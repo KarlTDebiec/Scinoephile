@@ -1,2 +1,3 @@
+hanziconv
 pandas
-pycantonese
+-e git://github.com/pycantonese/pycantonese#egg=pycantonese
