@@ -157,6 +157,7 @@ class SubtitleManager(object):
         return parser
 
     def add_cantonese_pinyin(self):
+        """"""
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
@@ -193,11 +194,11 @@ class SubtitleManager(object):
                 if self.verbosity >= 3:
                     print(character, "found in word")
 
-            #            embed()
             yale = pc.jyutping2yale(jyutping)
             return yale
 
         corpus = pc.hkcancor()
+        corpus.add("data/romanization/unmatched.cha")
         character_to_cantonese = {}
         punctuation = {"　": " ",
                        "？": "?",
@@ -213,8 +214,12 @@ class SubtitleManager(object):
         for index, datum in self.data.iterrows():
             subtitle = datum["subtitle"]
             if self.verbosity >= 2:
+                start = datum.start.strftime("%H:%M:%S,%f")[:-3]
+                end = datum.end.strftime("%H:%M:%S,%f")[:-3]
                 print(index)
+                print(f"{start} --> {end}")
                 print(subtitle)
+
             romanized = ""
             for character in subtitle:
                 if self.re_hanzi.match(character):
@@ -294,7 +299,7 @@ class SubtitleManager(object):
                         subtitle += "\n" + line.strip()
             self.data = pd.DataFrame.from_items([("index", indexes),
                                                  ("start", starts),
-                                                 ("ends", ends),
+                                                 ("end", ends),
                                                  ("subtitle", subtitles)])
             self.data.set_index("index", inplace=True)
 
