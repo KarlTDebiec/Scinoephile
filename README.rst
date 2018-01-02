@@ -1,7 +1,7 @@
 Introduction
 ============
 
-Script for adding romanization below Chinese-language subtitles. Presently only
+Script for adding romanization below Chinese subtitles. Presently only
 supports the Yale romanization of Cantonese. This is really only useful for old
 Hong Kong movies (1980s to early 1990s) whose Chinese subtitles match the
 spoken Cantonese 1:1 (that is, using 係, 喺, and 唔 rather than 是, 在, and 不,
