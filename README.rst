@@ -9,11 +9,13 @@ than 是, 在, and 不, etc.). In the future may support simultaneous display of
 Chinese and English subtitles.
 
 Example Mandarin Input::
+
     1021
     01:54:17,982 --> 01:54:19,818
     一起回新疆！
 
 Example Mandarin Output::
+
     1021
     01:54:17,982 --> 01:54:19,818
     一起回新疆！
@@ -52,7 +54,6 @@ redirect it to a file.
 Usage
 =====
 
-::
     usage: zysyzm.py [-h] [-v | -q] [-m | -c] chinese_infile
 
     Adds romanization below Chinese subtitles.
