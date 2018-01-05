@@ -268,16 +268,6 @@ class SubtitleManager(object):
         from snownlp import SnowNLP
         from pypinyin import pinyin
 
-        punctuation = {"　": " ",
-                       "？": "?",
-                       "，": ",",
-                       "、": ",",
-                       "！": "!",
-                       "…": "...",
-                       "﹣": "-",
-                       "“ ": "\"",
-                       "” ": "\""}
-
         for index, datum in self.data.iterrows():
             subtitle = datum["subtitle"]
             if self.verbosity >= 2:
@@ -289,8 +279,8 @@ class SubtitleManager(object):
 
             romanized = ""
             for word in SnowNLP(subtitle).words:
-                if word in punctuation:
-                    romanized = romanized.strip() + punctuation[word]
+                if word in self.punctuation:
+                    romanized = romanized.strip() + self.punctuation[word]
                     continue
                 romanized += " " + "".join([a[0] for a in pinyin(word)])
 
