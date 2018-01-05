@@ -21,9 +21,31 @@ if __name__ == "__main__":
 ################################### CLASSES ###################################
 class SubtitleManager(object):
     """"""
+
+    # region Instance Variables
+    punctuation = {"\n": "\n",
+                   "　": " ",
+                   " ": " ",
+                   "？": "?",
+                   "，": ",",
+                   "、": ",",
+                   ".": ".",
+                   "！": "!",
+                   "…": "...",
+                   "﹣": "-",
+                   "-": "-",
+                   "“": "\"",
+                   "”": "\"",
+                   "\"": "\"",
+                   "《": "<",
+                   "》": ">",
+                   "「": "[",
+                   "」": "]",
+                   "：": ":"}
+
     re_index = re.compile("^(?P<index>\d+)$")
     re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d,\d\d\d) --> "
-                         "(?P<end>\d\d:\d\d:\d\d,\d\d\d)$")
+                         "(?P<end>\d\d:\d\d:\d\d,\d\d\d)(\sX1:0)?$")
     re_blank = re.compile("^\s*$")
 
     re_hanzi = re.compile("[\u4e00-\u9fff]")
@@ -31,36 +53,31 @@ class SubtitleManager(object):
     re_western = re.compile("[a-zA-Z0-9]")
     re_jyutping = re.compile("[a-z]+\d")
 
-    punctuation = {"　": " ",
-                   "？": "?",
-                   "，": ",",
-                   "、": ",",
-                   "！": "!",
-                   "…": "...",
-                   "﹣": "-",
-                   "“ ": "\"",
-                   "” ": "\""}
+    # endregion
 
     # region Builtins
-    def __init__(self, verbosity, language, spacing, chinese_infile,
-                 english_infile=None, **kwargs):
+    def __init__(self, verbosity, language, chinese_infile,
+                 english_infile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
         self.language = language
         self.spacing = spacing
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
         self.outfile = "out.srt"
-        self()
 
     def __call__(self):
-        self.read_infile()
+        self.chinese_subtitles = self.read_infile(self.chinese_infile)
+        if self.english_infile is not None:
+            self.english_subtitles = self.read_infile((self.english_infile))
 
-        self.add_hanyu_pinyin()
+        if self.language == "mandarin":
+            self.add_hanyu_pinyin(self.chinese_subtitles)
+        elif self.language == "cantonese":
+            self.add_cantonese_pinyin(self.chinese_subtitles)
 
     # endregion
 
     # region Properties
-
     @property
     def chinese_infile(self):
         return self._chinese_infile
@@ -72,6 +89,16 @@ class SubtitleManager(object):
         self._chinese_infile = value
 
     @property
+    def chinese_subtitles(self):
+        return self._chinese_subtitles
+
+    @chinese_subtitles.setter
+    def chinese_subtitles(self, value):
+        if not isinstance(value, pd.DataFrame):
+            raise ValueError()
+        self._chinese_subtitles = value
+
+    @property
     def english_infile(self):
         return self._english_infile
 
@@ -80,6 +107,16 @@ class SubtitleManager(object):
         if not (isinstance(value, str) or value is None):
             raise ValueError()
         self._english_infile = value
+
+    @property
+    def english_subtitles(self):
+        return self._english_subtitles
+
+    @english_subtitles.setter
+    def english_subtitles(self, value):
+        if not isinstance(value, pd.DataFrame):
+            raise ValueError()
+        self._english_subtitles = value
 
     @property
     def language(self):
@@ -136,6 +173,8 @@ class SubtitleManager(object):
                             help="Chinese subtitles in SRT format")
         # parser.add_argument("english_infile", type=str, nargs="?",
         #                    help="English subtitles in SRT format (optional)")
+        # parser.add_argument("-o", "--outfile", type=str, nargs="?",
+        #                     help="Output file (optional)")
 
         verbosity = parser.add_mutually_exclusive_group()
         verbosity.add_argument("-v", "--verbose", action="count",
@@ -157,17 +196,17 @@ class SubtitleManager(object):
                               help="""add Cantonese/Guangdonghua Yale-style
                                    pinyin (耶鲁广东话拼音)""")
 
-        spacing = parser.add_mutually_exclusive_group()
-        spacing.add_argument("-w", "--words", action="store_const",
-                             dest="spacing", default="words", const="words",
-                             help="""add spaces between words only""")
-        spacing.add_argument("-s", "--syllables", action="store_const",
-                             dest="spacing", const="syllables",
-                             help="add spaces between all syllables")
+        # spacing = parser.add_mutually_exclusive_group()
+        # spacing.add_argument("-w", "--words", action="store_const",
+        #                     dest="spacing", default="words", const="words",
+        #                     help="""add spaces between words only""")
+        # spacing.add_argument("-s", "--syllables", action="store_const",
+        #                     dest="spacing", const="syllables",
+        #                     help="add spaces between all syllables")
 
         return parser
 
-    def add_cantonese_pinyin(self):
+    def add_cantonese_pinyin(self, subtitles):
         """"""
         import pycantonese as pc
         from collections import Counter
@@ -182,12 +221,13 @@ class SubtitleManager(object):
                 traditional_character = HanziConv.toTraditional(character)
                 if traditional_character != character:
                     if self.verbosity >= 3:
-                        print(character, "not found, searching for traditional")
+                        print(
+                            f"{character} not found, searching for traditional")
                     return identify_cantonese_pinyin(traditional_character)
 
                 # Truly no instance of character in corpus
-                if self.verbosity >= 3:
-                    print(character, "really not found")
+                if self.verbosity >= 1:
+                    print(f"{character} not found in corpus")
                 return None
 
             # If character is found in corpus alone, use most common instance
@@ -195,7 +235,7 @@ class SubtitleManager(object):
             if len(character_matches) > 0:
                 jyutping = Counter(character_matches).most_common(1)[0][0]
                 if self.verbosity >= 3:
-                    print(character, "found as single character")
+                    print(f"{character} found as single character")
 
             # If character is not found in corpus alone, use most common word
             else:
@@ -203,9 +243,15 @@ class SubtitleManager(object):
                 index = most_common_word[0].index(character)
                 jyutping = self.re_jyutping.findall(most_common_word[2])[index]
                 if self.verbosity >= 3:
-                    print(character, "found in word")
+                    print("{character} found in word")
 
-            yale = pc.jyutping2yale(jyutping)
+            try:
+                yale = pc.jyutping2yale(jyutping)
+            except ValueError:
+                if self.verbosity >= 1:
+                    print(
+                        f"{character} found but could not be converted from jyutping to Yale")
+                return None
             return yale
 
         corpus = pc.hkcancor()
@@ -213,7 +259,7 @@ class SubtitleManager(object):
         character_to_cantonese = {}
         unmatched = set()
 
-        for index, datum in self.data.iterrows():
+        for index, datum in subtitles.iterrows():
             subtitle = datum["subtitle"]
             if self.verbosity >= 2:
                 start = datum.start.strftime("%H:%M:%S,%f")[:-3]
@@ -236,7 +282,9 @@ class SubtitleManager(object):
                     continue
                 else:
                     if self.verbosity >= 1:
-                        print(character, "is unrecognized as Chinese, western, or punctuation")
+                        print(
+                            f"{character} is unrecognized as Chinese, western, or punctuation")
+                        unmatched.add(character)
                     continue
 
                 # Character is a Hanzi, is its romanization known?
@@ -260,15 +308,17 @@ class SubtitleManager(object):
             if self.verbosity >= 2:
                 print(romanized)
                 print()
-        embed()
-        # if verbose, print out total number of characters
+        if self.verbosity >= 1 and len(unmatched) >= 0:
+            print(
+                f"The following {len(unmatched)} characters were not recognized:")
+            print("".join(unmatched))
 
-    def add_hanyu_pinyin(self):
+    def add_hanyu_pinyin(self, subtitles):
         """"""
         from snownlp import SnowNLP
         from pypinyin import pinyin
 
-        for index, datum in self.data.iterrows():
+        for index, datum in subtitles.iterrows():
             subtitle = datum["subtitle"]
             if self.verbosity >= 2:
                 start = datum.start.strftime("%H:%M:%S,%f")[:-3]
@@ -288,17 +338,16 @@ class SubtitleManager(object):
             if self.verbosity >= 2:
                 print(romanized)
                 print()
-        # if verbose, print out total number of characters
 
-    def read_infile(self):
-        with open(self.chinese_infile, "r") as chinese_infile:
-            index = start = end = subtitle = None
+    def read_infile(self, infile):
+        with open(infile, "r") as infile:
+            index = start = end = title = None
             indexes = []
             starts = []
             ends = []
-            subtitles = []
+            titles = []
             while True:
-                line = chinese_infile.readline()
+                line = infile.readline()
                 if line == "":
                     break
                 if self.re_index.match(line):
@@ -314,30 +363,30 @@ class SubtitleManager(object):
                     if (index is None
                             or start is None
                             or end is None
-                            or subtitle is None):
+                            or title is None):
                         raise Exception()
                     indexes.append(index)
                     starts.append(start)
                     ends.append(end)
-                    subtitles.append(subtitle)
-                    index = start = end = subtitle = None
+                    titles.append(title)
+                    index = start = end = title = None
                 else:
-                    if subtitle is None:
-                        subtitle = line.strip()
+                    if title is None:
+                        title = line.strip()
                     else:
-                        subtitle += "\n" + line.strip()
-            self.data = pd.DataFrame.from_items([("index", indexes),
-                                                 ("start", starts),
-                                                 ("end", ends),
-                                                 ("subtitle", subtitles)])
-            self.data.set_index("index", inplace=True)
+                        title += "\n" + line.strip()
+        return pd.DataFrame.from_items([("index", indexes),
+                                        ("start", starts),
+                                        ("end", ends),
+                                        ("subtitle", titles)])
 
     # endregion
 
     @classmethod
     def main(cls):
         """"""
-        cls(**vars(cls.construct_argparser().parse_args()))
+        subtitle_manager = cls(**vars(cls.construct_argparser().parse_args()))
+        subtitle_manager()
 
 
 #################################### MAIN #####################################
