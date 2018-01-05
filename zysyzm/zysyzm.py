@@ -31,6 +31,16 @@ class SubtitleManager(object):
     re_western = re.compile("[a-zA-Z0-9]")
     re_jyutping = re.compile("[a-z]+\d")
 
+    punctuation = {"　": " ",
+                   "？": "?",
+                   "，": ",",
+                   "、": ",",
+                   "！": "!",
+                   "…": "...",
+                   "﹣": "-",
+                   "“ ": "\"",
+                   "” ": "\""}
+
     # region Builtins
     def __init__(self, verbosity, language, spacing, chinese_infile,
                  english_infile=None, **kwargs):
@@ -44,7 +54,8 @@ class SubtitleManager(object):
 
     def __call__(self):
         self.read_infile()
-        self.add_cantonese_pinyin()
+
+        self.add_hanyu_pinyin()
 
     # endregion
 
@@ -200,15 +211,6 @@ class SubtitleManager(object):
         corpus = pc.hkcancor()
         corpus.add("data/romanization/unmatched.cha")
         character_to_cantonese = {}
-        punctuation = {"　": " ",
-                       "？": "?",
-                       "，": ",",
-                       "、": ",",
-                       "！": "!",
-                       "…": "...",
-                       "﹣": "-",
-                       "“ ": "\"",
-                       "” ": "\""}
         unmatched = set()
 
         for index, datum in self.data.iterrows():
@@ -229,8 +231,8 @@ class SubtitleManager(object):
                 elif self.re_western.match(character):
                     romanized += character
                     continue
-                elif character in punctuation:
-                    romanized = romanized.strip() + punctuation[character]
+                elif character in self.punctuation:
+                    romanized = romanized.strip() + self.punctuation[character]
                     continue
                 else:
                     if self.verbosity >= 1:
@@ -259,6 +261,43 @@ class SubtitleManager(object):
                 print(romanized)
                 print()
         embed()
+        # if verbose, print out total number of characters
+
+    def add_hanyu_pinyin(self):
+        """"""
+        from snownlp import SnowNLP
+        from pypinyin import pinyin
+
+        punctuation = {"　": " ",
+                       "？": "?",
+                       "，": ",",
+                       "、": ",",
+                       "！": "!",
+                       "…": "...",
+                       "﹣": "-",
+                       "“ ": "\"",
+                       "” ": "\""}
+
+        for index, datum in self.data.iterrows():
+            subtitle = datum["subtitle"]
+            if self.verbosity >= 2:
+                start = datum.start.strftime("%H:%M:%S,%f")[:-3]
+                end = datum.end.strftime("%H:%M:%S,%f")[:-3]
+                print(index)
+                print(f"{start} --> {end}")
+                print(subtitle)
+
+            romanized = ""
+            for word in SnowNLP(subtitle).words:
+                if word in punctuation:
+                    romanized = romanized.strip() + punctuation[word]
+                    continue
+                romanized += " " + "".join([a[0] for a in pinyin(word)])
+
+            romanized = romanized.strip()
+            if self.verbosity >= 2:
+                print(romanized)
+                print()
         # if verbose, print out total number of characters
 
     def read_infile(self):
