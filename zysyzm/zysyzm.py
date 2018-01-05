@@ -166,7 +166,7 @@ class SubtitleManager(object):
         """"""
         import argparse
 
-        help_message = """Process data"""
+        help_message = """Adds romanization below Chinese subtitles."""
         parser = argparse.ArgumentParser(description=help_message)
 
         parser.add_argument("chinese_infile", type=str,

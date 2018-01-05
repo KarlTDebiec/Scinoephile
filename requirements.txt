@@ -1,3 +1,5 @@
 hanziconv
 pandas
 -e git://github.com/pycantonese/pycantonese#egg=pycantonese
+pypinyin
+snownlp
