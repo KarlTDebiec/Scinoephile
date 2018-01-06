@@ -438,6 +438,12 @@ class SubtitleManager(object):
 
     def merge_chinese_english(self, chinese_subtitles, english_subtitles):
         def add_merged_subtitle():
+            if start == time:
+                return merged_subtitles
+            duration = datetime.datetime.combine(datetime.date.today(), time) \
+                       - datetime.datetime.combine(datetime.date.today(), start)
+            if duration.total_seconds() <= 0.1:
+                return merged_subtitles
             return merged_subtitles.append(
                 pd.concat([
                     pd.DataFrame.from_items(
