@@ -10,12 +10,16 @@
 ################################### MODULES ###################################
 import datetime
 import re
+import numpy as np
 import pandas as pd
 from IPython import embed
 
 if __name__ == "__main__":
     __package__ = str("zysyzm")
     import zysyzm
+
+pd.set_option("display.width", 110)
+pd.set_option("display.max_colwidth", 16)
 
 
 ################################### CLASSES ###################################
@@ -32,6 +36,7 @@ class SubtitleManager(object):
                    ".": ".",
                    "！": "!",
                    "…": "...",
+                   "...": "...",
                    "﹣": "-",
                    "-": "-",
                    "“": "\"",
@@ -56,28 +61,84 @@ class SubtitleManager(object):
     # endregion
 
     # region Builtins
-    def __init__(self, verbosity, language, chinese_infile,
-                 english_infile=None, spacing="words", **kwargs):
+    def __init__(self, verbosity, cantonese, mandarin, chinese_infile,
+                 english_infile=None, outfile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
-        self.language = language
-        self.spacing = spacing
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
-        self.outfile = "out.srt"
+        self.cantonese = cantonese
+        self.mandarin = mandarin
+        self.spacing = spacing
+        self.outfile = outfile
 
     def __call__(self):
         self.chinese_subtitles = self.read_infile(self.chinese_infile)
-        if self.english_infile is not None:
+        if self.english:
             self.english_subtitles = self.read_infile((self.english_infile))
 
-        if self.language == "mandarin":
-            self.add_hanyu_pinyin(self.chinese_subtitles)
-        elif self.language == "cantonese":
-            self.add_cantonese_pinyin(self.chinese_subtitles)
+        if self.cantonese:
+            self.add_cantonese_romanization(self.chinese_subtitles)
+        if self.mandarin:
+            self.add_mandarin_romanization(self.chinese_subtitles)
+        if self.english:
+            self.merged_subtiles = self.merge_chinese_english(
+                self.chinese_subtitles,
+                self.english_subtitles)
+
+        if self.outfile is not None:
+            if self.english:
+                output_subtitles = self.merged_subtiles.copy().rename(
+                    columns={"chinese": "text"})
+                empty_line = "|"
+            else:
+                output_subtitles = self.chinese_subtitles.copy()
+                empty_line = " "
+            output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
+            output_subtitles["text"] = output_subtitles["text"].apply(
+                lambda s: s.replace("\n", "    "))
+
+            if self.cantonese:
+                output_subtitles["cantonese"].replace(np.nan, empty_line,
+                                                      inplace=True)
+                output_subtitles["cantonese"] = \
+                    output_subtitles["cantonese"].apply(
+                        lambda s: s.replace("\n", "    "))
+                output_subtitles["text"] += "\n"
+                output_subtitles["text"] += output_subtitles["cantonese"]
+
+            if self.mandarin:
+                output_subtitles["mandarin"].replace(np.nan, empty_line,
+                                                     inplace=True)
+                output_subtitles["mandarin"] = \
+                    output_subtitles["mandarin"].apply(
+                        lambda s: s.replace("\n", "    "))
+                output_subtitles["text"] += "\n"
+                output_subtitles["text"] += output_subtitles["mandarin"]
+
+            if self.english:
+                output_subtitles["english"].replace(np.nan, empty_line,
+                                                    inplace=True)
+                output_subtitles["english"] = \
+                    output_subtitles["english"].apply(
+                        lambda s: s.replace("\n", "    "))
+                output_subtitles["text"] += "\n"
+                output_subtitles["text"] += output_subtitles["english"]
+
+            self.write_outfile(output_subtitles, self.outfile)
 
     # endregion
 
     # region Properties
+    @property
+    def cantonese(self):
+        return self._cantonese
+
+    @cantonese.setter
+    def cantonese(self, value):
+        if not isinstance(value, bool):
+            raise ValueError()
+        self._cantonese = value
+
     @property
     def chinese_infile(self):
         return self._chinese_infile
@@ -90,6 +151,8 @@ class SubtitleManager(object):
 
     @property
     def chinese_subtitles(self):
+        if not hasattr(self, "_chinese_subtitles"):
+            self._chinese_subtitles = None
         return self._chinese_subtitles
 
     @chinese_subtitles.setter
@@ -97,6 +160,10 @@ class SubtitleManager(object):
         if not isinstance(value, pd.DataFrame):
             raise ValueError()
         self._chinese_subtitles = value
+
+    @property
+    def english(self):
+        return self.english_infile is not None
 
     @property
     def english_infile(self):
@@ -110,6 +177,8 @@ class SubtitleManager(object):
 
     @property
     def english_subtitles(self):
+        if not hasattr(self, "_english_subtitles"):
+            self._english_subtitles = None
         return self._english_subtitles
 
     @english_subtitles.setter
@@ -119,14 +188,26 @@ class SubtitleManager(object):
         self._english_subtitles = value
 
     @property
-    def language(self):
-        return self._language
+    def mandarin(self):
+        return self._mandarin
 
-    @language.setter
-    def language(self, value):
-        if value not in ["cantonese", "mandarin"]:
+    @mandarin.setter
+    def mandarin(self, value):
+        if not isinstance(value, bool):
             raise ValueError()
-        self._language = value
+        self._mandarin = value
+
+    @property
+    def merged_subtitles(self):
+        if not hasattr(self, "_merged_subtitles"):
+            self._merged_subtitles = None
+        return self._merged_subtitles
+
+    @merged_subtitles.setter
+    def merged_subtitles(self, value):
+        if not isinstance(value, pd.DataFrame):
+            raise ValueError()
+        self._merged_subtitles = value
 
     @property
     def outfile(self):
@@ -134,7 +215,7 @@ class SubtitleManager(object):
 
     @outfile.setter
     def outfile(self, value):
-        if not isinstance(value, str):
+        if not (isinstance(value, str) or value is None):
             raise ValueError()
         self._outfile = value
 
@@ -163,18 +244,18 @@ class SubtitleManager(object):
     # region Methods
     @staticmethod
     def construct_argparser():
-        """"""
         import argparse
 
-        help_message = """Adds romanization below Chinese subtitles."""
+        help_message = """Script to add romanization and optionally English
+                          translation to Chinese subtitles."""
         parser = argparse.ArgumentParser(description=help_message)
 
         parser.add_argument("chinese_infile", type=str,
                             help="Chinese subtitles in SRT format")
-        # parser.add_argument("english_infile", type=str, nargs="?",
-        #                    help="English subtitles in SRT format (optional)")
-        # parser.add_argument("-o", "--outfile", type=str, nargs="?",
-        #                     help="Output file (optional)")
+        parser.add_argument("english_infile", type=str, nargs="?",
+                            help="English subtitles in SRT format (optional)")
+        parser.add_argument("-o", "--outfile", type=str, nargs="?",
+                            help="Output file (optional)")
 
         verbosity = parser.add_mutually_exclusive_group()
         verbosity.add_argument("-v", "--verbose", action="count",
@@ -185,35 +266,28 @@ class SubtitleManager(object):
                                dest="verbosity", const=0,
                                help="disable verbose output")
 
-        language = parser.add_mutually_exclusive_group()
-        language.add_argument("-m", "--mandarin", action="store_const",
-                              dest="language", default="mandarin",
-                              const="mandarin",
-                              help="""add Mandarin/Putonghua pinyin
-                              (汉语拼音)""")
-        language.add_argument("-c", "--cantonese", action="store_const",
-                              const="cantonese", dest="language",
-                              help="""add Cantonese/Guangdonghua Yale-style
+        parser.add_argument("-c", "--cantonese", action="store_true",
+                            help="""add Cantonese/Guangdonghua Yale-style
                                    pinyin (耶鲁广东话拼音)""")
+        parser.add_argument("-m", "--mandarin", action="store_true",
+                            help="add Mandarin/Putonghua pinyin (汉语拼音)")
 
         # spacing = parser.add_mutually_exclusive_group()
         # spacing.add_argument("-w", "--words", action="store_const",
-        #                     dest="spacing", default="words", const="words",
-        #                     help="""add spaces between words only""")
+        #                      dest="spacing", default="words", const="words",
+        #                      help="""add spaces between words only""")
         # spacing.add_argument("-s", "--syllables", action="store_const",
-        #                     dest="spacing", const="syllables",
-        #                     help="add spaces between all syllables")
+        #                      dest="spacing", const="syllables",
+        #                      help="add spaces between all syllables")
 
         return parser
 
-    def add_cantonese_pinyin(self, subtitles):
-        """"""
+    def add_cantonese_romanization(self, subtitles):
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
 
-        def identify_cantonese_pinyin(character):
-            """"""
+        def identify_cantonese_romanization(character):
             matches = corpus.search(character=character)
 
             if len(matches) == 0:
@@ -223,7 +297,8 @@ class SubtitleManager(object):
                     if self.verbosity >= 3:
                         print(
                             f"{character} not found, searching for traditional")
-                    return identify_cantonese_pinyin(traditional_character)
+                    return identify_cantonese_romanization(
+                        traditional_character)
 
                 # Truly no instance of character in corpus
                 if self.verbosity >= 1:
@@ -254,31 +329,49 @@ class SubtitleManager(object):
                 return None
             return yale
 
+        if self.verbosity >= 1:
+            print("Adding Cantonese romanization")
+
         corpus = pc.hkcancor()
         corpus.add("data/romanization/unmatched.cha")
+        romanizations = []
         character_to_cantonese = {}
         unmatched = set()
 
-        for index, datum in subtitles.iterrows():
-            subtitle = datum["subtitle"]
+        for index, subtitle in subtitles.iterrows():
+            text = subtitle["text"]
             if self.verbosity >= 2:
-                start = datum.start.strftime("%H:%M:%S,%f")[:-3]
-                end = datum.end.strftime("%H:%M:%S,%f")[:-3]
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
                 print(index)
                 print(f"{start} --> {end}")
-                print(subtitle)
+                print(text)
 
-            romanized = ""
-            for character in subtitle:
-                if self.re_hanzi.match(character):
-                    pass
-                elif self.re_hanzi_rare.match(character):
-                    pass
+            romanization = ""
+            for character in text:
+                if (self.re_hanzi.match(character)
+                        or self.re_hanzi_rare.match(character)):
+                    if character in character_to_cantonese:
+                        yale = character_to_cantonese[character]
+                        romanization += " " + yale
+                        continue
+                    elif character in unmatched:
+                        romanization += " " + character
+                        continue
+                    else:
+                        yale = identify_cantonese_romanization(character)
+                        if yale is not None:
+                            romanization += " " + yale
+                            character_to_cantonese[character] = yale
+                        else:
+                            romanization += " " + character
+                            unmatched.add(character)
                 elif self.re_western.match(character):
-                    romanized += character
+                    romanization += character
                     continue
                 elif character in self.punctuation:
-                    romanized = romanized.strip() + self.punctuation[character]
+                    romanization = romanization.strip() + self.punctuation[
+                        character]
                     continue
                 else:
                     if self.verbosity >= 1:
@@ -287,65 +380,160 @@ class SubtitleManager(object):
                         unmatched.add(character)
                     continue
 
-                # Character is a Hanzi, is its romanization known?
-                if character in character_to_cantonese:
-                    yale = character_to_cantonese[character]
-                    romanized += " " + yale
-                    continue
-                elif character in unmatched:
-                    romanized += " " + character
-                    continue
-                else:
-                    yale = identify_cantonese_pinyin(character)
-                    if yale is not None:
-                        romanized += " " + yale
-                        character_to_cantonese[character] = yale
-                    else:
-                        romanized += " " + character
-                        unmatched.add(character)
-
-            romanized = romanized.strip()
+            romanization = romanization.strip().replace("\n ", "\n")
+            romanizations += [romanization]
             if self.verbosity >= 2:
-                print(romanized)
+                print(romanization)
                 print()
+
+        subtitles["cantonese"] = pd.Series(romanizations,
+                                           index=subtitles.index)
         if self.verbosity >= 1 and len(unmatched) >= 0:
             print(
                 f"The following {len(unmatched)} characters were not recognized:")
             print("".join(unmatched))
 
-    def add_hanyu_pinyin(self, subtitles):
-        """"""
+    def add_mandarin_romanization(self, subtitles):
         from snownlp import SnowNLP
         from pypinyin import pinyin
 
-        for index, datum in subtitles.iterrows():
-            subtitle = datum["subtitle"]
-            if self.verbosity >= 2:
-                start = datum.start.strftime("%H:%M:%S,%f")[:-3]
-                end = datum.end.strftime("%H:%M:%S,%f")[:-3]
-                print(index)
-                print(f"{start} --> {end}")
-                print(subtitle)
+        if self.verbosity >= 1:
+            print("Adding Mandarin romanization")
 
-            romanized = ""
-            for word in SnowNLP(subtitle).words:
-                if word in self.punctuation:
-                    romanized = romanized.strip() + self.punctuation[word]
-                    continue
-                romanized += " " + "".join([a[0] for a in pinyin(word)])
+        romanizations = []
 
-            romanized = romanized.strip()
+        for index, row in subtitles.iterrows():
+            text = row["text"]
+
             if self.verbosity >= 2:
-                print(romanized)
+                start = row.start.strftime("%H:%M:%S,%f")[:-3]
+                end = row.end.strftime("%H:%M:%S,%f")[:-3]
+                print(f"{index}\n{start} --> {end}\n{text}")
+
+            romanization = ""
+            if self.spacing == "words":
+                for line in text.split("\n"):
+                    line_romanization = ""
+                    for section in line.split():
+                        section_romanization = ""
+                        for word in SnowNLP(section).words:
+                            if word in self.punctuation:
+                                section_romanization += \
+                                    self.punctuation[word]
+                            else:
+                                section_romanization += " " + "".join(
+                                    [a[0] for a in pinyin(word)])
+                        line_romanization += "  " + section_romanization.strip()
+                    romanization += "\n" + line_romanization.strip()
+            romanization = romanization.strip()
+
+            romanizations += [romanization]
+
+            if self.verbosity >= 2:
+                print(romanization)
                 print()
 
+        subtitles["mandarin"] = pd.Series(romanizations,
+                                          index=subtitles.index)
+
+    def merge_chinese_english(self, chinese_subtitles, english_subtitles):
+        def add_merged_subtitle():
+            return merged_subtitles.append(
+                pd.concat([
+                    pd.DataFrame.from_items(
+                        [("start", [start]), ("end", [time])]),
+                    current_chinese_subtitle,
+                    current_english_subtitle],
+                    axis=1),
+                ignore_index=True)
+
+        if self.verbosity >= 1:
+            print("Merging Chinese and English subtitles")
+
+        transitions = []
+        for _, subtitle in chinese_subtitles.iterrows():
+            transitions += [
+                [subtitle["start"], "chinese_start",
+                 subtitle.drop(["start", "end"])],
+                [subtitle["end"], "chinese_end", None]]
+        for _, subtitle in english_subtitles.iterrows():
+            transitions += [
+                [subtitle["start"], "english_start",
+                 subtitle.drop(["start", "end"])],
+                [subtitle["end"], "english_end", None]]
+        transitions.sort()
+
+        merged_subtitles = pd.DataFrame()
+
+        start = current_chinese_subtitle = current_english_subtitle = None
+        for time, kind, subtitle in transitions:
+            if kind == "chinese_start":
+                if start is None:
+                    # Transition from __ -> C_
+                    pass
+                else:
+                    # Transition from _E -> CE
+                    merged_subtitles = add_merged_subtitle()
+                current_chinese_subtitle = pd.DataFrame(
+                    subtitle).transpose().reset_index(drop=True).rename(
+                    columns={"text": "chinese"})
+                start = time
+            elif kind == "chinese_end":
+                merged_subtitles = add_merged_subtitle()
+                current_chinese_subtitle = None
+                if current_english_subtitle is None:
+                    # Transition from C_ -> __
+                    start = None
+                else:
+                    # Transition from CE -> _C
+                    start = time
+            elif kind == "english_start":
+                if start is None:
+                    # Transition from __ -> _E
+                    pass
+                else:
+                    # Transition from C_ -> CE
+                    merged_subtitles = add_merged_subtitle()
+                current_english_subtitle = pd.DataFrame(
+                    subtitle).transpose().reset_index(drop=True).rename(
+                    columns={"text": "english"})
+                start = time
+            elif kind == "english_end":
+                merged_subtitles = add_merged_subtitle()
+                current_english_subtitle = None
+                if current_chinese_subtitle is None:
+                    # Transition from _E -> __
+                    start = None
+                else:
+                    # Transition from CE -> E_
+                    start = time
+
+        if self.cantonese and self.mandarin:
+            merged_subtitles = merged_subtitles[
+                ["start", "end", "chinese", "cantonese", "mandarin", "english"]]
+        elif self.cantonese:
+            merged_subtitles = merged_subtitles[
+                ["start", "end", "chinese", "cantonese", "english"]]
+        elif self.mandarin:
+            merged_subtitles = merged_subtitles[
+                ["start", "end", "chinese", "mandarin", "english"]]
+        else:
+            merged_subtitles = merged_subtitles[
+                ["start", "end", "chinese", "english"]]
+        merged_subtitles.index += 1
+
+        return merged_subtitles
+
     def read_infile(self, infile):
+        if self.verbosity >= 1:
+            print(f"Reading subtitles from '{infile}'")
+
         with open(infile, "r") as infile:
             index = start = end = title = None
             indexes = []
             starts = []
             ends = []
-            titles = []
+            texts = []
             while True:
                 line = infile.readline()
                 if line == "":
@@ -368,25 +556,39 @@ class SubtitleManager(object):
                     indexes.append(index)
                     starts.append(start)
                     ends.append(end)
-                    titles.append(title)
+                    texts.append(title)
                     index = start = end = title = None
                 else:
                     if title is None:
                         title = line.strip()
                     else:
                         title += "\n" + line.strip()
-        return pd.DataFrame.from_items([("index", indexes),
-                                        ("start", starts),
-                                        ("end", ends),
-                                        ("subtitle", titles)])
+        subtitles = pd.DataFrame.from_items([("index", indexes),
+                                             ("start", starts),
+                                             ("end", ends),
+                                             ("text", texts)])
+        subtitles.set_index("index", inplace=True)
+        return subtitles
+
+    def write_outfile(self, subtitles, outfile):
+        if self.verbosity >= 1:
+            print(f"Writing subtitles to '{outfile}'")
+
+        with open(outfile, "w") as outfile:
+            for index, subtitle in subtitles.iterrows():
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
+                text = subtitle["text"]
+                outfile.write(f"{index}\n")
+                outfile.write(f"{start} --> {end}\n")
+                outfile.write(f"{text}\n")
+                outfile.write("\n")
 
     # endregion
 
     @classmethod
     def main(cls):
-        """"""
-        subtitle_manager = cls(**vars(cls.construct_argparser().parse_args()))
-        subtitle_manager()
+        cls(**vars(cls.construct_argparser().parse_args()))()
 
 
 #################################### MAIN #####################################

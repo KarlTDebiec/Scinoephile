@@ -1,4 +1,5 @@
 hanziconv
+numpy
 pandas
 -e git://github.com/pycantonese/pycantonese#egg=pycantonese
 pypinyin
