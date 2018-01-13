@@ -17,11 +17,11 @@ Example Mandarin Output::
 
 Example Cantonese Output::
 
-    206
-    00:12:14,234 --> 00:12:16,277
-    係咪係咯！我係嚟…
-    haih maih haih lok! ngóh haih lèih...
-    That's right, I come...
+    207
+    00:12:13,274 --> 00:12:14,109
+    係咪话我呀？　﹣係！
+    haih maih wah ngóh àh?- haih!
+    - You mean me?    - Yes!
 
 Dependencies
 ============
