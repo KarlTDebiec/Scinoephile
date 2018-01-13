@@ -283,6 +283,7 @@ class SubtitleManager(object):
         return parser
 
     def add_cantonese_romanization(self, subtitles):
+        import os
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
@@ -318,7 +319,7 @@ class SubtitleManager(object):
                 index = most_common_word[0].index(character)
                 jyutping = self.re_jyutping.findall(most_common_word[2])[index]
                 if self.verbosity >= 3:
-                    print("{character} found in word")
+                    print(f"{character} found in word")
 
             try:
                 yale = pc.jyutping2yale(jyutping)
@@ -333,7 +334,7 @@ class SubtitleManager(object):
             print("Adding Cantonese romanization")
 
         corpus = pc.hkcancor()
-        corpus.add("data/romanization/unmatched.cha")
+        corpus.add(f"{os.path.dirname(os.path.realpath(__file__))}/data/romanization/unmatched.cha")
         romanizations = []
         character_to_cantonese = {}
         unmatched = set()
