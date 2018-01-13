@@ -389,7 +389,7 @@ class SubtitleManager(object):
 
         subtitles["cantonese"] = pd.Series(romanizations,
                                            index=subtitles.index)
-        if self.verbosity >= 1 and len(unmatched) >= 0:
+        if self.verbosity >= 1 and len(unmatched) > 0:
             print(
                 f"The following {len(unmatched)} characters were not recognized:")
             print("".join(unmatched))
