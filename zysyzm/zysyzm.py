@@ -545,7 +545,9 @@ class SubtitleManager(object):
                 line = infile.readline()
                 if line == "":
                     break
-                if self.re_index.match(line):
+                if self.verbosity >= 3:
+                    print(line.strip())
+                if self.re_index.match(line) and index is None:
                     index = int(self.re_index.match(line).groupdict()["index"])
                 elif self.re_time.match(line):
                     start = datetime.datetime.strptime(
