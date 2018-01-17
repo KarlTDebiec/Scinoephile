@@ -43,19 +43,26 @@ redirect it to a file.
 Usage
 =====
 
-    usage: zysyzm.py [-h] [-v | -q] [-m | -c] chinese_infile
+    usage: zysyzm.py [-h] [-v | -q] [-i] [-s] [-m] [-c] [-o [OUTFILE]]
+                 chinese_infile [english_infile]
 
-    Adds romanization below Chinese subtitles.
+    Script to add romanization and optionally English translation to Chinese
+    subtitles.
 
     positional arguments:
-      chinese_infile   Chinese subtitles in SRT format
+      chinese_infile        Chinese subtitles in SRT format
+      english_infile        English subtitles in SRT format (optional)
 
     optional arguments:
-      -h, --help       show this help message and exit
-      -v, --verbose    enable verbose output, may be specified more than once
-      -q, --quiet      disable verbose output
-      -m, --mandarin   add Mandarin/Putonghua pinyin (汉语拼音)
-      -c, --cantonese  add Cantonese/Guangdonghua Yale-style pinyin (耶鲁广东话拼音)
+      -h, --help            show this help message and exit
+      -v, --verbose         enable verbose output, may be specified more than once
+      -q, --quiet           disable verbose output
+      -i, --interactive     present IPython prompt after loading and processing
+      -s, --simplified      convert traditional character to simplified
+      -m, --mandarin        add Mandarin/Putonghua pinyin (汉语拼音)
+      -c, --cantonese       add Cantonese/Guangdonghua Yale-style pinyin (耶鲁广东话拼音)
+      -o [OUTFILE], --outfile [OUTFILE]
+                            Output file (optional)
 
 Authorship
 ==========

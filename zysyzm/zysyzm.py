@@ -300,13 +300,13 @@ class SubtitleManager(object):
                           translation to Chinese subtitles."""
         parser = argparse.ArgumentParser(description=help_message)
 
+        # Input
         parser.add_argument("chinese_infile", type=str,
                             help="Chinese subtitles in SRT format")
         parser.add_argument("english_infile", type=str, nargs="?",
                             help="English subtitles in SRT format (optional)")
-        parser.add_argument("-o", "--outfile", type=str, nargs="?",
-                            help="Output file (optional)")
 
+        # Action
         verbosity = parser.add_mutually_exclusive_group()
         verbosity.add_argument("-v", "--verbose", action="count",
                                dest="verbosity", default=1,
@@ -319,7 +319,6 @@ class SubtitleManager(object):
                             dest="interactive",
                             help="""present IPython prompt after loading and
                                     processing""")
-
         parser.add_argument("-s", "--simplified", action="store_true",
                             help="""convert traditional character to simplified
                                  """)
@@ -328,7 +327,6 @@ class SubtitleManager(object):
         parser.add_argument("-c", "--cantonese", action="store_true",
                             help="""add Cantonese/Guangdonghua Yale-style
                                     pinyin (耶鲁广东话拼音)""")
-
         # spacing = parser.add_mutually_exclusive_group()
         # spacing.add_argument("-w", "--words", action="store_const",
         #                      dest="spacing", default="words", const="words",
@@ -336,6 +334,10 @@ class SubtitleManager(object):
         # spacing.add_argument("-s", "--syllables", action="store_const",
         #                      dest="spacing", const="syllables",
         #                      help="add spaces between all syllables")
+
+        #Output
+        parser.add_argument("-o", "--outfile", type=str, nargs="?",
+                            help="Output file (optional)")
 
         return parser
 
