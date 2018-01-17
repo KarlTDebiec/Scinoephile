@@ -61,11 +61,14 @@ class SubtitleManager(object):
     # endregion
 
     # region Builtins
-    def __init__(self, verbosity, cantonese, mandarin, chinese_infile,
+    def __init__(self, chinese_infile, verbosity=1, interactive=False,
+                 simplified=False, cantonese=False, mandarin=False,
                  english_infile=None, outfile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
+        self.interactive = interactive
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
+        self.simplified = simplified
         self.cantonese = cantonese
         self.mandarin = mandarin
         self.spacing = spacing
@@ -76,6 +79,8 @@ class SubtitleManager(object):
         if self.english:
             self.english_subtitles = self.read_infile((self.english_infile))
 
+        if self.simplified:
+            self.simplify(self.chinese_subtitles)
         if self.cantonese:
             self.add_cantonese_romanization(self.chinese_subtitles)
         if self.mandarin:
@@ -84,6 +89,9 @@ class SubtitleManager(object):
             self.merged_subtiles = self.merge_chinese_english(
                 self.chinese_subtitles,
                 self.english_subtitles)
+
+        if self.interactive:
+            embed()
 
         if self.outfile is not None:
             if self.english:
@@ -94,8 +102,8 @@ class SubtitleManager(object):
                 output_subtitles = self.chinese_subtitles.copy()
                 empty_line = " "
             output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
-            output_subtitles["text"] = output_subtitles["text"].apply(
-                lambda s: s.replace("\n", "    "))
+            # output_subtitles["text"] = output_subtitles["text"].apply(
+            #    lambda s: s.replace("\n", "    "))
 
             if self.cantonese:
                 output_subtitles["cantonese"].replace(np.nan, empty_line,
@@ -131,6 +139,8 @@ class SubtitleManager(object):
     # region Properties
     @property
     def cantonese(self):
+        if not hasattr(self, "_cantonese"):
+            self._cantonese = False
         return self._cantonese
 
     @cantonese.setter
@@ -140,7 +150,13 @@ class SubtitleManager(object):
         self._cantonese = value
 
     @property
+    def chinese(self):
+        return self.chinese_infile is not None
+
+    @property
     def chinese_infile(self):
+        if not hasattr(self, "_chinese_infile"):
+            self._chinese_infile = None
         return self._chinese_infile
 
     @chinese_infile.setter
@@ -167,6 +183,8 @@ class SubtitleManager(object):
 
     @property
     def english_infile(self):
+        if not hasattr(self, "_english_infile"):
+            self._english_infile = None
         return self._english_infile
 
     @english_infile.setter
@@ -188,7 +206,21 @@ class SubtitleManager(object):
         self._english_subtitles = value
 
     @property
+    def interactive(self):
+        if not hasattr(self, "_interactive"):
+            self._interactive = False
+        return self._interactive
+
+    @interactive.setter
+    def interactive(self, value):
+        if not isinstance(value, bool):
+            raise ValueError()
+        self._interactive = value
+
+    @property
     def mandarin(self):
+        if not hasattr(self, "_mandarin"):
+            self._mandarin = False
         return self._mandarin
 
     @mandarin.setter
@@ -211,6 +243,8 @@ class SubtitleManager(object):
 
     @property
     def outfile(self):
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
         return self._outfile
 
     @outfile.setter
@@ -220,7 +254,21 @@ class SubtitleManager(object):
         self._outfile = value
 
     @property
+    def simplified(self):
+        if not hasattr(self, "_simplified"):
+            self._simplified = False
+        return self._simplified
+
+    @simplified.setter
+    def simplified(self, value):
+        if not isinstance(value, bool):
+            raise ValueError()
+        self._simplified = value
+
+    @property
     def spacing(self):
+        if not hasattr(self, "_spacing"):
+            self._spacing = "words"
         return self._spacing
 
     @spacing.setter
@@ -231,6 +279,8 @@ class SubtitleManager(object):
 
     @property
     def verbosity(self):
+        if not hasattr(self, "_verbosity"):
+            self._verbosity = 1
         return self._verbosity
 
     @verbosity.setter
@@ -265,12 +315,19 @@ class SubtitleManager(object):
         verbosity.add_argument("-q", "--quiet", action="store_const",
                                dest="verbosity", const=0,
                                help="disable verbose output")
+        parser.add_argument("-i", "--interactive", action="store_true",
+                            dest="interactive",
+                            help="""present IPython prompt after loading and
+                                    processing""")
 
-        parser.add_argument("-c", "--cantonese", action="store_true",
-                            help="""add Cantonese/Guangdonghua Yale-style
-                                   pinyin (耶鲁广东话拼音)""")
+        parser.add_argument("-s", "--simplified", action="store_true",
+                            help="""convert traditional character to simplified
+                                 """)
         parser.add_argument("-m", "--mandarin", action="store_true",
                             help="add Mandarin/Putonghua pinyin (汉语拼音)")
+        parser.add_argument("-c", "--cantonese", action="store_true",
+                            help="""add Cantonese/Guangdonghua Yale-style
+                                    pinyin (耶鲁广东话拼音)""")
 
         # spacing = parser.add_mutually_exclusive_group()
         # spacing.add_argument("-w", "--words", action="store_const",
@@ -334,7 +391,8 @@ class SubtitleManager(object):
             print("Adding Cantonese romanization")
 
         corpus = pc.hkcancor()
-        corpus.add(f"{os.path.dirname(os.path.realpath(__file__))}/data/romanization/unmatched.cha")
+        corpus.add(
+            f"{os.path.dirname(os.path.realpath(__file__))}/data/romanization/unmatched.cha")
         romanizations = []
         character_to_cantonese = {}
         unmatched = set()
@@ -342,11 +400,9 @@ class SubtitleManager(object):
         for index, subtitle in subtitles.iterrows():
             text = subtitle["text"]
             if self.verbosity >= 2:
-                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-                print(index)
-                print(f"{start} --> {end}")
-                print(text)
+                start = row.start.strftime("%H:%M:%S,%f")[:-3]
+                end = row.end.strftime("%H:%M:%S,%f")[:-3]
+                print(f"{index}\n{start} --> {end}\n{text}")
 
             romanization = ""
             for character in text:
@@ -403,12 +459,12 @@ class SubtitleManager(object):
 
         romanizations = []
 
-        for index, row in subtitles.iterrows():
-            text = row["text"]
+        for index, subtitle in subtitles.iterrows():
+            text = subtitle["text"]
 
             if self.verbosity >= 2:
-                start = row.start.strftime("%H:%M:%S,%f")[:-3]
-                end = row.end.strftime("%H:%M:%S,%f")[:-3]
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
                 print(f"{index}\n{start} --> {end}\n{text}")
 
             romanization = ""
@@ -431,8 +487,7 @@ class SubtitleManager(object):
             romanizations += [romanization]
 
             if self.verbosity >= 2:
-                print(romanization)
-                print()
+                print(f"{romanization}\n")
 
         subtitles["mandarin"] = pd.Series(romanizations,
                                           index=subtitles.index)
@@ -578,6 +633,33 @@ class SubtitleManager(object):
                                              ("text", texts)])
         subtitles.set_index("index", inplace=True)
         return subtitles
+
+    def simplify(self, subtitles):
+        from hanziconv import HanziConv
+
+        if self.verbosity >= 1:
+            print("Converting traditional characters to simplified")
+
+        for index, subtitle in subtitles.iterrows():
+            text = subtitle["text"]
+
+            if self.verbosity >= 2:
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
+                print(f"{index}\n{start} --> {end}\n{text}")
+
+            simplified = ""
+            for character in text:
+                if (self.re_hanzi.match(character)
+                        or self.re_hanzi_rare.match(character)):
+                    simplified += HanziConv.toSimplified(character)
+                else:
+                    simplified += character
+
+            if self.verbosity >= 2:
+                print(f"{simplified}\n")
+
+            subtitle["text"] = simplified
 
     def write_outfile(self, subtitles, outfile):
         if self.verbosity >= 1:
