@@ -5,10 +5,10 @@ Script for adding romanization below Chinese subtitles, and combining Chinese
 and English subtitles. Supports Mandarin Hanyu Pinyin and the Yale romanization
 of Cantonese. Cantonese romanization is really only useful for older Hong Kong
 movies (1980s to early 1990s) whose Chinese subtitles `match the spoken
-Cantonese 1:1 <written cantonese>`_ (that is, using 係, 喺, and 唔 rather than
-是, 在, and 不, etc.).
+Cantonese 1:1 <https://en.wikipedia.org/wiki/Written_Cantonese>`_ (that is,
+using 係, 喺, and 唔 rather than 是, 在, and 不, etc.).
 
-Example Mandarin Output::
+Example Mandarin/English Output::
 
       2
       00:01:04,397 --> 00:01:06,149
@@ -16,7 +16,7 @@ Example Mandarin Output::
       yō! lǐ yé lái la
       Master Li is here!
 
-Example Cantonese Output::
+Example Cantonese/English Output::
 
     207
     00:12:13,274 --> 00:12:14,109
