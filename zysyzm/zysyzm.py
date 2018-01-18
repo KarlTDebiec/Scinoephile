@@ -63,7 +63,8 @@ class SubtitleManager(object):
     # region Builtins
     def __init__(self, chinese_infile, verbosity=1, interactive=False,
                  simplified=False, cantonese=False, mandarin=False,
-                 english_infile=None, outfile=None, spacing="words", **kwargs):
+                 truecase=False, english_infile=None, outfile=None,
+                 spacing="words", **kwargs):
         self.verbosity = verbosity
         self.interactive = interactive
         self.chinese_infile = chinese_infile
@@ -71,28 +72,40 @@ class SubtitleManager(object):
         self.simplified = simplified
         self.cantonese = cantonese
         self.mandarin = mandarin
+        self.truecase = truecase
         self.spacing = spacing
         self.outfile = outfile
 
     def __call__(self):
+        # Load infiles
         self.chinese_subtitles = self.read_infile(self.chinese_infile)
         if self.english:
             self.english_subtitles = self.read_infile((self.english_infile))
 
+        # Apply text modifications
         if self.simplified:
             self.simplify(self.chinese_subtitles)
         if self.cantonese:
             self.add_cantonese_romanization(self.chinese_subtitles)
         if self.mandarin:
             self.add_mandarin_romanization(self.chinese_subtitles)
+        if self.truecase:
+            if self.english:
+                self.apply_truecase(self._english_subtitles)
+            else:
+                self.apply_truecase(self._chinese_subtitles)
+
+        # Merge Chinese and English
         if self.english:
             self.merged_subtiles = self.merge_chinese_english(
                 self.chinese_subtitles,
                 self.english_subtitles)
 
+        #
         if self.interactive:
             embed()
 
+        # Write outfile
         if self.outfile is not None:
             if self.english:
                 output_subtitles = self.merged_subtiles.copy().rename(
@@ -102,8 +115,6 @@ class SubtitleManager(object):
                 output_subtitles = self.chinese_subtitles.copy()
                 empty_line = " "
             output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
-            # output_subtitles["text"] = output_subtitles["text"].apply(
-            #    lambda s: s.replace("\n", "    "))
 
             if self.cantonese:
                 output_subtitles["cantonese"].replace(np.nan, empty_line,
@@ -278,6 +289,18 @@ class SubtitleManager(object):
         self._spacing = value
 
     @property
+    def truecase(self):
+        if not hasattr(self, "_truecase"):
+            self._truecase = False
+        return self._truecase
+
+    @truecase.setter
+    def truecase(self, value):
+        if not isinstance(value, bool):
+            raise ValueError()
+        self._truecase = value
+
+    @property
     def verbosity(self):
         if not hasattr(self, "_verbosity"):
             self._verbosity = 1
@@ -315,12 +338,8 @@ class SubtitleManager(object):
         verbosity.add_argument("-q", "--quiet", action="store_const",
                                dest="verbosity", const=0,
                                help="disable verbose output")
-        parser.add_argument("-i", "--interactive", action="store_true",
-                            dest="interactive",
-                            help="""present IPython prompt after loading and
-                                    processing""")
         parser.add_argument("-s", "--simplified", action="store_true",
-                            help="""convert traditional character to simplified
+                            help="""convert traditional characters to simplified
                                  """)
         parser.add_argument("-m", "--mandarin", action="store_true",
                             help="add Mandarin/Putonghua pinyin (汉语拼音)")
@@ -334,8 +353,15 @@ class SubtitleManager(object):
         # spacing.add_argument("-s", "--syllables", action="store_const",
         #                      dest="spacing", const="syllables",
         #                      help="add spaces between all syllables")
+        parser.add_argument("-t", "--truecase", action="store_true",
+                            help="""apply standard capitalization to English
+                                    subtitles""")
+        parser.add_argument("-i", "--interactive", action="store_true",
+                            dest="interactive",
+                            help="""present IPython prompt after loading and
+                                    processing""")
 
-        #Output
+        # Output
         parser.add_argument("-o", "--outfile", type=str, nargs="?",
                             help="Output file (optional)")
 
@@ -493,6 +519,42 @@ class SubtitleManager(object):
 
         subtitles["mandarin"] = pd.Series(romanizations,
                                           index=subtitles.index)
+
+    def apply_truecase(self, subtitles):
+        import nltk
+
+        if self.verbosity >= 1:
+            print("Applying truecase to English subtitles")
+
+        for index, subtitle in subtitles.iterrows():
+            text = subtitle["text"]
+
+            if self.verbosity >= 2:
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
+                print(f"{index}\n{start} --> {end}\n{text}")
+
+                tagged = nltk.pos_tag(
+                    [word.lower() for word in nltk.word_tokenize(text)])
+                normalized = [w.capitalize() if t in ["NN", "NNS"] else w
+                              for (w, t) in tagged]
+                normalized[0] = normalized[0].capitalize()
+                truecased = re.sub(" (?=[\.,'!?:;])", "", ' '.join(normalized))
+
+                # Could probably use a more appropriate tokenization function,
+                # but cleaning up in this way is fine for now.
+                truecased = truecased.replace(" n't", "n't")
+                truecased = truecased.replace(" i ", " I ")
+                truecased = truecased.replace("``", "\"")
+                truecased = truecased.replace("''", "\"")
+                truecased = re.sub(
+                    "(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+                    lambda s: s.group().upper(), truecased)
+
+                if self.verbosity >= 2:
+                    print(f"{truecased}\n")
+
+                subtitle["text"] = truecased
 
     def merge_chinese_english(self, chinese_subtitles, english_subtitles):
         def add_merged_subtitle():

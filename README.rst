@@ -28,9 +28,10 @@ Dependencies
 ============
 
 - `hanziconv <https://github.com/berniey/hanziconv>`_
+- `nltk <https://github.com/nltk/nltk>`_
 - `pandas <https://github.com/pandas-dev/pandas>`_
 - `pycantonese <https://github.com/pycantonese/pycantonese>`_
-  (Recent version from from GitHub rather than pypi)
+  (recent version from from GitHub rather than pypi)
 - `pypinyin <https://github.com/mozillazg/python-pinyin>`_
 - `snownlp <https://github.com/isnowfy/snownlp>`_
 
@@ -46,7 +47,7 @@ Usage
 
 ::
 
-    usage: zysyzm.py [-h] [-v | -q] [-i] [-s] [-m] [-c] [-o [OUTFILE]]
+    usage: zysyzm.py [-h] [-v | -q] [-s] [-m] [-c] [-t] [-i] [-o [OUTFILE]]
                  chinese_infile [english_infile]
 
     Script to add romanization and optionally English translation to Chinese
@@ -60,10 +61,11 @@ Usage
       -h, --help            show this help message and exit
       -v, --verbose         enable verbose output, may be specified more than once
       -q, --quiet           disable verbose output
-      -i, --interactive     present IPython prompt after loading and processing
-      -s, --simplified      convert traditional character to simplified
+      -s, --simplified      convert traditional characters to simplified
       -m, --mandarin        add Mandarin/Putonghua pinyin (汉语拼音)
       -c, --cantonese       add Cantonese/Guangdonghua Yale-style pinyin (耶鲁广东话拼音)
+      -t, --truecase        apply standard capitalization to English subtitles
+      -i, --interactive     present IPython prompt after loading and processing
       -o [OUTFILE], --outfile [OUTFILE]
                             Output file (optional)
 
