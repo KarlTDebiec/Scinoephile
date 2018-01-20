@@ -51,8 +51,9 @@ Usage
     usage: zysyzm.py [-h] [-v | -q] [-s] [-m] [-c] [-t] [-i] [-o [OUTFILE]]
                  chinese_infile [english_infile]
 
-    Script to add romanization and optionally English translation to Chinese
-    subtitles.
+    Modify Chinese subtitles by adding Mandarin or Cantonese romanization,
+    converting traditional characters to simplified, and merging with English
+    translation.
 
     positional arguments:
       chinese_infile        Chinese subtitles in SRT format
