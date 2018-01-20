@@ -14,12 +14,9 @@ import numpy as np
 import pandas as pd
 from IPython import embed
 
-if __name__ == "__main__":
-    __package__ = str("zysyzm")
-    import zysyzm
-
 pd.set_option("display.width", 110)
 pd.set_option("display.max_colwidth", 16)
+pd.set_option("display.max_rows", None)
 
 
 ################################### CLASSES ###################################
@@ -38,6 +35,7 @@ class SubtitleManager(object):
                    "…": "...",
                    "...": "...",
                    "﹣": "-",
+                   "─": "─",
                    "-": "-",
                    "“": "\"",
                    "”": "\"",
@@ -97,18 +95,21 @@ class SubtitleManager(object):
 
         # Merge Chinese and English
         if self.english:
-            self.merged_subtiles = self.merge_chinese_english(
+            self.merged_subtitles = self.merge_chinese_english(
                 self.chinese_subtitles,
                 self.english_subtitles)
 
-        #
+            self.merged_subtitles = self.merge_chinese_english_2(
+                self.merged_subtitles)
+
+        # Interactive
         if self.interactive:
             embed()
 
         # Write outfile
         if self.outfile is not None:
             if self.english:
-                output_subtitles = self.merged_subtiles.copy().rename(
+                output_subtitles = self.merged_subtitles.copy().rename(
                     columns={"chinese": "text"})
                 empty_line = "|"
             else:
@@ -319,8 +320,10 @@ class SubtitleManager(object):
     def construct_argparser():
         import argparse
 
-        help_message = """Script to add romanization and optionally English
-                          translation to Chinese subtitles."""
+        help_message = """Modify Chinese subtitles by adding Mandarin or
+                          Cantonese romanization, converting traditional
+                          characters to simplified, and merging with English
+                          translation."""
         parser = argparse.ArgumentParser(description=help_message)
 
         # Input
@@ -428,8 +431,8 @@ class SubtitleManager(object):
         for index, subtitle in subtitles.iterrows():
             text = subtitle["text"]
             if self.verbosity >= 2:
-                start = row.start.strftime("%H:%M:%S,%f")[:-3]
-                end = row.end.strftime("%H:%M:%S,%f")[:-3]
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
                 print(f"{index}\n{start} --> {end}\n{text}")
 
             romanization = ""
@@ -562,8 +565,8 @@ class SubtitleManager(object):
                 return merged_subtitles
             duration = datetime.datetime.combine(datetime.date.today(), time) \
                        - datetime.datetime.combine(datetime.date.today(), start)
-            if duration.total_seconds() <= 0.1:
-                return merged_subtitles
+            # if duration.total_seconds() <= 0.1:
+            #    return merged_subtitles
             return merged_subtitles.append(
                 pd.concat([
                     pd.DataFrame.from_items(
@@ -649,6 +652,96 @@ class SubtitleManager(object):
         merged_subtitles.index += 1
 
         return merged_subtitles
+
+    def merge_chinese_english_2(self, merged_subtitles):
+
+        cleaned_subs = pd.DataFrame([merged_subtitles.iloc[0]])
+
+        for index in self.merged_subtitles.index[1:]:
+            last = cleaned_subs.iloc[-1]
+            next = merged_subtitles.loc[index]
+            nay = pd.DataFrame([last, next])
+            if last.chinese == next.chinese:
+                if isinstance(last.english, float) and np.isnan(last.english):
+                    # Chinese started before English
+                    # print("A")
+                    last.english = next.english
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently necessary
+                elif isinstance(next.english, float) and np.isnan(next.english):
+                    # English started before Chinese
+                    # print("B")
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                else:
+                    # Single Chinese subtitle given two English subtitles
+                    gap = (datetime.datetime.combine(datetime.date.today(),
+                                                     next.start) -
+                           datetime.datetime.combine(datetime.date.today(),
+                                                     last.end))
+                    if gap.total_seconds() < 0.5:
+                        # Probably long Chinese split into two English
+                        # print("C1", gap.total_seconds())
+                        mid = (datetime.datetime.combine(datetime.date.today(),
+                                                         last.end) +
+                               (gap / 2)).time()
+                        last.end = mid
+                        next.start = mid
+                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                        cleaned_subs = cleaned_subs.append(next)
+
+                    else:
+                        # Probably Chinese repeated with different English
+                        # print("C2", gap.total_seconds())
+                        cleaned_subs = cleaned_subs.append(next)
+
+            elif last.english == next.english:
+                if isinstance(last.chinese, float) and np.isnan(last.chinese):
+                    # English started before Chinese
+                    # print("D")
+                    last.chinese = next.chinese
+                    if hasattr(next, "mandarin"):
+                        last.mandarin = next.mandarin
+                    if hasattr(next, "cantonese"):
+                        last.cantonese = next.cantonese
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently necessary
+                elif isinstance(next.chinese, float) and np.isnan(next.chinese):
+                    # Chinese started before English
+                    if last.end < next.start:
+                        # print("E1")
+                        cleaned_subs = cleaned_subs.append(next)
+                    else:
+                        # print("E2")
+                        last.end = next.end
+                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                else:
+                    gap = (datetime.datetime.combine(datetime.date.today(),
+                                                     next.start) -
+                           datetime.datetime.combine(datetime.date.today(),
+                                                     last.end))
+                    if gap.total_seconds() < 0.5:
+                        # Probably long English split into two Chinese
+                        # print("F1", gap.total_seconds())
+                        mid = (datetime.datetime.combine(datetime.date.today(),
+                                                         last.end) +
+                               (gap / 2)).time()
+                        last.end = mid
+                        next.start = mid
+                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                        cleaned_subs = cleaned_subs.append(next)
+                    else:
+                        # Probably English repeated with different Chinese
+                        # print("F2", gap.total_seconds())
+                        cleaned_subs = cleaned_subs.append(next)
+            else:
+                #print("G")
+                cleaned_subs = cleaned_subs.append(next)
+
+        cleaned_subs = cleaned_subs.reset_index(drop=True)
+        cleaned_subs.index += 1
+
+        return cleaned_subs
 
     def read_infile(self, infile):
         if self.verbosity >= 1:
