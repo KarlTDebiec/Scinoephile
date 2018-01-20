@@ -29,7 +29,7 @@ Dependencies
 
 - `hanziconv <https://github.com/berniey/hanziconv>`_
 - `nltk <https://github.com/nltk/nltk>`_
-- `numpy<https://github.com/numpy/numpy>`_
+- `numpy <https://github.com/numpy/numpy>`_
 - `pandas <https://github.com/pandas-dev/pandas>`_
 - `pycantonese <https://github.com/pycantonese/pycantonese>`_
   (recent version from from GitHub rather than pypi)
