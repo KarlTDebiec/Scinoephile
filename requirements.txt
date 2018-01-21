@@ -1,4 +1,5 @@
 hanziconv
+IPython
 nltk
 numpy
 pandas

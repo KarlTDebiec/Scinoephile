@@ -98,7 +98,6 @@ class SubtitleManager(object):
             self.merged_subtitles = self.merge_chinese_english(
                 self.chinese_subtitles,
                 self.english_subtitles)
-
             self.merged_subtitles = self.merge_chinese_english_2(
                 self.merged_subtitles)
 
@@ -116,6 +115,9 @@ class SubtitleManager(object):
                 output_subtitles = self.chinese_subtitles.copy()
                 empty_line = " "
             output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
+            output_subtitles["text"] = \
+                output_subtitles["text"].apply(
+                    lambda s: s.replace("\n", "    "))
 
             if self.cantonese:
                 output_subtitles["cantonese"].replace(np.nan, empty_line,
@@ -735,7 +737,7 @@ class SubtitleManager(object):
                         # print("F2", gap.total_seconds())
                         cleaned_subs = cleaned_subs.append(next)
             else:
-                #print("G")
+                # print("G")
                 cleaned_subs = cleaned_subs.append(next)
 
         cleaned_subs = cleaned_subs.reset_index(drop=True)
