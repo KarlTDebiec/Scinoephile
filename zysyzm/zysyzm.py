@@ -368,7 +368,7 @@ class SubtitleManager(object):
 
         # Output
         parser.add_argument("-o", "--outfile", type=str, nargs="?",
-                            help="Output file (optional)")
+                            help="output file (optional)")
 
         return parser
 
