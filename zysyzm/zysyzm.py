@@ -164,6 +164,15 @@ class SubtitleManager(object):
         self._cantonese = value
 
     @property
+    def cantonese_corpus(self):
+        if not hasattr(self, "_cantonese_corpus"):
+            import pycantonese as pc
+            self._cantonese_corpus = pc.hkcancor()
+            self._cantonese_corpus.add(
+                f"{self.directory}/data/romanization/unmatched.cha")
+        return self._cantonese_corpus
+
+    @property
     def chinese(self):
         return self.chinese_infile is not None
 
@@ -190,6 +199,13 @@ class SubtitleManager(object):
         if not isinstance(value, pd.DataFrame):
             raise ValueError()
         self._chinese_subtitles = value
+
+    @property
+    def directory(self):
+        if not hasattr(self, "_directory"):
+            import os
+            self._directory = os.path.dirname(os.path.realpath(__file__))
+        return self._directory
 
     @property
     def english(self):
@@ -373,13 +389,12 @@ class SubtitleManager(object):
         return parser
 
     def add_cantonese_romanization(self, subtitles):
-        import os
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
 
         def identify_cantonese_romanization(character):
-            matches = corpus.search(character=character)
+            matches = self.cantonese_corpus.search(character=character)
 
             if len(matches) == 0:
                 # Character not found in corpus, search for traditional version
@@ -423,9 +438,6 @@ class SubtitleManager(object):
         if self.verbosity >= 1:
             print("Adding Cantonese romanization")
 
-        corpus = pc.hkcancor()
-        corpus.add(
-            f"{os.path.dirname(os.path.realpath(__file__))}/data/romanization/unmatched.cha")
         romanizations = []
         character_to_cantonese = {}
         unmatched = set()
