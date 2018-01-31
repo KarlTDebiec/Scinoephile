@@ -21,7 +21,9 @@ pd.set_option("display.max_rows", None)
 
 ################################### CLASSES ###################################
 class SubtitleManager(object):
-    """"""
+    """
+    Class for managing subtitles
+    """
 
     # region Instance Variables
     punctuation = {"\n": "\n",
@@ -153,6 +155,7 @@ class SubtitleManager(object):
     # region Properties
     @property
     def cantonese(self):
+        """bool: Whether or not subtitles contain Cantonese romanzation"""
         if not hasattr(self, "_cantonese"):
             self._cantonese = False
         return self._cantonese
@@ -174,6 +177,7 @@ class SubtitleManager(object):
 
     @property
     def chinese(self):
+        """bool: Whether or not subtitles contain Chinese character text"""
         return self.chinese_infile is not None
 
     @property
@@ -209,6 +213,7 @@ class SubtitleManager(object):
 
     @property
     def english(self):
+        """bool: Whether or not subtitles contain English text"""
         return self.english_infile is not None
 
     @property
@@ -249,6 +254,7 @@ class SubtitleManager(object):
 
     @property
     def mandarin(self):
+        """bool: Whether or not subtitles contain Mandarin romanization"""
         if not hasattr(self, "_mandarin"):
             self._mandarin = False
         return self._mandarin
@@ -336,6 +342,12 @@ class SubtitleManager(object):
     # region Methods
     @staticmethod
     def construct_argparser():
+        """
+        Prepares argument parser
+
+        Returns:
+            argparser (argparse.ArgumentParser): Argument parser
+        """
         import argparse
 
         help_message = """Modify Chinese subtitles by adding Mandarin or
@@ -389,6 +401,20 @@ class SubtitleManager(object):
         return parser
 
     def add_cantonese_romanization(self, subtitles):
+        """
+        Adds Yale-style romanization of Cantonese to provided subtitles
+
+        Args:
+            subtitles (pandas.DataFrame): Subtitles, including chinese
+              character text in column named 'text'; adds column named
+              'cantonese' with romanization
+
+        Todo:
+            * Add support for Jyupting
+            * Support source field names other than 'text'
+            * Look into word segmentation
+            * Look into capitalization
+        """
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
@@ -496,6 +522,18 @@ class SubtitleManager(object):
             print("".join(unmatched))
 
     def add_mandarin_romanization(self, subtitles):
+        """
+        Adds Hanyu Pinyin romanization of Mandarin to provided subtitles
+
+        subtitles (pandas.DataFrame): Subtitles, including chinese
+              character text in column named 'text'; adds column named
+              'mandarin' with romanization
+
+        Todo:
+            * Support source field names other than 'text'
+            * Implement option to enable/disable word segmentation
+            * Look into capitalization
+        """
         from snownlp import SnowNLP
         from pypinyin import pinyin
 
