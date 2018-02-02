@@ -27,7 +27,7 @@ class SubtitleManager(object):
     Todo:
         * Document
         * Separate Chinese and English infile arguments (do not always expect
-          Chinese
+          Chinese)
         * OCR features? (someday)
     """
 
@@ -174,6 +174,7 @@ class SubtitleManager(object):
 
     @property
     def cantonese_corpus(self):
+        """pycantonese.corpus.CantoneseCHATReader: Corpus for romanization"""
         if not hasattr(self, "_cantonese_corpus"):
             import pycantonese as pc
             self._cantonese_corpus = pc.hkcancor()
@@ -188,6 +189,7 @@ class SubtitleManager(object):
 
     @property
     def chinese_infile(self):
+        """str: Path to SRT file containing Chinese character text"""
         if not hasattr(self, "_chinese_infile"):
             self._chinese_infile = None
         return self._chinese_infile
@@ -200,6 +202,7 @@ class SubtitleManager(object):
 
     @property
     def chinese_subtitles(self):
+        """pandas.core.frame.DataFrame: Chinese character subtitles"""
         if not hasattr(self, "_chinese_subtitles"):
             self._chinese_subtitles = None
         return self._chinese_subtitles
@@ -212,6 +215,7 @@ class SubtitleManager(object):
 
     @property
     def directory(self):
+        """str: Path to this file"""
         if not hasattr(self, "_directory"):
             import os
             self._directory = os.path.dirname(os.path.realpath(__file__))
@@ -224,6 +228,7 @@ class SubtitleManager(object):
 
     @property
     def english_infile(self):
+        """str: Path to SRT file containing English text"""
         if not hasattr(self, "_english_infile"):
             self._english_infile = None
         return self._english_infile
@@ -236,6 +241,7 @@ class SubtitleManager(object):
 
     @property
     def english_subtitles(self):
+        """pandas.core.frame.DataFrame: English subtitles"""
         if not hasattr(self, "_english_subtitles"):
             self._english_subtitles = None
         return self._english_subtitles
@@ -248,6 +254,7 @@ class SubtitleManager(object):
 
     @property
     def interactive(self):
+        """bool: Whether or not to present IPython prompt after processing"""
         if not hasattr(self, "_interactive"):
             self._interactive = False
         return self._interactive
@@ -273,6 +280,7 @@ class SubtitleManager(object):
 
     @property
     def merged_subtitles(self):
+        """pandas.core.frame.DataFrame: Merged Chinese/English subtitles"""
         if not hasattr(self, "_merged_subtitles"):
             self._merged_subtitles = None
         return self._merged_subtitles
@@ -285,6 +293,7 @@ class SubtitleManager(object):
 
     @property
     def outfile(self):
+        """str: Path to output SRT file"""
         if not hasattr(self, "_outfile"):
             self._outfile = None
         return self._outfile
@@ -297,6 +306,7 @@ class SubtitleManager(object):
 
     @property
     def simplified(self):
+        """bool: Whether or not to convert traditional Chinese to simplified"""
         if not hasattr(self, "_simplified"):
             self._simplified = False
         return self._simplified
@@ -321,6 +331,7 @@ class SubtitleManager(object):
 
     @property
     def truecase(self):
+        """bool: Whether or not to estimate capitalization of English"""
         if not hasattr(self, "_truecase"):
             self._truecase = False
         return self._truecase
@@ -333,6 +344,7 @@ class SubtitleManager(object):
 
     @property
     def verbosity(self):
+        """int: Level of output to provide"""
         if not hasattr(self, "_verbosity"):
             self._verbosity = 1
         return self._verbosity
