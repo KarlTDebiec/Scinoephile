@@ -23,6 +23,12 @@ pd.set_option("display.max_rows", None)
 class SubtitleManager(object):
     """
     Class for managing subtitles
+
+    Todo:
+        * Document
+        * Separate Chinese and English infile arguments (do not always expect
+          Chinese
+        * OCR features? (someday)
     """
 
     # region Instance Variables
@@ -378,7 +384,7 @@ class SubtitleManager(object):
                             help="add Mandarin/Putonghua pinyin (汉语拼音)")
         parser.add_argument("-c", "--cantonese", action="store_true",
                             help="""add Cantonese/Guangdonghua Yale-style
-                                    pinyin (耶鲁广东话拼音)""")
+                                    pinyin (耶鲁粤语拼音)""")
         # spacing = parser.add_mutually_exclusive_group()
         # spacing.add_argument("-w", "--words", action="store_const",
         #                      dest="spacing", default="words", const="words",

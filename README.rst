@@ -65,7 +65,7 @@ Usage
       -q, --quiet           disable verbose output
       -s, --simplified      convert traditional characters to simplified
       -m, --mandarin        add Mandarin/Putonghua pinyin (汉语拼音)
-      -c, --cantonese       add Cantonese/Guangdonghua Yale-style pinyin (耶鲁广东话拼音)
+      -c, --cantonese       add Cantonese/Guangdonghua Yale-style pinyin (耶鲁粤语拼音)
       -t, --truecase        apply standard capitalization to English subtitles
       -i, --interactive     present IPython prompt after loading and processing
       -o [OUTFILE], --outfile [OUTFILE]
