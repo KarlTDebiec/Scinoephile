@@ -137,16 +137,16 @@ class SubtitleManager(object):
             output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
             output_subtitles["text"] = \
                 output_subtitles["text"].apply(
-                    lambda s: s.replace("\n-", " -")).apply(
-                    lambda s: s.replace("\n", "    "))
+                    lambda s: s.replace("\n-", "    -")).apply(
+                    lambda s: s.replace("\n", " "))
 
             if self.mandarin:
                 output_subtitles["mandarin"].replace(np.nan, empty_line,
                                                      inplace=True)
                 output_subtitles["mandarin"] = \
                     output_subtitles["mandarin"].apply(
-                        lambda s: s.replace("\n-", " -")).apply(
-                        lambda s: s.replace("\n", "    "))
+                        lambda s: s.replace("\n-", "    -")).apply(
+                        lambda s: s.replace("\n", " "))
                 output_subtitles["text"] += "\n"
                 output_subtitles["text"] += output_subtitles["mandarin"]
 
@@ -155,8 +155,8 @@ class SubtitleManager(object):
                                                       inplace=True)
                 output_subtitles["cantonese"] = \
                     output_subtitles["cantonese"].apply(
-                        lambda s: s.replace("\n-", " -")).apply(
-                        lambda s: s.replace("\n", "    "))
+                        lambda s: s.replace("\n-", "    -")).apply(
+                        lambda s: s.replace("\n", " "))
                 output_subtitles["text"] += "\n"
                 output_subtitles["text"] += output_subtitles["cantonese"]
 
@@ -165,8 +165,8 @@ class SubtitleManager(object):
                                                     inplace=True)
                 output_subtitles["english"] = \
                     output_subtitles["english"].apply(
-                        lambda s: s.replace("\n-", " -")).apply(
-                        lambda s: s.replace("\n", "    "))
+                        lambda s: s.replace("\n-", "    -")).apply(
+                        lambda s: s.replace("\n", " "))
                 output_subtitles["text"] += "\n"
                 output_subtitles["text"] += output_subtitles["english"]
 
@@ -716,17 +716,14 @@ class SubtitleManager(object):
         for index in self.merged_subtitles.index[1:]:
             last = cleaned_subs.iloc[-1]
             next = merged_subtitles.loc[index]
-            nay = pd.DataFrame([last, next])
             if last.chinese == next.chinese:
                 if isinstance(last.english, float) and np.isnan(last.english):
                     # Chinese started before English
-                    # print("A")
                     last.english = next.english
                     last.end = next.end
                     cleaned_subs.iloc[-1] = last  # Apparently necessary
                 elif isinstance(next.english, float) and np.isnan(next.english):
                     # English started before Chinese
-                    # print("B")
                     last.end = next.end
                     cleaned_subs.iloc[-1] = last  # Apparently not necessary
                 else:
@@ -737,7 +734,6 @@ class SubtitleManager(object):
                                                      last.end))
                     if gap.total_seconds() < 0.5:
                         # Probably long Chinese split into two English
-                        # print("C1", gap.total_seconds())
                         mid = (datetime.datetime.combine(datetime.date.today(),
                                                          last.end) +
                                (gap / 2)).time()
@@ -748,13 +744,11 @@ class SubtitleManager(object):
 
                     else:
                         # Probably Chinese repeated with different English
-                        # print("C2", gap.total_seconds())
                         cleaned_subs = cleaned_subs.append(next)
 
             elif last.english == next.english:
                 if isinstance(last.chinese, float) and np.isnan(last.chinese):
                     # English started before Chinese
-                    # print("D")
                     last.chinese = next.chinese
                     if hasattr(next, "mandarin"):
                         last.mandarin = next.mandarin
@@ -765,10 +759,8 @@ class SubtitleManager(object):
                 elif isinstance(next.chinese, float) and np.isnan(next.chinese):
                     # Chinese started before English
                     if last.end < next.start:
-                        # print("E1")
                         cleaned_subs = cleaned_subs.append(next)
                     else:
-                        # print("E2")
                         last.end = next.end
                         cleaned_subs.iloc[-1] = last  # Apparently not necessary
                 else:
@@ -778,7 +770,6 @@ class SubtitleManager(object):
                                                      last.end))
                     if gap.total_seconds() < 0.5:
                         # Probably long English split into two Chinese
-                        # print("F1", gap.total_seconds())
                         mid = (datetime.datetime.combine(datetime.date.today(),
                                                          last.end) +
                                (gap / 2)).time()
@@ -788,10 +779,8 @@ class SubtitleManager(object):
                         cleaned_subs = cleaned_subs.append(next)
                     else:
                         # Probably English repeated with different Chinese
-                        # print("F2", gap.total_seconds())
                         cleaned_subs = cleaned_subs.append(next)
             else:
-                # print("G")
                 cleaned_subs = cleaned_subs.append(next)
 
         cleaned_subs = cleaned_subs.reset_index(drop=True)
