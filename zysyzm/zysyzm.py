@@ -25,10 +25,9 @@ class SubtitleManager(object):
     Class for managing subtitles
 
     Todo:
-        * Document
-        * Separate Chinese and English infile arguments (do not always expect
-          Chinese)
-        * OCR features? (someday)
+        - Document
+        - Clean up merging
+        - OCR features? (someday)
     """
 
     # region Instance Variables
@@ -67,42 +66,52 @@ class SubtitleManager(object):
     # endregion
 
     # region Builtins
-    def __init__(self, chinese_infile, verbosity=1, interactive=False,
-                 simplified=False, cantonese=False, mandarin=False,
-                 truecase=False, english_infile=None, outfile=None,
-                 spacing="words", **kwargs):
+    def __init__(self, verbosity=1, interactive=False, chinese_infile=None,
+                 english_infile=None, c_offset=0, simplified=False,
+                 mandarin=False, cantonese=False, e_offset=0, truecase=False,
+                 outfile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
         self.interactive = interactive
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
+        self.c_offset = c_offset
         self.simplified = simplified
-        self.cantonese = cantonese
         self.mandarin = mandarin
+        self.cantonese = cantonese
+        self.e_offset = e_offset
         self.truecase = truecase
         self.spacing = spacing
         self.outfile = outfile
 
     def __call__(self):
+        """
+        Core logic
+
+        TODO:
+            - Decide between setting within each function or returning
+            - Move actual merging to another function 'complile_subtitles'
+        """
         # Load infiles
-        self.chinese_subtitles = self.read_infile(self.chinese_infile)
+        if self.chinese:
+            self.chinese_subtitles = self.read_infile(self.chinese_infile)
         if self.english:
             self.english_subtitles = self.read_infile((self.english_infile))
 
-        # Apply text modifications
-        if self.simplified:
-            self.simplify(self.chinese_subtitles)
-        if self.cantonese:
-            self.add_cantonese_romanization(self.chinese_subtitles)
-        if self.mandarin:
-            self.add_mandarin_romanization(self.chinese_subtitles)
-        if self.truecase:
-            if self.english:
+        # Apply actions to
+        if self.chinese:
+            if self.simplified:
+                self.simplify(self.chinese_subtitles)
+            if self.mandarin:
+                self.add_mandarin_romanization(self.chinese_subtitles)
+            if self.cantonese:
+                self.add_cantonese_romanization(self.chinese_subtitles)
+
+        if self.english:
+            if self.truecase:
                 self.apply_truecase(self._english_subtitles)
-            else:
-                self.apply_truecase(self._chinese_subtitles)
 
         # Merge Chinese and English
-        if self.english:
+        if self.chinese and self.english:
             self.merged_subtitles = self.merge_chinese_english(
                 self.chinese_subtitles,
                 self.english_subtitles)
@@ -115,41 +124,48 @@ class SubtitleManager(object):
 
         # Write outfile
         if self.outfile is not None:
-            if self.english:
+            if self.chinese and self.english:
                 output_subtitles = self.merged_subtitles.copy().rename(
                     columns={"chinese": "text"})
                 empty_line = "|"
-            else:
+            elif self.chinese:
                 output_subtitles = self.chinese_subtitles.copy()
+                empty_line = " "
+            else:
+                output_subtitles = self.english_subtitles.copy()
                 empty_line = " "
             output_subtitles["text"].replace(np.nan, empty_line, inplace=True)
             output_subtitles["text"] = \
                 output_subtitles["text"].apply(
+                    lambda s: s.replace("\n-", " -")).apply(
                     lambda s: s.replace("\n", "    "))
-
-            if self.cantonese:
-                output_subtitles["cantonese"].replace(np.nan, empty_line,
-                                                      inplace=True)
-                output_subtitles["cantonese"] = \
-                    output_subtitles["cantonese"].apply(
-                        lambda s: s.replace("\n", "    "))
-                output_subtitles["text"] += "\n"
-                output_subtitles["text"] += output_subtitles["cantonese"]
 
             if self.mandarin:
                 output_subtitles["mandarin"].replace(np.nan, empty_line,
                                                      inplace=True)
                 output_subtitles["mandarin"] = \
                     output_subtitles["mandarin"].apply(
+                        lambda s: s.replace("\n-", " -")).apply(
                         lambda s: s.replace("\n", "    "))
                 output_subtitles["text"] += "\n"
                 output_subtitles["text"] += output_subtitles["mandarin"]
+
+            if self.cantonese:
+                output_subtitles["cantonese"].replace(np.nan, empty_line,
+                                                      inplace=True)
+                output_subtitles["cantonese"] = \
+                    output_subtitles["cantonese"].apply(
+                        lambda s: s.replace("\n-", " -")).apply(
+                        lambda s: s.replace("\n", "    "))
+                output_subtitles["text"] += "\n"
+                output_subtitles["text"] += output_subtitles["cantonese"]
 
             if self.english:
                 output_subtitles["english"].replace(np.nan, empty_line,
                                                     inplace=True)
                 output_subtitles["english"] = \
                     output_subtitles["english"].apply(
+                        lambda s: s.replace("\n-", " -")).apply(
                         lambda s: s.replace("\n", "    "))
                 output_subtitles["text"] += "\n"
                 output_subtitles["text"] += output_subtitles["english"]
@@ -159,6 +175,23 @@ class SubtitleManager(object):
     # endregion
 
     # region Properties
+    @property
+    def c_offset(self):
+        if not hasattr(self, "_c_offset"):
+            self._c_offset = 0
+        return self._c_offset
+
+    @c_offset.setter
+    def c_offset(self, value):
+        if value is None:
+            value = 0
+        elif not isinstance(value, float):
+            try:
+                value = float(value)
+            except Exception as e:
+                raise e
+        self._c_offset = value
+
     @property
     def cantonese(self):
         """bool: Whether or not subtitles contain Cantonese romanzation"""
@@ -220,6 +253,23 @@ class SubtitleManager(object):
             import os
             self._directory = os.path.dirname(os.path.realpath(__file__))
         return self._directory
+
+    @property
+    def e_offset(self):
+        if not hasattr(self, "_e_offset"):
+            self._e_offset = 0
+        return self._e_offset
+
+    @e_offset.setter
+    def e_offset(self, value):
+        if value is None:
+            value = 0
+        elif not isinstance(value, float):
+            try:
+                value = float(value)
+            except Exception as e:
+                raise e
+        self._e_offset = value
 
     @property
     def english(self):
@@ -358,66 +408,6 @@ class SubtitleManager(object):
     # endregion
 
     # region Methods
-    @staticmethod
-    def construct_argparser():
-        """
-        Prepares argument parser
-
-        Returns:
-            argparser (argparse.ArgumentParser): Argument parser
-        """
-        import argparse
-
-        help_message = """Modify Chinese subtitles by adding Mandarin or
-                          Cantonese romanization, converting traditional
-                          characters to simplified, and merging with English
-                          translation."""
-        parser = argparse.ArgumentParser(description=help_message)
-
-        # Input
-        parser.add_argument("chinese_infile", type=str,
-                            help="Chinese subtitles in SRT format")
-        parser.add_argument("english_infile", type=str, nargs="?",
-                            help="English subtitles in SRT format (optional)")
-
-        # Action
-        verbosity = parser.add_mutually_exclusive_group()
-        verbosity.add_argument("-v", "--verbose", action="count",
-                               dest="verbosity", default=1,
-                               help="""enable verbose output, may be specified
-                                       more than once""")
-        verbosity.add_argument("-q", "--quiet", action="store_const",
-                               dest="verbosity", const=0,
-                               help="disable verbose output")
-        parser.add_argument("-s", "--simplified", action="store_true",
-                            help="""convert traditional characters to simplified
-                                 """)
-        parser.add_argument("-m", "--mandarin", action="store_true",
-                            help="add Mandarin/Putonghua pinyin (汉语拼音)")
-        parser.add_argument("-c", "--cantonese", action="store_true",
-                            help="""add Cantonese/Guangdonghua Yale-style
-                                    pinyin (耶鲁粤语拼音)""")
-        # spacing = parser.add_mutually_exclusive_group()
-        # spacing.add_argument("-w", "--words", action="store_const",
-        #                      dest="spacing", default="words", const="words",
-        #                      help="""add spaces between words only""")
-        # spacing.add_argument("-s", "--syllables", action="store_const",
-        #                      dest="spacing", const="syllables",
-        #                      help="add spaces between all syllables")
-        parser.add_argument("-t", "--truecase", action="store_true",
-                            help="""apply standard capitalization to English
-                                    subtitles""")
-        parser.add_argument("-i", "--interactive", action="store_true",
-                            dest="interactive",
-                            help="""present IPython prompt after loading and
-                                    processing""")
-
-        # Output
-        parser.add_argument("-o", "--outfile", type=str, nargs="?",
-                            help="output file (optional)")
-
-        return parser
-
     def add_cantonese_romanization(self, subtitles):
         """
         Adds Yale-style romanization of Cantonese to provided subtitles
@@ -633,10 +623,6 @@ class SubtitleManager(object):
         def add_merged_subtitle():
             if start == time:
                 return merged_subtitles
-            duration = datetime.datetime.combine(datetime.date.today(), time) \
-                       - datetime.datetime.combine(datetime.date.today(), start)
-            # if duration.total_seconds() <= 0.1:
-            #    return merged_subtitles
             return merged_subtitles.append(
                 pd.concat([
                     pd.DataFrame.from_items(
@@ -904,9 +890,121 @@ class SubtitleManager(object):
 
     # endregion
 
+    @staticmethod
+    def construct_argparser():
+        """
+        Prepares argument parser
+
+        Returns:
+            argparser (argparse.ArgumentParser): Argument parser
+        """
+        import argparse
+
+        help_message = ("Modify Chinese subtitles by adding Mandarin or "
+                        "Cantonese romanization, converting traditional "
+                        "characters to simplified, and merging with English "
+                        "translation.")
+
+        parser = argparse.ArgumentParser(description=help_message)
+
+        # General
+        verbosity = parser.add_mutually_exclusive_group()
+        verbosity.add_argument("-v", "--verbose", action="count",
+                               dest="verbosity", default=1,
+                               help="enable verbose output, may be specified "
+                                    "more than once")
+        verbosity.add_argument("-q", "--quiet", action="store_const",
+                               dest="verbosity", const=0,
+                               help="disable verbose output")
+        parser.add_argument("-i", "--interactive", action="store_true",
+                            dest="interactive",
+                            help="present IPython prompt after loading and "
+                                 "processing")
+
+        # Input
+        parser_input = parser.add_argument_group(
+            "input (at least one required)")
+        parser_input.add_argument("-c", "--chinese_infile", type=str, nargs="?",
+                                  metavar="INFILE",
+                                  help="Chinese subtitles in SRT format")
+        parser_input.add_argument("-e", "--english_infile", type=str, nargs="?",
+                                  metavar="INFILE",
+                                  help="English subtitles in SRT format")
+
+        # Action
+        parser_action = parser.add_argument_group("action")
+        parser_action.add_argument("--c_offset", type=float, nargs="?",
+                                   default=0,
+                                   help="offset added to Chinese subtitle "
+                                        "timestamps")
+        parser_action.add_argument("-s", "--simplified", action="store_true",
+                                   help="convert traditional characters to "
+                                        "simplified")
+        parser_action.add_argument("-m", "--mandarin", action="store_true",
+                                   help="add Mandarin/Putonghua pinyin "
+                                        "(汉语拼音)")
+        parser_action.add_argument("-y", "--yue", action="store_true",
+                                   dest="cantonese",
+                                   help="add Cantonese/Guangdonghua/Yue "
+                                        "Yale-style pinyin (耶鲁粤语拼音)")
+        parser_action.add_argument("--e_offset", type=float, nargs="?",
+                                   default=0,
+                                   help="offset added to English subtitle "
+                                        "timestamps")
+        parser_action.add_argument("--truecase", action="store_true",
+                                   help="apply standard capitalization to "
+                                        "English subtitles")
+
+        # Output
+        parser_output = parser.add_argument_group("output")
+        parser_output.add_argument("-o", "--outfile", type=str, nargs="?",
+                                   help="output file (optional)")
+
+        return parser
+
     @classmethod
     def main(cls):
-        cls(**vars(cls.construct_argparser().parse_args()))()
+        """
+        Parses and validates arguments
+
+        TODO:
+            - General method of requiring one or more of a group of arguments
+            - General method of having arguments require one another
+        """
+        from io import StringIO
+        parser = cls.construct_argparser()
+        args = parser.parse_args()
+
+        with StringIO() as helptext:
+            parser.print_help(helptext)
+            try:
+                if args.chinese_infile is None and args.english_infile is None:
+                    raise ValueError("Either argument '--chinese_infile' "
+                                     "or '--english_infile' is required")
+                if args.chinese_infile is None:
+                    if args.c_offset != 0:
+                        raise ValueError("Argument '--c_offset' requires "
+                                         "argument '--chinese_infile'")
+                    if args.simplified:
+                        raise ValueError("Argument '-s' requires "
+                                         "argument '--chinese_infile'")
+                    if args.mandarin:
+                        raise ValueError("Argument '-m' requires "
+                                         "argument '--chinese_infile'")
+                    if args.cantonese:
+                        raise ValueError("Argument '-y' requires "
+                                         "argument '--chinese_infile'")
+                if args.english_infile is None:
+                    if args.e_offset != 0:
+                        raise ValueError("Argument '--e_offset' requires "
+                                         "argument '--english_infile'")
+                    if args.truecase:
+                        raise ValueError("Argument '--truecase' requires "
+                                         "argument '--english_infile'")
+            except ValueError as e:
+                print(helptext.getvalue())
+                raise e
+        cls(**vars(args))()
 
 
 #################################### MAIN #####################################
