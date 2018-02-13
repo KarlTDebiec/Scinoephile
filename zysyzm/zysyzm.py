@@ -99,6 +99,9 @@ class SubtitleManager(object):
 
         # Apply actions to
         if self.chinese:
+            if self.c_offset != 0:
+                self.chinese_subtitles = self.apply_offset(
+                    self.chinese_subtitles, self.c_offset)
             if self.simplified:
                 self.simplify(self.chinese_subtitles)
             if self.mandarin:
@@ -107,8 +110,11 @@ class SubtitleManager(object):
                 self.add_cantonese_romanization(self.chinese_subtitles)
 
         if self.english:
+            if self.e_offset != 0:
+                self.english_subtitles = self.apply_offset(
+                    self.english_subtitles, self.c_offset)
             if self.truecase:
-                self.apply_truecase(self._english_subtitles)
+                self.apply_truecase(self.english_subtitles)
 
         # Merge Chinese and English
         if self.chinese and self.english:
@@ -140,35 +146,36 @@ class SubtitleManager(object):
                     lambda s: s.replace("\n-", "    -")).apply(
                     lambda s: s.replace("\n", " "))
 
-            if self.mandarin:
-                output_subtitles["mandarin"].replace(np.nan, empty_line,
-                                                     inplace=True)
-                output_subtitles["mandarin"] = \
-                    output_subtitles["mandarin"].apply(
-                        lambda s: s.replace("\n-", "    -")).apply(
-                        lambda s: s.replace("\n", " "))
-                output_subtitles["text"] += "\n"
-                output_subtitles["text"] += output_subtitles["mandarin"]
+            if self.chinese:
+                if self.mandarin:
+                    output_subtitles["mandarin"].replace(np.nan, empty_line,
+                                                         inplace=True)
+                    output_subtitles["mandarin"] = \
+                        output_subtitles["mandarin"].apply(
+                            lambda s: s.replace("\n-", "    -")).apply(
+                            lambda s: s.replace("\n", " "))
+                    output_subtitles["text"] += "\n"
+                    output_subtitles["text"] += output_subtitles["mandarin"]
 
-            if self.cantonese:
-                output_subtitles["cantonese"].replace(np.nan, empty_line,
-                                                      inplace=True)
-                output_subtitles["cantonese"] = \
-                    output_subtitles["cantonese"].apply(
-                        lambda s: s.replace("\n-", "    -")).apply(
-                        lambda s: s.replace("\n", " "))
-                output_subtitles["text"] += "\n"
-                output_subtitles["text"] += output_subtitles["cantonese"]
+                if self.cantonese:
+                    output_subtitles["cantonese"].replace(np.nan, empty_line,
+                                                          inplace=True)
+                    output_subtitles["cantonese"] = \
+                        output_subtitles["cantonese"].apply(
+                            lambda s: s.replace("\n-", "    -")).apply(
+                            lambda s: s.replace("\n", " "))
+                    output_subtitles["text"] += "\n"
+                    output_subtitles["text"] += output_subtitles["cantonese"]
 
-            if self.english:
-                output_subtitles["english"].replace(np.nan, empty_line,
-                                                    inplace=True)
-                output_subtitles["english"] = \
-                    output_subtitles["english"].apply(
-                        lambda s: s.replace("\n-", "    -")).apply(
-                        lambda s: s.replace("\n", " "))
-                output_subtitles["text"] += "\n"
-                output_subtitles["text"] += output_subtitles["english"]
+                if self.english:
+                    output_subtitles["english"].replace(np.nan, empty_line,
+                                                        inplace=True)
+                    output_subtitles["english"] = \
+                        output_subtitles["english"].apply(
+                            lambda s: s.replace("\n-", "    -")).apply(
+                            lambda s: s.replace("\n", " "))
+                    output_subtitles["text"] += "\n"
+                    output_subtitles["text"] += output_subtitles["english"]
 
             self.write_outfile(output_subtitles, self.outfile)
 
@@ -229,7 +236,7 @@ class SubtitleManager(object):
 
     @chinese_infile.setter
     def chinese_infile(self, value):
-        if not isinstance(value, str):
+        if not isinstance(value, str) and value is not None:
             raise ValueError()
         self._chinese_infile = value
 
@@ -285,7 +292,7 @@ class SubtitleManager(object):
 
     @english_infile.setter
     def english_infile(self, value):
-        if not (isinstance(value, str) or value is None):
+        if not isinstance(value, str) and value is not None:
             raise ValueError()
         self._english_infile = value
 
@@ -582,6 +589,14 @@ class SubtitleManager(object):
 
         subtitles["mandarin"] = pd.Series(romanizations,
                                           index=subtitles.index)
+
+    def apply_offset(self, subtitles, offset):
+        offset = datetime.timedelta(100)
+        subtitles["start"] = subtitles["start"].apply(
+            lambda s: s + offset.time())
+        subtitles["end"] = subtitles["end"].apply(
+            lambda s: s + offset.time())
+        return subtitles
 
     def apply_truecase(self, subtitles):
         import nltk
@@ -912,7 +927,7 @@ class SubtitleManager(object):
 
         # Input
         parser_input = parser.add_argument_group(
-            "input (at least one required)")
+            "input arguments (at least one required)")
         parser_input.add_argument("-c", "--chinese_infile", type=str, nargs="?",
                                   metavar="INFILE",
                                   help="Chinese subtitles in SRT format")
@@ -921,9 +936,8 @@ class SubtitleManager(object):
                                   help="English subtitles in SRT format")
 
         # Action
-        parser_action = parser.add_argument_group("action")
-        parser_action.add_argument("--c_offset", type=float, nargs="?",
-                                   default=0,
+        parser_action = parser.add_argument_group("action arguments")
+        parser_action.add_argument("--c_offset", type=float, default=0,
                                    help="offset added to Chinese subtitle "
                                         "timestamps")
         parser_action.add_argument("-s", "--simplified", action="store_true",
@@ -936,8 +950,7 @@ class SubtitleManager(object):
                                    dest="cantonese",
                                    help="add Cantonese/Guangdonghua/Yue "
                                         "Yale-style pinyin (耶鲁粤语拼音)")
-        parser_action.add_argument("--e_offset", type=float, nargs="?",
-                                   default=0,
+        parser_action.add_argument("--e_offset", type=float, default=0,
                                    help="offset added to English subtitle "
                                         "timestamps")
         parser_action.add_argument("--truecase", action="store_true",
@@ -945,7 +958,7 @@ class SubtitleManager(object):
                                         "English subtitles")
 
         # Output
-        parser_output = parser.add_argument_group("output")
+        parser_output = parser.add_argument_group("output arguments")
         parser_output.add_argument("-o", "--outfile", type=str, nargs="?",
                                    help="output file (optional)")
 
@@ -960,7 +973,9 @@ class SubtitleManager(object):
             - General method of requiring one or more of a group of arguments
             - General method of having arguments require one another
         """
+        import sys
         from io import StringIO
+
         parser = cls.construct_argparser()
         args = parser.parse_args()
 
