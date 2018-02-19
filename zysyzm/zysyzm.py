@@ -112,7 +112,7 @@ class SubtitleManager(object):
         if self.english:
             if self.e_offset != 0:
                 self.english_subtitles = self.apply_offset(
-                    self.english_subtitles, self.c_offset)
+                    self.english_subtitles, self.e_offset)
             if self.truecase:
                 self.apply_truecase(self.english_subtitles)
 
@@ -591,14 +591,35 @@ class SubtitleManager(object):
                                           index=subtitles.index)
 
     def apply_offset(self, subtitles, offset):
-        offset = datetime.timedelta(100)
+        """
+
+        Args:
+            subtitles:
+            offset:
+
+        Returns:
+
+        """
+
+        if self.verbosity >= 1:
+            print(f"Applying offset of {offset} seconds")
+
+        offset = datetime.timedelta(seconds=offset)
         subtitles["start"] = subtitles["start"].apply(
-            lambda s: s + offset.time())
+            lambda s: (datetime.datetime.combine(datetime.date.today(), s) + offset).time())
         subtitles["end"] = subtitles["end"].apply(
-            lambda s: s + offset.time())
+            lambda s: (datetime.datetime.combine(datetime.date.today(), s) + offset).time())
         return subtitles
 
     def apply_truecase(self, subtitles):
+        """
+
+        Args:
+            subtitles:
+
+        Returns:
+
+        """
         import nltk
 
         if self.verbosity >= 1:
@@ -833,7 +854,7 @@ class SubtitleManager(object):
                             or start is None
                             or end is None
                             or title is None):
-                        raise Exception()
+                        raise Exception(f"{index} {start} {end} {title}")
                     indexes.append(index)
                     starts.append(start)
                     ends.append(end)
