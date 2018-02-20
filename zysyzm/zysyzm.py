@@ -54,8 +54,8 @@ class SubtitleManager(object):
                    "：": ":"}
 
     re_index = re.compile("^(?P<index>\d+)$")
-    re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d,\d\d\d) --> "
-                         "(?P<end>\d\d:\d\d:\d\d,\d\d\d)(\sX1:0)?$")
+    re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
+                         "(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
     re_blank = re.compile("^\s*$")
 
     re_hanzi = re.compile("[\u4e00-\u9fff]")
@@ -67,13 +67,14 @@ class SubtitleManager(object):
 
     # region Builtins
     def __init__(self, verbosity=1, interactive=False, chinese_infile=None,
-                 english_infile=None, c_offset=0, simplified=False,
+                 english_infile=None, vtt=False, c_offset=0, simplified=False,
                  mandarin=False, cantonese=False, e_offset=0, truecase=False,
                  outfile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
         self.interactive = interactive
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
+        self.vtt = vtt
         self.c_offset = c_offset
         self.simplified = simplified
         self.mandarin = mandarin
@@ -93,9 +94,15 @@ class SubtitleManager(object):
         """
         # Load infiles
         if self.chinese:
-            self.chinese_subtitles = self.read_infile(self.chinese_infile)
+            if self.vtt:
+                self.chinese_subtitles = self.read_vtt(self.chinese_infile)
+            else:
+                self.chinese_subtitles = self.read_srt(self.chinese_infile)
         if self.english:
-            self.english_subtitles = self.read_infile((self.english_infile))
+            if self.vtt:
+                self.english_subtitles = self.read_vtt((self.english_infile))
+            else:
+                self.english_subtitles = self.read_srt((self.english_infile))
 
         # Apply actions to
         if self.chinese:
@@ -412,6 +419,18 @@ class SubtitleManager(object):
             raise ValueError()
         self._verbosity = value
 
+    @property
+    def vtt(self):
+        """bool: Whether or not input subtitles are in VTT format"""
+        if not hasattr(self, "_vtt"):
+            self._vtt = False
+        return self._vtt
+
+    @vtt.setter
+    def vtt(self, value):
+        if not isinstance(value, bool):
+            raise ValueError()
+        self._vtt = value
     # endregion
 
     # region Methods
@@ -824,7 +843,7 @@ class SubtitleManager(object):
 
         return cleaned_subs
 
-    def read_infile(self, infile):
+    def read_srt(self, infile):
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
 
@@ -866,6 +885,53 @@ class SubtitleManager(object):
                     else:
                         title += "\n" + line.strip()
         subtitles = pd.DataFrame.from_items([("index", indexes),
+                                             ("start", starts),
+                                             ("end", ends),
+                                             ("text", texts)])
+        subtitles.set_index("index", inplace=True)
+        return subtitles
+
+    def read_vtt(self, infile):
+        if self.verbosity >= 1:
+            print(f"Reading subtitles from '{infile}'")
+
+        with open(infile, "r") as infile:
+            start = end = text = None
+            starts = []
+            ends = []
+            texts = []
+            line = infile.readline()
+            line = infile.readline()
+            line = infile.readline()
+            line = infile.readline()
+            while True:
+                line = infile.readline()
+                if line == "":
+                    break
+                if self.verbosity >= 3:
+                    print(line.strip())
+                if self.re_time.match(line):
+                    start = datetime.datetime.strptime(
+                        self.re_time.match(line).groupdict()["start"],
+                        "%H:%M:%S.%f").time()
+                    end = datetime.datetime.strptime(
+                        self.re_time.match(line).groupdict()["end"],
+                        "%H:%M:%S.%f").time()
+                elif self.re_blank.match(line):
+                    if (start is None
+                        or end is None
+                        or text is None):
+                        raise Exception(f"{start} {end} {text}")
+                    starts.append(start)
+                    ends.append(end)
+                    texts.append(text)
+                    start = end = text = None
+                else:
+                    if text is None:
+                        text = line.strip()
+                    else:
+                        text += "\n" + line.strip()
+        subtitles = pd.DataFrame.from_items([("index", range(1, len(texts)+1)),
                                              ("start", starts),
                                              ("end", ends),
                                              ("text", texts)])
@@ -956,6 +1022,10 @@ class SubtitleManager(object):
                                   metavar="INFILE",
                                   help="English subtitles in SRT format")
 
+        parser_input.add_argument("--vtt", action="store_true",
+                                  help="Input subtitles in VTT format rather "
+                                       "than SRT")
+
         # Action
         parser_action = parser.add_argument_group("action arguments")
         parser_action.add_argument("--c_offset", type=float, default=0,
@@ -1004,28 +1074,28 @@ class SubtitleManager(object):
             parser.print_help(helptext)
             try:
                 if args.chinese_infile is None and args.english_infile is None:
-                    raise ValueError("Either argument '--chinese_infile' "
-                                     "or '--english_infile' is required")
+                    raise ValueError("Either argument '-c/--chinese_infile' "
+                                     "or '-e/--english_infile' is required")
                 if args.chinese_infile is None:
                     if args.c_offset != 0:
                         raise ValueError("Argument '--c_offset' requires "
-                                         "argument '--chinese_infile'")
+                                         "argument '-c/--chinese_infile'")
                     if args.simplified:
                         raise ValueError("Argument '-s' requires "
-                                         "argument '--chinese_infile'")
+                                         "argument '-c/--chinese_infile'")
                     if args.mandarin:
                         raise ValueError("Argument '-m' requires "
-                                         "argument '--chinese_infile'")
+                                         "argument '-c/--chinese_infile'")
                     if args.cantonese:
                         raise ValueError("Argument '-y' requires "
-                                         "argument '--chinese_infile'")
+                                         "argument '-c/--chinese_infile'")
                 if args.english_infile is None:
                     if args.e_offset != 0:
                         raise ValueError("Argument '--e_offset' requires "
-                                         "argument '--english_infile'")
+                                         "argument '-e/--english_infile'")
                     if args.truecase:
                         raise ValueError("Argument '--truecase' requires "
-                                         "argument '--english_infile'")
+                                         "argument '-e/--english_infile'")
             except ValueError as e:
                 print(helptext.getvalue())
                 raise e
