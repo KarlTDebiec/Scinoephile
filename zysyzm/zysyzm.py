@@ -67,14 +67,13 @@ class SubtitleManager(object):
 
     # region Builtins
     def __init__(self, verbosity=1, interactive=False, chinese_infile=None,
-                 english_infile=None, vtt=False, c_offset=0, simplified=False,
+                 english_infile=None, c_offset=0, simplified=False,
                  mandarin=False, cantonese=False, e_offset=0, truecase=False,
                  outfile=None, spacing="words", **kwargs):
         self.verbosity = verbosity
         self.interactive = interactive
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
-        self.vtt = vtt
         self.c_offset = c_offset
         self.simplified = simplified
         self.mandarin = mandarin
@@ -94,12 +93,12 @@ class SubtitleManager(object):
         """
         # Load infiles
         if self.chinese:
-            if self.vtt:
+            if self.chinese_infile.endswith("vtt"):
                 self.chinese_subtitles = self.read_vtt(self.chinese_infile)
             else:
                 self.chinese_subtitles = self.read_srt(self.chinese_infile)
         if self.english:
-            if self.vtt:
+            if self.english_infile.endswith("vtt"):
                 self.english_subtitles = self.read_vtt((self.english_infile))
             else:
                 self.english_subtitles = self.read_srt((self.english_infile))
@@ -418,20 +417,6 @@ class SubtitleManager(object):
         if not isinstance(value, int) and value >= 0:
             raise ValueError()
         self._verbosity = value
-
-    @property
-    def vtt(self):
-        """bool: Whether or not input subtitles are in VTT format"""
-        if not hasattr(self, "_vtt"):
-            self._vtt = False
-        return self._vtt
-
-    @vtt.setter
-    def vtt(self, value):
-        if not isinstance(value, bool):
-            raise ValueError()
-        self._vtt = value
-    # endregion
 
     # region Methods
     def add_cantonese_romanization(self, subtitles):
@@ -1021,10 +1006,6 @@ class SubtitleManager(object):
         parser_input.add_argument("-e", "--english_infile", type=str, nargs="?",
                                   metavar="INFILE",
                                   help="English subtitles in SRT format")
-
-        parser_input.add_argument("--vtt", action="store_true",
-                                  help="Input subtitles in VTT format rather "
-                                       "than SRT")
 
         # Action
         parser_action = parser.add_argument_group("action arguments")
