@@ -14,17 +14,17 @@ import numpy as np
 import pandas as pd
 from IPython import embed
 
+################################## SETTINGS ###################################
 pd.set_option("display.width", 110)
 pd.set_option("display.max_colwidth", 16)
 pd.set_option("display.max_rows", None)
-
 
 ################################### CLASSES ###################################
 class SubtitleManager(object):
     """
     Class for managing subtitles
 
-    Todo:
+    TODO:
         - Document
         - Clean up merging
         - OCR features? (someday)
@@ -118,7 +118,7 @@ class SubtitleManager(object):
             if self.translate:
                 self.add_english_translation(self.chinese_subtitles)
 
-        # Apply operations to Enlish
+        # Apply operations to English
         if self.english:
             if self.e_offset != 0:
                 self.english_subtitles = self.apply_offset(
@@ -461,7 +461,7 @@ class SubtitleManager(object):
               character text in column named 'text'; adds column named
               'cantonese' with romanization
 
-        Todo:
+        TODO:
             * Add support for Jyupting
             * Support source field names other than 'text'
             * Look into word segmentation
@@ -608,7 +608,7 @@ class SubtitleManager(object):
               character text in column named 'text'; adds column named
               'mandarin' with romanization
 
-        Todo:
+        TODO:
             * Support source field names other than 'text'
             * Implement option to enable/disable word segmentation
             * Look into capitalization
@@ -1103,7 +1103,7 @@ class SubtitleManager(object):
         return parser
 
     @staticmethod
-    def validate_arguments(parser, args):
+    def validate_args(parser, args):
         """
         Validates arguments
 
@@ -1165,7 +1165,7 @@ class SubtitleManager(object):
 
         parser = cls.construct_argparser()
         args = parser.parse_args()
-        cls.validate_arguments(parser, args)
+        cls.validate_args(parser, args)
         cls(**vars(args))()
 
 

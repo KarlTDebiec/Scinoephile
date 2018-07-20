@@ -40,8 +40,7 @@ Installation
 ============
 
 Not currently possible or necessary. Just run the script from the folder within
-which the script is located. Writes output directly to the terminal; just
-redirect it to a file.
+which the script is located.
 
 Usage
 =====
