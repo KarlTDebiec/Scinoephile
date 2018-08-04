@@ -1031,7 +1031,7 @@ class SubtitleManager(object):
     @staticmethod
     def construct_argparser():
         """
-        Prepares argument parser
+        Constructs argument parser
 
         Returns:
             parser (argparse.ArgumentParser): Argument parser
