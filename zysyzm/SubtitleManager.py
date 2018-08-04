@@ -19,6 +19,7 @@ pd.set_option("display.width", 110)
 pd.set_option("display.max_colwidth", 16)
 pd.set_option("display.max_rows", None)
 
+
 ################################### CLASSES ###################################
 class SubtitleManager(object):
     """
