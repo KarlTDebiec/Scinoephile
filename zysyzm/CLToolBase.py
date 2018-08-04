@@ -9,13 +9,10 @@
 #   BSD license. See the LICENSE file for details.
 ################################### CLASSES ###################################
 class CLToolBase(object):
-    """
-    Base class for command line tools
-
-    """
+    """ Base for command line tools """
 
     # region Instance Variables
-    help_message = ("Base class for common line tools")
+    help_message = ("Base for common line tools")
 
     # endregion
 
@@ -122,7 +119,7 @@ class CLToolBase(object):
         if hasattr(cls, "__call__"):
             cls(**vars(args))()
 
+
 #################################### MAIN #####################################
 if __name__ == "__main__":
     CLToolBase.main()
-
