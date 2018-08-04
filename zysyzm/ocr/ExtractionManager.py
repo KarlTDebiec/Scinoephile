@@ -14,7 +14,7 @@ from os import mkdir
 from os.path import basename, expandvars, isdir
 from IPython import embed
 from PIL import Image, ImageChops, ImageDraw
-from zysyzm.CLToolBase import CLToolBase
+from zysyzm import CLToolBase
 
 
 ################################### CLASSES ###################################

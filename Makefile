@@ -2,7 +2,7 @@ ROOT        = $(shell pwd)
 PYTHON      = $(shell which python)
 DEPS        = $(wildcard *.py */*.py)
 zysyzm      = /usr/local/anaconda3/envs/zysyzm/lib/python3.6/site-packages/zysyzm-0.1-py3.6.egg
-EXTRACTION  = $(ROOT)/zysyzm/ExtractionManager.py
+EXTRACTION  = $(ROOT)/zysyzm/ocr/ExtractionManager.py
 CLARGS      =
 
 $(zysyzm): $(DEPS)
