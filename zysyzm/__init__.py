@@ -9,16 +9,17 @@
 #   BSD license. See the LICENSE file for details.
 ################################### CLASSES ###################################
 class CLToolBase(object):
-    """ Base for command line tools """
+    """Base for command line tools"""
 
     # region Instance Variables
-    help_message = ("Base for common line tools")
+    help_message = CLToolBase.__doc__
 
     # endregion
 
     # region Builtins
     def __init__(self, verbosity=1, interactive=False, **kwargs):
         """
+        Initializes tool
 
         Args:
             verbosity (int): Level of verbose output
@@ -28,12 +29,22 @@ class CLToolBase(object):
         self.verbosity = verbosity
         self.interactive = interactive
 
+    def __call__(self):
+        """ Core logic """
+
+        if isinstance(self, CLToolBase):
+            raise NotImplementedError("zysyzm.CLToolBase class is not to "
+                                      "be used directly")
+        else:
+            raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
+                                      "method has not been implemented")
+
     # endregion
 
     # region Properties
     @property
     def directory(self):
-        """str: Path to this Python file"""
+        """str: path to this Python file"""
         if not hasattr(self, "_directory"):
             import os
             self._directory = os.path.dirname(os.path.realpath(__file__))
@@ -71,7 +82,7 @@ class CLToolBase(object):
     @classmethod
     def construct_argparser(cls, parser=None):
         """
-        Prepares argument parser
+        Constructs argument parser
 
         Returns:
             parser (argparse.ArgumentParser): Argument parser
@@ -99,7 +110,7 @@ class CLToolBase(object):
     @classmethod
     def validate_args(cls, parser, args):
         """
-        Validates arguments
+        Validates arguments provided to an argument parser
 
         Args:
             parser (argparse.ArgumentParser): Argument parser
@@ -116,5 +127,4 @@ class CLToolBase(object):
         parser = cls.construct_argparser()
         args = parser.parse_args()
         cls.validate_args(parser, args)
-        if hasattr(cls, "__call__"):
-            cls(**vars(args))()
+        cls(**vars(args))()
