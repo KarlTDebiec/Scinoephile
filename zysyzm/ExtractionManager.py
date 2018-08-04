@@ -11,10 +11,7 @@
 import numpy as np
 import pandas as pd
 from IPython import embed
-import zysyzm
-embed()
-from sys import exit
-exit()
+from zysyzm.CLToolBase import CLToolBase
 
 ################################## SETTINGS ###################################
 pd.set_option("display.width", 110)
