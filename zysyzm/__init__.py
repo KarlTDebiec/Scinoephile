@@ -12,7 +12,7 @@ class CLToolBase(object):
     """Base for command line tools"""
 
     # region Instance Variables
-    help_message = CLToolBase.__doc__
+    help_message = "Base for command line tools"
 
     # endregion
 
@@ -101,7 +101,7 @@ class CLToolBase(object):
         verbosity.add_argument("-q", "--quiet", action="store_const",
                                dest="verbosity", const=0,
                                help="disable verbose output")
-        parser.add_argument("-i", "--interactive", action="store_true",
+        parser.add_argument("-I", "--interactive", action="store_true",
                             dest="interactive",
                             help="present IPython prompt")
 
