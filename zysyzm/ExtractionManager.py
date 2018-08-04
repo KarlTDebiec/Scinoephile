@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   generate.py
+#   zysyzm.ExtractionManager.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -10,8 +10,11 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from IPython import embed
+import zysyzm
+embed()
+from sys import exit
+exit()
 
 ################################## SETTINGS ###################################
 pd.set_option("display.width", 110)
@@ -20,13 +23,14 @@ pd.set_option("display.max_rows", None)
 
 
 ################################### CLASSES ###################################
-class DataGenerationManager(object):
+class ExtractionManager(CLToolBase):
     """
-    Class for managing subtitles
+    Class for extracting individual characters from a collection of subtitles
 
     """
 
     # region Instance Variables
+
     # endregion
 
     # region Builtins
@@ -37,11 +41,24 @@ class DataGenerationManager(object):
     def __call__(self):
         """
         Core logic
-
-        TODO:
-            - Decide between setting within each function or returning
-            - Move actual merging to another function 'complile_subtitles'
         """
+
+        from os.path import expandvars
+
+        infile = "${DROPBOX}/code/test/cmn-Hans-0002.png"
+
+        from PIL import Image, ImageChops
+        im = Image.open(expandvars(infile))
+
+        def trim(image):
+            background = Image.new(image.mode, image.size, image.getpixel((0, 0)))
+            diff = ImageChops.difference(image, bg)
+            diff = ImageChops.add(diff, diff, 2.0, -100)
+            bbox = diff.getbbox()
+            if bbox:
+                return image.crop(bbox)
+
+        im = trim(im)
 
         # Interactive
         if self.interactive:
@@ -50,39 +67,6 @@ class DataGenerationManager(object):
     # endregion
 
     # region Properties
-    @property
-    def directory(self):
-        """str: Path to this Python file"""
-        if not hasattr(self, "_directory"):
-            import os
-            self._directory = os.path.dirname(os.path.realpath(__file__))
-        return self._directory
-
-    @property
-    def interactive(self):
-        """bool: Present IPython prompt after processing subtitles"""
-        if not hasattr(self, "_interactive"):
-            self._interactive = False
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, value):
-        if not isinstance(value, bool):
-            raise ValueError()
-        self._interactive = value
-
-    @property
-    def verbosity(self):
-        """int: Level of output to provide"""
-        if not hasattr(self, "_verbosity"):
-            self._verbosity = 1
-        return self._verbosity
-
-    @verbosity.setter
-    def verbosity(self, value):
-        if not isinstance(value, int) and value >= 0:
-            raise ValueError()
-        self._verbosity = value
 
     # endregion Properties
 
@@ -101,7 +85,7 @@ class DataGenerationManager(object):
         """
         import argparse
 
-        help_message = ("Help message")
+        help_message = ("ExtractionManager.py")
 
         parser = argparse.ArgumentParser(description=help_message)
 
@@ -127,33 +111,9 @@ class DataGenerationManager(object):
 
         return parser
 
-    @staticmethod
-    def validate_args(parser, args):
-        """
-        Validates arguments
-
-        Args:
-            parser (argparse.ArgumentParser): Argument parser
-            args: Arguments
-
-        """
-        pass
-
     # endregion
-
-    @classmethod
-    def main(cls):
-        """
-        Parses and validates arguments, constructs and calls object
-
-        """
-
-        parser = cls.construct_argparser()
-        args = parser.parse_args()
-        cls.validate_args(parser, args)
-        cls(**vars(args))()
 
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    DataGenerationManager.main()
+    ExtractionManager.main()

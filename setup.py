@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
-setup(name="ZYSYZM", version="0.1", packages=["zysyzm"],
-  license="BSD 3-clause", long_description=open("README.rst").read())
+setup(name="zysyzm", version="0.1", packages=find_packages())

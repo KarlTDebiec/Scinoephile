@@ -1,35 +1,58 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.CLToolBase.py
+#   generate.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-################################### CLASSES ###################################
-class CLToolBase(object):
-    """
-    Base class for command line tools
+################################### MODULES ###################################
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from IPython import embed
 
+################################## SETTINGS ###################################
+pd.set_option("display.width", 110)
+pd.set_option("display.max_colwidth", 16)
+pd.set_option("display.max_rows", None)
+
+
+################################### CLASSES ###################################
+class DataGenerationManager(object):
+    """
+    Class for managing subtitles
+
+    Design:
+        Instance Variables:
+        Builtins:
+        Properties:
+        Methods:
+        Static Methods:
+        Class Methods:
     """
 
     # region Instance Variables
-    help_message = ("Base class for common line tools")
-
     # endregion
 
     # region Builtins
     def __init__(self, verbosity=1, interactive=False, **kwargs):
-        """
-
-        Args:
-            verbosity (int): Level of verbose output
-            interactive (bool): Show IPython prompt
-            kwargs (dict): Additional keyword arguments
-        """
         self.verbosity = verbosity
         self.interactive = interactive
+
+    def __call__(self):
+        """
+        Core logic
+
+        TODO:
+            - Decide between setting within each function or returning
+            - Move actual merging to another function 'complile_subtitles'
+        """
+
+        # Interactive
+        if self.interactive:
+            embed()
 
     # endregion
 
@@ -70,9 +93,13 @@ class CLToolBase(object):
 
     # endregion Properties
 
-    # region Class Methods
-    @classmethod
-    def construct_argparser(cls, parser=None):
+    # region Methods
+
+    # endregion
+
+    # region Static Methods
+    @staticmethod
+    def construct_argparser():
         """
         Prepares argument parser
 
@@ -81,8 +108,9 @@ class CLToolBase(object):
         """
         import argparse
 
-        if parser is None:
-            parser = argparse.ArgumentParser(description=cls.help_message)
+        help_message = ("Help message")
+
+        parser = argparse.ArgumentParser(description=help_message)
 
         # General
         verbosity = parser.add_mutually_exclusive_group()
@@ -95,18 +123,26 @@ class CLToolBase(object):
                                help="disable verbose output")
         parser.add_argument("-i", "--interactive", action="store_true",
                             dest="interactive",
-                            help="present IPython prompt")
+                            help="present IPython prompt after loading and "
+                                 "processing")
+
+        # Input
+
+        # Operation
+
+        # Output
 
         return parser
 
-    @classmethod
-    def validate_args(cls, parser, args):
+    @staticmethod
+    def validate_args(parser, args):
         """
         Validates arguments
 
         Args:
             parser (argparse.ArgumentParser): Argument parser
-            args (argparse.Namespace): Arguments
+            args: Arguments
+
         """
         pass
 
@@ -114,15 +150,17 @@ class CLToolBase(object):
 
     @classmethod
     def main(cls):
-        """ Parses and validates arguments, constructs and calls object """
+        """
+        Parses and validates arguments, constructs and calls object
+
+        """
 
         parser = cls.construct_argparser()
         args = parser.parse_args()
         cls.validate_args(parser, args)
-        if hasattr(cls, "__call__"):
-            cls(**vars(args))()
+        cls(**vars(args))()
+
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    CLToolBase.main()
-
+    DataGenerationManager.main()
