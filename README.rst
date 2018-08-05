@@ -50,9 +50,9 @@ Usage
 
 ::
 
-    usage: CompilationManager.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
-                                 [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
-                                 [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
+    usage: Compositor.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
+                     [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
+                     [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
 
     Compiles Chinese and English subtitles into a single file, optionally adding
     Mandarin or Cantonese romanization, converting traditional characters to

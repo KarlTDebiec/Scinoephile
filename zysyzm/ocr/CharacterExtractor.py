@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.ExtractionManager.py
+#   zysyzm.ocr.CharacterExtractor.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -14,7 +14,7 @@ from zysyzm.ocr import (adjust_2bit_grayscale_palette, resize_image,
 
 
 ################################### CLASSES ###################################
-class ExtractionManager(CLToolBase):
+class CharacterExtractor(CLToolBase):
 
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
@@ -253,4 +253,4 @@ class ExtractionManager(CLToolBase):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    ExtractionManager.main()
+    CharacterExtractor.main()

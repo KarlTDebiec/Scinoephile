@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.CompilationManager.py
+#   zysyzm.Compositor.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -12,7 +12,7 @@ from zysyzm import CLToolBase
 
 
 ################################### CLASSES ###################################
-class CompilationManager(CLToolBase):
+class Compositor(CLToolBase):
     """
     Compiles Chinese and English subtitles
 
@@ -1182,4 +1182,4 @@ class CompilationManager(CLToolBase):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    CompilationManager.main()
+    Compositor.main()
