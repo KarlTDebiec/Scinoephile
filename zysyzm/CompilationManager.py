@@ -18,7 +18,7 @@ class CompilationManager(CLToolBase):
 
     TODO:
         - Document
-        - Clean up merging
+        - Clean up merging code
     """
     import re
 

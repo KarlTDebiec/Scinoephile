@@ -14,7 +14,7 @@ from zysyzm.ocr import resize_image, trim_image
 
 ################################### CLASSES ###################################
 class ExtractionManager(CLToolBase):
-    """Extracts characters from image-based subtitles"""
+    """Extracts individual characters from image-based subtitles"""
 
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
