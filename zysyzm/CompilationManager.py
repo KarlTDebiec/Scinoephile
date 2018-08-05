@@ -638,6 +638,7 @@ class CompilationManager(CLToolBase):
             * Implement option to enable/disable word segmentation
             * Look into capitalization
         """
+        import pandas as pd
         from snownlp import SnowNLP
         from pypinyin import pinyin
 
@@ -713,6 +714,7 @@ class CompilationManager(CLToolBase):
 
         """
         import nltk
+        import re
 
         if self.verbosity >= 1:
             print("Applying truecase to English subtitles")
