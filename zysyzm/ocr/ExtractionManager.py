@@ -9,12 +9,12 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm import CLToolBase
-from zysyzm.ocr import resize_image, trim_image
+from zysyzm.ocr import (set_four_color_grayscale_palette, resize_image,
+                        trim_image)
 
 
 ################################### CLASSES ###################################
 class ExtractionManager(CLToolBase):
-    """Extracts individual characters from image-based subtitles"""
 
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
@@ -56,7 +56,7 @@ class ExtractionManager(CLToolBase):
 
         # Loop over subtitles
         for infile in self.input_images:
-            if self.verbosity >= 1:
+            if self.verbosity >= 2:
                 print(f"Processing '{basename(infile)}'")
 
             # Open image
@@ -73,8 +73,8 @@ class ExtractionManager(CLToolBase):
             blank_columns = np.where(nonwhite_pixels_in_column == 0)[0]
             if len(blank_columns) == 0:
                 if self.verbosity >= 1:
-                    print("    Whitespace between characters could not be "
-                          f"found for '{basename(infile)}'; skipping")
+                    print("Whitespace between characters not found for "
+                          f"'{basename(infile)}'; skipping")
                 continue
 
             # Identify boundaries between characters
@@ -119,8 +119,8 @@ class ExtractionManager(CLToolBase):
                     boundary_index = int(np.median(close))
                 except ValueError as e:
                     if self.verbosity >= 1:
-                        print("    Problem finding spaces between characters "
-                              f"for '{basename(infile)}; breaking")
+                        print("Problem finding spaces between characters for "
+                              f"'{basename(infile)}'; breaking")
                     break
                 boundary = blank_columns[boundary_index]
 
@@ -151,10 +151,14 @@ class ExtractionManager(CLToolBase):
                                           char_boundaries[i + 1],
                                           subtitle_img.size[1]))
                 char = trim_image(trim_image(char))  # Unclear why 2X needed
-                if char is not None:
-                    char = resize_image(char, (80, 80))
-                    char.save(f"{subtitle_output_directory}/{j:02d}.png")
-                    j += 1
+                if char is None:
+                    continue
+                char = resize_image(char, (80, 80))
+                char = set_four_color_grayscale_palette(char)
+                char.save(f"{subtitle_output_directory}/{j:02d}.png")
+                j += 1
+            # from sys import exit
+            # exit()
 
     # endregion
 

@@ -8,14 +8,39 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################## FUNCTIONS ##################################
+def set_four_color_grayscale_palette(image):
+    """
+    Sets palette of a four-color grayscale image to [0, 85, 170, 255]
+
+    Args:
+        image(PIL.Image.Image): 4-color grayscale source image
+
+    Returns (PIL.Image.Image): image with [0, 85, 170, 255] palette
+
+    """
+    import numpy as np
+    from PIL import Image
+
+    raw = np.array(image)
+    raw2 = raw[:, :, 0]
+    input_shades = np.where(np.bincount(raw2[:, :].flatten()) != 0)[0]
+    output_shades = [0, 85, 170, 255]
+
+    for input_shade, output_shade in zip(input_shades, output_shades):
+        raw2[raw2 == input_shade] = output_shade
+
+    image = Image.fromarray(raw, mode=image.mode)
+    return image
+
+
 def trim_image(image):
     """
     Trims outer rows and columns of an image based on background color
 
     Args:
-        image (): source image
+        image (PIL.Image.Image): source image
 
-    Returns (): trimmed image
+    Returns (PIL.Image.Image): trimmed image
 
     """
     from PIL import Image, ImageChops
@@ -35,10 +60,10 @@ def resize_image(image, new_size):
     Resizes an image, keeping current contents centered
 
     Args:
-        image (): source image
+        image (PIL.Image.Image): source image
         new_size (tuple(int, int)): New width and height
 
-    Returns (): resized image
+    Returns (PIL.Image.Image): resized image
 
     """
     import numpy as np

@@ -65,8 +65,9 @@ class TrainingDataGenerator(CLToolBase):
                 fig.clear()
                 text = fig.text(x=0.5, y=0.475, s=char,
                                 ha="center", va="center",
-                                fontproperties=font, color=(0.94, 0.94, 0.94))
-                text.set_path_effects([Stroke(linewidth=6, foreground="k"),
+                                fontproperties=font, color=(0.67, 0.67, 0.67))
+                text.set_path_effects([Stroke(linewidth=6,
+                                              foreground=(0.00, 0.00, 0.00)),
                                        Normal()])
                 fig.savefig(char_outfile, dpi=80, transparent=True)
 
@@ -75,10 +76,10 @@ class TrainingDataGenerator(CLToolBase):
                 char_img = resize_image(char_img, (80, 80))
                 raw = np.array(char_img)
                 raw2 = raw[:, :]
-                raw2[raw2 < 80] = 0
-                raw2[np.logical_and(raw2 >= 80, raw2 < 160)] = 120
-                raw2[np.logical_and(raw2 >= 160, raw2 <= 240)] = 240
-                raw2[raw2 > 240] = 255
+                raw2[raw2 < 42] = 0
+                raw2[np.logical_and(raw2 >= 42, raw2 < 127)] = 85
+                raw2[np.logical_and(raw2 >= 127, raw2 <= 212)] = 170
+                raw2[raw2 > 212] = 255
                 char_img = Image.fromarray(raw, mode=char_img.mode)
                 char_img.save(char_outfile)
 
