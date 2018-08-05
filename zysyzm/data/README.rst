@@ -18,4 +18,4 @@ Romanization
 
 `unmatched.cha` contains Jyutping Cantonese romanization of characters not
 included in the `Hong Kong Cantonese Corpus
-<http://compling.hss.ntu.edu.sg/hkcancor/>` used by pycantonese.
+<http://compling.hss.ntu.edu.sg/hkcancor/>`_ used by pycantonese.
