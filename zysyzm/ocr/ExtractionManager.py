@@ -17,7 +17,8 @@ class ExtractionManager(CLToolBase):
     """Extracts characters from image-based subtitles"""
 
     # region Instance Variables
-    help_message = ("Extracts characters from image-based subtitles")
+    help_message = ("Tool for extracting individual characters from"
+                    "image-based subtitles")
 
     # endregion
 

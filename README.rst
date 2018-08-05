@@ -4,7 +4,7 @@ Introduction
 Python package for working with Chinese/English bilingual subtitles. Mainly
 useful for combining separate Chinese and English subtitle files into single
 synchronized bilingual subtitles. May optionally add romanization below Chinese
-subtitles using Mandarin Hanyu Pinyin and the Yale romanization of Cantonese.
+subtitles using Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
 Cantonese romanization is really only useful for older Hong Kong movies (1980s
 to early 1990s) whose Chinese subtitles `match the spoken Cantonese 1:1
 <https://en.wikipedia.org/wiki/Written_Cantonese>`_ (that is, using 係, 喺, and
@@ -50,28 +50,40 @@ Usage
 
 ::
 
-    usage: zysyzm.py [-h] [-v | -q] [-s] [-m] [-c] [-t] [-i] [-o [OUTFILE]]
-                 chinese_infile [english_infile]
+    usage: CompilationManager.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
+                                 [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
+                                 [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
 
-    Modify Chinese subtitles by adding Mandarin or Cantonese romanization,
-    converting traditional characters to simplified, and merging with English
-    translation.
-
-    positional arguments:
-      chinese_infile        Chinese subtitles in SRT format
-      english_infile        English subtitles in SRT format (optional)
+    Compiles Chinese and English subtitles into a single file, optionally adding
+    Mandarin or Cantonese romanization, converting traditional characters to
+    simplified, or adding machine translation.
 
     optional arguments:
       -h, --help            show this help message and exit
       -v, --verbose         enable verbose output, may be specified more than once
       -q, --quiet           disable verbose output
+      -I, --interactive     present IPython prompt
+
+    input arguments (at least one required):
+      -c [INFILE], --chinese_infile [INFILE]
+                            Chinese subtitles in SRT format
+      -e [INFILE], --english_infile [INFILE]
+                            English subtitles in SRT format
+
+    operation arguments:
+      --c_offset C_OFFSET   offset added to Chinese subtitle timestamps
       -s, --simplified      convert traditional characters to simplified
       -m, --mandarin        add Mandarin/Putonghua pinyin (汉语拼音)
-      -c, --cantonese       add Cantonese/Guangdonghua Yale-style pinyin (耶鲁粤语拼音)
-      -t, --truecase        apply standard capitalization to English subtitles
-      -i, --interactive     present IPython prompt after loading and processing
+      -y, --yue             add Cantonese/Guangdonghua/Yue Yale-style pinyin
+                            (耶鲁粤语拼音)
+      -t, --translate       generate English translation using Google Translate;
+                            requires key for Google Cloud Platform
+      --e_offset E_OFFSET   offset added to English subtitle timestamps
+      --truecase            apply standard capitalization to English subtitles
+
+    output arguments:
       -o [OUTFILE], --outfile [OUTFILE]
-                            Output file (optional)
+                            output file (optional)
 
 Authorship
 ==========

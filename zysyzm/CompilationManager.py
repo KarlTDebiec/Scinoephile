@@ -14,20 +14,19 @@ from zysyzm import CLToolBase
 ################################### CLASSES ###################################
 class CompilationManager(CLToolBase):
     """
-    Class for managing subtitles
+    Compiles Chinese and English subtitles
 
     TODO:
         - Document
         - Clean up merging
-        - OCR features? (someday)
     """
     import re
 
     # region Instance Variables
-    help_message = ("Modify Chinese subtitles by adding Mandarin or "
-                    "Cantonese romanization, converting traditional "
-                    "characters to simplified, and merging with English "
-                    "translation.")
+    help_message = ("Compiles Chinese and English subtitles into a single "
+                    "file, optionally adding Mandarin or Cantonese "
+                    "romanization, converting traditional characters to "
+                    "simplified, or adding machine translation.")
     punctuation = {"\n": "\n",
                    "　": " ",
                    " ": " ",
