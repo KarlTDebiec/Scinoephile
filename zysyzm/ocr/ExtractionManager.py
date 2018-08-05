@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm import CLToolBase
-from zysyzm.ocr import (set_four_color_grayscale_palette, resize_image,
+from zysyzm.ocr import (adjust_2bit_grayscale_palette, resize_image,
                         trim_image)
 
 
@@ -154,7 +154,7 @@ class ExtractionManager(CLToolBase):
                 if char is None:
                     continue
                 char = resize_image(char, (80, 80))
-                char = set_four_color_grayscale_palette(char)
+                char = adjust_2bit_grayscale_palette(char)
                 char.save(f"{subtitle_output_directory}/{j:02d}.png")
                 j += 1
             # from sys import exit

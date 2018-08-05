@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm import CLToolBase
-from zysyzm.ocr import resize_image, trim_image
+from zysyzm.ocr import convert_8bit_grayscale_to_2bit, resize_image, trim_image
 
 
 ################################### CLASSES ###################################
@@ -35,57 +35,74 @@ class TrainingDataGenerator(CLToolBase):
 
     def __call__(self):
         """Core logic"""
-        import numpy as np
-        from IPython import embed
-        from os import mkdir
-        from os.path import expandvars, isdir
         from matplotlib.pyplot import figure
-        from matplotlib.font_manager import FontProperties
-        from matplotlib.patheffects import Stroke, Normal
-        from PIL import Image
 
-        font_names = ["Hei", "LiHei Pro", "STHeiti"]
-        # font_names += ["Kai", "BiauKai"]
-        # font_names += ["LiSong Pro", "STFangsong"]
-        chars = ["的", "一", "是", "不", "了", "在"]
+        def generate_image(char, font_name, font_size, border_width):
+            from matplotlib.font_manager import FontProperties
+            from matplotlib.patheffects import Stroke, Normal
+            from PIL import Image
+
+            outfile = f"{self.output_directory}/{char}_{font_size:02d}_" \
+                      f"{border_width:02d}_{font_name.replace(' ', '')}.png"
+
+            # Use matplotlib to generate initial image of character
+            fig.clear()
+            font = FontProperties(family=font_name, size=font_size)
+            text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
+                            fontproperties=font, color=(0.67, 0.67, 0.67))
+            text.set_path_effects([Stroke(linewidth=border_width,
+                                          foreground=(0.00, 0.00, 0.00)),
+                                   Normal()])
+            fig.savefig(outfile, dpi=80, transparent=True)
+
+            # Reload with pillow to trim, resize, and adjust color
+            char_img = trim_image(Image.open(outfile).convert("L"), 0)
+            char_img = resize_image(char_img, (80, 80))
+            char_img = convert_8bit_grayscale_to_2bit(char_img)
+            char_img.save(outfile)
+
+            if self.verbosity >= 2:
+                print(f"Wrote '{outfile}'")
+
+
         fig = figure(figsize=(1, 1))
 
-        # Loop over fonts
-        for font_name in font_names:
-            font_dir = f"{self.output_directory}/{font_name}"
-            if not isdir(font_dir):
-                mkdir(font_dir)
-            font = FontProperties(family=font_name, size=60)
+        chars = ["的", "一", "是", "不", "了", "在"]
+        font_names = ["Hei", "LiHei Pro", "STHeiti"]
+        font_names += ["Kai", "BiauKai"]
+        font_names += ["LiSong Pro", "STFangsong"]
+        font_sizes = [58, 59, 60, 61, 62]
+        border_widths = [3, 4, 5, 6, 7]
 
-            # Loop over characters
-            for char in chars:
-                char_outfile = f"{font_dir}/{char}.png"
-
-                # Use matplotlib to fenerate initial image of character
-                fig.clear()
-                text = fig.text(x=0.5, y=0.475, s=char,
-                                ha="center", va="center",
-                                fontproperties=font, color=(0.67, 0.67, 0.67))
-                text.set_path_effects([Stroke(linewidth=6,
-                                              foreground=(0.00, 0.00, 0.00)),
-                                       Normal()])
-                fig.savefig(char_outfile, dpi=80, transparent=True)
-
-                # Reload with pillow to trim and adjust color and transparency
-                char_img = trim_image(Image.open(char_outfile).convert("L"))
-                char_img = resize_image(char_img, (80, 80))
-                raw = np.array(char_img)
-                raw2 = raw[:, :]
-                raw2[raw2 < 42] = 0
-                raw2[np.logical_and(raw2 >= 42, raw2 < 127)] = 85
-                raw2[np.logical_and(raw2 >= 127, raw2 <= 212)] = 170
-                raw2[raw2 > 212] = 255
-                char_img = Image.fromarray(raw, mode=char_img.mode)
-                char_img.save(char_outfile)
+        # Loop over combinations
+        for char in chars:
+            for font_name in font_names:
+                for font_size in font_sizes:
+                    for border_width in border_widths:
+                        generate_image(char, font_name, font_size,
+                                       border_width)
 
     # endregion
 
     # region Properties
+    @property
+    def n_images(self):
+        """int: Number of character images to generate"""
+        if not hasattr(self, "_n_images"):
+            self._n_images = 1000
+        return self._n_images
+
+    @n_images.setter
+    def n_images(self, value):
+        if not isinstance(value, int) and value is not None:
+            try:
+                value = int(value)
+            except Exception as e:
+                raise ValueError()
+        if value < 1 and value is not None:
+            raise ValueError()
+        self._n_images = value
+
     @property
     def output_directory(self):
         """str: Path to directory for output character images"""

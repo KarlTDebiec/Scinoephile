@@ -8,7 +8,30 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################## FUNCTIONS ##################################
-def set_four_color_grayscale_palette(image):
+def convert_8bit_grayscale_to_2bit(image):
+    """
+    Sets palette of a four-color grayscale image to [0, 85, 170, 255]
+
+    Args:
+        image(PIL.Image.Image): 4-color grayscale source image
+
+    Returns (PIL.Image.Image): image with [0, 85, 170, 255] palette
+
+    """
+    import numpy as np
+    from PIL import Image
+
+    raw = np.array(image)
+    raw[raw < 42] = 0
+    raw[np.logical_and(raw >= 42, raw < 127)] = 85
+    raw[np.logical_and(raw >= 127, raw <= 212)] = 170
+    raw[raw > 212] = 255
+
+    image = Image.fromarray(raw, mode=image.mode)
+    return image
+
+
+def adjust_2bit_grayscale_palette(image):
     """
     Sets palette of a four-color grayscale image to [0, 85, 170, 255]
 
@@ -33,7 +56,7 @@ def set_four_color_grayscale_palette(image):
     return image
 
 
-def trim_image(image):
+def trim_image(image, background_color=None):
     """
     Trims outer rows and columns of an image based on background color
 
@@ -45,8 +68,10 @@ def trim_image(image):
     """
     from PIL import Image, ImageChops
 
-    background = Image.new(image.mode, image.size,
-                           image.getpixel((0, 0)))
+    if background_color is None:
+        background_color = image.getpixel((0, 0))
+
+    background = Image.new(image.mode, image.size, background_color)
     diff = ImageChops.difference(image, background)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
