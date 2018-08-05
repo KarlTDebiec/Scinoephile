@@ -1,9 +1,9 @@
-Data files.
+Supporting data files.
 
 OCR
 ===
 
-`characters.txt` contains frequency data for 9933 Chinese characters.
+``characters.txt`` contains frequency data for 9933 Chinese characters.
 
 `Da, Jun. 2004. A corpus-based study of character and bigram frequencies in
 Chinese e-texts and its implications for Chinese language instruction. The
@@ -16,6 +16,6 @@ in Teaching and Learning Chinese, ed. by Zhang, Pu, Tianwei Xie and Juan Xu,
 Romanization
 ============
 
-`unmatched.cha` contains Jyutping Cantonese romanization of characters not
+``unmatched.cha`` contains Jyutping Cantonese romanization of characters not
 included in the `Hong Kong Cantonese Corpus
 <http://compling.hss.ntu.edu.sg/hkcancor/>`_ used by pycantonese.
