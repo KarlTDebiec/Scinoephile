@@ -66,24 +66,23 @@ Usage
 
     input arguments (at least one required):
       -c [INFILE], --chinese_infile [INFILE]
-                            Chinese subtitles in SRT format
+                            Chinese subtitles in SRT or VTT format
       -e [INFILE], --english_infile [INFILE]
-                            English subtitles in SRT format
+                            English subtitles in SRT or VTT format
 
     operation arguments:
-      --c_offset C_OFFSET   offset added to Chinese subtitle timestamps
+      --c_offset C_OFFSET   apply offset to Chinese subtitle timings
       -s, --simplified      convert traditional characters to simplified
-      -m, --mandarin        add Mandarin/Putonghua pinyin (汉语拼音)
-      -y, --yue             add Cantonese/Guangdonghua/Yue Yale-style pinyin
-                            (耶鲁粤语拼音)
-      -t, --translate       generate English translation using Google Translate;
-                            requires key for Google Cloud Platform
-      --e_offset E_OFFSET   offset added to English subtitle timestamps
+      -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
+      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+      -t, --translate       add English machine translation generated using Google
+                            Translate; requires key for Google Cloud Platform
+      --e_offset E_OFFSET   apply offset to English subtitle timings
       --truecase            apply standard capitalization to English subtitles
 
     output arguments:
       -o [OUTFILE], --outfile [OUTFILE]
-                            output file (optional)
+                            output file
 
 Authorship
 ==========

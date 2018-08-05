@@ -1088,34 +1088,32 @@ class CompilationManager(CLToolBase):
             "input arguments (at least one required)")
         parser_inp.add_argument("-c", "--chinese_infile", type=str, nargs="?",
                                 metavar="INFILE",
-                                help="Chinese subtitles in SRT format")
+                                help="Chinese subtitles in SRT or VTT format")
         parser_inp.add_argument("-e", "--english_infile", type=str, nargs="?",
                                 metavar="INFILE",
-                                help="English subtitles in SRT format")
+                                help="English subtitles in SRT or VTT format")
 
         # Operation
         parser_ops = parser.add_argument_group("operation arguments")
         parser_ops.add_argument("--c_offset", type=float, default=0,
-                                help="offset added to Chinese subtitle "
-                                     "timestamps")
+                                help="apply offset to Chinese subtitle "
+                                     "timings")
         parser_ops.add_argument("-s", "--simplified", action="store_true",
                                 help="convert traditional characters to "
                                      "simplified")
         parser_ops.add_argument("-m", "--mandarin", action="store_true",
-                                help="add Mandarin/Putonghua pinyin "
-                                     "(汉语拼音)")
+                                help="add Mandarin Hanyu pinyin (汉语拼音)")
         parser_ops.add_argument("-y", "--yue", action="store_true",
                                 dest="cantonese",
-                                help="add Cantonese/Guangdonghua/Yue "
-                                     "Yale-style pinyin (耶鲁粤语拼音)")
+                                help="add Cantonese Yale pinyin (耶鲁粤语拼音)")
         parser_ops.add_argument("-t", "--translate", action="store_true",
                                 dest="translate",
-                                help="generate English translation using "
-                                     "Google Translate; requires key for "
-                                     "Google Cloud Platform")
+                                help="add English machine translation "
+                                     "generated using Google Translate; "
+                                     "requires key for Google Cloud Platform")
         parser_ops.add_argument("--e_offset", type=float, default=0,
-                                help="offset added to English subtitle "
-                                     "timestamps")
+                                help="apply offset to English subtitle "
+                                     "timings")
         parser_ops.add_argument("--truecase", action="store_true",
                                 help="apply standard capitalization to "
                                      "English subtitles")
@@ -1123,18 +1121,21 @@ class CompilationManager(CLToolBase):
         # Output
         parser_out = parser.add_argument_group("output arguments")
         parser_out.add_argument("-o", "--outfile", type=str, nargs="?",
-                                help="output file (optional)")
+                                help="output file")
 
         return parser
 
-    @staticmethod
-    def validate_args(parser, args):
+    @classmethod
+    def validate_args(cls, parser, args):
         """
         Validates arguments
 
         Args:
             parser (argparse.ArgumentParser): Argument parser
             args (argparse.Namespace): Arguments
+
+        Raises:
+            ValueError: Incompatibility between provided arguments
 
         """
         from io import StringIO
