@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ExtractionManager.py
+#   zysyzm.ocr.ExtractionManager.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -31,7 +31,7 @@ class ExtractionManager(CLToolBase):
               images
             output_directory (str): Path to directory for output character
               images
-            **kwargs (dict): Additional keyword arguments
+            kwargs (dict): Additional keyword arguments
         """
         super().__init__(**kwargs)
 

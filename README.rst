@@ -1,12 +1,16 @@
 Introduction
 ============
 
-Script for adding romanization below Chinese subtitles, and combining Chinese
-and English subtitles. Supports Mandarin Hanyu Pinyin and the Yale romanization
-of Cantonese. Cantonese romanization is really only useful for older Hong Kong
-movies (1980s to early 1990s) whose Chinese subtitles `match the spoken
-Cantonese 1:1 <https://en.wikipedia.org/wiki/Written_Cantonese>`_ (that is,
-using 係, 喺, and 唔 rather than 是, 在, and 不, etc.).
+Python package for working with Chinese/English bilingual subtitles. Mainly
+useful for combining separate Chinese and English subtitle files into single
+synchronized bilingual subtitles. May optionally add romanization below Chinese
+subtitles using Mandarin Hanyu Pinyin and the Yale romanization of Cantonese.
+Cantonese romanization is really only useful for older Hong Kong movies (1980s
+to early 1990s) whose Chinese subtitles `match the spoken Cantonese 1:1
+<https://en.wikipedia.org/wiki/Written_Cantonese>`_ (that is, using 係, 喺, and
+唔 rather than 是, 在, and 不, etc.). Optical Character Recognition functions
+are currently under development to allow the conversion of image-based Blu-Ray
+subtitles to text format.
 
 Example Mandarin/English Output::
 
@@ -39,8 +43,7 @@ Dependencies
 Installation
 ============
 
-Not currently possible or necessary. Just run the script from the folder within
-which the script is located.
+``python setup.py install``
 
 Usage
 =====

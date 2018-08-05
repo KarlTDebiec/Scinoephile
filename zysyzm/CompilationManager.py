@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.py
+#   zysyzm.CompilationManager.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,20 +8,11 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-import datetime
-import re
-import numpy as np
-import pandas as pd
-from IPython import embed
-
-################################## SETTINGS ###################################
-pd.set_option("display.width", 110)
-pd.set_option("display.max_colwidth", 16)
-pd.set_option("display.max_rows", None)
+from zysyzm import CLToolBase
 
 
 ################################### CLASSES ###################################
-class SubtitleManager(object):
+class CompilationManager(CLToolBase):
     """
     Class for managing subtitles
 
@@ -30,8 +21,13 @@ class SubtitleManager(object):
         - Clean up merging
         - OCR features? (someday)
     """
+    import re
 
     # region Instance Variables
+    help_message = ("Modify Chinese subtitles by adding Mandarin or "
+                    "Cantonese romanization, converting traditional "
+                    "characters to simplified, and merging with English "
+                    "translation.")
     punctuation = {"\n": "\n",
                    "　": " ",
                    " ": " ",
@@ -67,12 +63,33 @@ class SubtitleManager(object):
     # endregion
 
     # region Builtins
-    def __init__(self, verbosity=1, interactive=False, chinese_infile=None,
-                 english_infile=None, c_offset=0, simplified=False,
-                 mandarin=False, cantonese=False, translate=False, e_offset=0,
-                 truecase=False, outfile=None, spacing="words", **kwargs):
-        self.verbosity = verbosity
-        self.interactive = interactive
+    def __init__(self, chinese_infile=None, english_infile=None, c_offset=0,
+                 simplified=False, mandarin=False, cantonese=False,
+                 translate=False, e_offset=0, truecase=False, outfile=None,
+                 spacing="words", **kwargs):
+        """
+        Initializes tool
+
+        Args:
+            chinese_infile (str): Path to SRT file containing Chinese character
+              text
+            english_infile (str): Path to SRT file containing English text
+            c_offset (float): Time offset applied to Chinese subtitles
+              (seconds)
+            simplified (bool): Convert traditional Chinese to simplified
+            mandarin (bool): Add Mandarin romanization to Chinese subtitles
+            cantonese (bool): Add Cantonese romanzation to Chinese subtitles
+            translate (bool): Add English translation to Chinese subtitles
+            e_offset (float): Time offset applied to English subtitles
+              (seconds)
+            truecase (bool): Apply standard capitalization to English subtitles
+            outfile (str): Path to output SRT file
+            spacing (str): Space between syllables or words of Mandarin
+              romanization
+            kwargs (dict): Additional keyword arguments
+        """
+        super().__init__(**kwargs)
+
         self.chinese_infile = chinese_infile
         self.english_infile = english_infile
         self.c_offset = c_offset
@@ -85,6 +102,12 @@ class SubtitleManager(object):
         self.spacing = spacing
         self.outfile = outfile
 
+        import pandas as pd
+
+        pd.set_option("display.width", 110)
+        pd.set_option("display.max_colwidth", 16)
+        pd.set_option("display.max_rows", None)
+
     def __call__(self):
         """
         Core logic
@@ -93,6 +116,8 @@ class SubtitleManager(object):
             - Decide between setting within each function or returning
             - Move actual merging to another function 'complile_subtitles'
         """
+        import numpy as np
+
         # Load infiles
         if self.chinese:
             if self.chinese_infile.endswith("vtt"):
@@ -137,6 +162,7 @@ class SubtitleManager(object):
 
         # Interactive
         if self.interactive:
+            from IPython import embed
             embed()
 
         # Write outfile
@@ -229,7 +255,8 @@ class SubtitleManager(object):
 
     @property
     def cantonese_corpus(self):
-        """pycantonese.corpus.CantoneseCHATReader: Corpus for Cantonese romanization"""
+        """pycantonese.corpus.CantoneseCHATReader: Corpus for Cantonese
+             romanization"""
         if not hasattr(self, "_cantonese_corpus"):
             import pycantonese as pc
             self._cantonese_corpus = pc.hkcancor()
@@ -251,8 +278,14 @@ class SubtitleManager(object):
 
     @chinese_infile.setter
     def chinese_infile(self, value):
+        from os.path import expandvars, isfile
+
         if not isinstance(value, str) and value is not None:
             raise ValueError()
+        else:
+            value = expandvars(value)
+            if not isfile(value):
+                raise ValueError()
         self._chinese_infile = value
 
     @property
@@ -264,17 +297,11 @@ class SubtitleManager(object):
 
     @chinese_subtitles.setter
     def chinese_subtitles(self, value):
+        import pandas as pd
+
         if not isinstance(value, pd.DataFrame):
             raise ValueError()
         self._chinese_subtitles = value
-
-    @property
-    def directory(self):
-        """str: Path to this Python file"""
-        if not hasattr(self, "_directory"):
-            import os
-            self._directory = os.path.dirname(os.path.realpath(__file__))
-        return self._directory
 
     @property
     def e_offset(self):
@@ -308,8 +335,14 @@ class SubtitleManager(object):
 
     @english_infile.setter
     def english_infile(self, value):
+        from os.path import expandvars, isfile
+
         if not isinstance(value, str) and value is not None:
             raise ValueError()
+        else:
+            value = expandvars(value)
+            if not isfile(value):
+                raise ValueError()
         self._english_infile = value
 
     @property
@@ -321,22 +354,11 @@ class SubtitleManager(object):
 
     @english_subtitles.setter
     def english_subtitles(self, value):
+        import pandas as pd
+
         if not isinstance(value, pd.DataFrame):
             raise ValueError()
         self._english_subtitles = value
-
-    @property
-    def interactive(self):
-        """bool: Present IPython prompt after processing subtitles"""
-        if not hasattr(self, "_interactive"):
-            self._interactive = False
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, value):
-        if not isinstance(value, bool):
-            raise ValueError()
-        self._interactive = value
 
     @property
     def mandarin(self):
@@ -360,6 +382,8 @@ class SubtitleManager(object):
 
     @merged_subtitles.setter
     def merged_subtitles(self, value):
+        import pandas as pd
+
         if not isinstance(value, pd.DataFrame):
             raise ValueError()
         self._merged_subtitles = value
@@ -373,6 +397,16 @@ class SubtitleManager(object):
 
     @outfile.setter
     def outfile(self, value):
+        from os import access, W_OK
+        from os.path import dirname, expandvars
+
+        if not isinstance(value, str) and value is not None:
+            raise ValueError()
+        else:
+            value = expandvars(value)
+            if not access(dirname(value), W_OK):
+                raise ValueError()
+
         if not (isinstance(value, str) or value is None):
             raise ValueError()
         self._outfile = value
@@ -437,19 +471,6 @@ class SubtitleManager(object):
             raise ValueError()
         self._truecase = value
 
-    @property
-    def verbosity(self):
-        """int: Level of output to provide"""
-        if not hasattr(self, "_verbosity"):
-            self._verbosity = 1
-        return self._verbosity
-
-    @verbosity.setter
-    def verbosity(self, value):
-        if not isinstance(value, int) and value >= 0:
-            raise ValueError()
-        self._verbosity = value
-
     # endregion Properties
 
     # region Methods
@@ -468,6 +489,7 @@ class SubtitleManager(object):
             * Look into word segmentation
             * Look into capitalization
         """
+        import pandas as pd
         import pycantonese as pc
         from collections import Counter
         from hanziconv import HanziConv
@@ -581,6 +603,8 @@ class SubtitleManager(object):
               character text in column named 'text'; adds column named
               'english' with translation
         """
+        import pandas as pd
+
         if self.verbosity >= 1:
             print("Adding English translation")
 
@@ -665,15 +689,18 @@ class SubtitleManager(object):
         Returns:
 
         """
+        from datetime import timedelta
+        from datetime import date
+        from datetime import datetime
 
         if self.verbosity >= 1:
             print(f"Applying offset of {offset} seconds")
 
-        offset = datetime.timedelta(seconds=offset)
+        offset = timedelta(seconds=offset)
         subtitles["start"] = subtitles["start"].apply(
-            lambda s: (datetime.datetime.combine(datetime.date.today(), s) + offset).time())
+            lambda s: (datetime.combine(date.today(), s) + offset).time())
         subtitles["end"] = subtitles["end"].apply(
-            lambda s: (datetime.datetime.combine(datetime.date.today(), s) + offset).time())
+            lambda s: (datetime.combine(date.today(), s) + offset).time())
         return subtitles
 
     def apply_truecase(self, subtitles):
@@ -721,6 +748,8 @@ class SubtitleManager(object):
                 subtitle["text"] = truecased
 
     def merge_chinese_english(self, chinese_subtitles, english_subtitles):
+        import pandas as pd
+
         def add_merged_subtitle():
             if start == time:
                 return merged_subtitles
@@ -811,6 +840,10 @@ class SubtitleManager(object):
         return merged_subtitles
 
     def merge_chinese_english_2(self, merged_subtitles):
+        import numpy as np
+        import pandas as pd
+        from datetime import date
+        from datetime import datetime
 
         cleaned_subs = pd.DataFrame([merged_subtitles.iloc[0]])
 
@@ -829,15 +862,12 @@ class SubtitleManager(object):
                     cleaned_subs.iloc[-1] = last  # Apparently not necessary
                 else:
                     # Single Chinese subtitle given two English subtitles
-                    gap = (datetime.datetime.combine(datetime.date.today(),
-                                                     next.start) -
-                           datetime.datetime.combine(datetime.date.today(),
-                                                     last.end))
+                    gap = (datetime.combine(date.today(), next.start) -
+                           datetime.combine(date.today(), last.end))
                     if gap.total_seconds() < 0.5:
                         # Probably long Chinese split into two English
-                        mid = (datetime.datetime.combine(datetime.date.today(),
-                                                         last.end) +
-                               (gap / 2)).time()
+                        mid = (datetime.combine(
+                            date.today(), last.end) + (gap / 2)).time()
                         last.end = mid
                         next.start = mid
                         cleaned_subs.iloc[-1] = last  # Apparently not necessary
@@ -865,15 +895,12 @@ class SubtitleManager(object):
                         last.end = next.end
                         cleaned_subs.iloc[-1] = last  # Apparently not necessary
                 else:
-                    gap = (datetime.datetime.combine(datetime.date.today(),
-                                                     next.start) -
-                           datetime.datetime.combine(datetime.date.today(),
-                                                     last.end))
+                    gap = (datetime.combine(date.today(), next.start) -
+                           datetime.combine(date.today(), last.end))
                     if gap.total_seconds() < 0.5:
                         # Probably long English split into two Chinese
-                        mid = (datetime.datetime.combine(datetime.date.today(),
-                                                         last.end) +
-                               (gap / 2)).time()
+                        mid = (datetime.combine(
+                            date.today(), last.end) + (gap / 2)).time()
                         last.end = mid
                         next.start = mid
                         cleaned_subs.iloc[-1] = last  # Apparently not necessary
@@ -890,6 +917,9 @@ class SubtitleManager(object):
         return cleaned_subs
 
     def read_srt(self, infile):
+        import pandas as pd
+        from datetime import datetime
+
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
 
@@ -908,10 +938,10 @@ class SubtitleManager(object):
                 if self.re_index.match(line) and index is None:
                     index = int(self.re_index.match(line).groupdict()["index"])
                 elif self.re_time.match(line):
-                    start = datetime.datetime.strptime(
+                    start = datetime.strptime(
                         self.re_time.match(line).groupdict()["start"],
                         "%H:%M:%S,%f").time()
-                    end = datetime.datetime.strptime(
+                    end = datetime.strptime(
                         self.re_time.match(line).groupdict()["end"],
                         "%H:%M:%S,%f").time()
                 elif self.re_blank.match(line):
@@ -938,6 +968,9 @@ class SubtitleManager(object):
         return subtitles
 
     def read_vtt(self, infile):
+        import pandas as pd
+        from datetime import datetime
+
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
 
@@ -957,10 +990,10 @@ class SubtitleManager(object):
                 if self.verbosity >= 3:
                     print(line.strip())
                 if self.re_time.match(line):
-                    start = datetime.datetime.strptime(
+                    start = datetime.strptime(
                         self.re_time.match(line).groupdict()["start"],
                         "%H:%M:%S.%f").time()
-                    end = datetime.datetime.strptime(
+                    end = datetime.strptime(
                         self.re_time.match(line).groupdict()["end"],
                         "%H:%M:%S.%f").time()
                 elif self.re_blank.match(line):
@@ -1027,9 +1060,9 @@ class SubtitleManager(object):
 
     # endregion
 
-    # region Static Methods
-    @staticmethod
-    def construct_argparser():
+    # region Class Methods
+    @classmethod
+    def construct_argparser(cls, parser=None):
         """
         Constructs argument parser
 
@@ -1038,26 +1071,16 @@ class SubtitleManager(object):
         """
         import argparse
 
-        help_message = ("Modify Chinese subtitles by adding Mandarin or "
-                        "Cantonese romanization, converting traditional "
-                        "characters to simplified, and merging with English "
-                        "translation.")
-
-        parser = argparse.ArgumentParser(description=help_message)
-
-        # General
-        verbosity = parser.add_mutually_exclusive_group()
-        verbosity.add_argument("-v", "--verbose", action="count",
-                               dest="verbosity", default=1,
-                               help="enable verbose output, may be specified "
-                                    "more than once")
-        verbosity.add_argument("-q", "--quiet", action="store_const",
-                               dest="verbosity", const=0,
-                               help="disable verbose output")
-        parser.add_argument("-i", "--interactive", action="store_true",
-                            dest="interactive",
-                            help="present IPython prompt after loading and "
-                                 "processing")
+        # Prepare parser
+        if isinstance(parser, argparse.ArgumentParser):
+            parser = parser
+        elif isinstance(parser, argparse._SubParsersAction):
+            parser = parser.add_parser(name="extraction",
+                                       description=cls.help_message,
+                                       help=cls.help_message)
+        elif parser is None:
+            parser = argparse.ArgumentParser(description=cls.help_message)
+        super().construct_argparser(parser)
 
         # Input
         parser_inp = parser.add_argument_group(
@@ -1110,7 +1133,7 @@ class SubtitleManager(object):
 
         Args:
             parser (argparse.ArgumentParser): Argument parser
-            args: Arguments
+            args (argparse.Namespace): Arguments
 
         """
         from io import StringIO
@@ -1154,22 +1177,7 @@ class SubtitleManager(object):
 
     # endregion
 
-    @classmethod
-    def main(cls):
-        """
-        Parses and validates arguments
-
-        TODO:
-            - General method of requiring one or more of a group of arguments
-            - General method of having arguments require one another
-        """
-
-        parser = cls.construct_argparser()
-        args = parser.parse_args()
-        cls.validate_args(parser, args)
-        cls(**vars(args))()
-
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    SubtitleManager.main()
+    CompilationManager.main()
