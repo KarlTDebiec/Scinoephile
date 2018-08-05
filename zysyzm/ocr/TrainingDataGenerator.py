@@ -31,19 +31,28 @@ class TrainingDataGenerator(CLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.output_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.trn_output_directory = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.val_output_directory = \
+            "/Users/kdebiec/Desktop/docs/subtitles/val"
+        self.val_portion = 0.5
 
     def __call__(self):
         """Core logic"""
         from matplotlib.pyplot import figure
 
         def generate_image(char, font_name, font_size, border_width):
+            import numpy as np
             from matplotlib.font_manager import FontProperties
             from matplotlib.patheffects import Stroke, Normal
             from PIL import Image
 
-            outfile = f"{self.output_directory}/{char}_{font_size:02d}_" \
-                      f"{border_width:02d}_{font_name.replace(' ', '')}.png"
+            if np.random.rand() < self.val_portion:
+                outfile = f"{self.val_output_directory}/"
+            else:
+                outfile = f"{self.trn_output_directory}/"
+            outfile += f"{char}_{font_size:02d}_{border_width:02d}_" \
+                       f"{font_name.replace(' ', '')}.png"
 
             # Use matplotlib to generate initial image of character
             fig.clear()
@@ -64,18 +73,17 @@ class TrainingDataGenerator(CLToolBase):
             if self.verbosity >= 2:
                 print(f"Wrote '{outfile}'")
 
+        fig = figure(figsize=(1, 1))  # Make on figure and reuse it
 
-        fig = figure(figsize=(1, 1))
-
-        chars = ["的", "一", "是", "不", "了", "在"]
-        font_names = ["Hei", "LiHei Pro", "STHeiti"]
-        font_names += ["Kai", "BiauKai"]
-        font_names += ["LiSong Pro", "STFangsong"]
+        font_names = ["Hei", "STHeiti"]
+        # font_names += ["LiHei Pro"]
+        # font_names += ["Kai", "BiauKai"]
+        # font_names += ["LiSong Pro", "STFangsong"]
         font_sizes = [58, 59, 60, 61, 62]
         border_widths = [3, 4, 5, 6, 7]
 
         # Loop over combinations
-        for char in chars:
+        for char in self.chars[:21]:
             for font_name in font_names:
                 for font_size in font_sizes:
                     for border_width in border_widths:
@@ -85,6 +93,27 @@ class TrainingDataGenerator(CLToolBase):
     # endregion
 
     # region Properties
+    @property
+    def chars(self):
+        """pandas.core.frame.DataFrame: Characters"""
+        if not hasattr(self, "_chars"):
+            import numpy as np
+
+            self._chars = np.array(self.char_frequency_table["character"],
+                                   np.str)
+        return self._chars
+
+    @property
+    def char_frequency_table(self):
+        """pandas.core.frame.DataFrame: Character frequency table"""
+        if not hasattr(self, "_char_frequency_table"):
+            import pandas as pd
+
+            self._char_frequency_table = pd.read_csv(
+                f"{self.directory}/data/ocr/characters.txt", sep="\t",
+                names=["character", "frequency", "cumulative frequency"])
+        return self._char_frequency_table
+
     @property
     def n_images(self):
         """int: Number of character images to generate"""
@@ -104,14 +133,14 @@ class TrainingDataGenerator(CLToolBase):
         self._n_images = value
 
     @property
-    def output_directory(self):
-        """str: Path to directory for output character images"""
-        if not hasattr(self, "_output_directory"):
-            self._output_directory = None
-        return self._output_directory
+    def trn_output_directory(self):
+        """str: Path to directory for output training character images"""
+        if not hasattr(self, "_trn_output_directory"):
+            self._trn_output_directory = None
+        return self._trn_output_directory
 
-    @output_directory.setter
-    def output_directory(self, value):
+    @trn_output_directory.setter
+    def trn_output_directory(self, value):
         from os import makedirs
         from os.path import expandvars, isdir
 
@@ -124,7 +153,50 @@ class TrainingDataGenerator(CLToolBase):
                     makedirs(value)
                 except Exception as e:
                     raise ValueError()
-        self._output_directory = value
+        self._trn_output_directory = value
+
+    @property
+    def val_output_directory(self):
+        """str: Path to directory for output validation character images"""
+        if not hasattr(self, "_val_output_directory"):
+            self._val_output_directory = None
+        return self._val_output_directory
+
+    @val_output_directory.setter
+    def val_output_directory(self, value):
+        from os import makedirs
+        from os.path import expandvars, isdir
+
+        if not isinstance(value, str) and value is not None:
+            raise ValueError()
+        elif isinstance(value, str):
+            value = expandvars(value)
+            if not isdir(value):
+                try:
+                    makedirs(value)
+                except Exception as e:
+                    raise ValueError()
+        self._val_output_directory = value
+
+    @property
+    def val_portion(self):
+        """float: Portion of images to set aside for validation"""
+        if not hasattr(self, "_val_portion"):
+            self._val_portion = 0
+        return self._val_portion
+
+    @val_portion.setter
+    def val_portion(self, value):
+        if value is None:
+            value = 0
+        elif not isinstance(value, float):
+            try:
+                value = float(value)
+            except Exception as e:
+                raise ValueError()
+        if not 0 <= value <= 1:
+            raise ValueError()
+        self._val_portion = value
 
     # endregion
 
