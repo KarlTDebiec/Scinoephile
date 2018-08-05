@@ -15,7 +15,6 @@ from zysyzm.ocr import (adjust_2bit_grayscale_palette, resize_image,
 
 ################################### CLASSES ###################################
 class CharacterExtractor(CLToolBase):
-
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
                     "image-based subtitles")
@@ -60,7 +59,7 @@ class CharacterExtractor(CLToolBase):
                 print(f"Processing '{basename(infile)}'")
 
             # Open image
-            subtitle_img = trim_image(Image.open(infile).convert("LA"))
+            subtitle_img = trim_image(Image.open(infile).convert("L"))
             subtitle_output_directory = \
                 f"{self.output_directory}/{basename(infile).rstrip('.png')}"
             if not isdir(subtitle_output_directory):
@@ -68,13 +67,14 @@ class CharacterExtractor(CLToolBase):
             subtitle_outfile = f"{subtitle_output_directory}/full.png"
 
             # Identify blank columns containing only white pixels
-            raw = np.asarray(subtitle_img)[:, :, 0]
+            raw = np.asarray(subtitle_img)[:, :]
             nonwhite_pixels_in_column = (raw < raw.max()).sum(axis=0)
             blank_columns = np.where(nonwhite_pixels_in_column == 0)[0]
             if len(blank_columns) == 0:
                 if self.verbosity >= 1:
                     print("Whitespace between characters not found for "
                           f"'{basename(infile)}'; skipping")
+                subtitle_img.save(subtitle_outfile)
                 continue
 
             # Identify boundaries between characters
@@ -157,8 +157,6 @@ class CharacterExtractor(CLToolBase):
                 char = adjust_2bit_grayscale_palette(char)
                 char.save(f"{subtitle_output_directory}/{j:02d}.png")
                 j += 1
-            # from sys import exit
-            # exit()
 
     # endregion
 
@@ -176,7 +174,7 @@ class CharacterExtractor(CLToolBase):
 
         if not isinstance(value, str) and value is not None:
             raise ValueError()
-        else:
+        elif isinstance(value, str):
             value = expandvars(value)
             if not isdir(value):
                 raise ValueError()
@@ -186,7 +184,7 @@ class CharacterExtractor(CLToolBase):
     def input_images(self):
         from glob import iglob
 
-        return sorted(iglob("{0}/*.png".format(self.input_directory)))
+        return sorted(iglob(f"{self.input_directory}/*.png"))
 
     @property
     def output_directory(self):
@@ -202,7 +200,7 @@ class CharacterExtractor(CLToolBase):
 
         if not isinstance(value, str) and value is not None:
             raise ValueError()
-        else:
+        elif isinstance(value, str):
             value = expandvars(value)
             if not isdir(value):
                 try:

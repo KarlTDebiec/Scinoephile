@@ -45,12 +45,11 @@ def adjust_2bit_grayscale_palette(image):
     from PIL import Image
 
     raw = np.array(image)
-    raw2 = raw[:, :, 0]
-    input_shades = np.where(np.bincount(raw2[:, :].flatten()) != 0)[0]
+    input_shades = np.where(np.bincount(raw.flatten()) != 0)[0]
     output_shades = [0, 85, 170, 255]
 
     for input_shade, output_shade in zip(input_shades, output_shades):
-        raw2[raw2 == input_shade] = output_shade
+        raw[raw == input_shade] = output_shade
 
     image = Image.fromarray(raw, mode=image.mode)
     return image

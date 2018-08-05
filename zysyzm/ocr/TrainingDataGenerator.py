@@ -31,7 +31,7 @@ class TrainingDataGenerator(CLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.output_directory = "/Users/kdebiec/Desktop/docs/subtitles/training"
+        self.output_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """Core logic"""
@@ -117,7 +117,7 @@ class TrainingDataGenerator(CLToolBase):
 
         if not isinstance(value, str) and value is not None:
             raise ValueError()
-        else:
+        elif isinstance(value, str):
             value = expandvars(value)
             if not isdir(value):
                 try:
