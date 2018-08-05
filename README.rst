@@ -45,8 +45,8 @@ Installation
 
 ``python setup.py install``
 
-Usage
-=====
+Compositing
+===========
 
 ::
 
