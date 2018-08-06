@@ -35,13 +35,14 @@ class TrainingDataGenerator(CLToolBase):
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/val"
-        self.val_portion = 0.5
+        self.val_portion = 0.1
 
     def __call__(self):
         """Core logic"""
         from matplotlib.pyplot import figure
 
-        def generate_image(char, font_name, font_size, border_width):
+        def generate_image(char, font_name, font_size, border_width,
+                           x_offset, y_offset):
             import numpy as np
             from matplotlib.font_manager import FontProperties
             from matplotlib.patheffects import Stroke, Normal
@@ -52,6 +53,7 @@ class TrainingDataGenerator(CLToolBase):
             else:
                 outfile = f"{self.trn_output_directory}/"
             outfile += f"{char}_{font_size:02d}_{border_width:02d}_" \
+                       f"{x_offset:+d}_{y_offset:+d}_" \
                        f"{font_name.replace(' ', '')}.png"
 
             # Use matplotlib to generate initial image of character
@@ -66,7 +68,7 @@ class TrainingDataGenerator(CLToolBase):
 
             # Reload with pillow to trim, resize, and adjust color
             char_img = trim_image(Image.open(outfile).convert("L"), 0)
-            char_img = resize_image(char_img, (80, 80))
+            char_img = resize_image(char_img, (80, 80), x_offset, y_offset)
             char_img = convert_8bit_grayscale_to_2bit(char_img)
             char_img.save(outfile)
 
@@ -79,16 +81,22 @@ class TrainingDataGenerator(CLToolBase):
         # font_names += ["LiHei Pro"]
         # font_names += ["Kai", "BiauKai"]
         # font_names += ["LiSong Pro", "STFangsong"]
-        font_sizes = [58, 59, 60, 61, 62]
-        border_widths = [3, 4, 5, 6, 7]
+        font_sizes = range(58, 63)
+        border_widths = range(3, 8)
+        offsets = range(-2, 3)
 
         # Loop over combinations
-        for char in self.chars[:21]:
+        for char in self.chars[100:1000]:
+            if self.verbosity >= 1:
+                print(f"Generating data for {char}")
             for font_name in font_names:
                 for font_size in font_sizes:
                     for border_width in border_widths:
-                        generate_image(char, font_name, font_size,
-                                       border_width)
+                        for x_offset in offsets:
+                            for y_offset in offsets:
+                                generate_image(char, font_name, font_size,
+                                               border_width, x_offset,
+                                               y_offset)
 
     # endregion
 

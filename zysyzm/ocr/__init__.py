@@ -79,7 +79,7 @@ def trim_image(image, background_color=None):
         return image.crop(bbox)
 
 
-def resize_image(image, new_size):
+def resize_image(image, new_size, x_offset=0, y_offset=0):
     """
     Resizes an image, keeping current contents centered
 
@@ -96,6 +96,9 @@ def resize_image(image, new_size):
     x = int(np.floor((new_size[0] - image.size[0]) / 2))
     y = int(np.floor((new_size[1] - image.size[1]) / 2))
     new_image = Image.new(image.mode, new_size, image.getpixel((0, 0)))
-    new_image.paste(image, (x, y, x + image.size[0], y + image.size[1]))
+    new_image.paste(image, (x + x_offset,
+                            y + y_offset,
+                            x + image.size[0] + x_offset,
+                            y + image.size[1] + y_offset))
 
     return new_image

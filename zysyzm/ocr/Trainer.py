@@ -32,9 +32,9 @@ class Trainer(CLToolBase):
 
     def __call__(self):
         """Core logic"""
+        import numpy as np
         import tensorflow as tf
         from tensorflow import keras
-        from IPython import embed
 
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
@@ -44,13 +44,14 @@ class Trainer(CLToolBase):
         trn_img, trn_lbl = self.load_data(self.trn_input_directory)
         val_img, val_lbl = self.load_data(self.val_input_directory)
         tst_img, tst_lbl = self.load_data(self.tst_input_directory)
+        n_possible_chars = trn_lbl.max() + 1
 
         # Define model
+        # keras.layers.Flatten(input_shape=(80, 80)),
         model = keras.Sequential([
-            keras.layers.Flatten(input_shape=(80, 80)),
             keras.layers.Dense(128, activation=tf.nn.relu),
             keras.layers.Dense(128, activation=tf.nn.relu),
-            keras.layers.Dense(21, activation=tf.nn.softmax)
+            keras.layers.Dense(n_possible_chars, activation=tf.nn.softmax)
         ])
         model.compile(optimizer=tf.train.AdamOptimizer(),
                       loss='sparse_categorical_crossentropy',
@@ -66,11 +67,22 @@ class Trainer(CLToolBase):
         val_loss, val_acc = model.evaluate(val_img, val_lbl)
         tst_pred = model.predict(tst_img)
         tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
-        print(f"Training    Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}:")
-        print(f"Validation  Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}:")
-        print(f"Test        Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}:")
+        print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
+        print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
+        print(f"Test        Count:{tst_lbl.size:5d} Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}")
+        for i, char in enumerate(self.labels_to_chars(tst_lbl)):
+            tst_poss = np.where(tst_pred[i] > 0.1)[0]
+            tst_poss_char = self.labels_to_chars(tst_poss)
+            if char == tst_poss_char[0] and tst_poss.size == 1:
+                continue
+            tst_poss_char = self.labels_to_chars(tst_poss)
+            tst_poss_prob = np.round(tst_pred[i][tst_poss], 2)
+            print(f"{char} | {' '.join([f'{a}:{b:4.2f}' for a, b in zip(tst_poss_char, tst_poss_prob)])}")
 
-        embed()
+        # Interactive prompt
+        if self.interactive:
+            from IPython import embed
+            embed()
 
     # endregion
 
@@ -156,6 +168,11 @@ class Trainer(CLToolBase):
     # endregion
 
     # region Methods
+    def labels_to_chars(self, labels):
+        import numpy as np
+
+        return np.array([self.chars[i] for i in labels], np.str)
+
     def load_data(self, directory):
         import numpy as np
         from glob import iglob
@@ -165,8 +182,11 @@ class Trainer(CLToolBase):
         imgs, lbls = [], []
         for infile in iglob(f"{directory}/*.png"):
             img = Image.open(infile)
-            imgs += [np.array(img, np.float32) / 255]
-            lbls += [np.argwhere(self.chars == basename(infile)[0])[0]]
+            # imgs += [np.array(img, np.float32) / 255]
+            raw = np.array(img)
+            imgs += [np.append(np.logical_or(raw == 85, raw == 256).flatten(),
+                               np.logical_or(raw == 170, raw == 256).flatten())]
+            lbls += [np.argwhere(self.chars == basename(infile)[0])[0, 0]]
 
         return np.stack(imgs), np.array(lbls, np.int16)
     # endregion

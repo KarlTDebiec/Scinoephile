@@ -159,7 +159,7 @@ class Compositor(CLToolBase):
             self.merged_subtitles = self.merge_chinese_english_2(
                 self.merged_subtitles)
 
-        # Interactive
+        # Interactive prompt
         if self.interactive:
             from IPython import embed
             embed()
