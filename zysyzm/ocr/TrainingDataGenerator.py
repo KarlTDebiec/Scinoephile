@@ -8,12 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm import CLToolBase
-from zysyzm.ocr import convert_8bit_grayscale_to_2bit, resize_image, trim_image
+from zysyzm.ocr import (convert_8bit_grayscale_to_2bit, resize_image,
+                        trim_image, OCRCLToolBase)
 
 
 ################################### CLASSES ###################################
-class TrainingDataGenerator(CLToolBase):
+class TrainingDataGenerator(OCRCLToolBase):
     """Generates data for OCR model training and validation"""
 
     # region Instance Variables
@@ -86,7 +86,7 @@ class TrainingDataGenerator(CLToolBase):
         offsets = range(-2, 3)
 
         # Loop over combinations
-        for char in self.chars[100:1000]:
+        for char in self.chars[:43]:
             if self.verbosity >= 1:
                 print(f"Generating data for {char}")
             for font_name in font_names:
@@ -101,27 +101,6 @@ class TrainingDataGenerator(CLToolBase):
     # endregion
 
     # region Properties
-    @property
-    def chars(self):
-        """pandas.core.frame.DataFrame: Characters"""
-        if not hasattr(self, "_chars"):
-            import numpy as np
-
-            self._chars = np.array(self.char_frequency_table["character"],
-                                   np.str)
-        return self._chars
-
-    @property
-    def char_frequency_table(self):
-        """pandas.core.frame.DataFrame: Character frequency table"""
-        if not hasattr(self, "_char_frequency_table"):
-            import pandas as pd
-
-            self._char_frequency_table = pd.read_csv(
-                f"{self.directory}/data/ocr/characters.txt", sep="\t",
-                names=["character", "frequency", "cumulative frequency"])
-        return self._char_frequency_table
-
     @property
     def n_images(self):
         """int: Number of character images to generate"""

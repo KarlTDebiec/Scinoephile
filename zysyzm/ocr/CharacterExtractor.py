@@ -15,6 +15,7 @@ from zysyzm.ocr import (adjust_2bit_grayscale_palette, resize_image,
 
 ################################### CLASSES ###################################
 class CharacterExtractor(CLToolBase):
+    """Extracts individual characters from image-based subtitles"""
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
                     "image-based subtitles")

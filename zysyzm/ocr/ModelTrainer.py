@@ -8,11 +8,11 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm import CLToolBase
+from zysyzm.ocr import OCRCLToolBase
 
 
 ################################### CLASSES ###################################
-class Trainer(CLToolBase):
+class ModelTrainer(OCRCLToolBase):
     """Trains model"""
 
     # region Instance Variables
@@ -87,27 +87,6 @@ class Trainer(CLToolBase):
     # endregion
 
     # region Properties
-    @property
-    def chars(self):
-        """pandas.core.frame.DataFrame: Characters"""
-        if not hasattr(self, "_chars"):
-            import numpy as np
-
-            self._chars = np.array(self.char_frequency_table["character"],
-                                   np.str)
-        return self._chars
-
-    @property
-    def char_frequency_table(self):
-        """pandas.core.frame.DataFrame: Character frequency table"""
-        if not hasattr(self, "_char_frequency_table"):
-            import pandas as pd
-
-            self._char_frequency_table = pd.read_csv(
-                f"{self.directory}/data/ocr/characters.txt", sep="\t",
-                names=["character", "frequency", "cumulative frequency"])
-        return self._char_frequency_table
-
     @property
     def trn_input_directory(self):
         """str: Path to directory containing training character images"""
@@ -189,9 +168,10 @@ class Trainer(CLToolBase):
             lbls += [np.argwhere(self.chars == basename(infile)[0])[0, 0]]
 
         return np.stack(imgs), np.array(lbls, np.int16)
+
     # endregion
 
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    Trainer.main()
+    ModelTrainer.main()

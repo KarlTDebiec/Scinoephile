@@ -7,6 +7,10 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+################################### MODULES ###################################
+from zysyzm import CLToolBase
+
+
 ################################## FUNCTIONS ##################################
 def convert_8bit_grayscale_to_2bit(image):
     """
@@ -102,3 +106,29 @@ def resize_image(image, new_size, x_offset=0, y_offset=0):
                             y + image.size[1] + y_offset))
 
     return new_image
+
+
+################################### CLASSES ###################################
+class OCRCLToolBase(CLToolBase):
+    # region Properties
+    @property
+    def chars(self):
+        """pandas.core.frame.DataFrame: Characters"""
+        if not hasattr(self, "_chars"):
+            import numpy as np
+
+            self._chars = np.array(self.char_frequency_table["character"],
+                                   np.str)
+        return self._chars
+
+    @property
+    def char_frequency_table(self):
+        """pandas.core.frame.DataFrame: Character frequency table"""
+        if not hasattr(self, "_char_frequency_table"):
+            import pandas as pd
+
+            self._char_frequency_table = pd.read_csv(
+                f"{self.directory}/data/ocr/characters.txt", sep="\t",
+                names=["character", "frequency", "cumulative frequency"])
+        return self._char_frequency_table
+    # endregion
