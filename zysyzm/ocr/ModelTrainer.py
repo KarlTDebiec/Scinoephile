@@ -39,6 +39,7 @@ class ModelTrainer(OCRCLToolBase):
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
+        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
 
         # Load and organize data
         trn_img, trn_lbl = self.load_data(self.trn_input_directory)
@@ -48,9 +49,10 @@ class ModelTrainer(OCRCLToolBase):
 
         # Define model
         # keras.layers.Flatten(input_shape=(80, 80)),
+        # keras.layers.Dense(128, activation=tf.nn.relu),
+        # keras.layers.Dense(128, activation=tf.nn.relu),
         model = keras.Sequential([
-            keras.layers.Dense(128, activation=tf.nn.relu),
-            keras.layers.Dense(128, activation=tf.nn.relu),
+
             keras.layers.Dense(n_possible_chars, activation=tf.nn.softmax)
         ])
         model.compile(optimizer=tf.train.AdamOptimizer(),
@@ -58,7 +60,7 @@ class ModelTrainer(OCRCLToolBase):
                       metrics=['accuracy'])
 
         # Train model
-        model.fit(trn_img, trn_lbl, epochs=10)
+        model.fit(trn_img, trn_lbl, epochs=2)
 
         # Evaluate model
         trn_pred = model.predict(trn_img)
@@ -79,6 +81,10 @@ class ModelTrainer(OCRCLToolBase):
             tst_poss_prob = np.round(tst_pred[i][tst_poss], 2)
             print(f"{char} | {' '.join([f'{a}:{b:4.2f}' for a, b in zip(tst_poss_char, tst_poss_prob)])}")
 
+        # Save model
+        if self.model_outfile is not None:
+            model.save(self.model_outfile)
+
         # Interactive prompt
         if self.interactive:
             from IPython import embed
@@ -87,6 +93,45 @@ class ModelTrainer(OCRCLToolBase):
     # endregion
 
     # region Properties
+    @property
+    def model_infile(self):
+        """str: Path to input model file"""
+        if not hasattr(self, "_model_infile"):
+            self._model_infile = None
+        return self._model_infile
+
+    @model_infile.setter
+    def model_infile(self, value):
+        from os.path import expandvars, isfile
+
+        if not isinstance(value, str) and value is not None:
+            raise ValueError()
+        else:
+            value = expandvars(value)
+            if not isfile(value):
+                raise ValueError()
+        self._model_infile = value
+
+    @property
+    def model_outfile(self):
+        """str: Path to output model file"""
+        if not hasattr(self, "_model_outfile"):
+            self._model_outfile = None
+        return self._model_outfile
+
+    @model_outfile.setter
+    def model_outfile(self, value):
+        from os import access, W_OK
+        from os.path import dirname, expandvars
+
+        if not isinstance(value, str) and value is not None:
+            raise ValueError()
+        else:
+            value = expandvars(value)
+            if not access(dirname(value), W_OK):
+                raise ValueError()
+        self._model_outfile = value
+
     @property
     def trn_input_directory(self):
         """str: Path to directory containing training character images"""

@@ -406,8 +406,6 @@ class Compositor(CLToolBase):
             if not access(dirname(value), W_OK):
                 raise ValueError()
 
-        if not (isinstance(value, str) or value is None):
-            raise ValueError()
         self._outfile = value
 
     @property
