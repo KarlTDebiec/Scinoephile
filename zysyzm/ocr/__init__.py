@@ -110,6 +110,8 @@ def resize_image(image, new_size, x_offset=0, y_offset=0):
 
 ################################### CLASSES ###################################
 class OCRCLToolBase(CLToolBase):
+    """Base for optical character recognition command line tools"""
+
     # region Properties
     @property
     def chars(self):
@@ -131,4 +133,36 @@ class OCRCLToolBase(CLToolBase):
                 f"{self.directory}/data/ocr/characters.txt", sep="\t",
                 names=["character", "frequency", "cumulative frequency"])
         return self._char_frequency_table
+
+    # endregion
+
+    # region Methods
+    def chars_to_labels(self, chars):
+        """
+        Converts collection of characters to character labels
+
+        Args:
+            chars (np.ndarray(U64): characters
+
+        Returns (np.ndarray(int64): labels of provided characters
+        """
+        import numpy as np
+
+        sorter = np.argsort(self.chars)
+        return np.array(
+            sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
+
+    def labels_to_chars(self, labels):
+        """
+        Converts collection of character labels to characters themselves
+
+        Args:
+            labels (np.ndarray(int64): labels
+
+        Returns (np.ndarray(U64): characters of provided labels
+        """
+        import numpy as np
+
+        return np.array([self.chars[i] for i in labels], np.str)
+
     # endregion

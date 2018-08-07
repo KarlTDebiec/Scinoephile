@@ -147,11 +147,6 @@ class ModelTrainer(OCRCLToolBase):
     # endregion
 
     # region Methods
-    def labels_to_chars(self, labels):
-        import numpy as np
-
-        return np.array([self.chars[i] for i in labels], np.str)
-
     def load_data(self, directory):
         import numpy as np
         from glob import iglob
