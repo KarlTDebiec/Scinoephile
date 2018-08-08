@@ -33,20 +33,22 @@ class ModelTrainer(OCRCLToolBase):
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        # self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
 
     def __call__(self):
         """Core logic"""
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
+        from IPython import embed
 
         # Load and organize data
         trn_img, trn_lbl = self.load_data(self.trn_input_directory)
         val_img, val_lbl = self.load_data(self.val_input_directory)
         tst_img, tst_lbl = self.load_data(self.tst_input_directory)
-        self.n_chars = trn_lbl.max() + 1
+        if self.n_chars is None:
+            self.n_chars = trn_lbl.max() + 1
 
         if self.model_infile is not None:
             # Reload model
@@ -87,17 +89,14 @@ class ModelTrainer(OCRCLToolBase):
         print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
         print(f"Test        Count:{tst_lbl.size:5d} Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}")
         for i, char in enumerate(self.labels_to_chars(tst_lbl)):
-            tst_poss = np.where(tst_pred[i] > 0.1)[0]
-            if tst_poss.size == 0:
-                print(f"{char}")
-                continue
-            tst_poss_char = self.labels_to_chars(tst_poss)
-            if char == tst_poss_char[0] and tst_poss.size == 1:
-                continue
-            tst_poss_prob = np.round(tst_pred[i][tst_poss], 2)
-            matches = [f'{a}:{b:4.2f}'
-                       for a, b in zip(tst_poss_char, tst_poss_prob)]
-            print(f"{char} | {' '.join(matches)}")
+            tst_poss_lbls = np.argsort(tst_pred[i])[::-1]
+            tst_poss_chars = self.labels_to_chars(tst_poss_lbls)
+            tst_poss_probs = np.round(tst_pred[i][tst_poss_lbls], 2)
+            if char != tst_poss_chars[0]:
+                matches = [f'{a}:{b:4.2f}'
+                           for a, b in zip(tst_poss_chars[:10],
+                                           tst_poss_probs[:10])]
+                print(f"{char} | {' '.join(matches)}")
 
         # Save model
         if self.model_outfile is not None:
@@ -107,7 +106,6 @@ class ModelTrainer(OCRCLToolBase):
 
         # Interactive prompt
         if self.interactive:
-            from IPython import embed
             embed()
 
     # endregion
