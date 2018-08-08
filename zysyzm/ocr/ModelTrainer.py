@@ -30,37 +30,49 @@ class ModelTrainer(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
+        self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
+        self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
+        # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+
     def __call__(self):
         """Core logic"""
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
 
-        self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
-        self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-
         # Load and organize data
         trn_img, trn_lbl = self.load_data(self.trn_input_directory)
         val_img, val_lbl = self.load_data(self.val_input_directory)
         tst_img, tst_lbl = self.load_data(self.tst_input_directory)
-        n_possible_chars = trn_lbl.max() + 1
+        self.n_chars = trn_lbl.max() + 1
 
-        # Define model
-        # keras.layers.Flatten(input_shape=(80, 80)),
-        # keras.layers.Dense(128, activation=tf.nn.relu),
-        # keras.layers.Dense(128, activation=tf.nn.relu),
-        model = keras.Sequential([
+        if self.model_infile is not None:
+            # Reload model
+            if self.verbosity >= 1:
+                print(f"Loading model from {self.model_infile}")
+            model = keras.models.load_model(self.model_infile)
+            model.compile(optimizer=tf.train.AdamOptimizer(),
+                          loss='sparse_categorical_crossentropy',
+                          metrics=['accuracy'])
 
-            keras.layers.Dense(n_possible_chars, activation=tf.nn.softmax)
-        ])
-        model.compile(optimizer=tf.train.AdamOptimizer(),
-                      loss='sparse_categorical_crossentropy',
-                      metrics=['accuracy'])
+        else:
+            # Define model
+            model = keras.Sequential([
+                keras.layers.Dense(128,
+                                   input_shape=(12800,),
+                                   activation=tf.nn.relu),
+                keras.layers.Dense(self.n_chars,
+                                   activation=tf.nn.softmax)
+            ])
+            model.compile(optimizer=tf.train.AdamOptimizer(),
+                          loss='sparse_categorical_crossentropy',
+                          metrics=['accuracy'])
 
-        # Train model
-        model.fit(trn_img, trn_lbl, epochs=2)
+            # Train model
+            model.fit(trn_img, trn_lbl, epochs=10,
+                      validation_data=(val_img, val_lbl))
 
         # Evaluate model
         trn_pred = model.predict(trn_img)
@@ -69,20 +81,28 @@ class ModelTrainer(OCRCLToolBase):
         val_loss, val_acc = model.evaluate(val_img, val_lbl)
         tst_pred = model.predict(tst_img)
         tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
+
+        # Print Evaluation
         print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
         print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
         print(f"Test        Count:{tst_lbl.size:5d} Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}")
         for i, char in enumerate(self.labels_to_chars(tst_lbl)):
             tst_poss = np.where(tst_pred[i] > 0.1)[0]
+            if tst_poss.size == 0:
+                print(f"{char}")
+                continue
             tst_poss_char = self.labels_to_chars(tst_poss)
             if char == tst_poss_char[0] and tst_poss.size == 1:
                 continue
-            tst_poss_char = self.labels_to_chars(tst_poss)
             tst_poss_prob = np.round(tst_pred[i][tst_poss], 2)
-            print(f"{char} | {' '.join([f'{a}:{b:4.2f}' for a, b in zip(tst_poss_char, tst_poss_prob)])}")
+            matches = [f'{a}:{b:4.2f}'
+                       for a, b in zip(tst_poss_char, tst_poss_prob)]
+            print(f"{char} | {' '.join(matches)}")
 
         # Save model
         if self.model_outfile is not None:
+            if self.verbosity >= 1:
+                print(f"Saving model to {self.model_outfile}")
             model.save(self.model_outfile)
 
         # Interactive prompt
@@ -131,6 +151,24 @@ class ModelTrainer(OCRCLToolBase):
             if not access(dirname(value), W_OK):
                 raise ValueError()
         self._model_outfile = value
+
+    @property
+    def n_chars(self):
+        """int: Number of characters to match against"""
+        if not hasattr(self, "_n_chars"):
+            self._n_chars = 21
+        return self._n_chars
+
+    @n_chars.setter
+    def n_chars(self, value):
+        if not isinstance(value, int) and value is not None:
+            try:
+                value = int(value)
+            except Exception as e:
+                raise ValueError()
+        if value < 1 and value is not None:
+            raise ValueError()
+        self._n_chars = value
 
     @property
     def trn_input_directory(self):
