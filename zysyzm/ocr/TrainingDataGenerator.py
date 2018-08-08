@@ -31,6 +31,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
+        self.n_chars = 152
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \
@@ -86,7 +87,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         offsets = range(-2, 3)
 
         # Loop over combinations
-        for char in self.chars[:43]:
+        for char in self.chars[:self.n_chars]:
             if self.verbosity >= 1:
                 print(f"Generating data for {char}")
             for font_name in font_names:
@@ -101,6 +102,24 @@ class TrainingDataGenerator(OCRCLToolBase):
     # endregion
 
     # region Properties
+    @property
+    def n_chars(self):
+        """int: Number of characters to generate images of"""
+        if not hasattr(self, "_n_chars"):
+            self._n_chars = 21
+        return self._n_chars
+
+    @n_chars.setter
+    def n_chars(self, value):
+        if not isinstance(value, int) and value is not None:
+            try:
+                value = int(value)
+            except Exception as e:
+                raise ValueError()
+        if value < 1 and value is not None:
+            raise ValueError()
+        self._n_chars = value
+
     @property
     def n_images(self):
         """int: Number of character images to generate"""
