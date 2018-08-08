@@ -30,23 +30,24 @@ class TestDataCollector(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.src_input_directory = \
-            "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
-        self.tst_output_suffix = "00"
-        self.skip_chars = "国"
+        # self.src_input_directory = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
+        # self.tst_output_suffix = "00"
+        # self.skip_chars = "国军第此性业政美"
         # self.src_input_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/mcdull_kung_fu_ding_ding_dong"
         # self.tst_output_suffix = "01"
-        # self.skip_chars = "着"
-        # self.src_input_directory = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/mcdull_prince_de_la_bun"
-        # self.tst_output_suffix = "02"
-        # self.skip_chars = "着"
+        # self.skip_chars = "着性政战政"
+        self.src_input_directory = \
+            "/Users/kdebiec/Desktop/docs/subtitles/mcdull_prince_de_la_bun"
+        self.tst_output_suffix = "02"
+        self.skip_chars = "着军"
 
+        self.n_chars = 244
         self.tst_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/tst"
         self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        self.n_chars = 50
+
 
 
     def __call__(self):

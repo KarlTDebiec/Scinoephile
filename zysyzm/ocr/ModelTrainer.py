@@ -33,8 +33,8 @@ class ModelTrainer(OCRCLToolBase):
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        # self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
 
     def __call__(self):
         """Core logic"""
