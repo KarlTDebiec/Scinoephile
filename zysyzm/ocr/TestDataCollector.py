@@ -47,8 +47,7 @@ class TestDataCollector(OCRCLToolBase):
         self.tst_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/tst"
         self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-
-
+        self.match_attempts = 10
 
     def __call__(self):
         """Core logic"""
@@ -84,7 +83,7 @@ class TestDataCollector(OCRCLToolBase):
                     print(f"{tstfile} already exists")
             else:
                 scores = src_pred[:, self.chars_to_labels(char)]
-                for index in np.argsort(scores)[::-1]:
+                for index in np.argsort(scores)[::-1][:self.match_attempts]:
                     if scores[index] < 0.99:
                         continue
                     print(f"{char} {index:5d} {scores[index]:4.2f}" \
@@ -106,6 +105,27 @@ class TestDataCollector(OCRCLToolBase):
     # endregion
 
     # region Properties
+
+
+    @property
+    def match_attempts(self):
+        """int: Number of matches to show before moving on to next character"""
+        if not hasattr(self, "_n_chars"):
+            self._match_attempts = 10
+        return self._match_attempts
+
+    @match_attempts.setter
+    def match_attempts(self, value):
+        if not isinstance(value, int) and value is not None:
+            try:
+                value = int(value)
+            except Exception as e:
+                raise ValueError()
+        if value < 1 and value is not None:
+            raise ValueError()
+        self._match_attempts = value
+
+
     @property
     def model_infile(self):
         """str: Path to input model file"""
