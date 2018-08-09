@@ -31,7 +31,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 383
+        self.n_chars = 400
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \
@@ -48,16 +48,26 @@ class TrainingDataGenerator(OCRCLToolBase):
             from matplotlib.font_manager import FontProperties
             from matplotlib.patheffects import Stroke, Normal
             from PIL import Image
+            from os.path import isfile
 
+            outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
+                      f"{x_offset:+d}_{y_offset:+d}_" \
+                      f"{font_name.replace(' ', '')}.png"
+            if (isfile(f"{self.val_output_directory}/{outfile}")
+                    or isfile(f"{self.trn_output_directory}/{outfile}")):
+                return
             if np.random.rand() < self.val_portion:
-                outfile = f"{self.val_output_directory}/"
+                outfile = f"{self.val_output_directory}/{outfile}"
             else:
-                outfile = f"{self.trn_output_directory}/"
-            outfile += f"{char}_{font_size:02d}_{border_width:02d}_" \
-                       f"{x_offset:+d}_{y_offset:+d}_" \
-                       f"{font_name.replace(' ', '')}.png"
+                outfile = f"{self.trn_output_directory}/{outfile}"
 
             # Use matplotlib to generate initial image of character
+            #   Note that the image is written a file here, rather than
+            #   being rendered into an array or similar. This two-step
+            #   method yields anti-aliasing between the inner gray of the
+            #   character and its black outline, but not between the
+            #   black outline and the outer white. I haven't found an
+            #   in-memory workflow that achieves this style.
             fig.clear()
             font = FontProperties(family=font_name, size=font_size)
             text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
@@ -76,7 +86,7 @@ class TrainingDataGenerator(OCRCLToolBase):
             if self.verbosity >= 2:
                 print(f"Wrote '{outfile}'")
 
-        fig = figure(figsize=(1, 1))  # Make on figure and reuse it
+        fig = figure(figsize=(1.0, 1.0), dpi=80)
 
         font_names = ["Hei", "STHeiti"]
         # font_names += ["LiHei Pro"]
@@ -87,7 +97,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         offsets = range(-2, 3)
 
         # Loop over combinations
-        for char in self.chars[:self.n_chars]:
+        for char in self.chars[145:self.n_chars]:
             if self.verbosity >= 1:
                 print(f"Generating data for {char}")
             for font_name in font_names:
@@ -119,24 +129,6 @@ class TrainingDataGenerator(OCRCLToolBase):
         if value < 1 and value is not None:
             raise ValueError()
         self._n_chars = value
-
-    @property
-    def n_images(self):
-        """int: Number of character images to generate"""
-        if not hasattr(self, "_n_images"):
-            self._n_images = 1000
-        return self._n_images
-
-    @n_images.setter
-    def n_images(self, value):
-        if not isinstance(value, int) and value is not None:
-            try:
-                value = int(value)
-            except Exception as e:
-                raise ValueError()
-        if value < 1 and value is not None:
-            raise ValueError()
-        self._n_images = value
 
     @property
     def trn_output_directory(self):
