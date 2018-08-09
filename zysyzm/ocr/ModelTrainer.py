@@ -154,7 +154,7 @@ class ModelTrainer(OCRCLToolBase):
     def n_chars(self):
         """int: Number of characters to match against"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 21
+            self._n_chars = None
         return self._n_chars
 
     @n_chars.setter
@@ -233,17 +233,47 @@ class ModelTrainer(OCRCLToolBase):
         from glob import iglob
         from PIL import Image
         from os.path import basename
+        from os.path import isfile
 
+        if self.verbosity >= 1:
+            print(f"Loading images and labels from '{directory}'")
+        infiles = sorted(iglob(f"{directory}/*.png"))
         imgs, lbls = [], []
-        for infile in iglob(f"{directory}/*.png"):
-            img = Image.open(infile)
-            # imgs += [np.array(img, np.float32) / 255]
-            raw = np.array(img)
-            imgs += [np.append(np.logical_or(raw == 85, raw == 256).flatten(),
-                               np.logical_or(raw == 170, raw == 256).flatten())]
-            lbls += [np.argwhere(self.chars == basename(infile)[0])[0, 0]]
 
-        return np.stack(imgs), np.array(lbls, np.int16)
+        # Check for cache of previously-loaded image data
+        img_cache_file = f"{directory}/img_cache_2bitgrayscale.npy"
+        lbl_cache_file = f"{directory}/lbl_cache_2bitgrayscale.npy"
+        if isfile(img_cache_file) and isfile(lbl_cache_file):
+            if self.verbosity >= 1:
+                print(f"Loading image and label cache from '{img_cache_file} "
+                      f"and '{lbl_cache_file}")
+            imgs = np.load(img_cache_file)
+            lbls = np.load(lbl_cache_file)
+            if lbls.size == len(infiles):
+                return imgs, lbls
+            else:
+                print(f"More image files present on disk than in cache, "
+                      "reloading")
+
+        # Load and organize image files
+        for infile in infiles:
+            img = Image.open(infile)
+            raw = np.array(img)
+            imgs += [np.append(
+                np.logical_or(raw == 85, raw == 256).flatten(),
+                np.logical_or(raw == 170, raw == 256).flatten())]
+            lbls += [np.argwhere(self.chars == basename(infile)[0])[0, 0]]
+        imgs = np.stack(imgs)
+        lbls = np.array(lbls, np.int16)
+
+        # Write Cache files
+        if self.verbosity >= 1:
+            print(f"Saving image and label cache to '{img_cache_file} "
+                  f"and '{lbl_cache_file}")
+        np.save(img_cache_file, imgs)
+        np.save(lbl_cache_file, lbls)
+
+        return imgs, lbls
 
     # endregion
 
