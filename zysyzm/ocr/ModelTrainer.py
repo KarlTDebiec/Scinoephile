@@ -30,11 +30,12 @@ class ModelTrainer(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
+        # self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        # self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        # self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.n_chars = 600
 
     def __call__(self):
         """Core logic"""
@@ -44,9 +45,10 @@ class ModelTrainer(OCRCLToolBase):
         from IPython import embed
 
         # Load and organize data
-        trn_img, trn_lbl = self.load_data(self.trn_input_directory)
-        val_img, val_lbl = self.load_data(self.val_input_directory)
+        # trn_img, trn_lbl = self.load_data(self.trn_input_directory)
+        # val_img, val_lbl = self.load_data(self.val_input_directory)
         tst_img, tst_lbl = self.load_data(self.tst_input_directory)
+        embed()
         if self.n_chars is None:
             self.n_chars = trn_lbl.max() + 1
 
@@ -58,7 +60,6 @@ class ModelTrainer(OCRCLToolBase):
             model.compile(optimizer=tf.train.AdamOptimizer(),
                           loss='sparse_categorical_crossentropy',
                           metrics=['accuracy'])
-
         else:
             # Define model
             model = keras.Sequential([
@@ -77,16 +78,16 @@ class ModelTrainer(OCRCLToolBase):
                       validation_data=(val_img, val_lbl))
 
         # Evaluate model
-        trn_pred = model.predict(trn_img)
-        trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
-        val_pred = model.predict(tst_img)
-        val_loss, val_acc = model.evaluate(val_img, val_lbl)
+        # trn_pred = model.predict(trn_img)
+        # trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
+        # val_pred = model.predict(tst_img)
+        # val_loss, val_acc = model.evaluate(val_img, val_lbl)
         tst_pred = model.predict(tst_img)
         tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
 
         # Print Evaluation
-        print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
-        print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
+        # print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
+        # print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
         print(f"Test        Count:{tst_lbl.size:5d} Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}")
         for i, char in enumerate(self.labels_to_chars(tst_lbl)):
             tst_poss_lbls = np.argsort(tst_pred[i])[::-1]
@@ -190,7 +191,7 @@ class ModelTrainer(OCRCLToolBase):
     @property
     def tst_input_directory(self):
         """str: Path to directory containing test character images"""
-        if not hasattr(self, "_trn_input_directory"):
+        if not hasattr(self, "_tst_input_directory"):
             self._tst_input_directory = None
         return self._tst_input_directory
 
@@ -234,6 +235,7 @@ class ModelTrainer(OCRCLToolBase):
         from PIL import Image
         from os.path import basename
         from os.path import isfile
+        from os import remove
 
         if self.verbosity >= 1:
             print(f"Loading images and labels from '{directory}'")
@@ -254,6 +256,7 @@ class ModelTrainer(OCRCLToolBase):
             else:
                 print(f"More image files present on disk than in cache, "
                       "reloading")
+                imgs, lbls = [], []
 
         # Load and organize image files
         for infile in infiles:
@@ -270,7 +273,11 @@ class ModelTrainer(OCRCLToolBase):
         if self.verbosity >= 1:
             print(f"Saving image and label cache to '{img_cache_file} "
                   f"and '{lbl_cache_file}")
+        if isfile(img_cache_file):
+            remove(img_cache_file)
         np.save(img_cache_file, imgs)
+        if isfile(lbl_cache_file):
+            remove(lbl_cache_file)
         np.save(lbl_cache_file, lbls)
 
         return imgs, lbls
