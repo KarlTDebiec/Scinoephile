@@ -12,6 +12,30 @@ from zysyzm import CLToolBase
 
 
 ################################## FUNCTIONS ##################################
+def adjust_2bit_grayscale_palette(image):
+    """
+    Sets palette of a four-color grayscale image to [0, 85, 170, 255]
+
+    Args:
+        image(PIL.Image.Image): 4-color grayscale source image
+
+    Returns (PIL.Image.Image): image with [0, 85, 170, 255] palette
+
+    """
+    import numpy as np
+    from PIL import Image
+
+    raw = np.array(image)
+    input_shades = np.where(np.bincount(raw.flatten()) != 0)[0]
+    output_shades = [0, 85, 170, 255]
+
+    for input_shade, output_shade in zip(input_shades, output_shades):
+        raw[raw == input_shade] = output_shade
+
+    image = Image.fromarray(raw, mode=image.mode)
+    return image
+
+
 def convert_8bit_grayscale_to_2bit(image):
     """
     Sets palette of a four-color grayscale image to [0, 85, 170, 255]
@@ -35,28 +59,80 @@ def convert_8bit_grayscale_to_2bit(image):
     return image
 
 
-def adjust_2bit_grayscale_palette(image):
+def draw_text_on_image(image, text, x=0, y=0, font="Arial.ttf", size=30):
     """
-    Sets palette of a four-color grayscale image to [0, 85, 170, 255]
+    Draws text on an image
 
     Args:
-        image(PIL.Image.Image): 4-color grayscale source image
-
-    Returns (PIL.Image.Image): image with [0, 85, 170, 255] palette
+        image (PIL.Image.Image): image on which to draw text
+        text (str): text to draw
+        x (int, optional): x position at which to center text
+        y (int, optional): x position at which to center text
+        font (str, optional): font with which to draw text
+        size (int, optional): font size with which to draw text
 
     """
-    import numpy as np
+    from PIL import ImageDraw, ImageFont
+
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(font, size)
+    width, height = draw.textsize(text, font=font)
+    draw.text((x - width / 2, y - height / 2), text, font=font)
+
+
+def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
+                        border_width=5, x_offset=0, y_offset=0,
+                        tmpfile="/tmp/zysyzm.png"):
+    """
+    Generates an image of a character
+
+    Note that the image is written a file here, rather than being rendered
+    into an array or similar. This two-step method yields anti-aliasing
+    between the inner gray of the character and its black outline, but not
+    between the black outline and the outer white. I haven't found an
+    in-memory workflow that achieves this style.
+
+    Args:
+        char (str): character to generate an image of
+        fig (matplotlib.figure.Figure, optional): figure on  which to draw
+          character
+        font_name (str, optional): font with which to draw character
+        font_size (int, optional): font size with which to draw character
+        border_width (int, optional: border width with which to draw character
+        x_offset (int, optional): x offset to apply to character
+        y_offset (int, optional: y offset to apply to character
+
+    Returns:
+
+    """
+    from os import remove
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
 
-    raw = np.array(image)
-    input_shades = np.where(np.bincount(raw.flatten()) != 0)[0]
-    output_shades = [0, 85, 170, 255]
+    # Use matplotlib to generate initial image of character
+    if fig is None:
+        from matplotlib.pyplot import figure
 
-    for input_shade, output_shade in zip(input_shades, output_shades):
-        raw[raw == input_shade] = output_shade
+        fig = figure(figsize=(1.0, 1.0), dpi=80)
+    else:
+        fig.clear()
 
-    image = Image.fromarray(raw, mode=image.mode)
-    return image
+    # Draw image with matplotlib
+    font = FontProperties(family=font_name, size=font_size)
+    text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
+                    fontproperties=font, color=(0.67, 0.67, 0.67))
+    text.set_path_effects([Stroke(linewidth=border_width,
+                                  foreground=(0.00, 0.00, 0.00)),
+                           Normal()])
+    fig.savefig(tmpfile, dpi=80, transparent=True)
+
+    # Reload with pillow to trim, resize, and adjust color
+    img = trim_image(Image.open(tmpfile).convert("L"), 0)
+    img = resize_image(img, (80, 80), x_offset, y_offset)
+    remove(tmpfile)
+
+    return img
 
 
 def trim_image(image, background_color=None):

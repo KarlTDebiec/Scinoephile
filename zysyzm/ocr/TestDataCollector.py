@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRCLToolBase
+from zysyzm.ocr import OCRCLToolBase, draw_text_on_image, generate_char_image
 
 
 ################################### CLASSES ###################################
@@ -33,21 +33,22 @@ class TestDataCollector(OCRCLToolBase):
         # self.src_input_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
         # self.tst_output_suffix = "00"
-        # self.skip_chars = "国军第此性业政美"
+        # self.skip_chars = ""
         # self.src_input_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/mcdull_kung_fu_ding_ding_dong"
         # self.tst_output_suffix = "01"
-        # self.skip_chars = "着性政战政"
+        # self.skip_chars = ""
         self.src_input_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/mcdull_prince_de_la_bun"
         self.tst_output_suffix = "02"
-        self.skip_chars = "着军"
+        self.skip_chars = ""
 
-        self.n_chars = 244
+        self.n_chars = 600
         self.tst_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/tst"
         self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        self.match_attempts = 10
+        self.n_matches = 10
+        self.min_weight = 0.9
 
     def __call__(self):
         """Core logic"""
@@ -68,54 +69,104 @@ class TestDataCollector(OCRCLToolBase):
                           metrics=['accuracy'])
 
         # Make predictions for source images
-        src_img, src_infiles = self.load_unlabeled_data(self.src_input_directory)
-
+        src_img, src_infiles = self.load_unlabeled_data(
+            self.src_input_directory)
         src_pred = model.predict(src_img)
 
+        # Gather missing test images
         for char in self.chars[:self.n_chars]:
             tstfile = f"{self.tst_output_directory}/" \
                       f"{char}_{self.tst_output_suffix}.png"
             if char in self.skip_chars:
                 if self.verbosity >= 1:
                     print(f"skipping {char}")
+                continue
             elif isfile(tstfile):
                 if self.verbosity >= 1:
-                    print(f"{tstfile} already exists")
-            else:
-                scores = src_pred[:, self.chars_to_labels(char)]
-                for index in np.argsort(scores)[::-1][:self.match_attempts]:
-                    if scores[index] < 0.99:
+                    print(f"'{tstfile}' already exists")
+                continue
+
+            # Identify matches
+            scores = src_pred[:, self.chars_to_labels(char)]
+            match_indexes = np.argsort(scores)[::-1][:self.n_matches]
+            match_indexes = match_indexes[
+                scores[match_indexes] > self.min_weight]
+            if match_indexes.size == 0:
+                if self.verbosity >= 1:
+                    print(f"No matches found for {char}"
+                          f"above minimum weight {self.min_weight}")
+                continue
+
+            # Generate image prompt
+            image = Image.new("L", (match_indexes.size * 100, 300), 255)
+            char_image = generate_char_image(char)
+            image.paste(char_image, (10, 10, 90, 90))
+            for i, index in enumerate(match_indexes):
+                match_image = Image.open(src_infiles[index])
+                image.paste(match_image, (10 + 100 * i, 110,
+                                          90 + 100 * i, 190))
+                draw_text_on_image(image, f"{int(scores[index]*100):2d}%",
+                                   50 + 100 * i, 220)
+                draw_text_on_image(image, str(i),
+                                   50 + 100 * i, 270)
+
+            # Prompt user for match
+            image.show()
+            while True:
+                match = input(f"Enter index of image matching {char}, "
+                              "or Enter to continue:")
+                if match == "":
+                    break
+                else:
+                    try:
+                        if int(match) <= i:
+                            infile = src_infiles[match_indexes[int(match)]]
+                            if self.verbosity >= 1:
+                                print(f"copying '{infile}' to '{tstfile}'")
+                            copyfile(infile, tstfile)
+                            break
+                    except ValueError as e:
+                        print(e)
                         continue
-                    print(f"{char} {index:5d} {scores[index]:4.2f}" \
-                          f"{src_infiles[index]}")
-                    image = Image.open(src_infiles[index])
-                    image.show()
-                    match = input(f"Is this an image of {char}?")
-                    if match.lower().startswith("y"):
-                        if self.verbosity >= 1:
-                            print(f"copying {src_infiles[index]} to {tstfile}")
-                        copyfile(src_infiles[index], tstfile)
-                        break
 
         # Interactive prompt
         if self.interactive:
             from IPython import embed
+
             embed()
 
     # endregion
 
     # region Properties
+    @property
+    def min_weight(self):
+        """float: Minimum weight of matches to propose"""
+        if not hasattr(self, "_min_weight"):
+            self._min_weight = 0
+        return self._min_weight
 
+    @min_weight.setter
+    def min_weight(self, value):
+        if value is None:
+            value = 0
+        elif not isinstance(value, float):
+            try:
+                value = float(value)
+            except Exception as e:
+                raise ValueError()
+        if not 0 <= value <= 1:
+            raise ValueError()
+        self._min_weight = value
 
     @property
-    def match_attempts(self):
-        """int: Number of matches to show before moving on to next character"""
-        if not hasattr(self, "_n_chars"):
-            self._match_attempts = 10
-        return self._match_attempts
+    def n_matches(self):
+        """int: Maximum number of matches to propose"""
+        if not hasattr(self, "_n_matches"):
+            self._n_matches = 10
+        return self._n_matches
 
-    @match_attempts.setter
-    def match_attempts(self, value):
+    @n_matches.setter
+    def n_matches(self, value):
         if not isinstance(value, int) and value is not None:
             try:
                 value = int(value)
@@ -123,8 +174,7 @@ class TestDataCollector(OCRCLToolBase):
                 raise ValueError()
         if value < 1 and value is not None:
             raise ValueError()
-        self._match_attempts = value
-
+        self._n_matches = value
 
     @property
     def model_infile(self):
@@ -238,18 +288,31 @@ class TestDataCollector(OCRCLToolBase):
 
     # region Methods
     def load_unlabeled_data(self, directory):
+        """
+
+        Todo:
+          - Implement caching
+
+        Args:
+            directory (str): Directory from which to load image infiles
+
+        Returns (np.array(bool), list(str)): Images in 2-bit grayscale, infile
+          paths
+
+        """
         import numpy as np
         from glob import iglob
         from PIL import Image
-        from os.path import basename
 
         infiles = sorted(iglob(f"{directory}/*/[0-9][0-9].png"))
         imgs = []
         for infile in infiles:
             img = Image.open(infile)
             raw = np.array(img)
-            imgs += [np.append(np.logical_or(raw == 85, raw == 256).flatten(),
-                               np.logical_or(raw == 170, raw == 256).flatten())]
+            imgs += [np.append(np.logical_or(raw == 85,
+                                             raw == 256).flatten(),
+                               np.logical_or(raw == 170,
+                                             raw == 256).flatten())]
         return np.stack(imgs), infiles
 
     # endregion
