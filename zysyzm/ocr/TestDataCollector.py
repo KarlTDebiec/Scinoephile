@@ -13,7 +13,14 @@ from zysyzm.ocr import OCRCLToolBase, draw_text_on_image, generate_char_image
 
 ################################### CLASSES ###################################
 class TestDataCollector(OCRCLToolBase):
-    """Collects test data based on interim model"""
+    """
+    Collects test data based on interim model
+
+    Todo:
+      - Implement CL arguments
+      - Decide whether or not to move load_unlabeled_data out of class
+      - Move logic out of __call__
+    """
 
     # region Instance Variables
     help_message = ("Tool for collecting test data based on interim model")
@@ -33,17 +40,14 @@ class TestDataCollector(OCRCLToolBase):
         # self.src_input_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
         # self.tst_output_suffix = "00"
-        # self.skip_chars = ""
         # self.src_input_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/mcdull_kung_fu_ding_ding_dong"
         # self.tst_output_suffix = "01"
-        # self.skip_chars = ""
         self.src_input_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/mcdull_prince_de_la_bun"
         self.tst_output_suffix = "02"
-        self.skip_chars = ""
 
-        self.n_chars = 600
+        self.n_chars = 1000
         self.tst_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/tst"
         self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"

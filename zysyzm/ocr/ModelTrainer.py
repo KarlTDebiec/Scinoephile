@@ -13,7 +13,15 @@ from zysyzm.ocr import OCRCLToolBase
 
 ################################### CLASSES ###################################
 class ModelTrainer(OCRCLToolBase):
-    """Trains model"""
+    """
+    Trains model
+
+    Todo:
+      - CL arguments
+      - Support for western characters and punctuation
+      - Look into whether or not more data can be stored in hdf5 with model
+      - Decide whether or not to move load_labeled_data out of class
+    """
 
     # region Instance Variables
     help_message = ("Tool for training model")
@@ -30,12 +38,12 @@ class ModelTrainer(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        # self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        # self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
+        self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        # self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
-        self.n_chars = 600
+        # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
+        self.n_chars = 1000
 
     def __call__(self):
         """Core logic"""
@@ -45,10 +53,10 @@ class ModelTrainer(OCRCLToolBase):
         from IPython import embed
 
         # Load and organize data
-        # trn_img, trn_lbl = self.load_data(self.trn_input_directory)
-        # val_img, val_lbl = self.load_data(self.val_input_directory)
-        tst_img, tst_lbl = self.load_data(self.tst_input_directory)
-        embed()
+        trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)
+        val_img, val_lbl = self.load_labeled_data(self.val_input_directory)
+        tst_img, tst_lbl = self.load_labeled_data(self.tst_input_directory)
+
         if self.n_chars is None:
             self.n_chars = trn_lbl.max() + 1
 
@@ -63,7 +71,7 @@ class ModelTrainer(OCRCLToolBase):
         else:
             # Define model
             model = keras.Sequential([
-                keras.layers.Dense(128,
+                keras.layers.Dense(256,
                                    input_shape=(12800,),
                                    activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
@@ -78,16 +86,16 @@ class ModelTrainer(OCRCLToolBase):
                       validation_data=(val_img, val_lbl))
 
         # Evaluate model
-        # trn_pred = model.predict(trn_img)
-        # trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
-        # val_pred = model.predict(tst_img)
-        # val_loss, val_acc = model.evaluate(val_img, val_lbl)
+        trn_pred = model.predict(trn_img)
+        trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
+        val_pred = model.predict(tst_img)
+        val_loss, val_acc = model.evaluate(val_img, val_lbl)
         tst_pred = model.predict(tst_img)
         tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
 
         # Print Evaluation
-        # print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
-        # print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
+        print(f"Training    Count:{trn_lbl.size:5d} Loss:{trn_loss:7.5f} Accuracy:{trn_acc:7.5f}")
+        print(f"Validation  Count:{val_lbl.size:5d} Loss:{val_loss:7.5f} Accuracy:{val_acc:7.5f}")
         print(f"Test        Count:{tst_lbl.size:5d} Loss:{tst_loss:7.5f} Accuracy:{tst_acc:7.5f}")
         for i, char in enumerate(self.labels_to_chars(tst_lbl)):
             tst_poss_lbls = np.argsort(tst_pred[i])[::-1]
@@ -229,7 +237,7 @@ class ModelTrainer(OCRCLToolBase):
     # endregion
 
     # region Methods
-    def load_data(self, directory):
+    def load_labeled_data(self, directory):
         import numpy as np
         from glob import iglob
         from PIL import Image
