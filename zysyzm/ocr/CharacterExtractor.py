@@ -15,7 +15,15 @@ from zysyzm.ocr import (adjust_2bit_grayscale_palette, resize_image,
 
 ################################### CLASSES ###################################
 class CharacterExtractor(CLToolBase):
-    """Extracts individual characters from image-based subtitles"""
+    """
+    Extracts individual characters from image-based subtitles
+
+    Todo:
+      - Add threshold as a property and CL argument
+      - Split off methods from __call__
+      - Improve support for punctuation and western characters
+      - Consider supporting output directly to hdf5
+    """
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
                     "image-based subtitles")
