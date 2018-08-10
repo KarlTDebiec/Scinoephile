@@ -7,6 +7,19 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+"""
+Todo:
+  - Decide whether or not to move load_labeled_data and load_unlabeled_data
+    to separate functions
+  - Move caching from .npy format to hdf5, with information about generation
+    stored alongside the data
+  - Try relocating temporary image file from /tmp/ to io.Bytes
+  - Choose and implement inheritance pattern
+  - Implement central executable that reaches out to other classes
+  - Once data is moved into hdf5, consider CLTool for browse images
+  - Implement support for treating images as float, 8-bit grayscale,
+    2-bit grayscale, or 1-bit black and white
+"""
 ################################### MODULES ###################################
 from zysyzm import CLToolBase
 
@@ -101,8 +114,10 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
         border_width (int, optional: border width with which to draw character
         x_offset (int, optional): x offset to apply to character
         y_offset (int, optional: y offset to apply to character
+        tmpfile (str, option): path at which to write temporary image from
+          matplotlib
 
-    Returns:
+    Returns (PIL.Image.Image): Image of character
 
     """
     from os import remove
@@ -130,6 +145,7 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
     # Reload with pillow to trim, resize, and adjust color
     img = trim_image(Image.open(tmpfile).convert("L"), 0)
     img = resize_image(img, (80, 80), x_offset, y_offset)
+    img = convert_8bit_grayscale_to_2bit(img)
     remove(tmpfile)
 
     return img
@@ -137,7 +153,7 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
 
 def trim_image(image, background_color=None):
     """
-    Trims outer rows and columns of an image based on background color
+    Trims whitespace around an image
 
     Args:
         image (PIL.Image.Image): source image

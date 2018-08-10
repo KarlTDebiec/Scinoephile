@@ -8,13 +8,18 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import (convert_8bit_grayscale_to_2bit, resize_image,
-                        trim_image, OCRCLToolBase)
+from zysyzm.ocr import OCRCLToolBase
 
 
 ################################### CLASSES ###################################
 class TrainingDataGenerator(OCRCLToolBase):
-    """Generates data for OCR model training and validation"""
+    """
+    Generates data for OCR model training and validation
+
+    Todo:
+      - CL arguments
+      - Output directly to hdf5
+    """
 
     # region Instance Variables
     help_message = ("Tool for generating training data")
@@ -31,7 +36,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 400
+        self.n_chars = 1000
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \
@@ -42,72 +47,30 @@ class TrainingDataGenerator(OCRCLToolBase):
         """Core logic"""
         from matplotlib.pyplot import figure
 
-        def generate_image(char, font_name, font_size, border_width,
-                           x_offset, y_offset):
-            import numpy as np
-            from matplotlib.font_manager import FontProperties
-            from matplotlib.patheffects import Stroke, Normal
-            from PIL import Image
-            from os.path import isfile
-
-            outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
-                      f"{x_offset:+d}_{y_offset:+d}_" \
-                      f"{font_name.replace(' ', '')}.png"
-            if (isfile(f"{self.val_output_directory}/{outfile}")
-                    or isfile(f"{self.trn_output_directory}/{outfile}")):
-                return
-            if np.random.rand() < self.val_portion:
-                outfile = f"{self.val_output_directory}/{outfile}"
-            else:
-                outfile = f"{self.trn_output_directory}/{outfile}"
-
-            # Use matplotlib to generate initial image of character
-            #   Note that the image is written a file here, rather than
-            #   being rendered into an array or similar. This two-step
-            #   method yields anti-aliasing between the inner gray of the
-            #   character and its black outline, but not between the
-            #   black outline and the outer white. I haven't found an
-            #   in-memory workflow that achieves this style.
-            fig.clear()
-            font = FontProperties(family=font_name, size=font_size)
-            text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
-                            fontproperties=font, color=(0.67, 0.67, 0.67))
-            text.set_path_effects([Stroke(linewidth=border_width,
-                                          foreground=(0.00, 0.00, 0.00)),
-                                   Normal()])
-            fig.savefig(outfile, dpi=80, transparent=True)
-
-            # Reload with pillow to trim, resize, and adjust color
-            char_img = trim_image(Image.open(outfile).convert("L"), 0)
-            char_img = resize_image(char_img, (80, 80), x_offset, y_offset)
-            char_img = convert_8bit_grayscale_to_2bit(char_img)
-            char_img.save(outfile)
-
-            if self.verbosity >= 2:
-                print(f"Wrote '{outfile}'")
-
         fig = figure(figsize=(1.0, 1.0), dpi=80)
 
         font_names = ["Hei", "STHeiti"]
         # font_names += ["LiHei Pro"]
         # font_names += ["Kai", "BiauKai"]
         # font_names += ["LiSong Pro", "STFangsong"]
-        font_sizes = range(58, 63)
-        border_widths = range(3, 8)
-        offsets = range(-2, 3)
+        font_sizes = [58, 59, 60, 61, 62]
+        border_widths = [3, 4, 5, 6, 7]
+        offsets = [-2, -1, 0, 1, 2]
 
         # Loop over combinations
-        for char in self.chars[145:self.n_chars]:
+        for i, char in enumerate(self.chars[:self.n_chars]):
             if self.verbosity >= 1:
-                print(f"Generating data for {char}")
+                print(f"{i / self.n_chars * 100:4.2f}% complete, "
+                      f"generating data for {char}")
             for font_name in font_names:
                 for font_size in font_sizes:
                     for border_width in border_widths:
                         for x_offset in offsets:
                             for y_offset in offsets:
-                                generate_image(char, font_name, font_size,
-                                               border_width, x_offset,
-                                               y_offset)
+                                self.output_char_image(char, font_name,
+                                                       font_size, border_width,
+                                                       x_offset, y_offset,
+                                                       fig=fig)
 
     # endregion
 
@@ -196,6 +159,50 @@ class TrainingDataGenerator(OCRCLToolBase):
             raise ValueError()
         self._val_portion = value
 
+    # endregion
+
+    # region methods
+    def output_char_image(self, char, font_name="Hei", font_size=60,
+                          border_width=5, x_offset=0, y_offset=0, **kwargs):
+        """
+        Outputs an image of a character, if output image does not exist
+
+        Args:
+            char (str): character to generate an image of
+            font_name (str, optional): font with which to draw character
+            font_size (int, optional): font size with which to draw character
+            border_width (int, optional: border width with which to draw
+              character
+            x_offset (int, optional): x offset to apply to character
+            y_offset (int, optional: y offset to apply to character
+            **kwargs (dict):
+
+        """
+        import numpy as np
+        from os.path import isfile
+        from zysyzm.ocr import generate_char_image
+
+        # Check if outfile exists, and if not choose output location
+        outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
+                  f"{x_offset:+d}_{y_offset:+d}_" \
+                  f"{font_name.replace(' ', '')}.png"
+        if isfile(f"{self.val_output_directory}/{outfile}"):
+            return
+        elif isfile(f"{self.trn_output_directory}/{outfile}"):
+            return
+        elif np.random.rand() < self.val_portion:
+            outfile = f"{self.val_output_directory}/{outfile}"
+        else:
+            outfile = f"{self.trn_output_directory}/{outfile}"
+
+        # Generate image
+        img = generate_char_image(char, font_name=font_name,
+                                  font_size=font_size,
+                                  border_width=border_width, x_offset=x_offset,
+                                  y_offset=y_offset, **kwargs)
+        img.save(outfile)
+        if self.verbosity >= 2:
+            print(f"Wrote '{outfile}'")
     # endregion
 
 
