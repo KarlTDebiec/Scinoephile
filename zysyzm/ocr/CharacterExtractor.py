@@ -24,6 +24,7 @@ class CharacterExtractor(CLToolBase):
       - Improve support for punctuation and western characters
       - Consider supporting output directly to hdf5
     """
+
     # region Instance Variables
     help_message = ("Tool for extracting individual characters from"
                     "image-based subtitles")
@@ -255,6 +256,7 @@ class CharacterExtractor(CLToolBase):
                                 help="path to output directory")
 
         return parser
+
     # endregion
 
 
