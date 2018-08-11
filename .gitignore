@@ -8,3 +8,4 @@ dist
 src
 zysyzm.egg-info
 Makefile
+test.sh
