@@ -234,15 +234,20 @@ class OCRCLToolBase(CLToolBase):
         Converts collection of characters to character labels
 
         Args:
-            chars (np.ndarray(U64): characters
+            chars (np.ndarray(U64), str): characters
 
         Returns (np.ndarray(int64): labels of provided characters
         """
         import numpy as np
 
-        sorter = np.argsort(self.chars)
-        return np.array(
-            sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
+        if isinstance(chars, np.ndarray):
+            sorter = np.argsort(self.chars)
+            return np.array(
+                sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
+        elif isinstance(chars, str):
+            return np.argwhere(self.chars == chars[0])[0, 0]
+        else:
+            raise ValueError()
 
     def labels_to_chars(self, labels):
         """
@@ -255,6 +260,11 @@ class OCRCLToolBase(CLToolBase):
         """
         import numpy as np
 
-        return np.array([self.chars[i] for i in labels], np.str)
+        if isinstance(labels, np.ndarray):
+            return np.array([self.chars[i] for i in labels], np.str)
+        elif isinstance(labels, int):
+            return self.chars[labels]
+        else:
+            raise ValueError()
 
     # endregion
