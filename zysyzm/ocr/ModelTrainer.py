@@ -17,7 +17,6 @@ class ModelTrainer(OCRCLToolBase):
     Trains model
 
     Todo:
-      - CL arguments
       - Validate CL arguments
       - Support western characters and punctuation
       - Look into if information needed to 'compile'  can be stored in hdf5
@@ -31,8 +30,8 @@ class ModelTrainer(OCRCLToolBase):
     # endregion
 
     # region Builtins
-    def __init__(self, model_infile, trn_infile, tst_infile, n_chars,
-                 shape, batch_size, epochs, model_outfile, **kwargs):
+    def __init__(self, model_infile, trn_infile, tst_infile, val_portion,
+                 n_chars, shape, batch_size, epochs, model_outfile, **kwargs):
         """
         Initializes tool
 
@@ -44,6 +43,7 @@ class ModelTrainer(OCRCLToolBase):
         self.model_infile = model_infile
         self.trn_infile = trn_infile
         self.tst_infile = tst_infile
+        self.val_portion = val_portion
         self.n_chars = n_chars
         self.shape = shape
         self.batch_size = batch_size
@@ -58,45 +58,49 @@ class ModelTrainer(OCRCLToolBase):
         from tensorflow import keras
         from IPython import embed
 
-        def compile(model):
-            model.compile(optimizer=tf.train.AdamOptimizer(),
-                          loss="sparse_categorical_crossentropy",
-                          metrics=["accuracy"])
-
-        # Load and organize data
+        # # Load and organize data
         trn_img, trn_lbl = self.load_labeled_data(self.trn_infile, True)
+        shuffled_index = np.arange(trn_lbl.size)
+        np.random.shuffle(shuffled_index)
+        trn_img = trn_img[shuffled_index]
+        trn_lbl = trn_lbl[shuffled_index]
+        if self.val_portion is not None:
+            val_index = int(trn_lbl.size * (1 - self.val_portion))
+            val_img = trn_img[val_index:]
+            val_lbl = trn_lbl[val_index:]
+            trn_img = trn_img[:val_index]
+            trn_lbl = trn_lbl[:val_index]
         if self.tst_infile is not None:
             tst_img, tst_lbl = self.load_labeled_data(self.tst_infile, True)
 
         if self.n_chars is None:
             self.n_chars = trn_lbl.max() + 1
 
+        # Reload or construct model
         if self.model_infile is not None:
-            # Reload model
             if self.verbosity >= 1:
                 print(f"Loading model from {self.model_infile}")
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 model = keras.models.load_model(self.model_infile)
-            compile(model)
         else:
-            # Define model
             model = keras.Sequential()
             for s in self.shape:
                 model.add(keras.layers.Dense(
                     s,
-                    input_shape=(12800,),
                     activation=tf.nn.relu))
             model.add(keras.layers.Dense(
                 self.n_chars,
-                input_shape=(12800,),
-                activation=tf.nn.softmax), )
-            compile(model)
+                activation=tf.nn.softmax()))
+        model.compile(optimizer=tf.train.AdamOptimizer(),
+                      loss="sparse_categorical_crossentropy",
+                      metrics=["accuracy"])
 
-            # Train model
-            history = model.fit(trn_img, trn_lbl,
-                                epochs=self.epochs,
-                                batch_size=self.batch_size)
+        # Train model
+        fit_kw = {"epochs": self.epochs, "batch_size": self.batch_size}
+        if self.val_portion is not None:
+            fit_kw["validation_data"] = (val_img, val_lbl)
+        history = model.fit(trn_img, trn_lbl, **fit_kw)
 
         # Save model
         if self.model_outfile is not None:
@@ -108,23 +112,38 @@ class ModelTrainer(OCRCLToolBase):
         trn_pred = model.predict(trn_img)
         trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
         trn_errors = int(trn_lbl.size * (1 - trn_acc))
-        print(f"Training    Count:{trn_lbl.size:5d}  Loss:{trn_loss:7.5f} "
-              f"Accuracy:{trn_acc:7.5f}  Errors:{trn_errors:d}")
+        if self.verbosity >= 1:
+            print(f"Training    Count:{trn_lbl.size:5d}  "
+                  f"Loss:{trn_loss:7.5f} "
+                  f"Accuracy:{trn_acc:7.5f}  "
+                  f"Errors:{trn_errors:d}")
+        if self.val_portion is not None:
+            val_pred = model.predict(val_img)
+            val_loss, val_acc = model.evaluate(val_img, val_lbl)
+            val_errors = int(val_lbl.size * (1 - val_acc))
+            if self.verbosity >= 1:
+                print(f"Training    Count:{trn_lbl.size:5d}  "
+                      f"Loss:{trn_loss:7.5f}  "
+                      f"Accuracy:{trn_acc:7.5f}  "
+                      f"Errors:{trn_errors:d}")
         if self.tst_infile is not None:
             tst_pred = model.predict(tst_img)
             tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
             tst_errors = int(tst_lbl.size * (1 - tst_acc))
-            print(f"Test        Count:{tst_lbl.size:5d}  Loss:{tst_loss:7.5f} "
-                  f"Accuracy:{tst_acc:7.5f}  Errors:{tst_errors:d}")
-            for i, char in enumerate(self.labels_to_chars(tst_lbl)):
-                tst_poss_lbls = np.argsort(tst_pred[i])[::-1]
-                tst_poss_chars = self.labels_to_chars(tst_poss_lbls)
-                tst_poss_probs = np.round(tst_pred[i][tst_poss_lbls], 2)
-                if char != tst_poss_chars[0]:
-                    matches = [f'{a}:{b:4.2f}'
-                               for a, b in zip(tst_poss_chars[:10],
-                                               tst_poss_probs[:10])]
-                    print(f"{char} | {' '.join(matches)}")
+            if self.verbosity >= 1:
+                print(f"Test        Count:{tst_lbl.size:5d}  "
+                      f"Loss:{tst_loss:7.5f}  "
+                      f"Accuracy:{tst_acc:7.5f}  "
+                      f"Errors:{tst_errors:d}")
+                for i, char in enumerate(self.labels_to_chars(tst_lbl)):
+                    tst_poss_lbls = np.argsort(tst_pred[i])[::-1]
+                    tst_poss_chars = self.labels_to_chars(tst_poss_lbls)
+                    tst_poss_probs = np.round(tst_pred[i][tst_poss_lbls], 2)
+                    if char != tst_poss_chars[0]:
+                        matches = [f'{a}:{b:4.2f}'
+                                   for a, b in zip(tst_poss_chars[:10],
+                                                   tst_poss_probs[:10])]
+                        print(f"{char} | {' '.join(matches)}")
 
         # Interactive prompt
         if self.interactive:
@@ -293,6 +312,27 @@ class ModelTrainer(OCRCLToolBase):
                     raise ValueError()
         self._tst_input_directory = value
 
+    @property
+    def val_portion(self):
+        """float: Portion of training data to set aside for validation"""
+        if not hasattr(self, "_val_portion"):
+            self._val_portion = None
+        return self._val_portion
+
+    @val_portion.setter
+    def val_portion(self, value):
+        if value is not None:
+            if not isinstance(value, float):
+                try:
+                    value = float(value)
+                except Exception as e:
+                    raise ValueError()
+            if value == 0:
+                value = None
+            elif not 0 < value < 1:
+                raise ValueError()
+        self._val_portion = value
+
     # endregion
 
     # region Methods
@@ -397,6 +437,9 @@ class ModelTrainer(OCRCLToolBase):
         parser_inp.add_argument("-t", "--test_infile",
                                 type=str, dest="tst_infile",
                                 help="labeled test data")
+        parser_inp.add_argument("-V", "--val_portion", type=float,
+                                help="portion of training data to set aside "
+                                     "for validation")
 
         # Operation
         parser_ops = parser.add_argument_group("operation arguments")
@@ -404,6 +447,7 @@ class ModelTrainer(OCRCLToolBase):
                                 type=int,
                                 help="restrict model to set number of "
                                      "characters")
+
         parser_ops.add_argument("-s", "--shape",
                                 type=int, nargs="*",
                                 help="model shape")

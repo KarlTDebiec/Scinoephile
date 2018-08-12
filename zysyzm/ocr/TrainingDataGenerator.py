@@ -18,6 +18,7 @@ class TrainingDataGenerator(OCRCLToolBase):
 
     Todo:
       - CL arguments
+        - force to create a new hdf5 file
       - Output directly to hdf5
     """
 
@@ -36,12 +37,9 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 1000
+        self.n_chars = 100
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.val_output_directory = \
-            "/Users/kdebiec/Desktop/docs/subtitles/val"
-        self.val_portion = 0.1
 
     def __call__(self):
         """Core logic"""
@@ -49,13 +47,13 @@ class TrainingDataGenerator(OCRCLToolBase):
 
         fig = figure(figsize=(1.0, 1.0), dpi=80)
 
-        font_names = ["Hei", "STHeiti"]
+        font_names = ["Hei"]  # , "STHeiti"]
         # font_names += ["LiHei Pro"]
         # font_names += ["Kai", "BiauKai"]
         # font_names += ["LiSong Pro", "STFangsong"]
-        font_sizes = [58, 59, 60, 61, 62]
-        border_widths = [3, 4, 5, 6, 7]
-        offsets = [-2, -1, 0, 1, 2]
+        font_sizes = [60]
+        border_widths = [5]
+        offsets = [0]
 
         # Loop over combinations
         for i, char in enumerate(self.chars[:self.n_chars]):
@@ -116,49 +114,6 @@ class TrainingDataGenerator(OCRCLToolBase):
                     raise ValueError()
         self._trn_output_directory = value
 
-    @property
-    def val_output_directory(self):
-        """str: Path to directory for output validation character images"""
-        if not hasattr(self, "_val_output_directory"):
-            self._val_output_directory = None
-        return self._val_output_directory
-
-    @val_output_directory.setter
-    def val_output_directory(self, value):
-        from os import makedirs
-        from os.path import expandvars, isdir
-
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        elif isinstance(value, str):
-            value = expandvars(value)
-            if not isdir(value):
-                try:
-                    makedirs(value)
-                except Exception as e:
-                    raise ValueError()
-        self._val_output_directory = value
-
-    @property
-    def val_portion(self):
-        """float: Portion of images to set aside for validation"""
-        if not hasattr(self, "_val_portion"):
-            self._val_portion = 0
-        return self._val_portion
-
-    @val_portion.setter
-    def val_portion(self, value):
-        if value is None:
-            value = 0
-        elif not isinstance(value, float):
-            try:
-                value = float(value)
-            except Exception as e:
-                raise ValueError()
-        if not 0 <= value <= 1:
-            raise ValueError()
-        self._val_portion = value
-
     # endregion
 
     # region methods
@@ -186,14 +141,9 @@ class TrainingDataGenerator(OCRCLToolBase):
         outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
                   f"{x_offset:+d}_{y_offset:+d}_" \
                   f"{font_name.replace(' ', '')}.png"
-        if isfile(f"{self.val_output_directory}/{outfile}"):
+        outfile = f"{self.trn_output_directory}/{outfile}"
+        if isfile(f"{self.trn_output_directory}/{outfile}"):
             return
-        elif isfile(f"{self.trn_output_directory}/{outfile}"):
-            return
-        elif np.random.rand() < self.val_portion:
-            outfile = f"{self.val_output_directory}/{outfile}"
-        else:
-            outfile = f"{self.trn_output_directory}/{outfile}"
 
         # Generate image
         img = generate_char_image(char, font_name=font_name,
