@@ -23,11 +23,6 @@ class TrainingDataGenerator(OCRCLToolBase):
       - BiauKai
       - LiSong Pro
       - STFangsong
-
-    Todo:
-      - CL arguments
-        - force to create a new hdf5 file
-      - Output directly to hdf5
     """
 
     # region Instance Variables
@@ -55,12 +50,12 @@ class TrainingDataGenerator(OCRCLToolBase):
         from IPython import embed
 
         # Todo: Load pre-existing hdf5 if provided
-        dataset = OCRDataset()
-
-        # Prepare space for data
-
-        # Fill in data
-        # Todo: Save to hdf5
+        dataset = OCRDataset(
+            # hdf5_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+            n_chars=self.n_chars,
+            hdf5_outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+            verbosity=self.verbosity)
+        dataset.save_to_hdf5()
 
     # endregion
 

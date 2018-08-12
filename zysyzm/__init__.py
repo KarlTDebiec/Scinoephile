@@ -27,6 +27,19 @@ class Base(object):
 
             self._package_root = dirname(modules["zysyzm"].__file__)
         return self._package_root
+
+    @property
+    def verbosity(self):
+        """int: Level of output to provide"""
+        if not hasattr(self, "_verbosity"):
+            self._verbosity = 1
+        return self._verbosity
+
+    @verbosity.setter
+    def verbosity(self, value):
+        if not isinstance(value, int) and value >= 0:
+            raise ValueError()
+        self._verbosity = value
     # endregion
 
 
@@ -78,19 +91,6 @@ class CLToolBase(Base):
         if not isinstance(value, bool):
             raise ValueError()
         self._interactive = value
-
-    @property
-    def verbosity(self):
-        """int: Level of output to provide"""
-        if not hasattr(self, "_verbosity"):
-            self._verbosity = 1
-        return self._verbosity
-
-    @verbosity.setter
-    def verbosity(self, value):
-        if not isinstance(value, int) and value >= 0:
-            raise ValueError()
-        self._verbosity = value
 
     # endregion Properties
 
