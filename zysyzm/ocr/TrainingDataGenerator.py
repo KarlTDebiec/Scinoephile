@@ -16,6 +16,14 @@ class TrainingDataGenerator(OCRCLToolBase):
     """
     Generates data for OCR model training and validation
 
+    Other fonts that work with matplotlib:
+      - STHeiti
+      - LiHei Pro
+      - Kai
+      - BiauKai
+      - LiSong Pro
+      - STFangsong
+
     Todo:
       - CL arguments
         - force to create a new hdf5 file
@@ -43,32 +51,16 @@ class TrainingDataGenerator(OCRCLToolBase):
 
     def __call__(self):
         """Core logic"""
-        from matplotlib.pyplot import figure
+        from zysyzm.ocr import OCRDataset
+        from IPython import embed
 
-        fig = figure(figsize=(1.0, 1.0), dpi=80)
+        # Todo: Load pre-existing hdf5 if provided
+        dataset = OCRDataset()
 
-        font_names = ["Hei"]  # , "STHeiti"]
-        # font_names += ["LiHei Pro"]
-        # font_names += ["Kai", "BiauKai"]
-        # font_names += ["LiSong Pro", "STFangsong"]
-        font_sizes = [60]
-        border_widths = [5]
-        offsets = [0]
+        # Prepare space for data
 
-        # Loop over combinations
-        for i, char in enumerate(self.chars[:self.n_chars]):
-            if self.verbosity >= 1:
-                print(f"{i / self.n_chars * 100:4.2f}% complete, "
-                      f"generating data for {char}")
-            for font_name in font_names:
-                for font_size in font_sizes:
-                    for border_width in border_widths:
-                        for x_offset in offsets:
-                            for y_offset in offsets:
-                                self.output_char_image(char, font_name,
-                                                       font_size, border_width,
-                                                       x_offset, y_offset,
-                                                       fig=fig)
+        # Fill in data
+        # Todo: Save to hdf5
 
     # endregion
 

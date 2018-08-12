@@ -8,7 +8,29 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### CLASSES ###################################
-class CLToolBase(object):
+class Base(object):
+    """"""
+
+    # region Builtins
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    # endregion
+
+    # region Properties
+    @property
+    def package_root(self):
+        """str: path to package root directory"""
+        if not hasattr(self, "_package_root"):
+            from os.path import dirname
+            from sys import modules
+
+            self._package_root = dirname(modules["zysyzm"].__file__)
+        return self._package_root
+    # endregion
+
+
+class CLToolBase(Base):
     """Base for command line tools"""
 
     # region Instance Variables
@@ -26,6 +48,8 @@ class CLToolBase(object):
             interactive (bool): Show IPython prompt
             kwargs (dict): Additional keyword arguments
         """
+        super().__init__(**kwargs)
+
         self.verbosity = verbosity
         self.interactive = interactive
 
@@ -42,14 +66,6 @@ class CLToolBase(object):
     # endregion
 
     # region Properties
-    @property
-    def directory(self):
-        """str: path to this Python file"""
-        if not hasattr(self, "_directory"):
-            import os
-            self._directory = os.path.dirname(os.path.realpath(__file__))
-        return self._directory
-
     @property
     def interactive(self):
         """bool: Present IPython prompt after processing subtitles"""

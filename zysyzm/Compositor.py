@@ -260,7 +260,7 @@ class Compositor(CLToolBase):
             import pycantonese as pc
             self._cantonese_corpus = pc.hkcancor()
             self._cantonese_corpus.add(
-                f"{self.directory}/data/romanization/unmatched.cha")
+                f"{self.package_root}/data/romanization/unmatched.cha")
         return self._cantonese_corpus
 
     @property
