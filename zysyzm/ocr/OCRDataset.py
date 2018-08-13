@@ -24,6 +24,11 @@ class OCRDataset(OCRBase):
         Isn't really doing anything anymore
       - Implement other image data types (8 bit and 1 bit)
       - Support weighing available specs
+      - Support for creation of training and validaiton datasets, with at
+        least on image of each character in each
+      - Split some functionality off to a base Dataset class, and create
+        another subclass of that Dataset class for unlabeled data
+      - Implement method for viewing selected images with annotation
     """
 
     # region Builtins
