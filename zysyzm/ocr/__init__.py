@@ -247,6 +247,8 @@ class OCRBase(Base):
         """
         import numpy as np
 
+        if isinstance(chars, list):
+            chars = np.array(chars)
         if isinstance(chars, np.ndarray):
             sorter = np.argsort(self.chars)
             return np.array(
