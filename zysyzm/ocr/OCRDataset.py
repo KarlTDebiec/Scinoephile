@@ -111,7 +111,7 @@ class OCRDataset(OCRBase):
     def font_names(self):
         """list(str): List of font names"""
         if not hasattr(self, "_font_names"):
-            self._font_names = ["Hei"]
+            self._font_names = ["Hei", "STHeiti"]
         return self._font_names
 
     @font_names.setter
@@ -128,7 +128,7 @@ class OCRDataset(OCRBase):
     def font_sizes(self):
         """list(int): List of font sizes"""
         if not hasattr(self, "_font_sizes"):
-            self._font_sizes = [60]
+            self._font_sizes = [60, 59, 61, 58, 62]
         return self._font_sizes
 
     @font_sizes.setter
@@ -145,7 +145,7 @@ class OCRDataset(OCRBase):
     def font_widths(self):
         """list(int): List of font border widths"""
         if not hasattr(self, "_font_widths"):
-            self._font_widths = [6]
+            self._font_widths = [5, 3, 6, 3, 7]
         return self._font_widths
 
     @font_widths.setter
@@ -162,7 +162,7 @@ class OCRDataset(OCRBase):
     def font_x_offsets(self):
         """list(int): List of font x offsets"""
         if not hasattr(self, "_font_x_offsets"):
-            self._font_x_offsets = [0]
+            self._font_x_offsets = [0, -1, 1, -2, 2]
         return self._font_x_offsets
 
     @font_x_offsets.setter
@@ -179,7 +179,7 @@ class OCRDataset(OCRBase):
     def font_y_offsets(self):
         """list(int): List of font y offsets"""
         if not hasattr(self, "_font_y_offsets"):
-            self._font_y_offsets = [0]
+            self._font_y_offsets = [0, -1, 1, -2, 2]
         return self._font_y_offsets
 
     @font_y_offsets.setter
@@ -270,7 +270,7 @@ class OCRDataset(OCRBase):
                     raise ValueError()
             if value not in ["2bit"]:
                 raise ValueError()
-        self._font_names = value
+        self._image_mode = value
 
     @property
     def n_chars(self):
@@ -293,6 +293,31 @@ class OCRDataset(OCRBase):
     # endregion
 
     # region Methods
+    def add_images_of_chars(self, chars):
+        import numpy as np
+        from IPython import embed
+        from random import sample
+
+        columns = self.char_image_specs.columns.values
+        all_specs = self.char_image_specs_available.values.tolist()
+        all_specs = set(map(tuple, all_specs))
+
+        if not isinstance(chars, list):
+            chars = list(chars)
+        for char in chars:
+            old_specs = self.char_image_specs.loc[
+                self.char_image_specs["character"] == char].drop(
+                "character", axis=1).values
+            old_specs = set(map(tuple, list(old_specs)))
+            new_specs = all_specs.difference(old_specs)
+            new_spec = [char] + list(sample(new_specs, 1)[0])
+            new_spec_kw = {k: v for k, v in zip(columns, new_spec)}
+            new_image = self.generate_char_image_data(**new_spec_kw)
+            self.char_image_specs = self.char_image_specs.append(
+                new_spec_kw, ignore_index=True)
+            self.char_image_data = np.append(
+                self.char_image_data, np.expand_dims(new_image, 0), axis=0)
+
     def generate_char_image(self, character, font="Hei", size=60, width=5,
                             x_offset=0, y_offset=0, tmpfile="/tmp/zysyzm.png"):
         from os import remove
@@ -362,6 +387,7 @@ class OCRDataset(OCRBase):
             if "char_image_data" not in hdf5_infile:
                 raise ValueError()
 
+            from IPython import embed
             # Load configuration
             self.image_mode = hdf5_infile.attrs["mode"]
 

@@ -41,8 +41,6 @@ class TrainingDataGenerator(OCRCLToolBase):
         super().__init__(**kwargs)
 
         self.n_chars = 100
-        self.trn_output_directory = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """Core logic"""
@@ -55,6 +53,7 @@ class TrainingDataGenerator(OCRCLToolBase):
             n_chars=self.n_chars,
             hdf5_outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
             verbosity=self.verbosity)
+        dataset.add_images_of_chars("的了不一是在")
         dataset.save_to_hdf5()
 
     # endregion
