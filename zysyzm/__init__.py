@@ -12,8 +12,16 @@ class Base(object):
     """"""
 
     # region Builtins
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, verbosity=1, **kwargs):
+        """
+        Initializes tool
+
+        Args:
+            verbosity (int): Level of verbose output
+            interactive (bool): Show IPython prompt
+            kwargs (dict): Additional keyword arguments
+        """
+        self.verbosity = verbosity
 
     # endregion
 
@@ -52,18 +60,16 @@ class CLToolBase(Base):
     # endregion
 
     # region Builtins
-    def __init__(self, verbosity=1, interactive=False, **kwargs):
+    def __init__(self, interactive=False, **kwargs):
         """
         Initializes tool
 
         Args:
-            verbosity (int): Level of verbose output
             interactive (bool): Show IPython prompt
             kwargs (dict): Additional keyword arguments
         """
         super().__init__(**kwargs)
 
-        self.verbosity = verbosity
         self.interactive = interactive
 
     def __call__(self):
