@@ -47,13 +47,12 @@ class TrainingDataGenerator(OCRCLToolBase):
         from zysyzm.ocr import OCRDataset
         from IPython import embed
 
-        # Todo: Load pre-existing hdf5 if provided
         dataset = OCRDataset(
             # hdf5_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
             n_chars=self.n_chars,
             hdf5_outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
             verbosity=self.verbosity)
-        dataset.add_images_of_chars("的了不一是在")
+        dataset.add_images_of_chars("的", 10)
         dataset.save_to_hdf5()
 
     # endregion

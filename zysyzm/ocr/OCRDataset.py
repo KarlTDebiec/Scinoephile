@@ -13,7 +13,18 @@ from zysyzm.ocr import OCRBase
 
 ################################### CLASSES ###################################
 class OCRDataset(OCRBase):
-    """Dataset for representing a collection of character images"""
+    """Dataset for representing a collection of character images
+
+    Todo:
+      - Document
+      - Improve performance of image addition
+      - Support loading hdf5 infile and increasing n_chars, creating
+        additional figures
+      - This can actually be a command line tool; TrainingDataGenerate
+        Isn't really doing anything anymore
+      - Implement other image data types (8 bit and 1 bit)
+      - Support weighing available specs
+    """
 
     # region Builtins
     def __init__(self, font_names=None, font_sizes=None, font_widths=None,
@@ -293,30 +304,39 @@ class OCRDataset(OCRBase):
     # endregion
 
     # region Methods
-    def add_images_of_chars(self, chars):
+    def add_images_of_chars(self, chars, n_images=1):
+        """
+        Todo:
+          - Prepare empty spec and data of size len(chars) * n_images, keep
+            track of how many are actually added append once at the end
+          - Handle case in which more images are requested than specs remain
+            available
+          - Support varying number of images per character
+        """
         import numpy as np
-        from IPython import embed
         from random import sample
 
+        if not isinstance(chars, list):
+            chars = list(chars)
         columns = self.char_image_specs.columns.values
         all_specs = self.char_image_specs_available.values.tolist()
         all_specs = set(map(tuple, all_specs))
 
-        if not isinstance(chars, list):
-            chars = list(chars)
         for char in chars:
+            print(char)
             old_specs = self.char_image_specs.loc[
                 self.char_image_specs["character"] == char].drop(
                 "character", axis=1).values
             old_specs = set(map(tuple, list(old_specs)))
             new_specs = all_specs.difference(old_specs)
-            new_spec = [char] + list(sample(new_specs, 1)[0])
-            new_spec_kw = {k: v for k, v in zip(columns, new_spec)}
-            new_image = self.generate_char_image_data(**new_spec_kw)
-            self.char_image_specs = self.char_image_specs.append(
-                new_spec_kw, ignore_index=True)
-            self.char_image_data = np.append(
-                self.char_image_data, np.expand_dims(new_image, 0), axis=0)
+            for new_spec in list(sample(new_specs, n_images)):
+                new_spec = [char] + list(new_spec)
+                new_spec_kw = {k: v for k, v in zip(columns, new_spec)}
+                new_image = self.generate_char_image_data(**new_spec_kw)
+                self.char_image_specs = self.char_image_specs.append(
+                    new_spec_kw, ignore_index=True)
+                self.char_image_data = np.append(
+                    self.char_image_data, np.expand_dims(new_image, 0), axis=0)
 
     def generate_char_image(self, character, font="Hei", size=60, width=5,
                             x_offset=0, y_offset=0, tmpfile="/tmp/zysyzm.png"):
@@ -375,7 +395,12 @@ class OCRDataset(OCRBase):
 
         def clean_spec_for_pandas(row):
             """
-            Processes specification so that pandas
+            Processes spec for pandas
+
+            - Converted into a tuple for pandas to build DataFrame
+            - Characters converted from integers back to unicode. hdf5 and
+              numpy's unicode support do not cooperate well, and this is the
+              least painful solution.
             """
             return tuple([chr(row[0])] + list(row)[1:])
 
@@ -387,7 +412,6 @@ class OCRDataset(OCRBase):
             if "char_image_data" not in hdf5_infile:
                 raise ValueError()
 
-            from IPython import embed
             # Load configuration
             self.image_mode = hdf5_infile.attrs["mode"]
 
@@ -406,16 +430,18 @@ class OCRDataset(OCRBase):
         import pandas as pd
         import numpy as np
 
+        base_spec = self.char_image_specs_available.loc[0].to_dict()
+
         # Prepare empty arrays
         self.char_image_specs = pd.DataFrame(
             index=range(self.n_chars),
             columns=self.char_image_specs.columns.values)
-        self.char_image_data = np.zeros((self.n_chars, self.image_data_size),
-                                        dtype=self.image_data_dtype)
+        self.char_image_data = np.zeros(
+            (self.n_chars, self.image_data_size), dtype=self.image_data_dtype)
 
         # Fill in arrays with specs and data
         for i, char in enumerate(self.chars[:self.n_chars]):
-            row = self.char_image_specs_available.loc[0].to_dict()
+            row = base_spec.copy()
             row["character"] = char
             self.char_image_specs.loc[i] = row
             self.char_image_data[i] = self.generate_char_image_data(**row)
@@ -426,8 +452,9 @@ class OCRDataset(OCRBase):
 
         def clean_spec_for_hdf5(row):
             """
-            Processes specification so that numpy and h5py will accept it
-            - Unpacked into a tuple so that numpy can build a record array
+            Processes specification for numpy and h5py
+
+            - Converted into a tuple for numpy to build a record array
             - Characters converted from unicode strings to integers. hdf5 and
               numpy's unicode support do not cooperate well, and this is the
               least painful solution.
