@@ -34,7 +34,6 @@ class OCRDataset(OCRBase):
         least on image of each character in each
       - Split some functionality off to a base Dataset class, and create
         another subclass of that Dataset class for unlabeled data
-      - Implement method for viewing selected images with annotation
     """
 
     # region Builtins
@@ -524,7 +523,6 @@ class OCRDataset(OCRBase):
     def view_char_image(self, indexes, columns=None):
         import numpy as np
         from PIL import Image
-        from IPython import embed
 
         # Process arguments
         if isinstance(indexes, int):
@@ -543,7 +541,6 @@ class OCRDataset(OCRBase):
         for i, index in enumerate(indexes):
             column = (i // columns)
             row = i - (column * columns)
-            print(i, column, row, self.char_image_specs["character"].loc[index])
             char_image = self.data_to_image(self.char_image_data[index])
             image.paste(char_image,
                         (100 * row + 10,
@@ -551,7 +548,5 @@ class OCRDataset(OCRBase):
                          100 * (row + 1) - 10,
                          100 * (column + 1) - 10))
         image.show()
-        embed()
-        input()
 
     # endregion
