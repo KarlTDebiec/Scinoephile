@@ -8,28 +8,18 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRBase
+from zysyzm.ocr import OCRDataset
 
 
 ################################### CLASSES ###################################
-class OCRDataset(OCRBase):
-    """Dataset for representing a collection of character images
-
-    2bit grayscale:
-        0 -> 00
-        85 -> 01
-        170 -> 10
-        256 -> 11
-
-    Inheritance pattern:
-        - OCRDataset
-            - LabeledOCRDataset
-                - TrainingOCRDataset
-            - UnlabeledCORDataset
+class OCRDataset(OCRDataset):
+    """Dataset for representing a collection of unlabeled character images
 
     Todo:
       - Document
       - Improve performance of image addition
+      - Support loading hdf5 infile and increasing n_chars, creating
+        additional figures
       - This can actually be a command line tool; TrainingDataGenerate
         Isn't really doing anything anymore
       - Implement other image data types (8 bit and 1 bit)

@@ -286,3 +286,6 @@ class OCRCLToolBase(CLToolBase, OCRBase):
 
 ################################### MODULES ###################################
 from zysyzm.ocr.OCRDataset import OCRDataset
+from zysyzm.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
+from zysyzm.ocr.LabeledOCRDataset import LabeledOCRDataset
+from zysyzm.ocr.GeneratedOCRDataset import GeneratedOCRDataset

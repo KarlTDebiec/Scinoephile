@@ -7,11 +7,16 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+"""
+Todo:
+  - Document
+"""
 ################################### CLASSES ###################################
 class Base(object):
     """"""
 
     # region Builtins
+
     def __init__(self, verbosity=1, **kwargs):
         """
         Initializes tool
@@ -26,6 +31,7 @@ class Base(object):
     # endregion
 
     # region Properties
+
     @property
     def package_root(self):
         """str: path to package root directory"""
@@ -48,6 +54,7 @@ class Base(object):
         if not isinstance(value, int) and value >= 0:
             raise ValueError()
         self._verbosity = value
+
     # endregion
 
 
@@ -60,6 +67,7 @@ class CLToolBase(Base):
     # endregion
 
     # region Builtins
+
     def __init__(self, interactive=False, **kwargs):
         """
         Initializes tool
@@ -85,6 +93,7 @@ class CLToolBase(Base):
     # endregion
 
     # region Properties
+
     @property
     def interactive(self):
         """bool: Present IPython prompt after processing subtitles"""
@@ -101,6 +110,7 @@ class CLToolBase(Base):
     # endregion Properties
 
     # region Class Methods
+
     @classmethod
     def construct_argparser(cls, parser=None):
         """

@@ -13,27 +13,10 @@ from zysyzm.ocr import OCRBase
 
 ################################### CLASSES ###################################
 class OCRDataset(OCRBase):
-    """Dataset for representing a collection of character images
-
-    2bit grayscale:
-        0 -> 00
-        85 -> 01
-        170 -> 10
-        256 -> 11
-
-    Inheritance pattern:
-        - OCRDataset
-            - LabeledOCRDataset
-                - TrainingOCRDataset
-            - UnlabeledCORDataset
+    """Dataset for representing a collection of labeled character images
 
     Todo:
       - Document
-      - Improve performance of image addition
-      - This can actually be a command line tool; TrainingDataGenerate
-        Isn't really doing anything anymore
-      - Implement other image data types (8 bit and 1 bit)
-      - Support weighing available specs
       - Support for creation of training and validaiton datasets, with at
         least on image of each character in each
       - Split some functionality off to a base Dataset class, and create
