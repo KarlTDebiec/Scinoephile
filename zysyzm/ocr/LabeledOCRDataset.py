@@ -16,9 +16,15 @@ class LabeledOCRDataset(OCRDataset):
     """Represents a collection of labeled character images
 
     Todo:
-      - Refactor
-      - Document
+      - [ ] Refactor
+      - [ ] Document
     """
+
+    # region Instance Variables
+
+    help_message = ("Represents a collection of labeled character images")
+
+    # endregion
 
     # region Builtins
 

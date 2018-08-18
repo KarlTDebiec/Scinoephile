@@ -27,6 +27,7 @@ class OCRDataset(OCRCLToolBase):
     """
 
     # region Instance Variables
+
     help_message = ("Represents a collection of character images")
 
     # endregion
@@ -49,6 +50,10 @@ class OCRDataset(OCRCLToolBase):
             self.output_image_directory = output_image_directory
         if image_mode is not None:
             self.image_mode = image_mode
+
+    def __call__(self):
+        """ Core logic """
+        pass
 
     # endregion
 
@@ -77,8 +82,11 @@ class OCRDataset(OCRCLToolBase):
     @property
     def char_image_data(self):
         """numpy.ndarray(bool): Character image data"""
-        if not hasattr(self._char_image_data):
-            self._char_image_data = None
+        if not hasattr(self, "_char_image_data"):
+            import numpy as np
+
+            self._char_image_data = np.zeros((0, self.image_data_size),
+                                             self.image_data_dtype)
         return self._char_image_data
 
     @char_image_data.setter
@@ -155,7 +163,7 @@ class OCRDataset(OCRCLToolBase):
     @property
     def input_image_directory(self):
         """str: Path to directory for output training character images"""
-        if not hasattr(self, "_file_outfolder"):
+        if not hasattr(self, "_input_image_directory"):
             self._input_image_directory = None
         return self._input_image_directory
 
@@ -226,6 +234,16 @@ class OCRDataset(OCRCLToolBase):
     # endregion
 
     # region Methods
+
+    def add_char_images(self, char_image_specs, char_image_data):
+        import numpy as np
+
+        new = np.logical_not(
+            np.isin(char_image_specs, self.char_image_specs.values).flatten())
+        self.char_image_specs = self.char_image_specs.append(
+            char_image_specs.loc[new], ignore_index=True)
+        self.char_image_data = np.append(
+            self.char_image_data, char_image_data[new], axis=0)
 
     def image_to_data(self, image):
         import numpy as np
