@@ -77,6 +77,8 @@ class OCRDataset(OCRCLToolBase):
     @property
     def char_image_data(self):
         """numpy.ndarray(bool): Character image data"""
+        if not hasattr(self._char_image_data):
+            self._char_image_data = None
         return self._char_image_data
 
     @char_image_data.setter

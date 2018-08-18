@@ -40,26 +40,6 @@ class UnlabeledOCRDataset(OCRDataset):
     # region Properties
 
     @property
-    def char_image_specs_available(self):
-        """pandas.DataFrame: Available character image specifications"""
-        if not hasattr(self, "_char_image_specs_available"):
-            from itertools import product
-            import pandas as pd
-
-            self._char_image_specs_available = pd.DataFrame(
-                list(product(self.font_names, self.font_sizes,
-                             self.font_widths, self.font_x_offsets,
-                             self.font_y_offsets)),
-                columns=["font", "size", "width", "x_offset", "y_offset"])
-
-        return self._char_image_specs_available
-
-    @char_image_specs_available.setter
-    def char_image_specs_available(self, value):
-        # Todo: Validate
-        self._char_image_specs_available = value
-
-    @property
     def char_image_specs(self):
         """pandas.DataFrame: Character image specifications"""
         if not hasattr(self, "_char_image_specs"):
@@ -78,69 +58,6 @@ class UnlabeledOCRDataset(OCRDataset):
     # endregion
 
     # region Methods
-    def initialize_from_scratch(self):
-        import pandas as pd
-        import numpy as np
-
-        base_spec = self.char_image_specs_available.loc[0]
-
-        # Prepare empty arrays
-        self.char_image_specs = pd.DataFrame(
-            index=range(self.n_chars),
-            columns=self.char_image_specs.columns.values)
-        self.char_image_data = np.zeros(
-            (self.n_chars, self.image_data_size), dtype=self.image_data_dtype)
-
-        # Fill in arrays with specs and data
-        for i, char in enumerate(self.chars[:self.n_chars]):
-            row = base_spec.to_dict()
-            row["character"] = char
-            self.char_image_specs.loc[i] = row
-            self.char_image_data[i] = self.image_to_data(
-                self.generate_char_image(**row))
-
-    def write_hdf5(self):
-        import h5py
-        import numpy as np
-
-        def clean_spec_for_hdf5(row):
-            """
-            Processes specification for numpy and h5py
-
-            - Converted into a tuple for numpy to build a record array
-            - Characters converted from unicode strings to integers. hdf5 and
-              numpy's unicode support do not cooperate well, and this is the
-              least painful solution.
-            """
-            return tuple([ord(row[0])] + list(row[1:]))
-
-        if self.verbosity >= 1:
-            print(f"Saving data to '{self.output_hdf5}'")
-        with h5py.File(self.output_hdf5) as hdf5_outfile:
-            # Remove prior data
-            if "char_image_data" in hdf5_outfile:
-                del hdf5_outfile["char_image_data"]
-            if "char_image_specs" in hdf5_outfile:
-                del hdf5_outfile["char_image_specs"]
-
-            # Save configuration
-            hdf5_outfile.attrs["mode"] = self.image_mode
-
-            # Save character image specifications
-            char_image_specs = list(map(clean_spec_for_hdf5,
-                                        self.char_image_specs.values))
-            dtypes = list(zip(self.char_image_specs.columns.values,
-                              ["i4", "S10", "i1", "i1", "i1", "i1"]))
-            char_image_specs = np.array(char_image_specs, dtype=dtypes)
-            hdf5_outfile.create_dataset("char_image_specs",
-                                        data=char_image_specs, dtype=dtypes,
-                                        chunks=True, compression="gzip")
-
-            # Save character image data
-            hdf5_outfile.create_dataset("char_image_data",
-                                        data=self.char_image_data,
-                                        dtype=self.image_data_dtype,
-                                        chunks=True, compression="gzip")
 
     def view_char_image(self, indexes, columns=None):
         import numpy as np
@@ -172,6 +89,7 @@ class UnlabeledOCRDataset(OCRDataset):
         image.show()
 
     # endregion
+
 
 #################################### MAIN #####################################
 if __name__ == "__main__":

@@ -247,14 +247,17 @@ class OCRBase(Base):
         """
         import numpy as np
 
-        if isinstance(chars, list):
+        if isinstance(chars, str):
+            if len(str) == 1:
+                return np.argwhere(self.chars == chars[0])[0, 0]
+            elif len(str) > 1:
+                chars = np.array(list(chars))
+        elif isinstance(chars, list):
             chars = np.array(chars)
         if isinstance(chars, np.ndarray):
             sorter = np.argsort(self.chars)
             return np.array(
                 sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
-        elif isinstance(chars, str):
-            return np.argwhere(self.chars == chars[0])[0, 0]
         else:
             raise ValueError()
 
@@ -269,10 +272,12 @@ class OCRBase(Base):
         """
         import numpy as np
 
+        if isinstance(labels, int):
+            return self.chars[labels]
+        elif isinstance(labels, list):
+            labels = np.array(labels)
         if isinstance(labels, np.ndarray):
             return np.array([self.chars[i] for i in labels], np.str)
-        elif isinstance(labels, int):
-            return self.chars[labels]
         else:
             raise ValueError()
 
