@@ -11,6 +11,8 @@
 Todo:
   - Document
 """
+
+
 ################################### CLASSES ###################################
 class Base(object):
     """"""
@@ -62,6 +64,7 @@ class CLToolBase(Base):
     """Base for command line tools"""
 
     # region Instance Variables
+
     help_message = "Base for command line tools"
 
     # endregion
