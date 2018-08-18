@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.OCRDataset,py
+#   zysyzm.ocr.GeneratedOCRDataset,py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,19 +8,18 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRBase
+from zysyzm.ocr import LabeledOCRDataset
 
 
 ################################### CLASSES ###################################
-class OCRDataset(OCRBase):
-    """Dataset for representing a collection of labeled character images
+class GeneratedOCRDataset(LabeledOCRDataset):
+    """Represents a collection of generated character images
 
     Todo:
-      - Document
+      - Refactor
       - Support for creation of training and validaiton datasets, with at
         least on image of each character in each
-      - Split some functionality off to a base Dataset class, and create
-        another subclass of that Dataset class for unlabeled data
+      - Document
     """
 
     # region Builtins
@@ -42,19 +41,19 @@ class OCRDataset(OCRBase):
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
         if hdf5_infile is not None:
-            self.hdf5_infile = hdf5_infile
+            self.input_hdf5 = hdf5_infile
         if image_mode is not None:
             self.image_mode = image_mode
         if n_chars is not None:
             self.n_chars = n_chars
         if hdf5_infile is not None:
-            self.hdf5_infile = hdf5_infile
+            self.input_hdf5 = hdf5_infile
         if hdf5_outfile is not None:
-            self.hdf5_outfile = hdf5_outfile
+            self.output_hdf5 = hdf5_outfile
 
         # Initialize
-        if self.hdf5_infile is not None:
-            self.initialize_from_hdf5()
+        if self.input_hdf5 is not None:
+            self.read_hdf5()
         else:
             self.initialize_from_scratch()
 
@@ -97,16 +96,6 @@ class OCRDataset(OCRBase):
     def char_image_specs(self, value):
         # Todo: Validate
         self._char_image_specs = value
-
-    @property
-    def char_image_data(self):
-        """numpy.ndarray(bool): Character image data"""
-        return self._char_image_data
-
-    @char_image_data.setter
-    def char_image_data(self, value):
-        # Todo: Validate
-        self._char_image_data = value
 
     @property
     def figure(self):
@@ -201,86 +190,6 @@ class OCRDataset(OCRBase):
                 except Exception as e:
                     raise ValueError()
         self._font_y_offsets = value
-
-    @property
-    def hdf5_infile(self):
-        """str: Path to input hdf5 file"""
-        if not hasattr(self, "_hdf5_infile"):
-            self._hdf5_infile = None
-        return self._hdf5_infile
-
-    @hdf5_infile.setter
-    def hdf5_infile(self, value):
-        from os.path import expandvars, isfile
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError()
-            else:
-                value = expandvars(value)
-                if not isfile(value):
-                    raise ValueError()
-        self._hdf5_infile = value
-
-    @property
-    def hdf5_outfile(self):
-        """str: Path to output hdf5 file"""
-        if not hasattr(self, "_hdf5_outfile"):
-            self._hdf5_outfile = None
-        return self._hdf5_outfile
-
-    @hdf5_outfile.setter
-    def hdf5_outfile(self, value):
-        from os import access, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError()
-            else:
-                value = expandvars(value)
-                if isfile(value) and not access(value, R_OK):
-                    raise ValueError()
-                elif not access(dirname(value), W_OK):
-                    raise ValueError()
-        self._hdf5_outfile = value
-
-    @property
-    def image_data_size(self):
-        """int: Size of a single image within arrays"""
-        if self.image_mode == "8bit":
-            return 6400
-        elif self.image_mode == "2bit":
-            return 12800
-
-    @property
-    def image_data_dtype(self):
-        """type: Numpy dtype of image arrays"""
-        import numpy as np
-
-        if self.image_mode == "8bit":
-            return np.int8
-        elif self.image_mode == "2bit":
-            return np.bool
-
-    @property
-    def image_mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_image_mode"):
-            self._image_mode = "2bit"
-        return self._image_mode
-
-    @image_mode.setter
-    def image_mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception as e:
-                    raise ValueError()
-            if value not in ["2bit"]:
-                raise ValueError()
-        self._image_mode = value
 
     @property
     def n_chars(self):
@@ -408,7 +317,7 @@ class OCRDataset(OCRBase):
 
         return image
 
-    def initialize_from_hdf5(self):
+    def read_hdf5(self):
         import pandas as pd
         import h5py
         import numpy as np
@@ -425,8 +334,8 @@ class OCRDataset(OCRBase):
             return tuple([chr(row[0])] + list(row)[1:])
 
         if self.verbosity >= 1:
-            print(f"Reading data from '{self.hdf5_infile}'")
-        with h5py.File(self.hdf5_infile) as hdf5_infile:
+            print(f"Reading data from '{self.input_hdf5}'")
+        with h5py.File(self.input_hdf5) as hdf5_infile:
             if "char_image_specs" not in hdf5_infile:
                 raise ValueError()
             if "char_image_data" not in hdf5_infile:
@@ -467,7 +376,7 @@ class OCRDataset(OCRBase):
             self.char_image_data[i] = self.image_to_data(
                 self.generate_char_image(**row))
 
-    def save_to_hdf5(self):
+    def write_hdf5(self):
         import h5py
         import numpy as np
 
@@ -483,8 +392,8 @@ class OCRDataset(OCRBase):
             return tuple([ord(row[0])] + list(row[1:]))
 
         if self.verbosity >= 1:
-            print(f"Saving data to '{self.hdf5_outfile}'")
-        with h5py.File(self.hdf5_outfile) as hdf5_outfile:
+            print(f"Saving data to '{self.output_hdf5}'")
+        with h5py.File(self.output_hdf5) as hdf5_outfile:
             # Remove prior data
             if "char_image_data" in hdf5_outfile:
                 del hdf5_outfile["char_image_data"]
@@ -538,5 +447,42 @@ class OCRDataset(OCRBase):
                          100 * (row + 1) - 10,
                          100 * (column + 1) - 10))
         image.show()
+
+    def output_char_image(self, char, font_name="Hei", font_size=60,
+                          border_width=5, x_offset=0, y_offset=0, **kwargs):
+        """
+        Outputs an image of a character, if output image does not exist
+
+        Args:
+            char (str): character to generate an image of
+            font_name (str, optional): font with which to draw character
+            font_size (int, optional): font size with which to draw character
+            border_width (int, optional: border width with which to draw
+              character
+            x_offset (int, optional): x offset to apply to character
+            y_offset (int, optional: y offset to apply to character
+            **kwargs (dict):
+
+        """
+        import numpy as np
+        from os.path import isfile
+        from zysyzm.ocr import generate_char_image
+
+        # Check if outfile exists, and if not choose output location
+        outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
+                  f"{x_offset:+d}_{y_offset:+d}_" \
+                  f"{font_name.replace(' ', '')}.png"
+        outfile = f"{self.trn_output_directory}/{outfile}"
+        if isfile(f"{self.trn_output_directory}/{outfile}"):
+            return
+
+        # Generate image
+        img = generate_char_image(char, font_name=font_name,
+                                  font_size=font_size,
+                                  border_width=border_width, x_offset=x_offset,
+                                  y_offset=y_offset, **kwargs)
+        img.save(outfile)
+        if self.verbosity >= 2:
+            print(f"Wrote '{outfile}'")
 
     # endregion

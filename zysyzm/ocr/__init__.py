@@ -9,10 +9,6 @@
 #   BSD license. See the LICENSE file for details.
 """
 Todo:
-  - Decide whether or not to move load_labeled_data and load_unlabeled_data
-    to separate functions
-  - Move caching from .npy format to hdf5, with information about generation
-    stored alongside the data
   - Try relocating temporary image file from /tmp/ to io.Bytes
   - Choose and implement inheritance pattern
   - Implement central executable that reaches out to other classes
@@ -20,6 +16,7 @@ Todo:
   - Implement support for treating images as float, 8-bit grayscale,
     2-bit grayscale, or 1-bit black and white
   - Log useful error messages
+  - Document
 """
 ################################### MODULES ###################################
 from zysyzm import Base, CLToolBase
@@ -203,15 +200,17 @@ def resize_image(image, new_size, x_offset=0, y_offset=0):
 
 ################################### CLASSES ###################################
 class OCRBase(Base):
-    """"""
+    """Base for OCR-related classes"""
 
     # region Builtins
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     # endregion
 
     # region Properties
+
     @property
     def chars(self):
         """pandas.core.frame.DataFrame: Characters"""
@@ -236,6 +235,7 @@ class OCRBase(Base):
     # endregion
 
     # region Methods
+
     def chars_to_labels(self, chars):
         """
         Converts collection of characters to character labels
@@ -280,7 +280,7 @@ class OCRBase(Base):
 
 
 class OCRCLToolBase(CLToolBase, OCRBase):
-    """Base for optical character recognition command line tools"""
+    """Base for OCR command line tools"""
     pass
 
 
