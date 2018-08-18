@@ -356,10 +356,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 np.array(hdf5_infile["char_image_specs"])))
 
     def initialize_from_scratch(self):
-        import pandas as pd
         import numpy as np
-
-        base_spec = self.char_image_specs_available.loc[0]
+        import pandas as pd
 
         # Prepare empty arrays
         self.char_image_specs = pd.DataFrame(
@@ -370,7 +368,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Fill in arrays with specs and data
         for i, char in enumerate(self.chars[:self.n_chars]):
-            row = base_spec.to_dict()
+            row = self.char_image_specs_available.loc[0].to_dict()
             row["character"] = char
             self.char_image_specs.loc[i] = row
             self.char_image_data[i] = self.image_to_data(
