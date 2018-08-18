@@ -286,7 +286,20 @@ class OCRBase(Base):
 
 class OCRCLToolBase(CLToolBase, OCRBase):
     """Base for OCR command line tools"""
-    pass
+
+    # region Builtins
+
+    def __call__(self):
+        """ Core logic """
+
+        if isinstance(self, OCRCLToolBase):
+            raise NotImplementedError("zysyzm.OCRBase class is not to "
+                                      "be used directly")
+        else:
+            raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
+                                      "method has not been implemented")
+
+    # endregion
 
 
 ################################### MODULES ###################################
