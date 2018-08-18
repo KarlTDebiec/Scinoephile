@@ -15,6 +15,12 @@ from zysyzm.ocr import OCRBase
 class OCRDataset(OCRBase):
     """Dataset for representing a collection of character images
 
+    2bit grayscale:
+        0 -> 00
+        85 -> 01
+        170 -> 10
+        256 -> 11
+
     Todo:
       - Document
       - Improve performance of image addition
@@ -374,24 +380,44 @@ class OCRDataset(OCRBase):
             pass
         elif self.image_mode == "2bit":
             img = convert_8bit_grayscale_to_2bit(img)
+        elif self.image_mode == "1bit":
+            raise NotImplementedError()
 
         return img
 
-    def generate_char_image_data(self, **kwargs):
+    def image_to_data(self, image):
         import numpy as np
 
-        img = self.generate_char_image(**kwargs)
-
         if self.image_mode == "8bit":
-            data = np.array(img)
+            data = np.array(image).flatten()
         elif self.image_mode == "2bit":
-            raw = np.array(img)
-            data = np.append(np.logical_or(raw == 85, raw == 256).flatten(),
-                             np.logical_or(raw == 170, raw == 256).flatten())
-        else:
-            data = None
+            raw = np.array(image).flatten()
+            data = np.zeros((2 * raw.size), np.bool)
+            data[0::2][np.logical_or(raw == 170, raw == 255)] = True
+            data[1::2][np.logical_or(raw == 85, raw == 255)] = True
+        elif self.image_mode == "1bit":
+            raise NotImplementedError()
 
         return data
+
+    def data_to_image(self, data):
+        import numpy as np
+        from IPython import embed
+        from PIL import Image
+
+        if self.image_mode == "8bit":
+            raise NotImplementedError()
+        elif self.image_mode == "2bit":
+            raw = np.zeros((data.size // 2), np.uint8)
+            raw[np.logical_and(data[0::2] == False, data[1::2] == True)] = 85
+            raw[np.logical_and(data[0::2] == True, data[1::2] == False)] = 170
+            raw[np.logical_and(data[0::2] == True, data[1::2] == True)] = 255
+            raw = raw.reshape((int(np.sqrt(raw.size)), int(np.sqrt(raw.size))))
+            image = Image.fromarray(raw, mode="L")
+        elif self.image_mode == "1bit":
+            raise NotImplementedError()
+
+        return image
 
     def initialize_from_hdf5(self):
         import pandas as pd
@@ -435,7 +461,7 @@ class OCRDataset(OCRBase):
         import pandas as pd
         import numpy as np
 
-        base_spec = self.char_image_specs_available.loc[0].to_dict()
+        base_spec = self.char_image_specs_available.loc[0]
 
         # Prepare empty arrays
         self.char_image_specs = pd.DataFrame(
@@ -446,10 +472,11 @@ class OCRDataset(OCRBase):
 
         # Fill in arrays with specs and data
         for i, char in enumerate(self.chars[:self.n_chars]):
-            row = base_spec.copy()
+            row = base_spec.to_dict()
             row["character"] = char
             self.char_image_specs.loc[i] = row
-            self.char_image_data[i] = self.generate_char_image_data(**row)
+            self.char_image_data[i] = self.image_to_data(
+                self.generate_char_image(**row))
 
     def save_to_hdf5(self):
         import h5py
@@ -493,5 +520,38 @@ class OCRDataset(OCRBase):
                                         data=self.char_image_data,
                                         dtype=self.image_data_dtype,
                                         chunks=True, compression="gzip")
+
+    def view_char_image(self, indexes, columns=None):
+        import numpy as np
+        from PIL import Image
+        from IPython import embed
+
+        # Process arguments
+        if isinstance(indexes, int):
+            indexes = [indexes]
+        indexes = np.array(indexes, np.int)
+        if np.any(indexes >= self.char_image_data.shape[0]):
+            raise ValueError()
+        if columns is None:
+            columns = indexes.size
+            rows = 1
+        else:
+            rows = int(np.ceil(indexes.size / columns))
+
+        # Draw image
+        image = Image.new("L", (columns * 100, rows * 100), 255)
+        for i, index in enumerate(indexes):
+            column = (i // columns)
+            row = i - (column * columns)
+            print(i, column, row, self.char_image_specs["character"].loc[index])
+            char_image = self.data_to_image(self.char_image_data[index])
+            image.paste(char_image,
+                        (100 * row + 10,
+                         100 * column + 10,
+                         100 * (row + 1) - 10,
+                         100 * (column + 1) - 10))
+        image.show()
+        embed()
+        input()
 
     # endregion

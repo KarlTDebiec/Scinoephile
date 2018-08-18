@@ -48,12 +48,13 @@ class TrainingDataGenerator(OCRCLToolBase):
         from IPython import embed
 
         dataset = OCRDataset(
-            # hdf5_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+            hdf5_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
             n_chars=self.n_chars,
-            hdf5_outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+            # hdf5_outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
             verbosity=self.verbosity)
-        dataset.add_images_of_chars("的", 10)
-        dataset.save_to_hdf5()
+        # dataset.add_images_of_chars("的", 10)
+        dataset.view_char_image([0,1,2,3,4,5,6,7,8,9,10,11,12], columns=5)
+        # dataset.save_to_hdf5()
 
     # endregion
 
