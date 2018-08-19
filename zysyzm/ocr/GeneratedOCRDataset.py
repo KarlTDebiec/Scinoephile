@@ -71,7 +71,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.read_image_dir()
 
         # Check for minimum set of images
-        self.check_initialization()
+        self.generate_minimal_images()
 
         # Output
         if self.output_hdf5 is not None:
@@ -297,54 +297,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def generate_char_image(self, char, font="Hei", size=60, width=5,
-                            x_offset=0, y_offset=0, tmpfile="/tmp/zysyzm.png"):
-        from os import remove
-        from matplotlib.font_manager import FontProperties
-        from matplotlib.patheffects import Stroke, Normal
-        from PIL import Image
-        from zysyzm.ocr import (convert_8bit_grayscale_to_2bit, trim_image,
-                                resize_image)
-
-        # Draw initial image with matplotlib
-        self._figure.clear()
-        fp = FontProperties(family=font, size=size)
-        text = self._figure.text(x=0.5, y=0.475, s=char,
-                                 ha="center", va="center",
-                                 fontproperties=fp,
-                                 color=(0.67, 0.67, 0.67))
-        text.set_path_effects([Stroke(linewidth=width,
-                                      foreground=(0.00, 0.00, 0.00)),
-                               Normal()])
-        self._figure.savefig(tmpfile, dpi=80, transparent=True)
-
-        # Reload with pillow to trim, resize, and adjust color
-        img = trim_image(Image.open(tmpfile).convert("L"), 0)
-        img = resize_image(img, (80, 80), x_offset, y_offset)
-        remove(tmpfile)
-
-        # Convert to configured format
-        if self.image_mode == "8bit":
-            pass
-        elif self.image_mode == "2bit":
-            img = convert_8bit_grayscale_to_2bit(img)
-        elif self.image_mode == "1bit":
-            raise NotImplementedError()
-
-        return img
-
-    def generate_char_images(self, chars, n_images=1):
-        """
-        Todo:
-          - Prepare empty spec and data of size len(chars) * n_images, keep
-            track of how many are actually added append once at the end
-          - Handle case in which more images are requested than specs remain
-            available
-          - Support varying number of images per character
-        """
+    def generate_additional_images(self, chars, n_images=1):
         import numpy as np
         import pandas as pd
         from random import sample
+        from zysyzm.ocr import generate_char_image
 
         if not isinstance(chars, list):
             chars = list(chars)
@@ -373,13 +330,16 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             # Prepare data
             data = np.zeros((len(queue), self._data_size), self._data_dtype)
             for i, spec in enumerate(queue):
-                data[i] = self.image_to_data(self.generate_char_image(**spec))
+                data[i] = self.image_to_data(generate_char_image(
+                    fig=self._figure, image_mode=self.image_mode, **spec))
 
             self.add_images(specs, data)
 
-    def check_initialization(self):
+    def generate_minimal_images(self):
+
         import numpy as np
         import pandas as pd
+        from zysyzm.ocr import generate_char_image
 
         if self.verbosity >= 1:
             print(f"Checking for minimal image set")
@@ -404,7 +364,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             # Prepare data
             data = np.zeros((len(queue), self._data_size), self._data_dtype)
             for i, spec in enumerate(queue):
-                data[i] = self.image_to_data(self.generate_char_image(**spec))
+                data[i] = self.image_to_data(generate_char_image(
+                    fig=self._figure, image_mode=self.image_mode, **spec))
 
             self.add_images(specs, data)
 

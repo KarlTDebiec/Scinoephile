@@ -7,17 +7,6 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-"""
-Todo:
-  - Try relocating temporary image file from /tmp/ to io.Bytes
-  - Choose and implement inheritance pattern
-  - Implement central executable that reaches out to other classes
-  - Once data is moved into hdf5, consider CLTool for browse images
-  - Implement support for treating images as float, 8-bit grayscale,
-    2-bit grayscale, or 1-bit black and white
-  - Log useful error messages
-  - Document
-"""
 ################################### MODULES ###################################
 from zysyzm import Base, CLToolBase
 
@@ -91,8 +80,8 @@ def draw_text_on_image(image, text, x=0, y=0, font="Arial.ttf", size=30):
     draw.text((x - width / 2, y - height / 2), text, font=font)
 
 
-def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
-                        border_width=5, x_offset=0, y_offset=0,
+def generate_char_image(char, fig=None, font="Hei", size=60, width=5,
+                        x_offset=0, y_offset=0, image_mode="2bit",
                         tmpfile="/tmp/zysyzm.png"):
     """
     Generates an image of a character
@@ -107,9 +96,9 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
         char (str): character to generate an image of
         fig (matplotlib.figure.Figure, optional): figure on  which to draw
           character
-        font_name (str, optional): font with which to draw character
-        font_size (int, optional): font size with which to draw character
-        border_width (int, optional: border width with which to draw character
+        font (str, optional): font with which to draw character
+        size (int, optional): font size with which to draw character
+        width (int, optional: border width with which to draw character
         x_offset (int, optional): x offset to apply to character
         y_offset (int, optional: y offset to apply to character
         tmpfile (str, option): path at which to write temporary image from
@@ -123,7 +112,7 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
 
-    # Use matplotlib to generate initial image of character
+    # Draw initial image with matplotlib
     if fig is None:
         from matplotlib.pyplot import figure
 
@@ -132,21 +121,28 @@ def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
         fig.clear()
 
     # Draw image with matplotlib
-    font = FontProperties(family=font_name, size=font_size)
+    fp = FontProperties(family=font, size=size)
     text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
-                    fontproperties=font, color=(0.67, 0.67, 0.67))
-    text.set_path_effects([Stroke(linewidth=border_width,
+                    fontproperties=fp, color=(0.67, 0.67, 0.67))
+    text.set_path_effects([Stroke(linewidth=width,
                                   foreground=(0.00, 0.00, 0.00)),
                            Normal()])
     fig.savefig(tmpfile, dpi=80, transparent=True)
 
     # Reload with pillow to trim, resize, and adjust color
-    img = trim_image(Image.open(tmpfile).convert("L"), 0)
-    img = resize_image(img, (80, 80), x_offset, y_offset)
-    img = convert_8bit_grayscale_to_2bit(img)
+    image = trim_image(Image.open(tmpfile).convert("L"), 0)
+    image = resize_image(image, (80, 80), x_offset, y_offset)
     remove(tmpfile)
 
-    return img
+    # Convert to configured format
+    if image_mode == "8bit":
+        pass
+    elif image_mode == "2bit":
+        image = convert_8bit_grayscale_to_2bit(image)
+    elif image_mode == "1bit":
+        raise NotImplementedError()
+
+    return image
 
 
 def trim_image(image, background_color=None):
@@ -200,7 +196,12 @@ def resize_image(image, new_size, x_offset=0, y_offset=0):
 
 ################################### CLASSES ###################################
 class OCRBase(Base):
-    """Base for OCR-related classes"""
+    """
+    Base for OCR classes
+
+    Todo:
+      - [ ] Support western characters and punctuation
+    """
 
     # region Builtins
 
@@ -234,7 +235,7 @@ class OCRBase(Base):
 
     # endregion
 
-    # region Methods
+    # region Public Methods
 
     def chars_to_labels(self, chars):
         """
@@ -290,7 +291,7 @@ class OCRCLToolBase(CLToolBase, OCRBase):
     # region Builtins
 
     def __call__(self):
-        """ Core logic """
+        """Core logic"""
 
         if isinstance(self, OCRCLToolBase):
             raise NotImplementedError("zysyzm.OCRBase class is not to "
@@ -307,3 +308,4 @@ from zysyzm.ocr.OCRDataset import OCRDataset
 from zysyzm.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
 from zysyzm.ocr.LabeledOCRDataset import LabeledOCRDataset
 from zysyzm.ocr.GeneratedOCRDataset import GeneratedOCRDataset
+from zysyzm.ocr.AutoTrainer import AutoTrainer
