@@ -80,7 +80,8 @@ class OCRDataset(OCRCLToolBase):
     def char_image_specs(self, value):
         # Todo: Validate
         self._char_image_specs = value
-        delattr(self, "_char_image_specs_set")
+        if hasattr(self, "_char_image_specs_set"):
+            delattr(self, "_char_image_specs_set")
 
     @property
     def char_image_specs_set(self):
@@ -302,17 +303,6 @@ class OCRDataset(OCRCLToolBase):
         import h5py
         import numpy as np
 
-        def clean_spec_for_pandas(row):
-            """
-            Processes spec for pandas
-
-            - Converted into a tuple for pandas to build DataFrame
-            - Characters converted from integers back to unicode. hdf5 and
-              numpy's unicode support do not cooperate well, and this is the
-              least painful solution.
-            """
-            return tuple([chr(row[0])] + list(row)[1:])
-
         if self.verbosity >= 1:
             print(f"Reading data from '{self.input_hdf5}'")
         with h5py.File(self.input_hdf5) as hdf5_infile:
@@ -321,19 +311,22 @@ class OCRDataset(OCRCLToolBase):
             if "char_image_data" not in hdf5_infile:
                 raise ValueError()
 
-            # Load configuration
+            # Load configuration (Todo: Validate that mode matches current)
             self.image_mode = hdf5_infile.attrs["mode"]
 
-            # Load character image data
-            self.char_image_data = np.array(hdf5_infile["char_image_data"])
+            # Load specs
+            formatter = self._read_hdf5_spec_formatter(
+                hdf5_infile["char_image_specs"].dtype.names)
+            char_image_specs = pd.DataFrame(
+                data=list(map(formatter,
+                              np.array(hdf5_infile["char_image_specs"]))),
+                index=range(hdf5_infile["char_image_specs"].size),
+                columns=hdf5_infile["char_image_specs"].dtype.names)
 
-            # Load character image specification
-            self.char_image_specs = pd.DataFrame(
-                index=range(self.char_image_data.shape[0]),
-                columns=self.char_image_specs.columns.values)
-            self.char_image_specs[:] = list(map(
-                clean_spec_for_pandas,
-                np.array(hdf5_infile["char_image_specs"])))
+            # Load data
+            char_image_data = np.array(hdf5_infile["char_image_data"])
+
+        self.add_char_images(char_image_specs, char_image_data)
 
     def read_image_directory(self):
         import numpy as np
@@ -344,8 +337,8 @@ class OCRDataset(OCRCLToolBase):
             print(f"Reading images from '{self.input_image_directory}'")
         infiles = self._read_image_directory_infiles(
             self.input_image_directory)
-
-        new_char_image_data = np.zeros(
+        char_image_specs = self._read_image_directory_specs(infiles)
+        char_image_data = np.zeros(
             (len(infiles), self.image_data_size), self.image_data_dtype)
         for i, infile in enumerate(infiles):
             image = Image.open(infile)
@@ -355,10 +348,9 @@ class OCRDataset(OCRCLToolBase):
                 image = convert_8bit_grayscale_to_2bit(image)
             elif self.image_mode == "1bit":
                 raise NotImplementedError()
-            new_char_image_data[i] = self.image_to_data(image)
-        new_char_image_specs = self._read_image_directory_specs(infiles)
+            char_image_data[i] = self.image_to_data(image)
 
-        self.add_char_images(new_char_image_specs, new_char_image_data)
+        self.add_char_images(char_image_specs, char_image_data)
 
     def show_char_images(self, indexes, columns=None):
         import numpy as np
@@ -405,33 +397,34 @@ class OCRDataset(OCRCLToolBase):
             # Save configuration
             hdf5_outfile.attrs["mode"] = self.image_mode
 
-            # Save character image specifications
-            char_image_specs = list(map(self._output_hdf5_spec_format,
-                                        self.char_image_specs.values))
-            dtypes = self._output_hdf5_spec_dtypes()
-            char_image_specs = np.array(char_image_specs, dtype=dtypes)
-            hdf5_outfile.create_dataset("char_image_specs",
-                                        data=char_image_specs,
-                                        dtype=dtypes,
-                                        chunks=True, compression="gzip")
+            # Save specs
+            formatter = self._write_hdf5_spec_formatter(
+                self.char_image_specs.columns.values)
+            dtypes = self._write_hdf5_spec_dtypes(
+                self.char_image_specs.columns.values)
+            hdf5_outfile.create_dataset(
+                "char_image_specs",
+                data=np.array(list(map(formatter,
+                                       self.char_image_specs.values)),
+                              dtype=dtypes),
+                dtype=dtypes,
+                chunks=True,
+                compression="gzip")
 
-            # Save character image data
-            hdf5_outfile.create_dataset("char_image_data",
-                                        data=self.char_image_data,
-                                        dtype=self.image_data_dtype,
-                                        chunks=True,
-                                        compression="gzip")
+            # Save data
+            hdf5_outfile.create_dataset(
+                "char_image_data",
+                data=self.char_image_data,
+                dtype=self.image_data_dtype,
+                chunks=True,
+                compression="gzip")
 
     # endregion
 
     # Private Methods
 
-    def _output_hdf5_spec_format(self, spec):
+    def _read_hdf5_spec_formatter(self, columns):
         """Formats spec for compatibility with both numpy and h5py"""
-        raise NotImplementedError()
-
-    def _output_hdf5_spec_dtypes(self):
-        """Provides spec dtypes for compatibility with both numpy and h5py"""
         raise NotImplementedError()
 
     def _read_image_directory_infiles(self, path):
@@ -440,6 +433,14 @@ class OCRDataset(OCRCLToolBase):
 
     def _read_image_directory_specs(self, infiles):
         """Provides specs of infiles"""
+        raise NotImplementedError()
+
+    def _write_hdf5_spec_dtypes(self, columns):
+        """Provides spec dtypes compatible with both numpy and h5py"""
+        raise NotImplementedError()
+
+    def _write_hdf5_spec_formatter(self, columns):
+        """Provides spec formatter compatible with both numpy and h5py"""
         raise NotImplementedError()
 
     # endregion

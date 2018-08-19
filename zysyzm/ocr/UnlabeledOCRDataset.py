@@ -21,7 +21,7 @@ class UnlabeledOCRDataset(OCRDataset):
       - [x] Read image directory
       - [x] Add images
       - [x] Write hdf5
-      - [ ] Read hdf5
+      - [x] Read hdf5
       - [ ] Write image directory
       - [ ] Document
     """
@@ -37,10 +37,12 @@ class UnlabeledOCRDataset(OCRDataset):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.input_image_directory = \
-            "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
-        self.output_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
+        # self.input_image_directory = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
+        # self.input_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
+        # self.output_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
 
     def __call__(self):
         """ Core logic """
@@ -74,60 +76,24 @@ class UnlabeledOCRDataset(OCRDataset):
 
     # endregion
 
-    # region Public Methods
-
-    def read_hdf5(self):
-        import pandas as pd
-        import h5py
-        import numpy as np
-
-        def clean_spec_for_pandas(row):
-            """
-            Processes spec for pandas
-
-            - Converted into a tuple for pandas to build DataFrame
-            - Characters converted from integers back to unicode. hdf5 and
-              numpy's unicode support do not cooperate well, and this is the
-              least painful solution.
-            """
-            return tuple([chr(row[0])] + list(row)[1:])
-
-        if self.verbosity >= 1:
-            print(f"Reading data from '{self.input_hdf5}'")
-        with h5py.File(self.input_hdf5) as hdf5_infile:
-            if "char_image_specs" not in hdf5_infile:
-                raise ValueError()
-            if "char_image_data" not in hdf5_infile:
-                raise ValueError()
-
-            # Load configuration
-            self.image_mode = hdf5_infile.attrs["mode"]
-
-            # Load character image data
-            self.char_image_data = np.array(hdf5_infile["char_image_data"])
-
-            # Load character image specification
-            self.char_image_specs = pd.DataFrame(
-                index=range(self.char_image_data.shape[0]),
-                columns=self.char_image_specs.columns.values)
-            self.char_image_specs[:] = list(map(
-                clean_spec_for_pandas,
-                np.array(hdf5_infile["char_image_specs"])))
-
-    # endregion
-
     # Private Methods
 
-    def _output_hdf5_spec_format(self, spec):
+    def _read_hdf5_spec_formatter(self, columns):
         """Formats spec for compatibility with both numpy and h5py"""
-        return tuple(spec)
+        columns = list(columns)
 
-    def _output_hdf5_spec_dtypes(self):
-        """Provides spec dtypes for compatibility with both numpy and h5py"""
-        dtypes = {"path": "S255"}
-        return list(zip(self.char_image_specs.columns.values,
-                        [dtypes[k] for k in
-                         list(self.char_image_specs.columns.values)]))
+        if "path" in columns:
+            path_index = columns.index("path")
+
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].decode("utf8")
+                return tuple(x)
+        else:
+            def func(x):
+                return tuple(x)
+
+        return func
 
     def _read_image_directory_infiles(self, path):
         """Provides infiles within path"""
@@ -142,6 +108,28 @@ class UnlabeledOCRDataset(OCRDataset):
         return pd.DataFrame(data=infiles,
                             index=range(len(infiles)),
                             columns=self.char_image_spec_columns)
+
+    def _write_hdf5_spec_dtypes(self, columns):
+        """Provides spec dtypes compatible with both numpy and h5py"""
+        dtypes = {"path": "S255"}
+        return list(zip(columns, [dtypes[k] for k in columns]))
+
+    def _write_hdf5_spec_formatter(self, columns):
+        """Provides spec formatter compatible with both numpy and h5py"""
+        columns = list(columns)
+
+        if "path" in columns:
+            path_index = columns.index("path")
+
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].encode("utf8")
+                return tuple(x)
+        else:
+            def func(x):
+                return tuple(x)
+
+        return func
 
     # endregion
 

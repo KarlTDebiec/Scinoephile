@@ -21,7 +21,7 @@ class LabeledOCRDataset(OCRDataset):
       - [x] Read image directory
       - [x] Add images
       - [x] Write hdf5
-      - [ ] Read hdf5
+      - [x] Read hdf5
       - [ ] Write image directory
       - [ ] Document
     """
@@ -37,10 +37,12 @@ class LabeledOCRDataset(OCRDataset):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.input_image_directory = \
-            "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        self.output_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
+        # self.input_image_directory = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/tst"
+        # self.input_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
+        # self.output_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
 
     def __call__(self):
         """ Core logic """
@@ -76,32 +78,38 @@ class LabeledOCRDataset(OCRDataset):
 
     # Private Methods
 
-    def _output_hdf5_spec_format(self, row):
-        """
-        Formats spec for compatibility with both numpy and h5py
+    def _read_hdf5_spec_formatter(self, columns):
+        """Formats spec for compatibility with both numpy and h5py"""
+        columns = list(columns)
 
-        - Converted into a tuple for numpy to build a record array
-        - Characters converted from unicode strings to integers. hdf5 and
-          numpy's unicode support do not cooperate well, and this is the
-          least painful solution.
-        """
-        row = list(row)
-        if "path" in self.char_image_specs.columns.values:
-            path_index = list(
-                self.char_image_specs.columns.values).index("path")
-            row[path_index] = row[path_index].encode("utf8")
-        if "character" in self.char_image_specs.columns.values:
-            char_index = list(
-                self.char_image_specs.columns.values).index("character")
-            row[char_index] = row[char_index].encode("utf8")
-        return tuple(row)
+        if "path" in columns and "character" in columns:
+            path_index = columns.index("path")
+            character_index = columns.index("character")
 
-    def _output_hdf5_spec_dtypes(self):
-        """Provides spec dtypes for compatibility with both numpy and h5py"""
-        dtypes = {"path": "S255", "character": "S3"}
-        return list(zip(self.char_image_specs.columns.values,
-                        [dtypes[k] for k in
-                         list(self.char_image_specs.columns.values)]))
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].decode("utf8")
+                x[character_index] = x[character_index].decode("utf8")
+                return tuple(x)
+        elif "path" in columns:
+            path_index = columns.index("path")
+
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].decode("utf8")
+                return tuple(x)
+        elif "character" in columns:
+            character_index = columns.index("character")
+
+            def func(x):
+                x = list(x)
+                x[character_index] = x[character_index].decode("utf8")
+                return tuple(x)
+        else:
+            def func(x):
+                return tuple(x)
+
+        return func
 
     def _read_image_directory_infiles(self, path):
         """Provides infiles within path"""
@@ -120,6 +128,44 @@ class LabeledOCRDataset(OCRDataset):
         return pd.DataFrame(data=np.array([infiles, chars]).transpose(),
                             index=range(len(infiles)),
                             columns=self.char_image_spec_columns)
+
+    def _write_hdf5_spec_dtypes(self, columns):
+        """Provides spec dtypes compatible with both numpy and h5py"""
+        dtypes = {"path": "S255", "character": "S3"}
+        return list(zip(columns, [dtypes[k] for k in columns]))
+
+    def _write_hdf5_spec_formatter(self, columns):
+        """Provides spec formatter compatible with both numpy and h5py"""
+        columns = list(columns)
+
+        if "path" in columns and "character" in columns:
+            path_index = columns.index("path")
+            character_index = columns.index("character")
+
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].encode("utf8")
+                x[character_index] = x[character_index].encode("utf8")
+                return tuple(x)
+        elif "path" in columns:
+            path_index = columns.index("path")
+
+            def func(x):
+                x = list(x)
+                x[path_index] = x[path_index].encode("utf8")
+                return tuple(x)
+        elif "character" in columns:
+            character_index = columns.index("character")
+
+            def func(x):
+                x = list(x)
+                x[character_index] = x[character_index].encode("utf8")
+                return tuple(x)
+        else:
+            def func(x):
+                return tuple(x)
+
+        return func
 
     # endregion
 
