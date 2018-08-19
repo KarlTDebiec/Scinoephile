@@ -363,21 +363,10 @@ class OCRDataset(OCRCLToolBase):
         import h5py
         import numpy as np
 
-        def clean_spec_for_hdf5(row):
-            """
-            Processes specification for numpy and h5py
-
-            - Converted into a tuple for numpy to build a record array
-            - Characters converted from unicode strings to integers. hdf5 and
-              numpy's unicode support do not cooperate well, and this is the
-              least painful solution.
-            """
-            return tuple([ord(row[0])] + list(row[1:]))
-
         if self.verbosity >= 1:
-            print(f"Saving data to '{self.output_hdf5}'")
+            print(f"Writing data to '{self.output_hdf5}'")
         with h5py.File(self.output_hdf5) as hdf5_outfile:
-            # Remove prior data
+            # Remove preexisting data
             if "char_image_data" in hdf5_outfile:
                 del hdf5_outfile["char_image_data"]
             if "char_image_specs" in hdf5_outfile:
@@ -387,20 +376,22 @@ class OCRDataset(OCRCLToolBase):
             hdf5_outfile.attrs["mode"] = self.image_mode
 
             # Save character image specifications
-            char_image_specs = list(map(clean_spec_for_hdf5,
+            char_image_specs = list(map(self._output_hdf5_spec_format,
                                         self.char_image_specs.values))
-            dtypes = list(zip(self.char_image_specs.columns.values,
-                              ["i4", "S10", "i1", "i1", "i1", "i1"]))
+            dtypes = self._output_hdf5_spec_dtypes()
+
             char_image_specs = np.array(char_image_specs, dtype=dtypes)
             hdf5_outfile.create_dataset("char_image_specs",
-                                        data=char_image_specs, dtype=dtypes,
+                                        data=char_image_specs,
+                                        dtype=dtypes,
                                         chunks=True, compression="gzip")
 
             # Save character image data
             hdf5_outfile.create_dataset("char_image_data",
                                         data=self.char_image_data,
                                         dtype=self.image_data_dtype,
-                                        chunks=True, compression="gzip")
+                                        chunks=True,
+                                        compression="gzip")
 
     def show_char_images(self, indexes, columns=None):
         import numpy as np
@@ -434,6 +425,12 @@ class OCRDataset(OCRCLToolBase):
     # endregion
 
     # Private Methods
+
+    def _output_hdf5_spec_format(self, row):
+        raise NotImplementedError()
+
+    def _output_hdf5_spec_dtypes(self):
+        raise NotImplementedError()
 
     def _read_image_directory_infiles(self, path):
         raise NotImplementedError()

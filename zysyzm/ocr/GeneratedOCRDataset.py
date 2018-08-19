@@ -386,35 +386,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                                         dtype=self.image_data_dtype,
                                         chunks=True, compression="gzip")
 
-    def view_char_image(self, indexes, columns=None):
-        import numpy as np
-        from PIL import Image
-
-        # Process arguments
-        if isinstance(indexes, int):
-            indexes = [indexes]
-        indexes = np.array(indexes, np.int)
-        if np.any(indexes >= self.char_image_data.shape[0]):
-            raise ValueError()
-        if columns is None:
-            columns = indexes.size
-            rows = 1
-        else:
-            rows = int(np.ceil(indexes.size / columns))
-
-        # Draw image
-        image = Image.new("L", (columns * 100, rows * 100), 255)
-        for i, index in enumerate(indexes):
-            column = (i // columns)
-            row = i - (column * columns)
-            char_image = self.data_to_image(self.char_image_data[index])
-            image.paste(char_image,
-                        (100 * row + 10,
-                         100 * column + 10,
-                         100 * (row + 1) - 10,
-                         100 * (column + 1) - 10))
-        image.show()
-
     def output_char_image(self, char, font_name="Hei", font_size=60,
                           border_width=5, x_offset=0, y_offset=0, **kwargs):
         """
@@ -455,6 +426,12 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # endregion
 
     # Private Methods
+
+    def _output_hdf5_spec_format(self, row):
+        raise NotImplementedError()
+
+    def _output_hdf5_spec_dtypes(self):
+        raise NotImplementedError()
 
     def _read_image_directory_infiles(self, path):
         from glob import iglob

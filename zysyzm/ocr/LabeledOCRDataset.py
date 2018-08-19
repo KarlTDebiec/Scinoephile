@@ -67,11 +67,13 @@ class LabeledOCRDataset(OCRDataset):
 
     # endregion
 
-    # region Methods
-
-    # endregion
-
     # Private Methods
+
+    def _output_hdf5_spec_format(self, row):
+        raise NotImplementedError()
+
+    def _output_hdf5_spec_dtypes(self):
+        raise NotImplementedError()
 
     def _read_image_directory_infiles(self, path):
         from glob import iglob
