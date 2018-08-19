@@ -402,7 +402,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # endregion
 
-    # Private Methods
+    # region Private Methods
 
     def _get_hdf5_input_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
