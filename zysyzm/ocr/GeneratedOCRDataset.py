@@ -16,17 +16,22 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     """Represents a collection of generated character images
 
     Todo:
-      - Refactor
-      - Support for creation of training and validaiton datasets, with at
-        least on image of each character in each
-      - Document
+      - [ ] Read image directory
+      - [ ] Add images
+      - [ ] Write hdf5
+      - [ ] Initialize
+      - [ ] Read hdf5
+      - [ ] Write image directory
+      - [ ] Support creation of training and validation datasets, with at
+            least on image of each character in each
+      - [ ] Document
     """
 
     # region Builtins
 
     def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, hdf5_infile=None,
-                 hdf5_outfile=None, image_mode=None, n_chars=None, **kwargs):
+                 font_x_offsets=None, font_y_offsets=None, image_mode=None,
+                 n_chars=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
@@ -40,26 +45,36 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._font_x_offsets = font_x_offsets
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
-        if hdf5_infile is not None:
-            self.input_hdf5 = hdf5_infile
-        if image_mode is not None:
-            self.image_mode = image_mode
         if n_chars is not None:
             self.n_chars = n_chars
-        if hdf5_infile is not None:
-            self.input_hdf5 = hdf5_infile
-        if hdf5_outfile is not None:
-            self.output_hdf5 = hdf5_outfile
+
+    def __call__(self):
+        """ Core logic """
 
         # Initialize
         if self.input_hdf5 is not None:
             self.read_hdf5()
-        else:
-            self.initialize_from_scratch()
+        if self.input_image_directory is not None:
+            self.read_image_directory()
+        self.initialize_from_scratch()
+
+        # Present IPython prompt
+        if self.interactive:
+            self.embed()
 
     # endregion
 
     # region Properties
+
+    @property
+    def char_image_spec_columns(self):
+        """list(str): Character image specification columns"""
+
+        if hasattr(self, "_char_image_specs"):
+            return self.char_image_specs.columns.values
+        else:
+            return ["character", "font", "size", "width", "x_offset",
+                    "y_offset"]
 
     @property
     def char_image_specs_available(self):
@@ -80,22 +95,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     def char_image_specs_available(self, value):
         # Todo: Validate
         self._char_image_specs_available = value
-
-    @property
-    def char_image_specs(self):
-        """pandas.DataFrame: Character image specifications"""
-        if not hasattr(self, "_char_image_specs"):
-            import pandas as pd
-
-            self._char_image_specs = pd.DataFrame(
-                columns=["character", "font", "size", "width", "x_offset",
-                         "y_offset"])
-        return self._char_image_specs
-
-    @char_image_specs.setter
-    def char_image_specs(self, value):
-        # Todo: Validate
-        self._char_image_specs = value
 
     @property
     def figure(self):
@@ -283,40 +282,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         return img
 
-    def image_to_data(self, image):
-        import numpy as np
-
-        if self.image_mode == "8bit":
-            data = np.array(image).flatten()
-        elif self.image_mode == "2bit":
-            raw = np.array(image).flatten()
-            data = np.zeros((2 * raw.size), np.bool)
-            data[0::2][np.logical_or(raw == 170, raw == 255)] = True
-            data[1::2][np.logical_or(raw == 85, raw == 255)] = True
-        elif self.image_mode == "1bit":
-            raise NotImplementedError()
-
-        return data
-
-    def data_to_image(self, data):
-        import numpy as np
-        from IPython import embed
-        from PIL import Image
-
-        if self.image_mode == "8bit":
-            raise NotImplementedError()
-        elif self.image_mode == "2bit":
-            raw = np.zeros((data.size // 2), np.uint8)
-            raw[np.logical_and(data[0::2] == False, data[1::2] == True)] = 85
-            raw[np.logical_and(data[0::2] == True, data[1::2] == False)] = 170
-            raw[np.logical_and(data[0::2] == True, data[1::2] == True)] = 255
-            raw = raw.reshape((int(np.sqrt(raw.size)), int(np.sqrt(raw.size))))
-            image = Image.fromarray(raw, mode="L")
-        elif self.image_mode == "1bit":
-            raise NotImplementedError()
-
-        return image
-
     def read_hdf5(self):
         import pandas as pd
         import h5py
@@ -484,3 +449,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             print(f"Wrote '{outfile}'")
 
     # endregion
+
+
+#################################### MAIN #####################################
+if __name__ == "__main__":
+    GeneratedOCRDataset.main()

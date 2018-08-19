@@ -17,11 +17,10 @@ class UnlabeledOCRDataset(OCRDataset):
 
     Todo:
       - [x] Read image directory
+      - [x] Add images
       - [ ] Write hdf5
       - [ ] Read hdf5
       - [ ] Write image directory
-      - [ ] Refactor
-      - [ ] Read in unlabeled data
       - [ ] Document
     """
 
@@ -41,7 +40,6 @@ class UnlabeledOCRDataset(OCRDataset):
 
     def __call__(self):
         """ Core logic """
-        from IPython import embed
 
         # Initialize
         if self.input_hdf5 is not None:
@@ -51,7 +49,7 @@ class UnlabeledOCRDataset(OCRDataset):
 
         # Present IPython prompt
         if self.interactive:
-            embed()
+            self.embed()
 
     # endregion
 
@@ -68,7 +66,8 @@ class UnlabeledOCRDataset(OCRDataset):
 
     # endregion
 
-    # region Methods
+    # region Public Methods
+
     def read_hdf5(self):
         import pandas as pd
         import h5py
@@ -107,37 +106,6 @@ class UnlabeledOCRDataset(OCRDataset):
                 clean_spec_for_pandas,
                 np.array(hdf5_infile["char_image_specs"])))
 
-    def read_image_directory(self):
-        import numpy as np
-        import pandas as pd
-        from glob import iglob
-        from PIL import Image
-        from zysyzm.ocr import convert_8bit_grayscale_to_2bit
-
-        if self.verbosity >= 1:
-            print(f"Reading images from '{self.input_image_directory}'")
-        infiles = sorted(iglob(
-            f"{self.input_image_directory}/**/[0-9][0-9].png", recursive=True))
-
-        new_char_image_data = np.zeros(
-            (len(infiles), self.image_data_size), self.image_data_dtype)
-
-        for i, infile in enumerate(infiles):
-            image = Image.open(infile)
-            if self.image_mode == "8bit":
-                pass
-            elif self.image_mode == "2bit":
-                image = convert_8bit_grayscale_to_2bit(image)
-            elif self.image_mode == "1bit":
-                raise NotImplementedError()
-
-            new_char_image_data[i] = self.image_to_data(image)
-        new_char_image_specs = pd.DataFrame(
-            data=infiles, index=range(len(infiles)),
-            columns=self.char_image_spec_columns)
-
-        self.add_char_images(new_char_image_specs, new_char_image_data)
-
     def write_hdf5(self):
         import h5py
         import numpy as np
@@ -172,6 +140,22 @@ class UnlabeledOCRDataset(OCRDataset):
                                         data=self.char_image_data,
                                         dtype=self.image_data_dtype,
                                         chunks=True, compression="gzip")
+
+    # endregion
+
+    # Private Methods
+
+    def _read_image_directory_infiles(self, path):
+        from glob import iglob
+
+        return sorted(iglob(f"{path}/**/[0-9][0-9].png", recursive=True))
+
+    def _read_image_directory_specs(self, infiles):
+        import pandas as pd
+
+        return pd.DataFrame(data=infiles,
+                            index=range(len(infiles)),
+                            columns=self.char_image_spec_columns)
 
     # endregion
 

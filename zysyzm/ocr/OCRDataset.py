@@ -91,7 +91,14 @@ class OCRDataset(OCRCLToolBase):
 
     @char_image_data.setter
     def char_image_data(self, value):
-        # Todo: Validate
+        import numpy as np
+
+        if not isinstance(value, np.ndarray):
+            raise ValueError()
+        if value.shape[1] != self.image_data_size:
+            raise ValueError()
+        if value.dtype != self.image_data_dtype:
+            raise ValueError()
         self._char_image_data = value
 
     @property
@@ -240,6 +247,8 @@ class OCRDataset(OCRCLToolBase):
 
         new = np.logical_not(
             np.isin(char_image_specs, self.char_image_specs.values).flatten())
+
+        self.embed()
         self.char_image_specs = self.char_image_specs.append(
             char_image_specs.loc[new], ignore_index=True)
         self.char_image_data = np.append(
@@ -316,6 +325,31 @@ class OCRDataset(OCRCLToolBase):
                 clean_spec_for_pandas,
                 np.array(hdf5_infile["char_image_specs"])))
 
+    def read_image_directory(self):
+        import numpy as np
+        from PIL import Image
+        from zysyzm.ocr import convert_8bit_grayscale_to_2bit
+
+        if self.verbosity >= 1:
+            print(f"Reading images from '{self.input_image_directory}'")
+        infiles = self._read_image_directory_infiles(
+            self.input_image_directory)
+
+        new_char_image_data = np.zeros(
+            (len(infiles), self.image_data_size), self.image_data_dtype)
+        for i, infile in enumerate(infiles):
+            image = Image.open(infile)
+            if self.image_mode == "8bit":
+                pass
+            elif self.image_mode == "2bit":
+                image = convert_8bit_grayscale_to_2bit(image)
+            elif self.image_mode == "1bit":
+                raise NotImplementedError()
+            new_char_image_data[i] = self.image_to_data(image)
+        new_char_image_specs = self._read_image_directory_specs(infiles)
+
+        self.add_char_images(new_char_image_specs, new_char_image_data)
+
     def write_hdf5(self):
         import h5py
         import numpy as np
@@ -359,7 +393,7 @@ class OCRDataset(OCRCLToolBase):
                                         dtype=self.image_data_dtype,
                                         chunks=True, compression="gzip")
 
-    def view_char_image(self, indexes, columns=None):
+    def show_char_images(self, indexes, columns=None):
         import numpy as np
         from PIL import Image
 
@@ -387,5 +421,15 @@ class OCRDataset(OCRCLToolBase):
                          100 * (row + 1) - 10,
                          100 * (column + 1) - 10))
         image.show()
+
+    # endregion
+
+    # Private Methods
+
+    def _read_image_directory_infiles(self, path):
+        raise NotImplementedError()
+
+    def _read_image_directory_specs(self, infiles):
+        raise NotImplementedError()
 
     # endregion
