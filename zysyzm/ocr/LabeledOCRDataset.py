@@ -18,7 +18,7 @@ class LabeledOCRDataset(OCRDataset):
 
     Todo:
       - [x] Read image directory
-      - [ ] Add images
+      - [x] Add images
       - [ ] Write hdf5
       - [ ] Read hdf5
       - [ ] Write image directory

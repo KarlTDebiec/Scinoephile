@@ -17,8 +17,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     """Represents a collection of generated character images
 
     Todo:
-      - [ ] Read image directory
-      - [ ] Add images
+      - [x] Read image directory
+      - [x] Add images
       - [ ] Write hdf5
       - [ ] Initialize
       - [ ] Read hdf5
@@ -31,8 +31,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # region Builtins
 
     def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, image_mode=None,
-                 n_chars=None, **kwargs):
+                 font_x_offsets=None, font_y_offsets=None, n_chars=None,
+                 **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
@@ -49,6 +49,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if n_chars is not None:
             self.n_chars = n_chars
 
+        self.input_image_directory = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn"
+
     def __call__(self):
         """ Core logic """
 
@@ -57,7 +60,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.read_hdf5()
         if self.input_image_directory is not None:
             self.read_image_directory()
-        self.initialize_from_scratch()
+        # self.initialize_from_scratch()
 
         # Present IPython prompt
         if self.interactive:
@@ -74,7 +77,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if hasattr(self, "_char_image_specs"):
             return self.char_image_specs.columns.values
         else:
-            return ["character", "font", "size", "width", "x_offset",
+            return ["path", "character", "font", "size", "width", "x_offset",
                     "y_offset"]
 
     @property
@@ -448,6 +451,49 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         img.save(outfile)
         if self.verbosity >= 2:
             print(f"Wrote '{outfile}'")
+
+    # endregion
+
+    # Private Methods
+
+    def _read_image_directory_infiles(self, path):
+        from glob import iglob
+
+        return sorted(iglob(f"{path}/**/*.png", recursive=True))
+
+    def _read_image_directory_specs(self, infiles):
+        import numpy as np
+        import pandas as pd
+        from os.path import basename
+
+        chars = list(map(
+            lambda x: basename(x).split("_")[0],
+            infiles))
+        sizes = list(map(
+            lambda x: int(basename(x).split("_")[1]),
+            infiles))
+        widths = list(map(
+            lambda x: int(basename(x).split("_")[2]),
+            infiles))
+        x_offsets = list(map(
+            lambda x: int(basename(x).split("_")[3]),
+            infiles))
+        y_offsets = list(map(
+            lambda x: int(basename(x).split("_")[4]),
+            infiles))
+        fonts = list(map(
+            lambda x: basename(x).split("_")[5].split(".")[0],
+            infiles))
+
+        data = np.array([infiles, chars, fonts, sizes,
+                         widths, x_offsets, y_offsets]
+                        ).transpose()
+
+        return pd.DataFrame(data=np.array([infiles, chars, fonts, sizes,
+                                           widths, x_offsets, y_offsets]
+                                          ).transpose(),
+                            index=range(len(infiles)),
+                            columns=self.char_image_spec_columns)
 
     # endregion
 

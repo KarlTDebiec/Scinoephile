@@ -79,6 +79,14 @@ class OCRDataset(OCRCLToolBase):
     def char_image_specs(self, value):
         # Todo: Validate
         self._char_image_specs = value
+        delattr(self, "_char_image_specs_set")
+
+    @property
+    def char_image_specs_set(self):
+        if not hasattr(self, "_char_image_specs_set"):
+            self._char_image_specs_set = set(
+                list(map(tuple, self.char_image_specs.values)))
+        return self._char_image_specs_set
 
     @property
     def char_image_data(self):
@@ -246,12 +254,9 @@ class OCRDataset(OCRCLToolBase):
     def add_char_images(self, char_image_specs, char_image_data):
         import numpy as np
 
-        old_specs = set(list(map(tuple, self.char_image_specs.values)))
-
-        def is_new(row):
-            return tuple(row.values) not in old_specs
-
-        new = char_image_specs.apply(is_new, axis=1).values
+        new = char_image_specs.apply(
+            lambda x: tuple(x.values) not in self.char_image_specs_set,
+            axis=1).values
 
         self.char_image_specs = self.char_image_specs.append(
             char_image_specs.loc[new], ignore_index=True)
