@@ -53,13 +53,13 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.input_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
+        # self.input_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         # self.output_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         # self.output_image_dir = \
         #     "/Users/kdebiec/Desktop/generated"
-        self.n_chars = 10000
+        self.n_chars = 100
 
     def __call__(self):
         """ Core logic """
@@ -103,10 +103,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 except Exception as e:
                     raise ValueError()
         self._font_names = value
-        if hasattr(self, "_draw_specs_available_"):
-            delattr(self, "_draw_specs_available_")
-        if hasattr(self, "_draw_specs_minimal_"):
-            delattr(self, "_draw_specs_minimal_")
+        self._clear_private_property_caches()
 
     @property
     def font_sizes(self):
@@ -124,10 +121,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 except Exception as e:
                     raise ValueError()
         self._font_sizes = value
-        if hasattr(self, "_draw_specs_available_"):
-            delattr(self, "_draw_specs_available_")
-        if hasattr(self, "_draw_specs_minimal_"):
-            delattr(self, "_draw_specs_minimal_")
+        self._clear_private_property_caches()
 
     @property
     def font_widths(self):
@@ -145,10 +139,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 except Exception as e:
                     raise ValueError()
         self._font_widths = value
-        if hasattr(self, "_draw_specs_available_"):
-            delattr(self, "_draw_specs_available_")
-        if hasattr(self, "_draw_specs_minimal_"):
-            delattr(self, "_draw_specs_minimal_")
+        self._clear_private_property_caches()
 
     @property
     def font_x_offsets(self):
@@ -166,10 +157,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 except Exception as e:
                     raise ValueError()
         self._font_x_offsets = value
-        if hasattr(self, "_draw_specs_available_"):
-            delattr(self, "_draw_specs_available_")
-        if hasattr(self, "_draw_specs_minimal_"):
-            delattr(self, "_draw_specs_minimal_")
+        self._clear_private_property_caches()
 
     @property
     def font_y_offsets(self):
@@ -187,10 +175,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 except Exception as e:
                     raise ValueError()
         self._font_y_offsets = value
-        if hasattr(self, "_draw_specs_available_"):
-            delattr(self, "_draw_specs_available_")
-        if hasattr(self, "_draw_specs_minimal_"):
-            delattr(self, "_draw_specs_minimal_")
+        self._clear_private_property_caches()
 
     @property
     def n_chars(self):
@@ -270,6 +255,13 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return self._draw_specs_available_
 
     @property
+    def _draw_specs_available_set(self):
+        if not hasattr(self, "_draw_specs_available_set_"):
+            self._draw_specs_available_set_ = set(
+                map(tuple, self._draw_specs_available.values))
+        return self._draw_specs_available_set_
+
+    @property
     def _draw_specs_minimal(self):
         """pandas.DataFrame: Available character image specifications"""
         if not hasattr(self, "_draw_specs_minimal_"):
@@ -294,43 +286,16 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         return self._draw_specs_minimal_
 
+    @property
+    def _draw_specs_minimal_set(self):
+        if not hasattr(self, "_draw_specs_minimal_set_"):
+            self._draw_specs_minimal_set_ = set(
+                map(tuple, self._draw_specs_minimal.values))
+        return self._draw_specs_minimal_set_
+
     # endregion
 
     # region Public Methods
-
-    def add_images_of_chars(self, chars, n_images=1):
-        """
-        Todo:
-          - Prepare empty spec and data of size len(chars) * n_images, keep
-            track of how many are actually added append once at the end
-          - Handle case in which more images are requested than specs remain
-            available
-          - Support varying number of images per character
-        """
-        import numpy as np
-        from random import sample
-
-        if not isinstance(chars, list):
-            chars = list(chars)
-        columns = self.specs.columns.values
-        all_specs = self.char_image_specs_available.values.tolist()
-        all_specs = set(map(tuple, all_specs))
-
-        for char in chars:
-            print(char)
-            old_specs = self.specs.loc[
-                self.specs["char"] == char].drop(
-                "char", axis=1).values
-            old_specs = set(map(tuple, list(old_specs)))
-            new_specs = all_specs.difference(old_specs)
-            for new_spec in list(sample(new_specs, n_images)):
-                new_spec = [char] + list(new_spec)
-                new_spec_kw = {k: v for k, v in zip(columns, new_spec)}
-                new_image = self.generate_char_image_data(**new_spec_kw)
-                self.specs = self.specs.append(
-                    new_spec_kw, ignore_index=True)
-                self.data = np.append(
-                    self.data, np.expand_dims(new_image, 0), axis=0)
 
     def generate_char_image(self, char, font="Hei", size=60, width=5,
                             x_offset=0, y_offset=0, tmpfile="/tmp/zysyzm.png"):
@@ -368,6 +333,50 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         return img
 
+    def generate_char_images(self, chars, n_images=1):
+        """
+        Todo:
+          - Prepare empty spec and data of size len(chars) * n_images, keep
+            track of how many are actually added append once at the end
+          - Handle case in which more images are requested than specs remain
+            available
+          - Support varying number of images per character
+        """
+        import numpy as np
+        import pandas as pd
+        from random import sample
+
+        if not isinstance(chars, list):
+            chars = list(chars)
+
+        # Build queue of new specs
+        queue = []
+        for char in chars:
+            specs = self._draw_specs_available_set.difference(
+                self._get_specs_of_char(char))
+            for spec in sample(specs, min(n_images, len(specs))):
+                queue.append({
+                    "char": char,
+                    "font": spec[0],
+                    "size": spec[1],
+                    "width": spec[2],
+                    "x_offset": spec[3],
+                    "y_offset": spec[4]})
+
+        if len(queue) >= 1:
+            if self.verbosity >= 1:
+                print(f"Generating {len(queue)} new images")
+
+            # Prepare specs
+            specs = pd.DataFrame(queue)
+
+            # Prepare data
+            data = np.zeros((len(queue), self._data_size), self._data_dtype)
+            for i, spec in enumerate(queue):
+                data[i] = self.image_to_data(self.generate_char_image(**spec))
+
+            self.add_images(specs, data)
+
     def check_initialization(self):
         import numpy as np
         import pandas as pd
@@ -378,31 +387,39 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # Build queue of missing specs
         queue = []
         for i, char in enumerate(self.chars[:self.n_chars]):
-            specs_of_char = self.get_specs_of_char(char)
+            specs_of_char = self._get_specs_of_char(char)
             for _, spec in self._draw_specs_minimal.iterrows():
                 if tuple(spec) not in specs_of_char:
                     spec = spec.to_dict()
                     spec["char"] = char
                     queue.append(spec)
 
-        # Prepare specs
-        specs = pd.DataFrame(queue)
+        if len(queue) >= 1:
+            if self.verbosity >= 1:
+                print(f"Generating {len(queue)} images for minimal set")
 
-        # Prepare data
-        data = np.zeros((len(queue), self._data_size), self._data_dtype)
-        for i, spec in enumerate(queue):
-            data[i] = self.image_to_data(self.generate_char_image(**spec))
+            # Prepare specs
+            specs = pd.DataFrame(queue)
 
-        self.add_images(specs, data)
+            # Prepare data
+            data = np.zeros((len(queue), self._data_size), self._data_dtype)
+            for i, spec in enumerate(queue):
+                data[i] = self.image_to_data(self.generate_char_image(**spec))
 
-    def get_specs_of_char(self, chararcter):
-        return set(map(tuple, self.specs.loc[
-            self.specs["char"] == chararcter][
-            ["font", "size", "width", "x_offset", "y_offset"]].values))
+            self.add_images(specs, data)
 
     # endregion
 
     # region Private Methods
+    def _clear_private_property_caches(self):
+        if hasattr(self, "_draw_specs_available_"):
+            delattr(self, "_draw_specs_available_")
+        if hasattr(self, "_draw_specs_available_set_"):
+            delattr(self, "_draw_specs_available_set_")
+        if hasattr(self, "_draw_specs_minimal_"):
+            delattr(self, "_draw_specs_minimal_")
+        if hasattr(self, "_draw_specs_minimal_set_"):
+            delattr(self, "_draw_specs_minimal_set_")
 
     def _get_hdf5_input_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
@@ -519,6 +536,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                        f"{spec[1]['font'].replace(' ', '')}.png"
 
         return func
+
+    def _get_specs_of_char(self, char):
+        return set(map(tuple, self.specs.loc[
+            self.specs["char"] == char][
+            ["font", "size", "width", "x_offset", "y_offset"]].values))
 
     # endregion
 

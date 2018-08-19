@@ -36,20 +36,19 @@ class OCRDataset(OCRCLToolBase):
 
     # region Builtins
 
-    def __init__(self, input_hdf5=None, input_image_directory=None,
-                 output_hdf5=None, output_image_directory=None,
-                 image_mode=None, **kwargs):
+    def __init__(self, input_hdf5=None, input_image_dir=None, output_hdf5=None,
+                 output_image_dir=None, image_mode=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
         if input_hdf5 is not None:
             self.input_hdf5 = input_hdf5
-        if input_image_directory is not None:
-            self.input_image_dir = input_image_directory
+        if input_image_dir is not None:
+            self.input_image_dir = input_image_dir
         if output_hdf5 is not None:
             self.output_hdf5 = output_hdf5
-        if output_image_directory is not None:
-            self.output_image_dir = output_image_directory
+        if output_image_dir is not None:
+            self.output_image_dir = output_image_dir
         if image_mode is not None:
             self.image_mode = image_mode
 
@@ -235,7 +234,7 @@ class OCRDataset(OCRCLToolBase):
     @property
     def _specs_set(self):
         if not hasattr(self, "_specs_set_"):
-            self._specs_set_ = set(list(map(tuple, self.specs.values)))
+            self._specs_set_ = set(map(tuple, self.specs.values))
         return self._specs_set_
 
     @property
