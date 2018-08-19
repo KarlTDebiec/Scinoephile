@@ -37,13 +37,13 @@ class UnlabeledOCRDataset(OCRDataset):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # self.input_image_directory = \
+        # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
         # self.input_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
         # self.output_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
-        # self.output_image_directory = \
+        # self.output_image_dir = \
         #     "/Users/kdebiec/Desktop/unlabeled"
 
     def __call__(self):
@@ -52,14 +52,14 @@ class UnlabeledOCRDataset(OCRDataset):
         # Input
         if self.input_hdf5 is not None:
             self.read_hdf5()
-        if self.input_image_directory is not None:
-            self.read_image_directory()
+        if self.input_image_dir is not None:
+            self.read_image_dir()
 
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
-        if self.output_image_directory is not None:
-            self.write_image_directory()
+        if self.output_image_dir is not None:
+            self.write_image_dir()
 
         # Present IPython prompt
         if self.interactive:
@@ -70,16 +70,13 @@ class UnlabeledOCRDataset(OCRDataset):
     # region Private Properties
 
     @property
-    def _char_image_spec_columns(self):
+    def _spec_columns(self):
         """list(str): Character image specification columns"""
 
-        if hasattr(self, "_char_image_specs"):
-            return self.char_image_specs.columns.values
-        else:
-            return ["path"]
+        return ["path"]
 
     @property
-    def _char_image_spec_dtypes(self):
+    def _spec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str}
 
@@ -87,7 +84,7 @@ class UnlabeledOCRDataset(OCRDataset):
 
     # Private Methods
 
-    def _read_hdf5_spec_formatter(self, columns):
+    def _get_hdf5_input_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
         columns = list(columns)
 
@@ -104,26 +101,26 @@ class UnlabeledOCRDataset(OCRDataset):
 
         return func
 
-    def _read_image_directory_infiles(self, path):
+    def _list_image_dir_input_files(self, path):
         """Provides infiles within path"""
         from glob import iglob
 
         return sorted(iglob(f"{path}/**/[0-9][0-9].png", recursive=True))
 
-    def _read_image_directory_specs(self, infiles):
+    def _get_image_dir_input_specs(self, infiles):
         """Provides specs of infiles"""
         import pandas as pd
 
         return pd.DataFrame(data=infiles,
                             index=range(len(infiles)),
-                            columns=self._char_image_spec_columns)
+                            columns=self._spec_columns)
 
-    def _write_hdf5_spec_dtypes(self, columns):
+    def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
         dtypes = {"path": "S255"}
         return list(zip(columns, [dtypes[k] for k in columns]))
 
-    def _write_hdf5_spec_formatter(self, columns):
+    def _get_hdf5_output_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
         columns = list(columns)
 
@@ -140,7 +137,7 @@ class UnlabeledOCRDataset(OCRDataset):
 
         return func
 
-    def _write_image_directory_formatter(self, specs):
+    def _get_image_dir_outfile_formatter(self, specs):
         """Provides formatter for image outfile paths"""
         from os.path import dirname
 
@@ -157,13 +154,13 @@ class UnlabeledOCRDataset(OCRDataset):
             base_path_remover = get_base_path_remover(list(specs["path"]))
 
             def func(spec):
-                return f"{self.output_image_directory}/" \
+                return f"{self.output_image_dir}/" \
                        f"{base_path_remover(spec[1]['path'])}"
 
             return func
         else:
             def func(spec):
-                return f"{self.output_image_directory}/" \
+                return f"{self.output_image_dir}/" \
                        f"{spec[0]:06d}.png"
 
             return func

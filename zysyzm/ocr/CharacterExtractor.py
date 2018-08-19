@@ -59,9 +59,9 @@ class CharacterExtractor(CLToolBase):
 
         if self.verbosity >= 1:
             print("Processing subtitle image files in "
-                  f"'{self.input_image_directory}'")
+                  f"'{self.input_image_dir}'")
             print("Saving character image files  to "
-                  f"'{self.output_image_directory}'")
+                  f"'{self.output_image_dir}'")
 
         # Loop over subtitles
         for infile in self.input_images:
@@ -71,7 +71,7 @@ class CharacterExtractor(CLToolBase):
             # Open image
             subtitle_img = trim_image(Image.open(infile).convert("L"))
             subtitle_output_directory = \
-                f"{self.output_image_directory}/{basename(infile).rstrip('.png')}"
+                f"{self.output_image_dir}/{basename(infile).rstrip('.png')}"
             if not isdir(subtitle_output_directory):
                 mkdir(subtitle_output_directory)
             subtitle_outfile = f"{subtitle_output_directory}/full.png"
@@ -174,7 +174,7 @@ class CharacterExtractor(CLToolBase):
     @property
     def input_directory(self):
         """str: Path to directory containing input subtitle images"""
-        if not hasattr(self, "_input_image_directory"):
+        if not hasattr(self, "_input_image_dir"):
             self._input_directory = None
         return self._input_directory
 
@@ -194,12 +194,12 @@ class CharacterExtractor(CLToolBase):
     def input_images(self):
         from glob import iglob
 
-        return sorted(iglob(f"{self.input_image_directory}/*.png"))
+        return sorted(iglob(f"{self.input_image_dir}/*.png"))
 
     @property
     def output_directory(self):
         """str: Path to directory for output character images"""
-        if not hasattr(self, "_output_image_directory"):
+        if not hasattr(self, "_output_image_dir"):
             self._output_directory = None
         return self._output_directory
 

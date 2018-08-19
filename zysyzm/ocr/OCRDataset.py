@@ -45,11 +45,11 @@ class OCRDataset(OCRCLToolBase):
         if input_hdf5 is not None:
             self.input_hdf5 = input_hdf5
         if input_image_directory is not None:
-            self.input_image_directory = input_image_directory
+            self.input_image_dir = input_image_directory
         if output_hdf5 is not None:
             self.output_hdf5 = output_hdf5
         if output_image_directory is not None:
-            self.output_image_directory = output_image_directory
+            self.output_image_dir = output_image_directory
         if image_mode is not None:
             self.image_mode = image_mode
 
@@ -62,44 +62,43 @@ class OCRDataset(OCRCLToolBase):
     # region Public Properties
 
     @property
-    def char_image_specs(self):
+    def specs(self):
         """pandas.DataFrame: Character image specifications"""
-        if not hasattr(self, "_char_image_specs"):
+        if not hasattr(self, "_specs"):
             import pandas as pd
 
-            self._char_image_specs = pd.DataFrame({
-                c: pd.Series([], dtype=self._char_image_spec_dtypes[c])
-                for c in self._char_image_spec_columns})
-        return self._char_image_specs
+            self._specs = pd.DataFrame({
+                c: pd.Series([], dtype=self._spec_dtypes[c])
+                for c in self._spec_columns})
+        return self._specs
 
-    @char_image_specs.setter
-    def char_image_specs(self, value):
+    @specs.setter
+    def specs(self, value):
         # Todo: Validate
-        self._char_image_specs = value
-        if hasattr(self, "_char_image_specs_set_"):
-            delattr(self, "_char_image_specs_set_")
+        self._specs = value
+        if hasattr(self, "_specs_set_"):
+            delattr(self, "_specs_set_")
 
     @property
-    def char_image_data(self):
+    def data(self):
         """numpy.ndarray(bool): Character image data"""
-        if not hasattr(self, "_char_image_data"):
+        if not hasattr(self, "_data"):
             import numpy as np
 
-            self._char_image_data = np.zeros((0, self._image_data_size),
-                                             self._image_data_dtype)
-        return self._char_image_data
+            self._data = np.zeros((0, self._data_size), self._data_dtype)
+        return self._data
 
-    @char_image_data.setter
-    def char_image_data(self, value):
+    @data.setter
+    def data(self, value):
         import numpy as np
 
         if not isinstance(value, np.ndarray):
             raise ValueError()
-        if value.shape[1] != self._image_data_size:
+        if value.shape[1] != self._data_size:
             raise ValueError()
-        if value.dtype != self._image_data_dtype:
+        if value.dtype != self._data_dtype:
             raise ValueError()
-        self._char_image_data = value
+        self._data = value
 
     @property
     def image_mode(self):
@@ -146,14 +145,14 @@ class OCRDataset(OCRCLToolBase):
         self._input_hdf5 = value
 
     @property
-    def input_image_directory(self):
-        """str: Path to directory for output training character images"""
-        if not hasattr(self, "_input_image_directory"):
-            self._input_image_directory = None
-        return self._input_image_directory
+    def input_image_dir(self):
+        """str: Path to input image directory"""
+        if not hasattr(self, "_input_image_dir"):
+            self._input_image_dir = None
+        return self._input_image_dir
 
-    @input_image_directory.setter
-    def input_image_directory(self, value):
+    @input_image_dir.setter
+    def input_image_dir(self, value):
         from os import access, makedirs, R_OK, W_OK
         from os.path import expandvars, isdir
 
@@ -169,7 +168,7 @@ class OCRDataset(OCRCLToolBase):
                         raise ValueError()
                 if not access(value, W_OK):
                     raise ValueError()
-        self._input_image_directory = value
+        self._input_image_dir = value
 
     @property
     def output_hdf5(self):
@@ -195,14 +194,14 @@ class OCRDataset(OCRCLToolBase):
         self._output_hdf5 = value
 
     @property
-    def output_image_directory(self):
+    def output_image_dir(self):
         """str: Path to directory for output character images"""
-        if not hasattr(self, "_output_image_directory"):
-            self._output_image_directory = None
-        return self._output_image_directory
+        if not hasattr(self, "_output_image_dir"):
+            self._output_image_dir = None
+        return self._output_image_dir
 
-    @output_image_directory.setter
-    def output_image_directory(self, value):
+    @output_image_dir.setter
+    def output_image_dir(self, value):
         from os import makedirs
         from os.path import expandvars, isdir
 
@@ -217,31 +216,30 @@ class OCRDataset(OCRCLToolBase):
                         makedirs(value)
                     except Exception as e:
                         raise ValueError()
-        self._output_image_directory = value
+        self._output_image_dir = value
 
     # endregion
 
     # region Private Properties
 
     @property
-    def _char_image_spec_columns(self):
+    def _spec_columns(self):
         """list(str): Character image specification columns"""
         raise NotImplementedError()
 
     @property
-    def _char_image_spec_dtypes(self):
+    def _spec_dtypes(self):
         """list(str): Character image specification columns"""
         raise NotImplementedError()
 
     @property
-    def _char_image_specs_set(self):
-        if not hasattr(self, "_char_image_specs_set_"):
-            self._char_image_specs_set_ = set(
-                list(map(tuple, self.char_image_specs.values)))
-        return self._char_image_specs_set_
+    def _specs_set(self):
+        if not hasattr(self, "_specs_set_"):
+            self._specs_set_ = set(list(map(tuple, self.specs.values)))
+        return self._specs_set_
 
     @property
-    def _image_data_size(self):
+    def _data_size(self):
         """int: Size of a single image within arrays"""
         if self.image_mode == "8bit":
             return 6400
@@ -251,7 +249,7 @@ class OCRDataset(OCRCLToolBase):
             return 6400
 
     @property
-    def _image_data_dtype(self):
+    def _data_dtype(self):
         """type: Numpy dtype of image arrays"""
         import numpy as np
 
@@ -266,17 +264,16 @@ class OCRDataset(OCRCLToolBase):
 
     # region Public Methods
 
-    def add_char_images(self, char_image_specs, char_image_data):
+    def add_images(self, specs, data):
         import numpy as np
 
-        new = char_image_specs.apply(
-            lambda x: tuple(x.values) not in self._char_image_specs_set,
+        new = specs.apply(
+            lambda x: tuple(x.values) not in self._specs_set,
             axis=1).values
-
-        self.char_image_specs = self.char_image_specs.append(
-            char_image_specs.loc[new], ignore_index=True)
-        self.char_image_data = np.append(
-            self.char_image_data, char_image_data[new], axis=0)
+        if new.sum() >= 1:
+            self.specs = self.specs.append(specs.loc[new],
+                                           ignore_index=True, sort=False)
+            self.data = np.append(self.data, data[new], axis=0)
 
     def data_to_image(self, data):
         import numpy as np
@@ -285,7 +282,7 @@ class OCRDataset(OCRCLToolBase):
         if self.image_mode == "8bit":
             raise NotImplementedError()
         elif self.image_mode == "2bit":
-            raw = np.zeros((self._image_data_size // 2), np.uint8)
+            raw = np.zeros((self._data_size // 2), np.uint8)
             raw[np.logical_and(data[0::2] == False, data[1::2] == True)] = 85
             raw[np.logical_and(data[0::2] == True, data[1::2] == False)] = 170
             raw[np.logical_and(data[0::2] == True, data[1::2] == True)] = 255
@@ -319,40 +316,44 @@ class OCRDataset(OCRCLToolBase):
         if self.verbosity >= 1:
             print(f"Reading data from '{self.input_hdf5}'")
         with h5py.File(self.input_hdf5) as hdf5_infile:
-            if "char_image_specs" not in hdf5_infile:
+            if "specs" not in hdf5_infile:
                 raise ValueError()
-            if "char_image_data" not in hdf5_infile:
+            if "data" not in hdf5_infile:
                 raise ValueError()
 
             # Load configuration (Todo: Validate that mode matches current)
             self.image_mode = hdf5_infile.attrs["mode"]
 
             # Load specs
-            formatter = self._read_hdf5_spec_formatter(
-                hdf5_infile["char_image_specs"].dtype.names)
+            formatter = self._get_hdf5_input_spec_formatter(
+                hdf5_infile["specs"].dtype.names)
             char_image_specs = pd.DataFrame(
                 data=list(map(formatter,
-                              np.array(hdf5_infile["char_image_specs"]))),
-                index=range(hdf5_infile["char_image_specs"].size),
-                columns=hdf5_infile["char_image_specs"].dtype.names)
+                              np.array(hdf5_infile["specs"]))),
+                index=range(hdf5_infile["specs"].size),
+                columns=hdf5_infile["specs"].dtype.names)
 
             # Load data
-            char_image_data = np.array(hdf5_infile["char_image_data"])
+            char_image_data = np.array(hdf5_infile["data"])
 
-        self.add_char_images(char_image_specs, char_image_data)
+        self.add_images(char_image_specs, char_image_data)
 
-    def read_image_directory(self):
+    def read_image_dir(self):
         import numpy as np
         from PIL import Image
         from zysyzm.ocr import convert_8bit_grayscale_to_2bit
 
         if self.verbosity >= 1:
-            print(f"Reading images from '{self.input_image_directory}'")
-        infiles = self._read_image_directory_infiles(
-            self.input_image_directory)
-        char_image_specs = self._read_image_directory_specs(infiles)
-        char_image_data = np.zeros(
-            (len(infiles), self._image_data_size), self._image_data_dtype)
+            print(f"Reading images from '{self.input_image_dir}'")
+
+        # Prepare list of infiles
+        infiles = self._list_image_dir_input_files(self.input_image_dir)
+
+        # Prepare specs
+        specs = self._get_image_dir_input_specs(infiles)
+
+        # Prepare data
+        data = np.zeros((len(infiles), self._data_size), self._data_dtype)
         for i, infile in enumerate(infiles):
             image = Image.open(infile)
             if self.image_mode == "8bit":
@@ -361,11 +362,11 @@ class OCRDataset(OCRCLToolBase):
                 image = convert_8bit_grayscale_to_2bit(image)
             elif self.image_mode == "1bit":
                 raise NotImplementedError()
-            char_image_data[i] = self.image_to_data(image)
+            data[i] = self.image_to_data(image)
 
-        self.add_char_images(char_image_specs, char_image_data)
+        self.add_images(specs, data)
 
-    def show_char_images(self, indexes, columns=None):
+    def show_chars(self, indexes, columns=None):
         import numpy as np
         from PIL import Image
 
@@ -373,7 +374,7 @@ class OCRDataset(OCRCLToolBase):
         if isinstance(indexes, int):
             indexes = [indexes]
         indexes = np.array(indexes, np.int)
-        if np.any(indexes >= self.char_image_data.shape[0]):
+        if np.any(indexes >= self.data.shape[0]):
             raise ValueError()
         if columns is None:
             columns = indexes.size
@@ -386,7 +387,7 @@ class OCRDataset(OCRCLToolBase):
         for i, index in enumerate(indexes):
             column = (i // columns)
             row = i - (column * columns)
-            char_image = self.data_to_image(self.char_image_data[index])
+            char_image = self.data_to_image(self.data[index])
             image.paste(char_image,
                         (100 * row + 10,
                          100 * column + 10,
@@ -402,24 +403,23 @@ class OCRDataset(OCRCLToolBase):
             print(f"Writing data to '{self.output_hdf5}'")
         with h5py.File(self.output_hdf5) as hdf5_outfile:
             # Remove preexisting data
-            if "char_image_data" in hdf5_outfile:
-                del hdf5_outfile["char_image_data"]
-            if "char_image_specs" in hdf5_outfile:
-                del hdf5_outfile["char_image_specs"]
+            if "data" in hdf5_outfile:
+                del hdf5_outfile["data"]
+            if "specs" in hdf5_outfile:
+                del hdf5_outfile["specs"]
 
             # Save configuration
             hdf5_outfile.attrs["mode"] = self.image_mode
 
             # Save specs
             # Todo: Check if 'columns.values' can just be 'columns'
-            formatter = self._write_hdf5_spec_formatter(
-                self.char_image_specs.columns.values)
-            dtypes = self._write_hdf5_spec_dtypes(
-                self.char_image_specs.columns.values)
+            formatter = self._get_hdf5_output_spec_formatter(
+                self.specs.columns.values)
+            dtypes = self._get_hdf5_spec_dtypes(
+                self.specs.columns.values)
             hdf5_outfile.create_dataset(
-                "char_image_specs",
-                data=np.array(list(map(formatter,
-                                       self.char_image_specs.values)),
+                "specs",
+                data=np.array(list(map(formatter, self.specs.values)),
                               dtype=dtypes),
                 dtype=dtypes,
                 chunks=True,
@@ -427,23 +427,22 @@ class OCRDataset(OCRCLToolBase):
 
             # Save data
             hdf5_outfile.create_dataset(
-                "char_image_data",
-                data=self.char_image_data,
-                dtype=self._image_data_dtype,
+                "data",
+                data=self.data,
+                dtype=self._data_dtype,
                 chunks=True,
                 compression="gzip")
 
-    def write_image_directory(self):
+    def write_image_dir(self):
         from os import makedirs
         from os.path import dirname, isdir
 
         if self.verbosity >= 1:
-            print(f"Writing images to '{self.output_image_directory}'")
-        outfile_path_formatter = self._write_image_directory_formatter(
-            self.char_image_specs)
-        outfiles = map(outfile_path_formatter,
-                       self.char_image_specs.iterrows())
-        for outfile, data in zip(outfiles, self.char_image_data):
+            print(f"Writing images to '{self.output_image_dir}'")
+        outfile_path_formatter = self._get_image_dir_outfile_formatter(
+            self.specs)
+        outfiles = map(outfile_path_formatter, self.specs.iterrows())
+        for outfile, data in zip(outfiles, self.data):
             if self.verbosity >= 2:
                 print(f"Writing '{outfile}'")
             if not isdir(dirname(outfile)):
@@ -454,27 +453,27 @@ class OCRDataset(OCRCLToolBase):
 
     # Private Methods
 
-    def _read_hdf5_spec_formatter(self, columns):
+    def _get_hdf5_input_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
         raise NotImplementedError()
 
-    def _read_image_directory_infiles(self, path):
+    def _list_image_dir_input_files(self, path):
         """Provides infiles within path"""
         raise NotImplementedError()
 
-    def _read_image_directory_specs(self, infiles):
+    def _get_image_dir_input_specs(self, infiles):
         """Provides specs of infiles"""
         raise NotImplementedError()
 
-    def _write_hdf5_spec_dtypes(self, columns):
+    def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
         raise NotImplementedError()
 
-    def _write_hdf5_spec_formatter(self, columns):
+    def _get_hdf5_output_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
         raise NotImplementedError()
 
-    def _write_image_directory_formatter(self, specs):
+    def _get_image_dir_outfile_formatter(self, specs):
         """Provides formatter for image outfile paths"""
         raise NotImplementedError()
 
