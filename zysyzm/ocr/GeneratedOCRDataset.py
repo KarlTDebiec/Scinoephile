@@ -22,7 +22,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
       - [x] Add images
       - [x] Write hdf5
       - [x] Read hdf5
-      - [ ] Write image directory
+      - [x] Write image directory
       - [ ] Initialize
       - [ ] Support creation of training and validation datasets, with at
             least on image of each character in each
@@ -52,10 +52,12 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # self.input_image_directory = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.input_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
+        # self.input_hdf5 = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         # self.output_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
+        # self.output_image_directory = \
+        #     "/Users/kdebiec/Desktop/generated"
 
     def __call__(self):
         """ Core logic """
@@ -71,6 +73,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
+        if self.output_image_directory is not None:
+            self.write_image_directory()
 
         # Present IPython prompt
         if self.interactive:
@@ -78,17 +82,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # endregion
 
-    # region Properties
-
-    @property
-    def char_image_spec_columns(self):
-        """list(str): Character image specification columns"""
-
-        if hasattr(self, "_char_image_specs"):
-            return self.char_image_specs.columns.values
-        else:
-            return ["path", "character", "font", "size", "width", "x_offset",
-                    "y_offset"]
+    # region Public Properties
 
     @property
     def char_image_specs_available(self):
@@ -224,7 +218,27 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # endregion
 
-    # region Methods
+    # region Private Properties
+
+    @property
+    def _char_image_spec_columns(self):
+        """list(str): Character image specification columns"""
+
+        if hasattr(self, "_char_image_specs"):
+            return self.char_image_specs.columns.values
+        else:
+            return ["path", "character", "font", "size", "width", "x_offset",
+                    "y_offset"]
+
+    @property
+    def _char_image_spec_dtypes(self):
+        """list(str): Character image specification dtypes"""
+        return {"path": str, "character": str, "font": str, "size": int,
+                "width": int, "x_offset": int, "y_offset": int}
+
+    # endregion
+
+    # region Public Methods
 
     def add_images_of_chars(self, chars, n_images=1):
         """
@@ -305,7 +319,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             index=range(self.n_chars),
             columns=self.char_image_specs.columns.values)
         self.char_image_data = np.zeros(
-            (self.n_chars, self.image_data_size), dtype=self.image_data_dtype)
+            (self.n_chars, self._image_data_size), dtype=self._image_data_dtype)
 
         # Fill in arrays with specs and data
         for i, char in enumerate(self.chars[:self.n_chars]):
@@ -315,50 +329,31 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.char_image_data[i] = self.image_to_data(
                 self.generate_char_image(**row))
 
-    def output_char_image(self, char, font_name="Hei", font_size=60,
-                          border_width=5, x_offset=0, y_offset=0, **kwargs):
-        """
-        Outputs an image of a character, if output image does not exist
-
-        Args:
-            char (str): character to generate an image of
-            font_name (str, optional): font with which to draw character
-            font_size (int, optional): font size with which to draw character
-            border_width (int, optional: border width with which to draw
-              character
-            x_offset (int, optional): x offset to apply to character
-            y_offset (int, optional: y offset to apply to character
-            **kwargs (dict):
-
-        """
-        import numpy as np
-        from os.path import isfile
-        from zysyzm.ocr import generate_char_image
-
-        # Check if outfile exists, and if not choose output location
-        outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
-                  f"{x_offset:+d}_{y_offset:+d}_" \
-                  f"{font_name.replace(' ', '')}.png"
-        outfile = f"{self.trn_output_directory}/{outfile}"
-        if isfile(f"{self.trn_output_directory}/{outfile}"):
-            return
-
-        # Generate image
-        img = generate_char_image(char, font_name=font_name,
-                                  font_size=font_size,
-                                  border_width=border_width, x_offset=x_offset,
-                                  y_offset=y_offset, **kwargs)
-        img.save(outfile)
-        if self.verbosity >= 2:
-            print(f"Wrote '{outfile}'")
-
     # endregion
 
     # Private Methods
 
+    def _read_hdf5_spec_formatter(self, columns):
+        """Provides spec formatter compatible with both numpy and h5py"""
+        columns = list(columns)
+        str_indexes = []
+        if "path" in columns:
+            str_indexes += [columns.index("path")]
+        if "character" in columns:
+            str_indexes += [columns.index("character")]
+        if "font" in columns:
+            str_indexes += [columns.index("font")]
+
+        def func(x):
+            x = list(x)
+            for str_index in str_indexes:
+                x[str_index] = x[str_index].decode("utf8")
+            return tuple(x)
+
+        return func
+
     def _read_image_directory_specs(self, infiles):
         """Provides specs of infiles"""
-        import numpy as np
         import pandas as pd
         from os.path import basename
 
@@ -381,15 +376,23 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             lambda x: basename(x).split("_")[5].split(".")[0],
             infiles))
 
-        data = np.array([infiles, chars, fonts, sizes,
-                         widths, x_offsets, y_offsets]
-                        ).transpose()
+        specs = {
+            "path": pd.Series(
+                infiles, dtype=self._char_image_spec_dtypes["path"]),
+            "character": pd.Series(
+                chars, dtype=self._char_image_spec_dtypes["character"]),
+            "font": pd.Series(
+                fonts, dtype=self._char_image_spec_dtypes["font"]),
+            "size": pd.Series(
+                sizes, dtype=self._char_image_spec_dtypes["size"]),
+            "width": pd.Series(
+                widths, dtype=self._char_image_spec_dtypes["width"]),
+            "x_offset": pd.Series(
+                x_offsets, dtype=self._char_image_spec_dtypes["x_offset"]),
+            "y_offset": pd.Series(
+                y_offsets, dtype=self._char_image_spec_dtypes["y_offset"])}
 
-        return pd.DataFrame(data=np.array([infiles, chars, fonts, sizes,
-                                           widths, x_offsets, y_offsets]
-                                          ).transpose(),
-                            index=range(len(infiles)),
-                            columns=self.char_image_spec_columns)
+        return pd.DataFrame(data=specs, index=range(len(infiles)))
 
     def _write_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
@@ -397,6 +400,58 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                   "size": "i1", "width": "i1", "x_offset": "i1",
                   "y_offset": "i1"}
         return list(zip(columns, [dtypes[k] for k in columns]))
+
+    def _write_hdf5_spec_formatter(self, columns):
+        """Provides spec formatter compatible with both numpy and h5py"""
+        columns = list(columns)
+        str_indexes = []
+        if "path" in columns:
+            str_indexes += [columns.index("path")]
+        if "character" in columns:
+            str_indexes += [columns.index("character")]
+        if "font" in columns:
+            str_indexes += [columns.index("font")]
+
+        def func(x):
+            x = list(x)
+            for str_index in str_indexes:
+                x[str_index] = x[str_index].encode("utf8")
+            return tuple(x)
+
+        return func
+
+    def _write_image_directory_formatter(self, specs):
+        """Provides formatter for image outfile paths"""
+        from os.path import dirname
+
+        def get_base_path_remover(paths):
+            """Provides function to remove shared base path"""
+
+            for i in range(max(map(len, paths))):
+                if len(set([path[i] for path in paths])) != 1:
+                    break
+            i = len(dirname(paths[0][:i])) + 1
+            return lambda x: x[i:]
+
+        if "path" in specs.columns:
+            base_path_remover = get_base_path_remover(list(specs["path"]))
+
+            def func(spec):
+                return f"{self.output_image_directory}/" \
+                       f"{base_path_remover(spec[1]['path'])}"
+
+            return func
+        else:
+            def func(spec):
+                return f"{self.output_image_directory}/" \
+                       f"{spec[1]['character']}_" \
+                       f"{spec[1]['size']:02d}_" \
+                       f"{spec[1]['width']:02d}_" \
+                       f"{spec[1]['x_offset']:+d}_" \
+                       f"{spec[1]['y_offset']:+d}_" \
+                       f"{spec[1]['font'].replace(' ', '')}.png"
+
+        return func
 
     # endregion
 

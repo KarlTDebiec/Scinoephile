@@ -22,7 +22,7 @@ class LabeledOCRDataset(OCRDataset):
       - [x] Add images
       - [x] Write hdf5
       - [x] Read hdf5
-      - [ ] Write image directory
+      - [x] Write image directory
       - [ ] Document
     """
 
@@ -43,6 +43,8 @@ class LabeledOCRDataset(OCRDataset):
         #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
         # self.output_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
+        # self.output_image_directory = \
+        #     "/Users/kdebiec/Desktop/labeled"
 
     def __call__(self):
         """ Core logic """
@@ -56,6 +58,8 @@ class LabeledOCRDataset(OCRDataset):
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
+        if self.output_image_directory is not None:
+            self.write_image_directory()
 
         # Present IPython prompt
         if self.interactive:
@@ -63,10 +67,10 @@ class LabeledOCRDataset(OCRDataset):
 
     # endregion
 
-    # region Properties
+    # region Private Properties
 
     @property
-    def char_image_spec_columns(self):
+    def _char_image_spec_columns(self):
         """list(str): Character image specification columns"""
 
         if hasattr(self, "_char_image_specs"):
@@ -74,40 +78,29 @@ class LabeledOCRDataset(OCRDataset):
         else:
             return ["path", "character"]
 
+    @property
+    def _char_image_spec_dtypes(self):
+        """list(str): Character image specification dtypes"""
+        return {"path": str, "character": str}
+
     # endregion
 
     # Private Methods
 
     def _read_hdf5_spec_formatter(self, columns):
-        """Formats spec for compatibility with both numpy and h5py"""
+        """Provides spec formatter compatible with both numpy and h5py"""
         columns = list(columns)
+        str_indexes = []
+        if "path" in columns:
+            str_indexes += [columns.index("path")]
+        if "character" in columns:
+            str_indexes += [columns.index("character")]
 
-        if "path" in columns and "character" in columns:
-            path_index = columns.index("path")
-            character_index = columns.index("character")
-
-            def func(x):
-                x = list(x)
-                x[path_index] = x[path_index].decode("utf8")
-                x[character_index] = x[character_index].decode("utf8")
-                return tuple(x)
-        elif "path" in columns:
-            path_index = columns.index("path")
-
-            def func(x):
-                x = list(x)
-                x[path_index] = x[path_index].decode("utf8")
-                return tuple(x)
-        elif "character" in columns:
-            character_index = columns.index("character")
-
-            def func(x):
-                x = list(x)
-                x[character_index] = x[character_index].decode("utf8")
-                return tuple(x)
-        else:
-            def func(x):
-                return tuple(x)
+        def func(x):
+            x = list(x)
+            for str_index in str_indexes:
+                x[str_index] = x[str_index].decode("utf8")
+            return tuple(x)
 
         return func
 
@@ -127,7 +120,7 @@ class LabeledOCRDataset(OCRDataset):
 
         return pd.DataFrame(data=np.array([infiles, chars]).transpose(),
                             index=range(len(infiles)),
-                            columns=self.char_image_spec_columns)
+                            columns=self._char_image_spec_columns)
 
     def _write_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
@@ -137,36 +130,47 @@ class LabeledOCRDataset(OCRDataset):
     def _write_hdf5_spec_formatter(self, columns):
         """Provides spec formatter compatible with both numpy and h5py"""
         columns = list(columns)
+        str_indexes = []
+        if "path" in columns:
+            str_indexes += [columns.index("path")]
+        if "character" in columns:
+            str_indexes += [columns.index("character")]
 
-        if "path" in columns and "character" in columns:
-            path_index = columns.index("path")
-            character_index = columns.index("character")
-
-            def func(x):
-                x = list(x)
-                x[path_index] = x[path_index].encode("utf8")
-                x[character_index] = x[character_index].encode("utf8")
-                return tuple(x)
-        elif "path" in columns:
-            path_index = columns.index("path")
-
-            def func(x):
-                x = list(x)
-                x[path_index] = x[path_index].encode("utf8")
-                return tuple(x)
-        elif "character" in columns:
-            character_index = columns.index("character")
-
-            def func(x):
-                x = list(x)
-                x[character_index] = x[character_index].encode("utf8")
-                return tuple(x)
-        else:
-            def func(x):
-                return tuple(x)
+        def func(x):
+            x = list(x)
+            for str_index in str_indexes:
+                x[str_index] = x[str_index].encode("utf8")
+            return tuple(x)
 
         return func
 
+    def _write_image_directory_formatter(self, specs):
+        """Provides formatter for image outfile paths"""
+        from os.path import dirname
+
+        def get_base_path_remover(paths):
+            """Provides function to remove shared base path"""
+
+            for i in range(max(map(len, paths))):
+                if len(set([path[i] for path in paths])) != 1:
+                    break
+            i = len(dirname(paths[0][:i])) + 1
+            return lambda x: x[i:]
+
+        if "path" in specs.columns:
+            base_path_remover = get_base_path_remover(list(specs["path"]))
+
+            def func(spec):
+                return f"{self.output_image_directory}/" \
+                       f"{base_path_remover(spec[1]['path'])}"
+
+            return func
+        else:
+            def func(spec):
+                return f"{self.output_image_directory}/" \
+                       f"{spec[1]['character']}_{spec[0]:06d}.png"
+
+            return func
     # endregion
 
 
