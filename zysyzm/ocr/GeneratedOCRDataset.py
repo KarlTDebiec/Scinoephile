@@ -310,7 +310,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         queue = []
         for char in chars:
             specs = self._draw_specs_available_set.difference(
-                self._get_specs_of_char(char))
+                self._get_specs_of_char_set(char))
             for spec in sample(specs, min(n_images, len(specs))):
                 queue.append({
                     "char": char,
@@ -347,7 +347,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # Build queue of missing specs
         queue = []
         for i, char in enumerate(self.chars[:self.n_chars]):
-            specs_of_char = self._get_specs_of_char(char)
+            specs_of_char = self._get_specs_of_char_set(char)
             for _, spec in self._draw_specs_minimal.iterrows():
                 if tuple(spec) not in specs_of_char:
                     spec = spec.to_dict()
@@ -368,6 +368,46 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                     fig=self._figure, image_mode=self.image_mode, **spec))
 
             self.add_images(specs, data)
+
+    def get_data_for_training(self, val_portion=0.1):
+        import numpy as np
+        from random import sample
+
+        all_trn_indexes = []
+        all_val_indexes = []
+
+        # Prepare trn and val sets with at least one image of each character
+        for char in set(self.specs["char"]):
+            specs = self._get_specs_of_char(char)
+            n_specs = specs.index.size
+
+            # Add at least one image of each character to each set
+            trn_index, val_index = sample(specs.index.tolist(), 2)
+            all_trn_indexes.append(trn_index)
+            all_val_indexes.append(val_index)
+            specs = specs.drop([trn_index, val_index])
+
+            # Distribution remaining images across sets
+            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
+            n_for_val = int(np.ceil(n_specs * val_portion) - 1)
+            if n_for_trn > 0:
+                trn_indexes = sample(specs.index.tolist(), n_for_trn)
+                all_trn_indexes.extend(trn_indexes)
+                specs = specs.drop(trn_indexes)
+            if n_for_val > 0:
+                val_indexes = sample(specs.index.tolist(), n_for_val)
+                all_val_indexes.extend(val_indexes)
+                specs = specs.drop(val_indexes)
+
+        # Organize data for tensorflow
+        trn_img = self.data[all_trn_indexes]
+        trn_lbl = self.chars_to_labels(
+            self.specs["char"].loc[all_trn_indexes].values)
+        val_img = self.data[all_val_indexes]
+        val_lbl = self.chars_to_labels(
+            self.specs["char"].loc[all_val_indexes].values)
+
+        return trn_img, trn_lbl, val_img, val_lbl
 
     # endregion
 
@@ -499,9 +539,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return func
 
     def _get_specs_of_char(self, char):
-        return set(map(tuple, self.specs.loc[
-            self.specs["char"] == char][
-            ["font", "size", "width", "x_offset", "y_offset"]].values))
+        return self.specs.loc[self.specs["char"] == char][
+            ["font", "size", "width", "x_offset", "y_offset"]]
+
+    def _get_specs_of_char_set(self, char):
+        return set(map(tuple, self._get_specs_of_char(char).values))
 
     # endregion
 

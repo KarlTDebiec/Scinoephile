@@ -249,9 +249,9 @@ class OCRBase(Base):
         import numpy as np
 
         if isinstance(chars, str):
-            if len(str) == 1:
-                return np.argwhere(self.chars == chars[0])[0, 0]
-            elif len(str) > 1:
+            if len(chars) == 1:
+                return np.argwhere(self.chars == chars)[0, 0]
+            elif len(chars) > 1:
                 chars = np.array(list(chars))
         elif isinstance(chars, list):
             chars = np.array(chars)
