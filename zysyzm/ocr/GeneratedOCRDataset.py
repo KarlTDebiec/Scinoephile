@@ -14,12 +14,13 @@ from IPython import embed
 
 ################################### CLASSES ###################################
 class GeneratedOCRDataset(LabeledOCRDataset):
-    """Represents a collection of generated character images
+    """
+    Represents a collection of generated character images
 
     Todo:
       - [x] Read image directory
       - [x] Add images
-      - [ ] Write hdf5
+      - [x] Write hdf5
       - [ ] Initialize
       - [ ] Read hdf5
       - [ ] Write image directory
@@ -51,16 +52,23 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         self.input_image_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.output_hdf5 = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
 
     def __call__(self):
         """ Core logic """
 
-        # Initialize
+        # Input
         if self.input_hdf5 is not None:
             self.read_hdf5()
         if self.input_image_directory is not None:
             self.read_image_directory()
+
         # self.initialize_from_scratch()
+
+        # Output
+        if self.output_hdf5 is not None:
+            self.write_hdf5()
 
         # Present IPython prompt
         if self.interactive:
@@ -343,49 +351,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.char_image_data[i] = self.image_to_data(
                 self.generate_char_image(**row))
 
-    def write_hdf5(self):
-        import h5py
-        import numpy as np
-
-        def clean_spec_for_hdf5(row):
-            """
-            Processes specification for numpy and h5py
-
-            - Converted into a tuple for numpy to build a record array
-            - Characters converted from unicode strings to integers. hdf5 and
-              numpy's unicode support do not cooperate well, and this is the
-              least painful solution.
-            """
-            return tuple([ord(row[0])] + list(row[1:]))
-
-        if self.verbosity >= 1:
-            print(f"Saving data to '{self.output_hdf5}'")
-        with h5py.File(self.output_hdf5) as hdf5_outfile:
-            # Remove prior data
-            if "char_image_data" in hdf5_outfile:
-                del hdf5_outfile["char_image_data"]
-            if "char_image_specs" in hdf5_outfile:
-                del hdf5_outfile["char_image_specs"]
-
-            # Save configuration
-            hdf5_outfile.attrs["mode"] = self.image_mode
-
-            # Save character image specifications
-            char_image_specs = list(map(clean_spec_for_hdf5,
-                                        self.char_image_specs.values))
-            dtypes = list(zip(self.char_image_specs.columns.values,
-                              ["i4", "S10", "i1", "i1", "i1", "i1"]))
-            char_image_specs = np.array(char_image_specs, dtype=dtypes)
-            hdf5_outfile.create_dataset("char_image_specs",
-                                        data=char_image_specs, dtype=dtypes,
-                                        chunks=True, compression="gzip")
-
-            # Save character image data
-            hdf5_outfile.create_dataset("char_image_data",
-                                        data=self.char_image_data,
-                                        dtype=self.image_data_dtype,
-                                        chunks=True, compression="gzip")
-
     def output_char_image(self, char, font_name="Hei", font_size=60,
                           border_width=5, x_offset=0, y_offset=0, **kwargs):
         """
@@ -426,19 +391,23 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # endregion
 
     # Private Methods
-
-    def _output_hdf5_spec_format(self, row):
-        raise NotImplementedError()
-
     def _output_hdf5_spec_dtypes(self):
-        raise NotImplementedError()
+        """Provides spec dtypes for compatibility with both numpy and h5py"""
+        dtypes = {"path": "S255", "character": "S3", "font": "S10",
+                  "size": "i1", "width": "i1", "x_offset": "i1",
+                  "y_offset": "i1"}
+        return list(zip(self.char_image_specs.columns.values,
+                        [dtypes[k] for k in
+                         list(self.char_image_specs.columns.values)]))
 
     def _read_image_directory_infiles(self, path):
+        """Provides infiles within path"""
         from glob import iglob
 
         return sorted(iglob(f"{path}/**/*.png", recursive=True))
 
     def _read_image_directory_specs(self, infiles):
+        """Provides specs of infiles"""
         import numpy as np
         import pandas as pd
         from os.path import basename

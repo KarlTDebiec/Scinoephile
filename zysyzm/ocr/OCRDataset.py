@@ -14,7 +14,8 @@ from IPython import embed
 
 ################################### CLASSES ###################################
 class OCRDataset(OCRCLToolBase):
-    """Represents a collection of character images
+    """
+    Represents a collection of character images
 
     8bit grayscale to 2bit grayscale:
         0 -> 00
@@ -23,8 +24,8 @@ class OCRDataset(OCRCLToolBase):
         256 -> 11
 
     Todo:
-      - Document
-      - Implement other image data types (8 bit and 1 bit)
+      - [ ] Document
+      - [ ] Implement other image data types (8 bit and 1 bit)
     """
 
     # region Instance Variables
@@ -263,21 +264,6 @@ class OCRDataset(OCRCLToolBase):
         self.char_image_data = np.append(
             self.char_image_data, char_image_data[new], axis=0)
 
-    def image_to_data(self, image):
-        import numpy as np
-
-        if self.image_mode == "8bit":
-            data = np.array(image).flatten()
-        elif self.image_mode == "2bit":
-            raw = np.array(image).flatten()
-            data = np.zeros((2 * raw.size), np.bool)
-            data[0::2][np.logical_or(raw == 170, raw == 255)] = True
-            data[1::2][np.logical_or(raw == 85, raw == 255)] = True
-        elif self.image_mode == "1bit":
-            raise NotImplementedError()
-
-        return data
-
     def data_to_image(self, data):
         import numpy as np
         from PIL import Image
@@ -295,6 +281,21 @@ class OCRDataset(OCRCLToolBase):
             raise NotImplementedError()
 
         return image
+
+    def image_to_data(self, image):
+        import numpy as np
+
+        if self.image_mode == "8bit":
+            data = np.array(image).flatten()
+        elif self.image_mode == "2bit":
+            raw = np.array(image).flatten()
+            data = np.zeros((2 * raw.size), np.bool)
+            data[0::2][np.logical_or(raw == 170, raw == 255)] = True
+            data[1::2][np.logical_or(raw == 85, raw == 255)] = True
+        elif self.image_mode == "1bit":
+            raise NotImplementedError()
+
+        return data
 
     def read_hdf5(self):
         import pandas as pd
@@ -359,40 +360,6 @@ class OCRDataset(OCRCLToolBase):
 
         self.add_char_images(new_char_image_specs, new_char_image_data)
 
-    def write_hdf5(self):
-        import h5py
-        import numpy as np
-
-        if self.verbosity >= 1:
-            print(f"Writing data to '{self.output_hdf5}'")
-        with h5py.File(self.output_hdf5) as hdf5_outfile:
-            # Remove preexisting data
-            if "char_image_data" in hdf5_outfile:
-                del hdf5_outfile["char_image_data"]
-            if "char_image_specs" in hdf5_outfile:
-                del hdf5_outfile["char_image_specs"]
-
-            # Save configuration
-            hdf5_outfile.attrs["mode"] = self.image_mode
-
-            # Save character image specifications
-            char_image_specs = list(map(self._output_hdf5_spec_format,
-                                        self.char_image_specs.values))
-            dtypes = self._output_hdf5_spec_dtypes()
-
-            char_image_specs = np.array(char_image_specs, dtype=dtypes)
-            hdf5_outfile.create_dataset("char_image_specs",
-                                        data=char_image_specs,
-                                        dtype=dtypes,
-                                        chunks=True, compression="gzip")
-
-            # Save character image data
-            hdf5_outfile.create_dataset("char_image_data",
-                                        data=self.char_image_data,
-                                        dtype=self.image_data_dtype,
-                                        chunks=True,
-                                        compression="gzip")
-
     def show_char_images(self, indexes, columns=None):
         import numpy as np
         from PIL import Image
@@ -422,20 +389,57 @@ class OCRDataset(OCRCLToolBase):
                          100 * (column + 1) - 10))
         image.show()
 
+    def write_hdf5(self):
+        import h5py
+        import numpy as np
+
+        if self.verbosity >= 1:
+            print(f"Writing data to '{self.output_hdf5}'")
+        with h5py.File(self.output_hdf5) as hdf5_outfile:
+            # Remove preexisting data
+            if "char_image_data" in hdf5_outfile:
+                del hdf5_outfile["char_image_data"]
+            if "char_image_specs" in hdf5_outfile:
+                del hdf5_outfile["char_image_specs"]
+
+            # Save configuration
+            hdf5_outfile.attrs["mode"] = self.image_mode
+
+            # Save character image specifications
+            char_image_specs = list(map(self._output_hdf5_spec_format,
+                                        self.char_image_specs.values))
+            dtypes = self._output_hdf5_spec_dtypes()
+            char_image_specs = np.array(char_image_specs, dtype=dtypes)
+            hdf5_outfile.create_dataset("char_image_specs",
+                                        data=char_image_specs,
+                                        dtype=dtypes,
+                                        chunks=True, compression="gzip")
+
+            # Save character image data
+            hdf5_outfile.create_dataset("char_image_data",
+                                        data=self.char_image_data,
+                                        dtype=self.image_data_dtype,
+                                        chunks=True,
+                                        compression="gzip")
+
     # endregion
 
     # Private Methods
 
-    def _output_hdf5_spec_format(self, row):
+    def _output_hdf5_spec_format(self, spec):
+        """Formats spec for compatibility with both numpy and h5py"""
         raise NotImplementedError()
 
     def _output_hdf5_spec_dtypes(self):
+        """Provides spec dtypes for compatibility with both numpy and h5py"""
         raise NotImplementedError()
 
     def _read_image_directory_infiles(self, path):
+        """Provides infiles within path"""
         raise NotImplementedError()
 
     def _read_image_directory_specs(self, infiles):
+        """Provides specs of infiles"""
         raise NotImplementedError()
 
     # endregion

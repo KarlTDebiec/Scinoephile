@@ -14,12 +14,13 @@ from IPython import embed
 
 ################################### CLASSES ###################################
 class LabeledOCRDataset(OCRDataset):
-    """Represents a collection of labeled character images
+    """
+    Represents a collection of labeled character images
 
     Todo:
       - [x] Read image directory
       - [x] Add images
-      - [ ] Write hdf5
+      - [x] Write hdf5
       - [ ] Read hdf5
       - [ ] Write image directory
       - [ ] Document
@@ -38,15 +39,21 @@ class LabeledOCRDataset(OCRDataset):
 
         self.input_image_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/tst"
+        self.output_hdf5 = \
+            "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
 
     def __call__(self):
         """ Core logic """
 
-        # Initialize
+        # Input
         if self.input_hdf5 is not None:
             self.read_hdf5()
         if self.input_image_directory is not None:
             self.read_image_directory()
+
+        # Output
+        if self.output_hdf5 is not None:
+            self.write_hdf5()
 
         # Present IPython prompt
         if self.interactive:
@@ -70,17 +77,40 @@ class LabeledOCRDataset(OCRDataset):
     # Private Methods
 
     def _output_hdf5_spec_format(self, row):
-        raise NotImplementedError()
+        """
+        Formats spec for compatibility with both numpy and h5py
+
+        - Converted into a tuple for numpy to build a record array
+        - Characters converted from unicode strings to integers. hdf5 and
+          numpy's unicode support do not cooperate well, and this is the
+          least painful solution.
+        """
+        row = list(row)
+        if "path" in self.char_image_specs.columns.values:
+            path_index = list(
+                self.char_image_specs.columns.values).index("path")
+            row[path_index] = row[path_index].encode("utf8")
+        if "character" in self.char_image_specs.columns.values:
+            char_index = list(
+                self.char_image_specs.columns.values).index("character")
+            row[char_index] = row[char_index].encode("utf8")
+        return tuple(row)
 
     def _output_hdf5_spec_dtypes(self):
-        raise NotImplementedError()
+        """Provides spec dtypes for compatibility with both numpy and h5py"""
+        dtypes = {"path": "S255", "character": "S3"}
+        return list(zip(self.char_image_specs.columns.values,
+                        [dtypes[k] for k in
+                         list(self.char_image_specs.columns.values)]))
 
     def _read_image_directory_infiles(self, path):
+        """Provides infiles within path"""
         from glob import iglob
 
         return sorted(iglob(f"{path}/**/*.png", recursive=True))
 
     def _read_image_directory_specs(self, infiles):
+        """Provides specs of infiles"""
         import numpy as np
         import pandas as pd
         from os.path import basename

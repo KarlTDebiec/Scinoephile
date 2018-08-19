@@ -14,12 +14,13 @@ from IPython import embed
 
 ################################### CLASSES ###################################
 class UnlabeledOCRDataset(OCRDataset):
-    """Represents a collection of unlabeled character images
+    """
+    Represents a collection of unlabeled character images
 
     Todo:
       - [x] Read image directory
       - [x] Add images
-      - [ ] Write hdf5
+      - [x] Write hdf5
       - [ ] Read hdf5
       - [ ] Write image directory
       - [ ] Document
@@ -49,10 +50,6 @@ class UnlabeledOCRDataset(OCRDataset):
             self.read_hdf5()
         if self.input_image_directory is not None:
             self.read_image_directory()
-
-        # Present IPython prompt
-        # if self.interactive:
-        #     embed(**self.embed_kw)
 
         # Output
         if self.output_hdf5 is not None:
@@ -121,18 +118,25 @@ class UnlabeledOCRDataset(OCRDataset):
 
     # Private Methods
 
-    def _output_hdf5_spec_format(self, row):
-        return tuple(row)
+    def _output_hdf5_spec_format(self, spec):
+        """Formats spec for compatibility with both numpy and h5py"""
+        return tuple(spec)
 
     def _output_hdf5_spec_dtypes(self):
-        return list(zip(self.char_image_specs.columns.values, ["S255"]))
+        """Provides spec dtypes for compatibility with both numpy and h5py"""
+        dtypes = {"path": "S255"}
+        return list(zip(self.char_image_specs.columns.values,
+                        [dtypes[k] for k in
+                         list(self.char_image_specs.columns.values)]))
 
     def _read_image_directory_infiles(self, path):
+        """Provides infiles within path"""
         from glob import iglob
 
         return sorted(iglob(f"{path}/**/[0-9][0-9].png", recursive=True))
 
     def _read_image_directory_specs(self, infiles):
+        """Provides specs of infiles"""
         import pandas as pd
 
         return pd.DataFrame(data=infiles,
