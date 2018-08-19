@@ -59,7 +59,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         # self.output_image_dir = \
         #     "/Users/kdebiec/Desktop/generated"
-        self.n_chars = 100
+        # self.n_chars = 100
 
     def __call__(self):
         """ Core logic """
@@ -396,7 +396,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         if len(queue) >= 1:
             if self.verbosity >= 1:
-                print(f"Generating {len(queue)} images for minimal set")
+                print(f"Generating {len(queue)} new images for minimal set")
 
             # Prepare specs
             specs = pd.DataFrame(queue)
