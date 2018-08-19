@@ -59,6 +59,23 @@ class Base(object):
 
     # endregion
 
+    # region Methods
+
+    def embed(self):
+        from inspect import currentframe, getframeinfo
+        from IPython import embed
+
+        frameinfo = getframeinfo(currentframe().f_back)
+        file = frameinfo.filename.replace(self.package_root, "")
+        func = frameinfo.function
+        line = frameinfo.lineno
+        if self.verbosity >= 1:
+            print(f"IPython prompt in file {file}, function {func},"
+                  f" line {line}")
+        embed(display_banner=False)
+
+    # endregion
+
 
 class CLToolBase(Base):
     """Base for command line tools"""
