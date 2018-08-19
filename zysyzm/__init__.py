@@ -7,15 +7,9 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-"""
-Todo:
-  - Document
-"""
-
-
 ################################### CLASSES ###################################
 class Base(object):
-    """"""
+    """Base for all zysyzm classes"""
 
     # region Builtins
 
@@ -41,7 +35,7 @@ class Base(object):
             from os.path import dirname
             from sys import modules
 
-            self._package_root = dirname(modules["zysyzm"].__file__)
+            self._package_root = dirname(modules[__name__].__file__)
         return self._package_root
 
     @property
@@ -62,23 +56,32 @@ class Base(object):
     # region Methods
 
     def embed(self):
+        """Presents an interactive IPython prompt"""
         from inspect import currentframe, getframeinfo
         from IPython import embed
 
         frameinfo = getframeinfo(currentframe().f_back)
         file = frameinfo.filename.replace(self.package_root, "")
         func = frameinfo.function
-        line = frameinfo.lineno
+        number = frameinfo.lineno - 1
         if self.verbosity >= 1:
-            print(f"IPython prompt in file {file}, function {func},"
-                  f" line {line}")
+            print(f"\nIPython prompt in file {file}, function {func},"
+                  f" line {number}")
+        if self.verbosity >= 2:
+            print()
+            with open(frameinfo.filename, "r") as infile:
+                lines = [(i, line) for i, line in enumerate(infile)
+                         if i in range(number - 6, number + 5)]
+            for i, line in lines:
+                print(f"{i:4d} {'>' if i == number else ' '} {line.rstrip()}")
+
         embed(display_banner=False)
 
     # endregion
 
 
 class CLToolBase(Base):
-    """Base for command line tools"""
+    """Base for zysyzm command line tools"""
 
     # region Instance Variables
 
