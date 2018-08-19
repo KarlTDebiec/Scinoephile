@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm.ocr import LabeledOCRDataset
+from IPython import embed
 
 
 ################################### CLASSES ###################################
@@ -60,7 +61,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Present IPython prompt
         if self.interactive:
-            self.embed()
+            embed(**self.embed_kw)
 
     # endregion
 

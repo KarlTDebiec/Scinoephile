@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm.ocr import OCRCLToolBase
+from IPython import embed
 
 
 ################################### CLASSES ###################################
@@ -245,10 +246,13 @@ class OCRDataset(OCRCLToolBase):
     def add_char_images(self, char_image_specs, char_image_data):
         import numpy as np
 
-        new = np.logical_not(
-            np.isin(char_image_specs, self.char_image_specs.values).flatten())
+        old_specs = set(list(map(tuple, self.char_image_specs.values)))
 
-        self.embed()
+        def is_new(row):
+            return tuple(row.values) not in old_specs
+
+        new = char_image_specs.apply(is_new, axis=1).values
+
         self.char_image_specs = self.char_image_specs.append(
             char_image_specs.loc[new], ignore_index=True)
         self.char_image_data = np.append(

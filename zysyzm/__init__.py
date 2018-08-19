@@ -27,6 +27,28 @@ class Base(object):
     # endregion
 
     # region Properties
+    @property
+    def embed_kw(self):
+        """dict: """
+        from inspect import currentframe, getframeinfo
+
+        frameinfo = getframeinfo(currentframe().f_back)
+        file = frameinfo.filename.replace(self.package_root, "")
+        func = frameinfo.function
+        number = frameinfo.lineno - 1
+        if self.verbosity >= 1:
+            header = f"IPython prompt in file {file}, function {func}," \
+                     f" line {number}\n"
+        if self.verbosity >= 2:
+            header += "\n"
+            with open(frameinfo.filename, "r") as infile:
+                lines = [(i, line) for i, line in enumerate(infile)
+                         if i in range(number - 6, number + 5)]
+            for i, line in lines:
+                header += f"{i:5d} {'>' if i == number else ' '} " \
+                          f"{line.rstrip()}\n"
+
+        return {"header": header}
 
     @property
     def package_root(self):
@@ -50,32 +72,6 @@ class Base(object):
         if not isinstance(value, int) and value >= 0:
             raise ValueError()
         self._verbosity = value
-
-    # endregion
-
-    # region Methods
-
-    def embed(self):
-        """Presents an interactive IPython prompt"""
-        from inspect import currentframe, getframeinfo
-        from IPython import embed
-
-        frameinfo = getframeinfo(currentframe().f_back)
-        file = frameinfo.filename.replace(self.package_root, "")
-        func = frameinfo.function
-        number = frameinfo.lineno - 1
-        if self.verbosity >= 1:
-            print(f"\nIPython prompt in file {file}, function {func},"
-                  f" line {number}")
-        if self.verbosity >= 2:
-            print()
-            with open(frameinfo.filename, "r") as infile:
-                lines = [(i, line) for i, line in enumerate(infile)
-                         if i in range(number - 6, number + 5)]
-            for i, line in lines:
-                print(f"{i:4d} {'>' if i == number else ' '} {line.rstrip()}")
-
-        embed(display_banner=False)
 
     # endregion
 
