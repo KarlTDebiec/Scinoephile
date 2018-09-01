@@ -10,6 +10,7 @@
 ################################### MODULES ###################################
 from zysyzm.ocr import OCRCLToolBase
 from IPython import embed
+from sys import exit
 
 
 ################################### CLASSES ###################################
@@ -54,6 +55,15 @@ class AutoTrainer(OCRCLToolBase):
         # self.epochs = epochs
         # self.model_outfile = model_outfile
 
+        n_chars = 10
+        # 10,  0.9000
+        # 15,  0.6667
+        # 20,  0.8000
+        # 25,  0.6800
+        # 30,  0.8667
+        # 50,  0.6800
+        # 100, 0.5300
+
         if n_chars is not None:
             self.n_chars = n_chars
         if val_portion is not None:
@@ -62,16 +72,19 @@ class AutoTrainer(OCRCLToolBase):
         trn_hdf5 = "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
 
         self.trn_dataset = GeneratedOCRDataset(
-            # input_hdf5=trn_hdf5,
+            input_hdf5=trn_hdf5,
             output_hdf5=trn_hdf5,
+            output_image_dir="/Users/kdebiec/Desktop/trn",
             n_chars=self.n_chars)
-        if isfile(trn_hdf5):
+        if isfile(self.trn_dataset.input_hdf5):
             self.trn_dataset.read_hdf5()
+            self.trn_dataset.generate_minimal_images()
         else:
             self.trn_dataset.generate_minimal_images()
-            # self.trn_dataset.generate_additional_images(
-            # self.chars[:self.n_chars])
-            self.trn_dataset.write_hdf5()
+        self.trn_dataset.generate_additional_images(
+            self.chars[:self.n_chars], 1000)
+        self.trn_dataset.write_hdf5()
+        # self.trn_dataset.write_image_dir()
 
     def __call__(self):
         """Core logic"""
@@ -109,20 +122,20 @@ class AutoTrainer(OCRCLToolBase):
                                    zip(poss_chars[:10], poss_probs[:10])]
                         print(f"{char} | {' '.join(matches)}")
 
-        rounds_since_last_increase = 0
+        model = get_model()
+        trn_img, trn_lbl, val_img, val_lbl = \
+            self.trn_dataset.get_data_for_training(self.val_portion)
+
         while True:
             # Train model
-            trn_img, trn_lbl, val_img, val_lbl = \
-                self.trn_dataset.get_data_for_training(self.val_portion)
-            model = get_model()
             history = model.fit(
                 trn_img, trn_lbl,
                 validation_data=(val_img, val_lbl),
                 epochs=self.epochs,
                 batch_size=self.batch_size,
-                verbose=0,
-                callbacks=[keras.callbacks.EarlyStopping(
-                    patience=10, monitor="val_acc")])
+                verbose=1)
+            # callbacks=[keras.callbacks.EarlyStopping(
+            #     patience=10, monitor="val_acc")])
 
             # Evaluate model
             missed_chars = set()
@@ -130,23 +143,22 @@ class AutoTrainer(OCRCLToolBase):
             analyze("Validation", val_img, val_lbl, missed_chars)
 
             # Expand fitting set
-            if len(missed_chars) > 0:
+            if len(missed_chars) > int(self.n_chars * 0.01):
                 if self.verbosity >= 1:
                     print(f"Missed the following "
                           f"{len(missed_chars)}/{self.n_chars} "
                           f"characters: {''.join(missed_chars)}")
-                rounds_since_last_increase += 1
-                self.trn_dataset.generate_additional_images(missed_chars, 1)
-                self.trn_dataset.generate_additional_images(
-                    self.chars[:self.n_chars])
             else:
+                exit()
                 self.trn_dataset.write_hdf5()
                 self.n_chars += 10
                 self.trn_dataset.n_chars += 10
                 if self.verbosity >= 1:
                     print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
                 self.trn_dataset.generate_minimal_images()
-                rounds_since_last_increase = 0
+                self.trn_dataset.generate_additional_images(
+                    self.chars[:self.n_chars], 1000)
+                model = get_model()
 
     # endregion
 
@@ -156,7 +168,7 @@ class AutoTrainer(OCRCLToolBase):
     def batch_size(self):
         """int: Training batch size"""
         if not hasattr(self, "_batch_size"):
-            self._batch_size = 128
+            self._batch_size = 32
         return self._batch_size
 
     @batch_size.setter
@@ -175,7 +187,7 @@ class AutoTrainer(OCRCLToolBase):
     def epochs(self):
         """int: Number of epochs to train for"""
         if not hasattr(self, "_epochs"):
-            self._epochs = 25
+            self._epochs = 10
         return self._epochs
 
     @epochs.setter
@@ -237,7 +249,7 @@ class AutoTrainer(OCRCLToolBase):
     def n_chars(self):
         """int: Number of characters to restrict model to"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
+            self._n_chars = 20
         return self._n_chars
 
     @n_chars.setter
@@ -274,7 +286,7 @@ class AutoTrainer(OCRCLToolBase):
 
     @property
     def trn_dataset(self):
-        """str: Training dataset"""
+        """zysyzm.ocr.GeneratedOCRDataset: Training dataset"""
         if not hasattr(self, "_trn_dataset"):
             self._trn_dataset = None
         return self._trn_dataset

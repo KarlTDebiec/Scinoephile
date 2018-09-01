@@ -24,8 +24,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
       - [x] Read hdf5
       - [x] Write image directory
       - [x] Initialize
-      - [ ] Add images with randomly-chosen specs
-      - [ ] Support creation of training and validation datasets, with at
+      - [x] Add images with randomly-chosen specs
+      - [x] Support creation of training and validation datasets, with at
             least on image of each character in each
       - [ ] Document
     """
@@ -378,6 +378,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Prepare trn and val sets with at least one image of each character
         for char in set(self.specs["char"]):
+            print(char)
             specs = self._get_specs_of_char(char)
             n_specs = specs.index.size
 
@@ -398,6 +399,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 val_indexes = sample(specs.index.tolist(), n_for_val)
                 all_val_indexes.extend(val_indexes)
                 specs = specs.drop(val_indexes)
+            # trn_indexes.append(trn_index)
+            # val_indexes.append(val_index)
+            # self.show_chars(trn_indexes, 18)
+            # self.show_chars(val_indexes, 18)
+            # input()
 
         # Organize data for tensorflow
         trn_img = self.data[all_trn_indexes]
@@ -512,29 +518,30 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         def get_base_path_remover(paths):
             """Provides function to remove shared base path"""
 
+            i = 0
             for i in range(max(map(len, paths))):
                 if len(set([path[i] for path in paths])) != 1:
                     break
             i = len(dirname(paths[0][:i])) + 1
             return lambda x: x[i:]
 
-        if "path" in specs.columns:
-            base_path_remover = get_base_path_remover(list(specs["path"]))
-
-            def func(spec):
-                return f"{self.output_image_dir}/" \
-                       f"{base_path_remover(spec[1]['path'])}"
-
-            return func
-        else:
-            def func(spec):
-                return f"{self.output_image_dir}/" \
-                       f"{spec[1]['char']}_" \
-                       f"{spec[1]['size']:02d}_" \
-                       f"{spec[1]['width']:02d}_" \
-                       f"{spec[1]['x_offset']:+d}_" \
-                       f"{spec[1]['y_offset']:+d}_" \
-                       f"{spec[1]['font'].replace(' ', '')}.png"
+        # if "path" in specs.columns:
+        #     base_path_remover = get_base_path_remover(list(specs["path"]))
+        #
+        #     def func(spec):
+        #         return f"{self.output_image_dir}/" \
+        #                f"{base_path_remover(spec[1]['path'])}"
+        #
+        #     return func
+        # else:
+        def func(spec):
+            return f"{self.output_image_dir}/" \
+                   f"{spec[1]['char']}_" \
+                   f"{spec[1]['size']:02d}_" \
+                   f"{spec[1]['width']:02d}_" \
+                   f"{spec[1]['x_offset']:+d}_" \
+                   f"{spec[1]['y_offset']:+d}_" \
+                   f"{spec[1]['font'].replace(' ', '')}.png"
 
         return func
 
