@@ -28,14 +28,14 @@ class AutoTrainer(OCRCLToolBase):
 
     # region Instance Variables
 
-    help_message = ("Tool for training model")
+    help_message = ("Tool for automatic model training")
 
     # endregion
 
     # region Builtins
 
-    def __init__(self, model_infile=None, trn_infile=None, tst_infile=None,
-                 val_portion=None, n_chars=None, shape=None, batch_size=None,
+    def __init__(self, model_infile=None, trn_infile=None, val_portion=None,
+                 tst_infile=None, n_chars=None, shape=None, batch_size=None,
                  epochs=None, model_outfile=None, **kwargs):
         """
         Initializes tool
@@ -43,50 +43,54 @@ class AutoTrainer(OCRCLToolBase):
         Args:
             kwargs (dict): Additional keyword arguments
         """
-        from os.path import isfile
-        from zysyzm.ocr import GeneratedOCRDataset
+        from os.path import isdir, isfile
+        from zysyzm.ocr import LabeledOCRDataset, GeneratedOCRDataset
 
         super().__init__(**kwargs)
 
-        # self.model_infile = model_infile
-        # self.trn_infile = trn_infile
-        # self.tst_infile = tst_infile
-
-        # self.shape = shape
-        # self.batch_size = batch_size
-        # self.epochs = epochs
-        # self.model_outfile = model_outfile
-
-        n_chars = 10
-        # 10,  0.9000
-        # 15,  0.6667
-        # 20,  0.8000
-        # 25,  0.6800
-        # 30,  0.8667
-        # 50,  0.6800
-        # 100, 0.5300
-
-        if n_chars is not None:
-            self.n_chars = n_chars
+        # Store property values
+        if model_infile is not None:
+            self.model_infile = model_infile
         if val_portion is not None:
             self.val_portion = val_portion
+        if n_chars is not None:
+            self.n_chars = n_chars
+        if shape is not None:
+            self.shape = shape
+        if batch_size is not None:
+            self.batch_size = batch_size
+        if epochs is not None:
+            self.epochs = epochs
+        if model_outfile is not None:
+            self.model_outfile = model_outfile
 
-        trn_hdf5 = "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        # Temporary manual configuration for testing
+        trn_infile = "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        tst_infile = "/Users/kdebiec/Desktop/docs/subtitles/tst"
 
-        self.trn_dataset = GeneratedOCRDataset(
-            input_hdf5=trn_hdf5,
-            output_hdf5=trn_hdf5,
-            output_image_dir="/Users/kdebiec/Desktop/trn",
-            n_chars=self.n_chars)
-        if isfile(self.trn_dataset.input_hdf5):
-            self.trn_dataset.read_hdf5()
-            self.trn_dataset.generate_minimal_images()
-        else:
-            self.trn_dataset.generate_minimal_images()
-        self.trn_dataset.generate_additional_images(
-            self.chars[:self.n_chars], 1000)
-        self.trn_dataset.write_hdf5()
-        # self.trn_dataset.write_image_dir()
+        # Initialize training dataset
+        self.trn_dataset = GeneratedOCRDataset(n_chars=self.n_chars)
+        if trn_infile is not None:
+            if isdir(trn_infile):
+                self.trn_dataset.input_image_dir = trn_infile
+                self.trn_dataset.read_image_dir()
+            elif isfile(trn_infile):
+                self.trn_dataset.input_hdf5 = trn_infile
+                self.trn_dataset.read_hdf5()
+            else:
+                raise ValueError()
+
+        # Initialize test dataset
+        if tst_infile is not None:
+            self.tst_dataset = LabeledOCRDataset()
+            if isdir(tst_infile):
+                self.tst_dataset.input_image_dir = tst_infile
+                self.tst_dataset.read_image_dir()
+            elif isfile(tst_infile):
+                self.tst_dataset.input_hdf5 = tst_infile
+                self.tst_dataset.read_hdf5()
+            else:
+                raise ValueError()
 
     def __call__(self):
         """Core logic"""
@@ -115,50 +119,79 @@ class AutoTrainer(OCRCLToolBase):
                                    zip(poss_chars[:10], poss_probs[:10])]
                         print(f"{char} | {' '.join(matches)}")
 
-        model = keras.Sequential([
-            keras.layers.Dense(self.n_chars,
-                               input_shape=(12800,),
-                               activation=tf.nn.softmax)
-        ])
-        model.compile(optimizer=tf.train.AdamOptimizer(),
-                      loss='sparse_categorical_crossentropy',
-                      metrics=['accuracy'])
-
+        # Prepare training and validation data
+        self.trn_dataset.generate_minimal_images()
+        if self.trn_dataset.input_hdf5 is not None:
+            self.trn_dataset.write_hdf5()
         trn_img, trn_lbl, val_img, val_lbl = \
-            self.trn_dataset.get_data_for_training(self.val_portion)
-        print("lets make a dataset")
-        dataset = tf.data.Dataset.from_tensor_slices((val_img, val_lbl))
-        print("we have made a dataset")
+            self.trn_dataset.get_data_for_training(
+                val_portion=self.val_portion)
+        trn_img = self.format_data_for_model(trn_img)
+        val_img = self.format_data_for_model(val_img)
 
-        while True:
-            # Train model
-            history = model.fit(dataset, steps_per_epoch=10)  # ,
-            # trn_img, trn_lbl,
-            # validation_data=(val_img, val_lbl),
-            # epochs=self.epochs)  # ,
-            # batch_size=self.batch_size)
+        # Prepare test data
+        if self.tst_dataset is not None:
+            tst_img, tst_lbl = self.tst_dataset.get_images_and_labels()
+            tst_img = self.format_data_for_model(tst_img)
+            tst_img = tst_img[tst_lbl < self.n_chars]
+            tst_lbl = tst_lbl[tst_lbl < self.n_chars]
 
-            # Evaluate model
-            missed_chars = set()
-            analyze("Training", trn_img, trn_lbl, missed_chars)
-            # analyze("Validation", val_img, val_lbl, missed_chars)
+        # Prepare model
+        if self.model_infile is not None:
+            # Reload model
+            if self.verbosity >= 1:
+                print(f"Loading model from {self.model_infile}")
+            model = keras.models.load_model(self.model_infile)
+            model.compile(optimizer=tf.train.AdamOptimizer(),
+                          loss='sparse_categorical_crossentropy',
+                          metrics=['accuracy'])
+        else:
+            # Define model
+            model = keras.Sequential([
+                keras.layers.Dense(256,
+                                   # input_shape=(12800,),
+                                   input_shape=(19200,),
+                                   activation=tf.nn.relu),
+                keras.layers.Dense(self.n_chars,
+                                   activation=tf.nn.softmax)
+            ])
+            model.compile(optimizer=tf.train.AdamOptimizer(),
+                          loss='sparse_categorical_crossentropy',
+                          metrics=['accuracy'])
 
-            # Expand fitting set
-            if len(missed_chars) > 1:
-                if self.verbosity >= 1:
-                    print(f"Missed the following "
-                          f"{len(missed_chars)}/{self.n_chars} "
-                          f"characters: {''.join(missed_chars)}")
-            else:
-                exit()
-            #     self.trn_dataset.write_hdf5()
-            #     self.n_chars += 10
-            #     self.trn_dataset.n_chars += 10
-            #     if self.verbosity >= 1:
-            #         print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
-            #     self.trn_dataset.generate_minimal_images()
-            #     self.trn_dataset.generate_additional_images(
-            #         self.chars[:self.n_chars], 1000)
+        # Train model
+        model.fit(trn_img, trn_lbl, epochs=10,
+                  validation_data=(val_img, val_lbl))
+
+        # while True:
+        # Train model
+        # history = model.fit(dataset, steps_per_epoch=10)  # ,
+        # trn_img, trn_lbl,
+        # validation_data=(val_img, val_lbl),
+        # epochs=self.epochs)  # ,
+        # batch_size=self.batch_size)
+
+        # Evaluate model
+        # missed_chars = set()
+        # analyze("Training", trn_img, trn_lbl, missed_chars)
+        # analyze("Validation", val_img, val_lbl, missed_chars)
+
+        # Expand fitting set
+        # if len(missed_chars) > 1:
+        #     if self.verbosity >= 1:
+        #         print(f"Missed the following "
+        #               f"{len(missed_chars)}/{self.n_chars} "
+        #               f"characters: {''.join(missed_chars)}")
+        # else:
+        #     exit()
+        #     self.trn_dataset.write_hdf5()
+        #     self.n_chars += 10
+        #     self.trn_dataset.n_chars += 10
+        #     if self.verbosity >= 1:
+        #         print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
+        #     self.trn_dataset.generate_minimal_images()
+        #     self.trn_dataset.generate_additional_images(
+        #         self.chars[:self.n_chars], 1000)
 
     # endregion
 
@@ -178,9 +211,9 @@ class AutoTrainer(OCRCLToolBase):
                 try:
                     value = int(value)
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
             if value < 1 and value is not None:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         self._batch_size = value
 
     @property
@@ -197,57 +230,52 @@ class AutoTrainer(OCRCLToolBase):
                 try:
                     value = int(value)
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
             if value < 1 and value is not None:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         self._epochs = value
 
-    # @property
-    # def model_infile(self):
-    #     """str: Path to input model file"""
-    #     if not hasattr(self, "_model_infile"):
-    #         self._model_infile = None
-    #     return self._model_infile
-    #
-    # @model_infile.setter
-    # def model_infile(self, value):
-    #     from os.path import expandvars, isfile
-    #
-    #     if value is not None:
-    #         if not isinstance(value, str):
-    #             raise ValueError()
-    #         else:
-    #             value = expandvars(value)
-    #             if not isfile(value):
-    #                 raise ValueError()
-    #     self._model_infile = value
-    #
-    # @property
-    # def model_outfile(self):
-    #     """str: Path to output model file"""
-    #     if not hasattr(self, "_model_outfile"):
-    #         self._model_outfile = None
-    #     return self._model_outfile
-    #
-    # @model_outfile.setter
-    # def model_outfile(self, value):
-    #     from os import access, R_OK, W_OK
-    #     from os.path import dirname, expandvars, isfile
-    #
-    #     if value is not None:
-    #         if not isinstance(value, str):
-    #             raise ValueError()
-    #         else:
-    #             value = expandvars(value)
-    #             if isfile(value) and not access(value, R_OK):
-    #                 raise ValueError()
-    #             elif not access(dirname(value), W_OK):
-    #                 raise ValueError()
-    #     self._model_outfile = value
+    @property
+    def model_infile(self):
+        """str: Path to input model file"""
+        if not hasattr(self, "_model_infile"):
+            self._model_infile = None
+        return self._model_infile
+
+    @model_infile.setter
+    def model_infile(self, value):
+        from os.path import expandvars
+
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value)
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
+        self._model_infile = value
+
+    @property
+    def model_outfile(self):
+        """str: Path to output model file"""
+        if not hasattr(self, "_model_outfile"):
+            self._model_outfile = None
+        return self._model_outfile
+
+    @model_outfile.setter
+    def model_outfile(self, value):
+        from os.path import expandvars
+
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value)
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
+        self._model_outfile = value
 
     @property
     def n_chars(self):
-        """int: Number of characters to restrict model to"""
+        """int: Number of unique characters to support"""
         if not hasattr(self, "_n_chars"):
             self._n_chars = 10
         return self._n_chars
@@ -259,9 +287,9 @@ class AutoTrainer(OCRCLToolBase):
                 try:
                     value = int(value)
                 except Exception as e:
-                    raise ValueError()
-            if value < 1 and value is not None:
-                raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
+            if value < 1:
+                raise ValueError(self._generate_setter_exception(value))
         self._n_chars = value
 
     @property
@@ -275,18 +303,18 @@ class AutoTrainer(OCRCLToolBase):
     def shape(self, value):
         if value is not None:
             if not isinstance(value, list):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             elif isinstance(value, list):
                 for i, v in enumerate(value):
                     try:
                         value[i] = int(v)
                     except Exception as e:
-                        raise ValueError()
+                        raise ValueError(self._generate_setter_exception(value))
         self._shape = value
 
     @property
     def trn_dataset(self):
-        """zysyzm.ocr.GeneratedOCRDataset: Training dataset"""
+        """zysyzm.ocr.GeneratedOCRDataset: Training/validation dataset"""
         if not hasattr(self, "_trn_dataset"):
             self._trn_dataset = None
         return self._trn_dataset
@@ -297,28 +325,24 @@ class AutoTrainer(OCRCLToolBase):
 
         if value is not None:
             if not isinstance(value, GeneratedOCRDataset):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         self._trn_dataset = value
 
-    # @property
-    # def tst_infile(self):
-    #     """str: Path to directory containing test character images"""
-    #     if not hasattr(self, "_tst_input_directory"):
-    #         self._tst_input_directory = None
-    #     return self._tst_input_directory
-    #
-    # @tst_infile.setter
-    # def tst_infile(self, value):
-    #     from os.path import expandvars, isdir
-    #
-    #     if value is not None:
-    #         if not isinstance(value, str):
-    #             raise ValueError()
-    #         elif isinstance(value, str):
-    #             value = expandvars(value)
-    #             if not isdir(value):
-    #                 raise ValueError()
-    #     self._tst_input_directory = value
+    @property
+    def tst_dataset(self):
+        """zysyzm.ocr.GeneratedOCRDataset: Test dataset"""
+        if not hasattr(self, "_tst_dataset"):
+            self._tst_dataset = None
+        return self._tst_dataset
+
+    @tst_dataset.setter
+    def tst_dataset(self, value):
+        from zysyzm.ocr import LabeledOCRDataset
+
+        if value is not None:
+            if not isinstance(value, LabeledOCRDataset):
+                raise ValueError(self._generate_setter_exception(value))
+        self._tst_dataset = value
 
     @property
     def val_portion(self):
@@ -334,12 +358,28 @@ class AutoTrainer(OCRCLToolBase):
                 try:
                     value = float(value)
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
             if value == 0:
                 value = None
             elif not 0 < value < 1:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         self._val_portion = value
+
+    # endregion
+
+    # region Public Methpds
+
+    def format_data_for_model(self, data):
+        import numpy as np
+
+        bit1 = data[:, 0::2]
+        bit2 = data[:, 1::2]
+        formatted = np.zeros((data.shape[0], 19200), np.bool)
+        formatted[:, :6400] = np.logical_and(np.logical_not(bit1),
+                                             np.logical_not(bit2))
+        formatted[:, 6400:12800] = np.logical_and(np.logical_not(bit1), bit2)
+        formatted[:, 12800:] = np.logical_and(bit1, np.logical_not(bit2))
+        return formatted
 
     # endregion
 

@@ -27,17 +27,21 @@ class GeneratedOCRDataset(LabeledOCRDataset):
       - [x] Add images with randomly-chosen specs
       - [x] Support creation of training and validation datasets, with at
             least on image of each character in each
+      - [ ] Implement CL arguments
+      - [ ] Validate CL arguments
       - [ ] Document
     """
 
     # region Builtins
 
-    def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, n_chars=None,
+    def __init__(self, n_chars=None, font_names=None, font_sizes=None,
+                 font_widths=None, font_x_offsets=None, font_y_offsets=None,
                  **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
+        if n_chars is not None:
+            self.n_chars = n_chars
         if font_names is not None:
             self.font_names = font_names
         if font_sizes is not None:
@@ -48,40 +52,36 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._font_x_offsets = font_x_offsets
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
-        if n_chars is not None:
-            self.n_chars = n_chars
 
-        self.n_chars = 10
+        # Temporary manual configuration for testing
         # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        # self.input_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        self.output_hdf5 = ""  # \
-        # "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
-        self.output_image_dir = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.input_hdf5 = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        self.output_hdf5 = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        # self.output_image_dir = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """ Core logic """
+        from os.path import isdir, isfile
 
         # Input
-        if self.input_hdf5 is not None:
+        if self.input_hdf5 is not None and isfile(self.input_hdf5):
             self.read_hdf5()
-        if self.input_image_dir is not None:
+        if self.input_image_dir is not None and isdir(self.input_image_dir):
             self.read_image_dir()
 
-        # Check for minimum set of images
+        # Action
         self.generate_minimal_images()
-
-        # Add more images
-        self.generate_additional_images(10)
+        # self.generate_additional_images(1)
 
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
         if self.output_image_dir is not None:
-            # self.write_image_dir()
-            self.write_trn_val_image_dirs()
+            self.write_image_dir()
 
         # Present IPython prompt
         if self.interactive:
@@ -183,20 +183,21 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     @property
     def n_chars(self):
-        """int: Number of characters to generate images of"""
+        """int: Number of unique characters to support"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 100
+            self._n_chars = 10
         return self._n_chars
 
     @n_chars.setter
     def n_chars(self, value):
-        if not isinstance(value, int) and value is not None:
-            try:
-                value = int(value)
-            except Exception as e:
+        if value is not None:
+            if not isinstance(value, int):
+                try:
+                    value = int(value)
+                except Exception as e:
+                    raise ValueError(self._generate_setter_exception(value))
+            if value < 1:
                 raise ValueError(self._generate_setter_exception(value))
-        if value < 1 and value is not None:
-            raise ValueError(self._generate_setter_exception(value))
         self._n_chars = value
 
     # endregion

@@ -100,9 +100,9 @@ class ModelTrainer(OCRCLToolBase):
                           loss='sparse_categorical_crossentropy',
                           metrics=['accuracy'])
 
-            # Train model
-            model.fit(trn_img, trn_lbl, epochs=10,
-                      validation_data=(val_img, val_lbl))
+        # Train model
+        model.fit(trn_img, trn_lbl, epochs=10,
+                  validation_data=(val_img, val_lbl))
 
         # Evaluate model
         trn_pred = model.predict(trn_img)
@@ -206,14 +206,14 @@ class ModelTrainer(OCRCLToolBase):
 
     @trn_input_directory.setter
     def trn_input_directory(self, value):
-        from os.path import expandvars, isdir
+        from os.path import expandvars
 
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        elif isinstance(value, str):
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
-            if not isdir(value):
-                raise ValueError()
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._trn_input_directory = value
 
     @property
@@ -225,14 +225,14 @@ class ModelTrainer(OCRCLToolBase):
 
     @tst_input_directory.setter
     def tst_input_directory(self, value):
-        from os.path import expandvars, isdir
+        from os.path import expandvars
 
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        elif isinstance(value, str):
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
-            if not isdir(value):
-                raise ValueError()
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._tst_input_directory = value
 
     @property
@@ -244,14 +244,14 @@ class ModelTrainer(OCRCLToolBase):
 
     @val_input_directory.setter
     def val_input_directory(self, value):
-        from os.path import expandvars, isdir
+        from os.path import expandvars
 
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        elif isinstance(value, str):
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
-            if not isdir(value):
-                raise ValueError()
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._val_input_directory = value
 
     # endregion
