@@ -301,11 +301,14 @@ class OCRDataset(OCRCLToolBase):
         import h5py
         import numpy as np
 
+
+        # TODO: Validate that hdf5 file can be read
+
         if self.verbosity >= 1:
             print(f"Reading data from '{self.input_hdf5}'")
         with h5py.File(self.input_hdf5) as hdf5_infile:
             if "specs" not in hdf5_infile:
-                raise ValueError(self._generate_setter_exception(value))
+                raise ValueError()
             if "data" not in hdf5_infile:
                 raise ValueError()
 
@@ -330,6 +333,8 @@ class OCRDataset(OCRCLToolBase):
         import numpy as np
         from PIL import Image
         from zysyzm.ocr import convert_8bit_grayscale_to_2bit
+
+        # TODO: Validate that directory can be read
 
         if self.verbosity >= 1:
             print(f"Reading images from '{self.input_image_dir}'")
