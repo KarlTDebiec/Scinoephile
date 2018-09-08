@@ -92,11 +92,11 @@ class OCRDataset(OCRCLToolBase):
         import numpy as np
 
         if not isinstance(value, np.ndarray):
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         if value.shape[1] != self._data_size:
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         if value.dtype != self._data_dtype:
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         self._data = value
 
     @property
@@ -113,13 +113,13 @@ class OCRDataset(OCRCLToolBase):
                 try:
                     value = str(value)
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
             if value == "8bit":
                 raise NotImplementedError()
             elif value == "1bit":
                 raise NotImplementedError()
             elif value not in ["2bit"]:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
 
         self._image_mode = value
 
@@ -136,11 +136,11 @@ class OCRDataset(OCRCLToolBase):
 
         if value is not None:
             if not isinstance(value, str):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             else:
                 value = expandvars(value)
                 if not isfile(value):
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._input_hdf5 = value
 
     @property
@@ -157,16 +157,16 @@ class OCRDataset(OCRCLToolBase):
 
         if value is not None:
             if not isinstance(value, str):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             else:
                 value = expandvars(value)
                 if not isdir(value):
                     try:
                         makedirs(value)
                     except Exception as e:
-                        raise ValueError()
+                        raise ValueError(self._generate_setter_exception(value))
                 if not access(value, W_OK):
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._input_image_dir = value
 
     @property
@@ -183,16 +183,16 @@ class OCRDataset(OCRCLToolBase):
 
         if value is not None:
             if not isinstance(value, str):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
             if value == "":
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             elif isfile(value) and not access(value, R_OK):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             elif dirname(value) == "" and not access(getcwd(), W_OK):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             elif not access(dirname(value), W_OK):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         self._output_hdf5 = value
 
     @property
@@ -209,7 +209,7 @@ class OCRDataset(OCRCLToolBase):
 
         if value is not None:
             if not isinstance(value, str):
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
             # Todo: Just check if directory could be created, don't create
             if not isdir(value):
@@ -318,7 +318,7 @@ class OCRDataset(OCRCLToolBase):
             print(f"Reading data from '{self.input_hdf5}'")
         with h5py.File(self.input_hdf5) as hdf5_infile:
             if "specs" not in hdf5_infile:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
             if "data" not in hdf5_infile:
                 raise ValueError()
 
