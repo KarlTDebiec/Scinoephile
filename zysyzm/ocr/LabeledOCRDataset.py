@@ -24,6 +24,7 @@ class LabeledOCRDataset(OCRDataset):
       - [x] Read hdf5
       - [x] Write image directory
       - [ ] Document
+      - [ ] Don't allow 'path' to be set to NaN
     """
 
     # region Instance Variables
