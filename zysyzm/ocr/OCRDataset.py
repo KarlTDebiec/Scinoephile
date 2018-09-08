@@ -132,15 +132,14 @@ class OCRDataset(OCRCLToolBase):
 
     @input_hdf5.setter
     def input_hdf5(self, value):
-        from os.path import expandvars, isfile
+        from os.path import expandvars
 
         if value is not None:
             if not isinstance(value, str):
                 raise ValueError(self._generate_setter_exception(value))
-            else:
-                value = expandvars(value)
-                if not isfile(value):
-                    raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value)
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._input_hdf5 = value
 
     @property
@@ -152,21 +151,14 @@ class OCRDataset(OCRCLToolBase):
 
     @input_image_dir.setter
     def input_image_dir(self, value):
-        from os import access, makedirs, R_OK, W_OK
-        from os.path import expandvars, isdir
+        from os.path import expandvars
 
         if value is not None:
             if not isinstance(value, str):
                 raise ValueError(self._generate_setter_exception(value))
-            else:
-                value = expandvars(value)
-                if not isdir(value):
-                    try:
-                        makedirs(value)
-                    except Exception as e:
-                        raise ValueError(self._generate_setter_exception(value))
-                if not access(value, W_OK):
-                    raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value)
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._input_image_dir = value
 
     @property
@@ -204,19 +196,14 @@ class OCRDataset(OCRCLToolBase):
 
     @output_image_dir.setter
     def output_image_dir(self, value):
-        from os import makedirs
-        from os.path import expandvars, isdir
+        from os.path import expandvars
 
         if value is not None:
             if not isinstance(value, str):
                 raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value)
-            # Todo: Just check if directory could be created, don't create
-            if not isdir(value):
-                try:
-                    makedirs(value)
-                except Exception as e:
-                    raise ValueError()
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
         self._output_image_dir = value
 
     # endregion
