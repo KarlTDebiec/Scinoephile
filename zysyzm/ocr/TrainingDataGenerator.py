@@ -15,10 +15,8 @@ from zysyzm.ocr import OCRCLToolBase
 class TrainingDataGenerator(OCRCLToolBase):
     """
     Generates data for OCR model training and validation
-
     Todo:
       - CL arguments
-        - force to create a new hdf5 file
       - Output directly to hdf5
     """
 
@@ -31,15 +29,17 @@ class TrainingDataGenerator(OCRCLToolBase):
     def __init__(self, **kwargs):
         """
         Initializes tool
-
         Args:
             kwargs (dict): Additional keyword arguments
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 10
+        self.n_chars = 100
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.val_output_directory = \
+            "/Users/kdebiec/Desktop/docs/subtitles/val"
+        self.val_portion = 0.1
 
     def __call__(self):
         """Core logic"""
@@ -77,7 +77,7 @@ class TrainingDataGenerator(OCRCLToolBase):
     def n_chars(self):
         """int: Number of characters to generate images of"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
+            self._n_chars = 21
         return self._n_chars
 
     @n_chars.setter
@@ -114,6 +114,49 @@ class TrainingDataGenerator(OCRCLToolBase):
                     raise ValueError()
         self._trn_output_directory = value
 
+    @property
+    def val_output_directory(self):
+        """str: Path to directory for output validation character images"""
+        if not hasattr(self, "_val_output_directory"):
+            self._val_output_directory = None
+        return self._val_output_directory
+
+    @val_output_directory.setter
+    def val_output_directory(self, value):
+        from os import makedirs
+        from os.path import expandvars, isdir
+
+        if not isinstance(value, str) and value is not None:
+            raise ValueError()
+        elif isinstance(value, str):
+            value = expandvars(value)
+            if not isdir(value):
+                try:
+                    makedirs(value)
+                except Exception as e:
+                    raise ValueError()
+        self._val_output_directory = value
+
+    @property
+    def val_portion(self):
+        """float: Portion of images to set aside for validation"""
+        if not hasattr(self, "_val_portion"):
+            self._val_portion = 0
+        return self._val_portion
+
+    @val_portion.setter
+    def val_portion(self, value):
+        if value is None:
+            value = 0
+        elif not isinstance(value, float):
+            try:
+                value = float(value)
+            except Exception as e:
+                raise ValueError()
+        if not 0 <= value <= 1:
+            raise ValueError()
+        self._val_portion = value
+
     # endregion
 
     # region methods
@@ -121,7 +164,6 @@ class TrainingDataGenerator(OCRCLToolBase):
                           border_width=5, x_offset=0, y_offset=0, **kwargs):
         """
         Outputs an image of a character, if output image does not exist
-
         Args:
             char (str): character to generate an image of
             font_name (str, optional): font with which to draw character
@@ -131,7 +173,6 @@ class TrainingDataGenerator(OCRCLToolBase):
             x_offset (int, optional): x offset to apply to character
             y_offset (int, optional: y offset to apply to character
             **kwargs (dict):
-
         """
         import numpy as np
         from os.path import isfile
@@ -141,9 +182,14 @@ class TrainingDataGenerator(OCRCLToolBase):
         outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
                   f"{x_offset:+d}_{y_offset:+d}_" \
                   f"{font_name.replace(' ', '')}.png"
-        outfile = f"{self.trn_output_directory}/{outfile}"
-        if isfile(f"{self.trn_output_directory}/{outfile}"):
+        if isfile(f"{self.val_output_directory}/{outfile}"):
             return
+        elif isfile(f"{self.trn_output_directory}/{outfile}"):
+            return
+        elif np.random.rand() < self.val_portion:
+            outfile = f"{self.val_output_directory}/{outfile}"
+        else:
+            outfile = f"{self.trn_output_directory}/{outfile}"
 
         # Generate image
         img = generate_char_image(char, font_name=font_name,
