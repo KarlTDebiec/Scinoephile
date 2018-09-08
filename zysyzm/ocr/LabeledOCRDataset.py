@@ -82,6 +82,20 @@ class LabeledOCRDataset(OCRDataset):
 
     # endregion
 
+    # region Public Methods
+
+    def get_images_and_labels(self, indexes=None):
+        if indexes is None:
+            img = self.data
+            lbl = self.chars_to_labels(self.specs["char"].values)
+        else:
+            img = self.data[indexes]
+            lbl = self.chars_to_labels(self.specs["char"].loc[indexes].values)
+
+        return img, lbl
+
+    # endregion
+
     # region Private Methods
 
     def _get_hdf5_input_spec_formatter(self, columns):

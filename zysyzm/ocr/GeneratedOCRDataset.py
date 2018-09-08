@@ -51,15 +51,15 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if n_chars is not None:
             self.n_chars = n_chars
 
-        self.n_chars = 100
+        self.n_chars = 10
         # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
         # self.input_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        # self.output_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        self.output_image_dir = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn"
+        self.output_hdf5 = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
+        # self.output_image_dir = \
+        #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """ Core logic """
@@ -74,14 +74,14 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         self.generate_minimal_images()
 
         # Add more images
-        self.generate_additional_images(1000)
+        self.generate_additional_images(10)
 
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
         if self.output_image_dir is not None:
-            # self.write_image_dir()
-            self.write_trn_val_image_dirs()
+            self.write_image_dir()
+            # self.write_trn_val_image_dirs()
 
         # Present IPython prompt
         if self.interactive:
@@ -374,15 +374,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                     fig=self._figure, image_mode=self.image_mode, **spec))
 
             self.add_images(specs, data)
-
-    def get_images_and_labels(self, indexes=None):
-        if indexes is None:
-            img = self.data
-            lbl = self.chars_to_labels(self.specs["char"].values)
-        else:
-            img = self.data[indexes]
-            lbl = self.chars_to_labels(self.specs["char"].loc[indexes].values)
-        return img, lbl
 
     def get_data_for_training(self, val_portion=0.1):
         import numpy as np

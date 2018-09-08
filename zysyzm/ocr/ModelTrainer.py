@@ -40,7 +40,7 @@ class ModelTrainer(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 100
+        self.n_chars = 10
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
@@ -52,20 +52,31 @@ class ModelTrainer(OCRCLToolBase):
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
-        from zysyzm.ocr import GeneratedOCRDataset
+        from zysyzm.ocr import GeneratedOCRDataset, LabeledOCRDataset
 
         # Load and organize data
-        trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)
+        # trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)
         trn_dataset = GeneratedOCRDataset(input_image_dir=self.trn_input_directory)
         trn_dataset.read_image_dir()
-        nay_img, nay_lbl = trn_dataset.get_images_and_labels()
-        val_img, val_lbl = self.load_labeled_data(self.val_input_directory)
-        tst_img, tst_lbl = self.load_labeled_data(self.tst_input_directory)
-        tst_img = tst_img[tst_lbl < self.n_chars]
-        tst_lbl = tst_lbl[tst_lbl < self.n_chars]
+        trn_img, trn_lbl = trn_dataset.get_images_and_labels()
+        trn_img = self.format_data_for_model(trn_img)
 
         if self.n_chars is None:
             self.n_chars = trn_lbl.max() + 1
+
+        # val_img, val_lbl = self.load_labeled_data(self.val_input_directory)
+        val_dataset = GeneratedOCRDataset(input_image_dir=self.val_input_directory)
+        val_dataset.read_image_dir()
+        val_img, val_lbl = val_dataset.get_images_and_labels()
+        val_img = self.format_data_for_model(val_img)
+
+        # tst_img, tst_lbl = self.load_labeled_data(self.tst_input_directory)
+        tst_dataset = LabeledOCRDataset(input_image_dir=self.tst_input_directory)
+        tst_dataset.read_image_dir()
+        tst_img, tst_lbl = tst_dataset.get_images_and_labels()
+        tst_img = self.format_data_for_model(tst_img)
+        tst_img = tst_img[tst_lbl < self.n_chars]
+        tst_lbl = tst_lbl[tst_lbl < self.n_chars]
 
         # Prepare and train model
         if self.model_infile is not None:
@@ -247,6 +258,18 @@ class ModelTrainer(OCRCLToolBase):
     # endregion
 
     # region Public Methods
+
+    def format_data_for_model(self, data):
+        import numpy as np
+
+        bit1 = data[:, 0::2]
+        bit2 = data[:, 1::2]
+        formatted = np.zeros((data.shape[0], 19200), np.bool)
+        formatted[:, :6400] = np.logical_and(np.logical_not(bit1),
+                                             np.logical_not(bit2))
+        formatted[:, 6400:12800] = np.logical_and(np.logical_not(bit1), bit2)
+        formatted[:, 12800:] = np.logical_and(bit1, np.logical_not(bit2))
+        return formatted
 
     def load_labeled_data(self, directory):
         import numpy as np
