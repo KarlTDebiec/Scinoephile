@@ -42,7 +42,7 @@ class ModelTrainer(OCRCLToolBase):
 
         self.n_chars = 10
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
-        self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
+        # self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
         # self.model_infile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
         self.model_outfile = "/Users/kdebiec/Desktop/docs/subtitles/model.h5"
@@ -56,18 +56,17 @@ class ModelTrainer(OCRCLToolBase):
 
         # Load and organize data
         # trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)
-        trn_dataset = GeneratedOCRDataset(input_image_dir=self.trn_input_directory)
-        trn_dataset.read_image_dir()
-        trn_img, trn_lbl = trn_dataset.get_images_and_labels()
+        trn_dataset = GeneratedOCRDataset(
+            input_hdf5="/Users/kdebiec/Desktop/docs/subtitles/trn.h5")
+        trn_dataset.read_hdf5()
+        trn_img, trn_lbl, val_img, val_lbl = trn_dataset.get_data_for_training()
+        # trn_img, trn_lbl = trn_dataset.get_images_and_labels()
         trn_img = self.format_data_for_model(trn_img)
 
-        if self.n_chars is None:
-            self.n_chars = trn_lbl.max() + 1
-
         # val_img, val_lbl = self.load_labeled_data(self.val_input_directory)
-        val_dataset = GeneratedOCRDataset(input_image_dir=self.val_input_directory)
-        val_dataset.read_image_dir()
-        val_img, val_lbl = val_dataset.get_images_and_labels()
+        # val_dataset = GeneratedOCRDataset(input_image_dir=self.val_input_directory)
+        # val_dataset.read_image_dir()
+        # val_img, val_lbl = val_dataset.get_images_and_labels()
         val_img = self.format_data_for_model(val_img)
 
         # tst_img, tst_lbl = self.load_labeled_data(self.tst_input_directory)

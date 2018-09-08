@@ -57,9 +57,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # self.input_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         self.output_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        # self.output_image_dir = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
+            "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        self.output_image_dir = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """ Core logic """
@@ -80,8 +80,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if self.output_hdf5 is not None:
             self.write_hdf5()
         if self.output_image_dir is not None:
-            self.write_image_dir()
-            # self.write_trn_val_image_dirs()
+            # self.write_image_dir()
+            self.write_trn_val_image_dirs()
 
         # Present IPython prompt
         if self.interactive:
@@ -405,8 +405,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 all_val_indexes.extend(val_indexes)
                 specs = specs.drop(val_indexes)
 
-        # Organize data for tensorflow
-        # COULD STILL BE PROBLEM HERE
+        # Organize data
         trn_img = self.data[all_trn_indexes]
         trn_lbl = self.chars_to_labels(
             self.specs["char"].loc[all_trn_indexes].values)
