@@ -78,7 +78,7 @@ class AutoTrainer(OCRCLToolBase):
                 self.trn_dataset.input_hdf5 = trn_infile
                 self.trn_dataset.read_hdf5()
             else:
-                raise ValueError()
+                self.trn_dataset.input_hdf5 = trn_infile
 
         # Initialize test dataset
         if tst_infile is not None:
@@ -94,7 +94,6 @@ class AutoTrainer(OCRCLToolBase):
 
     def __call__(self):
         """Core logic"""
-        import warnings
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
@@ -113,30 +112,50 @@ class AutoTrainer(OCRCLToolBase):
                 if char != poss_chars[0]:
                     if missed_chars is not None:
                         missed_chars.add(char)
-                        # missed_chars.add(poss_chars[0])
+                        missed_chars.add(poss_chars[0])
                     if self.verbosity >= 2:
                         matches = [f"{a}:{b:4.2f}" for a, b in
                                    zip(poss_chars[:10], poss_probs[:10])]
                         print(f"{char} | {' '.join(matches)}")
 
         # Prepare training and validation data
+        def prep_trn_val():
+            trn_img, trn_lbl, val_img, val_lbl = \
+                self.trn_dataset.get_data_for_training(
+                    val_portion=self.val_portion)
+            trn_img = self.format_data_for_model(trn_img)
+            val_img = self.format_data_for_model(val_img)
+
+            return trn_img, trn_lbl, val_img, val_lbl
+
         self.trn_dataset.generate_minimal_images()
-        if self.trn_dataset.input_hdf5 is not None:
-            self.trn_dataset.write_hdf5()
-        trn_img, trn_lbl, val_img, val_lbl = \
-            self.trn_dataset.get_data_for_training(
-                val_portion=self.val_portion)
-        trn_img = self.format_data_for_model(trn_img)
-        val_img = self.format_data_for_model(val_img)
+        trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
 
         # Prepare test data
-        if self.tst_dataset is not None:
+        def prep_tst():
             tst_img, tst_lbl = self.tst_dataset.get_images_and_labels()
             tst_img = self.format_data_for_model(tst_img)
             tst_img = tst_img[tst_lbl < self.n_chars]
             tst_lbl = tst_lbl[tst_lbl < self.n_chars]
+            return tst_img, tst_lbl
+
+        if self.tst_dataset is not None:
+            tst_img, tst_lbl = prep_tst()
 
         # Prepare model
+        def prep_model():
+            model = keras.Sequential([
+                keras.layers.Dense(256,
+                                   input_shape=(19200,),
+                                   activation=tf.nn.relu),
+                keras.layers.Dense(self.n_chars,
+                                   activation=tf.nn.softmax)
+            ])
+            model.compile(optimizer=tf.train.AdamOptimizer(),
+                          loss='sparse_categorical_crossentropy',
+                          metrics=['accuracy'])
+            return model
+
         if self.model_infile is not None:
             # Reload model
             if self.verbosity >= 1:
@@ -147,51 +166,47 @@ class AutoTrainer(OCRCLToolBase):
                           metrics=['accuracy'])
         else:
             # Define model
-            model = keras.Sequential([
-                keras.layers.Dense(256,
-                                   # input_shape=(12800,),
-                                   input_shape=(19200,),
-                                   activation=tf.nn.relu),
-                keras.layers.Dense(self.n_chars,
-                                   activation=tf.nn.softmax)
-            ])
-            model.compile(optimizer=tf.train.AdamOptimizer(),
-                          loss='sparse_categorical_crossentropy',
-                          metrics=['accuracy'])
+            model = prep_model()
 
         # Train model
-        model.fit(trn_img, trn_lbl, epochs=10,
-                  validation_data=(val_img, val_lbl))
+        while True:
+            history = model.fit(trn_img, trn_lbl,
+                                validation_data=(val_img, val_lbl),
+                                epochs=self.epochs,
+                                batch_size=self.batch_size,
+                                verbose=0)
 
-        # while True:
-        # Train model
-        # history = model.fit(dataset, steps_per_epoch=10)  # ,
-        # trn_img, trn_lbl,
-        # validation_data=(val_img, val_lbl),
-        # epochs=self.epochs)  # ,
-        # batch_size=self.batch_size)
+            # Evaluate model
+            missed_chars = set()
+            analyze("Training", trn_img, trn_lbl, missed_chars)
+            analyze("Validation", val_img, val_lbl, missed_chars)
 
-        # Evaluate model
-        # missed_chars = set()
-        # analyze("Training", trn_img, trn_lbl, missed_chars)
-        # analyze("Validation", val_img, val_lbl, missed_chars)
-
-        # Expand fitting set
-        # if len(missed_chars) > 1:
-        #     if self.verbosity >= 1:
-        #         print(f"Missed the following "
-        #               f"{len(missed_chars)}/{self.n_chars} "
-        #               f"characters: {''.join(missed_chars)}")
-        # else:
-        #     exit()
-        #     self.trn_dataset.write_hdf5()
-        #     self.n_chars += 10
-        #     self.trn_dataset.n_chars += 10
-        #     if self.verbosity >= 1:
-        #         print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
-        #     self.trn_dataset.generate_minimal_images()
-        #     self.trn_dataset.generate_additional_images(
-        #         self.chars[:self.n_chars], 1000)
+            # Expand fitting set
+            if len(missed_chars) >= 1:
+                if self.verbosity >= 1:
+                    print(f"Missed the following "
+                          f"{len(missed_chars)}/{self.n_chars} "
+                          f"characters: {''.join(missed_chars)}")
+                self.trn_dataset.generate_additional_images(1, missed_chars)
+                trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
+            else:
+                self.trn_dataset.write_hdf5()
+                self.n_chars += 10
+                self.trn_dataset.n_chars = self.n_chars
+                self.trn_dataset.generate_minimal_images()
+                if self.trn_dataset.output_hdf5 is not None:
+                    self.trn_dataset.write_hdf5()
+                trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
+                if self.verbosity >= 1:
+                    n_images = trn_lbl.size + val_lbl.size
+                    images_per_char = n_images / self.n_chars
+                    print(f"\n\n\n"
+                          f"INCREASING N_CHARS TO {self.n_chars}, "
+                          f"FITTING TO {n_images} IMAGES, "
+                          f"{images_per_char:5.2f} "
+                          f"IMAGES PER CHARACTER"
+                          f"\n\n\n")
+                model = prep_model()
 
     # endregion
 
