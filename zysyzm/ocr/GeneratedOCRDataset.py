@@ -56,8 +56,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
         # self.input_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        self.output_hdf5 = \
-            "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
+        self.output_hdf5 = ""  # \
+        # "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
         self.output_image_dir = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
@@ -105,7 +105,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 try:
                     value = [str(v) for v in list(value)]
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._font_names = value
         self._clear_private_property_caches()
 
@@ -123,7 +123,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._font_sizes = value
         self._clear_private_property_caches()
 
@@ -141,7 +141,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._font_widths = value
         self._clear_private_property_caches()
 
@@ -159,7 +159,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._font_x_offsets = value
         self._clear_private_property_caches()
 
@@ -177,7 +177,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
-                    raise ValueError()
+                    raise ValueError(self._generate_setter_exception(value))
         self._font_y_offsets = value
         self._clear_private_property_caches()
 
@@ -194,9 +194,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             try:
                 value = int(value)
             except Exception as e:
-                raise ValueError()
+                raise ValueError(self._generate_setter_exception(value))
         if value < 1 and value is not None:
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         self._n_chars = value
 
     # endregion
