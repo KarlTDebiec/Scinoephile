@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from zysyzm import CLToolBase
+from IPython import embed
 
 
 ################################### CLASSES ###################################
@@ -279,12 +280,13 @@ class Compositor(CLToolBase):
     def chinese_infile(self, value):
         from os.path import expandvars, isfile
 
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        else:
-            value = expandvars(value)
-            if not isfile(value):
+        if value is not None:
+            if not isinstance(value, str):
                 raise ValueError()
+            else:
+                value = expandvars(value)
+                if not isfile(value):
+                    raise ValueError()
         self._chinese_infile = value
 
     @property
@@ -336,12 +338,13 @@ class Compositor(CLToolBase):
     def english_infile(self, value):
         from os.path import expandvars, isfile
 
-        if not isinstance(value, str) and value is not None:
-            raise ValueError()
-        else:
-            value = expandvars(value)
-            if not isfile(value):
+        if value is not None:
+            if not isinstance(value, str):
                 raise ValueError()
+            else:
+                value = expandvars(value)
+                if not isfile(value):
+                    raise ValueError()
         self._english_infile = value
 
     @property
@@ -403,7 +406,7 @@ class Compositor(CLToolBase):
             raise ValueError()
         else:
             value = expandvars(value)
-            if not access(dirname(value), W_OK):
+            if dirname(value) != "" and not access(dirname(value), W_OK):
                 raise ValueError()
 
         self._outfile = value
