@@ -37,7 +37,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 100
+        self.n_chars = 10
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
@@ -47,13 +47,13 @@ class TrainingDataGenerator(OCRCLToolBase):
 
         fig = figure(figsize=(1.0, 1.0), dpi=80)
 
-        font_names = ["Hei"]  # , "STHeiti"]
+        font_names = ["Hei", "STHeiti"]
         # font_names += ["LiHei Pro"]
         # font_names += ["Kai", "BiauKai"]
         # font_names += ["LiSong Pro", "STFangsong"]
-        font_sizes = [60]
-        border_widths = [5]
-        offsets = [0]
+        font_sizes = [58, 59, 60, 61, 62]
+        border_widths = [3, 4, 5, 6, 7]
+        offsets = [-2, -1, 0, 1, 2]
 
         # Loop over combinations
         for i, char in enumerate(self.chars[:self.n_chars]):
@@ -77,7 +77,7 @@ class TrainingDataGenerator(OCRCLToolBase):
     def n_chars(self):
         """int: Number of characters to generate images of"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 21
+            self._n_chars = 10
         return self._n_chars
 
     @n_chars.setter
