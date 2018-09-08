@@ -29,7 +29,7 @@ class Base(object):
     # region Properties
     @property
     def embed_kw(self):
-        """dict: """
+        """dict: Use 'IPython.embed(**self.embed_kw)' for more useful prompt"""
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)
@@ -70,8 +70,27 @@ class Base(object):
     @verbosity.setter
     def verbosity(self, value):
         if not isinstance(value, int) and value >= 0:
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         self._verbosity = value
+
+    # endregion
+
+    # region Private methods
+
+    def _generate_setter_exception(self, value):
+        """
+        Generates Exception text for setters that are passed invalid values
+
+        Returns:
+            str: Exception text
+        """
+        from inspect import currentframe, getframeinfo
+
+        frameinfo = getframeinfo(currentframe().f_back)
+        return f"Property '{type(self).__name__}.{frameinfo.function}'" \
+               f" was passed invalid value '{value}' " \
+               f"of type '{type(value).__name__}'. " \
+               f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
 
     # endregion
 
@@ -123,7 +142,7 @@ class CLToolBase(Base):
     @interactive.setter
     def interactive(self, value):
         if not isinstance(value, bool):
-            raise ValueError()
+            raise ValueError(self._generate_setter_exception(value))
         self._interactive = value
 
     # endregion Properties
