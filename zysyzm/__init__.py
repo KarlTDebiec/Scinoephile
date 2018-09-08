@@ -43,7 +43,7 @@ class Base(object):
             header += "\n"
             with open(frameinfo.filename, "r") as infile:
                 lines = [(i, line) for i, line in enumerate(infile)
-                         if i in range(number - 6, number + 5)]
+                         if i in range(number - 5, number + 6)]
             for i, line in lines:
                 header += f"{i:5d} {'>' if i == number else ' '} " \
                           f"{line.rstrip()}\n"
