@@ -27,11 +27,13 @@ class AutoTrainer(OCRCLToolBase):
     """
 
     # region Instance Variables
+
     help_message = ("Tool for training model")
 
     # endregion
 
     # region Builtins
+
     def __init__(self, model_infile=None, trn_infile=None, tst_infile=None,
                  val_portion=None, n_chars=None, shape=None, batch_size=None,
                  epochs=None, model_outfile=None, **kwargs):
@@ -338,10 +340,6 @@ class AutoTrainer(OCRCLToolBase):
             elif not 0 < value < 1:
                 raise ValueError()
         self._val_portion = value
-
-    # endregion
-
-    # region Public Methods
 
     # endregion
 

@@ -16,6 +16,7 @@ from IPython import embed
 class ModelTrainer(OCRCLToolBase):
     """
     Trains model
+
     Todo:
       - CL arguments
       - Support for western characters and punctuation
@@ -24,11 +25,13 @@ class ModelTrainer(OCRCLToolBase):
     """
 
     # region Instance Variables
+
     help_message = ("Tool for training model")
 
     # endregion
 
     # region Builtins
+
     def __init__(self, **kwargs):
         """
         Initializes tool
@@ -37,7 +40,7 @@ class ModelTrainer(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 10
+        self.n_chars = 100
         self.trn_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/val"
         self.tst_input_directory = "/Users/kdebiec/Desktop/docs/subtitles/tst"
@@ -49,9 +52,13 @@ class ModelTrainer(OCRCLToolBase):
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
+        from zysyzm.ocr import GeneratedOCRDataset
 
         # Load and organize data
         trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)
+        trn_dataset = GeneratedOCRDataset(input_image_dir=self.trn_input_directory)
+        trn_dataset.read_image_dir()
+        nay_img, nay_lbl = trn_dataset.get_images_and_labels()
         val_img, val_lbl = self.load_labeled_data(self.val_input_directory)
         tst_img, tst_lbl = self.load_labeled_data(self.tst_input_directory)
         tst_img = tst_img[tst_lbl < self.n_chars]
@@ -60,6 +67,7 @@ class ModelTrainer(OCRCLToolBase):
         if self.n_chars is None:
             self.n_chars = trn_lbl.max() + 1
 
+        # Prepare and train model
         if self.model_infile is not None:
             # Reload model
             if self.verbosity >= 1:
@@ -72,7 +80,8 @@ class ModelTrainer(OCRCLToolBase):
             # Define model
             model = keras.Sequential([
                 keras.layers.Dense(256,
-                                   input_shape=(12800,),
+                                   # input_shape=(12800,),
+                                   input_shape=(19200,),
                                    activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
                                    activation=tf.nn.softmax)
@@ -88,7 +97,7 @@ class ModelTrainer(OCRCLToolBase):
         # Evaluate model
         trn_pred = model.predict(trn_img)
         trn_loss, trn_acc = model.evaluate(trn_img, trn_lbl)
-        val_pred = model.predict(tst_img)
+        val_pred = model.predict(val_img)
         val_loss, val_acc = model.evaluate(val_img, val_lbl)
         tst_pred = model.predict(tst_img)
         tst_loss, tst_acc = model.evaluate(tst_img, tst_lbl)
@@ -119,7 +128,8 @@ class ModelTrainer(OCRCLToolBase):
 
     # endregion
 
-    # region Properties
+    # region Public Properties
+
     @property
     def model_infile(self):
         """str: Path to input model file"""
@@ -236,7 +246,8 @@ class ModelTrainer(OCRCLToolBase):
 
     # endregion
 
-    # region Methods
+    # region Public Methods
+
     def load_labeled_data(self, directory):
         import numpy as np
         from glob import iglob
@@ -270,9 +281,19 @@ class ModelTrainer(OCRCLToolBase):
         for infile in infiles:
             img = Image.open(infile)
             raw = np.array(img)
-            imgs += [np.append(
-                np.logical_or(raw == 85, raw == 256).flatten(),
-                np.logical_or(raw == 170, raw == 256).flatten())]
+            # ORIGINAL LINE THAT WORKED VERY WELL
+            # imgs += [np.append(
+            #     np.logical_or(raw == 85, raw == 256).flatten(),
+            #     np.logical_or(raw == 170, raw == 256).flatten())]
+            # ACTUAL LOGIC IT WAS CARRYING OUT
+            # imgs += [np.append(
+            #     (raw == 85).flatten(),
+            #     (raw == 170).flatten())]
+            # TESTS
+            imgs += [np.concatenate((
+                (raw == 0).flatten(),
+                (raw == 85).flatten(),
+                (raw == 170).flatten()))]
             lbls += [np.argwhere(self.chars == basename(infile)[0])[0, 0]]
         imgs = np.stack(imgs)
         lbls = np.array(lbls, np.int16)

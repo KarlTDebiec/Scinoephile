@@ -365,6 +365,27 @@ class OCRDataset(OCRCLToolBase):
 
         self.add_images(specs, data)
 
+    def show_data_old(self, data):
+        def data_to_image(data):
+            import numpy as np
+            from PIL import Image
+
+            raw = np.zeros((6400), np.uint8)
+            bit1 = data[:6400]
+            bit2 = data[6400:]
+            raw[np.logical_and(np.logical_not(bit2), bit1)] = 85
+            raw[np.logical_and(bit2, np.logical_not(bit1))] = 170
+            raw[np.logical_and(bit2, bit1)] = 255
+            raw = raw.reshape((int(np.sqrt(raw.size)), int(np.sqrt(raw.size))))
+            image = Image.fromarray(raw, mode="L")
+
+            return image
+
+        data_to_image(data).show()
+
+    def show_data(self, data):
+        self.data_to_image(data).show()
+
     def show_chars(self, indexes, columns=None):
         import numpy as np
         from PIL import Image

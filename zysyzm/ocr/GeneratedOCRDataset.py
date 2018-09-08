@@ -51,7 +51,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if n_chars is not None:
             self.n_chars = n_chars
 
-        self.n_chars = 10
+        self.n_chars = 100
         # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
         # self.input_hdf5 = \
@@ -74,7 +74,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         self.generate_minimal_images()
 
         # Add more images
-        self.generate_additional_images(1)
+        self.generate_additional_images(1000)
 
         # Output
         if self.output_hdf5 is not None:
@@ -374,6 +374,15 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                     fig=self._figure, image_mode=self.image_mode, **spec))
 
             self.add_images(specs, data)
+
+    def get_images_and_labels(self, indexes=None):
+        if indexes is None:
+            img = self.data
+            lbl = self.chars_to_labels(self.specs["char"].values)
+        else:
+            img = self.data[indexes]
+            lbl = self.chars_to_labels(self.specs["char"].loc[indexes].values)
+        return img, lbl
 
     def get_data_for_training(self, val_portion=0.1):
         import numpy as np
