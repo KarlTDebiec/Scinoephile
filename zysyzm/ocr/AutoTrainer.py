@@ -93,15 +93,6 @@ class AutoTrainer(OCRCLToolBase):
         import tensorflow as tf
         from tensorflow import keras
 
-        def get_model():
-            model = keras.Sequential()
-            # model.add(keras.layers.Dense(128, activation=tf.nn.relu))
-            model.add(keras.layers.Dense(self.n_chars, activation="softmax"))
-            model.compile(optimizer=tf.train.AdamOptimizer(),
-                          loss="sparse_categorical_crossentropy",
-                          metrics=["accuracy"])
-            return model
-
         def analyze(title, img, lbl, missed_chars=None):
             pred = model.predict(img)
             loss, acc = model.evaluate(img, lbl)
@@ -122,43 +113,50 @@ class AutoTrainer(OCRCLToolBase):
                                    zip(poss_chars[:10], poss_probs[:10])]
                         print(f"{char} | {' '.join(matches)}")
 
-        model = get_model()
+        model = keras.Sequential([
+            keras.layers.Dense(self.n_chars,
+                               input_shape=(12800,),
+                               activation=tf.nn.softmax)
+        ])
+        model.compile(optimizer=tf.train.AdamOptimizer(),
+                      loss='sparse_categorical_crossentropy',
+                      metrics=['accuracy'])
+
         trn_img, trn_lbl, val_img, val_lbl = \
             self.trn_dataset.get_data_for_training(self.val_portion)
+        print("lets make a dataset")
+        dataset = tf.data.Dataset.from_tensor_slices((val_img, val_lbl))
+        print("we have made a dataset")
 
         while True:
             # Train model
-            history = model.fit(
-                trn_img, trn_lbl,
-                validation_data=(val_img, val_lbl),
-                epochs=self.epochs,
-                batch_size=self.batch_size,
-                verbose=1)
-            # callbacks=[keras.callbacks.EarlyStopping(
-            #     patience=10, monitor="val_acc")])
+            history = model.fit(dataset, steps_per_epoch=10)  # ,
+            # trn_img, trn_lbl,
+            # validation_data=(val_img, val_lbl),
+            # epochs=self.epochs)  # ,
+            # batch_size=self.batch_size)
 
             # Evaluate model
             missed_chars = set()
             analyze("Training", trn_img, trn_lbl, missed_chars)
-            analyze("Validation", val_img, val_lbl, missed_chars)
+            # analyze("Validation", val_img, val_lbl, missed_chars)
 
             # Expand fitting set
-            if len(missed_chars) > int(self.n_chars * 0.01):
+            if len(missed_chars) > 1:
                 if self.verbosity >= 1:
                     print(f"Missed the following "
                           f"{len(missed_chars)}/{self.n_chars} "
                           f"characters: {''.join(missed_chars)}")
             else:
                 exit()
-                self.trn_dataset.write_hdf5()
-                self.n_chars += 10
-                self.trn_dataset.n_chars += 10
-                if self.verbosity >= 1:
-                    print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
-                self.trn_dataset.generate_minimal_images()
-                self.trn_dataset.generate_additional_images(
-                    self.chars[:self.n_chars], 1000)
-                model = get_model()
+            #     self.trn_dataset.write_hdf5()
+            #     self.n_chars += 10
+            #     self.trn_dataset.n_chars += 10
+            #     if self.verbosity >= 1:
+            #         print(f"\n\n\nINCREASING N_CHARS TO {self.n_chars}\n\n\n")
+            #     self.trn_dataset.generate_minimal_images()
+            #     self.trn_dataset.generate_additional_images(
+            #         self.chars[:self.n_chars], 1000)
 
     # endregion
 
@@ -249,7 +247,7 @@ class AutoTrainer(OCRCLToolBase):
     def n_chars(self):
         """int: Number of characters to restrict model to"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 20
+            self._n_chars = 10
         return self._n_chars
 
     @n_chars.setter
@@ -264,25 +262,25 @@ class AutoTrainer(OCRCLToolBase):
                 raise ValueError()
         self._n_chars = value
 
-    # @property
-    # def shape(self):
-    #     """list(int): Shape of model"""
-    #     if not hasattr(self, "_shape"):
-    #         self._shape = None
-    #     return self._shape
-    #
-    # @shape.setter
-    # def shape(self, value):
-    #     if value is not None:
-    #         if not isinstance(value, list):
-    #             raise ValueError()
-    #         elif isinstance(value, list):
-    #             for i, v in enumerate(value):
-    #                 try:
-    #                     value[i] = int(v)
-    #                 except Exception as e:
-    #                     raise ValueError()
-    #     self._shape = value
+    @property
+    def shape(self):
+        """list(int): Shape of model"""
+        if not hasattr(self, "_shape"):
+            self._shape = [128, 128, 128]
+        return self._shape
+
+    @shape.setter
+    def shape(self, value):
+        if value is not None:
+            if not isinstance(value, list):
+                raise ValueError()
+            elif isinstance(value, list):
+                for i, v in enumerate(value):
+                    try:
+                        value[i] = int(v)
+                    except Exception as e:
+                        raise ValueError()
+        self._shape = value
 
     @property
     def trn_dataset(self):

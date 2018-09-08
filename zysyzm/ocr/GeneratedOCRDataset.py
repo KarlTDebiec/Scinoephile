@@ -378,7 +378,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Prepare trn and val sets with at least one image of each character
         for char in set(self.specs["char"]):
-            print(char)
             specs = self._get_specs_of_char(char)
             n_specs = specs.index.size
 
@@ -399,11 +398,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 val_indexes = sample(specs.index.tolist(), n_for_val)
                 all_val_indexes.extend(val_indexes)
                 specs = specs.drop(val_indexes)
-            # trn_indexes.append(trn_index)
-            # val_indexes.append(val_index)
-            # self.show_chars(trn_indexes, 18)
-            # self.show_chars(val_indexes, 18)
-            # input()
 
         # Organize data for tensorflow
         trn_img = self.data[all_trn_indexes]
