@@ -51,15 +51,15 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         if n_chars is not None:
             self.n_chars = n_chars
 
+        self.n_chars = 10
         # self.input_image_dir = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn"
         # self.input_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
         # self.output_hdf5 = \
         #     "/Users/kdebiec/Desktop/docs/subtitles/trn/generated.h5"
-        # self.output_image_dir = \
-        #     "/Users/kdebiec/Desktop/generated"
-        # self.n_chars = 100
+        self.output_image_dir = \
+            "/Users/kdebiec/Desktop/docs/subtitles/trn"
 
     def __call__(self):
         """ Core logic """
@@ -73,11 +73,15 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # Check for minimum set of images
         self.generate_minimal_images()
 
+        # Add more images
+        self.generate_additional_images(1)
+
         # Output
         if self.output_hdf5 is not None:
             self.write_hdf5()
         if self.output_image_dir is not None:
-            self.write_image_dir()
+            # self.write_image_dir()
+            self.write_trn_val_image_dirs()
 
         # Present IPython prompt
         if self.interactive:
@@ -297,12 +301,14 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def generate_additional_images(self, chars, n_images=1):
+    def generate_additional_images(self, n_images=1, chars=None):
         import numpy as np
         import pandas as pd
         from random import sample
         from zysyzm.ocr import generate_char_image
 
+        if chars is None:
+            chars = self.chars[:self.n_chars]
         if not isinstance(chars, list):
             chars = list(chars)
 
@@ -400,6 +406,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 specs = specs.drop(val_indexes)
 
         # Organize data for tensorflow
+        # COULD STILL BE PROBLEM HERE
         trn_img = self.data[all_trn_indexes]
         trn_lbl = self.chars_to_labels(
             self.specs["char"].loc[all_trn_indexes].values)
@@ -409,9 +416,91 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         return trn_img, trn_lbl, val_img, val_lbl
 
+    def get_trn_val_indexes(self, val_portion=0.1):
+        import numpy as np
+        from random import sample
+
+        all_trn_indexes = []
+        all_val_indexes = []
+
+        # Prepare trn and val sets with at least one image of each character
+        for char in set(self.specs["char"]):
+            specs = self._get_specs_of_char(char)
+            n_specs = specs.index.size
+
+            # Add at least one image of each character to each set
+            trn_index, val_index = sample(specs.index.tolist(), 2)
+            all_trn_indexes.append(trn_index)
+            all_val_indexes.append(val_index)
+            specs = specs.drop([trn_index, val_index])
+
+            # Distribution remaining images across sets
+            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
+            n_for_val = int(np.ceil(n_specs * val_portion) - 1)
+            if n_for_trn > 0:
+                trn_indexes = sample(specs.index.tolist(), n_for_trn)
+                all_trn_indexes.extend(trn_indexes)
+                specs = specs.drop(trn_indexes)
+            if n_for_val > 0:
+                val_indexes = sample(specs.index.tolist(), n_for_val)
+                all_val_indexes.extend(val_indexes)
+                specs = specs.drop(val_indexes)
+
+        return all_trn_indexes, all_val_indexes
+
+    def write_trn_val_image_dirs(self):
+        from os import makedirs
+        from os.path import dirname, isdir
+
+        trn_image_dir = f"{self.output_image_dir.rstrip('trn')}trn"
+        val_image_dir = f"{self.output_image_dir.rstrip('trn')}val"
+
+        if self.verbosity >= 1:
+            print(f"Writing images to '{trn_image_dir}'"
+                  f"and {val_image_dir}")
+
+        def trn_outfile_formatter(spec):
+            return f"{trn_image_dir}/" \
+                   f"{spec[1]['char']}_" \
+                   f"{spec[1]['size']:02d}_" \
+                   f"{spec[1]['width']:02d}_" \
+                   f"{spec[1]['x_offset']:+d}_" \
+                   f"{spec[1]['y_offset']:+d}_" \
+                   f"{spec[1]['font'].replace(' ', '')}.png"
+
+        def val_outfile_formatter(spec):
+            return f"{val_image_dir}/" \
+                   f"{spec[1]['char']}_" \
+                   f"{spec[1]['size']:02d}_" \
+                   f"{spec[1]['width']:02d}_" \
+                   f"{spec[1]['x_offset']:+d}_" \
+                   f"{spec[1]['y_offset']:+d}_" \
+                   f"{spec[1]['font'].replace(' ', '')}.png"
+
+        trn_indexes, val_indexes = self.get_trn_val_indexes()
+        trn_outfiles = map(trn_outfile_formatter,
+                           self.specs.loc[trn_indexes].iterrows())
+        val_outfiles = map(val_outfile_formatter,
+                           self.specs.loc[val_indexes].iterrows())
+        trn_data = self.data[trn_indexes]
+        val_data = self.data[val_indexes]
+        for outfile, data in zip(trn_outfiles, trn_data):
+            if self.verbosity >= 1:
+                print(f"Writing '{outfile}'")
+            if not isdir(dirname(outfile)):
+                makedirs(dirname(outfile))
+            self.data_to_image(data).save(outfile)
+        for outfile, data in zip(val_outfiles, val_data):
+            if self.verbosity >= 1:
+                print(f"Writing '{outfile}'")
+            if not isdir(dirname(outfile)):
+                makedirs(dirname(outfile))
+            self.data_to_image(data).save(outfile)
+
     # endregion
 
     # region Private Methods
+
     def _clear_private_property_caches(self):
         if hasattr(self, "_draw_specs_available_"):
             delattr(self, "_draw_specs_available_")

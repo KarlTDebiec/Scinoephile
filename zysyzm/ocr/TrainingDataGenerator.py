@@ -34,7 +34,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 10
+        self.n_chars = 100
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \

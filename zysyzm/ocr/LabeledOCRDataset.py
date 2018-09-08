@@ -168,6 +168,7 @@ class LabeledOCRDataset(OCRDataset):
                        f"{spec[1]['char']}_{spec[0]:06d}.png"
 
             return func
+
     # endregion
 
 
