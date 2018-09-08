@@ -34,7 +34,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         super().__init__(**kwargs)
 
-        self.n_chars = 100
+        self.n_chars = 10
         self.trn_output_directory = \
             "/Users/kdebiec/Desktop/docs/subtitles/trn"
         self.val_output_directory = \
@@ -159,7 +159,7 @@ class TrainingDataGenerator(OCRCLToolBase):
 
     # endregion
 
-    # region methods
+    # region Methods
     def output_char_image(self, char, font_name="Hei", font_size=60,
                           border_width=5, x_offset=0, y_offset=0, **kwargs):
         """
@@ -176,7 +176,88 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         import numpy as np
         from os.path import isfile
-        from zysyzm.ocr import generate_char_image
+
+        # Old versions of functions copied in from working_copy's
+        #   zysyzm/ocr/__init__.py. Have not checked if trim_image,
+        #   resize_image, and convert_8bit_grayscale_to_2bit have actually
+        #   changed
+        # from zysyzm.ocr import trim_image
+        def trim_image(image, background_color=None):
+            from PIL import Image, ImageChops
+
+            if background_color is None:
+                background_color = image.getpixel((0, 0))
+
+            background = Image.new(image.mode, image.size, background_color)
+            diff = ImageChops.difference(image, background)
+            diff = ImageChops.add(diff, diff, 2.0, -100)
+            bbox = diff.getbbox()
+
+            if bbox:
+                return image.crop(bbox)
+
+        # from zysyzm.ocr import resize_image
+        def resize_image(image, new_size, x_offset=0, y_offset=0):
+            import numpy as np
+            from PIL import Image
+
+            x = int(np.floor((new_size[0] - image.size[0]) / 2))
+            y = int(np.floor((new_size[1] - image.size[1]) / 2))
+            new_image = Image.new(image.mode, new_size, image.getpixel((0, 0)))
+            new_image.paste(image, (x + x_offset,
+                                    y + y_offset,
+                                    x + image.size[0] + x_offset,
+                                    y + image.size[1] + y_offset))
+
+            return new_image
+
+        # from zysyzm.ocr import convert_8bit_grayscale_to_2bit
+        def convert_8bit_grayscale_to_2bit(image):
+            import numpy as np
+            from PIL import Image
+
+            raw = np.array(image)
+            raw[raw < 42] = 0
+            raw[np.logical_and(raw >= 42, raw < 127)] = 85
+            raw[np.logical_and(raw >= 127, raw <= 212)] = 170
+            raw[raw > 212] = 255
+
+            image = Image.fromarray(raw, mode=image.mode)
+            return image
+
+        # from zysyzm.ocr import generate_char_image
+        def generate_char_image(char, fig=None, font_name="Hei", font_size=60,
+                                border_width=5, x_offset=0, y_offset=0,
+                                tmpfile="/tmp/zysyzm.png"):
+            from os import remove
+            from matplotlib.font_manager import FontProperties
+            from matplotlib.patheffects import Stroke, Normal
+            from PIL import Image
+
+            # Use matplotlib to generate initial image of character
+            if fig is None:
+                from matplotlib.pyplot import figure
+
+                fig = figure(figsize=(1.0, 1.0), dpi=80)
+            else:
+                fig.clear()
+
+            # Draw image with matplotlib
+            font = FontProperties(family=font_name, size=font_size)
+            text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
+                            fontproperties=font, color=(0.67, 0.67, 0.67))
+            text.set_path_effects([Stroke(linewidth=border_width,
+                                          foreground=(0.00, 0.00, 0.00)),
+                                   Normal()])
+            fig.savefig(tmpfile, dpi=80, transparent=True)
+
+            # Reload with pillow to trim, resize, and adjust color
+            img = trim_image(Image.open(tmpfile).convert("L"), 0)
+            img = resize_image(img, (80, 80), x_offset, y_offset)
+            img = convert_8bit_grayscale_to_2bit(img)
+            remove(tmpfile)
+
+            return img
 
         # Check if outfile exists, and if not choose output location
         outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
@@ -192,6 +273,10 @@ class TrainingDataGenerator(OCRCLToolBase):
             outfile = f"{self.trn_output_directory}/{outfile}"
 
         # Generate image
+        # img = generate_char_image(char, name=font_name,
+        #                           size=font_size,
+        #                           width=border_width, x_offset=x_offset,
+        #                           y_offset=y_offset, **kwargs)
         img = generate_char_image(char, font_name=font_name,
                                   font_size=font_size,
                                   border_width=border_width, x_offset=x_offset,
