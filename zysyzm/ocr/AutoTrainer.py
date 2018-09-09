@@ -144,13 +144,12 @@ class AutoTrainer(OCRCLToolBase):
 
         def prep_model():
             model = keras.Sequential([
-                keras.layers.Dense(256,
+                keras.layers.Dense(1024,
                                    input_shape=(19200,),
                                    activation=tf.nn.relu),
-                # keras.layers.Dense(256,
-                #                    activation=tf.nn.relu),
+                keras.layers.Dense(512,
+                                   activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
-                                   # input_shape=(19200,),
                                    activation=tf.nn.softmax)
             ])
             model.compile(optimizer=tf.train.AdamOptimizer(),
