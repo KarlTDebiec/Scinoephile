@@ -74,9 +74,15 @@ class AutoTrainer(OCRCLToolBase):
             if isdir(trn_infile):
                 self.trn_dataset.input_image_dir = trn_infile
                 self.trn_dataset.read_image_dir()
+                n_chars = len(set(self.trn_dataset.specs["char"].values))
+                self.n_chars = n_chars
+                self.trn_dataset.n_chars = n_chars
             elif isfile(trn_infile):
                 self.trn_dataset.input_hdf5 = trn_infile
                 self.trn_dataset.read_hdf5()
+                n_chars = len(set(self.trn_dataset.specs["char"].values))
+                self.n_chars = n_chars
+                self.trn_dataset.n_chars = n_chars
             else:
                 self.trn_dataset.input_hdf5 = trn_infile
 
@@ -118,7 +124,6 @@ class AutoTrainer(OCRCLToolBase):
                                    zip(poss_chars[:10], poss_probs[:10])]
                         print(f"{char} | {' '.join(matches)}")
 
-        # Prepare training and validation data
         def prep_trn_val():
             trn_img, trn_lbl, val_img, val_lbl = \
                 self.trn_dataset.get_data_for_training(
@@ -128,10 +133,6 @@ class AutoTrainer(OCRCLToolBase):
 
             return trn_img, trn_lbl, val_img, val_lbl
 
-        self.trn_dataset.generate_minimal_images()
-        trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
-
-        # Prepare test data
         def prep_tst():
             tst_img, tst_lbl = self.tst_dataset.get_images_and_labels()
             tst_img = self.format_data_for_model(tst_img)
@@ -139,16 +140,15 @@ class AutoTrainer(OCRCLToolBase):
             tst_lbl = tst_lbl[tst_lbl < self.n_chars]
             return tst_img, tst_lbl
 
-        if self.tst_dataset is not None:
-            tst_img, tst_lbl = prep_tst()
-
-        # Prepare model
         def prep_model():
             model = keras.Sequential([
-                keras.layers.Dense(256,
-                                   input_shape=(19200,),
-                                   activation=tf.nn.relu),
+                # keras.layers.Dense(256,
+                #                    input_shape=(19200,),
+                #                    activation=tf.nn.relu),
+                # keras.layers.Dense(256,
+                #                    activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
+                                   input_shape=(19200,),
                                    activation=tf.nn.softmax)
             ])
             model.compile(optimizer=tf.train.AdamOptimizer(),
@@ -156,17 +156,18 @@ class AutoTrainer(OCRCLToolBase):
                           metrics=['accuracy'])
             return model
 
-        if self.model_infile is not None:
-            # Reload model
-            if self.verbosity >= 1:
-                print(f"Loading model from {self.model_infile}")
-            model = keras.models.load_model(self.model_infile)
-            model.compile(optimizer=tf.train.AdamOptimizer(),
-                          loss='sparse_categorical_crossentropy',
-                          metrics=['accuracy'])
-        else:
-            # Define model
-            model = prep_model()
+        # Prepare training and validation data
+        self.trn_dataset.generate_minimal_images()
+        trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
+        n_images = trn_lbl.size + val_lbl.size
+        self.batch_size = max(32, np.ceil(n_images // 10))
+
+        # Prepare test data
+        if self.tst_dataset is not None:
+            tst_img, tst_lbl = prep_tst()
+
+        # Prepare model
+        model = prep_model()
 
         # Train model
         while True:
@@ -174,7 +175,11 @@ class AutoTrainer(OCRCLToolBase):
                                 validation_data=(val_img, val_lbl),
                                 epochs=self.epochs,
                                 batch_size=self.batch_size,
-                                verbose=0)
+                                callbacks=[
+                                    keras.callbacks.EarlyStopping(
+                                        monitor="val_loss",
+                                        min_delta=0.01,
+                                        patience=2)])
 
             # Evaluate model
             missed_chars = set()
@@ -189,22 +194,26 @@ class AutoTrainer(OCRCLToolBase):
                           f"characters: {''.join(missed_chars)}")
                 self.trn_dataset.generate_additional_images(1, missed_chars)
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
+                n_images = trn_lbl.size + val_lbl.size
+                self.batch_size = max(32, np.ceil(n_images // 10))
+                if self.verbosity >= 1:
+                    print(f"Setting batch size to {self.batch_size}")
             else:
                 self.trn_dataset.write_hdf5()
-                self.n_chars += 10
+                self.n_chars += 25
                 self.trn_dataset.n_chars = self.n_chars
                 self.trn_dataset.generate_minimal_images()
                 if self.trn_dataset.output_hdf5 is not None:
                     self.trn_dataset.write_hdf5()
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
                 if self.verbosity >= 1:
-                    n_images = trn_lbl.size + val_lbl.size
                     images_per_char = n_images / self.n_chars
                     print(f"\n\n\n"
-                          f"INCREASING N_CHARS TO {self.n_chars}, "
-                          f"FITTING TO {n_images} IMAGES, "
-                          f"{images_per_char:5.2f} "
-                          f"IMAGES PER CHARACTER"
+                          f"FITTING {self.n_chars} CHARACTERS "
+                          f"TO {n_images} IMAGES "
+                          f"({images_per_char:4.2f} IMAGES PER CHARACTER); "
+                          f"USING {self.epochs} EPOCHS, "
+                          f"BATCH SIZE OF {self.batch_size}"
                           f"\n\n\n")
                 model = prep_model()
 
@@ -235,7 +244,7 @@ class AutoTrainer(OCRCLToolBase):
     def epochs(self):
         """int: Number of epochs to train for"""
         if not hasattr(self, "_epochs"):
-            self._epochs = 10
+            self._epochs = 20
         return self._epochs
 
     @epochs.setter
@@ -292,7 +301,7 @@ class AutoTrainer(OCRCLToolBase):
     def n_chars(self):
         """int: Number of unique characters to support"""
         if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
+            self._n_chars = 25
         return self._n_chars
 
     @n_chars.setter
