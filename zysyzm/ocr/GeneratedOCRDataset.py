@@ -18,15 +18,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     Represents a collection of generated character images
 
     Todo:
-      - [x] Read image directory
-      - [x] Add images
-      - [x] Write hdf5
-      - [x] Read hdf5
-      - [x] Write image directory
-      - [x] Initialize
-      - [x] Add images with randomly-chosen specs
-      - [x] Support creation of training and validation datasets, with at
-            least on image of each character in each
       - [ ] Implement CL arguments
       - [ ] Validate CL arguments
       - [ ] Document

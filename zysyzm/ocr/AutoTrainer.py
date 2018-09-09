@@ -19,7 +19,10 @@ class AutoTrainer(OCRCLToolBase):
     Trains model
 
     Todo:
-      - [ ] Generate fitting and validation sets with new class
+      - [x] Generate fitting and validation sets with new class
+      - [ ] Re-implement test data
+      - [ ] Refine until 3000 characters are viable
+      - [ ] Reimplement saving and loading of model
       - [ ] Validate CL arguments
       - [ ] Support western characters and punctuation
       - [ ] Look into if information needed to 'compile' can be stored in hdf5

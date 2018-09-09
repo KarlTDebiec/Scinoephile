@@ -19,10 +19,10 @@ class CharacterExtractor(CLToolBase):
     Extracts individual characters from image-based subtitles
 
     Todo:
-      - Add threshold as a property and CL argument
-      - Split off methods from __call__
-      - Improve support for punctuation and western characters
-      - Consider supporting output directly to hdf5
+      - [ ] Refactor with new dataset classes
+      - [ ] Add threshold as a property and CL argument
+      - [ ] Split off methods from __call__
+      - [ ] Improve support for punctuation and western characters
     """
 
     # region Instance Variables

@@ -18,8 +18,9 @@ class Compositor(CLToolBase):
     Compiles Chinese and English subtitles
 
     TODO:
-        - Document
-        - Clean up merging code
+        - [ ] Refactor and improve code for handling dashes
+        - [ ] Clean up merging code
+        - [ ] Document
     """
     import re
 

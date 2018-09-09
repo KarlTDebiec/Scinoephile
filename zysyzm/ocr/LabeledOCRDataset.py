@@ -18,11 +18,6 @@ class LabeledOCRDataset(OCRDataset):
     Represents a collection of labeled character images
 
     Todo:
-      - [x] Read image directory
-      - [x] Add images
-      - [x] Write hdf5
-      - [x] Read hdf5
-      - [x] Write image directory
       - [ ] Document
       - [ ] Don't allow 'path' to be set to NaN
     """

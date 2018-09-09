@@ -17,9 +17,10 @@ class TestDataCollector(OCRCLToolBase):
     Collects test data based on interim model
 
     Todo:
-      - Implement CL arguments
-      - Decide whether or not to move load_unlabeled_data out of class
-      - Move logic out of __call__
+      - [ ] Refactor with new dataset classes
+      - [ ] Implement CL arguments
+      - [ ] Decide whether or not to move load_unlabeled_data out of class
+      - [ ] Move logic out of __call__
     """
 
     # region Instance Variables
