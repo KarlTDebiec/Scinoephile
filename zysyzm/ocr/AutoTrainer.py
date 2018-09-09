@@ -104,7 +104,7 @@ class AutoTrainer(OCRCLToolBase):
         import tensorflow as tf
         from tensorflow import keras
 
-        def analyze(title, img, lbl, missed_chars=None):
+        def analyze(title, img, lbl, missed_yat, missed_eee):
             pred = model.predict(img)
             loss, acc = model.evaluate(img, lbl)
             errors = int(lbl.size * (1 - acc))
@@ -116,9 +116,8 @@ class AutoTrainer(OCRCLToolBase):
                 poss_chars = self.labels_to_chars(poss_lbls)
                 poss_probs = np.round(pred[i][poss_lbls], 2)
                 if char != poss_chars[0]:
-                    if missed_chars is not None:
-                        missed_chars.add(char)
-                        missed_chars.add(poss_chars[0])
+                    missed_yat.add(char)
+                    missed_eee.add(poss_chars[0])
                     if self.verbosity >= 2:
                         matches = [f"{a}:{b:4.2f}" for a, b in
                                    zip(poss_chars[:10], poss_probs[:10])]
@@ -142,13 +141,13 @@ class AutoTrainer(OCRCLToolBase):
 
         def prep_model():
             model = keras.Sequential([
-                # keras.layers.Dense(256,
-                #                    input_shape=(19200,),
-                #                    activation=tf.nn.relu),
+                keras.layers.Dense(256,
+                                   input_shape=(19200,),
+                                   activation=tf.nn.relu),
                 # keras.layers.Dense(256,
                 #                    activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
-                                   input_shape=(19200,),
+                                   # input_shape=(19200,),
                                    activation=tf.nn.softmax)
             ])
             model.compile(optimizer=tf.train.AdamOptimizer(),
@@ -161,6 +160,7 @@ class AutoTrainer(OCRCLToolBase):
         trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
         n_images = trn_lbl.size + val_lbl.size
         self.batch_size = max(32, np.ceil(n_images // 10))
+        missed_yat_history = []
 
         # Prepare test data
         if self.tst_dataset is not None:
@@ -171,6 +171,8 @@ class AutoTrainer(OCRCLToolBase):
 
         # Train model
         while True:
+            if self.verbosity >= 1:
+                print(f"Round {len(missed_yat_history)}")
             history = model.fit(trn_img, trn_lbl,
                                 validation_data=(val_img, val_lbl),
                                 epochs=self.epochs,
@@ -182,17 +184,37 @@ class AutoTrainer(OCRCLToolBase):
                                         patience=2)])
 
             # Evaluate model
-            missed_chars = set()
-            analyze("Training", trn_img, trn_lbl, missed_chars)
-            analyze("Validation", val_img, val_lbl, missed_chars)
+            missed_yat = set()
+            missed_eee = set()
+            analyze("Training", trn_img, trn_lbl, missed_yat, missed_eee)
+            analyze("Validation", val_img, val_lbl, missed_yat, missed_eee)
+            missed_all = missed_yat.union(missed_eee)
+            missed_yat_history.append(missed_yat)
 
             # Expand fitting set
-            if len(missed_chars) >= 1:
+            if len(missed_all) >= 1:
                 if self.verbosity >= 1:
-                    print(f"Missed the following "
-                          f"{len(missed_chars)}/{self.n_chars} "
-                          f"characters: {''.join(missed_chars)}")
-                self.trn_dataset.generate_additional_images(1, missed_chars)
+                    print(f"Misidentified the following "
+                          f"{len(missed_yat)}/{self.n_chars} "
+                          f"characters: {''.join(missed_yat)}")
+                    print(f"As the following "
+                          f"{len(missed_eee)}/{self.n_chars} "
+                          f"characters: {''.join(missed_eee)}")
+                self.trn_dataset.generate_additional_images(1, missed_all)
+                if (len(missed_yat_history) >= 10):
+                    missed_stuck = missed_yat_history[-1].intersection(
+                        missed_yat_history[-2]).intersection(
+                        missed_yat_history[-3]).intersection(
+                        missed_yat_history[-4]).intersection(
+                        missed_yat_history[-5])
+                    if len(missed_stuck) >= 1:
+                        if self.verbosity >= 1:
+                            print(f"The following "
+                                  f"{len(missed_stuck)}/{self.n_chars} "
+                                  f"characters have been missed for the last "
+                                  f"five rounds: {''.join(missed_stuck)}")
+                        self.trn_dataset.generate_additional_images(
+                            5, missed_stuck)
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
                 n_images = trn_lbl.size + val_lbl.size
                 self.batch_size = max(32, np.ceil(n_images // 10))
@@ -206,6 +228,7 @@ class AutoTrainer(OCRCLToolBase):
                 if self.trn_dataset.output_hdf5 is not None:
                     self.trn_dataset.write_hdf5()
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
+                missed_yat_history = []
                 if self.verbosity >= 1:
                     images_per_char = n_images / self.n_chars
                     print(f"\n\n\n"
