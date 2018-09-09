@@ -20,9 +20,13 @@ class AutoTrainer(OCRCLToolBase):
 
     Todo:
       - [x] Generate fitting and validation sets with new class
-      - [ ] Re-implement test data
+      - [x] Save separate training dataset hdf5 files
+      - [ ] Write log file(s)
+      - [ ] Re-implement saving and loading of model
+      - [ ] Re-implement support for shape
+      - [ ] Re-implement evaluation on test data
+      - [ ] Better name for missed_yat and missed_eee
       - [ ] Refine until 3000 characters are viable
-      - [ ] Reimplement saving and loading of model
       - [ ] Validate CL arguments
       - [ ] Support western characters and punctuation
       - [ ] Look into if information needed to 'compile' can be stored in hdf5
@@ -103,6 +107,7 @@ class AutoTrainer(OCRCLToolBase):
 
     def __call__(self):
         """Core logic"""
+        from os.path import dirname
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
@@ -132,7 +137,6 @@ class AutoTrainer(OCRCLToolBase):
                     val_portion=self.val_portion)
             trn_img = self.format_data_for_model(trn_img)
             val_img = self.format_data_for_model(val_img)
-
             return trn_img, trn_lbl, val_img, val_lbl
 
         def prep_tst():
@@ -144,10 +148,8 @@ class AutoTrainer(OCRCLToolBase):
 
         def prep_model():
             model = keras.Sequential([
-                keras.layers.Dense(1024,
-                                   input_shape=(19200,),
-                                   activation=tf.nn.relu),
                 keras.layers.Dense(512,
+                                   input_shape=(19200,),
                                    activation=tf.nn.relu),
                 keras.layers.Dense(self.n_chars,
                                    activation=tf.nn.softmax)
@@ -217,6 +219,7 @@ class AutoTrainer(OCRCLToolBase):
                                   f"five rounds: {''.join(missed_stuck)}")
                         self.trn_dataset.generate_additional_images(
                             5, missed_stuck)
+                        model = prep_model()
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
                 n_images = trn_lbl.size + val_lbl.size
                 self.batch_size = max(32, np.ceil(n_images // 10))
@@ -229,6 +232,9 @@ class AutoTrainer(OCRCLToolBase):
                 self.trn_dataset.generate_minimal_images()
                 if self.trn_dataset.output_hdf5 is not None:
                     self.trn_dataset.write_hdf5()
+                    outfile = f"{dirname(self.trn_dataset.output_hdf5)}/" \
+                              f"trn_{self.trn_dataset.n_chars:05d}.h5"
+                    self.trn_dataset.write_hdf5(outfile)
                 trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
                 missed_yat_history = []
                 if self.verbosity >= 1:
@@ -269,7 +275,7 @@ class AutoTrainer(OCRCLToolBase):
     def epochs(self):
         """int: Number of epochs to train for"""
         if not hasattr(self, "_epochs"):
-            self._epochs = 20
+            self._epochs = 100
         return self._epochs
 
     @epochs.setter

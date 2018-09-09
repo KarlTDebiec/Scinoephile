@@ -18,6 +18,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     Represents a collection of generated character images
 
     Todo:
+      - [ ] Remove temporary code used during troubleshooting
+      - [ ] Expand training and validation sets when images are added, rather
+            than recreating fully
       - [ ] Implement CL arguments
       - [ ] Validate CL arguments
       - [ ] Document
@@ -480,13 +483,13 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 print(f"Writing '{outfile}'")
             if not isdir(dirname(outfile)):
                 makedirs(dirname(outfile))
-            self.data_to_image(data).save(outfile)
+            self.image_array_to_object(data).save(outfile)
         for outfile, data in zip(val_outfiles, val_data):
             if self.verbosity >= 1:
                 print(f"Writing '{outfile}'")
             if not isdir(dirname(outfile)):
                 makedirs(dirname(outfile))
-            self.data_to_image(data).save(outfile)
+            self.image_array_to_object(data).save(outfile)
 
     # endregion
 
@@ -585,31 +588,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         return pd.DataFrame(data=specs, index=range(len(infiles)))
 
-    def _get_image_dir_outfile_formatter(self, specs):
+    def _get_image_dir_outfile_formatter(self, specs, outdir):
         """Provides formatter for image outfile paths"""
-        from os.path import dirname
 
-        def get_base_path_remover(paths):
-            """Provides function to remove shared base path"""
-
-            i = 0
-            for i in range(max(map(len, paths))):
-                if len(set([path[i] for path in paths])) != 1:
-                    break
-            i = len(dirname(paths[0][:i])) + 1
-            return lambda x: x[i:]
-
-        # if "path" in specs.columns:
-        #     base_path_remover = get_base_path_remover(list(specs["path"]))
-        #
-        #     def func(spec):
-        #         return f"{self.output_image_dir}/" \
-        #                f"{base_path_remover(spec[1]['path'])}"
-        #
-        #     return func
-        # else:
         def func(spec):
-            return f"{self.output_image_dir}/" \
+            return f"{outdir}/" \
                    f"{spec[1]['char']}_" \
                    f"{spec[1]['size']:02d}_" \
                    f"{spec[1]['width']:02d}_" \
