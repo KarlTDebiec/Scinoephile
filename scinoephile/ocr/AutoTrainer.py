@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.AutoTrainer.py
+#   scinoephile.ocr.AutoTrainer.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRCLToolBase
+from scinoephile.ocr import OCRCLToolBase
 from IPython import embed
 from sys import exit
 
@@ -47,7 +47,7 @@ class AutoTrainer(OCRCLToolBase):
             kwargs (dict): Additional keyword arguments
         """
         from os.path import isdir, isfile
-        from zysyzm.ocr import LabeledOCRDataset, GeneratedOCRDataset
+        from scinoephile.ocr import LabeledOCRDataset, GeneratedOCRDataset
 
         super().__init__(**kwargs)
 
@@ -364,14 +364,14 @@ class AutoTrainer(OCRCLToolBase):
 
     @property
     def trn_dataset(self):
-        """zysyzm.ocr.GeneratedOCRDataset: Training/validation dataset"""
+        """scinoephile.ocr.GeneratedOCRDataset: Training/validation dataset"""
         if not hasattr(self, "_trn_dataset"):
             self._trn_dataset = None
         return self._trn_dataset
 
     @trn_dataset.setter
     def trn_dataset(self, value):
-        from zysyzm.ocr import GeneratedOCRDataset
+        from scinoephile.ocr import GeneratedOCRDataset
 
         if value is not None:
             if not isinstance(value, GeneratedOCRDataset):
@@ -380,14 +380,14 @@ class AutoTrainer(OCRCLToolBase):
 
     @property
     def tst_dataset(self):
-        """zysyzm.ocr.GeneratedOCRDataset: Test dataset"""
+        """scinoephile.ocr.GeneratedOCRDataset: Test dataset"""
         if not hasattr(self, "_tst_dataset"):
             self._tst_dataset = None
         return self._tst_dataset
 
     @tst_dataset.setter
     def tst_dataset(self, value):
-        from zysyzm.ocr import LabeledOCRDataset
+        from scinoephile.ocr import LabeledOCRDataset
 
         if value is not None:
             if not isinstance(value, LabeledOCRDataset):

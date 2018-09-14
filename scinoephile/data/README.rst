@@ -16,6 +16,6 @@ in Teaching and Learning Chinese, ed. by Zhang, Pu, Tianwei Xie and Juan Xu,
 Romanization
 ============
 
-``unmatched.cha`` contains Jyutping Cantonese romanization of characters not
-included in the `Hong Kong Cantonese Corpus
+``unmatched.cha`` contains Jyutping Cantonese romanization of selected
+characters not included in the `Hong Kong Cantonese Corpus
 <http://compling.hss.ntu.edu.sg/hkcancor/>`_ used by pycantonese.

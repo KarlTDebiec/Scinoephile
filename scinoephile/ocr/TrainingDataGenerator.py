@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.TrainingDataGenerator.py
+#   scinoephile.ocr.TrainingDataGenerator.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRCLToolBase
+from scinoephile.ocr import OCRCLToolBase
 
 
 ################################### CLASSES ###################################
@@ -176,7 +176,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         import numpy as np
         from os.path import isfile
-        from zysyzm.ocr import generate_char_image
+        from scinoephile.ocr import generate_char_image
 
         # Check if outfile exists, and if not choose output location
         outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \

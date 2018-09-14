@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.GeneratedOCRDataset,py
+#   scinoephile.ocr.GeneratedOCRDataset,py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import LabeledOCRDataset
+from scinoephile.ocr import LabeledOCRDataset
 from IPython import embed
 
 
@@ -297,7 +297,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         import numpy as np
         import pandas as pd
         from random import sample
-        from zysyzm.ocr import generate_char_image
+        from scinoephile.ocr import generate_char_image
 
         if chars is None:
             chars = self.chars[:self.n_chars]
@@ -337,7 +337,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         import numpy as np
         import pandas as pd
-        from zysyzm.ocr import generate_char_image
+        from scinoephile.ocr import generate_char_image
 
         if self.verbosity >= 1:
             print(f"Checking for minimal image set")

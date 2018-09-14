@@ -6,6 +6,6 @@ __pycache__
 build
 dist
 src
-zysyzm.egg-info
+scinoephile.egg-info
 Makefile
 test.sh

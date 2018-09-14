@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.__init__.py
+#   scinoephile.__init__.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### CLASSES ###################################
 class Base(object):
-    """Base for all zysyzm classes"""
+    """Base for all scinoephile classes"""
 
     # region Builtins
 
@@ -96,7 +96,7 @@ class Base(object):
 
 
 class CLToolBase(Base):
-    """Base for zysyzm command line tools"""
+    """Base for scinoephile command line tools"""
 
     # region Instance Variables
 
@@ -122,7 +122,7 @@ class CLToolBase(Base):
         """ Core logic """
 
         if isinstance(self, CLToolBase):
-            raise NotImplementedError("zysyzm.CLToolBase class is not to "
+            raise NotImplementedError("scinoephile.CLToolBase class is not to "
                                       "be used directly")
         else:
             raise NotImplementedError(f"{self.__class__.__name__}.__call__ "

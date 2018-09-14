@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.Trainer.py
+#   scinoephile.ocr.Trainer.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRCLToolBase
+from scinoephile.ocr import OCRCLToolBase
 from IPython import embed
 
 
@@ -52,7 +52,7 @@ class ModelTrainer(OCRCLToolBase):
         import numpy as np
         import tensorflow as tf
         from tensorflow import keras
-        from zysyzm.ocr import GeneratedOCRDataset, LabeledOCRDataset
+        from scinoephile.ocr import GeneratedOCRDataset, LabeledOCRDataset
 
         # Load and organize data
         # trn_img, trn_lbl = self.load_labeled_data(self.trn_input_directory)

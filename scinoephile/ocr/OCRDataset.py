@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.OCRDataset,py
+#   scinoephile.ocr.OCRDataset,py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm.ocr import OCRCLToolBase
+from scinoephile.ocr import OCRCLToolBase
 from IPython import embed
 
 
@@ -332,7 +332,7 @@ class OCRDataset(OCRCLToolBase):
     def read_image_dir(self):
         import numpy as np
         from PIL import Image
-        from zysyzm.ocr import convert_8bit_grayscale_to_2bit
+        from scinoephile.ocr import convert_8bit_grayscale_to_2bit
 
         # TODO: Validate that directory can be read
 

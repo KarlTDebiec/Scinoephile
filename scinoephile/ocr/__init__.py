@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   zysyzm.ocr.__init__.py
+#   scinoephile.ocr.__init__.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from zysyzm import Base, CLToolBase
+from scinoephile import Base, CLToolBase
 
 
 ################################## FUNCTIONS ##################################
@@ -82,7 +82,7 @@ def draw_text_on_image(image, text, x=0, y=0, font="Arial.ttf", size=30):
 
 def generate_char_image(char, fig=None, font="Hei", size=60, width=5,
                         x_offset=0, y_offset=0, image_mode="2bit",
-                        tmpfile="/tmp/zysyzm.png"):
+                        tmpfile="/tmp/scinoephile.png"):
     """
     Generates an image of a character
 
@@ -294,7 +294,7 @@ class OCRCLToolBase(CLToolBase, OCRBase):
         """Core logic"""
 
         if isinstance(self, OCRCLToolBase):
-            raise NotImplementedError("zysyzm.OCRBase class is not to "
+            raise NotImplementedError("scinoephile.OCRBase class is not to "
                                       "be used directly")
         else:
             raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
@@ -304,8 +304,8 @@ class OCRCLToolBase(CLToolBase, OCRBase):
 
 
 ################################### MODULES ###################################
-from zysyzm.ocr.OCRDataset import OCRDataset
-from zysyzm.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
-from zysyzm.ocr.LabeledOCRDataset import LabeledOCRDataset
-from zysyzm.ocr.GeneratedOCRDataset import GeneratedOCRDataset
-from zysyzm.ocr.AutoTrainer import AutoTrainer
+from scinoephile.ocr.OCRDataset import OCRDataset
+from scinoephile.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
+from scinoephile.ocr.LabeledOCRDataset import LabeledOCRDataset
+from scinoephile.ocr.GeneratedOCRDataset import GeneratedOCRDataset
+from scinoephile.ocr.AutoTrainer import AutoTrainer

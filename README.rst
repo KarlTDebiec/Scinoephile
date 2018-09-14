@@ -87,7 +87,7 @@ Compositing
 Authorship
 ==========
 
-ZYSYZM is developed by Karl T. Debiec.
+Scinoephile is developed by Karl T. Debiec.
 
 License
 =======
