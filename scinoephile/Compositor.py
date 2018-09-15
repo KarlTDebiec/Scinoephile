@@ -20,6 +20,24 @@ class Compositor(CLToolBase):
     TODO:
         - [ ] Refactor and improve code for handling dashes
         - [ ] Clean up merging code
+        - [ ] Apply timings from one infile directly to another, provided they
+              have the same number of subtitles
+        - [ ] Address warnings
+          - .../Compositor.py:762:         FutureWarning: from_items is
+            deprecated. Please use DataFrame.from_dict(dict(items), ...)
+            instead. DataFrame.from_dict(OrderedDict(items)) may be used to
+            preserve the key order. [("start", [start]), ("end", [time])]),
+            .../lib/python3.6/site-packages/pandas/core/frame.py:6211:
+          - FutureWarning: Sorting because non-concatenation axis is not
+            aligned. A future version of pandas will change to not sort by
+            default. To accept the future behavior, pass 'sort=False'. To
+            retain the current behavior and silence the warning, pass
+            'sort=True'. sort=sort)
+          - .../lib/python3.6/site-packages/pandas/core/generic.py:4405:
+            SettingWithCopyWarning: A value is trying to be set on a copy of a
+            slice from a DataFrame. See the caveats in the documentation:
+            http://pandas.pydata.org/pandas-docs/stable/
+            indexing.html#indexing-view-versus-copy self[name] = value
         - [ ] Document
     """
     import re
