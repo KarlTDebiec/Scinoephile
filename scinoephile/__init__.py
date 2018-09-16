@@ -198,3 +198,6 @@ class CLToolBase(Base):
         args = parser.parse_args()
         cls.validate_args(parser, args)
         cls(**vars(args))()
+
+################################### MODULES ###################################
+from scinoephile.SubtitleDataset import SubtitleDataset

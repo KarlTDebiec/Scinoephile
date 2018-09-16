@@ -120,6 +120,7 @@ class Reader(CLToolBase):
 
         bytes2int = lambda x: int.from_bytes(x, byteorder="big")
 
+        subtitle_index = 1
         byte_offset = 0
         start_time = None
         palette = None
@@ -153,8 +154,11 @@ class Reader(CLToolBase):
                         image[np.where(reduced_image == color_index)] = color
                 else:
                     end_time = timestamp / 90000
-                    # Image.fromarray(image).show()
+                    # outfile = f"/Users/kdebiec/Desktop/magnificent_mcdull/{subtitle_index:06d}.png"
+                    # print(f"{start_time:>9.3f} {end_time:>9.3f} {outfile}")
+                    # Image.fromarray(image).save(outfile)
                     # Add image to nascent collection
+                    subtitle_index += 1
                     start_time = None
                     palette = None
                     reduced_image = None

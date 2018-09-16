@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   scinoephile.ocr.OCRDataset,py
+#   scinoephile.ocr.OCRDataset.py
 #
 #   Copyright (C) 2017-2018 Karl T Debiec
 #   All rights reserved.
