@@ -24,6 +24,7 @@ class OCRDataset(OCRCLToolBase):
         256 -> 11
 
     Todo:
+      - [x] Support writing hdf5 and images to specified paths
       - [ ] Document
       - [ ] Implement other image data types (8 bit and 1 bit)
     """
@@ -45,16 +46,18 @@ class OCRDataset(OCRCLToolBase):
             self.input_hdf5 = input_hdf5
         if input_image_dir is not None:
             self.input_image_dir = input_image_dir
+
+        if image_mode is not None:
+            self.image_mode = image_mode
+
         if output_hdf5 is not None:
             self.output_hdf5 = output_hdf5
         if output_image_dir is not None:
             self.output_image_dir = output_image_dir
-        if image_mode is not None:
-            self.image_mode = image_mode
 
     def __call__(self):
         """ Core logic """
-        pass
+        raise NotImplementedError()
 
     # endregion
 
@@ -253,6 +256,15 @@ class OCRDataset(OCRCLToolBase):
     # region Public Methods
 
     def add_images(self, specs, data):
+        """
+        Adds image data and specifications
+
+        TODO: Improve efficiency; is it necessary to check that specs are new?
+
+        Args:
+            specs (pandas.DataFrame): New specifications
+            data (numpy.ndarray(bool)): New image data
+        """
         import numpy as np
 
         new = specs.apply(
@@ -263,7 +275,15 @@ class OCRDataset(OCRCLToolBase):
                                            ignore_index=True, sort=False)
             self.data = np.append(self.data, data[new], axis=0)
 
-    def data_to_image(self, data):
+    def image_array_to_object(self, array):
+        """
+        Converts image array to image object
+
+        Args:
+            array (numpy.ndarray(bool)): Image data
+
+        Returns (PIL.Image.Image): Image object
+        """
         import numpy as np
         from PIL import Image
 
@@ -271,9 +291,12 @@ class OCRDataset(OCRCLToolBase):
             raise NotImplementedError()
         elif self.image_mode == "2bit":
             raw = np.zeros((self._data_size // 2), np.uint8)
-            raw[np.logical_and(data[0::2] == False, data[1::2] == True)] = 85
-            raw[np.logical_and(data[0::2] == True, data[1::2] == False)] = 170
-            raw[np.logical_and(data[0::2] == True, data[1::2] == True)] = 255
+            raw[np.logical_and(array[0::2] == False,
+                               array[1::2] == True)] = 85
+            raw[np.logical_and(array[0::2] == True,
+                               array[1::2] == False)] = 170
+            raw[np.logical_and(array[0::2] == True,
+                               array[1::2] == True)] = 255
             raw = raw.reshape((int(np.sqrt(raw.size)), int(np.sqrt(raw.size))))
             image = Image.fromarray(raw, mode="L")
         elif self.image_mode == "1bit":
@@ -282,25 +305,32 @@ class OCRDataset(OCRCLToolBase):
         return image
 
     def image_to_data(self, image):
+        """
+        Converts image object to image array
+
+        Args:
+            image (PIL.Image.Image): Image object
+
+        Returns (numpy.ndarray(bool)): Image array
+        """
         import numpy as np
 
         if self.image_mode == "8bit":
-            data = np.array(image).flatten()
+            array = np.array(image).flatten()
         elif self.image_mode == "2bit":
             raw = np.array(image).flatten()
-            data = np.zeros((2 * raw.size), np.bool)
-            data[0::2][np.logical_or(raw == 170, raw == 255)] = True
-            data[1::2][np.logical_or(raw == 85, raw == 255)] = True
+            array = np.zeros((2 * raw.size), np.bool)
+            array[0::2][np.logical_or(raw == 170, raw == 255)] = True
+            array[1::2][np.logical_or(raw == 85, raw == 255)] = True
         elif self.image_mode == "1bit":
             raise NotImplementedError()
 
-        return data
+        return array
 
     def read_hdf5(self):
         import pandas as pd
         import h5py
         import numpy as np
-
 
         # TODO: Validate that hdf5 file can be read
 
@@ -378,7 +408,7 @@ class OCRDataset(OCRCLToolBase):
         data_to_image(data).show()
 
     def show_data(self, data):
-        self.data_to_image(data).show()
+        self.image_array_to_object(data).show()
 
     def show_chars(self, indexes, columns=None):
         import numpy as np
@@ -401,7 +431,7 @@ class OCRDataset(OCRCLToolBase):
         for i, index in enumerate(indexes):
             column = (i // columns)
             row = i - (column * columns)
-            char_image = self.data_to_image(self.data[index])
+            char_image = self.image_array_to_object(self.data[index])
             image.paste(char_image,
                         (100 * row + 10,
                          100 * column + 10,
@@ -409,13 +439,27 @@ class OCRDataset(OCRCLToolBase):
                          100 * (column + 1) - 10))
         image.show()
 
-    def write_hdf5(self):
+    def write_hdf5(self, outfile=None):
+        """
+        Writes dataset to an hdf5 file
+
+        Args:
+            outfile (str, optional): Path to hdf5 file; defaults to
+              self.output_hdf5
+        """
+        from os.path import expandvars
         import h5py
         import numpy as np
 
+        if outfile is None:
+            outfile = self.output_hdf5
+        else:
+            outfile = expandvars(outfile)
+        # TODO: Validate that hdf5 file can be written
+
         if self.verbosity >= 1:
-            print(f"Writing data to '{self.output_hdf5}'")
-        with h5py.File(self.output_hdf5) as hdf5_outfile:
+            print(f"Writing data to '{outfile}'")
+        with h5py.File(outfile) as hdf5_outfile:
             # Remove preexisting data
             if "data" in hdf5_outfile:
                 del hdf5_outfile["data"]
@@ -426,7 +470,7 @@ class OCRDataset(OCRCLToolBase):
             hdf5_outfile.attrs["mode"] = self.image_mode
 
             # Save specs
-            # Todo: Check if 'columns.values' can just be 'columns'
+            # TODO: Check if 'columns.values' can just be 'columns'
             formatter = self._get_hdf5_output_spec_formatter(
                 self.specs.columns.values)
             dtypes = self._get_hdf5_spec_dtypes(
@@ -447,21 +491,33 @@ class OCRDataset(OCRCLToolBase):
                 chunks=True,
                 compression="gzip")
 
-    def write_image_dir(self):
+    def write_image_dir(self, outdir=None):
+        """
+
+        Args:
+            outdir (str): Path to output directory; defaults to
+              self.output_image_dir
+        """
         from os import makedirs
-        from os.path import dirname, isdir
+        from os.path import dirname, expandvars, isdir
+
+        if outdir is None:
+            outdir = self.output_image_dir
+        else:
+            outdir = expandvars(outdir)
+        # TODO: Validate that directory can be written
 
         if self.verbosity >= 1:
-            print(f"Writing images to '{self.output_image_dir}'")
+            print(f"Writing images to '{outdir}'")
         outfile_path_formatter = self._get_image_dir_outfile_formatter(
-            self.specs)
+            self.specs, outdir)
         outfiles = map(outfile_path_formatter, self.specs.iterrows())
         for outfile, data in zip(outfiles, self.data):
             if self.verbosity >= 2:
                 print(f"Writing '{outfile}'")
             if not isdir(dirname(outfile)):
                 makedirs(dirname(outfile))
-            self.data_to_image(data).save(outfile)
+            self.image_array_to_object(data).save(outfile)
 
     # endregion
 
@@ -487,7 +543,7 @@ class OCRDataset(OCRCLToolBase):
         """Provides spec formatter compatible with both numpy and h5py"""
         raise NotImplementedError()
 
-    def _get_image_dir_outfile_formatter(self, specs):
+    def _get_image_dir_outfile_formatter(self, specs, outdir):
         """Provides formatter for image outfile paths"""
         raise NotImplementedError()
 

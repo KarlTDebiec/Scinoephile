@@ -151,7 +151,7 @@ class LabeledOCRDataset(OCRDataset):
 
         return func
 
-    def _get_image_dir_outfile_formatter(self, specs):
+    def _get_image_dir_outfile_formatter(self, specs, outdir):
         """Provides formatter for image outfile paths"""
         from os.path import dirname
 
@@ -168,13 +168,13 @@ class LabeledOCRDataset(OCRDataset):
             base_path_remover = get_base_path_remover(list(specs["path"]))
 
             def func(spec):
-                return f"{self.output_image_dir}/" \
+                return f"{outdir}/" \
                        f"{base_path_remover(spec[1]['path'])}"
 
             return func
         else:
             def func(spec):
-                return f"{self.output_image_dir}/" \
+                return f"{outdir}/" \
                        f"{spec[1]['char']}_{spec[0]:06d}.png"
 
             return func
