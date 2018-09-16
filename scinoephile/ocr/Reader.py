@@ -20,7 +20,7 @@ class Reader(CLToolBase):
     TODO:
       - [x] Open SUP file and loop over bytes
       - [x] Read images
-      - [ ] Read and apply image palettes
+      - [x] Read and apply image palettes
       - [ ] Read times and locations
       - [ ] Store times and locations in hdf5
       - [ ] Store images in hdf5
@@ -58,13 +58,30 @@ class Reader(CLToolBase):
 
         b2i = lambda x: int.from_bytes(x, byteorder="big")
 
+        def read_palette(bytes):
+            palette = np.zeros((256, 4), np.uint8)
+            bytes_index = 0
+            while bytes_index < len(bytes):
+                # color number, y, cb, cr, alpha
+                color_index = bytes[bytes_index]
+                y = bytes[bytes_index + 1]
+                cb = bytes[bytes_index + 2]
+                cr = bytes[bytes_index + 3]
+                palette[color_index, 0] = y + 1.402 * (cr - 128)
+                palette[color_index, 1] = y - .34414 * (cb - 128) - .71414 * (cr - 128)
+                palette[color_index, 2] = y + 1.772 * (cb - 128)
+                palette[color_index, 3] = bytes[bytes_index + 4]
+                bytes_index += 5
+            palette[255] = [16, 128, 128, 0]
+            return palette
+
         def read_image(bytes, width, height):
             image = np.zeros((width * height), np.uint8)
             bytes_index = 0
             pixel_index = 0
-            while bytes_index <= len(bytes) - 1:
+            while bytes_index < len(bytes):
                 byte_1 = bytes[bytes_index]
-                if byte_1 == 0x00:
+                if byte_1 == 0x00:  # 00 | Special behaviors
                     byte_2 = bytes[bytes_index + 1]
                     if byte_2 == 0x00:  # 00 00 | New line
                         bytes_index += 2
@@ -106,6 +123,8 @@ class Reader(CLToolBase):
 
         offset = 0
         last_header_offset = 0
+        palette = None
+        reduced_image = None
         print(f"TYPE      HEX:     START      TIME      SIZE    OFFSET     BYTES")
         while True:
             if b2i(raw[offset:offset + 2]) != 0x5047:
@@ -116,21 +135,28 @@ class Reader(CLToolBase):
             type = raw[header_offset + 10]
             size = b2i(raw[header_offset + 11: header_offset + 13])
             content_offset = header_offset + 13
-            if type == 0x14:
+            if type == 0x14:  # Palette
                 kind = "PDS"
-            elif type == 0x15:
+                palette_bytes = raw[content_offset + 2:content_offset + size]
+                palette = read_palette(palette_bytes)
+            elif type == 0x15:  # Image
                 kind = "ODS"
                 image_bytes = raw[content_offset + 11:content_offset + size]
                 width = b2i(raw[content_offset + 7:content_offset + 9])
                 height = b2i(raw[content_offset + 9:content_offset + 11])
-                image = read_image(image_bytes, width, height)
-                Image.fromarray(image).show()
-            elif type == 0x16:
+                reduced_image = read_image(image_bytes, width, height)
+            elif type == 0x16:  # Header
                 kind = "PCS"
-            elif type == 0x17:
+                palette = None
+                reduced_image = None
+            elif type == 0x17:  # Something
                 kind = "WDS"
-            elif type == 0x80:
+            elif type == 0x80:  # End
                 kind = "END"
+                if palette is not None and reduced_image is not None:
+                    image = np.zeros((*reduced_image.shape, 4), np.uint8)
+                    for color_index, color in enumerate(palette):
+                        image[np.where(reduced_image == color_index)] = color
             else:
                 kind = "UNKNOWN"
             if header_offset != 0:
@@ -143,8 +169,6 @@ class Reader(CLToolBase):
             last_content_start = content_offset
 
             offset += 13 + size
-            # if offset >= 100000:
-            #     break
             if offset >= len(raw):
                 break
         print(f"{offset - last_content_start:>9d}")
