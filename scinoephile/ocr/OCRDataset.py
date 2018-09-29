@@ -25,6 +25,7 @@ class OCRDataset(OCRCLToolBase):
 
     Todo:
       - [x] Support writing hdf5 and images to specified paths
+      - [ ] Support reading hdf5 and images from specified paths
       - [ ] Document
       - [ ] Implement other image data types (8 bit and 1 bit)
     """
@@ -447,9 +448,9 @@ class OCRDataset(OCRCLToolBase):
             outfile (str, optional): Path to hdf5 file; defaults to
               self.output_hdf5
         """
-        from os.path import expandvars
         import h5py
         import numpy as np
+        from os.path import expandvars
 
         if outfile is None:
             outfile = self.output_hdf5
