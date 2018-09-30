@@ -8,12 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile import CLToolBase
+from scinoephile import SubtitleDataset
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class Reader(CLToolBase):
+class ImageSubtitleDataset(SubtitleDataset):
     """
     Extracts individual characters from image-based subtitles
 
@@ -24,7 +24,6 @@ class Reader(CLToolBase):
       - [x] Read times and locations
       - [ ] Store times and locations in hdf5 or text
       - [ ] Store images in hdf5
-      - [ ] Implement equivalent support for BDSup2Sub/vobsub2srt workflow
     """
 
     # region Instance Variables
@@ -232,4 +231,4 @@ class Reader(CLToolBase):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    Reader.main()
+    ImageSubtitleDataset.main()

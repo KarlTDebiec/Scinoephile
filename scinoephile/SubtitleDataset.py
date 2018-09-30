@@ -8,25 +8,238 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile import CLToolBase
+from scinoephile import Base, CLToolBase
 from IPython import embed
+from pysubs2 import SSAFile, SSAEvent
+from pysubs2.formatbase import FormatBase
 
 
 ################################### CLASSES ###################################
+class HDF5Format(FormatBase):
+    """
+    TODO:
+      - [x] Save to hdf5
+      - [x] Load from hdf5
+    """
+
+    @classmethod
+    def from_file(cls, subs, fp, **kwargs):
+        """
+        TODO:
+          - [x] Load info
+          - [x] Load styles
+          - [x] Load events
+          - [x] Clean up
+          - [ ] Load project info
+        """
+        from pysubs2.ssastyle import SSAStyle
+        import numpy as np
+
+        def string_to_field(field, value):
+            from pysubs2.time import timestamp_to_ms
+            from pysubs2.time import TIMESTAMP
+            from pysubs2.substation import ass_rgba_to_color
+
+            if field in {"start", "end"}:
+                return timestamp_to_ms(TIMESTAMP.match(value).groups())
+            elif "color" in field:
+                return ass_rgba_to_color(value)
+            elif field in {"bold", "underline", "italic", "strikeout"}:
+                return value == "-1"
+            elif field in {"borderstyle", "encoding", "marginl", "marginr",
+                           "marginv", "layer", "alphalevel"}:
+                return int(value)
+            elif field in {"fontsize", "scalex", "scaley", "spacing", "angle",
+                           "outline", "shadow"}:
+                return float(value)
+            elif field == "marked":
+                return value.endswith("1")
+            elif field == "alignment":
+                i = int(value)
+                return i
+            else:
+                return value
+
+        subs.info.clear()
+        subs.aegisub_project.clear()
+        subs.styles.clear()
+
+        # Load info
+        for k, v in fp.attrs.items():
+            subs.info[k] = v
+
+        # Load styles
+        if "styles" in fp:
+            styles = np.array(fp["styles"])
+            for style in styles:
+                style = {field.lower(): string_to_field(field,
+                                                        value.decode("utf8"))
+                         for field, value in zip(styles.dtype.names, style)}
+                name = style.pop("name")
+                subs.styles[name] = SSAStyle(**style)
+
+        # Load subtitles
+        if "events" in fp:
+            events = np.array(fp["events"])
+            for event in events:
+                event = {field.lower(): string_to_field(field,
+                                                        value.decode("utf8"))
+                         for field, value in zip(event.dtype.names, event)}
+                subs.events.append(SSAEvent(**event))
+
+        return subs
+
+    @classmethod
+    def to_file(cls, subs, fp, format_, **kwargs):
+        """
+        TODO:
+          - [x] Save info
+          - [x] Save styles
+          - [x] Save events
+          - [x] Clean up
+          - [ ] Save project info
+        """
+        from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
+        import numpy as np
+
+        def field_to_string(field, item):
+            from pysubs2.common import text_type, Color
+            from pysubs2.substation import color_to_ass_rgba, ms_to_timestamp
+            from numbers import Number
+
+            value = getattr(item, field)
+
+            if field in {"start", "end"}:
+                return ms_to_timestamp(value)
+            elif field == "marked":
+                return f"Marked={value:d}"
+            elif isinstance(value, bool):
+                return "-1" if value else "0"
+            elif isinstance(value, (text_type, Number)):
+                return text_type(value)
+            elif isinstance(value, Color):
+                return color_to_ass_rgba(value)
+            else:
+                raise TypeError(f"Unexpected type when writing a SubStation "
+                                f"field {value:!r} for line {item:!r}")
+
+        # Save info
+        for k, v in subs.info.items():
+            fp.attrs[k] = v
+
+        # Save styles
+        if "styles" in fp:
+            del fp["styles"]
+        dtypes = [("name", "S255"),
+                  *((field.strip(), "S255") for field in STYLE_FIELDS["ass"])]
+        styles = []
+        for name, style in subs.styles.items():
+            styles += [(name.encode("utf8"),
+                        *(field_to_string(field, style).encode("utf8")
+                          for field in STYLE_FIELDS["ass"]))]
+        styles = np.array(styles, dtype=dtypes)
+        fp.create_dataset("styles", data=styles, dtype=dtypes)
+
+        # Save subtitles
+        if "events" in fp:
+            del fp["events"]
+        dtypes = [("type", "S255"),
+                  *((field.strip(), "S255") for field in EVENT_FIELDS["ass"])]
+        events = []
+        for event in subs.events:
+            events += [(event.type.encode("utf8"),
+                        *(field_to_string(field, event).encode("utf8")
+                          for field in EVENT_FIELDS["ass"]))]
+        events = np.array(events, dtype=dtypes)
+        fp.create_dataset("events", data=events, dtype=dtypes)
+
+
+class SubtitleSeries(SSAFile, Base):
+    """
+    TODO:
+      - [x] Save to hdf5
+      - [x] Load from hdf5
+      - [x] Print with class name of SubtitleSeries
+      - [ ] Print with actual live class name (will then work for subclasses)
+      - [ ] Print as a table
+      - [ ] Add verbosity argument to __init__
+    """
+
+    # region Builtins
+
+    def __repr__(self):
+        if self.events:
+            from pysubs2.time import ms_to_str
+
+            return f"<SubtitleSeries with {len(self):d} events " \
+                   f"and {len(self.styles):d} styles, " \
+                   f"last timestamp {ms_to_str(max(e.end for e in self)):s}>"
+        else:
+            return f"<SubtitleSeries with 0 events " \
+                   f"and {len(self.styles):d} styles>"
+
+    # endregion
+
+    # region Public Methods
+
+    def save(self, path, format_=None, **kwargs):
+        """
+        SSAFile.save expects an open text file, so we open hdf5 here
+        """
+        # CHeck if hdf5
+        if (format_ == "hdf5" or path.endswith(".hdf5")
+                or path.endswith(".h5")):
+            import h5py
+
+            with h5py.File(path) as fp:
+                HDF5Format.to_file(self, fp, format_=format_, **kwargs)
+        # Otherwise, continue as superclass SSAFile
+        else:
+            SSAFile.save(self, path, format_=format_, **kwargs)
+
+    # endregion
+
+    # region Public Class Methods
+
+    @classmethod
+    def load(cls, path, encoding="utf-8", **kwargs):
+        """
+        SSAFile.from_file expects an open text file, so we open hdf5 here
+        """
+
+        # Check if hdf5
+        if (encoding == "hdf5" or path.endswith(".hdf5")
+                or path.endswith(".h5")):
+            import h5py
+
+            with h5py.File(path) as fp:
+                subs = cls()
+                subs.format = "hdf5"
+                return HDF5Format.from_file(subs, fp, **kwargs)
+        # Otherwise, continue as superclass SSAFile
+        else:
+            with open(path, encoding=encoding) as fp:
+                return cls.from_file(fp, **kwargs)
+
+    # endregion
+
+
+class Subtitle(SSAEvent, Base):
+    pass
+
+
 class SubtitleDataset(CLToolBase):
     """
     Represents a collection of subtitles
 
     Todo:
-      - [ ] Read from SRT
-      - [ ] Write to SRT
+      - [x] Read from SRT
+      - [x] Write to SRT
       - [ ] Write to hdf5
       - [ ] Read from hdf5
       - [ ] Write to pandas
       - [ ] Read from pandas
       - [ ] Read from VTT
-      - [ ] Reindex
-      - [ ] Convert multi-line to single line
       - [ ] Document
     """
 
@@ -38,31 +251,36 @@ class SubtitleDataset(CLToolBase):
 
     # region Builtins
 
-    def __init__(self, input_hdf5=None, input_pandas=None, input_srt=None,
-                 output_hdf5=None, output_pandas=None, output_srt=None,
-                 **kwargs):
+    def __init__(self, infile=None, outfile=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if input_hdf5 is not None:
-            self.input_hdf5 = input_hdf5
-        if input_pandas is not None:
-            self.input_pandas = input_pandas
-        if input_srt is not None:
-            self.input_srt = input_srt
-        if output_hdf5 is not None:
-            self.output_hdf5 = output_hdf5
-        if output_pandas is not None:
-            self.output_pandas = output_pandas
-        if output_srt is not None:
-            self.output_srt = output_srt
+        if infile is not None:
+            self.infile = infile
+        if outfile is not None:
+            self.outfile = outfile
+
+        # Temporary manual configuration for testing
+        self.infile = \
+            "/Users/kdebiec/Dropbox/code/subtitles/" \
+            "youth/" \
+            "Youth.en-US.srt"
+        self.outfile = \
+            "/Users/kdebiec/Dropbox/code/subtitles/" \
+            "youth/" \
+            "youth.hdf5"
 
     def __call__(self):
         """ Core logic """
         from os.path import isfile
         # Input
-        if self.input_srt is not None and isfile(self.input_srt):
-            self.input_srt()
+        if self.infile is not None and isfile(self.infile):
+            self.read()
+
+        # Output
+        if self.outfile is not None:
+            self.write()
+            self.read(self.outfile)
 
         # Present IPython prompt
         if self.interactive:
@@ -73,14 +291,14 @@ class SubtitleDataset(CLToolBase):
     # region Public Properties
 
     @property
-    def input_hdf5(self):
-        """str: Path to input hdf5 file"""
-        if not hasattr(self, "_input_hdf5"):
-            self._input_hdf5 = None
-        return self._input_hdf5
+    def infile(self):
+        """str: Path to input file"""
+        if not hasattr(self, "_infile"):
+            self._infile = None
+        return self._infile
 
-    @input_hdf5.setter
-    def input_hdf5(self, value):
+    @infile.setter
+    def infile(self, value):
         from os.path import expandvars
 
         if value is not None:
@@ -89,55 +307,17 @@ class SubtitleDataset(CLToolBase):
             value = expandvars(value)
             if value == "":
                 raise ValueError(self._generate_setter_exception(value))
-        self._input_hdf5 = value
+        self._infile = value
 
     @property
-    def input_pandas(self):
-        """str: Path to input pandas text file"""
-        if not hasattr(self, "_input_pandas"):
-            self._input_pandas = None
-        return self._input_pandas
+    def outfile(self):
+        """str: Path to output file"""
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
+        return self._outfile
 
-    @input_pandas.setter
-    def input_pandas(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._input_pandas = value
-
-    @property
-    def input_srt(self):
-        """str: Path to input srt file"""
-        if not hasattr(self, "_input_srt"):
-            self._input_srt = None
-        return self._input_srt
-
-    @input_srt.setter
-    def input_srt(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._input_srt = value
-
-    @property
-    def output_hdf5(self):
-        """str: Path to output hdf5 file"""
-        if not hasattr(self, "_output_hdf5"):
-            self._output_hdf5 = None
-        return self._output_hdf5
-
-    @output_hdf5.setter
-    def output_hdf5(self, value):
+    @outfile.setter
+    def outfile(self, value):
         from os import access, getcwd, R_OK, W_OK
         from os.path import dirname, expandvars, isfile
 
@@ -153,74 +333,20 @@ class SubtitleDataset(CLToolBase):
                 raise ValueError(self._generate_setter_exception(value))
             elif not access(dirname(value), W_OK):
                 raise ValueError(self._generate_setter_exception(value))
-        self._output_hdf5 = value
-
-    @property
-    def output_pandas(self):
-        """str: Path to output pandas file"""
-        if not hasattr(self, "_output_pandas"):
-            self._output_pandas = None
-        return self._output_pandas
-
-    @output_pandas.setter
-    def output_pandas(self, value):
-        from os import access, getcwd, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-            elif isfile(value) and not access(value, R_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif dirname(value) == "" and not access(getcwd(), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif not access(dirname(value), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-        self._output_pandas = value
-
-    @property
-    def output_srt(self):
-        """str: Path to output srt file"""
-        if not hasattr(self, "_output_srt"):
-            self._output_srt = None
-        return self._output_srt
-
-    @output_srt.setter
-    def output_srt(self, value):
-        from os import access, getcwd, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-            elif isfile(value) and not access(value, R_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif dirname(value) == "" and not access(getcwd(), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif not access(dirname(value), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-        self._output_srt = value
+        self._outfile = value
 
     @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
-            self._subtitles = None
+            self._subtitles = SubtitleSeries(verbosity=self.verbosity)
         return self._subtitles
 
     @subtitles.setter
     def subtitles(self, value):
-        import pandas as pd
-
-        if not isinstance(value, pd.DataFrame):
-            raise ValueError()
-        # TODO: Improve validation
+        if value is not None:
+            if not isinstance(value, SubtitleSeries):
+                raise ValueError()
         self._subtitles = value
 
     # endregion
@@ -230,91 +356,44 @@ class SubtitleDataset(CLToolBase):
     # endregion
 
     # region Public Methods
-    def read_srt(self, infile=None):
-        import re
-        import pandas as pd
-        from datetime import datetime
+
+    def read(self, infile=None):
         from os.path import expandvars
 
-        re_index = re.compile("^(?P<index>\d+)$")
-        re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
-                             "(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
-        re_blank = re.compile("^\s*$")
-
-        if infile is None:
-            infile = self.input_srt
-        else:
+        if infile is not None:
             infile = expandvars(infile)
-        # TODO: Validate that srt file can be read
+        elif self.infile is not None:
+            infile = self.infile
+        else:
+            raise ValueError()
 
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
-        with open(infile, "r") as infile:
-            index = start = end = text = None
-            indexes = []
-            starts = []
-            ends = []
-            texts = []
-            while True:
-                line = infile.readline()
-                if line == "":
-                    break
-                if self.verbosity >= 3:
-                    print(line.strip())
-                match_index = re_index.match(line)
-                match_time = re_time.match(line)
-                match_blank = re_blank.match(line)
-                if match_index and index is None:
-                    index = int(match_index.groupdict()["index"])
-                elif match_time:
-                    start = datetime.strptime(match_time.groupdict()["start"],
-                                              "%H:%M:%S,%f").time()
-                    end = datetime.strptime(match_time.groupdict()["end"],
-                                            "%H:%M:%S,%f").time()
-                elif match_blank:
-                    if (index is None or start is None
-                            or end is None or text is None):
-                        raise ValueError()
-                    indexes.append(index)
-                    starts.append(start)
-                    ends.append(end)
-                    texts.append(text)
-                    index = start = end = text = None
-                else:
-                    if text is None:
-                        text = line.strip()
-                    else:
-                        text += "\n" + line.strip()
-        subtitles = pd.DataFrame.from_items([("index", indexes),
-                                             ("start", starts),
-                                             ("end", ends),
-                                             ("text", texts)])
-        subtitles.set_index("index", inplace=True)
-        self.subtitles = subtitles
+        self.subtitles = SubtitleSeries.load(infile)
+        self.subtitles.verbosity = self.verbosity
 
-    def write_srt(self, outfile):
+    def write(self, outfile=None):
         from os.path import expandvars
 
-        if outfile is None:
-            outfile = self.output_srt
-        else:
+        if outfile is not None:
             outfile = expandvars(outfile)
-        # TODO: Validate that srt file can be written
+        elif self.outfile is not None:
+            outfile = self.outfile
+        else:
+            raise ValueError()
 
         if self.verbosity >= 1:
             print(f"Writing subtitles to '{outfile}'")
-        with open(outfile, "w") as outfile:
-            for index, subtitle in self.subtitles.iterrows():
-                start = subtitle["start"].strftime("%H:%M:%S,%f")[:-3]
-                end = subtitle["end"].strftime("%H:%M:%S,%f")[:-3]
-                text = subtitle["text"]
-                outfile.write(f"{index}\n")
-                outfile.write(f"{start} --> {end}\n")
-                outfile.write(f"{text}\n")
-                outfile.write("\n")
+
+        self.subtitles.save(outfile)
 
     # endregion
 
     # region Private Methods
 
     # endregion
+
+
+#################################### MAIN #####################################
+if __name__ == "__main__":
+    SubtitleDataset.main()
