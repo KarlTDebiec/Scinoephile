@@ -36,6 +36,7 @@ class Base(object):
         file = frameinfo.filename.replace(self.package_root, "")
         func = frameinfo.function
         number = frameinfo.lineno - 1
+        header = ""
         if self.verbosity >= 1:
             header = f"IPython prompt in file {file}, function {func}," \
                      f" line {number}\n"
@@ -199,6 +200,6 @@ class CLToolBase(Base):
         cls.validate_args(parser, args)
         cls(**vars(args))()
 
+
 ################################### MODULES ###################################
 from scinoephile.SubtitleDataset import SubtitleDataset
-

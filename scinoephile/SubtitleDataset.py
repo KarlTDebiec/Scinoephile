@@ -160,7 +160,7 @@ class SubtitleSeries(SSAFile, Base):
       - [x] Save to hdf5
       - [x] Load from hdf5
       - [x] Print with class name of SubtitleSeries
-      - [ ] Print with actual live class name (will then work for subclasses)
+      - [x] Print with actual live class name (will then work for subclasses)
       - [ ] Print as a table
       - [ ] Add verbosity argument to __init__
     """
@@ -171,7 +171,7 @@ class SubtitleSeries(SSAFile, Base):
         if self.events:
             from pysubs2.time import ms_to_str
 
-            return f"<SubtitleSeries with {len(self):d} events " \
+            return f"<{self.__class__.__name__} with {len(self):d} events " \
                    f"and {len(self.styles):d} styles, " \
                    f"last timestamp {ms_to_str(max(e.end for e in self)):s}>"
         else:
