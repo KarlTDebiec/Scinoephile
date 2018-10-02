@@ -18,14 +18,22 @@ class ImageSubtitleSeries(SubtitleSeries):
 
 
 class ImageSubtitleEvent(SubtitleEvent):
-    """"""
+    """
+    Subtitle event that includes an image
+
+    TODO:
+      - [ ] Determine if image should be a property
+    """
 
     # region Builtins
 
-    def __init__(self, image=None, **kwargs):
+    def __init__(self, image=None, verbosity=None, **kwargs):
         super().__init__(**kwargs)
 
         self.image = image
+
+        if verbosity is not None:
+            self.verbosity = verbosity
 
     # endregion
 
@@ -53,6 +61,7 @@ class ImageSubtitleDataset(SubtitleDataset):
       - [x] Read times and locations
       - [ ] Store times and locations in hdf5 or text
       - [ ] Store images in hdf5
+      - [ ] Document
     """
 
     # region Instance Variables
@@ -75,6 +84,9 @@ class ImageSubtitleDataset(SubtitleDataset):
         self.infile = "/Users/kdebiec/Dropbox/code/subtitles/" \
                       "magnificent_mcdull/original/" \
                       "Magnificent Mcdull.3.zho.sup"
+        self.outfile = "/Users/kdebiec/Dropbox/code/subtitles/" \
+                       "magnificent_mcdull/" \
+                       "mcdull.h5"
 
     def __call__(self):
         """Core logic"""
@@ -84,8 +96,8 @@ class ImageSubtitleDataset(SubtitleDataset):
             self.read()
 
         # Output
-        # if self.outfile is not None:
-        #     self.write()
+        if self.outfile is not None:
+            self.write()
 
         # Present IPython prompt
         if self.interactive:
@@ -104,7 +116,7 @@ class ImageSubtitleDataset(SubtitleDataset):
         segment_kinds = {0x14: "PDS", 0x15: "ODS", 0x16: "PCS",
                          0x17: "WDS", 0x80: "END"}
 
-        # Select infile
+        # Process arguments
         if infile is not None:
             infile = expandvars(infile)
         elif self.infile is not None:

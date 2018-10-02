@@ -22,6 +22,7 @@ class HDF5Format(FormatBase):
     TODO:
       - [x] Save to hdf5
       - [x] Load from hdf5
+      - [ ] Document
     """
 
     @classmethod
@@ -165,8 +166,9 @@ class SubtitleSeries(SSAFile, Base):
       - [x] Load from hdf5
       - [x] Print with class name of SubtitleSeries
       - [x] Print with actual live class name (will then work for subclasses)
-      - [ ] Print as a table
-      - [ ] Add verbosity argument to __init__
+      - [x] Add verbosity argument to __init__
+      - [ ] Print as a pandas table
+      - [ ] Document
     """
 
     # region Builtins
@@ -373,6 +375,7 @@ class SubtitleDataset(CLToolBase):
     def read(self, infile=None):
         from os.path import expandvars
 
+        # Process arguments
         if infile is not None:
             infile = expandvars(infile)
         elif self.infile is not None:
@@ -380,6 +383,7 @@ class SubtitleDataset(CLToolBase):
         else:
             raise ValueError()
 
+        # Load infile
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
         self.subtitles = SubtitleSeries.load(infile)
