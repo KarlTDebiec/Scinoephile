@@ -141,7 +141,8 @@ class HDF5Format(FormatBase):
                         *(field_to_string(field, style).encode("utf8")
                           for field in STYLE_FIELDS["ass"]))]
         styles = np.array(styles, dtype=dtypes)
-        fp.create_dataset("styles", data=styles, dtype=dtypes)
+        fp.create_dataset("styles", data=styles, dtype=dtypes, chunks=True,
+                          compression="gzip")
 
         # Save subtitles
         if "events" in fp:
@@ -154,7 +155,18 @@ class HDF5Format(FormatBase):
                         *(field_to_string(field, event).encode("utf8")
                           for field in EVENT_FIELDS["ass"]))]
         events = np.array(events, dtype=dtypes)
-        fp.create_dataset("events", data=events, dtype=dtypes)
+        fp.create_dataset("events", data=events, dtype=dtypes, chunks=True,
+                          compression="gzip")
+
+        # Save images
+        if "images" in fp:
+            del fp["images"]
+        fp.create_group("images")
+        for i, event in enumerate(subs.events):
+            if hasattr(event, "image"):
+                fp["images"].create_dataset(f"{i:04d}", data=event.image,
+                                            dtype=np.int8, chunks=True,
+                                            compression="gzip")
 
 
 class SubtitleSeries(SSAFile, Base):

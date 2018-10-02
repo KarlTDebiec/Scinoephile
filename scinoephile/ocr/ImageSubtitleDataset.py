@@ -23,7 +23,7 @@ class ImageSubtitleSeries(SubtitleSeries):
 
     def save(self, path, format_=None, **kwargs):
         """
-        Only makes sense to save to hdf5
+        Warn that data will be lost if not saved to hdf5
         """
 
         # Check if hdf5
@@ -50,6 +50,7 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     TODO:
       - [ ] Determine if image should be a property
+      - [ ] Document
     """
 
     # region Builtins
@@ -213,7 +214,7 @@ class ImageSubtitleDataset(SubtitleDataset):
                       f"{content_offset:>9d} ")
 
             byte_offset += 13 + content_size
-            if byte_offset >= 100000:  # >= len(sup_bytes):
+            if byte_offset >= len(sup_bytes):  # >= 100000:
                 break
 
         self.subtitles = ImageSubtitleSeries(verbosity=self.verbosity)
