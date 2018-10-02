@@ -13,20 +13,20 @@ class Base(object):
 
     # region Builtins
 
-    def __init__(self, verbosity=1, **kwargs):
+    def __init__(self, verbosity=None, **kwargs):
         """
-        Initializes tool
+        Initializes class
 
         Args:
             verbosity (int): Level of verbose output
-            interactive (bool): Show IPython prompt
-            kwargs (dict): Additional keyword arguments
         """
-        self.verbosity = verbosity
+        if verbosity is not None:
+            self.verbosity = verbosity
 
     # endregion
 
     # region Properties
+
     @property
     def embed_kw(self):
         """dict: Use 'IPython.embed(**self.embed_kw)' for more useful prompt"""
@@ -107,7 +107,7 @@ class CLToolBase(Base):
 
     # region Builtins
 
-    def __init__(self, interactive=False, **kwargs):
+    def __init__(self, interactive=None, **kwargs):
         """
         Initializes tool
 
@@ -117,14 +117,15 @@ class CLToolBase(Base):
         """
         super().__init__(**kwargs)
 
-        self.interactive = interactive
+        if interactive is not None:
+            self.interactive = interactive
 
     def __call__(self):
         """ Core logic """
 
-        if isinstance(self, CLToolBase):
-            raise NotImplementedError("scinoephile.CLToolBase class is not to "
-                                      "be used directly")
+        if self.__class__.__name__ == "CLToolBase":
+            raise NotImplementedError(f"{self.__class__.__name__} is not to "
+                                      "be called directly")
         else:
             raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
                                       "method has not been implemented")
@@ -193,7 +194,7 @@ class CLToolBase(Base):
 
     @classmethod
     def main(cls):
-        """ Parses and validates arguments, constructs and calls object """
+        """Parses and validates arguments, constructs and calls object"""
 
         parser = cls.construct_argparser()
         args = parser.parse_args()
@@ -202,5 +203,7 @@ class CLToolBase(Base):
 
 
 ################################### MODULES ###################################
-from scinoephile.SubtitleDataset import (HDF5Format, SubtitleDataset,
-                                         SubtitleSeries, SubtitleEvent)
+from scinoephile.HDF5Format import HDF5Format
+from scinoephile.SubtitleDataset import SubtitleDataset
+from scinoephile.SubtitleEvent import SubtitleEvent
+from scinoephile.SubtitleSeries import SubtitleSeries

@@ -304,6 +304,10 @@ class OCRCLToolBase(CLToolBase, OCRBase):
 
 
 ################################### MODULES ###################################
+from scinoephile.ocr.ImageSubtitleDataset import ImageSubtitleDataset
+from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
+from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
+from scinoephile.ocr.SUPFormat import SUPFormat
 from scinoephile.ocr.OCRDataset import OCRDataset
 from scinoephile.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
 from scinoephile.ocr.LabeledOCRDataset import LabeledOCRDataset
