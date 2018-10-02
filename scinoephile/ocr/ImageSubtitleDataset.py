@@ -14,7 +14,34 @@ from IPython import embed
 
 ################################### CLASSES ###################################
 class ImageSubtitleSeries(SubtitleSeries):
-    pass
+    """
+    Subtitle series that includes images
+
+    TODO:
+      - [ ] Document
+    """
+
+    def save(self, path, format_=None, **kwargs):
+        """
+        Only makes sense to save to hdf5
+        """
+
+        # Check if hdf5
+        if (format_ == "hdf5" or path.endswith(".hdf5")
+                or path.endswith(".h5")):
+            import h5py
+            from scinoephile import HDF5Format
+
+            with h5py.File(path) as fp:
+                HDF5Format.to_file(self, fp, format_=format_, **kwargs)
+        # Otherwise, continue as superclass SSAFile
+        else:
+            from warnings import warn
+            from pysubs2 import SSAFile
+
+            warn(f"{self.__class__.__name__}'s image data may only be saved "
+                 f"to hdf5")
+            SSAFile.save(self, path, format_=format_, **kwargs)
 
 
 class ImageSubtitleEvent(SubtitleEvent):
@@ -108,6 +135,10 @@ class ImageSubtitleDataset(SubtitleDataset):
     # region Public methods
 
     def read(self, infile=None):
+        """
+        TODO:
+          - [ ] Support reading from hdf5
+        """
         import numpy as np
         from pysubs2.time import make_time
         from os.path import expandvars
@@ -182,10 +213,8 @@ class ImageSubtitleDataset(SubtitleDataset):
                       f"{content_offset:>9d} ")
 
             byte_offset += 13 + content_size
-            if byte_offset >= len(sup_bytes):
+            if byte_offset >= 100000:  # >= len(sup_bytes):
                 break
-
-        embed(**self.embed_kw)
 
         self.subtitles = ImageSubtitleSeries(verbosity=self.verbosity)
         self.subtitles.events = events

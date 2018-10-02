@@ -202,5 +202,5 @@ class CLToolBase(Base):
 
 
 ################################### MODULES ###################################
-from scinoephile.SubtitleDataset import (SubtitleDataset, SubtitleSeries,
-                                         SubtitleEvent)
+from scinoephile.SubtitleDataset import (HDF5Format, SubtitleDataset,
+                                         SubtitleSeries, SubtitleEvent)

@@ -198,6 +198,7 @@ class SubtitleSeries(SSAFile, Base):
         """
         SSAFile.save expects an open text file, so we open hdf5 here
         """
+
         # Check if hdf5
         if (format_ == "hdf5" or path.endswith(".hdf5")
                 or path.endswith(".h5")):
@@ -392,6 +393,7 @@ class SubtitleDataset(CLToolBase):
     def write(self, outfile=None):
         from os.path import expandvars
 
+        # Process argments
         if outfile is not None:
             outfile = expandvars(outfile)
         elif self.outfile is not None:
@@ -399,9 +401,9 @@ class SubtitleDataset(CLToolBase):
         else:
             raise ValueError()
 
+        # Write outfile
         if self.verbosity >= 1:
             print(f"Writing subtitles to '{outfile}'")
-
         self.subtitles.save(outfile)
 
     # endregion
