@@ -17,6 +17,8 @@ from pysubs2.formatbase import FormatBase
 ################################### CLASSES ###################################
 class HDF5Format(FormatBase):
     """
+    Subtitle format for hdf5
+
     TODO:
       - [x] Save to hdf5
       - [x] Load from hdf5
@@ -156,6 +158,8 @@ class HDF5Format(FormatBase):
 
 class SubtitleSeries(SSAFile, Base):
     """
+    Extension of pysubs2's SSAFile with additional features
+
     TODO:
       - [x] Save to hdf5
       - [x] Load from hdf5
@@ -166,6 +170,12 @@ class SubtitleSeries(SSAFile, Base):
     """
 
     # region Builtins
+
+    def __init__(self, verbosity=None):
+        super().__init__()
+
+        if verbosity is not None:
+            self.verbosity = verbosity
 
     def __repr__(self):
         if self.events:
@@ -186,7 +196,7 @@ class SubtitleSeries(SSAFile, Base):
         """
         SSAFile.save expects an open text file, so we open hdf5 here
         """
-        # CHeck if hdf5
+        # Check if hdf5
         if (format_ == "hdf5" or path.endswith(".hdf5")
                 or path.endswith(".h5")):
             import h5py
@@ -224,22 +234,26 @@ class SubtitleSeries(SSAFile, Base):
     # endregion
 
 
-class Subtitle(SSAEvent, Base):
-    pass
+class SubtitleEvent(SSAEvent, Base):
+    """
+    Extension of pysubs2's SSAEvent with additional features
+    """
+
+    def __repr__(self):
+        from pysubs2.time import ms_to_str
+
+        return f"<{self.__class__.__name__} " \
+               f"type={self.type} " \
+               f"start={ms_to_str(self.start)} " \
+               f"end={ms_to_str(self.end)} " \
+               f"text='{self.text}'>"
 
 
 class SubtitleDataset(CLToolBase):
     """
     Represents a collection of subtitles
 
-    Todo:
-      - [x] Read from SRT
-      - [x] Write to SRT
-      - [ ] Write to hdf5
-      - [ ] Read from hdf5
-      - [ ] Write to pandas
-      - [ ] Read from pandas
-      - [ ] Read from VTT
+    TODO:
       - [ ] Document
     """
 
@@ -280,7 +294,6 @@ class SubtitleDataset(CLToolBase):
         # Output
         if self.outfile is not None:
             self.write()
-            self.read(self.outfile)
 
         # Present IPython prompt
         if self.interactive:
