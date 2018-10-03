@@ -24,10 +24,9 @@ class OCRDataset(OCRCLToolBase):
         256 -> 11
 
     Todo:
-      - [x] Support writing hdf5 and images to specified paths
-      - [ ] Support reading hdf5 and images from specified paths
-      - [ ] Document
+      - [ ] Clean up and refactor
       - [ ] Implement other image data types (8 bit and 1 bit)
+      - [ ] Document
     """
 
     # region Instance Variables

@@ -18,7 +18,6 @@ class SUPFormat(FormatBase):
     Subtitle format for Blu-Ray SUP
 
     TODO:
-      - [ ] Load from SUP
       - [ ] Document
     """
 

@@ -18,8 +18,8 @@ class LabeledOCRDataset(OCRDataset):
     Represents a collection of labeled character images
 
     Todo:
-      - [ ] Document
       - [ ] Don't allow 'path' to be set to NaN
+      - [ ] Document
     """
 
     # region Instance Variables

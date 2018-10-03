@@ -18,11 +18,8 @@ class CharacterExtractor(CLToolBase):
     """
     Extracts individual characters from image-based subtitles
 
-    Todo:
-      - [ ] Refactor with new dataset classes
-      - [ ] Add threshold as a property and CL argument
-      - [ ] Split off methods from __call__
-      - [ ] Improve support for punctuation and western characters
+    TODO:
+      - [ ] Move functionality to ImageSubtitleDataset and related classes
     """
 
     # region Instance Variables

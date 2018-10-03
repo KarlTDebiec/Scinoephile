@@ -18,7 +18,8 @@ class ImageSubtitleEvent(SubtitleEvent):
     Subtitle event that includes an image
 
     TODO:
-      - [ ] Determine if image should be a property
+      - [ ] Move over code for splitting subtitle into separate characters
+      - [ ] Decide if image should be a property
       - [ ] Document
     """
 

@@ -18,12 +18,6 @@ class ImageSubtitleDataset(SubtitleDataset):
     Extracts individual characters from image-based subtitles
 
     TODO:
-      - [x] Open SUP file and loop over bytes
-      - [x] Read images
-      - [x] Read and apply image palettes
-      - [x] Read times and locations
-      - [ ] Store times and locations in hdf5 or text
-      - [ ] Store images in hdf5
       - [ ] Think about using a metaclass
       - [ ] Document
     """

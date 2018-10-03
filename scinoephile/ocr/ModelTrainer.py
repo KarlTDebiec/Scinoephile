@@ -17,11 +17,9 @@ class ModelTrainer(OCRCLToolBase):
     """
     Trains model
 
-    Todo:
-      - CL arguments
-      - Support for western characters and punctuation
-      - Look into whether or not more data can be stored in hdf5 with model
-      - Decide whether or not to move load_labeled_data out of class
+    TODO:
+      - [ ] Confirm all functionality has been ported to AutoTrainer, then
+            remove
     """
 
     # region Instance Variables

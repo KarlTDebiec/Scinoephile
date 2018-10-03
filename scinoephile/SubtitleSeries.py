@@ -19,11 +19,6 @@ class SubtitleSeries(SSAFile, Base):
     Extension of pysubs2's SSAFile with additional features
 
     TODO:
-      - [x] Save to hdf5
-      - [x] Load from hdf5
-      - [x] Print with class name of SubtitleSeries
-      - [x] Print with actual live class name (will then work for subclasses)
-      - [x] Add verbosity argument to __init__
       - [ ] Print as a pandas table
       - [ ] Document
     """

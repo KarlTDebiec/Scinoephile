@@ -18,8 +18,8 @@ class HDF5Format(FormatBase):
     Subtitle format for hdf5
 
     TODO:
-      - [x] Save to hdf5
-      - [x] Load from hdf5
+      - [ ] Save individual characters
+      - [ ] Load individual characters
       - [ ] Consider if separating image output to a subclass makes sense
       - [ ] Document
     """
@@ -30,10 +30,6 @@ class HDF5Format(FormatBase):
     def from_file(cls, subs, fp, **kwargs):
         """
         TODO:
-          - [x] Load info
-          - [x] Load styles
-          - [x] Load events
-          - [x] Clean up
           - [ ] Load project info
           - [ ] Support verbosity
         """
@@ -110,10 +106,6 @@ class HDF5Format(FormatBase):
     def to_file(cls, subs, fp, format_, **kwargs):
         """
         TODO:
-          - [x] Save info
-          - [x] Save styles
-          - [x] Save events
-          - [x] Clean up
           - [ ] Save project info
         """
         from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
