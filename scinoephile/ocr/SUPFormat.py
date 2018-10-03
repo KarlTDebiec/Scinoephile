@@ -24,7 +24,7 @@ class SUPFormat(FormatBase):
     # region Public Class Methods
 
     @classmethod
-    def from_file(cls, subs, fp, **kwargs):
+    def from_file(cls, subs, fp, verbosity=1, **kwargs):
         """
         TODO:
           - [ ] Support verbosity
@@ -37,8 +37,6 @@ class SUPFormat(FormatBase):
         segment_kinds = {0x14: "PDS", 0x15: "ODS", 0x16: "PCS",
                          0x17: "WDS", 0x80: "END"}
         # Load infile
-        # if self.verbosity >= 1:
-        #     print(f"Reading subtitles from '{path}'")
         sup_bytes = fp.read()
 
         # Parse infile
@@ -48,8 +46,8 @@ class SUPFormat(FormatBase):
         image = None
         palette = None
         compressed_image = None
-        # if self.verbosity >= 2:
-        #     print(f"KIND   :     START      TIME      SIZE    OFFSET")
+        if verbosity >= 2:
+            print(f"KIND   :     START      TIME      SIZE    OFFSET")
         while True:
             if bytes2int(sup_bytes[byte_offset:byte_offset + 2]) != 0x5047:
                 raise ValueError()
@@ -84,13 +82,13 @@ class SUPFormat(FormatBase):
                     palette = None
                     compressed_image = None
 
-            # if self.verbosity >= 2:
-            #     print(f"{segment_kinds.get(segment_kind, 'UNKNOWN'):<8s} "
-            #           f"{hex(segment_kind)}: "
-            #           f"{header_offset:>9d} "
-            #           f"{timestamp:>9d} "
-            #           f"{content_size:>9d} "
-            #           f"{content_offset:>9d} ")
+            if verbosity >= 2:
+                print(f"{segment_kinds.get(segment_kind, 'UNKNOWN'):<8s} "
+                      f"{hex(segment_kind)}: "
+                      f"{header_offset:>9d} "
+                      f"{timestamp:>9d} "
+                      f"{content_size:>9d} "
+                      f"{content_offset:>9d} ")
 
             byte_offset += 13 + content_size
             if byte_offset >= len(sup_bytes):  # >= 100000:

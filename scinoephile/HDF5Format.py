@@ -27,7 +27,7 @@ class HDF5Format(FormatBase):
     # region Public Class Methods
 
     @classmethod
-    def from_file(cls, subs, fp, **kwargs):
+    def from_file(cls, subs, fp, verbosity=1, **kwargs):
         """
         TODO:
           - [ ] Load project info
@@ -103,7 +103,7 @@ class HDF5Format(FormatBase):
         return subs
 
     @classmethod
-    def to_file(cls, subs, fp, format_, **kwargs):
+    def to_file(cls, subs, fp, format_, verbosity=1, **kwargs):
         """
         TODO:
           - [ ] Save project info

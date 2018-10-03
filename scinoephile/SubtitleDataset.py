@@ -167,7 +167,8 @@ class SubtitleDataset(CLToolBase):
         # Load infile
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
-        self.subtitles = self._series_class.load(infile)
+        self.subtitles = self._series_class.load(infile,
+                                                 verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 
     def write(self, outfile=None):

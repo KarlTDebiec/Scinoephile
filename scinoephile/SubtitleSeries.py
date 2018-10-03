@@ -57,10 +57,15 @@ class SubtitleSeries(SSAFile, Base):
             import h5py
             from scinoephile import HDF5Format
 
+            if self.verbosity >= 1:
+                print(f"Saving to '{path}' as hdf5")
             with h5py.File(path) as fp:
-                HDF5Format.to_file(self, fp, format_=format_, **kwargs)
+                HDF5Format.to_file(self, fp, format_=format_,
+                                   verbosity=self.verbosity, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
+            if self.verbosity >= 1:
+                print(f"Saving to '{path}'")
             SSAFile.save(self, path, format_=format_, **kwargs)
 
     # endregion
@@ -68,7 +73,7 @@ class SubtitleSeries(SSAFile, Base):
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", **kwargs):
+    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
         """
         SSAFile.from_file expects an open text file, so we open hdf5 here
         """
@@ -79,12 +84,17 @@ class SubtitleSeries(SSAFile, Base):
             import h5py
             from scinoephile import HDF5Format
 
+            if verbosity >= 1:
+                print(f"Loading from '{path}' as hdf5")
             with h5py.File(path) as fp:
                 subs = cls()
                 subs.format = "hdf5"
-                return HDF5Format.from_file(subs, fp, **kwargs)
+                return HDF5Format.from_file(subs, fp,
+                                            verbosity=verbosity, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
+            if verbosity >= 1:
+                print(f"Loading from '{path}'")
             with open(path, encoding=encoding) as fp:
                 return cls.from_file(fp, **kwargs)
 

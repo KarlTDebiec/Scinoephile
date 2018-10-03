@@ -45,8 +45,8 @@ class ImageSubtitleDataset(SubtitleDataset):
         self.outfile = "/Users/kdebiec/Dropbox/code/subtitles/" \
                        "magnificent_mcdull/" \
                        "mcdull.h5"
-        self.infile = self.outfile
-        self.outfile = None
+        # self.infile = self.outfile
+        # self.outfile = None
 
     # endregion
 

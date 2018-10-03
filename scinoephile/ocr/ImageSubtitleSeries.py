@@ -35,7 +35,8 @@ class ImageSubtitleSeries(SubtitleSeries):
             from scinoephile import HDF5Format
 
             with h5py.File(path) as fp:
-                HDF5Format.to_file(self, fp, format_=format_, **kwargs)
+                HDF5Format.to_file(self, fp, format_=format_,
+                                   verbosity=self.verbosity, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
             from warnings import warn
@@ -50,7 +51,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", **kwargs):
+    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
         """
         SSAFile.from_file expects an open text file, so we open hdf5 here
         """
@@ -61,20 +62,28 @@ class ImageSubtitleSeries(SubtitleSeries):
             import h5py
             from scinoephile import HDF5Format
 
+            if verbosity >= 1:
+                print(f"Loading from '{path}' as hdf5")
             with h5py.File(path) as fp:
                 subs = cls()
                 subs.format = "hdf5"
-                return HDF5Format.from_file(subs, fp, **kwargs)
+                return HDF5Format.from_file(subs, fp,
+                                            verbosity=verbosity, **kwargs)
         # Check if sup
         if encoding == "sup" or path.endswith("sup"):
             from scinoephile.ocr import SUPFormat
 
+            if verbosity >= 1:
+                print(f"Loading from '{path}' as sup")
             with open(path, "rb") as fp:
                 subs = cls()
                 subs.format = "sup"
-                return SUPFormat.from_file(subs, fp, **kwargs)
+                return SUPFormat.from_file(subs, fp, verbosity=verbosity,
+                                           **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
+            if verbosity >= 1:
+                print(f"Loading from '{path}'")
             with open(path, encoding=encoding) as fp:
                 return cls.from_file(fp, **kwargs)
 
