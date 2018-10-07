@@ -44,7 +44,6 @@ class ImageSubtitleEvent(SubtitleEvent):
         if not hasattr(self, "_char_bounds"):
             import numpy as np
 
-            # Works for both 8 bit and 1 bit
             white_cols = (self.imagedata == self.imagedata.max()).all(axis=0)
             diff = np.diff(np.array(white_cols, np.int))
             # Get starts of chars, ends of chars, first nonwhite, last nonwhite
@@ -71,19 +70,20 @@ class ImageSubtitleEvent(SubtitleEvent):
             import numpy as np
 
             if self.image_mode == "8 bit":
-                raise NotImplementedError()
+                chars = np.ones((self.char_bounds.shape[0], 80, 80),
+                                np.uint8) * 255
             elif self.image_mode == "1 bit":
                 chars = np.ones((self.char_bounds.shape[0], 80, 80),
                                 np.bool)
-                for i, (x1, x2) in enumerate(self.char_bounds):
-                    char = self.imagedata[:, x1:x2 + 1]
-                    white_rows = (char == char.max()).all(axis=1)
-                    char = char[np.argmin(white_rows):
-                                white_rows.size - np.argmin(white_rows[::-1])]
-                    x = int(np.floor((80 - char.shape[1]) / 2))
-                    y = int(np.floor((80 - char.shape[0]) / 2))
-                    chars[i, y:y + char.shape[0], x:x + char.shape[1]] = char
-                self._char_imagedata = chars
+            for i, (x1, x2) in enumerate(self.char_bounds):
+                char = self.imagedata[:, x1:x2 + 1]
+                white_rows = (char == char.max()).all(axis=1)
+                char = char[np.argmin(white_rows):
+                            white_rows.size - np.argmin(white_rows[::-1])]
+                x = int(np.floor((80 - char.shape[1]) / 2))
+                y = int(np.floor((80 - char.shape[0]) / 2))
+                chars[i, y:y + char.shape[0], x:x + char.shape[1]] = char
+            self._char_imagedata = chars
         return self._char_imagedata
 
     @property
