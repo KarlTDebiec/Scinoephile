@@ -44,29 +44,46 @@ class ImageSubtitleEvent(SubtitleEvent):
         if not hasattr(self, "_char_bounds"):
             import numpy as np
 
+            # Works for both 8 bit and 1 bit
             white_cols = (self.imagedata == self.imagedata.max()).all(axis=0)
             diff = np.diff(np.array(white_cols, np.int))
-            # starts of chars, ends of chars, first nonwhite, last nonwhite
+            # Get starts of chars, ends of chars, first nonwhite, last nonwhite
             bounds = np.unique(((np.where(diff == -1)[0] + 1).tolist()
                                 + np.where(diff == 1)[0].tolist()
                                 + [np.argmin(white_cols)]
                                 + [white_cols.size - 1
                                    - np.argmin(white_cols[::-1])]))
             bounds = bounds.reshape((-1, 2))
-
             self._char_bounds = bounds
         return self._char_bounds
 
     @property
     def char_widths(self):
         """str: Images of individual characters """
-        return self.char_bounds[:, 1] - self.char_bounds[:, 0]
+        if not hasattr(self, "_char_widths"):
+            self._char_widths = self.char_bounds[:, 1] - self.char_bounds[:, 0]
+        return self._char_widths
 
     @property
     def char_imagedata(self):
         """str: Images of individual characters """
         if not hasattr(self, "_char_imagedata"):
-            self._char_imagedata = None
+            import numpy as np
+
+            if self.image_mode == "8 bit":
+                raise NotImplementedError()
+            elif self.image_mode == "1 bit":
+                chars = np.ones((self.char_bounds.shape[0], 80, 80),
+                                np.bool)
+                for i, (x1, x2) in enumerate(self.char_bounds):
+                    char = self.imagedata[:, x1:x2 + 1]
+                    white_rows = (char == char.max()).all(axis=1)
+                    char = char[np.argmin(white_rows):
+                                white_rows.size - np.argmin(white_rows[::-1])]
+                    x = int(np.floor((80 - char.shape[1]) / 2))
+                    y = int(np.floor((80 - char.shape[0]) / 2))
+                    chars[i, y:y + char.shape[0], x:x + char.shape[1]] = char
+                self._char_imagedata = chars
         return self._char_imagedata
 
     @property
@@ -133,9 +150,9 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     # region Public Methods
 
-    def show(self, char_bounds=False):
+    def show(self):
         import numpy as np
-        from PIL import Image, ImageDraw
+        from PIL import Image
 
         if self.imagedata is not None:
             if self.image_mode == "8 bit":
@@ -143,10 +160,6 @@ class ImageSubtitleEvent(SubtitleEvent):
             elif self.image_mode == "1 bit":
                 image = Image.fromarray(self.imagedata.astype(np.uint8) * 255,
                                         mode="L").convert("1")
-            if char_bounds:
-                draw = ImageDraw.Draw(image)
-                for bound in self.char_bounds:
-                    draw.line((bound, 0, bound, image.size[1]), fill=0, width=2)
             image.show()
         else:
             raise ValueError()
