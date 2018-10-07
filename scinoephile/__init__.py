@@ -144,7 +144,10 @@ class CLToolBase(Base):
     @interactive.setter
     def interactive(self, value):
         if not isinstance(value, bool):
-            raise ValueError(self._generate_setter_exception(value))
+            try:
+                value = bool(value)
+            except Exception:
+                raise ValueError(self._generate_setter_exception(value))
         self._interactive = value
 
     # endregion Properties

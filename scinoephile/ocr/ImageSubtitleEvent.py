@@ -18,8 +18,6 @@ class ImageSubtitleEvent(SubtitleEvent):
     Subtitle event that includes an image
 
     TODO:
-      - [ ] Move over code for splitting subtitle into separate characters
-      - [ ] Determine if this needs an image_mode property
       - [ ] Document
     """
 
@@ -143,6 +141,7 @@ class ImageSubtitleEvent(SubtitleEvent):
                     value = np.array(white_bg.convert("1", dither=0))
             else:
                 raise ValueError(self._generate_setter_exception(value))
+        # TODO: If changed, clear cached properties
 
         self._imagedata = value
 

@@ -19,7 +19,6 @@ class ImageSubtitleSeries(SubtitleSeries):
     Subtitle series that includes images
 
     TODO:
-      - [ ] Determine if this needs an image_mode property
       - [ ] Document
     """
 
@@ -63,7 +62,7 @@ class ImageSubtitleSeries(SubtitleSeries):
                 pass
             else:
                 raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, change on all events
+        # TODO: If changed, change on events
 
         self._image_mode = value
 
@@ -105,7 +104,8 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
+    def load(cls, path, encoding="utf-8", image_mode=None, verbosity=1,
+             **kwargs):
         """
         SSAFile.from_file expects an open text file, so we open hdf5 here
         """
@@ -116,11 +116,13 @@ class ImageSubtitleSeries(SubtitleSeries):
             import h5py
 
             with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
+                return cls._load_hdf5(fp, image_mode=image_mode,
+                                      verbosity=verbosity, **kwargs)
         # Check if sup
         if encoding == "sup" or path.endswith("sup"):
             with open(path, "rb") as fp:
-                return cls._load_sup(fp, verbosity=verbosity, **kwargs)
+                return cls._load_sup(fp, image_mode=image_mode,
+                                     verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
             with open(path, encoding=encoding) as fp:
@@ -133,7 +135,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Private Methods
 
     @classmethod
-    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
+    def _load_hdf5(cls, fp, image_mode=None, verbosity=1, **kwargs):
         """
         Loads subtitles from an hdf5 file into a nascent SubtitleSeries
 
@@ -147,12 +149,15 @@ class ImageSubtitleSeries(SubtitleSeries):
 
         # Load images
         if "images" in fp and "events" in fp:
-            subs.image_mode = image_mode = fp["images"].attrs["image_mode"]
+            subs.image_mode = fp["images"].attrs["image_mode"]
+            if image_mode is not None and subs.image_mode != image_mode:
+                raise ValueError()
+
             for i, event in enumerate(subs.events):
                 event.image_mode = subs.image_mode
-                if image_mode == "8 bit":
+                if subs.image_mode == "8 bit":
                     event.imagedata = np.array(fp["images"][f"{i:04d}"], np.uint8)
-                elif image_mode == "1 bit":
+                elif subs.image_mode == "1 bit":
                     event.imagedata = np.array(fp["images"][f"{i:04d}"], np.bool)
 
         return subs

@@ -37,17 +37,6 @@ class ImageSubtitleDataset(SubtitleDataset):
         if image_mode is not None:
             self.image_mode = image_mode
 
-        # Temporary manual configuration for testing
-        self.infile = "/Users/kdebiec/Dropbox/code/subtitles/" \
-                      "magnificent_mcdull/original/" \
-                      "Magnificent Mcdull.3.zho.sup"
-        self.outfile = "/Users/kdebiec/Dropbox/code/subtitles/" \
-                       "magnificent_mcdull/" \
-                       "mcdull.h5"
-        self.image_mode = "1 bit"
-        self.infile = self.outfile
-        self.outfile = None
-
     # endregion
 
     # region Public Properties

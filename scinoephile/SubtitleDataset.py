@@ -52,16 +52,6 @@ class SubtitleDataset(CLToolBase):
         if outfile is not None:
             self.outfile = outfile
 
-        # Temporary manual configuration for testing
-        self.infile = \
-            "/Users/kdebiec/Dropbox/code/subtitles/" \
-            "youth/" \
-            "Youth.en-US.srt"
-        self.outfile = \
-            "/Users/kdebiec/Dropbox/code/subtitles/" \
-            "youth/" \
-            "youth.hdf5"
-
     def __call__(self):
         """ Core logic """
 

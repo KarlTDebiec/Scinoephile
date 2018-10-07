@@ -15,13 +15,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class OCRDataset(OCRCLToolBase):
     """
-    Represents a collection of character images
-
-    8bit grayscale to 2bit grayscale:
-        0 -> 00
-        85 -> 01
-        170 -> 10
-        256 -> 11
+    Collection of character images
 
     Todo:
       - [ ] Clean up and refactor
