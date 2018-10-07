@@ -75,21 +75,14 @@ class ImageSubtitleSeries(SubtitleSeries):
                 or path.endswith(".h5")):
             import h5py
 
-            if verbosity >= 1:
-                print(f"Loading from '{path}' as hdf5")
             with h5py.File(path) as fp:
                 return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Check if sup
         if encoding == "sup" or path.endswith("sup"):
-
-            if verbosity >= 1:
-                print(f"Loading from '{path}' as sup")
             with open(path, "rb") as fp:
                 return cls._load_sup(fp, verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
-            if verbosity >= 1:
-                print(f"Loading from '{path}'")
             with open(path, encoding=encoding) as fp:
                 subs = cls.from_file(fp, **kwargs)
                 subs.verbosity = verbosity
@@ -110,7 +103,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         import numpy as np
 
         # Load info, styles, and events
-        subs = SubtitleSeries._load_hdf5(fp, verbosity, **kwargs)
+        subs = super()._load_hdf5(fp, verbosity, **kwargs)
 
         # Load images
         if "images" in fp and "events" in fp:

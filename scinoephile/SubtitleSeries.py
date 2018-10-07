@@ -70,14 +70,10 @@ class SubtitleSeries(SSAFile, Base):
                 or path.endswith(".h5")):
             import h5py
 
-            if self.verbosity >= 1:
-                print(f"Saving to '{path}' as hdf5")
             with h5py.File(path) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            if self.verbosity >= 1:
-                print(f"Saving to '{path}'")
             SSAFile.save(self, path, format_=format_, **kwargs)
 
     # endregion
@@ -165,14 +161,10 @@ class SubtitleSeries(SSAFile, Base):
                 or path.endswith(".h5")):
             import h5py
 
-            if verbosity >= 1:
-                print(f"Loading from '{path}' as hdf5")
             with h5py.File(path) as fp:
                 return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
-            if verbosity >= 1:
-                print(f"Loading from '{path}'")
             with open(path, encoding=encoding) as fp:
                 subs = cls.from_file(fp, **kwargs)
                 subs.verbosity = verbosity
