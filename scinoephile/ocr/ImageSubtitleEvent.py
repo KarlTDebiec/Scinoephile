@@ -40,20 +40,27 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     @property
     def char_bounds(self):
-        """str: Images of individual characters """
+        """array(int): Boundaries of individual characters """
         if not hasattr(self, "_char_bounds"):
-            self._char_bounds = None
-        return self._char_bounds
-
-    @char_bounds.setter
-    def char_bounds(self, value):
-        if value is not None:
             import numpy as np
 
-            if not isinstance(value, list):
-                raise ValueError(self._generate_setter_exception(value))
+            white_cols = (self.imagedata == self.imagedata.max()).all(axis=0)
+            diff = np.diff(np.array(white_cols, np.int))
+            # starts of chars, ends of chars, first nonwhite, last nonwhite
+            bounds = np.unique(((np.where(diff == -1)[0] + 1).tolist()
+                                + np.where(diff == 1)[0].tolist()
+                                + [np.argmin(white_cols)]
+                                + [white_cols.size - 1
+                                   - np.argmin(white_cols[::-1])]))
+            bounds = bounds.reshape((-1, 2))
 
-        self._char_bounds = value
+            self._char_bounds = bounds
+        return self._char_bounds
+
+    @property
+    def char_widths(self):
+        """str: Images of individual characters """
+        return self.char_bounds[:, 1] - self.char_bounds[:, 0]
 
     @property
     def char_imagedata(self):
@@ -61,16 +68,6 @@ class ImageSubtitleEvent(SubtitleEvent):
         if not hasattr(self, "_char_imagedata"):
             self._char_imagedata = None
         return self._char_imagedata
-
-    @char_imagedata.setter
-    def char_imagedata(self, value):
-        if value is not None:
-            import numpy as np
-
-            if not isinstance(value, list):
-                raise ValueError(self._generate_setter_exception(value))
-
-        self._char_imagedata = value
 
     @property
     def image_mode(self):
@@ -148,90 +145,10 @@ class ImageSubtitleEvent(SubtitleEvent):
                                         mode="L").convert("1")
             if char_bounds:
                 draw = ImageDraw.Draw(image)
-                for bound in self.char_bounds[1:]:
+                for bound in self.char_bounds:
                     draw.line((bound, 0, bound, image.size[1]), fill=0, width=2)
             image.show()
         else:
             raise ValueError()
-
-    # endregion
-
-    # region Private Methods
-
-    def _find_char_bounds(self):
-        import numpy as np
-
-        threshold = 0.04
-        if self.imagedata is None:
-            return
-
-        # Identify blank columns containing only white pixels
-        nonwhite_pixels_in_column = (
-                self.imagedata < self.imagedata.max()).sum(axis=0)
-        blank_columns = np.where(nonwhite_pixels_in_column == 0)[0]
-        if len(blank_columns) == 0:
-            if self.verbosity >= 1:
-                print("Whitespace between characters not found")
-            # return
-
-        embed(**self.embed_kw)
-
-        # Identify boundaries between characters
-        char_bounds = np.array([0])
-        char_width = 75
-
-        # Loop over characters in subtitle
-        while True:
-            # Estimate location of next boundary between characters
-            next_bound = char_bounds[-1] + char_width
-            if next_bound >= self.imagedata.size[0] - (char_width / 2):
-                break
-
-            # Identify blank columns closest to estimated boundary
-            delta = np.abs(blank_columns - next_bound) / next_bound
-            try:
-                close = np.where(delta < threshold)[0]
-                if close.size == 0:
-                    close = np.where(delta < threshold * 2)[0]
-                if close.size == 0:
-                    close = np.where(delta < threshold * 3)[0]
-                if close.size == 0:
-                    # Look for half-width characters
-                    next_bound -= 37
-                    delta = np.abs(blank_columns - next_bound
-                                   ) / next_bound
-                    close = np.where(delta < threshold)[0]
-                    if close.size == 0:
-                        close = np.where(delta < threshold * 2)[0]
-                    if close.size == 0:
-                        close = np.where(delta < threshold * 3)[0]
-                    if close.size == 0:
-                        # Last-ditch check for very thin characters
-                        next_bound -= 10
-                        delta = np.abs(blank_columns - next_bound
-                                       ) / next_bound
-                        close = np.where(delta < threshold)[0]
-                        if close.size == 0:
-                            close = np.where(delta < threshold * 2)[0]
-                        if close.size == 0:
-                            close = np.where(delta < threshold * 3)[0]
-                bound_index = int(np.median(close))
-            except ValueError as e:
-                if self.verbosity >= 1:
-                    print("Problem finding spaces between characters")
-                return
-
-            bound = blank_columns[bound_index]
-
-            # Add to list of boundaries, refine estimate of character
-            #   width, and estimate location of next boundary
-            char_bounds = np.append(char_bounds, bound)
-            char_widths = (char_bounds[1:] - char_bounds[:-1])
-            full_width_chars = np.extract(char_widths > 56, char_widths)
-            if full_width_chars.size >= 1:
-                char_width = np.mean(full_width_chars)
-            else:
-                char_width = 75
-        char_bounds = np.append(char_bounds, self.imagedata.size[0])
 
     # endregion
