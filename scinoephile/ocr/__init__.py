@@ -101,7 +101,7 @@ def generate_char_image(char, fig=None, font="Hei", size=60, width=5,
         width (int, optional: border width with which to draw character
         x_offset (int, optional): x offset to apply to character
         y_offset (int, optional: y offset to apply to character
-        tmpfile (str, option): path at which to write temporary image from
+        tmpfile (str, option): path at which to save temporary image from
           matplotlib
 
     Returns (PIL.Image.Image): Image of character
@@ -307,7 +307,6 @@ class OCRCLToolBase(CLToolBase, OCRBase):
 from scinoephile.ocr.ImageSubtitleDataset import ImageSubtitleDataset
 from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
-from scinoephile.ocr.SUPFormat import SUPFormat
 from scinoephile.ocr.OCRDataset import OCRDataset
 from scinoephile.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
 from scinoephile.ocr.LabeledOCRDataset import LabeledOCRDataset

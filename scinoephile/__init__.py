@@ -203,7 +203,6 @@ class CLToolBase(Base):
 
 
 ################################### MODULES ###################################
-from scinoephile.HDF5Format import HDF5Format
 from scinoephile.SubtitleDataset import SubtitleDataset
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries

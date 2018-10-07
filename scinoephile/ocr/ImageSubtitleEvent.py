@@ -19,6 +19,7 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     TODO:
       - [ ] Move over code for splitting subtitle into separate characters
+      - [ ] Determine if this needs an image_mode property
       - [ ] Decide if image should be a property
       - [ ] Document
     """

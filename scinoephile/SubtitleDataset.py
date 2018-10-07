@@ -19,8 +19,8 @@ class SubtitleDataset(CLToolBase):
 
     Design for loading and saving data
         Dataset
-            read method passes infile to SubtitleSeries.load
-            write method passes outfile to SubtitleSeries.save
+            load method passes infile to SubtitleSeries.load
+            save method passes outfile to SubtitleSeries.save
         SubtitleSeries
             load class method passes open infile and subs to from_file
             save method passes open outfile and subs to to_file
@@ -33,10 +33,12 @@ class SubtitleDataset(CLToolBase):
     TODO:
       - [ ] Document
     """
+    from scinoephile import SubtitleSeries
 
-    # region Instance Variables
+    # region Class Variables
 
     help_message = ("Represents a collection of subtitles")
+    series_class = SubtitleSeries
 
     # endregion
 
@@ -66,11 +68,11 @@ class SubtitleDataset(CLToolBase):
 
         # Input
         if self.infile is not None:
-            self.read()
+            self.load()
 
         # Output
         if self.outfile is not None:
-            self.write()
+            self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -129,31 +131,21 @@ class SubtitleDataset(CLToolBase):
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
-            self._subtitles = self._series_class(verbosity=self.verbosity)
+            self._subtitles = self.series_class(verbosity=self.verbosity)
         return self._subtitles
 
     @subtitles.setter
     def subtitles(self, value):
         if value is not None:
-            if not isinstance(value, self._series_class):
+            if not isinstance(value, self.series_class):
                 raise ValueError()
         self._subtitles = value
 
     # endregion
 
-    # region Private Properties
-
-    @property
-    def _series_class(self):
-        from scinoephile import SubtitleSeries
-
-        return SubtitleSeries
-
-    # endregion
-
     # region Public Methods
 
-    def read(self, infile=None):
+    def load(self, infile=None):
         from os.path import expandvars
 
         # Process arguments
@@ -167,14 +159,14 @@ class SubtitleDataset(CLToolBase):
         # Load infile
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
-        self.subtitles = self._series_class.load(infile,
-                                                 verbosity=self.verbosity)
+        self.subtitles = self.series_class.load(infile,
+                                                verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 
-    def write(self, outfile=None):
+    def save(self, outfile=None):
         from os.path import expandvars
 
-        # Process argments
+        # Process arguments
         if outfile is not None:
             outfile = expandvars(outfile)
         elif self.outfile is not None:

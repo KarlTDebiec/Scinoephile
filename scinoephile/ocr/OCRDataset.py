@@ -332,7 +332,7 @@ class OCRDataset(OCRCLToolBase):
         import h5py
         import numpy as np
 
-        # TODO: Validate that hdf5 file can be read
+        # TODO: Validate that hdf5 file can be load
 
         if self.verbosity >= 1:
             print(f"Reading data from '{self.input_hdf5}'")
@@ -364,7 +364,7 @@ class OCRDataset(OCRCLToolBase):
         from PIL import Image
         from scinoephile.ocr import convert_8bit_grayscale_to_2bit
 
-        # TODO: Validate that directory can be read
+        # TODO: Validate that directory can be load
 
         if self.verbosity >= 1:
             print(f"Reading images from '{self.input_image_dir}'")
