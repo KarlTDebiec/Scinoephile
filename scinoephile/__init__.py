@@ -88,8 +88,8 @@ class Base(object):
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)
-        return f"Property '{type(self).__name__}.{frameinfo.function}'" \
-               f" was passed invalid value '{value}' " \
+        return f"Property '{type(self).__name__}.{frameinfo.function}' " \
+               f"was passed invalid value '{value}' " \
                f"of type '{type(value).__name__}'. " \
                f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
 
@@ -203,6 +203,6 @@ class CLToolBase(Base):
 
 
 ################################### MODULES ###################################
-from scinoephile.SubtitleDataset import SubtitleDataset
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries
+from scinoephile.SubtitleDataset import SubtitleDataset

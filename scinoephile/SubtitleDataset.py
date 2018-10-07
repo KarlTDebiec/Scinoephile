@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile import CLToolBase
+from scinoephile import CLToolBase, SubtitleSeries
 from IPython import embed
 
 
@@ -33,7 +33,6 @@ class SubtitleDataset(CLToolBase):
     TODO:
       - [ ] Document
     """
-    from scinoephile import SubtitleSeries
 
     # region Class Variables
 

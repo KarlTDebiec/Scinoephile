@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from pysubs2 import SSAFile
-from scinoephile import Base
+from scinoephile import Base, SubtitleEvent
 from IPython import embed
 
 
@@ -26,7 +26,6 @@ class SubtitleSeries(SSAFile, Base):
       - [ ] Print as a pandas table
       - [ ] Document
     """
-    from scinoephile.SubtitleEvent import SubtitleEvent
 
     # region Class Variables
 
@@ -36,9 +35,10 @@ class SubtitleSeries(SSAFile, Base):
 
     # region Builtins
 
-    def __init__(self, verbosity=None):
-        super().__init__()
+    def __init__(self, verbosity=None, **kwargs):
+        super().__init__()  # SSAFile.__init__ accepts no arguments
 
+        # Store property values
         if verbosity is not None:
             self.verbosity = verbosity
 
@@ -168,6 +168,8 @@ class SubtitleSeries(SSAFile, Base):
             with open(path, encoding=encoding) as fp:
                 subs = cls.from_file(fp, **kwargs)
                 subs.verbosity = verbosity
+                for event in subs.events:
+                    event.verbosity = verbosity
                 return subs
 
     # endregion
@@ -235,7 +237,8 @@ class SubtitleSeries(SSAFile, Base):
                 event = {field.lower(): string_to_field(field,
                                                         value.decode("utf8"))
                          for field, value in zip(event.dtype.names, event)}
-                subs.events.append(cls.event_class(**event))
+                subs.events.append(cls.event_class(verbosity=verbosity,
+                                                   **event))
 
         return subs
 

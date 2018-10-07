@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from scinoephile import SubtitleSeries
+from scinoephile.ocr import ImageSubtitleEvent
 from IPython import embed
 
 
@@ -21,11 +22,50 @@ class ImageSubtitleSeries(SubtitleSeries):
       - [ ] Determine if this needs an image_mode property
       - [ ] Document
     """
-    from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 
     # region Class Variables
 
     event_class = ImageSubtitleEvent
+
+    # endregion
+
+    # region Builtins
+
+    def __init__(self, image_mode=None, **kwargs):
+        super().__init__()
+
+        # Store property values
+        if image_mode is not None:
+            self.image_mode = image_mode
+
+    # endregion
+
+    # region Public Properties
+
+    @property
+    def image_mode(self):
+        """str: Image mode"""
+        if not hasattr(self, "_image_mode"):
+            self._image_mode = "1 bit"
+        return self._image_mode
+
+    @image_mode.setter
+    def image_mode(self, value):
+        if value is not None:
+            if not isinstance(value, str):
+                try:
+                    value = str(value)
+                except Exception:
+                    raise ValueError(self._generate_setter_exception(value))
+            if value == "8 bit":
+                pass
+            elif value == "1 bit":
+                pass
+            else:
+                raise ValueError(self._generate_setter_exception(value))
+        # TODO: If changed, change on all events
+
+        self._image_mode = value
 
     # endregion
 
@@ -54,8 +94,8 @@ class ImageSubtitleSeries(SubtitleSeries):
             from warnings import warn
             from pysubs2 import SSAFile
 
-            warn(f"{self.__class__.__name__}'s image data may only be saved "
-                 f"to hdf5")
+            warn(f"{self.__class__.__name__}'s image data may only be "
+                 f"saved to hdf5")
             if self.verbosity >= 1:
                 print(f"Saving to '{path}'")
             SSAFile.save(self, path, format_=format_, **kwargs)
@@ -103,24 +143,24 @@ class ImageSubtitleSeries(SubtitleSeries):
         import numpy as np
 
         # Load info, styles, and events
-        subs = super()._load_hdf5(fp, verbosity, **kwargs)
+        subs = super()._load_hdf5(fp=fp, verbosity=verbosity, **kwargs)
 
         # Load images
         if "images" in fp and "events" in fp:
+            subs.image_mode = image_mode = fp["images"].attrs["image_mode"]
             for i, event in enumerate(subs.events):
-                event.image = np.array(fp["images"][f"{i:04d}"], np.uint8)
+                event.image_mode = subs.image_mode
+                if image_mode == "8 bit":
+                    event.imagedata = np.array(fp["images"][f"{i:04d}"], np.uint8)
+                elif image_mode == "1 bit":
+                    event.imagedata = np.array(fp["images"][f"{i:04d}"], np.bool)
 
         return subs
 
     @classmethod
-    def _load_sup(cls, fp, verbosity=1, **kwargs):
-        """
-        TODO:
-          - [ ] Support verbosity
-        """
+    def _load_sup(cls, fp, image_mode=None, verbosity=1, **kwargs):
         import numpy as np
         from pysubs2.time import make_time
-        from scinoephile.ocr import ImageSubtitleEvent
 
         def read_palette(bytes):
             import numpy as np
@@ -195,14 +235,14 @@ class ImageSubtitleSeries(SubtitleSeries):
                          0x17: "WDS", 0x80: "END"}
 
         # initialize
-        subs = cls(verbosity=verbosity)
+        subs = cls(image_mode=image_mode, verbosity=verbosity)
         subs.format = "sup"
 
         # Parse infile
         sup_bytes = fp.read()
         byte_offset = 0
         start_time = None
-        image = None
+        imagedata = None
         palette = None
         compressed_image = None
         if verbosity >= 2:
@@ -228,15 +268,16 @@ class ImageSubtitleSeries(SubtitleSeries):
             elif segment_kind == 0x80:  # End
                 if start_time is None:
                     start_time = timestamp / 90000
-                    image = np.zeros((*compressed_image.shape, 4), np.uint8)
+                    imagedata = np.zeros((*compressed_image.shape, 4), np.uint8)
                     for color_index, color in enumerate(palette):
-                        image[np.where(compressed_image == color_index)] = color
+                        imagedata[np.where(compressed_image == color_index)] = color
                 else:
                     end_time = timestamp / 90000
                     subs.events.append(cls.event_class(
                         start=make_time(s=start_time),
                         end=make_time(s=end_time),
-                        image=image))
+                        image_mode=image_mode,
+                        imagedata=imagedata))
 
                     start_time = None
                     palette = None
@@ -272,10 +313,18 @@ class ImageSubtitleSeries(SubtitleSeries):
         if "images" in fp:
             del fp["images"]
         fp.create_group("images")
+        fp["images"].attrs["image_mode"] = self.image_mode
         for i, event in enumerate(self.events):
-            if hasattr(event, "image"):
-                fp["images"].create_dataset(f"{i:04d}", data=event.image,
-                                            dtype=np.uint8, chunks=True,
-                                            compression="gzip")
+            if hasattr(event, "imagedata"):
+                if event.image_mode == "8 bit":
+                    fp["images"].create_dataset(f"{i:04d}",
+                                                data=event.imagedata,
+                                                dtype=np.uint8, chunks=True,
+                                                compression="gzip")
+                elif event.image_mode == "1 bit":
+                    fp["images"].create_dataset(f"{i:04d}",
+                                                data=event.imagedata,
+                                                dtype=np.bool, chunks=True,
+                                                compression="gzip")
 
     # endregion

@@ -21,6 +21,13 @@ class SubtitleEvent(SSAEvent, Base):
 
     # region Builtins
 
+    def __init__(self, verbosity=None, **kwargs):
+        super().__init__(**kwargs)  # SSAEvent.__init__ accepts arguments
+
+        # Store property values
+        if verbosity is not None:
+            self.verbosity = verbosity
+
     def __repr__(self):
         from pysubs2.time import ms_to_str
 
