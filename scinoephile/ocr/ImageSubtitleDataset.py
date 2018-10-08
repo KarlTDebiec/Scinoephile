@@ -23,8 +23,7 @@ class ImageSubtitleDataset(SubtitleDataset):
     """
 
     # region Instance Variables
-    help_message = ("Tool for extracting individual characters from"
-                    "image-based subtitles")
+    help_message = ("Represents a collection of image-based subtitles")
     series_class = ImageSubtitleSeries
 
     # endregion

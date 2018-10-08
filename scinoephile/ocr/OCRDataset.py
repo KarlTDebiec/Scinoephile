@@ -15,11 +15,11 @@ from IPython import embed
 ################################### CLASSES ###################################
 class OCRDataset(OCRCLToolBase):
     """
-    Collection of character images
+    Represents a collection of character images
 
-    Todo:
+    TODO:
+      - [ ] Implement 8-bit and 1-bit support; remove 2-bit support
       - [ ] Clean up and refactor
-      - [ ] Implement other image data types (8 bit and 1 bit)
       - [ ] Document
     """
 
@@ -31,23 +31,16 @@ class OCRDataset(OCRCLToolBase):
 
     # region Builtins
 
-    def __init__(self, input_hdf5=None, input_image_dir=None, output_hdf5=None,
-                 output_image_dir=None, image_mode=None, **kwargs):
+    def __init__(self, infile=None, outfile=None, image_mode=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if input_hdf5 is not None:
-            self.input_hdf5 = input_hdf5
-        if input_image_dir is not None:
-            self.input_image_dir = input_image_dir
-
+        if infile is not None:
+            self.infile = infile
+        if outfile is not None:
+            self.outfile = outfile
         if image_mode is not None:
             self.image_mode = image_mode
-
-        if output_hdf5 is not None:
-            self.output_hdf5 = output_hdf5
-        if output_image_dir is not None:
-            self.output_image_dir = output_image_dir
 
     def __call__(self):
         """ Core logic """
@@ -100,7 +93,7 @@ class OCRDataset(OCRCLToolBase):
     def image_mode(self):
         """str: Image mode"""
         if not hasattr(self, "_image_mode"):
-            self._image_mode = "2bit"
+            self._image_mode = "1 bit"
         return self._image_mode
 
     @image_mode.setter
@@ -109,26 +102,27 @@ class OCRDataset(OCRCLToolBase):
             if not isinstance(value, str):
                 try:
                     value = str(value)
-                except Exception as e:
+                except Exception:
                     raise ValueError(self._generate_setter_exception(value))
-            if value == "8bit":
-                raise NotImplementedError()
-            elif value == "1bit":
-                raise NotImplementedError()
-            elif value not in ["2bit"]:
+            if value == "8 bit":
+                pass
+            elif value == "1 bit":
+                pass
+            else:
                 raise ValueError(self._generate_setter_exception(value))
+        # TODO: Respond to changes appropriately
 
         self._image_mode = value
 
     @property
-    def input_hdf5(self):
-        """str: Path to input hdf5 file"""
-        if not hasattr(self, "_input_hdf5"):
-            self._input_hdf5 = None
-        return self._input_hdf5
+    def infile(self):
+        """str: Path to input file"""
+        if not hasattr(self, "_infile"):
+            self._infile = None
+        return self._infile
 
-    @input_hdf5.setter
-    def input_hdf5(self, value):
+    @infile.setter
+    def infile(self, value):
         from os.path import expandvars
 
         if value is not None:
@@ -137,36 +131,17 @@ class OCRDataset(OCRCLToolBase):
             value = expandvars(value)
             if value == "":
                 raise ValueError(self._generate_setter_exception(value))
-        self._input_hdf5 = value
+        self._infile = value
 
     @property
-    def input_image_dir(self):
-        """str: Path to input image directory"""
-        if not hasattr(self, "_input_image_dir"):
-            self._input_image_dir = None
-        return self._input_image_dir
+    def outfile(self):
+        """str: Path to output file"""
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
+        return self._outfile
 
-    @input_image_dir.setter
-    def input_image_dir(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._input_image_dir = value
-
-    @property
-    def output_hdf5(self):
-        """str: Path to output hdf5 file"""
-        if not hasattr(self, "_output_hdf5"):
-            self._output_hdf5 = None
-        return self._output_hdf5
-
-    @output_hdf5.setter
-    def output_hdf5(self, value):
+    @outfile.setter
+    def outfile(self, value):
         from os import access, getcwd, R_OK, W_OK
         from os.path import dirname, expandvars, isfile
 
@@ -182,26 +157,7 @@ class OCRDataset(OCRCLToolBase):
                 raise ValueError(self._generate_setter_exception(value))
             elif not access(dirname(value), W_OK):
                 raise ValueError(self._generate_setter_exception(value))
-        self._output_hdf5 = value
-
-    @property
-    def output_image_dir(self):
-        """str: Path to directory for output character images"""
-        if not hasattr(self, "_output_image_dir"):
-            self._output_image_dir = None
-        return self._output_image_dir
-
-    @output_image_dir.setter
-    def output_image_dir(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._output_image_dir = value
+        self._outfile = value
 
     # endregion
 
