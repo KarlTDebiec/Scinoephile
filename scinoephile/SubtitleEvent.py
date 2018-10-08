@@ -16,6 +16,8 @@ from IPython import embed
 ################################### CLASSES ###################################
 class SubtitleEvent(SSAEvent, Base):
     """
+    Represents an individual subtitle
+
     Extension of pysubs2's SSAEvent with additional features
     """
 

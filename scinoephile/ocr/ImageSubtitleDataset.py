@@ -16,7 +16,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleDataset(SubtitleDataset):
     """
-    Extracts individual characters from image-based subtitles
+    Represents a collection of image-based subtitles
 
     TODO:
       - [ ] Document

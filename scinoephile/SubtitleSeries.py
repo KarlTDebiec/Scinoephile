@@ -16,11 +16,11 @@ from IPython import embed
 ################################### CLASSES ###################################
 class SubtitleSeries(SSAFile, Base):
     """
-    Extension of pysubs2's SSAFile with additional features
+    Represents a subtitle track
 
-    Includes code for loading to and saving from hdf5; while these are part of
-    separate classes in pysubs.SSAFile, this additional separation is not
-    needed here
+    Extension of pysubs2's SSAFile with additional features. Includes code for
+    loading to and saving from hdf5; while these are part of separate classes
+    in pysubs.SSAFile, this additional separation is not needed here.
 
     TODO:
       - [ ] Print as a pandas table

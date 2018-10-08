@@ -15,7 +15,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleEvent(SubtitleEvent):
     """
-    Subtitle event that includes an image
+    Represents an individual image-based subtitle
 
     TODO:
       - [ ] Document

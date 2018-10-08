@@ -16,7 +16,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleSeries(SubtitleSeries):
     """
-    Subtitle series that includes images
+    Represents an image-based subtitle track
 
     TODO:
       - [ ] Document
