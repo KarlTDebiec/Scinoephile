@@ -126,12 +126,9 @@ def gen_char_imagedata(char, font, fig=None, size=60, width=5,
     elif image_mode == "1 bit":
         imagedata = np.array(image.convert("1", dither=0))
     else:
-        raise ValueError()
+        raise NotImplementedError()
 
-    x_offset = 5
     imagedata = center_imagedata(imagedata, x_offset, y_offset)
-    from IPython import embed
-    embed()
 
     return imagedata.flatten()
 
