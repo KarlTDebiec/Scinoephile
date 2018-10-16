@@ -20,8 +20,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     Todo:
       - [x] Update gen_min_imagedata
-      - [ ] Generate font name from path?
-      - [ ] Update generate_additional_images
+      - [x] Update gen_new_imagedata
       - [ ] Update saving
       - [ ] Update loading
       - [ ] Remove temporary code used during troubleshooting
@@ -68,7 +67,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Action
         self.gen_min_imagedata()
-        # self.generate_additional_images(1)
+        self.gen_new_imagedata(10)
 
         # Output
         # if self.outfile is not None:
@@ -296,46 +295,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def generate_additional_images(self, n_images=1, chars=None):
-        import numpy as np
-        import pandas as pd
-        from random import sample
-        from scinoephile.ocr import generate_char_image
-
-        if chars is None:
-            chars = self.chars[:self.n_chars]
-        if not isinstance(chars, list):
-            chars = list(chars)
-
-        # Build queue of new specs
-        queue = []
-        for char in chars:
-            specs = self._draw_specs_available_set.difference(
-                self._get_specs_of_char_set(char))
-            for spec in sample(specs, min(n_images, len(specs))):
-                queue.append({
-                    "char": char,
-                    "font": spec[0],
-                    "size": spec[1],
-                    "width": spec[2],
-                    "x_offset": spec[3],
-                    "y_offset": spec[4]})
-
-        if len(queue) >= 1:
-            if self.verbosity >= 1:
-                print(f"Generating {len(queue)} new images")
-
-            # Prepare specs
-            specs = pd.DataFrame(queue)
-
-            # Prepare data
-            data = np.zeros((len(queue), 6400), np.bool)
-            for i, spec in enumerate(queue):
-                data[i] = self.image_to_data(generate_char_image(
-                    fig=self._figure, image_mode=self.image_mode, **spec))
-
-            self.add_images(specs, data)
-
     def gen_min_imagedata(self):
         import numpy as np
         import pandas as pd
@@ -371,7 +330,52 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 imagedata[i] = gen_char_imagedata(fig=self._figure,
                                                   image_mode=self.image_mode,
                                                   **spec)
-            self.add_images(specs, imagedata)
+            self.add_imagedata(specs, imagedata)
+
+    def gen_new_imagedata(self, n_images=1, chars=None):
+        import numpy as np
+        import pandas as pd
+        from random import sample
+        from scinoephile.ocr import gen_char_imagedata
+
+        if chars is None:
+            chars = self.chars[:self.n_chars]
+        if not isinstance(chars, list):
+            chars = list(chars)
+
+        # Build queue of new specs
+        queue = []
+        for char in chars:
+            specs = self._draw_specs_available_set.difference(
+                self._get_specs_of_char_set(char))
+            for spec in sample(specs, min(n_images, len(specs))):
+                queue.append({
+                    "char": char,
+                    "font": spec[0],
+                    "size": spec[1],
+                    "width": spec[2],
+                    "x_offset": spec[3],
+                    "y_offset": spec[4]})
+
+        if len(queue) >= 1:
+            if self.verbosity >= 1:
+                print(f"Generating {len(queue)} new images")
+
+            # Prepare specs
+            specs = pd.DataFrame(queue)
+
+            # Prepare data
+            if self.image_mode == "8 bit":
+                data = np.zeros((len(queue), 6400), np.uint8)
+            elif self.image_mode == "1 bit":
+                data = np.zeros((len(queue), 6400), np.bool)
+            else:
+                raise NotImplementedError()
+            for i, spec in enumerate(queue):
+                data[i] = gen_char_imagedata(
+                    fig=self._figure, image_mode=self.image_mode, **spec)
+
+            self.add_imagedata(specs, data)
 
     def get_data_for_training(self, val_portion=0.1):
         import numpy as np

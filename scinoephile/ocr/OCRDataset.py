@@ -213,14 +213,14 @@ class OCRDataset(OCRCLToolBase):
 
     # region Public Methods
 
-    def add_images(self, imagespecs, imagedata):
+    def add_imagedata(self, imagespecs, imagedata):
         """
         Adds image imagedata and specifications
 
         TODO: Improve efficiency; is it necessary to check that specs are new?
 
         Args:
-            imagespecs (pandas.DataFrame): New specifications
+            imagespecs (pandas.DataFrame): New specs
             imagedata (numpy.ndarray): New imagedata
         """
         import numpy as np
@@ -230,7 +230,8 @@ class OCRDataset(OCRCLToolBase):
             axis=1).values
         if new.sum() >= 1:
             self.imagespecs = self.imagespecs.append(imagespecs.loc[new],
-                                                     ignore_index=True, sort=False)
+                                                     ignore_index=True,
+                                                     sort=False)
             self.imagedata = np.append(self.imagedata, imagedata[new], axis=0)
 
     def read_hdf5(self):
@@ -261,7 +262,7 @@ class OCRDataset(OCRCLToolBase):
             # Load data
             char_image_data = np.array(hdf5_infile["imagedata"])
 
-        self.add_images(char_image_specs, char_image_data)
+        self.add_imagedata(char_image_specs, char_image_data)
 
     def read_image_dir(self):
         import numpy as np
@@ -291,9 +292,9 @@ class OCRDataset(OCRCLToolBase):
                 raise NotImplementedError()
             data[i] = self.image_to_data(image)
 
-        self.add_images(specs, data)
+        self.add_imagedata(specs, data)
 
-    def show_chars(self, indexes=None, columns=None):
+    def show(self, indexes=None, columns=None):
         import numpy as np
         from PIL import Image
 
