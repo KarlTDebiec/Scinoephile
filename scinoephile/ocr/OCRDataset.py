@@ -73,8 +73,12 @@ class OCRDataset(OCRCLToolBase):
         """numpy.ndarray(bool): Character image data"""
         if not hasattr(self, "_imagedata"):
             import numpy as np
-
-            self._imagedata = np.zeros((0, self._imagedata_size), self._imagedata_dtype)
+            if self.image_mode == "8 bit":
+                self._imagedata = np.zeros((0, 6400), np.uint8)
+            elif self.image_mode == "1 bit":
+                self._imagedata = np.zeros((0, 6400), np.bool)
+            else:
+                raise NotImplementedError()
         return self._imagedata
 
     @imagedata.setter
@@ -83,10 +87,18 @@ class OCRDataset(OCRCLToolBase):
 
         if not isinstance(value, np.ndarray):
             raise ValueError(self._generate_setter_exception(value))
-        if value.shape[1] != self._imagedata_size:
-            raise ValueError(self._generate_setter_exception(value))
-        if value.dtype != self._imagedata_dtype:
-            raise ValueError(self._generate_setter_exception(value))
+        if self.image_mode == "8 bit":
+            if value.shape[1] != 6400:
+                raise ValueError(self._generate_setter_exception(value))
+            if value.dtype != np.uint8:
+                raise ValueError(self._generate_setter_exception(value))
+        elif self.image_mode == "1 bit":
+            if value.shape[1] != 6400:
+                raise ValueError(self._generate_setter_exception(value))
+            if value.dtype != np.bool:
+                raise ValueError(self._generate_setter_exception(value))
+        else:
+            raise NotImplementedError()
         self._imagedata = value
 
     @property
@@ -182,9 +194,9 @@ class OCRDataset(OCRCLToolBase):
     @property
     def _imagedata_size(self):
         """int: Size of a single image within arrays"""
-        if self.image_mode == "8bit":
+        if self.image_mode == "8 bit":
             return 6400
-        elif self.image_mode == "1bit":
+        elif self.image_mode == "1 bit":
             return 6400
 
     @property
@@ -192,9 +204,9 @@ class OCRDataset(OCRCLToolBase):
         """type: dtype of image arrays"""
         import numpy as np
 
-        if self.image_mode == "8bit":
+        if self.image_mode == "8 bit":
             return np.int8
-        elif self.image_mode == "1bit":
+        elif self.image_mode == "1 bit":
             return np.bool
 
     # endregion
@@ -281,12 +293,14 @@ class OCRDataset(OCRCLToolBase):
 
         self.add_images(specs, data)
 
-    def show_chars(self, indexes, columns=None):
+    def show_chars(self, indexes=None, columns=None):
         import numpy as np
         from PIL import Image
 
         # Process arguments
-        if isinstance(indexes, int):
+        if indexes is None:
+            indexes = range(self.imagedata.shape[0])
+        elif isinstance(indexes, int):
             indexes = [indexes]
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= self.imagedata.shape[0]):
@@ -298,11 +312,24 @@ class OCRDataset(OCRCLToolBase):
             rows = int(np.ceil(indexes.size / columns))
 
         # Draw image
-        image = Image.new("L", (columns * 100, rows * 100), 255)
+        if self.image_mode == "8 bit":
+            image = Image.new("L", (columns * 100, rows * 100), 255)
+        elif self.image_mode == "1 bit":
+            image = Image.new("1", (columns * 100, rows * 100), 1)
+        else:
+            raise NotImplementedError()
         for i, index in enumerate(indexes):
             column = (i // columns)
             row = i - (column * columns)
-            char_image = self.image_array_to_object(self.imagedata[index])
+            if self.image_mode == "8 bit":
+                char_image = Image.fromarray(
+                    self.imagedata[index].reshape((80, 80)))
+            elif self.image_mode == "1 bit":
+                char_image = Image.fromarray(
+                    self.imagedata[index].reshape(
+                        (80, 80)).astype(np.uint8) * 255)
+            else:
+                raise NotImplementedError()
             image.paste(char_image,
                         (100 * row + 10,
                          100 * column + 10,

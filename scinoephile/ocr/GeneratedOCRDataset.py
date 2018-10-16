@@ -19,8 +19,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     Represents a collection of generated character images
 
     Todo:
-      - [ ] Update gen_min_imagedata
-      - [ ] Generate font name from path
+      - [x] Update gen_min_imagedata
+      - [ ] Generate font name from path?
       - [ ] Update generate_additional_images
       - [ ] Update saving
       - [ ] Update loading
@@ -86,8 +86,10 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     def font_names(self):
         """list(str): List of font names"""
         if not hasattr(self, "_font_names"):
-            self._font_names = ["/System/Library/Fonts/STHeiti Light.ttc",
-                                "/System/Library/Fonts/STHeiti Medium.ttc"]
+            self._font_names = [
+                "/System/Library/Fonts/STHeiti Light.ttc",
+                "/System/Library/Fonts/STHeiti Medium.ttc",
+                "/System/Library/Fonts/PingFang.ttc"]
         return self._font_names
 
     @font_names.setter
@@ -369,8 +371,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 imagedata[i] = gen_char_imagedata(fig=self._figure,
                                                   image_mode=self.image_mode,
                                                   **spec)
-            exit()
-            # self.add_images(specs, imagedata)
+            self.add_images(specs, imagedata)
 
     def get_data_for_training(self, val_portion=0.1):
         import numpy as np
