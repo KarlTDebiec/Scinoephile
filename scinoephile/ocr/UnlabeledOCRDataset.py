@@ -34,32 +34,16 @@ class UnlabeledOCRDataset(OCRDataset):
 
     # region Builtins
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        # self.input_image_dir = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
-        # self.input_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
-        # self.output_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
-        # self.output_image_dir = \
-        #     "/Users/kdebiec/Desktop/unlabeled"
-
     def __call__(self):
         """ Core logic """
 
         # Input
-        if self.input_hdf5 is not None:
-            self.read_hdf5()
-        if self.input_image_dir is not None:
-            self.read_image_dir()
+        if self.infile is not None:
+            self.load()
 
         # Output
-        if self.output_hdf5 is not None:
-            self.write_hdf5()
-        if self.output_image_dir is not None:
-            self.write_image_dir()
+        if self.outfile is not None:
+            self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -70,13 +54,13 @@ class UnlabeledOCRDataset(OCRDataset):
     # region Private Properties
 
     @property
-    def _spec_columns(self):
+    def _imagespec_columns(self):
         """list(str): Character image specification columns"""
 
         return ["path"]
 
     @property
-    def _spec_dtypes(self):
+    def _imagespec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str}
 
@@ -113,7 +97,7 @@ class UnlabeledOCRDataset(OCRDataset):
 
         return pd.DataFrame(data=infiles,
                             index=range(len(infiles)),
-                            columns=self._spec_columns)
+                            columns=self._imagespec_columns)
 
     def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""

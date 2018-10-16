@@ -17,19 +17,6 @@ class SubtitleDataset(CLToolBase):
     """
     Represents a collection of subtitles
 
-    Design for loading and saving data
-        Dataset
-            load method passes infile to SubtitleSeries.load
-            save method passes outfile to SubtitleSeries.save
-        SubtitleSeries
-            load class method passes open infile and subs to from_file
-            save method passes open outfile and subs to to_file
-            from_file identifies format and passes open infile and subs to Format.from_file
-            to_file identifies format and passes open outfile and subs to Format.to_file
-        Format
-            from_file class method loads from open infile into provided subs
-            to_file class method writes from provided subs to open outfile
-
     TODO:
       - [ ] Document
     """

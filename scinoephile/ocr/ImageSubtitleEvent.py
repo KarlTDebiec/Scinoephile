@@ -126,19 +126,21 @@ class ImageSubtitleEvent(SubtitleEvent):
                 raise ValueError(self._generate_setter_exception(value))
 
             if self.image_mode == "8 bit":
-                if len(value.shape) == 3:
+                if len(value.shape) == 3:  # Convert RGB to L
                     trans_bg = Image.fromarray(value)
                     white_bg = Image.new("RGBA", trans_bg.size,
                                          (255, 255, 255, 255))
                     white_bg.paste(trans_bg, mask=trans_bg)
                     value = np.array(white_bg.convert("L"))
+                # TODO: Should this also handle inputs of mode 1? Or error out?
             elif self.image_mode == "1 bit":
-                if len(value.shape) == 3:
+                if len(value.shape) == 3:  # Convert RGB to 1
                     trans_bg = Image.fromarray(value)
                     white_bg = Image.new("RGBA", trans_bg.size,
                                          (255, 255, 255, 255))
                     white_bg.paste(trans_bg, mask=trans_bg)
                     value = np.array(white_bg.convert("1", dither=0))
+                # TODO: Should this also handle inputs of mode L?
             else:
                 raise ValueError(self._generate_setter_exception(value))
         # TODO: If changed, clear cached properties

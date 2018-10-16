@@ -80,9 +80,82 @@ def draw_text_on_image(image, text, x=0, y=0, font="Arial.ttf", size=30):
     draw.text((x - width / 2, y - height / 2), text, font=font)
 
 
-def generate_char_image(char, fig=None, font="Hei", size=60, width=5,
-                        x_offset=0, y_offset=0, image_mode="2bit",
-                        tmpfile="/tmp/scinoephile.png"):
+def gen_char_imagedata(char, font, fig=None, size=60, width=5,
+                       x_offset=0, y_offset=0, image_mode="1 bit"):
+    """
+    Generates imagedata of a character
+
+    Args:
+        char (str): character to generate an image of
+        fig (matplotlib.figure.Figure, optional): figure on  which to draw
+          character
+        font (str): font with which to draw character
+        size (int, optional): font size with which to draw character
+        width (int, optional: border width with which to draw character
+        x_offset (int, optional): x offset to apply to character
+        y_offset (int, optional: y offset to apply to character
+
+    Returns (np.ndarray): Image of character
+
+    """
+    import numpy as np
+    from matplotlib.font_manager import FontProperties
+    from matplotlib.patheffects import Stroke, Normal
+    from PIL import Image
+
+    # Draw initial image with matplotlib
+    if fig is None:
+        from matplotlib.pyplot import figure
+
+        fig = figure(figsize=(1.0, 1.0), dpi=80)
+    else:
+        fig.clear()
+
+    # Draw image using matplotlib
+    text = fig.text(x=0.5, y=0.475, s=char, ha="center", va="center",
+                    fontproperties=FontProperties(fname=font, size=size),
+                    color=(0.67, 0.67, 0.67))
+    text.set_path_effects([Stroke(linewidth=width, foreground=(0.0, 0.0, 0.0)),
+                           Normal()])
+    fig.canvas.draw()
+
+    # Convert to appropriate mode using pillow
+    image = Image.fromarray(np.array(fig.canvas.renderer._renderer))
+    if image_mode == "8 bit":
+        imagedata = np.array(image.convert("L"))
+    elif image_mode == "1 bit":
+        imagedata = np.array(image.convert("1", dither=0))
+    else:
+        raise ValueError()
+
+    x_offset = 5
+    imagedata = center_imagedata(imagedata, x_offset, y_offset)
+    from IPython import embed
+    embed()
+
+    return imagedata.flatten()
+
+
+def center_imagedata(imagedata, x_offset=0, y_offset=0):
+    import numpy as np
+
+    white_cols = (imagedata == imagedata.max()).all(axis=0)
+    white_rows = (imagedata == imagedata.max()).all(axis=1)
+    trimmed = imagedata[
+              np.argmin(white_rows):white_rows.size - np.argmin(white_rows[::-1]),
+              np.argmin(white_cols):white_cols.size - np.argmin(white_cols[::-1])]
+    x = int(np.floor((80 - trimmed.shape[1]) / 2))
+    y = int(np.floor((80 - trimmed.shape[0]) / 2))
+    centered = np.ones_like(imagedata) * imagedata.max()
+    centered[y + y_offset:y + trimmed.shape[0] + y_offset,
+    x + x_offset:x + trimmed.shape[1] + x_offset] = trimmed
+
+    return centered
+
+
+def generate_char_image_old(char, fig=None, font="Hei", size=60, width=5,
+                            x_offset=0, y_offset=0, image_mode="2bit",
+                            tmpfile="/tmp/scinoephile.png"):
     """
     Generates an image of a character
 

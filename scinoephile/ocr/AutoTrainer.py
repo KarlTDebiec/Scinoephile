@@ -24,7 +24,7 @@ class AutoTrainer(OCRCLToolBase):
       - [ ] Write log file(s)
       - [ ] Re-implement saving and loading of model
       - [ ] Re-implement support for shape
-      - [ ] Re-implement evaluation on test data
+      - [ ] Re-implement evaluation on test images
       - [ ] Better name for missed_yat and missed_eee
       - [ ] Refine until 3000 characters are viable
       - [ ] Validate CL arguments
@@ -401,7 +401,7 @@ class AutoTrainer(OCRCLToolBase):
 
     @property
     def val_portion(self):
-        """float: Portion of training data to set aside for validation"""
+        """float: Portion of training image to set aside for validation"""
         if not hasattr(self, "_val_portion"):
             self._val_portion = 0.1
         return self._val_portion
@@ -473,7 +473,7 @@ class AutoTrainer(OCRCLToolBase):
         #                         type=str, dest="tst_infile",
         #                         help="labeled test data")
         parser_inp.add_argument("-V", "--val_portion", type=float,
-                                help="portion of training data to set aside "
+                                help="portion of training images to set aside "
                                      "for validation")
 
         # Operation

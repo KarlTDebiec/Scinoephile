@@ -30,32 +30,16 @@ class LabeledOCRDataset(OCRDataset):
 
     # region Builtins
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        # self.input_image_dir = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/tst"
-        # self.input_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
-        # self.output_hdf5 = \
-        #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
-        # self.output_image_dir = \
-        #     "/Users/kdebiec/Desktop/labeled"
-
     def __call__(self):
         """ Core logic """
 
         # Input
-        if self.input_hdf5 is not None:
-            self.read_hdf5()
-        if self.input_image_dir is not None:
-            self.read_image_dir()
+        if self.infile is not None:
+            self.load()
 
         # Output
-        if self.output_hdf5 is not None:
-            self.write_hdf5()
-        if self.output_image_dir is not None:
-            self.write_image_dir()
+        if self.outfile is not None:
+            self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -66,13 +50,13 @@ class LabeledOCRDataset(OCRDataset):
     # region Private Properties
 
     @property
-    def _spec_columns(self):
+    def _imagespec_columns(self):
         """list(str): Character image specification columns"""
 
         return ["path", "char"]
 
     @property
-    def _spec_dtypes(self):
+    def _imagespec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str, "char": str}
 
@@ -82,11 +66,11 @@ class LabeledOCRDataset(OCRDataset):
 
     def get_images_and_labels(self, indexes=None):
         if indexes is None:
-            img = self.data
-            lbl = self.chars_to_labels(self.specs["char"].values)
+            img = self.imagedata
+            lbl = self.chars_to_labels(self.imagespecs["char"].values)
         else:
-            img = self.data[indexes]
-            lbl = self.chars_to_labels(self.specs["char"].loc[indexes].values)
+            img = self.imagedata[indexes]
+            lbl = self.chars_to_labels(self.imagespecs["char"].loc[indexes].values)
 
         return img, lbl
 
@@ -127,7 +111,7 @@ class LabeledOCRDataset(OCRDataset):
 
         return pd.DataFrame(data=np.array([infiles, chars]).transpose(),
                             index=range(len(infiles)),
-                            columns=self._spec_columns)
+                            columns=self._imagespec_columns)
 
     def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
