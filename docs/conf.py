@@ -37,6 +37,7 @@ html_context = dict(
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]
 autodoc_member_order = "bysource"
@@ -44,3 +45,4 @@ autodoc_default_options = {
     "members": None,
     "show-inheritance": None,
 }
+todo_include_todos = False

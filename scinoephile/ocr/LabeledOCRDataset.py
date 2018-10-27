@@ -17,7 +17,7 @@ class LabeledOCRDataset(OCRDataset):
     """
     Represents a collection of labeled character images
 
-    Todo:
+    .. todo:
       - [ ] Don't allow 'path' to be set to NaN
       - [ ] Document
     """

@@ -17,7 +17,7 @@ class OCRDataset(OCRCLToolBase):
     """
     Represents a collection of character images
 
-    TODO:
+    .. todo:
       - [ ] Implement 8-bit and 1-bit support; remove 2-bit support
       - [ ] Clean up and refactor
       - [ ] Document
@@ -217,7 +217,7 @@ class OCRDataset(OCRCLToolBase):
         """
         Adds image imagedata and specifications
 
-        TODO: Improve efficiency; is it necessary to check that specs are new?
+        .. todo: Improve efficiency; is it necessary to check that specs are new?
 
         Args:
             imagespecs (pandas.DataFrame): New specs

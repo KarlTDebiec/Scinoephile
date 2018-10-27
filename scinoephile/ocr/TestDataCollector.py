@@ -17,7 +17,7 @@ class TestDataCollector(OCRCLToolBase):
     """
     Collects test data based on interim model
 
-    Todo:
+    .. todo:
       - [ ] Refactor with new dataset classes
       - [ ] Implement CL arguments
       - [ ] Decide whether or not to move load_unlabeled_data out of class
@@ -296,7 +296,7 @@ class TestDataCollector(OCRCLToolBase):
     def load_unlabeled_data(self, directory):
         """
 
-        Todo:
+        .. todo:
           - Implement caching
 
         Args:

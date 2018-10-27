@@ -15,7 +15,7 @@ from scinoephile.ocr import OCRCLToolBase
 class TrainingDataGenerator(OCRCLToolBase):
     """
     Generates data for OCR model training and validation
-    Todo:
+    .. todo:
       - CL arguments
       - Output directly to hdf5
     """

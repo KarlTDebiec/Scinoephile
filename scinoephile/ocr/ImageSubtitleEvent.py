@@ -17,7 +17,7 @@ class ImageSubtitleEvent(SubtitleEvent):
     """
     Represents an individual image-based subtitle
 
-    TODO:
+    .. todo:
       - [ ] Document
     """
 

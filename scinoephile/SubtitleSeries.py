@@ -22,7 +22,7 @@ class SubtitleSeries(SSAFile, Base):
     loading to and saving from hdf5; while these are part of separate classes
     in pysubs.SSAFile, this additional separation is not needed here.
 
-    TODO:
+    .. todo:
       - [ ] Print as a pandas table
       - [ ] Document
     """
@@ -84,7 +84,7 @@ class SubtitleSeries(SSAFile, Base):
         """
         Saves subtitles to an output hdf5 file
 
-        TODO:
+        .. todo:
           - [ ] Save project info
         """
         from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
@@ -181,7 +181,7 @@ class SubtitleSeries(SSAFile, Base):
         """
         Loads subtitles from an hdf5 file into a nascent SubtitleSeries
 
-        TODO:
+        .. todo:
           - [ ] Load project info
         """
         import numpy as np

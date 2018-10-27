@@ -18,7 +18,7 @@ class AutoTrainer(OCRCLToolBase):
     """
     Trains model
 
-    Todo:
+    .. todo:
       - [x] Generate fitting and validation sets with new class
       - [x] Save separate training dataset hdf5 files
       - [ ] Write log file(s)

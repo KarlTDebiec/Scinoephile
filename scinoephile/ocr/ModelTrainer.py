@@ -17,7 +17,7 @@ class ModelTrainer(OCRCLToolBase):
     """
     Trains model
 
-    TODO:
+    .. todo:
       - [ ] Confirm all functionality has been ported to AutoTrainer, then
             remove
     """

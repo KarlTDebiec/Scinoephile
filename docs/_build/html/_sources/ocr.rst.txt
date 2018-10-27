@@ -19,8 +19,8 @@ OCR Command Line Tool Base
 Data Structures
 _______________
 
-OCR
-```
+OCR Images
+``````````
 
 Base Dataset
 ............
@@ -39,8 +39,8 @@ Generated Dataset
 .. autoclass:: scinoephile.ocr.GeneratedOCRDataset
 
 
-Subtitles
-`````````
+Image-Based Subtitles
+`````````````````````
 
 Dataset
 .......
