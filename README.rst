@@ -12,7 +12,9 @@ and 唔 rather than 是, 在, and 不, etc.). Optical Character Recognition
 functions are currently under development to allow the conversion of
 image-based Blu-Ray subtitles to text format.
 
-Example Mandarin/English Output::
+Example Mandarin/English Output:
+
+.. code-block:: text
 
     2
     00:01:04,397 --> 00:01:06,149
@@ -20,7 +22,9 @@ Example Mandarin/English Output::
     yō! lǐ yé lái la
     Master Li is here!
 
-Example Cantonese/English Output::
+Example Cantonese/English Output:
+
+.. code-block:: text
 
     207
     00:12:13,274 --> 00:12:14,109
@@ -43,7 +47,9 @@ Dependencies
 Installation
 ------------
 
-``python setup.py install``
+.. code-block:: text
+
+    python setup.py install
 
 Compositing
 -----------

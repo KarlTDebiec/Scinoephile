@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### CLASSES ###################################
 class Base(object):
-    """Base for all scinoephile classes"""
+    """Base for scinoephile classes"""
 
     # region Builtins
 
@@ -29,7 +29,7 @@ class Base(object):
 
     @property
     def embed_kw(self):
-        """dict: Use 'IPython.embed(**self.embed_kw)' for more useful prompt"""
+        """dict: use ``IPython.embed(**self.embed_kw)`` for more useful prompt"""
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)
@@ -53,7 +53,7 @@ class Base(object):
 
     @property
     def package_root(self):
-        """str: path to package root directory"""
+        """str: Path to package root directory"""
         if not hasattr(self, "_package_root"):
             from os.path import dirname
             from sys import modules
@@ -136,7 +136,7 @@ class CLToolBase(Base):
 
     @property
     def interactive(self):
-        """bool: Present IPython prompt after processing subtitles"""
+        """bool: present IPython prompt after processing subtitles"""
         if not hasattr(self, "_interactive"):
             self._interactive = False
         return self._interactive

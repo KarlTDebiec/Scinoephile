@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scinoephile.ocr.LabeledOCRDataset &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../base.html">Base Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scinoephile.html">scinoephile</a> &raquo;</li>
+        
+          <li><a href="../ocr.html">scinoephile.ocr</a> &raquo;</li>
+        
+      <li>scinoephile.ocr.LabeledOCRDataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scinoephile.ocr.LabeledOCRDataset</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#   scinoephile.ocr.LabeledOCRDataset,py</span>
+<span class="c1">#</span>
+<span class="c1">#   Copyright (C) 2017-2018 Karl T Debiec</span>
+<span class="c1">#   All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#   This software may be modified and distributed under the terms of the</span>
+<span class="c1">#   BSD license. See the LICENSE file for details.</span>
+<span class="c1">################################### MODULES ###################################</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRDataset</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
+
+
+<span class="c1">################################### CLASSES ###################################</span>
+<div class="viewcode-block" id="LabeledOCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.LabeledOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">LabeledOCRDataset</span><span class="p">(</span><span class="n">OCRDataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a collection of labeled character images</span>
+
+<span class="sd">    Todo:</span>
+<span class="sd">      - [ ] Don&#39;t allow &#39;path&#39; to be set to NaN</span>
+<span class="sd">      - [ ] Document</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># region Instance Variables</span>
+
+    <span class="n">help_message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Represents a collection of labeled character images&quot;</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Builtins</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Core logic &quot;&quot;&quot;</span>
+
+        <span class="c1"># Input</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">infile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+        <span class="c1"># Output</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># Present IPython prompt</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span><span class="p">:</span>
+            <span class="n">embed</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_kw</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_imagespec_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_imagespec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Methods</span>
+
+    <span class="k">def</span> <span class="nf">get_images_and_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span>
+            <span class="n">lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span>
+            <span class="n">lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">lbl</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Methods</span>
+
+    <span class="k">def</span> <span class="nf">_get_hdf5_input_spec_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides spec formatter compatible with both numpy and h5py&quot;&quot;&quot;</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">str_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="s2">&quot;char&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">)]</span>
+
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">str_index</span> <span class="ow">in</span> <span class="n">str_indexes</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">_list_image_dir_input_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides infiles within path&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">glob</span> <span class="k">import</span> <span class="n">iglob</span>
+
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">iglob</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{path}</span><span class="s2">/**/*.png&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_image_dir_input_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infiles</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides specs of infiles&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">basename</span>
+
+        <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">basename</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">infiles</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">infiles</span><span class="p">,</span> <span class="n">chars</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span>
+                            <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">infiles</span><span class="p">)),</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_columns</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_hdf5_spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides spec dtypes compatible with both numpy and h5py&quot;&quot;&quot;</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;S255&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="s2">&quot;S3&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="p">[</span><span class="n">dtypes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_get_hdf5_output_spec_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides spec formatter compatible with both numpy and h5py&quot;&quot;&quot;</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">str_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="s2">&quot;char&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">)]</span>
+
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">str_index</span> <span class="ow">in</span> <span class="n">str_indexes</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">_get_image_dir_outfile_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specs</span><span class="p">,</span> <span class="n">outdir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Provides formatter for image outfile paths&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span>
+
+        <span class="k">def</span> <span class="nf">get_base_path_remover</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Provides function to remove shared base path&quot;&quot;&quot;</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">paths</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">specs</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">base_path_remover</span> <span class="o">=</span> <span class="n">get_base_path_remover</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">specs</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]))</span>
+
+            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{outdir}</span><span class="s2">/&quot;</span> \
+                       <span class="n">f</span><span class="s2">&quot;{base_path_remover(spec[1][&#39;path&#39;])}&quot;</span>
+
+            <span class="k">return</span> <span class="n">func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{outdir}</span><span class="s2">/&quot;</span> \
+                       <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;char&#39;]}</span><span class="s2">_</span><span class="si">{spec[0]:06d}</span><span class="s2">.png&quot;</span>
+
+            <span class="k">return</span> <span class="n">func</span></div>
+
+    <span class="c1"># endregion</span>
+
+
+<span class="c1">#################################### MAIN #####################################</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">LabeledOCRDataset</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

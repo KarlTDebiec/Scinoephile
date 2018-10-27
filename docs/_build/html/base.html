@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Base Functionality &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Optical Character Recognition" href="ocr.html" />
+    <link rel="prev" title="Scinoephile" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Base Functionality</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-classes">Base Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base">Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-tool-base">Command Line Tool Base</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-structures">Data Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subtitles">Subtitles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dataset">Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#series">Series</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event">Event</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Base Functionality</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-scinoephile">
+<span id="base-functionality"></span><h1>Base Functionality<a class="headerlink" href="#module-scinoephile" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="base-classes">
+<h2>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="base">
+<h3>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="scinoephile.Base">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">Base</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base for scinoephile classes</p>
+<dl class="attribute">
+<dt id="scinoephile.Base.embed_kw">
+<code class="descname">embed_kw</code><a class="headerlink" href="#scinoephile.Base.embed_kw" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Use <code class="docutils literal notranslate"><span class="pre">IPython.embed(**self.embed_kw)</span></code> for more useful prompt</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Base.package_root">
+<code class="descname">package_root</code><a class="headerlink" href="#scinoephile.Base.package_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: Path to package root directory</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Base.verbosity">
+<code class="descname">verbosity</code><a class="headerlink" href="#scinoephile.Base.verbosity" title="Permalink to this definition">¶</a></dt>
+<dd><p>int: Level of output to provide</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="command-line-tool-base">
+<h3>Command Line Tool Base<a class="headerlink" href="#command-line-tool-base" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="scinoephile.CLToolBase">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">CLToolBase</code><span class="sig-paren">(</span><em>interactive=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
+<p>Base for scinoephile command line tools</p>
+<dl class="attribute">
+<dt id="scinoephile.CLToolBase.interactive">
+<code class="descname">interactive</code><a class="headerlink" href="#scinoephile.CLToolBase.interactive" title="Permalink to this definition">¶</a></dt>
+<dd><p>bool: present IPython prompt after processing subtitles</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.CLToolBase.construct_argparser">
+<em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.construct_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs argument parser</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>parser (argparse.ArgumentParser): Argument parser</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.CLToolBase.validate_args">
+<em class="property">classmethod </em><code class="descname">validate_args</code><span class="sig-paren">(</span><em>parser</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.validate_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.validate_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates arguments provided to an argument parser</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>parser (argparse.ArgumentParser): Argument parser
+args (argparse.Namespace): Arguments</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.CLToolBase.main">
+<em class="property">classmethod </em><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses and validates arguments, constructs and calls object</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="data-structures">
+<h2>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="subtitles">
+<h3>Subtitles<a class="headerlink" href="#subtitles" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="dataset">
+<h4>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="scinoephile.SubtitleDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleDataset.html#SubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scinoephile.CLToolBase" title="scinoephile.CLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.CLToolBase</span></code></a></p>
+<p>Represents a collection of subtitles</p>
+<dl class="docutils">
+<dt>TODO:</dt>
+<dd><ul class="first last simple">
+<li>[ ] Document</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.series_class">
+<code class="descname">series_class</code><a class="headerlink" href="#scinoephile.SubtitleDataset.series_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.infile">
+<code class="descname">infile</code><a class="headerlink" href="#scinoephile.SubtitleDataset.infile" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: Path to input file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.outfile">
+<code class="descname">outfile</code><a class="headerlink" href="#scinoephile.SubtitleDataset.outfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: Path to output file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.subtitles">
+<code class="descname">subtitles</code><a class="headerlink" href="#scinoephile.SubtitleDataset.subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>pandas.core.frame.DataFrame: Subtitles</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="series">
+<h4>Series<a class="headerlink" href="#series" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="scinoephile.SubtitleSeries">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleSeries</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssafile.SSAFile</span></code>, <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
+<p>Represents a subtitle track</p>
+<p>Extension of pysubs2’s SSAFile with additional features. Includes code for
+loading to and saving from hdf5; while these are part of separate classes
+in pysubs.SSAFile, this additional separation is not needed here.</p>
+<dl class="docutils">
+<dt>TODO:</dt>
+<dd><ul class="first last simple">
+<li>[ ] Print as a pandas table</li>
+<li>[ ] Document</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="scinoephile.SubtitleSeries.event_class">
+<code class="descname">event_class</code><a class="headerlink" href="#scinoephile.SubtitleSeries.event_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent.SubtitleEvent</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.SubtitleSeries.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves subtitles to an output file</p>
+<p>pysubs2.SSAFile.save expects an open text file, so we open the hdf5
+file here for consistency.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.SubtitleSeries.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>encoding='utf-8'</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads subtitles from an input file</p>
+<p>pysubs2.SSAFile.from_file expects an open text file, so we open the
+hdf5 file here for consistency</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="event">
+<h4>Event<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="scinoephile.SubtitleEvent">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleEvent</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleEvent.html#SubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssaevent.SSAEvent</span></code>, <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
+<p>Represents an individual subtitle</p>
+<p>Extension of pysubs2’s SSAEvent with additional features</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ocr.html" class="btn btn-neutral float-right" title="Optical Character Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Scinoephile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

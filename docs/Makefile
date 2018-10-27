@@ -1,16 +1,17 @@
-# Minimal makefile for Sphinx documentation
-#
-
-# You can set these variables from the command line.
-SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = scinoephile
-SOURCEDIR     = .
-BUILDDIR      = _build
+PYTHON      = $(shell which python)
+SPHINXBUILD = $(shell which sphinx-build)
+SPHINXPROJ  = scinoephile
+SOURCEDIR   = .
+BUILDDIR    = _build
 
 .PHONY: html
 html:
-	$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	$(PYTHON) $(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(O)
+
+.PHONY: full
+full:
+	cd .. && make
+	$(PYTHON) $(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(O)
 
 .PHONY: clean
 clean:

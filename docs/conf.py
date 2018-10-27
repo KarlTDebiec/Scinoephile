@@ -22,6 +22,7 @@ master_doc = "index"
 language = "en"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 pygments_style = "default"
+
 html_theme = "sphinx_rtd_theme"
 htmlhelp_basename = "scinoephile"
 html_show_sphinx = False
@@ -37,10 +38,9 @@ html_context = dict(
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-#    "m2r",
-#    "recommonmark",
 ]
-#source_parsers = {
-#    '.md': 'recommonmark.parser.CommonMarkParser'
-#}
-#intersphinx_mapping = {"https://docs.python.org/": None}
+autodoc_member_order = "bysource"
+autodoc_default_options = {
+    "members": None,
+    "show-inheritance": None,
+}
