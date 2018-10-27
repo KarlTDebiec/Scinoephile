@@ -70,8 +70,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         self.gen_new_imagedata(10)
 
         # Output
-        # if self.outfile is not None:
-        #     self.save()
+        if self.outfile is not None:
+            self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -88,7 +88,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._font_names = [
                 "/System/Library/Fonts/STHeiti Light.ttc",
                 "/System/Library/Fonts/STHeiti Medium.ttc",
-                "/System/Library/Fonts/PingFang.ttc"]
+                "/System/Library/Fonts/PingFang.ttc",
+                "/Library/Fonts/Songti.ttc"]
         return self._font_names
 
     @font_names.setter
