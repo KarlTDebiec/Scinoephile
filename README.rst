@@ -1,5 +1,5 @@
 Introduction
-============
+------------
 
 Python package for working with Chinese/English bilingual subtitles. Mainly
 useful for combining separate Chinese and English subtitle files into single
@@ -29,7 +29,7 @@ Example Cantonese/English Output::
     - You mean me?    - Yes!
 
 Dependencies
-============
+------------
 
 - `hanziconv <https://github.com/berniey/hanziconv>`_
 - `nltk <https://github.com/nltk/nltk>`_
@@ -41,12 +41,12 @@ Dependencies
 - `snownlp <https://github.com/isnowfy/snownlp>`_
 
 Installation
-============
+------------
 
 ``python setup.py install``
 
 Compositing
-===========
+-----------
 
 .. code-block:: text
 
@@ -85,11 +85,11 @@ Compositing
                             output file
 
 Authorship
-==========
+----------
 
 Scinoephile is developed by Karl T. Debiec.
 
 License
-=======
+-------
 
 Released under a 3-clause BSD license.
