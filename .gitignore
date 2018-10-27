@@ -4,6 +4,7 @@
 .idea
 __pycache__
 build
+docs/_build
 dist
 src
 scinoephile.egg-info
