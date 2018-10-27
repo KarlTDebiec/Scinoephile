@@ -37,6 +37,10 @@ html_context = dict(
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-    "recommonmark",
+#    "m2r",
+#    "recommonmark",
 ]
+#source_parsers = {
+#    '.md': 'recommonmark.parser.CommonMarkParser'
+#}
 #intersphinx_mapping = {"https://docs.python.org/": None}

@@ -83,6 +83,12 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">Welcome to scinoephile’s documentation!</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#compositing">Compositing</a></li>
+<li><a class="reference internal" href="#authorship">Authorship</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
 </ul>
 </div>
             
@@ -122,6 +128,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -135,7 +143,8 @@
         
             
             
-              <a href="https://github.com/KarlTDebiec/scinoephile/blob/master/docs/index.md" class="fa fa-github"> Edit on GitHub</a>
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -151,7 +160,121 @@
             
   <div class="section" id="welcome-to-scinoephile-s-documentation">
 <h1>Welcome to scinoephile’s documentation!<a class="headerlink" href="#welcome-to-scinoephile-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Test</p>
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Python package for working with Chinese/English bilingual subtitles. Mainly
+useful for combining separate Chinese and English subtitle files into single
+synchronized bilingual subtitles. May optionally add romanization below Chinese
+subtitles using Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
+Cantonese romanization is really only useful for older Hong Kong movies (1980s
+to early 1990s) whose Chinese subtitles <a class="reference external" href="https://en.wikipedia.org/wiki/Written_Cantonese">match the spoken Cantonese 1:1</a> (that is, using 係, 喺,
+and 唔 rather than 是, 在, and 不, etc.). Optical Character Recognition
+functions are currently under development to allow the conversion of
+image-based Blu-Ray subtitles to text format.</p>
+<p>Example Mandarin/English Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2
+00:01:04,397 --&gt; 00:01:06,149
+喲！李爺來啦
+yō! lǐ yé lái la
+Master Li is here!
+</pre></div>
+</div>
+<p>Example Cantonese/English Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>207
+00:12:13,274 --&gt; 00:12:14,109
+係咪话我呀？　﹣係！
+haih maih wah ngóh àh?- haih!
+- You mean me?    - Yes!
+</pre></div>
+</div>
+</div>
+<div class="section" id="dependencies">
+<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/berniey/hanziconv">hanziconv</a></li>
+<li><a class="reference external" href="https://github.com/nltk/nltk">nltk</a></li>
+<li><a class="reference external" href="https://github.com/numpy/numpy">numpy</a></li>
+<li><a class="reference external" href="https://github.com/pandas-dev/pandas">pandas</a></li>
+<li><a class="reference external" href="https://github.com/pycantonese/pycantonese">pycantonese</a>
+(recent version from from GitHub rather than pypi)</li>
+<li><a class="reference external" href="https://github.com/mozillazg/python-pinyin">pypinyin</a></li>
+<li><a class="reference external" href="https://github.com/isnowfy/snownlp">snownlp</a></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code></p>
+</div>
+<div class="section" id="compositing">
+<h1>Compositing<a class="headerlink" href="#compositing" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
+                 [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
+                 [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
+
+Compiles Chinese and English subtitles into a single file, optionally adding
+Mandarin or Cantonese romanization, converting traditional characters to
+simplified, or adding machine translation.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         enable verbose output, may be specified more than once
+  -q, --quiet           disable verbose output
+  -I, --interactive     present IPython prompt
+
+input arguments (at least one required):
+  -c [INFILE], --chinese_infile [INFILE]
+                        Chinese subtitles in SRT or VTT format
+  -e [INFILE], --english_infile [INFILE]
+                        English subtitles in SRT or VTT format
+
+operation arguments:
+  --c_offset C_OFFSET   apply offset to Chinese subtitle timings
+  -s, --simplified      convert traditional characters to simplified
+  -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
+  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+  -t, --translate       add English machine translation generated using Google
+                        Translate; requires key for Google Cloud Platform
+  --e_offset E_OFFSET   apply offset to English subtitle timings
+  --truecase            apply standard capitalization to English subtitles
+
+output arguments:
+  -o [OUTFILE], --outfile [OUTFILE]
+                        output file
+</pre></div>
+</div>
+</div>
+<div class="section" id="authorship">
+<h1>Authorship<a class="headerlink" href="#authorship" title="Permalink to this headline">¶</a></h1>
+<p>Scinoephile is developed by Karl T. Debiec.</p>
+</div>
+<div class="section" id="license">
+<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
+<p>Released under a 3-clause BSD license.</p>
+<p>Copyright (c) 2017-2018, Karl T. Debiec</p>
+<p>All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+<ul class="simple">
+<li>Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</li>
+<li>Neither the name Scinoephile nor the names of its contributors may be used
+to endorse or promote products derived from this software without specific
+prior written permission.</li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </div>
 
 
