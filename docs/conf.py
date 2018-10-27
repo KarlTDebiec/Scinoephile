@@ -19,7 +19,7 @@ release = "0.1.0"
 
 source_suffix = [".rst", ".md"]
 master_doc = "index"
-language = None
+language = "en"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 pygments_style = "default"
 html_theme = "sphinx_rtd_theme"
@@ -30,10 +30,13 @@ html_context = dict(
     display_github = True,
     github_user    = "KarlTDebiec",
     github_repo    = "scinoephile",
+    github_version = "master",
+    conf_py_path  = "/docs/",
 )
 
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
+    "recommonmark",
 ]
 #intersphinx_mapping = {"https://docs.python.org/": None}
