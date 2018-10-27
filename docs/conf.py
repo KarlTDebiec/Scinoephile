@@ -17,16 +17,20 @@ author = "Karl T Debiec"
 version = "0.1.0"
 release = "0.1.0"
 
-#templates_path = ["_templates"]
 source_suffix = [".rst", ".md"]
 master_doc = "index"
 language = None
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
-pygments_style = "sphinx"
-#html_theme = "alabaster"
-html_theme        = "sphinx_rtd_theme"
-#html_static_path = ["_static"]
+pygments_style = "default"
+html_theme = "sphinx_rtd_theme"
 htmlhelp_basename = "scinoephile"
+html_show_sphinx = False
+html_show_sourcelink = False
+html_context = dict(
+    display_github = True,
+    github_user    = "KarlTDebiec",
+    github_repo    = "scinoephile",
+)
 
 extensions = [
     "sphinx.ext.autodoc",
