@@ -10,13 +10,12 @@
 ################################### MODULES ###################################
 from scinoephile.ocr import LabeledOCRDataset
 from IPython import embed
-from sys import exit
 
 
 ################################### CLASSES ###################################
 class GeneratedOCRDataset(LabeledOCRDataset):
     """
-    Represents a collection of generated character images
+    A collection of generated character images
 
     .. todo::
       - [x] Update gen_min_imagedata
@@ -28,14 +27,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             than recreating fully
       - [ ] Implement CL arguments
       - [ ] Validate CL arguments
-      - [ ] Document
     """
-
-    # region Instance Variables
-
-    help_message = ("Represents a collection of generated character images")
-
-    # endregion
 
     # region Builtins
 

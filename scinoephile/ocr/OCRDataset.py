@@ -15,19 +15,11 @@ from IPython import embed
 ################################### CLASSES ###################################
 class OCRDataset(OCRCLToolBase):
     """
-    Represents a collection of character images
+    A collection of character images
 
     .. todo::
       - [ ] Implement 8-bit and 1-bit support; remove 2-bit support
-      - [ ] Clean up and refactor
-      - [ ] Document
     """
-
-    # region Instance Variables
-
-    help_message = ("Represents a collection of character images")
-
-    # endregion
 
     # region Builtins
 
@@ -71,7 +63,7 @@ class OCRDataset(OCRCLToolBase):
     @property
     def imagedata(self):
         """numpy.ndarray(bool): Character image data"""
-        if not hasattr(self, "_imagedata"):
+        if not hasattr(self, "_imgdata"):
             import numpy as np
             if self.image_mode == "8 bit":
                 self._imagedata = np.zeros((0, 6400), np.uint8)
@@ -104,7 +96,7 @@ class OCRDataset(OCRCLToolBase):
     @property
     def image_mode(self):
         """str: Image mode"""
-        if not hasattr(self, "_image_mode"):
+        if not hasattr(self, "_imgmode"):
             self._image_mode = "1 bit"
         return self._image_mode
 
@@ -215,14 +207,14 @@ class OCRDataset(OCRCLToolBase):
 
     def add_imagedata(self, imagespecs, imagedata):
         """
-        Adds image imagedata and specifications
+        Adds image imgdata and specifications
 
         .. todo::
           - [ ] Improve efficiency; is it necessary to check that specs are new?
 
         Args:
             imagespecs (pandas.DataFrame): New specs
-            imagedata (numpy.ndarray): New imagedata
+            imagedata (numpy.ndarray): New imgdata
         """
         import numpy as np
 
@@ -241,11 +233,11 @@ class OCRDataset(OCRCLToolBase):
         import numpy as np
 
         if self.verbosity >= 1:
-            print(f"Reading imagedata from '{self.input_hdf5}'")
+            print(f"Reading imgdata from '{self.input_hdf5}'")
         with h5py.File(self.input_hdf5) as hdf5_infile:
             if "imagespecs" not in hdf5_infile:
                 raise ValueError()
-            if "imagedata" not in hdf5_infile:
+            if "imgdata" not in hdf5_infile:
                 raise ValueError()
 
             # Load configuration (Todo: Validate that mode matches current)
@@ -261,7 +253,7 @@ class OCRDataset(OCRCLToolBase):
                 columns=hdf5_infile["imagespecs"].dtype.names)
 
             # Load data
-            char_image_data = np.array(hdf5_infile["imagedata"])
+            char_image_data = np.array(hdf5_infile["imgdata"])
 
         self.add_imagedata(char_image_specs, char_image_data)
 
@@ -358,11 +350,11 @@ class OCRDataset(OCRCLToolBase):
         # TODO: Validate that hdf5 file can be written
 
         if self.verbosity >= 1:
-            print(f"Writing imagedata to '{outfile}'")
+            print(f"Writing imgdata to '{outfile}'")
         with h5py.File(outfile) as hdf5_outfile:
             # Remove preexisting data
-            if "imagedata" in hdf5_outfile:
-                del hdf5_outfile["imagedata"]
+            if "imgdata" in hdf5_outfile:
+                del hdf5_outfile["imgdata"]
             if "imagespecs" in hdf5_outfile:
                 del hdf5_outfile["imagespecs"]
 
@@ -385,7 +377,7 @@ class OCRDataset(OCRCLToolBase):
 
             # Save data
             hdf5_outfile.create_dataset(
-                "imagedata",
+                "imgdata",
                 data=self.imagedata,
                 dtype=self._imagedata_dtype,
                 chunks=True,

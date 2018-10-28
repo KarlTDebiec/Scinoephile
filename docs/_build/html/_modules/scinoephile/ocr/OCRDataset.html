@@ -270,7 +270,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;numpy.ndarray(bool): Character image data&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imagedata&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgdata&quot;</span><span class="p">):</span>
             <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
@@ -303,7 +303,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_image_mode&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgmode&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span>
 
@@ -414,14 +414,14 @@
 
 <div class="viewcode-block" id="OCRDataset.add_imagedata"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.add_imagedata">[docs]</a>    <span class="k">def</span> <span class="nf">add_imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imagespecs</span><span class="p">,</span> <span class="n">imagedata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds image imagedata and specifications</span>
+<span class="sd">        Adds image imgdata and specifications</span>
 
 <span class="sd">        .. todo::</span>
 <span class="sd">          - [ ] Improve efficiency; is it necessary to check that specs are new?</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            imagespecs (pandas.DataFrame): New specs</span>
-<span class="sd">            imagedata (numpy.ndarray): New imagedata</span>
+<span class="sd">            imagedata (numpy.ndarray): New imgdata</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -440,11 +440,11 @@
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading imagedata from &#39;</span><span class="si">{self.input_hdf5}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading imgdata from &#39;</span><span class="si">{self.input_hdf5}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_hdf5</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf5_infile</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;imagespecs&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdf5_infile</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">&quot;imagedata&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdf5_infile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;imgdata&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdf5_infile</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
 
             <span class="c1"># Load configuration (Todo: Validate that mode matches current)</span>
@@ -460,7 +460,7 @@
                 <span class="n">columns</span><span class="o">=</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
 
             <span class="c1"># Load data</span>
-            <span class="n">char_image_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagedata&quot;</span><span class="p">])</span>
+            <span class="n">char_image_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imgdata&quot;</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_imagedata</span><span class="p">(</span><span class="n">char_image_specs</span><span class="p">,</span> <span class="n">char_image_data</span><span class="p">)</span>
 
@@ -557,11 +557,11 @@
         <span class="c1"># TODO: Validate that hdf5 file can be written</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing imagedata to &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing imgdata to &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
             <span class="c1"># Remove preexisting data</span>
-            <span class="k">if</span> <span class="s2">&quot;imagedata&quot;</span> <span class="ow">in</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">hdf5_outfile</span><span class="p">[</span><span class="s2">&quot;imagedata&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;imgdata&quot;</span> <span class="ow">in</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">hdf5_outfile</span><span class="p">[</span><span class="s2">&quot;imgdata&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="s2">&quot;imagespecs&quot;</span> <span class="ow">in</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">hdf5_outfile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span>
 
@@ -584,7 +584,7 @@
 
             <span class="c1"># Save data</span>
             <span class="n">hdf5_outfile</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
-                <span class="s2">&quot;imagedata&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;imgdata&quot;</span><span class="p">,</span>
                 <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">,</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagedata_dtype</span><span class="p">,</span>
                 <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>

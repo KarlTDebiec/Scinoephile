@@ -6,7 +6,9 @@ Development
 Optical Character Recognition
 _____________________________
 
+- [x] Fix font support on new macos and matplotlib
 - [x] Review Subtitle and ImageSubtitle Data Structures
+- [ ] Review OCR Data Structures
 - [ ] Migrate Machine Learning code to newer data structures
 - [ ] Save machine learning model and reload
 - [ ] Apply machine learning model to ImageSubtitleDataset
@@ -24,12 +26,13 @@ _____________
 
 - [x] Configure GitHub Pages documentation
 - [ ] Document Base and CLToolBase
-- [ ] Document Subtitle Dataset, Series, and Event
-- [ ] Document Image Subtitle Dataset, Series, and Event
+- [ ] Document Subtitle Data Structures
+- [ ] Document Image Subtitle Data Structures
 - [ ] Document OCRBase and OCRCLToolBase
+- [ ] Document OCR Data Structures
 
 Future Projects
 _______________
 
+- Improve requirements.txt and clarify what is required for which functions
 - Automated testing using pytest and TravisCI
-

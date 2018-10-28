@@ -15,18 +15,11 @@ from IPython import embed
 ################################### CLASSES ###################################
 class LabeledOCRDataset(OCRDataset):
     """
-    Represents a collection of labeled character images
+    A collection of labeled character images
 
     .. todo::
       - [ ] Don't allow 'path' to be set to NaN
-      - [ ] Document
     """
-
-    # region Instance Variables
-
-    help_message = ("Represents a collection of labeled character images")
-
-    # endregion
 
     # region Builtins
 

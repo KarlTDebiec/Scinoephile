@@ -239,7 +239,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_image_mode&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgmode&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span>
 
@@ -295,7 +295,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading subtitles from &#39;</span><span class="si">{infile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">series_class</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span>
-                                                <span class="n">image_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span><span class="p">,</span>
+                                                <span class="n">imgmode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span><span class="p">,</span>
                                                 <span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span></div>
 

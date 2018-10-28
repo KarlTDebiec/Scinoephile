@@ -26,26 +26,27 @@ class ImageSubtitleDataset(SubtitleDataset):
     # endregion
 
     # region Builtins
-    def __init__(self, image_mode=None, **kwargs):
+
+    def __init__(self, imgmode=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if image_mode is not None:
-            self.image_mode = image_mode
+        if imgmode is not None:
+            self.imgmode = imgmode
 
     # endregion
 
     # region Public Properties
 
     @property
-    def image_mode(self):
+    def imgmode(self):
         """str: Image mode"""
-        if not hasattr(self, "_image_mode"):
-            self._image_mode = "1 bit"
-        return self._image_mode
+        if not hasattr(self, "_imgmode"):
+            self._imgmode = "1 bit"
+        return self._imgmode
 
-    @image_mode.setter
-    def image_mode(self, value):
+    @imgmode.setter
+    def imgmode(self, value):
         if value is not None:
             if not isinstance(value, str):
                 try:
@@ -58,15 +59,15 @@ class ImageSubtitleDataset(SubtitleDataset):
                 pass
             else:
                 raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, change on self.subtitles
+        # TODO: If changed, change on self.subtitles as well
 
-        self._image_mode = value
+        self._imgmode = value
 
     @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
-            self._subtitles = self.series_class(image_mode=self.image_mode,
+            self._subtitles = self.series_class(imgmode=self.imgmode,
                                                 verbosity=self.verbosity)
         return self._subtitles
 
@@ -96,7 +97,7 @@ class ImageSubtitleDataset(SubtitleDataset):
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
         self.subtitles = self.series_class.load(infile,
-                                                image_mode=self.image_mode,
+                                                imgmode=self.imgmode,
                                                 verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 

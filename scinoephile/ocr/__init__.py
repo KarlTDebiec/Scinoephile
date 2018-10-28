@@ -83,7 +83,7 @@ def draw_text_on_image(image, text, x=0, y=0, font="Arial.ttf", size=30):
 def gen_char_imagedata(char, font, fig=None, size=60, width=5,
                        x_offset=0, y_offset=0, image_mode="1 bit"):
     """
-    Generates imagedata of a character
+    Generates imgdata of a character
 
     Args:
         char (str): character to generate an image of

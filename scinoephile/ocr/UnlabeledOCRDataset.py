@@ -15,7 +15,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class UnlabeledOCRDataset(OCRDataset):
     """
-    Represents a collection of unlabeled character images
+    A collection of unlabeled character images
 
     .. todo::
       - [x] Read image directory
@@ -23,14 +23,7 @@ class UnlabeledOCRDataset(OCRDataset):
       - [x] Write hdf5
       - [x] Read hdf5
       - [x] Write image directory
-      - [ ] Document
     """
-
-    # region Instance Variables
-
-    help_message = ("Represents a collection of unlabeled character images")
-
-    # endregion
 
     # region Builtins
 
