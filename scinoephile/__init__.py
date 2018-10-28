@@ -7,6 +7,10 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+################################## MODULES ###################################
+from IPython import embed
+
+
 ################################### CLASSES ###################################
 class Base(object):
     """Base for scinoephile classes"""
@@ -99,12 +103,6 @@ class Base(object):
 class CLToolBase(Base):
     """Base for scinoephile command line tools"""
 
-    # region Instance Variables
-
-    help_message = "Base for command line tools"
-
-    # endregion
-
     # region Builtins
 
     def __init__(self, interactive=None, **kwargs):
@@ -165,7 +163,14 @@ class CLToolBase(Base):
         import argparse
 
         if parser is None:
-            parser = argparse.ArgumentParser(description=cls.help_message)
+            if hasattr(cls, "helptext"):
+                description = cls.helptext
+            else:
+                try:
+                    description = cls.__doc__.split("\n")[1].strip()
+                except IndexError:
+                    description = cls.__doc__
+            parser = argparse.ArgumentParser(description=description)
 
         # General
         verbosity = parser.add_mutually_exclusive_group()

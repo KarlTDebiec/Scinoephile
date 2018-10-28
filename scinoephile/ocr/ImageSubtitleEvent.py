@@ -15,10 +15,7 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleEvent(SubtitleEvent):
     """
-    Represents an individual image-based subtitle
-
-    .. todo::
-      - [ ] Document
+    An individual image-based subtitle
     """
 
     # region Builtins

@@ -16,18 +16,14 @@ from IPython import embed
 ################################### CLASSES ###################################
 class SubtitleSeries(SSAFile, Base):
     """
-    Represents a subtitle track
+    A series of subtitles
 
     Extension of pysubs2's SSAFile with additional features. Includes code for
-    loading to and saving from hdf5; while these are part of separate classes
-    in pysubs.SSAFile, this additional separation is not needed here.
-
-    .. todo::
-      - [ ] Print as a pandas table
-      - [ ] Document
+    loading to and saving from hdf5. While these are part of separate classes
+    in pysubs.SSAFile, this additional separation is not beneficial here.
     """
 
-    # region Class Variables
+    # region Class Attributes
 
     event_class = SubtitleEvent
 

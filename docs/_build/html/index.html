@@ -124,6 +124,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#future-projects">Future Projects</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -311,104 +318,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="base.html#index-0"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleDataset.py:docstring of scinoephile.SubtitleDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Print as a pandas table</li>
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="base.html#index-1"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py:docstring of scinoephile.SubtitleSeries, line 7.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Support western characters and punctuation</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-0"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py:docstring of scinoephile.ocr.OCRBase, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Implement 8-bit and 1-bit support; remove 2-bit support</li>
-<li>[ ] Clean up and refactor</li>
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-1"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py:docstring of scinoephile.ocr.OCRDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Improve efficiency; is it necessary to check that specs are new?</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-2"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py:docstring of scinoephile.ocr.OCRDataset.add_imagedata, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[x] Read image directory</li>
-<li>[x] Add images</li>
-<li>[x] Write hdf5</li>
-<li>[x] Read hdf5</li>
-<li>[x] Write image directory</li>
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-3"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/UnlabeledOCRDataset.py:docstring of scinoephile.ocr.UnlabeledOCRDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Don’t allow ‘path’ to be set to NaN</li>
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-4"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/LabeledOCRDataset.py:docstring of scinoephile.ocr.LabeledOCRDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[x] Update gen_min_imagedata</li>
-<li>[x] Update gen_new_imagedata</li>
-<li>[ ] Update saving</li>
-<li>[ ] Update loading</li>
-<li>[ ] Remove temporary code used during troubleshooting</li>
-<li><dl class="first docutils">
-<dt>[ ] Expand training and validation sets when images are added, rather</dt>
-<dd>than recreating fully</dd>
-</dl>
-</li>
-<li>[ ] Implement CL arguments</li>
-<li>[ ] Validate CL arguments</li>
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-5"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/GeneratedOCRDataset.py:docstring of scinoephile.ocr.GeneratedOCRDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-6"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleDataset.py:docstring of scinoephile.ocr.ImageSubtitleDataset, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-7"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py:docstring of scinoephile.ocr.ImageSubtitleSeries, line 3.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Document</li>
-</ul>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ocr.html#index-8"><em>original entry</em></a> is located in /usr/local/anaconda3/envs/scinoephile/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py:docstring of scinoephile.ocr.ImageSubtitleEvent, line 3.)</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>

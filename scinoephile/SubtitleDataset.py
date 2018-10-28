@@ -15,15 +15,14 @@ from IPython import embed
 ################################### CLASSES ###################################
 class SubtitleDataset(CLToolBase):
     """
-    Represents a collection of subtitles
+    A collection of subtitles
 
-    .. todo::
-      - [ ] Document
+    Serves as an additional layer around SubtitleSeries and SubtitleEvent to
+    separate scinoephile and pysubs2 styles.
     """
 
-    # region Class Variables
+    # region Class Attributes
 
-    help_message = ("Represents a collection of subtitles")
     series_class = SubtitleSeries
 
     # endregion
@@ -156,8 +155,3 @@ class SubtitleDataset(CLToolBase):
         self.subtitles.save(outfile)
 
     # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    SubtitleDataset.main()

@@ -16,9 +16,9 @@ from IPython import embed
 ################################### CLASSES ###################################
 class SubtitleEvent(SSAEvent, Base):
     """
-    Represents an individual subtitle
+    An individual subtitle
 
-    Extension of pysubs2's SSAEvent with additional features
+    Extension of pysubs2's SSAEvent with additional features.
     """
 
     # region Builtins
@@ -33,7 +33,7 @@ class SubtitleEvent(SSAEvent, Base):
     def __repr__(self):
         from pysubs2.time import ms_to_str
 
-        return f"<{self.__class__.__name__} " \
+        return f"<{self.__class__.__name__}— " \
                f"type={self.type} " \
                f"start={ms_to_str(self.start)} " \
                f"end={ms_to_str(self.end)} " \

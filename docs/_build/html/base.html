@@ -125,6 +125,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#future-projects">Future Projects</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -209,13 +216,13 @@
 <td>Base for scinoephile command line tools</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#scinoephile.SubtitleDataset" title="scinoephile.SubtitleDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scinoephile.SubtitleDataset</span></code></a></td>
-<td>Represents a collection of subtitles</td>
+<td>A collection of subtitles</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries</span></code></a></td>
-<td>Represents a subtitle track</td>
+<td>A series of subtitles</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#scinoephile.SubtitleEvent" title="scinoephile.SubtitleEvent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent</span></code></a></td>
-<td>Represents an individual subtitle</td>
+<td>An individual subtitle</td>
 </tr>
 </tbody>
 </table>
@@ -303,13 +310,9 @@ args (argparse.Namespace): Arguments</dd>
 <dt id="scinoephile.SubtitleDataset">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleDataset.html#SubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.CLToolBase" title="scinoephile.CLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.CLToolBase</span></code></a></p>
-<p>Represents a collection of subtitles</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Document</li>
-</ul>
-</div>
+<p>A collection of subtitles</p>
+<p>Serves as an additional layer around SubtitleSeries and SubtitleEvent to
+separate scinoephile and pysubs2 styles.</p>
 <dl class="attribute">
 <dt id="scinoephile.SubtitleDataset.series_class">
 <code class="descname">series_class</code><a class="headerlink" href="#scinoephile.SubtitleDataset.series_class" title="Permalink to this definition">¶</a></dt>
@@ -343,17 +346,10 @@ args (argparse.Namespace): Arguments</dd>
 <dt id="scinoephile.SubtitleSeries">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleSeries</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssafile.SSAFile</span></code>, <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
-<p>Represents a subtitle track</p>
+<p>A series of subtitles</p>
 <p>Extension of pysubs2’s SSAFile with additional features. Includes code for
-loading to and saving from hdf5; while these are part of separate classes
-in pysubs.SSAFile, this additional separation is not needed here.</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>[ ] Print as a pandas table</li>
-<li>[ ] Document</li>
-</ul>
-</div>
+loading to and saving from hdf5. While these are part of separate classes
+in pysubs.SSAFile, this additional separation is not beneficial here.</p>
 <dl class="attribute">
 <dt id="scinoephile.SubtitleSeries.event_class">
 <code class="descname">event_class</code><a class="headerlink" href="#scinoephile.SubtitleSeries.event_class" title="Permalink to this definition">¶</a></dt>
@@ -385,8 +381,8 @@ hdf5 file here for consistency</p>
 <dt id="scinoephile.SubtitleEvent">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleEvent</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleEvent.html#SubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssaevent.SSAEvent</span></code>, <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
-<p>Represents an individual subtitle</p>
-<p>Extension of pysubs2’s SSAEvent with additional features</p>
+<p>An individual subtitle</p>
+<p>Extension of pysubs2’s SSAEvent with additional features.</p>
 </dd></dl>
 
 </div>

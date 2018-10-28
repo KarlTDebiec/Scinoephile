@@ -16,14 +16,11 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleDataset(SubtitleDataset):
     """
-    Represents a collection of image-based subtitles
-
-    .. todo::
-      - [ ] Document
+    A collection of image-based subtitles
     """
 
-    # region Instance Variables
-    help_message = ("Represents a collection of image-based subtitles")
+    # region Class Attributes
+
     series_class = ImageSubtitleSeries
 
     # endregion
@@ -104,8 +101,3 @@ class ImageSubtitleDataset(SubtitleDataset):
         self.subtitles.verbosity = self.verbosity
 
     # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    ImageSubtitleDataset.main()

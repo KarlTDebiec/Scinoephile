@@ -123,6 +123,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#future-projects">Future Projects</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -206,18 +213,14 @@
 <span class="c1">################################### CLASSES ###################################</span>
 <div class="viewcode-block" id="SubtitleSeries"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">SubtitleSeries</span><span class="p">(</span><span class="n">SSAFile</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a subtitle track</span>
+<span class="sd">    A series of subtitles</span>
 
 <span class="sd">    Extension of pysubs2&#39;s SSAFile with additional features. Includes code for</span>
-<span class="sd">    loading to and saving from hdf5; while these are part of separate classes</span>
-<span class="sd">    in pysubs.SSAFile, this additional separation is not needed here.</span>
-
-<span class="sd">    .. todo::</span>
-<span class="sd">      - [ ] Print as a pandas table</span>
-<span class="sd">      - [ ] Document</span>
+<span class="sd">    loading to and saving from hdf5. While these are part of separate classes</span>
+<span class="sd">    in pysubs.SSAFile, this additional separation is not beneficial here.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># region Class Variables</span>
+    <span class="c1"># region Class Attributes</span>
 
     <span class="n">event_class</span> <span class="o">=</span> <span class="n">SubtitleEvent</span>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; scinoephile 0.1.0 documentation</title>
+  <title>Development &mdash; scinoephile 0.1.0 documentation</title>
   
 
   
@@ -27,7 +27,8 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Command-Line Tools" href="cltools.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -63,7 +64,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -80,7 +81,7 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="base.html">Base Functionality</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="base.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="base.html#base">Base</a></li>
@@ -123,11 +124,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#future-projects">Future Projects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-projects">Future Projects</a></li>
 </ul>
 </li>
 </ul>
@@ -169,20 +170,23 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Development</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/KarlTDebiec/scinoephile/blob/master/docs/search" class="fa fa-github"> Edit on GitHub</a>
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -196,24 +200,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="development">
+<h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="optical-character-recognition">
+<h2>Optical Character Recognition<a class="headerlink" href="#optical-character-recognition" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[x] Review Subtitle and ImageSubtitle Data Structures</li>
+<li>[ ] Migrate Machine Learning code to newer data structures</li>
+<li>[ ] Save machine learning model and reload</li>
+<li>[ ] Apply machine learning model to ImageSubtitleDataset</li>
+<li>[ ] Add support for Western characters and punctuation</li>
+</ul>
+</div>
+<div class="section" id="migrate-compositor-to-new-data-structures">
+<h2>Migrate Compositor to New Data Structures<a class="headerlink" href="#migrate-compositor-to-new-data-structures" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[ ] Print SubtitleSeries and SubtitleDataset as pandas DataFrames</li>
+<li>[ ] Migrate English, Chinese (may call Hanzi for clarity, and bilingual
+subtitles to SubtitleSeries</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[x] Configure GitHub Pages documentation</li>
+<li>[ ] Document Base and CLToolBase</li>
+<li>[ ] Document Subtitle Dataset, Series, and Event</li>
+<li>[ ] Document Image Subtitle Dataset, Series, and Event</li>
+<li>[ ] Document OCRBase and OCRCLToolBase</li>
+</ul>
+</div>
+<div class="section" id="future-projects">
+<h2>Future Projects<a class="headerlink" href="#future-projects" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Automated testing using pytest and TravisCI</li>
+</ul>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="cltools.html" class="btn btn-neutral" title="Command-Line Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -245,7 +281,6 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="_static/searchtools.js"></script>
     
 
   
@@ -256,14 +291,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>

@@ -16,13 +16,10 @@ from IPython import embed
 ################################### CLASSES ###################################
 class ImageSubtitleSeries(SubtitleSeries):
     """
-    Represents an image-based subtitle track
-
-     .. todo::
-      - [ ] Document
+    A series of image-based subtitles
     """
 
-    # region Class Variables
+    # region Class Attributes
 
     event_class = ImageSubtitleEvent
 
@@ -133,6 +130,40 @@ class ImageSubtitleSeries(SubtitleSeries):
     # endregion
 
     # region Private Methods
+
+    def _save_hdf5(self, fp, **kwargs):
+        """
+        Saves subtitles to an output hdf5 file
+
+        .. todo::
+          - [ ] Save project info
+        """
+        import numpy as np
+
+        # Save info, styles and subtitles
+        SubtitleSeries._save_hdf5(self, fp, **kwargs)
+
+        # Save images
+        if "images" in fp:
+            del fp["images"]
+        fp.create_group("images")
+        fp["images"].attrs["image_mode"] = self.image_mode
+        for i, event in enumerate(self.events):
+            if hasattr(event, "imagedata"):
+                if event.image_mode == "8 bit":
+                    fp["images"].create_dataset(f"{i:04d}",
+                                                data=event.imagedata,
+                                                dtype=np.uint8, chunks=True,
+                                                compression="gzip")
+                elif event.image_mode == "1 bit":
+                    fp["images"].create_dataset(f"{i:04d}",
+                                                data=event.imagedata,
+                                                dtype=np.bool, chunks=True,
+                                                compression="gzip")
+
+    # endregion
+
+    # region Private Class Methods
 
     @classmethod
     def _load_hdf5(cls, fp, image_mode=None, verbosity=1, **kwargs):
@@ -301,35 +332,5 @@ class ImageSubtitleSeries(SubtitleSeries):
                 break
 
         return subs
-
-    def _save_hdf5(self, fp, **kwargs):
-        """
-        Saves subtitles to an output hdf5 file
-
-        .. todo::
-          - [ ] Save project info
-        """
-        import numpy as np
-
-        # Save info, styles and subtitles
-        SubtitleSeries._save_hdf5(self, fp, **kwargs)
-
-        # Save images
-        if "images" in fp:
-            del fp["images"]
-        fp.create_group("images")
-        fp["images"].attrs["image_mode"] = self.image_mode
-        for i, event in enumerate(self.events):
-            if hasattr(event, "imagedata"):
-                if event.image_mode == "8 bit":
-                    fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.imagedata,
-                                                dtype=np.uint8, chunks=True,
-                                                compression="gzip")
-                elif event.image_mode == "1 bit":
-                    fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.imagedata,
-                                                dtype=np.bool, chunks=True,
-                                                compression="gzip")
 
     # endregion
