@@ -47,12 +47,12 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         #     self.load()
 
         # Action
-        self.generate_minimal_images()
-        self.generate_additional_images(2)
+        self.generate_minimal_img()
+        self.generate_additional_img(2)
 
         # Output
-        # if self.outfile is not None:
-        #     self.save()
+        if self.outfile is not None:
+            self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -259,7 +259,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
             "char", axis=1).values))
 
-    def generate_minimal_images(self):
+    def generate_minimal_img(self):
         import numpy as np
         import pandas as pd
         from scinoephile.ocr import generate_char_img
@@ -288,7 +288,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
             self.add_img(spec, data)
 
-    def generate_additional_images(self, n_images=1, chars=None):
+    def generate_additional_img(self, n_images=1, chars=None):
         import numpy as np
         import pandas as pd
         from random import sample
@@ -394,8 +394,14 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         """
         import numpy as np
 
-        dtypes = {"char": "S3", "font": "S255", "size": "i1", "width": "i1",
-                  "x_offset": "i1", "y_offset": "i1"}
+        dtypes = [
+            ("char", "S3"),
+            ("font", "S255"),
+            ("size", "i1"),
+            ("width", "i1"),
+            ("x_offset", "i1"),
+            ("y_offset", "i1")]
+        encode = lambda x: x.encode("utf8")
 
         # Save image mode
         fp.attrs["mode"] = self.mode
@@ -403,14 +409,12 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         # Save image specs
         if "spec" in fp:
             del fp["spec"]
-        dtypes = [(k, dtypes[k]) for k in self.spec.columns]
-        specs = []
-        for spec in self.spec:
-            specs += []
-        specs = np.array(specs, dtypes)
-        embed(**self.embed_kw)
+        encoded = self.spec.copy()
+        encoded["char"] = encoded["char"].apply(encode)
+        encoded["font"] = encoded["font"].apply(encode)
+        encoded = np.array(list(map(tuple, list(encoded.values))), dtype=dtypes)
         fp.create_dataset("spec",
-                          data=specs, dtype=dtypes,
+                          data=encoded, dtype=dtypes,
                           chunks=True, compression="gzip")
 
         # Save iamge data
