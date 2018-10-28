@@ -211,6 +211,56 @@ class OCRDataset(OCRCLToolBase):
             self.data = np.append(
                 self.data, data[new], axis=0)
 
+    def load(self, infile=None, **kwargs):
+        """
+        Loads character images from an input file
+        """
+        from os.path import expandvars
+
+        # Process arguments
+        if infile is not None:
+            infile = expandvars(infile)
+        elif self.infile is not None:
+            infile = self.infile
+        else:
+            raise ValueError()
+
+        # Read infile
+        if self.verbosity >= 1:
+            print(f"Reading character images from '{infile}'")
+        if (infile.endswith(".hdf5") or infile.endswith(".h5")):
+            import h5py
+
+            with h5py.File(infile) as fp:
+                self._load_hdf5(fp, **kwargs)
+        else:
+            raise NotImplementedError()
+
+    def save(self, outfile=None, **kwargs):
+        """
+        Saves character images to an output file
+        """
+        from os.path import expandvars
+
+        # Process arguments
+        if outfile is not None:
+            outfile = expandvars(outfile)
+        elif self.outfile is not None:
+            outfile = self.outfile
+        else:
+            raise ValueError()
+
+        # Write outfile
+        if self.verbosity >= 1:
+            print(f"Writing character images to '{outfile}'")
+        if (outfile.endswith(".hdf5") or outfile.endswith(".h5")):
+            import h5py
+
+            with h5py.File(outfile) as fp:
+                self._save_hdf5(fp, **kwargs)
+        else:
+            raise NotImplementedError()
+
     def show(self, indexes=None, cols=20):
         import numpy as np
         from PIL import Image
@@ -253,37 +303,14 @@ class OCRDataset(OCRCLToolBase):
                                  100 * (column + 1) - 10))
         img.show()
 
-    def read_hdf5(self):
-        """
-        import pandas as pd
-        import h5py
-        import numpy as np
+    # endregion
 
-        if self.verbosity >= 1:
-            print(f"Reading images from '{self.input_hdf5}'")
-        with h5py.File(self.input_hdf5) as hdf5_infile:
-            if "spec" not in hdf5_infile:
-                raise ValueError()
-            if "data" not in hdf5_infile:
-                raise ValueError()
+    # region Private Methods
 
-            # Load configuration (Todo: Validate that mode matches current)
-            self.mode = hdf5_infile.attrs["mode"]
+    def _load_hdf5(self, fp, **kwargs):
+        raise NotImplementedError()
 
-            # Load specs
-            formatter = self._get_hdf5_input_spec_formatter(
-                hdf5_infile["spec"].dtype.names)
-            char_image_specs = pd.DataFrame(
-                data=list(map(formatter,
-                              np.array(hdf5_infile["spec"]))),
-                index=range(hdf5_infile["spec"].size),
-                columns=hdf5_infile["spec"].dtype.names)
-
-            # Load data
-            char_image_data = np.array(hdf5_infile["data"])
-
-        self.add_img(char_image_specs, char_image_data)
-        """
+    def _save_hdf5(self, fp, **kwargs):
         raise NotImplementedError()
 
     # endregion

@@ -476,42 +476,15 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="scinoephile.ocr.OCRDataset.read_hdf5">
-<code class="descname">read_hdf5</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.read_hdf5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.read_hdf5" title="Permalink to this definition">¶</a></dt>
-<dd><p>import pandas as pd
-import h5py
-import numpy as np</p>
-<dl class="docutils">
-<dt>if self.verbosity &gt;= 1:</dt>
-<dd>print(f”Reading images from ‘{self.input_hdf5}’”)</dd>
-<dt>with h5py.File(self.input_hdf5) as hdf5_infile:</dt>
-<dd><dl class="first docutils">
-<dt>if “spec” not in hdf5_infile:</dt>
-<dd>raise ValueError()</dd>
-<dt>if “data” not in hdf5_infile:</dt>
-<dd>raise ValueError()</dd>
-</dl>
-<p># Load configuration (Todo: Validate that mode matches current)
-self.mode = hdf5_infile.attrs[“mode”]</p>
-<p># Load specs
-formatter = self._get_hdf5_input_spec_formatter(</p>
-<blockquote>
-<div>hdf5_infile[“spec”].dtype.names)</div></blockquote>
-<dl class="docutils">
-<dt>char_image_specs = pd.DataFrame(</dt>
-<dd><dl class="first docutils">
-<dt>data=list(map(formatter,</dt>
-<dd>np.array(hdf5_infile[“spec”]))),</dd>
-</dl>
-<p class="last">index=range(hdf5_infile[“spec”].size),
-columns=hdf5_infile[“spec”].dtype.names)</p>
-</dd>
-</dl>
-<p class="last"># Load data
-char_image_data = np.array(hdf5_infile[“data”])</p>
-</dd>
-</dl>
-<p>self.add_img(char_image_specs, char_image_data)</p>
+<dt id="scinoephile.ocr.OCRDataset.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>infile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads character images from an input file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves character images to an output file</p>
 </dd></dl>
 
 </dd></dl>
@@ -794,12 +767,6 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="scinoephile.ocr.GeneratedOCRDataset.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves character images to an output file</p>
 </dd></dl>
 
 <dl class="method">

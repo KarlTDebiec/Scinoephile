@@ -39,7 +39,7 @@ if __name__ == "__main__":
     GeneratedOCRDataset(
         infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
         outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        image_mode="1 bit", n_chars=50, interactive=False, **kwargs)()
+        mode="1 bit", n_chars=50, interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

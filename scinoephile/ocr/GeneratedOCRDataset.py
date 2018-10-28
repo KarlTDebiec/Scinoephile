@@ -43,8 +43,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         """ Core logic """
 
         # Input
-        # if self.infile is not None:
-        #     self.load()
+        if self.infile is not None:
+            self.load()
 
         # Action
         self.generate_minimal_img()
@@ -324,31 +324,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
             self.add_img(specs, data)
 
-    def save(self, outfile=None, **kwargs):
-        """
-        Saves character images to an output file
-        """
-        from os.path import expandvars
-
-        # Process arguments
-        if outfile is not None:
-            outfile = expandvars(outfile)
-        elif self.outfile is not None:
-            outfile = self.outfile
-        else:
-            raise ValueError()
-
-        # Write outfile
-        if self.verbosity >= 1:
-            print(f"Writing character images to '{outfile}'")
-        if (outfile.endswith(".hdf5") or outfile.endswith(".h5")):
-            import h5py
-
-            with h5py.File(outfile) as fp:
-                self._save_hdf5(fp, **kwargs)
-        else:
-            raise NotImplementedError()
-
     def get_trn_val_indexes(self, val_portion=0.1):
         """
         import numpy as np
@@ -388,10 +363,31 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Private Methods
 
+    def _load_hdf5(self, fp, **kwargs):
+        import pandas as pd
+        import numpy as np
+
+        decode = lambda x: x.decode("utf8")
+
+        # Load image mode
+        self.mode = fp.attrs["mode"]
+
+        # Load image specs
+        if "spec" not in fp:
+            return  # Do not need to raise if hdf5 is empty
+        spec = np.array(fp["spec"])
+        spec = pd.DataFrame(data=spec, index=range(spec.size), columns=spec.dtype.names)
+        spec["char"] = spec["char"].apply(decode)
+        spec["font"] = spec["font"].apply(decode)
+
+        # Load image data
+        if "data" not in fp:
+            raise ValueError()  # Need to raise if hdf5 has specs but no data
+        data = np.array(fp["data"])
+
+        self.add_img(spec, data)
+
     def _save_hdf5(self, fp, **kwargs):
-        """
-        Saves character images to an output hdf5 file
-        """
         import numpy as np
 
         dtypes = [

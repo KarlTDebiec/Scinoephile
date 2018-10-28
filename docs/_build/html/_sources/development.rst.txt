@@ -12,7 +12,8 @@ _____________________________
 - [x] Review Subtitle and ImageSubtitle Data Structures
 - [x] Review OCR Datasets
 - [x] Update OCR Datasets' save
-- [ ] Update OCR Datasets' load
+- [x] Update OCR Datasets' load
+- [ ] Confirm that both 8-bit and 1-bit workflows work
 - [ ] Review and update Autotrainer
 - [ ] Save machine learning model and reload
 - [ ] From ImageSubtitleDataset, organize data structures for tensorflow
