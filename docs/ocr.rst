@@ -11,6 +11,13 @@ Optical Character Recognition
 
     scinoephile.ocr.OCRBase
     scinoephile.ocr.OCRCLToolBase
+    scinoephile.ocr.OCRDataset
+    scinoephile.ocr.UnlabeledOCRDataset
+    scinoephile.ocr.LabeledOCRDataset
+    scinoephile.ocr.GeneratedOCRDataset
+    scinoephile.ocr.ImageSubtitleDataset
+    scinoephile.ocr.ImageSubtitleSeries
+    scinoephile.ocr.ImageSubtitleEvent
 
 Base Classes
 ____________
@@ -62,3 +69,4 @@ Event
 .....
 
 .. autoclass:: scinoephile.ocr.ImageSubtitleEvent
+

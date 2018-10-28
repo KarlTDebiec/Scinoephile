@@ -5,6 +5,15 @@ Base Functionality
 .. automodule:: scinoephile
     :no-members:
 
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.Base
+    scinoephile.CLToolBase
+    scinoephile.SubtitleDataset
+    scinoephile.SubtitleSeries
+    scinoephile.SubtitleEvent
+
 Base Classes
 ____________
 
@@ -33,3 +42,4 @@ Series
 Event
 .....
 .. autoclass:: scinoephile.SubtitleEvent
+
