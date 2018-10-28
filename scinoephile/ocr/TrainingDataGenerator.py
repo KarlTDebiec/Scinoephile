@@ -176,7 +176,7 @@ class TrainingDataGenerator(OCRCLToolBase):
         """
         import numpy as np
         from os.path import isfile
-        from scinoephile.ocr import generate_char_image
+        from scinoephile.ocr import generate_char_img
 
         # Check if outfile exists, and if not choose output location
         outfile = f"{char}_{font_size:02d}_{border_width:02d}_" \
@@ -192,9 +192,9 @@ class TrainingDataGenerator(OCRCLToolBase):
             outfile = f"{self.trn_output_directory}/{outfile}"
 
         # Generate image
-        img = generate_char_image(char, font=font_name, size=font_size,
-                                  width=border_width, x_offset=x_offset,
-                                  y_offset=y_offset, **kwargs)
+        img = generate_char_img(char, font=font_name, size=font_size,
+                                width=border_width, x_offset=x_offset,
+                                y_offset=y_offset, **kwargs)
         img.save(outfile)
         if self.verbosity >= 2:
             print(f"Wrote '{outfile}'")

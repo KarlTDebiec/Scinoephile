@@ -120,6 +120,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a></li>
@@ -319,8 +320,9 @@
                         <span class="o">*</span><span class="p">(</span><span class="n">field_to_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
                           <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">STYLE_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">]))]</span>
         <span class="n">styles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">styles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;styles&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">styles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;styles&quot;</span><span class="p">,</span>
+                          <span class="n">data</span><span class="o">=</span><span class="n">styles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
         <span class="c1"># Save subtitles</span>
         <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
@@ -333,8 +335,9 @@
                         <span class="o">*</span><span class="p">(</span><span class="n">field_to_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
                           <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">EVENT_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">]))]</span>
         <span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">,</span>
+                          <span class="n">data</span><span class="o">=</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
     <span class="c1"># endregion</span>
 

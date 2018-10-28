@@ -70,3 +70,9 @@ Event
 
 .. autoclass:: scinoephile.ocr.ImageSubtitleEvent
 
+Functions
+_________
+
+.. autofunction:: scinoephile.ocr.center_char_img
+.. autofunction:: scinoephile.ocr.generate_char_img
+

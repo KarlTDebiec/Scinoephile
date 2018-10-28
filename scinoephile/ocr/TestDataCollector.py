@@ -8,8 +8,8 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import (OCRCLToolBase, draw_text_on_image, 
-                             generate_char_image)
+from scinoephile.ocr import (OCRCLToolBase, draw_text_on_image,
+                             generate_char_img)
 
 
 ################################### CLASSES ###################################
@@ -105,7 +105,7 @@ class TestDataCollector(OCRCLToolBase):
 
             # Generate image prompt
             image = Image.new("L", (match_indexes.size * 100, 300), 255)
-            char_image = generate_char_image(char)
+            char_image = generate_char_img(char)
             image.paste(char_image, (10, 10, 90, 90))
             for i, index in enumerate(match_indexes):
                 match_image = Image.open(src_infiles[index])

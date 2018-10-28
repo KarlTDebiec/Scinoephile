@@ -41,7 +41,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     @property
     def imgmode(self):
         """str: Image mode"""
-        if not hasattr(self, "_imgmode"):
+        if not hasattr(self, "_mode"):
             self._imgmode = "1 bit"
         return self._imgmode
 
@@ -148,15 +148,15 @@ class ImageSubtitleSeries(SubtitleSeries):
         fp.create_group("images")
         fp["images"].attrs["mode"] = self.imgmode
         for i, event in enumerate(self.events):
-            if hasattr(event, "imgdata"):
-                if event.imgmode == "8 bit":
+            if hasattr(event, "data"):
+                if event.mode == "8 bit":
                     fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.imgdata,
+                                                data=event.data,
                                                 dtype=np.uint8, chunks=True,
                                                 compression="gzip")
-                elif event.imgmode == "1 bit":
+                elif event.mode == "1 bit":
                     fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.imgdata,
+                                                data=event.data,
                                                 dtype=np.bool, chunks=True,
                                                 compression="gzip")
 
@@ -179,16 +179,16 @@ class ImageSubtitleSeries(SubtitleSeries):
 
         # Load images
         if "images" in fp and "events" in fp:
-            subs.imgmode = fp["images"].attrs["mode"]
-            if imgmode is not None and subs.imgmode != imgmode:
+            subs.mode = fp["images"].attrs["mode"]
+            if imgmode is not None and subs.mode != imgmode:
                 raise ValueError()
 
             for i, event in enumerate(subs.events):
-                event.imgmode = subs.imgmode
-                if subs.imgmode == "8 bit":
-                    event.imgdata = np.array(fp["images"][f"{i:04d}"], np.uint8)
-                elif subs.imgmode == "1 bit":
-                    event.imgdata = np.array(fp["images"][f"{i:04d}"], np.bool)
+                event.mode = subs.mode
+                if subs.mode == "8 bit":
+                    event.data = np.array(fp["images"][f"{i:04d}"], np.uint8)
+                elif subs.mode == "1 bit":
+                    event.data = np.array(fp["images"][f"{i:04d}"], np.bool)
 
         return subs
 

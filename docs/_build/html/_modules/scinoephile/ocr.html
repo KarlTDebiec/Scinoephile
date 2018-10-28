@@ -120,6 +120,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a></li>
@@ -209,6 +210,85 @@
 
 
 <span class="c1">################################## FUNCTIONS ##################################</span>
+<div class="viewcode-block" id="center_char_img"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.center_char_img">[docs]</a><span class="k">def</span> <span class="nf">center_char_img</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Centers image data</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (numpy.ndarray): Character image data</span>
+<span class="sd">        x_offset (int): Offset to apply along x axis</span>
+<span class="sd">        y_offset (int): Offset to apply along y axis</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: Centered character image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">white_cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">white_rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">trimmed</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">):</span><span class="n">white_rows</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">):</span><span class="n">white_cols</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">centered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">centered</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">,</span>
+    <span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">trimmed</span>
+
+    <span class="k">return</span> <span class="n">centered</span></div>
+
+
+<div class="viewcode-block" id="generate_char_img"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.generate_char_img">[docs]</a><span class="k">def</span> <span class="nf">generate_char_img</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                      <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;1 bit&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates an image of a character</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        char (str): character of which to draw an image of</span>
+<span class="sd">        font (str): font with which to draw character</span>
+<span class="sd">        fig (matplotlib.figure.Figure, optional): figure on which to draw</span>
+<span class="sd">          character</span>
+<span class="sd">        size (int, optional): font size with which to draw character</span>
+<span class="sd">        width (int, optional: border width with which to draw character</span>
+<span class="sd">        x_offset (int, optional): x offset to apply to character</span>
+<span class="sd">        y_offset (int, optional: y offset to apply to character</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: Character image data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="k">import</span> <span class="n">FontProperties</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="k">import</span> <span class="n">Stroke</span><span class="p">,</span> <span class="n">Normal</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+    <span class="c1"># Process arguments</span>
+    <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="k">import</span> <span class="n">figure</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="c1"># Draw image using matplotlib</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.475</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">char</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                    <span class="n">fontproperties</span><span class="o">=</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">))</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">Stroke</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+                           <span class="n">Normal</span><span class="p">()])</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+    <span class="c1"># Convert to appropriate mode using pillow</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">_renderer</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">center_char_img</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
+
+
 <span class="k">def</span> <span class="nf">adjust_2bit_grayscale_palette</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets palette of a four-color grayscale image to [0, 85, 170, 255]</span>
@@ -275,76 +355,6 @@
     <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
     <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">textsize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
     <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">gen_char_imagedata</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                       <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">image_mode</span><span class="o">=</span><span class="s2">&quot;1 bit&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates imgdata of a character</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        char (str): character to generate an image of</span>
-<span class="sd">        fig (matplotlib.figure.Figure, optional): figure on  which to draw</span>
-<span class="sd">          character</span>
-<span class="sd">        font (str): font with which to draw character</span>
-<span class="sd">        size (int, optional): font size with which to draw character</span>
-<span class="sd">        width (int, optional: border width with which to draw character</span>
-<span class="sd">        x_offset (int, optional): x offset to apply to character</span>
-<span class="sd">        y_offset (int, optional: y offset to apply to character</span>
-
-<span class="sd">    Returns (np.ndarray): Image of character</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="k">import</span> <span class="n">FontProperties</span>
-    <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="k">import</span> <span class="n">Stroke</span><span class="p">,</span> <span class="n">Normal</span>
-    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
-
-    <span class="c1"># Draw initial image with matplotlib</span>
-    <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="k">import</span> <span class="n">figure</span>
-
-        <span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">fig</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-
-    <span class="c1"># Draw image using matplotlib</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.475</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">char</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-                    <span class="n">fontproperties</span><span class="o">=</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span>
-                    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">))</span>
-    <span class="n">text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">Stroke</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
-                           <span class="n">Normal</span><span class="p">()])</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-
-    <span class="c1"># Convert to appropriate mode using pillow</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">_renderer</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-        <span class="n">imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-        <span class="n">imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
-    <span class="n">imagedata</span> <span class="o">=</span> <span class="n">center_imagedata</span><span class="p">(</span><span class="n">imagedata</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">imagedata</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">center_imagedata</span><span class="p">(</span><span class="n">imagedata</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-    <span class="n">white_cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">imagedata</span> <span class="o">==</span> <span class="n">imagedata</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">white_rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">imagedata</span> <span class="o">==</span> <span class="n">imagedata</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">trimmed</span> <span class="o">=</span> <span class="n">imagedata</span><span class="p">[</span>
-              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">):</span><span class="n">white_rows</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
-              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">):</span><span class="n">white_cols</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">centered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">imagedata</span><span class="p">)</span> <span class="o">*</span> <span class="n">imagedata</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">centered</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">,</span>
-    <span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">trimmed</span>
-
-    <span class="k">return</span> <span class="n">centered</span>
 
 
 <span class="k">def</span> <span class="nf">generate_char_image_old</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s2">&quot;Hei&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>

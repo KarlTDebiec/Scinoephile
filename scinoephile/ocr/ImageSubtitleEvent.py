@@ -84,7 +84,7 @@ class ImageSubtitleEvent(SubtitleEvent):
     @property
     def imgmode(self):
         """str: Image mode"""
-        if not hasattr(self, "_imgmode"):
+        if not hasattr(self, "_mode"):
             self._imgmode = "1 bit"
         return self._imgmode
 
@@ -102,14 +102,14 @@ class ImageSubtitleEvent(SubtitleEvent):
                 pass
             else:
                 raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, set self.imgdata = self.imgdata to convert
+        # TODO: If changed, set self.data = self.data to convert
 
         self._imgmode = value
 
     @property
     def imgdata(self):
         """str: Image """
-        if not hasattr(self, "_imgdata"):
+        if not hasattr(self, "_data"):
             self._imgdata = None
         return self._imgdata
 

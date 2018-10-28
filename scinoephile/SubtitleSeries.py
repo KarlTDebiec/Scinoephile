@@ -122,8 +122,9 @@ class SubtitleSeries(SSAFile, Base):
                         *(field_to_string(field, style).encode("utf8")
                           for field in STYLE_FIELDS["ass"]))]
         styles = np.array(styles, dtype=dtypes)
-        fp.create_dataset("styles", data=styles, dtype=dtypes, chunks=True,
-                          compression="gzip")
+        fp.create_dataset("styles",
+                          data=styles, dtype=dtypes,
+                          chunks=True, compression="gzip")
 
         # Save subtitles
         if "events" in fp:
@@ -136,8 +137,9 @@ class SubtitleSeries(SSAFile, Base):
                         *(field_to_string(field, event).encode("utf8")
                           for field in EVENT_FIELDS["ass"]))]
         events = np.array(events, dtype=dtypes)
-        fp.create_dataset("events", data=events, dtype=dtypes, chunks=True,
-                          compression="gzip")
+        fp.create_dataset("events",
+                          data=events, dtype=dtypes,
+                          chunks=True, compression="gzip")
 
     # endregion
 

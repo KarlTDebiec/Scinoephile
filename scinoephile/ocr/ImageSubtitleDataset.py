@@ -41,7 +41,7 @@ class ImageSubtitleDataset(SubtitleDataset):
     @property
     def imgmode(self):
         """str: Image mode"""
-        if not hasattr(self, "_imgmode"):
+        if not hasattr(self, "_mode"):
             self._imgmode = "1 bit"
         return self._imgmode
 

@@ -120,6 +120,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
@@ -215,148 +216,36 @@
 <div class="viewcode-block" id="LabeledOCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.LabeledOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">LabeledOCRDataset</span><span class="p">(</span><span class="n">OCRDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of labeled character images</span>
-
-<span class="sd">    .. todo::</span>
-<span class="sd">      - [ ] Don&#39;t allow &#39;path&#39; to be set to NaN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># region Builtins</span>
-
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Core logic &quot;&quot;&quot;</span>
-
-        <span class="c1"># Input</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">infile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-
-        <span class="c1"># Output</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-
-        <span class="c1"># Present IPython prompt</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span><span class="p">:</span>
-            <span class="n">embed</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_kw</span><span class="p">)</span>
-
-    <span class="c1"># endregion</span>
-
-    <span class="c1"># region Private Properties</span>
+    <span class="c1"># region Public Properties</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imgspec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">spec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imgspec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
 
-    <span class="k">def</span> <span class="nf">get_images_and_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+<div class="viewcode-block" id="LabeledOCRDataset.get_images_and_labels"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.LabeledOCRDataset.get_images_and_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_images_and_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        if indexes is None:</span>
-<span class="sd">            img = self.imgdata</span>
-<span class="sd">            lbl = self.chars_to_labels(self.imgspec[&quot;char&quot;].values)</span>
+<span class="sd">            img = self.data</span>
+<span class="sd">            lbl = self.chars_to_labels(self.spec[&quot;char&quot;].values)</span>
 <span class="sd">        else:</span>
-<span class="sd">            img = self.imgdata[indexes]</span>
-<span class="sd">            lbl = self.chars_to_labels(self.imgspec[&quot;char&quot;].loc[indexes].values)</span>
+<span class="sd">            img = self.data[indexes]</span>
+<span class="sd">            lbl = self.chars_to_labels(self.spec[&quot;char&quot;].loc[indexes].values)</span>
 
 <span class="sd">        return img, lbl</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-    <span class="c1"># endregion</span>
-
-    <span class="c1"># region Private Methods</span>
-
-    <span class="k">def</span> <span class="nf">_get_hdf5_input_spec_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides spec formatter compatible with both numpy and h5py&quot;&quot;&quot;</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-        <span class="n">str_indexes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="s2">&quot;char&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">)]</span>
-
-        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">str_index</span> <span class="ow">in</span> <span class="n">str_indexes</span><span class="p">:</span>
-                <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">func</span>
-
-    <span class="k">def</span> <span class="nf">_list_image_dir_input_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides infiles within path&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">glob</span> <span class="k">import</span> <span class="n">iglob</span>
-
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">iglob</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{path}</span><span class="s2">/**/*.png&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_get_image_dir_input_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infiles</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides specs of infiles&quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">basename</span>
-
-        <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">basename</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">infiles</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">infiles</span><span class="p">,</span> <span class="n">chars</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span>
-                            <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">infiles</span><span class="p">)),</span>
-                            <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_cols</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_hdf5_spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides spec dtypes compatible with both numpy and h5py&quot;&quot;&quot;</span>
-        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;S255&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="s2">&quot;S3&quot;</span><span class="p">}</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="p">[</span><span class="n">dtypes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]))</span>
-
-    <span class="k">def</span> <span class="nf">_get_hdf5_output_spec_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides spec formatter compatible with both numpy and h5py&quot;&quot;&quot;</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-        <span class="n">str_indexes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="s2">&quot;char&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">str_indexes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">)]</span>
-
-        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">str_index</span> <span class="ow">in</span> <span class="n">str_indexes</span><span class="p">:</span>
-                <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">str_index</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">func</span>
-
-    <span class="k">def</span> <span class="nf">_get_image_dir_outfile_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specs</span><span class="p">,</span> <span class="n">outdir</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Provides formatter for image outfile paths&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span>
-
-        <span class="k">def</span> <span class="nf">get_base_path_remover</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Provides function to remove shared base path&quot;&quot;&quot;</span>
-
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">paths</span><span class="p">))):</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">break</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
-
-        <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">specs</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="n">base_path_remover</span> <span class="o">=</span> <span class="n">get_base_path_remover</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">specs</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]))</span>
-
-            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{outdir}</span><span class="s2">/&quot;</span> \
-                       <span class="n">f</span><span class="s2">&quot;{base_path_remover(spec[1][&#39;path&#39;])}&quot;</span>
-
-            <span class="k">return</span> <span class="n">func</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{outdir}</span><span class="s2">/&quot;</span> \
-                       <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;char&#39;]}</span><span class="s2">_</span><span class="si">{spec[0]:06d}</span><span class="s2">.png&quot;</span>
-
-            <span class="k">return</span> <span class="n">func</span></div>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
     <span class="c1"># endregion</span>
 </pre></div>

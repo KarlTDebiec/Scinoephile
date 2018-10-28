@@ -120,6 +120,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
@@ -283,7 +284,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">imgmode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgmode&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_mode&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span>
 
@@ -301,14 +302,14 @@
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="c1"># TODO: If changed, set self.imgdata = self.imgdata to convert</span>
+        <span class="c1"># TODO: If changed, set self.data = self.data to convert</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">imgdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgdata&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_data&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span>
 

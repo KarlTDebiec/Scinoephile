@@ -122,6 +122,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ocr.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
@@ -238,19 +239,43 @@
 <dl class="attribute">
 <dt id="scinoephile.Base.embed_kw">
 <code class="descname">embed_kw</code><a class="headerlink" href="#scinoephile.Base.embed_kw" title="Permalink to this definition">¶</a></dt>
-<dd><p>dict: use <code class="docutils literal notranslate"><span class="pre">IPython.embed(**self.embed_kw)</span></code> for more useful prompt</p>
+<dd><p>use <code class="docutils literal notranslate"><span class="pre">IPython.embed(**self.embed_kw)</span></code> for more useful prompt</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Base.package_root">
 <code class="descname">package_root</code><a class="headerlink" href="#scinoephile.Base.package_root" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: Path to package root directory</p>
+<dd><p>Path to package root directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Base.verbosity">
 <code class="descname">verbosity</code><a class="headerlink" href="#scinoephile.Base.verbosity" title="Permalink to this definition">¶</a></dt>
-<dd><p>int: Level of output to provide</p>
+<dd><p>Level of output to provide</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -266,28 +291,49 @@
 <dl class="attribute">
 <dt id="scinoephile.CLToolBase.interactive">
 <code class="descname">interactive</code><a class="headerlink" href="#scinoephile.CLToolBase.interactive" title="Permalink to this definition">¶</a></dt>
-<dd><p>bool: present IPython prompt after processing subtitles</p>
+<dd><p>present IPython prompt after processing subtitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="scinoephile.CLToolBase.construct_argparser">
 <em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.construct_argparser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs argument parser</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>parser (argparse.ArgumentParser): Argument parser</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Argument parser</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">parser (argparse.ArgumentParser)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="scinoephile.CLToolBase.validate_args">
 <em class="property">classmethod </em><code class="descname">validate_args</code><span class="sig-paren">(</span><em>parser</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.validate_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.validate_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates arguments provided to an argument parser</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>parser (argparse.ArgumentParser): Argument parser
-args (argparse.Namespace): Arguments</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – Argument parser</li>
+<li><strong>args</strong> (<em>argparse.Namespace</em>) – Arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -322,19 +368,43 @@ separate scinoephile and pysubs2 styles.</p>
 <dl class="attribute">
 <dt id="scinoephile.SubtitleDataset.infile">
 <code class="descname">infile</code><a class="headerlink" href="#scinoephile.SubtitleDataset.infile" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: Path to input file</p>
+<dd><p>Path to input file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.SubtitleDataset.outfile">
 <code class="descname">outfile</code><a class="headerlink" href="#scinoephile.SubtitleDataset.outfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>str: Path to output file</p>
+<dd><p>Path to output file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.SubtitleDataset.subtitles">
 <code class="descname">subtitles</code><a class="headerlink" href="#scinoephile.SubtitleDataset.subtitles" title="Permalink to this definition">¶</a></dt>
-<dd><p>pandas.core.frame.DataFrame: Subtitles</p>
+<dd><p>Subtitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.core.frame.DataFrame</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
