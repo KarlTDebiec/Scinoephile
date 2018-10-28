@@ -18,15 +18,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     A collection of generated character images
 
     .. todo::
-      - [x] Update gen_min_imagedata
-      - [x] Update gen_new_imagedata
       - [ ] Update saving
       - [ ] Update loading
       - [ ] Remove temporary code used during troubleshooting
       - [ ] Expand training and validation sets when images are added, rather
             than recreating fully
-      - [ ] Implement CL arguments
-      - [ ] Validate CL arguments
     """
 
     # region Builtins
@@ -58,12 +54,12 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         #     self.load()
 
         # Action
-        self.gen_min_imagedata()
-        self.gen_new_imagedata(10)
+        self.gen_min_img()
+        self.gen_new_img(10)
 
         # Output
-        if self.outfile is not None:
-            self.save()
+        # if self.outfile is not None:
+        #     self.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -191,17 +187,17 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # region Private Properties
 
     @property
-    def _imagespec_columns(self):
+    def _imgspec_cols(self):
         """list(str): Character image specification columns"""
 
-        if hasattr(self, "_imagespecs"):
-            return self.imagespecs.columns.values
+        if hasattr(self, "_imgspec"):
+            return self.imgspec.columns.values
         else:
             return ["path", "char", "font", "size", "width", "x_offset",
                     "y_offset"]
 
     @property
-    def _imagespec_dtypes(self):
+    def _imgspec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str, "char": str, "font": str, "size": int,
                 "width": int, "x_offset": int, "y_offset": int}
@@ -229,19 +225,19 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._draw_specs_available_ = pd.DataFrame({
                 "font": pd.Series(
                     fonts,
-                    dtype=self._imagespec_dtypes["font"]),
+                    dtype=self._imgspec_dtypes["font"]),
                 "size": pd.Series(
                     sizes,
-                    dtype=self._imagespec_dtypes["size"]),
+                    dtype=self._imgspec_dtypes["size"]),
                 "width": pd.Series(
                     widths,
-                    dtype=self._imagespec_dtypes["width"]),
+                    dtype=self._imgspec_dtypes["width"]),
                 "x_offset": pd.Series(
                     x_offsets,
-                    dtype=self._imagespec_dtypes["x_offset"]),
+                    dtype=self._imgspec_dtypes["x_offset"]),
                 "y_offset": pd.Series(
                     y_offsets,
-                    dtype=self._imagespec_dtypes["y_offset"])})
+                    dtype=self._imgspec_dtypes["y_offset"])})
 
         return self._draw_specs_available_
 
@@ -261,19 +257,19 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._draw_specs_minimal_ = pd.DataFrame({
                 "font": pd.Series(
                     self.font_names,
-                    dtype=self._imagespec_dtypes["font"]),
+                    dtype=self._imgspec_dtypes["font"]),
                 "size": pd.Series(
                     [self.font_sizes[0]] * len(self.font_names),
-                    dtype=self._imagespec_dtypes["size"]),
+                    dtype=self._imgspec_dtypes["size"]),
                 "width": pd.Series(
                     [self.font_widths[0]] * len(self.font_names),
-                    dtype=self._imagespec_dtypes["width"]),
+                    dtype=self._imgspec_dtypes["width"]),
                 "x_offset": pd.Series(
                     [self.font_x_offsets[0]] * len(self.font_names),
-                    dtype=self._imagespec_dtypes["x_offset"]),
+                    dtype=self._imgspec_dtypes["x_offset"]),
                 "y_offset": pd.Series(
                     [self.font_y_offsets[0]] * len(self.font_names),
-                    dtype=self._imagespec_dtypes["y_offset"])})
+                    dtype=self._imgspec_dtypes["y_offset"])})
 
         return self._draw_specs_minimal_
 
@@ -288,7 +284,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def gen_min_imagedata(self):
+    def gen_min_img(self):
         import numpy as np
         import pandas as pd
         from scinoephile.ocr import gen_char_imagedata
@@ -311,21 +307,21 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 print(f"Generating {len(queue)} new images for minimal set")
 
             # Prepare specs
-            specs = pd.DataFrame(queue)
+            imgspec = pd.DataFrame(queue)
 
             # Prepare data
-            imagedata = None
-            if self.image_mode == "8 bit":
-                imagedata = np.zeros((len(queue), 6400), np.uint8)
-            elif self.image_mode == "1 bit":
-                imagedata = np.zeros((len(queue), 6400), np.bool)
+            imgdata = None
+            if self.imgmode == "8 bit":
+                imgdata = np.zeros((len(queue), 6400), np.uint8)
+            elif self.imgmode == "1 bit":
+                imgdata = np.zeros((len(queue), 6400), np.bool)
             for i, spec in enumerate(queue):
-                imagedata[i] = gen_char_imagedata(fig=self._figure,
-                                                  image_mode=self.image_mode,
+                imgdata[i] = gen_char_imagedata(fig=self._figure,
+                                                  image_mode=self.imgmode,
                                                   **spec)
-            self.add_imagedata(specs, imagedata)
+            self.add_img(imgspec, imgdata)
 
-    def gen_new_imagedata(self, n_images=1, chars=None):
+    def gen_new_img(self, n_images=1, chars=None):
         import numpy as np
         import pandas as pd
         from random import sample
@@ -358,19 +354,20 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             specs = pd.DataFrame(queue)
 
             # Prepare data
-            if self.image_mode == "8 bit":
+            if self.imgmode == "8 bit":
                 data = np.zeros((len(queue), 6400), np.uint8)
-            elif self.image_mode == "1 bit":
+            elif self.imgmode == "1 bit":
                 data = np.zeros((len(queue), 6400), np.bool)
             else:
                 raise NotImplementedError()
             for i, spec in enumerate(queue):
                 data[i] = gen_char_imagedata(
-                    fig=self._figure, image_mode=self.image_mode, **spec)
+                    fig=self._figure, image_mode=self.imgmode, **spec)
 
-            self.add_imagedata(specs, data)
+            self.add_img(specs, data)
 
     def get_data_for_training(self, val_portion=0.1):
+        """
         import numpy as np
         from random import sample
 
@@ -378,7 +375,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         all_val_indexes = []
 
         # Prepare trn and val sets with at least one image of each character
-        for char in set(self.imagespecs["char"]):
+        for char in set(self.imgspec["char"]):
             specs = self._get_specs_of_char(char)
             n_specs = specs.index.size
 
@@ -401,16 +398,19 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 specs = specs.drop(val_indexes)
 
         # Organize data
-        trn_img = self.imagedata[all_trn_indexes]
+        trn_img = self.imgdata[all_trn_indexes]
         trn_lbl = self.chars_to_labels(
-            self.imagespecs["char"].loc[all_trn_indexes].values)
-        val_img = self.imagedata[all_val_indexes]
+            self.imgspec["char"].loc[all_trn_indexes].values)
+        val_img = self.imgdata[all_val_indexes]
         val_lbl = self.chars_to_labels(
-            self.imagespecs["char"].loc[all_val_indexes].values)
+            self.imgspec["char"].loc[all_val_indexes].values)
 
         return trn_img, trn_lbl, val_img, val_lbl
+        """
+        raise NotImplementedError()
 
     def get_trn_val_indexes(self, val_portion=0.1):
+        """
         import numpy as np
         from random import sample
 
@@ -418,7 +418,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         all_val_indexes = []
 
         # Prepare trn and val sets with at least one image of each character
-        for char in set(self.imagespecs["char"]):
+        for char in set(self.imgspec["char"]):
             specs = self._get_specs_of_char(char)
             n_specs = specs.index.size
 
@@ -441,8 +441,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 specs = specs.drop(val_indexes)
 
         return all_trn_indexes, all_val_indexes
+        """
+        raise NotImplementedError()
 
     def write_trn_val_image_dirs(self):
+        """
         from os import makedirs
         from os.path import dirname, isdir
 
@@ -473,11 +476,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         trn_indexes, val_indexes = self.get_trn_val_indexes()
         trn_outfiles = map(trn_outfile_formatter,
-                           self.imagespecs.loc[trn_indexes].iterrows())
+                           self.imgspec.loc[trn_indexes].iterrows())
         val_outfiles = map(val_outfile_formatter,
-                           self.imagespecs.loc[val_indexes].iterrows())
-        trn_data = self.imagedata[trn_indexes]
-        val_data = self.imagedata[val_indexes]
+                           self.imgspec.loc[val_indexes].iterrows())
+        trn_data = self.imgdata[trn_indexes]
+        val_data = self.imgdata[val_indexes]
         for outfile, data in zip(trn_outfiles, trn_data):
             if self.verbosity >= 1:
                 print(f"Writing '{outfile}'")
@@ -490,6 +493,8 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             if not isdir(dirname(outfile)):
                 makedirs(dirname(outfile))
             self.image_array_to_object(data).save(outfile)
+        """
+        raise NotImplementedError()
 
     # endregion
 
@@ -572,19 +577,19 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         specs = {
             "path": pd.Series(
-                infiles, dtype=self._imagespec_dtypes["path"]),
+                infiles, dtype=self._imgspec_dtypes["path"]),
             "char": pd.Series(
-                chars, dtype=self._imagespec_dtypes["char"]),
+                chars, dtype=self._imgspec_dtypes["char"]),
             "font": pd.Series(
-                fonts, dtype=self._imagespec_dtypes["font"]),
+                fonts, dtype=self._imgspec_dtypes["font"]),
             "size": pd.Series(
-                sizes, dtype=self._imagespec_dtypes["size"]),
+                sizes, dtype=self._imgspec_dtypes["size"]),
             "width": pd.Series(
-                widths, dtype=self._imagespec_dtypes["width"]),
+                widths, dtype=self._imgspec_dtypes["width"]),
             "x_offset": pd.Series(
-                x_offsets, dtype=self._imagespec_dtypes["x_offset"]),
+                x_offsets, dtype=self._imgspec_dtypes["x_offset"]),
             "y_offset": pd.Series(
-                y_offsets, dtype=self._imagespec_dtypes["y_offset"])}
+                y_offsets, dtype=self._imgspec_dtypes["y_offset"])}
 
         return pd.DataFrame(data=specs, index=range(len(infiles)))
 
@@ -603,15 +608,10 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return func
 
     def _get_specs_of_char(self, char):
-        return self.imagespecs.loc[self.imagespecs["char"] == char][
+        return self.imgspec.loc[self.imgspec["char"] == char][
             ["font", "size", "width", "x_offset", "y_offset"]]
 
     def _get_specs_of_char_set(self, char):
         return set(map(tuple, self._get_specs_of_char(char).values))
 
     # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    GeneratedOCRDataset.main()

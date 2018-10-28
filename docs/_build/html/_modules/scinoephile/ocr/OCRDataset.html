@@ -214,23 +214,12 @@
 <span class="c1">################################### CLASSES ###################################</span>
 <div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">OCRCLToolBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a collection of character images</span>
-
-<span class="sd">    .. todo::</span>
-<span class="sd">      - [ ] Implement 8-bit and 1-bit support; remove 2-bit support</span>
-<span class="sd">      - [ ] Clean up and refactor</span>
-<span class="sd">      - [ ] Document</span>
+<span class="sd">    A collection of character images</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># region Instance Variables</span>
-
-    <span class="n">help_message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Represents a collection of character images&quot;</span><span class="p">)</span>
-
-    <span class="c1"># endregion</span>
 
     <span class="c1"># region Builtins</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Store property values</span>
@@ -238,8 +227,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">infile</span> <span class="o">=</span> <span class="n">infile</span>
         <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="n">outfile</span>
-        <span class="k">if</span> <span class="n">image_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">=</span> <span class="n">image_mode</span>
+        <span class="k">if</span> <span class="n">imgmode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">=</span> <span class="n">imgmode</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Core logic &quot;&quot;&quot;</span>
@@ -250,65 +239,52 @@
     <span class="c1"># region Public Properties</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imagespecs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">imgspec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;pandas.DataFrame: Character image specifications&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imagespecs&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgspec&quot;</span><span class="p">):</span>
             <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-                <span class="n">c</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_columns</span><span class="p">})</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="n">c</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_cols</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec</span>
 
-    <span class="nd">@imagespecs</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imagespecs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@imgspec</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">imgspec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># Todo: Validate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_specs_set_&quot;</span><span class="p">):</span>
-            <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_specs_set_&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">imgdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;numpy.ndarray(bool): Character image data&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgdata&quot;</span><span class="p">):</span>
             <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata</span>
 
-    <span class="nd">@imagedata</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata_size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata_dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span>
+
+    <span class="nd">@imgdata</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">imgdata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">6400</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">6400</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata_size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata_dtype</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">imgmode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgmode&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span>
 
-    <span class="nd">@image_mode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@imgmode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">imgmode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -323,7 +299,7 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="c1"># TODO: Respond to changes appropriately</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_image_mode</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">infile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -374,249 +350,249 @@
     <span class="c1"># region Private Properties</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagespec_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgspec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagespec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgspec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagespecs_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgspec_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;set: Unique character image specs&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imagespecs_set_&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs_set_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs_set_</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgspec_set_&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_set_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_set_</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagedata_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgdata_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;int: Size of a single image within arrays&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">6400</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">6400</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagedata_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgdata_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;type: dtype of image arrays&quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
 
-<div class="viewcode-block" id="OCRDataset.add_imagedata"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.add_imagedata">[docs]</a>    <span class="k">def</span> <span class="nf">add_imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imagespecs</span><span class="p">,</span> <span class="n">imagedata</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.add_img"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.add_img">[docs]</a>    <span class="k">def</span> <span class="nf">add_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgspec</span><span class="p">,</span> <span class="n">imgdata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds image imgdata and specifications</span>
-
-<span class="sd">        .. todo::</span>
-<span class="sd">          - [ ] Improve efficiency; is it necessary to check that specs are new?</span>
+<span class="sd">        Adds new images</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            imagespecs (pandas.DataFrame): New specs</span>
-<span class="sd">            imagedata (numpy.ndarray): New imgdata</span>
+<span class="sd">            imgspec (pandas.DataFrame): New image specifications</span>
+<span class="sd">            imgdata (numpy.ndarray): New image data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-        <span class="n">new</span> <span class="o">=</span> <span class="n">imagespecs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagespecs_set</span><span class="p">,</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">imgspec</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_set</span><span class="p">,</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
         <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">new</span><span class="p">],</span>
-                                                     <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                     <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">,</span> <span class="n">imagedata</span><span class="p">[</span><span class="n">new</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">imgspec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">new</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span><span class="p">,</span> <span class="n">imgdata</span><span class="p">[</span><span class="n">new</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">read_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-        <span class="kn">import</span> <span class="nn">h5py</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="viewcode-block" id="OCRDataset.read_hdf5"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.read_hdf5">[docs]</a>    <span class="k">def</span> <span class="nf">read_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        import pandas as pd</span>
+<span class="sd">        import h5py</span>
+<span class="sd">        import numpy as np</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading imgdata from &#39;</span><span class="si">{self.input_hdf5}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_hdf5</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf5_infile</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;imagespecs&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdf5_infile</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">&quot;imgdata&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdf5_infile</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+<span class="sd">        if self.verbosity &gt;= 1:</span>
+<span class="sd">            print(f&quot;Reading images from &#39;{self.input_hdf5}&#39;&quot;)</span>
+<span class="sd">        with h5py.File(self.input_hdf5) as hdf5_infile:</span>
+<span class="sd">            if &quot;imgspec&quot; not in hdf5_infile:</span>
+<span class="sd">                raise ValueError()</span>
+<span class="sd">            if &quot;imgdata&quot; not in hdf5_infile:</span>
+<span class="sd">                raise ValueError()</span>
 
-            <span class="c1"># Load configuration (Todo: Validate that mode matches current)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">=</span> <span class="n">hdf5_infile</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+<span class="sd">            # Load configuration (Todo: Validate that mode matches current)</span>
+<span class="sd">            self.imgmode = hdf5_infile.attrs[&quot;mode&quot;]</span>
 
-            <span class="c1"># Load specs</span>
-            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hdf5_input_spec_formatter</span><span class="p">(</span>
-                <span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
-            <span class="n">char_image_specs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span>
-                              <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]))),</span>
-                <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
-                <span class="n">columns</span><span class="o">=</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+<span class="sd">            # Load specs</span>
+<span class="sd">            formatter = self._get_hdf5_input_spec_formatter(</span>
+<span class="sd">                hdf5_infile[&quot;imgspec&quot;].dtype.names)</span>
+<span class="sd">            char_image_specs = pd.DataFrame(</span>
+<span class="sd">                data=list(map(formatter,</span>
+<span class="sd">                              np.array(hdf5_infile[&quot;imgspec&quot;]))),</span>
+<span class="sd">                index=range(hdf5_infile[&quot;imgspec&quot;].size),</span>
+<span class="sd">                columns=hdf5_infile[&quot;imgspec&quot;].dtype.names)</span>
 
-            <span class="c1"># Load data</span>
-            <span class="n">char_image_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hdf5_infile</span><span class="p">[</span><span class="s2">&quot;imgdata&quot;</span><span class="p">])</span>
+<span class="sd">            # Load data</span>
+<span class="sd">            char_image_data = np.array(hdf5_infile[&quot;imgdata&quot;])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_imagedata</span><span class="p">(</span><span class="n">char_image_specs</span><span class="p">,</span> <span class="n">char_image_data</span><span class="p">)</span>
+<span class="sd">        self.add_img(char_image_specs, char_image_data)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">read_image_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
-        <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">convert_8bit_grayscale_to_2bit</span>
+<div class="viewcode-block" id="OCRDataset.read_image_dir"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.read_image_dir">[docs]</a>    <span class="k">def</span> <span class="nf">read_image_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        from PIL import Image</span>
+<span class="sd">        from scinoephile.ocr import convert_8bit_grayscale_to_2bit</span>
 
-        <span class="c1"># TODO: Validate that directory can be load</span>
+<span class="sd">        # TODO: Validate that directory can be load</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading images from &#39;</span><span class="si">{self.input_image_dir}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="sd">        if self.verbosity &gt;= 1:</span>
+<span class="sd">            print(f&quot;Reading images from &#39;{self.input_image_dir}&#39;&quot;)</span>
 
-        <span class="c1"># Prepare list of infiles</span>
-        <span class="n">infiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_image_dir_input_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_image_dir</span><span class="p">)</span>
+<span class="sd">        # Prepare list of infiles</span>
+<span class="sd">        infiles = self._list_image_dir_input_files(self.input_image_dir)</span>
 
-        <span class="c1"># Prepare specs</span>
-        <span class="n">specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_image_dir_input_specs</span><span class="p">(</span><span class="n">infiles</span><span class="p">)</span>
+<span class="sd">        # Prepare specs</span>
+<span class="sd">        specs = self._get_image_dir_input_specs(infiles)</span>
 
-        <span class="c1"># Prepare data</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">infiles</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata_size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imagedata_dtype</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">infile</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">infiles</span><span class="p">):</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8bit&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;2bit&quot;</span><span class="p">:</span>
-                <span class="n">image</span> <span class="o">=</span> <span class="n">convert_8bit_grayscale_to_2bit</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1bit&quot;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_to_data</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="sd">        # Prepare data</span>
+<span class="sd">        data = np.zeros((len(infiles), self._imgdata_size), self._imgdata_dtype)</span>
+<span class="sd">        for i, infile in enumerate(infiles):</span>
+<span class="sd">            image = Image.open(infile)</span>
+<span class="sd">            if self.imgmode == &quot;8bit&quot;:</span>
+<span class="sd">                pass</span>
+<span class="sd">            elif self.imgmode == &quot;2bit&quot;:</span>
+<span class="sd">                image = convert_8bit_grayscale_to_2bit(image)</span>
+<span class="sd">            elif self.imgmode == &quot;1bit&quot;:</span>
+<span class="sd">                raise NotImplementedError()</span>
+<span class="sd">            data[i] = self.image_to_data(image)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_imagedata</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="sd">        self.add_img(specs, data)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 
         <span class="c1"># Process arguments</span>
         <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">indexes</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexes</span><span class="p">]</span>
         <span class="n">indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">indexes</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">indexes</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">columns</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">size</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">columns</span><span class="p">))</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">cols</span><span class="p">))</span>
 
         <span class="c1"># Draw image</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">columns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">255</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">columns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indexes</span><span class="p">):</span>
-            <span class="n">column</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="n">columns</span><span class="p">)</span>
-            <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">column</span> <span class="o">*</span> <span class="n">columns</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="n">char_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">)))</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="n">char_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="n">cols</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">column</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+                <span class="n">char_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+                <span class="n">char_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">imgdata</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                         <span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-            <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">char_image</span><span class="p">,</span>
-                        <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
-                         <span class="mi">100</span> <span class="o">*</span> <span class="n">column</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
-                         <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
-                         <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
-        <span class="n">image</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">char_img</span><span class="p">,</span>
+                      <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+                       <span class="mi">100</span> <span class="o">*</span> <span class="n">column</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+                       <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
+                       <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <div class="viewcode-block" id="OCRDataset.write_hdf5"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.write_hdf5">[docs]</a>    <span class="k">def</span> <span class="nf">write_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Writes dataset to an hdf5 file</span>
+<span class="sd">        import h5py</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        from os.path import expandvars</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            outfile (str, optional): Path to hdf5 file; defaults to</span>
-<span class="sd">              self.output_hdf5</span>
+<span class="sd">        if outfile is None:</span>
+<span class="sd">            outfile = self.output_hdf5</span>
+<span class="sd">        else:</span>
+<span class="sd">            outfile = expandvars(outfile)</span>
+<span class="sd">        # TODO: Validate that hdf5 file can be written</span>
+
+<span class="sd">        if self.verbosity &gt;= 1:</span>
+<span class="sd">            print(f&quot;Writing imgdata to &#39;{outfile}&#39;&quot;)</span>
+<span class="sd">        with h5py.File(outfile) as hdf5_outfile:</span>
+<span class="sd">            # Remove preexisting data</span>
+<span class="sd">            if &quot;imgdata&quot; in hdf5_outfile:</span>
+<span class="sd">                del hdf5_outfile[&quot;imgdata&quot;]</span>
+<span class="sd">            if &quot;imgspec&quot; in hdf5_outfile:</span>
+<span class="sd">                del hdf5_outfile[&quot;imgspec&quot;]</span>
+
+<span class="sd">            # Save configuration</span>
+<span class="sd">            hdf5_outfile.attrs[&quot;mode&quot;] = self.imgmode</span>
+
+<span class="sd">            # Save specs</span>
+<span class="sd">            # TODO: Check if &#39;columns.values&#39; can just be &#39;columns&#39;</span>
+<span class="sd">            formatter = self._get_hdf5_output_spec_formatter(</span>
+<span class="sd">                self.imgspec.columns.values)</span>
+<span class="sd">            dtypes = self._get_hdf5_spec_dtypes(</span>
+<span class="sd">                self.imgspec.columns.values)</span>
+<span class="sd">            hdf5_outfile.create_dataset(</span>
+<span class="sd">                &quot;imgspec&quot;,</span>
+<span class="sd">                data=np.array(list(map(formatter, self.imgspec.values)),</span>
+<span class="sd">                              dtype=dtypes),</span>
+<span class="sd">                dtype=dtypes,</span>
+<span class="sd">                chunks=True,</span>
+<span class="sd">                compression=&quot;gzip&quot;)</span>
+
+<span class="sd">            # Save data</span>
+<span class="sd">            hdf5_outfile.create_dataset(</span>
+<span class="sd">                &quot;imgdata&quot;,</span>
+<span class="sd">                data=self.imgdata,</span>
+<span class="sd">                dtype=self._imgdata_dtype,</span>
+<span class="sd">                chunks=True,</span>
+<span class="sd">                compression=&quot;gzip&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">h5py</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
-
-        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">outfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_hdf5</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">outfile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
-        <span class="c1"># TODO: Validate that hdf5 file can be written</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing imgdata to &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
-            <span class="c1"># Remove preexisting data</span>
-            <span class="k">if</span> <span class="s2">&quot;imgdata&quot;</span> <span class="ow">in</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">hdf5_outfile</span><span class="p">[</span><span class="s2">&quot;imgdata&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;imagespecs&quot;</span> <span class="ow">in</span> <span class="n">hdf5_outfile</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">hdf5_outfile</span><span class="p">[</span><span class="s2">&quot;imagespecs&quot;</span><span class="p">]</span>
-
-            <span class="c1"># Save configuration</span>
-            <span class="n">hdf5_outfile</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span>
-
-            <span class="c1"># Save specs</span>
-            <span class="c1"># TODO: Check if &#39;columns.values&#39; can just be &#39;columns&#39;</span>
-            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hdf5_output_spec_formatter</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-            <span class="n">dtypes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hdf5_spec_dtypes</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-            <span class="n">hdf5_outfile</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
-                <span class="s2">&quot;imagespecs&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">values</span><span class="p">)),</span>
-                              <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">),</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
-                <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-
-            <span class="c1"># Save data</span>
-            <span class="n">hdf5_outfile</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
-                <span class="s2">&quot;imgdata&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">,</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagedata_dtype</span><span class="p">,</span>
-                <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="OCRDataset.write_image_dir"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.write_image_dir">[docs]</a>    <span class="k">def</span> <span class="nf">write_image_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        from os import makedirs</span>
+<span class="sd">        from os.path import dirname, expandvars, isdir</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            outdir (str): Path to output directory; defaults to</span>
-<span class="sd">              self.output_image_dir</span>
+<span class="sd">        if outdir is None:</span>
+<span class="sd">            outdir = self.output_image_dir</span>
+<span class="sd">        else:</span>
+<span class="sd">            outdir = expandvars(outdir)</span>
+<span class="sd">        # TODO: Validate that directory can be written</span>
+
+<span class="sd">        if self.verbosity &gt;= 1:</span>
+<span class="sd">            print(f&quot;Writing images to &#39;{outdir}&#39;&quot;)</span>
+<span class="sd">        outfile_path_formatter = self._get_image_dir_outfile_formatter(</span>
+<span class="sd">            self.imgspec, outdir)</span>
+<span class="sd">        outfiles = map(outfile_path_formatter, self.imgspec.iterrows())</span>
+<span class="sd">        for outfile, data in zip(outfiles, self.imgdata):</span>
+<span class="sd">            if self.verbosity &gt;= 2:</span>
+<span class="sd">                print(f&quot;Writing &#39;{outfile}&#39;&quot;)</span>
+<span class="sd">            if not isdir(dirname(outfile)):</span>
+<span class="sd">                makedirs(dirname(outfile))</span>
+<span class="sd">            self.image_array_to_object(data).save(outfile)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">makedirs</span>
-        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">expandvars</span><span class="p">,</span> <span class="n">isdir</span>
-
-        <span class="k">if</span> <span class="n">outdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">outdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_image_dir</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">outdir</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">outdir</span><span class="p">)</span>
-        <span class="c1"># TODO: Validate that directory can be written</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing images to &#39;</span><span class="si">{outdir}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="n">outfile_path_formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_image_dir_outfile_formatter</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">,</span> <span class="n">outdir</span><span class="p">)</span>
-        <span class="n">outfiles</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">outfile_path_formatter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">outfiles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">)):</span>
-                <span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_array_to_object</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
     <span class="c1"># endregion</span>
 

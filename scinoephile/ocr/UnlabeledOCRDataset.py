@@ -16,13 +16,6 @@ from IPython import embed
 class UnlabeledOCRDataset(OCRDataset):
     """
     A collection of unlabeled character images
-
-    .. todo::
-      - [x] Read image directory
-      - [x] Add images
-      - [x] Write hdf5
-      - [x] Read hdf5
-      - [x] Write image directory
     """
 
     # region Builtins
@@ -47,13 +40,13 @@ class UnlabeledOCRDataset(OCRDataset):
     # region Private Properties
 
     @property
-    def _imagespec_columns(self):
+    def _imgspec_cols(self):
         """list(str): Character image specification columns"""
 
         return ["path"]
 
     @property
-    def _imagespec_dtypes(self):
+    def _imgspec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str}
 
@@ -90,7 +83,7 @@ class UnlabeledOCRDataset(OCRDataset):
 
         return pd.DataFrame(data=infiles,
                             index=range(len(infiles)),
-                            columns=self._imagespec_columns)
+                            columns=self._imgspec_cols)
 
     def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
@@ -143,8 +136,3 @@ class UnlabeledOCRDataset(OCRDataset):
             return func
 
     # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    UnlabeledOCRDataset.main()

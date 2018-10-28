@@ -217,15 +217,11 @@
 <span class="sd">    A collection of generated character images</span>
 
 <span class="sd">    .. todo::</span>
-<span class="sd">      - [x] Update gen_min_imagedata</span>
-<span class="sd">      - [x] Update gen_new_imagedata</span>
 <span class="sd">      - [ ] Update saving</span>
 <span class="sd">      - [ ] Update loading</span>
 <span class="sd">      - [ ] Remove temporary code used during troubleshooting</span>
 <span class="sd">      - [ ] Expand training and validation sets when images are added, rather</span>
 <span class="sd">            than recreating fully</span>
-<span class="sd">      - [ ] Implement CL arguments</span>
-<span class="sd">      - [ ] Validate CL arguments</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
@@ -257,12 +253,12 @@
         <span class="c1">#     self.load()</span>
 
         <span class="c1"># Action</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gen_min_imagedata</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gen_new_imagedata</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_min_img</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_new_img</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
         <span class="c1"># Output</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c1"># if self.outfile is not None:</span>
+        <span class="c1">#     self.save()</span>
 
         <span class="c1"># Present IPython prompt</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span><span class="p">:</span>
@@ -390,17 +386,17 @@
     <span class="c1"># region Private Properties</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagespec_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgspec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imagespecs&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_imgspec&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;font&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;x_offset&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;y_offset&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_imagespec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_imgspec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                 <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">}</span>
@@ -428,19 +424,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_draw_specs_available_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
                 <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="n">fonts</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="n">sizes</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="n">widths</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="n">x_offsets</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="n">y_offsets</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_specs_available_</span>
 
@@ -460,19 +456,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_draw_specs_minimal_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
                 <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_x_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_specs_minimal_</span>
 
@@ -487,7 +483,7 @@
 
     <span class="c1"># region Public Methods</span>
 
-    <span class="k">def</span> <span class="nf">gen_min_imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">gen_min_img</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
         <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">gen_char_imagedata</span>
@@ -510,21 +506,21 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Generating {len(queue)} new images for minimal set&quot;</span><span class="p">)</span>
 
             <span class="c1"># Prepare specs</span>
-            <span class="n">specs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+            <span class="n">imgspec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
 
             <span class="c1"># Prepare data</span>
-            <span class="n">imagedata</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="n">imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="n">imagedata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+            <span class="n">imgdata</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+                <span class="n">imgdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+                <span class="n">imgdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span>
-                <span class="n">imagedata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_char_imagedata</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span>
-                                                  <span class="n">image_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span><span class="p">,</span>
+                <span class="n">imgdata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_char_imagedata</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span>
+                                                  <span class="n">image_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span><span class="p">,</span>
                                                   <span class="o">**</span><span class="n">spec</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_imagedata</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="n">imagedata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">imgspec</span><span class="p">,</span> <span class="n">imgdata</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">gen_new_imagedata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_images</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">gen_new_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_images</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
         <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
@@ -557,138 +553,147 @@
             <span class="n">specs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
 
             <span class="c1"># Prepare data</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="mi">6400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen_char_imagedata</span><span class="p">(</span>
-                    <span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span> <span class="n">image_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_mode</span><span class="p">,</span> <span class="o">**</span><span class="n">spec</span><span class="p">)</span>
+                    <span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span> <span class="n">image_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span><span class="p">,</span> <span class="o">**</span><span class="n">spec</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_imagedata</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_data_for_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
+<div class="viewcode-block" id="GeneratedOCRDataset.get_data_for_training"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.get_data_for_training">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_for_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        from random import sample</span>
 
-        <span class="n">all_trn_indexes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">all_val_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">        all_trn_indexes = []</span>
+<span class="sd">        all_val_indexes = []</span>
 
-        <span class="c1"># Prepare trn and val sets with at least one image of each character</span>
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]):</span>
-            <span class="n">specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
-            <span class="n">n_specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span>
+<span class="sd">        # Prepare trn and val sets with at least one image of each character</span>
+<span class="sd">        for char in set(self.imgspec[&quot;char&quot;]):</span>
+<span class="sd">            specs = self._get_specs_of_char(char)</span>
+<span class="sd">            n_specs = specs.index.size</span>
 
-            <span class="c1"># Add at least one image of each character to each set</span>
-            <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">all_trn_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trn_index</span><span class="p">)</span>
-            <span class="n">all_val_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_index</span><span class="p">)</span>
-            <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span><span class="p">])</span>
+<span class="sd">            # Add at least one image of each character to each set</span>
+<span class="sd">            trn_index, val_index = sample(specs.index.tolist(), 2)</span>
+<span class="sd">            all_trn_indexes.append(trn_index)</span>
+<span class="sd">            all_val_indexes.append(val_index)</span>
+<span class="sd">            specs = specs.drop([trn_index, val_index])</span>
 
-            <span class="c1"># Distribution remaining images across sets</span>
-            <span class="n">n_for_trn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n_specs</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">val_portion</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">n_for_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_specs</span> <span class="o">*</span> <span class="n">val_portion</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_for_trn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">trn_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_trn</span><span class="p">)</span>
-                <span class="n">all_trn_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
-                <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_for_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">val_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_val</span><span class="p">)</span>
-                <span class="n">all_val_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
-                <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
+<span class="sd">            # Distribution remaining images across sets</span>
+<span class="sd">            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)</span>
+<span class="sd">            n_for_val = int(np.ceil(n_specs * val_portion) - 1)</span>
+<span class="sd">            if n_for_trn &gt; 0:</span>
+<span class="sd">                trn_indexes = sample(specs.index.tolist(), n_for_trn)</span>
+<span class="sd">                all_trn_indexes.extend(trn_indexes)</span>
+<span class="sd">                specs = specs.drop(trn_indexes)</span>
+<span class="sd">            if n_for_val &gt; 0:</span>
+<span class="sd">                val_indexes = sample(specs.index.tolist(), n_for_val)</span>
+<span class="sd">                all_val_indexes.extend(val_indexes)</span>
+<span class="sd">                specs = specs.drop(val_indexes)</span>
 
-        <span class="c1"># Organize data</span>
-        <span class="n">trn_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">all_trn_indexes</span><span class="p">]</span>
-        <span class="n">trn_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">all_trn_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">val_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">all_val_indexes</span><span class="p">]</span>
-        <span class="n">val_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">all_val_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="sd">        # Organize data</span>
+<span class="sd">        trn_img = self.imgdata[all_trn_indexes]</span>
+<span class="sd">        trn_lbl = self.chars_to_labels(</span>
+<span class="sd">            self.imgspec[&quot;char&quot;].loc[all_trn_indexes].values)</span>
+<span class="sd">        val_img = self.imgdata[all_val_indexes]</span>
+<span class="sd">        val_lbl = self.chars_to_labels(</span>
+<span class="sd">            self.imgspec[&quot;char&quot;].loc[all_val_indexes].values)</span>
 
-        <span class="k">return</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span>
+<span class="sd">        return trn_img, trn_lbl, val_img, val_lbl</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">get_trn_val_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
+<div class="viewcode-block" id="GeneratedOCRDataset.get_trn_val_indexes"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">get_trn_val_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        from random import sample</span>
 
-        <span class="n">all_trn_indexes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">all_val_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">        all_trn_indexes = []</span>
+<span class="sd">        all_val_indexes = []</span>
 
-        <span class="c1"># Prepare trn and val sets with at least one image of each character</span>
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]):</span>
-            <span class="n">specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
-            <span class="n">n_specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span>
+<span class="sd">        # Prepare trn and val sets with at least one image of each character</span>
+<span class="sd">        for char in set(self.imgspec[&quot;char&quot;]):</span>
+<span class="sd">            specs = self._get_specs_of_char(char)</span>
+<span class="sd">            n_specs = specs.index.size</span>
 
-            <span class="c1"># Add at least one image of each character to each set</span>
-            <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">all_trn_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trn_index</span><span class="p">)</span>
-            <span class="n">all_val_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_index</span><span class="p">)</span>
-            <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span><span class="p">])</span>
+<span class="sd">            # Add at least one image of each character to each set</span>
+<span class="sd">            trn_index, val_index = sample(specs.index.tolist(), 2)</span>
+<span class="sd">            all_trn_indexes.append(trn_index)</span>
+<span class="sd">            all_val_indexes.append(val_index)</span>
+<span class="sd">            specs = specs.drop([trn_index, val_index])</span>
 
-            <span class="c1"># Distribution remaining images across sets</span>
-            <span class="n">n_for_trn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n_specs</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">val_portion</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">n_for_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_specs</span> <span class="o">*</span> <span class="n">val_portion</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_for_trn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">trn_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_trn</span><span class="p">)</span>
-                <span class="n">all_trn_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
-                <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_for_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">val_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">specs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_val</span><span class="p">)</span>
-                <span class="n">all_val_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
-                <span class="n">specs</span> <span class="o">=</span> <span class="n">specs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
+<span class="sd">            # Distribution remaining images across sets</span>
+<span class="sd">            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)</span>
+<span class="sd">            n_for_val = int(np.ceil(n_specs * val_portion) - 1)</span>
+<span class="sd">            if n_for_trn &gt; 0:</span>
+<span class="sd">                trn_indexes = sample(specs.index.tolist(), n_for_trn)</span>
+<span class="sd">                all_trn_indexes.extend(trn_indexes)</span>
+<span class="sd">                specs = specs.drop(trn_indexes)</span>
+<span class="sd">            if n_for_val &gt; 0:</span>
+<span class="sd">                val_indexes = sample(specs.index.tolist(), n_for_val)</span>
+<span class="sd">                all_val_indexes.extend(val_indexes)</span>
+<span class="sd">                specs = specs.drop(val_indexes)</span>
 
-        <span class="k">return</span> <span class="n">all_trn_indexes</span><span class="p">,</span> <span class="n">all_val_indexes</span>
+<span class="sd">        return all_trn_indexes, all_val_indexes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">write_trn_val_image_dirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">makedirs</span>
-        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">isdir</span>
+<div class="viewcode-block" id="GeneratedOCRDataset.write_trn_val_image_dirs"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.write_trn_val_image_dirs">[docs]</a>    <span class="k">def</span> <span class="nf">write_trn_val_image_dirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        from os import makedirs</span>
+<span class="sd">        from os.path import dirname, isdir</span>
 
-        <span class="n">trn_image_dir</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{self.output_image_dir.rstrip(&#39;trn&#39;)}trn&quot;</span>
-        <span class="n">val_image_dir</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{self.output_image_dir.rstrip(&#39;trn&#39;)}val&quot;</span>
+<span class="sd">        trn_image_dir = f&quot;{self.output_image_dir.rstrip(&#39;trn&#39;)}trn&quot;</span>
+<span class="sd">        val_image_dir = f&quot;{self.output_image_dir.rstrip(&#39;trn&#39;)}val&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing images to &#39;</span><span class="si">{trn_image_dir}</span><span class="s2">&#39;&quot;</span>
-                  <span class="n">f</span><span class="s2">&quot;and </span><span class="si">{val_image_dir}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">        if self.verbosity &gt;= 1:</span>
+<span class="sd">            print(f&quot;Writing images to &#39;{trn_image_dir}&#39;&quot;</span>
+<span class="sd">                  f&quot;and {val_image_dir}&quot;)</span>
 
-        <span class="k">def</span> <span class="nf">trn_outfile_formatter</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{trn_image_dir}</span><span class="s2">/&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;char&#39;]}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;size&#39;]:02d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;width&#39;]:02d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;x_offset&#39;]:+d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;y_offset&#39;]:+d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;{spec[1][&#39;font&#39;].replace(&#39; &#39;, &#39;&#39;)}.png&quot;</span>
+<span class="sd">        def trn_outfile_formatter(spec):</span>
+<span class="sd">            return f&quot;{trn_image_dir}/&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;char&#39;]}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;size&#39;]:02d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;width&#39;]:02d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;x_offset&#39;]:+d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;y_offset&#39;]:+d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;font&#39;].replace(&#39; &#39;, &#39;&#39;)}.png&quot;</span>
 
-        <span class="k">def</span> <span class="nf">val_outfile_formatter</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{val_image_dir}</span><span class="s2">/&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;char&#39;]}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;size&#39;]:02d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;width&#39;]:02d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;x_offset&#39;]:+d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;</span><span class="si">{spec[1][&#39;y_offset&#39;]:+d}</span><span class="s2">_&quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;{spec[1][&#39;font&#39;].replace(&#39; &#39;, &#39;&#39;)}.png&quot;</span>
+<span class="sd">        def val_outfile_formatter(spec):</span>
+<span class="sd">            return f&quot;{val_image_dir}/&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;char&#39;]}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;size&#39;]:02d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;width&#39;]:02d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;x_offset&#39;]:+d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;y_offset&#39;]:+d}_&quot; \</span>
+<span class="sd">                   f&quot;{spec[1][&#39;font&#39;].replace(&#39; &#39;, &#39;&#39;)}.png&quot;</span>
 
-        <span class="n">trn_indexes</span><span class="p">,</span> <span class="n">val_indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_trn_val_indexes</span><span class="p">()</span>
-        <span class="n">trn_outfiles</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">trn_outfile_formatter</span><span class="p">,</span>
-                           <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">trn_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())</span>
-        <span class="n">val_outfiles</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">val_outfile_formatter</span><span class="p">,</span>
-                           <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">val_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())</span>
-        <span class="n">trn_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">trn_indexes</span><span class="p">]</span>
-        <span class="n">val_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagedata</span><span class="p">[</span><span class="n">val_indexes</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trn_outfiles</span><span class="p">,</span> <span class="n">trn_data</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">)):</span>
-                <span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_array_to_object</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">val_outfiles</span><span class="p">,</span> <span class="n">val_data</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">)):</span>
-                <span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_array_to_object</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+<span class="sd">        trn_indexes, val_indexes = self.get_trn_val_indexes()</span>
+<span class="sd">        trn_outfiles = map(trn_outfile_formatter,</span>
+<span class="sd">                           self.imgspec.loc[trn_indexes].iterrows())</span>
+<span class="sd">        val_outfiles = map(val_outfile_formatter,</span>
+<span class="sd">                           self.imgspec.loc[val_indexes].iterrows())</span>
+<span class="sd">        trn_data = self.imgdata[trn_indexes]</span>
+<span class="sd">        val_data = self.imgdata[val_indexes]</span>
+<span class="sd">        for outfile, data in zip(trn_outfiles, trn_data):</span>
+<span class="sd">            if self.verbosity &gt;= 1:</span>
+<span class="sd">                print(f&quot;Writing &#39;{outfile}&#39;&quot;)</span>
+<span class="sd">            if not isdir(dirname(outfile)):</span>
+<span class="sd">                makedirs(dirname(outfile))</span>
+<span class="sd">            self.image_array_to_object(data).save(outfile)</span>
+<span class="sd">        for outfile, data in zip(val_outfiles, val_data):</span>
+<span class="sd">            if self.verbosity &gt;= 1:</span>
+<span class="sd">                print(f&quot;Writing &#39;{outfile}&#39;&quot;)</span>
+<span class="sd">            if not isdir(dirname(outfile)):</span>
+<span class="sd">                makedirs(dirname(outfile))</span>
+<span class="sd">            self.image_array_to_object(data).save(outfile)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
     <span class="c1"># endregion</span>
 
@@ -771,19 +776,19 @@
 
         <span class="n">specs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">infiles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]),</span>
+                <span class="n">infiles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">chars</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]),</span>
+                <span class="n">chars</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">fonts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
+                <span class="n">fonts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
+                <span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">widths</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
+                <span class="n">widths</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">x_offsets</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
+                <span class="n">x_offsets</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">y_offsets</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imagespec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])}</span>
+                <span class="n">y_offsets</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_imgspec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])}</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">specs</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">infiles</span><span class="p">)))</span>
 
@@ -802,18 +807,13 @@
         <span class="k">return</span> <span class="n">func</span>
 
     <span class="k">def</span> <span class="nf">_get_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">imagespecs</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">][</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">imgspec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">][</span>
             <span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;x_offset&quot;</span><span class="p">,</span> <span class="s2">&quot;y_offset&quot;</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="nf">_get_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span></div>
 
     <span class="c1"># endregion</span>
-
-
-<span class="c1">#################################### MAIN #####################################</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">GeneratedOCRDataset</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
 </pre></div>
 
            </div>

@@ -43,13 +43,13 @@ class LabeledOCRDataset(OCRDataset):
     # region Private Properties
 
     @property
-    def _imagespec_columns(self):
+    def _imgspec_cols(self):
         """list(str): Character image specification columns"""
 
         return ["path", "char"]
 
     @property
-    def _imagespec_dtypes(self):
+    def _imgspec_dtypes(self):
         """list(str): Character image specification dtypes"""
         return {"path": str, "char": str}
 
@@ -58,14 +58,17 @@ class LabeledOCRDataset(OCRDataset):
     # region Public Methods
 
     def get_images_and_labels(self, indexes=None):
+        return NotImplementedError()
+        """
         if indexes is None:
-            img = self.imagedata
-            lbl = self.chars_to_labels(self.imagespecs["char"].values)
+            img = self.imgdata
+            lbl = self.chars_to_labels(self.imgspec["char"].values)
         else:
-            img = self.imagedata[indexes]
-            lbl = self.chars_to_labels(self.imagespecs["char"].loc[indexes].values)
+            img = self.imgdata[indexes]
+            lbl = self.chars_to_labels(self.imgspec["char"].loc[indexes].values)
 
         return img, lbl
+        """
 
     # endregion
 
@@ -104,7 +107,7 @@ class LabeledOCRDataset(OCRDataset):
 
         return pd.DataFrame(data=np.array([infiles, chars]).transpose(),
                             index=range(len(infiles)),
-                            columns=self._imagespec_columns)
+                            columns=self._imgspec_cols)
 
     def _get_hdf5_spec_dtypes(self, columns):
         """Provides spec dtypes compatible with both numpy and h5py"""
@@ -157,8 +160,3 @@ class LabeledOCRDataset(OCRDataset):
             return func
 
     # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    LabeledOCRDataset.main()

@@ -7,10 +7,15 @@ Optical Character Recognition
 _____________________________
 
 - [x] Fix font support on new macos and matplotlib
+- [x] Update GeneratedOCRDataset's gen_min_img
+- [x] Update GeneratedOCRDataset's gen_add_img
 - [x] Review Subtitle and ImageSubtitle Data Structures
-- [ ] Review OCR Data Structures
-- [ ] Migrate Machine Learning code to newer data structures
+- [x] Review OCR Datasets
+- [ ] Update OCR Datasets' save
+- [ ] Update OCR Datasets' load
+- [ ] Review and update Autotrainer
 - [ ] Save machine learning model and reload
+- [ ] From ImageSubtitleDataset, organize data structures for tensorflow
 - [ ] Apply machine learning model to ImageSubtitleDataset
 - [ ] Add support for Western characters and punctuation
 

@@ -216,7 +216,7 @@
 <td>Base for OCR command line tools</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#scinoephile.ocr.OCRDataset" title="scinoephile.ocr.OCRDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset</span></code></a></td>
-<td>Represents a collection of character images</td>
+<td>A collection of character images</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#scinoephile.ocr.UnlabeledOCRDataset" title="scinoephile.ocr.UnlabeledOCRDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scinoephile.ocr.UnlabeledOCRDataset</span></code></a></td>
 <td>A collection of unlabeled character images</td>
@@ -303,24 +303,24 @@
 <h4>Base Dataset<a class="headerlink" href="#base-dataset" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.OCRDataset">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>imgmode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.ocr.OCRCLToolBase" title="scinoephile.ocr.OCRCLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRCLToolBase</span></code></a></p>
-<p>Represents a collection of character images</p>
+<p>A collection of character images</p>
 <dl class="attribute">
-<dt id="scinoephile.ocr.OCRDataset.imagespecs">
-<code class="descname">imagespecs</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imagespecs" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.OCRDataset.imgspec">
+<code class="descname">imgspec</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imgspec" title="Permalink to this definition">¶</a></dt>
 <dd><p>pandas.DataFrame: Character image specifications</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.OCRDataset.imagedata">
-<code class="descname">imagedata</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imagedata" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.OCRDataset.imgdata">
+<code class="descname">imgdata</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imgdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>numpy.ndarray(bool): Character image data</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.OCRDataset.image_mode">
-<code class="descname">image_mode</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.image_mode" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.OCRDataset.imgmode">
+<code class="descname">imgmode</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imgmode" title="Permalink to this definition">¶</a></dt>
 <dd><p>str: Image mode</p>
 </dd></dl>
 
@@ -337,26 +337,142 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="scinoephile.ocr.OCRDataset.add_imagedata">
-<code class="descname">add_imagedata</code><span class="sig-paren">(</span><em>imagespecs</em>, <em>imagedata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.add_imagedata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.add_imagedata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds image imgdata and specifications</p>
+<dt id="scinoephile.ocr.OCRDataset.add_img">
+<code class="descname">add_img</code><span class="sig-paren">(</span><em>imgspec</em>, <em>imgdata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.add_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.add_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new images</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>imagespecs (pandas.DataFrame): New specs
-imagedata (numpy.ndarray): New imgdata</dd>
+<dd>imgspec (pandas.DataFrame): New image specifications
+imgdata (numpy.ndarray): New image data</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.read_hdf5">
+<code class="descname">read_hdf5</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.read_hdf5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.read_hdf5" title="Permalink to this definition">¶</a></dt>
+<dd><p>import pandas as pd
+import h5py
+import numpy as np</p>
+<dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Reading images from ‘{self.input_hdf5}’”)</dd>
+<dt>with h5py.File(self.input_hdf5) as hdf5_infile:</dt>
+<dd><dl class="first docutils">
+<dt>if “imgspec” not in hdf5_infile:</dt>
+<dd>raise ValueError()</dd>
+<dt>if “imgdata” not in hdf5_infile:</dt>
+<dd>raise ValueError()</dd>
+</dl>
+<p># Load configuration (Todo: Validate that mode matches current)
+self.imgmode = hdf5_infile.attrs[“mode”]</p>
+<p># Load specs
+formatter = self._get_hdf5_input_spec_formatter(</p>
+<blockquote>
+<div>hdf5_infile[“imgspec”].dtype.names)</div></blockquote>
+<dl class="docutils">
+<dt>char_image_specs = pd.DataFrame(</dt>
+<dd><dl class="first docutils">
+<dt>data=list(map(formatter,</dt>
+<dd>np.array(hdf5_infile[“imgspec”]))),</dd>
+</dl>
+<p class="last">index=range(hdf5_infile[“imgspec”].size),
+columns=hdf5_infile[“imgspec”].dtype.names)</p>
+</dd>
+</dl>
+<p class="last"># Load data
+char_image_data = np.array(hdf5_infile[“imgdata”])</p>
+</dd>
+</dl>
+<p>self.add_img(char_image_specs, char_image_data)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.read_image_dir">
+<code class="descname">read_image_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.read_image_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.read_image_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>import numpy as np
+from PIL import Image
+from scinoephile.ocr import convert_8bit_grayscale_to_2bit</p>
+<p># TODO: Validate that directory can be load</p>
+<dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Reading images from ‘{self.input_image_dir}’”)</dd>
+</dl>
+<p># Prepare list of infiles
+infiles = self._list_image_dir_input_files(self.input_image_dir)</p>
+<p># Prepare specs
+specs = self._get_image_dir_input_specs(infiles)</p>
+<p># Prepare data
+data = np.zeros((len(infiles), self._imgdata_size), self._imgdata_dtype)
+for i, infile in enumerate(infiles):</p>
+<blockquote>
+<div><p>image = Image.open(infile)
+if self.imgmode == “8bit”:</p>
+<blockquote>
+<div>pass</div></blockquote>
+<dl class="docutils">
+<dt>elif self.imgmode == “2bit”:</dt>
+<dd>image = convert_8bit_grayscale_to_2bit(image)</dd>
+<dt>elif self.imgmode == “1bit”:</dt>
+<dd>raise NotImplementedError()</dd>
+</dl>
+<p>data[i] = self.image_to_data(image)</p>
+</div></blockquote>
+<p>self.add_img(specs, data)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scinoephile.ocr.OCRDataset.write_hdf5">
 <code class="descname">write_hdf5</code><span class="sig-paren">(</span><em>outfile=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.write_hdf5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.write_hdf5" title="Permalink to this definition">¶</a></dt>
-<dd><p>Writes dataset to an hdf5 file</p>
+<dd><p>import h5py
+import numpy as np
+from os.path import expandvars</p>
 <dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>outfile (str, optional): Path to hdf5 file; defaults to</dt>
-<dd>self.output_hdf5</dd>
+<dt>if outfile is None:</dt>
+<dd>outfile = self.output_hdf5</dd>
+<dt>else:</dt>
+<dd>outfile = expandvars(outfile)</dd>
 </dl>
+<p># TODO: Validate that hdf5 file can be written</p>
+<dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Writing imgdata to ‘{outfile}’”)</dd>
+<dt>with h5py.File(outfile) as hdf5_outfile:</dt>
+<dd><p class="first"># Remove preexisting data
+if “imgdata” in hdf5_outfile:</p>
+<blockquote>
+<div>del hdf5_outfile[“imgdata”]</div></blockquote>
+<dl class="docutils">
+<dt>if “imgspec” in hdf5_outfile:</dt>
+<dd>del hdf5_outfile[“imgspec”]</dd>
+</dl>
+<p># Save configuration
+hdf5_outfile.attrs[“mode”] = self.imgmode</p>
+<p># Save specs
+# TODO: Check if ‘columns.values’ can just be ‘columns’
+formatter = self._get_hdf5_output_spec_formatter(</p>
+<blockquote>
+<div>self.imgspec.columns.values)</div></blockquote>
+<dl class="docutils">
+<dt>dtypes = self._get_hdf5_spec_dtypes(</dt>
+<dd>self.imgspec.columns.values)</dd>
+<dt>hdf5_outfile.create_dataset(</dt>
+<dd><p class="first">“imgspec”,
+data=np.array(list(map(formatter, self.imgspec.values)),</p>
+<blockquote>
+<div>dtype=dtypes),</div></blockquote>
+<p class="last">dtype=dtypes,
+chunks=True,
+compression=”gzip”)</p>
+</dd>
+</dl>
+<p># Save data
+hdf5_outfile.create_dataset(</p>
+<blockquote class="last">
+<div>“imgdata”,
+data=self.imgdata,
+dtype=self._imgdata_dtype,
+chunks=True,
+compression=”gzip”)</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -364,14 +480,32 @@ imagedata (numpy.ndarray): New imgdata</dd>
 <dl class="method">
 <dt id="scinoephile.ocr.OCRDataset.write_image_dir">
 <code class="descname">write_image_dir</code><span class="sig-paren">(</span><em>outdir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.write_image_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.write_image_dir" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>outdir (str): Path to output directory; defaults to</dt>
-<dd>self.output_image_dir</dd>
+<dd><p>from os import makedirs
+from os.path import dirname, expandvars, isdir</p>
+<dl class="docutils">
+<dt>if outdir is None:</dt>
+<dd>outdir = self.output_image_dir</dd>
+<dt>else:</dt>
+<dd>outdir = expandvars(outdir)</dd>
 </dl>
-</dd>
+<p># TODO: Validate that directory can be written</p>
+<dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Writing images to ‘{outdir}’”)</dd>
+<dt>outfile_path_formatter = self._get_image_dir_outfile_formatter(</dt>
+<dd>self.imgspec, outdir)</dd>
 </dl>
+<p>outfiles = map(outfile_path_formatter, self.imgspec.iterrows())
+for outfile, data in zip(outfiles, self.imgdata):</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if self.verbosity &gt;= 2:</dt>
+<dd>print(f”Writing ‘{outfile}’”)</dd>
+<dt>if not isdir(dirname(outfile)):</dt>
+<dd>makedirs(dirname(outfile))</dd>
+</dl>
+<p>self.image_array_to_object(data).save(outfile)</p>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
@@ -381,7 +515,7 @@ imagedata (numpy.ndarray): New imgdata</dd>
 <h4>Unlabeled Dataset<a class="headerlink" href="#unlabeled-dataset" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.UnlabeledOCRDataset">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">UnlabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/UnlabeledOCRDataset.html#UnlabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.UnlabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">UnlabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>imgmode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/UnlabeledOCRDataset.html#UnlabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.UnlabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code></p>
 <p>A collection of unlabeled character images</p>
 </dd></dl>
@@ -391,7 +525,7 @@ imagedata (numpy.ndarray): New imgdata</dd>
 <h4>Labeled Dataset<a class="headerlink" href="#labeled-dataset" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.LabeledOCRDataset">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">LabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/LabeledOCRDataset.html#LabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.LabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">LabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>imgmode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/LabeledOCRDataset.html#LabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.LabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code></p>
 <p>A collection of labeled character images</p>
 </dd></dl>
@@ -438,6 +572,137 @@ imagedata (numpy.ndarray): New imgdata</dd>
 <dt id="scinoephile.ocr.GeneratedOCRDataset.n_chars">
 <code class="descname">n_chars</code><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.n_chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>int: Number of unique characters to support</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.GeneratedOCRDataset.get_data_for_training">
+<code class="descname">get_data_for_training</code><span class="sig-paren">(</span><em>val_portion=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.get_data_for_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.get_data_for_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>import numpy as np
+from random import sample</p>
+<p>all_trn_indexes = []
+all_val_indexes = []</p>
+<p># Prepare trn and val sets with at least one image of each character
+for char in set(self.imgspec[“char”]):</p>
+<blockquote>
+<div><p>specs = self._get_specs_of_char(char)
+n_specs = specs.index.size</p>
+<p># Add at least one image of each character to each set
+trn_index, val_index = sample(specs.index.tolist(), 2)
+all_trn_indexes.append(trn_index)
+all_val_indexes.append(val_index)
+specs = specs.drop([trn_index, val_index])</p>
+<p># Distribution remaining images across sets
+n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
+n_for_val = int(np.ceil(n_specs * val_portion) - 1)
+if n_for_trn &gt; 0:</p>
+<blockquote>
+<div>trn_indexes = sample(specs.index.tolist(), n_for_trn)
+all_trn_indexes.extend(trn_indexes)
+specs = specs.drop(trn_indexes)</div></blockquote>
+<dl class="docutils">
+<dt>if n_for_val &gt; 0:</dt>
+<dd>val_indexes = sample(specs.index.tolist(), n_for_val)
+all_val_indexes.extend(val_indexes)
+specs = specs.drop(val_indexes)</dd>
+</dl>
+</div></blockquote>
+<p># Organize data
+trn_img = self.imgdata[all_trn_indexes]
+trn_lbl = self.chars_to_labels(</p>
+<blockquote>
+<div>self.imgspec[“char”].loc[all_trn_indexes].values)</div></blockquote>
+<p>val_img = self.imgdata[all_val_indexes]
+val_lbl = self.chars_to_labels(</p>
+<blockquote>
+<div>self.imgspec[“char”].loc[all_val_indexes].values)</div></blockquote>
+<p>return trn_img, trn_lbl, val_img, val_lbl</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes">
+<code class="descname">get_trn_val_indexes</code><span class="sig-paren">(</span><em>val_portion=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.get_trn_val_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>import numpy as np
+from random import sample</p>
+<p>all_trn_indexes = []
+all_val_indexes = []</p>
+<p># Prepare trn and val sets with at least one image of each character
+for char in set(self.imgspec[“char”]):</p>
+<blockquote>
+<div><p>specs = self._get_specs_of_char(char)
+n_specs = specs.index.size</p>
+<p># Add at least one image of each character to each set
+trn_index, val_index = sample(specs.index.tolist(), 2)
+all_trn_indexes.append(trn_index)
+all_val_indexes.append(val_index)
+specs = specs.drop([trn_index, val_index])</p>
+<p># Distribution remaining images across sets
+n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
+n_for_val = int(np.ceil(n_specs * val_portion) - 1)
+if n_for_trn &gt; 0:</p>
+<blockquote>
+<div>trn_indexes = sample(specs.index.tolist(), n_for_trn)
+all_trn_indexes.extend(trn_indexes)
+specs = specs.drop(trn_indexes)</div></blockquote>
+<dl class="docutils">
+<dt>if n_for_val &gt; 0:</dt>
+<dd>val_indexes = sample(specs.index.tolist(), n_for_val)
+all_val_indexes.extend(val_indexes)
+specs = specs.drop(val_indexes)</dd>
+</dl>
+</div></blockquote>
+<p>return all_trn_indexes, all_val_indexes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.GeneratedOCRDataset.write_trn_val_image_dirs">
+<code class="descname">write_trn_val_image_dirs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.write_trn_val_image_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.write_trn_val_image_dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>from os import makedirs
+from os.path import dirname, isdir</p>
+<p>trn_image_dir = f”{self.output_image_dir.rstrip(‘trn’)}trn”
+val_image_dir = f”{self.output_image_dir.rstrip(‘trn’)}val”</p>
+<dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd><dl class="first last docutils">
+<dt>print(f”Writing images to ‘{trn_image_dir}’”</dt>
+<dd>f”and {val_image_dir}”)</dd>
+</dl>
+</dd>
+<dt>def trn_outfile_formatter(spec):</dt>
+<dd>return f”{trn_image_dir}/”                    f”{spec[1][‘char’]}_”                    f”{spec[1][‘size’]:02d}_”                    f”{spec[1][‘width’]:02d}_”                    f”{spec[1][‘x_offset’]:+d}_”                    f”{spec[1][‘y_offset’]:+d}_”                    f”{spec[1][‘font’].replace(‘ ‘, ‘’)}.png”</dd>
+<dt>def val_outfile_formatter(spec):</dt>
+<dd>return f”{val_image_dir}/”                    f”{spec[1][‘char’]}_”                    f”{spec[1][‘size’]:02d}_”                    f”{spec[1][‘width’]:02d}_”                    f”{spec[1][‘x_offset’]:+d}_”                    f”{spec[1][‘y_offset’]:+d}_”                    f”{spec[1][‘font’].replace(‘ ‘, ‘’)}.png”</dd>
+</dl>
+<p>trn_indexes, val_indexes = self.get_trn_val_indexes()
+trn_outfiles = map(trn_outfile_formatter,</p>
+<blockquote>
+<div>self.imgspec.loc[trn_indexes].iterrows())</div></blockquote>
+<dl class="docutils">
+<dt>val_outfiles = map(val_outfile_formatter,</dt>
+<dd>self.imgspec.loc[val_indexes].iterrows())</dd>
+</dl>
+<p>trn_data = self.imgdata[trn_indexes]
+val_data = self.imgdata[val_indexes]
+for outfile, data in zip(trn_outfiles, trn_data):</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Writing ‘{outfile}’”)</dd>
+<dt>if not isdir(dirname(outfile)):</dt>
+<dd>makedirs(dirname(outfile))</dd>
+</dl>
+<p>self.image_array_to_object(data).save(outfile)</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>for outfile, data in zip(val_outfiles, val_data):</dt>
+<dd><dl class="first docutils">
+<dt>if self.verbosity &gt;= 1:</dt>
+<dd>print(f”Writing ‘{outfile}’”)</dd>
+<dt>if not isdir(dirname(outfile)):</dt>
+<dd>makedirs(dirname(outfile))</dd>
+</dl>
+<p class="last">self.image_array_to_object(data).save(outfile)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
