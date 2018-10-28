@@ -20,14 +20,14 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     # region Builtins
 
-    def __init__(self, imgmode=None, imgdata=None, **kwargs):
+    def __init__(self, mode=None, data=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if imgmode is not None:
-            self.imgmode = imgmode
-        if imgdata is not None:
-            self.imgdata = imgdata
+        if mode is not None:
+            self.mode = mode
+        if data is not None:
+            self.data = data
 
     # endregion
 
@@ -39,7 +39,7 @@ class ImageSubtitleEvent(SubtitleEvent):
         if not hasattr(self, "_char_bounds"):
             import numpy as np
 
-            white_cols = (self.imgdata == self.imgdata.max()).all(axis=0)
+            white_cols = (self.data == self.data.max()).all(axis=0)
             diff = np.diff(np.array(white_cols, np.int))
             # Get starts of chars, ends of chars, first nonwhite, last nonwhite
             bounds = np.unique(((np.where(diff == -1)[0] + 1).tolist()
@@ -59,37 +59,37 @@ class ImageSubtitleEvent(SubtitleEvent):
         return self._char_widths
 
     @property
-    def char_imgdata(self):
+    def char_data(self):
         """str: Images of individual characters """
-        if not hasattr(self, "_char_imgdata"):
+        if not hasattr(self, "_char_data"):
             import numpy as np
 
-            if self.imgmode == "8 bit":
+            if self.mode == "8 bit":
                 chars = np.ones((self.char_bounds.shape[0], 80, 80),
                                 np.uint8) * 255
-            elif self.imgmode == "1 bit":
+            elif self.mode == "1 bit":
                 chars = np.ones((self.char_bounds.shape[0], 80, 80),
                                 np.bool)
             for i, (x1, x2) in enumerate(self.char_bounds):
-                char = self.imgdata[:, x1:x2 + 1]
+                char = self.data[:, x1:x2 + 1]
                 white_rows = (char == char.max()).all(axis=1)
                 char = char[np.argmin(white_rows):
                             white_rows.size - np.argmin(white_rows[::-1])]
                 x = int(np.floor((80 - char.shape[1]) / 2))
                 y = int(np.floor((80 - char.shape[0]) / 2))
                 chars[i, y:y + char.shape[0], x:x + char.shape[1]] = char
-            self._char_imgdata = chars
-        return self._char_imgdata
+            self._char_data = chars
+        return self._char_data
 
     @property
-    def imgmode(self):
+    def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):
-            self._imgmode = "1 bit"
-        return self._imgmode
+            self._mode = "1 bit"
+        return self._mode
 
-    @imgmode.setter
-    def imgmode(self, value):
+    @mode.setter
+    def mode(self, value):
         if value is not None:
             if not isinstance(value, str):
                 try:
@@ -104,17 +104,17 @@ class ImageSubtitleEvent(SubtitleEvent):
                 raise ValueError(self._generate_setter_exception(value))
         # TODO: If changed, set self.data = self.data to convert
 
-        self._imgmode = value
+        self._mode = value
 
     @property
-    def imgdata(self):
+    def data(self):
         """str: Image """
         if not hasattr(self, "_data"):
-            self._imgdata = None
-        return self._imgdata
+            self._data = None
+        return self._data
 
-    @imgdata.setter
-    def imgdata(self, value):
+    @data.setter
+    def data(self, value):
         if value is not None:
             import numpy as np
             from PIL import Image
@@ -122,7 +122,7 @@ class ImageSubtitleEvent(SubtitleEvent):
             if not isinstance(value, np.ndarray):
                 raise ValueError(self._generate_setter_exception(value))
 
-            if self.imgmode == "8 bit":
+            if self.mode == "8 bit":
                 if len(value.shape) == 3:  # Convert RGB to L
                     trans_bg = Image.fromarray(value)
                     white_bg = Image.new("RGBA", trans_bg.size,
@@ -130,7 +130,7 @@ class ImageSubtitleEvent(SubtitleEvent):
                     white_bg.paste(trans_bg, mask=trans_bg)
                     value = np.array(white_bg.convert("L"))
                 # TODO: Should this also handle inputs of mode 1? Or error out?
-            elif self.imgmode == "1 bit":
+            elif self.mode == "1 bit":
                 if len(value.shape) == 3:  # Convert RGB to 1
                     trans_bg = Image.fromarray(value)
                     white_bg = Image.new("RGBA", trans_bg.size,
@@ -142,7 +142,7 @@ class ImageSubtitleEvent(SubtitleEvent):
                 raise ValueError(self._generate_setter_exception(value))
         # TODO: If changed, clear cached properties
 
-        self._imgdata = value
+        self._data = value
 
     # endregion
 
@@ -152,12 +152,12 @@ class ImageSubtitleEvent(SubtitleEvent):
         import numpy as np
         from PIL import Image
 
-        if self.imgdata is not None:
-            if self.imgmode == "8 bit":
-                img = Image.fromarray(self.imgdata)
-            elif self.imgmode == "1 bit":
-                img = Image.fromarray(self.imgdata.astype(np.uint8) * 255,
-                                        mode="L").convert("1")
+        if self.data is not None:
+            if self.mode == "8 bit":
+                img = Image.fromarray(self.data)
+            elif self.mode == "1 bit":
+                img = Image.fromarray(self.data.astype(np.uint8) * 255,
+                                      mode="L").convert("1")
             img.show()
         else:
             raise ValueError()

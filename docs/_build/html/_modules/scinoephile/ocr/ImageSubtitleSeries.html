@@ -227,26 +227,26 @@
 
     <span class="c1"># region Builtins</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="c1"># Store property values</span>
-        <span class="k">if</span> <span class="n">imgmode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span> <span class="o">=</span> <span class="n">imgmode</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Properties</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imgmode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_mode&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
 
-    <span class="nd">@imgmode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imgmode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@mode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -261,7 +261,7 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="c1"># TODO: If changed, change on events</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_imgmode</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1"># endregion</span>
 
@@ -317,7 +317,7 @@
         <span class="c1"># Check if sup</span>
         <span class="k">if</span> <span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;sup&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;sup&quot;</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span>
                                      <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Otherwise, use SSAFile.from_file</span>
         <span class="k">else</span><span class="p">:</span>
@@ -346,7 +346,7 @@
         <span class="k">if</span> <span class="s2">&quot;images&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span>
         <span class="n">fp</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">)</span>
-        <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgmode</span>
+        <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
@@ -393,7 +393,7 @@
         <span class="k">return</span> <span class="n">subs</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_load_sup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_load_sup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">make_time</span>
 
@@ -470,14 +470,14 @@
                          <span class="mh">0x17</span><span class="p">:</span> <span class="s2">&quot;WDS&quot;</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">:</span> <span class="s2">&quot;END&quot;</span><span class="p">}</span>
 
         <span class="c1"># initialize</span>
-        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">imgmode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
         <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;sup&quot;</span>
 
         <span class="c1"># Parse infile</span>
         <span class="n">sup_bytes</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">byte_offset</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">imgdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">palette</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">compressed_img</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
@@ -496,23 +496,23 @@
                 <span class="n">palette_bytes</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="n">content_size</span><span class="p">]</span>
                 <span class="n">palette</span> <span class="o">=</span> <span class="n">read_palette</span><span class="p">(</span><span class="n">palette_bytes</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x15</span><span class="p">:</span>  <span class="c1"># Image</span>
-                <span class="n">imgbytes</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="n">content_size</span><span class="p">]</span>
+                <span class="n">image_bytes</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="n">content_size</span><span class="p">]</span>
                 <span class="n">width</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">7</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">9</span><span class="p">])</span>
                 <span class="n">height</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">9</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
-                <span class="n">compressed_img</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">imgbytes</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+                <span class="n">compressed_img</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>  <span class="c1"># End</span>
                 <span class="k">if</span> <span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">start_time</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span>
-                    <span class="n">imgdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">compressed_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">compressed_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">color_index</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">palette</span><span class="p">):</span>
-                        <span class="n">imgdata</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compressed_img</span> <span class="o">==</span> <span class="n">color_index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">color</span>
+                        <span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compressed_img</span> <span class="o">==</span> <span class="n">color_index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">color</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">end_time</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span>
                     <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span>
                         <span class="n">start</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">start_time</span><span class="p">),</span>
                         <span class="n">end</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">end_time</span><span class="p">),</span>
-                        <span class="n">imgmode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span>
-                        <span class="n">imgdata</span><span class="o">=</span><span class="n">imgdata</span><span class="p">))</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">))</span>
 
                     <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">palette</span> <span class="o">=</span> <span class="kc">None</span>
@@ -527,7 +527,7 @@
                       <span class="n">f</span><span class="s2">&quot;</span><span class="si">{content_offset:&gt;9d}</span><span class="s2"> &quot;</span><span class="p">)</span>
 
             <span class="n">byte_offset</span> <span class="o">+=</span> <span class="mi">13</span> <span class="o">+</span> <span class="n">content_size</span>
-            <span class="k">if</span> <span class="n">byte_offset</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">):</span>  <span class="c1"># &gt;= 100000:</span>
+            <span class="k">if</span> <span class="n">byte_offset</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">):</span>
                 <span class="k">break</span>
 
         <span class="k">return</span> <span class="n">subs</span></div>

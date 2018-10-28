@@ -36,10 +36,10 @@ if __name__ == "__main__":
     #     infile=subtitle_root + "magnificent_mcdull/mcdull_1bit.h5",
     #     mode="1 bit", interactive=False, **kwargs)()
 
-    GeneratedOCRDataset(
-        infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        mode="1 bit", n_chars=50, interactive=True, **kwargs)()
+    # GeneratedOCRDataset(
+    #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+    #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+    #     mode="1 bit", n_chars=50, interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

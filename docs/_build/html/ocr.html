@@ -814,7 +814,7 @@ specs = specs.drop(val_indexes)</dd>
 <h4>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.ImageSubtitleDataset">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleDataset</code><span class="sig-paren">(</span><em>imgmode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleDataset.html#ImageSubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleDataset</code><span class="sig-paren">(</span><em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleDataset.html#ImageSubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleDataset.SubtitleDataset</span></code></p>
 <p>A collection of image-based subtitles</p>
 <dl class="attribute">
@@ -824,8 +824,8 @@ specs = specs.drop(val_indexes)</dd>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleDataset.imgmode">
-<code class="descname">imgmode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset.imgmode" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleDataset.mode">
+<code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset.mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image mode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -858,7 +858,7 @@ specs = specs.drop(val_indexes)</dd>
 <h4>Series<a class="headerlink" href="#series" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.ImageSubtitleSeries">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleSeries</code><span class="sig-paren">(</span><em>imgmode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleSeries</code><span class="sig-paren">(</span><em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
 <p>A series of image-based subtitles</p>
 <dl class="attribute">
@@ -868,8 +868,8 @@ specs = specs.drop(val_indexes)</dd>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleSeries.imgmode">
-<code class="descname">imgmode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.imgmode" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleSeries.mode">
+<code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image mode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -903,7 +903,7 @@ file here for consistency.</p>
 <h4>Event<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
 <dt id="scinoephile.ocr.ImageSubtitleEvent">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleEvent</code><span class="sig-paren">(</span><em>imgmode=None</em>, <em>imgdata=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleEvent</code><span class="sig-paren">(</span><em>mode=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent.SubtitleEvent</span></code></p>
 <p>An individual image-based subtitle</p>
 <dl class="attribute">
@@ -935,8 +935,8 @@ file here for consistency.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleEvent.char_imgdata">
-<code class="descname">char_imgdata</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_imgdata" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleEvent.char_data">
+<code class="descname">char_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Images of individual characters</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -949,8 +949,8 @@ file here for consistency.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleEvent.imgmode">
-<code class="descname">imgmode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.imgmode" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleEvent.mode">
+<code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image mode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -963,8 +963,8 @@ file here for consistency.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleEvent.imgdata">
-<code class="descname">imgdata</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.imgdata" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleEvent.data">
+<code class="descname">data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

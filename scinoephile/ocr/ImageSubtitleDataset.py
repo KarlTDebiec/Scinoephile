@@ -27,26 +27,26 @@ class ImageSubtitleDataset(SubtitleDataset):
 
     # region Builtins
 
-    def __init__(self, imgmode=None, **kwargs):
+    def __init__(self, mode=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if imgmode is not None:
-            self.imgmode = imgmode
+        if mode is not None:
+            self.mode = mode
 
     # endregion
 
     # region Public Properties
 
     @property
-    def imgmode(self):
+    def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):
-            self._imgmode = "1 bit"
-        return self._imgmode
+            self._mode = "1 bit"
+        return self._mode
 
-    @imgmode.setter
-    def imgmode(self, value):
+    @mode.setter
+    def mode(self, value):
         if value is not None:
             if not isinstance(value, str):
                 try:
@@ -61,13 +61,13 @@ class ImageSubtitleDataset(SubtitleDataset):
                 raise ValueError(self._generate_setter_exception(value))
         # TODO: If changed, change on self.subtitles as well
 
-        self._imgmode = value
+        self._mode = value
 
     @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
-            self._subtitles = self.series_class(imgmode=self.imgmode,
+            self._subtitles = self.series_class(imgmode=self.mode,
                                                 verbosity=self.verbosity)
         return self._subtitles
 
@@ -97,7 +97,7 @@ class ImageSubtitleDataset(SubtitleDataset):
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
         self.subtitles = self.series_class.load(infile,
-                                                imgmode=self.imgmode,
+                                                imgmode=self.mode,
                                                 verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 

@@ -27,26 +27,26 @@ class ImageSubtitleSeries(SubtitleSeries):
 
     # region Builtins
 
-    def __init__(self, imgmode=None, **kwargs):
+    def __init__(self, mode=None, **kwargs):
         super().__init__()
 
         # Store property values
-        if imgmode is not None:
-            self.imgmode = imgmode
+        if mode is not None:
+            self.mode = mode
 
     # endregion
 
     # region Public Properties
 
     @property
-    def imgmode(self):
+    def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):
-            self._imgmode = "1 bit"
-        return self._imgmode
+            self._mode = "1 bit"
+        return self._mode
 
-    @imgmode.setter
-    def imgmode(self, value):
+    @mode.setter
+    def mode(self, value):
         if value is not None:
             if not isinstance(value, str):
                 try:
@@ -61,7 +61,7 @@ class ImageSubtitleSeries(SubtitleSeries):
                 raise ValueError(self._generate_setter_exception(value))
         # TODO: If changed, change on events
 
-        self._imgmode = value
+        self._mode = value
 
     # endregion
 
@@ -117,7 +117,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Check if sup
         if encoding == "sup" or path.endswith("sup"):
             with open(path, "rb") as fp:
-                return cls._load_sup(fp, imgmode=imgmode,
+                return cls._load_sup(fp, mode=imgmode,
                                      verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
@@ -146,7 +146,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         if "images" in fp:
             del fp["images"]
         fp.create_group("images")
-        fp["images"].attrs["mode"] = self.imgmode
+        fp["images"].attrs["mode"] = self.mode
         for i, event in enumerate(self.events):
             if hasattr(event, "data"):
                 if event.mode == "8 bit":
@@ -193,7 +193,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         return subs
 
     @classmethod
-    def _load_sup(cls, fp, imgmode=None, verbosity=1, **kwargs):
+    def _load_sup(cls, fp, mode=None, verbosity=1, **kwargs):
         import numpy as np
         from pysubs2.time import make_time
 
@@ -270,14 +270,14 @@ class ImageSubtitleSeries(SubtitleSeries):
                          0x17: "WDS", 0x80: "END"}
 
         # initialize
-        subs = cls(imgmode=imgmode, verbosity=verbosity)
+        subs = cls(mode=mode, verbosity=verbosity)
         subs.format = "sup"
 
         # Parse infile
         sup_bytes = fp.read()
         byte_offset = 0
         start_time = None
-        imgdata = None
+        data = None
         palette = None
         compressed_img = None
         if verbosity >= 2:
@@ -296,23 +296,23 @@ class ImageSubtitleSeries(SubtitleSeries):
                 palette_bytes = sup_bytes[content_offset + 2:content_offset + content_size]
                 palette = read_palette(palette_bytes)
             elif segment_kind == 0x15:  # Image
-                imgbytes = sup_bytes[content_offset + 11:content_offset + content_size]
+                image_bytes = sup_bytes[content_offset + 11:content_offset + content_size]
                 width = bytes2int(sup_bytes[content_offset + 7:content_offset + 9])
                 height = bytes2int(sup_bytes[content_offset + 9:content_offset + 11])
-                compressed_img = read_image(imgbytes, width, height)
+                compressed_img = read_image(image_bytes, width, height)
             elif segment_kind == 0x80:  # End
                 if start_time is None:
                     start_time = timestamp / 90000
-                    imgdata = np.zeros((*compressed_img.shape, 4), np.uint8)
+                    data = np.zeros((*compressed_img.shape, 4), np.uint8)
                     for color_index, color in enumerate(palette):
-                        imgdata[np.where(compressed_img == color_index)] = color
+                        data[np.where(compressed_img == color_index)] = color
                 else:
                     end_time = timestamp / 90000
                     subs.events.append(cls.event_class(
                         start=make_time(s=start_time),
                         end=make_time(s=end_time),
-                        imgmode=imgmode,
-                        imgdata=imgdata))
+                        mode=mode,
+                        data=data))
 
                     start_time = None
                     palette = None
@@ -327,7 +327,7 @@ class ImageSubtitleSeries(SubtitleSeries):
                       f"{content_offset:>9d} ")
 
             byte_offset += 13 + content_size
-            if byte_offset >= len(sup_bytes):  # >= 100000:
+            if byte_offset >= len(sup_bytes):
                 break
 
         return subs
