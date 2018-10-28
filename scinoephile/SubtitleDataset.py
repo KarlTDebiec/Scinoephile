@@ -17,7 +17,7 @@ class SubtitleDataset(CLToolBase):
     """
     Represents a collection of subtitles
 
-    .. todo:
+    .. todo::
       - [ ] Document
     """
 

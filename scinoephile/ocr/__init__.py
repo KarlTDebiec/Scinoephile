@@ -269,7 +269,7 @@ class OCRBase(Base):
     """
     Base for OCR classes
 
-    .. todo:
+    .. todo::
       - [ ] Support western characters and punctuation
     """
 

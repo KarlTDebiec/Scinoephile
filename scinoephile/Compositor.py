@@ -17,7 +17,7 @@ class Compositor(CLToolBase):
     """
     Compiles Chinese and English subtitles
 
-    .. todo:
+    .. todo::
         - [ ] Refactor and improve code for handling dashes
         - [ ] Clean up merging code
         - [ ] Apply timings from one infile directly to another, provided they
@@ -131,7 +131,7 @@ class Compositor(CLToolBase):
         """
         Core logic
 
-        .. todo:
+        .. todo::
             - Decide between setting within each function or returning
             - Move actual merging to another function 'complile_subtitles'
         """
@@ -502,7 +502,7 @@ class Compositor(CLToolBase):
               character text in column named 'text'; adds column named
               'cantonese' with romanization
 
-        .. todo:
+        .. todo::
             * Add support for Jyupting
             * Support source field names other than 'text'
             * Look into word segmentation
@@ -652,7 +652,7 @@ class Compositor(CLToolBase):
               character text in column named 'text'; adds column named
               'mandarin' with romanization
 
-        .. todo:
+        .. todo::
             * Support source field names other than 'text'
             * Implement option to enable/disable word segmentation
             * Look into capitalization

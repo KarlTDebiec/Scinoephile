@@ -18,7 +18,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     """
     Represents an image-based subtitle track
 
-     .. todo:
+     .. todo::
       - [ ] Document
     """
 
@@ -139,7 +139,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         Loads subtitles from an hdf5 file into a nascent SubtitleSeries
 
-        .. todo:
+        .. todo::
           - [ ] Load project info
         """
         import numpy as np
@@ -306,7 +306,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         Saves subtitles to an output hdf5 file
 
-        .. todo:
+        .. todo::
           - [ ] Save project info
         """
         import numpy as np

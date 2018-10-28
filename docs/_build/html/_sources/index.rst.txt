@@ -7,6 +7,8 @@ Scinoephile
 
 .. include:: ../LICENSE
 
+.. todolist::
+
 .. toctree::
     :hidden:
     :maxdepth: 4

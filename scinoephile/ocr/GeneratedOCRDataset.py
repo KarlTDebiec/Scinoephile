@@ -18,7 +18,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     """
     Represents a collection of generated character images
 
-    .. todo:
+    .. todo::
       - [x] Update gen_min_imagedata
       - [x] Update gen_new_imagedata
       - [ ] Update saving

@@ -14,4 +14,5 @@ Scinoephile
     base.rst
     ocr.rst
     cltools.rst
+    development.rst
 

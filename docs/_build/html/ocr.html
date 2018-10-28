@@ -240,6 +240,12 @@
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRBase</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
 <p>Base for OCR classes</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Support western characters and punctuation</li>
+</ul>
+</div>
 <dl class="attribute">
 <dt id="scinoephile.ocr.OCRBase.chars">
 <code class="descname">chars</code><a class="headerlink" href="#scinoephile.ocr.OCRBase.chars" title="Permalink to this definition">¶</a></dt>
@@ -299,6 +305,14 @@
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.ocr.OCRCLToolBase" title="scinoephile.ocr.OCRCLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRCLToolBase</span></code></a></p>
 <p>Represents a collection of character images</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Implement 8-bit and 1-bit support; remove 2-bit support</li>
+<li>[ ] Clean up and refactor</li>
+<li>[ ] Document</li>
+</ul>
+</div>
 <dl class="attribute">
 <dt id="scinoephile.ocr.OCRDataset.imagespecs">
 <code class="descname">imagespecs</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.imagespecs" title="Permalink to this definition">¶</a></dt>
@@ -333,6 +347,12 @@
 <dt id="scinoephile.ocr.OCRDataset.add_imagedata">
 <code class="descname">add_imagedata</code><span class="sig-paren">(</span><em>imagespecs</em>, <em>imagedata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.add_imagedata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.add_imagedata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds image imagedata and specifications</p>
+<div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Improve efficiency; is it necessary to check that specs are new?</li>
+</ul>
+</div>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>imagespecs (pandas.DataFrame): New specs
@@ -377,6 +397,17 @@ imagedata (numpy.ndarray): New imagedata</dd>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">UnlabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/UnlabeledOCRDataset.html#UnlabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.UnlabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code></p>
 <p>Represents a collection of unlabeled character images</p>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[x] Read image directory</li>
+<li>[x] Add images</li>
+<li>[x] Write hdf5</li>
+<li>[x] Read hdf5</li>
+<li>[x] Write image directory</li>
+<li>[ ] Document</li>
+</ul>
+</div>
 </dd></dl>
 
 </div>
@@ -387,6 +418,13 @@ imagedata (numpy.ndarray): New imagedata</dd>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">LabeledOCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/LabeledOCRDataset.html#LabeledOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.LabeledOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code></p>
 <p>Represents a collection of labeled character images</p>
+<div class="admonition-todo admonition" id="index-4">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Don’t allow ‘path’ to be set to NaN</li>
+<li>[ ] Document</li>
+</ul>
+</div>
 </dd></dl>
 
 </div>
@@ -397,6 +435,24 @@ imagedata (numpy.ndarray): New imagedata</dd>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">GeneratedOCRDataset</code><span class="sig-paren">(</span><em>n_chars=None</em>, <em>font_names=None</em>, <em>font_sizes=None</em>, <em>font_widths=None</em>, <em>font_x_offsets=None</em>, <em>font_y_offsets=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.LabeledOCRDataset.LabeledOCRDataset</span></code></p>
 <p>Represents a collection of generated character images</p>
+<div class="admonition-todo admonition" id="index-5">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[x] Update gen_min_imagedata</li>
+<li>[x] Update gen_new_imagedata</li>
+<li>[ ] Update saving</li>
+<li>[ ] Update loading</li>
+<li>[ ] Remove temporary code used during troubleshooting</li>
+<li><dl class="first docutils">
+<dt>[ ] Expand training and validation sets when images are added, rather</dt>
+<dd>than recreating fully</dd>
+</dl>
+</li>
+<li>[ ] Implement CL arguments</li>
+<li>[ ] Validate CL arguments</li>
+<li>[ ] Document</li>
+</ul>
+</div>
 <dl class="attribute">
 <dt id="scinoephile.ocr.GeneratedOCRDataset.font_names">
 <code class="descname">font_names</code><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.font_names" title="Permalink to this definition">¶</a></dt>
@@ -446,6 +502,12 @@ imagedata (numpy.ndarray): New imagedata</dd>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleDataset</code><span class="sig-paren">(</span><em>image_mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleDataset.html#ImageSubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleDataset.SubtitleDataset</span></code></p>
 <p>Represents a collection of image-based subtitles</p>
+<div class="admonition-todo admonition" id="index-6">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Document</li>
+</ul>
+</div>
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleDataset.series_class">
 <code class="descname">series_class</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset.series_class" title="Permalink to this definition">¶</a></dt>
@@ -475,7 +537,13 @@ imagedata (numpy.ndarray): New imagedata</dd>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
 <p>Represents an image-based subtitle track</p>
 <blockquote>
-<div></div></blockquote>
+<div><div class="admonition-todo admonition" id="index-7">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Document</li>
+</ul>
+</div>
+</div></blockquote>
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.event_class">
 <code class="descname">event_class</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.event_class" title="Permalink to this definition">¶</a></dt>
@@ -513,6 +581,12 @@ file here for consistency.</p>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleEvent</code><span class="sig-paren">(</span><em>image_mode=None</em>, <em>imagedata=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent.SubtitleEvent</span></code></p>
 <p>Represents an individual image-based subtitle</p>
+<div class="admonition-todo admonition" id="index-8">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>[ ] Document</li>
+</ul>
+</div>
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_bounds">
 <code class="descname">char_bounds</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_bounds" title="Permalink to this definition">¶</a></dt>

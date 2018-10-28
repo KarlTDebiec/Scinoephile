@@ -17,7 +17,7 @@ class UnlabeledOCRDataset(OCRDataset):
     """
     Represents a collection of unlabeled character images
 
-    .. todo:
+    .. todo::
       - [x] Read image directory
       - [x] Add images
       - [x] Write hdf5

@@ -18,7 +18,7 @@ class ImageSubtitleDataset(SubtitleDataset):
     """
     Represents a collection of image-based subtitles
 
-    .. todo:
+    .. todo::
       - [ ] Document
     """
 
