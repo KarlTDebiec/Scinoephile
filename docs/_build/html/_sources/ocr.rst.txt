@@ -2,8 +2,15 @@
 
 Optical Character Recognition
 -----------------------------
+
 .. automodule:: scinoephile.ocr
     :no-members:
+
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.ocr.OCRBase
+    scinoephile.ocr.OCRCLToolBase
 
 Base Classes
 ____________

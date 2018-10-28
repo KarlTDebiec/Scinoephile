@@ -34,9 +34,14 @@ html_context = dict(
     github_version = "master",
     conf_py_path  = "/docs/",
 )
+html_theme_options = {
+    'collapse_navigation': False,
+}
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]

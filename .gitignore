@@ -2,10 +2,11 @@
 *.swo
 .DS_Store
 .idea
+test.sh
+Makefile
 __pycache__
 build
 dist
 src
 scinoephile.egg-info
-test.sh
 docs/_build/doctrees
