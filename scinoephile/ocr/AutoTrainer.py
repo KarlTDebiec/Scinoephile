@@ -16,42 +16,16 @@ from sys import exit
 ################################### CLASSES ###################################
 class AutoTrainer(OCRCLToolBase):
     """
-    Trains model
-
-    .. todo::
-      - [x] Generate fitting and validation sets with new class
-      - [x] Save separate training dataset hdf5 files
-      - [ ] Write log file(s)
-      - [ ] Re-implement saving and loading of model
-      - [ ] Re-implement support for shape
-      - [ ] Re-implement evaluation on test images
-      - [ ] Better name for missed_yat and missed_eee
-      - [ ] Refine until 3000 characters are viable
-      - [ ] Validate CL arguments
-      - [ ] Support western characters and punctuation
-      - [ ] Look into if information needed to 'compile' can be stored in hdf5
-            with model
+    Automated machine learning model trainer
     """
-
-    # region Instance Variables
-
-    help_message = ("Tool for automatic model training")
-
-    # endregion
 
     # region Builtins
 
-    def __init__(self, model_infile=None, trn_infile=None, val_portion=None,
-                 tst_infile=None, n_chars=None, shape=None, batch_size=None,
-                 epochs=None, model_outfile=None, **kwargs):
-        """
-        Initializes tool
-
-        Args:
-            kwargs (dict): Additional keyword arguments
-        """
-        from os.path import isdir, isfile
-        from scinoephile.ocr import LabeledOCRDataset, GeneratedOCRDataset
+    def __init__(self, model_infile=None, val_portion=None,
+                 n_chars=None, shape=None, batch_size=None,
+                 epochs=None, model_outfile=None, trn_infile=None,
+                 mode="1 bit", additional_images=1, tst_infile=None, **kwargs):
+        from scinoephile.ocr import GeneratedOCRDataset
 
         super().__init__(**kwargs)
 
@@ -71,182 +45,57 @@ class AutoTrainer(OCRCLToolBase):
         if model_outfile is not None:
             self.model_outfile = model_outfile
 
-        # Temporary manual configuration for testing
-        trn_infile = "/Users/kdebiec/Desktop/docs/subtitles/trn.h5"
-        tst_infile = "/Users/kdebiec/Desktop/docs/subtitles/tst"
-
-        # Initialize training dataset
-        self.trn_dataset = GeneratedOCRDataset(n_chars=self.n_chars)
-        if trn_infile is not None:
-            if isdir(trn_infile):
-                self.trn_dataset.input_image_dir = trn_infile
-                self.trn_dataset.read_image_dir()
-                n_chars = len(set(self.trn_dataset.specs["char"].values))
-                self.n_chars = n_chars
-                self.trn_dataset.n_chars = n_chars
-            elif isfile(trn_infile):
-                self.trn_dataset.input_hdf5 = trn_infile
-                self.trn_dataset.read_hdf5()
-                n_chars = len(set(self.trn_dataset.specs["char"].values))
-                self.n_chars = n_chars
-                self.trn_dataset.n_chars = n_chars
-            else:
-                self.trn_dataset.input_hdf5 = trn_infile
-
-        # Initialize test dataset
-        if tst_infile is not None:
-            self.tst_dataset = LabeledOCRDataset()
-            if isdir(tst_infile):
-                self.tst_dataset.input_image_dir = tst_infile
-                self.tst_dataset.read_image_dir()
-            elif isfile(tst_infile):
-                self.tst_dataset.input_hdf5 = tst_infile
-                self.tst_dataset.read_hdf5()
-            else:
-                raise ValueError()
+        # Initialize training dataset, using passed values
+        self.trn_ds = GeneratedOCRDataset(
+            infile=trn_infile,
+            outfile=trn_infile,
+            mode=mode,
+            n_chars=self.n_chars,
+            verbosity=self.verbosity)
+        self.trn_ds.load()
+        # self.trn_ds.generate_minimal_img()
+        # self.trn_ds.generate_additional_img(additional_images)
+        # self.trn_ds.save()
 
     def __call__(self):
-        """Core logic"""
-        from os.path import dirname
-        import numpy as np
-        import tensorflow as tf
         from tensorflow import keras
 
-        def analyze(title, img, lbl, missed_yat, missed_eee):
-            pred = model.predict(img)
-            loss, acc = model.evaluate(img, lbl)
-            errors = int(lbl.size * (1 - acc))
-            if self.verbosity >= 1:
-                print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
-                      f"Accuracy:{acc:7.5f}  Errors:{errors:d}")
-            for i, char in enumerate(self.labels_to_chars(lbl)):
-                poss_lbls = np.argsort(pred[i])[::-1]
-                poss_chars = self.labels_to_chars(poss_lbls)
-                poss_probs = np.round(pred[i][poss_lbls], 2)
-                if char != poss_chars[0]:
-                    missed_yat.add(char)
-                    missed_eee.add(poss_chars[0])
-                    if self.verbosity >= 2:
-                        matches = [f"{a}:{b:4.2f}" for a, b in
-                                   zip(poss_chars[:10], poss_probs[:10])]
-                        print(f"{char} | {' '.join(matches)}")
-
-        def prep_trn_val():
-            trn_img, trn_lbl, val_img, val_lbl = \
-                self.trn_dataset.get_data_for_training(
-                    val_portion=self.val_portion)
-            trn_img = self.format_data_for_model(trn_img)
-            val_img = self.format_data_for_model(val_img)
-            return trn_img, trn_lbl, val_img, val_lbl
-
-        def prep_tst():
-            tst_img, tst_lbl = self.tst_dataset.get_images_and_labels()
-            tst_img = self.format_data_for_model(tst_img)
-            tst_img = tst_img[tst_lbl < self.n_chars]
-            tst_lbl = tst_lbl[tst_lbl < self.n_chars]
-            return tst_img, tst_lbl
-
-        def prep_model():
-            model = keras.Sequential([
-                keras.layers.Dense(512,
-                                   input_shape=(19200,),
-                                   activation=tf.nn.relu),
-                keras.layers.Dense(self.n_chars,
-                                   activation=tf.nn.softmax)
-            ])
-            model.compile(optimizer=tf.train.AdamOptimizer(),
-                          loss='sparse_categorical_crossentropy',
-                          metrics=['accuracy'])
-            return model
+        # Prepare model
+        if self.model_infile is not None:
+            self.model = keras.models.load_model(self.model_infile)
+        self.prepare_model()
 
         # Prepare training and validation data
-        self.trn_dataset.generate_minimal_images()
-        trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
-        n_images = trn_lbl.size + val_lbl.size
-        self.batch_size = max(32, np.ceil(n_images // 10))
-        missed_yat_history = []
+        trn_img, trn_lbl, val_img, val_lbl = self.trn_ds.get_training_data(
+            val_portion=self.val_portion)
 
-        # Prepare test data
-        if self.tst_dataset is not None:
-            tst_img, tst_lbl = prep_tst()
-
-        # Prepare model
-        model = prep_model()
-
-        # Train model
+        # Training Loop
+        round = 1
         while True:
             if self.verbosity >= 1:
-                print(f"Round {len(missed_yat_history)}")
-            history = model.fit(trn_img, trn_lbl,
-                                validation_data=(val_img, val_lbl),
-                                epochs=self.epochs,
-                                batch_size=self.batch_size,
-                                callbacks=[
-                                    keras.callbacks.EarlyStopping(
-                                        monitor="val_loss",
-                                        min_delta=0.01,
-                                        patience=2)])
+                print(f"Round {round}")
+
+            # Train model
+            history = self.model.fit(trn_img, trn_lbl,
+                                     validation_data=(val_img, val_lbl),
+                                     epochs=self.epochs,
+                                     batch_size=self.batch_size,
+                                     callbacks=self.callbacks)
+            round += 1
 
             # Evaluate model
-            missed_yat = set()
-            missed_eee = set()
-            analyze("Training", trn_img, trn_lbl, missed_yat, missed_eee)
-            analyze("Validation", val_img, val_lbl, missed_yat, missed_eee)
-            missed_all = missed_yat.union(missed_eee)
-            missed_yat_history.append(missed_yat)
+            self.analyze_image_predictions("Training", trn_img, trn_lbl)
+            self.analyze_image_predictions("Validation", val_img, val_lbl)
 
-            # Expand fitting set
-            if len(missed_all) >= 1:
+            # Save model
+            if self.model_outfile is not None:
                 if self.verbosity >= 1:
-                    print(f"Misidentified the following "
-                          f"{len(missed_yat)}/{self.n_chars} "
-                          f"characters: {''.join(missed_yat)}")
-                    print(f"As the following "
-                          f"{len(missed_eee)}/{self.n_chars} "
-                          f"characters: {''.join(missed_eee)}")
-                self.trn_dataset.generate_additional_images(1, missed_all)
-                if (len(missed_yat_history) >= 10):
-                    missed_stuck = missed_yat_history[-1].intersection(
-                        missed_yat_history[-2]).intersection(
-                        missed_yat_history[-3]).intersection(
-                        missed_yat_history[-4]).intersection(
-                        missed_yat_history[-5])
-                    if len(missed_stuck) >= 1:
-                        if self.verbosity >= 1:
-                            print(f"The following "
-                                  f"{len(missed_stuck)}/{self.n_chars} "
-                                  f"characters have been missed for the last "
-                                  f"five rounds: {''.join(missed_stuck)}")
-                        self.trn_dataset.generate_additional_images(
-                            5, missed_stuck)
-                        model = prep_model()
-                trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
-                n_images = trn_lbl.size + val_lbl.size
-                self.batch_size = max(32, np.ceil(n_images // 10))
-                if self.verbosity >= 1:
-                    print(f"Setting batch size to {self.batch_size}")
-            else:
-                self.trn_dataset.write_hdf5()
-                self.n_chars += 25
-                self.trn_dataset.n_chars = self.n_chars
-                self.trn_dataset.generate_minimal_images()
-                if self.trn_dataset.output_hdf5 is not None:
-                    self.trn_dataset.write_hdf5()
-                    outfile = f"{dirname(self.trn_dataset.output_hdf5)}/" \
-                              f"trn_{self.trn_dataset.n_chars:05d}.h5"
-                    self.trn_dataset.write_hdf5(outfile)
-                trn_img, trn_lbl, val_img, val_lbl = prep_trn_val()
-                missed_yat_history = []
-                if self.verbosity >= 1:
-                    images_per_char = n_images / self.n_chars
-                    print(f"\n\n\n"
-                          f"FITTING {self.n_chars} CHARACTERS "
-                          f"TO {n_images} IMAGES "
-                          f"({images_per_char:4.2f} IMAGES PER CHARACTER); "
-                          f"USING {self.epochs} EPOCHS, "
-                          f"BATCH SIZE OF {self.batch_size}"
-                          f"\n\n\n")
-                model = prep_model()
+                    print(f"Saving model to {self.model_outfile}")
+                self.model.save(self.model_outfile)
+
+            # Quit
+            if round > 100:
+                break
 
     # endregion
 
@@ -272,6 +121,23 @@ class AutoTrainer(OCRCLToolBase):
         self._batch_size = value
 
     @property
+    def callbacks(self):
+        if not hasattr(self, "_callbacks"):
+            from tensorflow.keras.callbacks import (EarlyStopping,
+                                                    ReduceLROnPlateau)
+
+            self._callbacks = []
+            # keras.callbacks.EarlyStopping(monitor="val_loss",
+            #                               min_delta=0.001,
+            #                               patience=10),
+            # keras.callbacks.ReduceLROnPlateau(monitor="acc",
+            #                                   patience=3,
+            #                                   verbose=1,
+            #                                   factor=0.1,
+            #                                   min_lr=0.000000001)]
+        return self._callbacks
+
+    @property
     def epochs(self):
         """int: Number of epochs to train for"""
         if not hasattr(self, "_epochs"):
@@ -289,6 +155,16 @@ class AutoTrainer(OCRCLToolBase):
             if value < 1 and value is not None:
                 raise ValueError(self._generate_setter_exception(value))
         self._epochs = value
+
+    @property
+    def model(self):
+        if not hasattr(self, "_model"):
+            self._model = None
+        return self._model
+
+    @model.setter
+    def model(self, value):
+        self._model = value
 
     @property
     def model_infile(self):
@@ -368,36 +244,36 @@ class AutoTrainer(OCRCLToolBase):
         self._shape = value
 
     @property
-    def trn_dataset(self):
+    def trn_ds(self):
         """scinoephile.ocr.GeneratedOCRDataset: Training/validation dataset"""
-        if not hasattr(self, "_trn_dataset"):
-            self._trn_dataset = None
-        return self._trn_dataset
+        if not hasattr(self, "_trn_ds"):
+            self._trn_ds = None
+        return self._trn_ds
 
-    @trn_dataset.setter
-    def trn_dataset(self, value):
+    @trn_ds.setter
+    def trn_ds(self, value):
         from scinoephile.ocr import GeneratedOCRDataset
 
         if value is not None:
             if not isinstance(value, GeneratedOCRDataset):
                 raise ValueError(self._generate_setter_exception(value))
-        self._trn_dataset = value
+        self._trn_ds = value
 
     @property
-    def tst_dataset(self):
+    def tst_ds(self):
         """scinoephile.ocr.GeneratedOCRDataset: Test dataset"""
-        if not hasattr(self, "_tst_dataset"):
-            self._tst_dataset = None
-        return self._tst_dataset
+        if not hasattr(self, "_tst_ds"):
+            self._tst_ds = None
+        return self._tst_ds
 
-    @tst_dataset.setter
-    def tst_dataset(self, value):
+    @tst_ds.setter
+    def tst_ds(self, value):
         from scinoephile.ocr import LabeledOCRDataset
 
         if value is not None:
             if not isinstance(value, LabeledOCRDataset):
                 raise ValueError(self._generate_setter_exception(value))
-        self._tst_dataset = value
+        self._tst_ds = value
 
     @property
     def val_portion(self):
@@ -422,88 +298,44 @@ class AutoTrainer(OCRCLToolBase):
 
     # endregion
 
-    # region Public Methpds
+    # region Public Methods
 
-    def format_data_for_model(self, data):
+    def prepare_model(self):
+        from tensorflow.keras.optimizers import Adam, RMSprop
+
+        if self.model is None:
+            from tensorflow.keras.models import Sequential
+            from tensorflow.keras.layers import Dense, Dropout
+
+            self.model = Sequential()
+            self.model.add(Dense(512, input_shape=(6400,), activation="relu"))
+            self.model.add(Dropout(0.2))
+            self.model.add(Dense(512, activation="relu"))
+            self.model.add(Dropout(0.2))
+            self.model.add(Dense(self.n_chars, activation="softmax"))
+            self.model.summary()
+        self.model.compile(
+            optimizer=Adam(),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"])
+        #   optimizer=tf.train.AdamOptimizer(),
+        #   loss="sparse_categorical_crossentropy",
+
+    def analyze_image_predictions(self, title, img, lbl):
         import numpy as np
 
-        bit1 = data[:, 0::2]
-        bit2 = data[:, 1::2]
-        formatted = np.zeros((data.shape[0], 19200), np.bool)
-        formatted[:, :6400] = np.logical_and(np.logical_not(bit1),
-                                             np.logical_not(bit2))
-        formatted[:, 6400:12800] = np.logical_and(np.logical_not(bit1), bit2)
-        formatted[:, 12800:] = np.logical_and(bit1, np.logical_not(bit2))
-        return formatted
-
+        pred = self.model.predict(img)
+        loss, acc = self.model.evaluate(img, lbl)
+        if self.verbosity >= 1:
+            print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
+                  f"Accuracy:{acc:7.5f}")
+        for i, char in enumerate(self.labels_to_chars(lbl)):
+            poss_lbls = np.argsort(pred[i])[::-1]
+            poss_chars = self.labels_to_chars(poss_lbls)
+            poss_probs = np.round(pred[i][poss_lbls], 2)
+            if char != poss_chars[0]:
+                if self.verbosity >= 2:
+                    matches = [f"{a}:{b:4.2f}" for a, b in
+                               zip(poss_chars[:10], poss_probs[:10])]
+                    print(f"{char} | {' '.join(matches)}")
     # endregion
-
-    # region Public Class Methods
-
-    @classmethod
-    def construct_argparser(cls, parser=None):
-        """
-        Constructs argument parser
-
-        Returns:
-            parser (argparse.ArgumentParser): Argument parser
-        """
-        import argparse
-
-        # Prepare parser
-        if isinstance(parser, argparse.ArgumentParser):
-            parser = parser
-        elif isinstance(parser, argparse._SubParsersAction):
-            parser = parser.add_parser(name="extraction",
-                                       description=cls.help_message,
-                                       help=cls.help_message)
-        elif parser is None:
-            parser = argparse.ArgumentParser(description=cls.help_message)
-        super().construct_argparser(parser)
-
-        # Input
-        parser_inp = parser.add_argument_group("input arguments")
-        # parser_inp.add_argument("-i", "--model_infile",
-        #                         type=str,
-        #                         help="input model hdf5 file")
-        # parser_inp.add_argument("-r", "--train_data",
-        #                         type=str, dest="train",
-        #                         help="labeled training/validation data")
-        # parser_inp.add_argument("-t", "--test_infile",
-        #                         type=str, dest="tst_infile",
-        #                         help="labeled test data")
-        parser_inp.add_argument("-V", "--val_portion", type=float,
-                                help="portion of training images to set aside "
-                                     "for validation")
-
-        # Operation
-        parser_ops = parser.add_argument_group("operation arguments")
-        parser_ops.add_argument("-n", "--n_chars",
-                                type=int,
-                                help="restrict model to set number of "
-                                     "characters")
-
-        # parser_ops.add_argument("-s", "--shape",
-        #                         type=int, nargs="*",
-        #                         help="model shape")
-        # parser_ops.add_argument("-b", "--batch_size",
-        #                         type=int,
-        #                         help="batch size")
-        # parser_ops.add_argument("-e", "--epochs",
-        #                         type=int,
-        #                         help="number of epochs")
-
-        # Output
-        # parser_out = parser.add_argument_group("output arguments")
-        # parser_out.add_argument("-o", "--model_outfile",
-        #                         type=str,
-        #                         help="output model hdf5 file")
-
-        return parser
-
-    # endregion
-
-
-#################################### MAIN #####################################
-if __name__ == "__main__":
-    AutoTrainer.main()

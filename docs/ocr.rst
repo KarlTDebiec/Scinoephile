@@ -70,6 +70,13 @@ Event
 
 .. autoclass:: scinoephile.ocr.ImageSubtitleEvent
 
+Machine Learning
+________________
+
+Dataset
+.......
+.. autoclass:: scinoephile.ocr.AutoTrainer
+
 Functions
 _________
 

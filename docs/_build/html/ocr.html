@@ -122,6 +122,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
 </ul>
 </li>
@@ -769,41 +770,6 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes">
-<code class="descname">get_trn_val_indexes</code><span class="sig-paren">(</span><em>val_portion=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.get_trn_val_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes" title="Permalink to this definition">¶</a></dt>
-<dd><p>import numpy as np
-from random import sample</p>
-<p>all_trn_indexes = []
-all_val_indexes = []</p>
-<p># Prepare trn and val sets with at least one image of each character
-for char in set(self.spec[“char”]):</p>
-<blockquote>
-<div><p>specs = self._get_specs_of_char(char)
-n_specs = specs.index.size</p>
-<p># Add at least one image of each character to each set
-trn_index, val_index = sample(specs.index.tolist(), 2)
-all_trn_indexes.append(trn_index)
-all_val_indexes.append(val_index)
-specs = specs.drop([trn_index, val_index])</p>
-<p># Distribution remaining images across sets
-n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
-n_for_val = int(np.ceil(n_specs * val_portion) - 1)
-if n_for_trn &gt; 0:</p>
-<blockquote>
-<div>trn_indexes = sample(specs.index.tolist(), n_for_trn)
-all_trn_indexes.extend(trn_indexes)
-specs = specs.drop(trn_indexes)</div></blockquote>
-<dl class="docutils">
-<dt>if n_for_val &gt; 0:</dt>
-<dd>val_indexes = sample(specs.index.tolist(), n_for_val)
-all_val_indexes.extend(val_indexes)
-specs = specs.drop(val_indexes)</dd>
-</dl>
-</div></blockquote>
-<p>return all_trn_indexes, all_val_indexes</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -980,6 +946,142 @@ file here for consistency.</p>
 
 </div>
 </div>
+</div>
+<div class="section" id="machine-learning">
+<h2>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scinoephile.ocr.AutoTrainer">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">AutoTrainer</code><span class="sig-paren">(</span><em>model_infile=None</em>, <em>val_portion=None</em>, <em>n_chars=None</em>, <em>shape=None</em>, <em>batch_size=None</em>, <em>epochs=None</em>, <em>model_outfile=None</em>, <em>trn_infile=None</em>, <em>mode='1 bit'</em>, <em>additional_images=1</em>, <em>tst_infile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/AutoTrainer.html#AutoTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.AutoTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#scinoephile.ocr.OCRCLToolBase" title="scinoephile.ocr.OCRCLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRCLToolBase</span></code></a></p>
+<p>Automated machine learning model trainer</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.batch_size">
+<code class="descname">batch_size</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.batch_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training batch size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.epochs">
+<code class="descname">epochs</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.epochs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of epochs to train for</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.model_infile">
+<code class="descname">model_infile</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.model_infile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to input model file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.model_outfile">
+<code class="descname">model_outfile</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.model_outfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to output model file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.n_chars">
+<code class="descname">n_chars</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.n_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of unique characters to support</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.shape">
+<code class="descname">shape</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.trn_ds">
+<code class="descname">trn_ds</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.trn_ds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training/validation dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#scinoephile.ocr.GeneratedOCRDataset" title="scinoephile.ocr.GeneratedOCRDataset">scinoephile.ocr.GeneratedOCRDataset</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.tst_ds">
+<code class="descname">tst_ds</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.tst_ds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#scinoephile.ocr.GeneratedOCRDataset" title="scinoephile.ocr.GeneratedOCRDataset">scinoephile.ocr.GeneratedOCRDataset</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.val_portion">
+<code class="descname">val_portion</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.val_portion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Portion of training image to set aside for validation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>

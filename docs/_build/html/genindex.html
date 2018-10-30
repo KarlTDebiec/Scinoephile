@@ -121,6 +121,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ocr.html#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocr.html#functions">Functions</a></li>
 </ul>
 </li>
@@ -216,6 +217,7 @@
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  
@@ -226,12 +228,20 @@
       <li><a href="ocr.html#scinoephile.ocr.OCRDataset.add_img">add_img() (scinoephile.ocr.OCRDataset method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer">AutoTrainer (class in scinoephile.ocr)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="base.html#scinoephile.Base">Base (class in scinoephile)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.batch_size">batch_size (scinoephile.ocr.AutoTrainer attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -285,6 +295,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="base.html#scinoephile.Base.embed_kw">embed_kw (scinoephile.Base attribute)</a>
 </li>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.epochs">epochs (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries.event_class">event_class (scinoephile.ocr.ImageSubtitleSeries attribute)</a>
@@ -321,13 +333,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.generate_char_img">generate_char_img() (in module scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset">GeneratedOCRDataset (class in scinoephile.ocr)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.get_images_and_labels">get_images_and_labels() (scinoephile.ocr.LabeledOCRDataset method)</a>
+      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset">GeneratedOCRDataset (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes">get_trn_val_indexes() (scinoephile.ocr.GeneratedOCRDataset method)</a>
+      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.get_images_and_labels">get_images_and_labels() (scinoephile.ocr.LabeledOCRDataset method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -390,13 +400,23 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.model_infile">model_infile (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.model_outfile">model_outfile (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.n_chars">n_chars (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.n_chars">n_chars (scinoephile.ocr.AutoTrainer attribute)</a>
+
+      <ul>
+        <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.n_chars">(scinoephile.ocr.GeneratedOCRDataset attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -449,6 +469,8 @@
         <li><a href="base.html#scinoephile.SubtitleDataset.series_class">(scinoephile.SubtitleDataset attribute)</a>
 </li>
       </ul></li>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.shape">shape (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
       <li><a href="ocr.html#scinoephile.ocr.OCRDataset.spec">spec (scinoephile.ocr.OCRDataset attribute)</a>
 </li>
       <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_all">spec_all (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
@@ -496,6 +518,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.trn_ds">trn_ds (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.tst_ds">tst_ds (scinoephile.ocr.AutoTrainer attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -507,10 +541,12 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="base.html#scinoephile.CLToolBase.validate_args">validate_args() (scinoephile.CLToolBase class method)</a>
+      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.val_portion">val_portion (scinoephile.ocr.AutoTrainer attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="base.html#scinoephile.CLToolBase.validate_args">validate_args() (scinoephile.CLToolBase class method)</a>
+</li>
       <li><a href="base.html#scinoephile.Base.verbosity">verbosity (scinoephile.Base attribute)</a>
 </li>
   </ul></td>

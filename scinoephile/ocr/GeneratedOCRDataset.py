@@ -48,7 +48,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Action
         self.generate_minimal_img()
-        self.generate_additional_img(2)
 
         # Output
         if self.outfile is not None:
@@ -78,7 +77,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self._font_names = [
                 "/System/Library/Fonts/STHeiti Light.ttc",
                 "/System/Library/Fonts/STHeiti Medium.ttc",
-                "/System/Library/Fonts/PingFang.ttc",
                 "/Library/Fonts/Songti.ttc"]
         return self._font_names
 
@@ -113,7 +111,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     def font_widths(self):
         """list(int): List of font border widths"""
         if not hasattr(self, "_font_widths"):
-            self._font_widths = [5, 3, 6, 3, 7]
+            self._font_widths = [5, 3, 6, 3]
         return self._font_widths
 
     @font_widths.setter
@@ -256,6 +254,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # region Public Methods
 
     def existing_specs_of_char(self, char):
+        return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
+
+    def existing_specs_of_char_set(self, char):
         return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
             "char", axis=1).values))
 
@@ -272,7 +273,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
         for char in self.chars[:self.n_chars]:
-            existing = self.existing_specs_of_char(char)
+            existing = self.existing_specs_of_char_set(char)
             needed = self.spec_min_set.difference(existing)
             queue.extend(map(to_dict, needed))
 
@@ -307,7 +308,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
         for char in chars:
-            existing = self.existing_specs_of_char(char)
+            existing = self.existing_specs_of_char_set(char)
             available = self.spec_all_set.difference(existing)
             selected = sample(available, min(n_images, len(available)))
             queue.extend(map(to_dict, selected))
@@ -324,40 +325,45 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
             self.add_img(specs, data)
 
-    def get_trn_val_indexes(self, val_portion=0.1):
-        """
+    def get_training_data(self, val_portion=0.1):
         import numpy as np
         from random import sample
 
-        all_trn_indexes = []
-        all_val_indexes = []
+        complete_trn_indexes = []
+        complete_val_indexes = []
 
         # Prepare trn and val sets with at least one image of each character
         for char in set(self.spec["char"]):
-            specs = self._get_specs_of_char(char)
-            n_specs = specs.index.size
+            all = self.existing_specs_of_char(char)
 
             # Add at least one image of each character to each set
-            trn_index, val_index = sample(specs.index.tolist(), 2)
-            all_trn_indexes.append(trn_index)
-            all_val_indexes.append(val_index)
-            specs = specs.drop([trn_index, val_index])
+            trn_index, val_index = sample(all.index.tolist(), 2)
+            complete_trn_indexes.append(trn_index)
+            complete_val_indexes.append(val_index)
+            all = all.drop([trn_index, val_index])
 
-            # Distribution remaining images across sets
-            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)
-            n_for_val = int(np.ceil(n_specs * val_portion) - 1)
+            # Distribute remaining images across sets
+            n_for_val = int(np.ceil(all.index.size * val_portion) - 1)
+            n_for_trn = all.index.size - n_for_val
             if n_for_trn > 0:
-                trn_indexes = sample(specs.index.tolist(), n_for_trn)
-                all_trn_indexes.extend(trn_indexes)
-                specs = specs.drop(trn_indexes)
+                trn_indexes = sample(all.index.tolist(), n_for_trn)
+                complete_trn_indexes.extend(trn_indexes)
+                all = all.drop(trn_indexes)
             if n_for_val > 0:
-                val_indexes = sample(specs.index.tolist(), n_for_val)
-                all_val_indexes.extend(val_indexes)
-                specs = specs.drop(val_indexes)
+                val_indexes = sample(all.index.tolist(), n_for_val)
+                complete_val_indexes.extend(val_indexes)
 
-        return all_trn_indexes, all_val_indexes
-        """
-        raise NotImplementedError()
+        # Organize data
+        trn_img = self.data[complete_trn_indexes]
+        trn_lbl = self.chars_to_labels(self.spec["char"].loc[complete_trn_indexes].values)
+        val_img = self.data[complete_val_indexes]
+        val_lbl = self.chars_to_labels(self.spec["char"].loc[complete_val_indexes].values)
+
+        if self.mode == "8 bit":
+            trn_img = np.array(trn_img, np.float64) / 255.0
+            val_img = np.array(val_img, np.float64) / 255.0
+
+        return trn_img, trn_lbl, val_img, val_lbl
 
     # endregion
 

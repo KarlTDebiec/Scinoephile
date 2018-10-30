@@ -13,9 +13,14 @@ _____________________________
 - [x] Review OCR Datasets
 - [x] Update OCR Datasets' save
 - [x] Update OCR Datasets' load
-- [ ] Confirm that both 8-bit and 1-bit workflows work
-- [ ] Review and update Autotrainer
-- [ ] Save machine learning model and reload
+- [x] Confirm that both 8-bit and 1-bit workflows work
+- [x] Review and update AutoTrainer
+- [x] Save model and reload
+- [ ] Extend generate_minimal_img to check for minimal number of images
+- [ ] Re-implement test data collector
+- [ ] Calculate difference between test images and generated images
+- [ ] Add log output to AutoTrainer
+- [ ] Re-implement support for configuring AutoTrainer
 - [ ] From ImageSubtitleDataset, organize data structures for tensorflow
 - [ ] Apply machine learning model to ImageSubtitleDataset
 - [ ] Add support for Western characters and punctuation

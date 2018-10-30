@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from scinoephile import Base, CLToolBase
+from IPython import embed
 
 
 ################################## FUNCTIONS ##################################
@@ -77,18 +78,28 @@ def generate_char_img(char, font, fig=None, size=60, width=5,
                     color=(0.67, 0.67, 0.67))
     text.set_path_effects([Stroke(linewidth=width, foreground=(0.0, 0.0, 0.0)),
                            Normal()])
-    fig.canvas.draw()
+    try:
+        fig.canvas.draw()
+    except ValueError as e:
+        print(f"{char} {font} {size} {width} {x_offset} {y_offset}")
+        raise e
 
     # Convert to appropriate mode using pillow
     img = Image.fromarray(np.array(fig.canvas.renderer._renderer))
     if mode == "8 bit":
-        data = np.array(img.convert("L"))
+        data = np.array(img.convert("L"), np.uint8)
     elif mode == "1 bit":
-        data = np.array(img.convert("1", dither=0))
+        data = np.array(img.convert("1", dither=0), np.bool)
     else:
         raise NotImplementedError()
 
-    return center_char_img(data, x_offset, y_offset).flatten()
+    try:
+        data = center_char_img(data, x_offset, y_offset)
+    except ValueError as e:
+        print(f"{char} {font} {size} {width} {x_offset} {y_offset}")
+        raise e
+
+    return data.flatten()
 
 
 def adjust_2bit_grayscale_palette(image):

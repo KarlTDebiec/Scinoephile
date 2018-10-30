@@ -120,6 +120,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
 </ul>
 </li>
@@ -248,7 +249,6 @@
 
         <span class="c1"># Action</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_minimal_img</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_additional_img</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># Output</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -278,7 +278,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_names</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="s2">&quot;/System/Library/Fonts/STHeiti Light.ttc&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;/System/Library/Fonts/STHeiti Medium.ttc&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/System/Library/Fonts/PingFang.ttc&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;/Library/Fonts/Songti.ttc&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_names</span>
 
@@ -313,7 +312,7 @@
     <span class="k">def</span> <span class="nf">font_widths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(int): List of font border widths&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_widths&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span>
 
     <span class="nd">@font_widths</span><span class="o">.</span><span class="n">setter</span>
@@ -456,6 +455,9 @@
     <span class="c1"># region Public Methods</span>
 
     <span class="k">def</span> <span class="nf">existing_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">existing_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
             <span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 
@@ -472,7 +474,7 @@
         <span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">to_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">,</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">))}</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_chars</span><span class="p">]:</span>
-            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char_set</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
             <span class="n">needed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_min_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span>
             <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">to_dict</span><span class="p">,</span> <span class="n">needed</span><span class="p">))</span>
 
@@ -507,7 +509,7 @@
         <span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">to_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">,</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">))}</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
-            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char_set</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
             <span class="n">available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_all_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span>
             <span class="n">selected</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">available</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_images</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available</span><span class="p">)))</span>
             <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">to_dict</span><span class="p">,</span> <span class="n">selected</span><span class="p">))</span>
@@ -524,40 +526,45 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GeneratedOCRDataset.get_trn_val_indexes"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.get_trn_val_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">get_trn_val_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        from random import sample</span>
+    <span class="k">def</span> <span class="nf">get_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
 
-<span class="sd">        all_trn_indexes = []</span>
-<span class="sd">        all_val_indexes = []</span>
+        <span class="n">complete_trn_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">complete_val_indexes</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="sd">        # Prepare trn and val sets with at least one image of each character</span>
-<span class="sd">        for char in set(self.spec[&quot;char&quot;]):</span>
-<span class="sd">            specs = self._get_specs_of_char(char)</span>
-<span class="sd">            n_specs = specs.index.size</span>
+        <span class="c1"># Prepare trn and val sets with at least one image of each character</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]):</span>
+            <span class="nb">all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
 
-<span class="sd">            # Add at least one image of each character to each set</span>
-<span class="sd">            trn_index, val_index = sample(specs.index.tolist(), 2)</span>
-<span class="sd">            all_trn_indexes.append(trn_index)</span>
-<span class="sd">            all_val_indexes.append(val_index)</span>
-<span class="sd">            specs = specs.drop([trn_index, val_index])</span>
+            <span class="c1"># Add at least one image of each character to each set</span>
+            <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">complete_trn_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trn_index</span><span class="p">)</span>
+            <span class="n">complete_val_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_index</span><span class="p">)</span>
+            <span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span><span class="p">])</span>
 
-<span class="sd">            # Distribution remaining images across sets</span>
-<span class="sd">            n_for_trn = int(np.floor(n_specs * (1 - val_portion)) - 1)</span>
-<span class="sd">            n_for_val = int(np.ceil(n_specs * val_portion) - 1)</span>
-<span class="sd">            if n_for_trn &gt; 0:</span>
-<span class="sd">                trn_indexes = sample(specs.index.tolist(), n_for_trn)</span>
-<span class="sd">                all_trn_indexes.extend(trn_indexes)</span>
-<span class="sd">                specs = specs.drop(trn_indexes)</span>
-<span class="sd">            if n_for_val &gt; 0:</span>
-<span class="sd">                val_indexes = sample(specs.index.tolist(), n_for_val)</span>
-<span class="sd">                all_val_indexes.extend(val_indexes)</span>
-<span class="sd">                specs = specs.drop(val_indexes)</span>
+            <span class="c1"># Distribute remaining images across sets</span>
+            <span class="n">n_for_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">val_portion</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">n_for_trn</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">n_for_val</span>
+            <span class="k">if</span> <span class="n">n_for_trn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">trn_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_trn</span><span class="p">)</span>
+                <span class="n">complete_trn_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
+                <span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_for_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">val_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_val</span><span class="p">)</span>
+                <span class="n">complete_val_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
 
-<span class="sd">        return all_trn_indexes, all_val_indexes</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="c1"># Organize data</span>
+        <span class="n">trn_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">complete_trn_indexes</span><span class="p">]</span>
+        <span class="n">trn_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_trn_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">val_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">complete_val_indexes</span><span class="p">]</span>
+        <span class="n">val_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars_to_labels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_val_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
+            <span class="n">trn_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+            <span class="n">val_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+
+        <span class="k">return</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span>
 
     <span class="c1"># endregion</span>
 
