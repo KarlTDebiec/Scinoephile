@@ -46,8 +46,8 @@ if __name__ == "__main__":
         model_infile=None,
         model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
         trn_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        val_portion=0.1, mode="8 bit", n_chars=100, additional_images=97,
-        batch_size=128, epochs=10, interactive=True, **kwargs)()
+        val_portion=0.1, mode="8 bit", n_chars=100, n_images=100,
+        batch_size=128, epochs=10, interactive=True, **kwargs)
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

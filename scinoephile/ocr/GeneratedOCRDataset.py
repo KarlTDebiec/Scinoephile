@@ -47,7 +47,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.load()
 
         # Action
-        self.generate_minimal_img()
+        self.generate_images()
 
         # Output
         if self.outfile is not None:
@@ -260,22 +260,38 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
             "char", axis=1).values))
 
-    def generate_minimal_img(self):
+    def generate_images(self, chars=None, n_images=None):
         import numpy as np
         import pandas as pd
+        from random import sample
         from scinoephile.ocr import generate_char_img
 
         # Process arguments
+        if chars is None:
+            chars = self.chars[:self.n_chars]
+        if not isinstance(chars, list):
+            chars = list(chars)
+        if n_images is None:
+            n_images = len(self.spec_min_set)
+        n_images = max(len(self.spec_min_set), n_images)
         if self.verbosity >= 1:
-            print(f"Checking for minimal image set")
+            print(f"Checking for minimum of {n_images} images of each of "
+                  f"{len(chars)} characters")
 
         # Build queue of needed specs
         queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
-        for char in self.chars[:self.n_chars]:
+        for char in chars:
             existing = self.existing_specs_of_char_set(char)
-            needed = self.spec_min_set.difference(existing)
-            queue.extend(map(to_dict, needed))
+            minimal = self.spec_min_set.difference(existing)
+            queue.extend(map(to_dict, minimal))
+            n_additional = n_images - len(existing) - len(minimal)
+
+            if n_additional >= 1:
+                available = self.spec_all_set.difference(existing).difference(
+                    minimal)
+                selected = sample(available, min(n_additional, len(available)))
+                queue.extend(map(to_dict, selected))
 
         # Generate and add images
         if len(queue) >= 1:
@@ -288,42 +304,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 data[i] = generate_char_img(fig=self.figure, mode=self.mode, **kwargs)
 
             self.add_img(spec, data)
-
-    def generate_additional_img(self, n_images=1, chars=None):
-        import numpy as np
-        import pandas as pd
-        from random import sample
-        from scinoephile.ocr import generate_char_img
-
-        # Process arguments
-        if chars is None:
-            chars = self.chars[:self.n_chars]
-        if not isinstance(chars, list):
-            chars = list(chars)
-        if self.verbosity >= 1:
-            print(f"Generating {n_images} new images for each of {len(chars)} "
-                  f"characters")
-
-        # Build queue of new specs
-        queue = []
-        to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
-        for char in chars:
-            existing = self.existing_specs_of_char_set(char)
-            available = self.spec_all_set.difference(existing)
-            selected = sample(available, min(n_images, len(available)))
-            queue.extend(map(to_dict, selected))
-
-        # Generate and add images
-        if len(queue) >= 1:
-            if self.verbosity >= 1:
-                print(f"Generating {len(queue)} new images")
-
-            specs = pd.DataFrame(queue)
-            data = np.zeros((len(queue), self.data_size), self.data_dtype)
-            for i, kwargs in enumerate(queue):
-                data[i] = generate_char_img(fig=self.figure, mode=self.mode, **kwargs)
-
-            self.add_img(specs, data)
 
     def get_training_data(self, val_portion=0.1):
         import numpy as np

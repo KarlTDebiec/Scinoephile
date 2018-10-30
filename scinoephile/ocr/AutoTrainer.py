@@ -24,7 +24,7 @@ class AutoTrainer(OCRCLToolBase):
     def __init__(self, model_infile=None, val_portion=None,
                  n_chars=None, shape=None, batch_size=None,
                  epochs=None, model_outfile=None, trn_infile=None,
-                 mode="1 bit", additional_images=1, tst_infile=None, **kwargs):
+                 mode="1 bit", n_images=1, tst_infile=None, **kwargs):
         from scinoephile.ocr import GeneratedOCRDataset
 
         super().__init__(**kwargs)
@@ -53,9 +53,8 @@ class AutoTrainer(OCRCLToolBase):
             n_chars=self.n_chars,
             verbosity=self.verbosity)
         self.trn_ds.load()
-        # self.trn_ds.generate_minimal_img()
-        # self.trn_ds.generate_additional_img(additional_images)
-        # self.trn_ds.save()
+        self.trn_ds.generate_images(n_images=n_images)
+        self.trn_ds.save()
 
     def __call__(self):
         from tensorflow import keras

@@ -7,7 +7,7 @@ Optical Character Recognition
 _____________________________
 
 - [x] Fix font support on new macos and matplotlib
-- [x] Update GeneratedOCRDataset's generate_minimal_img
+- [x] Update GeneratedOCRDataset's generate_images
 - [x] Update GeneratedOCRDataset's gen_add_img
 - [x] Review Subtitle and ImageSubtitle Data Structures
 - [x] Review OCR Datasets
@@ -16,7 +16,7 @@ _____________________________
 - [x] Confirm that both 8-bit and 1-bit workflows work
 - [x] Review and update AutoTrainer
 - [x] Save model and reload
-- [ ] Extend generate_minimal_img to check for minimal number of images
+- [x] Extend generate_images to check for minimal number of images
 - [ ] Re-implement test data collector
 - [ ] Calculate difference between test images and generated images
 - [ ] Add log output to AutoTrainer
