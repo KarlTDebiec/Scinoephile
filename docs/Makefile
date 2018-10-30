@@ -15,4 +15,4 @@ full:
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILDDIR)/*
+	rm -rvf $(BUILDDIR)/*

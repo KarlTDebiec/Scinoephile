@@ -158,6 +158,8 @@ class ImageSubtitleEvent(SubtitleEvent):
             elif self.mode == "1 bit":
                 img = Image.fromarray(self.data.astype(np.uint8) * 255,
                                       mode="L").convert("1")
+            else:
+                raise NotImplementedError()
             img.show()
         else:
             raise ValueError()
