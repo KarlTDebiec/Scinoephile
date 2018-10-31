@@ -85,7 +85,7 @@ class AutoTrainer(OCRCLToolBase):
                 self.model.save(self.model_outfile)
 
             # Quit
-            if round > 100:
+            if round > 10:
                 break
 
     # endregion
@@ -296,15 +296,15 @@ class AutoTrainer(OCRCLToolBase):
 
         if self.model is None:
             from tensorflow.keras.models import Sequential
-            from tensorflow.keras.layers import Dense, Dropout
+            from tensorflow.keras.layers import Dense, Dropout, Flatten
 
             self.model = Sequential()
+            self.model.add(Flatten())
             self.model.add(Dense(512, input_shape=(6400,), activation="relu"))
             self.model.add(Dropout(0.2))
             self.model.add(Dense(512, activation="relu"))
             self.model.add(Dropout(0.2))
             self.model.add(Dense(self.n_chars, activation="softmax"))
-            self.model.summary()
         self.model.compile(
             optimizer=Adam(),
             loss="sparse_categorical_crossentropy",

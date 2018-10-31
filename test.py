@@ -50,6 +50,7 @@ if __name__ == "__main__":
     trn_ds.load()
     trn_ds.generate_images(min_images=10)
     trn_ds.save()
+
     AutoTrainer(
         model_infile=None,
         model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",

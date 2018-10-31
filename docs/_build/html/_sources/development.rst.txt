@@ -18,7 +18,8 @@ _____________________________
 - [x] Save model and reload
 - [x] Extend generate_images to check for minimal number of images
 - [x] Have AutoTrainer accept OCR Datasets rather than building its own
-- [ ] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
+- [x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
+- [ ] Visualize weights
 - [ ] Re-implement test data collector
 - [ ] Extend generate_images to add set number of images rather than use total
 - [ ] Calculate difference between test images and generated images

@@ -299,7 +299,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
                 print(f"Generating {len(min_queue)} new images for minimal set")
 
             spec = pd.DataFrame(min_queue)
-            data = np.zeros((len(min_queue), self.data_size), self.data_dtype)
+            data = np.zeros((len(min_queue), 80, 80), self.data_dtype)
             for i, kwargs in enumerate(min_queue):
                 data[i] = generate_char_img(fig=self.figure, mode=self.mode, **kwargs)
 

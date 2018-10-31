@@ -82,7 +82,7 @@ class OCRDataset(OCRCLToolBase):
         if not hasattr(self, "_data"):
             import numpy as np
 
-            self._data = np.zeros((0, self.data_size), self.data_dtype)
+            self._data = np.zeros((0, 80, 80), self.data_dtype)
         return self._data
 
     @data.setter
@@ -91,7 +91,7 @@ class OCRDataset(OCRCLToolBase):
 
         if not isinstance(value, np.ndarray):
             raise ValueError(self._generate_setter_exception(value))
-        if value.shape[1] != self.data_size:
+        if value.shape[1] != 80 or value.shape[2] != 80:
             raise ValueError(self._generate_setter_exception(value))
         if value.dtype != self.data_dtype:
             raise ValueError(self._generate_setter_exception(value))
@@ -106,16 +106,6 @@ class OCRDataset(OCRCLToolBase):
             return np.uint8
         elif self.mode == "1 bit":
             return np.bool
-        else:
-            raise NotImplementedError()
-
-    @property
-    def data_size(self):
-        """int: Size of a single image within arrays"""
-        if self.mode == "8 bit":
-            return 6400
-        elif self.mode == "1 bit":
-            return 6400
         else:
             raise NotImplementedError()
 
@@ -295,11 +285,10 @@ class OCRDataset(OCRCLToolBase):
             column = (i // cols)
             row = i - (column * cols)
             if self.mode == "8 bit":
-                char_img = Image.fromarray(
-                    data[index].reshape((80, 80)))
+                char_img = Image.fromarray(data[index])
             elif self.mode == "1 bit":
                 char_img = Image.fromarray(
-                    data[index].reshape((80, 80)).astype(np.uint8) * 255)
+                    data[index].astype(np.uint8) * 255)
             else:
                 raise NotImplementedError()
             img.paste(char_img, (100 * row + 10,
