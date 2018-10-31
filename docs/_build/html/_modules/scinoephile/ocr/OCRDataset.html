@@ -209,12 +209,13 @@
 <span class="c1">#   This software may be modified and distributed under the terms of the</span>
 <span class="c1">#   BSD license. See the LICENSE file for details.</span>
 <span class="c1">################################### MODULES ###################################</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRCLToolBase</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">OCRCLToolBase</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">OCRCLToolBase</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of character images</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -502,11 +503,13 @@
 
     <span class="c1"># region Private Methods</span>
 
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">pass</span>
 
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_save_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">pass</span></div>
 
     <span class="c1"># endregion</span>
 </pre></div>

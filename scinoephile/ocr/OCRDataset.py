@@ -8,12 +8,13 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from abc import ABC, abstractmethod
 from scinoephile.ocr import OCRCLToolBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class OCRDataset(OCRCLToolBase):
+class OCRDataset(OCRCLToolBase, ABC):
     """
     A collection of character images
     """
@@ -301,10 +302,12 @@ class OCRDataset(OCRCLToolBase):
 
     # region Private Methods
 
+    @abstractmethod
     def _load_hdf5(self, fp, **kwargs):
-        raise NotImplementedError()
+        pass
 
+    @abstractmethod
     def _save_hdf5(self, fp, **kwargs):
-        raise NotImplementedError()
+        pass
 
     # endregion
