@@ -42,12 +42,19 @@ if __name__ == "__main__":
     #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
     #     mode="1 bit", n_chars=10, interactive=False, **kwargs)()
 
+    kwargs["n_chars"] = 20
+    trn_ds = GeneratedOCRDataset(
+        infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+        mode="8 bit", **kwargs)
+    trn_ds.load()
+    trn_ds.generate_images(min_images=10)
+    trn_ds.save()
     AutoTrainer(
         model_infile=None,
         model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
-        trn_infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        val_portion=0.1, mode="8 bit", n_chars=100, n_images=100,
-        batch_size=128, epochs=10, interactive=True, **kwargs)
+        trn_ds=trn_ds, val_portion=0.1, batch_size=128, epochs=10,
+        interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

@@ -260,7 +260,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
             "char", axis=1).values))
 
-    def generate_images(self, chars=None, n_images=None):
+    def generate_images(self, chars=None, min_images=None):
         import numpy as np
         import pandas as pd
         from random import sample
@@ -271,39 +271,43 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             chars = self.chars[:self.n_chars]
         if not isinstance(chars, list):
             chars = list(chars)
-        if n_images is None:
-            n_images = len(self.spec_min_set)
-        n_images = max(len(self.spec_min_set), n_images)
+        if min_images is None:
+            min_images = len(self.spec_min_set)
+        min_images = max(len(self.spec_min_set), min_images)
         if self.verbosity >= 1:
-            print(f"Checking for minimum of {n_images} images of each of "
+            print(f"Checking for minimum of {min_images} images of each of "
                   f"{len(chars)} characters")
 
         # Build queue of needed specs
-        queue = []
+        min_queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
         for char in chars:
             existing = self.existing_specs_of_char_set(char)
             minimal = self.spec_min_set.difference(existing)
-            queue.extend(map(to_dict, minimal))
-            n_additional = n_images - len(existing) - len(minimal)
+            min_queue.extend(map(to_dict, minimal))
+            n_additional = min_images - len(existing) - len(minimal)
 
             if n_additional >= 1:
                 available = self.spec_all_set.difference(existing).difference(
                     minimal)
                 selected = sample(available, min(n_additional, len(available)))
-                queue.extend(map(to_dict, selected))
+                min_queue.extend(map(to_dict, selected))
 
         # Generate and add images
-        if len(queue) >= 1:
+        if len(min_queue) >= 1:
             if self.verbosity >= 1:
-                print(f"Generating {len(queue)} new images for minimal set")
+                print(f"Generating {len(min_queue)} new images for minimal set")
 
-            spec = pd.DataFrame(queue)
-            data = np.zeros((len(queue), self.data_size), self.data_dtype)
-            for i, kwargs in enumerate(queue):
+            spec = pd.DataFrame(min_queue)
+            data = np.zeros((len(min_queue), self.data_size), self.data_dtype)
+            for i, kwargs in enumerate(min_queue):
                 data[i] = generate_char_img(fig=self.figure, mode=self.mode, **kwargs)
 
             self.add_img(spec, data)
+        else:
+            if self.verbosity >= 1:
+                print(f"Minimal image set already present")
+
 
     def get_training_data(self, val_portion=0.1):
         import numpy as np
@@ -356,11 +360,13 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         decode = lambda x: x.decode("utf8")
 
         # Load image mode
+        if "mode" not in fp.attrs:
+            return
         self.mode = fp.attrs["mode"]
 
         # Load image specs
         if "spec" not in fp:
-            return  # Do not need to raise if hdf5 is empty
+            raise ValueError()  # Weird to have mode but no specs or data
         spec = np.array(fp["spec"])
         spec = pd.DataFrame(data=spec, index=range(spec.size), columns=spec.dtype.names)
         spec["char"] = spec["char"].apply(decode)
@@ -368,7 +374,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Load image data
         if "data" not in fp:
-            raise ValueError()  # Need to raise if hdf5 has specs but no data
+            raise ValueError()  # Weirder to have mode and specs but no data
         data = np.array(fp["data"])
 
         self.add_img(spec, data)

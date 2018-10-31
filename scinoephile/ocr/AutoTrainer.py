@@ -21,10 +21,9 @@ class AutoTrainer(OCRCLToolBase):
 
     # region Builtins
 
-    def __init__(self, model_infile=None, val_portion=None,
-                 n_chars=None, shape=None, batch_size=None,
-                 epochs=None, model_outfile=None, trn_infile=None,
-                 mode="1 bit", n_images=1, tst_infile=None, **kwargs):
+    def __init__(self, model_infile=None, val_portion=None, n_chars=None,
+                 shape=None, batch_size=None, epochs=None, model_outfile=None,
+                 trn_ds=None, tst_ds=None, **kwargs):
         from scinoephile.ocr import GeneratedOCRDataset
 
         super().__init__(**kwargs)
@@ -46,15 +45,8 @@ class AutoTrainer(OCRCLToolBase):
             self.model_outfile = model_outfile
 
         # Initialize training dataset, using passed values
-        self.trn_ds = GeneratedOCRDataset(
-            infile=trn_infile,
-            outfile=trn_infile,
-            mode=mode,
-            n_chars=self.n_chars,
-            verbosity=self.verbosity)
-        self.trn_ds.load()
-        self.trn_ds.generate_images(n_images=n_images)
-        self.trn_ds.save()
+        if trn_ds is not None:
+            self.trn_ds = trn_ds
 
     def __call__(self):
         from tensorflow import keras
