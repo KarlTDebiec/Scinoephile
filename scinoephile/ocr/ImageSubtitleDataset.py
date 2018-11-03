@@ -39,6 +39,11 @@ class ImageSubtitleDataset(SubtitleDataset):
     # region Public Properties
 
     @property
+    def char_data(self):
+        """ndarray: Image data of individual characters within subtitles"""
+        return self.subtitles.char_data
+
+    @property
     def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):

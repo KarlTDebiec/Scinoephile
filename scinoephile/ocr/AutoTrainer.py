@@ -21,32 +21,34 @@ class AutoTrainer(OCRCLToolBase):
 
     # region Builtins
 
-    def __init__(self, model_infile=None, val_portion=None, n_chars=None,
-                 shape=None, batch_size=None, epochs=None, model_outfile=None,
-                 trn_ds=None, tst_ds=None, **kwargs):
-        from scinoephile.ocr import GeneratedOCRDataset
-
+    def __init__(self, n_chars=None, model_infile=None, trn_ds=None,
+                 val_portion=None, tst_ds=None, shape=None, batch_size=None,
+                 epochs=None, model_outfile=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if model_infile is not None:
-            self.model_infile = model_infile
-        if val_portion is not None:
-            self.val_portion = val_portion
         if n_chars is not None:
             self.n_chars = n_chars
+
+        if model_infile is not None:
+            self.model_infile = model_infile
+
+        if trn_ds is not None:
+            self.trn_ds = trn_ds
+        if val_portion is not None:
+            self.val_portion = val_portion
+        if tst_ds is not None:
+            self.tst_ds = tst_ds
+
         if shape is not None:
             self.shape = shape
         if batch_size is not None:
             self.batch_size = batch_size
         if epochs is not None:
             self.epochs = epochs
+
         if model_outfile is not None:
             self.model_outfile = model_outfile
-
-        # Initialize training dataset, using passed values
-        if trn_ds is not None:
-            self.trn_ds = trn_ds
 
     def __call__(self):
         from tensorflow import keras
@@ -293,6 +295,24 @@ class AutoTrainer(OCRCLToolBase):
 
     # region Public Methods
 
+    def analyze_image_predictions(self, title, img, lbl):
+        import numpy as np
+
+        pred = self.model.predict(img)
+        loss, acc = self.model.evaluate(img, lbl)
+        if self.verbosity >= 1:
+            print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
+                  f"Accuracy:{acc:7.5f}")
+        for i, char in enumerate(self.labels_to_chars(lbl)):
+            poss_lbls = np.argsort(pred[i])[::-1]
+            poss_chars = self.labels_to_chars(poss_lbls)
+            poss_probs = np.round(pred[i][poss_lbls], 2)
+            if char != poss_chars[0]:
+                if self.verbosity >= 2:
+                    matches = [f"{a}:{b:4.2f}" for a, b in
+                               zip(poss_chars[:10], poss_probs[:10])]
+                    print(f"{char} | {' '.join(matches)}")
+
     def prepare_model(self):
         from tensorflow.keras.optimizers import Adam, RMSprop
 
@@ -314,21 +334,4 @@ class AutoTrainer(OCRCLToolBase):
         #   optimizer=tf.train.AdamOptimizer(),
         #   loss="sparse_categorical_crossentropy",
 
-    def analyze_image_predictions(self, title, img, lbl):
-        import numpy as np
-
-        pred = self.model.predict(img)
-        loss, acc = self.model.evaluate(img, lbl)
-        if self.verbosity >= 1:
-            print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
-                  f"Accuracy:{acc:7.5f}")
-        for i, char in enumerate(self.labels_to_chars(lbl)):
-            poss_lbls = np.argsort(pred[i])[::-1]
-            poss_chars = self.labels_to_chars(poss_lbls)
-            poss_probs = np.round(pred[i][poss_lbls], 2)
-            if char != poss_chars[0]:
-                if self.verbosity >= 2:
-                    matches = [f"{a}:{b:4.2f}" for a, b in
-                               zip(poss_chars[:10], poss_probs[:10])]
-                    print(f"{char} | {' '.join(matches)}")
     # endregion

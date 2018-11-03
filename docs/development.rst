@@ -49,7 +49,6 @@ _____________
 - [ ] Document OCRBase and OCRCLToolBase
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
-- [ ]
 
 Miscellaneous
 _____________
