@@ -40,9 +40,9 @@ if __name__ == "__main__":
     # GeneratedOCRDataset(
     #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
     #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-    #     mode="1 bit", n_chars=10, interactive=False, **kwargs)()
+    #     mode="1 bit", n_chars=10, interactive=True, **kwargs)()
 
-    kwargs["n_chars"] = 20
+    kwargs["n_chars"] = 10
     trn_ds = GeneratedOCRDataset(
         infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
         outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
@@ -50,11 +50,10 @@ if __name__ == "__main__":
     trn_ds.load()
     trn_ds.generate_images(min_images=10)
     trn_ds.save()
-
     AutoTrainer(
         model_infile=None,
         model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
-        trn_ds=trn_ds, val_portion=0.1, batch_size=128, epochs=10,
+        trn_ds=trn_ds, val_portion=0.1, batch_size=32, epochs=10,
         interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(

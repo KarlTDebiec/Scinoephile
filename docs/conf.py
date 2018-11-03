@@ -49,6 +49,7 @@ extensions = [
 autodoc_member_order = "bysource"
 autodoc_default_options = {
     "members": None,
+    "special-members": "__init__",
     "show-inheritance": None,
 }
 todo_include_todos = False

@@ -20,8 +20,8 @@ _____________________________
 - [x] Have AutoTrainer accept OCR Datasets rather than building its own
 - [x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
 - [x] Convert OCRDataset to an abstract class
-- [ ] Visualize weights
 - [ ] Re-implement test data, take ImageSubtitleDataset and use to populate
+- [ ] Visualize weights
 - [ ] Extend generate_images to add set number of images rather than use total
 - [ ] Calculate difference between test images and generated images
 - [ ] Add log output to AutoTrainer
@@ -48,8 +48,14 @@ _____________
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
 
+Miscellaneous
+_____________
+
+- [ ] Make base classes abstract
+
 Future Projects
 _______________
 
 - Improve requirements.txt and clarify what is required for which functions
 - Automated testing using pytest and TravisCI
+- Sphinx checklist extension to convert "- [ ]" to "☐" and "- [X]" to "☑"

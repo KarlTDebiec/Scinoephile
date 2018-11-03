@@ -131,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future-projects">Future Projects</a></li>
 </ul>
 </li>
@@ -249,6 +250,20 @@
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRBase</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
 <p>Base for OCR classes</p>
+<dl class="method">
+<dt id="scinoephile.ocr.OCRBase.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.OCRBase.chars">
 <code class="descname">chars</code><a class="headerlink" href="#scinoephile.ocr.OCRBase.chars" title="Permalink to this definition">¶</a></dt>
@@ -332,6 +347,24 @@
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRDataset</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.ocr.OCRCLToolBase" title="scinoephile.ocr.OCRCLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRCLToolBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>A collection of character images</p>
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.OCRDataset.spec">
 <code class="descname">spec</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.spec" title="Permalink to this definition">¶</a></dt>
@@ -574,6 +607,24 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">GeneratedOCRDataset</code><span class="sig-paren">(</span><em>n_chars=None</em>, <em>font_names=None</em>, <em>font_sizes=None</em>, <em>font_widths=None</em>, <em>font_x_offsets=None</em>, <em>font_y_offsets=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.LabeledOCRDataset.LabeledOCRDataset</span></code></p>
 <p>A collection of generated character images</p>
+<dl class="method">
+<dt id="scinoephile.ocr.GeneratedOCRDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_chars=None</em>, <em>font_names=None</em>, <em>font_sizes=None</em>, <em>font_widths=None</em>, <em>font_x_offsets=None</em>, <em>font_y_offsets=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/GeneratedOCRDataset.html#GeneratedOCRDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.GeneratedOCRDataset.figure">
 <code class="descname">figure</code><a class="headerlink" href="#scinoephile.ocr.GeneratedOCRDataset.figure" title="Permalink to this definition">¶</a></dt>
@@ -775,6 +826,24 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.ImageSubtitleSeries.ImageSubtitleSeries</span></code></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="scinoephile.ocr.ImageSubtitleDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleDataset.html#ImageSubtitleDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleDataset.mode">
 <code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleDataset.mode" title="Permalink to this definition">¶</a></dt>
@@ -819,6 +888,12 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.ImageSubtitleEvent.ImageSubtitleEvent</span></code></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="scinoephile.ocr.ImageSubtitleSeries.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.mode">
 <code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.mode" title="Permalink to this definition">¶</a></dt>
@@ -858,6 +933,20 @@ file here for consistency.</p>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">ImageSubtitleEvent</code><span class="sig-paren">(</span><em>mode=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent.SubtitleEvent</span></code></p>
 <p>An individual image-based subtitle</p>
+<dl class="method">
+<dt id="scinoephile.ocr.ImageSubtitleEvent.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>mode=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_bounds">
 <code class="descname">char_bounds</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_bounds" title="Permalink to this definition">¶</a></dt>
@@ -940,6 +1029,24 @@ file here for consistency.</p>
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">AutoTrainer</code><span class="sig-paren">(</span><em>model_infile=None</em>, <em>val_portion=None</em>, <em>n_chars=None</em>, <em>shape=None</em>, <em>batch_size=None</em>, <em>epochs=None</em>, <em>model_outfile=None</em>, <em>trn_ds=None</em>, <em>tst_ds=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/AutoTrainer.html#AutoTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.AutoTrainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.ocr.OCRCLToolBase" title="scinoephile.ocr.OCRCLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRCLToolBase</span></code></a></p>
 <p>Automated machine learning model trainer</p>
+<dl class="method">
+<dt id="scinoephile.ocr.AutoTrainer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>model_infile=None</em>, <em>val_portion=None</em>, <em>n_chars=None</em>, <em>shape=None</em>, <em>batch_size=None</em>, <em>epochs=None</em>, <em>model_outfile=None</em>, <em>trn_ds=None</em>, <em>tst_ds=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/AutoTrainer.html#AutoTrainer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.ocr.AutoTrainer.batch_size">
 <code class="descname">batch_size</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.batch_size" title="Permalink to this definition">¶</a></dt>

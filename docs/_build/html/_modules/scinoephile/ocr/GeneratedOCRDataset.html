@@ -129,6 +129,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#future-projects">Future Projects</a></li>
 </ul>
 </li>
@@ -221,7 +222,7 @@
 
     <span class="c1"># region Builtins</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="GeneratedOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">font_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_x_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_y_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -238,7 +239,7 @@
         <span class="k">if</span> <span class="n">font_x_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_x_offsets</span> <span class="o">=</span> <span class="n">font_x_offsets</span>
         <span class="k">if</span> <span class="n">font_y_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span> <span class="o">=</span> <span class="n">font_y_offsets</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span> <span class="o">=</span> <span class="n">font_y_offsets</span></div>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Core logic &quot;&quot;&quot;</span>

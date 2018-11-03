@@ -6,7 +6,7 @@ Development
 Optical Character Recognition
 _____________________________
 
-- [x] Fix font support on new macos and matplotlib
+- [X] Fix font support on new macos and matplotlib
 - [x] Update GeneratedOCRDataset's generate_images
 - [x] Update GeneratedOCRDataset's gen_add_img
 - [x] Review Subtitle and ImageSubtitle Data Structures
@@ -48,8 +48,14 @@ _____________
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
 
+Miscellaneous
+_____________
+
+- [ ] Make base classes abstract
+
 Future Projects
 _______________
 
 - Improve requirements.txt and clarify what is required for which functions
 - Automated testing using pytest and TravisCI
+- Sphinx checklist extension to convert "- [ ]" to "☐" and "- [X]" to "☑"

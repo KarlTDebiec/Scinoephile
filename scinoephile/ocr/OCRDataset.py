@@ -68,14 +68,16 @@ class OCRDataset(OCRCLToolBase, ABC):
         self._spec = value
 
     @property
+    @abstractmethod
     def spec_cols(self):
         """list(str): Character image specification columns"""
-        raise NotImplementedError()
+        pass
 
     @property
+    @abstractmethod
     def spec_dtypes(self):
         """list(str): Character image specification dtypes"""
-        raise NotImplementedError()
+        pass
 
     @property
     def data(self):

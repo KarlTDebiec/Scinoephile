@@ -131,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future-projects">Future Projects</a></li>
 </ul>
 </li>
@@ -237,6 +238,20 @@
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">Base</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Base" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base for scinoephile classes</p>
+<dl class="method">
+<dt id="scinoephile.Base.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#Base.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Base.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.Base.embed_kw">
 <code class="descname">embed_kw</code><a class="headerlink" href="#scinoephile.Base.embed_kw" title="Permalink to this definition">¶</a></dt>
@@ -289,6 +304,24 @@
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">CLToolBase</code><span class="sig-paren">(</span><em>interactive=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
 <p>Base for scinoephile command line tools</p>
+<dl class="method">
+<dt id="scinoephile.CLToolBase.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>interactive=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile.html#CLToolBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.CLToolBase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.CLToolBase.interactive">
 <code class="descname">interactive</code><a class="headerlink" href="#scinoephile.CLToolBase.interactive" title="Permalink to this definition">¶</a></dt>
@@ -366,6 +399,24 @@ separate scinoephile and pysubs2 styles.</p>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="scinoephile.SubtitleDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleDataset.html#SubtitleDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes tool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="scinoephile.SubtitleDataset.infile">
 <code class="descname">infile</code><a class="headerlink" href="#scinoephile.SubtitleDataset.infile" title="Permalink to this definition">¶</a></dt>
@@ -428,6 +479,12 @@ in pysubs.SSAFile, this additional separation is not beneficial here.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scinoephile.SubtitleSeries.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="scinoephile.SubtitleSeries.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves subtitles to an output file</p>
@@ -454,6 +511,20 @@ hdf5 file here for consistency</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssaevent.SSAEvent</span></code>, <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a></p>
 <p>An individual subtitle</p>
 <p>Extension of pysubs2’s SSAEvent with additional features.</p>
+<dl class="method">
+<dt id="scinoephile.SubtitleEvent.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>verbosity=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/SubtitleEvent.html#SubtitleEvent.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
