@@ -39,13 +39,13 @@ class OCRDataset(OCRCLToolBase, ABC):
         if self.infile is not None:
             self.load()
 
-        # Output
-        if self.outfile is not None:
-            self.save()
-
         # Present IPython prompt
         if self.interactive:
             embed(**self.embed_kw)
+
+        # Output
+        if self.outfile is not None:
+            self.save()
 
     # endregion
 

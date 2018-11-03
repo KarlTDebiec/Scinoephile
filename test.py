@@ -8,6 +8,7 @@ from scinoephile.ocr import UnlabeledOCRDataset
 from scinoephile.ocr import TestOCRDataset
 from scinoephile.ocr import LabeledOCRDataset
 from scinoephile.ocr import GeneratedOCRDataset
+from scinoephile.ocr import Model
 from scinoephile.ocr import AutoTrainer
 
 #################################### MAIN #####################################
@@ -62,12 +63,18 @@ if __name__ == "__main__":
     #     interactive=True, **kwargs)()
 
     # Gather test data
+    kwargs["mode"] = "8 bit"
     kwargs["n_chars"] = 10
     sub_ds = ImageSubtitleDataset(
         infile=subtitle_root + "magnificent_mcdull/mcdull_8bit.h5",
-        mode="8 bit", interactive=False, **kwargs)
+        **kwargs)
     sub_ds.load()
-    TestOCRDataset(sub_ds=sub_ds, interactive=True, **kwargs)()
+    model = Model(
+        infile="/Users/kdebiec/Desktop/docs/subtitles/model_0100_0100.h5",
+        **kwargs)
+    model.load()
+    model.prepare_model()
+    TestOCRDataset(model=model, sub_ds=sub_ds, interactive=False, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \
