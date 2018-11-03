@@ -106,9 +106,6 @@ def generate_char_img(char, font, fig=None, size=60, width=5,
 class OCRBase(Base):
     """
     Base for OCR classes
-
-    .. todo::
-      - [ ] Support western characters and punctuation
     """
 
     # region Builtins

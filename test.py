@@ -14,6 +14,7 @@ if __name__ == "__main__":
     subtitle_root = "/Users/kdebiec/Dropbox/code/subtitles/"
     kwargs = {"verbosity": 2}
 
+    # Read text subtitles
     # SubtitleDataset(
     #     infile=subtitle_root + "youth/Youth.en-US.srt",
     #     outfile=subtitle_root + "youth/youth.hdf5",
@@ -22,6 +23,7 @@ if __name__ == "__main__":
     #     infile=subtitle_root + "youth/youth.hdf5",
     #     **kwargs)()
 
+    # Read image-based subtitles
     # ImageSubtitleDataset(
     #     infile=subtitle_root + "magnificent_mcdull/original/Magnificent Mcdull.3.zho.sup",
     #     outfile=subtitle_root + "magnificent_mcdull/mcdull_8bit.h5",
@@ -37,24 +39,31 @@ if __name__ == "__main__":
     #     infile=subtitle_root + "magnificent_mcdull/mcdull_1bit.h5",
     #     mode="1 bit", interactive=False, **kwargs)()
 
+    # Generate training data
     # GeneratedOCRDataset(
     #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
     #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
     #     mode="1 bit", n_chars=10, interactive=True, **kwargs)()
 
-    kwargs["n_chars"] = 10
-    trn_ds = GeneratedOCRDataset(
-        infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-        mode="8 bit", **kwargs)
-    trn_ds.load()
-    trn_ds.generate_images(min_images=10)
-    trn_ds.save()
-    AutoTrainer(
-        model_infile=None,
-        model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
-        trn_ds=trn_ds, val_portion=0.1, batch_size=32, epochs=10,
-        interactive=True, **kwargs)()
+    # Train model
+    # kwargs["n_chars"] = 10
+    # trn_ds = GeneratedOCRDataset(
+    #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+    #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+    #     mode="8 bit", **kwargs)
+    # trn_ds.load()
+    # trn_ds.generate_images(min_images=10)
+    # trn_ds.save()
+    # AutoTrainer(
+    #     model_infile=None,
+    #     model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
+    #     trn_ds=trn_ds, val_portion=0.1, batch_size=32, epochs=10,
+    #     interactive=True, **kwargs)()
+
+    # Gather test data
+    tst_ds = ImageSubtitleDataset(
+        infile=subtitle_root + "magnificent_mcdull/mcdull_8bit.h5",
+        mode="8 bit", interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

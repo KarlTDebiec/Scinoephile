@@ -20,6 +20,7 @@ _____________________________
 - [x] Have AutoTrainer accept OCR Datasets rather than building its own
 - [x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
 - [x] Convert OCRDataset to an abstract class
+- [x] ImageSubtitleSeries: Collected char_data
 - [ ] Re-implement test data, take ImageSubtitleDataset and use to populate
 - [ ] Visualize weights
 - [ ] Extend generate_images to add set number of images rather than use total
@@ -29,6 +30,7 @@ _____________________________
 - [ ] From ImageSubtitleDataset, organize data structures for tensorflow
 - [ ] Apply machine learning model to ImageSubtitleDataset
 - [ ] Add support for Western characters and punctuation
+- [ ] ImageSubtitleEvent: Identify spaces in subtitle images
 
 Migrate Compositor to New Data Structures
 _________________________________________
@@ -47,11 +49,14 @@ _____________
 - [ ] Document OCRBase and OCRCLToolBase
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
+- [ ]
 
 Miscellaneous
 _____________
 
 - [ ] Make base classes abstract
+- [ ] Move image mode property to a subclass of OCRBaseClass
+- [ ] Convenience function for viewing source of method/property in IPython
 
 Future Projects
 _______________

@@ -895,6 +895,20 @@ lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleSeries.char_data">
+<code class="descname">char_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data of individual characters within subtitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.mode">
 <code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image mode</p>
@@ -950,12 +964,12 @@ file here for consistency.</p>
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_bounds">
 <code class="descname">char_bounds</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_bounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Boundaries of individual characters</p>
+<dd><p>Boundaries of individual characters within subtitle</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">array(int)</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
 </tr>
 </tbody>
 </table>
@@ -964,7 +978,35 @@ file here for consistency.</p>
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_widths">
 <code class="descname">char_widths</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_widths" title="Permalink to this definition">¶</a></dt>
-<dd><p>Images of individual characters</p>
+<dd><p>Widths of individual characters within subtitle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleEvent.char_data">
+<code class="descname">char_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data of individual characters within subtitle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleEvent.data">
+<code class="descname">data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -976,14 +1018,14 @@ file here for consistency.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleEvent.char_data">
-<code class="descname">char_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Images of individual characters</p>
+<dt id="scinoephile.ocr.ImageSubtitleEvent.img">
+<code class="descname">img</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image of subtitle</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Image</td>
 </tr>
 </tbody>
 </table>
@@ -1003,18 +1045,10 @@ file here for consistency.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleEvent.data">
-<code class="descname">data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
+<dl class="method">
+<dt id="scinoephile.ocr.ImageSubtitleEvent.show">
+<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows image of subtitle</p>
 </dd></dl>
 
 </dd></dl>

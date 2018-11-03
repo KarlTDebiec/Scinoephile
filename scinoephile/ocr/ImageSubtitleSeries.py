@@ -39,6 +39,16 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Public Properties
 
     @property
+    def char_data(self):
+        """ndarray: Image data of individual characters within subtitles"""
+        if not hasattr(self, "_char_data"):
+            import numpy as np
+
+            self._char_data = np.concatenate([e.char_data for e in self.events])
+
+        return self._char_data
+
+    @property
     def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):

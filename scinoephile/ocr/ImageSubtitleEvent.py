@@ -35,7 +35,7 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     @property
     def char_bounds(self):
-        """array(int): Boundaries of individual characters """
+        """ndarray(int): Boundaries of individual characters within subtitle"""
         if not hasattr(self, "_char_bounds"):
             import numpy as np
 
@@ -53,14 +53,14 @@ class ImageSubtitleEvent(SubtitleEvent):
 
     @property
     def char_widths(self):
-        """str: Images of individual characters """
+        """ndarray(int): Widths of individual characters within subtitle"""
         if not hasattr(self, "_char_widths"):
             self._char_widths = self.char_bounds[:, 1] - self.char_bounds[:, 0]
         return self._char_widths
 
     @property
     def char_data(self):
-        """str: Images of individual characters """
+        """ndarray: Image data of individual characters within subtitle"""
         if not hasattr(self, "_char_data"):
             import numpy as np
 
@@ -82,33 +82,8 @@ class ImageSubtitleEvent(SubtitleEvent):
         return self._char_data
 
     @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, set self.data = self.data to convert
-
-        self._mode = value
-
-    @property
     def data(self):
-        """str: Image """
+        """str: Image data"""
         if not hasattr(self, "_data"):
             self._data = None
         return self._data
@@ -144,24 +119,57 @@ class ImageSubtitleEvent(SubtitleEvent):
 
         self._data = value
 
+    @property
+    def img(self):
+        """Image: Image of subtitle"""
+        if not hasattr(self, "_img"):
+            import numpy as np
+            from PIL import Image
+
+            if self.data is not None:
+                if self.mode == "8 bit":
+                    self._img = Image.fromarray(self.data)
+                elif self.mode == "1 bit":
+                    self._img = Image.fromarray(
+                        self.data.astype(np.uint8) * 255,
+                        mode="L").convert("1")
+            else:
+                raise ValueError()
+        return self._img
+
+    @property
+    def mode(self):
+        """str: Image mode"""
+        if not hasattr(self, "_mode"):
+            self._mode = "1 bit"
+        return self._mode
+
+    @mode.setter
+    def mode(self, value):
+        if value is not None:
+            if not isinstance(value, str):
+                try:
+                    value = str(value)
+                except Exception:
+                    raise ValueError(self._generate_setter_exception(value))
+            if value == "8 bit":
+                pass
+            elif value == "1 bit":
+                pass
+            else:
+                raise ValueError(self._generate_setter_exception(value))
+        # TODO: If changed, set self.data = self.data to convert
+
+        self._mode = value
+
     # endregion
 
     # region Public Methods
 
     def show(self):
-        import numpy as np
-        from PIL import Image
-
-        if self.data is not None:
-            if self.mode == "8 bit":
-                img = Image.fromarray(self.data)
-            elif self.mode == "1 bit":
-                img = Image.fromarray(self.data.astype(np.uint8) * 255,
-                                      mode="L").convert("1")
-            else:
-                raise NotImplementedError()
-            img.show()
-        else:
-            raise ValueError()
+        """
+        Shows image of subtitle
+        """
+        self.img.show()
 
     # endregion
