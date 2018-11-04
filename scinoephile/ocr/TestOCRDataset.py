@@ -52,6 +52,10 @@ class TestOCRDataset(OCRDataset):
     # region Public Properties
 
     @property
+    def labels(self):
+        return self.chars_to_labels(self.spec["char"].values)
+
+    @property
     def model(self):
         """scinoephile.ocr.Model: model"""
         if not hasattr(self, "_model"):
@@ -117,23 +121,23 @@ class TestOCRDataset(OCRDataset):
 
     # region Public Methods
 
-    def present_specs_of_char(self, char):
-        return self.spec.loc[
-            self.spec["char"] == char].drop("char", axis=1)
+    def present_specs_of_char(self, char, source=None):
+        if source is None:
+            return self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1)
+        else:
+            return self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1)[
+                self.spec["source"] == source].drop("source", axis=1)
 
-    def present_specs_of_char_set(self, char):
-        return set(map(tuple, self.spec.loc[
-            self.spec["char"] == char].drop("char", axis=1).values))
-
-    def present_specs_of_char_source(self, char, source):
-        return self.spec.loc[
-            self.spec["char"] == char].drop("char", axis=1)[
-            self.spec["source"] == source].drop("source", axis=1)
-
-    def present_specs_of_char_source_set(self, char, source):
-        return set(map(tuple, self.spec.loc[
-            self.spec["char"] == char].drop("char", axis=1)[
-            self.spec["source"] == source].drop("source", axis=1).values))
+    def present_specs_of_char_set(self, char, source=None):
+        if source is None:
+            return set(map(tuple, self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1).values))
+        else:
+            return set(map(tuple, self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1)[
+                self.spec["source"] == source].drop("source", axis=1).values))
 
     def label_new_chars(self, sub_ds=None, model=None):
         import numpy as np
@@ -155,7 +159,7 @@ class TestOCRDataset(OCRDataset):
         predictions = model.model.predict(sub_ds.char_data)
         for char in self.chars[:self.n_chars]:
 
-            if len(self.present_specs_of_char_source_set(char, source)) > 0:
+            if len(self.present_specs_of_char_set(char, source)) > 0:
                 continue
 
             # Identify best matches for this char

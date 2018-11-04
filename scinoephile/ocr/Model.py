@@ -206,6 +206,24 @@ class Model(OCRCLToolBase):
 
     # region Public Methods
 
+    def analyze_image_predictions(self, title, img, lbl):
+        import numpy as np
+
+        pred = self.model.predict(img)
+        loss, acc = self.model.evaluate(img, lbl)
+        if self.verbosity >= 1:
+            print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
+                  f"Accuracy:{acc:7.5f}")
+        for i, char in enumerate(self.labels_to_chars(lbl)):
+            poss_lbls = np.argsort(pred[i])[::-1]
+            poss_chars = self.labels_to_chars(poss_lbls)
+            poss_probs = np.round(pred[i][poss_lbls], 2)
+            if char != poss_chars[0]:
+                if self.verbosity >= 2:
+                    matches = [f"{a}:{b:4.2f}" for a, b in
+                               zip(poss_chars[:10], poss_probs[:10])]
+                    print(f"{char} | {' '.join(matches)}")
+
     def load(self, infile=None):
         from os.path import expandvars
         from tensorflow import keras
