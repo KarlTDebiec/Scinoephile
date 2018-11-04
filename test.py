@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 ################################### MODULES ###################################
+from os.path import isfile
 from scinoephile import SubtitleDataset
 from scinoephile.ocr import ImageSubtitleDataset
 from scinoephile.ocr import OCRDataset
@@ -48,19 +49,37 @@ if __name__ == "__main__":
     #     mode="1 bit", n_chars=10, interactive=False, **kwargs)()
 
     # Train model
-    kwargs["n_chars"] = 300
+    kwargs["n_chars"] = 200
+    trn_file = "/Users/kdebiec/Desktop/docs/subtitles/trn_0200_0100.h5"
+    model_file = "/Users/kdebiec/Desktop/docs/subtitles/model_0200_0100.h5"
+
     trn_ds = GeneratedOCRDataset(
-        infile="/Users/kdebiec/Desktop/docs/subtitles/trn_0300_0100.h5",
-        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn_0300_0100.h5",
-        mode="8 bit", **kwargs)
-    trn_ds.load()
-    trn_ds.generate_images(min_images=120)
+        infile=trn_file, outfile=trn_file, mode="8 bit", **kwargs)
+    if isfile(trn_file):
+        trn_ds.load()
+    trn_ds.generate_images(min_images=100)
     trn_ds.save()
+    model = Model(
+        infile=model_file, outfile=model_file, **kwargs)
+    if isfile(model_file):
+        model.load()
+    else:
+        model.build()
+    model.compile()
     AutoTrainer(
-        model_infile=None,
-        model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model_0300_0100.h5",
-        trn_ds=trn_ds, val_portion=0.1, batch_size=256, epochs=10,
+        model=model,
+        trn_ds=trn_ds, val_portion=0.1,
+        batch_size=256, epochs=10,
         interactive=True, **kwargs)()
+
+    # keras.callbacks.EarlyStopping(monitor="val_loss",
+    #                               min_delta=0.001,
+    #                               patience=10),
+    # keras.callbacks.ReduceLROnPlateau(monitor="acc",
+    #                                   patience=3,
+    #                                   verbose=1,
+    #                                   factor=0.1,
+    #                                   min_lr=0.000000001)]
 
     # Gather test data
     # kwargs["mode"] = "8 bit"
@@ -73,7 +92,6 @@ if __name__ == "__main__":
     #     infile="/Users/kdebiec/Desktop/docs/subtitles/model_0200_0100.h5",
     #     **kwargs)
     # model.load()
-    # model.prepare_model()
     # TestOCRDataset(model=model, sub_ds=sub_ds,
     #                infile="/Users/kdebiec/Desktop/docs/subtitles/tst.h5",
     #                outfile="/Users/kdebiec/Desktop/docs/subtitles/tst.h5",

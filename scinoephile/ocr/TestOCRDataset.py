@@ -53,7 +53,7 @@ class TestOCRDataset(OCRDataset):
 
     @property
     def figure(self):
-        """matplotlib.figure.Figure: Temporary figure used for images"""
+        """Figure: Temporary figure used for images"""
         if not hasattr(self, "_figure"):
             from matplotlib.pyplot import figure
 
@@ -62,6 +62,7 @@ class TestOCRDataset(OCRDataset):
 
     @property
     def labels(self):
+        """ndarray: Labels of chars in dataset"""
         return self.chars_to_labels(self.spec["char"].values)
 
     @property

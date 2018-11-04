@@ -22,13 +22,10 @@ _____________________________
 - [x] Convert OCRDataset to an abstract class
 - [x] ImageSubtitleSeries: Collected char_data
 - [x] Re-implement test data, take ImageSubtitleDataset and use to populate
-- [ ] Visualize weights
-- [ ] Extend generate_images to add set number of images rather than use total
-- [ ] Calculate difference between test images and generated images
+- [ ] Move AutoTrainer's model to a Model
+- [ ] Calculate differences between test images and generated images
 - [ ] Add log output to AutoTrainer
 - [ ] Re-implement support for configuring AutoTrainer
-- [ ] From ImageSubtitleDataset, organize data structures for tensorflow
-- [ ] Apply machine learning model to ImageSubtitleDataset
 - [ ] Add support for Western characters and punctuation
 - [ ] ImageSubtitleEvent: Identify spaces in subtitle images
 
@@ -53,6 +50,9 @@ _____________
 Miscellaneous
 _____________
 
+- [ ] Make clearer whether functions are acting on Images or image data
+- [ ] Visualize weights
+- [ ] Extend generate_images to add set number of images rather than use total
 - [ ] Make base classes abstract
 - [ ] Move image mode property to a subclass of OCRBaseClass
 - [ ] Convenience function for viewing source of method/property in IPython

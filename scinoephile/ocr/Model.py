@@ -20,8 +20,7 @@ class Model(OCRCLToolBase):
 
     # region Builtins
 
-    def __init__(self, n_chars=None, infile=None, shape=None, batch_size=None,
-                 epochs=None, outfile=None, **kwargs):
+    def __init__(self, n_chars=None, infile=None, outfile=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
@@ -30,13 +29,6 @@ class Model(OCRCLToolBase):
 
         if infile is not None:
             self.infile = infile
-
-        if shape is not None:
-            self.shape = shape
-        if batch_size is not None:
-            self.batch_size = batch_size
-        if epochs is not None:
-            self.epochs = epochs
 
         if outfile is not None:
             self.outfile = outfile
@@ -59,61 +51,6 @@ class Model(OCRCLToolBase):
     # endregion
 
     # region Public Properties
-
-    @property
-    def batch_size(self):
-        """int: Training batch size"""
-        if not hasattr(self, "_batch_size"):
-            self._batch_size = 32
-        return self._batch_size
-
-    @batch_size.setter
-    def batch_size(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1 and value is not None:
-                raise ValueError(self._generate_setter_exception(value))
-        self._batch_size = value
-
-    @property
-    def callbacks(self):
-        if not hasattr(self, "_callbacks"):
-            from tensorflow.keras.callbacks import (EarlyStopping,
-                                                    ReduceLROnPlateau)
-
-            self._callbacks = []
-            # keras.callbacks.EarlyStopping(monitor="val_loss",
-            #                               min_delta=0.001,
-            #                               patience=10),
-            # keras.callbacks.ReduceLROnPlateau(monitor="acc",
-            #                                   patience=3,
-            #                                   verbose=1,
-            #                                   factor=0.1,
-            #                                   min_lr=0.000000001)]
-        return self._callbacks
-
-    @property
-    def epochs(self):
-        """int: Number of epochs to train for"""
-        if not hasattr(self, "_epochs"):
-            self._epochs = 100
-        return self._epochs
-
-    @epochs.setter
-    def epochs(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1 and value is not None:
-                raise ValueError(self._generate_setter_exception(value))
-        self._epochs = value
 
     @property
     def model(self):
@@ -182,31 +119,11 @@ class Model(OCRCLToolBase):
                 raise ValueError(self._generate_setter_exception(value))
         self._n_chars = value
 
-    @property
-    def shape(self):
-        """list(int): Shape of model"""
-        if not hasattr(self, "_shape"):
-            self._shape = [128, 128, 128]
-        return self._shape
-
-    @shape.setter
-    def shape(self, value):
-        if value is not None:
-            if not isinstance(value, list):
-                raise ValueError(self._generate_setter_exception(value))
-            elif isinstance(value, list):
-                for i, v in enumerate(value):
-                    try:
-                        value[i] = int(v)
-                    except Exception as e:
-                        raise ValueError(self._generate_setter_exception(value))
-        self._shape = value
-
     # endregion
 
     # region Public Methods
 
-    def analyze_image_predictions(self, title, img, lbl):
+    def analyze_predictions(self, img, lbl, title=""):
         import numpy as np
 
         pred = self.model.predict(img)
@@ -223,6 +140,18 @@ class Model(OCRCLToolBase):
                     matches = [f"{a}:{b:4.2f}" for a, b in
                                zip(poss_chars[:10], poss_probs[:10])]
                     print(f"{char} | {' '.join(matches)}")
+
+    def build(self):
+        from tensorflow.keras.models import Sequential
+        from tensorflow.keras.layers import Dense, Dropout, Flatten
+
+        self.model = Sequential()
+        self.model.add(Flatten())
+        self.model.add(Dense(512, input_shape=(6400,), activation="relu"))
+        self.model.add(Dropout(0.2))
+        self.model.add(Dense(512, activation="relu"))
+        self.model.add(Dropout(0.2))
+        self.model.add(Dense(self.n_chars, activation="softmax"))
 
     def load(self, infile=None):
         from os.path import expandvars
@@ -241,20 +170,9 @@ class Model(OCRCLToolBase):
             print(f"Reading model from '{infile}'")
         self.model = keras.models.load_model(infile)
 
-    def prepare_model(self):
+    def compile(self):
         from tensorflow.keras.optimizers import Adam, RMSprop
 
-        if self.model is None:
-            from tensorflow.keras.models import Sequential
-            from tensorflow.keras.layers import Dense, Dropout, Flatten
-
-            self.model = Sequential()
-            self.model.add(Flatten())
-            self.model.add(Dense(512, input_shape=(6400,), activation="relu"))
-            self.model.add(Dropout(0.2))
-            self.model.add(Dense(512, activation="relu"))
-            self.model.add(Dropout(0.2))
-            self.model.add(Dense(self.n_chars, activation="softmax"))
         self.model.compile(
             optimizer=Adam(),
             loss="sparse_categorical_crossentropy",
@@ -275,7 +193,7 @@ class Model(OCRCLToolBase):
 
         # Write outfile
         if self.verbosity >= 1:
-            print(f"Saving model to {self.model_outfile}")
-        self.model.save(self.model_outfile)
+            print(f"Saving model to {outfile}")
+        self.model.save(outfile)
 
     # endregion

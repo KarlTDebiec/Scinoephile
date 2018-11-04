@@ -27,6 +27,8 @@ def center_char_img(data, x_offset=0, y_offset=0):
     """
     import numpy as np
 
+    # TODO: Make general-purpose; no need to hardcode shape or limit to chars
+
     white_cols = (data == data.max()).all(axis=0)
     white_rows = (data == data.max()).all(axis=1)
     trimmed = data[
@@ -57,6 +59,8 @@ def draw_text_on_img(image, text, x=0, y=0,
     """
     from PIL import ImageDraw, ImageFont
 
+    # TODO: Handle default font better
+
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(font, size)
     width, height = draw.textsize(text, font=font)
@@ -86,6 +90,8 @@ def generate_char_img(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     from matplotlib.font_manager import FontProperties
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
+
+    # TODO: Handle default font better
 
     # Process arguments
     if fig is None:

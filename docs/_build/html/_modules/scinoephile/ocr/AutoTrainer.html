@@ -277,8 +277,8 @@
             <span class="nb">round</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="c1"># Evaluate model</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">analyze_image_predictions</span><span class="p">(</span><span class="s2">&quot;Training&quot;</span><span class="p">,</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">analyze_image_predictions</span><span class="p">(</span><span class="s2">&quot;Validation&quot;</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="s2">&quot;Training&quot;</span><span class="p">,</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="s2">&quot;Validation&quot;</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">)</span>
 
             <span class="c1"># Save model</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -516,7 +516,7 @@
         <span class="c1">#   optimizer=tf.train.AdamOptimizer(),</span>
         <span class="c1">#   loss=&quot;sparse_categorical_crossentropy&quot;,</span>
 
-    <span class="k">def</span> <span class="nf">analyze_image_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">analyze_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
         <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>

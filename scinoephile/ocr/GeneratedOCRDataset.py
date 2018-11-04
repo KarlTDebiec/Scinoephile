@@ -306,7 +306,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.add_img(spec, data)
         else:
             if self.verbosity >= 1:
-                print(f"Minimal image set already present")
+                print(f"Minimal image set already present, nothing to do")
 
     def get_training_data(self, val_portion=0.1):
         import numpy as np
