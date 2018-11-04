@@ -153,10 +153,10 @@ class TestOCRDataset(OCRDataset):
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
 
         predictions = model.model.predict(sub_ds.char_data)
-        for char in self.chars[:10]:  #:self.n_chars]:
+        for char in self.chars[:self.n_chars]:
 
             if len(self.present_specs_of_char_source_set(char, source)) > 0:
-                break
+                continue
 
             # Identify best matches for this char
             scores = predictions[:, self.chars_to_labels(char)]

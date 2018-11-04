@@ -75,6 +75,7 @@ if __name__ == "__main__":
     model.load()
     model.prepare_model()
     TestOCRDataset(model=model, sub_ds=sub_ds,
+                   infile="/Users/kdebiec/Desktop/docs/subtitles/tst_0100_0100.h5",
                    outfile="/Users/kdebiec/Desktop/docs/subtitles/tst_0100_0100.h5",
                    interactive=True, **kwargs)()
 
