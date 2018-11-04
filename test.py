@@ -48,53 +48,33 @@ if __name__ == "__main__":
     #     mode="1 bit", n_chars=10, interactive=False, **kwargs)()
 
     # Train model
-    kwargs["n_chars"] = 200
+    kwargs["n_chars"] = 300
     trn_ds = GeneratedOCRDataset(
-        infile="/Users/kdebiec/Desktop/docs/subtitles/trn_0200_0100.h5",
-        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn_0200_0100.h5",
+        infile="/Users/kdebiec/Desktop/docs/subtitles/trn_0300_0100.h5",
+        outfile="/Users/kdebiec/Desktop/docs/subtitles/trn_0300_0100.h5",
         mode="8 bit", **kwargs)
     trn_ds.load()
-    trn_ds.generate_images(min_images=100)
+    trn_ds.generate_images(min_images=120)
     trn_ds.save()
     AutoTrainer(
         model_infile=None,
-        model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model_0200_0100.h5",
+        model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model_0300_0100.h5",
         trn_ds=trn_ds, val_portion=0.1, batch_size=256, epochs=10,
         interactive=True, **kwargs)()
 
     # Gather test data
     # kwargs["mode"] = "8 bit"
-    # kwargs["n_chars"] = 100
+    # kwargs["n_chars"] = 200
     # sub_ds = ImageSubtitleDataset(
     #     infile=subtitle_root + "magnificent_mcdull/mcdull_8bit.h5",
     #     **kwargs)
     # sub_ds.load()
     # model = Model(
-    #     infile="/Users/kdebiec/Desktop/docs/subtitles/model_0100_0100.h5",
+    #     infile="/Users/kdebiec/Desktop/docs/subtitles/model_0200_0100.h5",
     #     **kwargs)
     # model.load()
     # model.prepare_model()
     # TestOCRDataset(model=model, sub_ds=sub_ds,
-    #                infile="/Users/kdebiec/Desktop/docs/subtitles/tst_0100_0100.h5",
-    #                outfile="/Users/kdebiec/Desktop/docs/subtitles/tst_0100_0100.h5",
+    #                infile="/Users/kdebiec/Desktop/docs/subtitles/tst.h5",
+    #                outfile="/Users/kdebiec/Desktop/docs/subtitles/tst.h5",
     #                interactive=True, **kwargs)()
-
-    # UnlabeledOCRDataset(
-    # self.input_image_dir = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull"
-    # self.input_hdf5 = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
-    # self.output_hdf5 = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/magnificent_mcdull/unlabeled.h5"
-    # self.output_image_dir = \
-    #     "/Users/kdebiec/Desktop/unlabeled"
-
-    # LabeledOCRDataset(
-    # self.input_image_dir = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/tst"
-    # self.input_hdf5 = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
-    # self.output_hdf5 = \
-    #     "/Users/kdebiec/Desktop/docs/subtitles/tst/labeled.h5"
-    # self.output_image_dir = \
-    #     "/Users/kdebiec/Desktop/labeled"

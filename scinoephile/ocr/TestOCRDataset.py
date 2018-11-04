@@ -52,6 +52,15 @@ class TestOCRDataset(OCRDataset):
     # region Public Properties
 
     @property
+    def figure(self):
+        """matplotlib.figure.Figure: Temporary figure used for images"""
+        if not hasattr(self, "_figure"):
+            from matplotlib.pyplot import figure
+
+            self._figure = figure(figsize=(1.0, 1.0), dpi=80)
+        return self._figure
+
+    @property
     def labels(self):
         return self.chars_to_labels(self.spec["char"].values)
 
@@ -170,12 +179,13 @@ class TestOCRDataset(OCRDataset):
             if self.mode == "8 bit":
                 full_img = Image.new("L", (1000, 250), 255)
                 target_img = Image.fromarray(
-                    generate_char_img(char=char, mode=self.mode))
+                    generate_char_img(char=char, fig=self.figure,
+                                      mode=self.mode))
             elif self.mode == "1 bit":
                 full_img = Image.new("1", (1000, 250), 1)
                 target_img = Image.fromarray(
-                    generate_char_img(char=char, mode=self.mode).astype(
-                        np.uint8) * 255)
+                    generate_char_img(char=char, fig=self.figure,
+                                      mode=self.mode).astype(np.uint8) * 255)
             full_img.paste(target_img, (10, 10, 90, 90))
             for i, index in enumerate(best_match_indexes, 1):
                 if self.mode == "8 bit":

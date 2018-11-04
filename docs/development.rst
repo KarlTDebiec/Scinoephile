@@ -21,7 +21,7 @@ _____________________________
 - [x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
 - [x] Convert OCRDataset to an abstract class
 - [x] ImageSubtitleSeries: Collected char_data
-- [ ] Re-implement test data, take ImageSubtitleDataset and use to populate
+- [x] Re-implement test data, take ImageSubtitleDataset and use to populate
 - [ ] Visualize weights
 - [ ] Extend generate_images to add set number of images rather than use total
 - [ ] Calculate difference between test images and generated images
@@ -56,6 +56,7 @@ _____________
 - [ ] Make base classes abstract
 - [ ] Move image mode property to a subclass of OCRBaseClass
 - [ ] Convenience function for viewing source of method/property in IPython
+- [ ] Track modifications, and if infile==outfile only save if changed
 
 Future Projects
 _______________

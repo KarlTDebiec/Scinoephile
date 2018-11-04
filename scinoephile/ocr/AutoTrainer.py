@@ -86,7 +86,7 @@ class AutoTrainer(OCRCLToolBase):
                 self.model.save(self.model_outfile)
 
             # Quit
-            if round > 10:
+            if round > 100:
                 break
 
         # Present IPython prompt
