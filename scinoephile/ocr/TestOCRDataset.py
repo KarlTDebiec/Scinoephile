@@ -117,6 +117,24 @@ class TestOCRDataset(OCRDataset):
 
     # region Public Methods
 
+    def present_specs_of_char(self, char):
+        return self.spec.loc[
+            self.spec["char"] == char].drop("char", axis=1)
+
+    def present_specs_of_char_set(self, char):
+        return set(map(tuple, self.spec.loc[
+            self.spec["char"] == char].drop("char", axis=1).values))
+
+    def present_specs_of_char_source(self, char, source):
+        return self.spec.loc[
+            self.spec["char"] == char].drop("char", axis=1)[
+            self.spec["source"] == source].drop("source", axis=1)
+
+    def present_specs_of_char_source_set(self, char, source):
+        return set(map(tuple, self.spec.loc[
+            self.spec["char"] == char].drop("char", axis=1)[
+            self.spec["source"] == source].drop("source", axis=1).values))
+
     def label_new_chars(self, sub_ds=None, model=None):
         import numpy as np
         import pandas as pd
@@ -137,7 +155,8 @@ class TestOCRDataset(OCRDataset):
         predictions = model.model.predict(sub_ds.char_data)
         for char in self.chars[:10]:  #:self.n_chars]:
 
-            # TODO: Check if an image of char is already in dataset
+            if len(self.present_specs_of_char_source_set(char, source)) > 0:
+                break
 
             # Identify best matches for this char
             scores = predictions[:, self.chars_to_labels(char)]
@@ -230,8 +249,8 @@ class TestOCRDataset(OCRDataset):
 
         dtypes = [("char", "S3"),
                   ("source", "S255"),
-                  ("sub index", "i1"),
-                  ("char index", "i1")]
+                  ("sub index", "i2"),
+                  ("char index", "i2")]
         encode = lambda x: x.encode("utf8")
 
         # Save image mode

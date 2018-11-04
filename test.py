@@ -74,7 +74,9 @@ if __name__ == "__main__":
         **kwargs)
     model.load()
     model.prepare_model()
-    TestOCRDataset(model=model, sub_ds=sub_ds, interactive=True, **kwargs)()
+    TestOCRDataset(model=model, sub_ds=sub_ds,
+                   outfile="/Users/kdebiec/Desktop/docs/subtitles/tst_0100_0100.h5",
+                   interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

@@ -253,10 +253,10 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def existing_specs_of_char(self, char):
+    def present_specs_of_char(self, char):
         return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
 
-    def existing_specs_of_char_set(self, char):
+    def present_specs_of_char_set(self, char):
         return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
             "char", axis=1).values))
 
@@ -282,7 +282,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         min_queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
         for char in chars:
-            existing = self.existing_specs_of_char_set(char)
+            existing = self.present_specs_of_char_set(char)
             minimal = self.spec_min_set.difference(existing)
             min_queue.extend(map(to_dict, minimal))
             n_additional = min_images - len(existing) - len(minimal)
@@ -317,7 +317,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Prepare trn and val sets with at least one image of each character
         for char in set(self.spec["char"]):
-            all = self.existing_specs_of_char(char)
+            all = self.present_specs_of_char(char)
 
             # Add at least one image of each character to each set
             trn_index, val_index = sample(all.index.tolist(), 2)
