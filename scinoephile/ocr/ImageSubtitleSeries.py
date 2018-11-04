@@ -49,6 +49,15 @@ class ImageSubtitleSeries(SubtitleSeries):
         return self._char_data
 
     @property
+    def char_indexes(self):
+        """tuple(int, int): Indexes of char data in form of (subtitle, char)"""
+        if not hasattr(self, "_char_indexes"):
+            self._char_indexes = [(s, c)
+                                  for s, e in enumerate(self.events)
+                                  for c in range(e.char_data.shape[0])]
+        return self._char_indexes
+
+    @property
     def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):
@@ -76,6 +85,12 @@ class ImageSubtitleSeries(SubtitleSeries):
     # endregion
 
     # region Public Methods
+
+    def char_index_to_sub_char_indexes(self, index):
+        return self.char_indexes[index]
+
+    def sub_char_indexes_to_char_index(self, sub_index, char_index):
+        return self.char_indexes.index((sub_index, char_index))
 
     def save(self, path, format_=None, **kwargs):
         """

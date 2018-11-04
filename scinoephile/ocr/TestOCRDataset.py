@@ -42,7 +42,6 @@ class TestOCRDataset(OCRDataset):
         # Present IPython prompt
         if self.interactive:
             embed(**self.embed_kw)
-        self.label_new_chars()
 
         # Output
         if self.outfile is not None:
@@ -118,8 +117,83 @@ class TestOCRDataset(OCRDataset):
 
     # region Public Methods
 
-    def label_new_chars(self):
-        embed(**self.embed_kw)
+    def label_new_chars(self, sub_ds=None, model=None):
+        import numpy as np
+        import pandas as pd
+        from PIL import Image
+        from scinoephile.ocr import draw_text_on_img, generate_char_img
+
+        # Process arguments
+        if sub_ds is None:
+            sub_ds = self.sub_ds
+        if model is None:
+            model = self.model
+        source = sub_ds.infile
+
+        spec = []
+        indexes = []
+        to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
+
+        predictions = model.model.predict(sub_ds.char_data)
+        for char in self.chars[:10]:  #:self.n_chars]:
+
+            # TODO: Check if an image of char is already in dataset
+
+            # Identify best matches for this char
+            scores = predictions[:, self.chars_to_labels(char)]
+            best_match_indexes = np.argsort(scores)[::-1][:10]
+
+            # Generate prompt
+            if self.mode == "8 bit":
+                full_img = Image.new("L", (1000, 250), 255)
+                target_img = Image.fromarray(
+                    generate_char_img(char=char, mode=self.mode))
+            elif self.mode == "1 bit":
+                full_img = Image.new("1", (1000, 250), 1)
+                target_img = Image.fromarray(
+                    generate_char_img(char=char, mode=self.mode).astype(
+                        np.uint8) * 255)
+            full_img.paste(target_img, (10, 10, 90, 90))
+            for i, index in enumerate(best_match_indexes, 1):
+                if self.mode == "8 bit":
+                    match_image = Image.fromarray(sub_ds.char_data[index])
+                elif self.mode == "1 bit":
+                    match_image = Image.fromarray(
+                        sub_ds.char_data[index].astype(np.uint8) * 255)
+                full_img.paste(match_image, (10 + 100 * (i - 1), 110,
+                                             90 + 100 * (i - 1), 190))
+                draw_text_on_img(full_img, str(i % 10),
+                                 50 + 100 * (i - 1), 220)
+
+            # Prompt user for match
+            full_img.show()
+            while True:
+                match = input(f"Enter index of image matching {char}, "
+                              "or Enter to continue:")
+                if match == "":
+                    break
+                else:
+                    try:
+                        if int(match) == 0:
+                            index = best_match_indexes[9]
+                        elif int(match) <= 9:
+                            index = best_match_indexes[int(match) - 1]
+                        else:
+                            raise ValueError()
+
+                        spec.append(to_dict(
+                            (source, *sub_ds.char_index_to_sub_char_indexes(index))))
+                        indexes.append(index)
+                        break
+                    except ValueError as e:
+                        print(e)
+                        continue
+
+        if self.verbosity >= 1:
+            print(f"Adding {len(indexes)} new test images")
+        spec = pd.DataFrame(spec)
+        data = self.sub_ds.char_data[indexes]
+        self.add_img(spec, data)
 
     # endregion
 

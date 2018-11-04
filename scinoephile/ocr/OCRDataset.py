@@ -282,8 +282,6 @@ class OCRDataset(OCRCLToolBase, ABC):
             img = Image.new("L", (cols * 100, rows * 100), 255)
         elif self.mode == "1 bit":
             img = Image.new("1", (cols * 100, rows * 100), 1)
-        else:
-            raise NotImplementedError()
         for i, index in enumerate(indexes):
             column = (i // cols)
             row = i - (column * cols)
@@ -292,8 +290,6 @@ class OCRDataset(OCRCLToolBase, ABC):
             elif self.mode == "1 bit":
                 char_img = Image.fromarray(
                     data[index].astype(np.uint8) * 255)
-            else:
-                raise NotImplementedError()
             img.paste(char_img, (100 * row + 10,
                                  100 * column + 10,
                                  100 * (row + 1) - 10,

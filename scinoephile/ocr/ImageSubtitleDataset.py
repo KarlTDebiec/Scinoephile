@@ -44,6 +44,11 @@ class ImageSubtitleDataset(SubtitleDataset):
         return self.subtitles.char_data
 
     @property
+    def char_indexes(self):
+        """tuple(int, int): Indexes of char data in form of (subtitle, char)"""
+        return self.subtitles.char_indexes
+
+    @property
     def mode(self):
         """str: Image mode"""
         if not hasattr(self, "_mode"):
@@ -86,6 +91,9 @@ class ImageSubtitleDataset(SubtitleDataset):
     # endregion
 
     # region Public Methods
+
+    def char_index_to_sub_char_indexes(self, index):
+        return self.char_indexes[index]
 
     def load(self, infile=None):
         from os.path import expandvars
@@ -151,5 +159,8 @@ class ImageSubtitleDataset(SubtitleDataset):
                                  100 * (row + 1) - 10,
                                  100 * (column + 1) - 10))
         img.show()
+
+    def sub_char_indexes_to_char_index(self, sub_index, char_index):
+        return self.char_indexes.index((sub_index, char_index))
 
     # endregion

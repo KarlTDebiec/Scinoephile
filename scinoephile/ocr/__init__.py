@@ -41,8 +41,31 @@ def center_char_img(data, x_offset=0, y_offset=0):
     return centered
 
 
-def generate_char_img(char, font, fig=None, size=60, width=5,
-                      x_offset=0, y_offset=0, mode="1 bit"):
+def draw_text_on_img(image, text, x=0, y=0,
+                     font="/System/Library/Fonts/STHeiti Light.ttc", size=30):
+    """
+    Draws text on an image
+
+    Args:
+        image (PIL.Image.Image): image on which to draw text
+        text (str): text to draw
+        x (int, optional): x position at which to center text
+        y (int, optional): x position at which to center text
+        font (str, optional): font with which to draw text
+        size (int, optional): font size with which to draw text
+
+    """
+    from PIL import ImageDraw, ImageFont
+
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(font, size)
+    width, height = draw.textsize(text, font=font)
+    draw.text((x - width / 2, y - height / 2), text, font=font)
+
+
+def generate_char_img(char, font="/System/Library/Fonts/STHeiti Light.ttc",
+                      fig=None, size=60, width=5, x_offset=0, y_offset=0,
+                      mode="1 bit"):
     """
     Generates an image of a character
 

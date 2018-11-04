@@ -48,23 +48,23 @@ if __name__ == "__main__":
     #     mode="1 bit", n_chars=10, interactive=False, **kwargs)()
 
     # Train model
-    # kwargs["n_chars"] = 10
+    # kwargs["n_chars"] = 100
     # trn_ds = GeneratedOCRDataset(
-    #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
-    #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn.h5",
+    #     infile="/Users/kdebiec/Desktop/docs/subtitles/trn_0100_0100.h5",
+    #     outfile="/Users/kdebiec/Desktop/docs/subtitles/trn_0100_0100.h5",
     #     mode="8 bit", **kwargs)
     # trn_ds.load()
-    # trn_ds.generate_images(min_images=10)
+    # trn_ds.generate_images(min_images=100)
     # trn_ds.save()
     # AutoTrainer(
     #     model_infile=None,
-    #     model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model.h5",
-    #     trn_ds=trn_ds, val_portion=0.1, batch_size=32, epochs=10,
+    #     model_outfile="/Users/kdebiec/Desktop/docs/subtitles/model_0100_0100.h5",
+    #     trn_ds=trn_ds, val_portion=0.1, batch_size=128, epochs=10,
     #     interactive=True, **kwargs)()
 
     # Gather test data
     kwargs["mode"] = "8 bit"
-    kwargs["n_chars"] = 10
+    kwargs["n_chars"] = 100
     sub_ds = ImageSubtitleDataset(
         infile=subtitle_root + "magnificent_mcdull/mcdull_8bit.h5",
         **kwargs)
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         **kwargs)
     model.load()
     model.prepare_model()
-    TestOCRDataset(model=model, sub_ds=sub_ds, interactive=False, **kwargs)()
+    TestOCRDataset(model=model, sub_ds=sub_ds, interactive=True, **kwargs)()
 
     # UnlabeledOCRDataset(
     # self.input_image_dir = \

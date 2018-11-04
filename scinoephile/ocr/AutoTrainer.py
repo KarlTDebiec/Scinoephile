@@ -89,7 +89,9 @@ class AutoTrainer(OCRCLToolBase):
             if round > 10:
                 break
 
-        embed(**self.embed_kw)
+        # Present IPython prompt
+        if self.interactive:
+            embed(**self.embed_kw)
 
     # endregion
 
@@ -321,10 +323,10 @@ class AutoTrainer(OCRCLToolBase):
 
             self.model = Sequential()
             self.model.add(Flatten())
-            self.model.add(Dense(96, input_shape=(6400,), activation="relu"))
+            self.model.add(Dense(512, input_shape=(6400,), activation="relu"))
             self.model.add(Dropout(0.2))
-            # self.model.add(Dense(32, activation="relu"))
-            # self.model.add(Dropout(0.2))
+            self.model.add(Dense(512, activation="relu"))
+            self.model.add(Dropout(0.2))
             self.model.add(Dense(self.n_chars, activation="softmax"))
         self.model.compile(
             optimizer=Adam(),
