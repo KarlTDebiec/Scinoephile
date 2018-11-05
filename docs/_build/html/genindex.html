@@ -102,15 +102,14 @@
 <li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocr.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-base">OCR Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-command-line-tool-base">OCR Command Line Tool Base</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="ocr.html#data-structures">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-images">OCR Images</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocr.html#unlabeled-dataset">Unlabeled Dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocr.html#generated-dataset">Generated Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocr.html#train-dataset">Train Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocr.html#test-dataset">Test Dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
@@ -127,7 +126,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
@@ -220,7 +219,6 @@
  | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
- | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  
 </div>
@@ -230,27 +228,23 @@
       <li><a href="base.html#scinoephile.Base.__init__">__init__() (scinoephile.Base method)</a>
 
       <ul>
-        <li><a href="base.html#scinoephile.CLToolBase.__init__">(scinoephile.CLToolBase method)</a>
-</li>
-        <li><a href="base.html#scinoephile.SubtitleDataset.__init__">(scinoephile.SubtitleDataset method)</a>
-</li>
         <li><a href="base.html#scinoephile.SubtitleEvent.__init__">(scinoephile.SubtitleEvent method)</a>
 </li>
         <li><a href="base.html#scinoephile.SubtitleSeries.__init__">(scinoephile.SubtitleSeries method)</a>
 </li>
         <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.__init__">(scinoephile.ocr.AutoTrainer method)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.__init__">(scinoephile.ocr.GeneratedOCRDataset method)</a>
-</li>
-        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleDataset.__init__">(scinoephile.ocr.ImageSubtitleDataset method)</a>
-</li>
         <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.__init__">(scinoephile.ocr.ImageSubtitleEvent method)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries.__init__">(scinoephile.ocr.ImageSubtitleSeries method)</a>
+        <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.__init__">(scinoephile.ocr.LabeledOCRDataset method)</a>
+</li>
+        <li><a href="ocr.html#scinoephile.ocr.Model.__init__">(scinoephile.ocr.Model method)</a>
 </li>
         <li><a href="ocr.html#scinoephile.ocr.OCRBase.__init__">(scinoephile.ocr.OCRBase method)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.OCRDataset.__init__">(scinoephile.ocr.OCRDataset method)</a>
+        <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset.__init__">(scinoephile.ocr.TestOCRDataset method)</a>
+</li>
+        <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.__init__">(scinoephile.ocr.TrainOCRDataset method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -287,9 +281,11 @@
 </li>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.char_bounds">char_bounds (scinoephile.ocr.ImageSubtitleEvent attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.char_data">char_data (scinoephile.ocr.ImageSubtitleEvent attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleDataset.char_data">char_data (scinoephile.ocr.ImageSubtitleDataset attribute)</a>
 
       <ul>
+        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.char_data">(scinoephile.ocr.ImageSubtitleEvent attribute)</a>
+</li>
         <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries.char_data">(scinoephile.ocr.ImageSubtitleSeries attribute)</a>
 </li>
       </ul></li>
@@ -297,11 +293,15 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleDataset.char_indexes">char_indexes (scinoephile.ocr.ImageSubtitleDataset attribute)</a>
+
+      <ul>
+        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries.char_indexes">(scinoephile.ocr.ImageSubtitleSeries attribute)</a>
+</li>
+      </ul></li>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.char_widths">char_widths (scinoephile.ocr.ImageSubtitleEvent attribute)</a>
 </li>
       <li><a href="ocr.html#scinoephile.ocr.OCRBase.chars">chars (scinoephile.ocr.OCRBase attribute)</a>
-</li>
-      <li><a href="ocr.html#scinoephile.ocr.OCRBase.get_labels_of_chars">get_labels_of_chars() (scinoephile.ocr.OCRBase method)</a>
 </li>
       <li><a href="base.html#scinoephile.CLToolBase">CLToolBase (class in scinoephile)</a>
 </li>
@@ -347,19 +347,19 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.figure">figure (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.figure">figure (scinoephile.ocr.LabeledOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.font_names">font_names (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.font_names">font_names (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.font_sizes">font_sizes (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.font_sizes">font_sizes (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.font_widths">font_widths (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.font_widths">font_widths (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.font_x_offsets">font_x_offsets (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.font_x_offsets">font_x_offsets (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.font_y_offsets">font_y_offsets (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.font_y_offsets">font_y_offsets (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -371,9 +371,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset">GeneratedOCRDataset (class in scinoephile.ocr)</a>
+      <li><a href="ocr.html#scinoephile.ocr.OCRBase.get_chars_of_labels">get_chars_of_labels() (scinoephile.ocr.OCRBase method)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.get_images_and_labels">get_images_and_labels() (scinoephile.ocr.LabeledOCRDataset method)</a>
+      <li><a href="ocr.html#scinoephile.ocr.OCRBase.get_labels_of_chars">get_labels_of_chars() (scinoephile.ocr.OCRBase method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -385,19 +385,13 @@
 </li>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent">ImageSubtitleEvent (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries">ImageSubtitleSeries (class in scinoephile.ocr)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries">ImageSubtitleSeries (class in scinoephile.ocr)</a>
+</li>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.img">img (scinoephile.ocr.ImageSubtitleEvent attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.OCRDataset.infile">infile (scinoephile.ocr.OCRDataset attribute)</a>
-
-      <ul>
-        <li><a href="base.html#scinoephile.SubtitleDataset.infile">(scinoephile.SubtitleDataset attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="base.html#scinoephile.CLToolBase.interactive">interactive (scinoephile.CLToolBase attribute)</a>
+      <li><a href="base.html#scinoephile.Base.interactive">interactive (scinoephile.Base attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -407,7 +401,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset">LabeledOCRDataset (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.OCRBase.get_chars_of_labels">get_chars_of_labels() (scinoephile.ocr.OCRBase method)</a>
+      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.labels">labels (scinoephile.ocr.LabeledOCRDataset attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -427,21 +421,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="base.html#scinoephile.CLToolBase.main">main() (scinoephile.CLToolBase class method)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleDataset.mode">mode (scinoephile.ocr.ImageSubtitleDataset attribute)</a>
-
-      <ul>
-        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.mode">(scinoephile.ocr.ImageSubtitleEvent attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.OCRBase.mode">mode (scinoephile.ocr.OCRBase attribute)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleSeries.mode">(scinoephile.ocr.ImageSubtitleSeries attribute)</a>
-</li>
-        <li><a href="ocr.html#scinoephile.ocr.OCRDataset.mode">(scinoephile.ocr.OCRDataset attribute)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.model_infile">model_infile (scinoephile.ocr.AutoTrainer attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.Model">Model (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.model_outfile">model_outfile (scinoephile.ocr.AutoTrainer attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset.model">model (scinoephile.ocr.TestOCRDataset attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -452,7 +438,9 @@
       <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.n_chars">n_chars (scinoephile.ocr.AutoTrainer attribute)</a>
 
       <ul>
-        <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.n_chars">(scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+        <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.n_chars">(scinoephile.ocr.LabeledOCRDataset attribute)</a>
+</li>
+        <li><a href="ocr.html#scinoephile.ocr.Model.n_chars">(scinoephile.ocr.Model attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -463,18 +451,10 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.OCRBase">OCRBase (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.OCRCLToolBase">OCRCLToolBase (class in scinoephile.ocr)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.OCRDataset">OCRDataset (class in scinoephile.ocr)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.OCRDataset.outfile">outfile (scinoephile.ocr.OCRDataset attribute)</a>
-
-      <ul>
-        <li><a href="base.html#scinoephile.SubtitleDataset.outfile">(scinoephile.SubtitleDataset attribute)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -507,41 +487,41 @@
         <li><a href="base.html#scinoephile.SubtitleDataset.series_class">(scinoephile.SubtitleDataset attribute)</a>
 </li>
       </ul></li>
-      <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.shape">shape (scinoephile.ocr.AutoTrainer attribute)</a>
-</li>
       <li><a href="ocr.html#scinoephile.ocr.ImageSubtitleEvent.show">show() (scinoephile.ocr.ImageSubtitleEvent method)</a>
 </li>
       <li><a href="ocr.html#scinoephile.ocr.OCRDataset.spec">spec (scinoephile.ocr.OCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_all">spec_all (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_all">spec_all (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_all_set">spec_all_set (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_all_set">spec_all_set (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_cols">spec_cols (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.spec_cols">spec_cols (scinoephile.ocr.LabeledOCRDataset attribute)</a>
 
       <ul>
-        <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.spec_cols">(scinoephile.ocr.LabeledOCRDataset attribute)</a>
-</li>
         <li><a href="ocr.html#scinoephile.ocr.OCRDataset.spec_cols">(scinoephile.ocr.OCRDataset attribute)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.UnlabeledOCRDataset.spec_cols">(scinoephile.ocr.UnlabeledOCRDataset attribute)</a>
+        <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset.spec_cols">(scinoephile.ocr.TestOCRDataset attribute)</a>
+</li>
+        <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_cols">(scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_dtypes">spec_dtypes (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.spec_dtypes">spec_dtypes (scinoephile.ocr.LabeledOCRDataset attribute)</a>
 
       <ul>
-        <li><a href="ocr.html#scinoephile.ocr.LabeledOCRDataset.spec_dtypes">(scinoephile.ocr.LabeledOCRDataset attribute)</a>
-</li>
         <li><a href="ocr.html#scinoephile.ocr.OCRDataset.spec_dtypes">(scinoephile.ocr.OCRDataset attribute)</a>
 </li>
-        <li><a href="ocr.html#scinoephile.ocr.UnlabeledOCRDataset.spec_dtypes">(scinoephile.ocr.UnlabeledOCRDataset attribute)</a>
+        <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset.spec_dtypes">(scinoephile.ocr.TestOCRDataset attribute)</a>
+</li>
+        <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_dtypes">(scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
       </ul></li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_min">spec_min (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_min">spec_min (scinoephile.ocr.TrainOCRDataset attribute)</a>
 </li>
-      <li><a href="ocr.html#scinoephile.ocr.GeneratedOCRDataset.spec_min_set">spec_min_set (scinoephile.ocr.GeneratedOCRDataset attribute)</a>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset.spec_min_set">spec_min_set (scinoephile.ocr.TrainOCRDataset attribute)</a>
+</li>
+      <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset.sub_ds">sub_ds (scinoephile.ocr.TestOCRDataset attribute)</a>
 </li>
       <li><a href="base.html#scinoephile.SubtitleDataset">SubtitleDataset (class in scinoephile)</a>
 </li>
@@ -561,19 +541,15 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ocr.html#scinoephile.ocr.TestOCRDataset">TestOCRDataset (class in scinoephile.ocr)</a>
+</li>
+      <li><a href="ocr.html#scinoephile.ocr.TrainOCRDataset">TrainOCRDataset (class in scinoephile.ocr)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.trn_ds">trn_ds (scinoephile.ocr.AutoTrainer attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ocr.html#scinoephile.ocr.AutoTrainer.tst_ds">tst_ds (scinoephile.ocr.AutoTrainer attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ocr.html#scinoephile.ocr.UnlabeledOCRDataset">UnlabeledOCRDataset (class in scinoephile.ocr)</a>
 </li>
   </ul></td>
 </tr></table>

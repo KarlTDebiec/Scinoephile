@@ -101,15 +101,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-base">OCR Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-command-line-tool-base">OCR Command Line Tool Base</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#data-structures">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-images">OCR Images</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#unlabeled-dataset">Unlabeled Dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#generated-dataset">Generated Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#train-dataset">Train Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#test-dataset">Test Dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
@@ -126,7 +125,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
@@ -211,23 +210,22 @@
 <span class="c1">#   BSD license. See the LICENSE file for details.</span>
 <span class="c1">################################### MODULES ###################################</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">SubtitleEvent</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRBase</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="ImageSubtitleEvent"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleEvent">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleEvent</span><span class="p">(</span><span class="n">SubtitleEvent</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleEvent"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleEvent">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleEvent</span><span class="p">(</span><span class="n">SubtitleEvent</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An individual image-based subtitle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
 
-<div class="viewcode-block" id="ImageSubtitleEvent.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleEvent.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleEvent.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleEvent.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Store property values</span>
-        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
 
@@ -338,31 +336,6 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_mode&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
-
-    <span class="nd">@mode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="c1"># TODO: If changed, set self.data = self.data to convert</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1"># endregion</span>
 

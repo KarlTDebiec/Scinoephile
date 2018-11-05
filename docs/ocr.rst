@@ -10,14 +10,15 @@ Optical Character Recognition
     :nosignatures:
 
     scinoephile.ocr.OCRBase
-    scinoephile.ocr.OCRCLToolBase
     scinoephile.ocr.OCRDataset
-    scinoephile.ocr.UnlabeledOCRDataset
     scinoephile.ocr.LabeledOCRDataset
-    scinoephile.ocr.GeneratedOCRDataset
+    scinoephile.ocr.TrainOCRDataset
+    scinoephile.ocr.TestOCRDataset
     scinoephile.ocr.ImageSubtitleDataset
     scinoephile.ocr.ImageSubtitleSeries
     scinoephile.ocr.ImageSubtitleEvent
+    scinoephile.ocr.Model
+    scinoephile.ocr.AutoTrainer
 
 Base Classes
 ____________
@@ -25,10 +26,6 @@ ____________
 OCR Base
 ````````
 .. autoclass:: scinoephile.ocr.OCRBase
-
-OCR Command Line Tool Base
-``````````````````````````
-.. autoclass:: scinoephile.ocr.OCRCLToolBase
 
 Data Structures
 _______________
@@ -40,18 +37,18 @@ Base Dataset
 ............
 .. autoclass:: scinoephile.ocr.OCRDataset
 
-Unlabeled Dataset
-.................
-.. autoclass:: scinoephile.ocr.UnlabeledOCRDataset
-
 Labeled Dataset
 ...............
 .. autoclass:: scinoephile.ocr.LabeledOCRDataset
 
-Generated Dataset
-.................
-.. autoclass:: scinoephile.ocr.GeneratedOCRDataset
+Train Dataset
+.............
+.. autoclass:: scinoephile.ocr.TrainOCRDataset
 
+
+Test Dataset
+............
+.. autoclass:: scinoephile.ocr.TestOCRDataset
 
 Image-Based Subtitles
 `````````````````````
@@ -73,8 +70,12 @@ Event
 Machine Learning
 ________________
 
-Dataset
-.......
+Model
+.....
+.. autoclass:: scinoephile.ocr.Model
+
+AutoTrainer
+...........
 .. autoclass:: scinoephile.ocr.AutoTrainer
 
 Functions

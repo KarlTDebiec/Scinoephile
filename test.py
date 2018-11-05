@@ -4,7 +4,6 @@
 from scinoephile import SubtitleDataset
 from scinoephile.ocr import ImageSubtitleDataset
 from scinoephile.ocr import OCRDataset
-from scinoephile.ocr import UnlabeledOCRDataset
 from scinoephile.ocr import TestOCRDataset
 from scinoephile.ocr import LabeledOCRDataset
 from scinoephile.ocr import TrainOCRDataset

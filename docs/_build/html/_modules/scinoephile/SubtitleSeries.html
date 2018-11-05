@@ -101,15 +101,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ocr.html#ocr-base">OCR Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ocr.html#ocr-command-line-tool-base">OCR Command Line Tool Base</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr.html#data-structures">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ocr.html#ocr-images">OCR Images</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../ocr.html#unlabeled-dataset">Unlabeled Dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../ocr.html#generated-dataset">Generated Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ocr.html#train-dataset">Train Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ocr.html#test-dataset">Test Dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
@@ -126,7 +125,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
@@ -214,13 +213,13 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="SubtitleSeries"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">SubtitleSeries</span><span class="p">(</span><span class="n">SSAFile</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
+<div class="viewcode-block" id="SubtitleSeries"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">SubtitleSeries</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">SSAFile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A series of subtitles</span>
 
 <span class="sd">    Extension of pysubs2&#39;s SSAFile with additional features. Includes code for</span>
 <span class="sd">    loading to and saving from hdf5. While these are part of separate classes</span>
-<span class="sd">    in pysubs.SSAFile, this additional separation is not beneficial here.</span>
+<span class="sd">    in pysubs.SSAFile, this separation is not really beneficial here.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Class Attributes</span>
@@ -231,12 +230,9 @@
 
     <span class="c1"># region Builtins</span>
 
-<div class="viewcode-block" id="SubtitleSeries.__init__"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>  <span class="c1"># SSAFile.__init__ accepts no arguments</span>
-
-        <span class="c1"># Store property values</span>
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span></div>
+<div class="viewcode-block" id="SubtitleSeries.__init__"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">SSAFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># SSAFile.__init__ accepts no arguments</span></div>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
@@ -271,6 +267,35 @@
         <span class="c1"># Otherwise, continue as superclass SSAFile</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Class Methods</span>
+
+<div class="viewcode-block" id="SubtitleSeries.load"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads subtitles from an input file</span>
+
+<span class="sd">        pysubs2.SSAFile.from_file expects an open text file, so we open the</span>
+<span class="sd">        hdf5 file here for consistency</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check if hdf5</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
+            <span class="kn">import</span> <span class="nn">h5py</span>
+
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Otherwise, use SSAFile.from_file</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">subs</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
+                <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+                    <span class="n">event</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
+                <span class="k">return</span> <span class="n">subs</span></div>
 
     <span class="c1"># endregion</span>
 
@@ -340,35 +365,6 @@
         <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">,</span>
                           <span class="n">data</span><span class="o">=</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
                           <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-
-    <span class="c1"># endregion</span>
-
-    <span class="c1"># region Public Class Methods</span>
-
-<div class="viewcode-block" id="SubtitleSeries.load"><a class="viewcode-back" href="../../base.html#scinoephile.SubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Loads subtitles from an input file</span>
-
-<span class="sd">        pysubs2.SSAFile.from_file expects an open text file, so we open the</span>
-<span class="sd">        hdf5 file here for consistency</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Check if hdf5</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
-            <span class="kn">import</span> <span class="nn">h5py</span>
-
-            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="c1"># Otherwise, use SSAFile.from_file</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">subs</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
-                <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
-                    <span class="n">event</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
-                <span class="k">return</span> <span class="n">subs</span></div>
 
     <span class="c1"># endregion</span>
 

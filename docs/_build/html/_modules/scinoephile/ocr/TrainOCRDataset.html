@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>scinoephile.ocr.GeneratedOCRDataset &mdash; scinoephile 0.1.0 documentation</title>
+  <title>scinoephile.ocr.TrainOCRDataset &mdash; scinoephile 0.1.0 documentation</title>
   
 
   
@@ -101,15 +101,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-base">OCR Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-command-line-tool-base">OCR Command Line Tool Base</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#data-structures">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-images">OCR Images</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#unlabeled-dataset">Unlabeled Dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#generated-dataset">Generated Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#train-dataset">Train Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#test-dataset">Test Dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
@@ -126,7 +125,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
@@ -184,7 +183,7 @@
         
           <li><a href="../ocr.html">scinoephile.ocr</a> &raquo;</li>
         
-      <li>scinoephile.ocr.GeneratedOCRDataset</li>
+      <li>scinoephile.ocr.TrainOCRDataset</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -199,7 +198,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for scinoephile.ocr.GeneratedOCRDataset</h1><div class="highlight"><pre>
+  <h1>Source code for scinoephile.ocr.TrainOCRDataset</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1">#   scinoephile.ocr.GeneratedOCRDataset,py</span>
@@ -215,21 +214,18 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="GeneratedOCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">GeneratedOCRDataset</span><span class="p">(</span><span class="n">LabeledOCRDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainOCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.TrainOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">TrainOCRDataset</span><span class="p">(</span><span class="n">LabeledOCRDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A collection of generated character images</span>
+<span class="sd">    A collection of labeled character images for training</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
 
-<div class="viewcode-block" id="GeneratedOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.GeneratedOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">font_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_x_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_y_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.TrainOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">font_x_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_y_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Store property values</span>
-        <span class="k">if</span> <span class="n">n_chars</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_chars</span> <span class="o">=</span> <span class="n">n_chars</span>
         <span class="k">if</span> <span class="n">font_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span> <span class="o">=</span> <span class="n">font_names</span>
         <span class="k">if</span> <span class="n">font_sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -251,26 +247,17 @@
         <span class="c1"># Action</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_training_data</span><span class="p">()</span>
 
-        <span class="c1"># Output</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-
         <span class="c1"># Present IPython prompt</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span><span class="p">:</span>
             <span class="n">embed</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_kw</span><span class="p">)</span>
 
+        <span class="c1"># Output</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Properties</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;matplotlib.figure.Figure: Temporary figure used for images&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_figure&quot;</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="k">import</span> <span class="n">figure</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_figure</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">font_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -361,25 +348,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_font_y_offsets</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">n_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;int: Number of unique characters to support&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_n_chars&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_n_chars</span> <span class="o">=</span> <span class="mi">10</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_chars</span>
-
-    <span class="nd">@n_chars</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">n_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_chars</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">spec_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;pandas.DataFrame: All available character image specs&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec_all&quot;</span><span class="p">):</span>
@@ -455,13 +423,6 @@
 
     <span class="c1"># region Public Methods</span>
 
-    <span class="k">def</span> <span class="nf">existing_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">existing_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
-            <span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-
     <span class="k">def</span> <span class="nf">generate_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_images</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -484,7 +445,7 @@
         <span class="n">min_queue</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">to_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">,</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">))}</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
-            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char_set</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char_set</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
             <span class="n">minimal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_min_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span>
             <span class="n">min_queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">to_dict</span><span class="p">,</span> <span class="n">minimal</span><span class="p">))</span>
             <span class="n">n_additional</span> <span class="o">=</span> <span class="n">min_images</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
@@ -508,8 +469,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Minimal image set already present&quot;</span><span class="p">)</span>
-
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Minimal image set already present, nothing to do&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -520,7 +480,7 @@
 
         <span class="c1"># Prepare trn and val sets with at least one image of each character</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]):</span>
-            <span class="nb">all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="nb">all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
 
             <span class="c1"># Add at least one image of each character to each set</span>
             <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>

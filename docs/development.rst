@@ -25,6 +25,7 @@ _____________________________________________________________________
 - [x] Move AutoTrainer's model to a Model
 - [x] Make base classes abstract
 - [x] Move image mode property to a subclass of OCRBaseClass
+- [ ] Check model accuracy on test data
 - [ ] Calculate differences between test images and generated images
 - [ ] Add log output to AutoTrainer
 - [ ] Re-implement support for configuring AutoTrainer

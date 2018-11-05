@@ -102,15 +102,14 @@
 <li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocr.html#base-classes">Base Classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-base">OCR Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-command-line-tool-base">OCR Command Line Tool Base</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="ocr.html#data-structures">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#ocr-images">OCR Images</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocr.html#unlabeled-dataset">Unlabeled Dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocr.html#generated-dataset">Generated Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocr.html#train-dataset">Train Dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocr.html#test-dataset">Test Dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
@@ -127,7 +126,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
@@ -205,8 +204,8 @@
             
   <div class="section" id="development">
 <h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="optical-character-recognition">
-<h2>Optical Character Recognition<a class="headerlink" href="#optical-character-recognition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="implement-optical-character-recognition-for-reading-blu-ray-subtitles">
+<h2>Implement Optical Character Recognition for Reading Blu-Ray Subtitles<a class="headerlink" href="#implement-optical-character-recognition-for-reading-blu-ray-subtitles" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[x] Fix font support on new macos and matplotlib</li>
 <li>[x] Update GeneratedOCRDataset’s generate_training_data</li>
@@ -223,14 +222,14 @@
 <li>[x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array</li>
 <li>[x] Convert OCRDataset to an abstract class</li>
 <li>[x] ImageSubtitleSeries: Collected char_data</li>
-<li>[ ] Re-implement test data, take ImageSubtitleDataset and use to populate</li>
-<li>[ ] Visualize weights</li>
-<li>[ ] Extend generate_training_data to add set number of images rather than use total</li>
-<li>[ ] Calculate difference between test images and generated images</li>
+<li>[x] Re-implement test data, take ImageSubtitleDataset and use to populate</li>
+<li>[x] Move AutoTrainer’s model to a Model</li>
+<li>[x] Make base classes abstract</li>
+<li>[x] Move image mode property to a subclass of OCRBaseClass</li>
+<li>[ ] Check model accuracy on test data</li>
+<li>[ ] Calculate differences between test images and generated images</li>
 <li>[ ] Add log output to AutoTrainer</li>
 <li>[ ] Re-implement support for configuring AutoTrainer</li>
-<li>[ ] From ImageSubtitleDataset, organize data structures for tensorflow</li>
-<li>[ ] Apply machine learning model to ImageSubtitleDataset</li>
 <li>[ ] Add support for Western characters and punctuation</li>
 <li>[ ] ImageSubtitleEvent: Identify spaces in subtitle images</li>
 </ul>
@@ -253,15 +252,16 @@ subtitles to SubtitleSeries</li>
 <li>[ ] Document OCRBase and OCRCLToolBase</li>
 <li>[ ] Document OCR Data Structures</li>
 <li>[ ] Document Training tool</li>
-<li>[ ]</li>
 </ul>
 </div>
 <div class="section" id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>[ ] Make base classes abstract</li>
-<li>[ ] Move image mode property to a subclass of OCRBaseClass</li>
+<li>[ ] Make clearer whether functions are acting on Images or image data</li>
+<li>[ ] Visualize weights</li>
+<li>[ ] Extend generate_training_data to add set number of images rather than use total</li>
 <li>[ ] Convenience function for viewing source of method/property in IPython</li>
+<li>[ ] Track modifications, and if infile==outfile only save if changed</li>
 </ul>
 </div>
 <div class="section" id="future-projects">
