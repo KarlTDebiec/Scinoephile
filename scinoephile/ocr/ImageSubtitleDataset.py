@@ -9,12 +9,12 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from scinoephile import SubtitleDataset
-from scinoephile.ocr import ImageSubtitleSeries
+from scinoephile.ocr import ImageSubtitleSeries, OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class ImageSubtitleDataset(SubtitleDataset):
+class ImageSubtitleDataset(SubtitleDataset, OCRBase):
     """
     A collection of image-based subtitles
     """
@@ -22,17 +22,6 @@ class ImageSubtitleDataset(SubtitleDataset):
     # region Class Attributes
 
     series_class = ImageSubtitleSeries
-
-    # endregion
-
-    # region Builtins
-
-    def __init__(self, mode=None, **kwargs):
-        super().__init__(**kwargs)
-
-        # Store property values
-        if mode is not None:
-            self.mode = mode
 
     # endregion
 
@@ -49,35 +38,11 @@ class ImageSubtitleDataset(SubtitleDataset):
         return self.subtitles.char_indexes
 
     @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, change on self.subtitles as well
-
-        self._mode = value
-
-    @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
-            self._subtitles = self.series_class(imgmode=self.mode,
+            self._subtitles = self.series_class(mode=self.mode,
+                                                interactive=self.interactive,
                                                 verbosity=self.verbosity)
         return self._subtitles
 
@@ -92,8 +57,11 @@ class ImageSubtitleDataset(SubtitleDataset):
 
     # region Public Methods
 
-    def char_index_to_sub_char_indexes(self, index):
+    def get_subchar_indexes_of_char_indexes(self, index):
         return self.char_indexes[index]
+
+    def get_char_indexes_of_subchar_indexes(self, sub_index, char_index):
+        return self.char_indexes.index((sub_index, char_index))
 
     def load(self, infile=None):
         from os.path import expandvars
@@ -142,8 +110,6 @@ class ImageSubtitleDataset(SubtitleDataset):
             img = Image.new("L", (cols * 100, rows * 100), 255)
         elif self.mode == "1 bit":
             img = Image.new("1", (cols * 100, rows * 100), 1)
-        else:
-            raise NotImplementedError()
         for i, index in enumerate(indexes):
             column = (i // cols)
             row = i - (column * cols)
@@ -152,15 +118,10 @@ class ImageSubtitleDataset(SubtitleDataset):
             elif self.mode == "1 bit":
                 char_img = Image.fromarray(
                     data[index].astype(np.uint8) * 255)
-            else:
-                raise NotImplementedError()
             img.paste(char_img, (100 * row + 10,
                                  100 * column + 10,
                                  100 * (row + 1) - 10,
                                  100 * (column + 1) - 10))
         img.show()
-
-    def sub_char_indexes_to_char_index(self, sub_index, char_index):
-        return self.char_indexes.index((sub_index, char_index))
 
     # endregion

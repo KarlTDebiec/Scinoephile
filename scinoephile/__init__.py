@@ -8,22 +8,29 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################## MODULES ###################################
+from abc import ABC, abstractmethod
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class Base(object):
-    """Base for scinoephile classes"""
+class Base(ABC):
+    """Base including convenience methods and properties"""
 
     # region Builtins
 
-    def __init__(self, verbosity=None, **kwargs):
+    def __init__(self, interactive=None, verbosity=None, **kwargs):
         """
         Initializes class
 
         Args:
+            interactive (bool): Show IPython prompt
             verbosity (int): Level of verbose output
+            kwargs (dict): Additional keyword arguments
         """
+
+        # Store property values
+        if interactive is not None:
+            self.interactive = interactive
         if verbosity is not None:
             self.verbosity = verbosity
 
@@ -54,6 +61,22 @@ class Base(object):
                           f"{line.rstrip()}\n"
 
         return {"header": header}
+
+    @property
+    def interactive(self):
+        """bool: present IPython prompt after processing subtitles"""
+        if not hasattr(self, "_interactive"):
+            self._interactive = False
+        return self._interactive
+
+    @interactive.setter
+    def interactive(self, value):
+        if not isinstance(value, bool):
+            try:
+                value = bool(value)
+            except Exception:
+                raise ValueError(self._generate_setter_exception(value))
+        self._interactive = value
 
     @property
     def package_root(self):
@@ -100,55 +123,17 @@ class Base(object):
     # endregion
 
 
-class CLToolBase(Base):
+class CLToolBase(Base, ABC):
     """Base for scinoephile command line tools"""
 
     # region Builtins
 
-    def __init__(self, interactive=None, **kwargs):
-        """
-        Initializes tool
-
-        Args:
-            interactive (bool): Show IPython prompt
-            kwargs (dict): Additional keyword arguments
-        """
-        super().__init__(**kwargs)
-
-        if interactive is not None:
-            self.interactive = interactive
-
+    @abstractmethod
     def __call__(self):
         """ Core logic """
-
-        if self.__class__.__name__ == "CLToolBase":
-            raise NotImplementedError(f"{self.__class__.__name__} is not to "
-                                      "be called directly")
-        else:
-            raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
-                                      "method has not been implemented")
+        pass
 
     # endregion
-
-    # region Properties
-
-    @property
-    def interactive(self):
-        """bool: present IPython prompt after processing subtitles"""
-        if not hasattr(self, "_interactive"):
-            self._interactive = False
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, value):
-        if not isinstance(value, bool):
-            try:
-                value = bool(value)
-            except Exception:
-                raise ValueError(self._generate_setter_exception(value))
-        self._interactive = value
-
-    # endregion Properties
 
     # region Class Methods
 
@@ -208,6 +193,98 @@ class CLToolBase(Base):
         args = parser.parse_args()
         cls.validate_args(parser, args)
         cls(**vars(args))()
+
+
+class DatasetBase(Base, ABC):
+
+    # Region Builtins
+
+    def __init__(self, infile=None, outfile=None, **kwargs):
+        super().__init__(**kwargs)
+
+        # Store property values
+        if infile is not None:
+            self.infile = infile
+        if outfile is not None:
+            self.outfile = outfile
+
+    def __call__(self):
+        """ Core logic """
+
+        # Input
+        if self.infile is not None:
+            self.load()
+
+        # Present IPython prompt
+        if self.interactive:
+            embed(**self.embed_kw)
+
+        # Output
+        if self.outfile is not None:
+            self.save()
+
+    # endregion
+
+    # region Public Properties
+
+    @property
+    def infile(self):
+        """str: Path to input file"""
+        if not hasattr(self, "_infile"):
+            self._infile = None
+        return self._infile
+
+    @infile.setter
+    def infile(self, value):
+        from os.path import expandvars
+
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value).replace("//", "/")
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
+        self._infile = value
+
+    @property
+    def outfile(self):
+        """str: Path to output file"""
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
+        return self._outfile
+
+    @outfile.setter
+    def outfile(self, value):
+        from os import access, getcwd, R_OK, W_OK
+        from os.path import dirname, expandvars, isfile
+
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value).replace("//", "/")
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
+            elif isfile(value) and not access(value, R_OK):
+                raise ValueError(self._generate_setter_exception(value))
+            elif dirname(value) == "" and not access(getcwd(), W_OK):
+                raise ValueError(self._generate_setter_exception(value))
+            elif not access(dirname(value), W_OK):
+                raise ValueError(self._generate_setter_exception(value))
+        self._outfile = value
+
+    # endregion
+
+    # region Public Methods
+
+    @abstractmethod
+    def load(self):
+        pass
+
+    @abstractmethod
+    def save(self):
+        pass
+
+    # endregion
 
 
 ################################### MODULES ###################################

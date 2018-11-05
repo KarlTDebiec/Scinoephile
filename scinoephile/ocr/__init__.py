@@ -8,6 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from abc import ABC, abstractmethod
 from scinoephile import Base, CLToolBase
 from IPython import embed
 
@@ -67,9 +68,9 @@ def draw_text_on_img(image, text, x=0, y=0,
     draw.text((x - width / 2, y - height / 2), text, font=font)
 
 
-def generate_char_img(char, font="/System/Library/Fonts/STHeiti Light.ttc",
-                      fig=None, size=60, width=5, x_offset=0, y_offset=0,
-                      mode="1 bit"):
+def generate_char_data(char, font="/System/Library/Fonts/STHeiti Light.ttc",
+                       fig=None, size=60, width=5, x_offset=0, y_offset=0,
+                       mode="1 bit"):
     """
     Generates an image of a character
 
@@ -91,7 +92,7 @@ def generate_char_img(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
 
-    # TODO: Handle default font better
+    # TODO: Handle default font better; perhaps get matplotlib's default
 
     # Process arguments
     if fig is None:
@@ -132,15 +133,19 @@ def generate_char_img(char, font="/System/Library/Fonts/STHeiti Light.ttc",
 
 
 ################################### CLASSES ###################################
-class OCRBase(Base):
+class OCRBase(Base, ABC):
     """
     Base for OCR classes
     """
 
     # region Builtins
 
-    def __init__(self, **kwargs):
+    def __init__(self, mode=None, **kwargs):
         super().__init__(**kwargs)
+
+        # Store property values
+        if mode is not None:
+            self.mode = mode
 
     # endregion
 
@@ -167,18 +172,43 @@ class OCRBase(Base):
                 names=["character", "frequency", "cumulative frequency"])
         return self._char_frequency_table
 
+    @property
+    def mode(self):
+        """str: Image mode"""
+        if not hasattr(self, "_mode"):
+            self._mode = "1 bit"
+        return self._mode
+
+    @mode.setter
+    def mode(self, value):
+        if value is not None:
+            if not isinstance(value, str):
+                try:
+                    value = str(value)
+                except Exception:
+                    raise ValueError(self._generate_setter_exception(value))
+            if value == "8 bit":
+                pass
+            elif value == "1 bit":
+                pass
+            else:
+                raise ValueError(self._generate_setter_exception(value))
+
+        self._mode = value
+
     # endregion
 
     # region Public Methods
 
-    def chars_to_labels(self, chars):
+    def get_labels_of_chars(self, chars):
         """
-        Converts collection of characters to character labels
+        Gets unique integer indexes of provided char strings
 
         Args:
-            chars (np.ndarray(U64), str): characters
+            chars (ndarray(U64)): Chars
 
-        Returns (np.ndarray(int64): labels of provided characters
+        Returns:
+             ndarray(int64): Labels
         """
         import numpy as np
 
@@ -196,14 +226,15 @@ class OCRBase(Base):
         else:
             raise ValueError()
 
-    def labels_to_chars(self, labels):
+    def get_chars_of_labels(self, labels):
         """
-        Converts collection of character labels to characters themselves
+        Gets char strings of unique integer indexes
 
         Args:
-            labels (np.ndarray(int64): labels
+            labels (ndarray(int64)): Labels
 
-        Returns (np.ndarray(U64): characters of provided labels
+        Returns
+            ndarray(U64): Chars
         """
         import numpy as np
 
@@ -219,24 +250,6 @@ class OCRBase(Base):
     # endregion
 
 
-class OCRCLToolBase(CLToolBase, OCRBase):
-    """Base for OCR command line tools"""
-
-    # region Builtins
-
-    def __call__(self):
-        """Core logic"""
-
-        if isinstance(self, OCRCLToolBase):
-            raise NotImplementedError("scinoephile.OCRBase class is not to "
-                                      "be used directly")
-        else:
-            raise NotImplementedError(f"{self.__class__.__name__}.__call__ "
-                                      "method has not been implemented")
-
-    # endregion
-
-
 ################################### MODULES ###################################
 from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
@@ -244,7 +257,7 @@ from scinoephile.ocr.ImageSubtitleDataset import ImageSubtitleDataset
 from scinoephile.ocr.Model import Model
 from scinoephile.ocr.OCRDataset import OCRDataset
 from scinoephile.ocr.UnlabeledOCRDataset import UnlabeledOCRDataset
-from scinoephile.ocr.TestOCRDataset import TestOCRDataset
 from scinoephile.ocr.LabeledOCRDataset import LabeledOCRDataset
-from scinoephile.ocr.GeneratedOCRDataset import GeneratedOCRDataset
+from scinoephile.ocr.TestOCRDataset import TestOCRDataset
+from scinoephile.ocr.TrainOCRDataset import TrainOCRDataset
 from scinoephile.ocr.AutoTrainer import AutoTrainer

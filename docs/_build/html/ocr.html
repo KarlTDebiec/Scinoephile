@@ -293,8 +293,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="scinoephile.ocr.OCRBase.chars_to_labels">
-<code class="descname">chars_to_labels</code><span class="sig-paren">(</span><em>chars</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase.chars_to_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.chars_to_labels" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.OCRBase.get_labels_of_chars">
+<code class="descname">get_labels_of_chars</code><span class="sig-paren">(</span><em>chars</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase.get_labels_of_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.get_labels_of_chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts collection of characters to character labels</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -308,8 +308,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="scinoephile.ocr.OCRBase.labels_to_chars">
-<code class="descname">labels_to_chars</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase.labels_to_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.labels_to_chars" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.OCRBase.get_chars_of_labels">
+<code class="descname">get_chars_of_labels</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#OCRBase.get_chars_of_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.get_chars_of_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts collection of character labels to characters themselves</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -589,10 +589,10 @@
 <dd><dl class="docutils">
 <dt>if indexes is None:</dt>
 <dd>img = self.data
-lbl = self.chars_to_labels(self.spec[“char”].values)</dd>
+lbl = self.get_labels_of_chars(self.spec[“char”].values)</dd>
 <dt>else:</dt>
 <dd>img = self.data[indexes]
-lbl = self.chars_to_labels(self.spec[“char”].loc[indexes].values)</dd>
+lbl = self.get_labels_of_chars(self.spec[“char”].loc[indexes].values)</dd>
 </dl>
 <p>return img, lbl</p>
 </dd></dl>
@@ -1238,8 +1238,8 @@ file here for consistency.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="scinoephile.ocr.generate_char_img">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">generate_char_img</code><span class="sig-paren">(</span><em>char</em>, <em>font</em>, <em>fig=None</em>, <em>size=60</em>, <em>width=5</em>, <em>x_offset=0</em>, <em>y_offset=0</em>, <em>mode='1 bit'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#generate_char_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.generate_char_img" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.generate_char_data">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">generate_char_data</code><span class="sig-paren">(</span><em>char</em>, <em>font</em>, <em>fig=None</em>, <em>size=60</em>, <em>width=5</em>, <em>x_offset=0</em>, <em>y_offset=0</em>, <em>mode='1 bit'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/ocr.html#generate_char_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.generate_char_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an image of a character</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

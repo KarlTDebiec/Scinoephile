@@ -9,12 +9,12 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from scinoephile import SubtitleSeries
-from scinoephile.ocr import ImageSubtitleEvent
+from scinoephile.ocr import ImageSubtitleEvent, OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class ImageSubtitleSeries(SubtitleSeries):
+class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     """
     A series of image-based subtitles
     """
@@ -22,17 +22,6 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Class Attributes
 
     event_class = ImageSubtitleEvent
-
-    # endregion
-
-    # region Builtins
-
-    def __init__(self, mode=None, **kwargs):
-        super().__init__()
-
-        # Store property values
-        if mode is not None:
-            self.mode = mode
 
     # endregion
 
@@ -57,39 +46,14 @@ class ImageSubtitleSeries(SubtitleSeries):
                                   for c in range(e.char_data.shape[0])]
         return self._char_indexes
 
-    @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, change on events
-
-        self._mode = value
-
     # endregion
 
     # region Public Methods
 
-    def char_index_to_sub_char_indexes(self, index):
+    def get_char_indexes_of_subchar_indexes(self, index):
         return self.char_indexes[index]
 
-    def sub_char_indexes_to_char_index(self, sub_index, char_index):
+    def get_subchar_indexes_of_char_indexes(self, sub_index, char_index):
         return self.char_indexes.index((sub_index, char_index))
 
     def save(self, path, format_=None, **kwargs):

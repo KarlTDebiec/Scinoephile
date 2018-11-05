@@ -241,7 +241,7 @@
     <span class="k">return</span> <span class="n">centered</span></div>
 
 
-<div class="viewcode-block" id="generate_char_img"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.generate_char_img">[docs]</a><span class="k">def</span> <span class="nf">generate_char_img</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<div class="viewcode-block" id="generate_char_data"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.generate_char_data">[docs]</a><span class="k">def</span> <span class="nf">generate_char_data</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                       <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;1 bit&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates an image of a character</span>
@@ -342,7 +342,7 @@
 
     <span class="c1"># region Public Methods</span>
 
-<div class="viewcode-block" id="OCRBase.chars_to_labels"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.OCRBase.chars_to_labels">[docs]</a>    <span class="k">def</span> <span class="nf">chars_to_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRBase.get_labels_of_chars"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.OCRBase.get_labels_of_chars">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts collection of characters to character labels</span>
 
@@ -367,7 +367,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="OCRBase.labels_to_chars"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.OCRBase.labels_to_chars">[docs]</a>    <span class="k">def</span> <span class="nf">labels_to_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRBase.get_chars_of_labels"><a class="viewcode-back" href="../../ocr.html#scinoephile.ocr.OCRBase.get_chars_of_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts collection of character labels to characters themselves</span>
 

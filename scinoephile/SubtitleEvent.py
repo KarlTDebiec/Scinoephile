@@ -14,7 +14,7 @@ from IPython import embed
 
 
 ################################### CLASSES ###################################
-class SubtitleEvent(SSAEvent, Base):
+class SubtitleEvent(Base, SSAEvent):
     """
     An individual subtitle
 
@@ -23,12 +23,13 @@ class SubtitleEvent(SSAEvent, Base):
 
     # region Builtins
 
-    def __init__(self, verbosity=None, **kwargs):
-        super().__init__(**kwargs)  # SSAEvent.__init__ accepts arguments
+    def __init__(self, **kwargs):
+        super().__init__(**{k: v for k, v in kwargs.items()
+                            if k not in SSAEvent.FIELDS})
 
-        # Store property values
-        if verbosity is not None:
-            self.verbosity = verbosity
+        # SSAEvent.__init__ accepts arguments
+        SSAEvent.__init__(self, **{k: v for k, v in kwargs.items()
+                                   if k in SSAEvent.FIELDS})
 
     def __repr__(self):
         from pysubs2.time import ms_to_str

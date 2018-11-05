@@ -9,45 +9,16 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from abc import ABC, abstractmethod
-from scinoephile.ocr import OCRCLToolBase
+from scinoephile import DatasetBase
+from scinoephile.ocr import OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class OCRDataset(OCRCLToolBase, ABC):
+class OCRDataset(DatasetBase, OCRBase, ABC):
     """
     A collection of character images
     """
-
-    # region Builtins
-
-    def __init__(self, infile=None, outfile=None, mode=None, **kwargs):
-        super().__init__(**kwargs)
-
-        # Store property values
-        if infile is not None:
-            self.infile = infile
-        if outfile is not None:
-            self.outfile = outfile
-        if mode is not None:
-            self.mode = mode
-
-    def __call__(self):
-        """ Core logic """
-
-        # Input
-        if self.infile is not None:
-            self.load()
-
-        # Present IPython prompt
-        if self.interactive:
-            embed(**self.embed_kw)
-
-        # Output
-        if self.outfile is not None:
-            self.save()
-
-    # endregion
 
     # region Public Properties
 
@@ -111,75 +82,6 @@ class OCRDataset(OCRCLToolBase, ABC):
             return np.bool
         else:
             raise NotImplementedError()
-
-    @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-        # TODO: Respond to changes appropriately
-
-        self._mode = value
-
-    @property
-    def infile(self):
-        """str: Path to input file"""
-        if not hasattr(self, "_infile"):
-            self._infile = None
-        return self._infile
-
-    @infile.setter
-    def infile(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._infile = value
-
-    @property
-    def outfile(self):
-        """str: Path to output file"""
-        if not hasattr(self, "_outfile"):
-            self._outfile = None
-        return self._outfile
-
-    @outfile.setter
-    def outfile(self, value):
-        from os import access, getcwd, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-            elif isfile(value) and not access(value, R_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif dirname(value) == "" and not access(getcwd(), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            # TODO: Validate if directory exists or can be created
-        self._outfile = value
 
     # endregion
 

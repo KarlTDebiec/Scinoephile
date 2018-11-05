@@ -8,62 +8,30 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import OCRDataset
+from scinoephile.ocr import LabeledOCRDataset
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class TestOCRDataset(OCRDataset):
+class TestOCRDataset(LabeledOCRDataset):
     """
-    A collection of unlabeled character images
+    A collection of labeled character images for testing
     """
 
     # region Builtins
 
-    def __init__(self, n_chars=None, model=None, sub_ds=None, **kwargs):
+    def __init__(self, model=None, sub_ds=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if n_chars is not None:
-            self.n_chars = n_chars
-
         if model is not None:
             self.model = model
         if sub_ds is not None:
             self.sub_ds = sub_ds
 
-    def __call__(self):
-        """ Core logic """
-
-        # Input
-        if self.infile is not None:
-            self.load()
-
-        # Present IPython prompt
-        if self.interactive:
-            embed(**self.embed_kw)
-
-        # Output
-        if self.outfile is not None:
-            self.save()
-
     # endregion
 
     # region Public Properties
-
-    @property
-    def figure(self):
-        """Figure: Temporary figure used for images"""
-        if not hasattr(self, "_figure"):
-            from matplotlib.pyplot import figure
-
-            self._figure = figure(figsize=(1.0, 1.0), dpi=80)
-        return self._figure
-
-    @property
-    def labels(self):
-        """ndarray: Labels of chars in dataset"""
-        return self.chars_to_labels(self.spec["char"].values)
 
     @property
     def model(self):
@@ -80,25 +48,6 @@ class TestOCRDataset(OCRDataset):
             if not isinstance(value, Model):
                 raise ValueError(self._generate_setter_exception(value))
         self._model = value
-
-    @property
-    def n_chars(self):
-        """int: Number of unique characters to support"""
-        if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
-        return self._n_chars
-
-    @n_chars.setter
-    def n_chars(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1:
-                raise ValueError(self._generate_setter_exception(value))
-        self._n_chars = value
 
     @property
     def spec_cols(self):
@@ -131,7 +80,7 @@ class TestOCRDataset(OCRDataset):
 
     # region Public Methods
 
-    def present_specs_of_char(self, char, source=None):
+    def get_present_specs_of_char(self, char, source=None):
         if source is None:
             return self.spec.loc[
                 self.spec["char"] == char].drop("char", axis=1)
@@ -140,7 +89,7 @@ class TestOCRDataset(OCRDataset):
                 self.spec["char"] == char].drop("char", axis=1)[
                 self.spec["source"] == source].drop("source", axis=1)
 
-    def present_specs_of_char_set(self, char, source=None):
+    def get_present_specs_of_char_set(self, char, source=None):
         if source is None:
             return set(map(tuple, self.spec.loc[
                 self.spec["char"] == char].drop("char", axis=1).values))
@@ -149,11 +98,11 @@ class TestOCRDataset(OCRDataset):
                 self.spec["char"] == char].drop("char", axis=1)[
                 self.spec["source"] == source].drop("source", axis=1).values))
 
-    def label_new_chars(self, sub_ds=None, model=None):
+    def label_test_data(self, sub_ds=None, model=None):
         import numpy as np
         import pandas as pd
         from PIL import Image
-        from scinoephile.ocr import draw_text_on_img, generate_char_img
+        from scinoephile.ocr import draw_text_on_img, generate_char_data
 
         # Process arguments
         if sub_ds is None:
@@ -169,24 +118,24 @@ class TestOCRDataset(OCRDataset):
         predictions = model.model.predict(sub_ds.char_data)
         for char in self.chars[:self.n_chars]:
 
-            if len(self.present_specs_of_char_set(char, source)) > 0:
+            if len(self.get_present_specs_of_char_set(char, source)) > 0:
                 continue
 
             # Identify best matches for this char
-            scores = predictions[:, self.chars_to_labels(char)]
+            scores = predictions[:, self.get_labels_of_chars(char)]
             best_match_indexes = np.argsort(scores)[::-1][:10]
 
             # Generate prompt
             if self.mode == "8 bit":
                 full_img = Image.new("L", (1000, 250), 255)
                 target_img = Image.fromarray(
-                    generate_char_img(char=char, fig=self.figure,
-                                      mode=self.mode))
+                    generate_char_data(char=char, fig=self.figure,
+                                       mode=self.mode))
             elif self.mode == "1 bit":
                 full_img = Image.new("1", (1000, 250), 1)
                 target_img = Image.fromarray(
-                    generate_char_img(char=char, fig=self.figure,
-                                      mode=self.mode).astype(np.uint8) * 255)
+                    generate_char_data(char=char, fig=self.figure,
+                                       mode=self.mode).astype(np.uint8) * 255)
             full_img.paste(target_img, (10, 10, 90, 90))
             for i, index in enumerate(best_match_indexes, 1):
                 if self.mode == "8 bit":
@@ -216,7 +165,7 @@ class TestOCRDataset(OCRDataset):
                             raise ValueError()
 
                         spec.append(to_dict(
-                            (source, *sub_ds.char_index_to_sub_char_indexes(index))))
+                            (source, *sub_ds.get_subchar_indexes_of_char_indexes(index))))
                         indexes.append(index)
                         break
                     except ValueError as e:

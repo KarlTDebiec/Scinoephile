@@ -13,21 +13,18 @@ from IPython import embed
 
 
 ################################### CLASSES ###################################
-class GeneratedOCRDataset(LabeledOCRDataset):
+class TrainOCRDataset(LabeledOCRDataset):
     """
-    A collection of generated character images
+    A collection of labeled character images for training
     """
 
     # region Builtins
 
-    def __init__(self, n_chars=None, font_names=None, font_sizes=None,
-                 font_widths=None, font_x_offsets=None, font_y_offsets=None,
-                 **kwargs):
+    def __init__(self, font_names=None, font_sizes=None, font_widths=None,
+                 font_x_offsets=None, font_y_offsets=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if n_chars is not None:
-            self.n_chars = n_chars
         if font_names is not None:
             self.font_names = font_names
         if font_sizes is not None:
@@ -47,7 +44,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             self.load()
 
         # Action
-        self.generate_images()
+        self.generate_training_data()
 
         # Present IPython prompt
         if self.interactive:
@@ -60,15 +57,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
     # endregion
 
     # region Public Properties
-
-    @property
-    def figure(self):
-        """matplotlib.figure.Figure: Temporary figure used for images"""
-        if not hasattr(self, "_figure"):
-            from matplotlib.pyplot import figure
-
-            self._figure = figure(figsize=(1.0, 1.0), dpi=80)
-        return self._figure
 
     @property
     def font_names(self):
@@ -159,25 +147,6 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         self._font_y_offsets = value
 
     @property
-    def n_chars(self):
-        """int: Number of unique characters to support"""
-        if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
-        return self._n_chars
-
-    @n_chars.setter
-    def n_chars(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1:
-                raise ValueError(self._generate_setter_exception(value))
-        self._n_chars = value
-
-    @property
     def spec_all(self):
         """pandas.DataFrame: All available character image specs"""
         if not hasattr(self, "_spec_all"):
@@ -253,18 +222,11 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
     # region Public Methods
 
-    def present_specs_of_char(self, char):
-        return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
-
-    def present_specs_of_char_set(self, char):
-        return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
-            "char", axis=1).values))
-
-    def generate_images(self, chars=None, min_images=None):
+    def generate_training_data(self, chars=None, min_images=None):
         import numpy as np
         import pandas as pd
         from random import sample
-        from scinoephile.ocr import generate_char_img
+        from scinoephile.ocr import generate_char_data
 
         # Process arguments
         if chars is None:
@@ -282,7 +244,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
         min_queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
         for char in chars:
-            existing = self.present_specs_of_char_set(char)
+            existing = self.get_present_specs_of_char_set(char)
             minimal = self.spec_min_set.difference(existing)
             min_queue.extend(map(to_dict, minimal))
             n_additional = min_images - len(existing) - len(minimal)
@@ -301,7 +263,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
             spec = pd.DataFrame(min_queue)
             data = np.zeros((len(min_queue), 80, 80), self.data_dtype)
             for i, kwargs in enumerate(min_queue):
-                data[i] = generate_char_img(fig=self.figure, mode=self.mode, **kwargs)
+                data[i] = generate_char_data(fig=self.figure, mode=self.mode, **kwargs)
 
             self.add_img(spec, data)
         else:
@@ -317,7 +279,7 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Prepare trn and val sets with at least one image of each character
         for char in set(self.spec["char"]):
-            all = self.present_specs_of_char(char)
+            all = self.get_present_specs_of_char(char)
 
             # Add at least one image of each character to each set
             trn_index, val_index = sample(all.index.tolist(), 2)
@@ -338,9 +300,9 @@ class GeneratedOCRDataset(LabeledOCRDataset):
 
         # Organize data
         trn_img = self.data[complete_trn_indexes]
-        trn_lbl = self.chars_to_labels(self.spec["char"].loc[complete_trn_indexes].values)
+        trn_lbl = self.get_labels_of_chars(self.spec["char"].loc[complete_trn_indexes].values)
         val_img = self.data[complete_val_indexes]
-        val_lbl = self.chars_to_labels(self.spec["char"].loc[complete_val_indexes].values)
+        val_lbl = self.get_labels_of_chars(self.spec["char"].loc[complete_val_indexes].values)
 
         if self.mode == "8 bit":
             trn_img = np.array(trn_img, np.float64) / 255.0

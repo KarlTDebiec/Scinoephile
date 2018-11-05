@@ -240,10 +240,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        if indexes is None:</span>
 <span class="sd">            img = self.data</span>
-<span class="sd">            lbl = self.chars_to_labels(self.spec[&quot;char&quot;].values)</span>
+<span class="sd">            lbl = self.get_labels_of_chars(self.spec[&quot;char&quot;].values)</span>
 <span class="sd">        else:</span>
 <span class="sd">            img = self.data[indexes]</span>
-<span class="sd">            lbl = self.chars_to_labels(self.spec[&quot;char&quot;].loc[indexes].values)</span>
+<span class="sd">            lbl = self.get_labels_of_chars(self.spec[&quot;char&quot;].loc[indexes].values)</span>
 
 <span class="sd">        return img, lbl</span>
 <span class="sd">        &quot;&quot;&quot;</span>

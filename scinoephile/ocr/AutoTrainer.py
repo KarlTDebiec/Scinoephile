@@ -8,12 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import OCRCLToolBase
+from scinoephile.ocr import OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class AutoTrainer(OCRCLToolBase):
+class AutoTrainer(OCRBase):
     """
     Automated machine learning model trainer
     """
@@ -74,7 +74,7 @@ class AutoTrainer(OCRCLToolBase):
                 self.model.save()
 
             # Quit
-            if round > 100:
+            if round > 10:
                 break
 
         # Present IPython prompt
@@ -172,10 +172,10 @@ class AutoTrainer(OCRCLToolBase):
 
     @trn_ds.setter
     def trn_ds(self, value):
-        from scinoephile.ocr import GeneratedOCRDataset
+        from scinoephile.ocr import TrainOCRDataset
 
         if value is not None:
-            if not isinstance(value, GeneratedOCRDataset):
+            if not isinstance(value, TrainOCRDataset):
                 raise ValueError(self._generate_setter_exception(value))
         self._trn_ds = value
 

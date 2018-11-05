@@ -14,13 +14,13 @@ from IPython import embed
 
 
 ################################### CLASSES ###################################
-class SubtitleSeries(SSAFile, Base):
+class SubtitleSeries(Base, SSAFile):
     """
     A series of subtitles
 
     Extension of pysubs2's SSAFile with additional features. Includes code for
     loading to and saving from hdf5. While these are part of separate classes
-    in pysubs.SSAFile, this additional separation is not beneficial here.
+    in pysubs.SSAFile, this separation is not really beneficial here.
     """
 
     # region Class Attributes
@@ -31,12 +31,9 @@ class SubtitleSeries(SSAFile, Base):
 
     # region Builtins
 
-    def __init__(self, verbosity=None, **kwargs):
-        super().__init__()  # SSAFile.__init__ accepts no arguments
-
-        # Store property values
-        if verbosity is not None:
-            self.verbosity = verbosity
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        SSAFile.__init__(self)  # SSAFile.__init__ accepts no arguments
 
     def __repr__(self):
         if self.events:
@@ -71,6 +68,35 @@ class SubtitleSeries(SSAFile, Base):
         # Otherwise, continue as superclass SSAFile
         else:
             SSAFile.save(self, path, format_=format_, **kwargs)
+
+    # endregion
+
+    # region Public Class Methods
+
+    @classmethod
+    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
+        """
+        Loads subtitles from an input file
+
+        pysubs2.SSAFile.from_file expects an open text file, so we open the
+        hdf5 file here for consistency
+        """
+
+        # Check if hdf5
+        if (encoding == "hdf5" or path.endswith(".hdf5")
+                or path.endswith(".h5")):
+            import h5py
+
+            with h5py.File(path) as fp:
+                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
+        # Otherwise, use SSAFile.from_file
+        else:
+            with open(path, encoding=encoding) as fp:
+                subs = cls.from_file(fp, **kwargs)
+                subs.verbosity = verbosity
+                for event in subs.events:
+                    event.verbosity = verbosity
+                return subs
 
     # endregion
 
@@ -140,35 +166,6 @@ class SubtitleSeries(SSAFile, Base):
         fp.create_dataset("events",
                           data=events, dtype=dtypes,
                           chunks=True, compression="gzip")
-
-    # endregion
-
-    # region Public Class Methods
-
-    @classmethod
-    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
-        """
-        Loads subtitles from an input file
-
-        pysubs2.SSAFile.from_file expects an open text file, so we open the
-        hdf5 file here for consistency
-        """
-
-        # Check if hdf5
-        if (encoding == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
-            import h5py
-
-            with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
-        # Otherwise, use SSAFile.from_file
-        else:
-            with open(path, encoding=encoding) as fp:
-                subs = cls.from_file(fp, **kwargs)
-                subs.verbosity = verbosity
-                for event in subs.events:
-                    event.verbosity = verbosity
-                return subs
 
     # endregion
 

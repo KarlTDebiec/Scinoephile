@@ -9,23 +9,22 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from scinoephile import SubtitleEvent
+from scinoephile.ocr import OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class ImageSubtitleEvent(SubtitleEvent):
+class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     """
     An individual image-based subtitle
     """
 
     # region Builtins
 
-    def __init__(self, mode=None, data=None, **kwargs):
+    def __init__(self, data=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
-        if mode is not None:
-            self.mode = mode
         if data is not None:
             self.data = data
 
@@ -136,31 +135,6 @@ class ImageSubtitleEvent(SubtitleEvent):
             else:
                 raise ValueError()
         return self._img
-
-    @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-        # TODO: If changed, set self.data = self.data to convert
-
-        self._mode = value
 
     # endregion
 

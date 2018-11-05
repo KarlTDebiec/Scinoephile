@@ -8,45 +8,25 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import OCRCLToolBase
+from scinoephile import DatasetBase
+from scinoephile.ocr import OCRBase
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class Model(OCRCLToolBase):
+class Model(OCRBase, DatasetBase):
     """
     Machine learning model
     """
 
     # region Builtins
 
-    def __init__(self, n_chars=None, infile=None, outfile=None, **kwargs):
+    def __init__(self, n_chars=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
         if n_chars is not None:
             self.n_chars = n_chars
-
-        if infile is not None:
-            self.infile = infile
-
-        if outfile is not None:
-            self.outfile = outfile
-
-    def __call__(self):
-
-        # Input and preparation
-        if self.infile is not None:
-            self.load()
-        self.prepare_model()
-
-        # Output
-        if self.outfile is not None:
-            self.save()
-
-        # Present IPython prompt
-        if self.interactive:
-            embed(**self.embed_kw)
 
     # endregion
 
@@ -61,44 +41,6 @@ class Model(OCRCLToolBase):
     @model.setter
     def model(self, value):
         self._model = value
-
-    @property
-    def infile(self):
-        """str: Path to input model file"""
-        if not hasattr(self, "_infile"):
-            self._infile = None
-        return self._infile
-
-    @infile.setter
-    def infile(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._infile = value
-
-    @property
-    def outfile(self):
-        """str: Path to output model file"""
-        if not hasattr(self, "_outfile"):
-            self._outfile = None
-        return self._outfile
-
-    @outfile.setter
-    def outfile(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value)
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._outfile = value
 
     @property
     def n_chars(self):
@@ -131,9 +73,9 @@ class Model(OCRCLToolBase):
         if self.verbosity >= 1:
             print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
                   f"Accuracy:{acc:7.5f}")
-        for i, char in enumerate(self.labels_to_chars(lbl)):
+        for i, char in enumerate(self.get_chars_of_labels(lbl)):
             poss_lbls = np.argsort(pred[i])[::-1]
-            poss_chars = self.labels_to_chars(poss_lbls)
+            poss_chars = self.get_chars_of_labels(poss_lbls)
             poss_probs = np.round(pred[i][poss_lbls], 2)
             if char != poss_chars[0]:
                 if self.verbosity >= 2:
@@ -153,6 +95,14 @@ class Model(OCRCLToolBase):
         self.model.add(Dropout(0.2))
         self.model.add(Dense(self.n_chars, activation="softmax"))
 
+    def compile(self):
+        from tensorflow.keras.optimizers import Adam, RMSprop
+
+        self.model.compile(
+            optimizer=Adam(),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"])
+
     def load(self, infile=None):
         from os.path import expandvars
         from tensorflow import keras
@@ -169,16 +119,6 @@ class Model(OCRCLToolBase):
         if self.verbosity >= 1:
             print(f"Reading model from '{infile}'")
         self.model = keras.models.load_model(infile)
-
-    def compile(self):
-        from tensorflow.keras.optimizers import Adam, RMSprop
-
-        self.model.compile(
-            optimizer=Adam(),
-            loss="sparse_categorical_crossentropy",
-            metrics=["accuracy"])
-        #   optimizer=tf.train.AdamOptimizer(),
-        #   loss="sparse_categorical_crossentropy",
 
     def save(self, outfile=None):
         from os.path import expandvars
