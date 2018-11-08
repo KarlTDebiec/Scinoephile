@@ -130,8 +130,16 @@ if __name__ == "__main__":
         embed()
 
 
-    kwargs["n_chars"] = 100
-    kwargs["mode"] = "8 bit"
-    sub_file = f"{subtitle_root}/magnificent_mcdull/mcdull_8bit.h5"
-    mod_file = f"{data_root}/model_0100_0100_8bit.h5"
-    reconstruct()
+    # kwargs["n_chars"] = 100
+    # kwargs["mode"] = "8 bit"
+    # sub_file = f"{subtitle_root}/magnificent_mcdull/mcdull_8bit.h5"
+    # mod_file = f"{data_root}/model_0100_0100_8bit.h5"
+    # reconstruct()
+
+    tst_file = f"{data_root}/tst_8bit.h5"
+    trn_file = f"{data_root}/trn_0100_0100_8bit.h5"
+    trn_ds = TrainOCRDataset(infile=trn_file, **kwargs)
+    trn_ds.load()
+    tst_ds = TestOCRDataset(infile=tst_file, **kwargs)
+    tst_ds.load()
+    tst_ds.calculate_diff(trn_ds=trn_ds)

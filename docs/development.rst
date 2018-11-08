@@ -31,10 +31,10 @@ _____________________________
 - [x] Save reconstructed subtitles to srt
 - [x] Verify that subtitle series images can be saved to png files
 - [x] Reconstruct including spaces
-- [ ] Prepare small amout of test data (i.e. accuracte reconstuction)
+- [ ] Calculate diff between training images and test images to guide spec selection
+- [ ] Prepare small amount of test data (i.e. accuracte reconstuction)
 - [ ] Calculate reconstruction accuracy against test data
 - [ ] Calculate model accuracy on test data
-- [ ] Calculate diff between training images and test images to guide spec selection
 - [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
 
@@ -73,3 +73,4 @@ ______
 - Improve requirements.txt and clarify what is required for which functions
 - Automated testing using pytest and TravisCI
 - Sphinx checklist extension to convert "- [ ]" to "☐" and "- [X]" to "☑"
+- Replace test.py with a notebook

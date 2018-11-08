@@ -79,6 +79,18 @@ class TestOCRDataset(LabeledOCRDataset):
     # endregion
 
     # region Public Methods
+    def calculate_diff(self, trn_ds):
+        for char in self.get_present_chars_set():
+            print(char)
+            print(trn_ds.get_present_specs_of_char(char))
+        embed(**self.embed_kw)
+
+    def get_present_chars(self):
+        return sorted(list(self.get_present_chars_set()),
+                      key=self.get_labels_of_chars)
+
+    def get_present_chars_set(self):
+        return set(self.spec["char"])
 
     def get_present_specs_of_char(self, char, source=None):
         if source is None:
