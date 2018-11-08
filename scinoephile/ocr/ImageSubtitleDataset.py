@@ -28,16 +28,6 @@ class ImageSubtitleDataset(SubtitleDataset, OCRBase):
     # region Public Properties
 
     @property
-    def char_data(self):
-        """ndarray: Image data of individual characters within subtitles"""
-        return self.subtitles.char_data
-
-    @property
-    def char_indexes(self):
-        """tuple(int, int): Indexes of char data in form of (subtitle, char)"""
-        return self.subtitles.char_indexes
-
-    @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""
         if not hasattr(self, "_subtitles"):
@@ -56,12 +46,6 @@ class ImageSubtitleDataset(SubtitleDataset, OCRBase):
     # endregion
 
     # region Public Methods
-
-    def get_subchar_indexes_of_char_indexes(self, index):
-        return self.char_indexes[index]
-
-    def get_char_indexes_of_subchar_indexes(self, sub_index, char_index):
-        return self.char_indexes.index((sub_index, char_index))
 
     def load(self, infile=None):
         from os.path import expandvars

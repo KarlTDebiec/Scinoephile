@@ -51,6 +51,14 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         return self._char_bounds
 
     @property
+    def char_count(self):
+        """ndarray: Number of individual characters within subtitle"""
+        if not hasattr(self, "_char_count"):
+            self._char_count = self.char_data.shape[0]
+
+        return self._char_count
+
+    @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitle"""
         if not hasattr(self, "_char_data"):
@@ -175,7 +183,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     def show_predictions(self):
         import numpy as np
 
-        for i in range(self.char_data.shape[0]):
+        for i in range(self.char_count):
             poss_lbls = np.argsort(self.char_predictions[i])[::-1]
             poss_chars = self.get_chars_of_labels(poss_lbls)
             poss_probs = np.round(self.char_predictions[i][poss_lbls], 2)

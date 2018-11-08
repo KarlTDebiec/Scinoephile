@@ -28,6 +28,14 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     # region Public Properties
 
     @property
+    def char_counts(self):
+        """ndarray: Number of individual characters within subtitle"""
+        if not hasattr(self, "_char_counts"):
+            self._char_counts = [e.char_count for e in self.events]
+
+        return self._char_counts
+
+    @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitles"""
         if not hasattr(self, "_char_data"):
@@ -55,6 +63,19 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     def get_subchar_indexes_of_char_indexes(self, sub_index, char_index):
         return self.char_indexes.index((sub_index, char_index))
+
+    def predict(self, model):
+        import numpy as np
+
+        char_predictions = model.model.predict(self.char_data)
+        ends = np.cumsum(self.char_counts)
+        starts = ends - self.char_counts
+        for start, end, event in zip(starts, ends, self.events):
+            event.char_predictions = char_predictions[start:end]
+
+    def reconstruct_text(self):
+        for event in self.events:
+            event.reconstruct_text()
 
     def save(self, path, format_=None, **kwargs):
         """

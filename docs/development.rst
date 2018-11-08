@@ -27,8 +27,9 @@ _____________________________________________________________________
 - [x] Move image mode property to a subclass of OCRBaseClass
 - [x] Apply model to chars extracted from individual subtitle
 - [x] Reconstruct text from predictions
-- [ ] Apply model to complete subtitle series and reconstruct text
-- [ ] Save reconstructed subtitles to srt
+- [x] Apply model to complete subtitle series and reconstruct text
+- [x] Save reconstructed subtitles to srt
+- [ ] Verify that subtitle series images can be saved to flat files
 - [ ] Reconstruct including spaces
 - [ ] Prepare small amout of test data (i.e. accuracte reconstuction)
 - [ ] Calculate reconstruction accuracy against test data
