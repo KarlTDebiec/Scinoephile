@@ -2,5 +2,5 @@
 
 Machine Learning
 ________________
-.. autoclass:: scinoephile.ocr.Model
-.. autoclass:: scinoephile.ocr.AutoTrainer
+.. autoclass:: scinoephile.ocr.Model()
+.. autoclass:: scinoephile.ocr.AutoTrainer()
