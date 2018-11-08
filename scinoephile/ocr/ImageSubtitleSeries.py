@@ -106,12 +106,35 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 print(f"Saving to '{path}'")
             SSAFile.save(self, path, format_=format_, **kwargs)
 
+    def save(self, path, format_=None, **kwargs):
+        """
+        Saves subtitles to an output file
+
+        pysubs2.SSAFile.save expects an open text file, so we open the hdf5
+        file here for consistency.
+        """
+        from pysubs2 import SSAFile
+
+        # Check if hdf5
+        if (format_ == "hdf5" or path.endswith(".hdf5")
+                or path.endswith(".h5")):
+            import h5py
+
+            with h5py.File(path) as fp:
+                self._save_hdf5(fp, **kwargs)
+        # Check if directory
+        elif (format_ == "png" or path.endswith("/")):
+            self._save_png(path, **kwargs)
+        # Otherwise, continue as superclass SSAFile
+        else:
+            SSAFile.save(self, path, format_=format_, **kwargs)
+
     # endregion
 
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", imgmode=None, verbosity=1, **kwargs):
+    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
         """
         SSAFile.from_file expects an open text file, so we open hdf5 here
         """
@@ -122,13 +145,11 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             import h5py
 
             with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, imgmode=imgmode,
-                                      verbosity=verbosity, **kwargs)
+                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Check if sup
         if encoding == "sup" or path.endswith("sup"):
             with open(path, "rb") as fp:
-                return cls._load_sup(fp, mode=imgmode,
-                                     verbosity=verbosity, **kwargs)
+                return cls._load_sup(fp, verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
             with open(path, encoding=encoding) as fp:
@@ -170,12 +191,21 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                                                 dtype=np.bool, chunks=True,
                                                 compression="gzip")
 
+    def _save_png(self, fp, **kwargs):
+        from os import makedirs
+        from os.path import isdir
+
+        if not isdir(fp):
+            makedirs(fp)
+        for i, event in enumerate(self.events):
+            event.save(f"{fp}/{i:04d}.png")
+
     # endregion
 
     # region Private Class Methods
 
     @classmethod
-    def _load_hdf5(cls, fp, imgmode=None, verbosity=1, **kwargs):
+    def _load_hdf5(cls, fp, mode=None, verbosity=1, **kwargs):
         """
         Loads subtitles from an hdf5 file into a nascent SubtitleSeries
 
@@ -189,9 +219,10 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
         # Load images
         if "images" in fp and "events" in fp:
-            subs.mode = fp["images"].attrs["mode"]
-            if imgmode is not None and subs.mode != imgmode:
+            if mode is not None and fp["images"].attrs["mode"] != mode:
                 raise ValueError()
+            # TODO: Support converting from one image mode to another on load
+            subs.mode = fp["images"].attrs["mode"]
 
             for i, event in enumerate(subs.events):
                 event.mode = subs.mode

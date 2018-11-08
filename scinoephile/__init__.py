@@ -255,20 +255,13 @@ class DatasetBase(Base, ABC):
 
     @outfile.setter
     def outfile(self, value):
-        from os import access, getcwd, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
+        from os.path import expandvars
 
         if value is not None:
             if not isinstance(value, str):
                 raise ValueError(self._generate_setter_exception(value))
             value = expandvars(value).replace("//", "/")
             if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-            elif isfile(value) and not access(value, R_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif dirname(value) == "" and not access(getcwd(), W_OK):
-                raise ValueError(self._generate_setter_exception(value))
-            elif not access(dirname(value), W_OK):
                 raise ValueError(self._generate_setter_exception(value))
         self._outfile = value
 

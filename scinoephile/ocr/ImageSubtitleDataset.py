@@ -62,7 +62,7 @@ class ImageSubtitleDataset(SubtitleDataset, OCRBase):
         if self.verbosity >= 1:
             print(f"Reading subtitles from '{infile}'")
         self.subtitles = self.series_class.load(infile,
-                                                imgmode=self.mode,
+                                                mode=self.mode,
                                                 verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 

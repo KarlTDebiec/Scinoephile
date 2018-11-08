@@ -29,8 +29,8 @@ _____________________________________________________________________
 - [x] Reconstruct text from predictions
 - [x] Apply model to complete subtitle series and reconstruct text
 - [x] Save reconstructed subtitles to srt
-- [ ] Verify that subtitle series images can be saved to flat files
-- [ ] Reconstruct including spaces
+- [x] Verify that subtitle series images can be saved to png files
+- [x] Reconstruct including spaces
 - [ ] Prepare small amout of test data (i.e. accuracte reconstuction)
 - [ ] Calculate reconstruction accuracy against test data
 - [ ] Calculate model accuracy on test data
