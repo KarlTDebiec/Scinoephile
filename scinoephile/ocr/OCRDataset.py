@@ -23,34 +23,6 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
     # region Public Properties
 
     @property
-    def spec(self):
-        """pandas.DataFrame: Character image specifications"""
-        if not hasattr(self, "_spec"):
-            import pandas as pd
-
-            self._spec = pd.DataFrame(
-                {c: pd.Series([], dtype=self.spec_dtypes[c])
-                 for c in self.spec_cols})
-        return self._spec
-
-    @spec.setter
-    def spec(self, value):
-        # TODO: Validate
-        self._spec = value
-
-    @property
-    @abstractmethod
-    def spec_cols(self):
-        """list(str): Character image specification columns"""
-        pass
-
-    @property
-    @abstractmethod
-    def spec_dtypes(self):
-        """list(str): Character image specification dtypes"""
-        pass
-
-    @property
     def data(self):
         """numpy.ndarray(bool): Character image data"""
         if not hasattr(self, "_data"):
@@ -82,6 +54,34 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
             return np.bool
         else:
             raise NotImplementedError()
+
+    @property
+    def spec(self):
+        """pandas.DataFrame: Character image specifications"""
+        if not hasattr(self, "_spec"):
+            import pandas as pd
+
+            self._spec = pd.DataFrame(
+                {c: pd.Series([], dtype=self.spec_dtypes[c])
+                 for c in self.spec_cols})
+        return self._spec
+
+    @spec.setter
+    def spec(self, value):
+        # TODO: Validate
+        self._spec = value
+
+    @property
+    @abstractmethod
+    def spec_cols(self):
+        """list(str): Character image specification columns"""
+        pass
+
+    @property
+    @abstractmethod
+    def spec_dtypes(self):
+        """list(str): Character image specification dtypes"""
+        pass
 
     # endregion
 

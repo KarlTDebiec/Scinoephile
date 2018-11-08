@@ -74,17 +74,17 @@ if __name__ == "__main__":
             model=model,
             trn_ds=trn_ds, val_portion=0.1,
             batch_size=256, epochs=10,
-            interactive=True, **kwargs)()
+            interactive=False, **kwargs)()
 
 
-    # kwargs["n_chars"] = 100
+    # kwargs["n_chars"] = 200
     # kwargs["mode"] = "8 bit"
-    # trn_file = f"{data_root}/trn_0100_0100_8bit.h5"
-    # model_file = f"{data_root}/model_0100_0100_8bit.h5"
+    # trn_file = f"{data_root}/trn_0200_0100_8bit.h5"
+    # model_file = f"{data_root}/model_0200_0100_8bit.h5"
     # test_training()
     # kwargs["mode"] = "1 bit"
-    # trn_file = f"{data_root}/trn_0100_0100_1bit.h5"
-    # model_file = f"{data_root}/model_0100_0100_1bit.h5"
+    # trn_file = f"{data_root}/trn_0200_0100_1bit.h5"
+    # model_file = f"{data_root}/model_0200_0100_1bit.h5"
     # test_training()
 
     # keras.callbacks.EarlyStopping(monitor="val_loss",
@@ -107,14 +107,31 @@ if __name__ == "__main__":
                        interactive=True, **kwargs)()
 
 
-    kwargs["n_chars"] = 100
+    # kwargs["n_chars"] = 100
     # kwargs["mode"] = "8 bit"
     # model_file = f"{data_root}/model_0100_0100_8bit.h5"
     # trn_file = f"{subtitle_root}/magnificent_mcdull/mcdull_8bit.h5"
     # tst_file = f"{data_root}/tst_8bit.h5"
     # gather_test()
-    kwargs["mode"] = "1 bit"
-    model_file = f"{data_root}/model_0100_0100_1bit.h5"
-    trn_file = f"{subtitle_root}/magnificent_mcdull/mcdull_1bit.h5"
-    tst_file = f"{data_root}/tst_1bit.h5"
-    gather_test()
+    # kwargs["mode"] = "1 bit"
+    # model_file = f"{data_root}/model_0100_0100_1bit.h5"
+    # trn_file = f"{subtitle_root}/magnificent_mcdull/mcdull_1bit.h5"
+    # tst_file = f"{data_root}/tst_1bit.h5"
+    # gather_test()
+
+    # Test reconstruction
+    def reconstruct():
+        sub_ds = ImageSubtitleDataset(
+            infile=sub_file, interactive=False, **kwargs)
+        sub_ds()
+        model = Model(
+            infile=mod_file, **kwargs)
+        model.load()
+        embed()
+
+
+    kwargs["n_chars"] = 100
+    kwargs["mode"] = "8 bit"
+    sub_file = f"{subtitle_root}/magnificent_mcdull/mcdull_8bit.h5"
+    mod_file = f"{data_root}/model_0100_0100_8bit.h5"
+    reconstruct()

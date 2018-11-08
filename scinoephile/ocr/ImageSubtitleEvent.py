@@ -51,13 +51,6 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         return self._char_bounds
 
     @property
-    def char_widths(self):
-        """ndarray(int): Widths of individual characters within subtitle"""
-        if not hasattr(self, "_char_widths"):
-            self._char_widths = self.char_bounds[:, 1] - self.char_bounds[:, 0]
-        return self._char_widths
-
-    @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitle"""
         if not hasattr(self, "_char_data"):
@@ -79,6 +72,29 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
                 chars[i, y:y + char.shape[0], x:x + char.shape[1]] = char
             self._char_data = chars
         return self._char_data
+
+    @property
+    def char_predictions(self):
+        if not hasattr(self, "_char_predictions"):
+            self._char_predictions = None
+        return self._char_predictions
+
+    @char_predictions.setter
+    def char_predictions(self, value):
+        import numpy as np
+
+        if not isinstance(value, np.ndarray):
+            raise ValueError(self._generate_setter_exception(value))
+        if value.shape[0] != self.char_data.shape[0]:
+            raise ValueError(self._generate_setter_exception(value))
+        self._char_predictions = value
+
+    @property
+    def char_widths(self):
+        """ndarray(int): Widths of individual characters within subtitle"""
+        if not hasattr(self, "_char_widths"):
+            self._char_widths = self.char_bounds[:, 1] - self.char_bounds[:, 0]
+        return self._char_widths
 
     @property
     def data(self):
@@ -140,10 +156,31 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     # region Public Methods
 
+    def predict(self, model):
+        self.char_predictions = model.model.predict(self.char_data)
+
+    def reconstruct_text(self):
+        import numpy as np
+
+        chars = self.get_chars_of_labels(np.argsort(self.char_predictions,
+                                                    axis=1)[:, -1])
+        self.text = "".join(chars)
+
     def show(self):
         """
         Shows image of subtitle
         """
         self.img.show()
+
+    def show_predictions(self):
+        import numpy as np
+
+        for i in range(self.char_data.shape[0]):
+            poss_lbls = np.argsort(self.char_predictions[i])[::-1]
+            poss_chars = self.get_chars_of_labels(poss_lbls)
+            poss_probs = np.round(self.char_predictions[i][poss_lbls], 2)
+            matches = [f"{a}:{b:4.2f}" for a, b in
+                       zip(poss_chars[:10], poss_probs[:10])]
+            print(f"{i} | {' '.join(matches)}")
 
     # endregion

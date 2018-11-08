@@ -25,19 +25,25 @@ _____________________________________________________________________
 - [x] Move AutoTrainer's model to a Model
 - [x] Make base classes abstract
 - [x] Move image mode property to a subclass of OCRBaseClass
-- [ ] Check model accuracy on test data
-- [ ] Calculate differences between test images and generated images
+- [x] Apply model to chars extracted from individual subtitle
+- [x] Reconstruct text from predictions
+- [ ] Apply model to complete subtitle series and reconstruct text
+- [ ] Save reconstructed subtitles to srt
+- [ ] Reconstruct including spaces
+- [ ] Prepare small amout of test data (i.e. accuracte reconstuction)
+- [ ] Calculate reconstruction accuracy against test data
+- [ ] Calculate model accuracy on test data
+- [ ] Calculate diff between training images and test images to guide spec selection
 - [ ] Add log output to AutoTrainer
-- [ ] Re-implement support for configuring AutoTrainer
 - [ ] Add support for Western characters and punctuation
-- [ ] ImageSubtitleEvent: Identify spaces in subtitle images
 
 Migrate Compositor to New Data Structures
 _________________________________________
 
-- [ ] Print SubtitleSeries and SubtitleDataset as pandas DataFrames
-- [ ] Migrate English, Chinese (may call Hanzi for clarity, and bilingual
-  subtitles to SubtitleSeries
+- [ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames
+- [ ] Set up framework for CompositeSubtitleDataset(Dataset)
+- [ ] Set up framework for Compositor(CLToolBase, CompositeSubtitleDataset)
+- [ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries
 
 Documentation
 _____________

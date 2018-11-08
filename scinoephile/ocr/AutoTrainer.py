@@ -74,7 +74,7 @@ class AutoTrainer(OCRBase):
                 self.model.save()
 
             # Quit
-            if round > 10:
+            if round > 100:
                 break
 
         # Present IPython prompt
