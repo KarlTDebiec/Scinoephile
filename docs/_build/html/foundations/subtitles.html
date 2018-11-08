@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Subtitles &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Classes" href="classes.html" />
+    <link rel="prev" title="Foundations" href="../foundations.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ocr/datasets.html">Image Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../foundations.html">Foundations</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../foundations.html">Foundations</a> &raquo;</li>
+        
+      <li>Subtitles</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="subtitles">
+<h1>Subtitles<a class="headerlink" href="#subtitles" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scinoephile.SubtitleDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleDataset</code><a class="reference internal" href="../_modules/scinoephile/SubtitleDataset.html#SubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="classes.html#scinoephile.DatasetBase" title="scinoephile.DatasetBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.DatasetBase</span></code></a></p>
+<p>A collection of subtitles</p>
+<p>Serves as an additional layer around SubtitleSeries and SubtitleEvent to
+separate scinoephile and pysubs2 styles.</p>
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.series_class">
+<code class="descname">series_class</code><a class="headerlink" href="#scinoephile.SubtitleDataset.series_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.SubtitleDataset.subtitles">
+<code class="descname">subtitles</code><a class="headerlink" href="#scinoephile.SubtitleDataset.subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.core.frame.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.SubtitleSeries">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleSeries</code><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="classes.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssafile.SSAFile</span></code></p>
+<p>A series of subtitles</p>
+<p>Extension of pysubs2’s SSAFile with additional features. Includes code for
+loading to and saving from hdf5. While these are part of separate classes
+in pysubs.SSAFile, this separation is not really beneficial here.</p>
+<dl class="attribute">
+<dt id="scinoephile.SubtitleSeries.event_class">
+<code class="descname">event_class</code><a class="headerlink" href="#scinoephile.SubtitleSeries.event_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleEvent.SubtitleEvent</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.SubtitleSeries.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.SubtitleSeries.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves subtitles to an output file</p>
+<p>pysubs2.SSAFile.save expects an open text file, so we open the hdf5
+file here for consistency.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.SubtitleSeries.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>encoding='utf-8'</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads subtitles from an input file</p>
+<p>pysubs2.SSAFile.from_file expects an open text file, so we open the
+hdf5 file here for consistency</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.SubtitleEvent">
+<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleEvent</code><a class="reference internal" href="../_modules/scinoephile/SubtitleEvent.html#SubtitleEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="classes.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssaevent.SSAEvent</span></code></p>
+<p>An individual subtitle</p>
+<p>Extension of pysubs2’s SSAEvent with additional features.</p>
+<dl class="method">
+<dt id="scinoephile.SubtitleEvent.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleEvent.html#SubtitleEvent.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="classes.html" class="btn btn-neutral float-right" title="Classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../foundations.html" class="btn btn-neutral" title="Foundations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -81,55 +81,29 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../base.html">Base Functionality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#command-line-tool-base">Command Line Tool Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#subtitles">Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-base">OCR Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-images">OCR Images</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#train-dataset">Train Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#test-dataset">Test Dataset</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#machine-learning">Machine Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/datasets.html">Image Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future-projects">Future Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future">Future</a></li>
 </ul>
 </li>
 </ul>
@@ -215,7 +189,7 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="ImageSubtitleSeries"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleSeries</span><span class="p">(</span><span class="n">SubtitleSeries</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleSeries"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleSeries</span><span class="p">(</span><span class="n">SubtitleSeries</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A series of image-based subtitles</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -227,6 +201,14 @@
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">char_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ndarray: Number of individual characters within subtitle&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_char_counts&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_char_counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">char_count</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_char_counts</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">char_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -257,7 +239,20 @@
     <span class="k">def</span> <span class="nf">get_subchar_indexes_of_char_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_index</span><span class="p">,</span> <span class="n">char_index</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_indexes</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="n">sub_index</span><span class="p">,</span> <span class="n">char_index</span><span class="p">))</span>
 
-<div class="viewcode-block" id="ImageSubtitleSeries.save"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleSeries.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="n">char_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_data</span><span class="p">)</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_counts</span><span class="p">)</span>
+        <span class="n">starts</span> <span class="o">=</span> <span class="n">ends</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_counts</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">char_predictions</span> <span class="o">=</span> <span class="n">char_predictions</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">reconstruct_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">reconstruct_text</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves subtitles to an output file, warning that data will be lost if</span>
 <span class="sd">        not saved to hdf5</span>
@@ -284,14 +279,37 @@
                  <span class="n">f</span><span class="s2">&quot;to hdf5&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Saving to &#39;</span><span class="si">{path}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ImageSubtitleSeries.save"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves subtitles to an output file</span>
+
+<span class="sd">        pysubs2.SSAFile.save expects an open text file, so we open the hdf5</span>
+<span class="sd">        file here for consistency.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pysubs2</span> <span class="k">import</span> <span class="n">SSAFile</span>
+
+        <span class="c1"># Check if hdf5</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
+            <span class="kn">import</span> <span class="nn">h5py</span>
+
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Check if directory</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;png&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_png</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Otherwise, continue as superclass SSAFile</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Class Methods</span>
 
-<div class="viewcode-block" id="ImageSubtitleSeries.load"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.ImageSubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleSeries.load"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        SSAFile.from_file expects an open text file, so we open hdf5 here</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -302,13 +320,11 @@
             <span class="kn">import</span> <span class="nn">h5py</span>
 
             <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span>
-                                      <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Check if sup</span>
         <span class="k">if</span> <span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;sup&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;sup&quot;</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">imgmode</span><span class="p">,</span>
-                                     <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Otherwise, use SSAFile.from_file</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
@@ -350,12 +366,21 @@
                                                 <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                 <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_save_png</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">makedirs</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isdir</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>
+            <span class="n">makedirs</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{fp}</span><span class="s2">/</span><span class="si">{i:04d}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Private Class Methods</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">imgmode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an hdf5 file into a nascent SubtitleSeries</span>
 
@@ -369,9 +394,10 @@
 
         <span class="c1"># Load images</span>
         <span class="k">if</span> <span class="s2">&quot;images&quot;</span> <span class="ow">in</span> <span class="n">fp</span> <span class="ow">and</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">subs</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">imgmode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">subs</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">imgmode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+            <span class="c1"># TODO: Support converting from one image mode to another on load</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
                 <span class="n">event</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">mode</span>

@@ -81,55 +81,29 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../base.html">Base Functionality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#command-line-tool-base">Command Line Tool Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#subtitles">Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-base">OCR Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-images">OCR Images</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#train-dataset">Train Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#test-dataset">Test Dataset</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#machine-learning">Machine Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/datasets.html">Image Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future-projects">Future Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future">Future</a></li>
 </ul>
 </li>
 </ul>
@@ -214,14 +188,14 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="TestOCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.TestOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">TestOCRDataset</span><span class="p">(</span><span class="n">LabeledOCRDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="TestOCRDataset"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TestOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">TestOCRDataset</span><span class="p">(</span><span class="n">LabeledOCRDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of labeled character images for testing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
 
-<div class="viewcode-block" id="TestOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.TestOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sub_ds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TestOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TestOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sub_ds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Store property values</span>

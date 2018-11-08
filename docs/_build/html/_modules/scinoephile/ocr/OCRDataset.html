@@ -81,55 +81,29 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../base.html">Base Functionality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#command-line-tool-base">Command Line Tool Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../base.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../base.html#subtitles">Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../base.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#base-classes">Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-base">OCR Base</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#data-structures">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#ocr-images">OCR Images</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#base-dataset">Base Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#labeled-dataset">Labeled Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#train-dataset">Train Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#test-dataset">Test Dataset</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ocr.html#image-based-subtitles">Image-Based Subtitles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#dataset">Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#series">Series</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../ocr.html#event">Event</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#machine-learning">Machine Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr.html#functions">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/datasets.html">Image Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#implement-optical-character-recognition-for-reading-blu-ray-subtitles">Implement Optical Character Recognition for Reading Blu-Ray Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#migrate-compositor-to-new-data-structures">Migrate Compositor to New Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future-projects">Future Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#future">Future</a></li>
 </ul>
 </li>
 </ul>
@@ -216,40 +190,12 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">DatasetBase</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">DatasetBase</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of character images</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Public Properties</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;pandas.DataFrame: Character image specifications&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
-                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">})</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span>
-
-    <span class="nd">@spec</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="c1"># TODO: Validate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">spec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@property</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -284,11 +230,39 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;pandas.DataFrame: Character image specifications&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec&quot;</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span>
+
+    <span class="nd">@spec</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># TODO: Validate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">spec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
 
-<div class="viewcode-block" id="OCRDataset.add_img"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.add_img">[docs]</a>    <span class="k">def</span> <span class="nf">add_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.add_img"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.add_img">[docs]</a>    <span class="k">def</span> <span class="nf">add_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds new images</span>
 
@@ -307,7 +281,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">new</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OCRDataset.load"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.load"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads character images from an input file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -332,7 +306,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="OCRDataset.save"><a class="viewcode-back" href="../../../ocr.html#scinoephile.ocr.OCRDataset.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.save"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves character images to an output file</span>
 <span class="sd">        &quot;&quot;&quot;</span>

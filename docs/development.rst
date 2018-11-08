@@ -3,8 +3,8 @@
 Development
 -----------
 
-Implement Optical Character Recognition for Reading Blu-Ray Subtitles
-_____________________________________________________________________
+Optical Character Recognition
+_____________________________
 
 - [x] Fix font support on new macos and matplotlib
 - [x] Update GeneratedOCRDataset's generate_training_data
@@ -38,8 +38,8 @@ _____________________________________________________________________
 - [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
 
-Migrate Compositor to New Data Structures
-_________________________________________
+Compositor Rewrite
+__________________
 
 - [ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames
 - [ ] Set up framework for CompositeSubtitleDataset(Dataset)
@@ -56,6 +56,7 @@ _____________
 - [ ] Document OCRBase and OCRCLToolBase
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
+- [ ] Improve examples
 
 Miscellaneous
 _____________
@@ -66,8 +67,8 @@ _____________
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
 
-Future Projects
-_______________
+Future
+______
 
 - Improve requirements.txt and clarify what is required for which functions
 - Automated testing using pytest and TravisCI

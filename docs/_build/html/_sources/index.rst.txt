@@ -11,8 +11,7 @@ Scinoephile
     :hidden:
     :maxdepth: 4
 
-    base.rst
-    ocr.rst
     cltools.rst
+    ocr.rst
+    foundations.rst
     development.rst
-

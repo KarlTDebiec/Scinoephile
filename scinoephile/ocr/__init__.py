@@ -7,6 +7,38 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+"""
+Test
+
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.ocr.OCRBase
+
+Image-Based Subtitles
+
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.ocr.ImageSubtitleDataset
+    scinoephile.ocr.ImageSubtitleSeries
+    scinoephile.ocr.ImageSubtitleEvent
+
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.ocr.OCRDataset
+    scinoephile.ocr.TrainOCRDataset
+    scinoephile.ocr.TestOCRDataset
+
+.. autosummary::
+    :nosignatures:
+
+    scinoephile.ocr.Model
+    scinoephile.ocr.AutoTrainer
+
+Test
+"""
 ################################### MODULES ###################################
 from abc import ABC, abstractmethod
 from scinoephile import Base, CLToolBase
