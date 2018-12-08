@@ -32,7 +32,7 @@ _____________________________
 - [x] Verify that subtitle series images can be saved to png files
 - [x] Reconstruct including spaces
 - [x] Reduce ImageSubtitleSeries char_data to single instance of each image
-- [ ] Save ImageSubtitleSeries char_data and char_spec to hdf5
+- [x] Save ImageSubtitleSeries char_data and char_spec to hdf5
 - [ ] Make sure ImageSubtitleSeries reconstruction still works
 
 - [ ] Prepare small amount of test data (i.e. accurate reconstuction)
@@ -43,6 +43,7 @@ _____________________________
 - [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
 - [ ] Add support for more complex identification of spaces between characters
+- [ ] Improve support for traditional Chinese and English
 
 Compositor Rewrite
 __________________

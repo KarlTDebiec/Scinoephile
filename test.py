@@ -35,10 +35,8 @@ def test(movie, language, mode):
     ImageSubtitleDataset(infile=sup_file, outfile=h5_file, **kwargs)()
     ImageSubtitleDataset(infile=h5_file, outfile=png_file, **kwargs)()
 
-
 # test("magnificent_mcdull", "cmn-Hans", "8 bit")
 # test("magnificent_mcdull", "cmn-Hans", "1 bit")
-test("magnificent_mcdull", "cmn-Hant", "8 bit")
 # test("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
 # test("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
 # test("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
