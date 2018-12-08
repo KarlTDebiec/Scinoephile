@@ -79,11 +79,22 @@ class TestOCRDataset(LabeledOCRDataset):
     # endregion
 
     # region Public Methods
-    def calculate_diff(self, trn_ds):
-        for char in self.get_present_chars_set():
-            print(char)
-            print(trn_ds.get_present_specs_of_char(char))
-        embed(**self.embed_kw)
+    # def calculate_diff(self, trn_ds):
+    #     import numpy as np
+    #
+    #     for char in self.get_present_chars()[:self.n_chars]:
+    #         print(char)
+    #         tst_spec = self.get_present_specs_of_char(char)
+    #         trn_spec = trn_ds.get_present_specs_of_char(char)
+    #         tst_data = self.data[tst_spec.index.values]
+    #         trn_data = trn_ds.data[trn_spec.index.values]
+    #         diff = trn_data.astype(np.float32) - tst_data
+    #         diff = np.power(diff, 2)
+    #         trn_spec["rmse"] = np.sqrt(np.mean(diff, axis=(1, 2)))
+    #         diff = np.sqrt(diff)
+    #         trn_spec["mae"] = np.mean(diff, axis=(1, 2))
+    #
+    #         embed(**self.embed_kw)
 
     def get_present_chars(self):
         return sorted(list(self.get_present_chars_set()),
@@ -101,14 +112,9 @@ class TestOCRDataset(LabeledOCRDataset):
                 self.spec["char"] == char].drop("char", axis=1)[
                 self.spec["source"] == source].drop("source", axis=1)
 
-    def get_present_specs_of_char_set(self, char, source=None):
-        if source is None:
-            return set(map(tuple, self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1).values))
-        else:
-            return set(map(tuple, self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1)[
-                self.spec["source"] == source].drop("source", axis=1).values))
+    def get_present_specs_of_char_set(self, char, **kwargs):
+        return set(map(tuple,
+                       self.get_present_specs_of_char(char, **kwargs).values))
 
     def label_test_data(self, sub_ds=None, model=None):
         import numpy as np
@@ -240,14 +246,18 @@ class TestOCRDataset(LabeledOCRDataset):
         encoded["source"] = encoded["source"].apply(encode)
         encoded = np.array(list(map(tuple, list(encoded.values))), dtype=dtypes)
         fp.create_dataset("spec",
-                          data=encoded, dtype=dtypes,
-                          chunks=True, compression="gzip")
+                          data=encoded,
+                          dtype=dtypes,
+                          chunks=True,
+                          compression="gzip")
 
-        # Save iamge data
+        # Save image data
         if "data" in fp:
             del fp["data"]
         fp.create_dataset("data",
-                          data=self.data, dtype=self.data_dtype,
-                          chunks=True, compression="gzip")
+                          data=self.data,
+                          dtype=self.data_dtype,
+                          chunks=True,
+                          compression="gzip")
 
     # endregion

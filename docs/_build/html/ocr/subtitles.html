@@ -220,8 +220,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleSeries.char_counts">
-<code class="descname">char_counts</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_counts" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleSeries.char_count">
+<code class="descname">char_count</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of individual characters within subtitle</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -248,14 +248,56 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="scinoephile.ocr.ImageSubtitleSeries.char_indexes">
-<code class="descname">char_indexes</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_indexes" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.ImageSubtitleSeries.char_spec">
+<code class="descname">char_spec</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_spec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indexes of char data in form of (subtitle, char)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">tuple(int, int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleSeries.data_dtype">
+<code class="descname">data_dtype</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.data_dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>dtype of image arrays</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleSeries.spec_cols">
+<code class="descname">spec_cols</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.spec_cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character image specification columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.ImageSubtitleSeries.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character image specification dtypes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(str)</td>
 </tr>
 </tbody>
 </table>

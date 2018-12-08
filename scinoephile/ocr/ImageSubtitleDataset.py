@@ -66,46 +66,4 @@ class ImageSubtitleDataset(SubtitleDataset, OCRBase):
                                                 verbosity=self.verbosity)
         self.subtitles.verbosity = self.verbosity
 
-    def show(self, data=None, indexes=None, cols=20):
-        import numpy as np
-        from PIL import Image
-
-        # Process arguments
-        if data is None and indexes is None:
-            data = self.char_data
-            indexes = range(self.char_data.shape[0])
-        elif data is None and indexes is not None:
-            data = self.char_data
-        elif data is not None and indexes is None:
-            indexes = range(data.shape[0])
-        if isinstance(indexes, int):
-            indexes = [indexes]
-        indexes = np.array(indexes, np.int)
-        if np.any(indexes >= data.shape[0]):
-            raise ValueError()
-        if cols is None:
-            cols = indexes.size
-            rows = 1
-        else:
-            rows = int(np.ceil(indexes.size / cols))
-
-        # Draw image
-        if self.mode == "8 bit":
-            img = Image.new("L", (cols * 100, rows * 100), 255)
-        elif self.mode == "1 bit":
-            img = Image.new("1", (cols * 100, rows * 100), 1)
-        for i, index in enumerate(indexes):
-            column = (i // cols)
-            row = i - (column * cols)
-            if self.mode == "8 bit":
-                char_img = Image.fromarray(data[index])
-            elif self.mode == "1 bit":
-                char_img = Image.fromarray(
-                    data[index].astype(np.uint8) * 255)
-            img.paste(char_img, (100 * row + 10,
-                                 100 * column + 10,
-                                 100 * (row + 1) - 10,
-                                 100 * (column + 1) - 10))
-        img.show()
-
     # endregion

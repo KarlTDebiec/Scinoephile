@@ -206,12 +206,17 @@
 <li>[x] Save reconstructed subtitles to srt</li>
 <li>[x] Verify that subtitle series images can be saved to png files</li>
 <li>[x] Reconstruct including spaces</li>
-<li>[ ] Prepare small amout of test data (i.e. accuracte reconstuction)</li>
+<li>[x] Reduce ImageSubtitleSeries char_data to single instance of each image</li>
+<li>[ ] Save ImageSubtitleSeries char_data and char_spec to hdf5</li>
+<li>[ ] Make sure ImageSubtitleSeries reconstruction still works</li>
+<li>[ ] Prepare small amount of test data (i.e. accurate reconstuction)</li>
+<li>[ ] Calculate diff between training images and test images to guide spec selection</li>
+<li>[ ] TrainOCRDataset and TestOCRDataset sort function</li>
 <li>[ ] Calculate reconstruction accuracy against test data</li>
 <li>[ ] Calculate model accuracy on test data</li>
-<li>[ ] Calculate diff between training images and test images to guide spec selection</li>
 <li>[ ] Add log output to AutoTrainer</li>
 <li>[ ] Add support for Western characters and punctuation</li>
+<li>[ ] Add support for more complex identification of spaces between characters</li>
 </ul>
 </div>
 <div class="section" id="compositor-rewrite">
@@ -239,6 +244,7 @@
 <div class="section" id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li>[ ] Replace matplotlib with another library to improve font support</li>
 <li>[ ] Make clearer whether functions are acting on Images or image data</li>
 <li>[ ] Visualize weights</li>
 <li>[ ] Extend generate_training_data to add set number of images rather than use total</li>
@@ -252,6 +258,7 @@
 <li>Improve requirements.txt and clarify what is required for which functions</li>
 <li>Automated testing using pytest and TravisCI</li>
 <li>Sphinx checklist extension to convert “- [ ]” to “☐” and “- [X]” to “☑”</li>
+<li>Replace test.py with a notebook</li>
 </ul>
 </div>
 </div>

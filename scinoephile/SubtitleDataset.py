@@ -27,6 +27,8 @@ class SubtitleDataset(DatasetBase):
 
     # endregion
 
+    # region Public Properties
+
     @property
     def subtitles(self):
         """pandas.core.frame.DataFrame: Subtitles"""

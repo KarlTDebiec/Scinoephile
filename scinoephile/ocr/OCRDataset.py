@@ -158,18 +158,21 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
 
     def show(self, data=None, indexes=None, cols=20):
         import numpy as np
+        from pandas import DataFrame
         from PIL import Image
 
         # Process arguments
         if data is None and indexes is None:
             data = self.data
             indexes = range(self.data.shape[0])
-        elif data is None and indexes is not None:
-            data = self.data
         elif data is not None and indexes is None:
             indexes = range(data.shape[0])
+        elif data is None and indexes is not None:
+            data = self.data
         if isinstance(indexes, int):
             indexes = [indexes]
+        elif isinstance(indexes, DataFrame):
+            indexes = indexes.index.values
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= data.shape[0]):
             raise ValueError()

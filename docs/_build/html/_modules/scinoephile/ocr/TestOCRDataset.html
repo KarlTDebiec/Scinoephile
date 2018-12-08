@@ -254,6 +254,29 @@
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
+    <span class="c1"># def calculate_diff(self, trn_ds):</span>
+    <span class="c1">#     import numpy as np</span>
+    <span class="c1">#</span>
+    <span class="c1">#     for char in self.get_present_chars()[:self.n_chars]:</span>
+    <span class="c1">#         print(char)</span>
+    <span class="c1">#         tst_spec = self.get_present_specs_of_char(char)</span>
+    <span class="c1">#         trn_spec = trn_ds.get_present_specs_of_char(char)</span>
+    <span class="c1">#         tst_data = self.data[tst_spec.index.values]</span>
+    <span class="c1">#         trn_data = trn_ds.data[trn_spec.index.values]</span>
+    <span class="c1">#         diff = trn_data.astype(np.float32) - tst_data</span>
+    <span class="c1">#         diff = np.power(diff, 2)</span>
+    <span class="c1">#         trn_spec[&quot;rmse&quot;] = np.sqrt(np.mean(diff, axis=(1, 2)))</span>
+    <span class="c1">#         diff = np.sqrt(diff)</span>
+    <span class="c1">#         trn_spec[&quot;mae&quot;] = np.mean(diff, axis=(1, 2))</span>
+    <span class="c1">#</span>
+    <span class="c1">#         embed(**self.embed_kw)</span>
+
+    <span class="k">def</span> <span class="nf">get_present_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_present_chars_set</span><span class="p">()),</span>
+                      <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_present_chars_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">get_present_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -264,14 +287,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">source</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_present_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">source</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_present_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span>
+                       <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">label_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_ds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -403,15 +421,19 @@
         <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">encode</span><span class="p">)</span>
         <span class="n">encoded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">values</span><span class="p">))),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
         <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;spec&quot;</span><span class="p">,</span>
-                          <span class="n">data</span><span class="o">=</span><span class="n">encoded</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
-                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+                          <span class="n">data</span><span class="o">=</span><span class="n">encoded</span><span class="p">,</span>
+                          <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Save iamge data</span>
+        <span class="c1"># Save image data</span>
         <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
         <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
-                          <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">,</span>
-                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span></div>
+                          <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                          <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span></div>
 
     <span class="c1"># endregion</span>
 </pre></div>

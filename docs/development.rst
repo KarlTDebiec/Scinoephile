@@ -31,12 +31,18 @@ _____________________________
 - [x] Save reconstructed subtitles to srt
 - [x] Verify that subtitle series images can be saved to png files
 - [x] Reconstruct including spaces
+- [x] Reduce ImageSubtitleSeries char_data to single instance of each image
+- [ ] Save ImageSubtitleSeries char_data and char_spec to hdf5
+- [ ] Make sure ImageSubtitleSeries reconstruction still works
+
+- [ ] Prepare small amount of test data (i.e. accurate reconstuction)
 - [ ] Calculate diff between training images and test images to guide spec selection
-- [ ] Prepare small amount of test data (i.e. accuracte reconstuction)
+- [ ] TrainOCRDataset and TestOCRDataset sort function
 - [ ] Calculate reconstruction accuracy against test data
 - [ ] Calculate model accuracy on test data
 - [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
+- [ ] Add support for more complex identification of spaces between characters
 
 Compositor Rewrite
 __________________
@@ -61,6 +67,7 @@ _____________
 Miscellaneous
 _____________
 
+- [ ] Replace matplotlib with another library to improve font support
 - [ ] Make clearer whether functions are acting on Images or image data
 - [ ] Visualize weights
 - [ ] Extend generate_training_data to add set number of images rather than use total

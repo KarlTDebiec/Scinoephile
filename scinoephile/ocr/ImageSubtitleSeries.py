@@ -28,83 +28,72 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     # region Public Properties
 
     @property
-    def char_counts(self):
+    def char_count(self):
         """ndarray: Number of individual characters within subtitle"""
-        if not hasattr(self, "_char_counts"):
-            self._char_counts = [e.char_count for e in self.events]
+        if not hasattr(self, "_char_count"):
+            self._char_count = [e.char_count for e in self.events]
 
-        return self._char_counts
+        return self._char_count
 
     @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitles"""
         if not hasattr(self, "_char_data"):
-            import numpy as np
-
-            self._char_data = np.concatenate([e.char_data for e in self.events])
-
+            self._initialize_char_data()
         return self._char_data
 
     @property
-    def char_indexes(self):
+    def char_spec(self):
         """tuple(int, int): Indexes of char data in form of (subtitle, char)"""
-        if not hasattr(self, "_char_indexes"):
-            self._char_indexes = [(s, c)
-                                  for s, e in enumerate(self.events)
-                                  for c in range(e.char_data.shape[0])]
-        return self._char_indexes
+        if not hasattr(self, "_char_spec"):
+            self._initialize_char_data()
+
+        return self._char_spec
+
+    @property
+    def data_dtype(self):
+        """type: dtype of image arrays"""
+        import numpy as np
+
+        if self.mode == "8 bit":
+            return np.uint8
+        elif self.mode == "1 bit":
+            return np.bool
+        else:
+            raise NotImplementedError()
+
+    @property
+    def spec_cols(self):
+        """list(str): Character image specification columns"""
+        return ["indexes"]
+
+    @property
+    def spec_dtypes(self):
+        """list(str): Character image specification dtypes"""
+        return {"indexes": object}
 
     # endregion
 
     # region Public Methods
 
     def get_char_indexes_of_subchar_indexes(self, index):
-        return self.char_indexes[index]
+        return self.char_spec[index]
 
     def get_subchar_indexes_of_char_indexes(self, sub_index, char_index):
-        return self.char_indexes.index((sub_index, char_index))
+        return self.char_spec.index((sub_index, char_index))
 
     def predict(self, model):
         import numpy as np
 
         char_predictions = model.model.predict(self.char_data)
-        ends = np.cumsum(self.char_counts)
-        starts = ends - self.char_counts
+        ends = np.cumsum(self.char_count)
+        starts = ends - self.char_count
         for start, end, event in zip(starts, ends, self.events):
             event.char_predictions = char_predictions[start:end]
 
     def reconstruct_text(self):
         for event in self.events:
             event.reconstruct_text()
-
-    def save(self, path, format_=None, **kwargs):
-        """
-        Saves subtitles to an output file, warning that data will be lost if
-        not saved to hdf5
-
-        pysubs2.SSAFile.save expects an open text file, so we open the hdf5
-        file here for consistency.
-        """
-
-        # Check if hdf5
-        if (format_ == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
-            import h5py
-
-            if self.verbosity >= 1:
-                print(f"Saving to '{path}' as hdf5")
-            with h5py.File(path) as fp:
-                self._save_hdf5(fp, **kwargs)
-        # Otherwise, continue as superclass SSAFile
-        else:
-            from warnings import warn
-            from pysubs2 import SSAFile
-
-            warn(f"{self.__class__.__name__}'s image data may only be saved"
-                 f"to hdf5")
-            if self.verbosity >= 1:
-                print(f"Saving to '{path}'")
-            SSAFile.save(self, path, format_=format_, **kwargs)
 
     def save(self, path, format_=None, **kwargs):
         """
@@ -128,6 +117,48 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         # Otherwise, continue as superclass SSAFile
         else:
             SSAFile.save(self, path, format_=format_, **kwargs)
+
+    def show(self, data=None, indexes=None, cols=20):
+        import numpy as np
+        from PIL import Image
+
+        # Process arguments
+        if data is None and indexes is None:
+            data = self.char_data
+            indexes = range(self.char_data.shape[0])
+        elif data is None and indexes is not None:
+            data = self.char_data
+        elif data is not None and indexes is None:
+            indexes = range(data.shape[0])
+        if isinstance(indexes, int):
+            indexes = [indexes]
+        indexes = np.array(indexes, np.int)
+        if np.any(indexes >= data.shape[0]):
+            raise ValueError()
+        if cols is None:
+            cols = indexes.size
+            rows = 1
+        else:
+            rows = int(np.ceil(indexes.size / cols))
+
+        # Draw image
+        if self.mode == "8 bit":
+            img = Image.new("L", (cols * 100, rows * 100), 255)
+        elif self.mode == "1 bit":
+            img = Image.new("1", (cols * 100, rows * 100), 1)
+        for i, index in enumerate(indexes):
+            column = (i // cols)
+            row = i - (column * cols)
+            if self.mode == "8 bit":
+                char_img = Image.fromarray(data[index])
+            elif self.mode == "1 bit":
+                char_img = Image.fromarray(
+                    data[index].astype(np.uint8) * 255)
+            img.paste(char_img, (100 * row + 10,
+                                 100 * column + 10,
+                                 100 * (row + 1) - 10,
+                                 100 * (column + 1) - 10))
+        img.show()
 
     # endregion
 
@@ -161,6 +192,30 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     # region Private Methods
 
+    def _initialize_char_data(self):
+        import numpy as np
+        import pandas as pd
+
+        n_total_chars = sum(self.char_count)
+        n_checked_chars = 0
+        n_unique_chars = 0
+        char_data = np.zeros((n_total_chars, 80, 80), np.uint8)
+        char_indexes = []
+
+        for i, e in enumerate(self.events):
+            n_checked_chars += e.char_count
+            for j, c in enumerate(e.char_data):
+                match = (char_data[:n_unique_chars] == c).all(axis=(1, 2))
+                if match.any():
+                    index = np.where(match)[0][0]
+                    char_indexes[index].append((i, j))
+                else:
+                    char_data[n_unique_chars] = c
+                    char_indexes.append([(i, j)])
+                    n_unique_chars += 1
+        self._char_data = char_data[:n_unique_chars]
+        self._char_spec = pd.DataFrame.from_dict({"indexes": char_indexes})
+
     def _save_hdf5(self, fp, **kwargs):
         """
         Saves subtitles to an output hdf5 file
@@ -169,31 +224,60 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
           - [ ] Save project info
         """
         import numpy as np
+        import pandas as pd
+
+        dtypes = [("series char index", "i8"),
+                  ("subtitle index", "i8"),
+                  ("subtitle char index", "i8")]
 
         # Save info, styles and subtitles
         SubtitleSeries._save_hdf5(self, fp, **kwargs)
 
-        # Save images
+        # Save image mode
+        fp.attrs["mode"] = self.mode
+
+        # Save subtitle image data
         if "images" in fp:
             del fp["images"]
         fp.create_group("images")
-        fp["images"].attrs["mode"] = self.mode
         for i, event in enumerate(self.events):
             if hasattr(event, "data"):
-                if event.mode == "8 bit":
-                    fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.data,
-                                                dtype=np.uint8, chunks=True,
-                                                compression="gzip")
-                elif event.mode == "1 bit":
-                    fp["images"].create_dataset(f"{i:04d}",
-                                                data=event.data,
-                                                dtype=np.bool, chunks=True,
-                                                compression="gzip")
+                fp["images"].create_dataset(f"{i:04d}",
+                                            data=event.data,
+                                            dtype=self.data_dtype,
+                                            chunks=True,
+                                            compression="gzip")
+
+        # Save char image specs
+        if "char_spec" in fp:
+            del fp["char_spec"]
+        fp.create_dataset("char_spec",
+                          data=np.array(
+                              list(
+                                  map(tuple, list(pd.DataFrame(
+                                      [(i, j, k)
+                                       for i, s in self.char_spec.iterrows()
+                                       for j, k in s["indexes"]],
+                                      columns=[d[0] for d in dtypes]).values))),
+                              dtype=dtypes),
+                          dtype=dtypes,
+                          chunks=True,
+                          compression="gzip")
+
+        # Save char image data
+        if "char_data" in fp:
+            del fp["char_data"]
+        fp.create_dataset("char_data",
+                          data=self.char_data,
+                          dtype=self.data_dtype,
+                          chunks=True,
+                          compression="gzip")
 
     def _save_png(self, fp, **kwargs):
         from os import makedirs
         from os.path import isdir
+
+        # todo: Also save SRT file in folder using pysubs2 code
 
         if not isdir(fp):
             makedirs(fp)
@@ -213,23 +297,44 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
           - [ ] Load project info
         """
         import numpy as np
+        import pandas as pd
 
         # Load info, styles, and events
         subs = super()._load_hdf5(fp=fp, verbosity=verbosity, **kwargs)
 
         # Load images
         if "images" in fp and "events" in fp:
-            if mode is not None and fp["images"].attrs["mode"] != mode:
+            if mode is not None and fp.attrs["mode"] != mode:
                 raise ValueError()
             # TODO: Support converting from one image mode to another on load
-            subs.mode = fp["images"].attrs["mode"]
+            subs.mode = fp.attrs["mode"]
 
             for i, event in enumerate(subs.events):
                 event.mode = subs.mode
-                if subs.mode == "8 bit":
-                    event.data = np.array(fp["images"][f"{i:04d}"], np.uint8)
-                elif subs.mode == "1 bit":
-                    event.data = np.array(fp["images"][f"{i:04d}"], np.bool)
+                event.data = np.array(fp["images"][f"{i:04d}"], subs.data_dtype)
+                # if subs.mode == "8 bit":
+                #     event.data = np.array(fp["images"][f"{i:04d}"], np.uint8)
+                # elif subs.mode == "1 bit":
+                #     event.data = np.array(fp["images"][f"{i:04d}"], np.bool)
+
+            # Load char image specs
+            if "char_spec" in fp:
+                encoded = np.array(fp["char_spec"])
+                encoded = pd.DataFrame(data=encoded,
+                                       index=range(encoded.size),
+                                       columns=encoded.dtype.names)
+                n_unique_chars = encoded["series char index"].max() + 1
+                char_spec = pd.DataFrame({"indexes":
+                                              np.empty((n_unique_chars,
+                                                        0)).tolist()})
+                for i, j, k in encoded.values:
+                    char_spec.loc[i] = char_spec.loc[i] + [(j, k)]
+
+                subs._char_spec = char_spec
+
+            # Load char image data
+            if "char_data" in fp:
+                subs._char_data = np.array(fp["char_data"])
 
         return subs
 
