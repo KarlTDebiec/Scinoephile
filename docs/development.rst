@@ -33,16 +33,17 @@ _____________________________
 - [x] Reconstruct including spaces
 - [x] Reduce ImageSubtitleSeries char_data to single instance of each image
 - [x] Save ImageSubtitleSeries char_data and char_spec to hdf5
+- [x] Prepare small amount of test data with accurate reconstuction for validation
+- [ ] Log stdout to file
 - [ ] Make sure ImageSubtitleSeries reconstruction still works
 
-- [ ] Prepare small amount of test data (i.e. accurate reconstuction)
 - [ ] Calculate diff between training images and test images to guide spec selection
-- [ ] TrainOCRDataset and TestOCRDataset sort function
+- [ ] Implement TrainOCRDataset and TestOCRDataset sort function
 - [ ] Calculate reconstruction accuracy against test data
 - [ ] Calculate model accuracy on test data
 - [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
-- [ ] Add support for more complex identification of spaces between characters
+- [ ] Improve identification of spaces between characters
 - [ ] Improve support for traditional Chinese and English
 
 Compositor Rewrite

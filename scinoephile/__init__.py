@@ -280,6 +280,50 @@ class DatasetBase(Base, ABC):
     # endregion
 
 
+class StdoutLogger(object):
+    """
+    Logs print statements to stdout to a designated file
+    """
+
+    def __init__(self, outfile, mode, process_carriage_returns=True):
+        import sys
+
+        self.process_carriage_returns = process_carriage_returns
+
+        self.file = open(outfile, mode)
+        self.stdout = sys.stdout
+        sys.stdout = self
+
+    def flush(self):
+        self.file.flush()
+
+    def write(self, data):
+        self.file.write(data)
+        self.stdout.write(data)
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, _type, _value, _traceback):
+        import sys
+
+        sys.stdout = self.stdout
+        self.file.close()
+
+        if self.process_carriage_returns:
+            from io import open
+            from re import sub
+            from shutil import copyfile
+            from tempfile import NamedTemporaryFile
+
+            with open(self.file.name, "r", newline="\n") as file:
+                with NamedTemporaryFile("w") as temp:
+                    for i, line in enumerate(file):
+                        temp.write(sub("^.*\r", "", line))
+                    temp.flush()
+                    copyfile(temp.name, f"{file.name}")
+
+
 ################################### MODULES ###################################
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries
