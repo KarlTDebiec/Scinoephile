@@ -196,6 +196,7 @@ class CLToolBase(Base, ABC):
 
 
 class DatasetBase(Base, ABC):
+    """Base for datasets"""
 
     # Region Builtins
 
@@ -281,9 +282,9 @@ class DatasetBase(Base, ABC):
 
 
 class StdoutLogger(object):
-    """
-    Logs print statements to stdout to a designated file
-    """
+    """Logs print statements to both stdout and file; use with 'with'"""
+
+    # region Builtins
 
     def __init__(self, outfile, mode, process_carriage_returns=True):
         import sys
@@ -293,13 +294,6 @@ class StdoutLogger(object):
         self.file = open(outfile, mode)
         self.stdout = sys.stdout
         sys.stdout = self
-
-    def flush(self):
-        self.file.flush()
-
-    def write(self, data):
-        self.file.write(data)
-        self.stdout.write(data)
 
     def __enter__(self):
         pass
@@ -322,6 +316,19 @@ class StdoutLogger(object):
                         temp.write(sub("^.*\r", "", line))
                     temp.flush()
                     copyfile(temp.name, f"{file.name}")
+
+    # endregion
+
+    # region Public Methods
+
+    def flush(self):
+        self.file.flush()
+
+    def write(self, data):
+        self.file.write(data)
+        self.stdout.write(data)
+
+    # endregion
 
 
 ################################### MODULES ###################################

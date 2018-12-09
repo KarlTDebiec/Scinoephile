@@ -66,15 +66,15 @@ class AutoTrainer(OCRBase):
             round += 1
 
             # Evaluate model
-            self.model.analyze_predictions(trn_img, trn_lbl, "Training")
-            self.model.analyze_predictions(val_img, val_lbl, "Validation")
+            trn_loss, trn_acc = self.model.analyze_predictions(trn_img, trn_lbl, "Training")
+            val_loss, val_acc = self.model.analyze_predictions(val_img, val_lbl, "Validation")
 
             # Save model
             if self.model.outfile is not None:
                 self.model.save()
 
             # Quit
-            if round > 10:
+            if trn_acc >= 0.99 or round >= 100:
                 break
 
         # Present IPython prompt

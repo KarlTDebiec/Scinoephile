@@ -83,6 +83,8 @@ class Model(OCRBase, DatasetBase):
                                zip(poss_chars[:10], poss_probs[:10])]
                     print(f"{char} | {' '.join(matches)}")
 
+        return loss, acc
+
     def build(self):
         from tensorflow.keras.models import Sequential
         from tensorflow.keras.layers import Dense, Dropout, Flatten

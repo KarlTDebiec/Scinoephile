@@ -40,11 +40,16 @@ def test1(movie, language, mode):
 
 # test1("magnificent_mcdull", "cmn-Hans", "8 bit")
 # test1("magnificent_mcdull", "cmn-Hans", "1 bit")
+# Traditional fails in 8 bit mode; cannot handle overlapping Western characters
 # test1("magnificent_mcdull", "cmn-Hant", "1 bit")
+
 # test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
 # test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
+# Traditional fails; cannot handle overlapping Western characters
+
 # test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
 # test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
+# Traditional fails in 8 bit mode; cannot handle overlapping Western characters
 # test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
 
 
@@ -62,13 +67,9 @@ def test2(n_chars, n_images, mode):
     return trn_ds
 
 
-# test2(100, 100, "8 bit")
-# test2(100, 100, "1 bit")
-
-
 # Test model training
 def test3(n_chars, n_images, mode):
-    kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 2}
+    kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 1}
     mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
     log_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.log"
 
@@ -84,7 +85,13 @@ def test3(n_chars, n_images, mode):
         AutoTrainer(model=model, trn_ds=trn_ds, val_portion=0.1,
                     batch_size=256, epochs=10, **kwargs)()
 
-test3(100, 100, "8 bit")
+
+for n_chars in [100, 200, 300, 400, 500]:
+    for n_images in [100, 200, 300, 400, 500]:
+        for mode in ["1 bit", "8 bit"]:
+            mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
+            if not isfile(mod_file):
+                test3(n_chars, n_images, mode)
 
 # Test reconstruction
 # def reconstruct(movie, language, n_chars, n_images, mode):

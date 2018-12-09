@@ -34,7 +34,7 @@ _____________________________
 - [x] Reduce ImageSubtitleSeries char_data to single instance of each image
 - [x] Save ImageSubtitleSeries char_data and char_spec to hdf5
 - [x] Prepare small amount of test data with accurate reconstuction for validation
-- [ ] Log stdout to file
+- [x] Implement support for logging stdout to file
 - [ ] Make sure ImageSubtitleSeries reconstruction still works
 
 - [ ] Calculate diff between training images and test images to guide spec selection
