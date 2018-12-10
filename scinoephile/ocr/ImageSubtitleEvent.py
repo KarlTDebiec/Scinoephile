@@ -180,26 +180,21 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
         chars = self.get_chars_of_labels(
             np.argsort(self.char_predictions, axis=1)[:, -1])
-        # text = "".join(chars)
         text = ""
         items = zip(chars[:-1], chars[1:], self.char_widths[:-1],
                     self.char_widths[1:], self.char_separations)
         for i, (char_i, char_j, width_i, width_j, sep) in enumerate(items):
-            print(i, char_i, char_j, width_i, width_j, sep)
-
             text += char_i
 
             # Two Hanzi: separation cutoff of 40 to add double-width space
             if width_i >= 45 and width_j >= 45 and sep >= 40:
-                print("Adding a double-width space")
+                # print("Adding a double-width space")
                 text += "　"
             # Two Roman: separation cutoff of 35 to add single-width space
             elif width_i < 45 and width_j < 45 and sep >= 36:
-                print("Adding a single-width space")
+                # print("Adding a single-width space")
                 text += " "
         text += chars[-1]
-        self.show()
-        print(text)
 
         self.text = text
         # TODO: Improve handling of roman characters

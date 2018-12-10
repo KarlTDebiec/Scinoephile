@@ -43,6 +43,22 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         return self._char_data
 
     @property
+    def char_predictions(self):
+        if not hasattr(self, "_char_predictions"):
+            self._char_predictions = None
+        return self._char_predictions
+
+    @char_predictions.setter
+    def char_predictions(self, value):
+        import numpy as np
+
+        if not isinstance(value, np.ndarray):
+            raise ValueError(self._generate_setter_exception(value))
+        if value.shape[0] != self.char_data.shape[0]:
+            raise ValueError(self._generate_setter_exception(value))
+        self._char_predictions = value
+
+    @property
     def char_spec(self):
         """tuple(int, int): Indexes of char data in form of (subtitle, char)"""
         if not hasattr(self, "_char_spec"):
@@ -76,6 +92,51 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     # region Public Methods
 
+    def calculate_accuracy(self, infile, n_chars):
+        from scinoephile import SubtitleSeries
+
+        standard = SubtitleSeries.load(infile)
+        n_correct = 0
+        n_total = 0
+        n_correct_matchable = 0
+        n_total_matchable = 0
+
+        # Loop over events
+        event_pairs = zip([e.text for e in self.events[:len(standard.events)]],
+                          [e.text for e in standard.events])
+        for i, (pred_text, true_text) in enumerate(event_pairs):
+            pred_text = pred_text.replace("　", "").replace(" ", "")
+            true_text = true_text.replace("　", "").replace(" ", "")
+            true_text = true_text.replace("…", "...")
+            print(i, pred_text, true_text, len(pred_text), len(true_text))
+
+            # Determine labels of true characters
+            try:
+                true_labels = self.get_labels_of_chars(true_text)
+            except IndexError:
+                true_labels = []
+                for true_char in true_text:
+                    try:
+                        true_labels.append(self.get_labels_of_chars(true_char))
+                    except:
+                        true_labels.append(-1)
+
+            # Loop over characters
+            char_pairs = zip(pred_text, true_text, true_labels)
+            for j, (pred_char, true_char, true_label) in enumerate(char_pairs):
+                n_total += 1
+                if pred_char == true_char:
+                    n_correct += 1
+                if 0 <= true_label and true_label < n_chars:
+                    n_total_matchable += 1
+                    if pred_char == true_char:
+                        n_correct_matchable += 1
+        print(f"{n_correct} out of {n_total} characters correct "
+              f"(accuracy = {n_correct/n_total:6.4})")
+        print(f"{n_correct_matchable} out of {n_total_matchable} matchable "
+              f"characters correct "
+              f"(accuracy = {n_correct_matchable/n_total_matchable:6.4f})")
+
     def get_char_indexes_of_subchar_indexes(self, index):
         return self.char_spec[index]
 
@@ -83,13 +144,22 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         return self.char_spec.index((sub_index, char_index))
 
     def predict(self, model):
-        import numpy as np
+        import pandas as pd
 
-        char_predictions = model.model.predict(self.char_data)
-        ends = np.cumsum(self.char_count)
-        starts = ends - self.char_count
-        for start, end, event in zip(starts, ends, self.events):
-            event.char_predictions = char_predictions[start:end]
+        dtypes = [("series char index", "i8"),
+                  ("subtitle index", "i8"),
+                  ("subtitle char index", "i8")]
+
+        self.char_predictions = model.model.predict(self.char_data)
+        char_indexes = pd.DataFrame([(i, j, k)
+                                     for i, s in self.char_spec.iterrows()
+                                     for j, k in s["indexes"]],
+                                    columns=[d[0] for d in dtypes])
+        for i, event in enumerate(self.events):
+            event_indexes = char_indexes[
+                char_indexes["subtitle index"] == i].sort_values(
+                "subtitle char index")["series char index"].values
+            event.char_predictions = self.char_predictions[event_indexes]
 
     def reconstruct_text(self):
         for event in self.events:

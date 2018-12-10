@@ -241,15 +241,15 @@
             <span class="nb">round</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="c1"># Evaluate model</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="s2">&quot;Training&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">,</span> <span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
+            <span class="n">trn_loss</span><span class="p">,</span> <span class="n">trn_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="s2">&quot;Training&quot;</span><span class="p">)</span>
+            <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">,</span> <span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
 
             <span class="c1"># Save model</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
             <span class="c1"># Quit</span>
-            <span class="k">if</span> <span class="nb">round</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">trn_acc</span> <span class="o">&gt;=</span> <span class="mf">0.99</span> <span class="ow">or</span> <span class="nb">round</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
                 <span class="k">break</span>
 
         <span class="c1"># Present IPython prompt</span>

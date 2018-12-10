@@ -218,6 +218,22 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_char_data</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">char_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_char_predictions&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span>
+
+    <span class="nd">@char_predictions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">char_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">char_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;tuple(int, int): Indexes of char data in form of (subtitle, char)&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_char_spec&quot;</span><span class="p">):</span>
@@ -251,6 +267,51 @@
 
     <span class="c1"># region Public Methods</span>
 
+    <span class="k">def</span> <span class="nf">calculate_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">n_chars</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">SubtitleSeries</span>
+
+        <span class="n">standard</span> <span class="o">=</span> <span class="n">SubtitleSeries</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+        <span class="n">n_correct</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_correct_matchable</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_total_matchable</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Loop over events</span>
+        <span class="n">event_pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">standard</span><span class="o">.</span><span class="n">events</span><span class="p">)]],</span>
+                          <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">standard</span><span class="o">.</span><span class="n">events</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">pred_text</span><span class="p">,</span> <span class="n">true_text</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event_pairs</span><span class="p">):</span>
+            <span class="n">pred_text</span> <span class="o">=</span> <span class="n">pred_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;　&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">true_text</span> <span class="o">=</span> <span class="n">true_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;　&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">true_text</span> <span class="o">=</span> <span class="n">true_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pred_text</span><span class="p">,</span> <span class="n">true_text</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred_text</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_text</span><span class="p">))</span>
+
+            <span class="c1"># Determine labels of true characters</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">true_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">(</span><span class="n">true_text</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="n">true_labels</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">true_char</span> <span class="ow">in</span> <span class="n">true_text</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">true_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">(</span><span class="n">true_char</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">true_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Loop over characters</span>
+            <span class="n">char_pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pred_text</span><span class="p">,</span> <span class="n">true_text</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">pred_char</span><span class="p">,</span> <span class="n">true_char</span><span class="p">,</span> <span class="n">true_label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">char_pairs</span><span class="p">):</span>
+                <span class="n">n_total</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">pred_char</span> <span class="o">==</span> <span class="n">true_char</span><span class="p">:</span>
+                    <span class="n">n_correct</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">true_label</span> <span class="ow">and</span> <span class="n">true_label</span> <span class="o">&lt;</span> <span class="n">n_chars</span><span class="p">:</span>
+                    <span class="n">n_total_matchable</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">pred_char</span> <span class="o">==</span> <span class="n">true_char</span><span class="p">:</span>
+                        <span class="n">n_correct_matchable</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{n_correct}</span><span class="s2"> out of </span><span class="si">{n_total}</span><span class="s2"> characters correct &quot;</span>
+              <span class="n">f</span><span class="s2">&quot;(accuracy = {n_correct/n_total:6.4})&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{n_correct_matchable}</span><span class="s2"> out of </span><span class="si">{n_total_matchable}</span><span class="s2"> matchable &quot;</span>
+              <span class="n">f</span><span class="s2">&quot;characters correct &quot;</span>
+              <span class="n">f</span><span class="s2">&quot;(accuracy = {n_correct_matchable/n_total_matchable:6.4f})&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">get_char_indexes_of_subchar_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_spec</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
@@ -258,13 +319,22 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_spec</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="n">sub_index</span><span class="p">,</span> <span class="n">char_index</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-        <span class="n">char_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_data</span><span class="p">)</span>
-        <span class="n">ends</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_count</span><span class="p">)</span>
-        <span class="n">starts</span> <span class="o">=</span> <span class="n">ends</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_count</span>
-        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
-            <span class="n">event</span><span class="o">.</span><span class="n">char_predictions</span> <span class="o">=</span> <span class="n">char_predictions</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;series char index&quot;</span><span class="p">,</span> <span class="s2">&quot;i8&quot;</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s2">&quot;subtitle index&quot;</span><span class="p">,</span> <span class="s2">&quot;i8&quot;</span><span class="p">),</span>
+                  <span class="p">(</span><span class="s2">&quot;subtitle char index&quot;</span><span class="p">,</span> <span class="s2">&quot;i8&quot;</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">char_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_data</span><span class="p">)</span>
+        <span class="n">char_indexes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_spec</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
+                                     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;indexes&quot;</span><span class="p">]],</span>
+                                    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+            <span class="n">event_indexes</span> <span class="o">=</span> <span class="n">char_indexes</span><span class="p">[</span>
+                <span class="n">char_indexes</span><span class="p">[</span><span class="s2">&quot;subtitle index&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+                <span class="s2">&quot;subtitle char index&quot;</span><span class="p">)[</span><span class="s2">&quot;series char index&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">char_predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_predictions</span><span class="p">[</span><span class="n">event_indexes</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">reconstruct_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>

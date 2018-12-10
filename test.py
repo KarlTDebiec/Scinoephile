@@ -34,8 +34,12 @@ def test1(movie, language, mode):
     h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.h5"
     png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}/"
 
-    ImageSubtitleDataset(infile=sup_file, outfile=h5_file, **kwargs)()
-    ImageSubtitleDataset(infile=h5_file, outfile=png_file, **kwargs)()
+    sub_ds = ImageSubtitleDataset(infile=sup_file, outfile=h5_file, **kwargs)
+    sub_ds.load()
+    sub_ds.save()
+    sub_ds = ImageSubtitleDataset(infile=h5_file, outfile=png_file, **kwargs)
+    sub_ds.load()
+    sub_ds.save()
 
 
 # test1("magnificent_mcdull", "cmn-Hans", "8 bit")
@@ -86,35 +90,38 @@ def test3(n_chars, n_images, mode):
                     batch_size=256, epochs=10, **kwargs)()
 
 
-for n_chars in [100, 200, 300, 400, 500]:
-    for n_images in [100, 200, 300, 400, 500]:
-        for mode in ["1 bit", "8 bit"]:
-            mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
-            if not isfile(mod_file):
-                test3(n_chars, n_images, mode)
+# for n_chars in [100, 200]:
+#     for n_images in [100, 200]:
+#         for mode in ["1 bit", "8 bit"]:
+#             mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
+#             if not isfile(mod_file):
+#                 test3(n_chars, n_images, mode)
 
 # Test reconstruction
-# def reconstruct(movie, language, n_chars, n_images, mode):
-#     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 2}
-#     sub_ds = ImageSubtitleDataset(infile=sub_file, **kwargs)
-#     sub_ds()
-#     model = Model(infile=f"{data_root}/model/0100_0100_{mode.replace(' ','')}.h5", **kwargs)
-#     model.load()
-#     embed()
+def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
+    kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 2}
+    h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.h5"
+    srt_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.srt"
+    mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
+
+    sub_ds = ImageSubtitleDataset(infile=h5_file, **kwargs)
+    sub_ds.load()
+    model = Model(infile=mod_file, **kwargs)
+    model.load()
+    sub_ds.subtitles.predict(model)
+    sub_ds.subtitles.reconstruct_text()
+    sub_ds.save(srt_file)
+    if calculate_accuracy:
+        std_file = f"{data_root}/{movie}/standard.srt"
+        sub_ds.subtitles.calculate_accuracy(std_file, n_chars)
 
 
-# sub_file = f"{data_root}/magnificent_mcdull/mcdull_8bit.h5"
-# mod_file = f"{data_root}/model/0100_0100_8bit.h5"
-# reconstruct("magnificent_mcdull", "cmn-Hans", "100", "100", "8 bit")
-
-# tst_file = f"{data_root}/tst_8bit.h5"
-# trn_file = f"{data_root}/trn_0100_0100_8bit.h5"
-# trn_ds = TrainOCRDataset(infile=trn_file, **kwargs)
-# trn_ds.load()
-# tst_ds = TestOCRDataset(infile=tst_file, **kwargs)
-# tst_ds.load()
-# tst_ds.calculate_diff(trn_ds=trn_ds)
-
+# test4("magnificent_mcdull", "cmn-Hans", 100, 100, "8 bit")
+# test4("magnificent_mcdull", "cmn-Hans", 100, 100, "1 bit")
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "8 bit")
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "1 bit")
+test4("mcdull_prince_de_la_bun", "cmn-Hans", 200, 100, "8 bit", True)
+# test4("mcdull_prince_de_la_bun", "cmn-Hans", 100, 100, "1 bit", True)
 
 # Gather test data
 # def gather_test():

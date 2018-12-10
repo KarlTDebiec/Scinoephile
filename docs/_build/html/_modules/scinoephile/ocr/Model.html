@@ -258,6 +258,8 @@
                                <span class="nb">zip</span><span class="p">(</span><span class="n">poss_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">poss_probs</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{char}</span><span class="s2"> | {&#39; &#39;.join(matches)}&quot;</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span>
+
     <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
         <span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="k">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span>

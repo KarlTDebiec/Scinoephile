@@ -314,6 +314,7 @@
 <dt id="scinoephile.DatasetBase">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">DatasetBase</code><a class="reference internal" href="../_modules/scinoephile.html#DatasetBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.DatasetBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base for datasets</p>
 <dl class="method">
 <dt id="scinoephile.DatasetBase.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>infile=None</em>, <em>outfile=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#DatasetBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.DatasetBase.__init__" title="Permalink to this definition">¶</a></dt>
@@ -367,7 +368,7 @@
 <dt id="scinoephile.StdoutLogger">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">StdoutLogger</code><a class="reference internal" href="../_modules/scinoephile.html#StdoutLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.StdoutLogger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Logs print statements to stdout to a designated file</p>
+<p>Logs print statements to both stdout and file; use with ‘with’</p>
 <dl class="method">
 <dt id="scinoephile.StdoutLogger.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>outfile</em>, <em>mode</em>, <em>process_carriage_returns=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#StdoutLogger.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.StdoutLogger.__init__" title="Permalink to this definition">¶</a></dt>
