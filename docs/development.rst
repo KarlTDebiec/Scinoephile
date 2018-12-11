@@ -33,15 +33,25 @@ _____________________________
 - [x] Reconstruct including spaces
 - [x] Reduce ImageSubtitleSeries char_data to single instance of each image
 - [x] Save ImageSubtitleSeries char_data and char_spec to hdf5
-- [x] Prepare small amount of test data with accurate reconstuction for validation
+- [x] Prepare small amount of test data with accurate reconstuction for
+      validation
 - [x] Implement support for logging stdout to file
 - [x] Update ImageSubtitleSeries reconstruction
-- [ ] Calculate reconstruction accuracy against test data
+- [x] Calculate reconstruction accuracy against test data
+- [ ] Add assigned character to ImageSubtitleSeries spec
+- [ ] When validating known reconstructing, add option to save correct
+      assignments back to ImageSubtitleDataset's spec
+- [ ] Add log output to AutoTrainer
 
+- [ ] Link entries in test dataset to deduplicated chars in ImageSubtitleDataset
+- [ ] Rename ImageSubtitleEvent’s data to full_data, and char_data to data
+- [ ] Consider removing ImageSubtitleDataset and SubtitleDataset completely;
+      SubtitleSeries could inherit from DatasetBase if necessary
+- [ ] Add to TestOCRDataset a list of ImageSubtitleDatasets(Series) to which
+      assignments are propagated
+- [ ] Calculate model accuracy on test data
 - [ ] Calculate diff between training images and test images to guide spec selection
 - [ ] Implement TrainOCRDataset and TestOCRDataset sort function
-- [ ] Calculate model accuracy on test data
-- [ ] Add log output to AutoTrainer
 - [ ] Add support for Western characters and punctuation
 - [ ] Improve identification of spaces between characters
 - [ ] Improve support for traditional Chinese and English
@@ -69,17 +79,18 @@ _____________
 Miscellaneous
 _____________
 
+- [ ] Improve performance of reading and writing training set
 - [ ] Replace matplotlib with another library to improve font support
 - [ ] Make clearer whether functions are acting on Images or image data
 - [ ] Visualize weights
 - [ ] Extend generate_training_data to add set number of images rather than use total
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
+- [ ] Compare to tesseract
 
 Future
 ______
 
-- Improve requirements.txt and clarify what is required for which functions
+- Improve requirements.txt;clarify what is required for which functions
 - Automated testing using pytest and TravisCI
 - Sphinx checklist extension to convert "- [ ]" to "☐" and "- [X]" to "☑"
-- Replace test.py with a notebook

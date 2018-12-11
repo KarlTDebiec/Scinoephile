@@ -108,7 +108,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             pred_text = pred_text.replace("　", "").replace(" ", "")
             true_text = true_text.replace("　", "").replace(" ", "")
             true_text = true_text.replace("…", "...")
-            print(i, pred_text, true_text, len(pred_text), len(true_text))
 
             # Determine labels of true characters
             try:

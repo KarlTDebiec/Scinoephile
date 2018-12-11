@@ -65,8 +65,9 @@ def test2(n_chars, n_images, mode):
     trn_ds = TrainOCRDataset(infile=trn_file, outfile=trn_file, **kwargs)
     if isfile(trn_file):
         trn_ds.load()
-    trn_ds.generate_training_data(min_images=n_images)
-    trn_ds.save()
+    else:
+        trn_ds.generate_training_data(min_images=n_images)
+        trn_ds.save()
 
     return trn_ds
 
@@ -84,30 +85,30 @@ def test3(n_chars, n_images, mode):
         model.load()
     else:
         model.build()
-    model.compile()
-    with StdoutLogger(log_file, "w"):
-        AutoTrainer(model=model, trn_ds=trn_ds, val_portion=0.1,
-                    batch_size=256, epochs=10, **kwargs)()
+        model.compile()
+        with StdoutLogger(log_file, "w"):
+            from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
+            callbacks = [ReduceLROnPlateau(monitor="val_loss", min_delta=0.01,
+                                           patience=3, factor=0.2, min_lr=0.001,
+                                           verbose=1),
+                         EarlyStopping(monitor="val_loss", min_delta=0.01,
+                                       patience=5, verbose=1)]
+            AutoTrainer(model=model, trn_ds=trn_ds, val_portion=0.1,
+                        batch_size=4096, epochs=1000, callbacks=callbacks, **kwargs)()
+    return model
 
-# for n_chars in [100, 200]:
-#     for n_images in [100, 200]:
-#         for mode in ["1 bit", "8 bit"]:
-#             mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
-#             if not isfile(mod_file):
-#                 test3(n_chars, n_images, mode)
 
 # Test reconstruction
 def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 2}
     h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.h5"
     srt_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.srt"
-    mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
+
+    model = test3(n_chars, n_images, mode)
 
     sub_ds = ImageSubtitleDataset(infile=h5_file, **kwargs)
     sub_ds.load()
-    model = Model(infile=mod_file, **kwargs)
-    model.load()
     sub_ds.subtitles.predict(model)
     sub_ds.subtitles.reconstruct_text()
     sub_ds.save(srt_file)
@@ -120,8 +121,8 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
 # test4("magnificent_mcdull", "cmn-Hans", 100, 100, "1 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "8 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "1 bit")
-test4("mcdull_prince_de_la_bun", "cmn-Hans", 200, 100, "8 bit", True)
-# test4("mcdull_prince_de_la_bun", "cmn-Hans", 100, 100, "1 bit", True)
+test3(1500, 500, "8 bit")
+test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
 
 # Gather test data
 # def gather_test():

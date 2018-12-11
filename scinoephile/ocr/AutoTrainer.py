@@ -51,31 +51,20 @@ class AutoTrainer(OCRBase):
         trn_img, trn_lbl, val_img, val_lbl = self.trn_ds.get_training_data(
             val_portion=self.val_portion)
 
-        # Training Loop
-        round = 1
-        while True:
-            if self.verbosity >= 1:
-                print(f"Round {round}")
+        # Train model
+        history = self.model.model.fit(trn_img, trn_lbl,
+                                       validation_data=(val_img, val_lbl),
+                                       epochs=self.epochs,
+                                       batch_size=self.batch_size,
+                                       callbacks=self.callbacks)
 
-            # Train model
-            history = self.model.model.fit(trn_img, trn_lbl,
-                                           validation_data=(val_img, val_lbl),
-                                           epochs=self.epochs,
-                                           batch_size=self.batch_size,
-                                           callbacks=self.callbacks)
-            round += 1
+        # Evaluate model
+        trn_loss, trn_acc = self.model.analyze_predictions(trn_img, trn_lbl, "Training")
+        val_loss, val_acc = self.model.analyze_predictions(val_img, val_lbl, "Validation")
 
-            # Evaluate model
-            trn_loss, trn_acc = self.model.analyze_predictions(trn_img, trn_lbl, "Training")
-            val_loss, val_acc = self.model.analyze_predictions(val_img, val_lbl, "Validation")
-
-            # Save model
-            if self.model.outfile is not None:
-                self.model.save()
-
-            # Quit
-            if trn_acc >= 0.99 or round >= 100:
-                break
+        # Save model
+        if self.model.outfile is not None:
+            self.model.save()
 
         # Present IPython prompt
         if self.interactive:
@@ -113,7 +102,7 @@ class AutoTrainer(OCRBase):
     @callbacks.setter
     def callbacks(self, value):
         # TODO: Validate
-        self.callbacks = value
+        self._callbacks = value
 
     @property
     def epochs(self):

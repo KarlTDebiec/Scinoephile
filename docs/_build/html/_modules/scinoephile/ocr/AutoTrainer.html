@@ -226,31 +226,20 @@
         <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trn_ds</span><span class="o">.</span><span class="n">get_training_data</span><span class="p">(</span>
             <span class="n">val_portion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val_portion</span><span class="p">)</span>
 
-        <span class="c1"># Training Loop</span>
-        <span class="nb">round</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Round </span><span class="si">{round}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Train model</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span>
+                                       <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">),</span>
+                                       <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+                                       <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+                                       <span class="n">callbacks</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">)</span>
 
-            <span class="c1"># Train model</span>
-            <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span>
-                                           <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">),</span>
-                                           <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
-                                           <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                                           <span class="n">callbacks</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">)</span>
-            <span class="nb">round</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Evaluate model</span>
+        <span class="n">trn_loss</span><span class="p">,</span> <span class="n">trn_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="s2">&quot;Training&quot;</span><span class="p">)</span>
+        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">,</span> <span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
 
-            <span class="c1"># Evaluate model</span>
-            <span class="n">trn_loss</span><span class="p">,</span> <span class="n">trn_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="s2">&quot;Training&quot;</span><span class="p">)</span>
-            <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">analyze_predictions</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span><span class="p">,</span> <span class="s2">&quot;Validation&quot;</span><span class="p">)</span>
-
-            <span class="c1"># Save model</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-
-            <span class="c1"># Quit</span>
-            <span class="k">if</span> <span class="n">trn_acc</span> <span class="o">&gt;=</span> <span class="mf">0.99</span> <span class="ow">or</span> <span class="nb">round</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
-                <span class="k">break</span>
+        <span class="c1"># Save model</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># Present IPython prompt</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span><span class="p">:</span>
@@ -288,7 +277,7 @@
     <span class="nd">@callbacks</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># TODO: Validate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">epochs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
