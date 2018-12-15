@@ -1071,6 +1071,8 @@ class Compositor(CLToolBase):
 
         with open(outfile, "w") as outfile:
             for index, subtitle in subtitles.iterrows():
+                if self.verbosity >= 2:
+                    print(index, subtitle)
                 start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
                 end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
                 text = subtitle["text"]
