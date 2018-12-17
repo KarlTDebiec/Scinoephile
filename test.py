@@ -5,7 +5,6 @@ from scinoephile import StdoutLogger, SubtitleSeries
 from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr import OCRDataset
 from scinoephile.ocr import TestOCRDataset
-from scinoephile.ocr import LabeledOCRDataset
 from scinoephile.ocr import TrainOCRDataset
 from scinoephile.ocr import Model
 from scinoephile.ocr import AutoTrainer
@@ -105,21 +104,21 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
 
     model = test3(n_chars, n_images, mode)
 
-    sub_ds = ImageSubtitleDataset(infile=h5_file, **kwargs)
-    sub_ds.load()
-    sub_ds.subtitles.predict(model)
-    sub_ds.subtitles.reconstruct_text()
+    sub_ds = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
+    sub_ds.predict(model)
+    sub_ds.reconstruct_text()
     sub_ds.save(srt_file)
     if calculate_accuracy:
         std_file = f"{data_root}/{movie}/standard.srt"
-        sub_ds.subtitles.calculate_accuracy(std_file, n_chars)
+        sub_ds.calculate_accuracy(std_file, n_chars)
 
-# test4("magnificent_mcdull", "cmn-Hans", 100, 100, "8 bit")
-# test4("magnificent_mcdull", "cmn-Hans", 100, 100, "1 bit")
-# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "8 bit")
-# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "1 bit")
-# test3(1500, 500, "8 bit")
-# test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
+
+# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
+# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "1 bit")
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit")
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit")
+# test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "8 bit", True)
+# test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "1 bit", True)
 
 # Gather test data
 # def gather_test():

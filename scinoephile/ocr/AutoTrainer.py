@@ -177,10 +177,10 @@ class AutoTrainer(OCRBase):
 
     @tst_ds.setter
     def tst_ds(self, value):
-        from scinoephile.ocr import LabeledOCRDataset
+        from scinoephile.ocr import TestOCRDataset
 
         if value is not None:
-            if not isinstance(value, LabeledOCRDataset):
+            if not isinstance(value, TestOCRDataset):
                 raise ValueError(self._generate_setter_exception(value))
         self._tst_ds = value
 

@@ -40,7 +40,7 @@ _____________________________
 - [x] Calculate reconstruction accuracy against test data
 - [x] Merge SubtitleDataset and SubtitleSeries
 - [x] Merge ImageSubtitleDataset and ImageSubtitleSeries
-- [ ] Remove LabeledOCRDataset
+- [x] Remove LabeledOCRDataset
 - [ ] Add assigned character to ImageSubtitleSeries spec
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 

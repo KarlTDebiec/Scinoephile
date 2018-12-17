@@ -255,7 +255,6 @@ from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
 from scinoephile.ocr.Model import Model
 from scinoephile.ocr.OCRDataset import OCRDataset
-from scinoephile.ocr.LabeledOCRDataset import LabeledOCRDataset
 from scinoephile.ocr.TestOCRDataset import TestOCRDataset
 from scinoephile.ocr.TrainOCRDataset import TrainOCRDataset
 from scinoephile.ocr.AutoTrainer import AutoTrainer

@@ -8,12 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import LabeledOCRDataset
+from scinoephile.ocr import OCRDataset
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class TrainOCRDataset(LabeledOCRDataset):
+class TrainOCRDataset(OCRDataset):
     """
     A collection of labeled character images for training
     """
@@ -35,24 +35,6 @@ class TrainOCRDataset(LabeledOCRDataset):
             self._font_x_offsets = font_x_offsets
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
-
-    def __call__(self):
-        """ Core logic """
-
-        # Input
-        if self.infile is not None:
-            self.load()
-
-        # Action
-        self.generate_training_data()
-
-        # Present IPython prompt
-        if self.interactive:
-            embed(**self.embed_kw)
-
-        # Output
-        if self.outfile is not None:
-            self.save()
 
     # endregion
 
@@ -269,6 +251,13 @@ class TrainOCRDataset(LabeledOCRDataset):
         else:
             if self.verbosity >= 1:
                 print(f"Minimal image set already present, nothing to do")
+
+    def get_present_specs_of_char(self, char):
+        return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
+
+    def get_present_specs_of_char_set(self, char):
+        return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
+            "char", axis=1).values))
 
     def get_training_data(self, val_portion=0.1):
         import numpy as np

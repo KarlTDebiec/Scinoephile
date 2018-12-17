@@ -8,12 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import LabeledOCRDataset
+from scinoephile.ocr import OCRDataset
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class TestOCRDataset(LabeledOCRDataset):
+class TestOCRDataset(OCRDataset):
     """
     A collection of labeled character images for testing
     """
@@ -79,6 +79,7 @@ class TestOCRDataset(LabeledOCRDataset):
     # endregion
 
     # region Public Methods
+
     # def calculate_diff(self, trn_ds):
     #     import numpy as np
     #
