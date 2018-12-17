@@ -62,17 +62,17 @@ class TestOCRDataset(LabeledOCRDataset):
 
     @property
     def sub_ds(self):
-        """scinoephile.ocr.ImageSubtitleDataset: Source subtitles"""
+        """scinoephile.ocr.ImageSubtitleSeries: Source subtitles"""
         if not hasattr(self, "_sub_ds"):
             self._sub_ds = None
         return self._sub_ds
 
     @sub_ds.setter
     def sub_ds(self, value):
-        from scinoephile.ocr import ImageSubtitleDataset
+        from scinoephile.ocr import ImageSubtitleSeries
 
         if value is not None:
-            if not isinstance(value, ImageSubtitleDataset):
+            if not isinstance(value, ImageSubtitleSeries):
                 raise ValueError(self._generate_setter_exception(value))
         self._sub_ds = value
 

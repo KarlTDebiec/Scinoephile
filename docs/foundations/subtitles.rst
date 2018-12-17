@@ -2,6 +2,5 @@
 
 Subtitles
 _________
-.. autoclass:: scinoephile.SubtitleDataset()
 .. autoclass:: scinoephile.SubtitleSeries()
 .. autoclass:: scinoephile.SubtitleEvent()

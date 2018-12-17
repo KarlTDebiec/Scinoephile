@@ -131,10 +131,10 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                     if pred_char == true_char:
                         n_correct_matchable += 1
         print(f"{n_correct} out of {n_total} characters correct "
-              f"(accuracy = {n_correct/n_total:6.4})")
+              f"(accuracy = {n_correct / n_total:6.4})")
         print(f"{n_correct_matchable} out of {n_total_matchable} matchable "
               f"characters correct "
-              f"(accuracy = {n_correct_matchable/n_total_matchable:6.4f})")
+              f"(accuracy = {n_correct_matchable / n_total_matchable:6.4f})")
 
     def get_char_indexes_of_subchar_indexes(self, index):
         return self.char_spec[index]
@@ -164,7 +164,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         for event in self.events:
             event.reconstruct_text()
 
-    def save(self, path, format_=None, **kwargs):
+    def save(self, outfile, format=None, **kwargs):
         """
         Saves subtitles to an output file
 
@@ -172,20 +172,31 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         file here for consistency.
         """
         from pysubs2 import SSAFile
+        from os.path import expandvars
+
+        # Process arguments
+        if outfile is not None:
+            outfile = expandvars(outfile)
+        elif self.outfile is not None:
+            outfile = self.outfile
+        else:
+            raise ValueError()
+        if self.verbosity >= 1:
+            print(f"Writing subtitles to '{outfile}'")
 
         # Check if hdf5
-        if (format_ == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
+        if (format == "hdf5" or outfile.endswith(".hdf5")
+                or outfile.endswith(".h5")):
             import h5py
 
-            with h5py.File(path) as fp:
+            with h5py.File(outfile) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Check if directory
-        elif (format_ == "png" or path.endswith("/")):
-            self._save_png(path, **kwargs)
+        elif (format == "png" or outfile.endswith("/")):
+            self._save_png(outfile, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            SSAFile.save(self, path, format_=format_, **kwargs)
+            SSAFile.save(self, outfile, format_=format, **kwargs)
 
     def show(self, data=None, indexes=None, cols=20):
         import numpy as np
@@ -234,28 +245,37 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
+    def load(cls, infile, encoding="utf-8", mode="8 bit", verbosity=1,
+             **kwargs):
         """
         SSAFile.from_file expects an open text file, so we open hdf5 here
         """
+        from os.path import expandvars
+
+        # Process arguments
+        if infile is not None:
+            infile = expandvars(infile)
+        else:
+            raise ValueError()
+        if verbosity >= 1:
+            print(f"Reading subtitles from '{infile}'")
 
         # Check if hdf5
-        if (encoding == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
+        if (encoding == "hdf5" or infile.endswith(".hdf5")
+                or infile.endswith(".h5")):
             import h5py
 
-            with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
+            with h5py.File(infile) as fp:
+                return cls._load_hdf5(fp, mode=mode, verbosity=verbosity,
+                                      **kwargs)
         # Check if sup
-        if encoding == "sup" or path.endswith("sup"):
-            with open(path, "rb") as fp:
-                return cls._load_sup(fp, verbosity=verbosity, **kwargs)
-        # Otherwise, use SSAFile.from_file
+        if encoding == "sup" or infile.endswith("sup"):
+            with open(infile, "rb") as fp:
+                return cls._load_sup(fp, mode=mode, verbosity=verbosity,
+                                     **kwargs)
+        # Other formats not supported for this class
         else:
-            with open(path, encoding=encoding) as fp:
-                subs = cls.from_file(fp, **kwargs)
-                subs.verbosity = verbosity
-                return subs
+            raise ValueError()
 
     # endregion
 
@@ -330,8 +350,8 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                                       columns=[d[0] for d in dtypes]).values))),
                               dtype=dtypes),
                           dtype=dtypes,
-                          chunks=True,
-                          compression="gzip")
+                          chunks=True)  # ,
+        #                   compression="gzip")
 
         # Save char image data
         if "char_data" in fp:
@@ -339,8 +359,8 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         fp.create_dataset("char_data",
                           data=self.char_data,
                           dtype=self.data_dtype,
-                          chunks=True,
-                          compression="gzip")
+                          chunks=True)  # ,
+        #                   compression="gzip")
 
     def _save_png(self, fp, **kwargs):
         from os import makedirs

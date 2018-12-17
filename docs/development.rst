@@ -38,30 +38,17 @@ _____________________________
 - [x] Implement support for logging stdout to file
 - [x] Update ImageSubtitleSeries reconstruction
 - [x] Calculate reconstruction accuracy against test data
-- [ ] Remove LabeledOCRDataset intermediate
-- [ ] Remove {Image}SubtitleDataset completely;
-      move functionality to {Image}SubtitleSeries (could inherit from
-      DatasetBase)
+- [ ] Merge SubtitleDataset and SubtitleSeries
+- [ ] Merge ImageSubtitleDataset and ImageSubtitleSeries
+- [ ] Remove LabeledOCRDataset
 - [ ] Add assigned character to ImageSubtitleSeries spec
-- [ ] Option to compress or not when saving Datasets (takes a long time)
-- [ ] Rename ImageSubtitleEvent’s data to full_data, and char_data to data
+- [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 
-- [ ] When validating known reconstructing, save final assignments
-      back to ImageSubtitleDataset's spec
 - [ ] Add log output to AutoTrainer
-- [ ] Link entries in test dataset to deduplicated chars in
-      ImageSubtitleDataset
-- [ ] Add to TestOCRDataset a list of ImageSubtitleDatasets(Series) to which
-      assignments are propagated
-- [ ] Calculate model accuracy on test data
+- [ ] Option to compress or not when saving Datasets (takes a long time)
 - [ ] Calculate diff between training images and test images to guide spec
-      selection; Red 255 should mean pixel is black in all training data and
-      in no test data; Blue 255 should mean pixel is white in all training data
-      and no test data
-- [ ] Implement TrainOCRDataset and TestOCRDataset sort function
+      selection
 - [ ] Add support for Western characters and punctuation
-- [ ] Improve identification of spaces between characters
-- [ ] Improve support for traditional Chinese and English
 
 Compositor Rewrite
 __________________
@@ -87,15 +74,19 @@ _____________
 Miscellaneous
 _____________
 
+- [ ] ImageSubtitleEvent: rename data to full_data, char_data to data
+- [ ] DatasetBase: Make load a classmethod
+- [ ] OCRDataset: Implement sort function
+- [ ] ImageSubtitleSeries: Improve identification of spaces between characters
 - [ ] Improve performance of reading and writing training set
 - [ ] Replace matplotlib with another library to improve font support
-- [ ] Make clear whether functions are acting on Images or image data
+- [ ] Make clearer whether functions are acting on Images or image data
 - [ ] Visualize weights
-- [ ] Extend generate_training_data to add set number of images rather than use total
+- [ ] Extend generate_training_data to add set number of images rather than
+      use total
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
 - [ ] Compare to tesseract
-- [ ] Use TensorBoard
 
 Future
 ______

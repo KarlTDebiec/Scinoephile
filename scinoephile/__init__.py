@@ -50,7 +50,7 @@ class Base(ABC):
         header = ""
         if self.verbosity >= 1:
             header = f"IPython prompt in file {file}, function {func}," \
-                     f" line {number}\n"
+                f" line {number}\n"
         if self.verbosity >= 2:
             header += "\n"
             with open(frameinfo.filename, "r") as infile:
@@ -58,7 +58,7 @@ class Base(ABC):
                          if i in range(number - 5, number + 6)]
             for i, line in lines:
                 header += f"{i:5d} {'>' if i == number else ' '} " \
-                          f"{line.rstrip()}\n"
+                    f"{line.rstrip()}\n"
 
         return {"header": header}
 
@@ -116,9 +116,9 @@ class Base(ABC):
 
         frameinfo = getframeinfo(currentframe().f_back)
         return f"Property '{type(self).__name__}.{frameinfo.function}' " \
-               f"was passed invalid value '{value}' " \
-               f"of type '{type(value).__name__}'. " \
-               f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
+            f"was passed invalid value '{value}' " \
+            f"of type '{type(value).__name__}'. " \
+            f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
 
     # endregion
 
@@ -198,7 +198,7 @@ class CLToolBase(Base, ABC):
 class DatasetBase(Base, ABC):
     """Base for datasets"""
 
-    # Region Builtins
+    # region Builtins
 
     def __init__(self, infile=None, outfile=None, **kwargs):
         super().__init__(**kwargs)
@@ -334,4 +334,3 @@ class StdoutLogger(object):
 ################################### MODULES ###################################
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries
-from scinoephile.SubtitleDataset import SubtitleDataset

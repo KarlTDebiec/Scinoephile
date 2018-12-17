@@ -40,58 +40,101 @@ class SubtitleSeries(Base, SSAFile):
             from pysubs2.time import ms_to_str
 
             return f"<{self.__class__.__name__} with {len(self):d} events " \
-                   f"and {len(self.styles):d} styles, " \
-                   f"last timestamp {ms_to_str(max(e.end for e in self)):s}>"
+                f"and {len(self.styles):d} styles, " \
+                f"last timestamp {ms_to_str(max(e.end for e in self)):s}>"
         else:
             return f"<SubtitleSeries with 0 events " \
-                   f"and {len(self.styles):d} styles>"
+                f"and {len(self.styles):d} styles>"
+
+    # endregion
+
+    # region Public Properties
+
+    @property
+    def outfile(self):
+        """str: Path to output file"""
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
+        return self._outfile
+
+    @outfile.setter
+    def outfile(self, value):
+        from os.path import expandvars
+
+        if value is not None:
+            if not isinstance(value, str):
+                raise ValueError(self._generate_setter_exception(value))
+            value = expandvars(value).replace("//", "/")
+            if value == "":
+                raise ValueError(self._generate_setter_exception(value))
+        self._outfile = value
 
     # endregion
 
     # region Public Methods
 
-    def save(self, path, format_=None, **kwargs):
+    def save(self, outfile, format=None, **kwargs):
         """
         Saves subtitles to an output file
 
         pysubs2.SSAFile.save expects an open text file, so we open the hdf5
         file here for consistency.
         """
+        from os.path import expandvars
+
+        # Process arguments
+        if outfile is not None:
+            outfile = expandvars(outfile)
+        elif self.outfile is not None:
+            outfile = self.outfile
+        else:
+            raise ValueError()
+        if self.verbosity >= 1:
+            print(f"Writing subtitles to '{outfile}'")
 
         # Check if hdf5
-        if (format_ == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
+        if (format == "hdf5" or outfile.endswith(".hdf5")
+                or outfile.endswith(".h5")):
             import h5py
 
-            with h5py.File(path) as fp:
+            with h5py.File(outfile) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            SSAFile.save(self, path, format_=format_, **kwargs)
+            SSAFile.save(self, outfile, format_=format, **kwargs)
 
     # endregion
 
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, encoding="utf-8", verbosity=1, **kwargs):
+    def load(cls, infile, encoding="utf-8", verbosity=1, **kwargs):
         """
         Loads subtitles from an input file
 
         pysubs2.SSAFile.from_file expects an open text file, so we open the
         hdf5 file here for consistency
         """
+        from os.path import expandvars
+
+        # Process arguments
+        if infile is not None:
+            infile = expandvars(infile)
+        else:
+            raise ValueError()
+        if verbosity >= 1:
+            print(f"Reading subtitles from '{infile}'")
 
         # Check if hdf5
-        if (encoding == "hdf5" or path.endswith(".hdf5")
-                or path.endswith(".h5")):
+        if (encoding == "hdf5" or infile.endswith(".hdf5")
+                or infile.endswith(".h5")):
             import h5py
 
-            with h5py.File(path) as fp:
+            with h5py.File(infile) as fp:
                 return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
-            with open(path, encoding=encoding) as fp:
+            with open(infile, encoding=encoding) as fp:
                 subs = cls.from_file(fp, **kwargs)
                 subs.verbosity = verbosity
                 for event in subs.events:

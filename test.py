@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 # Modules
-from scinoephile import StdoutLogger, SubtitleDataset
-from scinoephile.ocr import ImageSubtitleDataset
+from scinoephile import StdoutLogger, SubtitleSeries
+from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr import OCRDataset
 from scinoephile.ocr import TestOCRDataset
 from scinoephile.ocr import LabeledOCRDataset
@@ -13,54 +13,52 @@ from os.path import isfile
 from IPython import embed
 
 # Root paths and configuration
-subtitle_root = "/Users/kdebiec/Dropbox/code/subtitles/"
+subs_root = "/Users/kdebiec/Dropbox/code/subtitles/"
 data_root = "/Users/kdebiec/Desktop/subtitles/"
 
 
 # Test reading and writing text subtitles
 # kwargs = {"interactive": False, "verbosity": 1}
-# SubtitleDataset(
-#     infile=f"{subtitle_root}/youth/Youth.en-US.srt",
-#     outfile=f"{subtitle_root}/youth/youth.hdf5",
-#     **kwargs)()
-# SubtitleDataset(
-#     infile=f"{subtitle_root}/youth/youth.hdf5",
-#     **kwargs)()
+# subs_1 = SubtitleSeries.load(
+#     infile=f"{subs_root}/youth/Youth.en-US.srt", **kwargs)
+# subs_1.save(
+#     outfile=f"{subs_root}/youth/youth.hdf5", **kwargs)
+# subs_2 = SubtitleSeries.load(
+#     infile=f"{subs_root}/youth/youth.hdf5", **kwargs)
+
 
 # Test reading and writing image-based subtitles
 def test1(movie, language, mode):
     kwargs = {"interactive": False, "mode": mode, "verbosity": 2}
     sup_file = f"{data_root}/{movie}/{language}.sup"
-    h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.h5"
-    png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}/"
+    h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}.h5"
+    png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}/"
 
-    sub_ds = ImageSubtitleDataset(infile=sup_file, outfile=h5_file, **kwargs)
-    sub_ds.load()
-    sub_ds.save()
-    sub_ds = ImageSubtitleDataset(infile=h5_file, outfile=png_file, **kwargs)
-    sub_ds.load()
-    sub_ds.save()
+    subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
+    subs_1.save(outfile=h5_file)
+    subs_2 = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
+    subs_2.save(outfile=png_file)
 
 
 # test1("magnificent_mcdull", "cmn-Hans", "8 bit")
 # test1("magnificent_mcdull", "cmn-Hans", "1 bit")
 # Traditional fails in 8 bit mode; cannot handle overlapping Western characters
-# test1("magnificent_mcdull", "cmn-Hant", "1 bit")
+test1("magnificent_mcdull", "cmn-Hant", "1 bit")
 
-# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
-# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
+test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
+test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
 # Traditional fails; cannot handle overlapping Western characters
 
-# test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
-# test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
+test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
+test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
 # Traditional fails in 8 bit mode; cannot handle overlapping Western characters
-# test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
+test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
 
 
 # Test generating training dataset
 def test2(n_chars, n_images, mode):
     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 1}
-    trn_file = f"{data_root}/trn/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
+    trn_file = f"{data_root}/trn/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.h5"
 
     trn_ds = TrainOCRDataset(infile=trn_file, outfile=trn_file, **kwargs)
     if isfile(trn_file):
@@ -75,8 +73,8 @@ def test2(n_chars, n_images, mode):
 # Test model training
 def test3(n_chars, n_images, mode):
     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 1}
-    mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.h5"
-    log_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ','')}.log"
+    mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.h5"
+    log_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.log"
 
     trn_ds = test2(n_chars, n_images, mode)
 
@@ -102,8 +100,8 @@ def test3(n_chars, n_images, mode):
 # Test reconstruction
 def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 2}
-    h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.h5"
-    srt_file = f"{data_root}/{movie}/{language}_{mode.replace(' ','')}.srt"
+    h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}.h5"
+    srt_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}.srt"
 
     model = test3(n_chars, n_images, mode)
 
@@ -116,13 +114,12 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
         std_file = f"{data_root}/{movie}/standard.srt"
         sub_ds.subtitles.calculate_accuracy(std_file, n_chars)
 
-
 # test4("magnificent_mcdull", "cmn-Hans", 100, 100, "8 bit")
 # test4("magnificent_mcdull", "cmn-Hans", 100, 100, "1 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "8 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 100, 100, "1 bit")
-test3(1500, 500, "8 bit")
-test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
+# test3(1500, 500, "8 bit")
+# test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
 
 # Gather test data
 # def gather_test():
@@ -137,11 +134,11 @@ test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
 # kwargs["n_chars"] = 100
 # kwargs["mode"] = "8 bit"
 # model_file = f"{data_root}/model_0100_0100_8bit.h5"
-# trn_file = f"{subtitle_root}/magnificent_mcdull/mcdull_8bit.h5"
+# trn_file = f"{sub_root}/magnificent_mcdull/mcdull_8bit.h5"
 # tst_file = f"{data_root}/tst_8bit.h5"
 # gather_test()
 # kwargs["mode"] = "1 bit"
 # model_file = f"{data_root}/model_0100_0100_1bit.h5"
-# trn_file = f"{subtitle_root}/magnificent_mcdull/mcdull_1bit.h5"
+# trn_file = f"{sub_root}/magnificent_mcdull/mcdull_1bit.h5"
 # tst_file = f"{data_root}/tst_1bit.h5"
 # gather_test()

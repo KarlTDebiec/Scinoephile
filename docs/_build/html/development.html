@@ -216,31 +216,19 @@
 <li>[x] Implement support for logging stdout to file</li>
 <li>[x] Update ImageSubtitleSeries reconstruction</li>
 <li>[x] Calculate reconstruction accuracy against test data</li>
+<li>[ ] Merge SubtitleDataset and SubtitleSeries</li>
+<li>[ ] Merge ImageSubtitleDataset and ImageSubtitleSeries</li>
+<li>[ ] Remove LabeledOCRDataset</li>
 <li>[ ] Add assigned character to ImageSubtitleSeries spec</li>
-<li><dl class="first docutils">
-<dt>[ ] When validating known reconstructing, add option to save correct</dt>
-<dd>assignments back to ImageSubtitleDataset’s spec</dd>
-</dl>
-</li>
+<li>[ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries</li>
 <li>[ ] Add log output to AutoTrainer</li>
-<li>[ ] Link entries in test dataset to deduplicated chars in ImageSubtitleDataset</li>
-<li>[ ] Rename ImageSubtitleEvent’s data to full_data, and char_data to data</li>
+<li>[ ] Option to compress or not when saving Datasets (takes a long time)</li>
 <li><dl class="first docutils">
-<dt>[ ] Consider removing ImageSubtitleDataset and SubtitleDataset completely;</dt>
-<dd>SubtitleSeries could inherit from DatasetBase if necessary</dd>
+<dt>[ ] Calculate diff between training images and test images to guide spec</dt>
+<dd>selection</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>[ ] Add to TestOCRDataset a list of ImageSubtitleDatasets(Series) to which</dt>
-<dd>assignments are propagated</dd>
-</dl>
-</li>
-<li>[ ] Calculate model accuracy on test data</li>
-<li>[ ] Calculate diff between training images and test images to guide spec selection</li>
-<li>[ ] Implement TrainOCRDataset and TestOCRDataset sort function</li>
 <li>[ ] Add support for Western characters and punctuation</li>
-<li>[ ] Improve identification of spaces between characters</li>
-<li>[ ] Improve support for traditional Chinese and English</li>
 </ul>
 </div>
 <div class="section" id="compositor-rewrite">
@@ -249,7 +237,11 @@
 <li>[ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames</li>
 <li>[ ] Set up framework for CompositeSubtitleDataset(Dataset)</li>
 <li>[ ] Set up framework for Compositor(CLToolBase, CompositeSubtitleDataset)</li>
-<li>[ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries</li>
+<li><dl class="first docutils">
+<dt>[ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual</dt>
+<dd>subtitles to separate SubtitleSeries</dd>
+</dl>
+</li>
 </ul>
 </div>
 <div class="section" id="documentation">
@@ -268,11 +260,19 @@
 <div class="section" id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li>[ ] ImageSubtitleEvent: rename data to full_data, char_data to data</li>
+<li>[ ] DatasetBase: Make load a classmethod</li>
+<li>[ ] OCRDataset: Implement sort function</li>
+<li>[ ] ImageSubtitleSeries: Improve identification of spaces between characters</li>
 <li>[ ] Improve performance of reading and writing training set</li>
 <li>[ ] Replace matplotlib with another library to improve font support</li>
 <li>[ ] Make clearer whether functions are acting on Images or image data</li>
 <li>[ ] Visualize weights</li>
-<li>[ ] Extend generate_training_data to add set number of images rather than use total</li>
+<li><dl class="first docutils">
+<dt>[ ] Extend generate_training_data to add set number of images rather than</dt>
+<dd>use total</dd>
+</dl>
+</li>
 <li>[ ] Convenience function for viewing source of method/property in IPython</li>
 <li>[ ] Track modifications, and if infile==outfile only save if changed</li>
 <li>[ ] Compare to tesseract</li>

@@ -221,7 +221,7 @@
         <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;IPython prompt in file </span><span class="si">{file}</span><span class="s2">, function </span><span class="si">{func}</span><span class="s2">,&quot;</span> \
-                     <span class="n">f</span><span class="s2">&quot; line </span><span class="si">{number}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="s2">&quot; line </span><span class="si">{number}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">frameinfo</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
@@ -229,7 +229,7 @@
                          <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">number</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
                 <span class="n">header</span> <span class="o">+=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{i:5d}</span><span class="s2"> {&#39;&gt;&#39; if i == number else &#39; &#39;} &quot;</span> \
-                          <span class="n">f</span><span class="s2">&quot;{line.rstrip()}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;{line.rstrip()}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">header</span><span class="p">}</span>
 
@@ -287,9 +287,9 @@
 
         <span class="n">frameinfo</span> <span class="o">=</span> <span class="n">getframeinfo</span><span class="p">(</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;Property &#39;{type(self).__name__}.</span><span class="si">{frameinfo.function}</span><span class="s2">&#39; &quot;</span> \
-               <span class="n">f</span><span class="s2">&quot;was passed invalid value &#39;</span><span class="si">{value}</span><span class="s2">&#39; &quot;</span> \
-               <span class="n">f</span><span class="s2">&quot;of type &#39;{type(value).__name__}&#39;. &quot;</span> \
-               <span class="n">f</span><span class="s2">&quot;Expects &#39;{getattr(type(self), frameinfo.function).__doc__}&#39;.&quot;</span></div>
+            <span class="n">f</span><span class="s2">&quot;was passed invalid value &#39;</span><span class="si">{value}</span><span class="s2">&#39; &quot;</span> \
+            <span class="n">f</span><span class="s2">&quot;of type &#39;{type(value).__name__}&#39;. &quot;</span> \
+            <span class="n">f</span><span class="s2">&quot;Expects &#39;{getattr(type(self), frameinfo.function).__doc__}&#39;.&quot;</span></div>
 
     <span class="c1"># endregion</span>
 
@@ -369,7 +369,7 @@
 <div class="viewcode-block" id="DatasetBase"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.DatasetBase">[docs]</a><span class="k">class</span> <span class="nc">DatasetBase</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for datasets&quot;&quot;&quot;</span>
 
-    <span class="c1"># Region Builtins</span>
+    <span class="c1"># region Builtins</span>
 
 <div class="viewcode-block" id="DatasetBase.__init__"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.DatasetBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -505,7 +505,6 @@
 <span class="c1">################################### MODULES ###################################</span>
 <span class="kn">from</span> <span class="nn">scinoephile.SubtitleEvent</span> <span class="k">import</span> <span class="n">SubtitleEvent</span>
 <span class="kn">from</span> <span class="nn">scinoephile.SubtitleSeries</span> <span class="k">import</span> <span class="n">SubtitleSeries</span>
-<span class="kn">from</span> <span class="nn">scinoephile.SubtitleDataset</span> <span class="k">import</span> <span class="n">SubtitleDataset</span>
 </pre></div>
 
            </div>

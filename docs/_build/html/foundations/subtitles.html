@@ -182,35 +182,6 @@
   <div class="section" id="subtitles">
 <h1>Subtitles<a class="headerlink" href="#subtitles" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="scinoephile.SubtitleDataset">
-<em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleDataset</code><a class="reference internal" href="../_modules/scinoephile/SubtitleDataset.html#SubtitleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="classes.html#scinoephile.DatasetBase" title="scinoephile.DatasetBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.DatasetBase</span></code></a></p>
-<p>A collection of subtitles</p>
-<p>Serves as an additional layer around SubtitleSeries and SubtitleEvent to
-separate scinoephile and pysubs2 styles.</p>
-<dl class="attribute">
-<dt id="scinoephile.SubtitleDataset.series_class">
-<code class="descname">series_class</code><a class="headerlink" href="#scinoephile.SubtitleDataset.series_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.SubtitleSeries.SubtitleSeries</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="scinoephile.SubtitleDataset.subtitles">
-<code class="descname">subtitles</code><a class="headerlink" href="#scinoephile.SubtitleDataset.subtitles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtitles</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.core.frame.DataFrame</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="scinoephile.SubtitleSeries">
 <em class="property">class </em><code class="descclassname">scinoephile.</code><code class="descname">SubtitleSeries</code><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="classes.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pysubs2.ssafile.SSAFile</span></code></p>
@@ -243,9 +214,23 @@ in pysubs.SSAFile, this separation is not really beneficial here.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="scinoephile.SubtitleSeries.outfile">
+<code class="descname">outfile</code><a class="headerlink" href="#scinoephile.SubtitleSeries.outfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to output file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="scinoephile.SubtitleSeries.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><em>outfile</em>, <em>format=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves subtitles to an output file</p>
 <p>pysubs2.SSAFile.save expects an open text file, so we open the hdf5
 file here for consistency.</p>
@@ -253,7 +238,7 @@ file here for consistency.</p>
 
 <dl class="classmethod">
 <dt id="scinoephile.SubtitleSeries.load">
-<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>encoding='utf-8'</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>infile</em>, <em>encoding='utf-8'</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads subtitles from an input file</p>
 <p>pysubs2.SSAFile.from_file expects an open text file, so we open the
 hdf5 file here for consistency</p>

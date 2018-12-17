@@ -213,58 +213,101 @@
             <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">ms_to_str</span>
 
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;&lt;</span><span class="si">{self.__class__.__name__}</span><span class="s2"> with {len(self):d} events &quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles, &quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;last timestamp {ms_to_str(max(e.end for e in self)):s}&gt;&quot;</span>
+                <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles, &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;last timestamp {ms_to_str(max(e.end for e in self)):s}&gt;&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;&lt;SubtitleSeries with 0 events &quot;</span> \
-                   <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles&gt;&quot;</span>
+                <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles&gt;&quot;</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">outfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: Path to output file&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_outfile&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span>
+
+    <span class="nd">@outfile</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">outfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
 
-<div class="viewcode-block" id="SubtitleSeries.save"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SubtitleSeries.save"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves subtitles to an output file</span>
 
 <span class="sd">        pysubs2.SSAFile.save expects an open text file, so we open the hdf5</span>
 <span class="sd">        file here for consistency.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">outfile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">outfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outfile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing subtitles to &#39;</span><span class="si">{outfile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if hdf5</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">outfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">outfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
             <span class="kn">import</span> <span class="nn">h5py</span>
 
-            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Otherwise, continue as superclass SSAFile</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+            <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Class Methods</span>
 
 <div class="viewcode-block" id="SubtitleSeries.load"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an input file</span>
 
 <span class="sd">        pysubs2.SSAFile.from_file expects an open text file, so we open the</span>
 <span class="sd">        hdf5 file here for consistency</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="n">infile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">infile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading subtitles from &#39;</span><span class="si">{infile}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if hdf5</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">infile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">infile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">)):</span>
             <span class="kn">import</span> <span class="nn">h5py</span>
 
-            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Otherwise, use SSAFile.from_file</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="n">subs</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
                 <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
