@@ -43,16 +43,16 @@ def test1(movie, language, mode):
 # test1("magnificent_mcdull", "cmn-Hans", "8 bit")
 # test1("magnificent_mcdull", "cmn-Hans", "1 bit")
 # Traditional fails in 8 bit mode; cannot handle overlapping Western characters
-test1("magnificent_mcdull", "cmn-Hant", "1 bit")
+# test1("magnificent_mcdull", "cmn-Hant", "1 bit")
 
-test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
-test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
+# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
+# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
 # Traditional fails; cannot handle overlapping Western characters
 
-test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
-test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
+# test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
+# test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
 # Traditional fails in 8 bit mode; cannot handle overlapping Western characters
-test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
+# test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
 
 
 # Test generating training dataset

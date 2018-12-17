@@ -38,8 +38,8 @@ _____________________________
 - [x] Implement support for logging stdout to file
 - [x] Update ImageSubtitleSeries reconstruction
 - [x] Calculate reconstruction accuracy against test data
-- [ ] Merge SubtitleDataset and SubtitleSeries
-- [ ] Merge ImageSubtitleDataset and ImageSubtitleSeries
+- [x] Merge SubtitleDataset and SubtitleSeries
+- [x] Merge ImageSubtitleDataset and ImageSubtitleSeries
 - [ ] Remove LabeledOCRDataset
 - [ ] Add assigned character to ImageSubtitleSeries spec
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
