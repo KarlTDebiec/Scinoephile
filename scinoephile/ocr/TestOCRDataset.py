@@ -52,7 +52,7 @@ class TestOCRDataset(OCRDataset):
     @property
     def spec_cols(self):
         """list(str): Character image specification columns"""
-        return ["char", "source", "sub index", "char index"]
+        return ["char", "source", "indexes"]
 
     @property
     def spec_dtypes(self):
@@ -80,22 +80,24 @@ class TestOCRDataset(OCRDataset):
 
     # region Public Methods
 
-    # def calculate_diff(self, trn_ds):
-    #     import numpy as np
-    #
-    #     for char in self.get_present_chars()[:self.n_chars]:
-    #         print(char)
-    #         tst_spec = self.get_present_specs_of_char(char)
-    #         trn_spec = trn_ds.get_present_specs_of_char(char)
-    #         tst_data = self.data[tst_spec.index.values]
-    #         trn_data = trn_ds.data[trn_spec.index.values]
-    #         diff = trn_data.astype(np.float32) - tst_data
-    #         diff = np.power(diff, 2)
-    #         trn_spec["rmse"] = np.sqrt(np.mean(diff, axis=(1, 2)))
-    #         diff = np.sqrt(diff)
-    #         trn_spec["mae"] = np.mean(diff, axis=(1, 2))
-    #
-    #         embed(**self.embed_kw)
+    def calculate_diff(self, trn_ds):
+        raise NotImplementedError()
+
+        # import numpy as np
+        #
+        # for char in self.get_present_chars()[:self.n_chars]:
+        #     print(char)
+        #     tst_spec = self.get_present_specs_of_char(char)
+        #     trn_spec = trn_ds.get_present_specs_of_char(char)
+        #     tst_data = self.data[tst_spec.index.values]
+        #     trn_data = trn_ds.data[trn_spec.index.values]
+        #     diff = trn_data.astype(np.float32) - tst_data
+        #     diff = np.power(diff, 2)
+        #     trn_spec["rmse"] = np.sqrt(np.mean(diff, axis=(1, 2)))
+        #     diff = np.sqrt(diff)
+        #     trn_spec["mae"] = np.mean(diff, axis=(1, 2))
+        #
+        #     embed(**self.embed_kw)
 
     def get_present_chars(self):
         return sorted(list(self.get_present_chars_set()),

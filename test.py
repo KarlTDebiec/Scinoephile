@@ -107,13 +107,14 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     sub_ds = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
     sub_ds.predict(model)
     sub_ds.reconstruct_text()
+    embed()
     sub_ds.save(srt_file)
     if calculate_accuracy:
         std_file = f"{data_root}/{movie}/standard.srt"
         sub_ds.calculate_accuracy(std_file, n_chars)
 
 
-# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
+test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
 # test4("magnificent_mcdull", "cmn-Hans", 10, 100, "1 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit")

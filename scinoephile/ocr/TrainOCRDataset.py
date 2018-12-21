@@ -171,8 +171,8 @@ class TrainOCRDataset(OCRDataset):
     @property
     def spec_dtypes(self):
         """list(str): Character image specification dtypes"""
-        return {"path": str, "char": str, "font": str, "size": int,
-                "width": int, "x_offset": int, "y_offset": int}
+        return {"char": str, "font": str, "size": int, "width": int,
+                "x_offset": int, "y_offset": int}
 
     @property
     def spec_min(self):
