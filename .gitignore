@@ -2,7 +2,6 @@
 *.swo
 .DS_Store
 .idea
-test.sh
 Makefile
 __pycache__
 build

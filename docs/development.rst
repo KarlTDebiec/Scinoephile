@@ -41,7 +41,7 @@ _____________________________
 - [x] Merge SubtitleDataset and SubtitleSeries
 - [x] Merge ImageSubtitleDataset and ImageSubtitleSeries
 - [x] Remove LabeledOCRDataset
-- [ ] Add assigned character to ImageSubtitleSeries spec
+- [x] Add assigned character to ImageSubtitleSeries spec
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 
 - [ ] Add log output to AutoTrainer

@@ -1,6 +1,13 @@
 #!/usr/bin/python
-
-# Modules
+# -*- coding: utf-8 -*-
+#   test.py
+#
+#   Copyright (C) 2017-2019 Karl T Debiec
+#   All rights reserved.
+#
+#   This software may be modified and distributed under the terms of the
+#   BSD license. See the LICENSE file for details.
+################################### MODULES ###################################
 from scinoephile import StdoutLogger, SubtitleSeries
 from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr import OCRDataset
@@ -11,11 +18,12 @@ from scinoephile.ocr import AutoTrainer
 from os.path import isfile
 from IPython import embed
 
-# Root paths and configuration
+################################ CONFIGURATION ################################
 subs_root = "/Users/kdebiec/Dropbox/code/subtitles/"
 data_root = "/Users/kdebiec/Desktop/subtitles/"
 
 
+#################################### TESTS ####################################
 # Test reading and writing text subtitles
 # kwargs = {"interactive": False, "verbosity": 1}
 # subs_1 = SubtitleSeries.load(

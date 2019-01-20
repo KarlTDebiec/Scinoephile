@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #   scinoephile.Compositor.py
 #
-#   Copyright (C) 2017-2018 Karl T Debiec
+#   Copyright (C) 2017-2019 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -12,7 +12,7 @@ import sphinx_rtd_theme
 ################################ CONFIGURATION ################################
 
 project = "scinoephile"
-copyright = "2017-2018, Karl T Debiec"
+copyright = "2017-2019, Karl T Debiec"
 author = "Karl T Debiec"
 version = "0.1.0"
 release = "0.1.0"
