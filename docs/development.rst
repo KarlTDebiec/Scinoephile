@@ -18,7 +18,7 @@ _____________________________
 - [x] Save model and reload
 - [x] Extend generate_training_data to check for minimal number of images
 - [x] Have AutoTrainer accept OCR Datasets rather than building its own
-- [x] Switch from storing each image as a 1D 6400 array to 2D 80x80 array
+- [x] Switch from storing each image as a 1D 6400 array to a 2D 80x80 array
 - [x] Convert OCRDataset to an abstract class
 - [x] ImageSubtitleSeries: Collected char_data
 - [x] Re-implement test data, take ImageSubtitleDataset and use to populate

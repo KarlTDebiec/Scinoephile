@@ -42,24 +42,44 @@ def test1(movie, language, mode):
     png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}/"
 
     subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
+    # subs_1.save(outfile=png_file)
     subs_1.save(outfile=h5_file)
     subs_2 = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
     subs_2.save(outfile=png_file)
 
 
-# test1("magnificent_mcdull", "cmn-Hans", "8 bit")
-# test1("magnificent_mcdull", "cmn-Hans", "1 bit")
-# Traditional fails in 8 bit mode; cannot handle overlapping Western characters
-# test1("magnificent_mcdull", "cmn-Hant", "1 bit")
+# test1("magnificent_madame_mak", "cmn-Hans", "8 bit")
+# test1("magnificent_madame_mak", "cmn-Hans", "1 bit")
+# test1("magnificent_madame_mak", "cmn-Hant", "8 bit")  # Fails to split
+# test1("magnificent_madame_mak", "cmn-Hant", "1 bit")
 
 # test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "8 bit")
 # test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", "1 bit")
-# Traditional fails; cannot handle overlapping Western characters
+# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hant", "8 bit")  # Fails to split
+# test1("mcdull_kung_fu_ding_ding_dong", "cmn-Hant", "1 bit")  # Fails to split
+
+# test1("mcdull_me_and_my_mum", "cmn-Hans", "8 bit")  # Fails to split
+# test1("mcdull_me_and_my_mum", "cmn-Hans", "1 bit")  # Fails to split
+# test1("mcdull_me_and_my_mum", "cmn-Hant", "8 bit")  # Fails to split
+# test1("mcdull_me_and_my_mum", "cmn-Hant", "1 bit")  # Fails to split
 
 # test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
 # test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
-# Traditional fails in 8 bit mode; cannot handle overlapping Western characters
+# test1("mcdull_prince_de_la_bun", "cmn-Hant", "8 bit")  # Fails to split
 # test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
+
+# test1("mcdull_rise_of_the_rice_cooker", "cmn-Hans", "8 bit")  # Bad sup?
+# test1("mcdull_rise_of_the_rice_cooker", "cmn-Hans", "1 bit")  # Bad sup?
+# test1("mcdull_rise_of_the_rice_cooker", "cmn-Hant", "8 bit")  # Bad sup?
+# test1("mcdull_rise_of_the_rice_cooker", "cmn-Hant", "1 bit")  # Bad sup?
+
+# test1("mcdull_the_pork_of_music", "cmn-Hant", "8 bit")  # Fails to split
+# test1("mcdull_the_pork_of_music", "cmn-Hant", "1 bit")  # Fails to split
+
+# test1("my_life_as_mcdull", "cmn-Hans", "8 bit")
+# test1("my_life_as_mcdull", "cmn-Hans", "1 bit")
+test1("my_life_as_mcdull", "cmn-Hant", "8 bit")  # Fails to split
+test1("my_life_as_mcdull", "cmn-Hant", "1 bit")  # Fails to split
 
 
 # Test generating training dataset
@@ -121,8 +141,7 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
         std_file = f"{data_root}/{movie}/standard.srt"
         sub_ds.calculate_accuracy(std_file, n_chars)
 
-
-test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
+# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
 # test4("magnificent_mcdull", "cmn-Hans", 10, 100, "1 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit")
