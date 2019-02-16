@@ -78,8 +78,8 @@ def test1(movie, language, mode):
 
 # test1("my_life_as_mcdull", "cmn-Hans", "8 bit")
 # test1("my_life_as_mcdull", "cmn-Hans", "1 bit")
-test1("my_life_as_mcdull", "cmn-Hant", "8 bit")  # Fails to split
-test1("my_life_as_mcdull", "cmn-Hant", "1 bit")  # Fails to split
+# test1("my_life_as_mcdull", "cmn-Hant", "8 bit")  # Fails to split
+# test1("my_life_as_mcdull", "cmn-Hant", "1 bit")  # Fails to split
 
 
 # Test generating training dataset
@@ -141,8 +141,8 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
         std_file = f"{data_root}/{movie}/standard.srt"
         sub_ds.calculate_accuracy(std_file, n_chars)
 
-# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "8 bit")
-# test4("magnificent_mcdull", "cmn-Hans", 10, 100, "1 bit")
+test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit")
+# test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "1 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit")
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit")
 # test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "8 bit", True)

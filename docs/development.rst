@@ -6,44 +6,7 @@ Development
 Optical Character Recognition
 _____________________________
 
-- [x] Fix font support on new macos and matplotlib
-- [x] Update GeneratedOCRDataset's generate_training_data
-- [x] Update GeneratedOCRDataset's gen_add_img
-- [x] Review Subtitle and ImageSubtitle Data Structures
-- [x] Review OCR Datasets
-- [x] Update OCR Datasets' save
-- [x] Update OCR Datasets' load
-- [x] Confirm that both 8-bit and 1-bit workflows work
-- [x] Review and update AutoTrainer
-- [x] Save model and reload
-- [x] Extend generate_training_data to check for minimal number of images
-- [x] Have AutoTrainer accept OCR Datasets rather than building its own
-- [x] Switch from storing each image as a 1D 6400 array to a 2D 80x80 array
-- [x] Convert OCRDataset to an abstract class
-- [x] ImageSubtitleSeries: Collected char_data
-- [x] Re-implement test data, take ImageSubtitleDataset and use to populate
-- [x] Move AutoTrainer's model to a Model
-- [x] Make base classes abstract
-- [x] Move image mode property to a subclass of OCRBaseClass
-- [x] Apply model to chars extracted from individual subtitle
-- [x] Reconstruct text from predictions
-- [x] Apply model to complete subtitle series and reconstruct text
-- [x] Save reconstructed subtitles to srt
-- [x] Verify that subtitle series images can be saved to png files
-- [x] Reconstruct including spaces
-- [x] Reduce ImageSubtitleSeries char_data to single instance of each image
-- [x] Save ImageSubtitleSeries char_data and char_spec to hdf5
-- [x] Prepare small amount of test data with accurate reconstuction for
-      validation
-- [x] Implement support for logging stdout to file
-- [x] Update ImageSubtitleSeries reconstruction
-- [x] Calculate reconstruction accuracy against test data
-- [x] Merge SubtitleDataset and SubtitleSeries
-- [x] Merge ImageSubtitleDataset and ImageSubtitleSeries
-- [x] Remove LabeledOCRDataset
-- [x] Add assigned character to ImageSubtitleSeries spec
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
-
 - [ ] Add log output to AutoTrainer
 - [ ] Option to compress or not when saving Datasets (takes a long time)
 - [ ] Calculate diff between training images and test images to guide spec
@@ -62,7 +25,6 @@ __________________
 Documentation
 _____________
 
-- [x] Configure GitHub Pages documentation
 - [ ] Document Base and CLToolBase
 - [ ] Document Subtitle Data Structures
 - [ ] Document Image Subtitle Data Structures
