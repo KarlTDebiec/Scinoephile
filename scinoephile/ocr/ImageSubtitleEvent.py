@@ -8,6 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
 from scinoephile import SubtitleEvent
 from scinoephile.ocr import OCRBase
 from IPython import embed
@@ -36,31 +37,52 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     def char_bounds(self):
         """ndarray(int): Boundaries of individual characters within subtitle"""
         if not hasattr(self, "_char_bounds"):
-            self._initialze_char_data()
+            self._initialize_char_data()
         return self._char_bounds
 
     @property
     def char_count(self):
-        """ndarray: Number of individual characters within subtitle"""
+        """int: Number of individual characters within subtitle"""
         return self.char_data.shape[0]
 
     @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitle"""
         if not hasattr(self, "_char_data"):
-            self._initialze_char_data()
+            self._initialize_char_data()
         return self._char_data
 
     @property
+    def char_indexes(self):
+        """numpy.ndarray(bool): Indexes of character images within
+        SubtitleSeries' deduplicated character image data"""
+        if not hasattr(self, "_char_indexes"):
+            self._char_indexes = None
+        return self._char_indexes
+
+    @char_indexes.setter
+    def char_indexes(self, value):
+        if not isinstance(value, np.ndarray):
+            try:
+                value = np.array(value, np.int)
+            except:
+                raise ValueError(self._generate_setter_exception(value))
+        if value.ndim != 1:
+            raise ValueError(self._generate_setter_exception(value))
+        if value.size != self.char_count:
+            raise ValueError(self._generate_setter_exception(value))
+        self._char_indexes = value
+
+    @property
     def char_predictions(self):
+        """ndarray(float): Predicted confidence that each character image is
+        each matchable character"""
         if not hasattr(self, "_char_predictions"):
             self._char_predictions = None
         return self._char_predictions
 
     @char_predictions.setter
     def char_predictions(self, value):
-        import numpy as np
-
         if not isinstance(value, np.ndarray):
             embed(**self.embed_kw)
             raise ValueError(self._generate_setter_exception(value))
@@ -73,13 +95,6 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     def char_separations(self):
         """ndarray(int): Spaces between individual characters within subtitle"""
         return self.char_bounds[1:, 0] - self.char_bounds[:-1, 1]
-
-    @property
-    def char_spec(self):
-        """pandas.DataFrame: Character image specifications"""
-        if not hasattr(self, "_spec"):
-            self._initialize_char_data()
-        return self._char_spec
 
     @property
     def char_widths(self):
@@ -149,6 +164,13 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     # region Public Methods
 
     def predict(self, model):
+        """
+        Predicts confidence that each character image is each matchable
+        chararcter
+
+        Arguments:
+            model(model?): TensorFlow model with which to predict characters
+        """
         self.char_predictions = model.model.predict(self.char_data)
 
     def reconstruct_text(self):
@@ -186,8 +208,6 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         self.img.show()
 
     def show_predictions(self):
-        import numpy as np
-
         for i in range(self.char_count):
             poss_lbls = np.argsort(self.char_predictions[i])[::-1]
             poss_chars = self.get_chars_of_labels(poss_lbls)
@@ -200,9 +220,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     # region Private Methods
 
-    def _initialze_char_data(self):
-        import numpy as np
-
+    def _initialize_char_data(self):
         white_cols = (self.full_data == self.full_data.max()).all(axis=0)
         diff = np.diff(np.array(white_cols, np.int))
         # Get starts of chars, ends of chars, first nonwhite, last nonwhite

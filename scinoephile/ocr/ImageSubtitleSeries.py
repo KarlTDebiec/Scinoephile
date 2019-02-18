@@ -8,6 +8,8 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
+import pandas as pd
 from scinoephile import SubtitleSeries
 from scinoephile.ocr import ImageSubtitleEvent, OCRBase
 from IPython import embed
@@ -29,14 +31,14 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     @property
     def char_predictions(self):
+        """ndarray(float): Predicted confidence that each character image is
+        each matchable character"""
         if not hasattr(self, "_char_predictions"):
             self._char_predictions = None
         return self._char_predictions
 
     @char_predictions.setter
     def char_predictions(self, value):
-        import numpy as np
-
         if not isinstance(value, np.ndarray):
             raise ValueError(self._generate_setter_exception(value))
         if value.shape[0] != self.data.shape[0]:
@@ -45,23 +47,22 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     @property
     def data(self):
-        """ndarray: Image data of individual characters within subtitles"""
+        """ndarray: Dedupulicated character image data collected from all
+        subtitles"""
         if not hasattr(self, "_data"):
             self._initialize_char_data()
         return self._data
 
     @property
     def spec(self):
-        """pandas.DataFrame: Character image specifications"""
+        """DataFrame: Specifications describing each character image"""
         if not hasattr(self, "_spec"):
             self._initialize_char_data()
         return self._spec
 
     @property
     def data_dtype(self):
-        """type: dtype of image arrays"""
-        import numpy as np
-
+        """type: dtype of image data"""
         if self.mode == "8 bit":
             return np.uint8
         elif self.mode == "1 bit":
@@ -70,22 +71,30 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             raise NotImplementedError()
 
     @property
-    def spec_cols(self):
-        """list(str): Character image specification columns"""
-        return ["char", "indexes"]
-
-    @property
     def spec_dtypes(self):
-        """list(str): Character image specification dtypes"""
-        return {"char": str, "indexes": object}
+        """list(str): dtypes of columns in spec"""
+        from collections import OrderedDict
+
+        return OrderedDict(char=str, indexes=object)
 
     # endregion
 
     # region Public Methods
 
-    def calculate_accuracy(self, infile, n_chars):
-        from scinoephile import SubtitleSeries
+    def assign_char(self, index, char):
+        if self.spec.loc[index].char != char:
+            if self.verbosity >= 2:
+                print(f"Assigning character {index} as '{char}'")
+            self.spec.loc[index].char = char
 
+    def calculate_accuracy(self, infile, n_chars, assign=True):
+        """
+        Calculates accuracy of predicted text relative to known standard
+
+        Arguments:
+            infile (str): Path to standard infile
+            n_chars (int): Number of matchable characters
+        """
         standard = SubtitleSeries.load(infile)
         n_correct = 0
         n_total = 0
@@ -117,6 +126,9 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 n_total += 1
                 if pred_char == true_char:
                     n_correct += 1
+                    if assign:
+                        self.assign_char(self.events[i].char_indexes[j],
+                                         pred_char)
                 if 0 <= true_label and true_label < n_chars:
                     n_total_matchable += 1
                     if pred_char == true_char:
@@ -127,20 +139,32 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
               f"characters correct "
               f"(accuracy = {n_correct_matchable / n_total_matchable:6.4f})")
 
-    def get_char_indexes_of_subchar_indexes(self, index):
-        return self.spec[index]
+    def get_char_index_of_subchar_index(self, sub_index, char_index):
+        return None
 
-    def get_subchar_indexes_of_char_indexes(self, sub_index, char_index):
-        return self.spec.index((sub_index, char_index))
+    def get_subchar_indexes_of_char_index(self, index):
+        return self.spec.loc[index].indexes
 
     def predict(self, model):
-        import pandas as pd
+        """
+        Predicts confidence that each character image is each matchable
+        chararcter
 
+        Stores results in both this series' char_predictions and in each
+        event's char_predictions
+
+        Arguments:
+            model(model?): TensorFlow model with which to predict characters
+        """
         dtypes = [("series char index", "i8"),
                   ("subtitle index", "i8"),
                   ("subtitle char index", "i8")]
 
+        # Make predictions
         self.char_predictions = model.model.predict(self.data)
+
+        # Store predictions in each event
+        # TODO: Event char_predictions are references, right?
         char_indexes = pd.DataFrame([(i, j, k)
                                      for i, s in self.spec.iterrows()
                                      for j, k in s["indexes"]],
@@ -152,6 +176,9 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             event.char_predictions = self.char_predictions[event_indexes]
 
     def reconstruct_text(self):
+        """
+        Reconstructs text for each subtitle
+        """
         for event in self.events:
             event.reconstruct_text()
 
@@ -190,7 +217,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             SSAFile.save(self, outfile, format_=format, **kwargs)
 
     def show(self, data=None, indexes=None, cols=20):
-        import numpy as np
         from PIL import Image
 
         # Process arguments
@@ -273,9 +299,9 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     # region Private Methods
 
     def _initialize_char_data(self):
-        import numpy as np
-        import pandas as pd
-
+        """
+        Initializes deduplicated character image data structure
+        """
         if self.verbosity >= 1:
             print("Initializing character data structures")
 
@@ -283,25 +309,32 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         n_checked_chars = 0
         n_unique_chars = 0
         data = np.zeros((n_total_chars, 80, 80), np.uint8)
-        char_indexes = []
+        subchar_indexes = []
 
-        for i, e in enumerate(self.events):
+        # Loop over events, then over chars within event, and skip duplicates
+        for i, event in enumerate(self.events):
             if self.verbosity >= 2:
                 print(f"Analyzing characters for event "
                       f"{i + 1}/{len(self.events)}")
-            n_checked_chars += e.char_count
-            for j, c in enumerate(e.char_data):
-                match = (data[:n_unique_chars] == c).all(axis=(1, 2))
+            n_checked_chars += event.char_count
+            char_indexes = []
+            for j, char in enumerate(event.char_data):
+                match = (data[:n_unique_chars] == char).all(axis=(1, 2))
                 if match.any():
+                    # TODO: Can probably just calculate this once
                     index = np.where(match)[0][0]
-                    char_indexes[index].append((i, j))
+                    subchar_indexes[index].append((i, j))
+                    char_indexes.append(index)
                 else:
-                    data[n_unique_chars] = c
-                    char_indexes.append([(i, j)])
+                    index = n_unique_chars
+                    data[index] = char
+                    subchar_indexes.append([(i, j)])
+                    char_indexes.append(index)
                     n_unique_chars += 1
+            event.char_indexes = char_indexes
         self._data = data[:n_unique_chars]
         self._spec = pd.DataFrame.from_dict({"char": [""] * n_unique_chars,
-                                             "indexes": char_indexes})
+                                             "indexes": subchar_indexes})
 
     def _save_hdf5(self, fp, **kwargs):
         """
@@ -310,9 +343,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         .. todo::
           - [ ] Save project info
         """
-        import numpy as np
-        import pandas as pd
-
         dtypes = [("series char index", "i8"),
                   ("char", "S3"),
                   ("subtitle index", "i8"),
@@ -383,9 +413,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         .. todo::
           - [ ] Load project info
         """
-        import numpy as np
-        import pandas as pd
-
         decode = lambda x: x.decode("utf8")
 
         # Load info, styles, and events
@@ -402,6 +429,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 event.mode = subs.mode
                 event.full_data = np.array(fp["full_data"][f"{i:04d}"],
                                            subs.data_dtype)
+                event.char_indexes = np.zeros(event.char_count, np.int)
 
             # Load char image specs
             if "spec" in fp:
@@ -417,6 +445,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 for i, char, j, k in encoded.values:
                     spec["char"].loc[i] = decode(char)
                     spec["indexes"].loc[i] += [(j, k)]
+                    subs.events[j].char_indexes[k] = i
 
                 subs._spec = spec
 
@@ -428,12 +457,9 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     @classmethod
     def _load_sup(cls, fp, mode=None, verbosity=1, **kwargs):
-        import numpy as np
         from pysubs2.time import make_time
 
         def read_palette(bytes):
-            import numpy as np
-
             palette = np.zeros((256, 4), np.uint8)
             bytes_index = 0
             while bytes_index < len(bytes):
@@ -451,8 +477,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             return palette
 
         def read_image(bytes, width, height):
-            import numpy as np
-
             img = np.zeros((width * height), np.uint8)
             bytes_index = 0
             pixel_index = 0

@@ -6,7 +6,11 @@ Development
 Optical Character Recognition
 _____________________________
 
+- [x] Support char assignments in ImageSubtitleSeries
+- [x] Support char assignments in ImageSubtitleEvent
+- [ ] Add assignments to ImageSubtitleSeries based on predictions
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
+- [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
 - [ ] Add log output to AutoTrainer
 - [ ] Option to compress or not when saving Datasets (takes a long time)
 - [ ] Calculate diff between training images and test images to guide spec

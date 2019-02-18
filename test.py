@@ -103,14 +103,13 @@ def test3(n_chars, n_images, mode):
     mod_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.h5"
     log_file = f"{data_root}/model/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.log"
 
-    trn_ds = test2(n_chars, n_images, mode)
-
     model = Model(infile=mod_file, outfile=mod_file, **kwargs)
     if isfile(mod_file):
         model.load()
     else:
         model.build()
         model.compile()
+        trn_ds = test2(n_chars, n_images, mode)
         with StdoutLogger(log_file, "w"):
             from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
@@ -135,17 +134,18 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     sub_ds = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
     sub_ds.predict(model)
     sub_ds.reconstruct_text()
-    embed()
     sub_ds.save(srt_file)
     if calculate_accuracy:
         std_file = f"{data_root}/{movie}/standard.srt"
         sub_ds.calculate_accuracy(std_file, n_chars)
+    sub_ds.save(h5_file)
 
-test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit")
-# test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "1 bit")
-# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit")
-# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit")
-# test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "8 bit", True)
+
+# test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit", False)
+# test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "1 bit", False)
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit", False)
+# test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit", False)
+test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
 # test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "1 bit", True)
 
 # Gather test data
