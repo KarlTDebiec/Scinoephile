@@ -8,7 +8,7 @@ _____________________________
 
 - [x] Support char assignments in ImageSubtitleSeries
 - [x] Support char assignments in ImageSubtitleEvent
-- [ ] Add assignments to ImageSubtitleSeries based on predictions
+- [x] Complete assignmnet of one set
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
 - [ ] Add log output to AutoTrainer

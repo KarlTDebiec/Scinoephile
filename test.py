@@ -131,14 +131,15 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
 
     model = test3(n_chars, n_images, mode)
 
-    sub_ds = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
-    sub_ds.predict(model)
-    sub_ds.reconstruct_text()
-    sub_ds.save(srt_file)
+    subs = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
+    subs.predict(model)
+    subs.reconstruct_text()
+    subs.save(srt_file)
     if calculate_accuracy:
         std_file = f"{data_root}/{movie}/standard.srt"
-        sub_ds.calculate_accuracy(std_file, n_chars)
-    sub_ds.save(h5_file)
+        subs.calculate_accuracy(std_file, n_chars)
+    subs.manually_assign_chars(start_index=0)
+    subs.save(h5_file)
 
 
 # test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit", False)

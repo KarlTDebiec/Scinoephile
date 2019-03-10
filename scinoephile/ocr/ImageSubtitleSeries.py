@@ -145,6 +145,46 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     def get_subchar_indexes_of_char_index(self, index):
         return self.spec.loc[index].indexes
 
+    def manually_assign_chars(self, start_index=0):
+        from pypinyin import pinyin
+
+        predictions = self.get_chars_of_labels(
+            np.argsort(self.char_predictions, axis=1)[:, -1])
+
+        if self.verbosity >= 1:
+            print("Assigning characters")
+            print("  Press Enter to accept predicted character")
+            print("  or type another character and press Enter to correct")
+            print("  or press CTRL-D to skip character")
+            print("  or press CTRL-C to stop assigning")
+            print()
+        for i, spec in self.spec.iterrows():
+            if spec.char != "":
+                print(f"Character {i} previously assigned as '{spec.char}' "
+                      f"({pinyin(spec.char)[0][0]})")
+                continue
+            if i <= start_index:
+                print(f"Skipping assignment of character {i}")
+                continue
+
+            self.show(indexes=i)
+
+            try:
+                match = input(f"'{predictions[i]}' "
+                              f"({pinyin(predictions[i])[0][0]}): ")
+            except EOFError:
+                print(f"\nSkipping assignment of character {i}")
+                continue
+            except KeyboardInterrupt:
+                print("\nQuitting character assignment")
+                break
+            if match == "":
+                self.assign_char(i, predictions[i])
+            else:
+                self.assign_char(i, match)
+
+        embed(**self.embed_kw)
+
     def predict(self, model):
         """
         Predicts confidence that each character image is each matchable
@@ -164,7 +204,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         self.char_predictions = model.model.predict(self.data)
 
         # Store predictions in each event
-        # TODO: Event char_predictions are references, right?
+        # TODO: Confirm that char_predictions are references
         char_indexes = pd.DataFrame([(i, j, k)
                                      for i, s in self.spec.iterrows()
                                      for j, k in s["indexes"]],
@@ -217,6 +257,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             SSAFile.save(self, outfile, format_=format, **kwargs)
 
     def show(self, data=None, indexes=None, cols=20):
+        from imgcat import imgcat
         from PIL import Image
 
         # Process arguments
@@ -237,6 +278,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             rows = 1
         else:
             rows = int(np.ceil(indexes.size / cols))
+        cols = min(cols, indexes.size)
 
         # Draw image
         if self.mode == "8 bit":
@@ -255,7 +297,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                                  100 * column + 10,
                                  100 * (row + 1) - 10,
                                  100 * (column + 1) - 10))
-        img.show()
+        imgcat(img)
 
     # endregion
 
