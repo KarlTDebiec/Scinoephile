@@ -73,7 +73,6 @@ class Compositor(CLToolBase):
     re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
                          "(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
     re_blank = re.compile("^\s*$")
-
     re_hanzi = re.compile("[\u4e00-\u9fff]")
     re_hanzi_rare = re.compile("[\u3400-\u4DBF]")
     re_western = re.compile("[a-zA-Z0-9]")
