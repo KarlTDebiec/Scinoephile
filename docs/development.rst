@@ -8,7 +8,11 @@ _____________________________
 
 - [x] Support char assignments in ImageSubtitleSeries
 - [x] Support char assignments in ImageSubtitleEvent
-- [x] Complete assignmnet of one set
+- [x] Complete assignment of one subtitle dataset
+- [x] Stop forcing separation of characters on save
+- [ ] Improve character separation to support split characters such as 儿 and 八
+- [ ] Improve character separation to load assignments from another dataset
+
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
 - [ ] Add log output to AutoTrainer
@@ -53,6 +57,7 @@ _____________
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
 - [ ] Compare to tesseract
+- [ ] Implement SUP parsing in numba
 
 Future
 ______

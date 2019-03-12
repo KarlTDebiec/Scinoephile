@@ -8,6 +8,8 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
+import pandas as pd
 from scinoephile import StdoutLogger, SubtitleSeries
 from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr import OCRDataset
@@ -42,7 +44,6 @@ def test1(movie, language, mode):
     png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}/"
 
     subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
-    # subs_1.save(outfile=png_file)
     subs_1.save(outfile=h5_file)
     subs_2 = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
     subs_2.save(outfile=png_file)
@@ -63,7 +64,7 @@ def test1(movie, language, mode):
 # test1("mcdull_me_and_my_mum", "cmn-Hant", "8 bit")  # Fails to split
 # test1("mcdull_me_and_my_mum", "cmn-Hant", "1 bit")  # Fails to split
 
-# test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
+test1("mcdull_prince_de_la_bun", "cmn-Hans", "8 bit")
 # test1("mcdull_prince_de_la_bun", "cmn-Hans", "1 bit")
 # test1("mcdull_prince_de_la_bun", "cmn-Hant", "8 bit")  # Fails to split
 # test1("mcdull_prince_de_la_bun", "cmn-Hant", "1 bit")
@@ -132,21 +133,22 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     model = test3(n_chars, n_images, mode)
 
     subs = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
-    subs.predict(model)
-    subs.reconstruct_text()
-    subs.save(srt_file)
-    if calculate_accuracy:
-        std_file = f"{data_root}/{movie}/standard.srt"
-        subs.calculate_accuracy(std_file, n_chars)
-    subs.manually_assign_chars(start_index=0)
-    subs.save(h5_file)
+    embed()
+    # subs.predict(model)
+    # subs.reconstruct_text()
+    # subs.save(srt_file)
+    # if calculate_accuracy:
+    #     std_file = f"{data_root}/{movie}/standard.srt"
+    #     subs.calculate_accuracy(std_file, n_chars)
+    # subs.manually_assign_chars(start_index=0)
+    # subs.save(h5_file)
 
 
 # test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit", False)
 # test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "1 bit", False)
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "8 bit", False)
 # test4("mcdull_kung_fu_ding_ding_dong", "cmn-Hans", 10, 100, "1 bit", False)
-test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
+# test4("mcdull_prince_de_la_bun", "cmn-Hans", 1000, 500, "8 bit", True)
 # test4("mcdull_prince_de_la_bun", "cmn-Hans", 10, 100, "1 bit", True)
 
 # Gather test data

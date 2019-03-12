@@ -174,8 +174,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         self.char_predictions = model.model.predict(self.char_data)
 
     def reconstruct_text(self):
-        import numpy as np
-
+        """"""
         chars = self.get_chars_of_labels(
             np.argsort(self.char_predictions, axis=1)[:, -1])
         text = ""
@@ -205,7 +204,9 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         """
         Shows image of subtitle
         """
-        self.img.show()
+        from imgcat import imgcat
+        
+        imgcat(self.img)
 
     def show_predictions(self):
         for i in range(self.char_count):

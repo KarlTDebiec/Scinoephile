@@ -256,7 +256,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         else:
             SSAFile.save(self, outfile, format_=format, **kwargs)
 
-    def show(self, data=None, indexes=None, cols=20):
+    def show(self, indexes=None, data=None, cols=20):
         from imgcat import imgcat
         from PIL import Image
 
@@ -412,25 +412,27 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         # Save char image specs
         if "spec" in fp:
             del fp["spec"]
-        fp.create_dataset("spec",
-                          data=np.array(list(map(tuple, list(pd.DataFrame(
-                              [(i, encode(s["char"]), j, k)
-                               for i, s in self.spec.iterrows()
-                               for j, k in s["indexes"]],
-                              columns=[d[0] for d in dtypes]).values))),
-                                        dtype=dtypes),
-                          dtype=dtypes,
-                          chunks=True)  # ,
-        #                   compression="gzip")
+        if hasattr(self, "_spec"):
+            fp.create_dataset("spec",
+                              data=np.array(list(map(tuple, list(pd.DataFrame(
+                                  [(i, encode(s["char"]), j, k)
+                                   for i, s in self.spec.iterrows()
+                                   for j, k in s["indexes"]],
+                                  columns=[d[0] for d in dtypes]).values))),
+                                            dtype=dtypes),
+                              dtype=dtypes,
+                              chunks=True,
+                              compression="gzip")
 
         # Save char image data
         if "data" in fp:
             del fp["data"]
-        fp.create_dataset("data",
-                          data=self.data,
-                          dtype=self.data_dtype,
-                          chunks=True)  # ,
-        #                   compression="gzip")
+        if hasattr(self, "_data"):
+            fp.create_dataset("data",
+                              data=self.data,
+                              dtype=self.data_dtype,
+                              chunks=True,
+                              compression="gzip")
 
     def _save_png(self, fp, **kwargs):
         from os import makedirs
