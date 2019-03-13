@@ -473,7 +473,6 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 event.mode = subs.mode
                 event.full_data = np.array(fp["full_data"][f"{i:04d}"],
                                            subs.data_dtype)
-                event.char_indexes = np.zeros(event.char_count, np.int)
 
             # Load char image specs
             if "spec" in fp:
@@ -486,6 +485,8 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 spec = pd.DataFrame(
                     {"char": [""] * n_unique_chars,
                      "indexes": np.empty((n_unique_chars, 0)).tolist()})
+                for i, event in enumerate(subs.events):
+                    event.char_indexes = np.zeros(event.char_count, np.int)
                 for i, char, j, k in encoded.values:
                     spec["char"].loc[i] = decode(char)
                     spec["indexes"].loc[i] += [(j, k)]

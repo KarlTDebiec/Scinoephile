@@ -43,8 +43,8 @@ def test1(movie, language, mode):
     h5_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}.h5"
     png_file = f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}/"
 
-    subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
-    subs_1.save(outfile=h5_file)
+    # subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
+    # subs_1.save(outfile=h5_file)
     subs_2 = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
     subs_2.save(outfile=png_file)
 
@@ -133,7 +133,6 @@ def test4(movie, language, n_chars, n_images, mode, calculate_accuracy=False):
     model = test3(n_chars, n_images, mode)
 
     subs = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
-    embed()
     # subs.predict(model)
     # subs.reconstruct_text()
     # subs.save(srt_file)

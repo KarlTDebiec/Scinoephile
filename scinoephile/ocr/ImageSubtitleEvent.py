@@ -205,7 +205,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         Shows image of subtitle
         """
         from imgcat import imgcat
-        
+
         imgcat(self.img)
 
     def show_predictions(self):
@@ -222,6 +222,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     # region Private Methods
 
     def _initialize_char_data(self):
+        embed(**self.embed_kw)
         white_cols = (self.full_data == self.full_data.max()).all(axis=0)
         diff = np.diff(np.array(white_cols, np.int))
         # Get starts of chars, ends of chars, first nonwhite, last nonwhite
