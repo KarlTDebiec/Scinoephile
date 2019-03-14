@@ -8,9 +8,20 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
+import pandas as pd
 from abc import ABC, abstractmethod
-from scinoephile import Base, CLToolBase
+from scinoephile import Base, CLToolBase, package_root
 from IPython import embed
+
+################################## CONSTANTS ##################################
+char_frequency_table = pd.read_csv(
+    f"{package_root}/data/ocr/characters.txt",
+    sep="\t", names=["character", "frequency", "cumulative frequency"])
+
+chars = np.array(char_frequency_table["character"], np.str)
+punctuation = np.array("\n　 ,,？?，,、,..！!。.…﹣-─“”\"《<》>「[」]：:")
+
 
 
 ################################## FUNCTIONS ##################################
