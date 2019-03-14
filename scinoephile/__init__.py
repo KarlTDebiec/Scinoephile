@@ -12,6 +12,34 @@ from abc import ABC, abstractmethod
 from IPython import embed
 
 
+################################## FUNCTIONS ##################################
+def embed_kw(verbosity=2, **kwargs):
+    """dict: use ``IPython.embed(**embed_kw())`` for more useful prompt"""
+    from inspect import currentframe, getframeinfo
+    from os.path import dirname
+    from sys import modules
+
+    package_root = dirname(modules[__name__].__file__)
+    frameinfo = getframeinfo(currentframe().f_back)
+    file = frameinfo.filename.replace(package_root, "")
+    func = frameinfo.function
+    number = frameinfo.lineno - 1
+    header = ""
+    if verbosity >= 1:
+        header = f"IPython prompt in file {file}, function {func}," \
+            f" line {number}\n"
+    if verbosity >= 2:
+        header += "\n"
+        with open(frameinfo.filename, "r") as infile:
+            lines = [(i, line) for i, line in enumerate(infile)
+                     if i in range(number - 5, number + 6)]
+        for i, line in lines:
+            header += f"{i:5d} {'>' if i == number else ' '} " \
+                f"{line.rstrip()}\n"
+
+    return {"header": header}
+
+
 ################################### CLASSES ###################################
 class Base(ABC):
     """Base including convenience methods and properties"""

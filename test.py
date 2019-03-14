@@ -10,7 +10,7 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
-from scinoephile import StdoutLogger, SubtitleSeries
+from scinoephile import StdoutLogger, SubtitleSeries, embed_kw
 from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr import OCRDataset
 from scinoephile.ocr import TestOCRDataset
@@ -46,7 +46,8 @@ def test1(movie, language, mode):
     # subs_1 = ImageSubtitleSeries.load(infile=sup_file, **kwargs)
     # subs_1.save(outfile=h5_file)
     subs_2 = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
-    subs_2.save(outfile=png_file)
+    embed(**embed_kw(2))
+    # subs_2.save(outfile=png_file)
 
 
 # test1("magnificent_madame_mak", "cmn-Hans", "8 bit")
