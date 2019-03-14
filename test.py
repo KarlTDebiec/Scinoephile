@@ -35,6 +35,14 @@ data_root = "/Users/kdebiec/Desktop/subtitles/"
 # subs_2 = SubtitleSeries.load(
 #     infile=f"{subs_root}/youth/youth.hdf5", **kwargs)
 
+def view_events(events):
+    from time import sleep
+    for e in events:
+        e.show()
+        print("  ".join([f"{s:2d}" for s in e.char_widths]))
+        print("  " + "  ".join([f"{s:2d}" for s in e.char_separations]))
+        sleep(0.2)
+
 movie = "mcdull_prince_de_la_bun"
 language = "cmn-Hans"
 mode = "8 bit"
@@ -51,19 +59,12 @@ nonhanzi_indexes = []
 
 for i, s in subsa.spec[subsa.spec.char.isin(nonhanzi)].iterrows():
     nonhanzi_indexes.extend([j[0] for j in s.indexes])
-    nonhanzi_events = [subsa.events[i] for i in sorted(list(set(nonhanzi_indexes)))]
 nonhanzi_indexes = sorted(list(set(nonhanzi_indexes)))
 nonhanzi_events = [subsa.events[i] for i in nonhanzi_indexes]
 
-for e in nonhanzi_events:
-    e.show()
-    print(e.char_widths)
-    print(e.char_bounds[1:,0] - e.char_bounds[:-1,1])
-    input()
-
 incomplete_indexes = []
-for i in np.where(subsa.spec.char == "")[0]:
-    incomplete_indexes.extend([j[0] for j in subsa.spec.iloc[i].indexes])
+for i, s in subsa.spec[subsa.spec.char == ""].iterrows():
+    incomplete_indexes.extend([j[0] for j in s.indexes])
 incomplete_indexes = sorted(list(set(incomplete_indexes)))
 incomplete_events = [subsa.events[i] for i in incomplete_indexes]
 
