@@ -1,11 +1,12 @@
-*.swp
+*.ipynb
 *.swo
+*.swp
 .DS_Store
 .idea
 Makefile
 __pycache__
 build
 dist
+docs/_build/doctrees
 src
 scinoephile.egg-info
-docs/_build/doctrees

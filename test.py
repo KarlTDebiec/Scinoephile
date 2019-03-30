@@ -25,6 +25,7 @@ from IPython import embed
 subs_root = "/Users/kdebiec/Dropbox/code/subtitles/"
 data_root = "/Users/kdebiec/Desktop/subtitles/"
 
+
 #################################### TESTS ####################################
 # Test reading and writing text subtitles
 # kwargs = {"interactive": False, "verbosity": 1}
@@ -35,13 +36,17 @@ data_root = "/Users/kdebiec/Desktop/subtitles/"
 # subs_2 = SubtitleSeries.load(
 #     infile=f"{subs_root}/youth/youth.hdf5", **kwargs)
 
-def view_events(events):
+def view_events(events, pause=False):
     from time import sleep
     for e in events:
         e.show()
         print("  ".join([f"{s:2d}" for s in e.char_widths]))
         print("  " + "  ".join([f"{s:2d}" for s in e.char_separations]))
-        sleep(0.2)
+        if pause:
+            input()
+        else:
+            sleep(0.2)
+
 
 movie = "mcdull_prince_de_la_bun"
 language = "cmn-Hans"
@@ -67,6 +72,8 @@ for i, s in subsa.spec[subsa.spec.char == ""].iterrows():
     incomplete_indexes.extend([j[0] for j in s.indexes])
 incomplete_indexes = sorted(list(set(incomplete_indexes)))
 incomplete_events = [subsa.events[i] for i in incomplete_indexes]
+
+thin_events = [e for e in subsa.events if np.any(e.char_widths < 10)]
 
 embed(**embed_kw(**kwargs))
 

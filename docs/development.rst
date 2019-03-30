@@ -10,6 +10,7 @@ _____________________________
 - [x] Support char assignments in ImageSubtitleEvent
 - [x] Complete assignment of one subtitle dataset
 - [x] Stop forcing separation of characters on save
+- [ ] Function for merging characters manually
 - [ ] Improve character separation to support split characters such as 儿 and 八
 - [ ] Improve character separation to load assignments from another dataset
 

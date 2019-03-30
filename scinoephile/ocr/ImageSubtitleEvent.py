@@ -200,18 +200,27 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     def save(self, path):
         self.img.save(path)
 
-    def show(self, invert=True):
+    def show(self, invert=False):
         """
         Shows image of subtitle
         """
-        from imgcat import imgcat
+        from scinoephile import in_ipynb
 
         if invert:
             from PIL.ImageOps import invert
 
-            imgcat(invert(self.img))
+            img = invert(self.img)
         else:
-            imgcat(self.img)
+            img = self.img
+
+        if in_ipynb():
+            from IPython.display import display
+
+            display(img)
+        else:
+            from imgcat import imgcat
+
+            imgcat(img)
 
     def show_predictions(self):
         for i in range(self.char_count):

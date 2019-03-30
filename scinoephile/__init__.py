@@ -45,6 +45,23 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
+def in_ipynb():
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == "ZMQInteractiveShell":
+            # IPython in Jupyter Notebook
+            return True
+        elif shell == "TerminalInteractiveShell":
+            # IPython in terminal
+            return False
+        else:
+            # Other
+            return False
+    except NameError:
+        # Not in IPython
+        return False
+
+
 ################################### CLASSES ###################################
 class Base(ABC):
     """Base including convenience methods and properties"""
