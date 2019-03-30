@@ -82,6 +82,13 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     # region Public Methods
 
     def assign_char(self, index, char):
+        """
+        Assigns a character to a character image
+
+        Args:
+            index (int): Index of character image to assign
+            char (str): Character to assign to image
+        """
         if self.spec.loc[index].char != char:
             if self.verbosity >= 2:
                 print(f"Assigning character {index} as '{char}'")
@@ -140,12 +147,31 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
               f"(accuracy = {n_correct_matchable / n_total_matchable:6.4f})")
 
     def get_char_index_of_subchar_index(self, sub_index, char_index):
-        return None
+        raise NotImplementedError()
 
     def get_subchar_indexes_of_char_index(self, index):
+        """
+        Converts the index of a deduplicated character into a list of indexes
+        of that character's appearances within subtitles
+
+        Args:
+            index (int): Index of deduplicated character
+
+        Returns:
+            list(tuple(int, int)): Indexes of character within subtitles in the
+              form of (subtitle index within series, character index within
+              subtitle)
+        """
         return self.spec.loc[index].indexes
 
     def manually_assign_chars(self, start_index=0):
+        """
+
+
+        Args:
+            start_index (index): Character index at which to start interactive
+              character assignment
+        """
         from pypinyin import pinyin
 
         predictions = self.get_chars_of_labels(
@@ -257,18 +283,27 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             SSAFile.save(self, outfile, format_=format, **kwargs)
 
     def show(self, indexes=None, data=None, cols=20):
-        from imgcat import imgcat
+        """
+        Shows images of selected characters
+
+        If called from within Jupyter notebook, shows inline. If imgcat module
+        is available, shows inline in terminal. Otherwise opens a new window.
+
+        Args:
+            indexes (int, list, ndarray, optional): Indexes of characters to
+              show
+            data (ndarray, optional): Character data to show
+            cols (int, optional): Number of columns of characters
+        """
         from PIL import Image
+        from scinoephile import in_ipynb
 
         # Process arguments
-        if data is None and indexes is None:
+        if data is None:
             data = self.data
-            indexes = range(self.data.shape[0])
-        elif data is None and indexes is not None:
-            data = self.data
-        elif data is not None and indexes is None:
+        if indexes is None:
             indexes = range(data.shape[0])
-        if isinstance(indexes, int):
+        elif isinstance(indexes, int):
             indexes = [indexes]
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= data.shape[0]):
@@ -280,7 +315,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             rows = int(np.ceil(indexes.size / cols))
         cols = min(cols, indexes.size)
 
-        # Draw image
+        # Prepare image
         if self.mode == "8 bit":
             img = Image.new("L", (cols * 100, rows * 100), 255)
         elif self.mode == "1 bit":
@@ -297,7 +332,22 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                                  100 * column + 10,
                                  100 * (row + 1) - 10,
                                  100 * (column + 1) - 10))
-        imgcat(img)
+
+        # Show image
+        if in_ipynb():
+            from io import BytesIO
+            from IPython.display import  display, Image
+
+            bytes = BytesIO()
+            img.save(bytes, "png")
+            display(Image(data=bytes.getvalue()))
+        else:
+            try:
+                from imgcat import imgcat
+
+                imgcat(img)
+            except ImportError:
+                img.show()
 
     # endregion
 
@@ -513,7 +563,8 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 cb = bytes[bytes_index + 2]
                 cr = bytes[bytes_index + 3]
                 palette[color_index, 0] = y + 1.402 * (cr - 128)
-                palette[color_index, 1] = y - .34414 * (cb - 128) - .71414 * (cr - 128)
+                palette[color_index, 1] = y - .34414 * (cb - 128) - .71414 * (
+                        cr - 128)
                 palette[color_index, 2] = y + 1.772 * (cb - 128)
                 palette[color_index, 3] = bytes[bytes_index + 4]
                 bytes_index += 5
@@ -590,18 +641,24 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 raise ValueError()
 
             header_offset = byte_offset
-            timestamp = bytes2int(sup_bytes[header_offset + 2:header_offset + 6])
+            timestamp = bytes2int(
+                sup_bytes[header_offset + 2:header_offset + 6])
             segment_kind = sup_bytes[header_offset + 10]
-            content_size = bytes2int(sup_bytes[header_offset + 11: header_offset + 13])
+            content_size = bytes2int(
+                sup_bytes[header_offset + 11: header_offset + 13])
             content_offset = header_offset + 13
 
             if segment_kind == 0x14:  # Palette
-                palette_bytes = sup_bytes[content_offset + 2:content_offset + content_size]
+                palette_bytes = sup_bytes[
+                                content_offset + 2:content_offset + content_size]
                 palette = read_palette(palette_bytes)
             elif segment_kind == 0x15:  # Image
-                image_bytes = sup_bytes[content_offset + 11:content_offset + content_size]
-                width = bytes2int(sup_bytes[content_offset + 7:content_offset + 9])
-                height = bytes2int(sup_bytes[content_offset + 9:content_offset + 11])
+                image_bytes = sup_bytes[
+                              content_offset + 11:content_offset + content_size]
+                width = bytes2int(
+                    sup_bytes[content_offset + 7:content_offset + 9])
+                height = bytes2int(
+                    sup_bytes[content_offset + 9:content_offset + 11])
                 compressed_img = read_image(image_bytes, width, height)
             elif segment_kind == 0x80:  # End
                 if start_time is None:

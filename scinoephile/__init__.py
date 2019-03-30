@@ -11,7 +11,6 @@
 from abc import ABC, abstractmethod
 from os.path import dirname
 from sys import modules
-from IPython import embed
 
 ################################## CONSTANTS ##################################
 package_root = dirname(modules[__name__].__file__)
@@ -98,6 +97,7 @@ class Base(ABC):
         func = frameinfo.function
         number = frameinfo.lineno - 1
         header = ""
+
         if self.verbosity >= 1:
             header = f"IPython prompt in file {file}, function {func}," \
                 f" line {number}\n"

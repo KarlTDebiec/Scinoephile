@@ -202,10 +202,17 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     def show(self, invert=False):
         """
-        Shows image of subtitle
+        Shows event image
+
+        If called from within Jupyter notebook, shows inline. If imgcat module
+        is available, shows inline in terminal. Otherwise opens a new window.
+
+        Args:
+            invert (bool, optional): Invert color of event
         """
         from scinoephile import in_ipynb
 
+        # Prepare image
         if invert:
             from PIL.ImageOps import invert
 
@@ -213,14 +220,21 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         else:
             img = self.img
 
+        # Show image
         if in_ipynb():
-            from IPython.display import display
+            from io import BytesIO
+            from IPython.display import  display, Image
 
-            display(img)
+            bytes = BytesIO()
+            img.save(bytes, "png")
+            display(Image(data=bytes.getvalue()))
         else:
-            from imgcat import imgcat
+            try:
+                from imgcat import imgcat
 
-            imgcat(img)
+                imgcat(img)
+            except ImportError:
+                img.show()
 
     def show_predictions(self):
         for i in range(self.char_count):
