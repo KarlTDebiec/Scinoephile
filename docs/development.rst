@@ -10,16 +10,17 @@ _____________________________
 - [x] Support char assignments in ImageSubtitleEvent
 - [x] Complete assignment of one subtitle dataset
 - [x] Stop forcing separation of characters on save
-- [ ] Function for merging characters manually
-- [ ] Improve character separation to support split characters such as 儿 and 八
-- [ ] Improve character separation to load assignments from another dataset
-
+- [x] Function for merging characters manually
+- [ ] Update documentation of Subtitle and Event classes
+- [ ] Test SUP parsing
+- [ ] Migrate to tensorflow 2.0
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
 - [ ] Add log output to AutoTrainer
-- [ ] Option to compress or not when saving Datasets (takes a long time)
 - [ ] Calculate diff between training images and test images to guide spec
       selection
+- [ ] Improve character separation to support split characters such as 儿 and 八
+- [ ] Improve character separation to load assignments from another dataset
 - [ ] Add support for Western characters and punctuation
 
 Compositor Rewrite
@@ -59,6 +60,7 @@ _____________
 - [ ] Track modifications, and if infile==outfile only save if changed
 - [ ] Compare to tesseract
 - [ ] Implement SUP parsing in numba
+- [ ] Option to compress or not when saving Datasets (takes a long time)
 
 Future
 ______
