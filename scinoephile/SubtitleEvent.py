@@ -23,7 +23,15 @@ class SubtitleEvent(Base, SSAEvent):
 
     # region Builtins
 
-    def __init__(self, series, **kwargs):
+    def __init__(self, series=None, **kwargs):
+        """
+        Initializes
+
+        Args:
+            series (SubtitleSeries): Subtitle series of which this subtitle is
+              a part
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(**{k: v for k, v in kwargs.items()
                             if k not in SSAEvent.FIELDS})
 
@@ -50,6 +58,7 @@ class SubtitleEvent(Base, SSAEvent):
 
     @property
     def series(self):
+        """SubtitleSeries: Subtitle series of which this subtitle is a part"""
         if not hasattr(self, "_series"):
             self._series = None
         return self._series

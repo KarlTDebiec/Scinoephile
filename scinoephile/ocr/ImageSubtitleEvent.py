@@ -23,6 +23,13 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     # region Builtins
 
     def __init__(self, data=None, **kwargs):
+        """
+        Initializes
+
+        Args:
+            data (ndarray): Subtitle image data
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(**kwargs)
 
         # Store property values
@@ -71,7 +78,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     @property
     def char_indexes(self):
-        """numpy.ndarray(int): Indexes of character images within series'
+        """ndarray(int): Indexes of character images within series'
          deduplicated character image data"""
         flatten = lambda l: [item for sublist in l for item in sublist]
 
@@ -100,6 +107,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     @property
     def char_spec(self):
+        """DataFrame: Specification of individual characters within subtitle"""
         return self.series.spec.iloc[self.char_indexes]
 
     @property
@@ -111,7 +119,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     @property
     def full_data(self):
-        """str: Image data"""
+        """ndarray: Subtitle image data"""
         if not hasattr(self, "_full_data"):
             self._full_data = None
         return self._full_data
@@ -165,6 +173,7 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     @property
     def index(self):
+        """int: Index of subtitle within series"""
         if self.series is not None:
             return self.series.events.index(self)
         else:
@@ -172,6 +181,8 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     @property
     def series(self):
+        """Image SubtitleSeries: Subtitle series of which this subtitle is a
+        part"""
         if not hasattr(self, "_series"):
             self._series = None
         return self._series
@@ -200,7 +211,9 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
             self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
 
     def reconstruct_text(self):
-        """"""
+        """
+        Reconstructs text of this subtitle using assigned characters
+        """
         chars = self.char_spec["char"].values
         text = ""
         items = zip(chars[:-1], chars[1:], self.char_widths[:-1],
@@ -226,11 +239,22 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
         # TODO: Reconstruct ellipsis and any other characters that get split
 
     def save(self, path):
+        """
+        Saves subtitle image to an output file
+
+        Args:
+            path (str): Path to output file
+        """
+        from os.path import expandvars
+
+        path = expandvars(path).replace("//", "/")
+        if self.verbosity >= 1:
+            print(f"Writing subtitle to '{path}'")
         self.img.save(path)
 
     def show(self):
         """
-        Shows event image
+        Shows subtitle image
 
         If called from within Jupyter notebook, shows inline. If imgcat module
         is available, shows inline in terminal. Otherwise opens a new window.
@@ -260,6 +284,9 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
     # region Private Methods
 
     def _initialize_char_bounds(self):
+        """
+        Identifies boundaries between characters
+        """
         white_cols = (self.full_data == self.full_data.max()).all(axis=0)
         diff = np.diff(np.array(white_cols, np.int))
         # Get starts of chars, ends of chars, first nonwhite, last nonwhite

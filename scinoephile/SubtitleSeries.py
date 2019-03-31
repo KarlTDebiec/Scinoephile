@@ -8,6 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
 from pysubs2 import SSAFile
 from scinoephile import Base, SubtitleEvent
 from IPython import embed
@@ -18,9 +19,12 @@ class SubtitleSeries(Base, SSAFile):
     """
     A series of subtitles
 
-    Extension of pysubs2's SSAFile with additional features. Includes code for
-    loading to and saving from hdf5. While these are part of separate classes
-    in pysubs.SSAFile, this separation is not really beneficial here.
+    Extension of pysubs2's SSAFile with additional features. Includes code
+    for loading to and saving from hdf5. While these are part of separate
+    classes in pysubs.SSAFile, this separation is not really beneficial here.
+
+    Attributes:
+        event_class (class): Class of individual subtitle events
     """
 
     # region Class Attributes
@@ -32,12 +36,24 @@ class SubtitleSeries(Base, SSAFile):
     # region Builtins
 
     def __init__(self, **kwargs):
+        """
+        Initializes
+
+        Args:
+            **kwargs: Additional keyword arguments
+        """
         super().__init__(**kwargs)
 
         # SSAFile.__init__ accepts no arguments
         SSAFile.__init__(self)
 
     def __repr__(self):
+        """
+        Provides a string representation
+
+        Returns:
+            str: String representation of this series
+        """
         if self.events:
             from pysubs2.time import ms_to_str
 
@@ -50,94 +66,78 @@ class SubtitleSeries(Base, SSAFile):
 
     # endregion
 
-    # region Public Properties
-
-    @property
-    def outfile(self):
-        """str: Path to output file"""
-        if not hasattr(self, "_outfile"):
-            self._outfile = None
-        return self._outfile
-
-    @outfile.setter
-    def outfile(self, value):
-        from os.path import expandvars
-
-        if value is not None:
-            if not isinstance(value, str):
-                raise ValueError(self._generate_setter_exception(value))
-            value = expandvars(value).replace("//", "/")
-            if value == "":
-                raise ValueError(self._generate_setter_exception(value))
-        self._outfile = value
-
-    # endregion
-
     # region Public Methods
 
-    def save(self, outfile=None, format=None, **kwargs):
+    def save(self, path, format=None, **kwargs):
         """
         Saves subtitles to an output file
 
-        pysubs2.SSAFile.save expects an open text file, so we open the hdf5
-        file here for consistency.
+        Note:
+            pysubs2.SSAFile.save expects an open text file, so we open the
+            hdf5 file here for consistency.
+
+        Args:
+            path (str): Path to output file
+            format (str, optional): Output file format
+            **kwargs: Additional keyword arguments
         """
         from os.path import expandvars
 
         # Process arguments
-        if outfile is not None:
-            outfile = expandvars(outfile)
-        elif self.outfile is not None:
-            outfile = self.outfile
-        else:
-            raise ValueError()
+        path = expandvars(path).replace("//", "/")
         if self.verbosity >= 1:
-            print(f"Writing subtitles to '{outfile}'")
+            print(f"Writing subtitles to '{path}'")
 
         # Check if hdf5
-        if (format == "hdf5" or outfile.endswith(".hdf5")
-                or outfile.endswith(".h5")):
+        if format == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
             import h5py
 
-            with h5py.File(outfile) as fp:
+            with h5py.File(path) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            SSAFile.save(self, outfile, format_=format, **kwargs)
+            SSAFile.save(self, path, format_=format, **kwargs)
 
     # endregion
 
     # region Public Class Methods
 
     @classmethod
-    def load(cls, infile, encoding="utf-8", verbosity=1, **kwargs):
+    def load(cls, path, encoding="utf-8", format_=None, verbosity=1, **kwargs):
         """
         Loads subtitles from an input file
 
-        pysubs2.SSAFile.from_file expects an open text file, so we open the
-        hdf5 file here for consistency
+        Notes:
+            pysubs2.SSAFile.from_file expects an open text file, so we open
+             the hdf5 file here for consistency
+
+        Args:
+            infile (str): Path to input file
+            encoding (str, optional): Input file encoding
+            format_ (str, optional): Input file format
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            SubtitleSeries: Loaded subtitles
         """
         from os.path import expandvars
 
         # Process arguments
-        if infile is not None:
-            infile = expandvars(infile)
-        else:
-            raise ValueError()
+        path = expandvars(path).replace("//", "/")
         if verbosity >= 1:
-            print(f"Reading subtitles from '{infile}'")
+            print(f"Reading subtitles from '{path}'")
 
         # Check if hdf5
-        if (encoding == "hdf5" or infile.endswith(".hdf5")
-                or infile.endswith(".h5")):
+        if format_ == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
             import h5py
 
-            with h5py.File(infile) as fp:
+            with h5py.File(path) as fp:
                 return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Otherwise, use SSAFile.from_file
         else:
-            with open(infile, encoding=encoding) as fp:
-                subs = cls.from_file(fp, **kwargs)
+            with open(path, encoding=encoding) as fp:
+                subs = cls.from_file(fp, format_=format_, **kwargs)
                 subs.verbosity = verbosity
                 for event in subs.events:
                     event.verbosity = verbosity
@@ -151,18 +151,31 @@ class SubtitleSeries(Base, SSAFile):
         """
         Saves subtitles to an output hdf5 file
 
-        .. todo::
-          - [ ] Save project info
+        Todo:
+            * Save project info
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 output file
+            **kwargs: Additional keyword arguments
         """
         from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
-        import numpy as np
 
-        def field_to_string(field, item):
-            from pysubs2.common import text_type, Color
-            from pysubs2.substation import color_to_ass_rgba, ms_to_timestamp
+        def style_value_to_string(field, style):
+            """
+            Converts values of Substation style to string format
+
+            Args:
+                field (str): Name of fields
+                style (pysubs2.ssastyle.SSAStyle): SubStation Alpha style
+
+            Returns:
+                str: Value of field in string format
+            """
             from numbers import Number
+            from pysubs2.common import Color
+            from pysubs2.substation import color_to_ass_rgba, ms_to_timestamp
 
-            value = getattr(item, field)
+            value = getattr(style, field)
 
             if field in {"start", "end"}:
                 return ms_to_timestamp(value)
@@ -170,13 +183,13 @@ class SubtitleSeries(Base, SSAFile):
                 return f"Marked={value:d}"
             elif isinstance(value, bool):
                 return "-1" if value else "0"
-            elif isinstance(value, (text_type, Number)):
-                return text_type(value)
+            elif isinstance(value, (str, Number)):
+                return str(value)
             elif isinstance(value, Color):
                 return color_to_ass_rgba(value)
             else:
                 raise TypeError(f"Unexpected type when writing a SubStation "
-                                f"field {value:!r} for line {item:!r}")
+                                f"field {value:!r} for line {style:!r}")
 
         # Save info
         for k, v in self.info.items():
@@ -190,7 +203,7 @@ class SubtitleSeries(Base, SSAFile):
         styles = []
         for name, style in self.styles.items():
             styles += [(name.encode("utf8"),
-                        *(field_to_string(field, style).encode("utf8")
+                        *(style_value_to_string(field, style).encode("utf8")
                           for field in STYLE_FIELDS["ass"]))]
         styles = np.array(styles, dtype=dtypes)
         fp.create_dataset("styles",
@@ -205,7 +218,7 @@ class SubtitleSeries(Base, SSAFile):
         events = []
         for event in self.events:
             events += [(event.type.encode("utf8"),
-                        *(field_to_string(field, event).encode("utf8")
+                        *(style_value_to_string(field, event).encode("utf8")
                           for field in EVENT_FIELDS["ass"]))]
         events = np.array(events, dtype=dtypes)
         fp.create_dataset("events",
@@ -219,15 +232,22 @@ class SubtitleSeries(Base, SSAFile):
     @classmethod
     def _load_hdf5(cls, fp, verbosity=1, **kwargs):
         """
-        Loads subtitles from an hdf5 file into a nascent SubtitleSeries
+        Loads subtitles from an input hdf5 file
 
-        .. todo::
-          - [ ] Load project info
+         Todo:
+            * Load project info
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            SubtitleSeries: Loaded subtitles
         """
-        import numpy as np
         from pysubs2 import SSAStyle
 
-        def string_to_field(field, value):
+        def style_value_from_string(field, value):
             from pysubs2.time import timestamp_to_ms
             from pysubs2.time import TIMESTAMP
             from pysubs2.substation import ass_rgba_to_color
@@ -264,8 +284,9 @@ class SubtitleSeries(Base, SSAFile):
         if "styles" in fp:
             styles = np.array(fp["styles"])
             for style in styles:
-                style = {field.lower(): string_to_field(field,
-                                                        value.decode("utf8"))
+                style = {field.lower(): style_value_from_string(field,
+                                                                value.decode(
+                                                                    "utf8"))
                          for field, value in zip(styles.dtype.names, style)}
                 name = style.pop("name")
                 subs.styles[name] = SSAStyle(**style)
@@ -274,8 +295,9 @@ class SubtitleSeries(Base, SSAFile):
         if "events" in fp:
             events = np.array(fp["events"])
             for event in events:
-                event = {field.lower(): string_to_field(field,
-                                                        value.decode("utf8"))
+                event = {field.lower(): style_value_from_string(field,
+                                                                value.decode(
+                                                                    "utf8"))
                          for field, value in zip(event.dtype.names, event)}
                 subs.events.append(cls.event_class(verbosity=verbosity,
                                                    series=subs,
