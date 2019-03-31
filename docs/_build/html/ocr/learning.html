@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Machine Learning &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Foundations" href="foundations.html" />
+    <link rel="prev" title="Image Data Structures" href="datasets.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Image Data Structures</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../ocr.html">Optical Character Recognition</a> &raquo;</li>
+        
+      <li>Machine Learning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="machine-learning">
+<h1>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scinoephile.ocr.Model">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">Model</code><a class="reference internal" href="../_modules/scinoephile/ocr/Model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="foundations/classes.html#scinoephile.ocr.OCRBase" title="scinoephile.ocr.OCRBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRBase</span></code></a>, <a class="reference internal" href="../foundations/classes.html#scinoephile.DatasetBase" title="scinoephile.DatasetBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.DatasetBase</span></code></a></p>
+<p>Machine learning model</p>
+<dl class="method">
+<dt id="scinoephile.ocr.Model.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_chars=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/Model.html#Model.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.Model.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.Model.n_chars">
+<code class="descname">n_chars</code><a class="headerlink" href="#scinoephile.ocr.Model.n_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of unique characters to support</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.AutoTrainer">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">AutoTrainer</code><a class="reference internal" href="../_modules/scinoephile/ocr/AutoTrainer.html#AutoTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.AutoTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="foundations/classes.html#scinoephile.ocr.OCRBase" title="scinoephile.ocr.OCRBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRBase</span></code></a></p>
+<p>Automated machine learning model trainer</p>
+<dl class="method">
+<dt id="scinoephile.ocr.AutoTrainer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_chars=None</em>, <em>model=None</em>, <em>trn_ds=None</em>, <em>val_portion=None</em>, <em>tst_ds=None</em>, <em>batch_size=None</em>, <em>epochs=None</em>, <em>callbacks=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/AutoTrainer.html#AutoTrainer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.batch_size">
+<code class="descname">batch_size</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.batch_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training batch size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.epochs">
+<code class="descname">epochs</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.epochs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of epochs to train for</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.n_chars">
+<code class="descname">n_chars</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.n_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of unique characters to support</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.trn_ds">
+<code class="descname">trn_ds</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.trn_ds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training/validation dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">scinoephile.ocr.GeneratedOCRDataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.tst_ds">
+<code class="descname">tst_ds</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.tst_ds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">scinoephile.ocr.GeneratedOCRDataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.AutoTrainer.val_portion">
+<code class="descname">val_portion</code><a class="headerlink" href="#scinoephile.ocr.AutoTrainer.val_portion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Portion of training image to set aside for validation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="foundations.html" class="btn btn-neutral float-right" title="Foundations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="datasets.html" class="btn btn-neutral float-left" title="Image Data Structures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
