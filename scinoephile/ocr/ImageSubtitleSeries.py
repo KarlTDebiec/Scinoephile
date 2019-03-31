@@ -266,7 +266,9 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         """
         Reconstructs text for each subtitle
         """
-        for event in self.events:
+        for i, event in enumerate(self.events):
+            if self.verbosity >= 1:
+                print(f"Reconstructing text for subtitle {i}")
             event.reconstruct_text()
 
     def save(self, outfile, format=None, **kwargs):

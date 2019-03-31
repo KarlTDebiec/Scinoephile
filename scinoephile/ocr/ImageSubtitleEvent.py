@@ -201,16 +201,18 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
 
     def reconstruct_text(self):
         """"""
-        chars = self.get_chars_of_labels(
-            np.argsort(self.char_predictions, axis=1)[:, -1])
+        chars = self.char_spec["char"].values
         text = ""
         items = zip(chars[:-1], chars[1:], self.char_widths[:-1],
                     self.char_widths[1:], self.char_separations)
         for i, (char_i, char_j, width_i, width_j, sep) in enumerate(items):
             text += char_i
 
+            # Very large space: Two speakers
+            if sep >= 100:
+                text = f"﹣{text}　　﹣"
             # Two Hanzi: separation cutoff of 40 to add double-width space
-            if width_i >= 45 and width_j >= 45 and sep >= 40:
+            elif width_i >= 45 and width_j >= 45 and sep >= 40:
                 # print("Adding a double-width space")
                 text += "　"
             # Two Roman: separation cutoff of 35 to add single-width space
