@@ -9,9 +9,9 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 import numpy as np
+from IPython import embed
 from scinoephile import SubtitleEvent
 from scinoephile.ocr import OCRBase
-from IPython import embed
 
 
 ################################### CLASSES ###################################
@@ -266,9 +266,9 @@ class ImageSubtitleEvent(SubtitleEvent, OCRBase):
             from io import BytesIO
             from IPython.display import display, Image
 
-            bytes = BytesIO()
-            self.img.save(bytes, "png")
-            display(Image(data=bytes.getvalue()))
+            bytes_ = BytesIO()
+            self.img.save(bytes_, "png")
+            display(Image(data=bytes_.getvalue()))
         elif in_ipython() == "InteractiveShellEmbed":
             self.img.show()
         else:

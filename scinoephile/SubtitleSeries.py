@@ -9,9 +9,9 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 import numpy as np
+from IPython import embed
 from pysubs2 import SSAFile
 from scinoephile import Base, SubtitleEvent
-from IPython import embed
 
 
 ################################### CLASSES ###################################
@@ -22,14 +22,12 @@ class SubtitleSeries(Base, SSAFile):
     Extension of pysubs2's SSAFile with additional features. Includes code
     for loading to and saving from hdf5. While these are part of separate
     classes in pysubs.SSAFile, this separation is not really beneficial here.
-
-    Attributes:
-        event_class (class): Class of individual subtitle events
     """
 
     # region Class Attributes
 
     event_class = SubtitleEvent
+    """Class of individual subtitle events"""
 
     # endregion
 
@@ -68,7 +66,7 @@ class SubtitleSeries(Base, SSAFile):
 
     # region Public Methods
 
-    def save(self, path, format=None, **kwargs):
+    def save(self, path, format_=None, **kwargs):
         """
         Saves subtitles to an output file
 
@@ -78,7 +76,7 @@ class SubtitleSeries(Base, SSAFile):
 
         Args:
             path (str): Path to output file
-            format (str, optional): Output file format
+            format_ (str, optional): Output file format
             **kwargs: Additional keyword arguments
         """
         from os.path import expandvars
@@ -89,14 +87,14 @@ class SubtitleSeries(Base, SSAFile):
             print(f"Writing subtitles to '{path}'")
 
         # Check if hdf5
-        if format == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
+        if format_ == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
             import h5py
 
             with h5py.File(path) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            SSAFile.save(self, path, format_=format, **kwargs)
+            SSAFile.save(self, path, format_=format_, **kwargs)
 
     # endregion
 
@@ -112,7 +110,7 @@ class SubtitleSeries(Base, SSAFile):
              the hdf5 file here for consistency
 
         Args:
-            infile (str): Path to input file
+            path (str): Path to input file
             encoding (str, optional): Input file encoding
             format_ (str, optional): Input file format
             verbosity (int, optional): Level of verbose output
@@ -160,13 +158,13 @@ class SubtitleSeries(Base, SSAFile):
         """
         from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
 
-        def style_value_to_string(field, style):
+        def style_value_to_string(field, style_):
             """
             Converts values of Substation style to string format
 
             Args:
                 field (str): Name of fields
-                style (pysubs2.ssastyle.SSAStyle): SubStation Alpha style
+                style_ (pysubs2.ssastyle.SSAStyle): SubStation Alpha style
 
             Returns:
                 str: Value of field in string format
@@ -175,7 +173,7 @@ class SubtitleSeries(Base, SSAFile):
             from pysubs2.common import Color
             from pysubs2.substation import color_to_ass_rgba, ms_to_timestamp
 
-            value = getattr(style, field)
+            value = getattr(style_, field)
 
             if field in {"start", "end"}:
                 return ms_to_timestamp(value)
@@ -189,7 +187,7 @@ class SubtitleSeries(Base, SSAFile):
                 return color_to_ass_rgba(value)
             else:
                 raise TypeError(f"Unexpected type when writing a SubStation "
-                                f"field {value:!r} for line {style:!r}")
+                                f"field {value:!r} for line {style_:!r}")
 
         # Save info
         for k, v in self.info.items():

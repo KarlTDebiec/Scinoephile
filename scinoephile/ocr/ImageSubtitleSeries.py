@@ -10,23 +10,21 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
+from IPython import embed
 from scinoephile import SubtitleSeries
 from scinoephile.ocr import ImageSubtitleEvent, OCRBase
-from IPython import embed
 
 
 ################################### CLASSES ###################################
 class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     """
     A series of image-based subtitles
-
-    Attributes:
-        event_class (class): Class of individual subtitle events
     """
 
     # region Class Attributes
 
     event_class = ImageSubtitleEvent
+    """Class of individual subtitle events"""
 
     # endregion
 
@@ -104,6 +102,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         Arguments:
             infile (str): Path to standard infile
             n_chars (int): Number of matchable characters
+            assign (boot): Copy character assignments from standard
         """
         standard = SubtitleSeries.load(infile)
         n_correct = 0
@@ -139,7 +138,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                     if assign:
                         self.assign_char(self.events[i].char_indexes[j],
                                          pred_char)
-                if 0 <= true_label and true_label < n_chars:
+                if 0 <= true_label < n_chars:
                     n_total_matchable += 1
                     if pred_char == true_char:
                         n_correct_matchable += 1
@@ -259,7 +258,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 print(f"Reconstructing text for subtitle {i}")
             event.reconstruct_text()
 
-    def save(self, path, format=None, **kwargs):
+    def save(self, path, format_=None, **kwargs):
         """
         Saves subtitles to an output file
 
@@ -269,7 +268,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
         Args:
             path (str): Path to output file
-            format (str, optional): Output file format
+            format_ (str, optional): Output file format
             **kwargs: Additional keyword arguments
         """
         from os.path import expandvars, isdir
@@ -281,17 +280,17 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             print(f"Writing subtitles to '{path}'")
 
         # Check if hdf5
-        if format == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
+        if format_ == "hdf5" or path.endswith(".hdf5") or path.endswith(".h5"):
             import h5py
 
             with h5py.File(path) as fp:
                 self._save_hdf5(fp, **kwargs)
         # Check if directory
-        elif format == "png" or path.endswith("/") or isdir(path):
+        elif format_ == "png" or path.endswith("/") or isdir(path):
             self._save_png(path, **kwargs)
         # Otherwise, continue as superclass SSAFile
         else:
-            SSAFile.save(self, path, format_=format, **kwargs)
+            SSAFile.save(self, path, format_=format_, **kwargs)
 
     def show(self, indexes=None, data=None, cols=20):
         """
@@ -377,7 +376,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
              the hdf5 file here for consistency
 
         Args:
-            infile (str): Path to input file
+            path (str): Path to input file
             format_ (str, optional): Input file format
             mode (str, optional): Input file image mode
             verbosity (int, optional): Level of verbose output
@@ -573,7 +572,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             **kwargs: Additional keyword arguments
 
         Returns:
-            SubtitleSeries: Loaded subtitles
+            ImageSubtitleSeries: Loaded subtitles
         """
         decode = lambda x: x.decode("utf8")
 
@@ -631,68 +630,68 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         """
         from pysubs2.time import make_time
 
-        def read_palette(bytes):
-            palette = np.zeros((256, 4), np.uint8)
+        def read_palette(bytes_):
+            palette_ = np.zeros((256, 4), np.uint8)
             bytes_index = 0
-            while bytes_index < len(bytes):
-                color_index = bytes[bytes_index]
-                y = bytes[bytes_index + 1]
-                cb = bytes[bytes_index + 2]
-                cr = bytes[bytes_index + 3]
-                palette[color_index, 0] = y + 1.402 * (cr - 128)
-                palette[color_index, 1] = y - .34414 * (cb - 128) - .71414 * (
-                        cr - 128)
-                palette[color_index, 2] = y + 1.772 * (cb - 128)
-                palette[color_index, 3] = bytes[bytes_index + 4]
+            while bytes_index < len(bytes_):
+                color_index_ = bytes_[bytes_index]
+                y = bytes_[bytes_index + 1]
+                cb = bytes_[bytes_index + 2]
+                cr = bytes_[bytes_index + 3]
+                palette_[color_index_, 0] = y + 1.402 * (cr - 128)
+                palette_[color_index_, 1] = y - .34414 * (
+                        cb - 128) - .71414 * (cr - 128)
+                palette_[color_index_, 2] = y + 1.772 * (cb - 128)
+                palette_[color_index_, 3] = bytes_[bytes_index + 4]
                 bytes_index += 5
-            palette[255] = [16, 128, 128, 0]
+            palette_[255] = [16, 128, 128, 0]
 
-            return palette
+            return palette_
 
-        def read_image(bytes, width, height):
-            img = np.zeros((width * height), np.uint8)
+        def read_image(bytes_, width_, height_):
+            img = np.zeros((width_ * height_), np.uint8)
             bytes_index = 0
             pixel_index = 0
-            while bytes_index < len(bytes):
-                byte_1 = bytes[bytes_index]
+            while bytes_index < len(bytes_):
+                byte_1 = bytes_[bytes_index]
                 if byte_1 == 0x00:  # 00 | Special behaviors
-                    byte_2 = bytes[bytes_index + 1]
+                    byte_2 = bytes_[bytes_index + 1]
                     if byte_2 == 0x00:  # 00 00 | New line
                         bytes_index += 2
                     elif (byte_2 & 0xC0) == 0x40:  # 00 4X XX | 0 X times
-                        byte_3 = bytes[bytes_index + 2]
+                        byte_3 = bytes_[bytes_index + 2]
                         n_pixels = ((byte_2 - 0x40) << 8) + byte_3
-                        color = 0
-                        img[pixel_index:pixel_index + n_pixels] = color
+                        color_ = 0
+                        img[pixel_index:pixel_index + n_pixels] = color_
                         pixel_index += n_pixels
                         bytes_index += 3
                     elif (byte_2 & 0xC0) == 0x80:  # 00 8Y XX | X Y times
-                        byte_3 = bytes[bytes_index + 2]
+                        byte_3 = bytes_[bytes_index + 2]
                         n_pixels = byte_2 - 0x80
-                        color = byte_3
-                        img[pixel_index:pixel_index + n_pixels] = color
+                        color_ = byte_3
+                        img[pixel_index:pixel_index + n_pixels] = color_
                         pixel_index += n_pixels
                         bytes_index += 3
                     elif (byte_2 & 0xC0) != 0x00:  # 00 CY YY XX | X Y times
-                        byte_3 = bytes[bytes_index + 2]
-                        byte_4 = bytes[bytes_index + 3]
+                        byte_3 = bytes_[bytes_index + 2]
+                        byte_4 = bytes_[bytes_index + 3]
                         n_pixels = ((byte_2 - 0xC0) << 8) + byte_3
-                        color = byte_4
-                        img[pixel_index:pixel_index + n_pixels] = color
+                        color_ = byte_4
+                        img[pixel_index:pixel_index + n_pixels] = color_
                         pixel_index += n_pixels
                         bytes_index += 4
                     else:  # 00 XX | 0 X times
                         n_pixels = byte_2
-                        color = 0
-                        img[pixel_index:pixel_index + n_pixels] = color
+                        color_ = 0
+                        img[pixel_index:pixel_index + n_pixels] = color_
                         pixel_index += n_pixels
                         bytes_index += 2
                 else:  # XX | X once
-                    color = byte_1
-                    img[pixel_index] = color
+                    color_ = byte_1
+                    img[pixel_index] = color_
                     pixel_index += 1
                     bytes_index += 1
-            img.resize((height, width))
+            img.resize((height_, width_))
 
             return img
 
@@ -726,12 +725,12 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             content_offset = header_offset + 13
 
             if segment_kind == 0x14:  # Palette
-                palette_bytes = sup_bytes[
-                                content_offset + 2:content_offset + content_size]
+                palette_bytes = sup_bytes[content_offset + 2:
+                                          content_offset + content_size]
                 palette = read_palette(palette_bytes)
             elif segment_kind == 0x15:  # Image
-                image_bytes = sup_bytes[
-                              content_offset + 11:content_offset + content_size]
+                image_bytes = sup_bytes[content_offset + 11:
+                                        content_offset + content_size]
                 width = bytes2int(
                     sup_bytes[content_offset + 7:content_offset + 9])
                 height = bytes2int(

@@ -1,8 +1,11 @@
 hanziconv
+h5py
+imgcat
 IPython
 nltk
 numpy
 pandas
 -e git://github.com/pycantonese/pycantonese#egg=pycantonese
+pillow
 pypinyin
 snownlp
