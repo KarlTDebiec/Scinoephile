@@ -59,25 +59,6 @@ subsa = ImageSubtitleSeries.load(
     infile=f"{data_root}/{movie}/{language}_{mode.replace(' ', '')}_assigned.h5",
     **kwargs)
 
-nonhanzi = list(ascii_letters) + list(digits)
-nonhanzi_indexes = []
-
-for i, s in subsa.spec[subsa.spec.char.isin(nonhanzi)].iterrows():
-    nonhanzi_indexes.extend([j[0] for j in s.indexes])
-nonhanzi_indexes = sorted(list(set(nonhanzi_indexes)))
-nonhanzi_events = [subsa.events[i] for i in nonhanzi_indexes]
-
-incomplete_indexes = []
-for i, s in subsa.spec[subsa.spec.char == ""].iterrows():
-    incomplete_indexes.extend([j[0] for j in s.indexes])
-incomplete_indexes = sorted(list(set(incomplete_indexes)))
-incomplete_events = [subsa.events[i] for i in incomplete_indexes]
-
-thin_events = [e for e in subsa.events if np.any(e.char_widths < 10)]
-
-embed(**embed_kw(**kwargs))
-
-
 # Test reading and writing image-based subtitles
 def test1(movie, language, mode):
     kwargs = {"interactive": False, "mode": mode, "verbosity": 2}

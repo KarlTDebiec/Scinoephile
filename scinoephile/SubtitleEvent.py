@@ -23,7 +23,7 @@ class SubtitleEvent(Base, SSAEvent):
 
     # region Builtins
 
-    def __init__(self, **kwargs):
+    def __init__(self, series, **kwargs):
         super().__init__(**{k: v for k, v in kwargs.items()
                             if k not in SSAEvent.FIELDS})
 
@@ -31,13 +31,35 @@ class SubtitleEvent(Base, SSAEvent):
         SSAEvent.__init__(self, **{k: v for k, v in kwargs.items()
                                    if k in SSAEvent.FIELDS})
 
+        # Store property values
+        if series is not None:
+            self.series = series
+
     def __repr__(self):
         from pysubs2.time import ms_to_str
 
         return f"<{self.__class__.__name__}— " \
-               f"type={self.type} " \
-               f"start={ms_to_str(self.start)} " \
-               f"end={ms_to_str(self.end)} " \
-               f"text='{self.text}'>"
+            f"type={self.type} " \
+            f"start={ms_to_str(self.start)} " \
+            f"end={ms_to_str(self.end)} " \
+            f"text='{self.text}'>"
+
+    # endregion
+
+    # region Public Properties
+
+    @property
+    def series(self):
+        if not hasattr(self, "_series"):
+            self._series = None
+        return self._series
+
+    @series.setter
+    def series(self, value):
+        from scinoephile import SubtitleSeries
+
+        if not isinstance(value, SubtitleSeries):
+            raise ValueError(self._generate_setter_exception(value))
+        self._series = value
 
     # endregion

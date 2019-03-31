@@ -166,7 +166,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
 
     def manually_assign_chars(self, start_index=0):
         """
-
+        Interactively confirm character assignments
 
         Args:
             start_index (index): Character index at which to start interactive
@@ -174,8 +174,11 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         """
         from pypinyin import pinyin
 
-        predictions = self.get_chars_of_labels(
-            np.argsort(self.char_predictions, axis=1)[:, -1])
+        if self.char_predictions is not None:
+            predictions = self.get_chars_of_labels(
+                np.argsort(self.char_predictions, axis=1)[:, -1])
+        else:
+            predictions = None
 
         if self.verbosity >= 1:
             print("Assigning characters")
@@ -196,8 +199,11 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             self.show(indexes=i)
 
             try:
-                match = input(f"'{predictions[i]}' "
-                              f"({pinyin(predictions[i])[0][0]}): ")
+                if predictions is not None:
+                    match = input(f"'{predictions[i]}' "
+                                  f"({pinyin(predictions[i])[0][0]}): ")
+                else:
+                    match = input(f"'' (): ")
             except EOFError:
                 print(f"\nSkipping assignment of character {i}")
                 continue
@@ -210,6 +216,21 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 self.assign_char(i, match)
 
         embed(**self.embed_kw)
+
+    def merge_chars(self, index_1, index_2):
+        # In series:
+        #   Remove character 2 from data
+        #   Remove character 2 from spec
+        #   Make sure indexes are OK
+        # In each event that contains characters 1 and 2:
+        #   Reduce char_count by one
+        #   Update char_count
+        #   Update char_bounds
+        #   Update char_data
+        #   Update char_indexes
+        #   Update char_separations
+        #   Update char_widths
+        pass
 
     def predict(self, model):
         """
@@ -296,7 +317,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             cols (int, optional): Number of columns of characters
         """
         from PIL import Image
-        from scinoephile import in_ipynb
+        from scinoephile import in_ipython
 
         # Process arguments
         if data is None:
@@ -307,6 +328,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
             indexes = [indexes]
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= data.shape[0]):
+            embed(**self.embed_kw)
             raise ValueError()
         if cols is None:
             cols = indexes.size
@@ -334,13 +356,15 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                                  100 * (column + 1) - 10))
 
         # Show image
-        if in_ipynb():
+        if in_ipython() == "ZMQInteractiveShell":
             from io import BytesIO
-            from IPython.display import  display, Image
+            from IPython.display import display, Image
 
             bytes = BytesIO()
             img.save(bytes, "png")
             display(Image(data=bytes.getvalue()))
+        elif in_ipython() == "InteractiveShellEmbed":
+            img.show()
         else:
             try:
                 from imgcat import imgcat
@@ -397,35 +421,58 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
         if self.verbosity >= 1:
             print("Initializing character data structures")
 
+        if (hasattr(self, "_data") and self._data is not None
+                and hasattr(self, "_spec") and self._spec is not None):
+            prior_data = self._data
+            prior_spec = self._spec
+            if self.verbosity >= 1:
+                print("Retaining prior character assignments")
+        else:
+            prior_data = prior_spec = None
+
         n_total_chars = sum([e.char_count for e in self.events])
         n_checked_chars = 0
         n_unique_chars = 0
         data = np.zeros((n_total_chars, 80, 80), np.uint8)
+        chars = []
         subchar_indexes = []
 
-        # Loop over events, then over chars within event, and skip duplicates
+        # Loop over subtitles within this series
         for i, event in enumerate(self.events):
             if self.verbosity >= 2:
                 print(f"Analyzing characters for event "
                       f"{i + 1}/{len(self.events)}")
             n_checked_chars += event.char_count
-            char_indexes = []
-            for j, char in enumerate(event.char_data):
-                match = (data[:n_unique_chars] == char).all(axis=(1, 2))
-                if match.any():
-                    # TODO: Can probably just calculate this once
-                    index = np.where(match)[0][0]
-                    subchar_indexes[index].append((i, j))
-                    char_indexes.append(index)
+
+            # Loop over characters within this subtitle
+            for j, datum in enumerate(event.char_data):
+
+                # Check if character is already in nascent array
+                match = np.where(
+                    (data[:n_unique_chars] == datum).all(axis=(1, 2)))[0]
+                if match.size > 0:
+                    # Character previously seen, update index
+                    subchar_indexes[match[0]].append((i, j))
                 else:
-                    index = n_unique_chars
-                    data[index] = char
+                    # Character is new, add to nascent array
+                    data[n_unique_chars] = datum
                     subchar_indexes.append([(i, j)])
-                    char_indexes.append(index)
                     n_unique_chars += 1
-            event.char_indexes = char_indexes
+
+                    # Check prior data for assignment of this image
+                    if prior_data is not None:
+                        prior_match = np.where(
+                            (prior_data == datum).all(axis=(1, 2)))[0]
+                        if prior_match.size > 0:
+                            # Copy over prior assignment
+                            chars.append(
+                                prior_spec.loc[prior_match[0]]["char"])
+                        else:
+                            chars.append("")
+                    else:
+                        chars.append("")
         self._data = data[:n_unique_chars]
-        self._spec = pd.DataFrame.from_dict({"char": [""] * n_unique_chars,
+        self._spec = pd.DataFrame.from_dict({"char": chars,
                                              "indexes": subchar_indexes})
 
     def _save_hdf5(self, fp, **kwargs):
@@ -502,7 +549,7 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
     @classmethod
     def _load_hdf5(cls, fp, mode=None, verbosity=1, **kwargs):
         """
-        Loads subtitles from an hdf5 file into a nascent SubtitleSeries
+        Loads subtitles from an hdf5 file into a nascent ImagesSubtitleSeries
 
         .. todo::
           - [ ] Load project info
@@ -535,12 +582,12 @@ class ImageSubtitleSeries(SubtitleSeries, OCRBase):
                 spec = pd.DataFrame(
                     {"char": [""] * n_unique_chars,
                      "indexes": np.empty((n_unique_chars, 0)).tolist()})
-                for i, event in enumerate(subs.events):
-                    event.char_indexes = np.zeros(event.char_count, np.int)
+                # for i, event in enumerate(subs.events):
+                #     event.char_indexes = np.zeros(event.char_count, np.int)
                 for i, char, j, k in encoded.values:
                     spec["char"].loc[i] = decode(char)
                     spec["indexes"].loc[i] += [(j, k)]
-                    subs.events[j].char_indexes[k] = i
+                    # subs.events[j].char_indexes[k] = i
 
                 subs._spec = spec
 

@@ -44,15 +44,18 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def in_ipynb():
+def in_ipython():
     try:
         shell = get_ipython().__class__.__name__
         if shell == "ZMQInteractiveShell":
             # IPython in Jupyter Notebook
-            return True
+            return shell
+        elif shell == "InteractiveShellEmbed":
+            # IPython in Jupyter Notebook using IPython.embed
+            return shell
         elif shell == "TerminalInteractiveShell":
             # IPython in terminal
-            return False
+            return shell
         else:
             # Other
             return False

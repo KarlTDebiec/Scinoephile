@@ -33,7 +33,9 @@ class SubtitleSeries(Base, SSAFile):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        SSAFile.__init__(self)  # SSAFile.__init__ accepts no arguments
+
+        # SSAFile.__init__ accepts no arguments
+        SSAFile.__init__(self)
 
     def __repr__(self):
         if self.events:
@@ -276,6 +278,7 @@ class SubtitleSeries(Base, SSAFile):
                                                         value.decode("utf8"))
                          for field, value in zip(event.dtype.names, event)}
                 subs.events.append(cls.event_class(verbosity=verbosity,
+                                                   series=subs,
                                                    **event))
 
         return subs
