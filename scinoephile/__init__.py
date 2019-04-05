@@ -7,7 +7,7 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-################################## MODULES ###################################
+################################### MODULES ###################################
 from abc import ABC, abstractmethod
 from os.path import dirname
 from sys import modules
@@ -384,6 +384,6 @@ class StdoutLogger(object):
     # endregion
 
 
-################################### MODULES ###################################
+################################## MODULES ###################################
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries

@@ -3,34 +3,16 @@ platform darwin -- Python 3.6.8, pytest-4.3.1, py-1.8.0, pluggy-0.9.0 -- /usr/lo
 cachedir: .pytest_cache
 rootdir: /Users/kdebiec/Dropbox/code/scinoephile, inifile:
 plugins: cov-2.6.1
-collecting ... collected 8 items
+collecting ... collected 5 items
 
-test_hdf5.py::test_hdf5_read_chinese_simplified PASSED                   [ 12%]
-test_srt.py::test_srt_read_chinese_simplified PASSED                     [ 25%]
-test_srt.py::test_srt_read_english PASSED                                [ 37%]
-test_srt.py::test_srt_write_chinese_simplified PASSED                    [ 50%]
-test_srt.py::test_srt_write_english PASSED                               [ 62%]
-test_sup.py::test_sup_read_chinese_simplified PASSED                     [ 75%]
-test_sup.py::test_sup_read_chinese_traditional PASSED                    [ 87%]
-test_sup.py::test_sup_read_english PASSED                                [100%]
+test_Subtitle.py::test_Subtitle PASSED                                   [ 20%]
+test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 40%]
+test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 60%]
+test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 80%]
+test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
-Name                                                                                                                                           Stmts   Miss  Cover
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/Compositor.py                  662    662     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleEvent.py                21      9    57%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py              115     46    60%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                    187    142    24%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/AutoTrainer.py             120     99    18%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py      137     80    42%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py     381    216    43%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/Model.py                    78     64    18%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py              141    114    19%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TestOCRDataset.py          132    114    14%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TrainOCRDataset.py         200    174    13%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                113     77    32%
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                           2287   1797    21%
+Coverage HTML written to dir htmlcov
 
 
-========================== 8 passed in 163.05 seconds ==========================
+=========================== 5 passed in 3.48 seconds ===========================

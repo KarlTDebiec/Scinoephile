@@ -43,7 +43,7 @@ class SubtitleEvent(Base, SSAEvent):
         if series is not None:
             self.series = series
 
-    def __repr__(self):
+    def __str__(self):
         from pysubs2.time import ms_to_str
 
         return f"<{self.__class__.__name__}— " \

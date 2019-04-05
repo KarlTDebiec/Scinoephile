@@ -10,7 +10,9 @@ _____________________________
 - [x] Function for merging characters manually
 - [x] Update documentation of Subtitle and Event classes
 - [x] Add tests for reading srt, sup, and hdf5
-- [ ] Update documentation
+- [x] Update documentation
+- [ ] Fix documentation
+- [ ] Understand problem with times
 - [ ] Migrate to tensorflow 2.0
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset

@@ -45,9 +45,9 @@ class SubtitleSeries(Base, SSAFile):
         # SSAFile.__init__ accepts no arguments
         SSAFile.__init__(self)
 
-    def __repr__(self):
+    def __str__(self):
         """
-        Provides a string representation
+        Provides a string representation of series
 
         Returns:
             str: String representation of this series
@@ -55,9 +55,11 @@ class SubtitleSeries(Base, SSAFile):
         if self.events:
             from pysubs2.time import ms_to_str
 
-            return f"<{self.__class__.__name__} with {len(self):d} events " \
+            return f"<{self.__class__.__name__} " \
+                f"with {len(self.events):d} events " \
                 f"and {len(self.styles):d} styles, " \
-                f"last timestamp {ms_to_str(max(e.end for e in self)):s}>"
+                f"last timestamp " \
+                f"{ms_to_str(max(e.end for e in self.events)):s}>"
         else:
             return f"<SubtitleSeries with 0 events " \
                 f"and {len(self.styles):d} styles>"
@@ -136,10 +138,15 @@ class SubtitleSeries(Base, SSAFile):
         else:
             with open(path, encoding=encoding) as fp:
                 subs = cls.from_file(fp, format_=format_, **kwargs)
-                subs.verbosity = verbosity
-                for event in subs.events:
-                    event.verbosity = verbosity
-                return subs
+            subs.verbosity = verbosity
+            events = []
+            for ssaevent in subs.events:
+                events.append(cls.event_class(verbosity=verbosity,
+                                              series=subs,
+                                              **ssaevent.as_dict()))
+            subs.events = events
+
+            return subs
 
     # endregion
 
