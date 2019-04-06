@@ -14,7 +14,24 @@ test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 85%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
-Coverage HTML written to dir htmlcov
+Name                                                                                                                                           Stmts   Miss  Cover
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/Compositor.py                  662    662     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleEvent.py                21      2    90%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py              117      5    96%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                    187    141    25%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/AutoTrainer.py             120     99    18%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py      137     54    61%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py     381    160    58%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/Model.py                    78     64    18%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py              141    114    19%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TestOCRDataset.py          132    114    14%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TrainOCRDataset.py         200    174    13%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                107     71    34%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/__init__.py                0      0   100%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/testing.py                13      1    92%
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                                                           2296   1661    28%
 
 
-========================== 7 passed in 180.51 seconds ==========================
+========================== 7 passed in 166.99 seconds ==========================

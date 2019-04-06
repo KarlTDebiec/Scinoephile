@@ -10,3 +10,4 @@ dist
 docs/_build/doctrees
 src
 scinoephile.egg-info
+test/htmlcov
