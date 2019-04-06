@@ -279,7 +279,7 @@ class SubtitleSeries(Base, SSAFile):
 
         # Initialize
         subs = cls(verbosity=verbosity)
-        subs.format = "hdf5"
+        subs.format = "hdf5"  # TODO: Is this used anywhere?
 
         # Load info
         for k, v in fp.attrs.items():

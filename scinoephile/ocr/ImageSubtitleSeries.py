@@ -12,11 +12,11 @@ import numpy as np
 import pandas as pd
 from IPython import embed
 from scinoephile import SubtitleSeries
-from scinoephile.ocr import ImageSubtitleEvent, OCRBase
+from scinoephile.ocr import ImageSubtitleEvent
 
 
 ################################### CLASSES ###################################
-class ImageSubtitleSeries(SubtitleSeries, OCRBase):
+class ImageSubtitleSeries(SubtitleSeries):
     """
     A series of image-based subtitles
     """

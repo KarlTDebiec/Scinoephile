@@ -11,11 +11,10 @@
 import numpy as np
 from IPython import embed
 from scinoephile import SubtitleEvent
-from scinoephile.ocr import OCRBase
 
 
 ################################### CLASSES ###################################
-class ImageSubtitleEvent(SubtitleEvent, OCRBase):
+class ImageSubtitleEvent(SubtitleEvent):
     """
     An individual image-based subtitle
     """

@@ -10,18 +10,16 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
-from abc import ABC, abstractmethod
-from scinoephile import Base, CLToolBase, package_root
+from scinoephile import package_root
 from IPython import embed
 
 ################################## CONSTANTS ##################################
-char_frequency_table = pd.read_csv(
+char_index_df = pd.read_csv(
     f"{package_root}/data/ocr/characters.txt",
     sep="\t", names=["character", "frequency", "cumulative frequency"])
 
-chars = np.array(char_frequency_table["character"], np.str)
+char_index = np.array(char_index_df["character"], np.str)
 punctuation = np.array("\n　 ,,？?，,、,..！!。.…﹣-─“”\"《<》>「[」]：:")
-
 
 
 ################################## FUNCTIONS ##################################
@@ -37,15 +35,15 @@ def center_char_img(data, x_offset=0, y_offset=0):
     Returns:
         numpy.ndarray: Centered character image
     """
-    import numpy as np
-
-    # TODO: Make general-purpose; no need to hardcode shape or limit to chars
-
+    # TODO: Make general-purpose
+    
     white_cols = (data == data.max()).all(axis=0)
     white_rows = (data == data.max()).all(axis=1)
     trimmed = data[
-              np.argmin(white_rows):white_rows.size - np.argmin(white_rows[::-1]),
-              np.argmin(white_cols):white_cols.size - np.argmin(white_cols[::-1])]
+              np.argmin(white_rows):white_rows.size - np.argmin(
+                  white_rows[::-1]),
+              np.argmin(white_cols):white_cols.size - np.argmin(
+                  white_cols[::-1])]
     x = int(np.floor((80 - trimmed.shape[1]) / 2))
     y = int(np.floor((80 - trimmed.shape[0]) / 2))
     centered = np.ones_like(data) * data.max()
@@ -98,7 +96,6 @@ def generate_char_data(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     Returns:
         numpy.ndarray: Character image data
     """
-    import numpy as np
     from matplotlib.font_manager import FontProperties
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
@@ -143,129 +140,64 @@ def generate_char_data(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     return data
 
 
-################################### CLASSES ###################################
-class OCRBase(Base, ABC):
+def get_labels_of_chars(chars):
     """
-    Base for OCR classes
+    Gets unique integer indexes of provided char strings
+
+    Args:
+        chars (ndarray(int64)): Chars
+
+    Returns:
+         ndarray(int64): Labels
     """
 
-    # region Builtins
+    # Process arguments
+    if isinstance(chars, str):
+        if len(chars) == 1:
+            return np.argwhere(chars == chars)[0, 0]
+        elif len(chars) > 1:
+            chars = np.array(list(chars))
+    elif isinstance(chars, list):
+        chars = np.array(chars)
 
-    def __init__(self, mode=None, **kwargs):
-        super().__init__(**kwargs)
+    # Return labels
+    if isinstance(chars, np.ndarray):
+        sorter = np.argsort(chars)
+        return np.array(
+            sorter[np.searchsorted(chars, chars, sorter=sorter)])
+    else:
+        raise ValueError()
 
-        # Store property values
-        if mode is not None:
-            self.mode = mode
 
-    # endregion
+def get_chars_of_labels(labels):
+    """
+    Gets char strings of unique integer indexes
 
-    # region Properties
+    Args:
+        labels (ndarray(int64)): Labels
 
-    @property
-    def chars(self):
-        """pandas.core.frame.DataFrame: Characters"""
-        if not hasattr(self, "_chars"):
-            import numpy as np
+    Returns
+        ndarray(U64): Chars
+    """
 
-            self._chars = np.array(self.char_frequency_table["character"],
-                                   np.str)
-        return self._chars
+    # Process arguments
+    if isinstance(labels, int):
+        return char_index[labels]
+    elif isinstance(labels, list):
+        labels = np.array(labels)
 
-    @property
-    def char_frequency_table(self):
-        """pandas.core.frame.DataFrame: Character frequency table"""
-        if not hasattr(self, "_char_frequency_table"):
-            import pandas as pd
-
-            self._char_frequency_table = pd.read_csv(
-                f"{self.package_root}/data/ocr/characters.txt", sep="\t",
-                names=["character", "frequency", "cumulative frequency"])
-        return self._char_frequency_table
-
-    @property
-    def mode(self):
-        """str: Image mode"""
-        if not hasattr(self, "_mode"):
-            self._mode = "1 bit"
-        return self._mode
-
-    @mode.setter
-    def mode(self, value):
-        if value is not None:
-            if not isinstance(value, str):
-                try:
-                    value = str(value)
-                except Exception:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value == "8 bit":
-                pass
-            elif value == "1 bit":
-                pass
-            else:
-                raise ValueError(self._generate_setter_exception(value))
-
-        self._mode = value
-
-    # endregion
-
-    # region Public Methods
-
-    def get_labels_of_chars(self, chars):
-        """
-        Gets unique integer indexes of provided char strings
-
-        Args:
-            chars (ndarray(U64)): Chars
-
-        Returns:
-             ndarray(int64): Labels
-        """
-        import numpy as np
-
-        if isinstance(chars, str):
-            if len(chars) == 1:
-                return np.argwhere(self.chars == chars)[0, 0]
-            elif len(chars) > 1:
-                chars = np.array(list(chars))
-        elif isinstance(chars, list):
-            chars = np.array(chars)
-        if isinstance(chars, np.ndarray):
-            sorter = np.argsort(self.chars)
-            return np.array(
-                sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
-        else:
-            raise ValueError()
-
-    def get_chars_of_labels(self, labels):
-        """
-        Gets char strings of unique integer indexes
-
-        Args:
-            labels (ndarray(int64)): Labels
-
-        Returns
-            ndarray(U64): Chars
-        """
-        import numpy as np
-
-        if isinstance(labels, int):
-            return self.chars[labels]
-        elif isinstance(labels, list):
-            labels = np.array(labels)
-        if isinstance(labels, np.ndarray):
-            return np.array([self.chars[i] for i in labels], np.str)
-        else:
-            raise ValueError()
-
-    # endregion
+    # return char_index
+    if isinstance(labels, np.ndarray):
+        return np.array([char_index[i] for i in labels], np.str)
+    else:
+        raise ValueError()
 
 
 ################################### MODULES ###################################
 from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
-from scinoephile.ocr.Model import Model
+# from scinoephile.ocr.Model import Model
 from scinoephile.ocr.OCRDataset import OCRDataset
-from scinoephile.ocr.TestOCRDataset import TestOCRDataset
+# from scinoephile.ocr.TestOCRDataset import TestOCRDataset
 from scinoephile.ocr.TrainOCRDataset import TrainOCRDataset
-from scinoephile.ocr.AutoTrainer import AutoTrainer
+# from scinoephile.ocr.AutoTrainer import AutoTrainer

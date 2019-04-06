@@ -8,63 +8,36 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numpy as np
+import pandas as pd
 from abc import ABC, abstractmethod
-from scinoephile import DatasetBase
-from scinoephile.ocr import OCRBase
+from scinoephile import Base
 from IPython import embed
 
 
 ################################### CLASSES ###################################
-class OCRDataset(DatasetBase, OCRBase, ABC):
+class OCRDataset(Base, ABC):
     """
     A collection of character images
     """
 
-    # region Builtins
-
-    def __init__(self, n_chars=None, **kwargs):
-        super().__init__(**kwargs)
-
-        # Store property values
-        if n_chars is not None:
-            self.n_chars = n_chars
-
-    # endregion
-
     # region Public Properties
-
     @property
     def data(self):
-        """numpy.ndarray(bool): Character image data"""
+        """numpy.ndarray(int): Character image data"""
         if not hasattr(self, "_data"):
-            import numpy as np
-
-            self._data = np.zeros((0, 80, 80), self.data_dtype)
+            self._data = np.zeros((0, 80, 80), np.uint8)
         return self._data
 
     @data.setter
     def data(self, value):
-        import numpy as np
-
         if not isinstance(value, np.ndarray):
             raise ValueError(self._generate_setter_exception(value))
         if value.shape[1] != 80 or value.shape[2] != 80:
             raise ValueError(self._generate_setter_exception(value))
-        if value.dtype != self.data_dtype:
+        if value.dtype != np.uint8:
             raise ValueError(self._generate_setter_exception(value))
         self._data = value
-
-    @property
-    def data_dtype(self):
-        """type: dtype of image arrays"""
-        import numpy as np
-
-        if self.mode == "8 bit":
-            return np.uint8
-        elif self.mode == "1 bit":
-            return np.bool
-        else:
-            raise NotImplementedError()
 
     @property
     def figure(self):
@@ -77,34 +50,13 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
 
     @property
     def labels(self):
-        """ndarray: Labels of chars in dataset"""
+        """ndarray: Labels of char_index in dataset"""
         return self.get_labels_of_chars(self.spec["char"].values)
-
-    @property
-    def n_chars(self):
-        """int: Number of unique characters to support"""
-        if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
-        return self._n_chars
-
-    @n_chars.setter
-    def n_chars(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1:
-                raise ValueError(self._generate_setter_exception(value))
-        self._n_chars = value
 
     @property
     def spec(self):
         """pandas.DataFrame: Character image specifications"""
         if not hasattr(self, "_spec"):
-            import pandas as pd
-
             self._spec = pd.DataFrame(
                 {c: pd.Series([], dtype=self.spec_dtypes[c])
                  for c in self.spec_cols})
@@ -139,11 +91,10 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
             spec (pandas.DataFrame): New image specifications
             data (numpy.ndarray): New image data
         """
-        import numpy as np
+        spec_is_new = lambda x: tuple(x.values) not in \
+                                set(map(tuple, self.spec.values))
 
-        new = spec.apply(
-            lambda x: tuple(x.values) not in set(map(tuple, self.spec.values)),
-            axis=1).values
+        new = spec.apply(spec_is_new, axis=1).values
         if new.sum() >= 1:
             self.spec = self.spec.append(
                 spec.loc[new], ignore_index=True, sort=False)
@@ -157,31 +108,6 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
     @abstractmethod
     def get_present_specs_of_char_set(self, char):
         pass
-
-    def load(self, infile=None, **kwargs):
-        """
-        Loads character images from an input file
-        """
-        from os.path import expandvars
-
-        # Process arguments
-        if infile is not None:
-            infile = expandvars(infile)
-        elif self.infile is not None:
-            infile = self.infile
-        else:
-            raise ValueError()
-
-        # Read infile
-        if self.verbosity >= 1:
-            print(f"Reading character images from '{infile}'")
-        if (infile.endswith(".hdf5") or infile.endswith(".h5")):
-            import h5py
-
-            with h5py.File(infile) as fp:
-                self._load_hdf5(fp, **kwargs)
-        else:
-            raise NotImplementedError()
 
     def save(self, outfile=None, **kwargs):
         """
@@ -255,14 +181,78 @@ class OCRDataset(DatasetBase, OCRBase, ABC):
 
     # endregion
 
-    # region Private Methods
+    @classmethod
+    def load(cls, path, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input file
 
-    @abstractmethod
-    def _load_hdf5(self, fp, **kwargs):
-        pass
+        Args:
+            path (str): Path to input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        import h5py
+        from os.path import expandvars
+
+        # Process arguments
+        path = expandvars(path).replace("//", "/")
+        if verbosity >= 1:
+            print(f"Reading dataset from '{path}'")
+
+        # Load
+        with h5py.File(path) as fp:
+            return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
+
+    # endregion
+
+    # region Private Methods
 
     @abstractmethod
     def _save_hdf5(self, fp, **kwargs):
         pass
+
+    # endregion
+
+    # region Private Class Methods
+
+    @classmethod
+    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input hdf5 file
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        decode = lambda x: x.decode("utf8")
+
+        # Initialize
+        dataset = cls(verbosity=verbosity)
+
+        # Load image specs
+        if "spec" not in fp:
+            raise ValueError()
+        spec = np.array(fp["spec"])
+        spec = pd.DataFrame(data=spec, index=range(spec.size),
+                            columns=spec.dtype.names)
+        spec["char"] = spec["char"].apply(decode)
+        spec["font"] = spec["font"].apply(decode)
+
+        # Load image data
+        if "data" not in fp:
+            raise ValueError()
+        data = np.array(fp["data"])
+
+        # Add images and return
+        dataset.add_img(spec, data)
+
+        return dataset
 
     # endregion

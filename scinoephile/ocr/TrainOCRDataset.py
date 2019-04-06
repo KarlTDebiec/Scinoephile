@@ -8,20 +8,24 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile.ocr import OCRDataset
+import pandas as pd
+import numpy as np
 from IPython import embed
+from scinoephile.ocr import (char_index, get_chars_of_labels,
+                             get_labels_of_chars, OCRDataset)
 
 
 ################################### CLASSES ###################################
 class TrainOCRDataset(OCRDataset):
     """
-    A collection of labeled character images for training
+    A collection of character images for training
     """
 
     # region Builtins
 
     def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, **kwargs):
+                 font_x_offsets=None, font_y_offsets=None, n_chars=None,
+                 **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
@@ -35,6 +39,8 @@ class TrainOCRDataset(OCRDataset):
             self._font_x_offsets = font_x_offsets
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
+        if n_chars is not None:
+            self.n_chars = n_chars
 
     # endregion
 
@@ -129,10 +135,28 @@ class TrainOCRDataset(OCRDataset):
         self._font_y_offsets = value
 
     @property
+    def n_chars(self):
+        """int: Number of unique characters to support"""
+        if not hasattr(self, "_n_chars"):
+            self._n_chars = 10
+        return self._n_chars
+
+    @n_chars.setter
+    def n_chars(self, value):
+        if value is not None:
+            if not isinstance(value, int):
+                try:
+                    value = int(value)
+                except Exception as e:
+                    raise ValueError(self._generate_setter_exception(value))
+            if value < 1:
+                raise ValueError(self._generate_setter_exception(value))
+        self._n_chars = value
+
+    @property
     def spec_all(self):
         """pandas.DataFrame: All available character image specs"""
         if not hasattr(self, "_spec_all"):
-            import pandas as pd
             from itertools import product
 
             fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
@@ -178,19 +202,20 @@ class TrainOCRDataset(OCRDataset):
     def spec_min(self):
         """pandas.DataFrame: Minimal character image specs"""
         if not hasattr(self, "_spec_min"):
-            import pandas as pd
-
             self._spec_min = pd.DataFrame({
                 "font": pd.Series(self.font_names,
                                   dtype=self.spec_dtypes["font"]),
                 "size": pd.Series([self.font_sizes[0]] * len(self.font_names),
                                   dtype=self.spec_dtypes["size"]),
-                "width": pd.Series([self.font_widths[0]] * len(self.font_names),
-                                   dtype=self.spec_dtypes["width"]),
-                "x_offset": pd.Series([self.font_x_offsets[0]] * len(self.font_names),
-                                      dtype=self.spec_dtypes["x_offset"]),
-                "y_offset": pd.Series([self.font_y_offsets[0]] * len(self.font_names),
-                                      dtype=self.spec_dtypes["y_offset"])})
+                "width": pd.Series(
+                    [self.font_widths[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["width"]),
+                "x_offset": pd.Series(
+                    [self.font_x_offsets[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["x_offset"]),
+                "y_offset": pd.Series(
+                    [self.font_y_offsets[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["y_offset"])})
         return self._spec_min
 
     @property
@@ -205,18 +230,16 @@ class TrainOCRDataset(OCRDataset):
     # region Public Methods
 
     def generate_training_data(self, chars=None, min_images=None):
-        import numpy as np
-        import pandas as pd
         from random import sample
         from scinoephile.ocr import generate_char_data
 
         # Process arguments
         if chars is None:
-            chars = self.chars[:self.n_chars]
+            chars = char_index[:self.n_chars]
         if not isinstance(chars, list):
             chars = list(chars)
         if min_images is None:
-            min_images = len(self.spec_min_set)
+            min_images = len(self.spec_min_set)  # TODO: What is this?
         min_images = max(len(self.spec_min_set), min_images)
         if self.verbosity >= 1:
             print(f"Checking for minimum of {min_images} images of each of "
@@ -240,12 +263,13 @@ class TrainOCRDataset(OCRDataset):
         # Generate and add images
         if len(min_queue) >= 1:
             if self.verbosity >= 1:
-                print(f"Generating {len(min_queue)} new images for minimal set")
+                print(
+                    f"Generating {len(min_queue)} new images for minimal set")
 
             spec = pd.DataFrame(min_queue)
-            data = np.zeros((len(min_queue), 80, 80), self.data_dtype)
+            data = np.zeros((len(min_queue), 80, 80), np.uint8)
             for i, kwargs in enumerate(min_queue):
-                data[i] = generate_char_data(fig=self.figure, mode=self.mode, **kwargs)
+                data[i] = generate_char_data(fig=self.figure, **kwargs)
 
             self.add_img(spec, data)
         else:
@@ -260,7 +284,6 @@ class TrainOCRDataset(OCRDataset):
             "char", axis=1).values))
 
     def get_training_data(self, val_portion=0.1):
-        import numpy as np
         from random import sample
 
         complete_trn_indexes = []
@@ -289,49 +312,24 @@ class TrainOCRDataset(OCRDataset):
 
         # Organize data
         trn_img = self.data[complete_trn_indexes]
-        trn_lbl = self.get_labels_of_chars(self.spec["char"].loc[complete_trn_indexes].values)
+        trn_lbl = get_labels_of_chars(
+            self.spec["char"].loc[complete_trn_indexes].values)
         val_img = self.data[complete_val_indexes]
-        val_lbl = self.get_labels_of_chars(self.spec["char"].loc[complete_val_indexes].values)
+        val_lbl = get_labels_of_chars(
+            self.spec["char"].loc[complete_val_indexes].values)
 
-        if self.mode == "8 bit":
-            trn_img = np.array(trn_img, np.float64) / 255.0
-            val_img = np.array(val_img, np.float64) / 255.0
+        trn_img = np.array(trn_img, np.float64) / 255.0
+        val_img = np.array(val_img, np.float64) / 255.0
 
         return trn_img, trn_lbl, val_img, val_lbl
 
     # endregion
 
+    # region Public Class Methods
+
     # region Private Methods
 
-    def _load_hdf5(self, fp, **kwargs):
-        import pandas as pd
-        import numpy as np
-
-        decode = lambda x: x.decode("utf8")
-
-        # Load image mode
-        if "mode" not in fp.attrs:
-            return
-        self.mode = fp.attrs["mode"]
-
-        # Load image specs
-        if "spec" not in fp:
-            raise ValueError()  # Weird to have mode but no specs or data
-        spec = np.array(fp["spec"])
-        spec = pd.DataFrame(data=spec, index=range(spec.size), columns=spec.dtype.names)
-        spec["char"] = spec["char"].apply(decode)
-        spec["font"] = spec["font"].apply(decode)
-
-        # Load image data
-        if "data" not in fp:
-            raise ValueError()  # Weirder to have mode and specs but no data
-        data = np.array(fp["data"])
-
-        self.add_img(spec, data)
-
     def _save_hdf5(self, fp, **kwargs):
-        import numpy as np
-
         dtypes = [
             ("char", "S3"),
             ("font", "S255"),
@@ -341,16 +339,14 @@ class TrainOCRDataset(OCRDataset):
             ("y_offset", "i1")]
         encode = lambda x: x.encode("utf8")
 
-        # Save image mode
-        fp.attrs["mode"] = self.mode
-
         # Save image specs
         if "spec" in fp:
             del fp["spec"]
         encoded = self.spec.copy()
         encoded["char"] = encoded["char"].apply(encode)
         encoded["font"] = encoded["font"].apply(encode)
-        encoded = np.array(list(map(tuple, list(encoded.values))), dtype=dtypes)
+        encoded = np.array(list(map(tuple, list(encoded.values))),
+                           dtype=dtypes)
         fp.create_dataset("spec",
                           data=encoded, dtype=dtypes,
                           chunks=True, compression="gzip")
