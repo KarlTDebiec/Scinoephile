@@ -70,19 +70,16 @@ class Base(ABC):
 
     # region Builtins
 
-    def __init__(self, interactive=None, verbosity=None, **kwargs):
+    def __init__(self, verbosity=None, **kwargs):
         """
         Initializes class
 
         Args:
-            interactive (bool): Show IPython prompt
             verbosity (int): Level of verbose output
             kwargs (dict): Additional keyword arguments
         """
 
         # Store property values
-        if interactive is not None:
-            self.interactive = interactive
         if verbosity is not None:
             self.verbosity = verbosity
 
@@ -96,7 +93,7 @@ class Base(ABC):
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)
-        file = frameinfo.filename.replace(self.package_root, "")
+        file = frameinfo.filename.replace(package_root, "")
         func = frameinfo.function
         number = frameinfo.lineno - 1
         header = ""
@@ -114,32 +111,6 @@ class Base(ABC):
                     f"{line.rstrip()}\n"
 
         return {"header": header}
-
-    @property
-    def interactive(self):
-        """bool: present IPython prompt after processing subtitles"""
-        if not hasattr(self, "_interactive"):
-            self._interactive = False
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, value):
-        if not isinstance(value, bool):
-            try:
-                value = bool(value)
-            except Exception:
-                raise ValueError(self._generate_setter_exception(value))
-        self._interactive = value
-
-    @property
-    def package_root(self):
-        """str: Path to package root directory"""
-        if not hasattr(self, "_package_root"):
-            from os.path import dirname
-            from sys import modules
-
-            self._package_root = dirname(modules[__name__].__file__)
-        return self._package_root
 
     @property
     def verbosity(self):

@@ -62,16 +62,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         return self._spec
 
     @property
-    def data_dtype(self):
-        """type: dtype of image data"""
-        if self.mode == "8 bit":
-            return np.uint8
-        elif self.mode == "1 bit":
-            return np.bool
-        else:
-            raise NotImplementedError()
-
-    @property
     def spec_dtypes(self):
         """OrderedDict(str, type): names and dtypes of columns in spec"""
         from collections import OrderedDict
@@ -327,18 +317,11 @@ class ImageSubtitleSeries(SubtitleSeries):
         cols = min(cols, indexes.size)
 
         # Prepare image
-        if self.mode == "8 bit":
-            img = Image.new("L", (cols * 100, rows * 100), 255)
-        elif self.mode == "1 bit":
-            img = Image.new("1", (cols * 100, rows * 100), 1)
+        img = Image.new("L", (cols * 100, rows * 100), 255)
         for i, index in enumerate(indexes):
             column = (i // cols)
             row = i - (column * cols)
-            if self.mode == "8 bit":
-                char_img = Image.fromarray(data[index])
-            elif self.mode == "1 bit":
-                char_img = Image.fromarray(
-                    data[index].astype(np.uint8) * 255)
+            char_img = Image.fromarray(data[index])
             img.paste(char_img, (100 * row + 10,
                                  100 * column + 10,
                                  100 * (row + 1) - 10,
@@ -367,7 +350,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Public Class Methods
 
     @classmethod
-    def load(cls, path, format_=None, mode="8 bit", verbosity=1, **kwargs):
+    def load(cls, path, format_=None, verbosity=1, **kwargs):
         """
         Loads subtitles from an input file
 
@@ -378,7 +361,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         Args:
             path (str): Path to input file
             format_ (str, optional): Input file format
-            mode (str, optional): Input file image mode
             verbosity (int, optional): Level of verbose output
             **kwargs: Additional keyword arguments
 
@@ -397,13 +379,11 @@ class ImageSubtitleSeries(SubtitleSeries):
             import h5py
 
             with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, mode=mode, verbosity=verbosity,
-                                      **kwargs)
+                return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
         # Check if sup
         if format_ == "sup" or path.endswith(".sup"):
             with open(path, "rb") as fp:
-                return cls._load_sup(fp, mode=mode, verbosity=verbosity,
-                                     **kwargs)
+                return cls._load_sup(fp, verbosity=verbosity, **kwargs)
         # Other formats not supported for this class
         else:
             raise ValueError()
@@ -494,9 +474,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Save info, styles and subtitles
         SubtitleSeries._save_hdf5(self, fp, **kwargs)
 
-        # Save image mode
-        fp.attrs["mode"] = self.mode
-
         # Save subtitle image data
         if "full_data" in fp:
             del fp["full_data"]
@@ -505,7 +482,7 @@ class ImageSubtitleSeries(SubtitleSeries):
             if hasattr(event, "full_data"):
                 fp["full_data"].create_dataset(f"{i:04d}",
                                                data=event.full_data,
-                                               dtype=self.data_dtype,
+                                               dtype=np.uint8,
                                                chunks=True,
                                                compression="gzip")
 
@@ -530,7 +507,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         if hasattr(self, "_data"):
             fp.create_dataset("data",
                               data=self.data,
-                              dtype=self.data_dtype,
+                              dtype=np.uint8,
                               chunks=True,
                               compression="gzip")
 
@@ -558,7 +535,7 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Private Class Methods
 
     @classmethod
-    def _load_hdf5(cls, fp, mode=None, verbosity=1, **kwargs):
+    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
         """
         Loads subtitles from an input hdf5 file
 
@@ -567,7 +544,6 @@ class ImageSubtitleSeries(SubtitleSeries):
 
         Args:
             fp (h5py._hl.files.File): Open hdf5 input file
-            mode (str, optional): Image mode of input file
             verbosity (int, optional): Level of verbose output
             **kwargs: Additional keyword arguments
 
@@ -581,15 +557,10 @@ class ImageSubtitleSeries(SubtitleSeries):
 
         # Load images
         if "full_data" in fp and "events" in fp:
-            if mode is not None and fp.attrs["mode"] != mode:
-                raise ValueError()
-            # TODO: Support converting from one image mode to another on load
-            subs.mode = fp.attrs["mode"]
 
             for i, event in enumerate(subs.events):
-                event.mode = subs.mode
                 event.full_data = np.array(fp["full_data"][f"{i:04d}"],
-                                           subs.data_dtype)
+                                           np.uint8)
 
             # Load char image specs
             if "spec" in fp:
@@ -615,13 +586,12 @@ class ImageSubtitleSeries(SubtitleSeries):
         return subs
 
     @classmethod
-    def _load_sup(cls, fp, mode=None, verbosity=1, **kwargs):
+    def _load_sup(cls, fp, verbosity=1, **kwargs):
         """
         Loads subtitles from an input sup file
 
         Args:
             fp (): Open binary file
-            mode (str, optional): Image mode
             verbosity (int, optional): Level of verbose output
             **kwargs: Additional keyword arguments
 
@@ -700,7 +670,7 @@ class ImageSubtitleSeries(SubtitleSeries):
                          0x17: "WDS", 0x80: "END"}
 
         # initialize
-        subs = cls(mode=mode, verbosity=verbosity)
+        subs = cls(verbosity=verbosity)
         subs.format = "sup"
 
         # Parse infile
@@ -747,7 +717,6 @@ class ImageSubtitleSeries(SubtitleSeries):
                     subs.events.append(cls.event_class(
                         start=make_time(s=start_time),
                         end=make_time(s=end_time),
-                        mode=mode,
                         data=data))
 
                     start_time = None

@@ -59,12 +59,8 @@ class ImageSubtitleEvent(SubtitleEvent):
         if not hasattr(self, "_char_bounds"):
             self._initialize_char_bounds()
 
-        if self.mode == "8 bit":
-            _char_data = np.ones(
-                (self.char_bounds.shape[0], 80, 80), np.uint8) * 255
-        elif self.mode == "1 bit":
-            _char_data = np.ones(
-                (self.char_bounds.shape[0], 80, 80), np.bool)
+        _char_data = np.ones(
+            (self.char_bounds.shape[0], 80, 80), np.uint8) * 255
         for i, (x1, x2) in enumerate(self.char_bounds):
             char = self.full_data[:, x1:x2 + 1]
             white_rows = (char == char.max()).all(axis=1)
@@ -131,24 +127,12 @@ class ImageSubtitleEvent(SubtitleEvent):
             if not isinstance(value, np.ndarray):
                 raise ValueError(self._generate_setter_exception(value))
 
-            if self.mode == "8 bit":
-                if len(value.shape) == 3:  # Convert RGB to L
-                    trans_bg = Image.fromarray(value)
-                    white_bg = Image.new("RGBA", trans_bg.size,
-                                         (255, 255, 255, 255))
-                    white_bg.paste(trans_bg, mask=trans_bg)
-                    value = np.array(white_bg.convert("L"))
-                # TODO: Should this also handle inputs of mode 1? Or error out?
-            elif self.mode == "1 bit":
-                if len(value.shape) == 3:  # Convert RGB to 1
-                    trans_bg = Image.fromarray(value)
-                    white_bg = Image.new("RGBA", trans_bg.size,
-                                         (255, 255, 255, 255))
-                    white_bg.paste(trans_bg, mask=trans_bg)
-                    value = np.array(white_bg.convert("1", dither=0))
-                # TODO: Should this also handle inputs of mode L?
-            else:
-                raise ValueError(self._generate_setter_exception(value))
+            if len(value.shape) == 3:  # Convert RGB to L
+                trans_bg = Image.fromarray(value)
+                white_bg = Image.new("RGBA", trans_bg.size,
+                                     (255, 255, 255, 255))
+                white_bg.paste(trans_bg, mask=trans_bg)
+                value = np.array(white_bg.convert("L"))
         # TODO: If changed, clear cached properties
 
         self._full_data = value
@@ -160,12 +144,7 @@ class ImageSubtitleEvent(SubtitleEvent):
             from PIL import Image
 
             if self.full_data is not None:
-                if self.mode == "8 bit":
-                    self._img = Image.fromarray(self.full_data)
-                elif self.mode == "1 bit":
-                    self._img = Image.fromarray(
-                        self.full_data.astype(np.uint8) * 255,
-                        mode="L").convert("1")
+                self._img = Image.fromarray(self.full_data)
             else:
                 raise ValueError()
         return self._img
