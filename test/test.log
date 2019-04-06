@@ -3,16 +3,18 @@ platform darwin -- Python 3.6.8, pytest-4.3.1, py-1.8.0, pluggy-0.9.0 -- /usr/lo
 cachedir: .pytest_cache
 rootdir: /Users/kdebiec/Dropbox/code/scinoephile, inifile:
 plugins: cov-2.6.1
-collecting ... collected 5 items
+collecting ... collected 7 items
 
-test_Subtitle.py::test_Subtitle PASSED                                   [ 20%]
-test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 40%]
-test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 60%]
-test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 80%]
+test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 14%]
+test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 28%]
+test_Subtitle.py::test_Subtitle PASSED                                   [ 42%]
+test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 57%]
+test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 71%]
+test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 85%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
 Coverage HTML written to dir htmlcov
 
 
-=========================== 5 passed in 3.48 seconds ===========================
+========================== 7 passed in 180.51 seconds ==========================

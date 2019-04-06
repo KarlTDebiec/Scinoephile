@@ -69,14 +69,14 @@ class Compositor(CLToolBase):
                    "」": "]",
                    "：": ":"}
 
-    re_index = re.compile("^(?P<index>\d+)$")
-    re_time = re.compile("^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
-                         "(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
-    re_blank = re.compile("^\s*$")
-    re_hanzi = re.compile("[\u4e00-\u9fff]")
-    re_hanzi_rare = re.compile("[\u3400-\u4DBF]")
-    re_western = re.compile("[a-zA-Z0-9]")
-    re_jyutping = re.compile("[a-z]+\d")
+    re_index = re.compile(r"^(?P<index>\d+)$")
+    re_time = re.compile(r"^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
+                         r"(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
+    re_blank = re.compile(r"^\s*$")
+    re_hanzi = re.compile(r"[\u4e00-\u9fff]")
+    re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
+    re_western = re.compile(r"[a-zA-Z0-9]")
+    re_jyutping = re.compile(r"[a-z]+\d")
 
     # endregion
 
@@ -750,7 +750,7 @@ class Compositor(CLToolBase):
                 normalized = [w.capitalize() if t in ["NN", "NNS"] else w
                               for (w, t) in tagged]
                 normalized[0] = normalized[0].capitalize()
-                truecased = re.sub(" (?=[\.,'!?:;])", "", ' '.join(normalized))
+                truecased = re.sub(r" (?=[\.,'!?:;])", "", ' '.join(normalized))
 
                 # Could probably use a more appropriate tokenization function,
                 # but cleaning up in this way is fine for now.
@@ -759,7 +759,7 @@ class Compositor(CLToolBase):
                 truecased = truecased.replace("``", "\"")
                 truecased = truecased.replace("''", "\"")
                 truecased = re.sub(
-                    "(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+                    r"(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
                     lambda s: s.group().upper(), truecased)
 
                 if self.verbosity >= 2:
