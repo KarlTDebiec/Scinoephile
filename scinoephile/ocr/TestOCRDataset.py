@@ -123,7 +123,7 @@ class TestOCRDataset(OCRDataset):
         import numpy as np
         import pandas as pd
         from PIL import Image
-        from scinoephile.ocr import draw_text_on_img, generate_char_data
+        from scinoephile.ocr import draw_text_on_img, generate_char_datum
 
         # Process arguments
         if sub_ds is None:
@@ -150,13 +150,13 @@ class TestOCRDataset(OCRDataset):
             if self.mode == "8 bit":
                 full_img = Image.new("L", (1000, 250), 255)
                 target_img = Image.fromarray(
-                    generate_char_data(char=char, fig=self.figure,
-                                       mode=self.mode))
+                    generate_char_datum(char=char, fig=self.figure,
+                                        mode=self.mode))
             elif self.mode == "1 bit":
                 full_img = Image.new("1", (1000, 250), 1)
                 target_img = Image.fromarray(
-                    generate_char_data(char=char, fig=self.figure,
-                                       mode=self.mode).astype(np.uint8) * 255)
+                    generate_char_datum(char=char, fig=self.figure,
+                                        mode=self.mode).astype(np.uint8) * 255)
             full_img.paste(target_img, (10, 10, 90, 90))
             for i, index in enumerate(best_match_indexes, 1):
                 if self.mode == "8 bit":

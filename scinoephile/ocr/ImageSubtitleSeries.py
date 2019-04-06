@@ -282,7 +282,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         else:
             SSAFile.save(self, path, format_=format_, **kwargs)
 
-    def show(self, indexes=None, data=None, cols=20):
+    def show(self, indexes=None, data=None, **kwargs):
         """
         Shows images of selected characters
 
@@ -290,13 +290,11 @@ class ImageSubtitleSeries(SubtitleSeries):
         is available, shows inline in terminal. Otherwise opens a new window.
 
         Args:
-            indexes (int, list, ndarray, optional): Indexes of characters to
-              show
-            data (ndarray, optional): Character data to show
-            cols (int, optional): Number of columns of characters
+            indexes (int, list, ndarray, optional): Indexes of character image
+              data to show
+            data (ndarray, optional): Character image data to show
         """
-        from PIL import Image
-        from scinoephile import in_ipython
+        from scinoephile.ocr import draw_char_imgs, show_img
 
         # Process arguments
         if data is None:
@@ -307,43 +305,14 @@ class ImageSubtitleSeries(SubtitleSeries):
             indexes = [indexes]
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= data.shape[0]):
-            embed(**self.embed_kw)
             raise ValueError()
-        if cols is None:
-            cols = indexes.size
-            rows = 1
-        else:
-            rows = int(np.ceil(indexes.size / cols))
-        cols = min(cols, indexes.size)
+        data = data[indexes]
 
-        # Prepare image
-        img = Image.new("L", (cols * 100, rows * 100), 255)
-        for i, index in enumerate(indexes):
-            column = (i // cols)
-            row = i - (column * cols)
-            char_img = Image.fromarray(data[index])
-            img.paste(char_img, (100 * row + 10,
-                                 100 * column + 10,
-                                 100 * (row + 1) - 10,
-                                 100 * (column + 1) - 10))
+        # Draw image
+        img = draw_char_imgs(data, **kwargs)
 
         # Show image
-        if in_ipython() == "ZMQInteractiveShell":
-            from io import BytesIO
-            from IPython.display import display, Image
-
-            bytes = BytesIO()
-            img.save(bytes, "png")
-            display(Image(data=bytes.getvalue()))
-        elif in_ipython() == "InteractiveShellEmbed":
-            img.show()
-        else:
-            try:
-                from imgcat import imgcat
-
-                imgcat(img)
-            except ImportError:
-                img.show()
+        show_img(img, **kwargs)
 
     # endregion
 

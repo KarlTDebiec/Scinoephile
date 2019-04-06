@@ -11,7 +11,7 @@
 import pandas as pd
 import numpy as np
 from IPython import embed
-from scinoephile.ocr import (char_index, get_chars_of_labels,
+from scinoephile.ocr import (hanzi_chars, get_chars_of_labels,
                              get_labels_of_chars, OCRDataset)
 
 
@@ -24,8 +24,7 @@ class TrainOCRDataset(OCRDataset):
     # region Builtins
 
     def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, n_chars=None,
-                 **kwargs):
+                 font_x_offsets=None, font_y_offsets=None, **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
@@ -39,8 +38,6 @@ class TrainOCRDataset(OCRDataset):
             self._font_x_offsets = font_x_offsets
         if font_y_offsets is not None:
             self.font_y_offsets = font_y_offsets
-        if n_chars is not None:
-            self.n_chars = n_chars
 
     # endregion
 
@@ -135,95 +132,73 @@ class TrainOCRDataset(OCRDataset):
         self._font_y_offsets = value
 
     @property
-    def n_chars(self):
-        """int: Number of unique characters to support"""
-        if not hasattr(self, "_n_chars"):
-            self._n_chars = 10
-        return self._n_chars
-
-    @n_chars.setter
-    def n_chars(self, value):
-        if value is not None:
-            if not isinstance(value, int):
-                try:
-                    value = int(value)
-                except Exception as e:
-                    raise ValueError(self._generate_setter_exception(value))
-            if value < 1:
-                raise ValueError(self._generate_setter_exception(value))
-        self._n_chars = value
-
-    @property
     def spec_all(self):
-        """pandas.DataFrame: All available character image specs"""
-        if not hasattr(self, "_spec_all"):
-            from itertools import product
+        """pandas.DataFrame: Possible character image specs for images in this
+        dataframe"""
+        from itertools import product
 
-            fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
-                self.font_names, self.font_sizes, self.font_widths,
-                self.font_x_offsets, self.font_y_offsets)))
+        fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
+            self.font_names, self.font_sizes, self.font_widths,
+            self.font_x_offsets, self.font_y_offsets)))
 
-            self._spec_all = pd.DataFrame({
-                "font": pd.Series(fonts,
-                                  dtype=self.spec_dtypes["font"]),
-                "size": pd.Series(sizes,
-                                  dtype=self.spec_dtypes["size"]),
-                "width": pd.Series(widths,
-                                   dtype=self.spec_dtypes["width"]),
-                "x_offset": pd.Series(x_offsets,
-                                      dtype=self.spec_dtypes["x_offset"]),
-                "y_offset": pd.Series(y_offsets,
-                                      dtype=self.spec_dtypes["y_offset"])})
-        return self._spec_all
+        return pd.DataFrame({
+            "font": pd.Series(
+                fonts,
+                dtype=self.spec_dtypes["font"]),
+            "size": pd.Series(
+                sizes,
+                dtype=self.spec_dtypes["size"]),
+            "width": pd.Series(
+                widths,
+                dtype=self.spec_dtypes["width"]),
+            "x_offset": pd.Series(
+                x_offsets,
+                dtype=self.spec_dtypes["x_offset"]),
+            "y_offset": pd.Series(
+                y_offsets,
+                dtype=self.spec_dtypes["y_offset"])})
 
     @property
     def spec_all_set(self):
-        """set(tuple): Set of minimal character image specs"""
-        if not hasattr(self, "_spec_all_set"):
-            self._spec_all_set = set(map(tuple, self.spec_all.values))
-        return self._spec_all_set
-
-    @property
-    def spec_cols(self):
-        """list(str): Character image specification columns"""
-
-        if hasattr(self, "_spec"):
-            return self.spec.columns.values
-        else:
-            return ["char", "font", "size", "width", "x_offset", "y_offset"]
+        """set(tuple): Set of possible character image specs for images in
+        this dataframe"""
+        return set(map(tuple, self.spec_all.values))
 
     @property
     def spec_dtypes(self):
-        """list(str): Character image specification dtypes"""
-        return {"char": str, "font": str, "size": int, "width": int,
-                "x_offset": int, "y_offset": int}
+        """OrderedDict(str, type): Names and dtypes of columns in spec
+        DataFrames"""
+        from collections import OrderedDict
+
+        return OrderedDict(char=str, font=str, size=int, width=int,
+                           x_offset=int, y_offset=int)
 
     @property
     def spec_min(self):
-        """pandas.DataFrame: Minimal character image specs"""
-        if not hasattr(self, "_spec_min"):
-            self._spec_min = pd.DataFrame({
-                "font": pd.Series(self.font_names,
-                                  dtype=self.spec_dtypes["font"]),
-                "size": pd.Series([self.font_sizes[0]] * len(self.font_names),
-                                  dtype=self.spec_dtypes["size"]),
-                "width": pd.Series(
-                    [self.font_widths[0]] * len(self.font_names),
-                    dtype=self.spec_dtypes["width"]),
-                "x_offset": pd.Series(
-                    [self.font_x_offsets[0]] * len(self.font_names),
-                    dtype=self.spec_dtypes["x_offset"]),
-                "y_offset": pd.Series(
-                    [self.font_y_offsets[0]] * len(self.font_names),
-                    dtype=self.spec_dtypes["y_offset"])})
-        return self._spec_min
+        """pandas.DataFrame: Minimal character image specs for which the
+        dataset should contain an image of every character it covers"""
+        return pd.DataFrame({
+            "font": pd.Series(
+                self.font_names,
+                dtype=self.spec_dtypes["font"]),
+            "size": pd.Series(
+                [self.font_sizes[0]] * len(self.font_names),
+                dtype=self.spec_dtypes["size"]),
+            "width": pd.Series(
+                [self.font_widths[0]] * len(self.font_names),
+                dtype=self.spec_dtypes["width"]),
+            "x_offset": pd.Series(
+                [self.font_x_offsets[0]] * len(self.font_names),
+                dtype=self.spec_dtypes["x_offset"]),
+            "y_offset": pd.Series(
+                [self.font_y_offsets[0]] * len(self.font_names),
+                dtype=self.spec_dtypes["y_offset"])})
 
     @property
     def spec_min_set(self):
-        """set(tuple): Set of minimal character image specs"""
-        if not hasattr(self, "_spec_min_set"):
-            self._spec_min_set = set(map(tuple, self.spec_min.values))
-        return self._spec_min_set
+        """set(tuple): Set of minimal character image specs for which the
+        dataset should contain an image of every character it covers"""
+        return set(map(tuple, self.spec_min.values))
 
     # endregion
 
@@ -231,23 +206,26 @@ class TrainOCRDataset(OCRDataset):
 
     def generate_training_data(self, chars=None, min_images=None):
         from random import sample
-        from scinoephile.ocr import generate_char_data
+        from scinoephile.ocr import generate_char_datum
 
         # Process arguments
         if chars is None:
-            chars = char_index[:self.n_chars]
+            chars = hanzi_chars[:10]
+        elif isinstance(chars, int):
+            chars = hanzi_chars[:chars]
         if not isinstance(chars, list):
             chars = list(chars)
         if min_images is None:
-            min_images = len(self.spec_min_set)  # TODO: What is this?
+            min_images = len(self.spec_min_set)
         min_images = max(len(self.spec_min_set), min_images)
         if self.verbosity >= 1:
-            print(f"Checking for minimum of {min_images} images of each of "
-                  f"{len(chars)} characters")
+            print(f"Checking that at least {min_images} images are present "
+                  f"for each of {len(chars)} characters")
 
         # Build queue of needed specs
         min_queue = []
-        to_dict = lambda x: {k: v for k, v in zip(self.spec_cols, (char, *x))}
+        to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(),
+                                                  (char, *x))}
         for char in chars:
             existing = self.get_present_specs_of_char_set(char)
             minimal = self.spec_min_set.difference(existing)
@@ -263,13 +241,13 @@ class TrainOCRDataset(OCRDataset):
         # Generate and add images
         if len(min_queue) >= 1:
             if self.verbosity >= 1:
-                print(
-                    f"Generating {len(min_queue)} new images for minimal set")
+                print(f"Generating {len(min_queue)} new images for minimal "
+                      f"set")
 
             spec = pd.DataFrame(min_queue)
             data = np.zeros((len(min_queue), 80, 80), np.uint8)
             for i, kwargs in enumerate(min_queue):
-                data[i] = generate_char_data(fig=self.figure, **kwargs)
+                data[i] = generate_char_datum(fig=self.figure, **kwargs)
 
             self.add_img(spec, data)
         else:
@@ -324,8 +302,6 @@ class TrainOCRDataset(OCRDataset):
         return trn_img, trn_lbl, val_img, val_lbl
 
     # endregion
-
-    # region Public Class Methods
 
     # region Private Methods
 

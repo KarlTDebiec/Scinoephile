@@ -14,12 +14,16 @@ from scinoephile import package_root
 from IPython import embed
 
 ################################## CONSTANTS ##################################
-char_index_df = pd.read_csv(
+hanzi_frequency = pd.read_csv(
     f"{package_root}/data/ocr/characters.txt",
     sep="\t", names=["character", "frequency", "cumulative frequency"])
 
-char_index = np.array(char_index_df["character"], np.str)
-punctuation = np.array("\n　 ,,？?，,、,..！!。.…﹣-─“”\"《<》>「[」]：:")
+hanzi_chars = np.array(hanzi_frequency["character"], np.str)
+western_chars = np.array(
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+numeric_chars = np.array("0123456789")
+eastern_punctuation_chars = np.array("。？！，、（）［］《》「」：；⋯")
+western_punctuation_chars = np.array(".?!,-–()[]<>:;…")
 
 
 ################################## FUNCTIONS ##################################
@@ -36,7 +40,7 @@ def center_char_img(data, x_offset=0, y_offset=0):
         numpy.ndarray: Centered character image
     """
     # TODO: Make general-purpose
-    
+
     white_cols = (data == data.max()).all(axis=0)
     white_rows = (data == data.max()).all(axis=1)
     trimmed = data[
@@ -51,6 +55,41 @@ def center_char_img(data, x_offset=0, y_offset=0):
     x + x_offset:x + trimmed.shape[1] + x_offset] = trimmed
 
     return centered
+
+
+def draw_char_imgs(data, cols=20, **kwargs):
+    """
+    Draws character images from provided data
+
+    Args:
+        data (ndarray, optional): Character data to show
+        cols (int, optional): Number of columns of characters
+        kwargs: Additional keyword arguments
+
+    Returns:
+        PIL.Image.Image: Images of characters
+    """
+    from PIL import Image
+
+    # Process arguments
+    if cols is None:
+        cols = data.shape[0]
+        rows = 1
+    else:
+        rows = int(np.ceil(data.shape[0] / cols))
+    cols = min(cols, data.shape[0])
+
+    # Draw image
+    img = Image.new("L", (cols * 100, rows * 100), 255)
+    for i, char in enumerate(data):
+        column = (i // cols)
+        row = i - (column * cols)
+        img.paste(Image.fromarray(char), (100 * row + 10,
+                                          100 * column + 10,
+                                          100 * (row + 1) - 10,
+                                          100 * (column + 1) - 10))
+
+    return img
 
 
 def draw_text_on_img(image, text, x=0, y=0,
@@ -77,9 +116,8 @@ def draw_text_on_img(image, text, x=0, y=0,
     draw.text((x - width / 2, y - height / 2), text, font=font)
 
 
-def generate_char_data(char, font="/System/Library/Fonts/STHeiti Light.ttc",
-                       fig=None, size=60, width=5, x_offset=0, y_offset=0,
-                       mode="1 bit"):
+def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
+                        fig=None, size=60, width=5, x_offset=0, y_offset=0):
     """
     Generates an image of a character
 
@@ -124,12 +162,7 @@ def generate_char_data(char, font="/System/Library/Fonts/STHeiti Light.ttc",
 
     # Convert to appropriate mode using pillow
     img = Image.fromarray(np.array(fig.canvas.renderer._renderer))
-    if mode == "8 bit":
-        data = np.array(img.convert("L"), np.uint8)
-    elif mode == "1 bit":
-        data = np.array(img.convert("1", dither=0), np.bool)
-    else:
-        raise NotImplementedError()
+    data = np.array(img.convert("L"), np.uint8)
 
     try:
         data = center_char_img(data, x_offset, y_offset)
@@ -182,15 +215,48 @@ def get_chars_of_labels(labels):
 
     # Process arguments
     if isinstance(labels, int):
-        return char_index[labels]
+        return hanzi_chars[labels]
     elif isinstance(labels, list):
         labels = np.array(labels)
 
-    # return char_index
+    # return hanzi_chars
     if isinstance(labels, np.ndarray):
-        return np.array([char_index[i] for i in labels], np.str)
+        return np.array([hanzi_chars[i] for i in labels], np.str)
     else:
         raise ValueError()
+
+
+def show_img(img, **kwargs):
+    """
+    Shows an image using context-appropriate function
+
+    If called from within Jupyter notebook, shows inline. If imgcat module
+    is available, shows inline in terminal. Otherwise opens a new window.
+
+    Args:
+        img (PIL.Image.Image): Image to show
+        kwargs: Additional keyword arguments
+
+    """
+    from scinoephile import in_ipython
+
+    # Show image
+    if in_ipython() == "ZMQInteractiveShell":
+        from io import BytesIO
+        from IPython.display import display, Image
+
+        bytes_ = BytesIO()
+        img.save(bytes_, "png")
+        display(Image(data=bytes_.getvalue()))
+    elif in_ipython() == "InteractiveShellEmbed":
+        img.show()
+    else:
+        try:
+            from imgcat import imgcat
+
+            imgcat(img)
+        except ImportError:
+            img.show()
 
 
 ################################### MODULES ###################################

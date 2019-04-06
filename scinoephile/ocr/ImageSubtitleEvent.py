@@ -233,29 +233,10 @@ class ImageSubtitleEvent(SubtitleEvent):
     def show(self):
         """
         Shows subtitle image
-
-        If called from within Jupyter notebook, shows inline. If imgcat module
-        is available, shows inline in terminal. Otherwise opens a new window.
         """
-        from scinoephile import in_ipython
+        from scinoephile.ocr import show_img
 
-        # Show image
-        if in_ipython() == "ZMQInteractiveShell":
-            from io import BytesIO
-            from IPython.display import display, Image
-
-            bytes_ = BytesIO()
-            self.img.save(bytes_, "png")
-            display(Image(data=bytes_.getvalue()))
-        elif in_ipython() == "InteractiveShellEmbed":
-            self.img.show()
-        else:
-            try:
-                from imgcat import imgcat
-
-                imgcat(self.img)
-            except ImportError:
-                self.img.show()
+        show_img(self.img)
 
     # endregion
 

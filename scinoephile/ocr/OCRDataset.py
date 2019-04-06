@@ -50,7 +50,7 @@ class OCRDataset(Base, ABC):
 
     @property
     def labels(self):
-        """ndarray: Labels of char_index in dataset"""
+        """ndarray: Labels of hanzi_chars in dataset"""
         return self.get_labels_of_chars(self.spec["char"].values)
 
     @property
@@ -59,7 +59,7 @@ class OCRDataset(Base, ABC):
         if not hasattr(self, "_spec"):
             self._spec = pd.DataFrame(
                 {c: pd.Series([], dtype=self.spec_dtypes[c])
-                 for c in self.spec_cols})
+                 for c in self.spec_dtypes.keys()})
         return self._spec
 
     @spec.setter
@@ -69,14 +69,9 @@ class OCRDataset(Base, ABC):
 
     @property
     @abstractmethod
-    def spec_cols(self):
-        """list(str): Character image specification columns"""
-        pass
-
-    @property
-    @abstractmethod
     def spec_dtypes(self):
-        """list(str): Character image specification dtypes"""
+        """OrderedDict(str, type): Names and dtypes of columns in spec
+        DataFrames"""
         pass
 
     # endregion
@@ -85,7 +80,7 @@ class OCRDataset(Base, ABC):
 
     def add_img(self, spec, data):
         """
-        Adds new images
+        Adds images, excluding images whose spec is already present
 
         Args:
             spec (pandas.DataFrame): New image specifications
@@ -134,50 +129,37 @@ class OCRDataset(Base, ABC):
         else:
             raise NotImplementedError()
 
-    def show(self, data=None, indexes=None, cols=20):
-        import numpy as np
-        from pandas import DataFrame
-        from PIL import Image
+    def show(self, indexes=None, data=None, **kwargs):
+        """
+        Shows images of selected characters
+
+        If called from within Jupyter notebook, shows inline. If imgcat module
+        is available, shows inline in terminal. Otherwise opens a new window.
+
+        Args:
+            indexes (int, list, ndarray, optional): Indexes of character image
+              data to show
+            data (ndarray, optional): Character image data to show
+        """
+        from scinoephile.ocr import draw_char_imgs, show_img
 
         # Process arguments
-        if data is None and indexes is None:
+        if data is None:
             data = self.data
-            indexes = range(self.data.shape[0])
-        elif data is not None and indexes is None:
+        if indexes is None:
             indexes = range(data.shape[0])
-        elif data is None and indexes is not None:
-            data = self.data
-        if isinstance(indexes, int):
+        elif isinstance(indexes, int):
             indexes = [indexes]
-        elif isinstance(indexes, DataFrame):
-            indexes = indexes.index.values
         indexes = np.array(indexes, np.int)
         if np.any(indexes >= data.shape[0]):
             raise ValueError()
-        if cols is None:
-            cols = indexes.size
-            rows = 1
-        else:
-            rows = int(np.ceil(indexes.size / cols))
+        data = data[indexes]
 
         # Draw image
-        if self.mode == "8 bit":
-            img = Image.new("L", (cols * 100, rows * 100), 255)
-        elif self.mode == "1 bit":
-            img = Image.new("1", (cols * 100, rows * 100), 1)
-        for i, index in enumerate(indexes):
-            column = (i // cols)
-            row = i - (column * cols)
-            if self.mode == "8 bit":
-                char_img = Image.fromarray(data[index])
-            elif self.mode == "1 bit":
-                char_img = Image.fromarray(
-                    data[index].astype(np.uint8) * 255)
-            img.paste(char_img, (100 * row + 10,
-                                 100 * column + 10,
-                                 100 * (row + 1) - 10,
-                                 100 * (column + 1) - 10))
-        img.show()
+        img = draw_char_imgs(data, **kwargs)
+
+        # Show image
+        show_img(img, **kwargs)
 
     # endregion
 
