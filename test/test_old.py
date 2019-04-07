@@ -32,20 +32,6 @@
 # test1("my_life_as_mcdull", "cmn-Hant", "8 bit")  # Fails to split
 # test1("my_life_as_mcdull", "cmn-Hant", "1 bit")  # Fails to split
 
-# Test generating training dataset
-# def test2(n_chars, n_images, mode):
-#     kwargs = {"interactive": False, "mode": mode, "n_chars": n_chars, "verbosity": 1}
-#     trn_file = f"{data_root}/trn/{n_chars:05d}_{n_images:05d}_{mode.replace(' ', '')}.h5"
-#
-#     trn_ds = TrainOCRDataset(infile=trn_file, outfile=trn_file, **kwargs)
-#     if isfile(trn_file):
-#         trn_ds.load()
-#     else:
-#         trn_ds.generate_training_data(min_images=n_images)
-#         trn_ds.save()
-#
-#     return trn_ds
-
 
 # Test model training
 # def test3(n_chars, n_images, mode):
@@ -82,14 +68,14 @@
 #     model = test3(n_chars, n_images, mode)
 #
 #     subs = ImageSubtitleSeries.load(infile=h5_file, **kwargs)
-    # subs.predict(model)
-    # subs.reconstruct_text()
-    # subs.save(srt_file)
-    # if calculate_accuracy:
-    #     std_file = f"{data_root}/{movie}/standard.srt"
-    #     subs.calculate_accuracy(std_file, n_chars)
-    # subs.manually_assign_chars(start_index=0)
-    # subs.save(h5_file)
+# subs.predict(model)
+# subs.reconstruct_text()
+# subs.save(srt_file)
+# if calculate_accuracy:
+#     std_file = f"{data_root}/{movie}/standard.srt"
+#     subs.calculate_accuracy(std_file, n_chars)
+# subs.manually_assign_chars(start_index=0)
+# subs.save(h5_file)
 
 # test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "8 bit", False)
 # test4("magnificent_madame_mak", "cmn-Hans", 10, 100, "1 bit", False)

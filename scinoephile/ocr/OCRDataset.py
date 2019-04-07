@@ -104,30 +104,21 @@ class OCRDataset(Base, ABC):
     def get_present_specs_of_char_set(self, char):
         pass
 
-    def save(self, outfile=None, **kwargs):
+    def save(self, path=None, **kwargs):
         """
         Saves character images to an output file
         """
+        import h5py
         from os.path import expandvars
 
         # Process arguments
-        if outfile is not None:
-            outfile = expandvars(outfile)
-        elif self.outfile is not None:
-            outfile = self.outfile
-        else:
-            raise ValueError()
+        path = expandvars(path).replace("//", "/")
+        if self.verbosity >= 1:
+            print(f"Writing character images to '{path}'")
 
         # Write outfile
-        if self.verbosity >= 1:
-            print(f"Writing character images to '{outfile}'")
-        if (outfile.endswith(".hdf5") or outfile.endswith(".h5")):
-            import h5py
-
-            with h5py.File(outfile) as fp:
-                self._save_hdf5(fp, **kwargs)
-        else:
-            raise NotImplementedError()
+        with h5py.File(path) as fp:
+            self._save_hdf5(fp, **kwargs)
 
     def show(self, indexes=None, data=None, **kwargs):
         """

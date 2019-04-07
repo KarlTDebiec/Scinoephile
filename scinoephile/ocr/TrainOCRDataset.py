@@ -315,7 +315,7 @@ class TrainOCRDataset(OCRDataset):
             ("y_offset", "i1")]
         encode = lambda x: x.encode("utf8")
 
-        # Save image specs
+        # Save character image specs
         if "spec" in fp:
             del fp["spec"]
         encoded = self.spec.copy()
@@ -327,11 +327,11 @@ class TrainOCRDataset(OCRDataset):
                           data=encoded, dtype=dtypes,
                           chunks=True, compression="gzip")
 
-        # Save iamge data
+        # Save character image data
         if "data" in fp:
             del fp["data"]
         fp.create_dataset("data",
-                          data=self.data, dtype=self.data_dtype,
+                          data=self.data, dtype=np.uint8,
                           chunks=True, compression="gzip")
 
     # endregion
