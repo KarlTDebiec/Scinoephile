@@ -23,30 +23,48 @@ class TrainOCRDataset(OCRDataset):
 
     # region Builtins
 
-    def __init__(self, font_names=None, font_sizes=None, font_widths=None,
-                 font_x_offsets=None, font_y_offsets=None, **kwargs):
+    def __init__(self, chars=None, font_names=None, font_sizes=None,
+                 font_widths=None, x_offsets=None, y_offsets=None,
+                 **kwargs):
         super().__init__(**kwargs)
 
         # Store property values
+        if chars is not None:
+            self.chars = chars
         if font_names is not None:
             self.font_names = font_names
         if font_sizes is not None:
             self.font_sizes = font_sizes
         if font_widths is not None:
             self._font_widths = font_widths
-        if font_x_offsets is not None:
-            self._font_x_offsets = font_x_offsets
-        if font_y_offsets is not None:
-            self.font_y_offsets = font_y_offsets
+        if x_offsets is not None:
+            self._x_offsets = x_offsets
+        if y_offsets is not None:
+            self.y_offsets = y_offsets
 
     # endregion
 
     # region Public Properties
 
     @property
+    def chars(self):
+        """list(str): Characters that may be present in this dataset"""
+        if not hasattr(self, "_chars"):
+            self._chars = list(hanzi_chars[:10])
+        return self._chars
+
+    @chars.setter
+    def chars(self, value):
+        # TODO: Validate
+        if isinstance(value, int):
+            value = list(hanzi_chars[:value])
+        self._chars = value
+
+    @property
     def font_names(self):
-        """list(str): List of font names"""
+        """list(str): Font names that may be present in this dataset"""
         if not hasattr(self, "_font_names"):
+            # TODO: Don't hardcode defaults for macOS
             self._font_names = [
                 "/System/Library/Fonts/STHeiti Light.ttc",
                 "/System/Library/Fonts/STHeiti Medium.ttc",
@@ -55,6 +73,7 @@ class TrainOCRDataset(OCRDataset):
 
     @font_names.setter
     def font_names(self, value):
+        # TODO: Validate better
         if value is not None:
             if not isinstance(value, list):
                 try:
@@ -65,7 +84,7 @@ class TrainOCRDataset(OCRDataset):
 
     @property
     def font_sizes(self):
-        """list(int): List of font sizes"""
+        """list(int): Font sizes that may be present in this dataset"""
         if not hasattr(self, "_font_sizes"):
             self._font_sizes = [60, 59, 61, 58, 62]
         return self._font_sizes
@@ -82,7 +101,7 @@ class TrainOCRDataset(OCRDataset):
 
     @property
     def font_widths(self):
-        """list(int): List of font border widths"""
+        """list(int): Font border widths that may be present in this dataset"""
         if not hasattr(self, "_font_widths"):
             self._font_widths = [5, 3, 6, 3]
         return self._font_widths
@@ -98,50 +117,61 @@ class TrainOCRDataset(OCRDataset):
         self._font_widths = value
 
     @property
-    def font_x_offsets(self):
-        """list(int): List of font x offsets"""
-        if not hasattr(self, "_font_x_offsets"):
-            self._font_x_offsets = [0, -1, 1, -2, 2]
-        return self._font_x_offsets
+    def x_offsets(self):
+        """list(int): X offsets that may be present in this dataset"""
+        if not hasattr(self, "_x_offsets"):
+            self._x_offsets = [0, -1, 1, -2, 2]
+        return self._x_offsets
 
-    @font_x_offsets.setter
-    def font_x_offsets(self, value):
+    @x_offsets.setter
+    def x_offsets(self, value):
         if value is not None:
             if not isinstance(value, list):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
                     raise ValueError(self._generate_setter_exception(value))
-        self._font_x_offsets = value
+        self._x_offsets = value
 
     @property
-    def font_y_offsets(self):
-        """list(int): List of font y offsets"""
-        if not hasattr(self, "_font_y_offsets"):
-            self._font_y_offsets = [0, -1, 1, -2, 2]
-        return self._font_y_offsets
+    def y_offsets(self):
+        """list(int): Y offsets that may be present in this dataset"""
+        if not hasattr(self, "_y_offsets"):
+            self._y_offsets = [0, -1, 1, -2, 2]
+        return self._y_offsets
 
-    @font_y_offsets.setter
-    def font_y_offsets(self, value):
+    @y_offsets.setter
+    def y_offsets(self, value):
         if value is not None:
             if not isinstance(value, list):
                 try:
                     value = [int(v) for v in list(value)]
                 except Exception as e:
                     raise ValueError(self._generate_setter_exception(value))
-        self._font_y_offsets = value
+        self._y_offsets = value
 
     @property
-    def spec_all(self):
-        """pandas.DataFrame: Possible character image specs for images in this
-        dataframe"""
+    def spec_dtypes(self):
+        """OrderedDict(str, type): Names and dtypes of columns in spec"""
+        from collections import OrderedDict
+
+        return OrderedDict(char=str, font=str, size=int, width=int,
+                           x_offset=int, y_offset=int)
+
+    # endregion
+
+    # region Public Methods
+
+    def generate_training_data(self, min_images=None):
         from itertools import product
+        from random import sample
+        from scinoephile.ocr import generate_char_datum
 
+        # Process arguments
         fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
             self.font_names, self.font_sizes, self.font_widths,
-            self.font_x_offsets, self.font_y_offsets)))
-
-        return pd.DataFrame({
+            self.x_offsets, self.y_offsets)))
+        spec_all = pd.DataFrame({
             "font": pd.Series(
                 fonts,
                 dtype=self.spec_dtypes["font"]),
@@ -157,27 +187,7 @@ class TrainOCRDataset(OCRDataset):
             "y_offset": pd.Series(
                 y_offsets,
                 dtype=self.spec_dtypes["y_offset"])})
-
-    @property
-    def spec_all_set(self):
-        """set(tuple): Set of possible character image specs for images in
-        this dataframe"""
-        return set(map(tuple, self.spec_all.values))
-
-    @property
-    def spec_dtypes(self):
-        """OrderedDict(str, type): Names and dtypes of columns in spec
-        DataFrames"""
-        from collections import OrderedDict
-
-        return OrderedDict(char=str, font=str, size=int, width=int,
-                           x_offset=int, y_offset=int)
-
-    @property
-    def spec_min(self):
-        """pandas.DataFrame: Minimal character image specs for which the
-        dataset should contain an image of every character it covers"""
-        return pd.DataFrame({
+        spec_min = pd.DataFrame({
             "font": pd.Series(
                 self.font_names,
                 dtype=self.spec_dtypes["font"]),
@@ -188,52 +198,32 @@ class TrainOCRDataset(OCRDataset):
                 [self.font_widths[0]] * len(self.font_names),
                 dtype=self.spec_dtypes["width"]),
             "x_offset": pd.Series(
-                [self.font_x_offsets[0]] * len(self.font_names),
+                [self.x_offsets[0]] * len(self.font_names),
                 dtype=self.spec_dtypes["x_offset"]),
             "y_offset": pd.Series(
-                [self.font_y_offsets[0]] * len(self.font_names),
+                [self.y_offsets[0]] * len(self.font_names),
                 dtype=self.spec_dtypes["y_offset"])})
-
-    @property
-    def spec_min_set(self):
-        """set(tuple): Set of minimal character image specs for which the
-        dataset should contain an image of every character it covers"""
-        return set(map(tuple, self.spec_min.values))
-
-    # endregion
-
-    # region Public Methods
-
-    def generate_training_data(self, chars=None, min_images=None):
-        from random import sample
-        from scinoephile.ocr import generate_char_datum
-
-        # Process arguments
-        if chars is None:
-            chars = hanzi_chars[:10]
-        elif isinstance(chars, int):
-            chars = hanzi_chars[:chars]
-        if not isinstance(chars, list):
-            chars = list(chars)
+        spec_all_set = set(map(tuple, spec_all.values))
+        spec_min_set = set(map(tuple, spec_min.values))
         if min_images is None:
-            min_images = len(self.spec_min_set)
-        min_images = max(len(self.spec_min_set), min_images)
+            min_images = len(spec_min_set)
+        min_images = max(len(spec_min_set), min_images)
         if self.verbosity >= 1:
             print(f"Checking that at least {min_images} images are present "
-                  f"for each of {len(chars)} characters")
+                  f"for each of {len(self.chars)} characters")
 
         # Build queue of needed specs
         min_queue = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(),
                                                   (char, *x))}
-        for char in chars:
+        for char in self.chars:
             existing = self.get_present_specs_of_char_set(char)
-            minimal = self.spec_min_set.difference(existing)
+            minimal = spec_min_set.difference(existing)
             min_queue.extend(map(to_dict, minimal))
             n_additional = min_images - len(existing) - len(minimal)
 
             if n_additional >= 1:
-                available = self.spec_all_set.difference(existing).difference(
+                available = spec_all_set.difference(existing).difference(
                     minimal)
                 selected = sample(available, min(n_additional, len(available)))
                 min_queue.extend(map(to_dict, selected))
@@ -268,25 +258,23 @@ class TrainOCRDataset(OCRDataset):
         complete_val_indexes = []
 
         # Prepare trn and val sets with at least one image of each character
-        for char in set(self.spec["char"]):
-            all = self.get_present_specs_of_char(char)
+        for char in self.chars:
+            all_indexes_of_char = set(
+                self.get_present_specs_of_char(char).index)
 
-            # Add at least one image of each character to each set
-            trn_index, val_index = sample(all.index.tolist(), 2)
+            # Add at least one image of each character to val and trn
+            trn_index, val_index = sample(all_indexes_of_char, 2)
             complete_trn_indexes.append(trn_index)
             complete_val_indexes.append(val_index)
-            all = all.drop([trn_index, val_index])
+            all_indexes_of_char -= {trn_index, val_index}
 
-            # Distribute remaining images across sets
-            n_for_val = int(np.ceil(all.index.size * val_portion) - 1)
-            n_for_trn = all.index.size - n_for_val
-            if n_for_trn > 0:
-                trn_indexes = sample(all.index.tolist(), n_for_trn)
-                complete_trn_indexes.extend(trn_indexes)
-                all = all.drop(trn_indexes)
+            # Distribute remaining images across val and trn sets
+            n_for_val = int(np.floor(len(all_indexes_of_char) * val_portion))
             if n_for_val > 0:
-                val_indexes = sample(all.index.tolist(), n_for_val)
+                val_indexes = sample(all_indexes_of_char, n_for_val)
                 complete_val_indexes.extend(val_indexes)
+                all_indexes_of_char -= set(val_indexes)
+            complete_trn_indexes.extend(all_indexes_of_char)
 
         # Organize data
         trn_img = self.data[complete_trn_indexes]
@@ -296,8 +284,8 @@ class TrainOCRDataset(OCRDataset):
         val_lbl = get_labels_of_chars(
             self.spec["char"].loc[complete_val_indexes].values)
 
-        trn_img = np.array(trn_img, np.float64) / 255.0
-        val_img = np.array(val_img, np.float64) / 255.0
+        trn_img = trn_img.astype(np.float16) / 255.0
+        val_img = val_img.astype(np.float16) / 255.0
 
         return trn_img, trn_lbl, val_img, val_lbl
 

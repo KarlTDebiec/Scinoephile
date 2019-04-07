@@ -82,7 +82,7 @@ def draw_char_imgs(data, cols=20, **kwargs):
     Draws character images from provided data
 
     Args:
-        data (ndarray, optional): Character data to show
+        data (ndarray): Character data to draw
         cols (int, optional): Number of columns of characters
         kwargs: Additional keyword arguments
 
@@ -92,6 +92,10 @@ def draw_char_imgs(data, cols=20, **kwargs):
     from PIL import Image
 
     # Process arguments
+    if data.dtype == np.uint8:
+        pass
+    elif data.dtype in [np.float16, np.float32, np.float64]:
+        data = np.array(data * 255.0, np.uint8)
     if cols is None:
         cols = data.shape[0]
         rows = 1
@@ -137,9 +141,11 @@ def draw_text_on_img(image, text, x=0, y=0,
 
 
 def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
-                        fig=None, size=60, width=5, x_offset=0, y_offset=0):
+                        size=60, width=5, x_offset=0, y_offset=0, fig=None):
     """
     Generates an image of a character
+
+    TODO: Don't hardcode defaults for macOS
 
     Args:
         char (str): character of which to draw an image of
@@ -157,8 +163,6 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     from matplotlib.font_manager import FontProperties
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
-
-    # TODO: Handle default font better; perhaps get matplotlib's default
 
     # Process arguments
     if fig is None:

@@ -49,11 +49,6 @@ class OCRDataset(Base, ABC):
         return self._figure
 
     @property
-    def labels(self):
-        """ndarray: Labels of hanzi_chars in dataset"""
-        return self.get_labels_of_chars(self.spec["char"].values)
-
-    @property
     def spec(self):
         """pandas.DataFrame: Character image specifications"""
         if not hasattr(self, "_spec"):
@@ -70,8 +65,7 @@ class OCRDataset(Base, ABC):
     @property
     @abstractmethod
     def spec_dtypes(self):
-        """OrderedDict(str, type): Names and dtypes of columns in spec
-        DataFrames"""
+        """OrderedDict(str, type): Names and dtypes of columns in spec"""
         pass
 
     # endregion
@@ -154,6 +148,8 @@ class OCRDataset(Base, ABC):
 
     # endregion
 
+    # region Public Class Methods
+
     @classmethod
     def load(cls, path, verbosity=1, **kwargs):
         """
@@ -204,7 +200,10 @@ class OCRDataset(Base, ABC):
         Returns:
             OCRDataset: Loaded dataset
         """
+        from scinoephile.ocr import get_labels_of_chars
+
         decode = lambda x: x.decode("utf8")
+        sort_chars = lambda x: get_labels_of_chars(x)
 
         # Initialize
         dataset = cls(verbosity=verbosity)
@@ -217,13 +216,14 @@ class OCRDataset(Base, ABC):
                             columns=spec.dtype.names)
         spec["char"] = spec["char"].apply(decode)
         spec["font"] = spec["font"].apply(decode)
+        dataset.chars = sorted(list(set(spec["char"])), key=sort_chars)
 
         # Load image data
         if "data" not in fp:
             raise ValueError()
         data = np.array(fp["data"])
 
-        # Add images and return
+        # Add images
         dataset.add_img(spec, data)
 
         return dataset
