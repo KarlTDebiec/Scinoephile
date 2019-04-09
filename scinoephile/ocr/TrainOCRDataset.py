@@ -10,9 +10,9 @@
 ################################### MODULES ###################################
 import pandas as pd
 import numpy as np
+from collections import OrderedDict
 from IPython import embed
-from scinoephile.ocr import (hanzi_chars, get_chars_of_labels,
-                             get_labels_of_chars, OCRDataset)
+from scinoephile.ocr import get_labels_of_chars, OCRDataset
 
 
 ################################### CLASSES ###################################
@@ -45,20 +45,6 @@ class TrainOCRDataset(OCRDataset):
     # endregion
 
     # region Public Properties
-
-    @property
-    def chars(self):
-        """list(str): Characters that may be present in this dataset"""
-        if not hasattr(self, "_chars"):
-            self._chars = list(hanzi_chars[:10])
-        return self._chars
-
-    @chars.setter
-    def chars(self, value):
-        # TODO: Validate
-        if isinstance(value, int):
-            value = list(hanzi_chars[:value])
-        self._chars = value
 
     @property
     def font_names(self):
@@ -153,8 +139,6 @@ class TrainOCRDataset(OCRDataset):
     @property
     def spec_dtypes(self):
         """OrderedDict(str, type): Names and dtypes of columns in spec"""
-        from collections import OrderedDict
-
         return OrderedDict(char=str, font=str, size=int, width=int,
                            x_offset=int, y_offset=int)
 
@@ -217,7 +201,7 @@ class TrainOCRDataset(OCRDataset):
         to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(),
                                                   (char, *x))}
         for char in self.chars:
-            existing = self.get_present_specs_of_char_set(char)
+            existing = self.get_present_specs_of_char(char, True)
             minimal = spec_min_set.difference(existing)
             min_queue.extend(map(to_dict, minimal))
             n_additional = min_images - len(existing) - len(minimal)
@@ -244,15 +228,14 @@ class TrainOCRDataset(OCRDataset):
             if self.verbosity >= 1:
                 print(f"Minimal image set already present, nothing to do")
 
-    def get_present_specs_of_char(self, char):
-        return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
-
-    def get_present_specs_of_char_set(self, char):
-        return set(map(tuple, self.spec.loc[self.spec["char"] == char].drop(
-            "char", axis=1).values))
-
-    def get_training_data(self, val_portion=0.1):
+    def get_data_for_tensorflow(self, val_portion=0.1):
         from random import sample
+
+        if val_portion is None or val_portion == 0.0:
+            trn_img = self.data.astype(np.float16) / 255.0
+            trn_lbl = get_labels_of_chars(self.spec["char"].values)
+
+            return trn_img, trn_lbl, None, None
 
         complete_trn_indexes = []
         complete_val_indexes = []
@@ -289,6 +272,51 @@ class TrainOCRDataset(OCRDataset):
 
         return trn_img, trn_lbl, val_img, val_lbl
 
+    def save(self, path=None, **kwargs):
+        """
+        Saves character images to an output file
+        """
+        import h5py
+        from os.path import expandvars
+
+        # Process arguments
+        path = expandvars(path).replace("//", "/")
+        if self.verbosity >= 1:
+            print(f"Writing character images to '{path}'")
+
+        # Write outfile
+        with h5py.File(path) as fp:
+            self._save_hdf5(fp, **kwargs)
+
+    # endregion
+
+    # region Public Class Methods
+
+    @classmethod
+    def load(cls, path, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input file
+
+        Args:
+            path (str): Path to input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        import h5py
+        from os.path import expandvars
+
+        # Process arguments
+        path = expandvars(path).replace("//", "/")
+        if verbosity >= 1:
+            print(f"Reading dataset from '{path}'")
+
+        # Load
+        with h5py.File(path) as fp:
+            return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
+
     # endregion
 
     # region Private Methods
@@ -321,5 +349,50 @@ class TrainOCRDataset(OCRDataset):
         fp.create_dataset("data",
                           data=self.data, dtype=np.uint8,
                           chunks=True, compression="gzip")
+
+    # endregion
+
+    # region Private Class Methods
+
+    @classmethod
+    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input hdf5 file
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        from scinoephile.ocr import get_labels_of_chars
+
+        decode = lambda x: x.decode("utf8")
+        sort_chars = lambda x: get_labels_of_chars(x)
+
+        # Initialize
+        dataset = cls(verbosity=verbosity)
+
+        # Load image specs
+        if "spec" not in fp:
+            raise ValueError()
+        spec = np.array(fp["spec"])
+        spec = pd.DataFrame(data=spec, index=range(spec.size),
+                            columns=spec.dtype.names)
+        spec["char"] = spec["char"].apply(decode)
+        spec["font"] = spec["font"].apply(decode)
+        dataset.chars = sorted(list(set(spec["char"])), key=sort_chars)
+
+        # Load image data
+        if "data" not in fp:
+            raise ValueError()
+        data = np.array(fp["data"])
+
+        # Add images
+        dataset.add_img(spec, data)
+
+        return dataset
 
     # endregion

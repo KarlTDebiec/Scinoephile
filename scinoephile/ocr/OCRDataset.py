@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from abc import ABC, abstractmethod
 from scinoephile import Base
+from scinoephile.ocr import hanzi_chars
 from IPython import embed
 
 
@@ -22,6 +23,21 @@ class OCRDataset(Base, ABC):
     """
 
     # region Public Properties
+
+    @property
+    def chars(self):
+        """list(str): Characters that may be present in this dataset"""
+        if not hasattr(self, "_chars"):
+            self._chars = list(hanzi_chars[:10])
+        return self._chars
+
+    @chars.setter
+    def chars(self, value):
+        # TODO: Validate
+        if isinstance(value, int):
+            value = list(hanzi_chars[:value])
+        self._chars = value
+
     @property
     def data(self):
         """numpy.ndarray(int): Character image data"""
@@ -90,13 +106,13 @@ class OCRDataset(Base, ABC):
             self.data = np.append(
                 self.data, data[new], axis=0)
 
-    @abstractmethod
-    def get_present_specs_of_char(self, char):
-        pass
-
-    @abstractmethod
-    def get_present_specs_of_char_set(self, char):
-        pass
+    def get_present_specs_of_char(self, char, as_set=True):
+        if as_set:
+            return set(map(tuple, self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1).values))
+        else:
+            return self.spec.loc[
+                self.spec["char"] == char].drop("char", axis=1)
 
     def save(self, path=None, **kwargs):
         """
@@ -145,87 +161,5 @@ class OCRDataset(Base, ABC):
 
         # Show image
         show_img(img, **kwargs)
-
-    # endregion
-
-    # region Public Class Methods
-
-    @classmethod
-    def load(cls, path, verbosity=1, **kwargs):
-        """
-        Loads dataset from an input file
-
-        Args:
-            path (str): Path to input file
-            verbosity (int, optional): Level of verbose output
-            **kwargs: Additional keyword arguments
-
-        Returns:
-            OCRDataset: Loaded dataset
-        """
-        import h5py
-        from os.path import expandvars
-
-        # Process arguments
-        path = expandvars(path).replace("//", "/")
-        if verbosity >= 1:
-            print(f"Reading dataset from '{path}'")
-
-        # Load
-        with h5py.File(path) as fp:
-            return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
-
-    # endregion
-
-    # region Private Methods
-
-    @abstractmethod
-    def _save_hdf5(self, fp, **kwargs):
-        pass
-
-    # endregion
-
-    # region Private Class Methods
-
-    @classmethod
-    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
-        """
-        Loads dataset from an input hdf5 file
-
-        Args:
-            fp (h5py._hl.files.File): Open hdf5 input file
-            verbosity (int, optional): Level of verbose output
-            **kwargs: Additional keyword arguments
-
-        Returns:
-            OCRDataset: Loaded dataset
-        """
-        from scinoephile.ocr import get_labels_of_chars
-
-        decode = lambda x: x.decode("utf8")
-        sort_chars = lambda x: get_labels_of_chars(x)
-
-        # Initialize
-        dataset = cls(verbosity=verbosity)
-
-        # Load image specs
-        if "spec" not in fp:
-            raise ValueError()
-        spec = np.array(fp["spec"])
-        spec = pd.DataFrame(data=spec, index=range(spec.size),
-                            columns=spec.dtype.names)
-        spec["char"] = spec["char"].apply(decode)
-        spec["font"] = spec["font"].apply(decode)
-        dataset.chars = sorted(list(set(spec["char"])), key=sort_chars)
-
-        # Load image data
-        if "data" not in fp:
-            raise ValueError()
-        data = np.array(fp["data"])
-
-        # Add images
-        dataset.add_img(spec, data)
-
-        return dataset
 
     # endregion
