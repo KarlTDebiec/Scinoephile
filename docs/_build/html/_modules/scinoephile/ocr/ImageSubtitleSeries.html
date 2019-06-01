@@ -104,7 +104,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#future">Future</a></li>
 </ul>
@@ -190,11 +189,11 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">SubtitleSeries</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">ImageSubtitleEvent</span><span class="p">,</span> <span class="n">OCRBase</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">ImageSubtitleEvent</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="ImageSubtitleSeries"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleSeries</span><span class="p">(</span><span class="n">SubtitleSeries</span><span class="p">,</span> <span class="n">OCRBase</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleSeries"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">ImageSubtitleSeries</span><span class="p">(</span><span class="n">SubtitleSeries</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A series of image-based subtitles</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -238,16 +237,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_char_data</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;type: dtype of image data&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -470,7 +459,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ImageSubtitleSeries.show"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSubtitleSeries.show"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shows images of selected characters</span>
 
@@ -478,13 +467,11 @@
 <span class="sd">        is available, shows inline in terminal. Otherwise opens a new window.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            indexes (int, list, ndarray, optional): Indexes of characters to</span>
-<span class="sd">              show</span>
-<span class="sd">            data (ndarray, optional): Character data to show</span>
-<span class="sd">            cols (int, optional): Number of columns of characters</span>
+<span class="sd">            indexes (int, list, ndarray, optional): Indexes of character image</span>
+<span class="sd">              data to show</span>
+<span class="sd">            data (ndarray, optional): Character image data to show</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
-        <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">in_ipython</span>
+        <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">draw_char_imgs</span><span class="p">,</span> <span class="n">show_img</span>
 
         <span class="c1"># Process arguments</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -495,57 +482,21 @@
             <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexes</span><span class="p">]</span>
         <span class="n">indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">indexes</span> <span class="o">&gt;=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="n">embed</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_kw</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cols</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">size</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">cols</span><span class="p">))</span>
-        <span class="n">cols</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">indexes</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span>
 
-        <span class="c1"># Prepare image</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">255</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indexes</span><span class="p">):</span>
-            <span class="n">column</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="n">cols</span><span class="p">)</span>
-            <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">column</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="n">char_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="n">char_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span>
-                    <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
-            <span class="n">img</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">char_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
-                                 <span class="mi">100</span> <span class="o">*</span> <span class="n">column</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
-                                 <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
-                                 <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="c1"># Draw image</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">draw_char_imgs</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Show image</span>
-        <span class="k">if</span> <span class="n">in_ipython</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ZMQInteractiveShell&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
-            <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span>
-
-            <span class="nb">bytes</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-            <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">bytes</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
-        <span class="k">elif</span> <span class="n">in_ipython</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;InteractiveShellEmbed&quot;</span><span class="p">:</span>
-            <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">from</span> <span class="nn">imgcat</span> <span class="k">import</span> <span class="n">imgcat</span>
-
-                <span class="n">imgcat</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+        <span class="n">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Class Methods</span>
 
 <div class="viewcode-block" id="ImageSubtitleSeries.load"><a class="viewcode-back" href="../../../ocr/subtitles.html#scinoephile.ocr.ImageSubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;8 bit&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an input file</span>
 
@@ -556,7 +507,6 @@
 <span class="sd">        Args:</span>
 <span class="sd">            path (str): Path to input file</span>
 <span class="sd">            format_ (str, optional): Input file format</span>
-<span class="sd">            mode (str, optional): Input file image mode</span>
 <span class="sd">            verbosity (int, optional): Level of verbose output</span>
 <span class="sd">            **kwargs: Additional keyword arguments</span>
 
@@ -575,13 +525,11 @@
             <span class="kn">import</span> <span class="nn">h5py</span>
 
             <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
-                                      <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Check if sup</span>
         <span class="k">if</span> <span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;sup&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.sup&quot;</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
-                                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_sup</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Other formats not supported for this class</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
@@ -672,9 +620,6 @@
         <span class="c1"># Save info, styles and subtitles</span>
         <span class="n">SubtitleSeries</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="c1"># Save image mode</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span>
-
         <span class="c1"># Save subtitle image data</span>
         <span class="k">if</span> <span class="s2">&quot;full_data&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;full_data&quot;</span><span class="p">]</span>
@@ -683,7 +628,7 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s2">&quot;full_data&quot;</span><span class="p">):</span>
                 <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;full_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{i:04d}</span><span class="s2">&quot;</span><span class="p">,</span>
                                                <span class="n">data</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">full_data</span><span class="p">,</span>
-                                               <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">,</span>
+                                               <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
                                                <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
@@ -708,7 +653,7 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_data&quot;</span><span class="p">):</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
                               <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-                              <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">,</span>
+                              <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
                               <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                               <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
@@ -736,7 +681,7 @@
     <span class="c1"># region Private Class Methods</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an input hdf5 file</span>
 
@@ -745,7 +690,6 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            fp (h5py._hl.files.File): Open hdf5 input file</span>
-<span class="sd">            mode (str, optional): Image mode of input file</span>
 <span class="sd">            verbosity (int, optional): Level of verbose output</span>
 <span class="sd">            **kwargs: Additional keyword arguments</span>
 
@@ -759,15 +703,10 @@
 
         <span class="c1"># Load images</span>
         <span class="k">if</span> <span class="s2">&quot;full_data&quot;</span> <span class="ow">in</span> <span class="n">fp</span> <span class="ow">and</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-            <span class="c1"># TODO: Support converting from one image mode to another on load</span>
-            <span class="n">subs</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
-                <span class="n">event</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">mode</span>
                 <span class="n">event</span><span class="o">.</span><span class="n">full_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;full_data&quot;</span><span class="p">][</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{i:04d}</span><span class="s2">&quot;</span><span class="p">],</span>
-                                           <span class="n">subs</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">)</span>
+                                           <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
             <span class="c1"># Load char image specs</span>
             <span class="k">if</span> <span class="s2">&quot;spec&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
@@ -793,13 +732,12 @@
         <span class="k">return</span> <span class="n">subs</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_load_sup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_load_sup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an input sup file</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            fp (): Open binary file</span>
-<span class="sd">            mode (str, optional): Image mode</span>
 <span class="sd">            verbosity (int, optional): Level of verbose output</span>
 <span class="sd">            **kwargs: Additional keyword arguments</span>
 
@@ -878,7 +816,7 @@
                          <span class="mh">0x17</span><span class="p">:</span> <span class="s2">&quot;WDS&quot;</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">:</span> <span class="s2">&quot;END&quot;</span><span class="p">}</span>
 
         <span class="c1"># initialize</span>
-        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
         <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;sup&quot;</span>
 
         <span class="c1"># Parse infile</span>
@@ -925,7 +863,6 @@
                     <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span>
                         <span class="n">start</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">start_time</span><span class="p">),</span>
                         <span class="n">end</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">end_time</span><span class="p">),</span>
-                        <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
                         <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">))</span>
 
                     <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>

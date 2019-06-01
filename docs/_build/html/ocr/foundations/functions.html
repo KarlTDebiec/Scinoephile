@@ -106,7 +106,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
 </ul>
@@ -190,77 +189,39 @@
 <dt id="scinoephile.ocr.center_char_img">
 <code class="descclassname">scinoephile.ocr.</code><code class="descname">center_char_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#center_char_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.center_char_img" title="Permalink to this definition">¶</a></dt>
 <dd><p>Centers image data</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> (<em>numpy.ndarray</em>) – Character image data</li>
-<li><strong>x_offset</strong> (<em>int</em>) – Offset to apply along x axis</li>
-<li><strong>y_offset</strong> (<em>int</em>) – Offset to apply along y axis</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Character image data</p></li>
+<li><p><strong>x_offset</strong> (<em>int</em>) – Offset to apply along x axis</p></li>
+<li><p><strong>y_offset</strong> (<em>int</em>) – Offset to apply along y axis</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Centered character image</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Centered character image</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="scinoephile.ocr.draw_text_on_img">
 <code class="descclassname">scinoephile.ocr.</code><code class="descname">draw_text_on_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#draw_text_on_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.draw_text_on_img" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws text on an image</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>image</strong> (<em>PIL.Image.Image</em>) – image on which to draw text</li>
-<li><strong>text</strong> (<em>str</em>) – text to draw</li>
-<li><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</li>
-<li><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</li>
-<li><strong>font</strong> (<em>str</em><em>, </em><em>optional</em>) – font with which to draw text</li>
-<li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – font size with which to draw text</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>PIL.Image.Image</em>) – image on which to draw text</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – text to draw</p></li>
+<li><p><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</p></li>
+<li><p><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</p></li>
+<li><p><strong>font</strong> (<em>str</em><em>, </em><em>optional</em>) – font with which to draw text</p></li>
+<li><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – font size with which to draw text</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="scinoephile.ocr.generate_char_data">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">generate_char_data</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#generate_char_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.generate_char_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates an image of a character</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>char</strong> (<em>str</em>) – character of which to draw an image of</li>
-<li><strong>font</strong> (<em>str</em>) – font with which to draw character</li>
-<li><strong>fig</strong> (<em>matplotlib.figure.Figure</em><em>, </em><em>optional</em>) – figure on which to draw
-character</li>
-<li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – font size with which to draw character</li>
-<li><strong>(</strong><strong>int</strong><strong>, </strong><strong>optional</strong> (<em>y_offset</em>) – border width with which to draw character</li>
-<li><strong>x_offset</strong> (<em>int</em><em>, </em><em>optional</em>) – x offset to apply to character</li>
-<li><strong>(</strong><strong>int</strong><strong>, </strong><strong>optional</strong> – y offset to apply to character</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Character image data</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

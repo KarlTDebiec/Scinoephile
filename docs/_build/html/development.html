@@ -105,7 +105,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#future">Future</a></li>
 </ul>
@@ -184,75 +183,66 @@
 <div class="section" id="optical-character-recognition">
 <h2>Optical Character Recognition<a class="headerlink" href="#optical-character-recognition" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>[x] Move interactive testing to Jupyter notebook</li>
-<li>[x] Function for merging characters manually</li>
-<li>[x] Update documentation of Subtitle and Event classes</li>
-<li>[x] Add tests for reading srt, sup, and hdf5</li>
-<li>[ ] Update documentation</li>
-<li>[ ] Migrate to tensorflow 2.0</li>
-<li>[ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries</li>
-<li>[ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset</li>
-<li>[ ] Add log output to AutoTrainer</li>
-<li>[ ] Calculate diff between training images and test images to guide spec selection</li>
-<li>[ ] Improve character separation to support split characters such as 儿 and 八</li>
-<li>[ ] Improve character separation to load assignments from another dataset</li>
-<li>[ ] Add support for Western characters and punctuation</li>
+<li><p>[x] Move interactive testing to Jupyter notebook</p></li>
+<li><p>[x] Function for merging characters manually</p></li>
+<li><p>[x] Update documentation of Subtitle and Event classes</p></li>
+<li><p>[x] Add tests for reading srt, sup, and hdf5</p></li>
+<li><p>[x] Update documentation</p></li>
+<li><p>[x] Migrate to tensorflow 2.0</p></li>
+<li><p>[ ] Fix documentation</p></li>
+<li><p>[ ] Understand problem with times</p></li>
+<li><p>[ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries</p></li>
+<li><p>[ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset</p></li>
+<li><p>[ ] Add log output to AutoTrainer</p></li>
+<li><p>[ ] Calculate diff between training images and test images to guide spec selection</p></li>
+<li><p>[ ] Improve character separation to support split characters such as 儿 and 八</p></li>
+<li><p>[ ] Improve character separation to load assignments from another dataset</p></li>
+<li><p>[ ] Add support for Western characters and punctuation</p></li>
 </ul>
 </div>
 <div class="section" id="compositor-rewrite">
 <h2>Compositor Rewrite<a class="headerlink" href="#compositor-rewrite" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>[ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames</li>
-<li>[ ] Set up framework for CompositeSubtitleDataset(Dataset)</li>
-<li>[ ] Set up framework for Compositor(CLToolBase, CompositeSubtitleDataset)</li>
-<li>[ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries</li>
+<li><p>[ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames</p></li>
+<li><p>[ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>[ ] Document Base and CLToolBase</li>
-<li>[ ] Document Subtitle Data Structures</li>
-<li>[ ] Document Image Subtitle Data Structures</li>
-<li>[ ] Document OCRBase and OCRCLToolBase</li>
-<li>[ ] Document OCR Data Structures</li>
-<li>[ ] Document Training tool</li>
-<li>[ ] Improve examples</li>
-</ul>
-</div>
-<div class="section" id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>[ ] sup reading in 1 bit</li>
-<li>[ ] hdf5 writing</li>
-<li>[ ] Character bounds identification</li>
-<li>[ ] Training set generation</li>
+<li><p>[ ] Document Base and CLToolBase</p></li>
+<li><p>[ ] Document Subtitle Data Structures</p></li>
+<li><p>[ ] Document Image Subtitle Data Structures</p></li>
+<li><p>[ ] Document OCRBase and OCRCLToolBase</p></li>
+<li><p>[ ] Document OCR Data Structures</p></li>
+<li><p>[ ] Document Training tool</p></li>
+<li><p>[ ] Improve examples</p></li>
 </ul>
 </div>
 <div class="section" id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>[ ] ImageSubtitleEvent: rename data to full_data, char_data to data</li>
-<li>[ ] DatasetBase: Make load a classmethod</li>
-<li>[ ] OCRDataset: Implement sort function</li>
-<li>[ ] ImageSubtitleSeries: Improve identification of spaces between characters</li>
-<li>[ ] Improve performance of reading and writing training set</li>
-<li>[ ] Replace matplotlib with another library to improve font support</li>
-<li>[ ] Make clearer whether functions are acting on Images or image data</li>
-<li>[ ] Visualize weights</li>
-<li>[ ] Extend generate_training_data to add set number of images rather than use total</li>
-<li>[ ] Convenience function for viewing source of method/property in IPython</li>
-<li>[ ] Track modifications, and if infile==outfile only save if changed</li>
-<li>[ ] Compare to tesseract</li>
-<li>[ ] Implement SUP parsing in numba</li>
-<li>[ ] Option to compress or not when saving Datasets (takes a long time)</li>
+<li><p>[ ] ImageSubtitleEvent: rename data to full_data, char_data to data</p></li>
+<li><p>[ ] DatasetBase: Make load a classmethod</p></li>
+<li><p>[ ] OCRDataset: Implement sort function</p></li>
+<li><p>[ ] ImageSubtitleSeries: Improve identification of spaces between characters</p></li>
+<li><p>[ ] Improve performance of reading and writing training set</p></li>
+<li><p>[ ] Replace matplotlib with another library to improve font support</p></li>
+<li><p>[ ] Make clearer whether functions are acting on Images or image data</p></li>
+<li><p>[ ] Visualize weights</p></li>
+<li><p>[ ] Extend generate_training_data to add set number of images rather than use total</p></li>
+<li><p>[ ] Convenience function for viewing source of method/property in IPython</p></li>
+<li><p>[ ] Track modifications, and if infile==outfile only save if changed</p></li>
+<li><p>[ ] Compare to tesseract</p></li>
+<li><p>[ ] Implement SUP parsing in numba</p></li>
+<li><p>[ ] Option to compress or not when saving Datasets (takes a long time)</p></li>
 </ul>
 </div>
 <div class="section" id="future">
 <h2>Future<a class="headerlink" href="#future" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Improve requirements.txt;clarify what is required for which functions</li>
-<li>Sphinx checklist extension to convert “- [ ]” to “☐” and “- [X]” to “☑”</li>
+<li><p>Improve requirements.txt;clarify what is required for which functions</p></li>
+<li><p>Sphinx checklist extension to convert “- [ ]” to “☐” and “- [X]” to “☑”</p></li>
 </ul>
 </div>
 </div>

@@ -11,9 +11,9 @@ _____________________________
 - [x] Update documentation of Subtitle and Event classes
 - [x] Add tests for reading srt, sup, and hdf5
 - [x] Update documentation
+- [x] Migrate to tensorflow 2.0
 - [ ] Fix documentation
 - [ ] Understand problem with times
-- [ ] Migrate to tensorflow 2.0
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
 - [ ] Add log output to AutoTrainer
@@ -26,8 +26,6 @@ Compositor Rewrite
 __________________
 
 - [ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames
-- [ ] Set up framework for CompositeSubtitleDataset(Dataset)
-- [ ] Set up framework for Compositor(CLToolBase, CompositeSubtitleDataset)
 - [ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries
 
 Documentation
@@ -40,13 +38,6 @@ _____________
 - [ ] Document OCR Data Structures
 - [ ] Document Training tool
 - [ ] Improve examples
-
-Tests
-_____
-- [ ] sup reading in 1 bit
-- [ ] hdf5 writing
-- [ ] Character bounds identification
-- [ ] Training set generation
 
 Miscellaneous
 _____________

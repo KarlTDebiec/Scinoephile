@@ -104,7 +104,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../development.html#future">Future</a></li>
 </ul>
@@ -186,33 +185,39 @@
 <span class="c1">#   This software may be modified and distributed under the terms of the</span>
 <span class="c1">#   BSD license. See the LICENSE file for details.</span>
 <span class="c1">################################### MODULES ###################################</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRDataset</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">get_labels_of_chars</span><span class="p">,</span> <span class="n">OCRDataset</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
 <div class="viewcode-block" id="TrainOCRDataset"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TrainOCRDataset">[docs]</a><span class="k">class</span> <span class="nc">TrainOCRDataset</span><span class="p">(</span><span class="n">OCRDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A collection of labeled character images for training</span>
+<span class="sd">    A collection of character images for training</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
 
-<div class="viewcode-block" id="TrainOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TrainOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">font_x_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_y_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainOCRDataset.__init__"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TrainOCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">font_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_offsets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Store property values</span>
+        <span class="k">if</span> <span class="n">chars</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">=</span> <span class="n">chars</span>
         <span class="k">if</span> <span class="n">font_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span> <span class="o">=</span> <span class="n">font_names</span>
         <span class="k">if</span> <span class="n">font_sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span> <span class="o">=</span> <span class="n">font_sizes</span>
         <span class="k">if</span> <span class="n">font_widths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span> <span class="o">=</span> <span class="n">font_widths</span>
-        <span class="k">if</span> <span class="n">font_x_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_font_x_offsets</span> <span class="o">=</span> <span class="n">font_x_offsets</span>
-        <span class="k">if</span> <span class="n">font_y_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span> <span class="o">=</span> <span class="n">font_y_offsets</span></div>
+        <span class="k">if</span> <span class="n">x_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x_offsets</span> <span class="o">=</span> <span class="n">x_offsets</span>
+        <span class="k">if</span> <span class="n">y_offsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_offsets</span> <span class="o">=</span> <span class="n">y_offsets</span></div>
 
     <span class="c1"># endregion</span>
 
@@ -220,8 +225,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">font_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(str): List of font names&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Font names that may be present in this dataset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_names&quot;</span><span class="p">):</span>
+            <span class="c1"># TODO: Don&#39;t hardcode defaults for macOS</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_names</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="s2">&quot;/System/Library/Fonts/STHeiti Light.ttc&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;/System/Library/Fonts/STHeiti Medium.ttc&quot;</span><span class="p">,</span>
@@ -230,6 +236,7 @@
 
     <span class="nd">@font_names</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">font_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># TODO: Validate better</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -240,7 +247,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">font_sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(int): List of font sizes&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;list(int): Font sizes that may be present in this dataset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_sizes&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">62</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_sizes</span>
@@ -257,7 +264,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">font_widths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(int): List of font border widths&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;list(int): Font border widths that may be present in this dataset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_widths&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span>
@@ -273,144 +280,111 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_font_widths</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">font_x_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(int): List of font x offsets&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_x_offsets&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_font_x_offsets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_x_offsets</span>
+    <span class="k">def</span> <span class="nf">x_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(int): X offsets that may be present in this dataset&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_x_offsets&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x_offsets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_offsets</span>
 
-    <span class="nd">@font_x_offsets</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">font_x_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@x_offsets</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">x_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_font_x_offsets</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_offsets</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">font_y_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(int): List of font y offsets&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_font_y_offsets&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_font_y_offsets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font_y_offsets</span>
+    <span class="k">def</span> <span class="nf">y_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(int): Y offsets that may be present in this dataset&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_y_offsets&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y_offsets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_offsets</span>
 
-    <span class="nd">@font_y_offsets</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">font_y_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@y_offsets</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">y_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_font_y_offsets</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;pandas.DataFrame: All available character image specs&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec_all&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-            <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
-
-            <span class="n">fonts</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">x_offsets</span><span class="p">,</span> <span class="n">y_offsets</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">product</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_widths</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">font_x_offsets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span><span class="p">)))</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_spec_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-                <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">fonts</span><span class="p">,</span>
-                                  <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span>
-                                  <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span>
-                                   <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">x_offsets</span><span class="p">,</span>
-                                      <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y_offsets</span><span class="p">,</span>
-                                      <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_all</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec_all_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;set(tuple): Set of minimal character image specs&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec_all_set&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_spec_all_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_all</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_all_set</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(str): Character image specification columns&quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;font&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;x_offset&quot;</span><span class="p">,</span> <span class="s2">&quot;y_offset&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_offsets</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;list(str): Character image specification dtypes&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">}</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;pandas.DataFrame: Minimal character image specs&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec_min&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_spec_min</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-                <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">,</span>
-                                  <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                                  <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                                   <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font_x_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                                      <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">font_y_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
-                                      <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_min</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">spec_min_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;set(tuple): Set of minimal character image specs&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_spec_min_set&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_spec_min_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_min</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_min_set</span>
+        <span class="sd">&quot;&quot;&quot;OrderedDict(str, type): Names and dtypes of columns in spec&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                           <span class="n">x_offset</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
 
-    <span class="k">def</span> <span class="nf">generate_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_images</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="k">def</span> <span class="nf">generate_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_images</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
         <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
-        <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">generate_char_data</span>
+        <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">generate_char_datum</span>
 
         <span class="c1"># Process arguments</span>
-        <span class="k">if</span> <span class="n">chars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">chars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_chars</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+        <span class="n">fonts</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">x_offsets</span><span class="p">,</span> <span class="n">y_offsets</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">product</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_widths</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_offsets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offsets</span><span class="p">)))</span>
+        <span class="n">spec_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="n">fonts</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="n">sizes</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="n">widths</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="n">x_offsets</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="n">y_offsets</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
+        <span class="n">spec_min</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;x_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;x_offset&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;y_offset&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font_names</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="p">[</span><span class="s2">&quot;y_offset&quot;</span><span class="p">])})</span>
+        <span class="n">spec_all_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">spec_all</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+        <span class="n">spec_min_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">spec_min</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">min_images</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">min_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_min_set</span><span class="p">)</span>
-        <span class="n">min_images</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_min_set</span><span class="p">),</span> <span class="n">min_images</span><span class="p">)</span>
+            <span class="n">min_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spec_min_set</span><span class="p">)</span>
+        <span class="n">min_images</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spec_min_set</span><span class="p">),</span> <span class="n">min_images</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Checking for minimum of </span><span class="si">{min_images}</span><span class="s2"> images of each of &quot;</span>
-                  <span class="n">f</span><span class="s2">&quot;{len(chars)} characters&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Checking that at least </span><span class="si">{min_images}</span><span class="s2"> images are present &quot;</span>
+                  <span class="n">f</span><span class="s2">&quot;for each of {len(self.chars)} characters&quot;</span><span class="p">)</span>
 
         <span class="c1"># Build queue of needed specs</span>
         <span class="n">min_queue</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">to_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_cols</span><span class="p">,</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">))}</span>
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
-            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char_set</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
-            <span class="n">minimal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_min_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span>
+        <span class="n">to_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec_dtypes</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                                  <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">))}</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">:</span>
+            <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">minimal</span> <span class="o">=</span> <span class="n">spec_min_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span>
             <span class="n">min_queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">to_dict</span><span class="p">,</span> <span class="n">minimal</span><span class="p">))</span>
             <span class="n">n_additional</span> <span class="o">=</span> <span class="n">min_images</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">n_additional</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_all_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+                <span class="n">available</span> <span class="o">=</span> <span class="n">spec_all_set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
                     <span class="n">minimal</span><span class="p">)</span>
                 <span class="n">selected</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">available</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_additional</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available</span><span class="p">)))</span>
                 <span class="n">min_queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">to_dict</span><span class="p">,</span> <span class="n">selected</span><span class="p">))</span>
@@ -418,98 +392,113 @@
         <span class="c1"># Generate and add images</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_queue</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Generating {len(min_queue)} new images for minimal set&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Generating {len(min_queue)} new images for minimal &quot;</span>
+                      <span class="n">f</span><span class="s2">&quot;set&quot;</span><span class="p">)</span>
 
             <span class="n">spec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">min_queue</span><span class="p">)</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">min_queue</span><span class="p">),</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">min_queue</span><span class="p">),</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">min_queue</span><span class="p">):</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_char_data</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_char_datum</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Minimal image set already present, nothing to do&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_present_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_present_specs_of_char_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
-            <span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">get_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="k">def</span> <span class="nf">get_data_for_tensorflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">sample</span>
+
+        <span class="k">if</span> <span class="n">val_portion</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val_portion</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">trn_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+            <span class="n">trn_lbl</span> <span class="o">=</span> <span class="n">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="n">complete_trn_indexes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">complete_val_indexes</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Prepare trn and val sets with at least one image of each character</span>
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]):</span>
-            <span class="nb">all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">:</span>
+            <span class="n">all_indexes_of_char</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_present_specs_of_char</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 
-            <span class="c1"># Add at least one image of each character to each set</span>
-            <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># Add at least one image of each character to val and trn</span>
+            <span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">all_indexes_of_char</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">complete_trn_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trn_index</span><span class="p">)</span>
             <span class="n">complete_val_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_index</span><span class="p">)</span>
-            <span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span><span class="p">])</span>
+            <span class="n">all_indexes_of_char</span> <span class="o">-=</span> <span class="p">{</span><span class="n">trn_index</span><span class="p">,</span> <span class="n">val_index</span><span class="p">}</span>
 
-            <span class="c1"># Distribute remaining images across sets</span>
-            <span class="n">n_for_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">val_portion</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">n_for_trn</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">n_for_val</span>
-            <span class="k">if</span> <span class="n">n_for_trn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">trn_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_trn</span><span class="p">)</span>
-                <span class="n">complete_trn_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
-                <span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">trn_indexes</span><span class="p">)</span>
+            <span class="c1"># Distribute remaining images across val and trn sets</span>
+            <span class="n">n_for_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_indexes_of_char</span><span class="p">)</span> <span class="o">*</span> <span class="n">val_portion</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">n_for_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">val_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">all</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n_for_val</span><span class="p">)</span>
+                <span class="n">val_indexes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">all_indexes_of_char</span><span class="p">,</span> <span class="n">n_for_val</span><span class="p">)</span>
                 <span class="n">complete_val_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
+                <span class="n">all_indexes_of_char</span> <span class="o">-=</span> <span class="nb">set</span><span class="p">(</span><span class="n">val_indexes</span><span class="p">)</span>
+            <span class="n">complete_trn_indexes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">all_indexes_of_char</span><span class="p">)</span>
 
         <span class="c1"># Organize data</span>
         <span class="n">trn_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">complete_trn_indexes</span><span class="p">]</span>
-        <span class="n">trn_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_trn_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">trn_lbl</span> <span class="o">=</span> <span class="n">get_labels_of_chars</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_trn_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="n">val_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">complete_val_indexes</span><span class="p">]</span>
-        <span class="n">val_lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_val_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">val_lbl</span> <span class="o">=</span> <span class="n">get_labels_of_chars</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">complete_val_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-            <span class="n">trn_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trn_img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
-            <span class="n">val_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val_img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+        <span class="n">trn_img</span> <span class="o">=</span> <span class="n">trn_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+        <span class="n">val_img</span> <span class="o">=</span> <span class="n">val_img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
 
         <span class="k">return</span> <span class="n">trn_img</span><span class="p">,</span> <span class="n">trn_lbl</span><span class="p">,</span> <span class="n">val_img</span><span class="p">,</span> <span class="n">val_lbl</span>
+
+<div class="viewcode-block" id="TrainOCRDataset.save"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TrainOCRDataset.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves character images to an output file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">h5py</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing character images to &#39;</span><span class="si">{path}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Write outfile</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Class Methods</span>
+
+<div class="viewcode-block" id="TrainOCRDataset.load"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.TrainOCRDataset.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads dataset from an input file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to input file</span>
+<span class="sd">            verbosity (int, optional): Level of verbose output</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            OCRDataset: Loaded dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">h5py</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading dataset from &#39;</span><span class="si">{path}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Load</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Private Methods</span>
 
-    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-        <span class="n">decode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Load image mode</span>
-        <span class="k">if</span> <span class="s2">&quot;mode&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
-
-        <span class="c1"># Load image specs</span>
-        <span class="k">if</span> <span class="s2">&quot;spec&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>  <span class="c1"># Weird to have mode but no specs or data</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">])</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">spec</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
-        <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
-        <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
-
-        <span class="c1"># Load image data</span>
-        <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>  <span class="c1"># Weirder to have mode and specs but no data</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">_save_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
         <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;S3&quot;</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;font&quot;</span><span class="p">,</span> <span class="s2">&quot;S255&quot;</span><span class="p">),</span>
@@ -519,26 +508,69 @@
             <span class="p">(</span><span class="s2">&quot;y_offset&quot;</span><span class="p">,</span> <span class="s2">&quot;i1&quot;</span><span class="p">)]</span>
         <span class="n">encode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Save image mode</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span>
-
-        <span class="c1"># Save image specs</span>
+        <span class="c1"># Save character image specs</span>
         <span class="k">if</span> <span class="s2">&quot;spec&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
         <span class="n">encoded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">encode</span><span class="p">)</span>
         <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">encode</span><span class="p">)</span>
-        <span class="n">encoded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">values</span><span class="p">))),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">encoded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">values</span><span class="p">))),</span>
+                           <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
         <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;spec&quot;</span><span class="p">,</span>
                           <span class="n">data</span><span class="o">=</span><span class="n">encoded</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
                           <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Save iamge data</span>
+        <span class="c1"># Save character image data</span>
         <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
         <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
-                          <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dtype</span><span class="p">,</span>
-                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span></div>
+                          <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Class Methods</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads dataset from an input hdf5 file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp (h5py._hl.files.File): Open hdf5 input file</span>
+<span class="sd">            verbosity (int, optional): Level of verbose output</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            OCRDataset: Loaded dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">get_labels_of_chars</span>
+
+        <span class="n">decode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+        <span class="n">sort_chars</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">get_labels_of_chars</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Initialize</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
+
+        <span class="c1"># Load image specs</span>
+        <span class="k">if</span> <span class="s2">&quot;spec&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">])</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">spec</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+        <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
+        <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;font&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">chars</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">])),</span> <span class="n">key</span><span class="o">=</span><span class="n">sort_chars</span><span class="p">)</span>
+
+        <span class="c1"># Load image data</span>
+        <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+
+        <span class="c1"># Add images</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">add_img</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataset</span></div>
 
     <span class="c1"># endregion</span>
 </pre></div>

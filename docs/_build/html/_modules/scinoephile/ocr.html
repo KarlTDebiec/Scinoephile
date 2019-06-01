@@ -104,7 +104,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
 </ul>
@@ -186,21 +185,43 @@
 <span class="c1">################################### MODULES ###################################</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">Base</span><span class="p">,</span> <span class="n">CLToolBase</span><span class="p">,</span> <span class="n">package_root</span>
+<span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">package_root</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 
 <span class="c1">################################## CONSTANTS ##################################</span>
-<span class="n">char_frequency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+<span class="n">hanzi_frequency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
     <span class="n">f</span><span class="s2">&quot;</span><span class="si">{package_root}</span><span class="s2">/data/ocr/characters.txt&quot;</span><span class="p">,</span>
     <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;cumulative frequency&quot;</span><span class="p">])</span>
 
-<span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">char_frequency_table</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-<span class="n">punctuation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">　 ,,？?，,、,..！!。.…﹣-─“”</span><span class="se">\&quot;</span><span class="s2">《&lt;》&gt;「[」]：:&quot;</span><span class="p">)</span>
-
+<span class="n">hanzi_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hanzi_frequency</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+<span class="n">western_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">)</span>
+<span class="n">numeric_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;0123456789&quot;</span><span class="p">)</span>
+<span class="n">eastern_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;。？！，、（）［］《》「」：；⋯&quot;</span><span class="p">)</span>
+<span class="n">western_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;.?!,-–()[]&lt;&gt;:;…&quot;</span><span class="p">)</span>
 
 
 <span class="c1">################################## FUNCTIONS ##################################</span>
+<span class="k">def</span> <span class="nf">analyze_predictions</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{title:10s}</span><span class="s2">  Count:</span><span class="si">{lbl.size:5d}</span><span class="s2">  Loss:</span><span class="si">{loss:7.5f}</span><span class="s2"> &quot;</span>
+              <span class="n">f</span><span class="s2">&quot;Accuracy:</span><span class="si">{acc:7.5f}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">get_chars_of_labels</span><span class="p">(</span><span class="n">lbl</span><span class="p">)):</span>
+            <span class="n">poss_lbls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">poss_chars</span> <span class="o">=</span> <span class="n">get_chars_of_labels</span><span class="p">(</span><span class="n">poss_lbls</span><span class="p">)</span>
+            <span class="n">poss_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">poss_lbls</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">char</span> <span class="o">!=</span> <span class="n">poss_chars</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">:</span><span class="si">{b:4.2f}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span>
+                               <span class="nb">zip</span><span class="p">(</span><span class="n">poss_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">poss_probs</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{char}</span><span class="s2"> | {&#39; &#39;.join(matches)}&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span>
+
+
 <div class="viewcode-block" id="center_char_img"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.center_char_img">[docs]</a><span class="k">def</span> <span class="nf">center_char_img</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Centers image data</span>
@@ -213,15 +234,15 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: Centered character image</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-    <span class="c1"># TODO: Make general-purpose; no need to hardcode shape or limit to chars</span>
+    <span class="c1"># TODO: Make general-purpose</span>
 
     <span class="n">white_cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">white_rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">trimmed</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span>
-              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">):</span><span class="n">white_rows</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
-              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">):</span><span class="n">white_cols</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_rows</span><span class="p">):</span><span class="n">white_rows</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+                  <span class="n">white_rows</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">white_cols</span><span class="p">):</span><span class="n">white_cols</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+                  <span class="n">white_cols</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
     <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">centered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -229,6 +250,45 @@
     <span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">trimmed</span>
 
     <span class="k">return</span> <span class="n">centered</span></div>
+
+
+<span class="k">def</span> <span class="nf">draw_char_imgs</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draws character images from provided data</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (ndarray): Character data to draw</span>
+<span class="sd">        cols (int, optional): Number of columns of characters</span>
+<span class="sd">        kwargs: Additional keyword arguments</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        PIL.Image.Image: Images of characters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+    <span class="c1"># Process arguments</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span> <span class="o">*</span> <span class="mf">255.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">cols</span><span class="p">))</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Draw image</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="n">cols</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">column</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">char</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+                                          <span class="mi">100</span> <span class="o">*</span> <span class="n">column</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+                                          <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
+                                          <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">img</span>
 
 
 <div class="viewcode-block" id="draw_text_on_img"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.draw_text_on_img">[docs]</a><span class="k">def</span> <span class="nf">draw_text_on_img</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -255,11 +315,12 @@
     <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="generate_char_data"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.generate_char_data">[docs]</a><span class="k">def</span> <span class="nf">generate_char_data</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s2">&quot;/System/Library/Fonts/STHeiti Light.ttc&quot;</span><span class="p">,</span>
-                       <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                       <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;1 bit&quot;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_char_datum</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s2">&quot;/System/Library/Fonts/STHeiti Light.ttc&quot;</span><span class="p">,</span>
+                        <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates an image of a character</span>
+
+<span class="sd">    TODO: Don&#39;t hardcode defaults for macOS</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        char (str): character of which to draw an image of</span>
@@ -274,12 +335,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: Character image data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
     <span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="k">import</span> <span class="n">FontProperties</span>
     <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="k">import</span> <span class="n">Stroke</span><span class="p">,</span> <span class="n">Normal</span>
     <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
-
-    <span class="c1"># TODO: Handle default font better; perhaps get matplotlib&#39;s default</span>
 
     <span class="c1"># Process arguments</span>
     <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -303,12 +361,7 @@
 
     <span class="c1"># Convert to appropriate mode using pillow</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">_renderer</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">center_char_img</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">)</span>
@@ -316,135 +369,97 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{char}</span><span class="s2"> </span><span class="si">{font}</span><span class="s2"> </span><span class="si">{size}</span><span class="s2"> </span><span class="si">{width}</span><span class="s2"> </span><span class="si">{x_offset}</span><span class="s2"> </span><span class="si">{y_offset}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">e</span>
 
-    <span class="k">return</span> <span class="n">data</span></div>
+    <span class="k">return</span> <span class="n">data</span>
 
 
-<span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="OCRBase"><a class="viewcode-back" href="../../ocr/foundations/classes.html#scinoephile.ocr.OCRBase">[docs]</a><span class="k">class</span> <span class="nc">OCRBase</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="n">chars</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base for OCR classes</span>
+<span class="sd">    Gets unique integer indexes of provided char strings</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        chars (ndarray(int64)): Chars</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">         ndarray(int64): Labels</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># region Builtins</span>
+    <span class="c1"># Process arguments</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">hanzi_chars</span> <span class="o">==</span> <span class="n">chars</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+    <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
 
-<div class="viewcode-block" id="OCRBase.__init__"><a class="viewcode-back" href="../../ocr/foundations/classes.html#scinoephile.ocr.OCRBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="c1"># Return labels</span>
+    <span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">sorter</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)])</span>
 
-        <span class="c1"># Store property values</span>
-        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span></div>
 
-    <span class="c1"># endregion</span>
+<span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets char strings of unique integer indexes</span>
 
-    <span class="c1"># region Properties</span>
+<span class="sd">    Args:</span>
+<span class="sd">        labels (ndarray(int64)): Labels</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;pandas.core.frame.DataFrame: Characters&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_chars&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="sd">    Returns</span>
+<span class="sd">        ndarray(U64): Chars</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_frequency_table</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">],</span>
-                                   <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span>
+    <span class="c1"># Process arguments</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">hanzi_chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">char_frequency_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;pandas.core.frame.DataFrame: Character frequency table&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_char_frequency_table&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="c1"># return hanzi_chars</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">hanzi_chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_char_frequency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{self.package_root}</span><span class="s2">/data/ocr/characters.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;cumulative frequency&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_char_frequency_table</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;str: Image mode&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_mode&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="s2">&quot;1 bit&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+<span class="k">def</span> <span class="nf">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shows an image using context-appropriate function</span>
 
-    <span class="nd">@mode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;8 bit&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;1 bit&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<span class="sd">    If called from within Jupyter notebook, shows inline. If imgcat module</span>
+<span class="sd">    is available, shows inline in terminal. Otherwise opens a new window.</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">value</span>
+<span class="sd">    Args:</span>
+<span class="sd">        img (PIL.Image.Image): Image to show</span>
+<span class="sd">        kwargs: Additional keyword arguments</span>
 
-    <span class="c1"># endregion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">in_ipython</span>
 
-    <span class="c1"># region Public Methods</span>
+    <span class="c1"># Show image</span>
+    <span class="k">if</span> <span class="n">in_ipython</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ZMQInteractiveShell&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
+        <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span>
 
-<div class="viewcode-block" id="OCRBase.get_labels_of_chars"><a class="viewcode-back" href="../../ocr/foundations/classes.html#scinoephile.ocr.OCRBase.get_labels_of_chars">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets unique integer indexes of provided char strings</span>
+        <span class="n">bytes_</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bytes_</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bytes_</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+    <span class="k">elif</span> <span class="n">in_ipython</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;InteractiveShellEmbed&quot;</span><span class="p">:</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">imgcat</span> <span class="k">import</span> <span class="n">imgcat</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            chars (ndarray(U64)): Chars</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">             ndarray(int64): Labels</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">==</span> <span class="n">chars</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="n">sorter</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="OCRBase.get_chars_of_labels"><a class="viewcode-back" href="../../ocr/foundations/classes.html#scinoephile.ocr.OCRBase.get_chars_of_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets char strings of unique integer indexes</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            labels (ndarray(int64)): Labels</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">            ndarray(U64): Chars</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div></div>
-
-    <span class="c1"># endregion</span>
+            <span class="n">imgcat</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
 <span class="c1">################################### MODULES ###################################</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.ImageSubtitleEvent</span> <span class="k">import</span> <span class="n">ImageSubtitleEvent</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.ImageSubtitleSeries</span> <span class="k">import</span> <span class="n">ImageSubtitleSeries</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr.Model</span> <span class="k">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.OCRDataset</span> <span class="k">import</span> <span class="n">OCRDataset</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.TestOCRDataset</span> <span class="k">import</span> <span class="n">TestOCRDataset</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.TrainOCRDataset</span> <span class="k">import</span> <span class="n">TrainOCRDataset</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr.AutoTrainer</span> <span class="k">import</span> <span class="n">AutoTrainer</span>
 </pre></div>
 
            </div>

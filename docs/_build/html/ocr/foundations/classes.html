@@ -106,7 +106,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
 </ul>
@@ -186,110 +185,6 @@
             
   <div class="section" id="classes">
 <h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="scinoephile.ocr.OCRBase">
-<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRBase</code><a class="reference internal" href="../../_modules/scinoephile/ocr.html#OCRBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../foundations/classes.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<p>Base for OCR classes</p>
-<dl class="method">
-<dt id="scinoephile.ocr.OCRBase.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>mode=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#OCRBase.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes class</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>interactive</strong> (<em>bool</em>) – Show IPython prompt</li>
-<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="scinoephile.ocr.OCRBase.chars">
-<code class="descname">chars</code><a class="headerlink" href="#scinoephile.ocr.OCRBase.chars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Characters</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.core.frame.DataFrame</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="scinoephile.ocr.OCRBase.char_frequency_table">
-<code class="descname">char_frequency_table</code><a class="headerlink" href="#scinoephile.ocr.OCRBase.char_frequency_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Character frequency table</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.core.frame.DataFrame</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="scinoephile.ocr.OCRBase.mode">
-<code class="descname">mode</code><a class="headerlink" href="#scinoephile.ocr.OCRBase.mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image mode</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="scinoephile.ocr.OCRBase.get_labels_of_chars">
-<code class="descname">get_labels_of_chars</code><span class="sig-paren">(</span><em>chars</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#OCRBase.get_labels_of_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.get_labels_of_chars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets unique integer indexes of provided char strings</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chars</strong> (<em>ndarray</em><em>(</em><em>U64</em><em>)</em>) – Chars</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Labels</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray(int64)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="scinoephile.ocr.OCRBase.get_chars_of_labels">
-<code class="descname">get_chars_of_labels</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#OCRBase.get_chars_of_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRBase.get_chars_of_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets char strings of unique integer indexes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>labels</strong> (<em>ndarray</em><em>(</em><em>int64</em><em>)</em>) – Labels</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Returns</dt>
-<dd>ndarray(U64): Chars</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 
 

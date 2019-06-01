@@ -3,6 +3,7 @@
 *.swp
 .DS_Store
 .idea
+.ipynb_checkpoints
 Makefile
 __pycache__
 build

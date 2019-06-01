@@ -8,7 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from scinoephile import CLToolBase
+from scinoephile import CLToolBase, SubtitleSeries
 from IPython import embed
 
 
@@ -610,7 +610,8 @@ class Compositor(CLToolBase):
                                            index=subtitles.index)
         if self.verbosity >= 1 and len(unmatched) > 0:
             print(
-                f"The following {len(unmatched)} characters were not recognized:")
+                f"The following {len(unmatched)} characters were not "
+                f"recognized:")
             print("".join(unmatched))
 
     def add_english_translation(self, subtitles):
@@ -750,7 +751,8 @@ class Compositor(CLToolBase):
                 normalized = [w.capitalize() if t in ["NN", "NNS"] else w
                               for (w, t) in tagged]
                 normalized[0] = normalized[0].capitalize()
-                truecased = re.sub(r" (?=[\.,'!?:;])", "", ' '.join(normalized))
+                truecased = re.sub(r" (?=[\.,'!?:;])", "",
+                                   ' '.join(normalized))
 
                 # Could probably use a more appropriate tokenization function,
                 # but cleaning up in this way is fine for now.
@@ -845,7 +847,8 @@ class Compositor(CLToolBase):
 
         if self.cantonese and self.mandarin:
             merged_subtitles = merged_subtitles[
-                ["start", "end", "chinese", "cantonese", "mandarin", "english"]]
+                ["start", "end", "chinese", "cantonese", "mandarin",
+                 "english"]]
         elif self.cantonese:
             merged_subtitles = merged_subtitles[
                 ["start", "end", "chinese", "cantonese", "english"]]
@@ -876,7 +879,8 @@ class Compositor(CLToolBase):
                     last.english = next.english
                     last.end = next.end
                     cleaned_subs.iloc[-1] = last  # Apparently necessary
-                elif isinstance(next.english, float) and np.isnan(next.english):
+                elif isinstance(next.english, float) and np.isnan(
+                        next.english):
                     # English started before Chinese
                     last.end = next.end
                     cleaned_subs.iloc[-1] = last  # Apparently not necessary
@@ -890,7 +894,8 @@ class Compositor(CLToolBase):
                             date.today(), last.end) + (gap / 2)).time()
                         last.end = mid
                         next.start = mid
-                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
                         cleaned_subs = cleaned_subs.append(next)
 
                     else:
@@ -907,13 +912,15 @@ class Compositor(CLToolBase):
                         last.cantonese = next.cantonese
                     last.end = next.end
                     cleaned_subs.iloc[-1] = last  # Apparently necessary
-                elif isinstance(next.chinese, float) and np.isnan(next.chinese):
+                elif isinstance(next.chinese, float) and np.isnan(
+                        next.chinese):
                     # Chinese started before English
                     if last.end < next.start:
                         cleaned_subs = cleaned_subs.append(next)
                     else:
                         last.end = next.end
-                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
                 else:
                     gap = (datetime.combine(date.today(), next.start) -
                            datetime.combine(date.today(), last.end))
@@ -923,7 +930,8 @@ class Compositor(CLToolBase):
                             date.today(), last.end) + (gap / 2)).time()
                         last.end = mid
                         next.start = mid
-                        cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
                         cleaned_subs = cleaned_subs.append(next)
                     else:
                         # Probably English repeated with different Chinese
@@ -1030,10 +1038,11 @@ class Compositor(CLToolBase):
                         text = line.strip()
                     else:
                         text += "\n" + line.strip()
-        subtitles = pd.DataFrame.from_items([("index", range(1, len(texts) + 1)),
-                                             ("start", starts),
-                                             ("end", ends),
-                                             ("text", texts)])
+        subtitles = pd.DataFrame.from_items(
+            [("index", range(1, len(texts) + 1)),
+             ("start", starts),
+             ("end", ends),
+             ("text", texts)])
         subtitles.set_index("index", inplace=True)
         return subtitles
 

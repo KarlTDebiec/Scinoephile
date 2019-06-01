@@ -4,5 +4,4 @@ Classes
 _______
 .. autoclass:: scinoephile.Base()
 .. autoclass:: scinoephile.CLToolBase()
-.. autoclass:: scinoephile.DatasetBase()
 .. autoclass:: scinoephile.StdoutLogger()

@@ -2,4 +2,3 @@
 
 Classes
 ```````
-.. autoclass:: scinoephile.ocr.OCRBase()

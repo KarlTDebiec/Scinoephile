@@ -106,7 +106,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#compositor-rewrite">Compositor Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../development.html#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
 </ul>
@@ -202,14 +201,11 @@ classes in pysubs.SSAFile, this separation is not really beneficial here.</p>
 <dt id="scinoephile.SubtitleSeries.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> – Additional keyword arguments</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Additional keyword arguments</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -217,23 +213,19 @@ classes in pysubs.SSAFile, this separation is not really beneficial here.</p>
 <code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves subtitles to an output file</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">pysubs2.SSAFile.save expects an open text file, so we open the
+<p class="admonition-title">Note</p>
+<p>pysubs2.SSAFile.save expects an open text file, so we open the
 hdf5 file here for consistency.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<em>str</em>) – Path to output file</li>
-<li><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Output file format</li>
-<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to output file</p></li>
+<li><p><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Output file format</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="classmethod">
@@ -241,31 +233,27 @@ hdf5 file here for consistency.</p>
 <em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>encoding='utf-8'</em>, <em>format_=None</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleSeries.html#SubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads subtitles from an input file</p>
 <p class="rubric">Notes</p>
-<dl class="docutils">
-<dt>pysubs2.SSAFile.from_file expects an open text file, so we open</dt>
-<dd>the hdf5 file here for consistency</dd>
+<dl class="simple">
+<dt>pysubs2.SSAFile.from_file expects an open text file, so we open</dt><dd><p>the hdf5 file here for consistency</p>
+</dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>str</em>) – Path to input file</li>
-<li><strong>encoding</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file encoding</li>
-<li><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file format</li>
-<li><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</li>
-<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to input file</p></li>
+<li><p><strong>encoding</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file encoding</p></li>
+<li><p><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file format</p></li>
+<li><p><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Loaded subtitles</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Loaded subtitles</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -280,33 +268,26 @@ hdf5 file here for consistency.</p>
 <dt id="scinoephile.SubtitleEvent.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>series=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/SubtitleEvent.html#SubtitleEvent.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.SubtitleEvent.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>series</strong> (<a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a>) – Subtitle series of which this subtitle is
-a part</li>
-<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (<a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a>) – Subtitle series of which this subtitle is
+a part</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.SubtitleEvent.series">
 <code class="descname">series</code><a class="headerlink" href="#scinoephile.SubtitleEvent.series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtitle series of which this subtitle is a part</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
