@@ -2,7 +2,7 @@ PYTHON      = $(shell which python)
 SPHINXBUILD = $(shell which sphinx-build)
 SPHINXPROJ  = scinoephile
 SOURCEDIR   = .
-BUILDDIR    = _build
+BUILDDIR    = build
 
 .PHONY: html
 html:
