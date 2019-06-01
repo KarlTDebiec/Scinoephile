@@ -190,9 +190,6 @@ class CLToolBase(Base, ABC):
         verbosity.add_argument("-q", "--quiet", action="store_const",
                                dest="verbosity", const=0,
                                help="disable verbose output")
-        parser.add_argument("-I", "--interactive", action="store_true",
-                            dest="interactive",
-                            help="present IPython prompt")
 
         return parser
 
