@@ -8,9 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import re
+import pandas as pd
 from abc import ABC, abstractmethod
 from os.path import dirname
 from sys import modules
+from IPython import embed
 
 ################################## CONSTANTS ##################################
 package_root = dirname(modules[__name__].__file__)
@@ -62,6 +65,71 @@ def in_ipython():
     except NameError:
         # Not in IPython
         return False
+
+
+def merge_subtitles(upper, lower, verbosity=1, **kwargs):
+    if isinstance(upper, SubtitleSeries):
+        upper = upper.get_dataframe()
+    if isinstance(lower, SubtitleSeries):
+        lower = lower.get_dataframe()
+
+    # Prepare list of transition events
+    transitions = []
+    for _, subtitle in upper.iterrows():
+        transitions += [(subtitle["start"], "upper_start", subtitle["text"]),
+                        (subtitle["end"], "upper_end", None)]
+    for _, subtitle in lower.iterrows():
+        transitions += [(subtitle["start"], "lower_start", subtitle["text"]),
+                        (subtitle["end"], "lower_end", None)]
+    transitions.sort()
+
+    merged = []
+
+    start = upper_text = lower_text = None
+    for time, kind, text in transitions:
+        if kind == "upper_start":
+            if start is None:
+                # Transition from __ -> U_
+                pass
+            else:
+                # Transition from _L -> UL
+                if start != time:
+                    merged += [(upper_text, lower_text, start, time)]
+            upper_text = text
+            start = time
+        elif kind == "upper_end":
+            if start != time:
+                merged += [(upper_text, lower_text, start, time)]
+            upper_text = None
+            if lower_text is None:
+                # Transition from U_ -> __
+                start = None
+            else:
+                # Transition from UL -> _L
+                start = time
+        elif kind == "lower_start":
+            if start is None:
+                # Transition from __ -> _L
+                pass
+            else:
+                # Transition from U_ -> UL
+                if start != time:
+                    merged += [(upper_text, lower_text, start, time)]
+            lower_text = text
+            start = time
+        elif kind == "lower_end":
+            if start != time:
+                merged += [(upper_text, lower_text, start, time)]
+            lower_text = None
+            if upper_text is None:
+                # Transition from _L -> __
+                start = None
+            else:
+                # Transition from UL -> U_
+                start = time
+
+    return pd.DataFrame.from_records(
+        data=merged, columns=["upper text", "lower text", "start", "end"])
 
 
 ################################### CLASSES ###################################

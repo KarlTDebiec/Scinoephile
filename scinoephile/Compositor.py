@@ -8,10 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import re
 import numpy as np
 import pandas as pd
-from scinoephile import CLToolBase, SubtitleSeries
+from os.path import expandvars, isfile
 from IPython import embed
+from scinoephile import (merge_subtitles, CLToolBase, SubtitleSeries)
 
 ################################## SETTINGS ###################################
 pd.set_option("display.width", 110)
@@ -109,10 +111,8 @@ class Compositor(CLToolBase):
             outfile (str): Path to output SRT file
             spacing (str): Space between syllables or words of Mandarin
               romanization
-            kwargs (dict): Additional keyword arguments
+            **kwargs: Additional keyword arguments
         """
-        from os.path import expandvars, isfile
-
         super().__init__(**kwargs)
 
         if bilingual:
@@ -132,7 +132,7 @@ class Compositor(CLToolBase):
                 hanzi = expandvars(hanzi)
                 if isfile(hanzi):
                     self.hanzi_subtitles = SubtitleSeries.load(
-                        english, verbosity=self.verbosity)
+                        hanzi, verbosity=self.verbosity)
         if pinyin:
             if isinstance(pinyin, str):
                 pinyin = expandvars(pinyin)
@@ -144,11 +144,29 @@ class Compositor(CLToolBase):
         """
         Core logic
         """
-
         if (self.english_subtitles is not None
                 and self.hanzi_subtitles is not None
                 and self.bilingual_subtitles is None):
+
+            for e in self.english_subtitles.events:
+                e.text = re.sub(r"^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$",
+                                r"- \1    - \2", e.text, re.M)
+                e.text = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                                r"\1 \2", e.text, re.M)
+            for e in self.hanzi_subtitles.events:
+                e.text = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
+                                r"﹣\1　　﹣\2", e.text, re.M)
+                e.text = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                                r"\1　\2", e.text, re.M)
+            english_df = self.english_subtitles.get_dataframe()
+            hanzi_df = self.hanzi_subtitles.get_dataframe()
+            merged_df = merge_subtitles(self.english_subtitles,
+                                     self.hanzi_subtitles)
             embed(**self.embed_kw)
+
+            # self.bilingual_subtitles = merge_subtitles(
+            #     self.english_subtitles, self.hanzi_subtitles,
+            #     verbosity=self.verbosity)
 
         # # Merge Chinese and English
         # if self.chinese and self.english:
@@ -437,7 +455,7 @@ class Compositor(CLToolBase):
 
     # endregion Properties
 
-    # region Methods
+    # region Old Methods
     # def add_cantonese_romanization(self, subtitles):
     #     """
     #     Adds Yale-style romanization of Cantonese to Chinese subtitles
@@ -890,108 +908,6 @@ class Compositor(CLToolBase):
     #
     #     return cleaned_subs
     #
-    # def read_srt(self, infile):
-    #     import pandas as pd
-    #     from datetime import datetime
-    #
-    #     if self.verbosity >= 1:
-    #         print(f"Reading subtitles from '{infile}'")
-    #
-    #     with open(infile, "r") as infile:
-    #         index = start = end = title = None
-    #         indexes = []
-    #         starts = []
-    #         ends = []
-    #         texts = []
-    #         while True:
-    #             line = infile.readline()
-    #             if line == "":
-    #                 break
-    #             if self.verbosity >= 3:
-    #                 print(line.strip())
-    #             if self.re_index.match(line) and index is None:
-    #                 index = int(self.re_index.match(line).groupdict()["index"])
-    #             elif self.re_time.match(line):
-    #                 start = datetime.strptime(
-    #                     self.re_time.match(line).groupdict()["start"],
-    #                     "%H:%M:%S,%f").time()
-    #                 end = datetime.strptime(
-    #                     self.re_time.match(line).groupdict()["end"],
-    #                     "%H:%M:%S,%f").time()
-    #             elif self.re_blank.match(line):
-    #                 if (index is None
-    #                         or start is None
-    #                         or end is None
-    #                         or title is None):
-    #                     raise Exception(f"{index} {start} {end} {title}")
-    #                 indexes.append(index)
-    #                 starts.append(start)
-    #                 ends.append(end)
-    #                 texts.append(title)
-    #                 index = start = end = title = None
-    #             else:
-    #                 if title is None:
-    #                     title = line.strip()
-    #                 else:
-    #                     title += "\n" + line.strip()
-    #     subtitles = pd.DataFrame.from_items([("index", indexes),
-    #                                          ("start", starts),
-    #                                          ("end", ends),
-    #                                          ("text", texts)])
-    #     subtitles.set_index("index", inplace=True)
-    #     return subtitles
-    #
-    # def read_vtt(self, infile):
-    #     import pandas as pd
-    #     from datetime import datetime
-    #
-    #     if self.verbosity >= 1:
-    #         print(f"Reading subtitles from '{infile}'")
-    #
-    #     with open(infile, "r") as infile:
-    #         start = end = text = None
-    #         starts = []
-    #         ends = []
-    #         texts = []
-    #         line = infile.readline()
-    #         line = infile.readline()
-    #         line = infile.readline()
-    #         line = infile.readline()
-    #         while True:
-    #             line = infile.readline()
-    #             if line == "":
-    #                 break
-    #             if self.verbosity >= 3:
-    #                 print(line.strip())
-    #             if self.re_time.match(line):
-    #                 start = datetime.strptime(
-    #                     self.re_time.match(line).groupdict()["start"],
-    #                     "%H:%M:%S.%f").time()
-    #                 end = datetime.strptime(
-    #                     self.re_time.match(line).groupdict()["end"],
-    #                     "%H:%M:%S.%f").time()
-    #             elif self.re_blank.match(line):
-    #                 if (start is None
-    #                         or end is None
-    #                         or text is None):
-    #                     raise Exception(f"{start} {end} {text}")
-    #                 starts.append(start)
-    #                 ends.append(end)
-    #                 texts.append(text)
-    #                 start = end = text = None
-    #             else:
-    #                 if text is None:
-    #                     text = line.strip()
-    #                 else:
-    #                     text += "\n" + line.strip()
-    #     subtitles = pd.DataFrame.from_items(
-    #         [("index", range(1, len(texts) + 1)),
-    #          ("start", starts),
-    #          ("end", ends),
-    #          ("text", texts)])
-    #     subtitles.set_index("index", inplace=True)
-    #     return subtitles
-    #
     # def simplify(self, subtitles):
     #     from hanziconv import HanziConv
     #
@@ -1018,22 +934,6 @@ class Compositor(CLToolBase):
     #             print(f"{simplified}\n")
     #
     #         subtitle["text"] = simplified
-    #
-    # def write_outfile(self, subtitles, outfile):
-    #     if self.verbosity >= 1:
-    #         print(f"Writing subtitles to '{outfile}'")
-    #
-    #     with open(outfile, "w") as outfile:
-    #         for index, subtitle in subtitles.iterrows():
-    #             if self.verbosity >= 2:
-    #                 print(index, subtitle)
-    #             start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-    #             end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-    #             text = subtitle["text"]
-    #             outfile.write(f"{index}\n")
-    #             outfile.write(f"{start} --> {end}\n")
-    #             outfile.write(f"{text}\n")
-    #             outfile.write("\n")
 
     # endregion
 
@@ -1060,24 +960,24 @@ class Compositor(CLToolBase):
         super().construct_argparser(parser)
 
         # Input
-        parser_inp = parser.add_argument_group(
-            "input arguments (at least one required)")
-        parser_inp.add_argument("-b", "--bilingual", type=str,
-                                nargs="?", default=False, const=True,
-                                metavar="FILE",
-                                help="Bilingual subtitles")
-        parser_inp.add_argument("-c", "--chinese", "--hanzi", type=str,
-                                nargs="?", default=False, const=True,
-                                metavar="FILE", dest="hanzi",
-                                help="Chinese Hanzi subtitles")
-        parser_inp.add_argument("-e", "--english", type=str,
-                                nargs="?", default=False, const=True,
-                                metavar="FILE",
-                                help="English subtitles")
-        parser_inp.add_argument("-p", "--pinyin", type=str,
-                                nargs="?", default=False, const=True,
-                                metavar="FILE",
-                                help="Chinese Pinyin subtitles")
+        parser_file = parser.add_argument_group(
+            "file arguments (at least one required)")
+        parser_file.add_argument("-b", "--bilingual", type=str,
+                                 nargs="?", default=False, const=True,
+                                 metavar="FILE",
+                                 help="Bilingual subtitles")
+        parser_file.add_argument("-c", "--chinese", "--hanzi", type=str,
+                                 nargs="?", default=False, const=True,
+                                 metavar="FILE", dest="hanzi",
+                                 help="Chinese Hanzi subtitles")
+        parser_file.add_argument("-e", "--english", type=str,
+                                 nargs="?", default=False, const=True,
+                                 metavar="FILE",
+                                 help="English subtitles")
+        parser_file.add_argument("-p", "--pinyin", type=str,
+                                 nargs="?", default=False, const=True,
+                                 metavar="FILE",
+                                 help="Chinese Pinyin subtitles")
 
         # Operation
         # parser_ops = parser.add_argument_group("operation arguments")
@@ -1103,11 +1003,6 @@ class Compositor(CLToolBase):
         # parser_ops.add_argument("--truecase", action="store_true",
         #                         help="apply standard capitalization to "
         #                              "English subtitles")
-
-        # Output
-        # parser_out = parser.add_argument_group("output arguments")
-        # parser_out.add_argument("-o", "--outfile", type=str, nargs="?",
-        #                         help="output file")
 
         return parser
 
