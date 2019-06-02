@@ -701,27 +701,22 @@ class Compositor(CLToolBase):
     @staticmethod
     def merge_chinese_english_2(merged):
 
-        # cleaned_subs = pd.DataFrame([merged.iloc[0]])
         cleaned_subs = [merged.iloc[0]]
 
         for index in merged.index[1:]:
-            # last = cleaned_subs.iloc[-1]
             last = cleaned_subs[-1]
             next = merged.loc[index]
+            # print(index, last.values, next.values)
             if last["upper text"] == next["upper text"]:
                 if isinstance(last["lower text"], float) and np.isnan(
                         last["lower text"]):
                     # Chinese started before English
                     last["lower text"] = next["lower text"]
                     last.end = next.end
-                    # cleaned_subs.iloc[-1] = last  # Apparently necessary
-                    cleaned_subs[-1] = last  # Apparently necessary
                 elif isinstance(next["lower text"], float) and np.isnan(
                         next["lower text"]):
                     # English started before Chinese
                     last.end = next.end
-                    # cleaned_subs.iloc[-1] = last  # Apparently not necessary
-                    cleaned_subs[-1] = last  # Apparently not necessary
                 else:
                     # Single Chinese subtitle given two English subtitles
                     gap = next.start - last.end
@@ -730,33 +725,24 @@ class Compositor(CLToolBase):
                         mid = last.end + (gap / 2)
                         last.end = mid
                         next.start = mid
-                        # cleaned_subs.iloc[-1] = last  # Apparently unnecessary
-                        cleaned_subs[-1] = last  # Apparently unnecessary
-                        # cleaned_subs = cleaned_subs.append(next)
                         cleaned_subs += [next]
                     else:
                         # Probably Chinese repeated with different English
-                        # cleaned_subs = cleaned_subs.append(next)
                         cleaned_subs += [next]
-
             elif last["lower text"] == next["lower text"]:
                 if isinstance(last["upper text"], float) and np.isnan(
                         last["upper text"]):
                     # English started before Chinese
                     last["upper text"] = next["upper text"]
                     last.end = next.end
-                    # cleaned_subs.iloc[-1] = last  # Apparently necessary
-                    cleaned_subs[-1] = last  # Apparently necessary
+                    # cleaned_subs[-1] = last  # Apparently necessary
                 elif isinstance(next["upper text"], float) and np.isnan(
                         next["upper text"]):
                     # Chinese started before English
                     if last.end < next.start:
-                        # cleaned_subs = cleaned_subs.append(next)
                         cleaned_subs += [next]
                     else:
                         last.end = next.end
-                        # cleaned_subs.iloc[-1] = last  # Apparently unnecessary
-                        cleaned_subs[-1] = last  # Apparently unnecessary
                 else:
                     gap = next.start - last.end
                     if gap < 500:
@@ -764,20 +750,13 @@ class Compositor(CLToolBase):
                         mid = last.end + (gap / 2)
                         last.end = mid
                         next.start = mid
-                        # cleaned_subs.iloc[-1] = last  # Apparently unnecessary
-                        cleaned_subs[-1] = last  # Apparently unnecessary
-                        # cleaned_subs = cleaned_subs.append(next)
                         cleaned_subs += [next]
                     else:
                         # Probably English repeated with different Chinese
-                        # cleaned_subs = cleaned_subs.append(next)
                         cleaned_subs += [next]
             else:
-                # cleaned_subs = cleaned_subs.append(next)
                 cleaned_subs += [next]
 
-        # cleaned_subs = cleaned_subs.reset_index(drop=True)
-        # cleaned_subs.index += 1
         cleaned_subs = pd.DataFrame(cleaned_subs)
 
         return cleaned_subs
