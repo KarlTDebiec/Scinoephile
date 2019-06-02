@@ -85,6 +85,12 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocr/subtitles.html">Image-Based Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocr/datasets.html">Image Data Structures</a></li>
@@ -96,14 +102,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#compositor">Compositor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future">Future</a></li>
@@ -210,15 +211,26 @@ haih maih wah ngóh àh?- haih!
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>All features require the following modules:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/berniey/hanziconv">hanziconv</a></p></li>
-<li><p><a class="reference external" href="https://github.com/nltk/nltk">nltk</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ipython/ipython">IPython</a></p></li>
 <li><p><a class="reference external" href="https://github.com/numpy/numpy">numpy</a></p></li>
 <li><p><a class="reference external" href="https://github.com/pandas-dev/pandas">pandas</a></p></li>
+<li><p><a class="reference external" href="https://github.com/tkarabela/pysubs2">pysubs2</a></p></li>
+</ul>
+<p>Selected features may also require:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/google-cloud-translate/">google-cloud-translate</a></p></li>
+<li><p><a class="reference external" href="https://github.com/h5py/h5py">h5py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/berniey/hanziconv">hanziconv</a></p></li>
+<li><p><a class="reference external" href="https://github.com/matplotlib/matplotlib">matplotlib</a></p></li>
+<li><p><a class="reference external" href="https://github.com/nltk/nltk">nltk</a></p></li>
+<li><p><a class="reference external" href="https://github.com/python-pillow/Pillow">pillow</a></p></li>
 <li><p><a class="reference external" href="https://github.com/pycantonese/pycantonese">pycantonese</a>
 (recent version from from GitHub rather than pypi)</p></li>
 <li><p><a class="reference external" href="https://github.com/mozillazg/python-pinyin">pypinyin</a></p></li>
 <li><p><a class="reference external" href="https://github.com/isnowfy/snownlp">snownlp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/tensorflow/tensorflow">tensorflow</a></p></li>
 </ul>
 </div>
 <div class="section" id="installation">
@@ -227,42 +239,59 @@ haih maih wah ngóh àh?- haih!
 </pre></div>
 </div>
 </div>
-<div class="section" id="compositing">
-<h2>Compositing<a class="headerlink" href="#compositing" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
-                 [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
-                 [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compositor">
+<h3>Compositor<a class="headerlink" href="#compositor" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
+                     [-p [FILE]] [-s] [-m] [-y]
 
 Compiles Chinese and English subtitles into a single file, optionally adding
-Mandarin or Cantonese romanization, converting traditional characters to
-simplified, or adding machine translation.
+Mandarin or Cantonese pinyin, converting traditional characters to simplified,
+or adding machine translation.
+
+Operations are inferred from provided arguments, e.g.:
+
+  Translate Chinese to English:
+    Compositor.py -e /nonexisting/english/outfile
+                  -c /existing/chinese/infile
+
+  Translate English to Chinese:
+    Compositor.py -e /existing/english/infile
+                  -c /nonexisting/chinese/outfile
+
+  Merge Chinese and English:
+    Compositor.py -e /existing/english/infile
+                  -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+
+  Convert traditional chinese to simplified, translate Chinese to English, and
+  merge:
+    Compositor.py -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+                  --simplify
 
 optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         enable verbose output, may be specified more than once
   -q, --quiet           disable verbose output
-  -I, --interactive     present IPython prompt
 
-input arguments (at least one required):
-  -c [INFILE], --chinese_infile [INFILE]
-                        Chinese subtitles in SRT or VTT format
-  -e [INFILE], --english_infile [INFILE]
-                        English subtitles in SRT or VTT format
+file arguments:
+  -b [FILE], --bilingual [FILE]
+                        Bilingual subtitles
+  -c [FILE], --chinese [FILE], --hanzi [FILE]
+                        Chinese Hanzi subtitles
+  -e [FILE], --english [FILE]
+                        English subtitles
+  -p [FILE], --pinyin [FILE]
+                        Chinese Pinyin subtitles
 
 operation arguments:
-  --c_offset C_OFFSET   apply offset to Chinese subtitle timings
-  -s, --simplified      convert traditional characters to simplified
+  -s, --simplify        convert traditional characters to simplified
   -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
   -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
-  -t, --translate       add English machine translation generated using Google
-                        Translate; requires key for Google Cloud Platform
-  --e_offset E_OFFSET   apply offset to English subtitle timings
-  --truecase            apply standard capitalization to English subtitles
-
-output arguments:
-  -o [OUTFILE], --outfile [OUTFILE]
-                        output file
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="authorship">

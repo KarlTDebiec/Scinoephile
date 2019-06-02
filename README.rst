@@ -36,12 +36,14 @@ Dependencies
 ------------
 
 All features require the following modules:
+
 - `IPython <https://github.com/ipython/ipython>`_
 - `numpy <https://github.com/numpy/numpy>`_
 - `pandas <https://github.com/pandas-dev/pandas>`_
 - `pysubs2 <https://github.com/tkarabela/pysubs2>`_
 
 Selected features may also require:
+
 - `google-cloud-translate <https://pypi.org/project/google-cloud-translate/>`_
 - `h5py <https://github.com/h5py/h5py>`_
 - `hanziconv <https://github.com/berniey/hanziconv>`_
@@ -62,11 +64,14 @@ Installation
 
     python setup.py install
 
-Compositing
------------
+Usage
+-----
+
+Compositor
+__________
 
 .. code-block:: text
-    
+
     usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
                          [-p [FILE]] [-s] [-m] [-y]
 

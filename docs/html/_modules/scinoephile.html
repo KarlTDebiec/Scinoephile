@@ -84,6 +84,12 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../ocr/subtitles.html">Image-Based Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ocr/datasets.html">Image Data Structures</a></li>
@@ -95,14 +101,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor">Compositor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
@@ -218,8 +219,20 @@
 
 
 <span class="c1">################################## FUNCTIONS ##################################</span>
-<span class="k">def</span> <span class="nf">embed_kw</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;dict: use ``IPython.embed(**embed_kw())`` for more useful prompt&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="embed_kw"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.embed_kw">[docs]</a><span class="k">def</span> <span class="nf">embed_kw</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepares header for IPython prompt showing current location in code</span>
+
+<span class="sd">    Use ``IPython.embed(**embed_kw())``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        verbosity (int): Level of verbose output</span>
+<span class="sd">        **kwargs: Additional keyword arguments</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dictionary: Keyword arguments to be passed to IPython.embed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="kn">from</span> <span class="nn">inspect</span> <span class="k">import</span> <span class="n">currentframe</span><span class="p">,</span> <span class="n">getframeinfo</span>
     <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span>
     <span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">modules</span>
@@ -242,10 +255,19 @@
             <span class="n">header</span> <span class="o">+=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{i:5d}</span><span class="s2"> {&#39;&gt;&#39; if i == number else &#39; &#39;} &quot;</span> \
                 <span class="n">f</span><span class="s2">&quot;{line.rstrip()}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">header</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">header</span><span class="p">}</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_simplified_hanzi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="get_simplified_hanzi"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_simplified_hanzi">[docs]</a><span class="k">def</span> <span class="nf">get_simplified_hanzi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts traditional hanzi to simplified</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): Text to simplify</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Text with traditional hanzi exchanged for simplified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">hanziconv</span> <span class="k">import</span> <span class="n">HanziConv</span>
 
     <span class="n">simplified</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -255,10 +277,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">simplified</span> <span class="o">+=</span> <span class="n">char</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{text}</span><span class="s2">|</span><span class="si">{simplified}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">simplified</span>
+    <span class="k">return</span> <span class="n">simplified</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_pinyin</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_pinyin"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_pinyin">[docs]</a><span class="k">def</span> <span class="nf">get_pinyin</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts hanzi to pinyin</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): Text to convert</span>
+<span class="sd">        language (str): Language of pinyin to use; may be &#39;mandarin&#39; or</span>
+<span class="sd">          &#39;cantonese&#39;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Pinyin text</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;mandarin&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">snownlp</span> <span class="k">import</span> <span class="n">SnowNLP</span>
         <span class="kn">from</span> <span class="nn">pypinyin</span> <span class="k">import</span> <span class="n">pinyin</span>
@@ -305,10 +338,21 @@
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value provided for argument &#39;language&#39;; &quot;</span>
-                         <span class="s2">&quot;must of &#39;cantonese&#39; or &#39;mandarin&#39;&quot;</span><span class="p">)</span>
+                         <span class="s2">&quot;must of &#39;cantonese&#39; or &#39;mandarin&#39;&quot;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_truecase</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="get_truecase"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_truecase">[docs]</a><span class="k">def</span> <span class="nf">get_truecase</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts English text to truecase.</span>
+
+<span class="sd">    Useful for subtiltes stored in all capital letters</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): Text to apply truecase to</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Text with truecase</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">nltk</span>
 
     <span class="n">tagged</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">([</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)])</span>
@@ -322,10 +366,23 @@
     <span class="n">truecased</span> <span class="o">=</span> <span class="n">truecased</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">truecased</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\A\w)|(?&lt;!\.\w)([\.?!] )\w|\w(?:\.\w)|(?&lt;=\w\.)\w&quot;</span><span class="p">,</span>
                        <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">group</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">truecased</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">truecased</span>
+    <span class="k">return</span> <span class="n">truecased</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_single_line_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_single_line_text"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_single_line_text">[docs]</a><span class="k">def</span> <span class="nf">get_single_line_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Arranges multi-line text on a single line.</span>
+
+<span class="sd">    Accounts for dashes (&#39;-&#39;) used for dialogue from multiple sources</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): Text to arrange</span>
+<span class="sd">        language (str): Punctuation and spacing language to use; may be</span>
+<span class="sd">          &#39;english&#39;, &#39;hanzi&#39;, or &#39;pinyin&#39;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Text arranged on a single line</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">single_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;english&quot;</span> <span class="ow">or</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;pinyin&quot;</span><span class="p">:</span>
         <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*﹣?\s*(.*)\s+﹣(.+)\s*$&quot;</span><span class="p">,</span>
@@ -345,10 +402,16 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value for argument &#39;language&#39;; must be &quot;</span>
                          <span class="s2">&quot;&#39;english&#39;, &#39;hanzi&#39;, or &#39;pinyin&#39;&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">single_line</span>
+    <span class="k">return</span> <span class="n">single_line</span></div>
 
 
-<span class="k">def</span> <span class="nf">in_ipython</span><span class="p">():</span>
+<div class="viewcode-block" id="in_ipython"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.in_ipython">[docs]</a><span class="k">def</span> <span class="nf">in_ipython</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines if inside IPython prompt</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Type of shell in use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">shell</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">if</span> <span class="n">shell</span> <span class="o">==</span> <span class="s2">&quot;ZMQInteractiveShell&quot;</span><span class="p">:</span>
@@ -365,10 +428,20 @@
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
         <span class="c1"># Not in IPython</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<span class="k">def</span> <span class="nf">merge_subtitles</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">):</span>
+<div class="viewcode-block" id="merge_subtitles"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.merge_subtitles">[docs]</a><span class="k">def</span> <span class="nf">merge_subtitles</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merges and synchronizes two sets of subtitles.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        upper (SubtitleSeries, pandas.DataFrame): Upper subtitles</span>
+<span class="sd">        lower (SubtitleSeries, pandas.DataFrame): Lower subtitles</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Merged and synchronized subtitles</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="n">merged</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">start</span> <span class="o">!=</span> <span class="n">time</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">upper_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -489,7 +562,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">synced_df</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">next</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">synced_df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">synced_df</span><span class="p">)</span></div>
 
 
 <span class="c1">################################### CLASSES ###################################</span>

@@ -12,6 +12,6 @@ Scinoephile
     :maxdepth: 4
 
     cltools.rst
-    ocr.rst
     foundations.rst
+    ocr.rst
     development.rst

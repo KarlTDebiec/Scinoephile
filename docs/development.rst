@@ -20,7 +20,9 @@ Compositor
 __________
 
 - [ ] Document
-- [ ] Overwrite Support
+- [ ] Restore support for Hanzi, pinyin, and English
+- [ ] Restore support for IPython console
+- [ ] Add support for overwriting files
 - [ ] Restore truecase argument support
 - [ ] Restore time offset support
 

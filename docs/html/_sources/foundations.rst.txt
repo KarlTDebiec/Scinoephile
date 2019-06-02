@@ -6,8 +6,8 @@ Foundations
     :no-members:
 
 .. toctree::
-    :hidden:
     :maxdepth: 4
 
     foundations/subtitles.rst
     foundations/classes.rst
+    foundations/functions.rst

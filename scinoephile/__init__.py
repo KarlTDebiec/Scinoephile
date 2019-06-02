@@ -46,7 +46,19 @@ re_western = re.compile(r"[a-zA-Z0-9]")
 
 ################################## FUNCTIONS ##################################
 def embed_kw(verbosity=2, **kwargs):
-    """dict: use ``IPython.embed(**embed_kw())`` for more useful prompt"""
+    """
+    Prepares header for IPython prompt showing current location in code
+
+    Use ``IPython.embed(**embed_kw())``.
+
+    Args:
+        verbosity (int): Level of verbose output
+        **kwargs: Additional keyword arguments
+
+    Returns:
+        dictionary: Keyword arguments to be passed to IPython.embed
+    """
+
     from inspect import currentframe, getframeinfo
     from os.path import dirname
     from sys import modules
@@ -73,6 +85,15 @@ def embed_kw(verbosity=2, **kwargs):
 
 
 def get_simplified_hanzi(text):
+    """
+    Converts traditional hanzi to simplified
+
+    Args:
+        text (str): Text to simplify
+
+    Returns:
+        str: Text with traditional hanzi exchanged for simplified
+    """
     from hanziconv import HanziConv
 
     simplified = ""
@@ -86,6 +107,17 @@ def get_simplified_hanzi(text):
 
 
 def get_pinyin(text, language="mandarin"):
+    """
+    Converts hanzi to pinyin
+
+    Args:
+        text (str): Text to convert
+        language (str): Language of pinyin to use; may be 'mandarin' or
+          'cantonese'
+
+    Returns:
+        str: Pinyin text
+    """
     if language == "mandarin":
         from snownlp import SnowNLP
         from pypinyin import pinyin
@@ -136,6 +168,17 @@ def get_pinyin(text, language="mandarin"):
 
 
 def get_truecase(text):
+    """
+    Converts English text to truecase.
+
+    Useful for subtiltes stored in all capital letters
+
+    Args:
+        text (str): Text to apply truecase to
+
+    Returns:
+        str: Text with truecase
+    """
     import nltk
 
     tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
@@ -153,6 +196,19 @@ def get_truecase(text):
 
 
 def get_single_line_text(text, language="english"):
+    """
+    Arranges multi-line text on a single line.
+
+    Accounts for dashes ('-') used for dialogue from multiple sources
+
+    Args:
+        text (str): Text to arrange
+        language (str): Punctuation and spacing language to use; may be
+          'english', 'hanzi', or 'pinyin'
+
+    Returns:
+        str: Text arranged on a single line
+    """
     single_line = ""
     if language == "english" or language == "pinyin":
         single_line = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
@@ -176,6 +232,12 @@ def get_single_line_text(text, language="english"):
 
 
 def in_ipython():
+    """
+    Determines if inside IPython prompt
+
+    Returns:
+        str: Type of shell in use
+    """
     try:
         shell = get_ipython().__class__.__name__
         if shell == "ZMQInteractiveShell":
@@ -196,6 +258,16 @@ def in_ipython():
 
 
 def merge_subtitles(upper, lower):
+    """
+    Merges and synchronizes two sets of subtitles.
+
+    Args:
+        upper (SubtitleSeries, pandas.DataFrame): Upper subtitles
+        lower (SubtitleSeries, pandas.DataFrame): Lower subtitles
+
+    Returns:
+        DataFrame: Merged and synchronized subtitles
+    """
     def add_event(merged):
         if start != time:
             if upper_text is None:
