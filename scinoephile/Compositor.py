@@ -712,19 +712,17 @@ class Compositor(CLToolBase):
                         last["lower text"]):
                     # Chinese started before English
                     last["lower text"] = next["lower text"]
-                    last.end = next.end
+                    last["end"] = next["end"]
                 elif isinstance(next["lower text"], float) and np.isnan(
                         next["lower text"]):
                     # English started before Chinese
-                    last.end = next.end
+                    last["end"] = next["end"]
                 else:
                     # Single Chinese subtitle given two English subtitles
-                    gap = next.start - last.end
+                    gap = next["start"] - last["end"]
                     if gap < 500:
                         # Probably long Chinese split into two English
-                        mid = last.end + (gap / 2)
-                        last.end = mid
-                        next.start = mid
+                        last["end"] = next["start"] = last["end"] + (gap / 2)
                         cleaned_subs += [next]
                     else:
                         # Probably Chinese repeated with different English
@@ -734,22 +732,19 @@ class Compositor(CLToolBase):
                         last["upper text"]):
                     # English started before Chinese
                     last["upper text"] = next["upper text"]
-                    last.end = next.end
-                    # cleaned_subs[-1] = last  # Apparently necessary
+                    last["end"] = next["end"]
                 elif isinstance(next["upper text"], float) and np.isnan(
                         next["upper text"]):
                     # Chinese started before English
-                    if last.end < next.start:
+                    if last.end < next["start"]:
                         cleaned_subs += [next]
                     else:
-                        last.end = next.end
+                        last["end"] = next["end"]
                 else:
-                    gap = next.start - last.end
+                    gap = next["start"] - last["end"]
                     if gap < 500:
                         # Probably long English split into two Chinese
-                        mid = last.end + (gap / 2)
-                        last.end = mid
-                        next.start = mid
+                        last["end"] = next["start"] = last["end"] + (gap / 2)
                         cleaned_subs += [next]
                     else:
                         # Probably English repeated with different Chinese
