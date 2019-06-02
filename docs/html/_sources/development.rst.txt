@@ -19,7 +19,6 @@ _____________________________
 Compositor
 __________
 
-- [ ] Handle NaN automatically
 - [ ] Restore support for Hanzi, pinyin, and English
 - [ ] Restore support for IPython console
 - [ ] Add support for overwriting files

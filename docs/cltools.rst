@@ -30,8 +30,7 @@ __________
                       -c /existing/chinese/infile
                       -b /nonexisting/bilingual/outfile
 
-      Convert traditional chinese to simplified, translate Chinese to English, and
-      merge:
+      Convert traditional Chinese to simplified, translate to English, and merge:
         Compositor.py -c /existing/chinese/infile
                       -b /nonexisting/bilingual/outfile
                       --simplify
