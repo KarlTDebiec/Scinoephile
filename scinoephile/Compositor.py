@@ -7,9 +7,33 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
+"""Compiles Chinese and English subtitles into a single file, optionally adding
+Mandarin or Cantonese pinyin, converting traditional characters to simplified,
+or adding machine translation.
+
+Operations are inferred from provided arguments, e.g.:
+
+  Translate Chinese to English:
+    Compositor.py -e /nonexisting/english/outfile
+                  -c /existing/chinese/infile
+
+  Translate English to Chinese:
+    Compositor.py -e /existing/english/infile
+                  -c /nonexisting/chinese/outfile
+
+  Merge Chinese and English:
+    Compositor.py -e /existing/english/infile
+                  -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+
+  Convert traditional chinese to simplified, translate Chinese to English, and
+  merge:
+    Compositor.py -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+                  --simplify
+"""
 ################################### MODULES ###################################
 import pandas as pd
-from collections import OrderedDict
 from os.path import expandvars, isfile
 from IPython import embed
 from scinoephile import (get_pinyin, get_simplified_hanzi,
@@ -26,54 +50,25 @@ pd.set_option("display.max_rows", None)
 class Compositor(CLToolBase):
     """
     Compiles Chinese and English subtitles
-
-    .. todo::
-        - [ ] Refactor and improve code for handling dashes
-        - [ ] Clean up merging code
-        - [ ] Apply timings from one infile directly to another, provided they
-              have the same number of subtitles
-        - [ ] Address warnings
-          - .../Compositor.py:762:         FutureWarning: from_items is
-            deprecated. Please use DataFrame.from_dict(dict(items), ...)
-            instead. DataFrame.from_dict(OrderedDict(items)) may be used to
-            preserve the key order. [("start", [start]), ("end", [time])]),
-            .../lib/python3.6/site-packages/pandas/core/frame.py:6211:
-          - FutureWarning: Sorting because non-concatenation axis is not
-            aligned. A future version of pandas will change to not sort by
-            default. To accept the future behavior, pass 'sort=False'. To
-            retain the current behavior and silence the warning, pass
-            'sort=True'. sort=sort)
-          - .../lib/python3.6/site-packages/pandas/core/generic.py:4405:
-            SettingWithCopyWarning: A value is trying to be set on a copy of a
-            slice from a DataFrame. See the caveats in the documentation:
-            http://pandas.pydata.org/pandas-docs/stable/
-            indexing.html#indexing-view-versus-copy self[name] = value
-        - [ ] Document
     """
-
-    # region Instance Variables
-    help_message = ("Compiles Chinese and English subtitles into a single "
-                    "file, optionally adding Mandarin or Cantonese "
-                    "romanization, converting traditional characters to "
-                    "simplified, or adding machine translation.")
-
-    # endregion
 
     # region Builtins
     def __init__(self, bilingual=False, english=False, hanzi=False,
                  pinyin=False, simplify=True, pinyin_language="mandarin",
                  **kwargs):
         """
-        Initializes tool
+        Initializes command-line tool and selects operations
 
         Args:
             bilingual (str): Path to bilingual infile or outfile
             english (str): Path to English infile or outfile
             hanzi (str): Path to hanzi Chinese infile or outfile
             pinyin (str): Path to pinyin Chinese infile or outfile
+            simplify (bool): Convert traditional hanzi to simplified
+            pinyin_language (str): Langauge for which to add pinyin; may be
+              'madarin' or 'cantonese'
             **kwargs: Additional keyword arguments
         """
-
         super().__init__(**kwargs)
 
         # Read in files if they exist
@@ -146,9 +141,8 @@ class Compositor(CLToolBase):
 
     def __call__(self):
         """
-        Core logic
+        Performs operations
         """
-        print(self.operations)
 
         # Read infiles
         if "read_bilingual" in self.operations:
@@ -243,13 +237,15 @@ class Compositor(CLToolBase):
 
     @property
     def operations(self):
+        """dict: Collection of operations to perform, with associated
+        arguments"""
         if not hasattr(self, "_operations"):
-            self._operations = OrderedDict()
+            self._operations = {}
         return self._operations
 
     @property
     def pinyin_subtitles(self):
-        """SubtitleSeries: Romanized Chinese subtitles"""
+        """SubtitleSeries: Pinyin Chinese subtitles"""
         if not hasattr(self, "_pinyin_subtitles"):
             if isinstance(self.hanzi_subtitles, SubtitleSeries):
                 self._initialize_pinyin_subtitles()
@@ -371,7 +367,7 @@ class Compositor(CLToolBase):
         if self.verbosity >= 1:
             print("Initializing English translation")
 
-        # Copy and translate
+        # Translate
         self._english_subtitles = deepcopy(self.hanzi_subtitles)
         texts = [e.text for e in self._english_subtitles.events]
         translations = []
@@ -395,7 +391,7 @@ class Compositor(CLToolBase):
         if self.verbosity >= 1:
             print("Initializing Chinese translation")
 
-        # Copy and translate
+        # Translate
         self._hanzi_subtitles = deepcopy(self.english_subtitles)
         texts = [e.text for e in self._hanzi_subtitles.events]
         translations = []
@@ -421,15 +417,18 @@ class Compositor(CLToolBase):
         """
         import argparse
 
-        # Prepare parser
         if isinstance(parser, argparse.ArgumentParser):
             parser = parser
         elif isinstance(parser, argparse._SubParsersAction):
-            parser = parser.add_parser(name="extraction",
-                                       description=cls.help_message,
-                                       help=cls.help_message)
+            parser = parser.add_parser(
+                name="compositor",
+                description=__doc__,
+                help=__doc__,
+                formatter_class=argparse.RawDescriptionHelpFormatter)
         elif parser is None:
-            parser = argparse.ArgumentParser(description=cls.help_message)
+            parser = argparse.ArgumentParser(
+                description=__doc__,
+                formatter_class=argparse.RawDescriptionHelpFormatter)
         super().construct_argparser(parser)
 
         # Files

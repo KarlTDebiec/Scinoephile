@@ -8,7 +8,7 @@ Makefile
 __pycache__
 build
 dist
-docs/build/doctrees
+docs/doctrees
 src
 scinoephile.egg-info
 test/htmlcov
