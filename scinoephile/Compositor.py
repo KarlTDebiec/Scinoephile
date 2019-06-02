@@ -157,14 +157,9 @@ class Compositor(CLToolBase):
                                 r"﹣\1　　﹣\2", e.text, re.M)
                 e.text = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
                                 r"\1　\2", e.text, re.M)
-            english_df = self.english_subtitles.get_dataframe()
-            hanzi_df = self.hanzi_subtitles.get_dataframe()
 
-            merged_df = self.merge_subtitles(hanzi_df, english_df)
-            merged_df = self.merge_chinese_english_2(merged_df)
-
-            # merged_df = merge_subtitles(self.hanzi_subtitles,
-            #                             self.english_subtitles)
+            merged_df = merge_subtitles(self.hanzi_subtitles,
+                                        self.english_subtitles)
             merged_df["text"] = [f"{e['upper text']}\n{e['lower text']}"
                                  for _, e in merged_df.iterrows()]
             self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
@@ -619,129 +614,6 @@ class Compositor(CLToolBase):
     #                 print(f"{truecased}\n")
     #
     #             subtitle["text"] = truecased
-
-    @staticmethod
-    def merge_subtitles(upper, lower):
-        def add_event(merged):
-            if start != time:
-                if upper_text is None:
-                    merged += [pd.DataFrame.from_records(
-                        [(start, time, lower_text)],
-                        columns=["start", "end", "lower text"])]
-                elif lower_text is None:
-                    merged += [pd.DataFrame.from_records(
-                        [(start, time, upper_text)],
-                        columns=["start", "end", "upper text"])]
-                else:
-                    merged += [pd.DataFrame.from_records(
-                        [(start, time, upper_text, lower_text)],
-                        columns=["start", "end", "upper text", "lower text"])]
-
-        transitions = []
-        for _, event in upper.iterrows():
-            transitions += [[event["start"], "upper_start", event["text"]],
-                            [event["end"], "upper_end", None]]
-        for _, event in lower.iterrows():
-            transitions += [[event["start"], "lower_start", event["text"]],
-                            [event["end"], "lower_end", None]]
-        transitions.sort()
-
-        merged = []
-
-        start = upper_text = lower_text = None
-        for time, kind, text in transitions:
-            if kind == "upper_start":
-                if start is None:
-                    # Transition from __ -> C_
-                    pass
-                else:
-                    # Transition from _E -> CE
-                    add_event(merged)
-                upper_text = text
-                start = time
-            elif kind == "upper_end":
-                add_event(merged)
-                upper_text = None
-                if lower_text is None:
-                    # Transition from C_ -> __
-                    start = None
-                else:
-                    # Transition from CE -> _C
-                    start = time
-            elif kind == "lower_start":
-                if start is None:
-                    # Transition from __ -> _E
-                    pass
-                else:
-                    # Transition from C_ -> CE
-                    add_event(merged)
-                lower_text = text
-                start = time
-            elif kind == "lower_end":
-                add_event(merged)
-                lower_text = None
-                if upper_text is None:
-                    # Transition from _E -> __
-                    start = None
-                else:
-                    # Transition from CE -> E_
-                    start = time
-
-        merged_df = pd.concat(merged, sort=False, ignore_index=True)[
-            ["upper text", "lower text", "start", "end"]]
-
-        return merged_df
-
-    @staticmethod
-    def merge_chinese_english_2(merged):
-
-        synced_df = [merged.iloc[0].copy()]
-
-        for index in range(1, merged.index.size):
-            last = synced_df[-1]
-            next = merged.iloc[index].copy()
-            if last["upper text"] == next["upper text"]:
-                if isinstance(last["lower text"], float) and np.isnan(
-                        last["lower text"]):
-                    # Upper started before lower
-                    last["lower text"] = next["lower text"]
-                    last["end"] = next["end"]
-                elif isinstance(next["lower text"], float) and np.isnan(
-                        next["lower text"]):
-                    # Lower started before upper
-                    last["end"] = next["end"]
-                else:
-                    # Single upper subtitle given two lower subtitles
-                    gap = next["start"] - last["end"]
-                    if gap < 500:
-                        # Probably long upper split into two lower
-                        last["end"] = next["start"] = last["end"] + (gap / 2)
-                    # Otherwise, probably upper repeated with different lower
-                    synced_df += [next]
-            elif last["lower text"] == next["lower text"]:
-                if isinstance(last["upper text"], float) and np.isnan(
-                        last["upper text"]):
-                    # Lower started before upper
-                    last["upper text"] = next["upper text"]
-                    last["end"] = next["end"]
-                elif isinstance(next["upper text"], float) and np.isnan(
-                        next["upper text"]):
-                    # Upper started before lower
-                    if last.end < next["start"]:
-                        synced_df += [next]
-                    else:
-                        last["end"] = next["end"]
-                else:
-                    gap = next["start"] - last["end"]
-                    if gap < 500:
-                        # Probably long lower split into two upper
-                        last["end"] = next["start"] = last["end"] + (gap / 2)
-                    # Otherwise, probably lower repeated with different upper
-                    synced_df += [next]
-            else:
-                synced_df += [next]
-
-        return pd.DataFrame(synced_df)
 
     # def simplify(self, subtitles):
     #     from hanziconv import HanziConv

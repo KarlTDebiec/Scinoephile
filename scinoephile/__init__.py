@@ -68,71 +68,126 @@ def in_ipython():
         return False
 
 
-def merge_subtitles(upper, lower, sync=True, verbosity=1, **kwargs):
+def merge_subtitles(upper, lower):
+    def add_event(merged):
+        if start != time:
+            if upper_text is None:
+                merged += [pd.DataFrame.from_records(
+                    [(start, time, lower_text)],
+                    columns=["start", "end", "lower text"])]
+            elif lower_text is None:
+                merged += [pd.DataFrame.from_records(
+                    [(start, time, upper_text)],
+                    columns=["start", "end", "upper text"])]
+            else:
+                merged += [pd.DataFrame.from_records(
+                    [(start, time, upper_text, lower_text)],
+                    columns=["start", "end", "upper text", "lower text"])]
+
     if isinstance(upper, SubtitleSeries):
         upper = upper.get_dataframe()
     if isinstance(lower, SubtitleSeries):
         lower = lower.get_dataframe()
 
-    # Prepare list of transition events
     transitions = []
-    for _, subtitle in upper.iterrows():
-        transitions += [(subtitle["start"], "upper_start", subtitle["text"]),
-                        (subtitle["end"], "upper_end", None)]
-    for _, subtitle in lower.iterrows():
-        transitions += [(subtitle["start"], "lower_start", subtitle["text"]),
-                        (subtitle["end"], "lower_end", None)]
+    for _, event in upper.iterrows():
+        transitions += [[event["start"], "upper_start", event["text"]],
+                        [event["end"], "upper_end", None]]
+    for _, event in lower.iterrows():
+        transitions += [[event["start"], "lower_start", event["text"]],
+                        [event["end"], "lower_end", None]]
     transitions.sort()
-    transitions = transitions[:300]
 
     merged = []
+
     start = upper_text = lower_text = None
     for time, kind, text in transitions:
         if kind == "upper_start":
             if start is None:
-                # Transition from __ -> U_
+                # Transition from __ -> C_
                 pass
             else:
-                # Transition from _L -> UL
-                if start != time:
-                    merged += [(upper_text, lower_text, start, time)]
+                # Transition from _E -> CE
+                add_event(merged)
             upper_text = text
             start = time
         elif kind == "upper_end":
-            if start != time:
-                merged += [(upper_text, lower_text, start, time)]
+            add_event(merged)
             upper_text = None
             if lower_text is None:
-                # Transition from U_ -> __
+                # Transition from C_ -> __
                 start = None
             else:
-                # Transition from UL -> _L
+                # Transition from CE -> _C
                 start = time
         elif kind == "lower_start":
             if start is None:
-                # Transition from __ -> _L
+                # Transition from __ -> _E
                 pass
             else:
-                # Transition from U_ -> UL
-                if start != time:
-                    merged += [(upper_text, lower_text, start, time)]
+                # Transition from C_ -> CE
+                add_event(merged)
             lower_text = text
             start = time
         elif kind == "lower_end":
-            if start != time:
-                merged += [(upper_text, lower_text, start, time)]
+            add_event(merged)
             lower_text = None
             if upper_text is None:
-                # Transition from _L -> __
+                # Transition from _E -> __
                 start = None
             else:
-                # Transition from UL -> U_
+                # Transition from CE -> E_
                 start = time
 
-    df = pd.DataFrame.from_records(
-        data=merged, columns=["upper text", "lower text", "start", "end"])
+    merged_df = pd.concat(merged, sort=False, ignore_index=True)[
+        ["upper text", "lower text", "start", "end"]]
 
-    return df
+    synced_df = [merged_df.iloc[0].copy()]
+    for index in range(1, merged_df.index.size):
+        last = synced_df[-1]
+        next = merged_df.iloc[index].copy()
+        if last["upper text"] == next["upper text"]:
+            if isinstance(last["lower text"], float) and np.isnan(
+                    last["lower text"]):
+                # Upper started before lower
+                last["lower text"] = next["lower text"]
+                last["end"] = next["end"]
+            elif isinstance(next["lower text"], float) and np.isnan(
+                    next["lower text"]):
+                # Lower started before upper
+                last["end"] = next["end"]
+            else:
+                # Single upper subtitle given two lower subtitles
+                gap = next["start"] - last["end"]
+                if gap < 500:
+                    # Probably long upper split into two lower
+                    last["end"] = next["start"] = last["end"] + (gap / 2)
+                # Otherwise, probably upper repeated with different lower
+                synced_df += [next]
+        elif last["lower text"] == next["lower text"]:
+            if isinstance(last["upper text"], float) and np.isnan(
+                    last["upper text"]):
+                # Lower started before upper
+                last["upper text"] = next["upper text"]
+                last["end"] = next["end"]
+            elif isinstance(next["upper text"], float) and np.isnan(
+                    next["upper text"]):
+                # Upper started before lower
+                if last.end < next["start"]:
+                    synced_df += [next]
+                else:
+                    last["end"] = next["end"]
+            else:
+                gap = next["start"] - last["end"]
+                if gap < 500:
+                    # Probably long lower split into two upper
+                    last["end"] = next["start"] = last["end"] + (gap / 2)
+                # Otherwise, probably lower repeated with different upper
+                synced_df += [next]
+        else:
+            synced_df += [next]
+
+    return pd.DataFrame(synced_df)
 
 
 ################################### CLASSES ###################################
