@@ -57,6 +57,8 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
 
     # Test that properites have loaded in accurately
     if md5s is not None:
+        if verbosity >= 2:
+            print(f"{'Property':<34s}{'Observed':<34s}{'Expected':<34s}")
         if "events_ends" in md5s:
             check_md5("events_ends",
                       [e.end for e in subs.events])
@@ -128,9 +130,9 @@ def test_Subtitle_srt_english(**kwargs):
               md5s=dict(
                   events_ends="f5d3cd18e4b4f8060daae6a78c79a261",
                   events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
-                  events_strs="d7f82116d76a9befe99cdaf1bb467315",
+                  events_strs="2b2068f7413e1f1d5ab35938253b12ef",
                   events_starts="3f6014e26a4a6f08681f30c3b151a3ad",
-                  events_texts="61030c42223ace7abd4298e10792d26f",
+                  events_texts="067bbb5f80d6f3e699b3c12e6e229a85",
                   str="dd57be09939d6eec40c7f41c2ef8ceca"),
               outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.srt",
               **kwargs)

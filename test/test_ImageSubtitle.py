@@ -58,6 +58,8 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
 
     # Test that properites have loaded in accurately
     if md5s is not None:
+        if verbosity >= 2:
+            print(f"{'Property':<34s}{'Observed':<34s}{'Expected':<34s}")
         if "data" in md5s:
             check_md5("data",
                       subs.data)
