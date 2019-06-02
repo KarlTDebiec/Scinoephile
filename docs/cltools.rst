@@ -3,3 +3,4 @@
 Command-Line Tools
 ------------------
 
+.. autoclass:: scinoephile.Compositor.Compositor()
