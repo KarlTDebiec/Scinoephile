@@ -13,7 +13,7 @@ import pandas as pd
 from scinoephile import package_root
 from IPython import embed
 
-################################## CONSTANTS ##################################
+################################## VARIABLES ##################################
 hanzi_frequency = pd.read_csv(
     f"{package_root}/data/ocr/characters.txt",
     sep="\t", names=["character", "frequency", "cumulative frequency"])

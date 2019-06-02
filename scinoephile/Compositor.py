@@ -8,14 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-import re
 import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
 from IPython import embed
-from scinoephile import (get_cantonese_pinyin, get_mandarin_pinyin,
-                         merge_subtitles, package_root, CLToolBase,
-                         SubtitleSeries)
+from scinoephile import (get_pinyin, get_single_line_text, merge_subtitles,
+                         CLToolBase, SubtitleSeries)
 
 ################################## SETTINGS ###################################
 pd.set_option("display.width", 110)
@@ -110,28 +108,7 @@ class Compositor(CLToolBase):
         """
         Core logic
         """
-        if (self.english_subtitles is not None
-                and self.hanzi_subtitles is not None):
-
-            for e in self.english_subtitles.events:
-                e.text = re.sub(r"^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$",
-                                r"- \1    - \2", e.text, re.M)
-                e.text = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
-                                r"\1 \2", e.text, re.M)
-            for e in self.hanzi_subtitles.events:
-                e.text = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
-                                r"﹣\1　　﹣\2", e.text, re.M)
-                e.text = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
-                                r"\1　\2", e.text, re.M)
-            self.pinyin_subtitles
-
-            # merged_df = merge_subtitles(self.hanzi_subtitles,
-            #                             self.english_subtitles)
-            # merged_df["text"] = [f"{e['upper text']}\n{e['lower text']}"
-            #                      for _, e in merged_df.iterrows()]
-            # self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
-            # self.bilingual_subtitles.save("$HOME/ZE.srt")
-            embed()
+        embed()
 
     # endregion
 
@@ -149,18 +126,6 @@ class Compositor(CLToolBase):
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._bilingual_subtitles = value
-
-    @property
-    def cantonese_corpus(self):
-        """pycantonese.corpus.CantoneseCHATReader: Corpus for Cantonese
-             romanization"""
-        if not hasattr(self, "_cantonese_corpus"):
-            import pycantonese as pc
-
-            self._cantonese_corpus = pc.hkcancor()
-            self._cantonese_corpus.add(
-                f"{package_root}/data/romanization/unmatched.cha")
-        return self._cantonese_corpus
 
     @property
     def english_subtitles(self):
@@ -247,8 +212,57 @@ class Compositor(CLToolBase):
 
     # region Private Methods
 
-    def _initialize_pinyin_subtitles(self, language="cantonese"):
+    def _initialize_bilingual_subtitles(self, chinese="hanzi"):
         from copy import deepcopy
+
+        # Process arguments
+        if self.english_subtitles is None:
+            raise ValueError("Initialization of bilingual subtitles requires "
+                             "initialized English subtitles")
+        if (chinese == "hanzi" and self.hanzi_subtitles is None
+                or (chinese == "pinyin" and self.pinyin_subtitles is None)):
+            raise ValueError("Initialization of bilingual subtitles requires "
+                             "initialized Chinese subtitles")
+        if chinese == "hanzi":
+            chinese_subtitles = deepcopy(self.hanzi_subtitles)
+        elif chinese == "pinyin":
+            chinese_subtitles = deepcopy(self.pinyin_subtitles)
+        else:
+            raise ValueError("Invalid value provided for argument 'chinese'; "
+                             "must be 'hanzi' or 'pinyin'")
+        english_subtitles = deepcopy(self.english_subtitles)
+
+        if self.verbosity >= 1:
+            print("Preparing bilingual subtitles")
+
+        # Convert each language to a single line
+        if chinese == "hanzi":
+            for e in chinese_subtitles.events:
+                e.text = get_single_line_text(e.text, "hanzi")
+        elif chinese == "pinyin":
+            for e in chinese_subtitles.events:
+                e.text = get_single_line_text(e.text, "pinyin")
+        for e in english_subtitles.events:
+            e.text = get_single_line_text(e.text, "english")
+
+        # Merge
+        merged_df = merge_subtitles(chinese_subtitles,
+                                    english_subtitles)
+        merged_df["text"] = [f"{e['upper text']}\n{e['lower text']}"
+                             for _, e in merged_df.iterrows()]
+
+        self._bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
+
+    def _initialize_pinyin_subtitles(self, language="mandarin"):
+        from copy import deepcopy
+
+        # Process arguments
+        if self.hanzi_subtitles is None:
+            raise ValueError("Initialization of pinyin subtitles requires "
+                             "initialized hanzi subtitles")
+        if language not in ["cantonese", "mandarin"]:
+            raise ValueError("Invalid value provided for argument 'language'; "
+                             "must of 'cantonese' or 'mandarin'")
 
         if self.verbosity >= 1:
             if language == "mandarin":
@@ -256,19 +270,13 @@ class Compositor(CLToolBase):
             elif language == "cantonese":
                 print("Adding Cantonese romanization")
 
-        character_to_cantonese = {}
-        unmatched = set()
-
+        # Copy and convert to pinyin
         self._pinyin_subtitles = deepcopy(self.hanzi_subtitles)
         for event in self._pinyin_subtitles.events:
             if language == "mandarin":
-                event.text = get_mandarin_pinyin(event.text)
+                event.text = get_pinyin(event.text, "mandarin")
             elif language == "cantonese":
-                event.text = get_cantonese_pinyin(event.text,
-                                                  self.cantonese_corpus,
-                                                  character_to_cantonese,
-                                                  unmatched,
-                                                  self.verbosity)
+                event.text = get_pinyin(event.text, "cantonese")
 
     # endregion
 

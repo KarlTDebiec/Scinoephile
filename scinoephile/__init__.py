@@ -16,8 +16,32 @@ from os.path import dirname
 from sys import modules
 from IPython import embed
 
-################################## CONSTANTS ##################################
+################################## VARIABLES ##################################
 package_root = dirname(modules[__name__].__file__)
+punctuation = {"\n": "\n",
+               "　": " ",
+               " ": " ",
+               "？": "?",
+               "，": ",",
+               "、": ",",
+               ".": ".",
+               "！": "!",
+               "…": "...",
+               "...": "...",
+               "﹣": "-",
+               "─": "─",
+               "-": "-",
+               "“": "\"",
+               "”": "\"",
+               "\"": "\"",
+               "《": "<",
+               "》": ">",
+               "「": "[",
+               "」": "]",
+               "：": ":"}
+re_hanzi = re.compile(r"[\u4e00-\u9fff]")
+re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
+re_western = re.compile(r"[a-zA-Z0-9]")
 
 
 ################################## FUNCTIONS ##################################
@@ -48,132 +72,77 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def get_cantonese_pinyin(text, corpus, character_to_cantonese=None,
-                         unmatched=None, verbosity=1):
-    import pycantonese as pc
-    from collections import Counter
-    from hanziconv import HanziConv
+def get_pinyin(text, language="mandarin"):
+    if language == "mandarin":
+        from snownlp import SnowNLP
+        from pypinyin import pinyin
 
-    punctuation = {"\n": "\n",
-                   "　": " ",
-                   " ": " ",
-                   "？": "?",
-                   "，": ",",
-                   "、": ",",
-                   ".": ".",
-                   "！": "!",
-                   "…": "...",
-                   "...": "...",
-                   "﹣": "-",
-                   "─": "─",
-                   "-": "-",
-                   "“": "\"",
-                   "”": "\"",
-                   "\"": "\"",
-                   "《": "<",
-                   "》": ">",
-                   "「": "[",
-                   "」": "]",
-                   "：": ":"}
-    re_hanzi = re.compile(r"[\u4e00-\u9fff]")
-    re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
-    re_jyutping = re.compile(r"[a-z]+\d")
-    re_western = re.compile(r"[a-zA-Z0-9]")
+        romanization = ""
+        for line in text.split("\n"):
+            line_romanization = ""
+            for section in line.split():
+                section_romanization = ""
+                for word in SnowNLP(section).words:
+                    if word in punctuation:
+                        section_romanization += punctuation[word]
+                    else:
+                        section_romanization += " " + "".join(
+                            [a[0] for a in pinyin(word)])
+                line_romanization += "  " + section_romanization.strip()
+            romanization += "\n" + line_romanization.strip()
+        return romanization.strip()
 
-    def identify_cantonese_romanization(character):
-        matches = corpus.search(character=character)
+    elif language == "cantonese":
+        from scinoephile.cantonese import get_cantonese_pinyin
 
-        if len(matches) == 0:
-            # Character not found in corpus, search for traditional version
-            traditional_character = HanziConv.toTraditional(character)
-            if traditional_character != character:
-                if verbosity >= 3:
-                    print(
-                        f"{character} not found, searching for traditional")
-                return identify_cantonese_romanization(
-                    traditional_character)
+        romanization = ""
+        for line in text.split("\n"):
+            print(line)
+            line_romanization = ""
+            for section in line.split():
+                section_romanization = ""
+                for char in section:
+                    if char in punctuation:
+                        section_romanization += punctuation[char]
+                    elif re_western.match(char):
+                        section_romanization += char
+                    elif (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+                        pinyin = get_cantonese_pinyin(char)
+                        if pinyin is not None:
+                            section_romanization += " " + pinyin
+                        else:
+                            section_romanization += char
+                line_romanization += "  " + section_romanization.strip()
+            romanization += "\n" + line_romanization.strip()
+        print(text, romanization.strip())
+        return romanization.strip()
 
-            # Truly no instance of character in corpus
-            if verbosity >= 1:
-                print(f"{character} not found in corpus")
-            return None
-
-        # If character is found in corpus alone, use most common instance
-        character_matches = [m[2] for m in matches if len(m[0]) == 1]
-        if len(character_matches) > 0:
-            jyutping = Counter(character_matches).most_common(1)[0][0]
-            if verbosity >= 3:
-                print(f"{character} found as single character")
-
-        # If character is not found in corpus alone, use most common word
-        else:
-            most_common_word = Counter(matches).most_common(1)[0][0]
-            index = most_common_word[0].index(character)
-            jyutping = re_jyutping.findall(most_common_word[2])[index]
-            if verbosity >= 3:
-                print(f"{character} found in word")
-
-        try:
-            yale = pc.jyutping2yale(jyutping)
-        except ValueError:
-            if verbosity >= 1:
-                print(
-                    f"{character} found but could not be converted from jyutping to Yale")
-            return None
-        return yale
-
-    if character_to_cantonese is None:
-        character_to_cantonese = {}
-    if unmatched is None:
-        unmatched = set()
-
-    romanization = ""
-    for character in text:
-        if (re_hanzi.match(character) or re_hanzi_rare.match(character)):
-            if character in character_to_cantonese:
-                romanization += " " + character_to_cantonese[character]
-            elif character in unmatched:
-                romanization += " " + character
-            else:
-                yale = identify_cantonese_romanization(character)
-                if yale is not None:
-                    character_to_cantonese[character] = yale
-                    romanization += " " + character_to_cantonese[character]
-                else:
-                    romanization += " " + character
-                    unmatched.add(character)
-        elif re_western.match(character):
-            romanization += character
-        elif character in punctuation:
-            romanization = romanization.strip() + punctuation[character]
-        else:
-            if verbosity >= 1:
-                print(f"{character} is unrecognized as Chinese, western, or "
-                      f"punctuation")
-            unmatched.add(character)
-
-    return romanization.strip()
+    else:
+        raise ValueError("Invalid value provided for argument 'language'; "
+                         "must of 'cantonese' or 'mandarin'")
 
 
-def get_mandarin_pinyin(text):
-    from snownlp import SnowNLP
-    from pypinyin import pinyin
+def get_single_line_text(text, language="english"):
+    single_line = ""
+    if language == "english" or language == "pinyin":
+        single_line = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
+                             r"﹣\1　　﹣\2",
+                             text, re.M)
+        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                             r"\1　\2",
+                             single_line, re.M)
+    elif language == "hanzi":
+        single_line = re.sub(r"^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$",
+                             r"- \1    - \2",
+                             text, re.M)
+        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                             r"\1 \2",
+                             single_line, re.M)
+    else:
+        raise ValueError("Invalid value for argument 'language'; must be "
+                         "'english', 'hanzi', or 'pinyin'")
 
-    romanization = ""
-    for line in text.split("\n"):
-        line_romanization = ""
-        for section in line.split():
-            section_romanization = ""
-            for word in SnowNLP(section).words:
-                if word in self.punctuation:
-                    section_romanization += self.punctuation[word]
-                else:
-                    section_romanization += " " + "".join(
-                        [a[0] for a in pinyin(word)])
-            line_romanization += "  " + section_romanization.strip()
-        romanization += "\n" + line_romanization.strip()
-
-    return romanization.strip()
+    return single_line
 
 
 def in_ipython():
