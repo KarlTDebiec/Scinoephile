@@ -8,8 +8,8 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-import numpy as np
 import pandas as pd
+from collections import OrderedDict
 from os.path import expandvars, isfile
 from IPython import embed
 from scinoephile import (get_pinyin, get_simplified_hanzi,
@@ -61,7 +61,8 @@ class Compositor(CLToolBase):
 
     # region Builtins
     def __init__(self, bilingual=False, english=False, hanzi=False,
-                 pinyin=False, **kwargs):
+                 pinyin=False, simplify=True, pinyin_language="mandarin",
+                 **kwargs):
         """
         Initializes tool
 
@@ -72,38 +73,120 @@ class Compositor(CLToolBase):
             pinyin (str): Path to pinyin Chinese infile or outfile
             **kwargs: Additional keyword arguments
         """
+
         super().__init__(**kwargs)
 
-        if bilingual:
-            if isinstance(bilingual, str):
-                bilingual = expandvars(bilingual)
-                if isfile(bilingual):
-                    self.bilingual_subtitles = SubtitleSeries.load(
-                        bilingual, verbosity=self.verbosity)
-        if english:
-            if isinstance(english, str):
-                english = expandvars(english)
-                if isfile(english):
-                    self.english_subtitles = SubtitleSeries.load(
-                        english, verbosity=self.verbosity)
-        if hanzi:
-            if isinstance(hanzi, str):
-                hanzi = expandvars(hanzi)
-                if isfile(hanzi):
-                    self.hanzi_subtitles = SubtitleSeries.load(
-                        hanzi, verbosity=self.verbosity)
-        if pinyin:
-            if isinstance(pinyin, str):
-                pinyin = expandvars(pinyin)
-                if isfile(pinyin):
-                    self.pinyin_subtitles = SubtitleSeries.load(
-                        pinyin, verbosity=self.verbosity)
+        # Read in files if they exist
+        if bilingual and isinstance(bilingual, str):
+            bilingual = expandvars(bilingual)
+            if isfile(bilingual):
+                self.operations["read_bilingual"] = bilingual
+            else:
+                self.operations["write_bilingual"] = bilingual
+        if english and isinstance(english, str):
+            english = expandvars(english)
+            if isfile(english):
+                self.operations["read_english"] = english
+            else:
+                self.operations["write_english"] = english
+        if hanzi and isinstance(hanzi, str):
+            hanzi = expandvars(hanzi)
+            if isfile(hanzi):
+                self.operations["read_hanzi"] = hanzi
+            else:
+                self.operations["write_hanzi"] = hanzi
+        if pinyin and isinstance(pinyin, str):
+            pinyin = expandvars(pinyin)
+            if isfile(pinyin):
+                self.operations["read_pinyin"] = pinyin
+            else:
+                self.operations["write_pinyin"] = pinyin
+
+        # Create subtitles if they do not exist
+        if ("write_english" in self.operations
+                and "read_english" not in self.operations):
+            if "read_hanzi" in self.operations:
+                self.operations["translate_english"] = True
+            else:
+                raise ValueError()
+        if ("write_hanzi" in self.operations
+                and "read_hanzi" not in self.operations):
+            if "read_english" in self.operations:
+                self.operations["translate_hanzi"] = True
+            else:
+                raise ValueError()
+        if ("write_pinyin" in self.operations
+                and "read_pinyin" not in self.operations):
+            if ("read_hanzi" in self.operations
+                    or "translate_hanzi" in self.operations):
+                self.operations[f"convert_pinyin_{pinyin_language}"] = True
+            else:
+                raise ValueError()
+        if ("write_bilingual" in self.operations
+                and "read_bilingual" not in self.operations):
+            if "read_english" not in self.operations:
+                if "read_hanzi" in self.operations:
+                    self.operations["translate_english"] = True
+                else:
+                    raise ValueError()
+            if "read_hanzi" not in self.operations:
+                if "read_english" in self.operations:
+                    self.operations["translate_english"] = True
+                else:
+                    raise ValueError()
+            self.operations["merge_bilingual"] = True
+
+        # Perform additional operations
+        if simplify:
+            if ("read_hanzi" in self.operations
+                    or "translate_hanzi" in self.operations):
+                self.operations["simplify_chinese"] = True
+            else:
+                raise ValueError()
 
     def __call__(self):
         """
         Core logic
         """
-        embed()
+        print(self.operations)
+
+        # Read infiles
+        if "read_bilingual" in self.operations:
+            self.bilingual_subtitles = SubtitleSeries.load(
+                self.operations["read_bilingual"], verbosity=self.verbosity)
+        if "read_english" in self.operations:
+            self.english_subtitles = SubtitleSeries.load(
+                self.operations["read_english"], verbosity=self.verbosity)
+        if "read_hanzi" in self.operations:
+            self.hanzi_subtitles = SubtitleSeries.load(
+                self.operations["read_hanzi"], verbosity=self.verbosity)
+        if "read_pinyin" in self.operations:
+            self.pinyin_subtitles = SubtitleSeries.load(
+                self.operations["read_pinyin"], verbosity=self.verbosity)
+
+        # Perform operations
+        if "translate_english" in self.operations:
+            self._translate_chinese_to_english()
+        if "translate_chinese" in self.operations:
+            self._translate_english_to_chinese()
+        if "simplify_chinese" in self.operations:
+            self._convert_traditional_to_simplified_hanzi()
+        if "convert_pinyin_mandarin" in self.operations:
+            self._initialize_pinyin_subtitles("mandarin")
+        if "convert_pinyin_cantonese" in self.operations:
+            self._initialize_pinyin_subtitles("cantonese")
+        if "merge_bilingual" in self.operations:
+            self._initialize_bilingual_subtitles()
+
+        # Write outfiles
+        if "write_bilingual" in self.operations:
+            self.bilingual_subtitles.save(self.operations["write_bilingual"])
+        if "write_english" in self.operations:
+            self.english_subtitles.save(self.operations["write_english"])
+        if "write_hanzi" in self.operations:
+            self.hanzi_subtitles.save(self.operations["write_hanzi"])
+        if "write_pinyin" in self.operations:
+            self.pinyin_subtitles.save(self.operations["write_pinyin"])
 
     # endregion
 
@@ -157,6 +240,12 @@ class Compositor(CLToolBase):
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._hanzi_subtitles = value
+
+    @property
+    def operations(self):
+        if not hasattr(self, "_operations"):
+            self._operations = OrderedDict()
+        return self._operations
 
     @property
     def pinyin_subtitles(self):
@@ -321,6 +410,7 @@ class Compositor(CLToolBase):
     # endregion
 
     # region Class Methods
+
     @classmethod
     def construct_argparser(cls, parser=None):
         """
@@ -342,9 +432,8 @@ class Compositor(CLToolBase):
             parser = argparse.ArgumentParser(description=cls.help_message)
         super().construct_argparser(parser)
 
-        # Input
-        parser_file = parser.add_argument_group(
-            "file arguments (at least one required)")
+        # Files
+        parser_file = parser.add_argument_group("file arguments")
         parser_file.add_argument("-b", "--bilingual", type=str,
                                  nargs="?", default=False, const=True,
                                  metavar="FILE",
@@ -363,84 +452,19 @@ class Compositor(CLToolBase):
                                  help="Chinese Pinyin subtitles")
 
         # Operation
-        # parser_ops = parser.add_argument_group("operation arguments")
-        # parser_ops.add_argument("--c_offset", type=float, default=0,
-        #                         help="apply offset to Chinese subtitle "
-        #                              "timings")
-        # parser_ops.add_argument("-s", "--simplified", action="store_true",
-        #                         help="convert traditional characters to "
-        #                              "simplified")
-        # parser_ops.add_argument("-m", "--mandarin", action="store_true",
-        #                         help="add Mandarin Hanyu pinyin (汉语拼音)")
-        # parser_ops.add_argument("-y", "--yue", action="store_true",
-        #                         dest="cantonese",
-        #                         help="add Cantonese Yale pinyin (耶鲁粤语拼音)")
-        # parser_ops.add_argument("-t", "--translate", action="store_true",
-        #                         dest="translate",
-        #                         help="add English machine translation "
-        #                              "generated using Google Translate; "
-        #                              "requires key for Google Cloud Platform")
-        # parser_ops.add_argument("--e_offset", type=float, default=0,
-        #                         help="apply offset to English subtitle "
-        #                              "timings")
-        # parser_ops.add_argument("--truecase", action="store_true",
-        #                         help="apply standard capitalization to "
-        #                              "English subtitles")
+        parser_ops = parser.add_argument_group("operation arguments")
+        parser_ops.add_argument("-s", "--simplify", action="store_true",
+                                help="convert traditional characters to "
+                                     "simplified")
+        parser_ops.add_argument("-m", "--mandarin", action="store_const",
+                                dest="pinyin_language", default="mandarin",
+                                const="mandarin",
+                                help="add Mandarin Hanyu pinyin (汉语拼音)")
+        parser_ops.add_argument("-y", "--yue", action="store_const",
+                                dest="pinyin_language", const="cantonese",
+                                help="add Cantonese Yale pinyin (耶鲁粤语拼音)")
 
         return parser
-
-    @classmethod
-    def validate_args(cls, parser, args):
-        """
-        Validates arguments
-
-        Args:
-            parser (argparse.ArgumentParser): Argument parser
-            args (argparse.Namespace): Arguments
-
-        Raises:
-            ValueError: Incompatibility between provided arguments
-
-        """
-        from io import StringIO
-
-        with StringIO() as helptext:
-            parser.print_help(helptext)
-            try:
-                pass
-            # if args.chinese_infile is None and args.english_infile is None:
-            #     raise ValueError("Either argument '-c/--chinese_infile' "
-            #                      "or '-e/--english_infile' is required")
-            # if args.chinese_infile is None:
-            #     if args.c_offset != 0:
-            #         raise ValueError("Argument '--c_offset' requires "
-            #                          "argument '-c/--chinese_infile'")
-            #     if args.simplified:
-            #         raise ValueError("Argument '-s' requires "
-            #                          "argument '-c/--chinese_infile'")
-            #     if args.mandarin:
-            #         raise ValueError("Argument '-m' requires "
-            #                          "argument '-c/--chinese_infile'")
-            #     if args.cantonese:
-            #         raise ValueError("Argument '-y' requires "
-            #                          "argument '-c/--chinese_infile'")
-            #     if args.translate:
-            #         raise ValueError("Argument '-t' requires "
-            #                          "argument '-c/--chinese_infile'")
-            # if args.english_infile is None:
-            #     if args.e_offset != 0:
-            #         raise ValueError("Argument '--e_offset' requires "
-            #                          "argument '-e/--english_infile'")
-            #     if args.truecase:
-            #         raise ValueError("Argument '--truecase' requires "
-            #                          "argument '-e/--english_infile'")
-            # if args.english_infile is not None:
-            #     if args.translate:
-            #         raise ValueError("Argument '-t' incompatible with "
-            #                          "argument '-e/--english_infile'")
-            except ValueError as e:
-                print(helptext.getvalue())
-                raise e
 
     # endregion
 

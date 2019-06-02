@@ -466,9 +466,9 @@ class CLToolBase(Base, ABC):
         """Parses and validates arguments, constructs and calls object"""
 
         parser = cls.construct_argparser()
-        args = parser.parse_args()
-        cls.validate_args(parser, args)
-        cls(**vars(args))()
+        args = vars(parser.parse_args())
+        cls.process_arguments(parser, args)
+        cls(**args)()
 
 
 class StdoutLogger(object):
