@@ -135,6 +135,23 @@ def get_pinyin(text, language="mandarin"):
                          "must of 'cantonese' or 'mandarin'")
 
 
+def get_truecase(text):
+    import nltk
+
+    tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
+    normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in
+                  tagged]
+    normalized[0] = normalized[0].capitalize()
+    truecased = re.sub(r" (?=[\.,'!?:;])", "", " ".join(normalized))
+    truecased = truecased.replace(" n't", "n't")
+    truecased = truecased.replace(" i ", " I ")
+    truecased = truecased.replace("``", "\"")
+    truecased = truecased.replace("''", "\"")
+    truecased = re.sub(r"(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+                       lambda s: s.group().upper(), truecased)
+    return truecased
+
+
 def get_single_line_text(text, language="english"):
     single_line = ""
     if language == "english" or language == "pinyin":

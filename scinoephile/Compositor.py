@@ -13,7 +13,7 @@ import pandas as pd
 from os.path import expandvars, isfile
 from IPython import embed
 from scinoephile import (get_pinyin, get_simplified_hanzi,
-                         get_single_line_text, merge_subtitles,
+                         get_single_line_text, get_truecase, merge_subtitles,
                          CLToolBase, SubtitleSeries)
 
 ################################## SETTINGS ###################################
@@ -50,7 +50,6 @@ class Compositor(CLToolBase):
             indexing.html#indexing-view-versus-copy self[name] = value
         - [ ] Document
     """
-    import re
 
     # region Instance Variables
     help_message = ("Compiles Chinese and English subtitles into a single "
@@ -258,6 +257,19 @@ class Compositor(CLToolBase):
         for event in self._hanzi_subtitles:
             event.text = get_simplified_hanzi(event.text)
 
+    def _convert_capital_english_to_truecase(self):
+
+        # Process arguments
+        if self.english_subtitles is None:
+            raise ValueError("Conversion of capitalized English to truecase "
+                             "requires initialized English subtitles")
+
+        if self.verbosity >= 1:
+            print("Converting capitalized English to truecase")
+
+        for event in self._english_subtitles:
+            event.text = get_truecase(event.text)
+
     def _translate_chinese_to_english(self):
         from copy import deepcopy
         from scinoephile.translation import client
@@ -305,48 +317,6 @@ class Compositor(CLToolBase):
                                               target_language="zh")]
         for i, translation in enumerate(translations):
             self._hanzi_subtitles.events[i].text = translation
-
-    # endregion
-
-    # region Old Methods
-
-    # def apply_truecase(self, subtitles):
-    #     import nltk
-    #     import re
-    #
-    #     if self.verbosity >= 1:
-    #         print("Applying truecase to English subtitles")
-    #
-    #     for index, subtitle in subtitles.iterrows():
-    #         text = subtitle["text"]
-    #
-    #         if self.verbosity >= 2:
-    #             start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-    #             end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-    #             print(f"{index}\n{start} --> {end}\n{text}")
-    #
-    #             tagged = nltk.pos_tag(
-    #                 [word.lower() for word in nltk.word_tokenize(text)])
-    #             normalized = [w.capitalize() if t in ["NN", "NNS"] else w
-    #                           for (w, t) in tagged]
-    #             normalized[0] = normalized[0].capitalize()
-    #             truecased = re.sub(r" (?=[\.,'!?:;])", "",
-    #                                ' '.join(normalized))
-    #
-    #             # Could probably use a more appropriate tokenization function,
-    #             # but cleaning up in this way is fine for now.
-    #             truecased = truecased.replace(" n't", "n't")
-    #             truecased = truecased.replace(" i ", " I ")
-    #             truecased = truecased.replace("``", "\"")
-    #             truecased = truecased.replace("''", "\"")
-    #             truecased = re.sub(
-    #                 r"(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
-    #                 lambda s: s.group().upper(), truecased)
-    #
-    #             if self.verbosity >= 2:
-    #                 print(f"{truecased}\n")
-    #
-    #             subtitle["text"] = truecased
 
     # endregion
 
