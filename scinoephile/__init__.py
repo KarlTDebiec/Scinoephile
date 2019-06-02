@@ -84,11 +84,13 @@ def merge_subtitles(upper, lower):
                     [(start, time, upper_text, lower_text)],
                     columns=["start", "end", "upper text", "lower text"])]
 
+    # Process arguments
     if isinstance(upper, SubtitleSeries):
         upper = upper.get_dataframe()
     if isinstance(lower, SubtitleSeries):
         lower = lower.get_dataframe()
 
+    # Organize transitions
     transitions = []
     for _, event in upper.iterrows():
         transitions += [[event["start"], "upper_start", event["text"]],
@@ -98,8 +100,8 @@ def merge_subtitles(upper, lower):
                         [event["end"], "lower_end", None]]
     transitions.sort()
 
+    # Merge events
     merged = []
-
     start = upper_text = lower_text = None
     for time, kind, text in transitions:
         if kind == "upper_start":
@@ -138,10 +140,10 @@ def merge_subtitles(upper, lower):
             else:
                 # Transition from CE -> E_
                 start = time
-
     merged_df = pd.concat(merged, sort=False, ignore_index=True)[
         ["upper text", "lower text", "start", "end"]]
 
+    # Synchronize events
     synced_df = [merged_df.iloc[0].copy()]
     for index in range(1, merged_df.index.size):
         last = synced_df[-1]
