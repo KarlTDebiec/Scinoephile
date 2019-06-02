@@ -12,26 +12,6 @@ and 唔 rather than 是, 在, and 不, etc.). Optical Character Recognition
 functions are currently under development to allow the conversion of
 image-based Blu-Ray subtitles to text format.
 
-Example Mandarin/English Output:
-
-.. code-block:: text
-
-    2
-    00:01:04,397 --> 00:01:06,149
-    喲！李爺來啦
-    yō! lǐ yé lái la
-    Master Li is here!
-
-Example Cantonese/English Output:
-
-.. code-block:: text
-
-    207
-    00:12:13,274 --> 00:12:14,109
-    係咪话我呀？　﹣係！
-    haih maih wah ngóh àh?- haih!
-    - You mean me?    - Yes!
-
 Dependencies
 ------------
 
@@ -56,7 +36,6 @@ Selected features may also require:
 - `pypinyin <https://github.com/mozillazg/python-pinyin>`_
 - `snownlp <https://github.com/isnowfy/snownlp>`_
 - `tensorflow <https://github.com/tensorflow/tensorflow>`_
-
 
 Installation
 ------------
@@ -119,7 +98,6 @@ __________
       -s, --simplify        convert traditional characters to simplified
       -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
       -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
-
 
 Authorship
 ----------
