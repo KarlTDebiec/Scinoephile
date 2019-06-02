@@ -179,9 +179,9 @@ class Compositor(CLToolBase):
                 self.merged_subtitles)
 
         # Interactive prompt
-        if self.interactive:
-            from IPython import embed
-            embed()
+        # if self.interactive:
+        #     from IPython import embed
+        #     embed()
 
         # Write outfile
         if self.outfile is not None:
