@@ -19,6 +19,7 @@ _____________________________
 Compositor
 __________
 
+- [ ] Complete documentation
 - [ ] Restore support for Hanzi, pinyin, and English
 - [ ] Restore support for IPython console
 - [ ] Add support for overwriting files

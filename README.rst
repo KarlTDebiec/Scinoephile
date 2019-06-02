@@ -47,6 +47,7 @@ Selected features may also require:
 - `google-cloud-translate <https://pypi.org/project/google-cloud-translate/>`_
 - `h5py <https://github.com/h5py/h5py>`_
 - `hanziconv <https://github.com/berniey/hanziconv>`_
+- `imgcat <https://github.com/wookayin/python-imgcat>`_
 - `matplotlib <https://github.com/matplotlib/matplotlib>`_
 - `nltk <https://github.com/nltk/nltk>`_
 - `pillow <https://github.com/python-pillow/Pillow>`_

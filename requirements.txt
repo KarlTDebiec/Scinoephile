@@ -1,11 +1,15 @@
-hanziconv
+google-cloud-translate
 h5py
+hanziconv
 imgcat
 IPython
+matplotlib
 nltk
 numpy
 pandas
--e git://github.com/pycantonese/pycantonese#egg=pycantonese
 pillow
+-e git://github.com/pycantonese/pycantonese#egg=pycantonese
 pypinyin
+pysubs2
 snownlp
+tensorflow
