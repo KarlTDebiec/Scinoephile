@@ -6,12 +6,6 @@ Development
 Optical Character Recognition
 _____________________________
 
-- [x] Move interactive testing to Jupyter notebook
-- [x] Function for merging characters manually
-- [x] Update documentation of Subtitle and Event classes
-- [x] Add tests for reading srt, sup, and hdf5
-- [x] Update documentation
-- [x] Migrate to tensorflow 2.0
 - [ ] Fix documentation
 - [ ] Understand problem with times
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
@@ -22,11 +16,15 @@ _____________________________
 - [ ] Improve character separation to load assignments from another dataset
 - [ ] Add support for Western characters and punctuation
 
-Compositor Rewrite
-__________________
+Compositor
+__________
 
-- [ ] Print SubtitleSeries, SubtitleSeries and SubtitleEvent as pandas DataFrames
-- [ ] Migrate English, Chinese (may call Hanzi for clarity), and bilingual subtitles to separate SubtitleSeries
+- [ ] Restore support for Hanzi, pinyin, and English
+- [ ] Restore support for IPython console
+- [ ] Add support for overwriting files
+- [ ] Restore truecase argument support
+- [ ] Restore time offset support
+- [ ] Tests
 
 Documentation
 _____________

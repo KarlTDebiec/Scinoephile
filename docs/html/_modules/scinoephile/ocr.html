@@ -83,7 +83,16 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr/subtitles.html">Image-Based Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr/datasets.html">Image Data Structures</a></li>
@@ -95,14 +104,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
@@ -188,7 +192,7 @@
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">package_root</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 
-<span class="c1">################################## CONSTANTS ##################################</span>
+<span class="c1">################################## VARIABLES ##################################</span>
 <span class="n">hanzi_frequency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
     <span class="n">f</span><span class="s2">&quot;</span><span class="si">{package_root}</span><span class="s2">/data/ocr/characters.txt&quot;</span><span class="p">,</span>
     <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;cumulative frequency&quot;</span><span class="p">])</span>

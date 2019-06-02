@@ -35,14 +35,27 @@ Example Cantonese/English Output:
 Dependencies
 ------------
 
-- `hanziconv <https://github.com/berniey/hanziconv>`_
-- `nltk <https://github.com/nltk/nltk>`_
+All features require the following modules:
+
+- `IPython <https://github.com/ipython/ipython>`_
 - `numpy <https://github.com/numpy/numpy>`_
 - `pandas <https://github.com/pandas-dev/pandas>`_
+- `pysubs2 <https://github.com/tkarabela/pysubs2>`_
+
+Selected features may also require:
+
+- `google-cloud-translate <https://pypi.org/project/google-cloud-translate/>`_
+- `h5py <https://github.com/h5py/h5py>`_
+- `hanziconv <https://github.com/berniey/hanziconv>`_
+- `matplotlib <https://github.com/matplotlib/matplotlib>`_
+- `nltk <https://github.com/nltk/nltk>`_
+- `pillow <https://github.com/python-pillow/Pillow>`_
 - `pycantonese <https://github.com/pycantonese/pycantonese>`_
   (recent version from from GitHub rather than pypi)
 - `pypinyin <https://github.com/mozillazg/python-pinyin>`_
 - `snownlp <https://github.com/isnowfy/snownlp>`_
+- `tensorflow <https://github.com/tensorflow/tensorflow>`_
+
 
 Installation
 ------------
@@ -51,44 +64,62 @@ Installation
 
     python setup.py install
 
-Compositing
------------
+Usage
+-----
+
+Compositor
+__________
 
 .. code-block:: text
 
-    usage: Compositor.py [-h] [-v | -q] [-I] [-c [INFILE]] [-e [INFILE]]
-                     [--c_offset C_OFFSET] [-s] [-m] [-y] [-t]
-                     [--e_offset E_OFFSET] [--truecase] [-o [OUTFILE]]
+    usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
+                         [-p [FILE]] [-s] [-m] [-y]
 
     Compiles Chinese and English subtitles into a single file, optionally adding
-    Mandarin or Cantonese romanization, converting traditional characters to
-    simplified, or adding machine translation.
+    Mandarin or Cantonese pinyin, converting traditional characters to simplified,
+    or adding machine translation.
+
+    Operations are inferred from provided arguments, e.g.:
+
+      Translate Chinese to English:
+        Compositor.py -e /nonexisting/english/outfile
+                      -c /existing/chinese/infile
+
+      Translate English to Chinese:
+        Compositor.py -e /existing/english/infile
+                      -c /nonexisting/chinese/outfile
+
+      Merge Chinese and English:
+        Compositor.py -e /existing/english/infile
+                      -c /existing/chinese/infile
+                      -b /nonexisting/bilingual/outfile
+
+      Convert traditional chinese to simplified, translate Chinese to English, and
+      merge:
+        Compositor.py -c /existing/chinese/infile
+                      -b /nonexisting/bilingual/outfile
+                      --simplify
 
     optional arguments:
       -h, --help            show this help message and exit
       -v, --verbose         enable verbose output, may be specified more than once
       -q, --quiet           disable verbose output
-      -I, --interactive     present IPython prompt
 
-    input arguments (at least one required):
-      -c [INFILE], --chinese_infile [INFILE]
-                            Chinese subtitles in SRT or VTT format
-      -e [INFILE], --english_infile [INFILE]
-                            English subtitles in SRT or VTT format
+    file arguments:
+      -b [FILE], --bilingual [FILE]
+                            Bilingual subtitles
+      -c [FILE], --chinese [FILE], --hanzi [FILE]
+                            Chinese Hanzi subtitles
+      -e [FILE], --english [FILE]
+                            English subtitles
+      -p [FILE], --pinyin [FILE]
+                            Chinese Pinyin subtitles
 
     operation arguments:
-      --c_offset C_OFFSET   apply offset to Chinese subtitle timings
-      -s, --simplified      convert traditional characters to simplified
+      -s, --simplify        convert traditional characters to simplified
       -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
       -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
-      -t, --translate       add English machine translation generated using Google
-                            Translate; requires key for Google Cloud Platform
-      --e_offset E_OFFSET   apply offset to English subtitle timings
-      --truecase            apply standard capitalization to English subtitles
 
-    output arguments:
-      -o [OUTFILE], --outfile [OUTFILE]
-                            output file
 
 Authorship
 ----------

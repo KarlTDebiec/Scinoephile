@@ -6,7 +6,6 @@ Optical Character Recognition
     :no-members:
 
 .. toctree::
-    :hidden:
     :maxdepth: 4
 
     ocr/subtitles.rst

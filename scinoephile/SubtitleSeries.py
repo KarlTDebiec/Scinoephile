@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 import numpy as np
+import pandas as pd
 from IPython import embed
 from pysubs2 import SSAFile
 from scinoephile import Base, SubtitleEvent
@@ -68,6 +69,12 @@ class SubtitleSeries(Base, SSAFile):
 
     # region Public Methods
 
+    def get_dataframe(self):
+        df = pd.DataFrame.from_records(
+            data=[(e.text, e.start, e.end) for e in self.events],
+            columns=["text", "start", "end"])
+        return df
+
     def save(self, path, format_=None, **kwargs):
         """
         Saves subtitles to an output file
@@ -101,6 +108,17 @@ class SubtitleSeries(Base, SSAFile):
     # endregion
 
     # region Public Class Methods
+
+    @classmethod
+    def from_dataframe(cls, df, verbosity=1, **kwargs):
+        subs = cls(verbosity=verbosity)
+
+        for _, event in df.iterrows():
+            subs.events.append(cls.event_class(
+                text=event["text"], start=event["start"], end=event["end"],
+                verbosity=verbosity, series=subs))
+
+        return subs
 
     @classmethod
     def load(cls, path, encoding="utf-8", format_=None, verbosity=1, **kwargs):

@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Optical Character Recognition" href="ocr.html" />
+    <link rel="next" title="Foundations" href="foundations.html" />
     <link rel="prev" title="Scinoephile" href="index.html" /> 
 </head>
 
@@ -85,7 +85,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-Line Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocr/subtitles.html">Image-Based Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocr/datasets.html">Image Data Structures</a></li>
@@ -97,14 +106,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#compositor-rewrite">Compositor Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#compositor">Compositor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future">Future</a></li>
@@ -181,6 +185,155 @@
             
   <div class="section" id="command-line-tools">
 <h1>Command-Line Tools<a class="headerlink" href="#command-line-tools" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="compositor">
+<h2>Compositor<a class="headerlink" href="#compositor" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
+                     [-p [FILE]] [-s] [-m] [-y]
+
+Compiles Chinese and English subtitles into a single file, optionally adding
+Mandarin or Cantonese pinyin, converting traditional characters to simplified,
+or adding machine translation.
+
+Operations are inferred from provided arguments, e.g.:
+
+  Translate Chinese to English:
+    Compositor.py -e /nonexisting/english/outfile
+                  -c /existing/chinese/infile
+
+  Translate English to Chinese:
+    Compositor.py -e /existing/english/infile
+                  -c /nonexisting/chinese/outfile
+
+  Merge Chinese and English:
+    Compositor.py -e /existing/english/infile
+                  -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+
+  Convert traditional chinese to simplified, translate Chinese to English, and
+  merge:
+    Compositor.py -c /existing/chinese/infile
+                  -b /nonexisting/bilingual/outfile
+                  --simplify
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         enable verbose output, may be specified more than once
+  -q, --quiet           disable verbose output
+
+file arguments:
+  -b [FILE], --bilingual [FILE]
+                        Bilingual subtitles
+  -c [FILE], --chinese [FILE], --hanzi [FILE]
+                        Chinese Hanzi subtitles
+  -e [FILE], --english [FILE]
+                        English subtitles
+  -p [FILE], --pinyin [FILE]
+                        Chinese Pinyin subtitles
+
+operation arguments:
+  -s, --simplify        convert traditional characters to simplified
+  -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
+  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+</pre></div>
+</div>
+<dl class="class">
+<dt id="scinoephile.Compositor.Compositor">
+<em class="property">class </em><code class="descclassname">scinoephile.Compositor.</code><code class="descname">Compositor</code><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="foundations/classes.html#scinoephile.CLToolBase" title="scinoephile.CLToolBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.CLToolBase</span></code></a></p>
+<p>Compiles Chinese and English subtitles</p>
+<dl class="method">
+<dt id="scinoephile.Compositor.Compositor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>bilingual=False</em>, <em>english=False</em>, <em>hanzi=False</em>, <em>pinyin=False</em>, <em>simplify=True</em>, <em>pinyin_language='mandarin'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes command-line tool and selects operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bilingual</strong> (<em>str</em>) – Path to bilingual infile or outfile</p></li>
+<li><p><strong>english</strong> (<em>str</em>) – Path to English infile or outfile</p></li>
+<li><p><strong>hanzi</strong> (<em>str</em>) – Path to hanzi Chinese infile or outfile</p></li>
+<li><p><strong>pinyin</strong> (<em>str</em>) – Path to pinyin Chinese infile or outfile</p></li>
+<li><p><strong>simplify</strong> (<em>bool</em>) – Convert traditional hanzi to simplified</p></li>
+<li><p><strong>pinyin_language</strong> (<em>str</em>) – Langauge for which to add pinyin; may be
+‘madarin’ or ‘cantonese’</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Compositor.Compositor.bilingual_subtitles">
+<code class="descname">bilingual_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.bilingual_subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bilingual subtitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Compositor.Compositor.english_subtitles">
+<code class="descname">english_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.english_subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>English subtitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Compositor.Compositor.hanzi_subtitles">
+<code class="descname">hanzi_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.hanzi_subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hanzi Chinse subtitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Compositor.Compositor.operations">
+<code class="descname">operations</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of operations to perform, with associated
+arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.Compositor.Compositor.pinyin_subtitles">
+<code class="descname">pinyin_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.pinyin_subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pinyin Chinese subtitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.Compositor.Compositor.construct_argparser">
+<em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.construct_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs argument parser</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Argument parser</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>parser (argparse.ArgumentParser)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -191,7 +344,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ocr.html" class="btn btn-neutral float-right" title="Optical Character Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="foundations.html" class="btn btn-neutral float-right" title="Foundations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Scinoephile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
