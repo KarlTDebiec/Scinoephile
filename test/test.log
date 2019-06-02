@@ -9,58 +9,9 @@ test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 14%]
 test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 28%]
 test_Subtitle.py::test_Subtitle PASSED                                   [ 42%]
 test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 57%]
-test_Subtitle.py::test_Subtitle_srt_english FAILED                       [ 71%]
+test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 71%]
 test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 85%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
-
-=================================== FAILURES ===================================
-__________________________ test_Subtitle_srt_english ___________________________
-
-kwargs = {}
-
-    def test_Subtitle_srt_english(**kwargs):
-        """Tests reading and writing English subtitles in srt format"""
-        run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.srt",
-                  md5s=dict(
-                      events_ends="f5d3cd18e4b4f8060daae6a78c79a261",
-                      events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
-                      events_strs="d7f82116d76a9befe99cdaf1bb467315",
-                      events_starts="3f6014e26a4a6f08681f30c3b151a3ad",
-                      events_texts="61030c42223ace7abd4298e10792d26f",
-                      str="dd57be09939d6eec40c7f41c2ef8ceca"),
-                  outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.srt",
->                 **kwargs)
-
-test_Subtitle.py:136: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-test_Subtitle.py:71: in run_tests
-    [str(e) for e in subs.events])
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-key = 'events_strs'
-value = ["<SubtitleEvent— type=Dialogue start=0:00:06 end=0:00:10 text='There was a BBQ pork in a box'>", "<SubtitleEvent— typ...ore, please'>", "<SubtitleEvent— type=Dialogue start=0:00:35 end=0:00:37 text='There was a Chicken with curry,'>", ...]
-
-    def check_md5(key, value):
-        """
-        Checks if the md5 of an object matches a cached value
-    
-        Args:
-            key (str): Name of object
-            value (object): Object to test
-        """
-        md5 = get_md5(value)
-    
-        if md5s[key] is not None:
-            if verbosity >= 2:
-                print(f"{key:<34s}{md5:<34s}{md5s[key]:<34s}")
->           assert (md5 == md5s[key])
-E           AssertionError: assert '2b2068f7413e...35938253b12ef' == 'd7f82116d76a9...cdaf1bb467315'
-E             - 2b2068f7413e1f1d5ab35938253b12ef
-E             + d7f82116d76a9befe99cdaf1bb467315
-
-test_Subtitle.py:48: AssertionError
------------------------------ Captured stdout call -----------------------------
-Reading subtitles from '/Users/kdebiec/Desktop/subtitles/test/input/mcdull_prince_de_la_bun/en-HK.srt'
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
 Name                                                                                                                                           Stmts   Miss  Cover
@@ -82,4 +33,5 @@ Name                                                                            
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 TOTAL                                                                                                                                           1588   1021    36%
 
-===================== 1 failed, 6 passed in 170.75 seconds =====================
+
+========================== 7 passed in 167.92 seconds ==========================
