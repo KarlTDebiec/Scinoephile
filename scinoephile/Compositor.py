@@ -160,13 +160,14 @@ class Compositor(CLToolBase):
                                 r"\1　\2", e.text, re.M)
             english_df = self.english_subtitles.get_dataframe()
             hanzi_df = self.hanzi_subtitles.get_dataframe()
-            merged_df = merge_subtitles(self.english_subtitles,
-                                     self.hanzi_subtitles)
-            embed(**self.embed_kw)
+            merged_df = merge_subtitles(self.hanzi_subtitles,
+                                        self.english_subtitles)
+            merged_df["text"] = [f"{e['upper text']}\n{e['lower text']}"
+                                 for _, e in merged_df.iterrows()]
 
-            # self.bilingual_subtitles = merge_subtitles(
-            #     self.english_subtitles, self.hanzi_subtitles,
-            #     verbosity=self.verbosity)
+            self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
+
+            self.bilingual_subtitles.save("$HOME/ZE.srt")
 
         # # Merge Chinese and English
         # if self.chinese and self.english:
@@ -732,182 +733,164 @@ class Compositor(CLToolBase):
     #                 print(f"{truecased}\n")
     #
     #             subtitle["text"] = truecased
-    #
-    # def merge_chinese_english(self, chinese_subtitles, english_subtitles):
-    #     import pandas as pd
-    #
-    #     def add_merged_subtitle():
-    #         if start == time:
-    #             return merged_subtitles
-    #         return merged_subtitles.append(
-    #             pd.concat([
-    #                 pd.DataFrame.from_items(
-    #                     [("start", [start]), ("end", [time])]),
-    #                 current_chinese_subtitle,
-    #                 current_english_subtitle],
-    #                 axis=1),
-    #             ignore_index=True)
-    #
-    #     if self.verbosity >= 1:
-    #         print("Merging Chinese and English subtitles")
-    #
-    #     transitions = []
-    #     for _, subtitle in chinese_subtitles.iterrows():
-    #         transitions += [
-    #             [subtitle["start"], "chinese_start",
-    #              subtitle.drop(["start", "end"])],
-    #             [subtitle["end"], "chinese_end", None]]
-    #     for _, subtitle in english_subtitles.iterrows():
-    #         transitions += [
-    #             [subtitle["start"], "english_start",
-    #              subtitle.drop(["start", "end"])],
-    #             [subtitle["end"], "english_end", None]]
-    #     transitions.sort()
-    #
-    #     merged_subtitles = pd.DataFrame()
-    #
-    #     start = current_chinese_subtitle = current_english_subtitle = None
-    #     for time, kind, subtitle in transitions:
-    #         if kind == "chinese_start":
-    #             if start is None:
-    #                 # Transition from __ -> C_
-    #                 pass
-    #             else:
-    #                 # Transition from _E -> CE
-    #                 merged_subtitles = add_merged_subtitle()
-    #             current_chinese_subtitle = pd.DataFrame(
-    #                 subtitle).transpose().reset_index(drop=True).rename(
-    #                 columns={"text": "chinese"})
-    #             start = time
-    #         elif kind == "chinese_end":
-    #             merged_subtitles = add_merged_subtitle()
-    #             current_chinese_subtitle = None
-    #             if current_english_subtitle is None:
-    #                 # Transition from C_ -> __
-    #                 start = None
-    #             else:
-    #                 # Transition from CE -> _C
-    #                 start = time
-    #         elif kind == "english_start":
-    #             if start is None:
-    #                 # Transition from __ -> _E
-    #                 pass
-    #             else:
-    #                 # Transition from C_ -> CE
-    #                 merged_subtitles = add_merged_subtitle()
-    #             current_english_subtitle = pd.DataFrame(
-    #                 subtitle).transpose().reset_index(drop=True).rename(
-    #                 columns={"text": "english"})
-    #             start = time
-    #         elif kind == "english_end":
-    #             merged_subtitles = add_merged_subtitle()
-    #             current_english_subtitle = None
-    #             if current_chinese_subtitle is None:
-    #                 # Transition from _E -> __
-    #                 start = None
-    #             else:
-    #                 # Transition from CE -> E_
-    #                 start = time
-    #
-    #     if self.cantonese and self.mandarin:
-    #         merged_subtitles = merged_subtitles[
-    #             ["start", "end", "chinese", "cantonese", "mandarin",
-    #              "english"]]
-    #     elif self.cantonese:
-    #         merged_subtitles = merged_subtitles[
-    #             ["start", "end", "chinese", "cantonese", "english"]]
-    #     elif self.mandarin:
-    #         merged_subtitles = merged_subtitles[
-    #             ["start", "end", "chinese", "mandarin", "english"]]
-    #     else:
-    #         merged_subtitles = merged_subtitles[
-    #             ["start", "end", "chinese", "english"]]
-    #     merged_subtitles.index += 1
-    #
-    #     return merged_subtitles
-    #
-    # def merge_chinese_english_2(self, merged_subtitles):
-    #     import numpy as np
-    #     import pandas as pd
-    #     from datetime import date
-    #     from datetime import datetime
-    #
-    #     cleaned_subs = pd.DataFrame([merged_subtitles.iloc[0]])
-    #
-    #     for index in self.merged_subtitles.index[1:]:
-    #         last = cleaned_subs.iloc[-1]
-    #         next = merged_subtitles.loc[index]
-    #         if last.chinese == next.chinese:
-    #             if isinstance(last.english, float) and np.isnan(last.english):
-    #                 # Chinese started before English
-    #                 last.english = next.english
-    #                 last.end = next.end
-    #                 cleaned_subs.iloc[-1] = last  # Apparently necessary
-    #             elif isinstance(next.english, float) and np.isnan(
-    #                     next.english):
-    #                 # English started before Chinese
-    #                 last.end = next.end
-    #                 cleaned_subs.iloc[-1] = last  # Apparently not necessary
-    #             else:
-    #                 # Single Chinese subtitle given two English subtitles
-    #                 gap = (datetime.combine(date.today(), next.start) -
-    #                        datetime.combine(date.today(), last.end))
-    #                 if gap.total_seconds() < 0.5:
-    #                     # Probably long Chinese split into two English
-    #                     mid = (datetime.combine(
-    #                         date.today(), last.end) + (gap / 2)).time()
-    #                     last.end = mid
-    #                     next.start = mid
-    #                     cleaned_subs.iloc[
-    #                         -1] = last  # Apparently not necessary
-    #                     cleaned_subs = cleaned_subs.append(next)
-    #
-    #                 else:
-    #                     # Probably Chinese repeated with different English
-    #                     cleaned_subs = cleaned_subs.append(next)
-    #
-    #         elif last.english == next.english:
-    #             if isinstance(last.chinese, float) and np.isnan(last.chinese):
-    #                 # English started before Chinese
-    #                 last.chinese = next.chinese
-    #                 if hasattr(next, "mandarin"):
-    #                     last.mandarin = next.mandarin
-    #                 if hasattr(next, "cantonese"):
-    #                     last.cantonese = next.cantonese
-    #                 last.end = next.end
-    #                 cleaned_subs.iloc[-1] = last  # Apparently necessary
-    #             elif isinstance(next.chinese, float) and np.isnan(
-    #                     next.chinese):
-    #                 # Chinese started before English
-    #                 if last.end < next.start:
-    #                     cleaned_subs = cleaned_subs.append(next)
-    #                 else:
-    #                     last.end = next.end
-    #                     cleaned_subs.iloc[
-    #                         -1] = last  # Apparently not necessary
-    #             else:
-    #                 gap = (datetime.combine(date.today(), next.start) -
-    #                        datetime.combine(date.today(), last.end))
-    #                 if gap.total_seconds() < 0.5:
-    #                     # Probably long English split into two Chinese
-    #                     mid = (datetime.combine(
-    #                         date.today(), last.end) + (gap / 2)).time()
-    #                     last.end = mid
-    #                     next.start = mid
-    #                     cleaned_subs.iloc[
-    #                         -1] = last  # Apparently not necessary
-    #                     cleaned_subs = cleaned_subs.append(next)
-    #                 else:
-    #                     # Probably English repeated with different Chinese
-    #                     cleaned_subs = cleaned_subs.append(next)
-    #         else:
-    #             cleaned_subs = cleaned_subs.append(next)
-    #
-    #     cleaned_subs = cleaned_subs.reset_index(drop=True)
-    #     cleaned_subs.index += 1
-    #
-    #     return cleaned_subs
-    #
+
+    def merge_chinese_english(self, chinese_subtitles, english_subtitles):
+        def add_merged_subtitle():
+            if start == time:
+                return merged_subtitles
+            return merged_subtitles.append(
+                pd.concat([
+                    pd.DataFrame.from_items(
+                        [("start", [start]), ("end", [time])]),
+                    current_chinese_subtitle,
+                    current_english_subtitle],
+                    axis=1),
+                ignore_index=True)
+
+        transitions = []
+        for _, subtitle in chinese_subtitles.iterrows():
+            transitions += [
+                [subtitle["start"], "chinese_start",
+                 subtitle.drop(["start", "end"])],
+                [subtitle["end"], "chinese_end", None]]
+        for _, subtitle in english_subtitles.iterrows():
+            transitions += [
+                [subtitle["start"], "english_start",
+                 subtitle.drop(["start", "end"])],
+                [subtitle["end"], "english_end", None]]
+        transitions.sort()
+
+        merged_subtitles = pd.DataFrame()
+
+        start = current_chinese_subtitle = current_english_subtitle = None
+        for time, kind, subtitle in transitions:
+            if kind == "chinese_start":
+                if start is None:
+                    # Transition from __ -> C_
+                    pass
+                else:
+                    # Transition from _E -> CE
+                    merged_subtitles = add_merged_subtitle()
+                current_chinese_subtitle = pd.DataFrame(
+                    subtitle).transpose().reset_index(drop=True).rename(
+                    columns={"text": "chinese"})
+                start = time
+            elif kind == "chinese_end":
+                merged_subtitles = add_merged_subtitle()
+                current_chinese_subtitle = None
+                if current_english_subtitle is None:
+                    # Transition from C_ -> __
+                    start = None
+                else:
+                    # Transition from CE -> _C
+                    start = time
+            elif kind == "english_start":
+                if start is None:
+                    # Transition from __ -> _E
+                    pass
+                else:
+                    # Transition from C_ -> CE
+                    merged_subtitles = add_merged_subtitle()
+                current_english_subtitle = pd.DataFrame(
+                    subtitle).transpose().reset_index(drop=True).rename(
+                    columns={"text": "english"})
+                start = time
+            elif kind == "english_end":
+                merged_subtitles = add_merged_subtitle()
+                current_english_subtitle = None
+                if current_chinese_subtitle is None:
+                    # Transition from _E -> __
+                    start = None
+                else:
+                    # Transition from CE -> E_
+                    start = time
+
+        merged_subtitles = merged_subtitles[
+            ["start", "end", "chinese", "english"]]
+        merged_subtitles.index += 1
+
+        return merged_subtitles
+
+    def merge_chinese_english_2(self, merged_subtitles):
+        from datetime import date
+        from datetime import datetime
+
+        cleaned_subs = pd.DataFrame([merged_subtitles.iloc[0]])
+
+        for index in self.merged_subtitles.index[1:]:
+            last = cleaned_subs.iloc[-1]
+            next = merged_subtitles.loc[index]
+            if last.chinese == next.chinese:
+                if isinstance(last.english, float) and np.isnan(last.english):
+                    # Chinese started before English
+                    last.english = next.english
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently necessary
+                elif isinstance(next.english, float) and np.isnan(
+                        next.english):
+                    # English started before Chinese
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently not necessary
+                else:
+                    # Single Chinese subtitle given two English subtitles
+                    gap = (datetime.combine(date.today(), next.start) -
+                           datetime.combine(date.today(), last.end))
+                    if gap.total_seconds() < 0.5:
+                        # Probably long Chinese split into two English
+                        mid = (datetime.combine(
+                            date.today(), last.end) + (gap / 2)).time()
+                        last.end = mid
+                        next.start = mid
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
+                        cleaned_subs = cleaned_subs.append(next)
+
+                    else:
+                        # Probably Chinese repeated with different English
+                        cleaned_subs = cleaned_subs.append(next)
+
+            elif last.english == next.english:
+                if isinstance(last.chinese, float) and np.isnan(last.chinese):
+                    # English started before Chinese
+                    last.chinese = next.chinese
+                    if hasattr(next, "mandarin"):
+                        last.mandarin = next.mandarin
+                    if hasattr(next, "cantonese"):
+                        last.cantonese = next.cantonese
+                    last.end = next.end
+                    cleaned_subs.iloc[-1] = last  # Apparently necessary
+                elif isinstance(next.chinese, float) and np.isnan(
+                        next.chinese):
+                    # Chinese started before English
+                    if last.end < next.start:
+                        cleaned_subs = cleaned_subs.append(next)
+                    else:
+                        last.end = next.end
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
+                else:
+                    gap = (datetime.combine(date.today(), next.start) -
+                           datetime.combine(date.today(), last.end))
+                    if gap.total_seconds() < 0.5:
+                        # Probably long English split into two Chinese
+                        mid = (datetime.combine(
+                            date.today(), last.end) + (gap / 2)).time()
+                        last.end = mid
+                        next.start = mid
+                        cleaned_subs.iloc[
+                            -1] = last  # Apparently not necessary
+                        cleaned_subs = cleaned_subs.append(next)
+                    else:
+                        # Probably English repeated with different Chinese
+                        cleaned_subs = cleaned_subs.append(next)
+            else:
+                cleaned_subs = cleaned_subs.append(next)
+
+        cleaned_subs = cleaned_subs.reset_index(drop=True)
+        cleaned_subs.index += 1
+
+        return cleaned_subs
+
     # def simplify(self, subtitles):
     #     from hanziconv import HanziConv
     #

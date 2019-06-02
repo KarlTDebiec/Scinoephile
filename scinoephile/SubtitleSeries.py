@@ -114,7 +114,6 @@ class SubtitleSeries(Base, SSAFile):
         subs = cls(verbosity=verbosity)
 
         for _, event in df.iterrows():
-            embed()
             subs.events.append(cls.event_class(
                 text=event["text"], start=event["start"], end=event["end"],
                 verbosity=verbosity, series=subs))
