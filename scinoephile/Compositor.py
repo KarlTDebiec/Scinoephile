@@ -144,7 +144,10 @@ class Compositor(CLToolBase):
     def hanzi_subtitles(self):
         """SubtitleSeries: Hanzi Chinse subtitles"""
         if not hasattr(self, "_hanzi_subtitles"):
-            self._hanzi_subtitles = None
+            if isinstance(self.english_subtitles, SubtitleSeries):
+                self._translate_chinese_to_english()
+            else:
+                self._hanzi_subtitles = None
         return self._hanzi_subtitles
 
     @hanzi_subtitles.setter
@@ -170,45 +173,6 @@ class Compositor(CLToolBase):
         self._pinyin_subtitles = value
 
     # endregion
-
-    # region Old Properties
-
-    # @property
-    # def simplified(self):
-    #     """bool: Convert traditional Chinese to simplified"""
-    #     if not hasattr(self, "_simplified"):
-    #         self._simplified = False
-    #     return self._simplified
-    #
-    # @simplified.setter
-    # def simplified(self, value):
-    #     if not isinstance(value, bool):
-    #         raise ValueError()
-    #     self._simplified = value
-    # @property
-    #
-    # @property
-    # def translate_client(self):
-    #     """google.cloud.translate_v2.client.Client: Google Translate client"""
-    #     if not hasattr(self, "_translate_client"):
-    #         from google.cloud import translate
-    #         self._translate_client = translate.Client()
-    #     return self._translate_client
-    #
-    # @property
-    # def truecase(self):
-    #     """bool: Apply standard capitalization to English subtitles"""
-    #     if not hasattr(self, "_truecase"):
-    #         self._truecase = False
-    #     return self._truecase
-    #
-    # @truecase.setter
-    # def truecase(self, value):
-    #     if not isinstance(value, bool):
-    #         raise ValueError()
-    #     self._truecase = value
-
-    # endregion Properties
 
     # region Private Methods
 
@@ -278,31 +242,33 @@ class Compositor(CLToolBase):
             elif language == "cantonese":
                 event.text = get_pinyin(event.text, "cantonese")
 
+    def _translate_chinese_to_english(self):
+        from copy import deepcopy
+        from scinoephile.translation import client
+
+        # Process arguments
+        if self.hanzi_subtitles is None:
+            raise ValueError("Initialization of English translation requires "
+                             "initialized hanzi subtitles")
+
+        if self.verbosity >= 1:
+            print("Initializing English translation")
+
+        # Copy and translate
+        self._english_subtitles = deepcopy(self.hanzi_subtitles)
+        texts = [e.text for e in self._english_subtitles.events]
+        translations = []
+        for i in range(0, len(texts), 100):
+            translations += [e["translatedText"] for e in
+                             client.translate(list(texts[i:i + 100]),
+                                              source_language="zh",
+                                              target_language="en")]
+        for i, translation in enumerate(translations):
+            self._english_subtitles.events[i].text = translation
+
     # endregion
 
     # region Old Methods
-
-    # def add_english_translation(self, subtitles):
-    #
-    #     if self.verbosity >= 1:
-    #         print("Adding English translation")
-    #
-    #     translations = []
-    #     for i in range(0, len(subtitles), 100):
-    #         translations += [c["translatedText"] for c in
-    #                          self.translate_client.translate(
-    #                              list(subtitles.iloc[i:i + 100].text),
-    #                              source_language="zh",
-    #                              target_language="en")]
-    #     subtitles["translation"] = pd.Series(translations,
-    #                                          index=subtitles.index)
-    #
-    #     if self.verbosity >= 2:
-    #         for index, subtitle in subtitles.iterrows():
-    #             start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-    #             end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-    #             print(f"{index}\n{start} --> {end}\n{subtitle.text}\n"
-    #                   f"{subtitle.translation}\n")
 
     # def apply_truecase(self, subtitles):
     #     import nltk
