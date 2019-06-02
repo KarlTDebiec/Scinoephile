@@ -45,6 +45,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinxarg.ext"
 ]
 autodoc_member_order = "bysource"
 autodoc_default_options = {

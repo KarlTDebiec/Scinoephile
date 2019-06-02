@@ -83,7 +83,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
@@ -385,18 +388,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">single_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;english&quot;</span> <span class="ow">or</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;pinyin&quot;</span><span class="p">:</span>
-        <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*﹣?\s*(.*)\s+﹣(.+)\s*$&quot;</span><span class="p">,</span>
-                             <span class="sa">r</span><span class="s2">&quot;﹣\1　　﹣\2&quot;</span><span class="p">,</span>
-                             <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-        <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*(.*)\s*\n\s*(.+)\s*$&quot;</span><span class="p">,</span>
-                             <span class="sa">r</span><span class="s2">&quot;\1　\2&quot;</span><span class="p">,</span>
-                             <span class="n">single_line</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;hanzi&quot;</span><span class="p">:</span>
         <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$&quot;</span><span class="p">,</span>
                              <span class="sa">r</span><span class="s2">&quot;- \1    - \2&quot;</span><span class="p">,</span>
                              <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
         <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*(.*)\s*\n\s*(.+)\s*$&quot;</span><span class="p">,</span>
                              <span class="sa">r</span><span class="s2">&quot;\1 \2&quot;</span><span class="p">,</span>
+                             <span class="n">single_line</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;hanzi&quot;</span><span class="p">:</span>
+        <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*﹣?\s*(.*)\s+﹣(.+)\s*$&quot;</span><span class="p">,</span>
+                             <span class="sa">r</span><span class="s2">&quot;﹣\1　　﹣\2&quot;</span><span class="p">,</span>
+                             <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">single_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*(.*)\s*\n\s*(.+)\s*$&quot;</span><span class="p">,</span>
+                             <span class="sa">r</span><span class="s2">&quot;\1　\2&quot;</span><span class="p">,</span>
                              <span class="n">single_line</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value for argument &#39;language&#39;; must be &quot;</span>
@@ -694,8 +697,8 @@
 
         <span class="k">return</span> <span class="n">parser</span></div>
 
-<div class="viewcode-block" id="CLToolBase.validate_args"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.CLToolBase.validate_args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validate_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="CLToolBase.process_arguments"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.CLToolBase.process_arguments">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">process_arguments</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validates arguments provided to an argument parser</span>
 

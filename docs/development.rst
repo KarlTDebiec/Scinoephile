@@ -19,12 +19,12 @@ _____________________________
 Compositor
 __________
 
-- [ ] Document
 - [ ] Restore support for Hanzi, pinyin, and English
 - [ ] Restore support for IPython console
 - [ ] Add support for overwriting files
 - [ ] Restore truecase argument support
 - [ ] Restore time offset support
+- [ ] Tests
 
 Documentation
 _____________

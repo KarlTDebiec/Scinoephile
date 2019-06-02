@@ -33,6 +33,7 @@ Operations are inferred from provided arguments, e.g.:
                   --simplify
 """
 ################################### MODULES ###################################
+import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
 from IPython import embed
@@ -299,8 +300,17 @@ class Compositor(CLToolBase):
         # Merge
         merged_df = merge_subtitles(chinese_subtitles,
                                     english_subtitles)
-        merged_df["text"] = [f"{e['upper text']}\n{e['lower text']}"
-                             for _, e in merged_df.iterrows()]
+        merged_text = []
+        for _, e in merged_df.iterrows():
+            if (isinstance(e["upper text"], float)
+                    and np.isnan(e["upper text"])):
+                merged_text += [e['lower text']]
+            elif (isinstance(e["lower text"], float)
+                  and np.isnan(e["lower text"])):
+                merged_text += [e["upper text"]]
+            else:
+                merged_text += [f"{e['upper text']}\n{e['lower text']}"]
+        merged_df["text"] = merged_text
 
         self._bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
 
@@ -468,6 +478,10 @@ class Compositor(CLToolBase):
     # endregion
 
 
+################################## FUNCTIONS ##################################
+get_argparser = Compositor.construct_argparser()
+
 #################################### MAIN #####################################
+
 if __name__ == "__main__":
     Compositor.main()

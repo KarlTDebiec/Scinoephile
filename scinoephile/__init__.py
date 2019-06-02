@@ -211,18 +211,18 @@ def get_single_line_text(text, language="english"):
     """
     single_line = ""
     if language == "english" or language == "pinyin":
-        single_line = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
-                             r"﹣\1　　﹣\2",
-                             text, re.M)
-        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
-                             r"\1　\2",
-                             single_line, re.M)
-    elif language == "hanzi":
         single_line = re.sub(r"^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$",
                              r"- \1    - \2",
                              text, re.M)
         single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
                              r"\1 \2",
+                             single_line, re.M)
+    elif language == "hanzi":
+        single_line = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
+                             r"﹣\1　　﹣\2",
+                             text, re.M)
+        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                             r"\1　\2",
                              single_line, re.M)
     else:
         raise ValueError("Invalid value for argument 'language'; must be "
@@ -521,7 +521,7 @@ class CLToolBase(Base, ABC):
         return parser
 
     @classmethod
-    def validate_args(cls, parser, args):
+    def process_arguments(cls, parser, args):
         """
         Validates arguments provided to an argument parser
 
