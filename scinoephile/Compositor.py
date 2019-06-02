@@ -12,7 +12,8 @@ import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
 from IPython import embed
-from scinoephile import (get_pinyin, get_single_line_text, merge_subtitles,
+from scinoephile import (get_pinyin, get_simplified_hanzi,
+                         get_single_line_text, merge_subtitles,
                          CLToolBase, SubtitleSeries)
 
 ################################## SETTINGS ###################################
@@ -244,32 +245,18 @@ class Compositor(CLToolBase):
             elif language == "cantonese":
                 event.text = get_pinyin(event.text, "cantonese")
 
-    def _convert_traditional_to_simplified_hanzi(self, subtitles):
-        from hanziconv import HanziConv
+    def _convert_traditional_to_simplified_hanzi(self):
+
+        # Process arguments
+        if self.hanzi_subtitles is None:
+            raise ValueError("Conversion of traditional hanzi to simplified "
+                             "requires initialized hanzi subtitles")
 
         if self.verbosity >= 1:
             print("Converting traditional characters to simplified")
 
-        for index, subtitle in subtitles.iterrows():
-            text = subtitle["text"]
-
-            if self.verbosity >= 2:
-                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-                print(f"{index}\n{start} --> {end}\n{text}")
-
-            simplified = ""
-            for character in text:
-                if (self.re_hanzi.match(character)
-                        or self.re_hanzi_rare.match(character)):
-                    simplified += HanziConv.toSimplified(character)
-                else:
-                    simplified += character
-
-            if self.verbosity >= 2:
-                print(f"{simplified}\n")
-
-            subtitle["text"] = simplified
+        for event in self._hanzi_subtitles:
+            event.text = get_simplified_hanzi(event.text)
 
     def _translate_chinese_to_english(self):
         from copy import deepcopy

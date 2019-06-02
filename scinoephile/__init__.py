@@ -72,6 +72,19 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
+def get_simplified_hanzi(text):
+    from hanziconv import HanziConv
+
+    simplified = ""
+    for char in text:
+        if (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+            simplified += HanziConv.toSimplified(char)
+        else:
+            simplified += char
+    print(f"{text}|{simplified}")
+    return simplified
+
+
 def get_pinyin(text, language="mandarin"):
     if language == "mandarin":
         from snownlp import SnowNLP
