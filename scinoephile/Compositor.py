@@ -701,11 +701,11 @@ class Compositor(CLToolBase):
     @staticmethod
     def merge_chinese_english_2(merged):
 
-        cleaned_subs = [merged.iloc[0]]
+        cleaned_subs = [merged.iloc[0].copy()]
 
-        for index in merged.index[1:]:
+        for index in range(1, merged.index.size):
             last = cleaned_subs[-1]
-            next = merged.loc[index]
+            next = merged.iloc[index].copy()
             # print(index, last.values, next.values)
             if last["upper text"] == next["upper text"]:
                 if isinstance(last["lower text"], float) and np.isnan(
