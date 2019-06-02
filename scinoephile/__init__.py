@@ -131,79 +131,8 @@ def merge_subtitles(upper, lower, sync=True, verbosity=1, **kwargs):
 
     df = pd.DataFrame.from_records(
         data=merged, columns=["upper text", "lower text", "start", "end"])
-    # return df
 
-    df = pd.DataFrame.from_records(
-        data=merged, columns=["chinese", "english", "start", "end"])
-
-    cleaned_subs = pd.DataFrame([df.iloc[0]])
-
-    for index in df.index[1:]:
-        last = cleaned_subs.iloc[-1]
-        next = df.loc[index]
-        print(index, last.values, next.values)
-        if last.chinese == next.chinese:
-            if isinstance(last.english, float) and np.isnan(last.english):
-                # Chinese started before English
-                last.english = next.english
-                last.end = next.end
-                cleaned_subs.iloc[-1] = last  # Apparently necessary
-            elif isinstance(next.english, float) and np.isnan(
-                    next.english):
-                # English started before Chinese
-                last.end = next.end
-                cleaned_subs.iloc[-1] = last  # Apparently not necessary
-            else:
-                # Single Chinese subtitle given two English subtitles
-                gap = next.start - last.end
-                if gap < 500:
-                    # Probably long Chinese split into two English
-                    mid = last.end + (gap / 2)
-                    last.end = mid
-                    next.start = mid
-                    cleaned_subs.iloc[-1] = last  # Apparently not necessary
-                    cleaned_subs = cleaned_subs.append(next)
-
-                else:
-                    # Probably Chinese repeated with different English
-                    cleaned_subs = cleaned_subs.append(next)
-
-        elif last.english == next.english:
-            if isinstance(last.chinese, float) and np.isnan(last.chinese):
-                # English started before Chinese
-                last.chinese = next.chinese
-                last.end = next.end
-                cleaned_subs.iloc[-1] = last  # Apparently necessary
-            elif isinstance(next.chinese, float) and np.isnan(
-                    next.chinese):
-                # Chinese started before English
-                if last.end < next.start:
-                    cleaned_subs = cleaned_subs.append(next)
-                else:
-                    last.end = next.end
-                    cleaned_subs.iloc[
-                        -1] = last  # Apparently not necessary
-            else:
-                gap = next.start - last.end
-                if gap < 500:
-                    # Probably long English split into two Chinese
-                    mid = last.end + (gap / 2)
-                    last.end = mid
-                    next.start = mid
-                    cleaned_subs.iloc[-1] = last  # Apparently not necessary
-                    cleaned_subs = cleaned_subs.append(next)
-                else:
-                    # Probably English repeated with different Chinese
-                    cleaned_subs = cleaned_subs.append(next)
-        else:
-            cleaned_subs = cleaned_subs.append(next)
-
-    cleaned_subs = cleaned_subs.reset_index(drop=True)
-    cleaned_subs.columns.values[0] = "upper text"
-    cleaned_subs.columns.values[1] = "lower text"
-    cleaned_subs.index += 1
-
-    return cleaned_subs
+    return df
 
 
 ################################### CLASSES ###################################
