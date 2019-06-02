@@ -48,6 +48,134 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
+def get_cantonese_pinyin(text, corpus, character_to_cantonese=None,
+                         unmatched=None, verbosity=1):
+    import pycantonese as pc
+    from collections import Counter
+    from hanziconv import HanziConv
+
+    punctuation = {"\n": "\n",
+                   "　": " ",
+                   " ": " ",
+                   "？": "?",
+                   "，": ",",
+                   "、": ",",
+                   ".": ".",
+                   "！": "!",
+                   "…": "...",
+                   "...": "...",
+                   "﹣": "-",
+                   "─": "─",
+                   "-": "-",
+                   "“": "\"",
+                   "”": "\"",
+                   "\"": "\"",
+                   "《": "<",
+                   "》": ">",
+                   "「": "[",
+                   "」": "]",
+                   "：": ":"}
+    re_hanzi = re.compile(r"[\u4e00-\u9fff]")
+    re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
+    re_jyutping = re.compile(r"[a-z]+\d")
+    re_western = re.compile(r"[a-zA-Z0-9]")
+
+    def identify_cantonese_romanization(character):
+        matches = corpus.search(character=character)
+
+        if len(matches) == 0:
+            # Character not found in corpus, search for traditional version
+            traditional_character = HanziConv.toTraditional(character)
+            if traditional_character != character:
+                if verbosity >= 3:
+                    print(
+                        f"{character} not found, searching for traditional")
+                return identify_cantonese_romanization(
+                    traditional_character)
+
+            # Truly no instance of character in corpus
+            if verbosity >= 1:
+                print(f"{character} not found in corpus")
+            return None
+
+        # If character is found in corpus alone, use most common instance
+        character_matches = [m[2] for m in matches if len(m[0]) == 1]
+        if len(character_matches) > 0:
+            jyutping = Counter(character_matches).most_common(1)[0][0]
+            if verbosity >= 3:
+                print(f"{character} found as single character")
+
+        # If character is not found in corpus alone, use most common word
+        else:
+            most_common_word = Counter(matches).most_common(1)[0][0]
+            index = most_common_word[0].index(character)
+            jyutping = re_jyutping.findall(most_common_word[2])[index]
+            if verbosity >= 3:
+                print(f"{character} found in word")
+
+        try:
+            yale = pc.jyutping2yale(jyutping)
+        except ValueError:
+            if verbosity >= 1:
+                print(
+                    f"{character} found but could not be converted from jyutping to Yale")
+            return None
+        return yale
+
+    if character_to_cantonese is None:
+        character_to_cantonese = {}
+    if unmatched is None:
+        unmatched = set()
+
+    romanization = ""
+    for character in text:
+        if (re_hanzi.match(character) or re_hanzi_rare.match(character)):
+            if character in character_to_cantonese:
+                romanization += " " + character_to_cantonese[character]
+            elif character in unmatched:
+                romanization += " " + character
+            else:
+                yale = identify_cantonese_romanization(character)
+                if yale is not None:
+                    character_to_cantonese[character] = yale
+                    romanization += " " + character_to_cantonese[character]
+                else:
+                    romanization += " " + character
+                    unmatched.add(character)
+        elif re_western.match(character):
+            romanization += character
+        elif character in punctuation:
+            romanization = romanization.strip() + punctuation[character]
+        else:
+            if verbosity >= 1:
+                print(f"{character} is unrecognized as Chinese, western, or "
+                      f"punctuation")
+            unmatched.add(character)
+
+    return romanization.strip()
+
+
+def get_mandarin_pinyin(text):
+    from snownlp import SnowNLP
+    from pypinyin import pinyin
+
+    romanization = ""
+    for line in text.split("\n"):
+        line_romanization = ""
+        for section in line.split():
+            section_romanization = ""
+            for word in SnowNLP(section).words:
+                if word in self.punctuation:
+                    section_romanization += self.punctuation[word]
+                else:
+                    section_romanization += " " + "".join(
+                        [a[0] for a in pinyin(word)])
+            line_romanization += "  " + section_romanization.strip()
+        romanization += "\n" + line_romanization.strip()
+
+    return romanization.strip()
+
+
 def in_ipython():
     try:
         shell = get_ipython().__class__.__name__
