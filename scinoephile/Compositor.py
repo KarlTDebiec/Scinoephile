@@ -57,11 +57,6 @@ class Compositor(CLToolBase):
                     "romanization, converting traditional characters to "
                     "simplified, or adding machine translation.")
 
-    re_index = re.compile(r"^(?P<index>\d+)$")
-    re_time = re.compile(r"^(?P<start>\d\d:\d\d:\d\d[,.]\d\d\d) --> "
-                         r"(?P<end>\d\d:\d\d:\d\d[,.]\d\d\d)(\sX1:0)?$")
-    re_blank = re.compile(r"^\s*$")
-
     # endregion
 
     # region Builtins
@@ -118,7 +113,11 @@ class Compositor(CLToolBase):
     def bilingual_subtitles(self):
         """SubtitleSeries: Bilingual subtitles"""
         if not hasattr(self, "_bilingual_subtitles"):
-            self._bilingual_subtitles = None
+            if (isinstance(self.hanzi_subtitles, SubtitleSeries)
+                    and isinstance(self.english_subtitles, SubtitleSeries)):
+                self._initialize_bilingual_subtitles()
+            else:
+                self._bilingual_subtitles = None
         return self._bilingual_subtitles
 
     @bilingual_subtitles.setter
@@ -131,7 +130,10 @@ class Compositor(CLToolBase):
     def english_subtitles(self):
         """SubtitleSeries: English subtitles"""
         if not hasattr(self, "_english_subtitles"):
-            self._english_subtitles = None
+            if isinstance(self.hanzi_subtitles, SubtitleSeries):
+                self._translate_chinese_to_english()
+            else:
+                self._english_subtitles = None
         return self._english_subtitles
 
     @english_subtitles.setter
@@ -145,7 +147,7 @@ class Compositor(CLToolBase):
         """SubtitleSeries: Hanzi Chinse subtitles"""
         if not hasattr(self, "_hanzi_subtitles"):
             if isinstance(self.english_subtitles, SubtitleSeries):
-                self._translate_chinese_to_english()
+                self._translate_english_to_chinese()
             else:
                 self._hanzi_subtitles = None
         return self._hanzi_subtitles
@@ -242,6 +244,33 @@ class Compositor(CLToolBase):
             elif language == "cantonese":
                 event.text = get_pinyin(event.text, "cantonese")
 
+    def _convert_traditional_to_simplified_hanzi(self, subtitles):
+        from hanziconv import HanziConv
+
+        if self.verbosity >= 1:
+            print("Converting traditional characters to simplified")
+
+        for index, subtitle in subtitles.iterrows():
+            text = subtitle["text"]
+
+            if self.verbosity >= 2:
+                start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
+                end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
+                print(f"{index}\n{start} --> {end}\n{text}")
+
+            simplified = ""
+            for character in text:
+                if (self.re_hanzi.match(character)
+                        or self.re_hanzi_rare.match(character)):
+                    simplified += HanziConv.toSimplified(character)
+                else:
+                    simplified += character
+
+            if self.verbosity >= 2:
+                print(f"{simplified}\n")
+
+            subtitle["text"] = simplified
+
     def _translate_chinese_to_english(self):
         from copy import deepcopy
         from scinoephile.translation import client
@@ -265,6 +294,30 @@ class Compositor(CLToolBase):
                                               target_language="en")]
         for i, translation in enumerate(translations):
             self._english_subtitles.events[i].text = translation
+
+    def _translate_english_to_chinese(self):
+        from copy import deepcopy
+        from scinoephile.translation import client
+
+        # Process arguments
+        if self.english_subtitles is None:
+            raise ValueError("Initialization of Chinese translation requires "
+                             "initialized English subtitles")
+
+        if self.verbosity >= 1:
+            print("Initializing Chinese translation")
+
+        # Copy and translate
+        self._hanzi_subtitles = deepcopy(self.english_subtitles)
+        texts = [e.text for e in self._hanzi_subtitles.events]
+        translations = []
+        for i in range(0, len(texts), 100):
+            translations += [e["translatedText"] for e in
+                             client.translate(list(texts[i:i + 100]),
+                                              source_language="en",
+                                              target_language="zh")]
+        for i, translation in enumerate(translations):
+            self._hanzi_subtitles.events[i].text = translation
 
     # endregion
 
@@ -307,33 +360,6 @@ class Compositor(CLToolBase):
     #                 print(f"{truecased}\n")
     #
     #             subtitle["text"] = truecased
-
-    # def simplify(self, subtitles):
-    #     from hanziconv import HanziConv
-    #
-    #     if self.verbosity >= 1:
-    #         print("Converting traditional characters to simplified")
-    #
-    #     for index, subtitle in subtitles.iterrows():
-    #         text = subtitle["text"]
-    #
-    #         if self.verbosity >= 2:
-    #             start = subtitle.start.strftime("%H:%M:%S,%f")[:-3]
-    #             end = subtitle.end.strftime("%H:%M:%S,%f")[:-3]
-    #             print(f"{index}\n{start} --> {end}\n{text}")
-    #
-    #         simplified = ""
-    #         for character in text:
-    #             if (self.re_hanzi.match(character)
-    #                     or self.re_hanzi_rare.match(character)):
-    #                 simplified += HanziConv.toSimplified(character)
-    #             else:
-    #                 simplified += character
-    #
-    #         if self.verbosity >= 2:
-    #             print(f"{simplified}\n")
-    #
-    #         subtitle["text"] = simplified
 
     # endregion
 
