@@ -40,11 +40,6 @@ from scinoephile import (get_pinyin, get_simplified_hanzi,
                          get_single_line_text, get_truecase, merge_subtitles,
                          CLToolBase, SubtitleSeries)
 
-################################## SETTINGS ###################################
-pd.set_option("display.width", 110)
-pd.set_option("display.max_colwidth", 16)
-pd.set_option("display.max_rows", None)
-
 
 ################################### CLASSES ###################################
 class Compositor(CLToolBase):
@@ -477,10 +472,6 @@ class Compositor(CLToolBase):
     # endregion
 
 
-################################## FUNCTIONS ##################################
-get_argparser = Compositor.construct_argparser()
-
 #################################### MAIN #####################################
-
 if __name__ == "__main__":
     Compositor.main()

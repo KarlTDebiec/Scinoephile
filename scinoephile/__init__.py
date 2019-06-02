@@ -268,6 +268,7 @@ def merge_subtitles(upper, lower):
     Returns:
         DataFrame: Merged and synchronized subtitles
     """
+
     def add_event(merged):
         if start != time:
             if upper_text is None:
@@ -536,6 +537,9 @@ class CLToolBase(Base, ABC):
     @classmethod
     def main(cls):
         """Parses and validates arguments, constructs and calls object"""
+        pd.set_option("display.width", 110)
+        pd.set_option("display.max_colwidth", 16)
+        pd.set_option("display.max_rows", None)
 
         parser = cls.construct_argparser()
         args = vars(parser.parse_args())
