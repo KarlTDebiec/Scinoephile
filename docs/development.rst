@@ -19,10 +19,11 @@ _____________________________
 Compositor
 __________
 
+- [x] Add support for overwriting files
+- [ ] Add support for input and output files of the same type
 - [ ] Complete documentation
-- [ ] Restore support for Hanzi, pinyin, and English
+- [ ] Restore support for Hanzi, pinyin, and English together
 - [ ] Restore support for IPython console
-- [ ] Add support for overwriting files
 - [ ] Restore truecase argument support
 - [ ] Restore time offset support
 - [ ] Tests

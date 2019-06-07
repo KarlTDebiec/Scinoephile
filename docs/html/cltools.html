@@ -187,8 +187,9 @@
 <h1>Command-Line Tools<a class="headerlink" href="#command-line-tools" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="compositor">
 <h2>Compositor<a class="headerlink" href="#compositor" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
-                     [-p [FILE]] [-s] [-m] [-y]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b FILE [overwrite ...]]
+                 [-c FILE [overwrite ...]] [-e FILE [overwrite ...]]
+                 [-p FILE [overwrite ...]] [-s] [-m] [-y]
 
 Compiles Chinese and English subtitles into a single file, optionally adding
 Mandarin or Cantonese pinyin, converting traditional characters to simplified,
@@ -220,13 +221,13 @@ optional arguments:
   -q, --quiet           disable verbose output
 
 file arguments:
-  -b [FILE], --bilingual [FILE]
+  -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
                         Bilingual subtitles
-  -c [FILE], --chinese [FILE], --hanzi [FILE]
+  -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                         Chinese Hanzi subtitles
-  -e [FILE], --english [FILE]
+  -e FILE [overwrite ...], --english FILE [overwrite ...]
                         English subtitles
-  -p [FILE], --pinyin [FILE]
+  -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
                         Chinese Pinyin subtitles
 
 operation arguments:
@@ -242,15 +243,19 @@ operation arguments:
 <p>Compiles Chinese and English subtitles</p>
 <dl class="method">
 <dt id="scinoephile.Compositor.Compositor.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>bilingual=False</em>, <em>english=False</em>, <em>hanzi=False</em>, <em>pinyin=False</em>, <em>simplify=True</em>, <em>pinyin_language='mandarin'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>bilingual=False</em>, <em>bilingual_overwrite=False</em>, <em>english=False</em>, <em>english_overwrite=False</em>, <em>hanzi=False</em>, <em>hanzi_overwrite=False</em>, <em>pinyin=False</em>, <em>pinyin_overwrite=False</em>, <em>simplify=True</em>, <em>pinyin_language='mandarin'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes command-line tool and selects operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bilingual</strong> (<em>str</em>) – Path to bilingual infile or outfile</p></li>
+<li><p><strong>bilingual_overwrite</strong> (<em>bool</em>) – Overwrite bilingual file</p></li>
 <li><p><strong>english</strong> (<em>str</em>) – Path to English infile or outfile</p></li>
+<li><p><strong>english_overwrite</strong> (<em>bool</em>) – Overwrite English file</p></li>
 <li><p><strong>hanzi</strong> (<em>str</em>) – Path to hanzi Chinese infile or outfile</p></li>
+<li><p><strong>hanzi_overwrite</strong> (<em>bool</em>) – Overwrite hanzi Chinese file</p></li>
 <li><p><strong>pinyin</strong> (<em>str</em>) – Path to pinyin Chinese infile or outfile</p></li>
+<li><p><strong>pinyin_overwrite</strong> (<em>bool</em>) – Overwrite pinyin Chinese file</p></li>
 <li><p><strong>simplify</strong> (<em>bool</em>) – Convert traditional hanzi to simplified</p></li>
 <li><p><strong>pinyin_language</strong> (<em>str</em>) – Langauge for which to add pinyin; may be
 ‘madarin’ or ‘cantonese’</p></li>

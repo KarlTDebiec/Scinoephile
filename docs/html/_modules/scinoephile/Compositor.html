@@ -217,12 +217,7 @@
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="p">(</span><span class="n">get_pinyin</span><span class="p">,</span> <span class="n">get_simplified_hanzi</span><span class="p">,</span>
                          <span class="n">get_single_line_text</span><span class="p">,</span> <span class="n">get_truecase</span><span class="p">,</span> <span class="n">merge_subtitles</span><span class="p">,</span>
-                         <span class="n">CLToolBase</span><span class="p">,</span> <span class="n">SubtitleSeries</span><span class="p">)</span>
-
-<span class="c1">################################## SETTINGS ###################################</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.width&quot;</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                         <span class="n">CLToolBase</span><span class="p">,</span> <span class="n">Metavar</span><span class="p">,</span> <span class="n">SubtitleSeries</span><span class="p">)</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
@@ -232,47 +227,61 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
-<div class="viewcode-block" id="Compositor.__init__"><a class="viewcode-back" href="../../cltools.html#scinoephile.Compositor.Compositor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bilingual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">english</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hanzi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">pinyin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pinyin_language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Compositor.__init__"><a class="viewcode-back" href="../../cltools.html#scinoephile.Compositor.Compositor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bilingual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bilingual_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">english</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">english_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hanzi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">hanzi_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pinyin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pinyin_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pinyin_language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes command-line tool and selects operations</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            bilingual (str): Path to bilingual infile or outfile</span>
+<span class="sd">            bilingual_overwrite (bool): Overwrite bilingual file</span>
 <span class="sd">            english (str): Path to English infile or outfile</span>
+<span class="sd">            english_overwrite (bool): Overwrite English file</span>
 <span class="sd">            hanzi (str): Path to hanzi Chinese infile or outfile</span>
+<span class="sd">            hanzi_overwrite (bool): Overwrite hanzi Chinese file</span>
 <span class="sd">            pinyin (str): Path to pinyin Chinese infile or outfile</span>
+<span class="sd">            pinyin_overwrite (bool): Overwrite pinyin Chinese file</span>
 <span class="sd">            simplify (bool): Convert traditional hanzi to simplified</span>
 <span class="sd">            pinyin_language (str): Langauge for which to add pinyin; may be</span>
 <span class="sd">              &#39;madarin&#39; or &#39;cantonese&#39;</span>
 <span class="sd">            **kwargs: Additional keyword arguments</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># embed(**self.embed_kw)</span>
 
         <span class="c1"># Read in files if they exist</span>
         <span class="k">if</span> <span class="n">bilingual</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bilingual</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">bilingual</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">bilingual</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">bilingual</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
+                <span class="k">if</span> <span class="n">bilingual_overwrite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
         <span class="k">if</span> <span class="n">english</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">english</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">english</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">english</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">english</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
+                <span class="k">if</span> <span class="n">english_overwrite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
         <span class="k">if</span> <span class="n">hanzi</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hanzi</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">hanzi</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">hanzi</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">hanzi</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
+                <span class="k">if</span> <span class="n">hanzi_overwrite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
         <span class="k">if</span> <span class="n">pinyin</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pinyin</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">pinyin</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">pinyin</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">pinyin</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
+                <span class="k">if</span> <span class="n">pinyin_overwrite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
 
@@ -442,6 +451,32 @@
 
     <span class="c1"># region Private Methods</span>
 
+    <span class="k">def</span> <span class="nf">_convert_traditional_to_simplified_hanzi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hanzi_subtitles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Conversion of traditional hanzi to simplified &quot;</span>
+                             <span class="s2">&quot;requires initialized hanzi subtitles&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting traditional characters to simplified&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hanzi_subtitles</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_simplified_hanzi</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_convert_capital_english_to_truecase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">english_subtitles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Conversion of capitalized English to truecase &quot;</span>
+                             <span class="s2">&quot;requires initialized English subtitles&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting capitalized English to truecase&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_english_subtitles</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_truecase</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_initialize_bilingual_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chinese</span><span class="o">=</span><span class="s2">&quot;hanzi&quot;</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 
@@ -516,32 +551,6 @@
                 <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_pinyin</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;mandarin&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;cantonese&quot;</span><span class="p">:</span>
                 <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_pinyin</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;cantonese&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_convert_traditional_to_simplified_hanzi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="c1"># Process arguments</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hanzi_subtitles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Conversion of traditional hanzi to simplified &quot;</span>
-                             <span class="s2">&quot;requires initialized hanzi subtitles&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting traditional characters to simplified&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hanzi_subtitles</span><span class="p">:</span>
-            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_simplified_hanzi</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_convert_capital_english_to_truecase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="c1"># Process arguments</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">english_subtitles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Conversion of capitalized English to truecase &quot;</span>
-                             <span class="s2">&quot;requires initialized English subtitles&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting capitalized English to truecase&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_english_subtitles</span><span class="p">:</span>
-            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_truecase</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_translate_chinese_to_english</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
@@ -622,20 +631,25 @@
         <span class="c1"># Files</span>
         <span class="n">parser_file</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;file arguments&quot;</span><span class="p">)</span>
         <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--bilingual&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                 <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span>
+                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
+                                 <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Bilingual subtitles&quot;</span><span class="p">)</span>
-        <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--chinese&quot;</span><span class="p">,</span> <span class="s2">&quot;--hanzi&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                 <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;hanzi&quot;</span><span class="p">,</span>
+        <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--chinese&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
+                                 <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
+                                 <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;hanzi&quot;</span><span class="p">,</span>
                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Chinese Hanzi subtitles&quot;</span><span class="p">)</span>
         <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--english&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                 <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span>
+                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
+                                 <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;English subtitles&quot;</span><span class="p">)</span>
         <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--pinyin&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                 <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span>
+                                 <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
+                                 <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Chinese Pinyin subtitles&quot;</span><span class="p">)</span>
 
         <span class="c1"># Operation</span>
@@ -656,11 +670,7 @@
     <span class="c1"># endregion</span>
 
 
-<span class="c1">################################## FUNCTIONS ##################################</span>
-<span class="n">get_argparser</span> <span class="o">=</span> <span class="n">Compositor</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">()</span>
-
 <span class="c1">#################################### MAIN #####################################</span>
-
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">Compositor</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
 </pre></div>

@@ -445,6 +445,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        DataFrame: Merged and synchronized subtitles</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="n">merged</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">start</span> <span class="o">!=</span> <span class="n">time</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">upper_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -663,7 +664,7 @@
 
     <span class="c1"># endregion</span>
 
-    <span class="c1"># region Class Methods</span>
+    <span class="c1"># region Public Class Methods</span>
 
 <div class="viewcode-block" id="CLToolBase.construct_argparser"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.CLToolBase.construct_argparser">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">construct_argparser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -710,14 +711,53 @@
 
     <span class="c1"># endregion</span>
 
+    <span class="c1"># region Public Static Methods</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_filepath_action</span><span class="p">():</span>
+        <span class="kn">import</span> <span class="nn">argparse</span>
+
+        <span class="k">class</span> <span class="nc">FilepathAction</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
+
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{self.dest}</span><span class="s2">_overwrite&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;overwrite&quot;</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{self.dest}</span><span class="s2">_overwrite&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">FilepathAction</span>
+
+    <span class="c1"># endregion</span>
+
 <div class="viewcode-block" id="CLToolBase.main"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.CLToolBase.main">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parses and validates arguments, constructs and calls object&quot;&quot;&quot;</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.width&quot;</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">()</span>
         <span class="n">args</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">())</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">process_arguments</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
         <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)()</span></div></div>
+
+<span class="k">class</span> <span class="nc">Metavar</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">cycle</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="StdoutLogger"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.StdoutLogger">[docs]</a><span class="k">class</span> <span class="nc">StdoutLogger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

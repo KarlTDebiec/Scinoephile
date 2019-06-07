@@ -487,7 +487,7 @@ class CLToolBase(Base, ABC):
 
     # endregion
 
-    # region Class Methods
+    # region Public Class Methods
 
     @classmethod
     def construct_argparser(cls, parser=None):
@@ -534,6 +534,33 @@ class CLToolBase(Base, ABC):
 
     # endregion
 
+    # region Public Static Methods
+
+    @staticmethod
+    def get_filepath_action():
+        import argparse
+
+        class FilepathAction(argparse.Action):
+
+            def __init__(self, **kwargs):
+                super().__init__(**kwargs)
+
+            def __call__(self, parser, args, values, option_string=None):
+                setattr(args, self.dest, values[0])
+                if len(values) == 1:
+                    setattr(args, f"{self.dest}_overwrite", False)
+                elif len(values) == 2:
+                    if "overwrite".startswith(values[1]):
+                        setattr(args, f"{self.dest}_overwrite", True)
+                    else:
+                        raise ValueError()
+                else:
+                    raise ValueError()
+
+        return FilepathAction
+
+    # endregion
+
     @classmethod
     def main(cls):
         """Parses and validates arguments, constructs and calls object"""
@@ -545,6 +572,15 @@ class CLToolBase(Base, ABC):
         args = vars(parser.parse_args())
         cls.process_arguments(parser, args)
         cls(**args)()
+
+class Metavar:
+    def __init__(self, iterable):
+        from itertools import cycle
+
+        self.generator = cycle(iterable)
+
+    def __str__(self):
+        return self.generator.__next__()
 
 
 class StdoutLogger(object):

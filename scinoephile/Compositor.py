@@ -38,7 +38,7 @@ from os.path import expandvars, isfile
 from IPython import embed
 from scinoephile import (get_pinyin, get_simplified_hanzi,
                          get_single_line_text, get_truecase, merge_subtitles,
-                         CLToolBase, SubtitleSeries)
+                         CLToolBase, Metavar, SubtitleSeries)
 
 
 ################################### CLASSES ###################################
@@ -48,47 +48,61 @@ class Compositor(CLToolBase):
     """
 
     # region Builtins
-    def __init__(self, bilingual=False, english=False, hanzi=False,
-                 pinyin=False, simplify=True, pinyin_language="mandarin",
-                 **kwargs):
+    def __init__(self, bilingual=False, bilingual_overwrite=False,
+                 english=False, english_overwrite=False, hanzi=False,
+                 hanzi_overwrite=False, pinyin=False, pinyin_overwrite=False,
+                 simplify=True, pinyin_language="mandarin", **kwargs):
         """
         Initializes command-line tool and selects operations
 
         Args:
             bilingual (str): Path to bilingual infile or outfile
+            bilingual_overwrite (bool): Overwrite bilingual file
             english (str): Path to English infile or outfile
+            english_overwrite (bool): Overwrite English file
             hanzi (str): Path to hanzi Chinese infile or outfile
+            hanzi_overwrite (bool): Overwrite hanzi Chinese file
             pinyin (str): Path to pinyin Chinese infile or outfile
+            pinyin_overwrite (bool): Overwrite pinyin Chinese file
             simplify (bool): Convert traditional hanzi to simplified
             pinyin_language (str): Langauge for which to add pinyin; may be
               'madarin' or 'cantonese'
             **kwargs: Additional keyword arguments
         """
         super().__init__(**kwargs)
+        # embed(**self.embed_kw)
 
         # Read in files if they exist
         if bilingual and isinstance(bilingual, str):
             bilingual = expandvars(bilingual)
             if isfile(bilingual):
                 self.operations["read_bilingual"] = bilingual
+                if bilingual_overwrite:
+                    self.operations["write_bilingual"] = bilingual
             else:
                 self.operations["write_bilingual"] = bilingual
         if english and isinstance(english, str):
             english = expandvars(english)
             if isfile(english):
                 self.operations["read_english"] = english
+                if english_overwrite:
+                    self.operations["write_english"] = english
             else:
                 self.operations["write_english"] = english
         if hanzi and isinstance(hanzi, str):
             hanzi = expandvars(hanzi)
             if isfile(hanzi):
                 self.operations["read_hanzi"] = hanzi
+                if hanzi_overwrite:
+                    self.operations["write_hanzi"] = hanzi
             else:
                 self.operations["write_hanzi"] = hanzi
         if pinyin and isinstance(pinyin, str):
             pinyin = expandvars(pinyin)
             if isfile(pinyin):
                 self.operations["read_pinyin"] = pinyin
+                if pinyin_overwrite:
+                    self.operations["write_pinyin"] = pinyin
             else:
                 self.operations["write_pinyin"] = pinyin
 
@@ -258,6 +272,32 @@ class Compositor(CLToolBase):
 
     # region Private Methods
 
+    def _convert_traditional_to_simplified_hanzi(self):
+
+        # Process arguments
+        if self.hanzi_subtitles is None:
+            raise ValueError("Conversion of traditional hanzi to simplified "
+                             "requires initialized hanzi subtitles")
+
+        if self.verbosity >= 1:
+            print("Converting traditional characters to simplified")
+
+        for event in self._hanzi_subtitles:
+            event.text = get_simplified_hanzi(event.text)
+
+    def _convert_capital_english_to_truecase(self):
+
+        # Process arguments
+        if self.english_subtitles is None:
+            raise ValueError("Conversion of capitalized English to truecase "
+                             "requires initialized English subtitles")
+
+        if self.verbosity >= 1:
+            print("Converting capitalized English to truecase")
+
+        for event in self._english_subtitles:
+            event.text = get_truecase(event.text)
+
     def _initialize_bilingual_subtitles(self, chinese="hanzi"):
         from copy import deepcopy
 
@@ -332,32 +372,6 @@ class Compositor(CLToolBase):
                 event.text = get_pinyin(event.text, "mandarin")
             elif language == "cantonese":
                 event.text = get_pinyin(event.text, "cantonese")
-
-    def _convert_traditional_to_simplified_hanzi(self):
-
-        # Process arguments
-        if self.hanzi_subtitles is None:
-            raise ValueError("Conversion of traditional hanzi to simplified "
-                             "requires initialized hanzi subtitles")
-
-        if self.verbosity >= 1:
-            print("Converting traditional characters to simplified")
-
-        for event in self._hanzi_subtitles:
-            event.text = get_simplified_hanzi(event.text)
-
-    def _convert_capital_english_to_truecase(self):
-
-        # Process arguments
-        if self.english_subtitles is None:
-            raise ValueError("Conversion of capitalized English to truecase "
-                             "requires initialized English subtitles")
-
-        if self.verbosity >= 1:
-            print("Converting capitalized English to truecase")
-
-        for event in self._english_subtitles:
-            event.text = get_truecase(event.text)
 
     def _translate_chinese_to_english(self):
         from copy import deepcopy
@@ -438,20 +452,25 @@ class Compositor(CLToolBase):
         # Files
         parser_file = parser.add_argument_group("file arguments")
         parser_file.add_argument("-b", "--bilingual", type=str,
-                                 nargs="?", default=False, const=True,
-                                 metavar="FILE",
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar=Metavar(["FILE", "overwrite"]),
                                  help="Bilingual subtitles")
-        parser_file.add_argument("-c", "--chinese", "--hanzi", type=str,
-                                 nargs="?", default=False, const=True,
-                                 metavar="FILE", dest="hanzi",
+        parser_file.add_argument("-c", "--chinese", type=str,
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar=Metavar(["FILE", "overwrite"]),
+                                 dest="hanzi",
                                  help="Chinese Hanzi subtitles")
         parser_file.add_argument("-e", "--english", type=str,
-                                 nargs="?", default=False, const=True,
-                                 metavar="FILE",
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar=Metavar(["FILE", "overwrite"]),
                                  help="English subtitles")
         parser_file.add_argument("-p", "--pinyin", type=str,
-                                 nargs="?", default=False, const=True,
-                                 metavar="FILE",
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar=Metavar(["FILE", "overwrite"]),
                                  help="Chinese Pinyin subtitles")
 
         # Operation

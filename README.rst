@@ -52,8 +52,9 @@ __________
 
 .. code-block:: text
 
-    usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
-                         [-p [FILE]] [-s] [-m] [-y]
+    usage: Compositor.py [-h] [-v | -q] [-b FILE [overwrite ...]]
+                     [-c FILE [overwrite ...]] [-e FILE [overwrite ...]]
+                     [-p FILE [overwrite ...]] [-s] [-m] [-y]
 
     Compiles Chinese and English subtitles into a single file, optionally adding
     Mandarin or Cantonese pinyin, converting traditional characters to simplified,
@@ -85,19 +86,20 @@ __________
       -q, --quiet           disable verbose output
 
     file arguments:
-      -b [FILE], --bilingual [FILE]
+      -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
                             Bilingual subtitles
-      -c [FILE], --chinese [FILE], --hanzi [FILE]
+      -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                             Chinese Hanzi subtitles
-      -e [FILE], --english [FILE]
+      -e FILE [overwrite ...], --english FILE [overwrite ...]
                             English subtitles
-      -p [FILE], --pinyin [FILE]
+      -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
                             Chinese Pinyin subtitles
 
     operation arguments:
       -s, --simplify        convert traditional characters to simplified
       -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
       -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+
 
 Authorship
 ----------

@@ -231,8 +231,9 @@ image-based Blu-Ray subtitles to text format.</p>
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="compositor">
 <h3>Compositor<a class="headerlink" href="#compositor" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b [FILE]] [-c [FILE]] [-e [FILE]]
-                     [-p [FILE]] [-s] [-m] [-y]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: Compositor.py [-h] [-v | -q] [-b FILE [overwrite ...]]
+                 [-c FILE [overwrite ...]] [-e FILE [overwrite ...]]
+                 [-p FILE [overwrite ...]] [-s] [-m] [-y]
 
 Compiles Chinese and English subtitles into a single file, optionally adding
 Mandarin or Cantonese pinyin, converting traditional characters to simplified,
@@ -264,13 +265,13 @@ optional arguments:
   -q, --quiet           disable verbose output
 
 file arguments:
-  -b [FILE], --bilingual [FILE]
+  -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
                         Bilingual subtitles
-  -c [FILE], --chinese [FILE], --hanzi [FILE]
+  -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                         Chinese Hanzi subtitles
-  -e [FILE], --english [FILE]
+  -e FILE [overwrite ...], --english FILE [overwrite ...]
                         English subtitles
-  -p [FILE], --pinyin [FILE]
+  -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
                         Chinese Pinyin subtitles
 
 operation arguments:
