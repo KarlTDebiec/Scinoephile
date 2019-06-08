@@ -2,10 +2,6 @@
 
 .. github_end
 
-.. only:: html
-
-    .. image:: static/coverage.svg
-
 Introduction
 ------------
 
