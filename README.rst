@@ -1,3 +1,5 @@
+.. image:: docs/static/build.svg
+
 .. image:: docs/static/coverage.svg
 
 .. github_end

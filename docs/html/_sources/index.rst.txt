@@ -3,7 +3,11 @@
 Scinoephile
 ===========
 
-.. image:: static/coverage.svg
+.. |build| image:: static/build.svg
+
+.. |coverage| image:: static/coverage.svg
+
+|build| |coverage|
 
 .. include:: ../README.rst
     :start-after: github_end
