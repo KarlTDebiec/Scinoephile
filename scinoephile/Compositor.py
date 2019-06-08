@@ -456,7 +456,7 @@ class Compositor(CLToolBase):
                                  nargs="+",
                                  action=cls.get_filepath_action(),
                                  metavar=Metavar(["FILE", "overwrite"]),
-                                 help="Bilingual subtitles")
+                                 help="bilingual subtitles")
         parser_file.add_argument("-c", "--chinese", type=str,
                                  nargs="+",
                                  action=cls.get_filepath_action(),
