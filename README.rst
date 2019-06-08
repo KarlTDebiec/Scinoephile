@@ -2,6 +2,8 @@
 
 .. image:: docs/static/coverage.svg
 
+.. image:: docs/static/license.svg
+
 .. github_end
 
 Introduction

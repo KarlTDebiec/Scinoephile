@@ -56,6 +56,30 @@ coverage_template = """
     </g>
 </svg>
 """
+license_template = """
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="78" height="20">
+    <linearGradient id="b" x2="0" y2="100%">
+        <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+        <stop offset="1" stop-opacity=".1"/>
+    </linearGradient>
+    <mask id="a">
+        <rect width="78" height="20" rx="3" fill="#fff"/>
+    </mask>
+    <g mask="url(#a)">
+        <path fill="#555" d="M0 0h47v20H0z"/>
+        <path fill="#97ca00" d="M47 0h31v20H47z"/>
+        <path fill="url(#b)" d="M0 0h78v20H0z"/>
+    </g>
+    <g fill="#fff" text-anchor="middle" 
+       font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+        <text x="24.5" y="15" fill="#010101" fill-opacity=".3">license</text>
+        <text x="24.5" y="14">license</text>
+        <text x="61.5" y="15" fill="#010101" fill-opacity=".3">MIT</text>
+        <text x="61.5" y="14">MIT</text>
+    </g>
+</svg>
+"""
 #################################### MAIN #####################################
 if __name__ == "__main__":
     import re
@@ -121,4 +145,9 @@ if __name__ == "__main__":
         outfile.write(coverage_template.strip().replace(
             "VALUE", f"{coverage}%").replace(
             "COLOR", get_coverage_color(coverage)))
+        outfile.write("\n")
+
+    # Write license badge
+    with open(f"{root}/docs/static/license.svg", "w") as outfile:
+        outfile.write(license_template.strip())
         outfile.write("\n")
