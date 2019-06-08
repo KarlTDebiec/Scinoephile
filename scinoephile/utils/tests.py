@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   scinoephile.utils.testing.py
+#   scinoephile.utils.tests.py
 #
 #   Copyright (C) 2017-2019 Karl T Debiec
 #   All rights reserved.
@@ -16,7 +16,7 @@ from subprocess import Popen, PIPE
 ################################## FUNCTIONS ##################################
 def cmp_h5(file_1, file_2):
     """
-    Checks if two
+    Checks if two hdf5 files contain the same data
 
     Args:
         file_1 (str): Path to first hdf5 file

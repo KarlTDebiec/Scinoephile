@@ -13,7 +13,7 @@ from os import remove
 from os.path import expandvars, isfile, isdir
 from shutil import rmtree
 from scinoephile.ocr import ImageSubtitleSeries
-from scinoephile.utils.testing import cmp_h5, get_md5
+from scinoephile.utils.tests import cmp_h5, get_md5
 
 ################################ CONFIGURATION ################################
 input_dir = expandvars("$HOME/Desktop/subtitles/")

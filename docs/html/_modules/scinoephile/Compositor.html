@@ -227,6 +227,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># region Builtins</span>
+
 <div class="viewcode-block" id="Compositor.__init__"><a class="viewcode-back" href="../../cltools.html#scinoephile.Compositor.Compositor.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bilingual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bilingual_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">english</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">english_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hanzi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">hanzi_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pinyin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pinyin_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -618,7 +619,7 @@
             <span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">):</span>
             <span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;compositor&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
                 <span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
                 <span class="n">help</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
                 <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
@@ -634,7 +635,7 @@
                                  <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
                                  <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
                                  <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
-                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Bilingual subtitles&quot;</span><span class="p">)</span>
+                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;bilingual subtitles&quot;</span><span class="p">)</span>
         <span class="n">parser_file</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--chinese&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
                                  <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
                                  <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>

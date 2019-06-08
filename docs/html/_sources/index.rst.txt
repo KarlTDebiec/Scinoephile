@@ -3,7 +3,16 @@
 Scinoephile
 ===========
 
+.. |build| image:: static/build.svg
+
+.. |coverage| image:: static/coverage.svg
+
+.. |license| image:: static/license.svg
+
+|build| |coverage| |license|
+
 .. include:: ../README.rst
+    :start-after: github_end
 
 .. include:: ../LICENSE
 

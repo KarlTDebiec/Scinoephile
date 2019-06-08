@@ -12,7 +12,7 @@ from filecmp import cmp
 from os import remove
 from os.path import expandvars, isfile
 from scinoephile import SubtitleSeries
-from scinoephile.utils.testing import cmp_h5, get_md5
+from scinoephile.utils.tests import cmp_h5, get_md5
 
 ################################ CONFIGURATION ################################
 input_dir = expandvars("$HOME/Desktop/subtitles/test/input")

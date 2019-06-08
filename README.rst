@@ -1,3 +1,13 @@
+.. |build| image:: docs/static/build.svg
+
+.. |coverage| image:: docs/static/coverage.svg
+
+.. |license| image:: docs/static/license.svg
+
+|build| |coverage| |license|
+
+.. github_end
+
 Introduction
 ------------
 
