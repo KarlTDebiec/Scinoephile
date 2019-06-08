@@ -14,7 +14,6 @@ import pandas as pd
 from abc import ABC, abstractmethod
 from os.path import dirname
 from sys import modules
-from IPython import embed
 
 ################################## VARIABLES ##################################
 package_root = dirname(modules[__name__].__file__)
@@ -58,12 +57,8 @@ def embed_kw(verbosity=2, **kwargs):
     Returns:
         dictionary: Keyword arguments to be passed to IPython.embed
     """
-
     from inspect import currentframe, getframeinfo
-    from os.path import dirname
-    from sys import modules
 
-    package_root = dirname(modules[__name__].__file__)
     frameinfo = getframeinfo(currentframe().f_back)
     file = frameinfo.filename.replace(package_root, "")
     func = frameinfo.function
@@ -98,7 +93,7 @@ def get_simplified_hanzi(text):
 
     simplified = ""
     for char in text:
-        if (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+        if re_hanzi.match(char) or re_hanzi_rare.match(char):
             simplified += HanziConv.toSimplified(char)
         else:
             simplified += char
@@ -151,7 +146,7 @@ def get_pinyin(text, language="mandarin"):
                         section_romanization += punctuation[char]
                     elif re_western.match(char):
                         section_romanization += char
-                    elif (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+                    elif re_hanzi.match(char) or re_hanzi_rare.match(char):
                         pinyin = get_cantonese_pinyin(char)
                         if pinyin is not None:
                             section_romanization += " " + pinyin
@@ -185,12 +180,12 @@ def get_truecase(text):
     normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in
                   tagged]
     normalized[0] = normalized[0].capitalize()
-    truecased = re.sub(r" (?=[\.,'!?:;])", "", " ".join(normalized))
+    truecased = re.sub(r" (?=[.,'!?:;])", "", " ".join(normalized))
     truecased = truecased.replace(" n't", "n't")
     truecased = truecased.replace(" i ", " I ")
     truecased = truecased.replace("``", "\"")
     truecased = truecased.replace("''", "\"")
-    truecased = re.sub(r"(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+    truecased = re.sub(r"(\A\w)|(?<!\.\w)([.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
                        lambda s: s.group().upper(), truecased)
     return truecased
 
@@ -392,6 +387,15 @@ def merge_subtitles(upper, lower):
     return pd.DataFrame(synced_df)
 
 
+def todo(func):
+    """Decorator be used to annotate unimplemented functions in a useful way"""
+
+    def wrapper():
+        raise NotImplementedError()
+
+    return wrapper
+
+
 ################################### CLASSES ###################################
 class Base(ABC):
     """Base including convenience methods and properties"""
@@ -417,7 +421,7 @@ class Base(ABC):
 
     @property
     def embed_kw(self):
-        """dict: use ``IPython.embed(**self.embed_kw)`` for more useful prompt"""
+        """Use ``IPython.embed(**self.embed_kw)`` for better prompt"""
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)

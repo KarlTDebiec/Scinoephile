@@ -12,7 +12,6 @@ import numba as nb
 import numpy as np
 import pandas as pd
 from scinoephile import package_root
-from IPython import embed
 
 ################################## VARIABLES ##################################
 hanzi_frequency = pd.read_csv(
@@ -72,8 +71,10 @@ def center_char_img(data, x_offset=0, y_offset=0):
     x = int(np.floor((80 - trimmed.shape[1]) / 2))
     y = int(np.floor((80 - trimmed.shape[0]) / 2))
     centered = np.ones_like(data) * data.max()
+    # @formatter:off
     centered[y + y_offset:y + trimmed.shape[0] + y_offset,
-    x + x_offset:x + trimmed.shape[1] + x_offset] = trimmed
+             x + x_offset:x + trimmed.shape[1] + x_offset] = trimmed
+    # @formatter:on
 
     return centered
 
