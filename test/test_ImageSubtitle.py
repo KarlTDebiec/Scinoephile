@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   a_test_sup.py
+#   test_ImageSubtitle.py
 #
 #   Copyright (C) 2017-2019 Karl T Debiec
 #   All rights reserved.
@@ -16,7 +16,7 @@ from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.utils.tests import cmp_h5, get_md5
 
 ################################ CONFIGURATION ################################
-input_dir = expandvars("$HOME/Desktop/subtitles/")
+input_dir = expandvars("$HOME/Desktop/subtitles/test/input")
 output_dir = expandvars("$HOME/Desktop/subtitles/test/output/")
 
 
@@ -171,5 +171,5 @@ def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    # test_ImageSubtitle_hdf5_chinese_simplified(verbosity=2)
+    test_ImageSubtitle_hdf5_chinese_simplified(verbosity=2)
     test_ImageSubtitle_sup_chinese_simplified(verbosity=2)

@@ -390,7 +390,7 @@ def merge_subtitles(upper, lower):
 def todo(func):
     """Decorator be used to annotate unimplemented functions in a useful way"""
 
-    def wrapper():
+    def wrapper(*args, **kwargs):
         raise NotImplementedError()
 
     return wrapper
