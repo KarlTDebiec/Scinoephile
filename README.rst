@@ -1,8 +1,10 @@
-.. image:: docs/static/build.svg
+.. |build| image:: static/build.svg
 
-.. image:: docs/static/coverage.svg
+.. |coverage| image:: static/coverage.svg
 
-.. image:: docs/static/license.svg
+.. |license| image:: static/license.svg
+
+|build| |coverage| |license|
 
 .. github_end
 
