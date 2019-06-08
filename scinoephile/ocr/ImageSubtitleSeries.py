@@ -12,7 +12,8 @@ import numpy as np
 import pandas as pd
 from IPython import embed
 from scinoephile import SubtitleSeries
-from scinoephile.ocr import ImageSubtitleEvent
+from scinoephile.ocr import (read_sup_image, read_sup_palette,
+                             ImageSubtitleEvent)
 
 
 ################################### CLASSES ###################################
@@ -569,71 +570,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         from pysubs2.time import make_time
 
-        def read_palette(bytes_):
-            palette_ = np.zeros((256, 4), np.uint8)
-            bytes_index = 0
-            while bytes_index < len(bytes_):
-                color_index_ = bytes_[bytes_index]
-                y = bytes_[bytes_index + 1]
-                cb = bytes_[bytes_index + 2]
-                cr = bytes_[bytes_index + 3]
-                palette_[color_index_, 0] = y + 1.402 * (cr - 128)
-                palette_[color_index_, 1] = y - .34414 * (
-                        cb - 128) - .71414 * (cr - 128)
-                palette_[color_index_, 2] = y + 1.772 * (cb - 128)
-                palette_[color_index_, 3] = bytes_[bytes_index + 4]
-                bytes_index += 5
-            palette_[255] = [16, 128, 128, 0]
-
-            return palette_
-
-        def read_image(bytes_, width_, height_):
-            img = np.zeros((width_ * height_), np.uint8)
-            bytes_index = 0
-            pixel_index = 0
-            while bytes_index < len(bytes_):
-                byte_1 = bytes_[bytes_index]
-                if byte_1 == 0x00:  # 00 | Special behaviors
-                    byte_2 = bytes_[bytes_index + 1]
-                    if byte_2 == 0x00:  # 00 00 | New line
-                        bytes_index += 2
-                    elif (byte_2 & 0xC0) == 0x40:  # 00 4X XX | 0 X times
-                        byte_3 = bytes_[bytes_index + 2]
-                        n_pixels = ((byte_2 - 0x40) << 8) + byte_3
-                        color_ = 0
-                        img[pixel_index:pixel_index + n_pixels] = color_
-                        pixel_index += n_pixels
-                        bytes_index += 3
-                    elif (byte_2 & 0xC0) == 0x80:  # 00 8Y XX | X Y times
-                        byte_3 = bytes_[bytes_index + 2]
-                        n_pixels = byte_2 - 0x80
-                        color_ = byte_3
-                        img[pixel_index:pixel_index + n_pixels] = color_
-                        pixel_index += n_pixels
-                        bytes_index += 3
-                    elif (byte_2 & 0xC0) != 0x00:  # 00 CY YY XX | X Y times
-                        byte_3 = bytes_[bytes_index + 2]
-                        byte_4 = bytes_[bytes_index + 3]
-                        n_pixels = ((byte_2 - 0xC0) << 8) + byte_3
-                        color_ = byte_4
-                        img[pixel_index:pixel_index + n_pixels] = color_
-                        pixel_index += n_pixels
-                        bytes_index += 4
-                    else:  # 00 XX | 0 X times
-                        n_pixels = byte_2
-                        color_ = 0
-                        img[pixel_index:pixel_index + n_pixels] = color_
-                        pixel_index += n_pixels
-                        bytes_index += 2
-                else:  # XX | X once
-                    color_ = byte_1
-                    img[pixel_index] = color_
-                    pixel_index += 1
-                    bytes_index += 1
-            img.resize((height_, width_))
-
-            return img
-
         bytes2int = lambda x: int.from_bytes(x, byteorder="big")
         segment_kinds = {0x14: "PDS", 0x15: "ODS", 0x16: "PCS",
                          0x17: "WDS", 0x80: "END"}
@@ -666,7 +602,7 @@ class ImageSubtitleSeries(SubtitleSeries):
             if segment_kind == 0x14:  # Palette
                 palette_bytes = sup_bytes[content_offset + 2:
                                           content_offset + content_size]
-                palette = read_palette(palette_bytes)
+                palette = read_sup_palette(palette_bytes)
             elif segment_kind == 0x15:  # Image
                 image_bytes = sup_bytes[content_offset + 11:
                                         content_offset + content_size]
@@ -674,7 +610,7 @@ class ImageSubtitleSeries(SubtitleSeries):
                     sup_bytes[content_offset + 7:content_offset + 9])
                 height = bytes2int(
                     sup_bytes[content_offset + 9:content_offset + 11])
-                compressed_img = read_image(image_bytes, width, height)
+                compressed_img = read_sup_image(image_bytes, width, height)
             elif segment_kind == 0x80:  # End
                 if start_time is None:
                     start_time = timestamp / 90000

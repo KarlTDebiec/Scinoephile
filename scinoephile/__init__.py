@@ -573,6 +573,7 @@ class CLToolBase(Base, ABC):
         cls.process_arguments(parser, args)
         cls(**args)()
 
+
 class Metavar:
     def __init__(self, iterable):
         from itertools import cycle
@@ -633,6 +634,6 @@ class StdoutLogger(object):
     # endregion
 
 
-################################## MODULES ###################################
+################################### CLASSES ###################################
 from scinoephile.SubtitleEvent import SubtitleEvent
 from scinoephile.SubtitleSeries import SubtitleSeries

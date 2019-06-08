@@ -8,6 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import numba as nb
 import numpy as np
 import pandas as pd
 from scinoephile import package_root
@@ -246,6 +247,70 @@ def get_chars_of_labels(labels):
         raise ValueError()
 
 
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def read_sup_image(bytes, width, height):
+    img = np.zeros((height, width), np.uint8)
+    byte_i = 0
+    row_i = 0
+    col_i = 0
+    while byte_i < len(bytes):
+        byte_1 = bytes[byte_i]
+        if byte_1 == 0x00:  # 00 | Special behaviors
+            byte_2 = bytes[byte_i + 1]
+            if byte_2 == 0x00:  # 00 00 | New line
+                byte_i += 2
+                row_i += 1
+                col_i = 0
+            else:
+                if (byte_2 & 0xC0) == 0x40:  # 00 4X XX | Color 0, X times
+                    byte_3 = bytes[byte_i + 2]
+                    n_pixels = ((byte_2 - 0x40) << 8) + byte_3
+                    color = 0
+                    byte_i += 3
+                elif (byte_2 & 0xC0) == 0x80:  # 00 8Y XX | Color X,  Y times
+                    byte_3 = bytes[byte_i + 2]
+                    n_pixels = byte_2 - 0x80
+                    color = byte_3
+                    byte_i += 3
+                elif (byte_2 & 0xC0) != 0x00:  # 00 CY YY XX | Color X, Y times
+                    byte_3 = bytes[byte_i + 2]
+                    byte_4 = bytes[byte_i + 3]
+                    n_pixels = ((byte_2 - 0xC0) << 8) + byte_3
+                    color = byte_4
+                    byte_i += 4
+                else:  # 00 XX | 0 X times
+                    n_pixels = byte_2
+                    color = 0
+                    byte_i += 2
+                img[row_i, col_i:col_i + n_pixels] = color
+                col_i += n_pixels
+        else:  # XX | Color X, once
+            color = byte_1
+            img[row_i, col_i] = color
+            col_i += 1
+            byte_i += 1
+    return img
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def read_sup_palette(bytes):
+    palette = np.zeros((256, 4), np.uint8)
+    byte_i = 0
+    while byte_i < len(bytes):
+        color_i = bytes[byte_i]
+        y = bytes[byte_i + 1]
+        cb = bytes[byte_i + 2]
+        cr = bytes[byte_i + 3]
+        palette[color_i, 0] = y + 1.402 * (cr - 128)
+        palette[color_i, 1] = y - .34414 * (cb - 128) - .71414 * (cr - 128)
+        palette[color_i, 2] = y + 1.772 * (cb - 128)
+        palette[color_i, 3] = bytes[byte_i + 4]
+        byte_i += 5
+    palette[255] = [16, 128, 128, 0]
+
+    return palette
+
+
 def show_img(img, **kwargs):
     """
     Shows an image using context-appropriate function
@@ -279,7 +344,7 @@ def show_img(img, **kwargs):
             img.show()
 
 
-################################### MODULES ###################################
+################################### CLASSES ###################################
 from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
 from scinoephile.ocr.OCRDataset import OCRDataset
