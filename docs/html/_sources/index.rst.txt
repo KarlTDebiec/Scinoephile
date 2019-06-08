@@ -3,6 +3,8 @@
 Scinoephile
 ===========
 
+.. image:: static/coverage.svg
+
 .. include:: ../README.rst
 
 .. include:: ../LICENSE

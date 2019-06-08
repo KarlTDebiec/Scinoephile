@@ -13,4 +13,4 @@ full:
 
 .PHONY: clean
 clean:
-	rm -rvf html
+	rm -frv html/*
