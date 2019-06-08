@@ -311,6 +311,52 @@ def read_sup_palette(bytes):
     return palette
 
 
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def read_sup_subtitles(bytes):
+    starts = []
+    ends = []
+    images = []
+    n_bytes = len(bytes)
+
+    byte_i = 0
+    seeking_start = True
+    while byte_i < n_bytes:
+
+        # Load header
+        byte_i += 2
+        timestamp = bytes[byte_i] * 16777216 + bytes[byte_i + 1] * 65536 \
+                    + bytes[byte_i + 2] * 256 + bytes[byte_i + 3]
+        byte_i += 8
+        segment_kind = bytes[byte_i]
+        byte_i += 1
+        size = bytes[byte_i] * 256 + bytes[byte_i + 1]
+        byte_i += 2
+
+        # Load content
+        if segment_kind == 0x14:  # Palette
+            palette_bytes = bytes[byte_i + 2:byte_i + size]
+            palette = read_sup_palette(palette_bytes)
+        elif segment_kind == 0x15:  # Image
+            width = bytes[byte_i + 7] * 256 + bytes[byte_i + 8]
+            height = bytes[byte_i + 9] * 256 + bytes[byte_i + 10]
+            image_bytes = bytes[byte_i + 11:byte_i + size]
+            compressed_image = read_sup_image(image_bytes, width, height)
+        elif segment_kind == 0x80:  # End
+            if seeking_start:
+                starts.append(timestamp / 90000)
+                image = np.zeros((height, width, 4), np.uint8)
+                for i in range(height):
+                    for j in range(width):
+                        image[i, j] = palette[compressed_image[i, j]]
+                images.append(image)
+                seeking_start = False
+            else:
+                ends.append(timestamp / 90000)
+                seeking_start = True
+        byte_i += size
+    return starts, ends, images
+
+
 def show_img(img, **kwargs):
     """
     Shows an image using context-appropriate function

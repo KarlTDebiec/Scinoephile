@@ -13,7 +13,7 @@ import pandas as pd
 from IPython import embed
 from scinoephile import SubtitleSeries
 from scinoephile.ocr import (read_sup_image, read_sup_palette,
-                             ImageSubtitleEvent)
+                             read_sup_subtitles, ImageSubtitleEvent)
 
 
 ################################### CLASSES ###################################
@@ -570,75 +570,18 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         from pysubs2.time import make_time
 
-        bytes2int = lambda x: int.from_bytes(x, byteorder="big")
-        segment_kinds = {0x14: "PDS", 0x15: "ODS", 0x16: "PCS",
-                         0x17: "WDS", 0x80: "END"}
-
-        # initialize
+        # Initialize
         subs = cls(verbosity=verbosity)
         subs.format = "sup"
 
         # Parse infile
-        sup_bytes = fp.read()
-        byte_offset = 0
-        start_time = None
-        data = None
-        palette = None
-        compressed_img = None
-        if verbosity >= 2:
-            print(f"KIND   :     START      TIME      SIZE    OFFSET")
-        while True:
-            if bytes2int(sup_bytes[byte_offset:byte_offset + 2]) != 0x5047:
-                raise ValueError()
-
-            header_offset = byte_offset
-            timestamp = bytes2int(
-                sup_bytes[header_offset + 2:header_offset + 6])
-            segment_kind = sup_bytes[header_offset + 10]
-            content_size = bytes2int(
-                sup_bytes[header_offset + 11: header_offset + 13])
-            content_offset = header_offset + 13
-
-            if segment_kind == 0x14:  # Palette
-                palette_bytes = sup_bytes[content_offset + 2:
-                                          content_offset + content_size]
-                palette = read_sup_palette(palette_bytes)
-            elif segment_kind == 0x15:  # Image
-                image_bytes = sup_bytes[content_offset + 11:
-                                        content_offset + content_size]
-                width = bytes2int(
-                    sup_bytes[content_offset + 7:content_offset + 9])
-                height = bytes2int(
-                    sup_bytes[content_offset + 9:content_offset + 11])
-                compressed_img = read_sup_image(image_bytes, width, height)
-            elif segment_kind == 0x80:  # End
-                if start_time is None:
-                    start_time = timestamp / 90000
-                    data = np.zeros((*compressed_img.shape, 4), np.uint8)
-                    for color_index, color in enumerate(palette):
-                        data[np.where(compressed_img == color_index)] = color
-                else:
-                    end_time = timestamp / 90000
-                    subs.events.append(cls.event_class(
-                        start=make_time(s=start_time),
-                        end=make_time(s=end_time),
-                        data=data))
-
-                    start_time = None
-                    palette = None
-                    compressed_img = None
-
-            if verbosity >= 2:
-                print(f"{segment_kinds.get(segment_kind, 'UNKNOWN'):<8s} "
-                      f"{hex(segment_kind)}: "
-                      f"{header_offset:>9d} "
-                      f"{timestamp:>9d} "
-                      f"{content_size:>9d} "
-                      f"{content_offset:>9d} ")
-
-            byte_offset += 13 + content_size
-            if byte_offset >= len(sup_bytes):
-                break
+        bytes = fp.read()
+        starts, ends, images = read_sup_subtitles(bytes)
+        for start, end, image in zip(starts, ends, images):
+            subs.events.append(cls.event_class(
+                start=make_time(s=start),
+                end=make_time(s=end),
+                data=image))
 
         return subs
 
