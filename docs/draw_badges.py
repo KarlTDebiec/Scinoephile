@@ -25,8 +25,8 @@ build_template = """
     </g>
     <g fill="#fff" text-anchor="middle" 
        font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-        <text x="19" y="15" fill="#010101" fill-opacity=".3">build</text>
-        <text x="19" y="14">build</text>
+        <text x="19" y="15" fill="#010101" fill-opacity=".3">Build</text>
+        <text x="19" y="14">Build</text>
         <text x="62" y="15" fill="#010101" fill-opacity=".3">VALUE</text>
         <text x="62" y="14">VALUE</text>
     </g>
@@ -49,8 +49,8 @@ coverage_template = """
     </g>
     <g fill="#fff" text-anchor="middle" 
        font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-        <text x="31.5" y="15" fill="#010101" fill-opacity=".3">coverage</text>
-        <text x="31.5" y="14">coverage</text>
+        <text x="31.5" y="15" fill="#010101" fill-opacity=".3">Coverage</text>
+        <text x="31.5" y="14">Coverage</text>
         <text x="80" y="15" fill="#010101" fill-opacity=".3">VALUE</text>
         <text x="80" y="14">VALUE</text>
     </g>
@@ -58,25 +58,25 @@ coverage_template = """
 """
 license_template = """
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="78" height="20">
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="20">
     <linearGradient id="b" x2="0" y2="100%">
         <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
         <stop offset="1" stop-opacity=".1"/>
     </linearGradient>
     <mask id="a">
-        <rect width="78" height="20" rx="3" fill="#fff"/>
+        <rect width="136" height="20" rx="3" fill="#fff"/>
     </mask>
     <g mask="url(#a)">
-        <path fill="#555" d="M0 0h47v20H0z"/>
-        <path fill="#97ca00" d="M47 0h31v20H47z"/>
-        <path fill="url(#b)" d="M0 0h78v20H0z"/>
+        <path fill="#555" d="M0 0h51v20H0z"/>
+        <path fill="#fe7d37" d="M51 0h85v20H51z"/>
+        <path fill="url(#b)" d="M0 0h136v20H0z"/>
     </g>
     <g fill="#fff" text-anchor="middle" 
        font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-        <text x="24.5" y="15" fill="#010101" fill-opacity=".3">license</text>
-        <text x="24.5" y="14">license</text>
-        <text x="61.5" y="15" fill="#010101" fill-opacity=".3">MIT</text>
-        <text x="61.5" y="14">MIT</text>
+        <text x="26.5" y="15" fill="#010101" fill-opacity=".3">License</text>
+        <text x="26.5" y="14">License</text>
+        <text x="92.5" y="15" fill="#010101" fill-opacity=".3">BSD 3-Clause</text>
+        <text x="92.5" y="14">BSD 3-Clause</text>
     </g>
 </svg>
 """
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
 
     def get_build_color(passing):
-        if build == "passing":
+        if build == "Passing":
             return "#4c1"
         else:
             return "#e05d44"
@@ -126,9 +126,9 @@ if __name__ == "__main__":
             match_build = re.match(re_build, line.strip())
             if match_build:
                 if match_build.groupdict()["failed"] is None:
-                    build = "passing"
+                    build = "Passing"
                 else:
-                    build = "failing"
+                    build = "Failing"
             match_coverage = re.match(re_coverage, line.strip())
             if match_coverage:
                 coverage = int(match_coverage.groupdict()['coverage'])

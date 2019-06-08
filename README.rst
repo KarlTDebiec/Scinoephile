@@ -1,8 +1,8 @@
-.. |build| image:: static/build.svg
+.. |build| image:: docs/static/build.svg
 
-.. |coverage| image:: static/coverage.svg
+.. |coverage| image:: docs/static/coverage.svg
 
-.. |license| image:: static/license.svg
+.. |license| image:: docs/static/license.svg
 
 |build| |coverage| |license|
 

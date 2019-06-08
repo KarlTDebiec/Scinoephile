@@ -14,9 +14,9 @@
     </g>
     <g fill="#fff" text-anchor="middle" 
        font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-        <text x="19" y="15" fill="#010101" fill-opacity=".3">build</text>
-        <text x="19" y="14">build</text>
-        <text x="62" y="15" fill="#010101" fill-opacity=".3">passing</text>
-        <text x="62" y="14">passing</text>
+        <text x="19" y="15" fill="#010101" fill-opacity=".3">Build</text>
+        <text x="19" y="14">Build</text>
+        <text x="62" y="15" fill="#010101" fill-opacity=".3">Passing</text>
+        <text x="62" y="14">Passing</text>
     </g>
 </svg>
