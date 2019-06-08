@@ -1,3 +1,11 @@
+.. image:: docs/static/coverage.svg
+
+.. github_end
+
+.. only:: html
+
+    .. image:: static/coverage.svg
+
 Introduction
 ------------
 
