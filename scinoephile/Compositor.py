@@ -48,6 +48,7 @@ class Compositor(CLToolBase):
     """
 
     # region Builtins
+
     def __init__(self, bilingual=False, bilingual_overwrite=False,
                  english=False, english_overwrite=False, hanzi=False,
                  hanzi_overwrite=False, pinyin=False, pinyin_overwrite=False,
@@ -439,7 +440,7 @@ class Compositor(CLToolBase):
             parser = parser
         elif isinstance(parser, argparse._SubParsersAction):
             parser = parser.add_parser(
-                name="compositor",
+                name=cls.__name__.lower(),
                 description=__doc__,
                 help=__doc__,
                 formatter_class=argparse.RawDescriptionHelpFormatter)
