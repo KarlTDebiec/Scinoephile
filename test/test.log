@@ -6,75 +6,19 @@ plugins: cov-2.6.1
 collecting ... collected 7 items
 
 test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 14%]
-test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified FAILED  [ 28%]
+test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 28%]
 test_Subtitle.py::test_Subtitle PASSED                                   [ 42%]
 test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 57%]
 test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 71%]
 test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 85%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
-=================================== FAILURES ===================================
-__________________ test_ImageSubtitle_sup_chinese_simplified ___________________
+=============================== warnings summary ===============================
+test/test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified
+  /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
+    return f(*args, **kwds)
 
-kwargs = {}
-
-    def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
-        """Tests reading simplified Chinese subtitles in sup format"""
-        run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.sup",
-                  md5s=dict(
-                      data="3c745f0e394724ce2a28bbba614dfa6e",
-                      events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
-                      events_char_count="9bbbf134d009857b20e5687c77326797",
-                      events_char_separations="2a0771dbd3a5740190206cfed3f40307",
-                      events_char_widths="3850d33adfa610c87a4c762d216f3c8c",
-                      events_ends="da71f05b3e0ce5f8e3a5500a88080fc8",
-                      events_images="7c419dabe0924fc1c30019a223ba8349",
-                      events_series="ad0e0d0f9fbcda05ceca6270df00fb61",
-                      events_starts="70a2565a5446bacf21fbce71b25ab71a",
-                      events_strs="a9c7f05fa0a52a148a56b3b1d8823da3",
-                      events_texts="9e2465e25709344c0dcc1ceecdf30b90",
-                      spec="c0bb0152088e705ac3bdd39af087c0c6",
-                      str="b257f040185902df5bae94f8ad411710"),
-                  outfiles=[
-                      f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.srt",
-                      f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5",
-                      f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit/"],
->                 **kwargs)
-
-test_ImageSubtitle.py:169: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-test_ImageSubtitle.py:65: in run_tests
-    subs.data)
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py:55: in data
-    self._initialize_char_data()
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py:396: in _initialize_char_data
-    for j, datum in enumerate(event.char_data):
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <SSAEvent type=Dialogue start=0:00:06 end=0:00:10 text=''>
-
-    @property
-    def char_data(self):
-        """ndarray: Image data of individual characters within subtitle"""
-        if not hasattr(self, "_char_bounds"):
-            self._initialize_char_bounds()
-    
-        _char_data = np.ones(
-            (self.char_bounds.shape[0], 80, 80), np.uint8) * 255
-        for i, (x1, x2) in enumerate(self.char_bounds):
-            char = self.full_data[:, x1:x2 + 1]
-            white_rows = (char == char.max()).all(axis=1)
-            char = char[np.argmin(white_rows):
-                        white_rows.size - np.argmin(white_rows[::-1])]
-            x = int(np.floor((80 - char.shape[1]) / 2))
-            y = int(np.floor((80 - char.shape[0]) / 2))
->           _char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
-E           ValueError: could not broadcast input array from shape (90301,4) into shape (80,4)
-
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py:71: ValueError
------------------------------ Captured stdout call -----------------------------
-Reading subtitles from '/Users/kdebiec/Desktop/subtitles/mcdull_prince_de_la_bun/cmn-Hans.sup'
-Initializing character data structures
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
 Name                                                                                                                                           Stmts   Miss  Cover
@@ -82,18 +26,18 @@ Name                                                                            
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/Compositor.py                  249    249     0%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleEvent.py                21      2    90%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py              127     11    91%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                    299    250    16%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                    299    249    17%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/cantonese/__init__.py           35     35     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py      110     37    66%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py     283    131    54%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py      110     31    72%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py     245    118    52%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py               73     53    27%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TestOCRDataset.py           37     25    32%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TrainOCRDataset.py         192    166    14%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                175    100    43%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                207    180    13%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/translation/__init__.py          2      2     0%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/__init__.py                0      0   100%
 /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/testing.py                13      1    92%
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                           1616   1062    34%
+TOTAL                                                                                                                                           1610   1122    30%
 
-===================== 1 failed, 6 passed in 44.31 seconds ======================
+==================== 7 passed, 1 warnings in 112.97 seconds ====================

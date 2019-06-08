@@ -193,7 +193,8 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">SubtitleSeries</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">ImageSubtitleEvent</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="p">(</span><span class="n">read_sup_image</span><span class="p">,</span> <span class="n">read_sup_palette</span><span class="p">,</span>
+                             <span class="n">read_sup_subtitles</span><span class="p">,</span> <span class="n">ImageSubtitleEvent</span><span class="p">)</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
@@ -750,140 +751,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">make_time</span>
 
-        <span class="k">def</span> <span class="nf">read_palette</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-            <span class="n">palette_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="n">bytes_index</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">while</span> <span class="n">bytes_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-                <span class="n">color_index_</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span><span class="p">]</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-                <span class="n">cb</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                <span class="n">cr</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
-                <span class="n">palette_</span><span class="p">[</span><span class="n">color_index_</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.402</span> <span class="o">*</span> <span class="p">(</span><span class="n">cr</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-                <span class="n">palette_</span><span class="p">[</span><span class="n">color_index_</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="o">.</span><span class="mi">34414</span> <span class="o">*</span> <span class="p">(</span>
-                        <span class="n">cb</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mi">71414</span> <span class="o">*</span> <span class="p">(</span><span class="n">cr</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-                <span class="n">palette_</span><span class="p">[</span><span class="n">color_index_</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.772</span> <span class="o">*</span> <span class="p">(</span><span class="n">cb</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-                <span class="n">palette_</span><span class="p">[</span><span class="n">color_index_</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>
-                <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">5</span>
-            <span class="n">palette_</span><span class="p">[</span><span class="mi">255</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-            <span class="k">return</span> <span class="n">palette_</span>
-
-        <span class="k">def</span> <span class="nf">read_image</span><span class="p">(</span><span class="n">bytes_</span><span class="p">,</span> <span class="n">width_</span><span class="p">,</span> <span class="n">height_</span><span class="p">):</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">width_</span> <span class="o">*</span> <span class="n">height_</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="n">bytes_index</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">pixel_index</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">while</span> <span class="n">bytes_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-                <span class="n">byte_1</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">byte_1</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 | Special behaviors</span>
-                    <span class="n">byte_2</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">byte_2</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 00 | New line</span>
-                        <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">2</span>
-                    <span class="k">elif</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x40</span><span class="p">:</span>  <span class="c1"># 00 4X XX | 0 X times</span>
-                        <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                        <span class="n">n_pixels</span> <span class="o">=</span> <span class="p">((</span><span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0x40</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">byte_3</span>
-                        <span class="n">color_</span> <span class="o">=</span> <span class="mi">0</span>
-                        <span class="n">img</span><span class="p">[</span><span class="n">pixel_index</span><span class="p">:</span><span class="n">pixel_index</span> <span class="o">+</span> <span class="n">n_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_</span>
-                        <span class="n">pixel_index</span> <span class="o">+=</span> <span class="n">n_pixels</span>
-                        <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">3</span>
-                    <span class="k">elif</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>  <span class="c1"># 00 8Y XX | X Y times</span>
-                        <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                        <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0x80</span>
-                        <span class="n">color_</span> <span class="o">=</span> <span class="n">byte_3</span>
-                        <span class="n">img</span><span class="p">[</span><span class="n">pixel_index</span><span class="p">:</span><span class="n">pixel_index</span> <span class="o">+</span> <span class="n">n_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_</span>
-                        <span class="n">pixel_index</span> <span class="o">+=</span> <span class="n">n_pixels</span>
-                        <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">3</span>
-                    <span class="k">elif</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 CY YY XX | X Y times</span>
-                        <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                        <span class="n">byte_4</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">bytes_index</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
-                        <span class="n">n_pixels</span> <span class="o">=</span> <span class="p">((</span><span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">byte_3</span>
-                        <span class="n">color_</span> <span class="o">=</span> <span class="n">byte_4</span>
-                        <span class="n">img</span><span class="p">[</span><span class="n">pixel_index</span><span class="p">:</span><span class="n">pixel_index</span> <span class="o">+</span> <span class="n">n_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_</span>
-                        <span class="n">pixel_index</span> <span class="o">+=</span> <span class="n">n_pixels</span>
-                        <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">4</span>
-                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># 00 XX | 0 X times</span>
-                        <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">byte_2</span>
-                        <span class="n">color_</span> <span class="o">=</span> <span class="mi">0</span>
-                        <span class="n">img</span><span class="p">[</span><span class="n">pixel_index</span><span class="p">:</span><span class="n">pixel_index</span> <span class="o">+</span> <span class="n">n_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_</span>
-                        <span class="n">pixel_index</span> <span class="o">+=</span> <span class="n">n_pixels</span>
-                        <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">2</span>
-                <span class="k">else</span><span class="p">:</span>  <span class="c1"># XX | X once</span>
-                    <span class="n">color_</span> <span class="o">=</span> <span class="n">byte_1</span>
-                    <span class="n">img</span><span class="p">[</span><span class="n">pixel_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_</span>
-                    <span class="n">pixel_index</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">bytes_index</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">height_</span><span class="p">,</span> <span class="n">width_</span><span class="p">))</span>
-
-            <span class="k">return</span> <span class="n">img</span>
-
-        <span class="n">bytes2int</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">)</span>
-        <span class="n">segment_kinds</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x14</span><span class="p">:</span> <span class="s2">&quot;PDS&quot;</span><span class="p">,</span> <span class="mh">0x15</span><span class="p">:</span> <span class="s2">&quot;ODS&quot;</span><span class="p">,</span> <span class="mh">0x16</span><span class="p">:</span> <span class="s2">&quot;PCS&quot;</span><span class="p">,</span>
-                         <span class="mh">0x17</span><span class="p">:</span> <span class="s2">&quot;WDS&quot;</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">:</span> <span class="s2">&quot;END&quot;</span><span class="p">}</span>
-
-        <span class="c1"># initialize</span>
+        <span class="c1"># Initialize</span>
         <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
         <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;sup&quot;</span>
 
         <span class="c1"># Parse infile</span>
-        <span class="n">sup_bytes</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">byte_offset</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">palette</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">compressed_img</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;KIND   :     START      TIME      SIZE    OFFSET&quot;</span><span class="p">)</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">bytes2int</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">[</span><span class="n">byte_offset</span><span class="p">:</span><span class="n">byte_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span> <span class="o">!=</span> <span class="mh">0x5047</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-
-            <span class="n">header_offset</span> <span class="o">=</span> <span class="n">byte_offset</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span>
-                <span class="n">sup_bytes</span><span class="p">[</span><span class="n">header_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="n">header_offset</span> <span class="o">+</span> <span class="mi">6</span><span class="p">])</span>
-            <span class="n">segment_kind</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">header_offset</span> <span class="o">+</span> <span class="mi">10</span><span class="p">]</span>
-            <span class="n">content_size</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span>
-                <span class="n">sup_bytes</span><span class="p">[</span><span class="n">header_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">:</span> <span class="n">header_offset</span> <span class="o">+</span> <span class="mi">13</span><span class="p">])</span>
-            <span class="n">content_offset</span> <span class="o">=</span> <span class="n">header_offset</span> <span class="o">+</span> <span class="mi">13</span>
-
-            <span class="k">if</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x14</span><span class="p">:</span>  <span class="c1"># Palette</span>
-                <span class="n">palette_bytes</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
-                                          <span class="n">content_offset</span> <span class="o">+</span> <span class="n">content_size</span><span class="p">]</span>
-                <span class="n">palette</span> <span class="o">=</span> <span class="n">read_palette</span><span class="p">(</span><span class="n">palette_bytes</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x15</span><span class="p">:</span>  <span class="c1"># Image</span>
-                <span class="n">image_bytes</span> <span class="o">=</span> <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">:</span>
-                                        <span class="n">content_offset</span> <span class="o">+</span> <span class="n">content_size</span><span class="p">]</span>
-                <span class="n">width</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span>
-                    <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">7</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">9</span><span class="p">])</span>
-                <span class="n">height</span> <span class="o">=</span> <span class="n">bytes2int</span><span class="p">(</span>
-                    <span class="n">sup_bytes</span><span class="p">[</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">9</span><span class="p">:</span><span class="n">content_offset</span> <span class="o">+</span> <span class="mi">11</span><span class="p">])</span>
-                <span class="n">compressed_img</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>  <span class="c1"># End</span>
-                <span class="k">if</span> <span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">start_time</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">compressed_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">color_index</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">palette</span><span class="p">):</span>
-                        <span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compressed_img</span> <span class="o">==</span> <span class="n">color_index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">color</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">end_time</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span>
-                    <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span>
-                        <span class="n">start</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">start_time</span><span class="p">),</span>
-                        <span class="n">end</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">end_time</span><span class="p">),</span>
-                        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">))</span>
-
-                    <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">palette</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">compressed_img</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{segment_kinds.get(segment_kind, &#39;UNKNOWN&#39;):&lt;8s} &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;{hex(segment_kind)}: &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{header_offset:&gt;9d}</span><span class="s2"> &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{timestamp:&gt;9d}</span><span class="s2"> &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{content_size:&gt;9d}</span><span class="s2"> &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{content_offset:&gt;9d}</span><span class="s2"> &quot;</span><span class="p">)</span>
-
-            <span class="n">byte_offset</span> <span class="o">+=</span> <span class="mi">13</span> <span class="o">+</span> <span class="n">content_size</span>
-            <span class="k">if</span> <span class="n">byte_offset</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sup_bytes</span><span class="p">):</span>
-                <span class="k">break</span>
+        <span class="nb">bytes</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">images</span> <span class="o">=</span> <span class="n">read_sup_subtitles</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">start</span><span class="p">),</span>
+                <span class="n">end</span><span class="o">=</span><span class="n">make_time</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">end</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">image</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">subs</span></div>
 

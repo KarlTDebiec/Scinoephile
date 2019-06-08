@@ -51,15 +51,11 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
             print(f"{key:<34s}{md5:<34s}")
 
     # Load infile
-    from sys import exit
-    from time import time
-    start = time()
     if infile is not None:
         subs = ImageSubtitleSeries.load(path=infile, verbosity=verbosity)
     else:
         subs = ImageSubtitleSeries(verbosity=verbosity)
-    print(f"DURATION: {time() - start}")
-    exit()
+
     # Test that properites have loaded in accurately
     if md5s is not None:
         if verbosity >= 2:
@@ -176,4 +172,4 @@ def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
 #################################### MAIN #####################################
 if __name__ == "__main__":
     # test_ImageSubtitle_hdf5_chinese_simplified(verbosity=2)
-    test_ImageSubtitle_sup_chinese_simplified()
+    test_ImageSubtitle_sup_chinese_simplified(verbosity=2)

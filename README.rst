@@ -30,6 +30,7 @@ Selected features may also require:
 - `imgcat <https://github.com/wookayin/python-imgcat>`_
 - `matplotlib <https://github.com/matplotlib/matplotlib>`_
 - `nltk <https://github.com/nltk/nltk>`_
+- `numba <https://github.com/numba/numba>`_
 - `pillow <https://github.com/python-pillow/Pillow>`_
 - `pycantonese <https://github.com/pycantonese/pycantonese>`_
   (recent version from from GitHub rather than pypi)
