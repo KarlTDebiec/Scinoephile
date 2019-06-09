@@ -22,6 +22,34 @@ test/test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified
 -- Docs: https://docs.pytest.org/en/latest/warnings.html
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
-Coverage HTML written to dir htmlcov
+Name                                                                                                                                                             Stmts   Miss  Cover
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/Compositor.py                                    249    249     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleEvent.py                                  21      2    90%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py                                127     11    91%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                                      299    247    17%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/cantonese/__init__.py                             35     35     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py                        110     31    72%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py                       245    118    52%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py                                 69     16    77%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TestOCRDataset.py                             23     16    30%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TrainOCRDataset.py                            83     43    48%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                                  206    152    26%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionDataset.py             33     14    58%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionTestDataset.py         34     20    41%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionTrainDataset.py       110      5    95%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/__init__.py                        3      0   100%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationDataset.py            9      9     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationTestDataset.py       25     25     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationTrainDataset.py      18     18     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/__init__.py                       3      3     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/translation/__init__.py                            2      2     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/BadgeCreator.py                              7      7     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/__init__.py                                  0      0   100%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/docs.py                                      0      0   100%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/testing.py                                  13     13     0%
+/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/tests.py                                    13      1    92%
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                                                                             1737   1037    40%
 
-==================== 8 passed, 1 warnings in 125.16 seconds ====================
+==================== 8 passed, 1 warnings in 125.53 seconds ====================
