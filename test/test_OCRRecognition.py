@@ -8,21 +8,28 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from filecmp import cmp
-from os import remove
-from os.path import expandvars, isfile
-from scinoephile import SubtitleSeries
-from scinoephile.utils.tests import cmp_h5, get_md5
+from os.path import expandvars
+from scinoephile.ocr.recognition import (RecognitionTrainDataset,
+                                         RecognitionTestDataset)
+from IPython import embed
 
 ################################ CONFIGURATION ################################
 input_dir = expandvars("$HOME/Desktop/subtitles/test/input")
 output_dir = expandvars("$HOME/Desktop/subtitles/test/output/")
 
-################################## FUNCTIONS ##################################
 
 #################################### TESTS ####################################
+def test_RecognitionTrainDataset(**kwargs):
+    ds = RecognitionTrainDataset(**kwargs)
+    ds.generate_training_data(min_images=20)
+    ds.get_data_for_tensorflow()
+    ds.get_data_for_tensorflow(val_portion=0)
+    ds.save(f"{output_dir}/ocr/recognition_training.h5")
+
+    ds = RecognitionTrainDataset.load(
+        f"{input_dir}/ocr/recognition_training.h5")
 
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    pass
+    test_RecognitionTrainDataset(verbosity=2)

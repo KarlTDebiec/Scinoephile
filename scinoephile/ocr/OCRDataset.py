@@ -51,10 +51,10 @@ class OCRDataset(Base, ABC):
         if not hasattr(self, "_figures"):
             from matplotlib.pyplot import figure
 
-            self._figure = [figure(figsize=(self.data_shape[0] / 80,
-                                            self.data_shape[1] / 80), dpi=80)
-                            for i in range(4)]
-        return self._figure
+            self._figures = [figure(figsize=(self.data_shape[0] / 80,
+                                             self.data_shape[1] / 80), dpi=80)
+                             for i in range(4)]
+        return self._figures
 
     @property
     def spec(self):

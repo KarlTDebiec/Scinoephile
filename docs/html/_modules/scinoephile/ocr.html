@@ -191,7 +191,6 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">package_root</span>
-<span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 
 <span class="c1">################################## VARIABLES ##################################</span>
 <span class="n">hanzi_frequency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
@@ -251,8 +250,10 @@
     <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="mi">80</span> <span class="o">-</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">centered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="c1"># @formatter:off</span>
     <span class="n">centered</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">,</span>
-    <span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">trimmed</span>
+             <span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">trimmed</span>
+    <span class="c1"># @formatter:on</span>
 
     <span class="k">return</span> <span class="n">centered</span></div>
 

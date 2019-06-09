@@ -130,7 +130,7 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
         # Prepare trn and val sets with at least one image of each character
         for char in self.chars:
             all_indexes_of_char = set(
-                self.get_present_specs_of_char(char).index)
+                self.get_present_specs_of_char(char, as_set=False).index)
 
             # Add at least one image of each character to val and trn
             trn_index, val_index = sample(all_indexes_of_char, 2)
