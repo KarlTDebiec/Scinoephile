@@ -278,7 +278,7 @@
     <span class="k">return</span> <span class="n">simplified</span></div>
 
 
-<div class="viewcode-block" id="get_pinyin"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_pinyin">[docs]</a><span class="k">def</span> <span class="nf">get_pinyin</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_pinyin"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_pinyin">[docs]</a><span class="k">def</span> <span class="nf">get_pinyin</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;mandarin&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts hanzi to pinyin</span>
 
@@ -286,6 +286,7 @@
 <span class="sd">        text (str): Text to convert</span>
 <span class="sd">        language (str): Language of pinyin to use; may be &#39;mandarin&#39; or</span>
 <span class="sd">          &#39;cantonese&#39;</span>
+<span class="sd">        verbosity (int): Level of verbose output</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Pinyin text</span>
@@ -307,14 +308,13 @@
                             <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">pinyin</span><span class="p">(</span><span class="n">word</span><span class="p">)])</span>
                 <span class="n">line_romanization</span> <span class="o">+=</span> <span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="n">section_romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="n">romanization</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line_romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">romanization</span> <span class="o">=</span> <span class="n">romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="k">elif</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;cantonese&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">scinoephile.cantonese</span> <span class="k">import</span> <span class="n">get_cantonese_pinyin</span>
 
         <span class="n">romanization</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="n">line_romanization</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
                 <span class="n">section_romanization</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -331,12 +331,13 @@
                             <span class="n">section_romanization</span> <span class="o">+=</span> <span class="n">char</span>
                 <span class="n">line_romanization</span> <span class="o">+=</span> <span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="n">section_romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="n">romanization</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line_romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
+        <span class="n">romanization</span> <span class="o">=</span> <span class="n">romanization</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value provided for argument &#39;language&#39;; &quot;</span>
-                         <span class="s2">&quot;must of &#39;cantonese&#39; or &#39;mandarin&#39;&quot;</span><span class="p">)</span></div>
+                         <span class="s2">&quot;must of &#39;cantonese&#39; or &#39;mandarin&#39;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{text}</span><span class="s2"> -&gt; </span><span class="si">{romanization}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">romanization</span></div>
 
 
 <div class="viewcode-block" id="get_truecase"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_truecase">[docs]</a><span class="k">def</span> <span class="nf">get_truecase</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
@@ -702,17 +703,6 @@
 
         <span class="k">return</span> <span class="n">parser</span></div>
 
-<div class="viewcode-block" id="CLToolBase.process_arguments"><a class="viewcode-back" href="../foundations/classes.html#scinoephile.CLToolBase.process_arguments">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">process_arguments</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validates arguments provided to an argument parser</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            parser (argparse.ArgumentParser): Argument parser</span>
-<span class="sd">            args (argparse.Namespace): Arguments</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Static Methods</span>
@@ -751,7 +741,6 @@
 
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">()</span>
         <span class="n">args</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">())</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">process_arguments</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
         <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)()</span></div></div>
 
 

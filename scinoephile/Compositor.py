@@ -52,7 +52,7 @@ class Compositor(CLToolBase):
     def __init__(self, bilingual=False, bilingual_overwrite=False,
                  english=False, english_overwrite=False, hanzi=False,
                  hanzi_overwrite=False, pinyin=False, pinyin_overwrite=False,
-                 simplify=True, pinyin_language="mandarin", **kwargs):
+                 simplify=False, pinyin_language="mandarin", **kwargs):
         """
         Initializes command-line tool and selects operations
 
@@ -369,10 +369,8 @@ class Compositor(CLToolBase):
         # Copy and convert to pinyin
         self._pinyin_subtitles = deepcopy(self.hanzi_subtitles)
         for event in self._pinyin_subtitles.events:
-            if language == "mandarin":
-                event.text = get_pinyin(event.text, "mandarin")
-            elif language == "cantonese":
-                event.text = get_pinyin(event.text, "cantonese")
+            event.text = get_pinyin(event.text, language,
+                                    verbosity=self.verbosity)
 
     def _translate_chinese_to_english(self):
         from copy import deepcopy

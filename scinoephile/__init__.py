@@ -101,7 +101,7 @@ def get_simplified_hanzi(text):
     return simplified
 
 
-def get_pinyin(text, language="mandarin"):
+def get_pinyin(text, language="mandarin", verbosity=1):
     """
     Converts hanzi to pinyin
 
@@ -109,6 +109,7 @@ def get_pinyin(text, language="mandarin"):
         text (str): Text to convert
         language (str): Language of pinyin to use; may be 'mandarin' or
           'cantonese'
+        verbosity (int): Level of verbose output
 
     Returns:
         str: Pinyin text
@@ -130,14 +131,13 @@ def get_pinyin(text, language="mandarin"):
                             [a[0] for a in pinyin(word)])
                 line_romanization += "  " + section_romanization.strip()
             romanization += "\n" + line_romanization.strip()
-        return romanization.strip()
+        romanization = romanization.strip()
 
     elif language == "cantonese":
         from scinoephile.cantonese import get_cantonese_pinyin
 
         romanization = ""
         for line in text.split("\n"):
-            print(line)
             line_romanization = ""
             for section in line.split():
                 section_romanization = ""
@@ -154,12 +154,13 @@ def get_pinyin(text, language="mandarin"):
                             section_romanization += char
                 line_romanization += "  " + section_romanization.strip()
             romanization += "\n" + line_romanization.strip()
-        print(text, romanization.strip())
-        return romanization.strip()
-
+        romanization = romanization.strip()
     else:
         raise ValueError("Invalid value provided for argument 'language'; "
                          "must of 'cantonese' or 'mandarin'")
+    if verbosity >= 2:
+        print(f"{text} -> {romanization}")
+    return romanization
 
 
 def get_truecase(text):
@@ -525,17 +526,6 @@ class CLToolBase(Base, ABC):
 
         return parser
 
-    @classmethod
-    def process_arguments(cls, parser, args):
-        """
-        Validates arguments provided to an argument parser
-
-        Args:
-            parser (argparse.ArgumentParser): Argument parser
-            args (argparse.Namespace): Arguments
-        """
-        pass
-
     # endregion
 
     # region Public Static Methods
@@ -574,7 +564,6 @@ class CLToolBase(Base, ABC):
 
         parser = cls.construct_argparser()
         args = vars(parser.parse_args())
-        cls.process_arguments(parser, args)
         cls(**args)()
 
 
