@@ -9,9 +9,9 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from os.path import expandvars
+from scinoephile.ocr import ImageSubtitleSeries
 from scinoephile.ocr.recognition import (RecognitionTrainDataset,
                                          RecognitionTestDataset)
-from IPython import embed
 
 ################################ CONFIGURATION ################################
 input_dir = expandvars("$HOME/Desktop/subtitles/test/input")
@@ -28,8 +28,18 @@ def test_RecognitionTrainDataset(**kwargs):
 
     ds = RecognitionTrainDataset.load(
         f"{input_dir}/ocr/recognition_training.h5")
+    ds.show()
+
+
+def test_RecognitionTestDataset(**kwargs):
+    subs = ImageSubtitleSeries.load(
+        f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5", **kwargs)
+    ds = RecognitionTestDataset(subtitle_series=subs, **kwargs)
+    ds.get_data_for_tensorflow()
+    ds.show()
 
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
     test_RecognitionTrainDataset(verbosity=2)
+    test_RecognitionTestDataset(verbosity=2)
