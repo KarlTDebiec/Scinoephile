@@ -76,34 +76,26 @@ class Compositor(CLToolBase):
         # Read in files if they exist
         if bilingual and isinstance(bilingual, str):
             bilingual = expandvars(bilingual)
-            if isfile(bilingual):
+            if isfile(bilingual) and not bilingual_overwrite:
                 self.operations["read_bilingual"] = bilingual
-                if bilingual_overwrite:
-                    self.operations["write_bilingual"] = bilingual
             else:
                 self.operations["write_bilingual"] = bilingual
         if english and isinstance(english, str):
             english = expandvars(english)
-            if isfile(english):
+            if isfile(english) and not english_overwrite:
                 self.operations["read_english"] = english
-                if english_overwrite:
-                    self.operations["write_english"] = english
             else:
                 self.operations["write_english"] = english
         if hanzi and isinstance(hanzi, str):
             hanzi = expandvars(hanzi)
-            if isfile(hanzi):
+            if isfile(hanzi) and not hanzi_overwrite:
                 self.operations["read_hanzi"] = hanzi
-                if hanzi_overwrite:
-                    self.operations["write_hanzi"] = hanzi
             else:
                 self.operations["write_hanzi"] = hanzi
         if pinyin and isinstance(pinyin, str):
             pinyin = expandvars(pinyin)
-            if isfile(pinyin):
+            if isfile(pinyin) and not pinyin_overwrite:
                 self.operations["read_pinyin"] = pinyin
-                if pinyin_overwrite:
-                    self.operations["write_pinyin"] = pinyin
             else:
                 self.operations["write_pinyin"] = pinyin
 
@@ -284,7 +276,7 @@ class Compositor(CLToolBase):
             print("Converting traditional characters to simplified")
 
         for event in self._hanzi_subtitles:
-            event.text = get_simplified_hanzi(event.text)
+            event.text = get_simplified_hanzi(event.text, self.verbosity)
 
     def _convert_capital_english_to_truecase(self):
 
@@ -394,6 +386,9 @@ class Compositor(CLToolBase):
                                               source_language="zh",
                                               target_language="en")]
         for i, translation in enumerate(translations):
+            if self.verbosity >= 2:
+                print(f"{self._english_subtitles.events[i].text} -> "
+                      f"{translation}")
             self._english_subtitles.events[i].text = translation
 
     def _translate_english_to_chinese(self):
@@ -418,6 +413,9 @@ class Compositor(CLToolBase):
                                               source_language="en",
                                               target_language="zh")]
         for i, translation in enumerate(translations):
+            if self.verbosity >= 2:
+                print(f"{self._hanzi_subtitles.events[i].text} -> "
+                      f"{translation}")
             self._hanzi_subtitles.events[i].text = translation
 
     # endregion

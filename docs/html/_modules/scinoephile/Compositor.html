@@ -255,34 +255,26 @@
         <span class="c1"># Read in files if they exist</span>
         <span class="k">if</span> <span class="n">bilingual</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bilingual</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">bilingual</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">bilingual</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">bilingual</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">bilingual</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bilingual_overwrite</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
-                <span class="k">if</span> <span class="n">bilingual_overwrite</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_bilingual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bilingual</span>
         <span class="k">if</span> <span class="n">english</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">english</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">english</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">english</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">english</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">english</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">english_overwrite</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
-                <span class="k">if</span> <span class="n">english_overwrite</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_english&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">english</span>
         <span class="k">if</span> <span class="n">hanzi</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hanzi</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">hanzi</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">hanzi</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">hanzi</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">hanzi</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hanzi_overwrite</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
-                <span class="k">if</span> <span class="n">hanzi_overwrite</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_hanzi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hanzi</span>
         <span class="k">if</span> <span class="n">pinyin</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pinyin</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">pinyin</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">pinyin</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">pinyin</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">pinyin</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pinyin_overwrite</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;read_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
-                <span class="k">if</span> <span class="n">pinyin_overwrite</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
 
@@ -463,7 +455,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting traditional characters to simplified&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hanzi_subtitles</span><span class="p">:</span>
-            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_simplified_hanzi</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_simplified_hanzi</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_convert_capital_english_to_truecase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -547,15 +539,6 @@
 
         <span class="c1"># Copy and convert to pinyin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pinyin_subtitles</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hanzi_subtitles</span><span class="p">)</span>
-
-        <span class="c1"># def nay(event):</span>
-        <span class="c1">#     event.text = get_pinyin(event.text, language,</span>
-        <span class="c1">#                             verbosity=self.verbosity)</span>
-        <span class="c1"># from multiprocessing import Pool</span>
-        <span class="c1"># with Pool(processes=4) as pool:</span>
-        <span class="c1">#     for i in pool.imap(nay, self._pinyin_subtitles.events):</span>
-        <span class="c1">#         pass</span>
-
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pinyin_subtitles</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
             <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">get_pinyin</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span>
                                     <span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
@@ -582,6 +565,9 @@
                                               <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;zh&quot;</span><span class="p">,</span>
                                               <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">translation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">translations</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{self._english_subtitles.events[i].text}</span><span class="s2"> -&gt; &quot;</span>
+                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{translation}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_english_subtitles</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">translation</span>
 
     <span class="k">def</span> <span class="nf">_translate_english_to_chinese</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -606,6 +592,9 @@
                                               <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
                                               <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;zh&quot;</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">translation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">translations</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{self._hanzi_subtitles.events[i].text}</span><span class="s2"> -&gt; &quot;</span>
+                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{translation}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hanzi_subtitles</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">translation</span>
 
     <span class="c1"># endregion</span>

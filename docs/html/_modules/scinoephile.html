@@ -256,7 +256,7 @@
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">header</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="get_simplified_hanzi"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_simplified_hanzi">[docs]</a><span class="k">def</span> <span class="nf">get_simplified_hanzi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="get_simplified_hanzi"><a class="viewcode-back" href="../foundations/functions.html#scinoephile.get_simplified_hanzi">[docs]</a><span class="k">def</span> <span class="nf">get_simplified_hanzi</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts traditional hanzi to simplified</span>
 
@@ -274,7 +274,8 @@
             <span class="n">simplified</span> <span class="o">+=</span> <span class="n">HanziConv</span><span class="o">.</span><span class="n">toSimplified</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">simplified</span> <span class="o">+=</span> <span class="n">char</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{text}</span><span class="s2">|</span><span class="si">{simplified}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{text}</span><span class="s2"> -&gt; </span><span class="si">{simplified}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">simplified</span></div>
 
 

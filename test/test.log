@@ -3,22 +3,263 @@ platform darwin -- Python 3.6.8, pytest-4.4.1, py-1.8.0, pluggy-0.9.0 -- /usr/lo
 cachedir: .pytest_cache
 rootdir: /Users/kdebiec/Dropbox/code/scinoephile
 plugins: cov-2.6.1
-collecting ... collected 12 items
+collecting ... collected 16 items
 
-test_Compositor.py::test_Compositor_yuewen_to_cantonese_pinyin PASSED    [  8%]
-test_Compositor.py::test_Compositor_zhongwen_to_cantonese_pinyin PASSED  [ 16%]
-test_Compositor.py::test_Compositor_argparser PASSED                     [ 25%]
-test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 33%]
-test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 41%]
-test_OCRRecognition.py::test_RecognitionTrainDataset PASSED              [ 50%]
-test_OCRRecognition.py::test_RecognitionTestDataset PASSED               [ 58%]
-test_Subtitle.py::test_Subtitle PASSED                                   [ 66%]
-test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 75%]
-test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 83%]
-test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 91%]
+test_Compositor.py::test_Compositor_merge_hanzi_english PASSED           [  6%]
+test_Compositor.py::test_Compositor_miscellaneous PASSED                 [ 12%]
+test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese PASSED    [ 18%]
+test_Compositor.py::test_Compositor_pinyin_zhongwen_to_cantonese PASSED  [ 25%]
+test_Compositor.py::test_Compositor_pinyin_zhongwen_to_mandarin PASSED   [ 31%]
+test_Compositor.py::test_Compositor_translate_chinese_to_english PASSED  [ 37%]
+test_Compositor.py::test_Compositor_translate_english_to_chinese PASSED  [ 43%]
+test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 50%]
+test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 56%]
+test_OCRRecognition.py::test_RecognitionTrainDataset PASSED              [ 62%]
+test_OCRRecognition.py::test_RecognitionTestDataset PASSED               [ 68%]
+test_Subtitle.py::test_Subtitle PASSED                                   [ 75%]
+test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 81%]
+test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 87%]
+test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 93%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
 =============================== warnings summary ===============================
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+test/test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese
+  /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/pylangacq/chat.py:794: DeprecationWarning: 'U' mode is deprecated
+    for line in open(self._filename, mode='rU', encoding=self.encoding):
+
 test/test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified
   /usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
     return f(*args, **kwds)
@@ -26,31 +267,6 @@ test/test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified
 -- Docs: https://docs.pytest.org/en/latest/warnings.html
 
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
-Name                                                                                                                                                             Stmts   Miss  Cover
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/Compositor.py                                    246    148    40%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleEvent.py                                  21      2    90%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/SubtitleSeries.py                                127     11    91%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/__init__.py                                      297    206    31%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/cantonese/__init__.py                             68     45    34%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleEvent.py                        110     31    72%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/ImageSubtitleSeries.py                       245    118    52%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/OCRDataset.py                                 69     16    77%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TestOCRDataset.py                             23      5    78%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/TrainOCRDataset.py                            83     43    48%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/__init__.py                                  206    134    35%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionDataset.py             33      4    88%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionTestDataset.py         34      3    91%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/RecognitionTrainDataset.py       110      5    95%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/recognition/__init__.py                        3      0   100%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationDataset.py            9      9     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationTestDataset.py       25     25     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/SegmentationTrainDataset.py      18     18     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/ocr/segmentation/__init__.py                       3      3     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/translation/__init__.py                            2      2     0%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/__init__.py                                  0      0   100%
-/usr/local/anaconda3/envs/scinoephile_py36_tf20/lib/python3.6/site-packages/scinoephile-0.1-py3.6.egg/scinoephile/utils/tests.py                                    13      1    92%
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                             1745    829    52%
+Coverage HTML written to dir htmlcov
 
-=================== 12 passed, 1 warnings in 134.71 seconds ====================
+================== 16 passed, 235 warnings in 211.06 seconds ===================

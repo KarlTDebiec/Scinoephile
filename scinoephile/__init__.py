@@ -79,7 +79,7 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def get_simplified_hanzi(text):
+def get_simplified_hanzi(text, verbosity=1):
     """
     Converts traditional hanzi to simplified
 
@@ -97,7 +97,8 @@ def get_simplified_hanzi(text):
             simplified += HanziConv.toSimplified(char)
         else:
             simplified += char
-    print(f"{text}|{simplified}")
+    if verbosity >= 2:
+        print(f"{text} -> {simplified}")
     return simplified
 
 

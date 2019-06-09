@@ -96,6 +96,8 @@ if __name__ == "__main__":
                              r"(?P<statements>\d+)+\s+"
                              r"(?P<missed>\d+)+\s+"
                              r"(?P<coverage>\d+)+%$")
+    re_coverage_html = re.compile(r"^\s*<span class=\"pc_cov\">"
+                                  r"(?P<coverage>\d+)%</span>$")
 
 
     def get_build_color(passing):
@@ -120,7 +122,8 @@ if __name__ == "__main__":
             return "#e05d44"
 
 
-    # Read test log
+    # Read test log, and html coverage is necessary
+    coverage = None
     with open(f"{root}/test/test.log", "r") as infile:
         for line in infile.readlines():
             match_build = re.match(re_build, line.strip())
@@ -132,6 +135,12 @@ if __name__ == "__main__":
             match_coverage = re.match(re_coverage, line.strip())
             if match_coverage:
                 coverage = int(match_coverage.groupdict()['coverage'])
+    if coverage is None:
+        with open(f"{root}/test/htmlcov/index.html", "r") as infile:
+            for line in infile.readlines():
+                match_coverage = re.match(re_coverage_html, line.strip())
+                if match_coverage:
+                    coverage = int(match_coverage.groupdict()['coverage'])
 
     # Write build badge
     with open(f"{root}/docs/static/build.svg", "w") as outfile:
