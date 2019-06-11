@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Functions" href="ocr/foundations/functions.html" /> 
+    <link rel="prev" title="Functions" href="foundations/functions.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,21 +88,21 @@
 <li class="toctree-l2"><a class="reference internal" href="cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocr/subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ocr/datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocr/recognition.html">Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocr/foundations.html">Foundations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocr/foundations/classes.html">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocr/foundations/functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
@@ -191,8 +191,6 @@
 <li><p>[ ] Understand problem with times</p></li>
 <li><p>[ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries</p></li>
 <li><p>[ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset</p></li>
-<li><p>[ ] Add log output to AutoTrainer</p></li>
-<li><p>[ ] Calculate diff between training images and test images to guide spec selection</p></li>
 <li><p>[ ] Improve character separation to support split characters such as 儿 and 八</p></li>
 <li><p>[ ] Improve character separation to load assignments from another dataset</p></li>
 <li><p>[ ] Add support for Western characters and punctuation</p></li>
@@ -202,13 +200,13 @@
 <h2>Compositor<a class="headerlink" href="#compositor" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>[x] Add support for overwriting files</p></li>
+<li><p>[x] Tests</p></li>
 <li><p>[ ] Add support for input and output files of the same type</p></li>
 <li><p>[ ] Complete documentation</p></li>
 <li><p>[ ] Restore support for Hanzi, pinyin, and English together</p></li>
 <li><p>[ ] Restore support for IPython console</p></li>
 <li><p>[ ] Restore truecase argument support</p></li>
 <li><p>[ ] Restore time offset support</p></li>
-<li><p>[ ] Tests</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
@@ -227,25 +225,20 @@
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>[ ] ImageSubtitleEvent: rename data to full_data, char_data to data</p></li>
-<li><p>[ ] DatasetBase: Make load a classmethod</p></li>
-<li><p>[ ] OCRDataset: Implement sort function</p></li>
 <li><p>[ ] ImageSubtitleSeries: Improve identification of spaces between characters</p></li>
-<li><p>[ ] Improve performance of reading and writing training set</p></li>
 <li><p>[ ] Replace matplotlib with another library to improve font support</p></li>
 <li><p>[ ] Make clearer whether functions are acting on Images or image data</p></li>
 <li><p>[ ] Visualize weights</p></li>
-<li><p>[ ] Extend generate_training_data to add set number of images rather than use total</p></li>
 <li><p>[ ] Convenience function for viewing source of method/property in IPython</p></li>
 <li><p>[ ] Track modifications, and if infile==outfile only save if changed</p></li>
 <li><p>[ ] Compare to tesseract</p></li>
-<li><p>[ ] Implement SUP parsing in numba</p></li>
 <li><p>[ ] Option to compress or not when saving Datasets (takes a long time)</p></li>
 </ul>
 </div>
 <div class="section" id="future">
 <h2>Future<a class="headerlink" href="#future" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Improve requirements.txt;clarify what is required for which functions</p></li>
+<li><p>Improve requirements.txt; clarify what is required for which functions</p></li>
 <li><p>Sphinx checklist extension to convert “- [ ]” to “☐” and “- [X]” to “☑”</p></li>
 </ul>
 </div>
@@ -260,7 +253,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="ocr/foundations/functions.html" class="btn btn-neutral float-left" title="Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="foundations/functions.html" class="btn btn-neutral float-left" title="Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

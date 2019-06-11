@@ -87,21 +87,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr/datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/recognition.html">Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr/foundations.html">Foundations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/classes.html">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
@@ -196,7 +196,7 @@
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset"><a class="viewcode-back" href="../../../ocr/foundations/classes.html#scinoephile.ocr.OCRDataset">[docs]</a><span class="k">class</span> <span class="nc">OCRDataset</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base dataset for optical character recognition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -260,7 +260,7 @@
 
     <span class="c1"># region Public Methods</span>
 
-<div class="viewcode-block" id="OCRDataset.append"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.append"><a class="viewcode-back" href="../../../ocr/foundations/classes.html#scinoephile.ocr.OCRDataset.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Appends images, excluding images whose spec is already present</span>
 
@@ -281,7 +281,7 @@
     <span class="k">def</span> <span class="nf">get_data_for_tensorflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="OCRDataset.save"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OCRDataset.save"><a class="viewcode-back" href="../../../ocr/foundations/classes.html#scinoephile.ocr.OCRDataset.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves images to an output file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -297,7 +297,7 @@
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OCRDataset.show"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.show">[docs]</a>    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OCRDataset.show"><a class="viewcode-back" href="../../../ocr/foundations/classes.html#scinoephile.ocr.OCRDataset.show">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shows selected images</span>
@@ -333,7 +333,7 @@
 
     <span class="c1"># region Public Class Methods</span>
 
-<div class="viewcode-block" id="OCRDataset.load"><a class="viewcode-back" href="../../../ocr/datasets.html#scinoephile.ocr.OCRDataset.load">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="OCRDataset.load"><a class="viewcode-back" href="../../../ocr/foundations/classes.html#scinoephile.ocr.OCRDataset.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads dataset from an input file</span>

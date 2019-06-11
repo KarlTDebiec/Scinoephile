@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Development" href="../../development.html" />
+    <link rel="next" title="Foundations" href="../../foundations.html" />
     <link rel="prev" title="Classes" href="classes.html" /> 
 </head>
 
@@ -89,21 +89,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../recognition.html">Character Recognition</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../foundations.html">Foundations</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="classes.html">Classes</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
@@ -309,8 +309,24 @@ character</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="scinoephile.ocr.read_sup_image">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">read_sup_image</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#read_sup_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.read_sup_image" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.show_img">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">show_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#show_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.show_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows an image using context-appropriate function</p>
+<p>If called from within Jupyter notebook, shows inline. If imgcat module
+is available, shows inline in terminal. Otherwise opens a new window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image.Image</em>) – Image to show</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.numba.read_sup_image">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_image</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a palette-compressed image from a block of bytes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -330,8 +346,8 @@ character</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="scinoephile.ocr.read_sup_palette">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">read_sup_palette</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#read_sup_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.read_sup_palette" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.numba.read_sup_palette">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_palette</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_palette" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a color palette from a block of bytes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -347,8 +363,8 @@ character</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="scinoephile.ocr.read_sup_subtitles">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">read_sup_subtitles</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#read_sup_subtitles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.read_sup_subtitles" title="Permalink to this definition">¶</a></dt>
+<dt id="scinoephile.ocr.numba.read_sup_subtitles">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_subtitles</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_subtitles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads subtitle images and times from a block of bytes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -367,22 +383,6 @@ character</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="scinoephile.ocr.show_img">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">show_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#show_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.show_img" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shows an image using context-appropriate function</p>
-<p>If called from within Jupyter notebook, shows inline. If imgcat module
-is available, shows inline in terminal. Otherwise opens a new window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>img</strong> (<em>PIL.Image.Image</em>) – Image to show</p></li>
-<li><p><strong>kwargs</strong> – Additional keyword arguments</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 
 
@@ -393,7 +393,7 @@ is available, shows inline in terminal. Otherwise opens a new window.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../development.html" class="btn btn-neutral float-right" title="Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../foundations.html" class="btn btn-neutral float-right" title="Foundations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="classes.html" class="btn btn-neutral float-left" title="Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

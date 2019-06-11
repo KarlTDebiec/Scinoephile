@@ -3,23 +3,25 @@ platform darwin -- Python 3.6.8, pytest-4.4.1, py-1.8.0, pluggy-0.9.0 -- /usr/lo
 cachedir: .pytest_cache
 rootdir: /Users/kdebiec/Dropbox/code/scinoephile
 plugins: cov-2.6.1
-collecting ... collected 16 items
+collecting ... collected 18 items
 
-test_Compositor.py::test_Compositor_merge_hanzi_english PASSED           [  6%]
-test_Compositor.py::test_Compositor_miscellaneous PASSED                 [ 12%]
-test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese PASSED    [ 18%]
-test_Compositor.py::test_Compositor_pinyin_zhongwen_to_cantonese PASSED  [ 25%]
-test_Compositor.py::test_Compositor_pinyin_zhongwen_to_mandarin PASSED   [ 31%]
-test_Compositor.py::test_Compositor_translate_chinese_to_english PASSED  [ 37%]
-test_Compositor.py::test_Compositor_translate_english_to_chinese PASSED  [ 43%]
-test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 50%]
-test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 56%]
-test_OCRRecognition.py::test_RecognitionTrainDataset PASSED              [ 62%]
-test_OCRRecognition.py::test_RecognitionTestDataset PASSED               [ 68%]
-test_Subtitle.py::test_Subtitle PASSED                                   [ 75%]
-test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 81%]
-test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 87%]
-test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 93%]
+test_Compositor.py::test_Compositor_merge_hanzi_english PASSED           [  5%]
+test_Compositor.py::test_Compositor_miscellaneous PASSED                 [ 11%]
+test_Compositor.py::test_Compositor_pinyin_yuewen_to_cantonese PASSED    [ 16%]
+test_Compositor.py::test_Compositor_pinyin_zhongwen_to_cantonese PASSED  [ 22%]
+test_Compositor.py::test_Compositor_pinyin_zhongwen_to_mandarin PASSED   [ 27%]
+test_Compositor.py::test_Compositor_translate_chinese_to_english PASSED  [ 33%]
+test_Compositor.py::test_Compositor_translate_english_to_chinese PASSED  [ 38%]
+test_ImageSubtitle.py::test_ImageSubtitle_hdf5_chinese_simplified PASSED [ 44%]
+test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified PASSED  [ 50%]
+test_OCRRecognition.py::test_RecognitionTrainDataset PASSED              [ 55%]
+test_OCRRecognition.py::test_RecognitionTestDataset PASSED               [ 61%]
+test_OCRSegmentation.py::test_SegmentationTrainDataset PASSED            [ 66%]
+test_OCRSegmentation.py::test_SegmentationTestDataset PASSED             [ 72%]
+test_Subtitle.py::test_Subtitle PASSED                                   [ 77%]
+test_Subtitle.py::test_Subtitle_srt_chinese_simplified PASSED            [ 83%]
+test_Subtitle.py::test_Subtitle_srt_english PASSED                       [ 88%]
+test_Subtitle.py::test_Subtitle_hdf5_chinese_simplified PASSED           [ 94%]
 test_Subtitle.py::test_Subtitle_hdf5_english PASSED                      [100%]
 
 =============================== warnings summary ===============================
@@ -269,4 +271,4 @@ test/test_ImageSubtitle.py::test_ImageSubtitle_sup_chinese_simplified
 ---------- coverage: platform darwin, python 3.6.8-final-0 -----------
 Coverage HTML written to dir htmlcov
 
-================== 16 passed, 235 warnings in 211.06 seconds ===================
+================== 18 passed, 235 warnings in 161.76 seconds ===================

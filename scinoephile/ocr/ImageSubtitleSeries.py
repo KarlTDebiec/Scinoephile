@@ -12,8 +12,9 @@ import numpy as np
 import pandas as pd
 from IPython import embed
 from scinoephile import SubtitleSeries
-from scinoephile.ocr import (read_sup_image, read_sup_palette,
-                             read_sup_subtitles, ImageSubtitleEvent)
+from scinoephile.ocr import (ImageSubtitleEvent)
+from scinoephile.ocr.numba import read_sup_image, read_sup_palette, \
+    read_sup_subtitles
 
 
 ################################### CLASSES ###################################

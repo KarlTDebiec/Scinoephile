@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from os.path import expandvars
+from scinoephile import SubtitleSeries
 from scinoephile.Compositor import Compositor
 
 ################################ CONFIGURATION ################################
@@ -33,9 +34,71 @@ def test_Compositor_merge_hanzi_english(**kwargs):
 
 
 def test_Compositor_miscellaneous(**kwargs):
+    # Test argument parser
     Compositor.construct_argparser()
+
+    # Test instantiation of empty object
     compositor = Compositor(**kwargs)
     compositor()
+
+    # Test that private methods fail appropriately with missing data
+    try:
+        compositor._convert_traditional_to_simplified_hanzi()
+        assert (False)
+    except ValueError:
+        pass
+    try:
+        compositor._initialize_bilingual_subtitles()
+        assert (False)
+    except ValueError:
+        pass
+    try:
+        compositor._initialize_pinyin_subtitles()
+        assert (False)
+    except ValueError:
+        pass
+    try:
+        compositor._translate_chinese_to_english()
+        assert (False)
+    except ValueError:
+        pass
+    try:
+        compositor._translate_english_to_chinese()
+        assert (False)
+    except ValueError:
+        pass
+
+    # Test default values of properites
+    _ = compositor.bilingual_subtitles
+    _ = compositor.english_subtitles
+    _ = compositor.hanzi_subtitles
+    _ = compositor.pinyin_subtitles
+
+    # Test setter validation
+    try:
+        compositor.bilingual_subtitles = False
+        assert (False)
+    except ValueError:
+        pass
+    compositor.bilingual_subtitles = SubtitleSeries()
+    try:
+        compositor.english_subtitles = False
+        assert (False)
+    except ValueError:
+        pass
+    compositor.english_subtitles = SubtitleSeries()
+    try:
+        compositor.hanzi_subtitles = False
+        assert (False)
+    except ValueError:
+        pass
+    compositor.hanzi_subtitles = SubtitleSeries()
+    try:
+        compositor.pinyin_subtitles = False
+        assert (False)
+    except ValueError:
+        pass
+    compositor.pinyin_subtitles = SubtitleSeries()
 
 
 def test_Compositor_pinyin_yuewen_to_cantonese(**kwargs):
@@ -84,10 +147,10 @@ def test_Compositor_translate_english_to_chinese(**kwargs):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    test_Compositor_merge_hanzi_english(verbosity=2)
-    test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
-    test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
-    test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
-    test_Compositor_translate_chinese_to_english(verbosity=2)
-    test_Compositor_translate_english_to_chinese(verbosity=2)
+    # test_Compositor_merge_hanzi_english(verbosity=2)
+    # test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
+    # test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
+    # test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
+    # test_Compositor_translate_chinese_to_english(verbosity=2)
+    # test_Compositor_translate_english_to_chinese(verbosity=2)
     test_Compositor_miscellaneous(verbosity=2)

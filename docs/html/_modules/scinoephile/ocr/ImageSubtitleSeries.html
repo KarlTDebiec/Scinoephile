@@ -87,21 +87,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr/datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ocr/recognition.html">Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../ocr/foundations.html">Foundations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/classes.html">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../ocr/foundations/functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
@@ -193,8 +193,9 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">SubtitleSeries</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="p">(</span><span class="n">read_sup_image</span><span class="p">,</span> <span class="n">read_sup_palette</span><span class="p">,</span>
-                             <span class="n">read_sup_subtitles</span><span class="p">,</span> <span class="n">ImageSubtitleEvent</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="p">(</span><span class="n">ImageSubtitleEvent</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr.numba</span> <span class="k">import</span> <span class="n">read_sup_image</span><span class="p">,</span> <span class="n">read_sup_palette</span><span class="p">,</span> \
+    <span class="n">read_sup_subtitles</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>

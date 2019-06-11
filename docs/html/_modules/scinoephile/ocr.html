@@ -87,21 +87,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr/subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ocr/datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ocr/learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/recognition.html">Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../ocr/foundations.html">Foundations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/classes.html">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
@@ -187,7 +187,6 @@
 <span class="c1">#   This software may be modified and distributed under the terms of the</span>
 <span class="c1">#   BSD license. See the LICENSE file for details.</span>
 <span class="c1">################################### MODULES ###################################</span>
-<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">package_root</span>
@@ -425,145 +424,6 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">hanzi_chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="read_sup_image"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.read_sup_image">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">read_sup_image</span><span class="p">(</span><span class="n">bytes_</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads a palette-compressed image from a block of bytes</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        bytes_ (bytearray): Block of bytes</span>
-<span class="sd">        height (int): Height of image</span>
-<span class="sd">        width (int): Width of image</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        ndarray: compressed image</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-    <span class="n">byte_i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">row_i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">col_i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">byte_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-        <span class="n">byte_1</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">byte_1</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 | Special behaviors</span>
-            <span class="n">byte_2</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">byte_2</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 00 | New line</span>
-                <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">2</span>
-                <span class="n">row_i</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">col_i</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x40</span><span class="p">:</span>  <span class="c1"># 00 4X XX | Color 0, X times</span>
-                    <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                    <span class="n">n_pixels</span> <span class="o">=</span> <span class="p">((</span><span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0x40</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">byte_3</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">3</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>  <span class="c1"># 00 8Y XX | Color X,  Y times</span>
-                    <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                    <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0x80</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="n">byte_3</span>
-                    <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">3</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">byte_2</span> <span class="o">&amp;</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>  <span class="c1"># 00 CY YY XX | Color X, Y times</span>
-                    <span class="n">byte_3</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-                    <span class="n">byte_4</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
-                    <span class="n">n_pixels</span> <span class="o">=</span> <span class="p">((</span><span class="n">byte_2</span> <span class="o">-</span> <span class="mh">0xC0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">byte_3</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="n">byte_4</span>
-                    <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">4</span>
-                <span class="k">else</span><span class="p">:</span>  <span class="c1"># 00 XX | 0 X times</span>
-                    <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">byte_2</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">2</span>
-                <span class="n">img</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">:</span><span class="n">col_i</span> <span class="o">+</span> <span class="n">n_pixels</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
-                <span class="n">col_i</span> <span class="o">+=</span> <span class="n">n_pixels</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># XX | Color X, once</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="n">byte_1</span>
-            <span class="n">img</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
-            <span class="n">col_i</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">img</span></div>
-
-
-<div class="viewcode-block" id="read_sup_palette"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.read_sup_palette">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">read_sup_palette</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads a color palette from a block of bytes</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        bytes_ (bytearray): Block of bytes</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        ndarray: palette; first index is color, second is channel</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-    <span class="n">byte_i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">byte_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-        <span class="n">color_i</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span><span class="p">]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">cb</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="n">cr</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
-        <span class="n">palette</span><span class="p">[</span><span class="n">color_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.402</span> <span class="o">*</span> <span class="p">(</span><span class="n">cr</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-        <span class="n">palette</span><span class="p">[</span><span class="n">color_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="o">.</span><span class="mi">34414</span> <span class="o">*</span> <span class="p">(</span><span class="n">cb</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="o">.</span><span class="mi">71414</span> <span class="o">*</span> <span class="p">(</span><span class="n">cr</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-        <span class="n">palette</span><span class="p">[</span><span class="n">color_i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.772</span> <span class="o">*</span> <span class="p">(</span><span class="n">cb</span> <span class="o">-</span> <span class="mi">128</span><span class="p">)</span>
-        <span class="n">palette</span><span class="p">[</span><span class="n">color_i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">5</span>
-    <span class="n">palette</span><span class="p">[</span><span class="mi">255</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">palette</span></div>
-
-
-<div class="viewcode-block" id="read_sup_subtitles"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.read_sup_subtitles">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">read_sup_subtitles</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads subtitle images and times from a block of bytes</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        bytes_ (bytearray): block of bytes</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tuple(list(float), list(float), list(ndarray)): Subtitle starts, ends,</span>
-<span class="sd">          and images</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">starts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">ends</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">byte_i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">seeking_start</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">while</span> <span class="n">byte_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">):</span>
-
-        <span class="c1"># Load header</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">16777216</span> <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">65536</span> \
-                    <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">8</span>
-        <span class="n">segment_kind</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span><span class="p">]</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="mi">2</span>
-
-        <span class="c1"># Load content</span>
-        <span class="k">if</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x14</span><span class="p">:</span>  <span class="c1"># Palette</span>
-            <span class="n">palette_bytes</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="n">byte_i</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
-            <span class="n">palette</span> <span class="o">=</span> <span class="n">read_sup_palette</span><span class="p">(</span><span class="n">palette_bytes</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x15</span><span class="p">:</span>  <span class="c1"># Image</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">10</span><span class="p">]</span>
-            <span class="n">image_bytes</span> <span class="o">=</span> <span class="n">bytes_</span><span class="p">[</span><span class="n">byte_i</span> <span class="o">+</span> <span class="mi">11</span><span class="p">:</span><span class="n">byte_i</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
-            <span class="n">compressed_image</span> <span class="o">=</span> <span class="n">read_sup_image</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">segment_kind</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>  <span class="c1"># End</span>
-            <span class="k">if</span> <span class="n">seeking_start</span><span class="p">:</span>
-                <span class="n">starts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span><span class="p">)</span>
-                <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
-                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
-                        <span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="n">compressed_image</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]]</span>
-                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-                <span class="n">seeking_start</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">ends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timestamp</span> <span class="o">/</span> <span class="mi">90000</span><span class="p">)</span>
-                <span class="n">seeking_start</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">byte_i</span> <span class="o">+=</span> <span class="n">size</span>
-    <span class="k">return</span> <span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">images</span></div>
 
 
 <div class="viewcode-block" id="show_img"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.show_img">[docs]</a><span class="k">def</span> <span class="nf">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

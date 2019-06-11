@@ -109,13 +109,13 @@ class Compositor(CLToolBase):
         if ("write_hanzi" in self.operations
                 and "read_hanzi" not in self.operations):
             if "read_english" in self.operations:
-                self.operations["translate_hanzi"] = True
+                self.operations["translate_chinese"] = True
             else:
                 raise ValueError()
         if ("write_pinyin" in self.operations
                 and "read_pinyin" not in self.operations):
             if ("read_hanzi" in self.operations
-                    or "translate_hanzi" in self.operations):
+                    or "translate_chinese" in self.operations):
                 self.operations[f"convert_pinyin_{pinyin_language}"] = True
             else:
                 raise ValueError()
@@ -136,7 +136,7 @@ class Compositor(CLToolBase):
         # Perform additional operations
         if simplify:
             if ("read_hanzi" in self.operations
-                    or "translate_hanzi" in self.operations):
+                    or "translate_chinese" in self.operations):
                 self.operations["simplify_chinese"] = True
             else:
                 raise ValueError()
@@ -192,9 +192,16 @@ class Compositor(CLToolBase):
     def bilingual_subtitles(self):
         """SubtitleSeries: Bilingual subtitles"""
         if not hasattr(self, "_bilingual_subtitles"):
-            if (isinstance(self.hanzi_subtitles, SubtitleSeries)
-                    and isinstance(self.english_subtitles, SubtitleSeries)):
-                self._initialize_bilingual_subtitles()
+            if (hasattr(self, "_english_subtitles")
+                    and self.english_subtitles is not None):
+                if (hasattr(self, "_hanzi_subtitles")
+                        and self.hanzi_subtitles is not None):
+                    self._initialize_bilingual_subtitles("hanzi")
+                elif (hasattr(self, "_pinyin_subtitles")
+                      and self.pinyin_subtitles is not None):
+                    self._initialize_bilingual_subtitles("pinyin")
+                else:
+                    self._bilingual_subtitles = None
             else:
                 self._bilingual_subtitles = None
         return self._bilingual_subtitles
@@ -209,7 +216,8 @@ class Compositor(CLToolBase):
     def english_subtitles(self):
         """SubtitleSeries: English subtitles"""
         if not hasattr(self, "_english_subtitles"):
-            if isinstance(self.hanzi_subtitles, SubtitleSeries):
+            if (hasattr(self, "_hanzi_subtitles")
+                    and self.hanzi_subtitles is not None):
                 self._translate_chinese_to_english()
             else:
                 self._english_subtitles = None
@@ -225,7 +233,8 @@ class Compositor(CLToolBase):
     def hanzi_subtitles(self):
         """SubtitleSeries: Hanzi Chinse subtitles"""
         if not hasattr(self, "_hanzi_subtitles"):
-            if isinstance(self.english_subtitles, SubtitleSeries):
+            if (hasattr(self, "_english_subtitles")
+                    and self.english_subtitles is not None):
                 self._translate_english_to_chinese()
             else:
                 self._hanzi_subtitles = None
@@ -249,7 +258,8 @@ class Compositor(CLToolBase):
     def pinyin_subtitles(self):
         """SubtitleSeries: Pinyin Chinese subtitles"""
         if not hasattr(self, "_pinyin_subtitles"):
-            if isinstance(self.hanzi_subtitles, SubtitleSeries):
+            if (hasattr(self, "_hanzi_subtitles")
+                    and self.hanzi_subtitles is not None):
                 self._initialize_pinyin_subtitles()
             else:
                 self._pinyin_subtitles = None
