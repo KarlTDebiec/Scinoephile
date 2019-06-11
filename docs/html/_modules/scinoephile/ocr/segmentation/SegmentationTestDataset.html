@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scinoephile.ocr.segmentation.SegmentationTestDataset &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../ocr/recognition.html">Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../scinoephile.html">scinoephile</a> &raquo;</li>
+        
+          <li><a href="../../ocr.html">scinoephile.ocr</a> &raquo;</li>
+        
+      <li>scinoephile.ocr.segmentation.SegmentationTestDataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scinoephile.ocr.segmentation.SegmentationTestDataset</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#   scinoephile.ocr.SegmentationTestDataset,py</span>
+<span class="c1">#</span>
+<span class="c1">#   Copyright (C) 2017-2019 Karl T Debiec</span>
+<span class="c1">#   All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#   This software may be modified and distributed under the terms of the</span>
+<span class="c1">#   BSD license. See the LICENSE file for details.</span>
+<span class="c1">################################### MODULES ###################################</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">todo</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">TestOCRDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr.segmentation</span> <span class="k">import</span> <span class="n">SegmentationDataset</span>
+
+
+<span class="c1">################################### CLASSES ###################################</span>
+<div class="viewcode-block" id="SegmentationTestDataset"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTestDataset">[docs]</a><span class="k">class</span> <span class="nc">SegmentationTestDataset</span><span class="p">(</span><span class="n">SegmentationDataset</span><span class="p">,</span> <span class="n">TestOCRDataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A collection of labeled character images for testing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># region Builtins</span>
+
+<div class="viewcode-block" id="SegmentationTestDataset.__init__"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTestDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subtitle_series</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Store property values</span>
+        <span class="k">if</span> <span class="n">chars</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">=</span> <span class="n">chars</span>
+        <span class="k">if</span> <span class="n">subtitle_series</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subtitle_series</span> <span class="o">=</span> <span class="n">subtitle_series</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">spec_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;OrderedDict(str, type): Names and dtypes of columns in spec&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">char_bounds</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Properties</span>
+
+    <span class="nd">@todo</span>
+    <span class="k">def</span> <span class="nf">get_data_for_tensorflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_portion</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Methods</span>
+
+    <span class="nd">@todo</span>
+    <span class="k">def</span> <span class="nf">_initialize_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes image data structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@todo</span>
+    <span class="k">def</span> <span class="nf">_save_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves images to an output hdf5 file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp (h5py._hl.files.File): Open hdf5 output file</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Class Methods</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@todo</span>
+    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads dataset from an input hdf5 file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp (h5py._hl.files.File): Open hdf5 input file</span>
+<span class="sd">            verbosity (int, optional): Level of verbose output</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            SegmentationTestDataset: Loaded dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

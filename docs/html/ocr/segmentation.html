@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Character Segmentation &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Character Recognition" href="recognition.html" />
+    <link rel="prev" title="Image-Based Subtitles" href="subtitles.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recognition.html">Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../ocr.html">Optical Character Recognition</a> &raquo;</li>
+        
+      <li>Character Segmentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="character-segmentation">
+<h1>Character Segmentation<a class="headerlink" href="#character-segmentation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scinoephile.ocr.segmentation.SegmentationDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.segmentation.</code><code class="descname">SegmentationDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationDataset.html#SegmentationDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base dataset for character segmentation</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.segmentation.SegmentationDataset.data_shape">
+<code class="descname">data_shape</code><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationDataset.data_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.segmentation.SegmentationTrainDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.segmentation.</code><code class="descname">SegmentationTrainDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationTrainDataset.html#SegmentationTrainDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTrainDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TrainOCRDataset.TrainOCRDataset</span></code></p>
+<p>A collection of subtitle images for training</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.segmentation.SegmentationTrainDataset.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTrainDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names and dtypes of columns in spec</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>OrderedDict(str, type)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.segmentation.SegmentationTestDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.segmentation.</code><code class="descname">SegmentationTestDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationTestDataset.html#SegmentationTestDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTestDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TestOCRDataset.TestOCRDataset</span></code></p>
+<p>A collection of labeled character images for testing</p>
+<dl class="method">
+<dt id="scinoephile.ocr.segmentation.SegmentationTestDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>chars=None</em>, <em>subtitle_series=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationTestDataset.html#SegmentationTestDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTestDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.segmentation.SegmentationTestDataset.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTestDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names and dtypes of columns in spec</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>OrderedDict(str, type)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="recognition.html" class="btn btn-neutral float-right" title="Character Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="subtitles.html" class="btn btn-neutral float-left" title="Image-Based Subtitles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

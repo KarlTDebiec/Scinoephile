@@ -147,10 +147,10 @@ def test_Compositor_translate_english_to_chinese(**kwargs):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
-    # test_Compositor_merge_hanzi_english(verbosity=2)
-    # test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
-    # test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
-    # test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
-    # test_Compositor_translate_chinese_to_english(verbosity=2)
-    # test_Compositor_translate_english_to_chinese(verbosity=2)
+    test_Compositor_merge_hanzi_english(verbosity=2)
+    test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
+    test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
+    test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
+    test_Compositor_translate_chinese_to_english(verbosity=2)
+    test_Compositor_translate_english_to_chinese(verbosity=2)
     test_Compositor_miscellaneous(verbosity=2)
