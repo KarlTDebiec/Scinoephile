@@ -7,9 +7,11 @@ Scinoephile
 
 .. |coverage| image:: static/coverage.svg
 
+.. |docs| image:: static/docs.svg
+
 .. |license| image:: static/license.svg
 
-|build| |coverage| |license|
+|build| |coverage| |docs| |license|
 
 .. include:: ../README.rst
     :start-after: github_end

@@ -2,9 +2,11 @@
 
 .. |coverage| image:: docs/static/coverage.svg
 
+.. |docs| image:: docs/static/docs.svg
+
 .. |license| image:: docs/static/license.svg
 
-|build| |coverage| |license|
+|build| |coverage| |docs| |license|
 
 .. github_end
 
