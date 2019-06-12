@@ -136,7 +136,7 @@ def test_ImageSubtitle_hdf5_chinese_simplified(**kwargs):
                   events_starts="f23a20cebaee31a99d58d61a2e28ab53",
                   events_strs="4d8e4f77b1b51e22396e34f62ba07735",
                   events_texts="02827e2ec172bb596741c8bfe2d59966",
-                  spec="db30127edbd288b50173835619588cb1",
+                  spec="0f85f86849336e48a516e74d836fadde",
                   str="b257f040185902df5bae94f8ad411710"),
               outfiles=[
                   f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.srt",
@@ -160,7 +160,7 @@ def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
                   events_starts="70a2565a5446bacf21fbce71b25ab71a",
                   events_strs="a9c7f05fa0a52a148a56b3b1d8823da3",
                   events_texts="9e2465e25709344c0dcc1ceecdf30b90",
-                  spec="c0bb0152088e705ac3bdd39af087c0c6",
+                  spec="fa05f41246e4bebcca36bb0caf9c1732",
                   str="b257f040185902df5bae94f8ad411710"),
               outfiles=[
                   f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.srt",

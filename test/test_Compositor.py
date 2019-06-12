@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 from os.path import expandvars
+from time import sleep
 from scinoephile import SubtitleSeries
 from scinoephile.Compositor import Compositor
 
@@ -24,6 +25,20 @@ def run_tests(md5s=None, verbosity=1, **kwargs):
 
 
 #################################### TESTS ####################################
+def test_Compositor_translate_chinese_to_english(**kwargs):
+    run_tests(
+        english=f"{output_dir}/trivisa/en-HK.srt",
+        english_overwrite=True,
+        hanzi=f"{input_dir}/trivisa/original/cmn-Hant.srt",
+        **kwargs)
+
+
+def test_Compositor_bilingual(**kwargs):
+    run_tests(
+        bilingual=f"{output_dir}/trivisa/ZE.srt",
+        **kwargs)
+
+
 def test_Compositor_merge_hanzi_english(**kwargs):
     run_tests(
         bilingual=f"{input_dir}/trivisa/ZE.srt",
@@ -34,12 +49,20 @@ def test_Compositor_merge_hanzi_english(**kwargs):
 
 
 def test_Compositor_miscellaneous(**kwargs):
-    # Test argument parser
-    Compositor.construct_argparser()
+    # Test classmethods
+    Compositor.construct_argparser().print_help()
+    try:
+        Compositor.main()
+    except SystemExit:
+        pass
 
     # Test instantiation of empty object
     compositor = Compositor(**kwargs)
     compositor()
+    compositor.verbosity = 1
+    print(compositor.embed_kw)
+    compositor.verbosity = 2
+    print(compositor.embed_kw)
 
     # Test that private methods fail appropriately with missing data
     try:
@@ -101,6 +124,12 @@ def test_Compositor_miscellaneous(**kwargs):
     compositor.pinyin_subtitles = SubtitleSeries()
 
 
+def test_Compositor_pinyin(**kwargs):
+    run_tests(
+        pinyin=f"{output_dir}/saving_mr_wu/cmn-pinyin.srt",
+        **kwargs)
+
+
 def test_Compositor_pinyin_yuewen_to_cantonese(**kwargs):
     run_tests(
         hanzi=f"{input_dir}/king_of_beggars/original/yue-Hans.srt",
@@ -129,14 +158,6 @@ def test_Compositor_pinyin_zhongwen_to_mandarin(**kwargs):
         **kwargs)
 
 
-def test_Compositor_translate_chinese_to_english(**kwargs):
-    run_tests(
-        english=f"{output_dir}/trivisa/en-HK.srt",
-        english_overwrite=True,
-        hanzi=f"{input_dir}/trivisa/original/cmn-Hant.srt",
-        **kwargs)
-
-
 def test_Compositor_translate_english_to_chinese(**kwargs):
     run_tests(
         english=f"{input_dir}/trivisa/original/en-HK.srt",
@@ -147,6 +168,8 @@ def test_Compositor_translate_english_to_chinese(**kwargs):
 
 #################################### MAIN #####################################
 if __name__ == "__main__":
+    test_Compositor_bilingual(verbosity=2)
+    test_Compositor_pinyin(verbosity=2)
     test_Compositor_merge_hanzi_english(verbosity=2)
     test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
     test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)

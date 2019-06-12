@@ -13,6 +13,7 @@ import re
 import pycantonese as pc
 from collections import Counter
 from os.path import isfile
+from warnings import catch_warnings, filterwarnings
 from hanziconv import HanziConv
 from scinoephile import package_root
 
@@ -22,10 +23,12 @@ if isfile(f"{data_root}/corpus.pkl"):
     with open(f"{data_root}/corpus.pkl", "rb") as infile:
         corpus = pickle.load(infile)
 else:
-    corpus = pc.hkcancor()
-    corpus.add(f"{data_root}/hanzi_to_jyutping.cha")
-    with open(f"{data_root}/corpus.pkl", "wb") as outfile:
-        pickle.dump(corpus, outfile, pickle.HIGHEST_PROTOCOL)
+    with catch_warnings():
+        filterwarnings("ignore", category=DeprecationWarning)
+        corpus = pc.hkcancor()
+        corpus.add(f"{data_root}/hanzi_to_jyutping.cha")
+        with open(f"{data_root}/corpus.pkl", "wb") as outfile:
+            pickle.dump(corpus, outfile, pickle.HIGHEST_PROTOCOL)
 if isfile(f"{data_root}/hanzi_to_yale.pkl"):
     with open(f"{data_root}/hanzi_to_yale.pkl", "rb") as infile:
         hanzi_to_pinyin = pickle.load(infile)
