@@ -9,6 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 import sphinx_rtd_theme
+
 ################################ CONFIGURATION ################################
 
 project = "scinoephile"
@@ -28,14 +29,14 @@ htmlhelp_basename = "scinoephile"
 html_show_sphinx = False
 html_show_sourcelink = False
 html_context = dict(
-    display_github = True,
-    github_user    = "KarlTDebiec",
-    github_repo    = "scinoephile",
-    github_version = "master",
-    conf_py_path  = "/docs/",
+    display_github=True,
+    github_user="KarlTDebiec",
+    github_repo="scinoephile",
+    github_version="master",
+    conf_py_path="/docs/",
 )
 html_theme_options = {
-    'collapse_navigation': False,
+    "collapse_navigation": False,
 }
 
 extensions = [
@@ -45,7 +46,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "sphinxarg.ext"
 ]
 autodoc_member_order = "bysource"
 autodoc_default_options = {
@@ -54,3 +54,5 @@ autodoc_default_options = {
     "show-inheritance": None,
 }
 todo_include_todos = False
+coverage_statistics_to_report = True
+coverage_statistics_to_stdout = True

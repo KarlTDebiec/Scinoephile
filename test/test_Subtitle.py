@@ -12,7 +12,7 @@ from filecmp import cmp
 from os import remove
 from os.path import expandvars, isfile
 from scinoephile import SubtitleSeries
-from scinoephile.utils.testing import cmp_h5, get_md5
+from scinoephile.utils.tests import cmp_h5, get_md5
 
 ################################ CONFIGURATION ################################
 input_dir = expandvars("$HOME/Desktop/subtitles/test/input")
@@ -156,10 +156,10 @@ def test_Subtitle_hdf5_english(**kwargs):
     """Tests reading and writing English subtitles in hdf5 format"""
     run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.h5",
               md5s=dict(
-                  # events_ends="f5d3cd18e4b4f8060daae6a78c79a261",
+                  events_ends="34d744f818436f2bc47cf5a4aadb2ca9",
                   events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
                   events_strs="d7f82116d76a9befe99cdaf1bb467315",
-                  # events_starts="3f6014e26a4a6f08681f30c3b151a3ad",
+                  events_starts="ec6dc07f45c2fa6ce5c02afdd158e6a8",
                   events_texts="61030c42223ace7abd4298e10792d26f",
                   str="dd57be09939d6eec40c7f41c2ef8ceca"),
               outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.h5",

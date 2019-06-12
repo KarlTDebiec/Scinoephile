@@ -10,67 +10,58 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
-from abc import ABC, abstractmethod
+from abc import abstractmethod, ABC
 from scinoephile import Base
-from scinoephile.ocr import hanzi_chars
-from IPython import embed
 
 
 ################################### CLASSES ###################################
 class OCRDataset(Base, ABC):
     """
-    A collection of character images
+    Base dataset for optical character recognition
     """
 
     # region Public Properties
 
     @property
-    def chars(self):
-        """list(str): Characters that may be present in this dataset"""
-        if not hasattr(self, "_chars"):
-            self._chars = list(hanzi_chars[:10])
-        return self._chars
-
-    @chars.setter
-    def chars(self, value):
-        # TODO: Validate
-        if isinstance(value, int):
-            value = list(hanzi_chars[:value])
-        self._chars = value
-
-    @property
     def data(self):
-        """numpy.ndarray(int): Character image data"""
+        """numpy.ndarray(int): Image data"""
         if not hasattr(self, "_data"):
-            self._data = np.zeros((0, 80, 80), np.uint8)
+            self._data = np.zeros((0, *self.data_shape), np.uint8)
         return self._data
 
     @data.setter
     def data(self, value):
         if not isinstance(value, np.ndarray):
             raise ValueError(self._generate_setter_exception(value))
-        if value.shape[1] != 80 or value.shape[2] != 80:
+        if value.shape[1:] != self.data_shape:
             raise ValueError(self._generate_setter_exception(value))
         if value.dtype != np.uint8:
             raise ValueError(self._generate_setter_exception(value))
         self._data = value
 
     @property
-    def figure(self):
-        """Figure: Temporary figure used for images"""
-        if not hasattr(self, "_figure"):
+    @abstractmethod
+    def data_shape(self):
+        """numpy.ndarray(int): Image data shape"""
+        pass
+
+    @property
+    def figures(self):
+        """List[Figure]: Temporary figures used for images"""
+        if not hasattr(self, "_figures"):
             from matplotlib.pyplot import figure
 
-            self._figure = figure(figsize=(1.0, 1.0), dpi=80)
-        return self._figure
+            self._figures = [figure(figsize=(self.data_shape[0] / 80,
+                                             self.data_shape[1] / 80), dpi=80)
+                             for i in range(4)]
+        return self._figures
 
     @property
     def spec(self):
-        """pandas.DataFrame: Character image specifications"""
+        """pandas.DataFrame: Image specifications"""
         if not hasattr(self, "_spec"):
-            self._spec = pd.DataFrame(
-                {c: pd.Series([], dtype=self.spec_dtypes[c])
-                 for c in self.spec_dtypes.keys()})
+            self._spec = pd.DataFrame({c: pd.Series([], dtype=d)
+                                       for c, d in self.spec_dtypes.items()})
         return self._spec
 
     @spec.setter
@@ -88,35 +79,30 @@ class OCRDataset(Base, ABC):
 
     # region Public Methods
 
-    def add_img(self, spec, data):
+    def append(self, spec, data):
         """
-        Adds images, excluding images whose spec is already present
+        Appends images, excluding images whose spec is already present
 
         Args:
             spec (pandas.DataFrame): New image specifications
             data (numpy.ndarray): New image data
         """
-        spec_is_new = lambda x: tuple(x.values) not in \
-                                set(map(tuple, self.spec.values))
+        current_spec = set(map(tuple, self.spec.values))
+        spec_is_new = lambda x: tuple(x.values) not in current_spec
 
         new = spec.apply(spec_is_new, axis=1).values
         if new.sum() >= 1:
             self.spec = self.spec.append(
                 spec.loc[new], ignore_index=True, sort=False)
-            self.data = np.append(
-                self.data, data[new], axis=0)
+            self.data = np.append(self.data, data[new], axis=0)
 
-    def get_present_specs_of_char(self, char, as_set=True):
-        if as_set:
-            return set(map(tuple, self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1).values))
-        else:
-            return self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1)
+    @abstractmethod
+    def get_data_for_tensorflow(self):
+        pass
 
     def save(self, path=None, **kwargs):
         """
-        Saves character images to an output file
+        Saves images to an output file
         """
         import h5py
         from os.path import expandvars
@@ -124,42 +110,91 @@ class OCRDataset(Base, ABC):
         # Process arguments
         path = expandvars(path).replace("//", "/")
         if self.verbosity >= 1:
-            print(f"Writing character images to '{path}'")
+            print(f"Writing images to '{path}'")
 
         # Write outfile
         with h5py.File(path) as fp:
             self._save_hdf5(fp, **kwargs)
 
+    @abstractmethod
     def show(self, indexes=None, data=None, **kwargs):
         """
-        Shows images of selected characters
+        Shows selected images
 
-        If called from within Jupyter notebook, shows inline. If imgcat module
-        is available, shows inline in terminal. Otherwise opens a new window.
+        If called from within Jupyter notebook, shows inline. If called from
+        within terminal and imgcat module is available, shows inline.
+        Otherwise opens a new window.
 
         Args:
-            indexes (int, list, ndarray, optional): Indexes of character image
-              data to show
-            data (ndarray, optional): Character image data to show
+            indexes (int, list, ndarray, optional): Indexes of images to show;
+              defaults to all
+            data (ndarray, optional): Image data to show; defaults to self.data
+            **kwargs: Additional keyword arguments
         """
-        from scinoephile.ocr import draw_char_imgs, show_img
+        pass
+
+    # endregion
+
+    # region Private Methods
+
+    @abstractmethod
+    def _save_hdf5(self, fp, **kwargs):
+        """
+        Saves images to an output hdf5 file
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 output file
+            **kwargs: Additional keyword arguments
+        """
+        pass
+
+    # endregion
+
+    # region Public Class Methods
+
+    @classmethod
+    def load(cls, path, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input file
+
+        Args:
+            path (str): Path to input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        import h5py
+        from os.path import expandvars
 
         # Process arguments
-        if data is None:
-            data = self.data
-        if indexes is None:
-            indexes = range(data.shape[0])
-        elif isinstance(indexes, int):
-            indexes = [indexes]
-        indexes = np.array(indexes, np.int)
-        if np.any(indexes >= data.shape[0]):
-            raise ValueError()
-        data = data[indexes]
+        path = expandvars(path).replace("//", "/")
+        if verbosity >= 1:
+            print(f"Reading dataset from '{path}'")
 
-        # Draw image
-        img = draw_char_imgs(data, **kwargs)
+        # Load
+        with h5py.File(path) as fp:
+            return cls._load_hdf5(fp, verbosity=verbosity, **kwargs)
 
-        # Show image
-        show_img(img, **kwargs)
+    # endregion
+
+    # region Private Class Methods
+
+    @classmethod
+    @abstractmethod
+    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
+        """
+        Loads dataset from an input hdf5 file
+
+        Args:
+            fp (h5py._hl.files.File): Open hdf5 input file
+            verbosity (int, optional): Level of verbose output
+            **kwargs: Additional keyword arguments
+
+        Returns:
+            OCRDataset: Loaded dataset
+        """
+        pass
 
     # endregion

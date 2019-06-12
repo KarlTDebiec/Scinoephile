@@ -8,15 +8,12 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-import pandas as pd
-import numpy as np
-from collections import OrderedDict
-from IPython import embed
-from scinoephile.ocr import hanzi_chars, get_labels_of_chars, OCRDataset
+from abc import abstractmethod, ABC
+from scinoephile.ocr import (ImageSubtitleSeries, OCRDataset)
 
 
 ################################### CLASSES ###################################
-class TestOCRDataset(OCRDataset):
+class TestOCRDataset(OCRDataset, ABC):
     """
     A collection of labeled character images for testing
     """
@@ -37,55 +34,31 @@ class TestOCRDataset(OCRDataset):
     # region Public Properties
 
     @property
-    def spec_dtypes(self):
-        """OrderedDict(str, type): Names and dtypes of columns in spec"""
-        return OrderedDict(char=str, indexes=object)
-
-    @property
     def subtitle_series(self):
-        """list(str): Characters that may be present in this dataset"""
+        """list(ImageSubtitleSeries): Subtitles to test against"""
         if not hasattr(self, "_subtitle_series"):
             self._subtitle_series = None
         return self._subtitle_series
 
     @subtitle_series.setter
     def subtitle_series(self, value):
-        # TODO: Validate
         if not isinstance(value, list):
             value = [value]
+        for v in value:
+            if not isinstance(v, ImageSubtitleSeries):
+                raise ValueError(self._generate_setter_exception(value))
         self._subtitle_series = value
-        self._initialize_char_data()
-
-    # endregion
-
-    # region Public Properties
-
-    def get_data_for_tensorflow(self):
-
-        img = self.data.astype(np.float16) / 255.0
-        lbl = get_labels_of_chars(self.spec["char"].values)
-
-        return img, lbl
+        self._initialize_data()
 
     # endregion
 
     # region Private Methods
 
-    def _initialize_char_data(self):
+    @abstractmethod
+    def _initialize_data(self):
         """
-        Initializes deduplicated character image data structure
+        Initializes image data structure
         """
-        if self.verbosity >= 1:
-            print("Initializing character data structures")
-
-        for i, series in enumerate(self.subtitle_series):
-            indexes = series.spec["char"].apply(lambda c: c in self.chars)
-
-            spec = series.spec[indexes].copy()
-            spec = spec.drop(columns="indexes")
-            spec["indexes"] = [(i, v) for v in spec.index.values]
-            data = series.data[indexes]
-
-            self.add_img(spec, data)
+        pass
 
     # endregion

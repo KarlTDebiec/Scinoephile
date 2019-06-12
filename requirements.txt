@@ -5,6 +5,7 @@ imgcat
 IPython
 matplotlib
 nltk
+numba
 numpy
 pandas
 pillow

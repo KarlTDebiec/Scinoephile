@@ -8,18 +8,37 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import pickle
 import re
 import pycantonese as pc
 from collections import Counter
+from os.path import isfile
+from warnings import catch_warnings, filterwarnings
 from hanziconv import HanziConv
 from scinoephile import package_root
 
 ################################## VARIABLES ##################################
-
-corpus = pc.hkcancor()
-corpus.add(f"{package_root}/data/romanization/unmatched.cha")
-hanzi_to_pinyin = {}
-unmatched = set()
+data_root = f"{package_root}/data/cantonese/"
+if isfile(f"{data_root}/corpus.pkl"):
+    with open(f"{data_root}/corpus.pkl", "rb") as infile:
+        corpus = pickle.load(infile)
+else:
+    with catch_warnings():
+        filterwarnings("ignore", category=DeprecationWarning)
+        corpus = pc.hkcancor()
+        corpus.add(f"{data_root}/hanzi_to_jyutping.cha")
+        with open(f"{data_root}/corpus.pkl", "wb") as outfile:
+            pickle.dump(corpus, outfile, pickle.HIGHEST_PROTOCOL)
+if isfile(f"{data_root}/hanzi_to_yale.pkl"):
+    with open(f"{data_root}/hanzi_to_yale.pkl", "rb") as infile:
+        hanzi_to_pinyin = pickle.load(infile)
+else:
+    hanzi_to_pinyin = {}
+if isfile(f"{data_root}/unmatched_hanzi.pkl"):
+    with open(f"{data_root}/unmatched_hanzi.pkl", "rb") as infile:
+        unmatched = pickle.load(infile)
+else:
+    unmatched = set()
 re_jyutping = re.compile(r"[a-z]+\d")
 
 
@@ -50,10 +69,17 @@ def get_cantonese_pinyin(hanzi):
         if len(matches) == 0:
             trad_hanzi = HanziConv.toTraditional(hanzi)
             if trad_hanzi != hanzi:
-                return get_cantonese_pinyin(trad_hanzi)
+                yale = get_cantonese_pinyin(trad_hanzi)
+                hanzi_to_pinyin[hanzi] = yale
+                with open(f"{data_root}/hanzi_to_yale.pkl", "wb") as outfile:
+                    pickle.dump(hanzi_to_pinyin, outfile,
+                                pickle.HIGHEST_PROTOCOL)
+                return yale
 
             # Truly no instance of hanzi in corpus
             unmatched.add(hanzi)
+            with open(f"{data_root}/unmatched_hanzi.pkl", "wb") as outfile:
+                pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
             return None
 
         # If found in corpus alone, use most common instance
@@ -71,7 +97,11 @@ def get_cantonese_pinyin(hanzi):
         try:
             yale = pc.jyutping2yale(jyutping)
             hanzi_to_pinyin[hanzi] = yale
+            with open(f"{data_root}/hanzi_to_yale.pkl", "wb") as outfile:
+                pickle.dump(hanzi_to_pinyin, outfile, pickle.HIGHEST_PROTOCOL)
             return yale
         except ValueError:
             unmatched.add(hanzi)
+            with open(f"{data_root}/unmatched_hanzi.pkl", "wb") as outfile:
+                pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
             return None

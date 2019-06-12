@@ -3,7 +3,18 @@
 Scinoephile
 ===========
 
+.. |build| image:: static/build.svg
+
+.. |coverage| image:: static/coverage.svg
+
+.. |docs| image:: static/docs.svg
+
+.. |license| image:: static/license.svg
+
+|build| |coverage| |docs| |license|
+
 .. include:: ../README.rst
+    :start-after: github_end
 
 .. include:: ../LICENSE
 
@@ -12,6 +23,6 @@ Scinoephile
     :maxdepth: 4
 
     cltools.rst
-    foundations.rst
     ocr.rst
+    foundations.rst
     development.rst

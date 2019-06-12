@@ -9,6 +9,6 @@ Optical Character Recognition
     :maxdepth: 4
 
     ocr/subtitles.rst
-    ocr/datasets.rst
-    ocr/learning.rst
+    ocr/segmentation.rst
+    ocr/recognition.rst
     ocr/foundations.rst

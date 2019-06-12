@@ -24,7 +24,7 @@
         <script type="text/javascript" src="../../_static/jquery.js"></script>
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -89,21 +89,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../subtitles.html">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../recognition.html">Character Recognition</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../foundations.html">Foundations</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
@@ -189,6 +189,289 @@
             
   <div class="section" id="classes">
 <h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scinoephile.ocr.OCRDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">OCRDataset</code><a class="reference internal" href="../../_modules/scinoephile/ocr/OCRDataset.html#OCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../foundations/classes.html#scinoephile.Base" title="scinoephile.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.Base</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base dataset for optical character recognition</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.OCRDataset.data">
+<code class="descname">data</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.OCRDataset.data_shape">
+<code class="descname">data_shape</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.data_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data shape</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.OCRDataset.figures">
+<code class="descname">figures</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.figures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporary figures used for images</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">List[Figure]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.OCRDataset.spec">
+<code class="descname">spec</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image specifications</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">pandas.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.OCRDataset.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.OCRDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names and dtypes of columns in spec</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>spec</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends images, excluding images whose spec is already present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>spec</strong> (<em>pandas.DataFrame</em>) – New image specifications</li>
+<li><strong>data</strong> (<em>numpy.ndarray</em>) – New image data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves images to an output file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.OCRDataset.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>indexes=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows selected images</p>
+<p>If called from within Jupyter notebook, shows inline. If called from
+within terminal and imgcat module is available, shows inline.
+Otherwise opens a new window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of images to show;
+defaults to all</li>
+<li><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Image data to show; defaults to self.data</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.ocr.OCRDataset.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/OCRDataset.html#OCRDataset.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.OCRDataset.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads dataset from an input file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – Path to input file</li>
+<li><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Loaded dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#scinoephile.ocr.OCRDataset" title="scinoephile.ocr.OCRDataset">OCRDataset</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.TrainOCRDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">TrainOCRDataset</code><a class="reference internal" href="../../_modules/scinoephile/ocr/TrainOCRDataset.html#TrainOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A collection of images for training</p>
+<dl class="method">
+<dt id="scinoephile.ocr.TrainOCRDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>chars=None</em>, <em>font_names=None</em>, <em>font_sizes=None</em>, <em>font_widths=None</em>, <em>x_offsets=None</em>, <em>y_offsets=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/TrainOCRDataset.html#TrainOCRDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TrainOCRDataset.font_names">
+<code class="descname">font_names</code><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.font_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font names that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TrainOCRDataset.font_sizes">
+<code class="descname">font_sizes</code><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.font_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font sizes that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TrainOCRDataset.font_widths">
+<code class="descname">font_widths</code><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.font_widths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font border widths that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TrainOCRDataset.x_offsets">
+<code class="descname">x_offsets</code><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.x_offsets" title="Permalink to this definition">¶</a></dt>
+<dd><p>X offsets that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TrainOCRDataset.y_offsets">
+<code class="descname">y_offsets</code><a class="headerlink" href="#scinoephile.ocr.TrainOCRDataset.y_offsets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y offsets that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.TestOCRDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.</code><code class="descname">TestOCRDataset</code><a class="reference internal" href="../../_modules/scinoephile/ocr/TestOCRDataset.html#TestOCRDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.TestOCRDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A collection of labeled character images for testing</p>
+<dl class="method">
+<dt id="scinoephile.ocr.TestOCRDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>chars=None</em>, <em>subtitle_series=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/TestOCRDataset.html#TestOCRDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.TestOCRDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.TestOCRDataset.subtitle_series">
+<code class="descname">subtitle_series</code><a class="headerlink" href="#scinoephile.ocr.TestOCRDataset.subtitle_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtitles to test against</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(<a class="reference internal" href="../subtitles.html#scinoephile.ocr.ImageSubtitleSeries" title="scinoephile.ocr.ImageSubtitleSeries">ImageSubtitleSeries</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

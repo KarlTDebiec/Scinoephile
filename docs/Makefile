@@ -4,7 +4,11 @@ SPHINXPROJ  = scinoephile
 
 .PHONY: html
 html:
-	$(PYTHON) $(SPHINXBUILD) -M html "." "." $(O)
+	$(PYTHON) $(SPHINXBUILD) -M html "." "."
+
+.PHONY: coverage
+coverage:
+	$(PYTHON) $(SPHINXBUILD) -M html "." "." -b coverage
 
 .PHONY: full
 full:
@@ -13,4 +17,4 @@ full:
 
 .PHONY: clean
 clean:
-	rm -rvf html
+	rm -frv html/*

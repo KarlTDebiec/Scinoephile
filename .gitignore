@@ -1,9 +1,7 @@
-*.ipynb
 *.swo
 *.swp
 .DS_Store
 .idea
-.ipynb_checkpoints
 Makefile
 __pycache__
 build
@@ -11,4 +9,6 @@ dist
 docs/doctrees
 src
 scinoephile.egg-info
+test/.coverage
 test/htmlcov
+test/test.log

@@ -24,7 +24,7 @@
         <script type="text/javascript" src="../_static/jquery.js"></script>
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Image Data Structures" href="datasets.html" />
+    <link rel="next" title="Character Segmentation" href="segmentation.html" />
     <link rel="prev" title="Optical Character Recognition" href="../ocr.html" /> 
 </head>
 
@@ -89,21 +89,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../cltools.html#compositor">Compositor</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../foundations/functions.html">Functions</a></li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Image-Based Subtitles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html">Image Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="learning.html">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recognition.html">Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="foundations.html">Foundations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/functions.html">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
@@ -203,11 +203,14 @@
 <code class="descname">char_predictions</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.char_predictions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predicted confidence that each character image is
 each matchable character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(float)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(float)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -215,62 +218,79 @@ each matchable character</p>
 <code class="descname">data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dedupulicated character image data collected from all
 subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.spec">
 <code class="descname">spec</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.spec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifications describing each character image</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>DataFrame</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">DataFrame</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.spec_dtypes">
 <code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.spec_dtypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>names and dtypes of columns in spec</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>OrderedDict(str, type)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.assign_char">
 <code class="descname">assign_char</code><span class="sig-paren">(</span><em>index</em>, <em>char</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.assign_char"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.assign_char" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a character to a character image</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<em>int</em>) – Index of character image to assign</p></li>
-<li><p><strong>char</strong> (<em>str</em>) – Character to assign to image</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>index</strong> (<em>int</em>) – Index of character image to assign</li>
+<li><strong>char</strong> (<em>str</em>) – Character to assign to image</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.calculate_accuracy">
 <code class="descname">calculate_accuracy</code><span class="sig-paren">(</span><em>infile</em>, <em>n_chars</em>, <em>assign=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.calculate_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.calculate_accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates accuracy of predicted text relative to known standard</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>infile</strong> (<em>str</em>) – Path to standard infile</p></li>
-<li><p><strong>n_chars</strong> (<em>int</em>) – Number of matchable characters</p></li>
-<li><p><strong>assign</strong> (<em>boot</em>) – Copy character assignments from standard</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>infile</strong> (<em>str</em>) – Path to standard infile</li>
+<li><strong>n_chars</strong> (<em>int</em>) – Number of matchable characters</li>
+<li><strong>assign</strong> (<em>boot</em>) – Copy character assignments from standard</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -278,34 +298,38 @@ subtitles</p>
 <code class="descname">get_subchar_indexes_of_char_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.get_subchar_indexes_of_char_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.get_subchar_indexes_of_char_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the index of a deduplicated character into a list of indexes
 of that character’s appearances within subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of deduplicated character</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Indexes of character within subtitles in the</dt><dd><p>form of (subtitle index within series, character index within
-subtitle)</p>
-</dd>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – Index of deduplicated character</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>Indexes of character within subtitles in the</dt>
+<dd>form of (subtitle index within series, character index within
+subtitle)</dd>
 </dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list(tuple(int, int))</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(tuple(int, int))</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scinoephile.ocr.ImageSubtitleSeries.manually_assign_chars">
 <code class="descname">manually_assign_chars</code><span class="sig-paren">(</span><em>start_index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.manually_assign_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.manually_assign_chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interactively confirm character assignments</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>start_index</strong> (<em>index</em>) – Character index at which to start interactive
-character assignment</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>start_index</strong> (<em>index</em>) – Character index at which to start interactive
+character assignment</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -315,11 +339,14 @@ character assignment</p>
 chararcter</p>
 <p>Stores results in both this series’ char_predictions and in each
 event’s char_predictions</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>model</strong> (<em>model?</em>) – TensorFlow model with which to predict characters</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> (<em>model?</em>) – TensorFlow model with which to predict characters</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -333,19 +360,23 @@ event’s char_predictions</p>
 <code class="descname">save</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves subtitles to an output file</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>pysubs2.SSAFile.save expects an open text file, so we open the
+<p class="first admonition-title">Note</p>
+<p class="last">pysubs2.SSAFile.save expects an open text file, so we open the
 hdf5 file here for consistency.</p>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – Path to output file</p></li>
-<li><p><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Output file format</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str</em>) – Path to output file</li>
+<li><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Output file format</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -354,15 +385,19 @@ hdf5 file here for consistency.</p>
 <dd><p>Shows images of selected characters</p>
 <p>If called from within Jupyter notebook, shows inline. If imgcat module
 is available, shows inline in terminal. Otherwise opens a new window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of character image
-data to show</p></li>
-<li><p><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Character image data to show</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of character image
+data to show</li>
+<li><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Character image data to show</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -370,26 +405,30 @@ data to show</p></li>
 <em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>format_=None</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleSeries.html#ImageSubtitleSeries.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleSeries.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads subtitles from an input file</p>
 <p class="rubric">Notes</p>
-<dl class="simple">
-<dt>pysubs2.SSAFile.from_file expects an open text file, so we open</dt><dd><p>the hdf5 file here for consistency</p>
-</dd>
+<dl class="docutils">
+<dt>pysubs2.SSAFile.from_file expects an open text file, so we open</dt>
+<dd>the hdf5 file here for consistency</dd>
 </dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – Path to input file</p></li>
-<li><p><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file format</p></li>
-<li><p><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – Path to input file</li>
+<li><strong>format</strong> (<em>str</em><em>, </em><em>optional</em>) – Input file format</li>
+<li><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Loaded subtitles</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#scinoephile.ocr.ImageSubtitleSeries" title="scinoephile.ocr.ImageSubtitleSeries">ImageSubtitleSeries</a></p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Loaded subtitles</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#scinoephile.ocr.ImageSubtitleSeries" title="scinoephile.ocr.ImageSubtitleSeries">ImageSubtitleSeries</a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -403,47 +442,60 @@ data to show</p></li>
 <dt id="scinoephile.ocr.ImageSubtitleEvent.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>ndarray</em>) – Subtitle image data</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>ndarray</em>) – Subtitle image data</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_bounds">
 <code class="descname">char_bounds</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Boundaries of individual characters within subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(int)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_count">
 <code class="descname">char_count</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of individual characters within subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_data">
 <code class="descname">char_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image data of individual characters within subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -451,11 +503,14 @@ data to show</p></li>
 <code class="descname">char_indexes</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_indexes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indexes of character images within series’
 deduplicated character image data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(int)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -463,11 +518,14 @@ deduplicated character image data</p>
 <code class="descname">char_predictions</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_predictions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predicted confidence that each character image is
 each matchable character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(float)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(float)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -475,66 +533,84 @@ each matchable character</p>
 <code class="descname">char_separations</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_separations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Widths of spaces between individual characters within
 subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(int)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_spec">
 <code class="descname">char_spec</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_spec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specification of individual characters within subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>DataFrame</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">DataFrame</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.char_widths">
 <code class="descname">char_widths</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.char_widths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Widths of individual characters within subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray(int)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray(int)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.full_data">
 <code class="descname">full_data</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.full_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtitle image data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.img">
 <code class="descname">img</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.img" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image of subtitle</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Image</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Image</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.index">
 <code class="descname">index</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index of subtitle within series</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -542,22 +618,28 @@ subtitle</p>
 <code class="descname">series</code><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtitle series of which this subtitle is a
 part</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Image SubtitleSeries</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Image SubtitleSeries</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scinoephile.ocr.ImageSubtitleEvent.merge_chars">
 <code class="descname">merge_chars</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent.merge_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.merge_chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merges two adjacent characters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of first of two characters to merge</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – Index of first of two characters to merge</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -570,11 +652,14 @@ part</p>
 <dt id="scinoephile.ocr.ImageSubtitleEvent.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/ImageSubtitleEvent.html#ImageSubtitleEvent.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.ImageSubtitleEvent.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves subtitle image to an output file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to output file</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – Path to output file</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -595,7 +680,7 @@ part</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="datasets.html" class="btn btn-neutral float-right" title="Image Data Structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="segmentation.html" class="btn btn-neutral float-right" title="Character Segmentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../ocr.html" class="btn btn-neutral float-left" title="Optical Character Recognition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

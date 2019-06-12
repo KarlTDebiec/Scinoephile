@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Character Recognition &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Foundations" href="foundations.html" />
+    <link rel="prev" title="Character Segmentation" href="segmentation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ocr.html">Optical Character Recognition</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../ocr.html">Optical Character Recognition</a> &raquo;</li>
+        
+      <li>Character Recognition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="character-recognition">
+<h1>Character Recognition<a class="headerlink" href="#character-recognition" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.recognition.</code><code class="descname">RecognitionDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionDataset.html#RecognitionDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRDataset.OCRDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base dataset for character recognition</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset.chars">
+<code class="descname">chars</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.chars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Characters that may be present in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset.data_shape">
+<code class="descname">data_shape</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.data_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image data shape</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray(int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>indexes=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionDataset.html#RecognitionDataset.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows selected images</p>
+<p>If called from within Jupyter notebook, shows inline. If called from
+within terminal and imgcat module is available, shows inline.
+Otherwise opens a new window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of images to show;
+defaults to all</li>
+<li><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Image data to show; defaults to self.data</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.recognition.RecognitionTrainDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.recognition.</code><code class="descname">RecognitionTrainDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTrainDataset.html#RecognitionTrainDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TrainOCRDataset.TrainOCRDataset</span></code></p>
+<p>A collection of character images for training</p>
+<dl class="attribute">
+<dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names and dtypes of columns in spec</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTrainDataset.html#RecognitionTrainDataset.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads dataset from an input file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – Path to input file</li>
+<li><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Loaded dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="foundations/classes.html#scinoephile.ocr.OCRDataset" title="scinoephile.ocr.OCRDataset">OCRDataset</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scinoephile.ocr.recognition.RecognitionTestDataset">
+<em class="property">class </em><code class="descclassname">scinoephile.ocr.recognition.</code><code class="descname">RecognitionTestDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTestDataset.html#RecognitionTestDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TestOCRDataset.TestOCRDataset</span></code></p>
+<p>A collection of labeled character images for testing</p>
+<dl class="method">
+<dt id="scinoephile.ocr.recognition.RecognitionTestDataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>chars=None</em>, <em>subtitle_series=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTestDataset.html#RecognitionTestDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="scinoephile.ocr.recognition.RecognitionTestDataset.spec_dtypes">
+<code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names and dtypes of columns in spec</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="foundations.html" class="btn btn-neutral float-right" title="Foundations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="segmentation.html" class="btn btn-neutral float-left" title="Character Segmentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

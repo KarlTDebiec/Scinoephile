@@ -10,8 +10,6 @@ _____________________________
 - [ ] Understand problem with times
 - [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
 - [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
-- [ ] Add log output to AutoTrainer
-- [ ] Calculate diff between training images and test images to guide spec selection
 - [ ] Improve character separation to support split characters such as 儿 and 八
 - [ ] Improve character separation to load assignments from another dataset
 - [ ] Add support for Western characters and punctuation
@@ -20,13 +18,13 @@ Compositor
 __________
 
 - [x] Add support for overwriting files
+- [x] Tests
 - [ ] Add support for input and output files of the same type
 - [ ] Complete documentation
 - [ ] Restore support for Hanzi, pinyin, and English together
 - [ ] Restore support for IPython console
 - [ ] Restore truecase argument support
 - [ ] Restore time offset support
-- [ ] Tests
 
 Documentation
 _____________
@@ -43,22 +41,17 @@ Miscellaneous
 _____________
 
 - [ ] ImageSubtitleEvent: rename data to full_data, char_data to data
-- [ ] DatasetBase: Make load a classmethod
-- [ ] OCRDataset: Implement sort function
 - [ ] ImageSubtitleSeries: Improve identification of spaces between characters
-- [ ] Improve performance of reading and writing training set
 - [ ] Replace matplotlib with another library to improve font support
 - [ ] Make clearer whether functions are acting on Images or image data
 - [ ] Visualize weights
-- [ ] Extend generate_training_data to add set number of images rather than use total
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
 - [ ] Compare to tesseract
-- [ ] Implement SUP parsing in numba
 - [ ] Option to compress or not when saving Datasets (takes a long time)
 
 Future
 ______
 
-- Improve requirements.txt;clarify what is required for which functions
+- Improve requirements.txt; clarify what is required for which functions
 - Sphinx checklist extension to convert "- [ ]" to "☐" and "- [X]" to "☑"

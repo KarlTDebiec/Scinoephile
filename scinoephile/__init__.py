@@ -14,7 +14,6 @@ import pandas as pd
 from abc import ABC, abstractmethod
 from os.path import dirname
 from sys import modules
-from IPython import embed
 
 ################################## VARIABLES ##################################
 package_root = dirname(modules[__name__].__file__)
@@ -58,12 +57,8 @@ def embed_kw(verbosity=2, **kwargs):
     Returns:
         dictionary: Keyword arguments to be passed to IPython.embed
     """
-
     from inspect import currentframe, getframeinfo
-    from os.path import dirname
-    from sys import modules
 
-    package_root = dirname(modules[__name__].__file__)
     frameinfo = getframeinfo(currentframe().f_back)
     file = frameinfo.filename.replace(package_root, "")
     func = frameinfo.function
@@ -84,7 +79,7 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def get_simplified_hanzi(text):
+def get_simplified_hanzi(text, verbosity=1):
     """
     Converts traditional hanzi to simplified
 
@@ -98,15 +93,16 @@ def get_simplified_hanzi(text):
 
     simplified = ""
     for char in text:
-        if (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+        if re_hanzi.match(char) or re_hanzi_rare.match(char):
             simplified += HanziConv.toSimplified(char)
         else:
             simplified += char
-    print(f"{text}|{simplified}")
+    if verbosity >= 2:
+        print(f"{text} -> {simplified}")
     return simplified
 
 
-def get_pinyin(text, language="mandarin"):
+def get_pinyin(text, language="mandarin", verbosity=1):
     """
     Converts hanzi to pinyin
 
@@ -114,6 +110,7 @@ def get_pinyin(text, language="mandarin"):
         text (str): Text to convert
         language (str): Language of pinyin to use; may be 'mandarin' or
           'cantonese'
+        verbosity (int): Level of verbose output
 
     Returns:
         str: Pinyin text
@@ -135,14 +132,13 @@ def get_pinyin(text, language="mandarin"):
                             [a[0] for a in pinyin(word)])
                 line_romanization += "  " + section_romanization.strip()
             romanization += "\n" + line_romanization.strip()
-        return romanization.strip()
+        romanization = romanization.strip()
 
     elif language == "cantonese":
         from scinoephile.cantonese import get_cantonese_pinyin
 
         romanization = ""
         for line in text.split("\n"):
-            print(line)
             line_romanization = ""
             for section in line.split():
                 section_romanization = ""
@@ -151,7 +147,7 @@ def get_pinyin(text, language="mandarin"):
                         section_romanization += punctuation[char]
                     elif re_western.match(char):
                         section_romanization += char
-                    elif (re_hanzi.match(char) or re_hanzi_rare.match(char)):
+                    elif re_hanzi.match(char) or re_hanzi_rare.match(char):
                         pinyin = get_cantonese_pinyin(char)
                         if pinyin is not None:
                             section_romanization += " " + pinyin
@@ -159,12 +155,13 @@ def get_pinyin(text, language="mandarin"):
                             section_romanization += char
                 line_romanization += "  " + section_romanization.strip()
             romanization += "\n" + line_romanization.strip()
-        print(text, romanization.strip())
-        return romanization.strip()
-
+        romanization = romanization.strip()
     else:
         raise ValueError("Invalid value provided for argument 'language'; "
                          "must of 'cantonese' or 'mandarin'")
+    if verbosity >= 2:
+        print(f"{text} -> {romanization}")
+    return romanization
 
 
 def get_truecase(text):
@@ -185,12 +182,12 @@ def get_truecase(text):
     normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in
                   tagged]
     normalized[0] = normalized[0].capitalize()
-    truecased = re.sub(r" (?=[\.,'!?:;])", "", " ".join(normalized))
+    truecased = re.sub(r" (?=[.,'!?:;])", "", " ".join(normalized))
     truecased = truecased.replace(" n't", "n't")
     truecased = truecased.replace(" i ", " I ")
     truecased = truecased.replace("``", "\"")
     truecased = truecased.replace("''", "\"")
-    truecased = re.sub(r"(\A\w)|(?<!\.\w)([\.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+    truecased = re.sub(r"(\A\w)|(?<!\.\w)([.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
                        lambda s: s.group().upper(), truecased)
     return truecased
 
@@ -392,6 +389,15 @@ def merge_subtitles(upper, lower):
     return pd.DataFrame(synced_df)
 
 
+def todo(func):
+    """Decorator be used to annotate unimplemented functions in a useful way"""
+
+    def wrapper(*args, **kwargs):
+        raise NotImplementedError()
+
+    return wrapper
+
+
 ################################### CLASSES ###################################
 class Base(ABC):
     """Base including convenience methods and properties"""
@@ -417,7 +423,7 @@ class Base(ABC):
 
     @property
     def embed_kw(self):
-        """dict: use ``IPython.embed(**self.embed_kw)`` for more useful prompt"""
+        """Use ``IPython.embed(**self.embed_kw)`` for better prompt"""
         from inspect import currentframe, getframeinfo
 
         frameinfo = getframeinfo(currentframe().f_back)
@@ -521,17 +527,6 @@ class CLToolBase(Base, ABC):
 
         return parser
 
-    @classmethod
-    def process_arguments(cls, parser, args):
-        """
-        Validates arguments provided to an argument parser
-
-        Args:
-            parser (argparse.ArgumentParser): Argument parser
-            args (argparse.Namespace): Arguments
-        """
-        pass
-
     # endregion
 
     # region Public Static Methods
@@ -570,7 +565,6 @@ class CLToolBase(Base, ABC):
 
         parser = cls.construct_argparser()
         args = vars(parser.parse_args())
-        cls.process_arguments(parser, args)
         cls(**args)()
 
 
