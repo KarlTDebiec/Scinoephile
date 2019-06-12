@@ -24,7 +24,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -245,57 +245,70 @@ operation arguments:
 <dt id="scinoephile.Compositor.Compositor.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>bilingual=False</em>, <em>bilingual_overwrite=False</em>, <em>english=False</em>, <em>english_overwrite=False</em>, <em>hanzi=False</em>, <em>hanzi_overwrite=False</em>, <em>pinyin=False</em>, <em>pinyin_overwrite=False</em>, <em>simplify=False</em>, <em>pinyin_language='mandarin'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes command-line tool and selects operations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>bilingual</strong> (<em>str</em>) – Path to bilingual infile or outfile</p></li>
-<li><p><strong>bilingual_overwrite</strong> (<em>bool</em>) – Overwrite bilingual file</p></li>
-<li><p><strong>english</strong> (<em>str</em>) – Path to English infile or outfile</p></li>
-<li><p><strong>english_overwrite</strong> (<em>bool</em>) – Overwrite English file</p></li>
-<li><p><strong>hanzi</strong> (<em>str</em>) – Path to hanzi Chinese infile or outfile</p></li>
-<li><p><strong>hanzi_overwrite</strong> (<em>bool</em>) – Overwrite hanzi Chinese file</p></li>
-<li><p><strong>pinyin</strong> (<em>str</em>) – Path to pinyin Chinese infile or outfile</p></li>
-<li><p><strong>pinyin_overwrite</strong> (<em>bool</em>) – Overwrite pinyin Chinese file</p></li>
-<li><p><strong>simplify</strong> (<em>bool</em>) – Convert traditional hanzi to simplified</p></li>
-<li><p><strong>pinyin_language</strong> (<em>str</em>) – Langauge for which to add pinyin; may be
-‘madarin’ or ‘cantonese’</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bilingual</strong> (<em>str</em>) – Path to bilingual infile or outfile</li>
+<li><strong>bilingual_overwrite</strong> (<em>bool</em>) – Overwrite bilingual file</li>
+<li><strong>english</strong> (<em>str</em>) – Path to English infile or outfile</li>
+<li><strong>english_overwrite</strong> (<em>bool</em>) – Overwrite English file</li>
+<li><strong>hanzi</strong> (<em>str</em>) – Path to hanzi Chinese infile or outfile</li>
+<li><strong>hanzi_overwrite</strong> (<em>bool</em>) – Overwrite hanzi Chinese file</li>
+<li><strong>pinyin</strong> (<em>str</em>) – Path to pinyin Chinese infile or outfile</li>
+<li><strong>pinyin_overwrite</strong> (<em>bool</em>) – Overwrite pinyin Chinese file</li>
+<li><strong>simplify</strong> (<em>bool</em>) – Convert traditional hanzi to simplified</li>
+<li><strong>pinyin_language</strong> (<em>str</em>) – Langauge for which to add pinyin; may be
+‘madarin’ or ‘cantonese’</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Compositor.Compositor.bilingual_subtitles">
 <code class="descname">bilingual_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.bilingual_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bilingual subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Compositor.Compositor.english_subtitles">
 <code class="descname">english_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.english_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>English subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Compositor.Compositor.hanzi_subtitles">
 <code class="descname">hanzi_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.hanzi_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hanzi Chinse subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -303,36 +316,44 @@ operation arguments:
 <code class="descname">operations</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collection of operations to perform, with associated
 arguments</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.Compositor.Compositor.pinyin_subtitles">
 <code class="descname">pinyin_subtitles</code><a class="headerlink" href="#scinoephile.Compositor.Compositor.pinyin_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pinyin Chinese subtitles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="foundations/subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries">SubtitleSeries</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="scinoephile.Compositor.Compositor.construct_argparser">
 <em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.construct_argparser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs argument parser</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Argument parser</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>parser (argparse.ArgumentParser)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Argument parser</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">parser (argparse.ArgumentParser)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

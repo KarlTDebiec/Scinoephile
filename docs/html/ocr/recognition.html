@@ -24,7 +24,7 @@
         <script type="text/javascript" src="../_static/jquery.js"></script>
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -196,22 +196,28 @@
 <dt id="scinoephile.ocr.recognition.RecognitionDataset.chars">
 <code class="descname">chars</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Characters that may be present in this dataset</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list(str)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.recognition.RecognitionDataset.data_shape">
 <code class="descname">data_shape</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.data_shape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image data shape</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>numpy.ndarray(int)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">numpy.ndarray(int)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -221,16 +227,20 @@
 <p>If called from within Jupyter notebook, shows inline. If called from
 within terminal and imgcat module is available, shows inline.
 Otherwise opens a new window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of images to show;
-defaults to all</p></li>
-<li><p><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Image data to show; defaults to self.data</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indexes</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>ndarray</em><em>, </em><em>optional</em>) – Indexes of images to show;
+defaults to all</li>
+<li><strong>data</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Image data to show; defaults to self.data</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -244,32 +254,39 @@ defaults to all</p></li>
 <dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.spec_dtypes">
 <code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Names and dtypes of columns in spec</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>OrderedDict(str, type)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.load">
 <em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>path</em>, <em>verbosity=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTrainDataset.html#RecognitionTrainDataset.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads dataset from an input file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em>) – Path to input file</p></li>
-<li><p><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – Path to input file</li>
+<li><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Level of verbose output</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Loaded dataset</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="foundations/classes.html#scinoephile.ocr.OCRDataset" title="scinoephile.ocr.OCRDataset">OCRDataset</a></p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Loaded dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="foundations/classes.html#scinoephile.ocr.OCRDataset" title="scinoephile.ocr.OCRDataset">OCRDataset</a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -283,25 +300,32 @@ defaults to all</p></li>
 <dt id="scinoephile.ocr.recognition.RecognitionTestDataset.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>chars=None</em>, <em>subtitle_series=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTestDataset.html#RecognitionTestDataset.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="scinoephile.ocr.recognition.RecognitionTestDataset.spec_dtypes">
 <code class="descname">spec_dtypes</code><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset.spec_dtypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Names and dtypes of columns in spec</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>OrderedDict(str, type)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">OrderedDict(str, type)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

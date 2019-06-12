@@ -24,7 +24,7 @@
         <script type="text/javascript" src="../_static/jquery.js"></script>
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -192,59 +192,68 @@
 <code class="descclassname">scinoephile.</code><code class="descname">embed_kw</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#embed_kw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.embed_kw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepares header for IPython prompt showing current location in code</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">IPython.embed(**embed_kw())</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
+<li><strong>**kwargs</strong> – Additional keyword arguments</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Keyword arguments to be passed to IPython.embed</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dictionary</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Keyword arguments to be passed to IPython.embed</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="scinoephile.get_simplified_hanzi">
 <code class="descclassname">scinoephile.</code><code class="descname">get_simplified_hanzi</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#get_simplified_hanzi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.get_simplified_hanzi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts traditional hanzi to simplified</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to simplify</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Text with traditional hanzi exchanged for simplified</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – Text to simplify</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Text with traditional hanzi exchanged for simplified</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="scinoephile.get_pinyin">
 <code class="descclassname">scinoephile.</code><code class="descname">get_pinyin</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#get_pinyin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.get_pinyin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts hanzi to pinyin</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>str</em>) – Text to convert</p></li>
-<li><p><strong>language</strong> (<em>str</em>) – Language of pinyin to use; may be ‘mandarin’ or
-‘cantonese’</p></li>
-<li><p><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) – Text to convert</li>
+<li><strong>language</strong> (<em>str</em>) – Language of pinyin to use; may be ‘mandarin’ or
+‘cantonese’</li>
+<li><strong>verbosity</strong> (<em>int</em>) – Level of verbose output</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Pinyin text</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pinyin text</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -252,17 +261,18 @@
 <code class="descclassname">scinoephile.</code><code class="descname">get_truecase</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#get_truecase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.get_truecase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts English text to truecase.</p>
 <p>Useful for subtiltes stored in all capital letters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to apply truecase to</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Text with truecase</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – Text to apply truecase to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Text with truecase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -270,55 +280,65 @@
 <code class="descclassname">scinoephile.</code><code class="descname">get_single_line_text</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#get_single_line_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.get_single_line_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Arranges multi-line text on a single line.</p>
 <p>Accounts for dashes (‘-‘) used for dialogue from multiple sources</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>str</em>) – Text to arrange</p></li>
-<li><p><strong>language</strong> (<em>str</em>) – Punctuation and spacing language to use; may be
-‘english’, ‘hanzi’, or ‘pinyin’</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>text</strong> (<em>str</em>) – Text to arrange</li>
+<li><strong>language</strong> (<em>str</em>) – Punctuation and spacing language to use; may be
+‘english’, ‘hanzi’, or ‘pinyin’</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Text arranged on a single line</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Text arranged on a single line</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="scinoephile.in_ipython">
 <code class="descclassname">scinoephile.</code><code class="descname">in_ipython</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#in_ipython"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.in_ipython" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if inside IPython prompt</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Type of shell in use</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Type of shell in use</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="scinoephile.merge_subtitles">
 <code class="descclassname">scinoephile.</code><code class="descname">merge_subtitles</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile.html#merge_subtitles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.merge_subtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merges and synchronizes two sets of subtitles.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>upper</strong> (<a class="reference internal" href="subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a><em>, </em><em>pandas.DataFrame</em>) – Upper subtitles</p></li>
-<li><p><strong>lower</strong> (<a class="reference internal" href="subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a><em>, </em><em>pandas.DataFrame</em>) – Lower subtitles</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>upper</strong> (<a class="reference internal" href="subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a><em>, </em><em>pandas.DataFrame</em>) – Upper subtitles</li>
+<li><strong>lower</strong> (<a class="reference internal" href="subtitles.html#scinoephile.SubtitleSeries" title="scinoephile.SubtitleSeries"><em>SubtitleSeries</em></a><em>, </em><em>pandas.DataFrame</em>) – Lower subtitles</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Merged and synchronized subtitles</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>DataFrame</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Merged and synchronized subtitles</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">DataFrame</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
