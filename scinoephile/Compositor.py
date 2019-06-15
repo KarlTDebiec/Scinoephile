@@ -71,9 +71,10 @@ class Compositor(CLToolBase):
             **kwargs: Additional keyword arguments
         """
         super().__init__(**kwargs)
-        # embed(**self.embed_kw)
 
-        # Read in files if they exist
+        # TODO: Rename read/write to load/save, for consistency
+
+        # Catalogue input and output operations
         if bilingual and isinstance(bilingual, str):
             bilingual = expandvars(bilingual)
             if isfile(bilingual) and not bilingual_overwrite:
@@ -99,7 +100,7 @@ class Compositor(CLToolBase):
             else:
                 self.operations["write_pinyin"] = pinyin
 
-        # Create subtitles if they do not exist
+        # Catalogue additional operations
         # TODO: Add useful exception text
         if ("write_english" in self.operations
                 and "read_english" not in self.operations):
@@ -187,7 +188,7 @@ class Compositor(CLToolBase):
 
     # endregion
 
-    # region Properties
+    # region Public Properties
 
     @property
     def bilingual_subtitles(self):

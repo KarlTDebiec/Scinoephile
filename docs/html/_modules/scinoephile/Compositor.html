@@ -250,9 +250,10 @@
 <span class="sd">            **kwargs: Additional keyword arguments</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="c1"># embed(**self.embed_kw)</span>
 
-        <span class="c1"># Read in files if they exist</span>
+        <span class="c1"># TODO: Rename read/write to load/save, for consistency</span>
+
+        <span class="c1"># Catalogue input and output operations</span>
         <span class="k">if</span> <span class="n">bilingual</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bilingual</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">bilingual</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">bilingual</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">bilingual</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bilingual_overwrite</span><span class="p">:</span>
@@ -278,7 +279,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
 
-        <span class="c1"># Create subtitles if they do not exist</span>
+        <span class="c1"># Catalogue additional operations</span>
         <span class="c1"># TODO: Add useful exception text</span>
         <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;write_english&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
                 <span class="ow">and</span> <span class="s2">&quot;read_english&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">):</span>
@@ -366,7 +367,7 @@
 
     <span class="c1"># endregion</span>
 
-    <span class="c1"># region Properties</span>
+    <span class="c1"># region Public Properties</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bilingual_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
