@@ -11,12 +11,12 @@
 import numpy as np
 from collections import OrderedDict
 from scinoephile import todo
-from scinoephile.ocr import get_labels_of_chars, TestOCRDataset
+from scinoephile.ocr import OCRTestDataset
 from scinoephile.ocr.recognition import RecognitionDataset
 
 
 ################################### CLASSES ###################################
-class RecognitionTestDataset(RecognitionDataset, TestOCRDataset):
+class RecognitionTestDataset(RecognitionDataset, OCRTestDataset):
     """
     A collection of labeled character images for testing
     """
@@ -48,7 +48,7 @@ class RecognitionTestDataset(RecognitionDataset, TestOCRDataset):
     def get_data_for_tensorflow(self):
 
         img = self.data.astype(np.float16) / 255.0
-        lbl = get_labels_of_chars(self.spec["char"].values)
+        lbl = self.get_labels_of_chars(self.spec["char"].values)
 
         return img, lbl
 

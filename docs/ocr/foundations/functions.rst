@@ -6,8 +6,6 @@ Functions
 .. autofunction:: scinoephile.ocr.draw_char_imgs(...)
 .. autofunction:: scinoephile.ocr.draw_text_on_img(...)
 .. autofunction:: scinoephile.ocr.generate_char_datum(...)
-.. autofunction:: scinoephile.ocr.get_labels_of_chars(...)
-.. autofunction:: scinoephile.ocr.get_chars_of_labels(...)
 .. autofunction:: scinoephile.ocr.show_img(...)
 .. autofunction:: scinoephile.ocr.numba.read_sup_image(...)
 .. autofunction:: scinoephile.ocr.numba.read_sup_palette(...)

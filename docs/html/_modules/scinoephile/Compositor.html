@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
@@ -279,6 +279,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;write_pinyin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinyin</span>
 
         <span class="c1"># Create subtitles if they do not exist</span>
+        <span class="c1"># TODO: Add useful exception text</span>
         <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;write_english&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
                 <span class="ow">and</span> <span class="s2">&quot;read_english&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">):</span>
             <span class="k">if</span> <span class="s2">&quot;read_hanzi&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
@@ -612,28 +613,14 @@
     <span class="c1"># region Class Methods</span>
 
 <div class="viewcode-block" id="Compositor.construct_argparser"><a class="viewcode-back" href="../../cltools.html#scinoephile.Compositor.Compositor.construct_argparser">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">construct_argparser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">construct_argparser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs argument parser</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            parser (argparse.ArgumentParser): Argument parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">argparse</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
-            <span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">):</span>
-            <span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
-                <span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
-                <span class="n">help</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
-                <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">parser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
-                <span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
-                <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Files</span>
         <span class="n">parser_file</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;file arguments&quot;</span><span class="p">)</span>
@@ -657,9 +644,9 @@
                                  <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
                                  <span class="n">action</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_filepath_action</span><span class="p">(),</span>
                                  <span class="n">metavar</span><span class="o">=</span><span class="n">Metavar</span><span class="p">([</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;overwrite&quot;</span><span class="p">]),</span>
-                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Chinese Pinyin subtitles&quot;</span><span class="p">)</span>
+                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Chinese pinyin subtitles&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Operation</span>
+        <span class="c1"># Operations</span>
         <span class="n">parser_ops</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;operation arguments&quot;</span><span class="p">)</span>
         <span class="n">parser_ops</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--simplify&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;convert traditional characters to &quot;</span>
@@ -670,7 +657,12 @@
                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add Mandarin Hanyu pinyin (汉语拼音)&quot;</span><span class="p">)</span>
         <span class="n">parser_ops</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--yue&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span>
                                 <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;pinyin_language&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;cantonese&quot;</span><span class="p">,</span>
-                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add Cantonese Yale pinyin (耶鲁粤语拼音)&quot;</span><span class="p">)</span>
+                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add Cantonese Yale pinyin (耶鲁粤语拼音); &quot;</span>
+                                     <span class="s2">&quot;mainly useful for older Hong Kong &quot;</span>
+                                     <span class="s2">&quot;movies (1980s to early 1990s) whose &quot;</span>
+                                     <span class="s2">&quot;Chinese subtitles are in 粤文 (i.e. &quot;</span>
+                                     <span class="s2">&quot;using 係, 喺, and 唔 rather than 是, 在, &quot;</span>
+                                     <span class="s2">&quot;and 不, etc.)&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">parser</span></div></div>
 

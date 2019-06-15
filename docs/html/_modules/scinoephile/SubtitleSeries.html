@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
@@ -353,8 +353,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves subtitles to an output hdf5 file</span>
 
-<span class="sd">        Todo:</span>
-<span class="sd">            * Save project info</span>
+<span class="sd">        TODO: Save project info</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            fp (h5py._hl.files.File): Open hdf5 output file</span>
@@ -436,8 +435,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads subtitles from an input hdf5 file</span>
 
-<span class="sd">         Todo:</span>
-<span class="sd">            * Load project info</span>
+<span class="sd">         TODO: Load project info</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            fp (h5py._hl.files.File): Open hdf5 input file</span>
@@ -476,7 +474,7 @@
 
         <span class="c1"># Initialize</span>
         <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
-        <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;hdf5&quot;</span>  <span class="c1"># TODO: Is this used anywhere?</span>
+        <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;hdf5&quot;</span>
 
         <span class="c1"># Load info</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

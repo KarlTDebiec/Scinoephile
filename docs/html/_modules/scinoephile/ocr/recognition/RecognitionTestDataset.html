@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#future">Future</a></li>
@@ -192,12 +192,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">todo</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">get_labels_of_chars</span><span class="p">,</span> <span class="n">TestOCRDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRTestDataset</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.recognition</span> <span class="k">import</span> <span class="n">RecognitionDataset</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="RecognitionTestDataset"><a class="viewcode-back" href="../../../../ocr/recognition.html#scinoephile.ocr.recognition.RecognitionTestDataset">[docs]</a><span class="k">class</span> <span class="nc">RecognitionTestDataset</span><span class="p">(</span><span class="n">RecognitionDataset</span><span class="p">,</span> <span class="n">TestOCRDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="RecognitionTestDataset"><a class="viewcode-back" href="../../../../ocr/recognition.html#scinoephile.ocr.recognition.RecognitionTestDataset">[docs]</a><span class="k">class</span> <span class="nc">RecognitionTestDataset</span><span class="p">(</span><span class="n">RecognitionDataset</span><span class="p">,</span> <span class="n">OCRTestDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of labeled character images for testing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -229,7 +229,7 @@
     <span class="k">def</span> <span class="nf">get_data_for_tensorflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
-        <span class="n">lbl</span> <span class="o">=</span> <span class="n">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">lbl</span>
 

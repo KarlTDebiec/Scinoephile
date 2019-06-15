@@ -43,17 +43,20 @@ __________
 
     file arguments:
       -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
-                            Bilingual subtitles
+                            bilingual subtitles
       -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                             Chinese Hanzi subtitles
       -e FILE [overwrite ...], --english FILE [overwrite ...]
                             English subtitles
       -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
-                            Chinese Pinyin subtitles
+                            Chinese pinyin subtitles
 
     operation arguments:
       -s, --simplify        convert traditional characters to simplified
       -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
-      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
+                            older Hong Kong movies (1980s to early 1990s) whose
+                            Chinese subtitles are in 粤文 (i.e. using 係, 喺, and 唔
+                            rather than 是, 在, and 不, etc.)
 
 .. autoclass:: scinoephile.Compositor.Compositor()

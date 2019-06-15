@@ -10,12 +10,12 @@
 ################################### MODULES ###################################
 from collections import OrderedDict
 from scinoephile import todo
-from scinoephile.ocr import TrainOCRDataset
+from scinoephile.ocr import OCRTrainDataset
 from scinoephile.ocr.segmentation import SegmentationDataset
 
 
 ################################### CLASSES ###################################
-class SegmentationTrainDataset(SegmentationDataset, TrainOCRDataset):
+class SegmentationTrainDataset(SegmentationDataset, OCRTrainDataset):
     """
     A collection of subtitle images for training
     """

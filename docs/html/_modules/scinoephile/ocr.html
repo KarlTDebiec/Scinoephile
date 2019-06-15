@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
@@ -197,32 +197,34 @@
     <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;cumulative frequency&quot;</span><span class="p">])</span>
 
 <span class="n">hanzi_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hanzi_frequency</span><span class="p">[</span><span class="s2">&quot;character&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-<span class="n">western_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-    <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">)</span>
-<span class="n">numeric_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;0123456789&quot;</span><span class="p">)</span>
-<span class="n">eastern_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;。？！，、（）［］《》「」：；⋯&quot;</span><span class="p">)</span>
-<span class="n">western_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;.?!,-–()[]&lt;&gt;:;…&quot;</span><span class="p">)</span>
+<span class="n">western_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span>
+    <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">))</span>
+<span class="n">numeric_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;0123456789&quot;</span><span class="p">))</span>
+<span class="s1">&#39;⋯&#39;</span>
+<span class="n">eastern_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;。？！，、（）［］《》「」：；&quot;</span><span class="p">))</span>
+<span class="s1">&#39;–&#39;</span>
+<span class="n">western_punctuation_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;.?!,-()[]&lt;&gt;:;…&quot;</span><span class="p">))</span>
 
 
 <span class="c1">################################## FUNCTIONS ##################################</span>
-<span class="k">def</span> <span class="nf">analyze_predictions</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-    <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{title:10s}</span><span class="s2">  Count:</span><span class="si">{lbl.size:5d}</span><span class="s2">  Loss:</span><span class="si">{loss:7.5f}</span><span class="s2"> &quot;</span>
-              <span class="n">f</span><span class="s2">&quot;Accuracy:</span><span class="si">{acc:7.5f}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">get_chars_of_labels</span><span class="p">(</span><span class="n">lbl</span><span class="p">)):</span>
-            <span class="n">poss_lbls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">poss_chars</span> <span class="o">=</span> <span class="n">get_chars_of_labels</span><span class="p">(</span><span class="n">poss_lbls</span><span class="p">)</span>
-            <span class="n">poss_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">poss_lbls</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">char</span> <span class="o">!=</span> <span class="n">poss_chars</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">:</span><span class="si">{b:4.2f}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span>
-                               <span class="nb">zip</span><span class="p">(</span><span class="n">poss_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">poss_probs</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{char}</span><span class="s2"> | {&#39; &#39;.join(matches)}&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span>
+<span class="c1"># def analyze_predictions(img, lbl, model, title=&quot;&quot;, verbosity=1, **kwargs):</span>
+<span class="c1">#     pred = model.predict(img)</span>
+<span class="c1">#     loss, acc = model.evaluate(img, lbl)</span>
+<span class="c1">#     if verbosity &gt;= 1:</span>
+<span class="c1">#         print(f&quot;{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} &quot;</span>
+<span class="c1">#               f&quot;Accuracy:{acc:7.5f}&quot;)</span>
+<span class="c1">#     if verbosity &gt;= 2:</span>
+<span class="c1">#         for i, char in enumerate(get_chars_of_labels(lbl)):</span>
+<span class="c1">#             poss_lbls = np.argsort(pred[i])[::-1]</span>
+<span class="c1">#             poss_chars = get_chars_of_labels(poss_lbls)</span>
+<span class="c1">#             poss_probs = np.round(pred[i][poss_lbls], 2)</span>
+<span class="c1">#             if char != poss_chars[0]:</span>
+<span class="c1">#                 if verbosity &gt;= 2:</span>
+<span class="c1">#                     matches = [f&quot;{a}:{b:4.2f}&quot; for a, b in</span>
+<span class="c1">#                                zip(poss_chars[:10], poss_probs[:10])]</span>
+<span class="c1">#                     print(f&quot;{char} | {&#39; &#39;.join(matches)}&quot;)</span>
+<span class="c1">#</span>
+<span class="c1">#     return loss, acc</span>
 
 
 <div class="viewcode-block" id="center_char_img"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.center_char_img">[docs]</a><span class="k">def</span> <span class="nf">center_char_img</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -325,8 +327,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates an image of a character</span>
 
-<span class="sd">    TODO: Don&#39;t hardcode defaults for macOS</span>
-
 <span class="sd">    Args:</span>
 <span class="sd">        char (str): character of which to draw an image of</span>
 <span class="sd">        font (str): font with which to draw character</span>
@@ -343,6 +343,8 @@
     <span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="k">import</span> <span class="n">FontProperties</span>
     <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="k">import</span> <span class="n">Stroke</span><span class="p">,</span> <span class="n">Normal</span>
     <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+    <span class="c1"># TODO: Don&#39;t hardcode defaults for macOS</span>
 
     <span class="c1"># Process arguments</span>
     <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -375,55 +377,6 @@
         <span class="k">raise</span> <span class="n">e</span>
 
     <span class="k">return</span> <span class="n">data</span></div>
-
-
-<div class="viewcode-block" id="get_labels_of_chars"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.get_labels_of_chars">[docs]</a><span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="n">chars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Gets unique integer indexes of provided char strings</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        chars (ndarray(int64)): Chars</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">         ndarray(int64): Labels</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Process arguments</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">hanzi_chars</span> <span class="o">==</span> <span class="n">chars</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
-    <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
-
-    <span class="c1"># Return labels</span>
-    <span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="n">sorter</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)])</span></div>
-
-
-<div class="viewcode-block" id="get_chars_of_labels"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.get_chars_of_labels">[docs]</a><span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Gets char strings of unique integer indexes</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        labels (ndarray(int64)): Labels</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">        ndarray(U64): Chars</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Process arguments</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">hanzi_chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-
-    <span class="c1"># return hanzi_chars</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">hanzi_chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="show_img"><a class="viewcode-back" href="../../ocr/foundations/functions.html#scinoephile.ocr.show_img">[docs]</a><span class="k">def</span> <span class="nf">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -463,8 +416,8 @@
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.ImageSubtitleEvent</span> <span class="k">import</span> <span class="n">ImageSubtitleEvent</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.ImageSubtitleSeries</span> <span class="k">import</span> <span class="n">ImageSubtitleSeries</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.OCRDataset</span> <span class="k">import</span> <span class="n">OCRDataset</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr.TestOCRDataset</span> <span class="k">import</span> <span class="n">TestOCRDataset</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr.TrainOCRDataset</span> <span class="k">import</span> <span class="n">TrainOCRDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr.OCRTestDataset</span> <span class="k">import</span> <span class="n">OCRTestDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr.OCRTrainDataset</span> <span class="k">import</span> <span class="n">OCRTrainDataset</span>
 </pre></div>
 
            </div>

@@ -27,7 +27,7 @@ def test_RecognitionTrainDataset(**kwargs):
     ds.save(f"{output_dir}/ocr/recognition_training.h5")
 
     ds = RecognitionTrainDataset.load(
-        f"{input_dir}/ocr/recognition_training.h5")
+        f"{output_dir}/ocr/recognition_training.h5")
     ds.show()
 
 

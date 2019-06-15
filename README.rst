@@ -17,12 +17,8 @@ Python package for working with Chinese/English bilingual subtitles. Mainly
 useful for combining separate Chinese and English subtitle files into single
 synchronized bilingual subtitles. May optionally add romanization below Chinese
 subtitles using Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
-Cantonese romanization is really only useful for older Hong Kong movies (1980s
-to early 1990s) whose Chinese subtitles `match the spoken Cantonese 1:1
-<https://en.wikipedia.org/wiki/Written_Cantonese>`_ (that is, using 係, 喺,
-and 唔 rather than 是, 在, and 不, etc.). Optical Character Recognition
-functions are currently under development to allow the conversion of
-image-based Blu-Ray subtitles to text format.
+Optical Character Recognition functions are currently under development to
+allow the conversion of image-based subtitles to text format.
 
 Dependencies
 ------------
@@ -100,18 +96,21 @@ __________
 
     file arguments:
       -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
-                            Bilingual subtitles
+                            bilingual subtitles
       -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                             Chinese Hanzi subtitles
       -e FILE [overwrite ...], --english FILE [overwrite ...]
                             English subtitles
       -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
-                            Chinese Pinyin subtitles
+                            Chinese pinyin subtitles
 
     operation arguments:
       -s, --simplify        convert traditional characters to simplified
       -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
-      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
+                            older Hong Kong movies (1980s to early 1990s) whose
+                            Chinese subtitles are in 粤文 (i.e. using 係, 喺, and 唔
+                            rather than 是, 在, and 不, etc.)
 
 
 Authorship

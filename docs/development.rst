@@ -3,39 +3,28 @@
 Development
 -----------
 
-Optical Character Recognition
-_____________________________
-
-- [ ] Fix documentation
-- [ ] Understand problem with times
-- [ ] Reimplement TestOCRDataset to link to a list of ImageSubtitleSeries
-- [ ] Replace spec_cols in OCRDataset, TrainOCRDataset and TestOCRDataset
-- [ ] Improve character separation to support split characters such as 儿 and 八
-- [ ] Improve character separation to load assignments from another dataset
-- [ ] Add support for Western characters and punctuation
-
 Compositor
 __________
 
-- [x] Add support for overwriting files
-- [x] Tests
 - [ ] Add support for input and output files of the same type
+- [ ] Document overwrite parameter
+- [ ] Extend test coverage
 - [ ] Complete documentation
 - [ ] Restore support for Hanzi, pinyin, and English together
-- [ ] Restore support for IPython console
-- [ ] Restore truecase argument support
-- [ ] Restore time offset support
+- [ ] Restore support for IPython prompt
+- [ ] Restore support fo truecase
+- [ ] Restore support for time offset
+
+Derasterizer
+____________
+
+- [ ] Add command-line arguments
+- [ ] Read infiles
 
 Documentation
 _____________
 
-- [ ] Document Base and CLToolBase
-- [ ] Document Subtitle Data Structures
-- [ ] Document Image Subtitle Data Structures
-- [ ] Document OCRBase and OCRCLToolBase
-- [ ] Document OCR Data Structures
-- [ ] Document Training tool
-- [ ] Improve examples
+- [ ] Review
 
 Miscellaneous
 _____________

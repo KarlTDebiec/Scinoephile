@@ -213,7 +213,7 @@ class ImageSubtitleEvent(SubtitleEvent):
         text += chars[-1]
 
         self.text = text
-        # TODO: Improve handling of roman characters
+        # TODO: Improve handling of western characters
         # TODO: Reconstruct ellipsis and any other characters that get split
 
     def save(self, path):

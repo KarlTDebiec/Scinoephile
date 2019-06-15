@@ -11,12 +11,12 @@
 import numpy as np
 from collections import OrderedDict
 from scinoephile import todo
-from scinoephile.ocr import TestOCRDataset
+from scinoephile.ocr import OCRTestDataset
 from scinoephile.ocr.segmentation import SegmentationDataset
 
 
 ################################### CLASSES ###################################
-class SegmentationTestDataset(SegmentationDataset, TestOCRDataset):
+class SegmentationTestDataset(SegmentationDataset, OCRTestDataset):
     """
     A collection of labeled character images for testing
     """

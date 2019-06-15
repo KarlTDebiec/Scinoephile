@@ -46,15 +46,14 @@ class OCRDataset(Base, ABC):
         pass
 
     @property
-    def figures(self):
-        """List[Figure]: Temporary figures used for images"""
-        if not hasattr(self, "_figures"):
+    def figure(self):
+        """Figure: Temporary figure used for images"""
+        if not hasattr(self, "_figure"):
             from matplotlib.pyplot import figure
 
-            self._figures = [figure(figsize=(self.data_shape[0] / 80,
-                                             self.data_shape[1] / 80), dpi=80)
-                             for i in range(4)]
-        return self._figures
+            self._figure = figure(figsize=(self.data_shape[0] / 80,
+                                           self.data_shape[1] / 80), dpi=80)
+        return self._figure
 
     @property
     def spec(self):

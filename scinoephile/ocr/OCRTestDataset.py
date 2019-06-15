@@ -13,7 +13,7 @@ from scinoephile.ocr import (ImageSubtitleSeries, OCRDataset)
 
 
 ################################### CLASSES ###################################
-class TestOCRDataset(OCRDataset, ABC):
+class OCRTestDataset(OCRDataset, ABC):
     """
     A collection of labeled character images for testing
     """

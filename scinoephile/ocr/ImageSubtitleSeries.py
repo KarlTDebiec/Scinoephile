@@ -428,9 +428,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         Saves subtitles to an output hdf5 file
 
-        Todo:
-            * Save project info
-
         Args:
             fp (h5py._hl.files.File): Open hdf5 output file
             **kwargs: Additional keyword arguments
@@ -486,15 +483,14 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         Saves subtitles to directory of png files
 
-        Todo:
-            * Also save srt file in folder using pysubs2 code
-
         Args:
             fp (str): Directory path
             **kwargs: Additional keyword arguments
         """
         from os import makedirs
         from os.path import isdir
+
+        # TODO: Also save srt file in folder using pysubs2 code
 
         if not isdir(fp):
             makedirs(fp)
@@ -510,9 +506,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         Loads subtitles from an input hdf5 file
 
-         Todo:
-            * Load project info
-
         Args:
             fp (h5py._hl.files.File): Open hdf5 input file
             verbosity (int, optional): Level of verbose output
@@ -521,6 +514,8 @@ class ImageSubtitleSeries(SubtitleSeries):
         Returns:
             ImageSubtitleSeries: Loaded subtitles
         """
+        # TODO: Load project info
+
         decode = lambda x: x.decode("utf8")
 
         # Load info, styles, and events

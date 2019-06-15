@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#future">Future</a></li>
@@ -192,12 +192,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">todo</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">TestOCRDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRTestDataset</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.segmentation</span> <span class="k">import</span> <span class="n">SegmentationDataset</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="SegmentationTestDataset"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTestDataset">[docs]</a><span class="k">class</span> <span class="nc">SegmentationTestDataset</span><span class="p">(</span><span class="n">SegmentationDataset</span><span class="p">,</span> <span class="n">TestOCRDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentationTestDataset"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTestDataset">[docs]</a><span class="k">class</span> <span class="nc">SegmentationTestDataset</span><span class="p">(</span><span class="n">SegmentationDataset</span><span class="p">,</span> <span class="n">OCRTestDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of labeled character images for testing</span>
 <span class="sd">    &quot;&quot;&quot;</span>

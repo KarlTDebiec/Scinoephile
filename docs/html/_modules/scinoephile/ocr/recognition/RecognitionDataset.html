@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#future">Future</a></li>
@@ -206,15 +206,14 @@
     <span class="k">def</span> <span class="nf">chars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;list(str): Characters that may be present in this dataset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_chars&quot;</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">hanzi_chars</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="n">hanzi_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span>
 
     <span class="nd">@chars</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># TODO: Validate</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">[:</span><span class="n">value</span><span class="p">])</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">[:</span><span class="n">value</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
@@ -225,6 +224,53 @@
     <span class="c1"># endregion</span>
 
     <span class="c1"># region Public Methods</span>
+
+<div class="viewcode-block" id="RecognitionDataset.get_labels_of_chars"><a class="viewcode-back" href="../../../../ocr/recognition.html#scinoephile.ocr.recognition.RecognitionDataset.get_labels_of_chars">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets unique integer indexes of provided char strings</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            chars: Chars</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             ndarray(int64): Labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">==</span> <span class="n">chars</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+        <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+
+        <span class="c1"># Return labels</span>
+        <span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">sorter</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="RecognitionDataset.get_chars_of_labels"><a class="viewcode-back" href="../../../../ocr/recognition.html#scinoephile.ocr.recognition.RecognitionDataset.get_chars_of_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets char strings of unique integer indexes</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            labels (ndarray(int64)): Labels</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">            ndarray(U64): Chars</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Improve exception text</span>
+
+        <span class="c1"># Process arguments and return chars</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div>
 
     <span class="k">def</span> <span class="nf">get_present_specs_of_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">as_set</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">as_set</span><span class="p">:</span>

@@ -174,8 +174,7 @@ class SubtitleSeries(Base, SSAFile):
         """
         Saves subtitles to an output hdf5 file
 
-        Todo:
-            * Save project info
+        TODO: Save project info
 
         Args:
             fp (h5py._hl.files.File): Open hdf5 output file
@@ -257,8 +256,7 @@ class SubtitleSeries(Base, SSAFile):
         """
         Loads subtitles from an input hdf5 file
 
-         Todo:
-            * Load project info
+         TODO: Load project info
 
         Args:
             fp (h5py._hl.files.File): Open hdf5 input file
@@ -297,7 +295,7 @@ class SubtitleSeries(Base, SSAFile):
 
         # Initialize
         subs = cls(verbosity=verbosity)
-        subs.format = "hdf5"  # TODO: Is this used anywhere?
+        subs.format = "hdf5"
 
         # Load info
         for k, v in fp.attrs.items():

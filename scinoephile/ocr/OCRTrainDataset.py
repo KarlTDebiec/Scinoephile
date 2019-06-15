@@ -13,7 +13,7 @@ from scinoephile.ocr import OCRDataset
 
 
 ################################### CLASSES ###################################
-class TrainOCRDataset(OCRDataset, ABC):
+class OCRTrainDataset(OCRDataset, ABC):
     """
     A collection of images for training
     """

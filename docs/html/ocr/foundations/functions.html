@@ -107,8 +107,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
@@ -265,7 +265,6 @@
 <dt id="scinoephile.ocr.generate_char_datum">
 <code class="descclassname">scinoephile.ocr.</code><code class="descname">generate_char_datum</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#generate_char_datum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.generate_char_datum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an image of a character</p>
-<p>TODO: Don’t hardcode defaults for macOS</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -290,42 +289,6 @@ character</li>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="scinoephile.ocr.get_labels_of_chars">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">get_labels_of_chars</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#get_labels_of_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.get_labels_of_chars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets unique integer indexes of provided char strings</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chars</strong> (<em>ndarray</em><em>(</em><em>int64</em><em>)</em>) – Chars</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Labels</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray(int64)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="scinoephile.ocr.get_chars_of_labels">
-<code class="descclassname">scinoephile.ocr.</code><code class="descname">get_chars_of_labels</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#get_chars_of_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.get_chars_of_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets char strings of unique integer indexes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>labels</strong> (<em>ndarray</em><em>(</em><em>int64</em><em>)</em>) – Labels</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Returns</dt>
-<dd>ndarray(U64): Chars</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">

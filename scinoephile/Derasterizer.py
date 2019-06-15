@@ -15,14 +15,14 @@ import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
 from IPython import embed
-from scinoephile import CLToolBase
+from scinoephile import CLToolBase, Metavar
 from scinoephile.ocr import ImageSubtitleSeries
 
 
 ################################### CLASSES ###################################
 class Derasterizer(CLToolBase):
     """
-    Compiles Chinese and English subtitles
+    Converts image-based subtitles to text
     """
 
     # region Builtins
@@ -46,28 +46,38 @@ class Derasterizer(CLToolBase):
     # region Class Methods
 
     @classmethod
-    def construct_argparser(cls, parser=None):
+    def construct_argparser(cls, **kwargs):
         """
         Constructs argument parser
 
         Returns:
             parser (argparse.ArgumentParser): Argument parser
         """
-        import argparse
+        parser = super().construct_argparser(description=__doc__, **kwargs)
 
-        if isinstance(parser, argparse.ArgumentParser):
-            parser = parser
-        elif isinstance(parser, argparse._SubParsersAction):
-            parser = parser.add_parser(
-                name=cls.__name__.lower(),
-                description=__doc__,
-                help=__doc__,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
-        elif parser is None:
-            parser = argparse.ArgumentParser(
-                description=__doc__,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
-        super().construct_argparser(parser)
+        # Files
+        parser_file = parser.add_argument_group("file arguments")
+        parser_file.add_argument("-i", "--infile", type=str,
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar="FILE",
+                                 help="Input image-based subtitle file")
+        parser_file.add_argument("-o", "--outfile", type=str,
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar="FILE",
+                                 help="Output subtitle file")
+        parser_file.add_argument("-s", "--standard", type=str,
+                                 nargs="+",
+                                 action=cls.get_filepath_action(),
+                                 metavar=Metavar(["FILE", "overwrite"]),
+                                 help="Standard subtitle file against which "
+                                      "to compare results")
+        # Model file for recognition
+
+        # Operations
+        parser_ops = parser.add_argument_group("operation arguments")
+        # Segmentation_method (standard or dnn)
 
         return parser
 

@@ -496,7 +496,7 @@ class CLToolBase(Base, ABC):
     # region Public Class Methods
 
     @classmethod
-    def construct_argparser(cls, parser=None):
+    def construct_argparser(cls, description, parser=None, **kwargs):
         """
         Constructs argument parser
 
@@ -505,15 +505,18 @@ class CLToolBase(Base, ABC):
         """
         import argparse
 
-        if parser is None:
-            if hasattr(cls, "helptext"):
-                description = cls.helptext
-            else:
-                try:
-                    description = cls.__doc__.split("\n")[1].strip()
-                except IndexError:
-                    description = cls.__doc__
-            parser = argparse.ArgumentParser(description=description)
+        if isinstance(parser, argparse.ArgumentParser):
+            parser = parser
+        elif isinstance(parser, argparse._SubParsersAction):
+            parser = parser.add_parser(
+                name=cls.__name__.lower(),
+                description=description,
+                help=description,
+                formatter_class=argparse.RawDescriptionHelpFormatter)
+        elif parser is None:
+            parser = argparse.ArgumentParser(
+                description=description,
+                formatter_class=argparse.RawDescriptionHelpFormatter)
 
         # General
         verbosity = parser.add_mutually_exclusive_group()

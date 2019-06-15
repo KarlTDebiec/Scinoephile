@@ -107,8 +107,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future">Future</a></li>
@@ -222,18 +222,21 @@ optional arguments:
 
 file arguments:
   -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
-                        Bilingual subtitles
+                        bilingual subtitles
   -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                         Chinese Hanzi subtitles
   -e FILE [overwrite ...], --english FILE [overwrite ...]
                         English subtitles
   -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
-                        Chinese Pinyin subtitles
+                        Chinese pinyin subtitles
 
 operation arguments:
   -s, --simplify        convert traditional characters to simplified
   -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
-  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
+                        older Hong Kong movies (1980s to early 1990s) whose
+                        Chinese subtitles are in 粤文 (i.e. using 係, 喺, and 唔
+                        rather than 是, 在, and 不, etc.)
 </pre></div>
 </div>
 <dl class="class">
@@ -342,7 +345,7 @@ arguments</p>
 
 <dl class="classmethod">
 <dt id="scinoephile.Compositor.Compositor.construct_argparser">
-<em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>parser=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.construct_argparser" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">construct_argparser</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scinoephile/Compositor.html#Compositor.construct_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.Compositor.Compositor.construct_argparser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs argument parser</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

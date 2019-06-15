@@ -18,32 +18,34 @@ hanzi_frequency = pd.read_csv(
     sep="\t", names=["character", "frequency", "cumulative frequency"])
 
 hanzi_chars = np.array(hanzi_frequency["character"], np.str)
-western_chars = np.array(
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-numeric_chars = np.array("0123456789")
-eastern_punctuation_chars = np.array("。？！，、（）［］《》「」：；⋯")
-western_punctuation_chars = np.array(".?!,-–()[]<>:;…")
+western_chars = np.array(list(
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+numeric_chars = np.array(list("0123456789"))
+'⋯'
+eastern_punctuation_chars = np.array(list("。？！，、（）［］《》「」：；"))
+'–'
+western_punctuation_chars = np.array(list(".?!,-()[]<>:;…"))
 
 
 ################################## FUNCTIONS ##################################
-def analyze_predictions(img, lbl, model, title="", verbosity=1, **kwargs):
-    pred = model.predict(img)
-    loss, acc = model.evaluate(img, lbl)
-    if verbosity >= 1:
-        print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
-              f"Accuracy:{acc:7.5f}")
-    if verbosity >= 2:
-        for i, char in enumerate(get_chars_of_labels(lbl)):
-            poss_lbls = np.argsort(pred[i])[::-1]
-            poss_chars = get_chars_of_labels(poss_lbls)
-            poss_probs = np.round(pred[i][poss_lbls], 2)
-            if char != poss_chars[0]:
-                if verbosity >= 2:
-                    matches = [f"{a}:{b:4.2f}" for a, b in
-                               zip(poss_chars[:10], poss_probs[:10])]
-                    print(f"{char} | {' '.join(matches)}")
-
-    return loss, acc
+# def analyze_predictions(img, lbl, model, title="", verbosity=1, **kwargs):
+#     pred = model.predict(img)
+#     loss, acc = model.evaluate(img, lbl)
+#     if verbosity >= 1:
+#         print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
+#               f"Accuracy:{acc:7.5f}")
+#     if verbosity >= 2:
+#         for i, char in enumerate(get_chars_of_labels(lbl)):
+#             poss_lbls = np.argsort(pred[i])[::-1]
+#             poss_chars = get_chars_of_labels(poss_lbls)
+#             poss_probs = np.round(pred[i][poss_lbls], 2)
+#             if char != poss_chars[0]:
+#                 if verbosity >= 2:
+#                     matches = [f"{a}:{b:4.2f}" for a, b in
+#                                zip(poss_chars[:10], poss_probs[:10])]
+#                     print(f"{char} | {' '.join(matches)}")
+#
+#     return loss, acc
 
 
 def center_char_img(data, x_offset=0, y_offset=0):
@@ -146,8 +148,6 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     """
     Generates an image of a character
 
-    TODO: Don't hardcode defaults for macOS
-
     Args:
         char (str): character of which to draw an image of
         font (str): font with which to draw character
@@ -164,6 +164,8 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     from matplotlib.font_manager import FontProperties
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
+
+    # TODO: Don't hardcode defaults for macOS
 
     # Process arguments
     if fig is None:
@@ -196,55 +198,6 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
         raise e
 
     return data
-
-
-def get_labels_of_chars(chars):
-    """
-    Gets unique integer indexes of provided char strings
-
-    Args:
-        chars (ndarray(int64)): Chars
-
-    Returns:
-         ndarray(int64): Labels
-    """
-
-    # Process arguments
-    if isinstance(chars, str):
-        if len(chars) == 1:
-            return np.argwhere(hanzi_chars == chars)[0, 0]
-        elif len(chars) > 1:
-            chars = list(chars)
-    chars = np.array(chars)
-
-    # Return labels
-    sorter = np.argsort(hanzi_chars)
-    return np.array(
-        sorter[np.searchsorted(hanzi_chars, chars, sorter=sorter)])
-
-
-def get_chars_of_labels(labels):
-    """
-    Gets char strings of unique integer indexes
-
-    Args:
-        labels (ndarray(int64)): Labels
-
-    Returns
-        ndarray(U64): Chars
-    """
-
-    # Process arguments
-    if isinstance(labels, int):
-        return hanzi_chars[labels]
-    elif isinstance(labels, list):
-        labels = np.array(labels)
-
-    # return hanzi_chars
-    if isinstance(labels, np.ndarray):
-        return np.array([hanzi_chars[i] for i in labels], np.str)
-    else:
-        raise ValueError()
 
 
 def show_img(img, **kwargs):
@@ -284,5 +237,5 @@ def show_img(img, **kwargs):
 from scinoephile.ocr.ImageSubtitleEvent import ImageSubtitleEvent
 from scinoephile.ocr.ImageSubtitleSeries import ImageSubtitleSeries
 from scinoephile.ocr.OCRDataset import OCRDataset
-from scinoephile.ocr.TestOCRDataset import TestOCRDataset
-from scinoephile.ocr.TrainOCRDataset import TrainOCRDataset
+from scinoephile.ocr.OCRTestDataset import OCRTestDataset
+from scinoephile.ocr.OCRTrainDataset import OCRTrainDataset

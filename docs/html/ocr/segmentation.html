@@ -107,8 +107,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
@@ -211,7 +211,7 @@
 <dl class="class">
 <dt id="scinoephile.ocr.segmentation.SegmentationTrainDataset">
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.segmentation.</code><code class="descname">SegmentationTrainDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationTrainDataset.html#SegmentationTrainDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTrainDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TrainOCRDataset.TrainOCRDataset</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRTrainDataset.OCRTrainDataset</span></code></p>
 <p>A collection of subtitle images for training</p>
 <dl class="attribute">
 <dt id="scinoephile.ocr.segmentation.SegmentationTrainDataset.spec_dtypes">
@@ -232,7 +232,7 @@
 <dl class="class">
 <dt id="scinoephile.ocr.segmentation.SegmentationTestDataset">
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.segmentation.</code><code class="descname">SegmentationTestDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/segmentation/SegmentationTestDataset.html#SegmentationTestDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.segmentation.SegmentationTestDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TestOCRDataset.TestOCRDataset</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.segmentation.SegmentationDataset.SegmentationDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRTestDataset.OCRTestDataset</span></code></p>
 <p>A collection of labeled character images for testing</p>
 <dl class="method">
 <dt id="scinoephile.ocr.segmentation.SegmentationTestDataset.__init__">

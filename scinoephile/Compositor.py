@@ -100,6 +100,7 @@ class Compositor(CLToolBase):
                 self.operations["write_pinyin"] = pinyin
 
         # Create subtitles if they do not exist
+        # TODO: Add useful exception text
         if ("write_english" in self.operations
                 and "read_english" not in self.operations):
             if "read_hanzi" in self.operations:
@@ -433,28 +434,14 @@ class Compositor(CLToolBase):
     # region Class Methods
 
     @classmethod
-    def construct_argparser(cls, parser=None):
+    def construct_argparser(cls, **kwargs):
         """
         Constructs argument parser
 
         Returns:
             parser (argparse.ArgumentParser): Argument parser
         """
-        import argparse
-
-        if isinstance(parser, argparse.ArgumentParser):
-            parser = parser
-        elif isinstance(parser, argparse._SubParsersAction):
-            parser = parser.add_parser(
-                name=cls.__name__.lower(),
-                description=__doc__,
-                help=__doc__,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
-        elif parser is None:
-            parser = argparse.ArgumentParser(
-                description=__doc__,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
-        super().construct_argparser(parser)
+        parser = super().construct_argparser(description=__doc__, **kwargs)
 
         # Files
         parser_file = parser.add_argument_group("file arguments")
@@ -478,9 +465,9 @@ class Compositor(CLToolBase):
                                  nargs="+",
                                  action=cls.get_filepath_action(),
                                  metavar=Metavar(["FILE", "overwrite"]),
-                                 help="Chinese Pinyin subtitles")
+                                 help="Chinese pinyin subtitles")
 
-        # Operation
+        # Operations
         parser_ops = parser.add_argument_group("operation arguments")
         parser_ops.add_argument("-s", "--simplify", action="store_true",
                                 help="convert traditional characters to "
@@ -491,7 +478,12 @@ class Compositor(CLToolBase):
                                 help="add Mandarin Hanyu pinyin (汉语拼音)")
         parser_ops.add_argument("-y", "--yue", action="store_const",
                                 dest="pinyin_language", const="cantonese",
-                                help="add Cantonese Yale pinyin (耶鲁粤语拼音)")
+                                help="add Cantonese Yale pinyin (耶鲁粤语拼音); "
+                                     "mainly useful for older Hong Kong "
+                                     "movies (1980s to early 1990s) whose "
+                                     "Chinese subtitles are in 粤文 (i.e. "
+                                     "using 係, 喺, and 唔 rather than 是, 在, "
+                                     "and 不, etc.)")
 
         return parser
 

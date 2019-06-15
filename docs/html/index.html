@@ -106,8 +106,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html#future">Future</a></li>
@@ -191,11 +191,8 @@
 useful for combining separate Chinese and English subtitle files into single
 synchronized bilingual subtitles. May optionally add romanization below Chinese
 subtitles using Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
-Cantonese romanization is really only useful for older Hong Kong movies (1980s
-to early 1990s) whose Chinese subtitles <a class="reference external" href="https://en.wikipedia.org/wiki/Written_Cantonese">match the spoken Cantonese 1:1</a> (that is, using 係, 喺,
-and 唔 rather than 是, 在, and 不, etc.). Optical Character Recognition
-functions are currently under development to allow the conversion of
-image-based Blu-Ray subtitles to text format.</p>
+Optical Character Recognition functions are currently under development to
+allow the conversion of image-based subtitles to text format.</p>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
@@ -268,18 +265,21 @@ optional arguments:
 
 file arguments:
   -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
-                        Bilingual subtitles
+                        bilingual subtitles
   -c FILE [overwrite ...], --chinese FILE [overwrite ...]
                         Chinese Hanzi subtitles
   -e FILE [overwrite ...], --english FILE [overwrite ...]
                         English subtitles
   -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
-                        Chinese Pinyin subtitles
+                        Chinese pinyin subtitles
 
 operation arguments:
   -s, --simplify        convert traditional characters to simplified
   -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
-  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音)
+  -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
+                        older Hong Kong movies (1980s to early 1990s) whose
+                        Chinese subtitles are in 粤文 (i.e. using 係, 喺, and 唔
+                        rather than 是, 在, and 不, etc.)
 </pre></div>
 </div>
 </div>

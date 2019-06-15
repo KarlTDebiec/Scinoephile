@@ -11,12 +11,12 @@
 import pandas as pd
 import numpy as np
 from collections import OrderedDict
-from scinoephile.ocr import get_labels_of_chars, TrainOCRDataset
+from scinoephile.ocr import OCRTrainDataset
 from scinoephile.ocr.recognition import RecognitionDataset
 
 
 ################################### CLASSES ###################################
-class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
+class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
     """
     A collection of character images for training
     """
@@ -34,9 +34,21 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
     # region Public Methods
 
     def generate_training_data(self, min_images=None):
+        """
+
+        Args:
+            min_images:
+
+        Returns:
+
+        """
         from itertools import product
         from random import sample
         from scinoephile.ocr import generate_char_datum
+
+        # TODO: Document
+        # TODO: Parallelize
+        # TODO: Handle missing characters smoothly
 
         # Process arguments
         fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
@@ -107,8 +119,9 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
 
             spec = pd.DataFrame(min_queue)
             data = np.zeros((len(min_queue), 80, 80), np.uint8)
-            for i, kwargs in enumerate(min_queue):
-                data[i] = generate_char_datum(fig=self.figures[0], **kwargs)
+
+            for i, kw in enumerate(min_queue):
+                data[i] = generate_char_datum(fig=self.figure, **kw)
 
             self.append(spec, data)
         else:
@@ -120,7 +133,7 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
 
         if val_portion is None or val_portion == 0.0:
             trn_img = self.data.astype(np.float16) / 255.0
-            trn_lbl = get_labels_of_chars(self.spec["char"].values)
+            trn_lbl = self.get_labels_of_chars(self.spec["char"].values)
 
             return trn_img, trn_lbl, None, None
 
@@ -148,10 +161,10 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
 
         # Organize data
         trn_img = self.data[complete_trn_indexes]
-        trn_lbl = get_labels_of_chars(
+        trn_lbl = self.get_labels_of_chars(
             self.spec["char"].loc[complete_trn_indexes].values)
         val_img = self.data[complete_val_indexes]
-        val_lbl = get_labels_of_chars(
+        val_lbl = self.get_labels_of_chars(
             self.spec["char"].loc[complete_val_indexes].values)
 
         trn_img = trn_img.astype(np.float16) / 255.0
@@ -200,14 +213,21 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
             ("width", "i1"),
             ("x_offset", "i1"),
             ("y_offset", "i1")]
-        encode = lambda x: x.encode("utf8")
+
+        # Save characters
+        if "chars" in fp:
+            del fp["chars"]
+        encoded = np.char.encode(self.chars, "utf8")
+        fp.create_dataset("chars",
+                          data=encoded, dtype="S3",
+                          chunks=True, compression="gzip")
 
         # Save character image specs
         if "spec" in fp:
             del fp["spec"]
         encoded = self.spec.copy()
-        encoded["char"] = encoded["char"].apply(encode)
-        encoded["font"] = encoded["font"].apply(encode)
+        encoded["char"] = np.char.encode(encoded["char"].values.astype(str))
+        encoded["font"] = np.char.encode(encoded["font"].values.astype(str))
         encoded = np.array(list(map(tuple, list(encoded.values))),
                            dtype=dtypes)
         fp.create_dataset("spec",
@@ -238,13 +258,16 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
         Returns:
             RecognitionTrainDataset: Loaded dataset
         """
-        from scinoephile.ocr import get_labels_of_chars
 
-        decode = lambda x: x.decode("utf8")
-        sort_chars = lambda x: get_labels_of_chars(x)
+        # TODO: Improve expection text
 
         # Initialize
         dataset = cls(verbosity=verbosity)
+
+        # Load characters
+        if "chars" not in fp:
+            raise ValueError()
+        dataset.chars = np.chararray.decode(fp["chars"], "utf8")
 
         # Load image specs
         if "spec" not in fp:
@@ -252,9 +275,9 @@ class RecognitionTrainDataset(RecognitionDataset, TrainOCRDataset):
         spec = np.array(fp["spec"])
         spec = pd.DataFrame(data=spec, index=range(spec.size),
                             columns=spec.dtype.names)
-        spec["char"] = spec["char"].apply(decode)
-        spec["font"] = spec["font"].apply(decode)
-        dataset.chars = sorted(list(set(spec["char"])), key=sort_chars)
+        spec["char"] = np.char.decode(spec["char"].values.astype("S3"), "utf8")
+        spec["font"] = np.char.decode(spec["font"].values.astype("S255"),
+                                      "utf8")
 
         # Load image data
         if "data" not in fp:

@@ -105,8 +105,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../development.html#future">Future</a></li>
@@ -191,12 +191,12 @@
 <span class="c1">################################### MODULES ###################################</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">todo</span>
-<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">TrainOCRDataset</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="n">OCRTrainDataset</span>
 <span class="kn">from</span> <span class="nn">scinoephile.ocr.segmentation</span> <span class="k">import</span> <span class="n">SegmentationDataset</span>
 
 
 <span class="c1">################################### CLASSES ###################################</span>
-<div class="viewcode-block" id="SegmentationTrainDataset"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTrainDataset">[docs]</a><span class="k">class</span> <span class="nc">SegmentationTrainDataset</span><span class="p">(</span><span class="n">SegmentationDataset</span><span class="p">,</span> <span class="n">TrainOCRDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentationTrainDataset"><a class="viewcode-back" href="../../../../ocr/segmentation.html#scinoephile.ocr.segmentation.SegmentationTrainDataset">[docs]</a><span class="k">class</span> <span class="nc">SegmentationTrainDataset</span><span class="p">(</span><span class="n">SegmentationDataset</span><span class="p">,</span> <span class="n">OCRTrainDataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of subtitle images for training</span>
 <span class="sd">    &quot;&quot;&quot;</span>

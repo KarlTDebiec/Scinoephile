@@ -107,8 +107,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../development.html#optical-character-recognition">Optical Character Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development.html#derasterizer">Derasterizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#miscellaneous">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../development.html#future">Future</a></li>
@@ -221,6 +221,42 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset.get_labels_of_chars">
+<code class="descname">get_labels_of_chars</code><span class="sig-paren">(</span><em>chars</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionDataset.html#RecognitionDataset.get_labels_of_chars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.get_labels_of_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets unique integer indexes of provided char strings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chars</strong> – Chars</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Labels</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray(int64)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.recognition.RecognitionDataset.get_chars_of_labels">
+<code class="descname">get_chars_of_labels</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionDataset.html#RecognitionDataset.get_chars_of_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.get_chars_of_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets char strings of unique integer indexes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>labels</strong> (<em>ndarray</em><em>(</em><em>int64</em><em>)</em>) – Labels</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Returns</dt>
+<dd>ndarray(U64): Chars</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="scinoephile.ocr.recognition.RecognitionDataset.show">
 <code class="descname">show</code><span class="sig-paren">(</span><em>indexes=None</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionDataset.html#RecognitionDataset.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionDataset.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shows selected images</p>
@@ -248,7 +284,7 @@ defaults to all</li>
 <dl class="class">
 <dt id="scinoephile.ocr.recognition.RecognitionTrainDataset">
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.recognition.</code><code class="descname">RecognitionTrainDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTrainDataset.html#RecognitionTrainDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TrainOCRDataset.TrainOCRDataset</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRTrainDataset.OCRTrainDataset</span></code></p>
 <p>A collection of character images for training</p>
 <dl class="attribute">
 <dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.spec_dtypes">
@@ -262,6 +298,20 @@ defaults to all</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scinoephile.ocr.recognition.RecognitionTrainDataset.generate_training_data">
+<code class="descname">generate_training_data</code><span class="sig-paren">(</span><em>min_images=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTrainDataset.html#RecognitionTrainDataset.generate_training_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTrainDataset.generate_training_data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>min_images</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -294,7 +344,7 @@ defaults to all</li>
 <dl class="class">
 <dt id="scinoephile.ocr.recognition.RecognitionTestDataset">
 <em class="property">class </em><code class="descclassname">scinoephile.ocr.recognition.</code><code class="descname">RecognitionTestDataset</code><a class="reference internal" href="../_modules/scinoephile/ocr/recognition/RecognitionTestDataset.html#RecognitionTestDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.recognition.RecognitionTestDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.TestOCRDataset.TestOCRDataset</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.recognition.RecognitionDataset.RecognitionDataset</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">scinoephile.ocr.OCRTestDataset.OCRTestDataset</span></code></p>
 <p>A collection of labeled character images for testing</p>
 <dl class="method">
 <dt id="scinoephile.ocr.recognition.RecognitionTestDataset.__init__">
