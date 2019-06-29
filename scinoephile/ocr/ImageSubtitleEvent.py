@@ -9,7 +9,6 @@
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
 import numpy as np
-from IPython import embed
 from scinoephile import SubtitleEvent
 
 
@@ -49,55 +48,27 @@ class ImageSubtitleEvent(SubtitleEvent):
     @property
     def char_count(self):
         """int: Number of individual characters within subtitle"""
-        if not hasattr(self, "_char_bounds"):
-            self._initialize_char_bounds()
         return self.char_bounds.shape[0]
 
     @property
     def char_data(self):
         """ndarray: Image data of individual characters within subtitle"""
-        if not hasattr(self, "_char_bounds"):
-            self._initialize_char_bounds()
-
-        _char_data = np.ones(
-            (self.char_bounds.shape[0], 80, 80), np.uint8) * 255
-        for i, (x1, x2) in enumerate(self.char_bounds):
-            char = self.full_data[:, x1:x2 + 1]
-            white_rows = (char == char.max()).all(axis=1)
-            char = char[np.argmin(white_rows):
-                        white_rows.size - np.argmin(white_rows[::-1])]
-            x = int(np.floor((80 - char.shape[1]) / 2))
-            y = int(np.floor((80 - char.shape[0]) / 2))
-            _char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
-        return _char_data
+        if not hasattr(self, "_char_data"):
+            self._initialize_char_data()
+        return self._char_data
 
     @property
     def char_indexes(self):
         """ndarray(int): Indexes of character images within series'
          deduplicated character image data"""
-        flatten = lambda l: [item for sublist in l for item in sublist]
-
-        char_indexes = sorted(flatten(
-            self.series.spec[self.series.spec.apply(
-                lambda x: np.any([self.index in [s for s, c in x["indexes"]]]),
-                axis=1)].apply(
-                lambda x: [(c, x.name) for s, c in x["indexes"]
-                           if s == self.index],
-                axis=1)))
-        return [i for c, i in char_indexes]
-
-    @property
-    def char_predictions(self):
-        """ndarray(float): Predicted confidence that each character image is
-        each matchable character"""
-        raise NotImplementedError()
+        if not hasattr(self, "_char_indexes"):
+            self._initialize_char_indexes()
+        return self._char_indexes
 
     @property
     def char_separations(self):
         """ndarray(int): Widths of spaces between individual characters within
         subtitle"""
-        if not hasattr(self, "_char_bounds"):
-            self._initialize_char_bounds()
         return self.char_bounds[1:, 0] - self.char_bounds[:-1, 1]
 
     @property
@@ -108,8 +79,6 @@ class ImageSubtitleEvent(SubtitleEvent):
     @property
     def char_widths(self):
         """ndarray(int): Widths of individual characters within subtitle"""
-        if not hasattr(self, "_char_bounds"):
-            self._initialize_char_bounds()
         return self.char_bounds[:, 1] - self.char_bounds[:, 0]
 
     @property
@@ -152,10 +121,9 @@ class ImageSubtitleEvent(SubtitleEvent):
     @property
     def index(self):
         """int: Index of subtitle within series"""
-        if self.series is not None:
-            return self.series.events.index(self)
-        else:
-            return None
+        if not hasattr(self, "_index"):
+            self._index = self.series.events.index(self)
+        return self._index
 
     @property
     def series(self):
@@ -176,45 +144,6 @@ class ImageSubtitleEvent(SubtitleEvent):
     # endregion
 
     # region Public Methods
-
-    def merge_chars(self, index):
-        """
-        Merges two adjacent characters
-
-        Args:
-            index (int): Index of first of two characters to merge
-        """
-        self._char_bounds = np.append(
-            self.char_bounds.flatten()[:index * 2 + 1],
-            self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
-
-    def reconstruct_text(self):
-        """
-        Reconstructs text of this subtitle using assigned characters
-        """
-        chars = self.char_spec["char"].values
-        text = ""
-        items = zip(chars[:-1], chars[1:], self.char_widths[:-1],
-                    self.char_widths[1:], self.char_separations)
-        for i, (char_i, char_j, width_i, width_j, sep) in enumerate(items):
-            text += char_i
-
-            # Very large space: Two speakers
-            if sep >= 100:
-                text = f"﹣{text}　　﹣"
-            # Two Hanzi: separation cutoff of 40 to add double-width space
-            elif width_i >= 45 and width_j >= 45 and sep >= 40:
-                # print("Adding a double-width space")
-                text += "　"
-            # Two Roman: separation cutoff of 35 to add single-width space
-            elif width_i < 45 and width_j < 45 and sep >= 36:
-                # print("Adding a single-width space")
-                text += " "
-        text += chars[-1]
-
-        self.text = text
-        # TODO: Improve handling of western characters
-        # TODO: Reconstruct ellipsis and any other characters that get split
 
     def save(self, path):
         """
@@ -257,4 +186,30 @@ class ImageSubtitleEvent(SubtitleEvent):
         bounds = bounds.reshape((-1, 2))
         self._char_bounds = bounds
 
-    # endregion
+    def _initialize_char_data(self):
+        char_data = np.ones((self.char_bounds.shape[0], 80, 80),
+                            np.uint8) * 255
+        for i, (x1, x2) in enumerate(self.char_bounds):
+            char = self.full_data[:, x1:x2 + 1]
+            white_rows = (char == char.max()).all(axis=1)
+            char = char[np.argmin(white_rows):
+                        white_rows.size - np.argmin(white_rows[::-1])]
+            x = int(np.floor((80 - char.shape[1]) / 2))
+            y = int(np.floor((80 - char.shape[0]) / 2))
+            char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
+        self._char_data = char_data
+
+    def _initialize_char_indexes(self):
+        flatten = lambda l: [item for sublist in l for item in sublist]
+
+        char_indexes = sorted(flatten(
+            self.series.spec[self.series.spec.apply(
+                lambda x: np.any([self.index in [s for s, c in x["indexes"]]]),
+                axis=1)].apply(
+                lambda x: [(c, x.name) for s, c in x["indexes"]
+                           if s == self.index],
+                axis=1)))
+        char_indexes = [i for c, i in char_indexes]
+        self._char_indexes = char_indexes
+
+# endregion

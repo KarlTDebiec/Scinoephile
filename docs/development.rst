@@ -18,8 +18,14 @@ __________
 Derasterizer
 ____________
 
-- [ ] Add command-line arguments
-- [ ] Read infiles
+- [x] Add command-line arguments
+- [x] Read infiles
+- [x] Write outfile
+- [x] Segment characters
+- [ ] Predict characters
+- [ ] Reconstruct text
+- [ ] Compare to standard
+- [ ] Print statistics
 
 Documentation
 _____________

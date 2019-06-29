@@ -123,7 +123,7 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
 #################################### TESTS ####################################
 def test_ImageSubtitle_hdf5_chinese_simplified(**kwargs):
     """Tests reading simplified Chinese subtitles in srt format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5",
+    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
               md5s=dict(
                   data="3c745f0e394724ce2a28bbba614dfa6e",
                   events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
@@ -139,15 +139,15 @@ def test_ImageSubtitle_hdf5_chinese_simplified(**kwargs):
                   spec="0f85f86849336e48a516e74d836fadde",
                   str="b257f040185902df5bae94f8ad411710"),
               outfiles=[
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.srt",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit/"],
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.srt",
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image/"],
               **kwargs)
 
 
 def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
     """Tests reading simplified Chinese subtitles in sup format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.sup",
+    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.sup",
               md5s=dict(
                   data="3c745f0e394724ce2a28bbba614dfa6e",
                   events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
@@ -163,9 +163,9 @@ def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
                   spec="fa05f41246e4bebcca36bb0caf9c1732",
                   str="b257f040185902df5bae94f8ad411710"),
               outfiles=[
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.srt",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit/"],
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.srt",
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
+                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image/"],
               **kwargs)
 
 

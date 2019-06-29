@@ -10,11 +10,9 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
-from IPython import embed
 from scinoephile import SubtitleSeries
 from scinoephile.ocr import (ImageSubtitleEvent)
-from scinoephile.ocr.numba import read_sup_image, read_sup_palette, \
-    read_sup_subtitles
+from scinoephile.ocr.numba import read_sup_subtitles
 
 
 ################################### CLASSES ###################################
@@ -33,112 +31,32 @@ class ImageSubtitleSeries(SubtitleSeries):
     # region Public Properties
 
     @property
-    def char_predictions(self):
-        """ndarray(float): Predicted confidence that each character image is
-        each matchable character"""
-        if not hasattr(self, "_char_predictions"):
-            self._char_predictions = None
-        return self._char_predictions
-
-    @char_predictions.setter
-    def char_predictions(self, value):
-        if not isinstance(value, np.ndarray):
-            raise ValueError(self._generate_setter_exception(value))
-        if value.shape[0] != self.data.shape[0]:
-            raise ValueError(self._generate_setter_exception(value))
-        self._char_predictions = value
-
-    @property
     def data(self):
         """ndarray: Dedupulicated character image data collected from all
         subtitles"""
         if not hasattr(self, "_data"):
-            self._initialize_char_data()
+            self._initialize_data()
         return self._data
 
     @property
     def spec(self):
         """DataFrame: Specifications describing each character image"""
         if not hasattr(self, "_spec"):
-            self._initialize_char_data()
+            self._initialize_data()
         return self._spec
 
     @property
     def spec_dtypes(self):
         """OrderedDict(str, type): names and dtypes of columns in spec"""
-        from collections import OrderedDict
+        if not hasattr(self, "_spec_dtypes"):
+            from collections import OrderedDict
 
-        return OrderedDict(char=str, indexes=object)
+            self._spec_dtypes = OrderedDict(char=str, indexes=object)
+        return self._spec_dtypes
 
     # endregion
 
     # region Public Methods
-
-    def assign_char(self, index, char):
-        """
-        Assigns a character to a character image
-
-        Args:
-            index (int): Index of character image to assign
-            char (str): Character to assign to image
-        """
-        if self.spec.loc[index].char != char:
-            if self.verbosity >= 2:
-                print(f"Assigning character {index} as '{char}'")
-            self.spec.loc[index].char = char
-
-    def calculate_accuracy(self, infile, n_chars, assign=True):
-        """
-        Calculates accuracy of predicted text relative to known standard
-
-        Arguments:
-            infile (str): Path to standard infile
-            n_chars (int): Number of matchable characters
-            assign (boot): Copy character assignments from standard
-        """
-        standard = SubtitleSeries.load(infile)
-        n_correct = 0
-        n_total = 0
-        n_correct_matchable = 0
-        n_total_matchable = 0
-
-        # Loop over events
-        event_pairs = zip([e.text for e in self.events[:len(standard.events)]],
-                          [e.text for e in standard.events])
-        for i, (pred_text, true_text) in enumerate(event_pairs):
-            pred_text = pred_text.replace("　", "").replace(" ", "")
-            true_text = true_text.replace("　", "").replace(" ", "")
-            true_text = true_text.replace("…", "...")
-
-            # Determine labels of true characters
-            try:
-                true_labels = self.get_labels_of_chars(true_text)
-            except IndexError:
-                true_labels = []
-                for true_char in true_text:
-                    try:
-                        true_labels.append(self.get_labels_of_chars(true_char))
-                    except:
-                        true_labels.append(-1)
-
-            # Loop over characters
-            char_pairs = zip(pred_text, true_text, true_labels)
-            for j, (pred_char, true_char, true_label) in enumerate(char_pairs):
-                n_total += 1
-                if pred_char == true_char:
-                    n_correct += 1
-                    if assign:
-                        self.assign_char(self.events[i].char_indexes[j],
-                                         pred_char)
-                if 0 <= true_label < n_chars:
-                    n_total_matchable += 1
-                    if pred_char == true_char:
-                        n_correct_matchable += 1
-        print(f"{n_correct} out of {n_total} characters correct "
-              f"(accuracy = {n_correct / n_total:6.4})")
-        print(f"{n_correct_matchable} out of {n_total_matchable} matchable "
-              f"characters correct "
-              f"(accuracy = {n_correct_matchable / n_total_matchable:6.4f})")
 
     def get_char_index_of_subchar_indexes(self, sub_index, char_index):
         raise NotImplementedError()
@@ -157,98 +75,6 @@ class ImageSubtitleSeries(SubtitleSeries):
               subtitle)
         """
         return self.spec.loc[index].indexes
-
-    def manually_assign_chars(self, start_index=0):
-        """
-        Interactively confirm character assignments
-
-        Args:
-            start_index (index): Character index at which to start interactive
-              character assignment
-        """
-        from pypinyin import pinyin
-
-        if self.char_predictions is not None:
-            predictions = self.get_chars_of_labels(
-                np.argsort(self.char_predictions, axis=1)[:, -1])
-        else:
-            predictions = None
-
-        if self.verbosity >= 1:
-            print("Assigning characters")
-            print("  Press Enter to accept predicted character")
-            print("  or type another character and press Enter to correct")
-            print("  or press CTRL-D to skip character")
-            print("  or press CTRL-C to stop assigning")
-            print()
-        for i, spec in self.spec.iterrows():
-            if spec.char != "":
-                print(f"Character {i} previously assigned as '{spec.char}' "
-                      f"({pinyin(spec.char)[0][0]})")
-                continue
-            if i <= start_index:
-                print(f"Skipping assignment of character {i}")
-                continue
-
-            self.show(indexes=i)
-
-            try:
-                if predictions is not None:
-                    match = input(f"'{predictions[i]}' "
-                                  f"({pinyin(predictions[i])[0][0]}): ")
-                else:
-                    match = input(f"'' (): ")
-            except EOFError:
-                print(f"\nSkipping assignment of character {i}")
-                continue
-            except KeyboardInterrupt:
-                print("\nQuitting character assignment")
-                break
-            if match == "":
-                self.assign_char(i, predictions[i])
-            else:
-                self.assign_char(i, match)
-
-        embed(**self.embed_kw)
-
-    def predict(self, model):
-        """
-        Predicts confidence that each character image is each matchable
-        chararcter
-
-        Stores results in both this series' char_predictions and in each
-        event's char_predictions
-
-        Arguments:
-            model(model?): TensorFlow model with which to predict characters
-        """
-        dtypes = [("series char index", "i8"),
-                  ("subtitle index", "i8"),
-                  ("subtitle char index", "i8")]
-
-        # Make predictions
-        self.char_predictions = model.model.predict(self.data)
-
-        # Store predictions in each event
-        # TODO: Confirm that char_predictions are references
-        char_indexes = pd.DataFrame([(i, j, k)
-                                     for i, s in self.spec.iterrows()
-                                     for j, k in s["indexes"]],
-                                    columns=[d[0] for d in dtypes])
-        for i, event in enumerate(self.events):
-            event_indexes = char_indexes[
-                char_indexes["subtitle index"] == i].sort_values(
-                "subtitle char index")["series char index"].values
-            event.char_predictions = self.char_predictions[event_indexes]
-
-    def reconstruct_text(self):
-        """
-        Reconstructs text for each subtitle
-        """
-        for i, event in enumerate(self.events):
-            if self.verbosity >= 1:
-                print(f"Reconstructing text for subtitle {i}")
-            event.reconstruct_text()
 
     def save(self, path, format_=None, **kwargs):
         """
@@ -363,7 +189,7 @@ class ImageSubtitleSeries(SubtitleSeries):
 
     # region Private Methods
 
-    def _initialize_char_data(self):
+    def _initialize_data(self):
         """
         Initializes deduplicated character image data structure
         """
@@ -577,7 +403,8 @@ class ImageSubtitleSeries(SubtitleSeries):
             subs.events.append(cls.event_class(
                 start=make_time(s=start),
                 end=make_time(s=end),
-                data=image))
+                data=image,
+                series=subs))
 
         return subs
 

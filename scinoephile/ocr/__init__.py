@@ -28,26 +28,6 @@ western_punctuation_chars = np.array(list(".?!,-()[]<>:;…"))
 
 
 ################################## FUNCTIONS ##################################
-# def analyze_predictions(img, lbl, model, title="", verbosity=1, **kwargs):
-#     pred = model.predict(img)
-#     loss, acc = model.evaluate(img, lbl)
-#     if verbosity >= 1:
-#         print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
-#               f"Accuracy:{acc:7.5f}")
-#     if verbosity >= 2:
-#         for i, char in enumerate(get_chars_of_labels(lbl)):
-#             poss_lbls = np.argsort(pred[i])[::-1]
-#             poss_chars = get_chars_of_labels(poss_lbls)
-#             poss_probs = np.round(pred[i][poss_lbls], 2)
-#             if char != poss_chars[0]:
-#                 if verbosity >= 2:
-#                     matches = [f"{a}:{b:4.2f}" for a, b in
-#                                zip(poss_chars[:10], poss_probs[:10])]
-#                     print(f"{char} | {' '.join(matches)}")
-#
-#     return loss, acc
-
-
 def center_char_img(data, x_offset=0, y_offset=0):
     """
     Centers image data

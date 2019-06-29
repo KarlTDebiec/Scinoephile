@@ -14,10 +14,13 @@ optical character recognition model.
 import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
+from pypinyin import pinyin
 from tensorflow import keras
 from IPython import embed
 from scinoephile import CLToolBase, Metavar, SubtitleSeries
-from scinoephile.ocr import ImageSubtitleSeries
+from scinoephile.ocr import (eastern_punctuation_chars, hanzi_chars,
+                             numeric_chars, western_chars,
+                             western_punctuation_chars, ImageSubtitleSeries)
 
 
 ################################### CLASSES ###################################
@@ -44,6 +47,7 @@ class Derasterizer(CLToolBase):
             self.operations["load_infile"] = infile
         else:
             raise ValueError()
+        self.operations["segment"] = True
         recognition_model = expandvars(recognition_model)
         if isfile(recognition_model):
             self.operations["load_recognition_model"] = recognition_model
@@ -73,16 +77,134 @@ class Derasterizer(CLToolBase):
                 self.operations["load_standard"])
 
         # Perform operations
-        from IPython import embed
-        embed(**self.embed_kw)
+        # dtypes = [("series char index", "i8"),
+        #           ("subtitle index", "i8"),
+        #           ("subtitle char index", "i8")]
 
-        # Write outfiles
+        # Chars
+        self.chars = np.concatenate(
+            (numeric_chars, western_chars, western_punctuation_chars,
+             eastern_punctuation_chars, hanzi_chars[:2200]))
+
+        # Make predictions
+        data = np.expand_dims(
+            self.image_subtitles.data.astype(np.float16) / 255.0, axis=3)
+        label_pred = self.recognition_model.predict(data)
+        char_pred = self.get_chars_of_labels(
+            np.argsort(label_pred, axis=1)[:, -1])
+
+        # Assign characters
+        for i, spec in self.image_subtitles.spec.iterrows():
+            if spec.char != "":
+                continue
+            if self.verbosity >= 2:
+                print(f"Assigning character {i} as '{char_pred[i]}'")
+            spec.char = char_pred[i]
+
+        # Reconstruct text
+        for i, event in enumerate(self.image_subtitles.events):
+            if event.text != "":
+                continue
+            if self.verbosity >= 1:
+                print(f"Reconstructing text for subtitle {i}")
+
+            chars = event.char_spec["char"].values
+            text = ""
+            items = zip(chars[:-1], chars[1:], event.char_widths[:-1],
+                        event.char_widths[1:], event.char_separations)
+            for i, (char_i, char_j, width_i, width_j, sep) in enumerate(items):
+                text += char_i
+
+                # Very large space: Two speakers
+                if sep >= 100:
+                    text = f"﹣{text}　　﹣"
+                # Two Hanzi: separation cutoff of 40 to add double-width space
+                elif width_i >= 45 and width_j >= 45 and sep >= 40:
+                    # print("Adding a double-width space")
+                    text += "　"
+                # Two Roman: separation cutoff of 35 to add single-width space
+                elif width_i < 45 and width_j < 45 and sep >= 36:
+                    # print("Adding a single-width space")
+                    text += " "
+            text += chars[-1]
+
+            event.text = text
+            if self.verbosity >= 1:
+                print(event.text)
+            # TODO: Reconstruct ellipsis
+
+        # Compare to standard
+        if self.standard_subtitles is not None:
+            event_pairs = zip([e.text for e in self.image_subtitles.events],
+                              [e.text for e in self.standard_subtitles.events])
+            n_events = len(self.image_subtitles.events)
+            n_events_correct_length = n_events
+            n_chars_total = 0
+            n_chars_correct = 0
+            n_chars_matchable = 0
+            for pred_text, true_text in event_pairs:
+
+                # Skip whitespace
+                pred_text = pred_text.replace("　", "").replace(" ", "")
+                true_text = true_text.replace("　", "").replace(" ", "")
+                n_chars_total += len(true_text)
+
+                # Loop over characters
+                if len(pred_text) != len(true_text):
+                    n_events_correct_length -= 1
+                else:
+                    for pred_char, true_char in zip(pred_text, true_text):
+                        if true_char in self.chars:
+                            n_chars_matchable += 1
+                            if pred_char == true_char:
+                                n_chars_correct += 1
+            print(f"{n_events_correct_length}/{n_events} "
+                  f"subtitles segmented correctly (accuracy = "
+                  f"{n_events_correct_length / n_events:6.4})")
+            print(f"{n_chars_correct}/{n_chars_total} "
+                  f"characters recognized correctly (accuracy = "
+                  f"{n_chars_correct / n_chars_total:6.4})")
+            print(f"{n_chars_correct}/{n_chars_matchable} "
+                  f"matchable characters recognized correctly (accuracy = "
+                  f"{n_chars_correct / n_chars_matchable:6.4f})")
+
+        # # Write outfiles
         if "save_outfile" in self.operations:
             self.image_subtitles.save(self.operations["save_outfile"])
 
     # endregion
 
     # region Public Properties
+
+    @property
+    def chars(self):
+        """list(str): Characters that may be present in this dataset"""
+        if not hasattr(self, "_chars"):
+            self._chars = hanzi_chars[:10]
+        return self._chars
+
+    @chars.setter
+    def chars(self, value):
+        # TODO: Validate
+        if isinstance(value, int):
+            value = np.array(hanzi_chars[:value])
+        self._chars = value
+
+    @property
+    def char_predictions(self):
+        """ndarray(float): Predicted confidence that each character image is
+        each matchable character"""
+        if not hasattr(self, "_char_predictions"):
+            self._char_predictions = None
+        return self._char_predictions
+
+    @char_predictions.setter
+    def char_predictions(self, value):
+        if not isinstance(value, np.ndarray):
+            raise ValueError(self._generate_setter_exception(value))
+        if value.shape[0] != self.image_subtitles.data.shape[0]:
+            raise ValueError(self._generate_setter_exception(value))
+        self._char_predictions = value
 
     @property
     def image_subtitles(self):
@@ -121,7 +243,7 @@ class Derasterizer(CLToolBase):
     @property
     def standard_subtitles(self):
         """SubtitleSeries: Standard subtitles against which to compare
-        results"""
+         results"""
         if not hasattr(self, "_standard_subtitles"):
             self._standard_subtitles = None
         return self._standard_subtitles
@@ -131,6 +253,141 @@ class Derasterizer(CLToolBase):
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._standard_subtitles = value
+
+    # endregion
+
+    # region Public Methods
+
+    def get_labels_of_chars(self, chars):
+        """
+        Gets unique integer indexes of provided char strings
+
+        Args:
+            chars: Chars
+
+        Returns:
+             ndarray(int64): Labels
+        """
+
+        # Process arguments
+        if isinstance(chars, str):
+            if len(chars) == 1:
+                return np.argwhere(self.chars == chars)[0, 0]
+            elif len(chars) > 1:
+                chars = list(chars)
+        chars = np.array(chars)
+
+        # Return labels
+        sorter = np.argsort(self.chars)
+        return np.array(
+            sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
+
+    def get_chars_of_labels(self, labels):
+        """
+        Gets char strings of unique integer indexes
+
+        Args:
+            labels (ndarray(int64)): Labels
+
+        Returns
+            ndarray(U64): Chars
+        """
+        # TODO: Improve exception text
+
+        # Process arguments and return chars
+        if isinstance(labels, int):
+            return self.chars[labels]
+        elif isinstance(labels, np.ndarray):
+            return self.chars[labels]
+        else:
+            try:
+                return self.chars[np.array(labels)]
+            except Exception as e:
+                raise e
+
+    def manually_assign_chars(self, start_index=0):
+        pass
+        # from pypinyin import pinyin
+        #
+        # if self.char_predictions is not None:
+        #     predictions = self.get_chars_of_labels(
+        #         np.argsort(self.char_predictions, axis=1)[:, -1])
+        # else:
+        #     predictions = None
+        #
+        # if self.verbosity >= 1:
+        #     print("Assigning characters")
+        #     print("  Press Enter to accept predicted character")
+        #     print("  or type another character and press Enter to correct")
+        #     print("  or press CTRL-D to skip character")
+        #     print("  or press CTRL-C to stop assigning")
+        #     print()
+        # for i, spec in self.spec.iterrows():
+        #     if spec.char != "":
+        #         print(f"Character {i} previously assigned as '{spec.char}' "
+        #               f"({pinyin(spec.char)[0][0]})")
+        #         continue
+        #     if i <= start_index:
+        #         print(f"Skipping assignment of character {i}")
+        #         continue
+        #
+        #     self.show(indexes=i)
+        #
+        #     try:
+        #         if predictions is not None:
+        #             match = input(f"'{predictions[i]}' "
+        #                           f"({pinyin(predictions[i])[0][0]}): ")
+        #         else:
+        #             match = input(f"'' (): ")
+        #     except EOFError:
+        #         print(f"\nSkipping assignment of character {i}")
+        #         continue
+        #     except KeyboardInterrupt:
+        #         print("\nQuitting character assignment")
+        #         break
+        #     if match == "":
+        #         self.assign_char(i, predictions[i])
+        #     else:
+        #         self.assign_char(i, match)
+        #
+        # embed(**self.embed_kw)
+
+    def merge_chars(self, index):
+        """
+        Merges two adjacent characters
+
+        Args:
+            index (int): Index of first of two characters to merge
+        """
+        pass
+        # self._char_bounds = np.append(
+        #     self.char_bounds.flatten()[:index * 2 + 1],
+        #     self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
+
+    # endregion
+
+    # region Private Methods
+
+    def _analyze_predictions(self, img, lbl, model, title="", verbosity=1,
+                             **kwargs):
+        pass
+        # pred = model.predict(img)
+        # loss, acc = model.evaluate(img, lbl)
+        # if verbosity >= 1:
+        #     print(f"{title:10s}  Count:{lbl.size:5d}  Loss:{loss:7.5f} "
+        #           f"Accuracy:{acc:7.5f}")
+        # if verbosity >= 2:
+        #     for i, char in enumerate(get_chars_of_labels(lbl)):
+        #         poss_lbls = np.argsort(pred[i])[::-1]
+        #         poss_chars = get_chars_of_labels(poss_lbls)
+        #         poss_probs = np.round(pred[i][poss_lbls], 2)
+        #         if char != poss_chars[0]:
+        #             if verbosity >= 2:
+        #                 matches = [f"{a}:{b:4.2f}" for a, b in
+        #                            zip(poss_chars[:10], poss_probs[:10])]
+        #                 print(f"{char} | {' '.join(matches)}")
+        #
+        # return loss, acc
 
     # endregion
 
