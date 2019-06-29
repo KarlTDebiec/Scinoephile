@@ -22,10 +22,10 @@ ____________
 - [x] Read infiles
 - [x] Write outfile
 - [x] Segment characters
-- [ ] Predict characters
-- [ ] Reconstruct text
-- [ ] Compare to standard
-- [ ] Print statistics
+- [x] Predict characters
+- [x] Reconstruct text
+- [x] Compare to standard
+- [x] Print statistics
 
 Documentation
 _____________

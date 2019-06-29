@@ -14,10 +14,9 @@ optical character recognition model.
 import numpy as np
 import pandas as pd
 from os.path import expandvars, isfile
-from pypinyin import pinyin
 from tensorflow import keras
 from IPython import embed
-from scinoephile import CLToolBase, Metavar, SubtitleSeries
+from scinoephile import input_prefill, CLToolBase, Metavar, SubtitleSeries
 from scinoephile.ocr import (eastern_punctuation_chars, hanzi_chars,
                              numeric_chars, western_chars,
                              western_punctuation_chars, ImageSubtitleSeries)
@@ -76,97 +75,108 @@ class Derasterizer(CLToolBase):
             self.standard_subtitles = SubtitleSeries.load(
                 self.operations["load_standard"])
 
-        # Perform operations
-        # dtypes = [("series char index", "i8"),
-        #           ("subtitle index", "i8"),
-        #           ("subtitle char index", "i8")]
-
         # Chars
         self.chars = np.concatenate(
             (numeric_chars, western_chars, western_punctuation_chars,
              eastern_punctuation_chars, hanzi_chars[:2200]))
 
         # Make predictions
-        data = np.expand_dims(
-            self.image_subtitles.data.astype(np.float16) / 255.0, axis=3)
-        label_pred = self.recognition_model.predict(data)
-        char_pred = self.get_chars_of_labels(
-            np.argsort(label_pred, axis=1)[:, -1])
+        # data = np.expand_dims(
+        #     self.image_subtitles.data.astype(np.float16) / 255.0, axis=3)
+        # label_pred = self.recognition_model.predict(data)
+        # char_pred = self.get_chars_of_labels(
+        #     np.argsort(label_pred, axis=1)[:, -1])
 
         # Assign characters
-        for i, spec in self.image_subtitles.spec.iterrows():
-            if spec.char != "":
-                continue
-            if self.verbosity >= 2:
-                print(f"Assigning character {i} as '{char_pred[i]}'")
-            spec.char = char_pred[i]
+        # for i, spec in self.image_subtitles.spec.iterrows():
+        #     if spec.char != "":
+        #         continue
+        #     if self.verbosity >= 2:
+        #         print(f"Assigning character {i} as '{char_pred[i]}'")
+        #     spec.char = char_pred[i]
 
         # Reconstruct text
+        # for event in self.image_subtitles.events:
+        #     if event.text != "":
+        #         continue
+        #     if self.verbosity >= 1:
+        #         print(f"Reconstructing text for subtitle {i}")
+        #
+        #     chars = event.char_spec["char"].values
+        #     text = ""
+        #     items = zip(chars[:-1], chars[1:], event.char_widths[:-1],
+        #                 event.char_widths[1:], event.char_separations)
+        #     for char_i, char_j, width_i, width_j, sep in items:
+        #         text += char_i
+        #
+        #         # Very large space: Two speakers
+        #         if sep >= 100:
+        #             text = f"﹣{text}　　﹣"
+        #         # Two Hanzi: separation cutoff of 40 to add double-width space
+        #         elif width_i >= 45 and width_j >= 45 and sep >= 40:
+        #             # print("Adding a double-width space")
+        #             text += "　"
+        #         # Two Roman: separation cutoff of 35 to add single-width space
+        #         elif width_i < 45 and width_j < 45 and sep >= 36:
+        #             # print("Adding a single-width space")
+        #             text += " "
+        #     text += chars[-1]
+        #
+        #     event.text = text
+        #     if self.verbosity >= 1:
+        #         print(event.text)
+        #     # TODO: Reconstruct ellipsis
+
+        # Validate assignments
         for i, event in enumerate(self.image_subtitles.events):
-            if event.text != "":
+            event.show()
+            try:
+                match = input_prefill(f"'{event.text}': ", event.text)
+            except EOFError:
+                print(f"\nSkipping subtitle {i}")
                 continue
-            if self.verbosity >= 1:
-                print(f"Reconstructing text for subtitle {i}")
+            except KeyboardInterrupt:
+                print("\nQuitting subtitle validation")
+                break
+            if match != event.text:
+                embed(**self.embed_kw)
 
-            chars = event.char_spec["char"].values
-            text = ""
-            items = zip(chars[:-1], chars[1:], event.char_widths[:-1],
-                        event.char_widths[1:], event.char_separations)
-            for i, (char_i, char_j, width_i, width_j, sep) in enumerate(items):
-                text += char_i
-
-                # Very large space: Two speakers
-                if sep >= 100:
-                    text = f"﹣{text}　　﹣"
-                # Two Hanzi: separation cutoff of 40 to add double-width space
-                elif width_i >= 45 and width_j >= 45 and sep >= 40:
-                    # print("Adding a double-width space")
-                    text += "　"
-                # Two Roman: separation cutoff of 35 to add single-width space
-                elif width_i < 45 and width_j < 45 and sep >= 36:
-                    # print("Adding a single-width space")
-                    text += " "
-            text += chars[-1]
-
-            event.text = text
-            if self.verbosity >= 1:
-                print(event.text)
-            # TODO: Reconstruct ellipsis
+        embed(**self.embed_kw)
 
         # Compare to standard
-        if self.standard_subtitles is not None:
-            event_pairs = zip([e.text for e in self.image_subtitles.events],
-                              [e.text for e in self.standard_subtitles.events])
-            n_events = len(self.image_subtitles.events)
-            n_events_correct_length = n_events
-            n_chars_total = 0
-            n_chars_correct = 0
-            n_chars_matchable = 0
-            for pred_text, true_text in event_pairs:
-
-                # Skip whitespace
-                pred_text = pred_text.replace("　", "").replace(" ", "")
-                true_text = true_text.replace("　", "").replace(" ", "")
-                n_chars_total += len(true_text)
-
-                # Loop over characters
-                if len(pred_text) != len(true_text):
-                    n_events_correct_length -= 1
-                else:
-                    for pred_char, true_char in zip(pred_text, true_text):
-                        if true_char in self.chars:
-                            n_chars_matchable += 1
-                            if pred_char == true_char:
-                                n_chars_correct += 1
-            print(f"{n_events_correct_length}/{n_events} "
-                  f"subtitles segmented correctly (accuracy = "
-                  f"{n_events_correct_length / n_events:6.4})")
-            print(f"{n_chars_correct}/{n_chars_total} "
-                  f"characters recognized correctly (accuracy = "
-                  f"{n_chars_correct / n_chars_total:6.4})")
-            print(f"{n_chars_correct}/{n_chars_matchable} "
-                  f"matchable characters recognized correctly (accuracy = "
-                  f"{n_chars_correct / n_chars_matchable:6.4f})")
+        # if self.standard_subtitles is not None:
+        #     event_pairs = zip([e.text for e in self.image_subtitles.events],
+        #                       [e.text for e in self.standard_subtitles.events])
+        #     n_events = len(self.image_subtitles.events)
+        #     n_events_correct_length = n_events
+        #     n_chars_total = 0
+        #     n_chars_correct = 0
+        #     n_chars_matchable = 0
+        #     for pred_text, true_text in event_pairs:
+        #
+        #         # Skip whitespace
+        #         pred_text = pred_text.replace("　", "").replace(" ", "")
+        #         true_text = true_text.replace("　", "").replace(" ", "")
+        #         n_chars_total += len(true_text)
+        #
+        #         # Loop over characters
+        #         if len(pred_text) != len(true_text):
+        #             n_events_correct_length -= 1
+        #         else:
+        #             for pred_char, true_char in zip(pred_text, true_text):
+        #                 if true_char in self.chars:
+        #                     n_chars_matchable += 1
+        #                     if pred_char == true_char:
+        #                         n_chars_correct += 1
+        #     print(f"{n_events_correct_length}/{n_events} "
+        #           f"subtitles segmented correctly (accuracy = "
+        #           f"{n_events_correct_length / n_events:6.4})")
+        #     print(f"{n_chars_correct}/{n_chars_total} "
+        #           f"characters recognized correctly (accuracy = "
+        #           f"{n_chars_correct / n_chars_total:6.4})")
+        #     print(f"{n_chars_correct}/{n_chars_matchable} "
+        #           f"matchable characters recognized correctly (accuracy = "
+        #           f"{n_chars_correct / n_chars_matchable:6.4f})")
 
         # # Write outfiles
         if "save_outfile" in self.operations:
@@ -430,7 +440,6 @@ class Derasterizer(CLToolBase):
 
         # Operations
         parser_ops = parser.add_argument_group("operation arguments")
-        # Segmentation_method (standard or dnn)
 
         return parser
 

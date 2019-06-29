@@ -79,6 +79,20 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
+def input_prefill(prompt, prefill):
+    from readline import insert_text, redisplay, set_pre_input_hook
+
+    def pre_input_hook():
+        insert_text(prefill)
+        redisplay()
+
+    set_pre_input_hook(pre_input_hook)
+    result = input(prompt)
+    set_pre_input_hook()
+
+    return result
+
+
 def get_simplified_hanzi(text, verbosity=1):
     """
     Converts traditional hanzi to simplified
