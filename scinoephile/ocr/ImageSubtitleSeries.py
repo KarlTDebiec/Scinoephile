@@ -196,59 +196,47 @@ class ImageSubtitleSeries(SubtitleSeries):
         if self.verbosity >= 1:
             print("Initializing character data structures")
 
-        if (hasattr(self, "_data") and self._data is not None
-                and hasattr(self, "_spec") and self._spec is not None):
-            prior_data = self._data
-            prior_spec = self._spec
-            if self.verbosity >= 1:
-                print("Retaining prior character assignments")
-        else:
-            prior_data = prior_spec = None
-
+        # Load character data
         n_total_chars = sum([e.char_count for e in self.events])
-        n_checked_chars = 0
-        n_unique_chars = 0
-        data = np.zeros((n_total_chars, 80, 80), np.uint8)
-        chars = []
-        subchar_indexes = []
+        raw_data = np.zeros((n_total_chars, 80, 80), np.uint8)
+        raw_subchar_indexes = np.empty(n_total_chars, dtype="O")
+        i = 0
+        for j, event in enumerate(self.events):
+            for k, datum in enumerate(event.char_data):
+                raw_data[i] = datum
+                raw_subchar_indexes[i] = [(j, k)]
+                i += 1
 
-        # Loop over subtitles within this series
-        for i, event in enumerate(self.events):
-            if self.verbosity >= 2:
-                print(f"Analyzing characters for event "
-                      f"{i + 1}/{len(self.events)}")
-            n_checked_chars += event.char_count
+        # Identify unique character data
+        raw_data = raw_data.reshape((n_total_chars, 80 * 80))
+        sorted_index = np.lexsort(raw_data.T)
+        sorted_data = raw_data[sorted_index]
+        datum_is_unique = np.append(
+            [True], np.any(np.diff(sorted_data, axis=0) != 0, axis=1), 0)
+        unique_indexes = np.sort(sorted_index[datum_is_unique])
+        n_unique_chars = datum_is_unique.sum()
 
-            # Loop over characters within this subtitle
-            for j, datum in enumerate(event.char_data):
+        # Organize de-duplicated character data
+        data = raw_data[unique_indexes].reshape(-1, 80, 80)
 
-                # Check if character is already in nascent array
-                match = np.where(
-                    (data[:n_unique_chars] == datum).all(axis=(1, 2)))[0]
-                if match.size > 0:
-                    # Character previously seen, update index
-                    subchar_indexes[match[0]].append((i, j))
-                else:
-                    # Character is new, add to nascent array
-                    data[n_unique_chars] = datum
-                    subchar_indexes.append([(i, j)])
-                    n_unique_chars += 1
+        # Organize character assignments
+        # TODO: If prior data existed, retain existing character assignments
+        chars = np.array([""] * n_unique_chars)
 
-                    # Check prior data for assignment of this image
-                    if prior_data is not None:
-                        prior_match = np.where(
-                            (prior_data == datum).all(axis=(1, 2)))[0]
-                        if prior_match.size > 0:
-                            # Copy over prior assignment
-                            chars.append(
-                                prior_spec.loc[prior_match[0]]["char"])
-                        else:
-                            chars.append("")
-                    else:
-                        chars.append("")
-        self._data = data[:n_unique_chars]
-        self._spec = pd.DataFrame.from_dict({"char": chars,
-                                             "indexes": subchar_indexes})
+        # Organize (subtitle, char) indexes
+        subchar_indexes = np.empty(n_unique_chars, dtype="O")
+        for i, (a, b, c) in enumerate(zip(sorted_index, datum_is_unique,
+                                          raw_subchar_indexes[sorted_index])):
+            if b:
+                final_index = np.where(unique_indexes == a)[0][0]
+                subchar_indexes[final_index] = c
+            else:
+                subchar_indexes[final_index] += c
+
+        # Store
+        self._data = data
+        self._spec = pd.DataFrame.from_dict(
+            {"char": chars, "indexes": subchar_indexes})
 
     def _save_hdf5(self, fp, **kwargs):
         """

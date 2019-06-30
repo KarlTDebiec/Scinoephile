@@ -67,18 +67,20 @@ class Derasterizer(CLToolBase):
         # Read infiles
         if "load_infile" in self.operations:
             self.image_subtitles = ImageSubtitleSeries.load(
-                self.operations["load_infile"])
+                self.operations["load_infile"], verbosity=self.verbosity)
         if "load_recognition_model" in self.operations:
             self.recognition_model = keras.models.load_model(
                 self.operations["load_recognition_model"])
         if "load_standard" in self.operations:
             self.standard_subtitles = SubtitleSeries.load(
-                self.operations["load_standard"])
+                self.operations["load_standard"], verbosity=self.verbosity)
 
         # Chars
         self.chars = np.concatenate(
             (numeric_chars, western_chars, western_punctuation_chars,
              eastern_punctuation_chars, hanzi_chars[:2200]))
+
+        self.image_subtitles._initialize_data()
 
         # Make predictions
         # data = np.expand_dims(
@@ -128,20 +130,25 @@ class Derasterizer(CLToolBase):
         #     # TODO: Reconstruct ellipsis
 
         # Validate assignments
-        for i, event in enumerate(self.image_subtitles.events):
-            event.show()
-            try:
-                match = input_prefill(f"'{event.text}': ", event.text)
-            except EOFError:
-                print(f"\nSkipping subtitle {i}")
-                continue
-            except KeyboardInterrupt:
-                print("\nQuitting subtitle validation")
-                break
-            if match != event.text:
-                embed(**self.embed_kw)
+        # for i, event in enumerate(self.image_subtitles.events):
+        #     event.show()
+        #     try:
+        #         text = input_prefill(f"'{event.text}': ", event.text)
+        #     except EOFError:
+        #         print(f"\nSkipping subtitle {i}")
+        #         continue
+        #     except KeyboardInterrupt:
+        #         print("\nQuitting subtitle validation")
+        #         break
+        #     if text != event.text:
+        #         if len(text) == len(event.text):
+        #             for j, (yat, eee) in enumerate(zip(text, event.text)):
+        #                 if yat != eee:
+        #                     print(yat, eee)
+        #                     print(event.char_spec.iloc[j])
+        #                     embed(**self.embed_kw)
 
-        embed(**self.embed_kw)
+        # embed(**self.embed_kw)
 
         # Compare to standard
         # if self.standard_subtitles is not None:
