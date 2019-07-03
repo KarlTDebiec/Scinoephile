@@ -12,7 +12,7 @@ __________
 - [ ] Complete documentation
 - [ ] Restore support for Hanzi, pinyin, and English together
 - [ ] Restore support for IPython prompt
-- [ ] Restore support fo truecase
+- [ ] Restore support for truecase
 - [ ] Restore support for time offset
 
 Derasterizer
@@ -26,6 +26,10 @@ ____________
 - [x] Reconstruct text
 - [x] Compare to standard
 - [x] Print statistics
+- [x] Compare to tesseract
+- [ ] Clean up and organize into functions
+- [ ] Color output intelligently when comparing to standard
+- [ ] Clean up documentation and README
 
 Documentation
 _____________
@@ -43,7 +47,6 @@ _____________
 - [ ] Visualize weights
 - [ ] Convenience function for viewing source of method/property in IPython
 - [ ] Track modifications, and if infile==outfile only save if changed
-- [ ] Compare to tesseract
 - [ ] Option to compress or not when saving Datasets (takes a long time)
 
 Future

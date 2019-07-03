@@ -49,12 +49,12 @@ def center_char_img(data, x_offset=0, y_offset=0):
                   white_rows[::-1]),
               np.argmin(white_cols):white_cols.size - np.argmin(
                   white_cols[::-1])]
-    x = int(np.floor((80 - trimmed.shape[1]) / 2))
-    y = int(np.floor((80 - trimmed.shape[0]) / 2))
+    x = max(int(np.floor((80 - trimmed.shape[1]) / 2)) + x_offset, 0)
+    y = max(int(np.floor((80 - trimmed.shape[0]) / 2)) + y_offset, 0)
     centered = np.ones_like(data) * data.max()
     # @formatter:off
-    centered[y + y_offset:y + trimmed.shape[0] + y_offset,
-             x + x_offset:x + trimmed.shape[1] + x_offset] = trimmed
+    centered[y:y + trimmed.shape[0],
+             x:x + trimmed.shape[1]] = trimmed
     # @formatter:on
 
     return centered
@@ -175,6 +175,8 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
         data = center_char_img(data, x_offset, y_offset)
     except ValueError as e:
         print(f"{char} {font} {size} {width} {x_offset} {y_offset}")
+        from IPython import embed
+        embed()
         raise e
 
     return data

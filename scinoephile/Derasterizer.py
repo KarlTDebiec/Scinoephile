@@ -188,6 +188,59 @@ class Derasterizer(CLToolBase):
                   f"matchable characters recognized correctly (accuracy = "
                   f"{n_chars_correct / n_chars_matchable:6.4f})")
 
+        # from IPython import embed
+        # embed(**self.embed_kw)
+        import pytesseract
+        from copy import deepcopy
+
+        if self.verbosity >= 1:
+            print(f"Reconstructing text using tesseract")
+        tess_subtitles = deepcopy(self.image_subtitles)
+        for i, event in enumerate(tess_subtitles.events):
+            if self.verbosity >= 2:
+                print(f"Reconstructing text for subtitle {i} using tesseract")
+            event.text = pytesseract.image_to_string(
+                event.img,
+                config=f"--psm 7 --oem 3",
+                lang="chi_sim")
+            if self.verbosity >= 2:
+                print(event.text)
+
+        # Compare to standard
+        if self.standard_subtitles is not None:
+            event_pairs = zip([e.text for e in tess_subtitles.events],
+                              [e.text for e in self.standard_subtitles.events])
+            n_events = len(tess_subtitles.events)
+            n_events_correct_length = n_events
+            n_chars_total = 0
+            n_chars_correct = 0
+            n_chars_matchable = 0
+            for pred_text, true_text in event_pairs:
+
+                # Skip whitespace
+                pred_text = pred_text.replace("　", "").replace(" ", "")
+                true_text = true_text.replace("　", "").replace(" ", "")
+                n_chars_total += len(true_text)
+
+                # Loop over characters
+                if len(pred_text) != len(true_text):
+                    n_events_correct_length -= 1
+                else:
+                    for pred_char, true_char in zip(pred_text, true_text):
+                        if true_char in self.chars:
+                            n_chars_matchable += 1
+                            if pred_char == true_char:
+                                n_chars_correct += 1
+            print(f"{n_events_correct_length}/{n_events} "
+                  f"subtitles segmented correctly (accuracy = "
+                  f"{n_events_correct_length / n_events:6.4})")
+            print(f"{n_chars_correct}/{n_chars_total} "
+                  f"characters recognized correctly (accuracy = "
+                  f"{n_chars_correct / n_chars_total:6.4})")
+            print(f"{n_chars_correct}/{n_chars_matchable} "
+                  f"matchable characters recognized correctly (accuracy = "
+                  f"{n_chars_correct / n_chars_matchable:6.4f})")
+
         # # Write outfiles
         if "save_outfile" in self.operations:
             self.image_subtitles.save(self.operations["save_outfile"])
