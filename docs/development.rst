@@ -31,6 +31,7 @@ Documentation
 _____________
 
 - [ ] Review
+- [ ] Move badge generator to utils, and cut down to a single template
 
 Miscellaneous
 _____________

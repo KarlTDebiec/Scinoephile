@@ -127,8 +127,6 @@ if __name__ == "__main__":
                          r"(?P<undocumented>\d+\s+|$)")
 
 
-    # | TOTAL           | 76.19%   | 5            |
-
     def get_build_color(passing):
         if build == "Passing":
             return "#4c1"
@@ -177,6 +175,7 @@ if __name__ == "__main__":
             match_docs = re.match(re_docs, line.strip())
             if match_docs:
                 docs = int(float(match_docs.groupdict()["docs"]))
+
     # Write build badge
     with open(f"{root}/docs/static/build.svg", "w") as outfile:
         outfile.write(build_template.strip().replace(
