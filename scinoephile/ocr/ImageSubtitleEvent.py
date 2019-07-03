@@ -62,7 +62,7 @@ class ImageSubtitleEvent(SubtitleEvent):
         """ndarray(int): Indexes of character images within series'
          deduplicated character image data"""
         if not hasattr(self, "_char_indexes"):
-            self._initialize_char_indexes()
+            self._char_indexes = np.zeros(self.char_count, np.int)
         return self._char_indexes
 
     @property
@@ -198,18 +198,5 @@ class ImageSubtitleEvent(SubtitleEvent):
             y = int(np.floor((80 - char.shape[0]) / 2))
             char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
         self._char_data = char_data
-
-    def _initialize_char_indexes(self):
-        flatten = lambda l: [item for sublist in l for item in sublist]
-
-        char_indexes = sorted(flatten(
-            self.series.spec[self.series.spec.apply(
-                lambda x: np.any([self.index in [s for s, c in x["indexes"]]]),
-                axis=1)].apply(
-                lambda x: [(c, x.name) for s, c in x["indexes"]
-                           if s == self.index],
-                axis=1)))
-        char_indexes = [i for c, i in char_indexes]
-        self._char_indexes = char_indexes
 
 # endregion

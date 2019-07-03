@@ -204,7 +204,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         for j, event in enumerate(self.events):
             for k, datum in enumerate(event.char_data):
                 raw_data[i] = datum
-                raw_subchar_indexes[i] = [(j, k)]
+                raw_subchar_indexes[i] = (j, k)
                 i += 1
 
         # Identify unique character data
@@ -225,13 +225,15 @@ class ImageSubtitleSeries(SubtitleSeries):
 
         # Organize (subtitle, char) indexes
         subchar_indexes = np.empty(n_unique_chars, dtype="O")
-        for i, (a, b, c) in enumerate(zip(sorted_index, datum_is_unique,
-                                          raw_subchar_indexes[sorted_index])):
-            if b:
+        for a, unique, subchar_index in zip(sorted_index, datum_is_unique,
+                                            raw_subchar_indexes[sorted_index]):
+            if unique:
                 final_index = np.where(unique_indexes == a)[0][0]
-                subchar_indexes[final_index] = c
+                subchar_indexes[final_index] = [subchar_index]
             else:
-                subchar_indexes[final_index] += c
+                subchar_indexes[final_index] += [subchar_index]
+            self.events[subchar_index[0]].char_indexes[
+                subchar_index[1]] = final_index
 
         # Store
         self._data = data
