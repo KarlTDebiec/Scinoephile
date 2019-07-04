@@ -26,6 +26,7 @@ eastern_punctuation_chars = np.array(list(
 western_punctuation_chars = np.array(list(
     ".?!,-()[]<>:;“”\"…"))
 
+
 ################################## FUNCTIONS ##################################
 def analyze_character_accuracy(self, img, lbl, model, title="", verbosity=1):
     # TODO: Implement

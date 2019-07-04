@@ -7,7 +7,7 @@
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-"""Converts image-based subtitles into text using deep a neural network-based
+"""Converts image-based subtitles into text using a deep neural network-based
 optical character recognition model.
 """
 ################################### MODULES ###################################
