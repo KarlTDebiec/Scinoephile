@@ -25,14 +25,6 @@ def run_tests(md5s=None, verbosity=1, **kwargs):
 
 
 #################################### TESTS ####################################
-def test_Compositor_translate_chinese_to_english(**kwargs):
-    run_tests(
-        english=f"{output_dir}/trivisa/en-HK.srt",
-        english_overwrite=True,
-        hanzi=f"{input_dir}/trivisa/original/cmn-Hant.srt",
-        **kwargs)
-
-
 def test_Compositor_bilingual(**kwargs):
     run_tests(
         bilingual=f"{output_dir}/trivisa/ZE.srt",
@@ -158,7 +150,14 @@ def test_Compositor_pinyin_zhongwen_to_mandarin(**kwargs):
         **kwargs)
 
 
-def test_Compositor_translate_english_to_chinese(**kwargs):
+def SKIP_test_Compositor_translate_chinese_to_english(**kwargs):
+    run_tests(
+        english=f"{output_dir}/trivisa/en-HK.srt",
+        english_overwrite=True,
+        hanzi=f"{input_dir}/trivisa/original/cmn-Hant.srt",
+        **kwargs)
+
+def SKIP_test_Compositor_translate_english_to_chinese(**kwargs):
     run_tests(
         english=f"{input_dir}/trivisa/original/en-HK.srt",
         hanzi=f"{output_dir}/trivisa/cmn-Hans.srt",
@@ -174,6 +173,6 @@ if __name__ == "__main__":
     test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
     test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
     test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
-    test_Compositor_translate_chinese_to_english(verbosity=2)
-    test_Compositor_translate_english_to_chinese(verbosity=2)
+    # test_Compositor_translate_chinese_to_english(verbosity=2)
+    # test_Compositor_translate_english_to_chinese(verbosity=2)
     test_Compositor_miscellaneous(verbosity=2)

@@ -88,31 +88,31 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
                   f"for each of {len(self.chars)} characters")
 
         # Build queue of needed specs
-        min_queue = []
+        kws = []
         to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(),
                                                   (char, *x))}
         for char in self.chars:
             existing = self.get_present_specs_of_char(char, True)
             minimal = spec_min_set.difference(existing)
-            min_queue.extend(map(to_dict, minimal))
+            kws.extend(map(to_dict, minimal))
             n_additional = min_images - len(existing) - len(minimal)
 
             if n_additional >= 1:
                 available = spec_all_set.difference(existing).difference(
                     minimal)
                 selected = sample(available, min(n_additional, len(available)))
-                min_queue.extend(map(to_dict, selected))
+                kws.extend(map(to_dict, selected))
 
         # Generate and add images
-        if len(min_queue) >= 1:
+        if len(kws) >= 1:
             if self.verbosity >= 1:
-                print(f"Generating {len(min_queue)} new images for minimal "
+                print(f"Generating {len(kws)} new images for minimal "
                       f"set")
 
-            data = np.zeros((len(min_queue), 80, 80), np.uint8)
-            complete_spec = []
+            data = np.zeros((len(kws), 80, 80), np.uint8)
+            complete_kw = []
             i = 0
-            for kw in min_queue:
+            for kw in kws:
                 try:
                     data[i] = generate_char_datum(fig=self.figure, **kw)
                 except ValueError:
@@ -122,10 +122,10 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
                               f"{kw['width']} {kw['x_offset']} "
                               f"{kw['y_offset']}")
                     continue
-                complete_spec += [kw]
+                complete_kw += [kw]
                 i += 1
             data = data[:i]
-            spec = pd.DataFrame(complete_spec)
+            spec = pd.DataFrame(complete_kw)
 
             self.append(spec, data)
         else:

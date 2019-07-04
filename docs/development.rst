@@ -6,14 +6,14 @@ Development
 Compositor
 __________
 
-- [ ] Add support for input and output files of the same type
-- [ ] Document overwrite parameter
+- [x] Improve file arguments
 - [ ] Extend test coverage
-- [ ] Complete documentation
+- [ ] Clean up documentation and README
 - [ ] Restore support for Hanzi, pinyin, and English together
 - [ ] Restore support for IPython prompt
 - [ ] Restore support for truecase
 - [ ] Restore support for time offset
+- [ ] To '--overwrite' flag, add option to back up file
 
 Derasterizer
 ____________
@@ -30,6 +30,8 @@ ____________
 - [ ] Clean up and organize into functions
 - [ ] Color output intelligently when comparing to standard
 - [ ] Clean up documentation and README
+- [ ] To '--overwrite' flag, add option to back up file
+- [ ] Figure out if characters can be stored into model
 
 Documentation
 _____________

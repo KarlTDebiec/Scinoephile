@@ -79,20 +79,6 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def input_prefill(prompt, prefill):
-    from readline import insert_text, redisplay, set_pre_input_hook
-
-    def pre_input_hook():
-        insert_text(prefill)
-        redisplay()
-
-    set_pre_input_hook(pre_input_hook)
-    result = input(prompt)
-    set_pre_input_hook()
-
-    return result
-
-
 def get_simplified_hanzi(text, verbosity=1):
     """
     Converts traditional hanzi to simplified
@@ -266,6 +252,20 @@ def in_ipython():
     except NameError:
         # Not in IPython
         return False
+
+
+def input_prefill(prompt, prefill):
+    from readline import insert_text, redisplay, set_pre_input_hook
+
+    def pre_input_hook():
+        insert_text(prefill)
+        redisplay()
+
+    set_pre_input_hook(pre_input_hook)
+    result = input(prompt)
+    set_pre_input_hook()
+
+    return result
 
 
 def merge_subtitles(upper, lower):
@@ -534,42 +534,19 @@ class CLToolBase(Base, ABC):
 
         # General
         verbosity = parser.add_mutually_exclusive_group()
-        verbosity.add_argument("-v", "--verbose", action="count",
-                               dest="verbosity", default=1,
+        verbosity.add_argument("-v", "--verbose",
+                               action="count",
+                               default=1,
+                               dest="verbosity",
                                help="enable verbose output, may be specified "
                                     "more than once")
-        verbosity.add_argument("-q", "--quiet", action="store_const",
-                               dest="verbosity", const=0,
+        verbosity.add_argument("-q", "--quiet",
+                               action="store_const",
+                               const=0,
+                               dest="verbosity",
                                help="disable verbose output")
 
         return parser
-
-    # endregion
-
-    # region Public Static Methods
-
-    @staticmethod
-    def get_filepath_action():
-        import argparse
-
-        class FilepathAction(argparse.Action):
-
-            def __init__(self, **kwargs):
-                super().__init__(**kwargs)
-
-            def __call__(self, parser, args, values, option_string=None):
-                setattr(args, self.dest, values[0])
-                if len(values) == 1:
-                    setattr(args, f"{self.dest}_overwrite", False)
-                elif len(values) == 2:
-                    if "overwrite".startswith(values[1]):
-                        setattr(args, f"{self.dest}_overwrite", True)
-                    else:
-                        raise ValueError()
-                else:
-                    raise ValueError()
-
-        return FilepathAction
 
     # endregion
 
@@ -585,32 +562,22 @@ class CLToolBase(Base, ABC):
         cls(**args)()
 
 
-class Metavar:
-    def __init__(self, iterable):
-        from itertools import cycle
-
-        self.generator = cycle(iterable)
-
-    def __str__(self):
-        return self.generator.__next__()
-
-
 class StdoutLogger(object):
     """Logs print statements to both stdout and file; use with 'with'"""
 
     # region Builtins
 
-    def __init__(self, outfile, mode, process_carriage_returns=True):
-        import sys
-
+    def __init__(self, outfile, mode="a", process_carriage_returns=True):
         self.process_carriage_returns = process_carriage_returns
-
-        self.file = open(outfile, mode)
-        self.stdout = sys.stdout
-        sys.stdout = self
+        self.outfile = outfile
+        self.mode = mode
 
     def __enter__(self):
-        pass
+        import sys
+
+        self.file = open(self.outfile, self.mode)
+        self.stdout = sys.stdout
+        sys.stdout = self
 
     def __exit__(self, _type, _value, _traceback):
         import sys
