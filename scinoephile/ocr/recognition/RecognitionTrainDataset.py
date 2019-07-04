@@ -34,14 +34,6 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
     # region Public Methods
 
     def generate_training_data(self, min_images=None):
-        """
-
-        Args:
-            min_images:
-
-        Returns:
-
-        """
         from itertools import product
         from random import sample
         from scinoephile.ocr import generate_char_datum
@@ -117,11 +109,23 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
                 print(f"Generating {len(min_queue)} new images for minimal "
                       f"set")
 
-            spec = pd.DataFrame(min_queue)
             data = np.zeros((len(min_queue), 80, 80), np.uint8)
-
-            for i, kw in enumerate(min_queue):
-                data[i] = generate_char_datum(fig=self.figure, **kw)
+            complete_spec = []
+            i = 0
+            for kw in min_queue:
+                try:
+                    data[i] = generate_char_datum(fig=self.figure, **kw)
+                except ValueError:
+                    if self.verbosity >= 1:
+                        print(f"Image generation failed for spec: "
+                              f"{kw['char']} {kw['font']} {kw['size']} "
+                              f"{kw['width']} {kw['x_offset']} "
+                              f"{kw['y_offset']}")
+                    continue
+                complete_spec += [kw]
+                i += 1
+            data = data[:i]
+            spec = pd.DataFrame(complete_spec)
 
             self.append(spec, data)
         else:

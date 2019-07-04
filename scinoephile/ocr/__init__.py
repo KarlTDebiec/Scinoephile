@@ -49,13 +49,10 @@ def center_char_img(data, x_offset=0, y_offset=0):
                   white_rows[::-1]),
               np.argmin(white_cols):white_cols.size - np.argmin(
                   white_cols[::-1])]
-    x = max(int(np.floor((80 - trimmed.shape[1]) / 2)) + x_offset, 0)
-    y = max(int(np.floor((80 - trimmed.shape[0]) / 2)) + y_offset, 0)
+    x = int(np.floor((80 - trimmed.shape[1]) / 2)) + x_offset
+    y = int(np.floor((80 - trimmed.shape[0]) / 2)) + y_offset
     centered = np.ones_like(data) * data.max()
-    # @formatter:off
-    centered[y:y + trimmed.shape[0],
-             x:x + trimmed.shape[1]] = trimmed
-    # @formatter:on
+    centered[y:y + trimmed.shape[0], x:x + trimmed.shape[1]] = trimmed
 
     return centered
 
@@ -161,23 +158,14 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
                     color=(0.67, 0.67, 0.67))
     text.set_path_effects([Stroke(linewidth=width, foreground=(0.0, 0.0, 0.0)),
                            Normal()])
-    try:
-        fig.canvas.draw()
-    except ValueError as e:
-        print(f"{char} {font} {size} {width} {x_offset} {y_offset}")
-        raise e
+    fig.canvas.draw()
 
     # Convert to appropriate mode using pillow
     img = Image.fromarray(np.array(fig.canvas.renderer._renderer))
     data = np.array(img.convert("L"), np.uint8)
 
-    try:
-        data = center_char_img(data, x_offset, y_offset)
-    except ValueError as e:
-        print(f"{char} {font} {size} {width} {x_offset} {y_offset}")
-        from IPython import embed
-        embed()
-        raise e
+    # Center
+    data = center_char_img(data, x_offset, y_offset)
 
     return data
 
