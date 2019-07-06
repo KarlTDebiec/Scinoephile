@@ -24,7 +24,7 @@ from scinoephile.ocr import (analyze_text_accuracy,
 ################################### CLASSES ###################################
 class Derasterizer(CLToolBase):
     """
-    Converts image-based subtitles to text
+    Converts image-based Chinese subtitles to text
     """
 
     # region Builtins
@@ -34,15 +34,17 @@ class Derasterizer(CLToolBase):
                  **kwargs):
         """
         Initializes command-line tool and compiles list of operations
-        Args:
-            infile (str): Path to image-based subtitle infile
-            outfile (str): Path to text-based subtitle infile
-            overwrite (bool): Overwrite outfile if it exists
-            recognition_model (str): Path to character recognition model
-            standard_infile (str):
-            tesseract (bool):
-            **kwargs: Additional keyword arguments
 
+        Args:
+            infile (str): Path to image-based Chinese Hanzi subtitle infile
+            outfile (str): Path to text-based Chinese Hanzi subtitle outfile
+            overwrite (bool): Overwrite outfile if it exists
+            recognition_model (str): Path to character recognition model infile
+            standard_infile (str): Path to known accurate text-based Chinese
+              Hanzi subtitle infile
+            tesseract (bool): Use tesseract library for OCR rather than
+              scinoephile
+            **kwargs: Additional keyword arguments
         """
 
         from os import access, R_OK, W_OK
@@ -400,7 +402,7 @@ class Derasterizer(CLToolBase):
             if self.verbosity >= 2:
                 print(event.text)
 
-    # endrion
+    # endregion
 
     # region Class Methods
 
@@ -426,7 +428,7 @@ class Derasterizer(CLToolBase):
                                   metavar="FILE")
         parser_input.add_argument("-sf", "--standard",
                                   dest="standard_infile",
-                                  help="known accurate text-base Chinese "
+                                  help="known accurate text-based Chinese "
                                        "Hanzi subtitle infile for validation "
                                        "of OCR results",
                                   metavar="FILE")

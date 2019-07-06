@@ -59,7 +59,7 @@ Derasterizer
 ____________
 
 .. code-block:: text
-    :name: derasterizer_usage
+    :name: derasterizer_helptext
 
     usage: Derasterizer.py [-h] [-v | -q] -if FILE [-rm FILE] [-sf FILE] [-t]
                            [-of FILE] [-o]
@@ -78,8 +78,8 @@ ____________
       -rm FILE, --recognition_model FILE
                             character recognition model infile
       -sf FILE, --standard FILE
-                            known accurate text-base Chinese Hanzi subtitle infile
-                            for validation of OCR results
+                            known accurate text-based Chinese Hanzi subtitle
+                            infile for validation of OCR results
 
     operation arguments:
       -t, --tesseract       use tesseract library for OCR rather than scinoephile
@@ -93,7 +93,7 @@ Compositor
 __________
 
 .. code-block:: text
-    :name: compositor_usage
+    :name: compositor_helptext
 
     usage: Compositor.py [-h] [-v | -q] [-bif FILE] [-cif FILE] [-eif FILE]
                          [-pif FILE] [-c] [-m] [-s] [-bof FILE] [-cof FILE]

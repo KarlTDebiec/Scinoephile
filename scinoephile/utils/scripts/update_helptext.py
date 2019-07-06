@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   update_badges.py
+#   update_helptext.py
 #
 #   Copyright (C) 2017-2019 Karl T Debiec
 #   All rights reserved.
@@ -17,28 +17,34 @@ if __name__ == "__main__":
 
     root = dirname(dirname(dirname(dirname(realpath(
         getframeinfo(currentframe()).filename)))))
-    re_usage = re.compile(r"((?P<block_1>.*:name: derasterizer_usage\n\n))"
-                          r"((?P<derasterizer_usage>.*?(?=^\S+)))"
-                          r"((?P<block_2>.*:name: compositor_usage\n\n))"
-                          r"((?P<compositor_usage>.*?(?=^\S+)))"
-                          r"((?P<block_3>.*))",
-                          re.M | re.S)
+    re_helptext = re.compile(
+        r"((?P<block_1>.*:name: derasterizer_helptext\n\n))"
+        r"((?P<derasterizer_helptext>.*?(?=^\S+)))"
+        r"((?P<block_2>.*:name: compositor_helptext\n\n))"
+        r"((?P<compositor_helptext>.*?(?=^\S+)))"
+        r"((?P<block_3>.*))",
+        re.M | re.S)
 
     # Read current README and split into sections
     with open(f"{root}/README.rst", "r") as infile:
         readme = infile.read()
-    readme_sections = re.match(re_usage, readme).groupdict()
+    readme_sections = re.match(re_helptext, readme).groupdict()
+
+    # Read current cltools.rst and split into sections
+    with open(f"{root}/docs/cltools.rst", "r") as infile:
+        cltools = infile.read()
+    cltools_sections = re.match(re_helptext, cltools).groupdict()
 
     # Read current Derasterizer.py usage
     with open(devnull, "w") as fnull:
-        derasterizer_usage = Popen(
+        derasterizer_helptext = Popen(
             f"python {root}/scinoephile/Derasterizer.py -h",
             stdout=PIPE, stderr=fnull, shell=True).stdout.read().decode(
             "utf-8")
 
     # Read current Compositor.py usage
     with open(devnull, "w") as fnull:
-        compositor_usage = Popen(
+        compositor_helptext = Popen(
             f"python {root}/scinoephile/Compositor.py -h",
             stdout=PIPE, stderr=fnull, shell=True).stdout.read().decode(
             "utf-8")
@@ -47,10 +53,22 @@ if __name__ == "__main__":
     with open(f"{root}/README.rst", "w") as outfile:
         outfile.write(readme_sections["block_1"])
         outfile.write("    ")
-        outfile.write(re.sub(r"\n(.+)", "\n    \\1", derasterizer_usage))
+        outfile.write(re.sub(r"\n(.+)", "\n    \\1", derasterizer_helptext))
         outfile.write("\n")
         outfile.write(readme_sections["block_2"])
         outfile.write("    ")
-        outfile.write(re.sub(r"\n(.+)", "\n    \\1", compositor_usage))
+        outfile.write(re.sub(r"\n(.+)", "\n    \\1", compositor_helptext))
         outfile.write("\n")
         outfile.write(readme_sections["block_3"])
+
+    # Write updated cltools.rst
+    with open(f"{root}/docs/cltools.rst", "w") as outfile:
+        outfile.write(cltools_sections["block_1"])
+        outfile.write("    ")
+        outfile.write(re.sub(r"\n(.+)", "\n    \\1", derasterizer_helptext))
+        outfile.write("\n")
+        outfile.write(cltools_sections["block_2"])
+        outfile.write("    ")
+        outfile.write(re.sub(r"\n(.+)", "\n    \\1", compositor_helptext))
+        outfile.write("\n")
+        outfile.write(cltools_sections["block_3"])

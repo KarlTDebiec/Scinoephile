@@ -44,7 +44,8 @@ from scinoephile import (get_pinyin, get_simplified_hanzi,
 ################################### CLASSES ###################################
 class Compositor(CLToolBase):
     """
-    Compiles Chinese and English subtitles
+    Combines Chinese and English subtitles into synchronized bilingual
+    subtitles
     """
 
     # region Builtins
@@ -62,11 +63,11 @@ class Compositor(CLToolBase):
             bilingual_outfile (str): Path to bilingual subtitle outfile
             english_infile (str): Path to English subtitle infile
             english_outfile (str): Path to English subtitle outfile
-            hanzi_infile (str): Path to Chinese Hanzi infile
-            hanzi_outfile (str): Path to Chinese Hanzi outfile
+            hanzi_infile (str): Path to Chinese Hanzi subtitle infile
+            hanzi_outfile (str): Path to Chinese Hanzi subtitle outfile
             overwrite (bool): Overwrite outfiles if they exist
-            pinyin_infile (str): Path to pinyin Chinese infile
-            pinyin_outfile (str): Path to pinyin Chinese outfile
+            pinyin_infile (str): Path to pinyin Chinese subtitle infile
+            pinyin_outfile (str): Path to pinyin Chinese subtitle outfile
             pinyin_language (bool, str): Langauge for which to add pinyin; may
               be 'mandarin' or 'cantonese'
             simplify (bool): Convert traditional Hanzi to simplified
