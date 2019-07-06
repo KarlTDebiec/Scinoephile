@@ -112,58 +112,62 @@ def test_Subtitle(**kwargs):
 
 def test_Subtitle_srt_chinese_simplified(**kwargs):
     """Tests reading and writing simplified Chinese subtitles in srt format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
-              md5s=dict(
-                  events_ends="7818b23b519ee573d0d4e87d44aa87c4",
-                  events_series="b4cbefcc5af1f073d7733a3cfcb0bd6c",
-                  events_strs="4fa79a5b7405be4d74da1f6062fc96da",
-                  events_starts="f23a20cebaee31a99d58d61a2e28ab53",
-                  events_texts="02827e2ec172bb596741c8bfe2d59966",
-                  str="fc249d74ac6c838b0d9365793a4988a2"),
-              outfiles=f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
+        md5s=dict(
+            events_ends="7818b23b519ee573d0d4e87d44aa87c4",
+            events_series="b4cbefcc5af1f073d7733a3cfcb0bd6c",
+            events_strs="4fa79a5b7405be4d74da1f6062fc96da",
+            events_starts="f23a20cebaee31a99d58d61a2e28ab53",
+            events_texts="02827e2ec172bb596741c8bfe2d59966",
+            str="fc249d74ac6c838b0d9365793a4988a2"),
+        outfiles=f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
+        **kwargs)
 
 
 def test_Subtitle_srt_english(**kwargs):
     """Tests reading and writing English subtitles in srt format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.srt",
-              md5s=dict(
-                  events_ends="f5d3cd18e4b4f8060daae6a78c79a261",
-                  events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
-                  events_strs="2b2068f7413e1f1d5ab35938253b12ef",
-                  events_starts="3f6014e26a4a6f08681f30c3b151a3ad",
-                  events_texts="067bbb5f80d6f3e699b3c12e6e229a85",
-                  str="dd57be09939d6eec40c7f41c2ef8ceca"),
-              outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.srt",
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.srt",
+        md5s=dict(
+            events_ends="f5d3cd18e4b4f8060daae6a78c79a261",
+            events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
+            events_strs="2b2068f7413e1f1d5ab35938253b12ef",
+            events_starts="3f6014e26a4a6f08681f30c3b151a3ad",
+            events_texts="067bbb5f80d6f3e699b3c12e6e229a85",
+            str="dd57be09939d6eec40c7f41c2ef8ceca"),
+        outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.srt",
+        **kwargs)
 
 
 def test_Subtitle_hdf5_chinese_simplified(**kwargs):
     """Tests reading and writing simplified Chinese subtitles in hdf5 format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
-              md5s=dict(
-                  events_ends="7818b23b519ee573d0d4e87d44aa87c4",
-                  events_series="b4cbefcc5af1f073d7733a3cfcb0bd6c",
-                  events_strs="4fa79a5b7405be4d74da1f6062fc96da",
-                  events_starts="f23a20cebaee31a99d58d61a2e28ab53",
-                  events_texts="02827e2ec172bb596741c8bfe2d59966",
-                  str="fc249d74ac6c838b0d9365793a4988a2"),
-              outfiles=f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
+        md5s=dict(
+            events_ends="7818b23b519ee573d0d4e87d44aa87c4",
+            events_series="b4cbefcc5af1f073d7733a3cfcb0bd6c",
+            events_strs="4fa79a5b7405be4d74da1f6062fc96da",
+            events_starts="f23a20cebaee31a99d58d61a2e28ab53",
+            events_texts="02827e2ec172bb596741c8bfe2d59966",
+            str="fc249d74ac6c838b0d9365793a4988a2"),
+        outfiles=f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
+        **kwargs)
 
 
 def test_Subtitle_hdf5_english(**kwargs):
     """Tests reading and writing English subtitles in hdf5 format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.h5",
-              md5s=dict(
-                  events_ends="34d744f818436f2bc47cf5a4aadb2ca9",
-                  events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
-                  events_strs="2b2068f7413e1f1d5ab35938253b12ef",
-                  events_starts="ec6dc07f45c2fa6ce5c02afdd158e6a8",
-                  events_texts="067bbb5f80d6f3e699b3c12e6e229a85",
-                  str="dd57be09939d6eec40c7f41c2ef8ceca"),
-              outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.h5",
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/en-HK.h5",
+        md5s=dict(
+            events_ends="34d744f818436f2bc47cf5a4aadb2ca9",
+            events_series="7e2924a1d9d4b3c671b9b8d7083c7c1d",
+            events_strs="2b2068f7413e1f1d5ab35938253b12ef",
+            events_starts="ec6dc07f45c2fa6ce5c02afdd158e6a8",
+            events_texts="067bbb5f80d6f3e699b3c12e6e229a85",
+            str="dd57be09939d6eec40c7f41c2ef8ceca"),
+        outfiles=f"{output_dir}/mcdull_prince_de_la_bun/en-HK.h5",
+        **kwargs)
 
 
 #################################### MAIN #####################################

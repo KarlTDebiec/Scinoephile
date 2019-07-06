@@ -123,50 +123,52 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
 #################################### TESTS ####################################
 def test_ImageSubtitle_hdf5_chinese_simplified(**kwargs):
     """Tests reading simplified Chinese subtitles in srt format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
-              md5s=dict(
-                  data="3c745f0e394724ce2a28bbba614dfa6e",
-                  events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
-                  events_char_count="9bbbf134d009857b20e5687c77326797",
-                  events_char_separations="2a0771dbd3a5740190206cfed3f40307",
-                  events_char_widths="3850d33adfa610c87a4c762d216f3c8c",
-                  events_ends="7818b23b519ee573d0d4e87d44aa87c4",
-                  events_images="7c419dabe0924fc1c30019a223ba8349",
-                  events_series="946c84f3c93e818bb367954a88782d4f",
-                  events_starts="f23a20cebaee31a99d58d61a2e28ab53",
-                  events_strs="4d8e4f77b1b51e22396e34f62ba07735",
-                  events_texts="02827e2ec172bb596741c8bfe2d59966",
-                  spec="0f85f86849336e48a516e74d836fadde",
-                  str="b257f040185902df5bae94f8ad411710"),
-              outfiles=[
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.srt",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image/"],
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
+        md5s=dict(
+            data="3c745f0e394724ce2a28bbba614dfa6e",
+            events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
+            events_char_count="9bbbf134d009857b20e5687c77326797",
+            events_char_separations="2a0771dbd3a5740190206cfed3f40307",
+            events_char_widths="3850d33adfa610c87a4c762d216f3c8c",
+            events_ends="7818b23b519ee573d0d4e87d44aa87c4",
+            events_images="7c419dabe0924fc1c30019a223ba8349",
+            events_series="946c84f3c93e818bb367954a88782d4f",
+            events_starts="f23a20cebaee31a99d58d61a2e28ab53",
+            events_strs="4d8e4f77b1b51e22396e34f62ba07735",
+            events_texts="02827e2ec172bb596741c8bfe2d59966",
+            spec="db30127edbd288b50173835619588cb1",
+            str="b257f040185902df5bae94f8ad411710"),
+        outfiles=[
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans/"],
+        **kwargs)
 
 
 def test_ImageSubtitle_sup_chinese_simplified(**kwargs):
     """Tests reading simplified Chinese subtitles in sup format"""
-    run_tests(infile=f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.sup",
-              md5s=dict(
-                  data="3c745f0e394724ce2a28bbba614dfa6e",
-                  events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
-                  events_char_count="9bbbf134d009857b20e5687c77326797",
-                  events_char_separations="2a0771dbd3a5740190206cfed3f40307",
-                  events_char_widths="3850d33adfa610c87a4c762d216f3c8c",
-                  events_ends="da71f05b3e0ce5f8e3a5500a88080fc8",
-                  events_images="7c419dabe0924fc1c30019a223ba8349",
-                  events_series="ad0e0d0f9fbcda05ceca6270df00fb61",
-                  events_starts="70a2565a5446bacf21fbce71b25ab71a",
-                  events_strs="a9c7f05fa0a52a148a56b3b1d8823da3",
-                  events_texts="9e2465e25709344c0dcc1ceecdf30b90",
-                  spec="fa05f41246e4bebcca36bb0caf9c1732",
-                  str="b257f040185902df5bae94f8ad411710"),
-              outfiles=[
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.srt",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image.h5",
-                  f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans_image/"],
-              **kwargs)
+    run_tests(
+        infile=f"{input_dir}/mcdull_prince_de_la_bun/original/cmn-Hans.sup",
+        md5s=dict(
+            data="3c745f0e394724ce2a28bbba614dfa6e",
+            events_char_bounds="326c5b3901a605d176d425d5dbbdc7e1",
+            events_char_count="9bbbf134d009857b20e5687c77326797",
+            events_char_separations="2a0771dbd3a5740190206cfed3f40307",
+            events_char_widths="3850d33adfa610c87a4c762d216f3c8c",
+            events_ends="da71f05b3e0ce5f8e3a5500a88080fc8",
+            events_images="7c419dabe0924fc1c30019a223ba8349",
+            events_series="946c84f3c93e818bb367954a88782d4f",
+            events_starts="70a2565a5446bacf21fbce71b25ab71a",
+            events_strs="a9c7f05fa0a52a148a56b3b1d8823da3",
+            events_texts="9e2465e25709344c0dcc1ceecdf30b90",
+            spec="c0bb0152088e705ac3bdd39af087c0c6",
+            str="b257f040185902df5bae94f8ad411710"),
+        outfiles=[
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.srt",
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5",
+            f"{output_dir}/mcdull_prince_de_la_bun/cmn-Hans/"],
+        **kwargs)
 
 
 #################################### MAIN #####################################
