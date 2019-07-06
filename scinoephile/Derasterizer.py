@@ -34,10 +34,17 @@ class Derasterizer(CLToolBase):
                  **kwargs):
         """
         Initializes command-line tool and compiles list of operations
-
         Args:
+            infile (str): Path to image-based subtitle infile
+            outfile (str): Path to text-based subtitle infile
+            overwrite (bool): Overwrite outfile if it exists
+            recognition_model (str): Path to character recognition model
+            standard_infile (str):
+            tesseract (bool):
             **kwargs: Additional keyword arguments
+
         """
+
         from os import access, R_OK, W_OK
         from os.path import dirname, expandvars, isfile
 
@@ -107,7 +114,7 @@ class Derasterizer(CLToolBase):
         # Derasterize
         self.chars = np.concatenate(
             (numeric_chars, western_chars, western_punctuation_chars,
-             eastern_punctuation_chars, hanzi_chars[:5000]))
+             eastern_punctuation_chars, hanzi_chars[:100]))
         if "segment_characters" in self.operations:
             self.image_subtitles._initialize_data()
         if "recognize_characters" in self.operations:

@@ -18,6 +18,8 @@ class ImageSubtitleEvent(SubtitleEvent):
     An individual image-based subtitle
     """
 
+    # TODO: rename data to full_data, char_data to data
+
     # region Builtins
 
     def __init__(self, data=None, **kwargs):
@@ -102,7 +104,6 @@ class ImageSubtitleEvent(SubtitleEvent):
                                      (255, 255, 255, 255))
                 white_bg.paste(trans_bg, mask=trans_bg)
                 value = np.array(white_bg.convert("L"))
-        # TODO: If changed, clear cached properties
 
         self._full_data = value
 

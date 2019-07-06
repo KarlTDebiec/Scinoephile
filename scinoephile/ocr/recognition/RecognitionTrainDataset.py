@@ -40,7 +40,6 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
 
         # TODO: Document
         # TODO: Parallelize
-        # TODO: Handle missing characters smoothly
 
         # Process arguments
         fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(

@@ -18,6 +18,8 @@ class OCRTrainDataset(OCRDataset, ABC):
     A collection of images for training
     """
 
+    # TODO: Don't hardcode font names for macOS
+
     # region Builtins
 
     def __init__(self, chars=None, font_names=None, font_sizes=None,
@@ -47,7 +49,6 @@ class OCRTrainDataset(OCRDataset, ABC):
     def font_names(self):
         """list(str): Font names that may be present in this dataset"""
         if not hasattr(self, "_font_names"):
-            # TODO: Don't hardcode defaults for macOS
             self._font_names = [
                 "/System/Library/Fonts/STHeiti Light.ttc",
                 "/System/Library/Fonts/STHeiti Medium.ttc",

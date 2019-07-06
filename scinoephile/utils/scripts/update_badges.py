@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#   draw_badges.py
+#   update_badges.py
 #
 #   Copyright (C) 2017-2019 Karl T Debiec
 #   All rights reserved.
@@ -111,11 +111,11 @@ if __name__ == "__main__":
     from os.path import dirname, realpath
 
     root = dirname(dirname(realpath(getframeinfo(currentframe()).filename)))
-    re_build = re.compile("^=+ "
-                          "((?P<failed>\d+) failed)?,? ?"
-                          "((?P<passed>\d+) passed)?,? ?"
-                          "((?P<warnings>\d+) warnings)? in "
-                          "(?P<duration>\d+\.?\d*)? seconds =+$")
+    re_build = re.compile(r"^=+ "
+                          r"((?P<failed>\d+) failed)?,? ?"
+                          r"((?P<passed>\d+) passed)?,? ?"
+                          r"((?P<warnings>\d+) warnings)? in "
+                          r"(?P<duration>\d+\.?\d*)? seconds =+$")
     re_coverage = re.compile(r"^TOTAL\s+"
                              r"(?P<statements>\d+)+\s+"
                              r"(?P<missed>\d+)+\s+"

@@ -26,7 +26,7 @@ def cmp_h5(file_1, file_2):
         bool: True if the files are identical, false otherwise
     """
     with open(devnull, "w") as fnull:
-        output = Popen("h5diff {0} {1}".format(file_1, file_2), stdout=PIPE,
+        output = Popen(f"h5diff {file_1} {file_2}", stdout=PIPE,
                        stderr=fnull, shell=True).stdout.read().decode("utf-8")
 
     if output == "":

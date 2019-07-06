@@ -8,17 +8,16 @@
 
 |build| |coverage| |docs| |license|
 
-.. github_end
+.. github_header_end
 
 Introduction
 ------------
 
-Python package for working with Chinese/English bilingual subtitles. Mainly
-useful for combining separate Chinese and English subtitle files into single
-synchronized bilingual subtitles. May optionally add romanization below Chinese
-subtitles using Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
-Optical Character Recognition functions are currently under development to
-allow the conversion of image-based subtitles to text format.
+Python package for working with Chinese/English bilingual subtitles. Useful
+for converting image-based Chinese subtitles into text using OCR, and for
+combining separate Chinese and English subtitles into synchronized bilingual
+subtitles. May optionally add romanization below Chinese subtitles using
+Mandarin Hanyu Pinyin or the Yale romanization of Cantonese.
 
 Dependencies
 ------------
@@ -56,37 +55,74 @@ Installation
 Usage
 -----
 
+Derasterizer
+____________
+
+.. code-block:: text
+    :name: derasterizer_usage
+
+    usage: Derasterizer.py [-h] [-v | -q] -if FILE [-rm FILE] [-sf FILE] [-t]
+                           [-of FILE] [-o]
+
+    Converts image-based subtitles into text using a deep neural network-based
+    optical character recognition model.
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --verbose         enable verbose output, may be specified more than once
+      -q, --quiet           disable verbose output
+
+    input arguments:
+      -if FILE, --infile FILE
+                            image-based subtitle infile
+      -rm FILE, --recognition_model FILE
+                            character recognition model infile
+      -sf FILE, --standard FILE
+                            standard subtitles infile against which to compare
+                            results
+      -of FILE, --outfile FILE
+                            text-based subtitle outfile
+
+    operation arguments:
+      -t, --tesseract       use tesseract library for OCR rather than scinoephile
+
+    output arguments:
+      -o, --overwrite       overwrite outfiles if they exist
+
 Compositor
 __________
 
 .. code-block:: text
+    :name: compositor_usage
 
-    usage: Compositor.py [-h] [-v | -q] [-b FILE [overwrite ...]]
-                     [-c FILE [overwrite ...]] [-e FILE [overwrite ...]]
-                     [-p FILE [overwrite ...]] [-s] [-m] [-y]
+    usage: Compositor.py [-h] [-v | -q] [-bif FILE] [-cif FILE] [-eif FILE]
+                         [-pif FILE] [-c] [-m] [-s] [-bof FILE] [-cof FILE]
+                         [-eof FILE] [-pof FILE] [-o]
 
     Compiles Chinese and English subtitles into a single file, optionally adding
     Mandarin or Cantonese pinyin, converting traditional characters to simplified,
     or adding machine translation.
 
-    Operations are inferred from provided arguments, e.g.:
-
-      Translate Chinese to English:
-        Compositor.py -e /nonexisting/english/outfile
-                      -c /existing/chinese/infile
-
-      Translate English to Chinese:
-        Compositor.py -e /existing/english/infile
-                      -c /nonexisting/chinese/outfile
+    Operations are inferred from provided infiles and outfiles, e.g.:
 
       Merge Chinese and English:
-        Compositor.py -e /existing/english/infile
-                      -c /existing/chinese/infile
-                      -b /nonexisting/bilingual/outfile
+        Compositor.py -cif /chinese/infile
+                      -eif /english/infile
+                      -bof /bilingual/outfile
+
+      Convert Chinese Hanzi to Cantonese Yale pinyin:
+        Compositor.py -cif /chinese/infile
+                      -pof /chinese/outfile
+                      --cantonese
+
+      Translate Chinese Hanzi to English, overwriting if necessary:
+        Compositor.py -cif /chinese/infile
+                      -eof /english/outfile
+                      -o
 
       Convert traditional Chinese to simplified, translate to English, and merge:
-        Compositor.py -c /existing/chinese/infile
-                      -b /nonexisting/bilingual/outfile
+        Compositor.py -cif /chinese/infile
+                      -bof /bilingual/outfile
                       --simplify
 
     optional arguments:
@@ -94,24 +130,34 @@ __________
       -v, --verbose         enable verbose output, may be specified more than once
       -q, --quiet           disable verbose output
 
-    file arguments:
-      -b FILE [overwrite ...], --bilingual FILE [overwrite ...]
-                            bilingual subtitles
-      -c FILE [overwrite ...], --chinese FILE [overwrite ...]
-                            Chinese Hanzi subtitles
-      -e FILE [overwrite ...], --english FILE [overwrite ...]
-                            English subtitles
-      -p FILE [overwrite ...], --pinyin FILE [overwrite ...]
-                            Chinese pinyin subtitles
+    input arguments:
+      -bif FILE, --bilingual_infile FILE
+                            bilingual subtitle infile
+      -cif FILE, --chinese_infile FILE
+                            Chinese Hanzi subtitle infile
+      -eif FILE, --english_infile FILE
+                            English subtitle infile
+      -pif FILE, --pinyin_infile FILE
+                            Chinese pinyin subtitle infile
 
     operation arguments:
-      -s, --simplify        convert traditional characters to simplified
-      -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
-      -y, --yue             add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
+      -c, --cantonese       add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for
                             older Hong Kong movies (1980s to early 1990s) whose
                             Chinese subtitles are in 粤文 (i.e. using 係, 喺, and 唔
                             rather than 是, 在, and 不, etc.)
+      -m, --mandarin        add Mandarin Hanyu pinyin (汉语拼音)
+      -s, --simplify        convert traditional Hanzi characters to simplified
 
+    output arguments:
+      -bof FILE, --bilingual_outfile FILE
+                            bilingual subtitle outfile
+      -cof FILE, --chinese_outfile FILE
+                            Chinese Hanzi subtitle outfile
+      -eof FILE, --english_outfile FILE
+                            English subtitle outfile
+      -pof FILE, --pinyin_outfile FILE
+                            Chinese pinyin subtitle outfile
+      -o, --overwrite       overwrite outfiles if they exist
 
 Authorship
 ----------

@@ -14,7 +14,7 @@ Scinoephile
 |build| |coverage| |docs| |license|
 
 .. include:: ../README.rst
-    :start-after: github_end
+    :start-after: github_header_end
 
 .. include:: ../LICENSE
 

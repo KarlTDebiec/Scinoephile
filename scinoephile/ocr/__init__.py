@@ -191,7 +191,7 @@ def draw_text_on_img(image, text, x=0, y=0,
     """
     from PIL import ImageDraw, ImageFont
 
-    # TODO: Handle default font better
+    # TODO: Don't hardcode default font for macOS
 
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(font, size)
@@ -221,7 +221,7 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     from matplotlib.patheffects import Stroke, Normal
     from PIL import Image
 
-    # TODO: Don't hardcode defaults for macOS
+    # TODO: Don't hardcode default font for macOS
 
     # Process arguments
     if fig is None:
