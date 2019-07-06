@@ -15,10 +15,8 @@ if __name__ == "__main__":
     from os.path import dirname, realpath
     from subprocess import Popen, PIPE
 
-    root = dirname(dirname(
-        dirname(dirname(realpath(getframeinfo(currentframe()).filename)))))
-    print(root)
-
+    root = dirname(dirname(dirname(dirname(realpath(
+        getframeinfo(currentframe()).filename)))))
     re_usage = re.compile(r"((?P<block_1>.*:name: derasterizer_usage\n\n))"
                           r"((?P<derasterizer_usage>.*?(?=^\S+)))"
                           r"((?P<block_2>.*:name: compositor_usage\n\n))"

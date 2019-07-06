@@ -417,7 +417,8 @@ class Derasterizer(CLToolBase):
         # Input
         parser_input = parser.add_argument_group("input arguments")
         parser_input.add_argument("-if", "--infile",
-                                  help="image-based subtitle infile",
+                                  help="image-based Chinese Hanzi subtitle "
+                                       "infile",
                                   metavar="FILE",
                                   required=True)
         parser_input.add_argument("-rm", "--recognition_model",
@@ -425,8 +426,9 @@ class Derasterizer(CLToolBase):
                                   metavar="FILE")
         parser_input.add_argument("-sf", "--standard",
                                   dest="standard_infile",
-                                  help="standard subtitles infile against "
-                                       "which to compare results",
+                                  help="known accurate text-base Chinese "
+                                       "Hanzi subtitle infile for validation "
+                                       "of OCR results",
                                   metavar="FILE")
         # Operations
         parser_ops = parser.add_argument_group("operation arguments")
@@ -437,12 +439,13 @@ class Derasterizer(CLToolBase):
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
-        parser_input.add_argument("-of", "--outfile",
-                                  help="text-based subtitle outfile",
-                                  metavar="FILE")
+        parser_output.add_argument("-of", "--outfile",
+                                   help="text-based Chinese Hanzi subtitle "
+                                        "outfile",
+                                   metavar="FILE")
         parser_output.add_argument("-o", "--overwrite",
                                    action="store_true",
-                                   help="overwrite outfiles if they exist")
+                                   help="overwrite outfile if it exists")
 
         return parser
 

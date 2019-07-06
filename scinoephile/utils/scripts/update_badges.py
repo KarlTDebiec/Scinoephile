@@ -110,7 +110,10 @@ if __name__ == "__main__":
     from inspect import currentframe, getframeinfo
     from os.path import dirname, realpath
 
-    root = dirname(dirname(realpath(getframeinfo(currentframe()).filename)))
+    # TODO: Use a single template SVG
+
+    root = dirname(dirname(dirname(dirname(realpath(
+        getframeinfo(currentframe()).filename)))))
     re_build = re.compile(r"^=+ "
                           r"((?P<failed>\d+) failed)?,? ?"
                           r"((?P<passed>\d+) passed)?,? ?"
@@ -168,7 +171,7 @@ if __name__ == "__main__":
                 match_coverage = re.match(re_coverage_html, line.strip())
                 if match_coverage:
                     coverage = int(match_coverage.groupdict()["coverage"])
-    docs = 10
+    docs = "?"
     with open(f"{root}/docs/html/python.txt", "r") as infile:
         for line in infile.readlines():
             print(line.strip())

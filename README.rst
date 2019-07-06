@@ -74,20 +74,20 @@ ____________
 
     input arguments:
       -if FILE, --infile FILE
-                            image-based subtitle infile
+                            image-based Chinese Hanzi subtitle infile
       -rm FILE, --recognition_model FILE
                             character recognition model infile
       -sf FILE, --standard FILE
-                            standard subtitles infile against which to compare
-                            results
-      -of FILE, --outfile FILE
-                            text-based subtitle outfile
+                            known accurate text-base Chinese Hanzi subtitle infile
+                            for validation of OCR results
 
     operation arguments:
       -t, --tesseract       use tesseract library for OCR rather than scinoephile
 
     output arguments:
-      -o, --overwrite       overwrite outfiles if they exist
+      -of FILE, --outfile FILE
+                            text-based Chinese Hanzi subtitle outfile
+      -o, --overwrite       overwrite outfile if it exists
 
 Compositor
 __________
