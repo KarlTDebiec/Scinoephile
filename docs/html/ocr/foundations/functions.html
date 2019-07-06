@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Functions &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Foundations" href="../../foundations.html" />
+    <link rel="prev" title="Classes" href="classes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../recognition.html">Character Recognition</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../foundations.html">Foundations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../ocr.html">Optical Character Recognition</a> &raquo;</li>
+        
+          <li><a href="../foundations.html">Foundations</a> &raquo;</li>
+        
+      <li>Functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/KarlTDebiec/scinoephile" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="scinoephile.ocr.center_char_img">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">center_char_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#center_char_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.center_char_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centers image data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>numpy.ndarray</em>) – Character image data</li>
+<li><strong>x_offset</strong> (<em>int</em>) – Offset to apply along x axis</li>
+<li><strong>y_offset</strong> (<em>int</em>) – Offset to apply along y axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Centered character image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.draw_char_imgs">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">draw_char_imgs</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#draw_char_imgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.draw_char_imgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws character images from provided data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>ndarray</em>) – Character data to draw</li>
+<li><strong>cols</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of columns of characters</li>
+<li><strong>kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Images of characters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">PIL.Image.Image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.draw_text_on_img">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">draw_text_on_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#draw_text_on_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.draw_text_on_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws text on an image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image</strong> (<em>PIL.Image.Image</em>) – image on which to draw text</li>
+<li><strong>text</strong> (<em>str</em>) – text to draw</li>
+<li><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</li>
+<li><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – x position at which to center text</li>
+<li><strong>font</strong> (<em>str</em><em>, </em><em>optional</em>) – font with which to draw text</li>
+<li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – font size with which to draw text</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.generate_char_datum">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">generate_char_datum</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#generate_char_datum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.generate_char_datum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an image of a character</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>char</strong> (<em>str</em>) – character of which to draw an image of</li>
+<li><strong>font</strong> (<em>str</em>) – font with which to draw character</li>
+<li><strong>fig</strong> (<em>matplotlib.figure.Figure</em><em>, </em><em>optional</em>) – figure on which to draw
+character</li>
+<li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – font size with which to draw character</li>
+<li><strong>(</strong><strong>int</strong><strong>, </strong><strong>optional</strong> (<em>y_offset</em>) – border width with which to draw character</li>
+<li><strong>x_offset</strong> (<em>int</em><em>, </em><em>optional</em>) – x offset to apply to character</li>
+<li><strong>(</strong><strong>int</strong><strong>, </strong><strong>optional</strong> – y offset to apply to character</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Character image data</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.show_img">
+<code class="descclassname">scinoephile.ocr.</code><code class="descname">show_img</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr.html#show_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.show_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows an image using context-appropriate function</p>
+<p>If called from within Jupyter notebook, shows inline. If imgcat module
+is available, shows inline in terminal. Otherwise opens a new window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img</strong> (<em>PIL.Image.Image</em>) – Image to show</li>
+<li><strong>kwargs</strong> – Additional keyword arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.numba.read_sup_image">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_image</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a palette-compressed image from a block of bytes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bytes</strong> (<em>bytearray</em>) – Block of bytes</li>
+<li><strong>height</strong> (<em>int</em>) – Height of image</li>
+<li><strong>width</strong> (<em>int</em>) – Width of image</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">compressed image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.numba.read_sup_palette">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_palette</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a color palette from a block of bytes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bytes</strong> (<em>bytearray</em>) – Block of bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">palette; first index is color, second is channel</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scinoephile.ocr.numba.read_sup_subtitles">
+<code class="descclassname">scinoephile.ocr.numba.</code><code class="descname">read_sup_subtitles</code><span class="sig-paren">(</span><em>...</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scinoephile/ocr/numba.html#read_sup_subtitles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scinoephile.ocr.numba.read_sup_subtitles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads subtitle images and times from a block of bytes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bytes</strong> (<em>bytearray</em>) – block of bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>Subtitle starts, ends,</dt>
+<dd>and images</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple(list(float), list(float), list(ndarray))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../foundations.html" class="btn btn-neutral float-right" title="Foundations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="classes.html" class="btn btn-neutral float-left" title="Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

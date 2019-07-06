@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scinoephile.Derasterizer &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/recognition.html">Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../scinoephile.html">scinoephile</a> &raquo;</li>
+        
+      <li>scinoephile.Derasterizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scinoephile.Derasterizer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#   scinoephile.Derasterizer.py</span>
+<span class="c1">#</span>
+<span class="c1">#   Copyright (C) 2017-2019 Karl T Debiec</span>
+<span class="c1">#   All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#   This software may be modified and distributed under the terms of the</span>
+<span class="c1">#   BSD license. See the LICENSE file for details.</span>
+<span class="sd">&quot;&quot;&quot;Converts image-based subtitles into text using a deep neural network-based</span>
+<span class="sd">optical character recognition model.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">################################### MODULES ###################################</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="k">import</span> <span class="n">keras</span>
+<span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">input_prefill</span><span class="p">,</span> <span class="n">CLToolBase</span><span class="p">,</span> <span class="n">SubtitleSeries</span>
+<span class="kn">from</span> <span class="nn">scinoephile.ocr</span> <span class="k">import</span> <span class="p">(</span><span class="n">analyze_text_accuracy</span><span class="p">,</span>
+                             <span class="n">eastern_punctuation_chars</span><span class="p">,</span> <span class="n">hanzi_chars</span><span class="p">,</span>
+                             <span class="n">numeric_chars</span><span class="p">,</span> <span class="n">western_chars</span><span class="p">,</span>
+                             <span class="n">western_punctuation_chars</span><span class="p">,</span> <span class="n">ImageSubtitleSeries</span><span class="p">)</span>
+
+
+<span class="c1">################################### CLASSES ###################################</span>
+<div class="viewcode-block" id="Derasterizer"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer">[docs]</a><span class="k">class</span> <span class="nc">Derasterizer</span><span class="p">(</span><span class="n">CLToolBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts image-based Chinese subtitles to text</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># region Builtins</span>
+
+<div class="viewcode-block" id="Derasterizer.__init__"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">recognition_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">standard_infile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tesseract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes command-line tool and compiles list of operations</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            infile (str): Path to image-based Chinese Hanzi subtitle infile</span>
+<span class="sd">            outfile (str): Path to text-based Chinese Hanzi subtitle outfile</span>
+<span class="sd">            overwrite (bool): Overwrite outfile if it exists</span>
+<span class="sd">            recognition_model (str): Path to character recognition model infile</span>
+<span class="sd">            standard_infile (str): Path to known accurate text-based Chinese</span>
+<span class="sd">              Hanzi subtitle infile</span>
+<span class="sd">            tesseract (bool): Use tesseract library for OCR rather than</span>
+<span class="sd">              scinoephile</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">access</span><span class="p">,</span> <span class="n">R_OK</span><span class="p">,</span> <span class="n">W_OK</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">expandvars</span><span class="p">,</span> <span class="n">isfile</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Compile input operations</span>
+        <span class="n">infile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">infile</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="ow">and</span> <span class="n">access</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">R_OK</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_infile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">infile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Image-based subtitle infile &quot;</span>
+                          <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{infile}</span><span class="s2">&#39; cannot be read&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tesseract</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">recognition_model</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;tesseract&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tesseract&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Use of tesseract library for OCR precludes &quot;</span>
+                                 <span class="s2">&quot;use of provided recognition model infile&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">recognition_model</span><span class="p">:</span>
+            <span class="n">recognition_model</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">recognition_model</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">standard_infile</span><span class="p">)</span> <span class="ow">and</span> <span class="n">access</span><span class="p">(</span><span class="n">standard_infile</span><span class="p">,</span> <span class="n">R_OK</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_recognition_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recognition_model</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;segment_characters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;recognize_characters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;reconstruct_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Character recognition model infile &quot;</span>
+                              <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{recognition_model}</span><span class="s2">&#39; cannot be read&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">standard_infile</span><span class="p">:</span>
+            <span class="n">standard_infile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">standard_infile</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">standard_infile</span><span class="p">)</span> <span class="ow">and</span> <span class="n">access</span><span class="p">(</span><span class="n">standard_infile</span><span class="p">,</span> <span class="n">R_OK</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_standard&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard_infile</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;compare_standard&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Standard subtitle infile &quot;</span>
+                              <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{standard_infile}</span><span class="s2">&#39; cannot be read&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Compile output operations</span>
+        <span class="k">if</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">outfile</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">access</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">outfile</span><span class="p">),</span> <span class="n">W_OK</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;save_outfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outfile</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Text-based Subtitle outfile &quot;</span>
+                                  <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{outfile}</span><span class="s2">&#39; already exists&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Text-based subtitle outfile &quot;</span>
+                              <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{outfile}</span><span class="s2">&#39; is not writable&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs operations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Load infiles</span>
+        <span class="k">if</span> <span class="s2">&quot;load_infile&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span> <span class="o">=</span> <span class="n">ImageSubtitleSeries</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_infile&quot;</span><span class="p">],</span> <span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;load_recognition_model&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recognition_model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_recognition_model&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;load_standard&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">standard_subtitles</span> <span class="o">=</span> <span class="n">SubtitleSeries</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;load_standard&quot;</span><span class="p">],</span> <span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
+
+        <span class="c1"># Derasterize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">numeric_chars</span><span class="p">,</span> <span class="n">western_chars</span><span class="p">,</span> <span class="n">western_punctuation_chars</span><span class="p">,</span>
+             <span class="n">eastern_punctuation_chars</span><span class="p">,</span> <span class="n">hanzi_chars</span><span class="p">[:</span><span class="mi">100</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="s2">&quot;segment_characters&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">_initialize_data</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;recognize_characters&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recognize_characters</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;reconstruct_text&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reconstruct_text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;tesseract&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tesseract</span><span class="p">()</span>
+
+        <span class="c1"># Analyze results</span>
+        <span class="k">if</span> <span class="s2">&quot;compare_standard&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="n">analyze_text_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">standard_subtitles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">,</span>
+                                  <span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
+
+        <span class="c1"># Save outfile</span>
+        <span class="k">if</span> <span class="s2">&quot;save_outfile&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="s2">&quot;save_outfile&quot;</span><span class="p">])</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list(str): Characters that may be present in this dataset&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_chars&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="n">hanzi_chars</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span>
+
+    <span class="nd">@chars</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># TODO: Validate</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hanzi_chars</span><span class="p">[:</span><span class="n">value</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chars</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">char_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ndarray(float): Predicted confidence that each character image is</span>
+<span class="sd">        each matchable character&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_char_predictions&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span>
+
+    <span class="nd">@char_predictions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">char_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_char_predictions</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">image_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ImageSubtitleSeries: Image-based subtitles&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_image_subtitles&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_image_subtitles</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_subtitles</span>
+
+    <span class="nd">@image_subtitles</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">image_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ImageSubtitleSeries</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_subtitles</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict: Collection of operations to perform, with associated</span>
+<span class="sd">        arguments&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_operations&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">recognition_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Model: Character recognition model&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_recognition_model&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recognition_model</span>
+
+    <span class="nd">@recognition_model</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">recognition_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recognition_model</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">standard_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;SubtitleSeries: Standard subtitles against which to compare</span>
+<span class="sd">         results&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_standard_subtitles&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_standard_subtitles</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standard_subtitles</span>
+
+    <span class="nd">@standard_subtitles</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">standard_subtitles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">SubtitleSeries</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_setter_exception</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_standard_subtitles</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Methods</span>
+
+<div class="viewcode-block" id="Derasterizer.get_labels_of_chars"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer.get_labels_of_chars">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels_of_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets unique integer indexes of provided char strings</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            chars: Chars</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             ndarray(int64): Labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span> <span class="o">==</span> <span class="n">chars</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+        <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+
+        <span class="c1"># Return labels</span>
+        <span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">sorter</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="Derasterizer.get_chars_of_labels"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer.get_chars_of_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_chars_of_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets char strings of unique integer indexes</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            labels (ndarray(int64)): Labels</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">            ndarray(U64): Chars</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Improve exception</span>
+
+        <span class="c1"># Process arguments and return chars</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chars</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div>
+
+    <span class="k">def</span> <span class="nf">manually_assign_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement; propogate character updates, CL argument</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="c1"># Newer:</span>
+        <span class="c1"># for i, event in enumerate(self.image_subtitles.events):</span>
+        <span class="c1">#     event.show()</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         text = input_prefill(f&quot;&#39;{event.text}&#39;: &quot;, event.text)</span>
+        <span class="c1">#     except EOFError:</span>
+        <span class="c1">#         print(f&quot;\nSkipping subtitle {i}&quot;)</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     except KeyboardInterrupt:</span>
+        <span class="c1">#         print(&quot;\nQuitting subtitle validation&quot;)</span>
+        <span class="c1">#         break</span>
+        <span class="c1">#     if text != event.text:</span>
+        <span class="c1">#         if len(text) == len(event.text):</span>
+        <span class="c1">#             for j, (yat, eee) in enumerate(zip(text, event.text)):</span>
+        <span class="c1">#                 if yat != eee:</span>
+        <span class="c1">#                     print(yat, eee)</span>
+        <span class="c1">#                     print(event.char_spec.iloc[j])</span>
+        <span class="c1">#                     embed(**self.embed_kw)</span>
+        <span class="c1"># Older:</span>
+        <span class="c1"># from pypinyin import pinyin</span>
+        <span class="c1"># if self.char_predictions is not None:</span>
+        <span class="c1">#     predictions = self.get_chars_of_labels(</span>
+        <span class="c1">#         np.argsort(self.char_predictions, axis=1)[:, -1])</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     predictions = None</span>
+        <span class="c1"># if self.verbosity &gt;= 1:</span>
+        <span class="c1">#     print(&quot;Assigning characters&quot;)</span>
+        <span class="c1">#     print(&quot;  Press Enter to accept predicted character&quot;)</span>
+        <span class="c1">#     print(&quot;  or type another character and press Enter to correct&quot;)</span>
+        <span class="c1">#     print(&quot;  or press CTRL-D to skip character&quot;)</span>
+        <span class="c1">#     print(&quot;  or press CTRL-C to stop assigning&quot;)</span>
+        <span class="c1">#     print()</span>
+        <span class="c1"># for i, spec in self.spec.iterrows():</span>
+        <span class="c1">#     if spec.char != &quot;&quot;:</span>
+        <span class="c1">#         print(f&quot;Character {i} previously assigned as &#39;{spec.char}&#39; &quot;</span>
+        <span class="c1">#               f&quot;({pinyin(spec.char)[0][0]})&quot;)</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     if i &lt;= start_index:</span>
+        <span class="c1">#         print(f&quot;Skipping assignment of character {i}&quot;)</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     self.show(indexes=i)</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         if predictions is not None:</span>
+        <span class="c1">#             match = input(f&quot;&#39;{predictions[i]}&#39; &quot;</span>
+        <span class="c1">#                           f&quot;({pinyin(predictions[i])[0][0]}): &quot;)</span>
+        <span class="c1">#         else:</span>
+        <span class="c1">#             match = input(f&quot;&#39;&#39; (): &quot;)</span>
+        <span class="c1">#     except EOFError:</span>
+        <span class="c1">#         print(f&quot;\nSkipping assignment of character {i}&quot;)</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     except KeyboardInterrupt:</span>
+        <span class="c1">#         print(&quot;\nQuitting character assignment&quot;)</span>
+        <span class="c1">#         break</span>
+        <span class="c1">#     if match == &quot;&quot;:</span>
+        <span class="c1">#         self.assign_char(i, predictions[i])</span>
+        <span class="c1">#     else:</span>
+        <span class="c1">#         self.assign_char(i, match)</span>
+
+<div class="viewcode-block" id="Derasterizer.merge_chars"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer.merge_chars">[docs]</a>    <span class="k">def</span> <span class="nf">merge_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Merges two adjacent characters</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): Index of first of two characters to merge</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Implement</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="c1"># self._char_bounds = np.append(</span>
+        <span class="c1">#     self.char_bounds.flatten()[:index * 2 + 1],</span>
+        <span class="c1">#     self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Methods</span>
+
+    <span class="k">def</span> <span class="nf">_recognize_characters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: Move to function</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">label_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recognition_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">char_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chars_of_labels</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">label_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">spec</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="n">char_pred</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_reconstruct_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: Move to function</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">char_spec</span><span class="p">[</span><span class="s2">&quot;char&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chars</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">chars</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">event</span><span class="o">.</span><span class="n">char_widths</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">event</span><span class="o">.</span><span class="n">char_widths</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">event</span><span class="o">.</span><span class="n">char_separations</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">char_i</span><span class="p">,</span> <span class="n">char_j</span><span class="p">,</span> <span class="n">width_i</span><span class="p">,</span> <span class="n">width_j</span><span class="p">,</span> <span class="n">sep</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="n">char_i</span>
+
+                <span class="c1"># Very large space: Two speakers</span>
+                <span class="k">if</span> <span class="n">sep</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;﹣</span><span class="si">{text}</span><span class="s2">　　﹣&quot;</span>
+                <span class="c1"># Two Hanzi: separation cutoff of 40 to add double-width space</span>
+                <span class="k">elif</span> <span class="n">width_i</span> <span class="o">&gt;=</span> <span class="mi">45</span> <span class="ow">and</span> <span class="n">width_j</span> <span class="o">&gt;=</span> <span class="mi">45</span> <span class="ow">and</span> <span class="n">sep</span> <span class="o">&gt;=</span> <span class="mi">40</span><span class="p">:</span>
+                    <span class="c1"># print(&quot;Adding a double-width space&quot;)</span>
+                    <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;　&quot;</span>
+                <span class="c1"># Two Roman: separation cutoff of 35 to add single-width space</span>
+                <span class="k">elif</span> <span class="n">width_i</span> <span class="o">&lt;</span> <span class="mi">45</span> <span class="ow">and</span> <span class="n">width_j</span> <span class="o">&lt;</span> <span class="mi">45</span> <span class="ow">and</span> <span class="n">sep</span> <span class="o">&gt;=</span> <span class="mi">36</span><span class="p">:</span>
+                    <span class="c1"># print(&quot;Adding a single-width space&quot;)</span>
+                    <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="n">chars</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># TODO: Reconstruct ellipsis</span>
+
+            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">_tesseract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: Move to function</span>
+        <span class="kn">import</span> <span class="nn">pytesseract</span>
+        <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reconstructing text using tesseract&quot;</span><span class="p">)</span>
+        <span class="n">tess_subtitles</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_subtitles</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tess_subtitles</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="n">f</span><span class="s2">&quot;Reconstructing text for subtitle </span><span class="si">{i}</span><span class="s2"> using tesseract&quot;</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">pytesseract</span><span class="o">.</span><span class="n">image_to_string</span><span class="p">(</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+                <span class="n">config</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;--psm 7 --oem 3&quot;</span><span class="p">,</span>
+                <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;chi_sim&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Class Methods</span>
+
+<div class="viewcode-block" id="Derasterizer.construct_argparser"><a class="viewcode-back" href="../../cltools.html#scinoephile.Derasterizer.Derasterizer.construct_argparser">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">construct_argparser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs argument parser</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            parser (argparse.ArgumentParser): Argument parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">construct_argparser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Input</span>
+        <span class="n">parser_input</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;input arguments&quot;</span><span class="p">)</span>
+        <span class="n">parser_input</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-if&quot;</span><span class="p">,</span> <span class="s2">&quot;--infile&quot;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;image-based Chinese Hanzi subtitle &quot;</span>
+                                       <span class="s2">&quot;infile&quot;</span><span class="p">,</span>
+                                  <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">,</span>
+                                  <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">parser_input</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-rm&quot;</span><span class="p">,</span> <span class="s2">&quot;--recognition_model&quot;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;character recognition model infile&quot;</span><span class="p">,</span>
+                                  <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">)</span>
+        <span class="n">parser_input</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-sf&quot;</span><span class="p">,</span> <span class="s2">&quot;--standard&quot;</span><span class="p">,</span>
+                                  <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;standard_infile&quot;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;known accurate text-based Chinese &quot;</span>
+                                       <span class="s2">&quot;Hanzi subtitle infile for validation &quot;</span>
+                                       <span class="s2">&quot;of OCR results&quot;</span><span class="p">,</span>
+                                  <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">)</span>
+        <span class="c1"># Operations</span>
+        <span class="n">parser_ops</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;operation arguments&quot;</span><span class="p">)</span>
+        <span class="n">parser_ops</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--tesseract&quot;</span><span class="p">,</span>
+                                <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use tesseract library for OCR rather &quot;</span>
+                                     <span class="s2">&quot;than scinoephile&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Output</span>
+        <span class="n">parser_output</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;output arguments&quot;</span><span class="p">)</span>
+        <span class="n">parser_output</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-of&quot;</span><span class="p">,</span> <span class="s2">&quot;--outfile&quot;</span><span class="p">,</span>
+                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;text-based Chinese Hanzi subtitle &quot;</span>
+                                        <span class="s2">&quot;outfile&quot;</span><span class="p">,</span>
+                                   <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;FILE&quot;</span><span class="p">)</span>
+        <span class="n">parser_output</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--overwrite&quot;</span><span class="p">,</span>
+                                   <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;overwrite outfile if it exists&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parser</span></div></div>
+
+    <span class="c1"># endregion</span>
+
+
+<span class="c1">#################################### MAIN #####################################</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">Derasterizer</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

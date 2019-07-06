@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scinoephile.SubtitleSeries &mdash; scinoephile 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> scinoephile
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cltools.html">Command-Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cltools.html#compositor">Compositor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ocr.html">Optical Character Recognition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/subtitles.html">Image-Based Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/segmentation.html">Character Segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/recognition.html">Character Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ocr/foundations.html">Foundations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ocr/foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundations.html">Foundations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/subtitles.html">Subtitles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/classes.html">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../foundations/functions.html">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#compositor">Compositor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#derasterizer">Derasterizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#future">Future</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scinoephile</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../scinoephile.html">scinoephile</a> &raquo;</li>
+        
+      <li>scinoephile.SubtitleSeries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scinoephile.SubtitleSeries</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#   scinoephile.SubtitleSeries.py</span>
+<span class="c1">#</span>
+<span class="c1">#   Copyright (C) 2017-2019 Karl T Debiec</span>
+<span class="c1">#   All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#   This software may be modified and distributed under the terms of the</span>
+<span class="c1">#   BSD license. See the LICENSE file for details.</span>
+<span class="c1">################################### MODULES ###################################</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
+<span class="kn">from</span> <span class="nn">pysubs2</span> <span class="k">import</span> <span class="n">SSAFile</span>
+<span class="kn">from</span> <span class="nn">scinoephile</span> <span class="k">import</span> <span class="n">Base</span><span class="p">,</span> <span class="n">SubtitleEvent</span>
+
+
+<span class="c1">################################### CLASSES ###################################</span>
+<div class="viewcode-block" id="SubtitleSeries"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries">[docs]</a><span class="k">class</span> <span class="nc">SubtitleSeries</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">SSAFile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A series of subtitles</span>
+
+<span class="sd">    Extension of pysubs2&#39;s SSAFile with additional features. Includes code</span>
+<span class="sd">    for loading to and saving from hdf5. While these are part of separate</span>
+<span class="sd">    classes in pysubs.SSAFile, this separation is not really beneficial here.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># region Class Attributes</span>
+
+    <span class="n">event_class</span> <span class="o">=</span> <span class="n">SubtitleEvent</span>
+    <span class="sd">&quot;&quot;&quot;Class of individual subtitle events&quot;&quot;&quot;</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Builtins</span>
+
+<div class="viewcode-block" id="SubtitleSeries.__init__"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># SSAFile.__init__ accepts no arguments</span>
+        <span class="n">SSAFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides a string representation of series</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: String representation of this series</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">ms_to_str</span>
+
+            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;&lt;</span><span class="si">{self.__class__.__name__}</span><span class="s2"> &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;with {len(self.events):d} events &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles, &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;last timestamp &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;{ms_to_str(max(e.end for e in self.events)):s}&gt;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;&lt;SubtitleSeries with 0 events &quot;</span> \
+                <span class="n">f</span><span class="s2">&quot;and {len(self.styles):d} styles&gt;&quot;</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Methods</span>
+
+    <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">[(</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+<div class="viewcode-block" id="SubtitleSeries.save"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves subtitles to an output file</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            pysubs2.SSAFile.save expects an open text file, so we open the</span>
+<span class="sd">            hdf5 file here for consistency.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to output file</span>
+<span class="sd">            format_ (str, optional): Output file format</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing subtitles to &#39;</span><span class="si">{path}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if hdf5</span>
+        <span class="k">if</span> <span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">h5py</span>
+
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Otherwise, continue as superclass SSAFile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SSAFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Public Class Methods</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dataframe</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">],</span>
+                <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">subs</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">subs</span>
+
+<div class="viewcode-block" id="SubtitleSeries.load"><a class="viewcode-back" href="../../foundations/subtitles.html#scinoephile.SubtitleSeries.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads subtitles from an input file</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            pysubs2.SSAFile.from_file expects an open text file, so we open</span>
+<span class="sd">             the hdf5 file here for consistency</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to input file</span>
+<span class="sd">            encoding (str, optional): Input file encoding</span>
+<span class="sd">            format_ (str, optional): Input file format</span>
+<span class="sd">            verbosity (int, optional): Level of verbose output</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            SubtitleSeries: Loaded subtitles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expandvars</span>
+
+        <span class="c1"># Process arguments</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading subtitles from &#39;</span><span class="si">{path}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if hdf5</span>
+        <span class="k">if</span> <span class="n">format_</span> <span class="o">==</span> <span class="s2">&quot;hdf5&quot;</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.h5&quot;</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">h5py</span>
+
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_hdf5</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Otherwise, use SSAFile.from_file</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
+            <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ssaevent</span> <span class="ow">in</span> <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+                                              <span class="n">series</span><span class="o">=</span><span class="n">subs</span><span class="p">,</span>
+                                              <span class="o">**</span><span class="n">ssaevent</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()))</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">events</span>
+
+            <span class="k">return</span> <span class="n">subs</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Methods</span>
+
+    <span class="k">def</span> <span class="nf">_save_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves subtitles to an output hdf5 file</span>
+
+<span class="sd">        TODO: Save project info</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp (h5py._hl.files.File): Open hdf5 output file</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pysubs2.substation</span> <span class="k">import</span> <span class="n">EVENT_FIELDS</span><span class="p">,</span> <span class="n">STYLE_FIELDS</span>
+
+        <span class="k">def</span> <span class="nf">style_value_to_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">style_</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Converts values of Substation style to string format</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                field (str): Name of fields</span>
+<span class="sd">                style_ (pysubs2.ssastyle.SSAStyle): SubStation Alpha style</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                str: Value of field in string format</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Number</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.common</span> <span class="k">import</span> <span class="n">Color</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.substation</span> <span class="k">import</span> <span class="n">color_to_ass_rgba</span><span class="p">,</span> <span class="n">ms_to_timestamp</span>
+
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">style_</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="n">ms_to_timestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;marked&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;Marked=</span><span class="si">{value:d}</span><span class="s2">&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;-1&quot;</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="s2">&quot;0&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Number</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Color</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">color_to_ass_rgba</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Unexpected type when writing a SubStation &quot;</span>
+                                <span class="n">f</span><span class="s2">&quot;field {value:!r} for line {style_:!r}&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Save info</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="c1"># Save styles</span>
+        <span class="k">if</span> <span class="s2">&quot;styles&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;styles&quot;</span><span class="p">]</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;S255&quot;</span><span class="p">),</span>
+                  <span class="o">*</span><span class="p">((</span><span class="n">field</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s2">&quot;S255&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">STYLE_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">])]</span>
+        <span class="n">styles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">styles</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">),</span>
+                        <span class="o">*</span><span class="p">(</span><span class="n">style_value_to_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">STYLE_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">]))]</span>
+        <span class="n">styles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">styles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;styles&quot;</span><span class="p">,</span>
+                          <span class="n">data</span><span class="o">=</span><span class="n">styles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Save subtitles</span>
+        <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">fp</span><span class="p">[</span><span class="s2">&quot;events&quot;</span><span class="p">]</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;S255&quot;</span><span class="p">),</span>
+                  <span class="o">*</span><span class="p">((</span><span class="n">field</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s2">&quot;S255&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">EVENT_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">])]</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+            <span class="n">events</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">),</span>
+                        <span class="o">*</span><span class="p">(</span><span class="n">style_value_to_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">EVENT_FIELDS</span><span class="p">[</span><span class="s2">&quot;ass&quot;</span><span class="p">]))]</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">,</span>
+                          <span class="n">data</span><span class="o">=</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span>
+                          <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Private Class Methods</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_load_hdf5</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads subtitles from an input hdf5 file</span>
+
+<span class="sd">         TODO: Load project info</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp (h5py._hl.files.File): Open hdf5 input file</span>
+<span class="sd">            verbosity (int, optional): Level of verbose output</span>
+<span class="sd">            **kwargs: Additional keyword arguments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            SubtitleSeries: Loaded subtitles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pysubs2</span> <span class="k">import</span> <span class="n">SSAStyle</span>
+
+        <span class="k">def</span> <span class="nf">style_value_from_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">timestamp_to_ms</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.time</span> <span class="k">import</span> <span class="n">TIMESTAMP</span>
+            <span class="kn">from</span> <span class="nn">pysubs2.substation</span> <span class="k">import</span> <span class="n">ass_rgba_to_color</span>
+
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="n">timestamp_to_ms</span><span class="p">(</span><span class="n">TIMESTAMP</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="s2">&quot;color&quot;</span> <span class="ow">in</span> <span class="n">field</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ass_rgba_to_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="s2">&quot;underline&quot;</span><span class="p">,</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span> <span class="s2">&quot;strikeout&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;-1&quot;</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;borderstyle&quot;</span><span class="p">,</span> <span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="s2">&quot;marginl&quot;</span><span class="p">,</span> <span class="s2">&quot;marginr&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;marginv&quot;</span><span class="p">,</span> <span class="s2">&quot;layer&quot;</span><span class="p">,</span> <span class="s2">&quot;alphalevel&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;fontsize&quot;</span><span class="p">,</span> <span class="s2">&quot;scalex&quot;</span><span class="p">,</span> <span class="s2">&quot;scaley&quot;</span><span class="p">,</span> <span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;outline&quot;</span><span class="p">,</span> <span class="s2">&quot;shadow&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;marked&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;alignment&quot;</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">i</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span>
+
+        <span class="c1"># Initialize</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">)</span>
+        <span class="n">subs</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;hdf5&quot;</span>
+
+        <span class="c1"># Load info</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">subs</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="c1"># Load styles</span>
+        <span class="k">if</span> <span class="s2">&quot;styles&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">styles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;styles&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">style</span> <span class="ow">in</span> <span class="n">styles</span><span class="p">:</span>
+                <span class="n">style</span> <span class="o">=</span> <span class="p">{</span><span class="n">field</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">style_value_from_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span>
+                                                                <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                                                                    <span class="s2">&quot;utf8&quot;</span><span class="p">))</span>
+                         <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">styles</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">style</span><span class="p">)}</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">subs</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">SSAStyle</span><span class="p">(</span><span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+        <span class="c1"># Load subtitles</span>
+        <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fp</span><span class="p">[</span><span class="s2">&quot;events&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="p">{</span><span class="n">field</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">style_value_from_string</span><span class="p">(</span><span class="n">field</span><span class="p">,</span>
+                                                                <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                                                                    <span class="s2">&quot;utf8&quot;</span><span class="p">))</span>
+                         <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">event</span><span class="p">)}</span>
+                <span class="n">subs</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">event_class</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+                                                   <span class="n">series</span><span class="o">=</span><span class="n">subs</span><span class="p">,</span>
+                                                   <span class="o">**</span><span class="n">event</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">subs</span></div>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Karl T Debiec
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
