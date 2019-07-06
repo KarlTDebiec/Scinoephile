@@ -33,7 +33,7 @@ def test_RecognitionTrainDataset(**kwargs):
 
 def test_RecognitionTestDataset(**kwargs):
     subs = ImageSubtitleSeries.load(
-        f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans_8bit.h5", **kwargs)
+        f"{input_dir}/mcdull_prince_de_la_bun/cmn-Hans.h5", **kwargs)
     ds = RecognitionTestDataset(subtitle_series=subs, **kwargs)
     ds.get_data_for_tensorflow()
     ds.show()
