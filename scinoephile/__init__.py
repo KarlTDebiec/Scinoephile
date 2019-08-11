@@ -510,7 +510,7 @@ class CLToolBase(Base, ABC):
     # region Public Class Methods
 
     @classmethod
-    def construct_argparser(cls, description, parser=None, **kwargs):
+    def construct_argparser(cls, description=None, parser=None, **kwargs):
         """
         Constructs argument parser
 

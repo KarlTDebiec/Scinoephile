@@ -35,7 +35,6 @@ Operations are inferred from provided infiles and outfiles, e.g.:
 """
 ################################### MODULES ###################################
 import numpy as np
-import pandas as pd
 from scinoephile import (get_pinyin, get_simplified_hanzi,
                          get_single_line_text, get_truecase, merge_subtitles,
                          CLToolBase, SubtitleSeries)

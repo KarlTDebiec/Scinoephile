@@ -16,7 +16,8 @@ import pandas as pd
 from tensorflow import keras
 from scinoephile import input_prefill, CLToolBase, SubtitleSeries
 from scinoephile.ocr import (analyze_text_accuracy,
-                             eastern_punctuation_chars, hanzi_chars,
+                             eastern_punctuation_chars,
+                             get_tesseract_derasterization, hanzi_chars,
                              numeric_chars, western_chars,
                              western_punctuation_chars, ImageSubtitleSeries)
 
@@ -46,7 +47,6 @@ class Derasterizer(CLToolBase):
               scinoephile
             **kwargs: Additional keyword arguments
         """
-
         from os import access, R_OK, W_OK
         from os.path import dirname, expandvars, isfile
 
@@ -61,7 +61,7 @@ class Derasterizer(CLToolBase):
                           f"'{infile}' cannot be read")
         if tesseract:
             if not recognition_model:
-                self.operations["tesseract"] = "tesseract"
+                self.operations["derasterize_using_tesseract"] = True
             else:
                 raise ValueError("Use of tesseract library for OCR precludes "
                                  "use of provided recognition model infile")
@@ -114,17 +114,18 @@ class Derasterizer(CLToolBase):
                 self.operations["load_standard"], verbosity=self.verbosity)
 
         # Derasterize
+        # TODO: Don't hardcode characters
         self.chars = np.concatenate(
             (numeric_chars, western_chars, western_punctuation_chars,
-             eastern_punctuation_chars, hanzi_chars[:100]))
+             eastern_punctuation_chars, hanzi_chars[:9933]))
         if "segment_characters" in self.operations:
             self.image_subtitles._initialize_data()
         if "recognize_characters" in self.operations:
             self._recognize_characters()
         if "reconstruct_text" in self.operations:
             self._reconstruct_text()
-        if "tesseract" in self.operations:
-            self._tesseract()
+        if "derasterize_using_tesseract" in self.operations:
+            self._derasterize_using_tesseract()
 
         # Analyze results
         if "compare_standard" in self.operations:
@@ -347,6 +348,19 @@ class Derasterizer(CLToolBase):
 
     # region Private Methods
 
+    def _derasterize_using_tesseract(self):
+        from multiprocessing import Pool, cpu_count
+
+        if self.verbosity >= 1:
+            print(f"Reconstructing text using tesseract")
+
+        for i, text in enumerate(Pool(cpu_count()).imap(
+                get_tesseract_derasterization,
+                [e.img for e in self.image_subtitles.events])):
+            self.image_subtitles.events[i].text = text
+            if self.verbosity >= 2:
+                print(f"{i:4d} | {text}")
+
     def _recognize_characters(self):
         # TODO: Move to function
         data = np.expand_dims(
@@ -382,25 +396,6 @@ class Derasterizer(CLToolBase):
             # TODO: Reconstruct ellipsis
 
             event.text = text
-
-    def _tesseract(self):
-        # TODO: Move to function
-        import pytesseract
-        from copy import deepcopy
-
-        if self.verbosity >= 1:
-            print(f"Reconstructing text using tesseract")
-        tess_subtitles = deepcopy(self.image_subtitles)
-        for i, event in enumerate(tess_subtitles.events):
-            if self.verbosity >= 2:
-                print(
-                    f"Reconstructing text for subtitle {i} using tesseract")
-            event.text = pytesseract.image_to_string(
-                event.img,
-                config=f"--psm 7 --oem 3",
-                lang="chi_sim")
-            if self.verbosity >= 2:
-                print(event.text)
 
     # endregion
 

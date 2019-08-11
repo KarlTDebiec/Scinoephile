@@ -70,7 +70,7 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
         true_text = true_text.replace("　", "").replace(" ", "")
         n_chars_total += len(true_text)
         if verbosity >= 2:
-            print(f"{i:4d}|{pred_text}|{true_text}")
+            print(f"{i:4d} | {pred_text} | {true_text}")
 
         # Loop over characters
 
@@ -247,6 +247,12 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     data = center_char_img(data, x_offset, y_offset)
 
     return data
+
+
+def get_tesseract_derasterization(image, language="chi_sim"):
+    from pytesseract import image_to_string
+
+    return image_to_string(image, config=f"--psm 7 --oem 3", lang=language)
 
 
 def show_img(img, **kwargs):
