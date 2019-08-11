@@ -36,8 +36,9 @@ Operations are inferred from provided infiles and outfiles, e.g.:
 ################################### MODULES ###################################
 import numpy as np
 from scinoephile import (get_pinyin, get_simplified_hanzi,
-                         get_single_line_text, get_truecase, merge_subtitles,
-                         CLToolBase, SubtitleSeries)
+                         get_single_line_text, get_truecase, is_readable,
+                         is_writable, merge_subtitles, CLToolBase,
+                         SubtitleSeries)
 
 
 ################################### CLASSES ###################################
@@ -72,8 +73,8 @@ class Compositor(CLToolBase):
             simplify (bool): Convert traditional Hanzi to simplified
             **kwargs: Additional keyword arguments
         """
-        from os import access, environ, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
+        from os import access, environ, R_OK
+        from os.path import expandvars, isfile
 
         super().__init__(**kwargs)
 
@@ -83,28 +84,28 @@ class Compositor(CLToolBase):
             raise ValueError("At least one infile required")
         if bilingual_infile:
             bilingual_infile = expandvars(str(bilingual_infile))
-            if isfile(bilingual_infile) and access(bilingual_infile, R_OK):
+            if is_readable(bilingual_infile):
                 self.operations["load_bilingual"] = bilingual_infile
             else:
                 raise IOError(f"Bilingual subtitle infile "
                               f"'{bilingual_infile}' cannot be read")
         if english_infile:
             english_infile = expandvars(str(english_infile))
-            if isfile(english_infile) and access(english_infile, R_OK):
+            if is_readable(english_infile):
                 self.operations["load_english"] = english_infile
             else:
                 raise IOError(f"English subtitle infile "
                               f"'{english_infile}' cannot be read")
         if hanzi_infile:
             hanzi_infile = expandvars(str(hanzi_infile))
-            if isfile(hanzi_infile) and access(hanzi_infile, R_OK):
+            if is_readable(hanzi_infile):
                 self.operations["load_hanzi"] = hanzi_infile
             else:
                 raise IOError(f"Chinese Hanzi subtitle infile "
                               f"'{hanzi_infile}' cannot be read")
         if pinyin_infile:
             pinyin_infile = expandvars(str(pinyin_infile))
-            if isfile(pinyin_infile) and access(pinyin_infile, R_OK):
+            if is_readable(pinyin_infile):
                 self.operations["load_pinyin"] = pinyin_infile
             else:
                 raise IOError(f"Chinese pinyin subtitle infile "
@@ -113,7 +114,7 @@ class Compositor(CLToolBase):
         # Compile output operations
         if bilingual_outfile:
             bilingual_outfile = expandvars(str(bilingual_outfile))
-            if access(dirname(bilingual_outfile), W_OK):
+            if is_writable(bilingual_outfile):
                 if not isfile(bilingual_outfile) or overwrite:
                     self.operations["save_bilingual"] = bilingual_outfile
                 else:
@@ -124,7 +125,7 @@ class Compositor(CLToolBase):
                               f"'{bilingual_outfile}' is not writable")
         if english_outfile:
             english_outfile = expandvars(str(english_outfile))
-            if access(dirname(english_outfile), W_OK):
+            if is_writable(english_outfile):
                 if not isfile(english_outfile) or overwrite:
                     self.operations["save_english"] = english_outfile
                 else:
@@ -135,7 +136,7 @@ class Compositor(CLToolBase):
                               f"'{english_outfile}' is not writable")
         if hanzi_outfile:
             hanzi_outfile = expandvars(str(hanzi_outfile))
-            if access(dirname(hanzi_outfile), W_OK):
+            if is_writable(hanzi_outfile):
                 if not isfile(hanzi_outfile) or overwrite:
                     self.operations["save_hanzi"] = hanzi_outfile
                 else:
@@ -146,7 +147,7 @@ class Compositor(CLToolBase):
                               f"'{hanzi_outfile}' is not writable")
         if pinyin_outfile:
             pinyin_outfile = expandvars(str(pinyin_outfile))
-            if access(dirname(pinyin_outfile), W_OK):
+            if is_writable(pinyin_outfile):
                 if not isfile(pinyin_outfile) or overwrite:
                     self.operations["save_pinyin"] = pinyin_outfile
                 else:

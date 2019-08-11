@@ -14,7 +14,7 @@ optical character recognition model.
 import numpy as np
 import pandas as pd
 from tensorflow import keras
-from scinoephile import input_prefill, CLToolBase, SubtitleSeries
+from scinoephile import is_readable, is_writable, CLToolBase, SubtitleSeries
 from scinoephile.ocr import (analyze_text_accuracy,
                              eastern_punctuation_chars, get_reconstructed_text,
                              get_tesseract_text, hanzi_chars, numeric_chars,
@@ -54,7 +54,7 @@ class Derasterizer(CLToolBase):
 
         # Compile input operations
         infile = expandvars(str(infile))
-        if isfile(infile) and access(infile, R_OK):
+        if is_readable(infile):
             self.operations["load_infile"] = infile
         else:
             raise IOError(f"Image-based subtitle infile "
@@ -67,7 +67,7 @@ class Derasterizer(CLToolBase):
                                  "use of provided recognition model infile")
         elif recognition_model:
             recognition_model = expandvars(str(recognition_model))
-            if isfile(standard_infile) and access(standard_infile, R_OK):
+            if is_readable(standard_infile):
                 self.operations["load_recognition_model"] = recognition_model
                 self.operations["segment_characters"] = True
                 self.operations["recognize_characters"] = True
@@ -77,7 +77,7 @@ class Derasterizer(CLToolBase):
                               f"'{recognition_model}' cannot be read")
         if standard_infile:
             standard_infile = expandvars(str(standard_infile))
-            if isfile(standard_infile) and access(standard_infile, R_OK):
+            if is_readable(standard_infile):
                 self.operations["load_standard"] = standard_infile
                 self.operations["compare_standard"] = True
             else:
@@ -87,7 +87,7 @@ class Derasterizer(CLToolBase):
         # Compile output operations
         if outfile:
             outfile = expandvars(str(outfile))
-            if access(dirname(outfile), W_OK):
+            if is_writable(outfile):
                 if not isfile(outfile) or overwrite:
                     self.operations["save_outfile"] = outfile
                 else:

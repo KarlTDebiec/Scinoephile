@@ -66,7 +66,7 @@ def embed_kw(verbosity=2, **kwargs):
     header = ""
     if verbosity >= 1:
         header = f"IPython prompt in file {file}, function {func}," \
-            f" line {number}\n"
+                 f" line {number}\n"
     if verbosity >= 2:
         header += "\n"
         with open(frameinfo.filename, "r") as infile:
@@ -74,7 +74,7 @@ def embed_kw(verbosity=2, **kwargs):
                      if i in range(number - 5, number + 6)]
         for i, line in lines:
             header += f"{i:5d} {'>' if i == number else ' '} " \
-                f"{line.rstrip()}\n"
+                      f"{line.rstrip()}\n"
 
     return {"header": header}
 
@@ -251,6 +251,29 @@ def in_ipython():
             return False
     except NameError:
         # Not in IPython
+        return False
+
+
+def is_readable(path):
+    from os import access, R_OK
+    from os.path import isfile
+
+    if isfile(path) and access(path, R_OK):
+        return True
+    else:
+        return False
+
+
+def is_writable(path):
+    from os import access, getcwd, W_OK
+    from os.path import dirname
+
+    path = dirname(path)
+    if path == "":
+        path = getcwd()
+    if access(path, W_OK):
+        return True
+    else:
         return False
 
 
@@ -448,7 +471,7 @@ class Base(ABC):
 
         if self.verbosity >= 1:
             header = f"IPython prompt in file {file}, function {func}," \
-                f" line {number}\n"
+                     f" line {number}\n"
         if self.verbosity >= 2:
             header += "\n"
             with open(frameinfo.filename, "r") as infile:
@@ -456,7 +479,7 @@ class Base(ABC):
                          if i in range(number - 5, number + 6)]
             for i, line in lines:
                 header += f"{i:5d} {'>' if i == number else ' '} " \
-                    f"{line.rstrip()}\n"
+                          f"{line.rstrip()}\n"
 
         return {"header": header}
 
@@ -488,9 +511,9 @@ class Base(ABC):
 
         frameinfo = getframeinfo(currentframe().f_back)
         return f"Property '{type(self).__name__}.{frameinfo.function}' " \
-            f"was passed invalid value '{value}' " \
-            f"of type '{type(value).__name__}'. " \
-            f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
+               f"was passed invalid value '{value}' " \
+               f"of type '{type(value).__name__}'. " \
+               f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
 
     # endregion
 
