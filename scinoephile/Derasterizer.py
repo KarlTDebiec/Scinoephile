@@ -16,10 +16,10 @@ import pandas as pd
 from tensorflow import keras
 from scinoephile import input_prefill, CLToolBase, SubtitleSeries
 from scinoephile.ocr import (analyze_text_accuracy,
-                             eastern_punctuation_chars,
-                             get_tesseract_derasterization, hanzi_chars,
-                             numeric_chars, western_chars,
-                             western_punctuation_chars, ImageSubtitleSeries)
+                             eastern_punctuation_chars, get_reconstructed_text,
+                             get_tesseract_text, hanzi_chars, numeric_chars,
+                             western_chars, western_punctuation_chars,
+                             ImageSubtitleSeries)
 
 
 ################################### CLASSES ###################################
@@ -355,7 +355,7 @@ class Derasterizer(CLToolBase):
             print(f"Reconstructing text using tesseract")
 
         for i, text in enumerate(Pool(cpu_count()).imap(
-                get_tesseract_derasterization,
+                get_tesseract_text,
                 [e.img for e in self.image_subtitles.events])):
             self.image_subtitles.events[i].text = text
             if self.verbosity >= 2:
@@ -372,30 +372,12 @@ class Derasterizer(CLToolBase):
             spec.char = char_pred[i]
 
     def _reconstruct_text(self):
-        # TODO: Move to function
         for i, event in enumerate(self.image_subtitles.events):
-            chars = event.char_spec["char"].values
-            text = ""
-            items = zip(chars[:-1], chars[1:], event.char_widths[:-1],
-                        event.char_widths[1:], event.char_separations)
-            for char_i, char_j, width_i, width_j, sep in items:
-                text += char_i
-
-                # Very large space: Two speakers
-                if sep >= 100:
-                    text = f"﹣{text}　　﹣"
-                # Two Hanzi: separation cutoff of 40 to add double-width space
-                elif width_i >= 45 and width_j >= 45 and sep >= 40:
-                    # print("Adding a double-width space")
-                    text += "　"
-                # Two Roman: separation cutoff of 35 to add single-width space
-                elif width_i < 45 and width_j < 45 and sep >= 36:
-                    # print("Adding a single-width space")
-                    text += " "
-            text += chars[-1]
-            # TODO: Reconstruct ellipsis
-
-            event.text = text
+            event.text = get_reconstructed_text(event.char_spec["char"].values,
+                                                event.char_widths,
+                                                event.char_separations)
+            if self.verbosity >= 2:
+                print(f"{i:4d} | {event.text}")
 
     # endregion
 
@@ -432,7 +414,7 @@ class Derasterizer(CLToolBase):
         parser_ops.add_argument("-t", "--tesseract",
                                 action="store_true",
                                 help="use tesseract library for OCR rather "
-                                     "than scinoephile")
+                                     "than scinoephile's bespoke model")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")

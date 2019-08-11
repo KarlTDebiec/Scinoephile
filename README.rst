@@ -31,6 +31,7 @@ All features require the following modules:
 
 Selected features may also require:
 
+- `colorama <https://github.com/tartley/colorama>`_
 - `google-cloud-translate <https://pypi.org/project/google-cloud-translate/>`_
 - `h5py <https://github.com/h5py/h5py>`_
 - `hanziconv <https://github.com/berniey/hanziconv>`_
@@ -40,7 +41,6 @@ Selected features may also require:
 - `numba <https://github.com/numba/numba>`_
 - `pillow <https://github.com/python-pillow/Pillow>`_
 - `pycantonese <https://github.com/pycantonese/pycantonese>`_
-  (recent version from from GitHub rather than pypi)
 - `pypinyin <https://github.com/mozillazg/python-pinyin>`_
 - `snownlp <https://github.com/isnowfy/snownlp>`_
 - `tensorflow <https://github.com/tensorflow/tensorflow>`_

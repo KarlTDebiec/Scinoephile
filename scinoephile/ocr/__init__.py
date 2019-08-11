@@ -52,6 +52,8 @@ def analyze_character_accuracy(self, img, lbl, model, title="", verbosity=1):
 
 def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
     # TODO: Document
+    from colorama import Fore, Style
+
     event_pairs = zip([e.text for e in subtitles.events],
                       [e.text for e in standard.events])
     n_events = len(subtitles.events)
@@ -69,23 +71,39 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
         pred_text = pred_text.replace("　", "").replace(" ", "")
         true_text = true_text.replace("　", "").replace(" ", "")
         n_chars_total += len(true_text)
-        if verbosity >= 2:
-            print(f"{i:4d} | {pred_text} | {true_text}")
-
         # Loop over characters
 
         if len(pred_text) != len(true_text):
             n_events_correct_length -= 1
+            # TODO: Align and evaluate each character
+            if verbosity >= 2:
+                print(f"{i:4d} | {Fore.RED}{pred_text}{Style.RESET_ALL}")
         else:
+            if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
+                print(f"{i:4d} | ", end="")
             for pred_char, true_char in zip(pred_text, true_text):
+                if pred_char == true_char:
+                    n_chars_correct += 1
+                    if verbosity >= 3 or (
+                            verbosity == 2 and pred_text != true_text):
+                        print(f"{Fore.GREEN}{pred_char}{Style.RESET_ALL}",
+                              end="")
+                else:
+                    if verbosity >= 3 or (
+                            verbosity == 2 and pred_text != true_text):
+                        print(f"{Fore.RED}{pred_char}{Style.RESET_ALL}",
+                              end="")
                 if true_char in chars:
                     n_chars_matchable += 1
-                    if pred_char == true_char:
-                        n_chars_correct += 1
                 elif true_char in hanzi_chars:
                     matchable_10k += true_char
                 else:
                     unmatchable += true_char
+            if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
+                print("")
+
+        if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
+            print(f"     | {true_text}")
 
     if verbosity >= 1:
         print(f"{n_events_correct_length}/{n_events} "
@@ -249,7 +267,35 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     return data
 
 
-def get_tesseract_derasterization(image, language="chi_sim"):
+def get_reconstructed_text(chars, widths, separations, punctuation="eastern"):
+    text = ""
+    items = zip(chars[:-1], chars[1:], widths[:-1], widths[1:], separations)
+    for char_i, char_j, width_i, width_j, sep in items:
+        text += char_i
+
+        # Very large space: Two speakers
+        if sep >= 100:
+            text = f"﹣{text}　　﹣"
+        # Two Hanzi: separation cutoff of 40 to add double-width space
+        elif width_i >= 45 and width_j >= 45 and sep >= 40:
+            # print("Adding a double-width space")
+            text += "　"
+        # Two Roman: separation cutoff of 35 to add single-width space
+        elif width_i < 45 and width_j < 45 and sep >= 36:
+            # print("Adding a single-width space")
+            text += " "
+    text += chars[-1]
+
+    # TODO: Improve handling of punctuation, including ellipsis
+    text = text.replace(".", "。")
+    text = text.replace("．", "。")
+    text = text.replace("!", "！")
+    text = text.replace(":", "：")
+
+    return text
+
+
+def get_tesseract_text(image, language="chi_sim"):
     from pytesseract import image_to_string
 
     return image_to_string(image, config=f"--psm 7 --oem 3", lang=language)

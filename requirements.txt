@@ -1,3 +1,4 @@
+colorama
 google-cloud-translate
 h5py
 hanziconv
@@ -9,7 +10,7 @@ numba
 numpy
 pandas
 pillow
--e git://github.com/pycantonese/pycantonese#egg=pycantonese
+pycantonese
 pypinyin
 pysubs2
 snownlp
