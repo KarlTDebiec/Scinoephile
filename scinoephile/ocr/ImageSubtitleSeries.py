@@ -8,6 +8,7 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from IPython import embed
 import numpy as np
 import pandas as pd
 from scinoephile import SubtitleSeries
@@ -310,8 +311,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         from os import makedirs
         from os.path import isdir
 
-        # TODO: Also save srt file in folder using pysubs2 code
-
         if not isdir(fp):
             makedirs(fp)
         for i, event in enumerate(self.events):
@@ -358,10 +357,12 @@ class ImageSubtitleSeries(SubtitleSeries):
                 # np.empty and tolist are used to create unique empty lists
                 spec = pd.DataFrame(
                     {"char": [""] * n_unique_chars,
-                     "indexes": np.empty((n_unique_chars, 0)).tolist()})
-                for i, char, j, k in encoded.values:
-                    spec["char"].loc[i] = decode(char)
-                    spec["indexes"].loc[i] += [(j, k)]
+                     "indexes": np.empty((n_unique_chars, 0)).tolist(),
+                     "confirmed": [False] * n_unique_chars, })
+                for i, char, j, k, confirmed in encoded.values:
+                    spec.at[i, "char"] = decode(char)
+                    spec.at[i, "indexes"] += [(j, k)]
+                    spec.at[i, "confirmed"] = confirmed
 
                 subs._spec = spec
 

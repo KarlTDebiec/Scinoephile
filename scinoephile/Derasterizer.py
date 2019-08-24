@@ -377,8 +377,8 @@ class Derasterizer(CLToolBase):
         label_pred = self.recognition_model.predict(data)
         char_pred = self.get_chars_of_labels(
             np.argsort(label_pred, axis=1)[:, -1])
-        for i in range(self.image_subtitles.spec.index.size):
-            self.image_subtitles.spec.loc[i, "char"] = char_pred[i]
+        for i in self.image_subtitles.spec.index:
+            self.image_subtitles.spec.at[i, "char"] = char_pred[i]
 
     def _reconstruct_text(self):
         for i, event in enumerate(self.image_subtitles.events):
