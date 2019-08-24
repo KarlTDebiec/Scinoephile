@@ -51,7 +51,8 @@ class ImageSubtitleSeries(SubtitleSeries):
         if not hasattr(self, "_spec_dtypes"):
             from collections import OrderedDict
 
-            self._spec_dtypes = OrderedDict(char=str, indexes=object)
+            self._spec_dtypes = OrderedDict(char=str, indexes=object,
+                                            confirmed=bool)
         return self._spec_dtypes
 
     # endregion
@@ -222,6 +223,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Organize character assignments
         # TODO: If prior data existed, retain existing character assignments
         chars = np.array([""] * n_unique_chars)
+        confirmed = np.array([False] * n_unique_chars)
 
         # Organize (subtitle, char) indexes
         subchar_indexes = np.empty(n_unique_chars, dtype="O")
@@ -238,7 +240,8 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Store
         self._data = data
         self._spec = pd.DataFrame.from_dict(
-            {"char": chars, "indexes": subchar_indexes})
+            {"char": chars, "indexes": subchar_indexes,
+             "confirmed": confirmed})
 
     def _save_hdf5(self, fp, **kwargs):
         """
@@ -252,7 +255,8 @@ class ImageSubtitleSeries(SubtitleSeries):
         dtypes = [("series char index", "i8"),
                   ("char", "S3"),
                   ("subtitle index", "i8"),
-                  ("subtitle char index", "i8")]
+                  ("subtitle char index", "i8"),
+                  ("confirmed", "?")]
         encode = lambda x: x.encode("utf8")
 
         # Save info, styles and subtitles
@@ -276,7 +280,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         if hasattr(self, "_spec"):
             fp.create_dataset("spec",
                               data=np.array(list(map(tuple, list(pd.DataFrame(
-                                  [(i, encode(s["char"]), j, k)
+                                  [(i, encode(s["char"]), j, k, s["confirmed"])
                                    for i, s in self.spec.iterrows()
                                    for j, k in s["indexes"]],
                                   columns=[d[0] for d in dtypes]).values))),

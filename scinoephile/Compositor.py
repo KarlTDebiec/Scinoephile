@@ -52,8 +52,8 @@ class Compositor(CLToolBase):
 
     def __init__(self, bilingual_infile=None, bilingual_outfile=None,
                  english_infile=None, english_outfile=None,
-                 hanzi_infile=None, hanzi_outfile=None, overwrite=False,
-                 pinyin_infile=None, pinyin_outfile=None,
+                 hanzi_infile=None, hanzi_outfile=None, interactive=False,
+                 overwrite=False, pinyin_infile=None, pinyin_outfile=None,
                  pinyin_language=None, simplify=False, **kwargs):
         """
         Initializes command-line tool and compiles list of operations
@@ -65,6 +65,8 @@ class Compositor(CLToolBase):
             english_outfile (str): Path to English subtitle outfile
             hanzi_infile (str): Path to Chinese Hanzi subtitle infile
             hanzi_outfile (str): Path to Chinese Hanzi subtitle outfile
+            interactive (bool): show IPython prompt after loading and
+              processing
             overwrite (bool): Overwrite outfiles if they exist
             pinyin_infile (str): Path to pinyin Chinese subtitle infile
             pinyin_outfile (str): Path to pinyin Chinese subtitle outfile
@@ -73,7 +75,7 @@ class Compositor(CLToolBase):
             simplify (bool): Convert traditional Hanzi to simplified
             **kwargs: Additional keyword arguments
         """
-        from os import access, environ, R_OK
+        from os import environ
         from os.path import expandvars, isfile
 
         super().__init__(**kwargs)
@@ -156,6 +158,8 @@ class Compositor(CLToolBase):
             else:
                 raise IOError(f"Chinese pinyin subtitle outfile "
                               f"'{pinyin_outfile}' is not writable")
+        if interactive:
+            self.operations["interactive"] = True
 
         # Compile conversion operations
         if ("save_english" in self.operations
@@ -243,6 +247,7 @@ class Compositor(CLToolBase):
         """
         Performs operations
         """
+        from IPython import embed
 
         # Load infiles
         if "load_bilingual" in self.operations:
@@ -271,6 +276,8 @@ class Compositor(CLToolBase):
             self._initialize_pinyin_subtitles("cantonese")
         if "merge_bilingual" in self.operations:
             self._initialize_bilingual_subtitles()
+        if "interactive" in self.operations:
+            embed(**self.embed_kw)
 
         # Save outfiles
         if "save_bilingual" in self.operations:
@@ -429,7 +436,7 @@ class Compositor(CLToolBase):
         elif chinese == "pinyin":
             for e in chinese_subtitles.events:
                 e.text = get_single_line_text(e.text, "pinyin")
-        for e in english_subtitles.events:
+        for i, e in enumerate(english_subtitles.events):
             e.text = get_single_line_text(e.text, "english")
 
         # Merge
@@ -439,7 +446,7 @@ class Compositor(CLToolBase):
         for _, e in merged_df.iterrows():
             if (isinstance(e["upper text"], float)
                     and np.isnan(e["upper text"])):
-                merged_text += [e['lower text']]
+                merged_text += [e["lower text"]]
             elif (isinstance(e["lower text"], float)
                   and np.isnan(e["lower text"])):
                 merged_text += [e["upper text"]]
@@ -458,7 +465,7 @@ class Compositor(CLToolBase):
                              "initialized hanzi subtitles")
         if language not in ["cantonese", "mandarin"]:
             raise ValueError("Invalid value provided for argument 'language'; "
-                             "must of 'cantonese' or 'mandarin'")
+                             "must be either 'cantonese' or 'mandarin'")
 
         if self.verbosity >= 1:
             if language == "mandarin":
@@ -580,6 +587,10 @@ class Compositor(CLToolBase):
                                 action="store_true",
                                 help="convert traditional Hanzi characters to "
                                      "simplified")
+        parser_ops.add_argument("-i", "--interactive",
+                                action="store_true",
+                                help="show IPython prompt after loading and "
+                                     "processing")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")

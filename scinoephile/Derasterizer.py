@@ -11,10 +11,12 @@
 optical character recognition model.
 """
 ################################### MODULES ###################################
+from IPython import embed
 import numpy as np
 import pandas as pd
 from tensorflow import keras
-from scinoephile import is_readable, is_writable, CLToolBase, SubtitleSeries
+from scinoephile import (input_prefill, is_readable, is_writable, CLToolBase,
+                         SubtitleSeries)
 from scinoephile.ocr import (analyze_text_accuracy,
                              eastern_punctuation_chars, get_reconstructed_text,
                              get_tesseract_text, hanzi_chars, numeric_chars,
@@ -31,8 +33,8 @@ class Derasterizer(CLToolBase):
     # region Builtins
 
     def __init__(self, infile, outfile=None, overwrite=False,
-                 recognition_model=None, standard_infile=None, tesseract=False,
-                 **kwargs):
+                 recognition_model=None, standard_infile=None,
+                 interactive=False, tesseract=False, **kwargs):
         """
         Initializes command-line tool and compiles list of operations
 
@@ -45,10 +47,10 @@ class Derasterizer(CLToolBase):
               Hanzi subtitle infile
             tesseract (bool): Use tesseract library for OCR rather than
               scinoephile
+            interactive (bool): Interactively validate results
             **kwargs: Additional keyword arguments
         """
-        from os import access, R_OK, W_OK
-        from os.path import dirname, expandvars, isfile
+        from os.path import expandvars, isfile
 
         super().__init__(**kwargs)
 
@@ -67,7 +69,7 @@ class Derasterizer(CLToolBase):
                                  "use of provided recognition model infile")
         elif recognition_model:
             recognition_model = expandvars(str(recognition_model))
-            if is_readable(standard_infile):
+            if is_readable(recognition_model):
                 self.operations["load_recognition_model"] = recognition_model
                 self.operations["segment_characters"] = True
                 self.operations["recognize_characters"] = True
@@ -75,6 +77,9 @@ class Derasterizer(CLToolBase):
             else:
                 raise IOError(f"Character recognition model infile "
                               f"'{recognition_model}' cannot be read")
+        else:
+            raise ValueError("Must provide either recognition model or "
+                             "use tesseract; neither provided")
         if standard_infile:
             standard_infile = expandvars(str(standard_infile))
             if is_readable(standard_infile):
@@ -83,6 +88,8 @@ class Derasterizer(CLToolBase):
             else:
                 raise IOError(f"Standard subtitle infile "
                               f"'{standard_infile}' cannot be read")
+        if interactive:
+            self.operations["interactive"] = True
 
         # Compile output operations
         if outfile:
@@ -126,6 +133,8 @@ class Derasterizer(CLToolBase):
             self._reconstruct_text()
         if "derasterize_using_tesseract" in self.operations:
             self._derasterize_using_tesseract()
+        if "interactive" in self.operations:
+            self._validate_interactively()
 
         # Analyze results
         if "compare_standard" in self.operations:
@@ -368,8 +377,8 @@ class Derasterizer(CLToolBase):
         label_pred = self.recognition_model.predict(data)
         char_pred = self.get_chars_of_labels(
             np.argsort(label_pred, axis=1)[:, -1])
-        for i, spec in self.image_subtitles.spec.iterrows():
-            spec.char = char_pred[i]
+        for i in range(self.image_subtitles.spec.index.size):
+            self.image_subtitles.spec.loc[i, "char"] = char_pred[i]
 
     def _reconstruct_text(self):
         for i, event in enumerate(self.image_subtitles.events):
@@ -378,6 +387,29 @@ class Derasterizer(CLToolBase):
                                                 event.char_separations)
             if self.verbosity >= 2:
                 print(f"{i:4d} | {event.text}")
+
+    def _validate_interactively(self):
+        embed(**self.embed_kw)
+        for i, event in enumerate(self.image_subtitles.events):
+            event.show()
+            print()
+            try:
+                # TODO: Highlight confirmed characters
+                text = input_prefill(f"{i:4d} | {event.text} | ", event.text)
+            except EOFError:
+                print(f"\nSkipping subtitle {i}")
+                continue
+            except KeyboardInterrupt:
+                print("\nQuitting subtitle validation")
+                break
+            # TODO: Confirm characters
+            if text != event.text:
+
+                if len(text) == len(event.text):
+                    for j, (yat, eee) in enumerate(zip(text, event.text)):
+                        if yat != eee:
+                            print(yat, eee)
+                            print(event.char_spec.iloc[j])
 
     # endregion
 
@@ -415,6 +447,9 @@ class Derasterizer(CLToolBase):
                                 action="store_true",
                                 help="use tesseract library for OCR rather "
                                      "than scinoephile's bespoke model")
+        parser_ops.add_argument("-i", "--interactive",
+                                action="store_true",
+                                help="interactively validate results")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")

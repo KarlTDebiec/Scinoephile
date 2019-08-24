@@ -206,19 +206,20 @@ def get_single_line_text(text, language="english"):
     Returns:
         str: Text arranged on a single line
     """
-    single_line = ""
+    # Revert strange substitution in pysubs2/subrip.py:66
+    single_line = re.sub(r"\\N", r"\n", text)
     if language == "english" or language == "pinyin":
-        single_line = re.sub(r"^\s*-?\s*(.*)\s*[\n\s]\s*-\s*(.+)\s*$",
+        single_line = re.sub(r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
                              r"- \1    - \2",
-                             text, re.M)
-        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                             single_line, re.M)
+        single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$",
                              r"\1 \2",
                              single_line, re.M)
     elif language == "hanzi":
-        single_line = re.sub(r"^\s*﹣?\s*(.*)\s+﹣(.+)\s*$",
+        single_line = re.sub(r"^\s*﹣\s*(.+)\s*\n\s*﹣(.+)\s*$",
                              r"﹣\1　　﹣\2",
-                             text, re.M)
-        single_line = re.sub(r"^\s*(.*)\s*\n\s*(.+)\s*$",
+                             single_line, re.M)
+        single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$",
                              r"\1　\2",
                              single_line, re.M)
     else:
@@ -422,8 +423,13 @@ def merge_subtitles(upper, lower):
                 synced_df += [next]
         else:
             synced_df += [next]
+    synced_df = pd.DataFrame(synced_df)
 
-    return pd.DataFrame(synced_df)
+    # Filter very short events
+    synced_df = synced_df.drop(
+        index=synced_df[synced_df["end"] - synced_df["start"] < 500].index)
+
+    return synced_df
 
 
 def todo(func):
