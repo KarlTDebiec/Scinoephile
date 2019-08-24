@@ -200,4 +200,4 @@ class ImageSubtitleEvent(SubtitleEvent):
             char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
         self._char_data = char_data
 
-# endregion
+    # endregion

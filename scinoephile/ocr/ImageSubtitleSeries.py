@@ -78,6 +78,25 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         return self.spec.loc[index].indexes
 
+    def merge_chars(self, index_1, index_2):
+        """
+        Merges two adjacent characters
+
+        Args:
+            index (int): Index of first of two characters to merge
+        """
+        # TODO: Implement
+        raise NotImplementedError()
+        # Get all instances of char 1 and char 2
+        # Make sure that all are adjacent
+        # Update char_bounds for all events
+        # Update char_data for all events
+
+
+        # self._char_bounds = np.append(
+        #     self.char_bounds.flatten()[:index * 2 + 1],
+        #     self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
+
     def save(self, path, format_=None, **kwargs):
         """
         Saves subtitles to an output file
@@ -221,13 +240,10 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Organize de-duplicated character data
         data = raw_data[unique_indexes].reshape(-1, 80, 80)
 
-        # Organize character assignments
-        # TODO: If prior data existed, retain existing character assignments
+        # Organize specs
         chars = np.array([""] * n_unique_chars)
-        confirmed = np.array([False] * n_unique_chars)
-
-        # Organize (subtitle, char) indexes
         subchar_indexes = np.empty(n_unique_chars, dtype="O")
+        confirmed = np.array([False] * n_unique_chars)
         for a, unique, subchar_index in zip(sorted_index, datum_is_unique,
                                             raw_subchar_indexes[sorted_index]):
             if unique:
@@ -237,12 +253,29 @@ class ImageSubtitleSeries(SubtitleSeries):
                 subchar_indexes[final_index] += [subchar_index]
             self.events[subchar_index[0]].char_indexes[
                 subchar_index[1]] = final_index
+        spec = pd.DataFrame.from_dict(
+            {"char": chars, "indexes": subchar_indexes,
+             "confirmed": confirmed})
+
+        # Transfer prior character assignments
+        if (hasattr(self, "_data") and self._data is not None and
+                hasattr(self, "_spec") and self._spec is not None):
+            if self.verbosity >= 1:
+                print("Transferring prior character assignments")
+            sums = np.array([datum.sum() for datum in self._data])
+            for i, datum in enumerate(data):
+                for j in np.where(sums == datum.sum())[0]:
+                    if np.all(datum == self._data[j]):
+                        if self.verbosity >= 2:
+                            print(f"Copying assingment of char {j} as "
+                                  f"'{self._spec.at[j, 'char']}'")
+
+                        spec.at[i, 'char'] = self._spec.at[j, 'char']
+                        spec.at[i, 'confirmed'] = self._spec.at[j, 'confirmed']
 
         # Store
         self._data = data
-        self._spec = pd.DataFrame.from_dict(
-            {"char": chars, "indexes": subchar_indexes,
-             "confirmed": confirmed})
+        self._spec = spec
 
     def _save_hdf5(self, fp, **kwargs):
         """

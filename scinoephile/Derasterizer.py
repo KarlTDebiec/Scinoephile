@@ -340,19 +340,6 @@ class Derasterizer(CLToolBase):
         #     else:
         #         self.assign_char(i, match)
 
-    def merge_chars(self, index):
-        """
-        Merges two adjacent characters
-
-        Args:
-            index (int): Index of first of two characters to merge
-        """
-        # TODO: Implement
-        raise NotImplementedError()
-        # self._char_bounds = np.append(
-        #     self.char_bounds.flatten()[:index * 2 + 1],
-        #     self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
-
     # endregion
 
     # region Private Methods
@@ -378,7 +365,8 @@ class Derasterizer(CLToolBase):
         char_pred = self.get_chars_of_labels(
             np.argsort(label_pred, axis=1)[:, -1])
         for i in self.image_subtitles.spec.index:
-            self.image_subtitles.spec.at[i, "char"] = char_pred[i]
+            if not self.image_subtitles.spec.at[i, "confirmed"]:
+                self.image_subtitles.spec.at[i, "char"] = char_pred[i]
 
     def _reconstruct_text(self):
         for i, event in enumerate(self.image_subtitles.events):
@@ -390,10 +378,7 @@ class Derasterizer(CLToolBase):
 
     def _validate_chars_interactively(self):
         from colorama import Fore, Style
-        # TODO: Highlight green if confirmed
         # TODO: Highlight orange if similar chars previously corrected
-        # TODO: What to do about spacing?
-        # TODO: What to do about ellipsis?
 
         for i, event in enumerate(self.image_subtitles.events):
             # print(event.char_spec)
@@ -422,13 +407,15 @@ class Derasterizer(CLToolBase):
             if len(text) == event.char_spec.shape[0]:
                 for k, (j, char) in enumerate(event.char_spec.iterrows()):
                     if char["char"] != text[k]:
-                        print(f"Reassigning char {j} from "
-                              f"'{char['char']}' to '{text[k]}")
+                        if self.verbosity >= 2:
+                            print(f"Reassigning char {j} from "
+                                  f"'{char['char']}' to '{text[k]}")
                         self.image_subtitles.spec.at[j, "char"] = text[k]
                         self.image_subtitles.spec.at[j, "confirmed"] = True
                     elif not char["confirmed"]:
-                        print(f"Confirming char {j} as "
-                              f"'{self.image_subtitles.spec.at[j, 'char']}'")
+                        if self.verbosity >= 2:
+                            print(f"Confirming char {j} as "
+                                  f"'{self.image_subtitles.spec.at[j, 'char']}'")
                         self.image_subtitles.spec.at[j, "confirmed"] = True
             else:
                 # TODO: Do kind of alignment to figure out what the user wants
