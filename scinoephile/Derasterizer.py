@@ -129,12 +129,12 @@ class Derasterizer(CLToolBase):
             self.image_subtitles._initialize_data()
         if "recognize_characters" in self.operations:
             self._recognize_characters()
+        if "interactive" in self.operations:
+            self._validate_chars_interactively()
         if "reconstruct_text" in self.operations:
             self._reconstruct_text()
         if "derasterize_using_tesseract" in self.operations:
             self._derasterize_using_tesseract()
-        if "interactive" in self.operations:
-            self._validate_interactively()
 
         # Analyze results
         if "compare_standard" in self.operations:
@@ -388,28 +388,51 @@ class Derasterizer(CLToolBase):
             if self.verbosity >= 2:
                 print(f"{i:4d} | {event.text}")
 
-    def _validate_interactively(self):
-        embed(**self.embed_kw)
+    def _validate_chars_interactively(self):
+        from colorama import Fore, Style
+        # TODO: Highlight green if confirmed
+        # TODO: Highlight orange if similar chars previously corrected
+        # TODO: What to do about spacing?
+        # TODO: What to do about ellipsis?
+
         for i, event in enumerate(self.image_subtitles.events):
+            # print(event.char_spec)
             event.show()
             print()
             try:
                 # TODO: Highlight confirmed characters
-                text = input_prefill(f"{i:4d} | {event.text} | ", event.text)
-            except EOFError:
-                print(f"\nSkipping subtitle {i}")
-                continue
+                prompt = f"{i:4d} | "
+                for j, char in event.char_spec.iterrows():
+                    if char["confirmed"]:
+                        prompt += f"{Fore.GREEN}{char['char']}" \
+                                  f"{Style.RESET_ALL}"
+                    else:
+                        prompt += f"{Fore.RED}{char['char']}" \
+                                  f"{Style.RESET_ALL}"
+                print(prompt)
+                text = input_prefill(f"     | ",
+                                     "".join(event.char_spec["char"]))
+                if text == "":
+                    print(f"\nSkipping subtitle {i}")
+                    continue
             except KeyboardInterrupt:
                 print("\nQuitting subtitle validation")
+                embed(**self.embed_kw)
                 break
-            # TODO: Confirm characters
-            if text != event.text:
-
-                if len(text) == len(event.text):
-                    for j, (yat, eee) in enumerate(zip(text, event.text)):
-                        if yat != eee:
-                            print(yat, eee)
-                            print(event.char_spec.iloc[j])
+            if len(text) == event.char_spec.shape[0]:
+                for k, (j, char) in enumerate(event.char_spec.iterrows()):
+                    if char["char"] != text[k]:
+                        print(f"Reassigning char {j} from "
+                              f"'{char['char']}' to '{text[k]}")
+                        self.image_subtitles.spec.at[j, "char"] = text[k]
+                        self.image_subtitles.spec.at[j, "confirmed"] = True
+                    elif not char["confirmed"]:
+                        print(f"Confirming char {j} as "
+                              f"'{self.image_subtitles.spec.at[j, 'char']}'")
+                        self.image_subtitles.spec.at[j, "confirmed"] = True
+            else:
+                # TODO: Do kind of alignment to figure out what the user wants
+                embed(**self.embed_kw)
 
     # endregion
 

@@ -279,6 +279,20 @@ def is_writable(path):
 
 
 def input_prefill(prompt, prefill):
+    """
+    Prompts user for input with pre-filled text
+
+    Does not handle colored prompt correctly
+
+    TODO: Does this block CTRL-D?
+
+    Args:
+        prompt (str): Prompt to present to user
+        prefill (str): Text to prefill for user
+
+    Returns:
+        str: Text inputted by user
+    """
     from readline import insert_text, redisplay, set_pre_input_hook
 
     def pre_input_hook():
@@ -380,7 +394,7 @@ def merge_subtitles(upper, lower):
 
     # Synchronize events
     synced_df = [merged_df.iloc[0].copy()]
-    for index in range(1, merged_df.index.size):
+    for index in range(1, merged_df.shape[0]):
         last = synced_df[-1]
         next = merged_df.iloc[index].copy()
         if last["upper text"] == next["upper text"]:

@@ -291,6 +291,7 @@ def get_reconstructed_text(chars, widths, separations, punctuation="eastern"):
     text = text.replace("．", "。")
     text = text.replace("!", "！")
     text = text.replace(":", "：")
+    text = text.replace("。。。", "⋯")
 
     return text
 
