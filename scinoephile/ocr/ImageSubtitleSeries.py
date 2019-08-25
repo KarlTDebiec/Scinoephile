@@ -78,25 +78,6 @@ class ImageSubtitleSeries(SubtitleSeries):
         """
         return self.spec.loc[index].indexes
 
-    def merge_chars(self, index_1, index_2):
-        """
-        Merges two adjacent characters
-
-        Args:
-            index (int): Index of first of two characters to merge
-        """
-        # TODO: Implement
-        raise NotImplementedError()
-        # Get all instances of char 1 and char 2
-        # Make sure that all are adjacent
-        # Update char_bounds for all events
-        # Update char_data for all events
-
-
-        # self._char_bounds = np.append(
-        #     self.char_bounds.flatten()[:index * 2 + 1],
-        #     self.char_bounds.flatten()[index * 2 + 3:]).reshape((-1, 2))
-
     def save(self, path, format_=None, **kwargs):
         """
         Saves subtitles to an output file
@@ -210,25 +191,33 @@ class ImageSubtitleSeries(SubtitleSeries):
 
     # region Private Methods
 
-    def _initialize_data(self):
+    def _initialize_data(self, verbosity=None):
         """
         Initializes deduplicated character image data structure
         """
-        if self.verbosity >= 1:
+
+        if verbosity is None:
+            verbosity = self.verbosity
+        if verbosity >= 1:
             print("Initializing character data structures")
 
         # Load character data
         n_total_chars = sum([e.char_count for e in self.events])
         raw_data = np.zeros((n_total_chars, 80, 80), np.uint8)
         raw_subchar_indexes = np.empty(n_total_chars, dtype="O")
-        i = 0
-        for j, event in enumerate(self.events):
-            for k, datum in enumerate(event.char_data):
-                raw_data[i] = datum
-                raw_subchar_indexes[i] = (j, k)
-                i += 1
+        char_index = 0
+        for event_index, event in enumerate(self.events):
+            for event_char_index, datum in enumerate(event.char_data):
+                raw_data[char_index] = datum
+                raw_subchar_indexes[char_index] = (
+                    event_index, event_char_index)
+                char_index += 1
 
-        # Identify unique character data
+        # Clear prior indexes
+        for event in self.events:
+            event._char_indexes = np.zeros(event.char_count, np.int)
+
+        # Deduplicate character data
         raw_data = raw_data.reshape((n_total_chars, 80 * 80))
         sorted_index = np.lexsort(raw_data.T)
         sorted_data = raw_data[sorted_index]
@@ -236,8 +225,6 @@ class ImageSubtitleSeries(SubtitleSeries):
             [True], np.any(np.diff(sorted_data, axis=0) != 0, axis=1), 0)
         unique_indexes = np.sort(sorted_index[datum_is_unique])
         n_unique_chars = datum_is_unique.sum()
-
-        # Organize de-duplicated character data
         data = raw_data[unique_indexes].reshape(-1, 80, 80)
 
         # Organize specs
@@ -260,13 +247,13 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Transfer prior character assignments
         if (hasattr(self, "_data") and self._data is not None and
                 hasattr(self, "_spec") and self._spec is not None):
-            if self.verbosity >= 1:
+            if verbosity >= 1:
                 print("Transferring prior character assignments")
             sums = np.array([datum.sum() for datum in self._data])
             for i, datum in enumerate(data):
                 for j in np.where(sums == datum.sum())[0]:
                     if np.all(datum == self._data[j]):
-                        if self.verbosity >= 2:
+                        if verbosity >= 3:
                             print(f"Copying assingment of char {j} as "
                                   f"'{self._spec.at[j, 'char']}'")
 
@@ -276,6 +263,45 @@ class ImageSubtitleSeries(SubtitleSeries):
         # Store
         self._data = data
         self._spec = spec
+
+    def _merge_chars(self, index_1, index_2, char=None):
+        """
+        Merges two adjacent characters
+
+        Args:
+            index_1 (int): Index of first character
+            index_1 (int): Index of second character
+            char (str): Character to assign to merged result
+        """
+        # Make sure that all are adjacent
+        if self.verbosity >= 2:
+            print(f"Merging chars {index_1} and {index_2}")
+        if len(self.spec.loc[index_1, "indexes"]) > 1:
+            embed(**self.embed_kw)
+        if len(self.spec.loc[index_1, "indexes"]) != len(
+                self.spec.loc[index_2, "indexes"]):
+            raise ValueError()
+        for (s1, c1), (s2, c2) in zip(self.spec.loc[index_1, "indexes"],
+                                      self.spec.loc[index_2, "indexes"]):
+            if s1 != s2:
+                raise ValueError()
+            if c1 + 1 != c2:
+                raise ValueError()
+        for s_i, c_i in self.spec.loc[index_1, "indexes"]:
+            event = self.events[s_i]
+            event._char_bounds = np.concatenate(
+                (event.char_bounds[:c_i],
+                 np.array([[event.char_bounds[c_i, 0],
+                            event.char_bounds[c_i + 1, 1]]]),
+                 event.char_bounds[c_i + 2:]))
+            event._initialize_char_data()
+        self._initialize_data(verbosity=self.verbosity - 1)
+        if char is not None:
+            new_index = event.char_spec.iloc[c1].name
+            if self.verbosity >= 2:
+                print(f"Confirming char {new_index} as '{char}'")
+            self.spec.loc[new_index, "char"] = char
+            self.spec.loc[new_index, "confirmed"] = True
 
     def _save_hdf5(self, fp, **kwargs):
         """
@@ -307,6 +333,8 @@ class ImageSubtitleSeries(SubtitleSeries):
                                                dtype=np.uint8,
                                                chunks=True,
                                                compression="gzip")
+                fp["full_data"][f"{i:04d}"].attrs[
+                    "char_bounds"] = event.char_bounds
 
         # Save char image specs
         if "spec" in fp:
@@ -379,6 +407,9 @@ class ImageSubtitleSeries(SubtitleSeries):
             for i, event in enumerate(subs.events):
                 event.full_data = np.array(fp["full_data"][f"{i:04d}"],
                                            np.uint8)
+                attrs = dict(fp["full_data"][f"{i:04d}"].attrs)
+                if "char_bounds" in attrs:
+                    event._char_bounds = attrs["char_bounds"]
 
             # Load char image specs
             if "spec" in fp:

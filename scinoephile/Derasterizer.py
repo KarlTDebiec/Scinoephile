@@ -377,49 +377,94 @@ class Derasterizer(CLToolBase):
                 print(f"{i:4d} | {event.text}")
 
     def _validate_chars_interactively(self):
-        from colorama import Fore, Style
-        # TODO: Highlight orange if similar chars previously corrected
+        # Replace periods
 
+        # TODO: Move somehwere else
+        for i, char in self.image_subtitles.spec.iterrows():
+            if char["char"] == "．" or char["char"] == ".":
+                if self.verbosity >= 2:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '。'")
+                self.image_subtitles.spec.at[i, "char"] = "。"
+
+        # Validate all events, CTRL-c to quit
         for i, event in enumerate(self.image_subtitles.events):
-            # print(event.char_spec)
-            event.show()
-            print()
             try:
-                # TODO: Highlight confirmed characters
-                prompt = f"{i:4d} | "
-                for j, char in event.char_spec.iterrows():
-                    if char["confirmed"]:
-                        prompt += f"{Fore.GREEN}{char['char']}" \
-                                  f"{Style.RESET_ALL}"
-                    else:
-                        prompt += f"{Fore.RED}{char['char']}" \
-                                  f"{Style.RESET_ALL}"
-                print(prompt)
-                text = input_prefill(f"     | ",
-                                     "".join(event.char_spec["char"]))
-                if text == "":
-                    print(f"\nSkipping subtitle {i}")
-                    continue
+                self._validate_event_interactively(event)
             except KeyboardInterrupt:
                 print("\nQuitting subtitle validation")
                 embed(**self.embed_kw)
                 break
-            if len(text) == event.char_spec.shape[0]:
-                for k, (j, char) in enumerate(event.char_spec.iterrows()):
-                    if char["char"] != text[k]:
-                        if self.verbosity >= 2:
-                            print(f"Reassigning char {j} from "
-                                  f"'{char['char']}' to '{text[k]}")
-                        self.image_subtitles.spec.at[j, "char"] = text[k]
-                        self.image_subtitles.spec.at[j, "confirmed"] = True
-                    elif not char["confirmed"]:
-                        if self.verbosity >= 2:
-                            print(f"Confirming char {j} as "
-                                  f"'{self.image_subtitles.spec.at[j, 'char']}'")
-                        self.image_subtitles.spec.at[j, "confirmed"] = True
+
+    def _validate_event_interactively(self, event):
+        from difflib import SequenceMatcher
+        from colorama import Fore, Style
+
+        # Show user subtitle image and predicted text, and prompt for update
+        event.show()
+        print()
+        prompt = f"{event.index:4d} | "
+        for _, char in event.char_spec.iterrows():
+            # TODO: Highlight orange if similar chars previously corrected
+            if char["confirmed"]:
+                prompt += f"{Fore.GREEN}" \
+                          f"{char['char']}" \
+                          f"{Style.RESET_ALL}"
             else:
-                # TODO: Do kind of alignment to figure out what the user wants
-                embed(**self.embed_kw)
+                prompt += f"{Fore.RED}" \
+                          f"{char['char']}" \
+                          f"{Style.RESET_ALL}"
+        print(prompt)
+        old_text = "".join(event.char_spec["char"])
+        new_text = input_prefill(f"     | ", old_text)
+
+        # Lengths are the same, assume no changes to segmentation
+        if len(new_text) == len(old_text):
+            for event_char_index, (char_index, char) in enumerate(
+                    event.char_spec.iterrows()):
+                if new_text[event_char_index] != char["char"]:
+                    if self.verbosity >= 2:
+                        print(f"Reassigning char {char_index} from "
+                              f"'{char['char']}' to "
+                              f"'{new_text[event_char_index]}'")
+                    self.image_subtitles.spec.at[
+                        char_index, "char"] = new_text[event_char_index]
+                    self.image_subtitles.spec.at[
+                        char_index, "confirmed"] = True
+                elif not char["confirmed"]:
+                    if self.verbosity >= 2:
+                        print(f"Confirming char {char_index} as "
+                              f"'{char['char']}'")
+                    self.image_subtitles.spec.at[
+                        char_index, "confirmed"] = True
+
+        # Lengths are not the same, merge chars
+        else:
+            opcodes = SequenceMatcher(a=old_text, b=new_text).get_opcodes()
+            for kind, old_start, old_end, new_start, new_end in opcodes:
+                if kind == "equal":
+                    for char_index, char in event.char_spec.iloc[
+                                            old_start:old_end].iterrows():
+                        if self.verbosity >= 2:
+                            print(f"Confirming char {char_index} as "
+                                  f"'{char['char']}'")
+                        self.image_subtitles.spec.at[
+                            char_index, "confirmed"] = True
+                elif kind == "replace":
+                    if old_end - old_start == new_end - new_start:
+                        # TODO: Handle normal reassingments alongside merges
+                        embed(**self.embed_kw)
+                    elif old_end - old_start == 2 and new_end - new_start == 1:
+                        self.image_subtitles._merge_chars(
+                            event.char_spec.iloc[old_start].name,
+                            event.char_spec.iloc[old_start + 1].name,
+                            new_text[new_start])
+                        self._validate_event_interactively(event)
+                        # Subsequent changes handled through recursion
+                        break
+                    else:
+                        # TODO: Handle this case
+                        embed(**self.embed_kw)
 
     # endregion
 
