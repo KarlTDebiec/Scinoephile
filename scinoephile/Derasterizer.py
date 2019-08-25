@@ -202,6 +202,13 @@ class Derasterizer(CLToolBase):
         return self._operations
 
     @property
+    def reassigned_chars(self):
+        """set(str): Characters that have been reassigned"""
+        if not hasattr(self, "_reassigned_chars"):
+            self._reassigned_chars = set()
+        return self._reassigned_chars
+
+    @property
     def recognition_model(self):
         """Model: Character recognition model"""
         if not hasattr(self, "_recognition_model"):
@@ -365,7 +372,13 @@ class Derasterizer(CLToolBase):
         char_pred = self.get_chars_of_labels(
             np.argsort(label_pred, axis=1)[:, -1])
         for i in self.image_subtitles.spec.index:
-            if not self.image_subtitles.spec.at[i, "confirmed"]:
+            if self.image_subtitles.spec.at[i, "confirmed"]:
+                if self.image_subtitles.spec.at[i, "char"] != char_pred[i]:
+                    self.reassigned_chars.add(
+                        self.image_subtitles.spec.at[i, "char"])
+                    self.reassigned_chars.add(
+                        char_pred[i])
+            else:
                 self.image_subtitles.spec.at[i, "char"] = char_pred[i]
 
     def _reconstruct_text(self):
@@ -386,6 +399,16 @@ class Derasterizer(CLToolBase):
                     print(f"Reassigning char {i} from "
                           f"'{char['char']}' to '。'")
                 self.image_subtitles.spec.at[i, "char"] = "。"
+            elif char["char"] == "!":
+                if self.verbosity >= 2:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '！'")
+                self.image_subtitles.spec.at[i, "char"] = "！"
+            elif char["char"] == ":":
+                if self.verbosity >= 2:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '：'")
+                self.image_subtitles.spec.at[i, "char"] = "："
 
         # Validate all events, CTRL-c to quit
         for i, event in enumerate(self.image_subtitles.events):
@@ -406,14 +429,15 @@ class Derasterizer(CLToolBase):
         prompt = f"{event.index:4d} | "
         for _, char in event.char_spec.iterrows():
             # TODO: Highlight orange if similar chars previously corrected
-            if char["confirmed"]:
-                prompt += f"{Fore.GREEN}" \
-                          f"{char['char']}" \
-                          f"{Style.RESET_ALL}"
+            if char["confirmed"] and char["char"] not in self.reassigned_chars:
+                prompt += f"{Fore.GREEN}"
+            elif char["confirmed"]:
+                prompt += f"{Fore.MAGENTA}"
+            elif char["char"] in self.reassigned_chars:
+                prompt += f"{Fore.RED}"
             else:
-                prompt += f"{Fore.RED}" \
-                          f"{char['char']}" \
-                          f"{Style.RESET_ALL}"
+                prompt += f"{Fore.WHITE}"
+            prompt += f"{char['char']}{Style.RESET_ALL}"
         print(prompt)
         old_text = "".join(event.char_spec["char"])
         new_text = input_prefill(f"     | ", old_text)
@@ -422,15 +446,23 @@ class Derasterizer(CLToolBase):
         if len(new_text) == len(old_text):
             for event_char_index, (char_index, char) in enumerate(
                     event.char_spec.iterrows()):
+
+                # Reassign character
                 if new_text[event_char_index] != char["char"]:
                     if self.verbosity >= 2:
                         print(f"Reassigning char {char_index} from "
                               f"'{char['char']}' to "
                               f"'{new_text[event_char_index]}'")
+                    self.reassigned_chars.add(
+                        new_text[event_char_index])
+                    self.reassigned_chars.add(
+                        char["char"])
                     self.image_subtitles.spec.at[
                         char_index, "char"] = new_text[event_char_index]
                     self.image_subtitles.spec.at[
                         char_index, "confirmed"] = True
+
+                # Confirm character assignment
                 elif not char["confirmed"]:
                     if self.verbosity >= 2:
                         print(f"Confirming char {char_index} as "
@@ -442,6 +474,8 @@ class Derasterizer(CLToolBase):
         else:
             opcodes = SequenceMatcher(a=old_text, b=new_text).get_opcodes()
             for kind, old_start, old_end, new_start, new_end in opcodes:
+
+                # Confirm one or more characters
                 if kind == "equal":
                     for char_index, char in event.char_spec.iloc[
                                             old_start:old_end].iterrows():
@@ -450,11 +484,21 @@ class Derasterizer(CLToolBase):
                                   f"'{char['char']}'")
                         self.image_subtitles.spec.at[
                             char_index, "confirmed"] = True
+
+                # Replace one or more characters
                 elif kind == "replace":
+
+                    # Straight character by character replacement
                     if old_end - old_start == new_end - new_start:
                         # TODO: Handle normal reassingments alongside merges
                         embed(**self.embed_kw)
+
+                    # Merging two characters into one
                     elif old_end - old_start == 2 and new_end - new_start == 1:
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start]["char"])
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start + 1]["char"])
                         self.image_subtitles._merge_chars(
                             event.char_spec.iloc[old_start].name,
                             event.char_spec.iloc[old_start + 1].name,
@@ -462,6 +506,8 @@ class Derasterizer(CLToolBase):
                         self._validate_event_interactively(event)
                         # Subsequent changes handled through recursion
                         break
+
+                    # Unusual merging
                     else:
                         # TODO: Handle this case
                         embed(**self.embed_kw)
