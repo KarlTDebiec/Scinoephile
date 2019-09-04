@@ -424,8 +424,9 @@ class Derasterizer(CLToolBase):
         from colorama import Fore, Style
 
         # Show user subtitle image and predicted text, and prompt for update
-        event.show()
-        print()
+        if not np.all(event.char_spec["confirmed"]):
+            event.show()
+            print()
         prompt = f"{event.index:4d} | "
         for _, char in event.char_spec.iterrows():
             # TODO: Highlight orange if similar chars previously corrected
@@ -439,6 +440,8 @@ class Derasterizer(CLToolBase):
                 prompt += f"{Fore.WHITE}"
             prompt += f"{char['char']}{Style.RESET_ALL}"
         print(prompt)
+        if np.all(event.char_spec["confirmed"]):
+            return
         old_text = "".join(event.char_spec["char"])
         new_text = input_prefill(f"     | ", old_text)
 
@@ -502,7 +505,24 @@ class Derasterizer(CLToolBase):
                         self.image_subtitles._merge_chars(
                             event.char_spec.iloc[old_start].name,
                             event.char_spec.iloc[old_start + 1].name,
-                            new_text[new_start])
+                            char=new_text[new_start])
+                        self._validate_event_interactively(event)
+                        # Subsequent changes handled through recursion
+                        break
+
+                    # Merging three characters into one
+                    elif old_end - old_start == 3 and new_end - new_start == 1:
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start]["char"])
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start + 1]["char"])
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start + 2]["char"])
+                        self.image_subtitles._merge_chars(
+                            event.char_spec.iloc[old_start].name,
+                            event.char_spec.iloc[old_start + 1].name,
+                            event.char_spec.iloc[old_start + 2].name,
+                            char=new_text[new_start])
                         self._validate_event_interactively(event)
                         # Subsequent changes handled through recursion
                         break
@@ -511,6 +531,11 @@ class Derasterizer(CLToolBase):
                     else:
                         # TODO: Handle this case
                         embed(**self.embed_kw)
+
+                # Delete one or more characters?
+                elif kind == "delete":
+                    # TODO: Handle this case
+                    embed(**self.embed_kw)
 
     # endregion
 

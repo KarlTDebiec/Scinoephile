@@ -264,40 +264,46 @@ class ImageSubtitleSeries(SubtitleSeries):
         self._data = data
         self._spec = spec
 
-    def _merge_chars(self, index_1, index_2, char=None):
+    def _merge_chars(self, index_1, index_2, index_3=None, char=None):
         """
-        Merges two adjacent characters
+        Merges two or three adjacent characters
 
         Args:
             index_1 (int): Index of first character
-            index_1 (int): Index of second character
-            char (str): Character to assign to merged result
+            index_2 (int): Index of second character
+            index_3 (int, opt): Index of third character
+            char (str, opt): Character to assign to merged result
         """
-        # Make sure that all are adjacent
+
         if self.verbosity >= 2:
-            print(f"Merging chars {index_1} and {index_2}")
-        if len(self.spec.loc[index_1, "indexes"]) > 1:
-            embed(**self.embed_kw)
-        if len(self.spec.loc[index_1, "indexes"]) != len(
-                self.spec.loc[index_2, "indexes"]):
-            raise ValueError()
-        for (s1, c1), (s2, c2) in zip(self.spec.loc[index_1, "indexes"],
-                                      self.spec.loc[index_2, "indexes"]):
-            if s1 != s2:
-                raise ValueError()
-            if c1 + 1 != c2:
-                raise ValueError()
-        for s_i, c_i in self.spec.loc[index_1, "indexes"]:
-            event = self.events[s_i]
-            event._char_bounds = np.concatenate(
-                (event.char_bounds[:c_i],
-                 np.array([[event.char_bounds[c_i, 0],
-                            event.char_bounds[c_i + 1, 1]]]),
-                 event.char_bounds[c_i + 2:]))
+            if index_3 is None:
+                print(f"Merging chars {index_1} and {index_2}")
+            else:
+                print(f"Merging chars {index_1}, {index_2}, and {index_3}")
+
+        # Merge in each event
+        for sub_i, char_i in self.spec.loc[index_1, "indexes"]:
+            event = self.events[sub_i]
+            if index_3 is None:
+                event._char_bounds = np.concatenate(
+                    (event.char_bounds[:char_i],
+                     np.array([[event.char_bounds[char_i, 0],
+                                event.char_bounds[char_i + 1, 1]]]),
+                     event.char_bounds[char_i + 2:]))
+            else:
+                event._char_bounds = np.concatenate(
+                    (event.char_bounds[:char_i],
+                     np.array([[event.char_bounds[char_i, 0],
+                                event.char_bounds[char_i + 2, 1]]]),
+                     event.char_bounds[char_i + 3:]))
             event._initialize_char_data()
+
+        # Re-intialize series data structures
         self._initialize_data(verbosity=self.verbosity - 1)
+
+        # Assign character if provided
         if char is not None:
-            new_index = event.char_spec.iloc[c1].name
+            new_index = event.char_spec.iloc[char_i].name
             if self.verbosity >= 2:
                 print(f"Confirming char {new_index} as '{char}'")
             self.spec.loc[new_index, "char"] = char

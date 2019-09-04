@@ -206,6 +206,8 @@ def get_single_line_text(text, language="english"):
     Returns:
         str: Text arranged on a single line
     """
+    # TODO: Think about replacing two western spaces with one eastern space
+
     # Revert strange substitution in pysubs2/subrip.py:66
     single_line = re.sub(r"\\N", r"\n", text)
     if language == "english" or language == "pinyin":
@@ -340,6 +342,7 @@ def merge_subtitles(upper, lower):
         lower = lower.get_dataframe()
 
     # Organize transitions
+    # TODO: Validate that events within each series do not overlap
     transitions = []
     for _, event in upper.iterrows():
         transitions += [[event["start"], "upper_start", event["text"]],
@@ -440,6 +443,7 @@ def merge_subtitles(upper, lower):
     synced_df = pd.DataFrame(synced_df)
 
     # Filter very short events
+    # TODO: Do this interactively, somewhere else
     synced_df = synced_df.drop(
         index=synced_df[synced_df["end"] - synced_df["start"] < 500].index)
 

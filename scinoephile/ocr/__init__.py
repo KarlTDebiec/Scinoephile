@@ -28,7 +28,7 @@ western_punctuation_chars = np.array(list(
 
 
 ################################## FUNCTIONS ##################################
-def analyze_character_accuracy(self, img, lbl, model, title="", verbosity=1):
+def analyze_character_accuracy(img, lbl, model, title="", verbosity=1):
     # TODO: Implement
     raise NotImplementedError()
     # pred = model.predict(img)

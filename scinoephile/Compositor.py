@@ -591,6 +591,7 @@ class Compositor(CLToolBase):
                                 action="store_true",
                                 help="show IPython prompt after loading and "
                                      "processing")
+        # TODO: Add option to collapse to single line
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
