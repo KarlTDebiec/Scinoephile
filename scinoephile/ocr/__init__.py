@@ -23,6 +23,7 @@ western_chars = np.array(list(
 numeric_chars = np.array(list("0123456789"))
 eastern_punctuation_chars = np.array(list(
     "．。？！，、﹣（）［］《》「」：；＂⋯"))
+#＜＞
 western_punctuation_chars = np.array(list(
     ".?!,-()[]<>:;“”\"…"))
 
