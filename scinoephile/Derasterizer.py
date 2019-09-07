@@ -32,9 +32,9 @@ class Derasterizer(CLToolBase):
 
     # region Builtins
 
-    def __init__(self, infile, outfile=None, overwrite=False,
-                 recognition_model=None, standard_infile=None,
-                 interactive=False, tesseract=False, **kwargs):
+    def __init__(self, infile, interactive=False, overwrite=False,
+                 outfile=None, recognition_model=None, standard_infile=None,
+                 tesseract=False, **kwargs):
         """
         Initializes command-line tool and compiles list of operations
 
@@ -88,8 +88,6 @@ class Derasterizer(CLToolBase):
             else:
                 raise IOError(f"Standard subtitle infile "
                               f"'{standard_infile}' cannot be read")
-        if interactive:
-            self.operations["interactive"] = True
 
         # Compile output operations
         if outfile:
@@ -98,11 +96,15 @@ class Derasterizer(CLToolBase):
                 if not isfile(outfile) or overwrite:
                     self.operations["save_outfile"] = outfile
                 else:
-                    raise IOError(f"Text-based Subtitle outfile "
+                    raise IOError(f"Text-based subtitle outfile "
                                   f"'{outfile}' already exists")
             else:
                 raise IOError(f"Text-based subtitle outfile "
                               f"'{outfile}' is not writable")
+
+        # Compile additional operations
+        if interactive:
+            self.operations["interactive"] = True
 
     def __call__(self):
         """

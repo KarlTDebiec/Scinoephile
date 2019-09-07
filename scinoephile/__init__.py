@@ -79,6 +79,13 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
+def format_list(list_of_strings, linker="and", quote="'"):
+    # TODO: Document
+    string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
+    string = re.sub(r"(.*), ", rf"\1, {linker} ", string)
+    return string
+
+
 def get_simplified_hanzi(text, verbosity=1):
     """
     Converts traditional hanzi to simplified
