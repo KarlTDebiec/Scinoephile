@@ -33,8 +33,8 @@ class Metadata(CLToolBase):
 
     # region Builtins
 
-    def __init__(self, infile, outfile, cast=None, date=None, description=None,
-                 director=None, interactive=False, language=None, genre=None,
+    def __init__(self, infile, outfile, cast=None, catalog_id=None, date=None,
+                 description=None, director=None, language=None, genre=None,
                  rating=None, overwrite=False, producer=None, studio=None,
                  title=None, writer=None, **kwargs):
         """
@@ -58,18 +58,7 @@ class Metadata(CLToolBase):
         else:
             raise IOError(f"MP4 infile '{infile}' cannot be read")
 
-        # Compile output operations
-        # if outfile:
-        #     outfile = expandvars(str(outfile))
-        #     if is_writable(outfile):
-        #         if not isfile(outfile) or overwrite:
-        #             self.operations["save_outfile"] = outfile
-        #         else:
-        #             raise IOError(f"MP4 outfile '{outfile}' already exists")
-        #     else:
-        #         raise IOError(f"MP4 outfile '{outfile}' is not writable")
-        #
-        # # Compile metadata operations
+        # Compile metadata operations
         if title:
             if isinstance(title, str):
                 self.args.append(f"--title {quote(title)}")
@@ -125,8 +114,13 @@ class Metadata(CLToolBase):
             else:
                 raise ValueError(
                     f"rating must be a string; '{rating}' provided")
-
-        if cast or director  or producer or writer or studio:
+        if catalog_id:
+            if isinstance(catalog_id, int):
+                self.args.append(f"--cnID {catalog_id}")
+            else:
+                raise ValueError(f"catalog_id must be an integer; "
+                                 f"'{catalog_id}' provided")
+        if cast or director or producer or writer or studio:
             xmlroot = etree.Element("plist", {"version": "1.0"})
             xmldict = etree.SubElement(xmlroot, "dict")
         if cast:
@@ -189,24 +183,36 @@ class Metadata(CLToolBase):
                 raise ValueError(
                     f"studio must be a list of strings; "
                     f"'{studio}' provided")
-        if cast or director  or producer or writer or studio:
+        if cast or director or producer or writer or studio:
             rDNSatom = etree.tostring(xmlroot, encoding='UTF-8',
                                       xml_declaration=True).decode()
             self.args.append(f"--rDNSatom {quote(rDNSatom)} "
                              f"name=iTunMOVI "
                              f"domain=com.apple.iTunes")
-        self.args.append(f"--cnID 1190229930")
+
+        # Compile output operations
+        if not outfile:
+            if not overwrite:
+                raise IOError(f"MP4 outfile not specified, use '--overwrite' "
+                              f"to overwrite input file")
+            outfile = infile
+        outfile = expandvars(str(outfile))
+        if is_writable(outfile):
+            if not isfile(outfile) or overwrite:
+                self.args.append(f"--out {quote(outfile)}")
+            else:
+                raise IOError(f"MP4 outfile '{outfile}' already exists")
+        else:
+            raise IOError(f"MP4 outfile '{outfile}' is not writable")
 
     def __call__(self):
         """
         Performs operations
         """
-        from IPython import embed
         import subprocess
+
         self.args = ["AtomicParsley"] + self.args
-        print(self.args)
         proc = subprocess.run(" ".join(self.args), shell=True)
-        print(proc.args)
 
     # endregion
 
@@ -223,14 +229,6 @@ class Metadata(CLToolBase):
     def args(self, value):
         # TODO: Validate
         self._args = value
-
-    @property
-    def operations(self):
-        """dict: Collection of operations to perform, with associated
-        arguments"""
-        if not hasattr(self, "_operations"):
-            self._operations = {}
-        return self._operations
 
     # endregion
 
@@ -269,6 +267,9 @@ class Metadata(CLToolBase):
         parser_metadata.add_argument("--rating",
                                      default="Unrated",
                                      help="MPAA Rating")
+        parser_metadata.add_argument("--catalog_id",
+                                     help="Apple Catalog ID",
+                                     type=int)
         parser_metadata.add_argument("--studio",
                                      action="append",
                                      help="Production Studio")
@@ -284,13 +285,6 @@ class Metadata(CLToolBase):
         parser_metadata.add_argument("--writer",
                                      action="append",
                                      help="Writer")
-
-        # Operations
-        parser_ops = parser.add_argument_group("operation arguments")
-        parser_ops.add_argument("-i", "--interactive",
-                                action="store_true",
-                                help="show IPython prompt after loading and "
-                                     "processing")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
