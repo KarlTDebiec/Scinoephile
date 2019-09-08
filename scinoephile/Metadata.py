@@ -35,7 +35,7 @@ class Metadata(CLToolBase):
 
     def __init__(self, infile, outfile, cast=None, catalog_id=None, date=None,
                  description=None, director=None, language=None, genre=None,
-                 rating=None, overwrite=False, producer=None, studio=None,
+                 overwrite=False, producer=None, rating=None, studio=None,
                  title=None, writer=None, **kwargs):
         """
         Initializes command-line tool and compiles list of operations
@@ -192,16 +192,20 @@ class Metadata(CLToolBase):
 
         # Compile output operations
         if not outfile:
-            if not overwrite:
-                raise IOError(f"MP4 outfile not specified, use '--overwrite' "
-                              f"to overwrite input file")
-            outfile = infile
+            if overwrite:
+                outfile = infile
+            else:
+                raise ValueError(f"Either outfile must be provided or "
+                                 f"overwrite must be used to overwrite infile")
         outfile = expandvars(str(outfile))
         if is_writable(outfile):
-            if not isfile(outfile) or overwrite:
-                self.args.append(f"--out {quote(outfile)}")
+            if not isfile(outfile):
+                self.args.append(f"-o {quote(outfile)}")
+            elif overwrite:
+                self.args.append(f"-o {quote(outfile)}")
+                self.args.append(f"-W")
             else:
-                raise IOError(f"MP4 outfile '{outfile}' already exists")
+                raise ValueError(f"MP4 outfile '{outfile}' already exists")
         else:
             raise IOError(f"MP4 outfile '{outfile}' is not writable")
 
@@ -209,10 +213,12 @@ class Metadata(CLToolBase):
         """
         Performs operations
         """
-        import subprocess
+        from subprocess import Popen
 
         self.args = ["AtomicParsley"] + self.args
-        proc = subprocess.run(" ".join(self.args), shell=True)
+        if self.verbosity >= 1:
+            print(" ".join(self.args))
+        Popen(" ".join(self.args), shell=True)
 
     # endregion
 
@@ -290,8 +296,7 @@ class Metadata(CLToolBase):
         parser_output = parser.add_argument_group("output arguments")
         parser_output.add_argument("-of", "--outfile",
                                    help="MP4 outfile",
-                                   metavar="FILE",
-                                   required=True)
+                                   metavar="FILE")
         parser_output.add_argument("-o", "--overwrite",
                                    action="store_true",
                                    help="overwrite outfiles if they exist")
