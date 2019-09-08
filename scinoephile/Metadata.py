@@ -189,21 +189,24 @@ class Metadata(CLToolBase):
             self.args.append(f"--rDNSatom {quote(rDNSatom)} "
                              f"name=iTunMOVI "
                              f"domain=com.apple.iTunes")
+        self.args = ["AtomicParsley"] + self.args
 
         # Compile output operations
         if not outfile:
             if overwrite:
+                # AtomicParsley will not overwrite its infile with its outfile,
+                # it will write to a temporary file. Here the desired outfile
+                # is saved so the temporary file may be moved into place
+                # afterwards
                 outfile = infile
+                self.outfile = outfile
             else:
-                raise ValueError(f"Either outfile must be provided or "
-                                 f"overwrite must be used to overwrite infile")
+                raise ValueError(f"outfile must be provided, or overwrite "
+                                 f"must be true to overwrite infile")
         outfile = expandvars(str(outfile))
         if is_writable(outfile):
-            if not isfile(outfile):
+            if not isfile(outfile) or overwrite:
                 self.args.append(f"-o {quote(outfile)}")
-            elif overwrite:
-                self.args.append(f"-o {quote(outfile)}")
-                self.args.append(f"-W")
             else:
                 raise ValueError(f"MP4 outfile '{outfile}' already exists")
         else:
@@ -213,12 +216,23 @@ class Metadata(CLToolBase):
         """
         Performs operations
         """
+        from os import rename
+        from os.path import getctime
         from subprocess import Popen
+        from glob import glob
 
-        self.args = ["AtomicParsley"] + self.args
+        # Run AtomicParsley
+        cmd = " ".join(self.args)
         if self.verbosity >= 1:
-            print(" ".join(self.args))
-        Popen(" ".join(self.args), shell=True)
+            print(cmd)
+        p = Popen(cmd, shell=True)
+        p_status = p.wait()
+
+        # Move temporary file to final location, if necessary
+        if self.outfile is not None:
+            temp_file = max(glob(f"{self.outfile.rstrip('.mp4')}-temp-*.mp4"),
+                            key=getctime)
+            rename(temp_file, self.outfile)
 
     # endregion
 
@@ -235,6 +249,18 @@ class Metadata(CLToolBase):
     def args(self, value):
         # TODO: Validate
         self._args = value
+
+    @property
+    def outfile(self):
+        """list: Outfile"""
+        if not hasattr(self, "_outfile"):
+            self._outfile = None
+        return self._outfile
+
+    @outfile.setter
+    def outfile(self, value):
+        # TODO: Validate
+        self._outfile = value
 
     # endregion
 
