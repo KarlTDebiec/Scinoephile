@@ -189,13 +189,14 @@ class Compositor(CLToolBase):
                 raise ValueError("Chinese Hanzi subtitle output requires "
                                  "either Chinese Hanzi or English subtitle "
                                  "input")
-            if simplify:
-                if "load_hanzi" in self.operations:
-                    self.operations["simplify_chinese"] = True
-                else:
-                    raise ValueError("Conversion to simplified Hanzi "
-                                     "characters requires Chinese Hanzi "
-                                     "subtitle input")
+        if simplify:
+            if ("load_hanzi" in self.operations
+                    or "translate_chinese" in self.operations):
+                self.operations["simplify_chinese"] = True
+            else:
+                raise ValueError("Conversion to simplified Hanzi "
+                                 "characters requires Chinese Hanzi "
+                                 "subtitle input")
         if ("save_pinyin" in self.operations
                 and "load_pinyin" not in self.operations):
             if ("load_hanzi" in self.operations

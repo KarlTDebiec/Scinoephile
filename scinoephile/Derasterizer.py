@@ -13,7 +13,6 @@ optical character recognition model.
 ################################### MODULES ###################################
 from IPython import embed
 import numpy as np
-import pandas as pd
 from tensorflow import keras
 from scinoephile import (input_prefill, is_readable, is_writable, CLToolBase,
                          SubtitleSeries)

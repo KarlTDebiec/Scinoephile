@@ -9,7 +9,7 @@
 #   BSD license. See the LICENSE file for details.
 """Adds Apple/iTunes-compatible metadata to MP4 files."""
 ################################### MODULES ###################################
-from scinoephile import format_list, is_readable, is_writable, CLToolBase
+from scinoephile import CLToolBase
 
 
 ################################### CLASSES ###################################
@@ -48,8 +48,12 @@ class Metadata(CLToolBase):
         import lxml.etree as etree
         from os.path import expandvars, isfile
         from shlex import quote
+        from scinoephile import format_list, is_readable, is_writable
 
         super().__init__(**kwargs)
+
+        # TODO: Document
+        # TODO: Move xml lists into static function
 
         # Compile input operations
         infile = expandvars(str(infile))
