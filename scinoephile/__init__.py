@@ -82,7 +82,10 @@ def embed_kw(verbosity=2, **kwargs):
 def format_list(list_of_strings, linker="and", quote="'"):
     # TODO: Document
     string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
-    string = re.sub(r"(.*), ", rf"\1, {linker} ", string)
+    if len(list_of_strings) == 2:
+        string = re.sub(r"(.*), ", rf"\1 {linker} ", string)
+    elif len(list_of_strings) > 2:
+        string = re.sub(r"(.*), ", rf"\1, {linker} ", string)
     return string
 
 
