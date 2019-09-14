@@ -537,13 +537,13 @@ class Derasterizer(CLToolBase):
                 elif kind == "delete":
                     if old_end - old_start == 1:
                         self.reassigned_chars.add(
-                            event.char_spec.iloc[old_start -1]["char"])
+                            event.char_spec.iloc[old_start - 1]["char"])
                         self.reassigned_chars.add(
                             event.char_spec.iloc[old_start]["char"])
                         self.image_subtitles._merge_chars(
-                            event.char_spec.iloc[old_start -1].name,
+                            event.char_spec.iloc[old_start - 1].name,
                             event.char_spec.iloc[old_start].name,
-                            char=new_text[new_start-1])
+                            char=new_text[new_start - 1])
                         self._validate_event_interactively(event)
                         # Subsequent edits handled through recursion
                         break
