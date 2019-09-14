@@ -508,7 +508,7 @@ class Derasterizer(CLToolBase):
                             event.char_spec.iloc[old_start + 1].name,
                             char=new_text[new_start])
                         self._validate_event_interactively(event)
-                        # Subsequent changes handled through recursion
+                        # Subsequent edits handled through recursion
                         break
 
                     # Merging three characters into one
@@ -525,7 +525,7 @@ class Derasterizer(CLToolBase):
                             event.char_spec.iloc[old_start + 2].name,
                             char=new_text[new_start])
                         self._validate_event_interactively(event)
-                        # Subsequent changes handled through recursion
+                        # Subsequent edits handled through recursion
                         break
 
                     # Unusual merging
@@ -535,8 +535,21 @@ class Derasterizer(CLToolBase):
 
                 # Delete one or more characters?
                 elif kind == "delete":
-                    # TODO: Handle this case
-                    embed(**self.embed_kw)
+                    if old_end - old_start == 1:
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start -1]["char"])
+                        self.reassigned_chars.add(
+                            event.char_spec.iloc[old_start]["char"])
+                        self.image_subtitles._merge_chars(
+                            event.char_spec.iloc[old_start -1].name,
+                            event.char_spec.iloc[old_start].name,
+                            char=new_text[new_start-1])
+                        self._validate_event_interactively(event)
+                        # Subsequent edits handled through recursion
+                        break
+                    else:
+                        # TODO: Handle this case
+                        embed(**self.embed_kw)
 
     # endregion
 
