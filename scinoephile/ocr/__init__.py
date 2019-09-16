@@ -10,6 +10,7 @@
 ################################### MODULES ###################################
 import numpy as np
 import pandas as pd
+from IPython import embed
 from scinoephile import package_root
 
 ################################## VARIABLES ##################################
@@ -53,76 +54,88 @@ def analyze_character_accuracy(img, lbl, model, title="", verbosity=1):
 
 def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
     # TODO: Document
+    from difflib import SequenceMatcher
     from colorama import Fore, Style
 
-    event_pairs = zip([e.text for e in subtitles.events],
-                      [e.text for e in standard.events])
-    n_events = len(subtitles.events)
-    n_events_correct_length = n_events
-    n_chars_total = 0
-    n_chars_correct = 0
-    n_chars_matchable = 0
-    matchable_10k = ""
+    event_pairs = zip(
+        [e.text.replace("　", "").replace(" ", "") for e in subtitles.events],
+        [e.text.replace("　", "").replace(" ", "") for e in standard.events])
+    counts = pd.DataFrame(np.zeros((6, 3), np.int),
+                          columns=["correct", "incorrect", "unmatchable"],
+                          index=["char segmentation", "hanzi chars",
+                                 "western chars", "numeric chars",
+                                 "punctuation chars", "all chars"])
     unmatchable = ""
 
     # Loop over subtitles
     for i, (pred_text, true_text) in enumerate(event_pairs):
-
-        # Remove whitespace
-        pred_text = pred_text.replace("　", "").replace(" ", "")
-        true_text = true_text.replace("　", "").replace(" ", "")
-        n_chars_total += len(true_text)
-        # Loop over characters
-
-        if len(pred_text) != len(true_text):
-            n_events_correct_length -= 1
-            # TODO: Align and evaluate each character
-            if verbosity >= 2:
-                print(f"{i:4d} | {Fore.RED}{pred_text}{Style.RESET_ALL}")
+        # Segmentation accuracy
+        if len(pred_text) == len(true_text):
+            counts.at["char segmentation", "correct"] += 1
+            line = f"{i:4d} | "
         else:
-            if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
-                print(f"{i:4d} | ", end="")
-            for pred_char, true_char in zip(pred_text, true_text):
-                if pred_char == true_char:
-                    n_chars_correct += 1
-                    if verbosity >= 3 or (
-                            verbosity == 2 and pred_text != true_text):
-                        print(f"{Fore.GREEN}{pred_char}{Style.RESET_ALL}",
-                              end="")
-                else:
-                    if verbosity >= 3 or (
-                            verbosity == 2 and pred_text != true_text):
-                        print(f"{Fore.RED}{pred_char}{Style.RESET_ALL}",
-                              end="")
-                if true_char in chars:
-                    n_chars_matchable += 1
-                elif true_char in hanzi_chars:
-                    matchable_10k += true_char
-                else:
-                    unmatchable += true_char
-            if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
-                print("")
+            counts.at["char segmentation", "incorrect"] += 1
+            line = f"{Fore.RED}{i:4d}{Style.RESET_ALL} | "
 
+        # Recognition accuracy
+        opcodes = SequenceMatcher(a=pred_text, b=true_text).get_opcodes()
+        for kind, pred_start, pred_end, true_start, true_end in opcodes:
+            if kind == "equal":
+                line += f"{Fore.GREEN}" \
+                        f"{pred_text[pred_start:pred_end]}" \
+                        f"{Style.RESET_ALL}"
+                for char in pred_text[pred_start:pred_end]:
+                    if char in hanzi_chars:
+                        counts.at["hanzi chars", "correct"] += 1
+                    elif char in western_chars:
+                        counts.at["western chars", "correct"] += 1
+                    elif char in numeric_chars:
+                        counts.at["numeric chars", "correct"] += 1
+                    elif (char in eastern_punctuation_chars
+                          or char in western_punctuation_chars):
+                        counts.at["punctuation chars", "correct"] += 1
+            elif kind == "replace":
+                line += f"{Fore.RED}" \
+                        f"{pred_text[pred_start:pred_end]}" \
+                        f"{Style.RESET_ALL}"
+                for char in true_text[true_start:true_end]:
+                    if char in hanzi_chars:
+                        counts.at["hanzi chars", "incorrect"] += 1
+                    elif char in western_chars:
+                        counts.at["western chars", "incorrect"] += 1
+                    elif char in numeric_chars:
+                        counts.at["numeric chars", "incorrect"] += 1
+                    elif (char in eastern_punctuation_chars
+                          or char in western_punctuation_chars):
+                        counts.at["punctuation chars", "incorrect"] += 1
+                    else:
+                        counts.at["hanzi chars", "unmatchable"] += 1
+                        unmatchable += char
+            elif kind == "delete":
+                line += f"{Fore.RED}" \
+                        f"{pred_text[pred_start:pred_end]}" \
+                        f"{Style.RESET_ALL}"
+            else:
+                embed()
         if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
+            print(line)
             print(f"     | {true_text}")
 
+    for column in ["correct", "incorrect", "unmatchable"]:
+        counts.at["all chars", column] = (
+                counts.at["hanzi chars", column] +
+                counts.at["western chars", column] +
+                counts.at["numeric chars", column] +
+                counts.at["punctuation chars", column])
+    counts["matchable"] = counts["correct"] + counts["incorrect"]
+    counts["total"] = counts["matchable"] + counts["unmatchable"]
+    counts["accuracy"] = counts["correct"] / counts["total"]
+    counts["matchable accuracy"] = counts["correct"] / counts["matchable"]
+    counts.at["char segmentation", "matchable"] = 0
+    counts.at["char segmentation", "matchable accuracy"] = 0
+
     if verbosity >= 1:
-        print(f"{n_events_correct_length}/{n_events} "
-              f"subtitles segmented correctly (accuracy = "
-              f"{n_events_correct_length / n_events:6.4})")
-        print(f"{n_chars_correct}/{n_chars_total} "
-              f"characters recognized correctly (accuracy = "
-              f"{n_chars_correct / n_chars_total:6.4})")
-        print(f"{n_chars_correct}/{n_chars_matchable} "
-              f"matchable characters recognized correctly (accuracy = "
-              f"{n_chars_correct / n_chars_matchable:6.4f})")
-        print(f"{len(matchable_10k)}/{n_chars_total} "
-              f"chars would be matchable using 10,000 most frequent"
-              f"({len(set(matchable_10k))} unique)")
-        print(sorted(list(set(matchable_10k))))
-        print(f"{len(unmatchable)}/{n_chars_total} "
-              f"chars would be still be unmatchable "
-              f"({len(set(unmatchable))} unique)")
+        print(counts)
         print(sorted(list(set(unmatchable))))
 
 
@@ -268,7 +281,8 @@ def generate_char_datum(char, font="/System/Library/Fonts/STHeiti Light.ttc",
     return data
 
 
-def get_reconstructed_text(chars, widths, separations, punctuation="eastern"):
+def get_reconstructed_text(chars, widths, separations,
+                           punctuation="fullwidth"):
     text = ""
     items = zip(chars[:-1], chars[1:], widths[:-1], widths[1:], separations)
     for char_i, char_j, width_i, width_j, sep in items:

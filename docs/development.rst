@@ -29,7 +29,10 @@ ____________
 - [x] Save char_bounds for each event
 - [x] Load char_bounds for each event
 - [x] Track reassigned characters
-- [ ] Merge sets of three characters
+- [x] Merge sets of three characters
+- [x] Score incorrectly-segmented lines more precisely
+- [ ] For unmatchable chars, print out unicode blocks
+- [ ] Print out list of misassigned chars
 - [ ] Clean up documentation and README
 - [ ] Backup files (-o to backup pre-existing file, -oo to overwrite)
 - [ ] Figure out if characters can be stored in model

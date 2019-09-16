@@ -126,6 +126,7 @@ class Derasterizer(CLToolBase):
         self.chars = np.concatenate(
             (numeric_chars, western_chars, western_punctuation_chars,
              eastern_punctuation_chars, hanzi_chars[:9933]))
+        self.reassigned_chars
         if "segment_characters" in self.operations:
             self.image_subtitles._initialize_data()
         if "recognize_characters" in self.operations:
@@ -287,67 +288,6 @@ class Derasterizer(CLToolBase):
             except Exception as e:
                 raise e
 
-    def manually_assign_chars(self, start_index=0):
-        # TODO: Implement; propogate character updates, CL argument
-        raise NotImplementedError()
-        # Newer:
-        # for i, event in enumerate(self.image_subtitles.events):
-        #     event.show()
-        #     try:
-        #         text = input_prefill(f"'{event.text}': ", event.text)
-        #     except EOFError:
-        #         print(f"\nSkipping subtitle {i}")
-        #         continue
-        #     except KeyboardInterrupt:
-        #         print("\nQuitting subtitle validation")
-        #         break
-        #     if text != event.text:
-        #         if len(text) == len(event.text):
-        #             for j, (yat, eee) in enumerate(zip(text, event.text)):
-        #                 if yat != eee:
-        #                     print(yat, eee)
-        #                     print(event.char_spec.iloc[j])
-        #                     embed(**self.embed_kw)
-        # Older:
-        # from pypinyin import pinyin
-        # if self.char_predictions is not None:
-        #     predictions = self.get_chars_of_labels(
-        #         np.argsort(self.char_predictions, axis=1)[:, -1])
-        # else:
-        #     predictions = None
-        # if self.verbosity >= 1:
-        #     print("Assigning characters")
-        #     print("  Press Enter to accept predicted character")
-        #     print("  or type another character and press Enter to correct")
-        #     print("  or press CTRL-D to skip character")
-        #     print("  or press CTRL-C to stop assigning")
-        #     print()
-        # for i, spec in self.spec.iterrows():
-        #     if spec.char != "":
-        #         print(f"Character {i} previously assigned as '{spec.char}' "
-        #               f"({pinyin(spec.char)[0][0]})")
-        #         continue
-        #     if i <= start_index:
-        #         print(f"Skipping assignment of character {i}")
-        #         continue
-        #     self.show(indexes=i)
-        #     try:
-        #         if predictions is not None:
-        #             match = input(f"'{predictions[i]}' "
-        #                           f"({pinyin(predictions[i])[0][0]}): ")
-        #         else:
-        #             match = input(f"'' (): ")
-        #     except EOFError:
-        #         print(f"\nSkipping assignment of character {i}")
-        #         continue
-        #     except KeyboardInterrupt:
-        #         print("\nQuitting character assignment")
-        #         break
-        #     if match == "":
-        #         self.assign_char(i, predictions[i])
-        #     else:
-        #         self.assign_char(i, match)
-
     # endregion
 
     # region Private Methods
@@ -362,7 +302,7 @@ class Derasterizer(CLToolBase):
                 get_tesseract_text,
                 [e.img for e in self.image_subtitles.events])):
             self.image_subtitles.events[i].text = text
-            if self.verbosity >= 2:
+            if self.verbosity >= 3:
                 print(f"{i:4d} | {text}")
 
     def _recognize_characters(self):
@@ -382,35 +322,33 @@ class Derasterizer(CLToolBase):
             else:
                 self.image_subtitles.spec.at[i, "char"] = char_pred[i]
 
+        # Replace half-width punctuation with full-width
+        for i, char in self.image_subtitles.spec.iterrows():
+            if char["char"] == "．" or char["char"] == ".":
+                if self.verbosity >= 1:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '。'")
+                self.image_subtitles.spec.at[i, "char"] = "。"
+            elif char["char"] == "!":
+                if self.verbosity >= 1:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '！'")
+                self.image_subtitles.spec.at[i, "char"] = "！"
+            elif char["char"] == ":":
+                if self.verbosity >= 1:
+                    print(f"Reassigning char {i} from "
+                          f"'{char['char']}' to '：'")
+                self.image_subtitles.spec.at[i, "char"] = "："
+
     def _reconstruct_text(self):
         for i, event in enumerate(self.image_subtitles.events):
             event.text = get_reconstructed_text(event.char_spec["char"].values,
                                                 event.char_widths,
                                                 event.char_separations)
-            if self.verbosity >= 2:
+            if self.verbosity >= 3:
                 print(f"{i:4d} | {event.text}")
 
     def _validate_chars_interactively(self):
-        # Replace periods
-
-        # TODO: Move somehwere else
-        for i, char in self.image_subtitles.spec.iterrows():
-            if char["char"] == "．" or char["char"] == ".":
-                if self.verbosity >= 2:
-                    print(f"Reassigning char {i} from "
-                          f"'{char['char']}' to '。'")
-                self.image_subtitles.spec.at[i, "char"] = "。"
-            elif char["char"] == "!":
-                if self.verbosity >= 2:
-                    print(f"Reassigning char {i} from "
-                          f"'{char['char']}' to '！'")
-                self.image_subtitles.spec.at[i, "char"] = "！"
-            elif char["char"] == ":":
-                if self.verbosity >= 2:
-                    print(f"Reassigning char {i} from "
-                          f"'{char['char']}' to '：'")
-                self.image_subtitles.spec.at[i, "char"] = "："
-
         # Validate all events, CTRL-c to quit
         for i, event in enumerate(self.image_subtitles.events):
             try:
@@ -453,7 +391,7 @@ class Derasterizer(CLToolBase):
 
                 # Reassign character
                 if new_text[event_char_index] != char["char"]:
-                    if self.verbosity >= 2:
+                    if self.verbosity >= 1:
                         print(f"Reassigning char {char_index} from "
                               f"'{char['char']}' to "
                               f"'{new_text[event_char_index]}'")
@@ -468,7 +406,7 @@ class Derasterizer(CLToolBase):
 
                 # Confirm character assignment
                 elif not char["confirmed"]:
-                    if self.verbosity >= 2:
+                    if self.verbosity >= 1:
                         print(f"Confirming char {char_index} as "
                               f"'{char['char']}'")
                     self.image_subtitles.spec.at[
