@@ -74,8 +74,8 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
                           index=["char segmentation", "hanzi chars",
                                  "western chars", "numeric chars",
                                  "punctuation chars", "all chars"])
-    misassigned_chars = set()
-    unmatchable_chars = set()
+    misassigned_chars = dict()
+    unmatchable_chars = dict()
 
     # Loop over subtitles
     for i, (pred_text, true_text) in enumerate(event_pairs):
@@ -108,28 +108,46 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
                 line += f"{Fore.RED}" \
                         f"{pred_text[pred_start:pred_end]}" \
                         f"{Style.RESET_ALL}"
-                misassigned_chars.update(list(pred_text[pred_start:pred_end]))
+                for char in pred_text[pred_start:pred_end]:
+                    block = get_unicode_block(char)
+                    if block not in misassigned_chars:
+                        misassigned_chars[block] = set()
+                    misassigned_chars[block].add(char)
                 for char in true_text[true_start:true_end]:
+                    block = get_unicode_block(char)
                     if char in hanzi_chars:
                         counts.at["hanzi chars", "incorrect"] += 1
-                        misassigned_chars.add(char)
+                        if block not in misassigned_chars:
+                            misassigned_chars[block] = set()
+                        misassigned_chars[block].add(char)
                     elif char in western_chars:
                         counts.at["western chars", "incorrect"] += 1
-                        misassigned_chars.add(char)
+                        if block not in misassigned_chars:
+                            misassigned_chars[block] = set()
+                        misassigned_chars[block].add(char)
                     elif char in numeric_chars:
                         counts.at["numeric chars", "incorrect"] += 1
-                        misassigned_chars.add(char)
+                        if block not in misassigned_chars:
+                            misassigned_chars[block] = set()
+                        misassigned_chars[block].add(char)
                     elif (char in eastern_punctuation_chars
                           or char in western_punctuation_chars):
                         counts.at["punctuation chars", "incorrect"] += 1
-                        misassigned_chars.add(char)
+                        if block not in misassigned_chars:
+                            misassigned_chars[block] = set()
+                        misassigned_chars[block].add(char)
                     else:
                         counts.at["hanzi chars", "unmatchable"] += 1
-                        unmatchable_chars.add(char)
+                        if block not in unmatchable_chars:
+                            unmatchable_chars[block] = set()
+                        unmatchable_chars[block].add(char)
             elif kind == "delete":
                 line += f"{Fore.RED}" \
                         f"{pred_text[pred_start:pred_end]}" \
                         f"{Style.RESET_ALL}"
+                for char in pred_text[pred_start:pred_end]:
+                    block = get_unicode_block(char)
+                    misassigned_chars.get(block, set()).add(char)
             else:
                 embed()
         if verbosity >= 3 or (verbosity == 2 and pred_text != true_text):
@@ -151,16 +169,18 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
 
     if verbosity >= 1:
         print(counts)
-        misassigned_chars = sorted(list(misassigned_chars))
+        length = max([len(b) for b in misassigned_chars.keys()]
+                     + [len(b) for b in unmatchable_chars.keys()])
         if len(misassigned_chars) > 0:
             print("Characters misassigned by model:")
-            for char in misassigned_chars:
-                print(f"{char} | {get_unicode_block(char)}")
-        unmatchable_chars = sorted(list(unmatchable_chars))
+            for block in sorted(misassigned_chars.keys()):
+                char = "".join(sorted(list(misassigned_chars[block])))
+                print(f"    {block:{length}} | {char}")
         if len(unmatchable_chars) > 0:
             print("Characters not matchable by model:")
-            for char in unmatchable_chars:
-                print(f"{char} | {get_unicode_block(char)}")
+            for block in sorted(unmatchable_chars.keys()):
+                char = "".join(sorted(list(unmatchable_chars[block])))
+                print(f"    {block:{length}} | {char}")
 
     return counts, unmatchable_chars
 
