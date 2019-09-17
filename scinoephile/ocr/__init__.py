@@ -14,10 +14,19 @@ from IPython import embed
 from scinoephile import package_root
 
 ################################## VARIABLES ##################################
+data_root = f"{package_root}/data/ocr/"
+unicode_blocks = pd.read_csv(f"{data_root}/Blocks-12.1.0.txt",
+                             sep=";", comment="#", skip_blank_lines=True,
+                             names=["range", "name"],
+                             converters={"name": lambda n: n.strip()})
+unicode_blocks["start"] = unicode_blocks["range"].apply(
+    lambda x: int(x.split(".")[0], 16))
+unicode_blocks["end"] = unicode_blocks["range"].apply(
+    lambda x: int(x.split(".")[-1], 16))
+unicode_blocks = unicode_blocks.drop(columns="range")
 hanzi_frequency = pd.read_csv(
-    f"{package_root}/data/ocr/characters.txt",
+    f"{data_root}/characters.txt",
     sep="\t", names=["character", "frequency", "cumulative frequency"])
-
 hanzi_chars = np.array(hanzi_frequency["character"], np.str)
 western_chars = np.array(list(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"))
@@ -65,7 +74,8 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
                           index=["char segmentation", "hanzi chars",
                                  "western chars", "numeric chars",
                                  "punctuation chars", "all chars"])
-    unmatchable = ""
+    misassigned_chars = set()
+    unmatchable_chars = set()
 
     # Loop over subtitles
     for i, (pred_text, true_text) in enumerate(event_pairs):
@@ -98,19 +108,24 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
                 line += f"{Fore.RED}" \
                         f"{pred_text[pred_start:pred_end]}" \
                         f"{Style.RESET_ALL}"
+                misassigned_chars.update(list(pred_text[pred_start:pred_end]))
                 for char in true_text[true_start:true_end]:
                     if char in hanzi_chars:
                         counts.at["hanzi chars", "incorrect"] += 1
+                        misassigned_chars.add(char)
                     elif char in western_chars:
                         counts.at["western chars", "incorrect"] += 1
+                        misassigned_chars.add(char)
                     elif char in numeric_chars:
                         counts.at["numeric chars", "incorrect"] += 1
+                        misassigned_chars.add(char)
                     elif (char in eastern_punctuation_chars
                           or char in western_punctuation_chars):
                         counts.at["punctuation chars", "incorrect"] += 1
+                        misassigned_chars.add(char)
                     else:
                         counts.at["hanzi chars", "unmatchable"] += 1
-                        unmatchable += char
+                        unmatchable_chars.add(char)
             elif kind == "delete":
                 line += f"{Fore.RED}" \
                         f"{pred_text[pred_start:pred_end]}" \
@@ -136,7 +151,18 @@ def analyze_text_accuracy(subtitles, standard, chars, verbosity=1):
 
     if verbosity >= 1:
         print(counts)
-        print(sorted(list(set(unmatchable))))
+        misassigned_chars = sorted(list(misassigned_chars))
+        if len(misassigned_chars) > 0:
+            print("Characters misassigned by model:")
+            for char in misassigned_chars:
+                print(f"{char} | {get_unicode_block(char)}")
+        unmatchable_chars = sorted(list(unmatchable_chars))
+        if len(unmatchable_chars) > 0:
+            print("Characters not matchable by model:")
+            for char in unmatchable_chars:
+                print(f"{char} | {get_unicode_block(char)}")
+
+    return counts, unmatchable_chars
 
 
 def center_char_img(data, x_offset=0, y_offset=0):
@@ -315,6 +341,15 @@ def get_tesseract_text(image, language="chi_sim"):
     from pytesseract import image_to_string
 
     return image_to_string(image, config=f"--psm 7 --oem 3", lang=language)
+
+
+def get_unicode_block(char):
+    # TODO: Document
+    code = ord(char)
+    for name, start, end in unicode_blocks.values:
+        if start <= code <= end:
+            return name
+    return None
 
 
 def show_img(img, **kwargs):

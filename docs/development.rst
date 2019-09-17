@@ -31,8 +31,9 @@ ____________
 - [x] Track reassigned characters
 - [x] Merge sets of three characters
 - [x] Score incorrectly-segmented lines more precisely
-- [ ] For unmatchable chars, print out unicode blocks
-- [ ] Print out list of misassigned chars
+- [x] For unmatchable chars, print out unicode blocks
+- [x] Print out list of misassigned chars
+- [ ] Organize misassigned and unmatchable chars by block
 - [ ] Clean up documentation and README
 - [ ] Backup files (-o to backup pre-existing file, -oo to overwrite)
 - [ ] Figure out if characters can be stored in model
