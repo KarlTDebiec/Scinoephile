@@ -51,16 +51,19 @@ class Compositor(CLToolBase):
     # region Builtins
 
     def __init__(self, bilingual_infile=None, bilingual_outfile=None,
-                 english_infile=None, english_outfile=None,
-                 hanzi_infile=None, hanzi_outfile=None, interactive=False,
-                 overwrite=False, pinyin_infile=None, pinyin_outfile=None,
-                 pinyin_language=None, simplify=False, **kwargs):
+                 combine_lines=False, english_infile=None,
+                 english_outfile=None, hanzi_infile=None, hanzi_outfile=None,
+                 interactive=False, overwrite=False, pinyin_infile=None,
+                 pinyin_outfile=None, pinyin_language=None, simplify=False,
+                 **kwargs):
         """
         Initializes command-line tool and compiles list of operations
 
         Args:
             bilingual_infile (str): Path to bilingual subtitle infile
             bilingual_outfile (str): Path to bilingual subtitle outfile
+            combine_lines (bool): combine multi-line subtitles into a single
+              line
             english_infile (str): Path to English subtitle infile
             english_outfile (str): Path to English subtitle outfile
             hanzi_infile (str): Path to Chinese Hanzi subtitle infile
@@ -189,6 +192,17 @@ class Compositor(CLToolBase):
                 raise ValueError("Chinese Hanzi subtitle output requires "
                                  "either Chinese Hanzi or English subtitle "
                                  "input")
+        if combine_lines:
+            if ("load_english" in self.operations
+                    or "translate_english" in self.operations):
+                self.operations["combine_english_lines"] = True
+            if ("load_hanzi" in self.operations
+                    or "translate_chinese" in self.operations):
+                self.operations["combine_hanzi_lines"] = True
+            if ("load_pinyin" in self.operations
+                    or "convert_pinyin_mandarin" in self.operations
+                    or "convert_pinyin_canontese" in self.operations):
+                self.operations["combine_pinyin_lines"] = True
         if simplify:
             if ("load_hanzi" in self.operations
                     or "translate_chinese" in self.operations):
@@ -242,6 +256,7 @@ class Compositor(CLToolBase):
                     raise ValueError("Bilingual subtitle output requires "
                                      "either Chinese Hanzi or English "
                                      "subtitle input")
+            self.operations["combine_lines"] = True
             self.operations["merge_bilingual"] = True
 
     def __call__(self):
@@ -275,6 +290,12 @@ class Compositor(CLToolBase):
             self._initialize_pinyin_subtitles("mandarin")
         if "convert_pinyin_cantonese" in self.operations:
             self._initialize_pinyin_subtitles("cantonese")
+        if "combine_english_lines" in self.operations:
+            self._combine_lines("english")
+        if "combine_hanzi_lines" in self.operations:
+            self._combine_lines("hanzi")
+        if "combine_pinyin_lines" in self.operations:
+            self._combine_lines("pinyin")
         if "merge_bilingual" in self.operations:
             self._initialize_bilingual_subtitles()
         if "interactive" in self.operations:
@@ -381,6 +402,29 @@ class Compositor(CLToolBase):
 
     # region Private Methods
 
+    def _combine_lines(self, language):
+        if language not in ["english", "hanzi", "pinyin"]:
+            raise ValueError("Invalid value provided for argument 'language'; "
+                             "must be 'english', 'hanzi', or 'pinyin'")
+        elif language == "english":
+            if self.english_subtitles is None:
+                raise ValueError("Comining of english lines requres "
+                                 "initialized English subtitles")
+            for i, e in enumerate(self.english_subtitles.events):
+                e.text = get_single_line_text(e.text, "english")
+        elif language == "hanzi":
+            if self.hanzi_subtitles is None:
+                raise ValueError("Combining of hanzi lines requires "
+                                 "initialized hanzi subtitles")
+            for e in self.hanzi_subtitles.events:
+                e.text = get_single_line_text(e.text, "hanzi")
+        elif language == "pinyin":
+            if self.pinyin_subtitles is None:
+                raise ValueError("Combining of pinyin lines requires "
+                                 "initialized pinyin subtitles")
+            for e in self.pinyin_subtitles.events:
+                e.text = get_single_line_text(e.text, "pinyin")
+
     def _convert_traditional_to_simplified_hanzi(self):
 
         # Process arguments
@@ -430,19 +474,8 @@ class Compositor(CLToolBase):
         if self.verbosity >= 1:
             print("Preparing bilingual subtitles")
 
-        # Convert each language to a single line
-        if chinese == "hanzi":
-            for e in chinese_subtitles.events:
-                e.text = get_single_line_text(e.text, "hanzi")
-        elif chinese == "pinyin":
-            for e in chinese_subtitles.events:
-                e.text = get_single_line_text(e.text, "pinyin")
-        for i, e in enumerate(english_subtitles.events):
-            e.text = get_single_line_text(e.text, "english")
-
         # Merge
-        merged_df = merge_subtitles(chinese_subtitles,
-                                    english_subtitles)
+        merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
         merged_text = []
         for _, e in merged_df.iterrows():
             if (isinstance(e["upper text"], float)
@@ -568,6 +601,11 @@ class Compositor(CLToolBase):
 
         # Operations
         parser_ops = parser.add_argument_group("operation arguments")
+        parser_ops.add_argument("-l", "--line",
+                                action="store_true",
+                                dest="combine_lines",
+                                help="combine multi-line subtitles into a "
+                                     "single line")
         parser_ops.add_argument("-c", "--cantonese",
                                 action="store_const",
                                 const="cantonese",
@@ -592,7 +630,6 @@ class Compositor(CLToolBase):
                                 action="store_true",
                                 help="show IPython prompt after loading and "
                                      "processing")
-        # TODO: Add option to collapse to single line
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
