@@ -2,8 +2,8 @@
 *.swp
 .DS_Store
 .idea
+.mypy_cache
 Makefile
-__pycache__
 build
 dist
 docs/doctrees
