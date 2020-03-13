@@ -1,8 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!python
 #   test_Subtitle.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -35,6 +34,11 @@ def run_tests(infile=None, md5s=None, outfiles=None, verbosity=1, **kwargs):
     def check_md5(key, value):
         """
         Checks if the md5 of an object matches a cached value
+
+        TODO:
+            - Replace 'key' with 'expected' md5sum, and handle 'None'
+            - Pass md5s.get('key') when check_md5 is called
+            - Move to utils/test.py
 
         Args:
             key (str): Name of object

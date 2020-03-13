@@ -1,8 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!python
 #   scinoephile.Compositor.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -34,11 +33,19 @@ Operations are inferred from provided infiles and outfiles, e.g.:
                   --simplify
 """
 ################################### MODULES ###################################
+from argparse import ArgumentError, ArgumentParser
+from copy import deepcopy
+from os import environ
+from os.path import isfile
+from typing import Any, Dict, List, Optional
+
 import numpy as np
-from scinoephile import (get_pinyin, get_simplified_hanzi,
-                         get_single_line_text, get_truecase, is_readable,
-                         is_writable, merge_subtitles, CLToolBase,
-                         SubtitleSeries)
+from IPython import embed
+
+from scinoephile import (CLToolBase, SubtitleSeries, get_pinyin,
+                         get_simplified_hanzi, get_single_line_text,
+                         get_truecase, infile_argument, merge_subtitles,
+                         outfile_argument)
 
 
 ################################### CLASSES ###################################
@@ -47,15 +54,24 @@ class Compositor(CLToolBase):
     Combines Chinese and English subtitles into synchronized bilingual
     subtitles
     """
+    _bilingual_subtitles: Optional[SubtitleSeries]
 
     # region Builtins
 
-    def __init__(self, bilingual_infile=None, bilingual_outfile=None,
-                 combine_lines=False, english_infile=None,
-                 english_outfile=None, hanzi_infile=None, hanzi_outfile=None,
-                 interactive=False, overwrite=False, pinyin_infile=None,
-                 pinyin_outfile=None, pinyin_language=None, simplify=False,
-                 **kwargs):
+    def __init__(self, bilingual_infile: Optional[str] = None,
+                 bilingual_outfile: Optional[str] = None,
+                 combine_lines: bool = False,
+                 english_infile: Optional[str] = None,
+                 english_outfile: Optional[str] = None,
+                 hanzi_infile: Optional[str] = None,
+                 hanzi_outfile: Optional[str] = None,
+                 interactive: bool = False,
+                 overwrite: bool = False,
+                 pinyin_infile: Optional[str] = None,
+                 pinyin_outfile: Optional[str] = None,
+                 pinyin_language: Optional[str] = None,
+                 simplify: bool = False,
+                 **kwargs: Any) -> None:
         """
         Initializes command-line tool and compiles list of operations
 
@@ -78,89 +94,42 @@ class Compositor(CLToolBase):
             simplify (bool): Convert traditional Hanzi to simplified
             **kwargs: Additional keyword arguments
         """
-        from os import environ
-        from os.path import expandvars, isfile
-
         super().__init__(**kwargs)
 
         # Compile input operations
         if not (bilingual_infile or english_infile or hanzi_infile
                 or pinyin_infile):
-            raise ValueError("At least one infile required")
+            raise ArgumentError("At least one infile required")
         if bilingual_infile:
-            bilingual_infile = expandvars(str(bilingual_infile))
-            if is_readable(bilingual_infile):
-                self.operations["load_bilingual"] = bilingual_infile
-            else:
-                raise IOError(f"Bilingual subtitle infile "
-                              f"'{bilingual_infile}' cannot be read")
+            self.operations["load_bilingual"] = bilingual_infile
         if english_infile:
-            english_infile = expandvars(str(english_infile))
-            if is_readable(english_infile):
-                self.operations["load_english"] = english_infile
-            else:
-                raise IOError(f"English subtitle infile "
-                              f"'{english_infile}' cannot be read")
+            self.operations["load_english"] = english_infile
         if hanzi_infile:
-            hanzi_infile = expandvars(str(hanzi_infile))
-            if is_readable(hanzi_infile):
-                self.operations["load_hanzi"] = hanzi_infile
-            else:
-                raise IOError(f"Chinese Hanzi subtitle infile "
-                              f"'{hanzi_infile}' cannot be read")
+            self.operations["load_hanzi"] = hanzi_infile
         if pinyin_infile:
-            pinyin_infile = expandvars(str(pinyin_infile))
-            if is_readable(pinyin_infile):
-                self.operations["load_pinyin"] = pinyin_infile
-            else:
-                raise IOError(f"Chinese pinyin subtitle infile "
-                              f"'{pinyin_infile}' cannot be read")
+            self.operations["load_pinyin"] = pinyin_infile
 
         # Compile output operations
         if bilingual_outfile:
-            bilingual_outfile = expandvars(str(bilingual_outfile))
-            if is_writable(bilingual_outfile):
-                if not isfile(bilingual_outfile) or overwrite:
-                    self.operations["save_bilingual"] = bilingual_outfile
-                else:
-                    raise IOError(f"Bilingual subtitle outfile "
-                                  f"'{bilingual_outfile}' already exists")
-            else:
-                raise IOError(f"Bilingual subtitle outfile "
-                              f"'{bilingual_outfile}' is not writable")
+            if isfile(bilingual_outfile) and not overwrite:
+                raise ArgumentError(f"Bilingual subtitle outfile "
+                                    f"'{bilingual_outfile}' already exists")
+            self.operations["save_bilingual"] = bilingual_outfile
         if english_outfile:
-            english_outfile = expandvars(str(english_outfile))
-            if is_writable(english_outfile):
-                if not isfile(english_outfile) or overwrite:
-                    self.operations["save_english"] = english_outfile
-                else:
-                    raise IOError(f"English subtitle outfile "
-                                  f"'{english_outfile}' already exists")
-            else:
-                raise IOError(f"English subtitle outfile "
-                              f"'{english_outfile}' is not writable")
+            if isfile(english_outfile) and not overwrite:
+                raise ArgumentError(f"English subtitle outfile "
+                                    f"'{english_outfile}' already exists")
+            self.operations["save_english"] = english_outfile
         if hanzi_outfile:
-            hanzi_outfile = expandvars(str(hanzi_outfile))
-            if is_writable(hanzi_outfile):
-                if not isfile(hanzi_outfile) or overwrite:
-                    self.operations["save_hanzi"] = hanzi_outfile
-                else:
-                    raise IOError(f"Chinese Hanzi subtitle outfile "
-                                  f"'{hanzi_outfile}' already exists")
-            else:
-                raise IOError(f"Chinese Hanzi subtitle outfile "
-                              f"'{hanzi_outfile}' is not writable")
+            if isfile(hanzi_outfile) and not overwrite:
+                raise ArgumentError(f"Chinese Hanzi subtitle outfile "
+                                    f"'{hanzi_outfile}' already exists")
+            self.operations["save_hanzi"] = hanzi_outfile
         if pinyin_outfile:
-            pinyin_outfile = expandvars(str(pinyin_outfile))
-            if is_writable(pinyin_outfile):
-                if not isfile(pinyin_outfile) or overwrite:
-                    self.operations["save_pinyin"] = pinyin_outfile
-                else:
-                    raise IOError(f"Chinese pinyin subtitle outfile "
-                                  f"'{pinyin_outfile}' already exists")
-            else:
-                raise IOError(f"Chinese pinyin subtitle outfile "
-                              f"'{pinyin_outfile}' is not writable")
+            if not isfile(pinyin_outfile) or overwrite:
+                raise ArgumentError(f"Chinese pinyin subtitle outfile "
+                                    f"'{pinyin_outfile}' already exists")
+            self.operations["save_pinyin"] = pinyin_outfile
         if interactive:
             self.operations["interactive"] = True
 
@@ -171,27 +140,27 @@ class Compositor(CLToolBase):
                 if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                     self.operations["translate_english"] = True
                 else:
-                    raise ValueError("Transation requires that "
-                                     "GOOGLE_APPLICATION_CREDENTIALS is "
-                                     "set to the path to a Google service "
-                                     "account key")
+                    raise ArgumentError("Transation requires that "
+                                        "GOOGLE_APPLICATION_CREDENTIALS is "
+                                        "set to the path to a Google service "
+                                        "account key")
             else:
-                raise ValueError("English subtitle output requires either "
-                                 "English or Chinese Hanzi subtitle input")
+                raise ArgumentError("English subtitle output requires either "
+                                    "English or Chinese Hanzi subtitle input")
         if ("save_hanzi" in self.operations
                 and "load_hanzi" not in self.operations):
             if "load_english" in self.operations:
                 if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                     self.operations["translate_chinese"] = True
                 else:
-                    raise ValueError("Transation requires that "
-                                     "GOOGLE_APPLICATION_CREDENTIALS is "
-                                     "set to the path to a Google service "
-                                     "account key")
+                    raise ArgumentError("Transation requires that "
+                                        "GOOGLE_APPLICATION_CREDENTIALS is "
+                                        "set to the path to a Google service "
+                                        "account key")
             else:
-                raise ValueError("Chinese Hanzi subtitle output requires "
-                                 "either Chinese Hanzi or English subtitle "
-                                 "input")
+                raise ArgumentError("Chinese Hanzi subtitle output requires "
+                                    "either Chinese Hanzi or English subtitle "
+                                    "input")
         if combine_lines:
             if ("load_english" in self.operations
                     or "translate_english" in self.operations):
@@ -208,22 +177,14 @@ class Compositor(CLToolBase):
                     or "translate_chinese" in self.operations):
                 self.operations["simplify_chinese"] = True
             else:
-                raise ValueError("Conversion to simplified Hanzi "
-                                 "characters requires Chinese Hanzi "
-                                 "subtitle input")
+                raise ArgumentError("Conversion to simplified Hanzi "
+                                    "characters requires Chinese Hanzi "
+                                    "subtitle input")
         if ("save_pinyin" in self.operations
                 and "load_pinyin" not in self.operations):
             if ("load_hanzi" in self.operations
                     or "translate_chinese" in self.operations):
-                if pinyin_language:
-                    pinyin_language = str(pinyin_language).lower()
-                    if pinyin_language in ["mandarin", "cantonese"]:
-                        self.operations[f"convert_pinyin_{pinyin_language}"] \
-                            = True
-                    else:
-                        raise ValueError(f"Pinyin language must be either "
-                                         f"'mandarin' or 'cantonese'; "
-                                         f"'{pinyin_language}' provided")
+                self.operations[f"convert_pinyin_{pinyin_language}"] = True
             else:
                 raise ValueError("Chinese pinyin subtitle output requires "
                                  "either Chinese Hanzi, Chinese pinyin, or "
@@ -235,35 +196,34 @@ class Compositor(CLToolBase):
                     if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                         self.operations["translate_english"] = True
                     else:
-                        raise ValueError("Transation requires that "
-                                         "GOOGLE_APPLICATION_CREDENTIALS is "
-                                         "set to the path to a Google service "
-                                         "account key")
+                        raise ArgumentError("Transation requires that "
+                                            "GOOGLE_APPLICATION_CREDENTIALS "
+                                            "is set to the path to a Google "
+                                            "service account key")
                 else:
-                    raise ValueError("Bilingual subtitle output requires "
-                                     "either Chinese Hanzi or English "
-                                     "subtitle input")
+                    raise ArgumentError("Bilingual subtitle output requires "
+                                        "either Chinese Hanzi or English "
+                                        "subtitle input")
             if "load_hanzi" not in self.operations:
                 if "load_english" in self.operations:
                     if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                         self.operations["translate_english"] = True
                     else:
-                        raise ValueError("Transation requires that "
-                                         "GOOGLE_APPLICATION_CREDENTIALS is "
-                                         "set to the path to a Google service "
-                                         "account key")
+                        raise ArgumentError("Transation requires that "
+                                            "GOOGLE_APPLICATION_CREDENTIALS "
+                                            "is set to the path to a Google "
+                                            "service account key")
                 else:
-                    raise ValueError("Bilingual subtitle output requires "
-                                     "either Chinese Hanzi or English "
-                                     "subtitle input")
+                    raise ArgumentError("Bilingual subtitle output requires "
+                                        "either Chinese Hanzi or English "
+                                        "subtitle input")
             self.operations["combine_lines"] = True
             self.operations["merge_bilingual"] = True
 
-    def __call__(self):
+    def __call__(self) -> None:
         """
         Performs operations
         """
-        from IPython import embed
 
         # Load infiles
         if "load_bilingual" in self.operations:
@@ -303,12 +263,20 @@ class Compositor(CLToolBase):
 
         # Save outfiles
         if "save_bilingual" in self.operations:
+            if self.bilingual_subtitles is None:
+                raise ValueError()
             self.bilingual_subtitles.save(self.operations["save_bilingual"])
         if "save_english" in self.operations:
+            if self.english_subtitles is None:
+                raise ValueError()
             self.english_subtitles.save(self.operations["save_english"])
         if "save_hanzi" in self.operations:
+            if self.hanzi_subtitles is None:
+                raise ValueError()
             self.hanzi_subtitles.save(self.operations["save_hanzi"])
         if "save_pinyin" in self.operations:
+            if self.pinyin_subtitles is None:
+                raise ValueError()
             self.pinyin_subtitles.save(self.operations["save_pinyin"])
 
     # endregion
@@ -316,7 +284,7 @@ class Compositor(CLToolBase):
     # region Public Properties
 
     @property
-    def bilingual_subtitles(self):
+    def bilingual_subtitles(self) -> Optional[SubtitleSeries]:
         """SubtitleSeries: Bilingual subtitles"""
         if not hasattr(self, "_bilingual_subtitles"):
             if (hasattr(self, "_english_subtitles")
@@ -334,13 +302,13 @@ class Compositor(CLToolBase):
         return self._bilingual_subtitles
 
     @bilingual_subtitles.setter
-    def bilingual_subtitles(self, value):
+    def bilingual_subtitles(self, value: Optional[SubtitleSeries]) -> None:
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._bilingual_subtitles = value
 
     @property
-    def english_subtitles(self):
+    def english_subtitles(self) -> Optional[SubtitleSeries]:
         """SubtitleSeries: English subtitles"""
         if not hasattr(self, "_english_subtitles"):
             if (hasattr(self, "_hanzi_subtitles")
@@ -351,38 +319,38 @@ class Compositor(CLToolBase):
         return self._english_subtitles
 
     @english_subtitles.setter
-    def english_subtitles(self, value):
+    def english_subtitles(self, value: Optional[SubtitleSeries]) -> None:
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._english_subtitles = value
 
     @property
-    def hanzi_subtitles(self):
+    def hanzi_subtitles(self) -> Optional[SubtitleSeries]:
         """SubtitleSeries: Hanzi Chinse subtitles"""
         if not hasattr(self, "_hanzi_subtitles"):
             if (hasattr(self, "_english_subtitles")
                     and self.english_subtitles is not None):
                 self._translate_english_to_chinese()
             else:
-                self._hanzi_subtitles = None
+                self._hanzi_subtitles: Optional[SubtitleSeries] = None
         return self._hanzi_subtitles
 
     @hanzi_subtitles.setter
-    def hanzi_subtitles(self, value):
+    def hanzi_subtitles(self, value: Optional[SubtitleSeries]) -> None:
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._hanzi_subtitles = value
 
     @property
-    def operations(self):
+    def operations(self) -> Dict[str, Any]:
         """dict: Collection of operations to perform, with associated
         arguments"""
         if not hasattr(self, "_operations"):
-            self._operations = {}
+            self._operations: Dict[str, Any] = {}
         return self._operations
 
     @property
-    def pinyin_subtitles(self):
+    def pinyin_subtitles(self) -> Optional[SubtitleSeries]:
         """SubtitleSeries: Pinyin Chinese subtitles"""
         if not hasattr(self, "_pinyin_subtitles"):
             if (hasattr(self, "_hanzi_subtitles")
@@ -393,7 +361,7 @@ class Compositor(CLToolBase):
         return self._pinyin_subtitles
 
     @pinyin_subtitles.setter
-    def pinyin_subtitles(self, value):
+    def pinyin_subtitles(self, value: Optional[SubtitleSeries]) -> None:
         if not isinstance(value, SubtitleSeries):
             raise ValueError(self._generate_setter_exception(value))
         self._pinyin_subtitles = value
@@ -402,7 +370,7 @@ class Compositor(CLToolBase):
 
     # region Private Methods
 
-    def _combine_lines(self, language):
+    def _combine_lines(self, language: str) -> None:
         if language not in ["english", "hanzi", "pinyin"]:
             raise ValueError("Invalid value provided for argument 'language'; "
                              "must be 'english', 'hanzi', or 'pinyin'")
@@ -425,10 +393,10 @@ class Compositor(CLToolBase):
             for e in self.pinyin_subtitles.events:
                 e.text = get_single_line_text(e.text, "pinyin")
 
-    def _convert_traditional_to_simplified_hanzi(self):
+    def _convert_traditional_to_simplified_hanzi(self) -> None:
 
         # Process arguments
-        if self.hanzi_subtitles is None:
+        if self._hanzi_subtitles is None:
             raise ValueError("Conversion of traditional hanzi to simplified "
                              "requires initialized hanzi subtitles")
 
@@ -438,10 +406,10 @@ class Compositor(CLToolBase):
         for event in self._hanzi_subtitles:
             event.text = get_simplified_hanzi(event.text, self.verbosity)
 
-    def _convert_capital_english_to_truecase(self):
+    def _convert_capital_english_to_truecase(self) -> None:
 
         # Process arguments
-        if self.english_subtitles is None:
+        if self._english_subtitles is None:
             raise ValueError("Conversion of capitalized English to truecase "
                              "requires initialized English subtitles")
 
@@ -451,7 +419,7 @@ class Compositor(CLToolBase):
         for event in self._english_subtitles:
             event.text = get_truecase(event.text)
 
-    def _initialize_bilingual_subtitles(self, chinese="hanzi"):
+    def _initialize_bilingual_subtitles(self, chinese: str = "hanzi") -> None:
         from copy import deepcopy
 
         # Process arguments
@@ -476,7 +444,7 @@ class Compositor(CLToolBase):
 
         # Merge
         merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
-        merged_text = []
+        merged_text: List[str] = []
         for _, e in merged_df.iterrows():
             if (isinstance(e["upper text"], float)
                     and np.isnan(e["upper text"])):
@@ -490,11 +458,12 @@ class Compositor(CLToolBase):
 
         self._bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
 
-    def _initialize_pinyin_subtitles(self, language="mandarin"):
+    def _initialize_pinyin_subtitles(self, language: str = "mandarin") -> None:
         from copy import deepcopy
 
         # Process arguments
-        if self.hanzi_subtitles is None:
+        self._pinyin_subtitles = deepcopy(self.hanzi_subtitles)
+        if self._pinyin_subtitles is None:
             raise ValueError("Initialization of pinyin subtitles requires "
                              "initialized hanzi subtitles")
         if language not in ["cantonese", "mandarin"]:
@@ -508,18 +477,17 @@ class Compositor(CLToolBase):
                 print("Adding Cantonese romanization")
 
         # Copy and convert to pinyin
-        self._pinyin_subtitles = deepcopy(self.hanzi_subtitles)
         for event in self._pinyin_subtitles.events:
             event.text = get_pinyin(event.text, language,
                                     verbosity=self.verbosity)
 
-    def _translate_chinese_to_english(self):
+    def _translate_chinese_to_english(self) -> None:
         # TODO: Move most to language-independent function
-        from copy import deepcopy
         from scinoephile.translation import client
 
         # Process arguments
-        if self.hanzi_subtitles is None:
+        self._english_subtitles = deepcopy(self.hanzi_subtitles)
+        if self._english_subtitles is None:
             raise ValueError("English translation requires Chinese subtitles "
                              "as source")
 
@@ -527,9 +495,8 @@ class Compositor(CLToolBase):
             print("Initializing English translation")
 
         # Translate
-        self._english_subtitles = deepcopy(self.hanzi_subtitles)
         texts = [e.text for e in self._english_subtitles.events]
-        translations = []
+        translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
                              client.translate(list(texts[i:i + 100]),
@@ -541,13 +508,13 @@ class Compositor(CLToolBase):
                       f"{translation}")
             self._english_subtitles.events[i].text = translation
 
-    def _translate_english_to_chinese(self):
+    def _translate_english_to_chinese(self) -> None:
         # TODO: Move most to language-independent function
-        from copy import deepcopy
         from scinoephile.translation import client
 
         # Process arguments
-        if self.english_subtitles is None:
+        self._hanzi_subtitles = deepcopy(self.english_subtitles)
+        if self._hanzi_subtitles is None:
             raise ValueError("Chinese translation requires English subtitles "
                              "as source")
 
@@ -555,9 +522,8 @@ class Compositor(CLToolBase):
             print("Initializing Chinese translation")
 
         # Translate
-        self._hanzi_subtitles = deepcopy(self.english_subtitles)
         texts = [e.text for e in self._hanzi_subtitles.events]
-        translations = []
+        translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
                              client.translate(list(texts[i:i + 100]),
@@ -574,81 +540,108 @@ class Compositor(CLToolBase):
     # region Class Methods
 
     @classmethod
-    def construct_argparser(cls, **kwargs):
+    def construct_argparser(cls, **kwargs: Any) -> ArgumentParser:
         """
         Constructs argument parser
 
         Returns:
-            parser (argparse.ArgumentParser): Argument parser
+            parser (ArgumentParser): Argument parser
         """
+
+        def pinyin_language_argument(value: str) -> str:
+            value = value.lower()
+            if value not in ["mandarin", "cantonese"]:
+                raise ArgumentError(f"Pinyin language must be either "
+                                    f"'mandarin' or 'cantonese'; '{value}' "
+                                    f"provided")
+            return value
+
         parser = super().construct_argparser(description=__doc__, **kwargs)
 
         # Input
         parser_input = parser.add_argument_group("input arguments")
-        parser_input.add_argument("-bif", "--bilingual_infile",
-                                  help="bilingual subtitle infile",
-                                  metavar="FILE")
-        parser_input.add_argument("-cif", "--chinese_infile",
-                                  dest="hanzi_infile",
-                                  help="Chinese Hanzi subtitle infile",
-                                  metavar="FILE")
-        parser_input.add_argument("-eif", "--english_infile",
-                                  help="English subtitle infile",
-                                  metavar="FILE")
-        parser_input.add_argument("-pif", "--pinyin_infile",
-                                  help="Chinese pinyin subtitle infile",
-                                  metavar="FILE")
+        parser_input.add_argument(
+            "-bif", "--bilingual_infile",
+            metavar="FILE",
+            type=infile_argument,
+            help="bilingual subtitle infile")
+        parser_input.add_argument(
+            "-cif", "--chinese_infile",
+            dest="hanzi_infile",
+            metavar="FILE",
+            type=infile_argument,
+            help="Chinese Hanzi subtitle infile")
+        parser_input.add_argument(
+            "-eif", "--english_infile",
+            metavar="FILE",
+            type=infile_argument,
+            help="English subtitle infile")
+        parser_input.add_argument(
+            "-pif", "--pinyin_infile",
+            metavar="FILE",
+            type=infile_argument,
+            help="Chinese pinyin subtitle infile")
 
         # Operations
         parser_ops = parser.add_argument_group("operation arguments")
-        parser_ops.add_argument("-l", "--line",
-                                action="store_true",
-                                dest="combine_lines",
-                                help="combine multi-line subtitles into a "
-                                     "single line")
-        parser_ops.add_argument("-c", "--cantonese",
-                                action="store_const",
-                                const="cantonese",
-                                dest="pinyin_language",
-                                help="add Cantonese Yale pinyin (耶鲁粤语拼音); "
-                                     "mainly useful for older Hong Kong "
-                                     "movies (1980s to early 1990s) whose "
-                                     "Chinese subtitles are in 粤文 (i.e. "
-                                     "using 係, 喺, and 唔 rather than 是, 在, "
-                                     "and 不, etc.)")
-        parser_ops.add_argument("-m", "--mandarin",
-                                action="store_const",
-                                const="mandarin",
-                                default="mandarin",
-                                dest="pinyin_language",
-                                help="add Mandarin Hanyu pinyin (汉语拼音)")
-        parser_ops.add_argument("-s", "--simplify",
-                                action="store_true",
-                                help="convert traditional Hanzi characters to "
-                                     "simplified")
-        parser_ops.add_argument("-i", "--interactive",
-                                action="store_true",
-                                help="show IPython prompt after loading and "
-                                     "processing")
+        parser_ops.add_argument(
+            "-l", "--line",
+            action="store_true",
+            dest="combine_lines",
+            help="combine multi-line subtitles into a single line")
+        parser_ops.add_argument(
+            "-c", "--cantonese",
+            action="store_const",
+            const="cantonese",
+            dest="pinyin_language",
+            help="add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for "
+                 "older Hong Kong movies (1980s to early 1990s) whose Chinese "
+                 "subtitles are in 粤文 (i.e. using 係, 喺, and 唔 rather than "
+                 "是, 在, and 不, etc.)")
+        parser_ops.add_argument(
+            "-m", "--mandarin",
+            action="store_const",
+            const="mandarin",
+            default="mandarin",
+            dest="pinyin_language",
+            type=pinyin_language_argument,
+            help="add Mandarin Hanyu pinyin (汉语拼音)")
+        parser_ops.add_argument(
+            "-s", "--simplify",
+            action="store_true",
+            help="convert traditional Hanzi characters to simplified")
+        parser_ops.add_argument(
+            "-i", "--interactive",
+            action="store_true",
+            help="show IPython prompt after loading and processing")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
-        parser_output.add_argument("-bof", "--bilingual_outfile",
-                                   help="bilingual subtitle outfile",
-                                   metavar="FILE")
-        parser_output.add_argument("-cof", "--chinese_outfile",
-                                   dest="hanzi_outfile",
-                                   help="Chinese Hanzi subtitle outfile",
-                                   metavar="FILE")
-        parser_output.add_argument("-eof", "--english_outfile",
-                                   help="English subtitle outfile",
-                                   metavar="FILE")
-        parser_output.add_argument("-pof", "--pinyin_outfile",
-                                   help="Chinese pinyin subtitle outfile",
-                                   metavar="FILE")
-        parser_output.add_argument("-o", "--overwrite",
-                                   action="store_true",
-                                   help="overwrite outfiles if they exist")
+        parser_output.add_argument(
+            "-bof", "--bilingual_outfile",
+            metavar="FILE",
+            type=outfile_argument,
+            help="bilingual subtitle outfile")
+        parser_output.add_argument(
+            "-cof", "--chinese_outfile",
+            dest="hanzi_outfile",
+            metavar="FILE",
+            type=outfile_argument,
+            help="Chinese Hanzi subtitle outfile")
+        parser_output.add_argument(
+            "-eof", "--english_outfile",
+            metavar="FILE",
+            type=outfile_argument,
+            help="English subtitle outfile")
+        parser_output.add_argument(
+            "-pof", "--pinyin_outfile",
+            metavar="FILE",
+            type=outfile_argument,
+            help="Chinese pinyin subtitle outfile")
+        parser_output.add_argument(
+            "-o", "--overwrite",
+            action="store_true",
+            help="overwrite outfiles if they exist")
 
         return parser
 

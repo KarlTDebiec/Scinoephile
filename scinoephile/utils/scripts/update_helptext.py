@@ -1,8 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!python
 #   update_helptext.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -18,11 +17,11 @@ if __name__ == "__main__":
     root = dirname(dirname(dirname(dirname(realpath(
         getframeinfo(currentframe()).filename)))))
     re_helptext = re.compile(
-        r"((?P<block_1>.*:name: derasterizer_helptext\n\n))"
-        r"((?P<derasterizer_helptext>.*?(?=^\S+)))"
-        r"((?P<block_2>.*:name: compositor_helptext\n\n))"
-        r"((?P<compositor_helptext>.*?(?=^\S+)))"
-        r"((?P<block_3>.*))",
+        r"(?P<block_1>.*:name: derasterizer_helptext\n\n)"
+        r"(?P<derasterizer_helptext>.*?(?=^\S+))"
+        r"(?P<block_2>.*:name: compositor_helptext\n\n)"
+        r"(?P<compositor_helptext>.*?(?=^\S+))"
+        r"(?P<block_3>.*)",
         re.M | re.S)
 
     # Read current README and split into sections

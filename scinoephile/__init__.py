@@ -1,19 +1,29 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!python
 #   scinoephile.__init__.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+import io
 import re
+import sys
+from abc import ABC, abstractmethod
+from argparse import (ArgumentError, ArgumentParser,
+                      RawDescriptionHelpFormatter, _SubParsersAction)
+from inspect import currentframe, getframeinfo
+from os import R_OK, W_OK, access, getcwd
+from os.path import dirname, expandvars, isfile
+from readline import insert_text, redisplay, set_pre_input_hook
+from shutil import copyfile
+from sys import modules
+from tempfile import NamedTemporaryFile
+from typing import Any, Dict, List, Optional, Tuple, Union, Callable
+
 import numpy as np
 import pandas as pd
-from abc import ABC, abstractmethod
-from os.path import dirname
-from sys import modules
 
 ################################## VARIABLES ##################################
 package_root = dirname(modules[__name__].__file__)
@@ -44,7 +54,7 @@ re_western = re.compile(r"[a-zA-Z0-9]")
 
 
 ################################## FUNCTIONS ##################################
-def embed_kw(verbosity=2, **kwargs):
+def embed_kw(verbosity: int = 2, **kwargs: Any) -> Dict[str, str]:
     """
     Prepares header for IPython prompt showing current location in code
 
@@ -57,9 +67,10 @@ def embed_kw(verbosity=2, **kwargs):
     Returns:
         dictionary: Keyword arguments to be passed to IPython.embed
     """
-    from inspect import currentframe, getframeinfo
-
-    frameinfo = getframeinfo(currentframe().f_back)
+    frame = currentframe()
+    if frame is None:
+        raise ValueError()
+    frameinfo = getframeinfo(frame.f_back)
     file = frameinfo.filename.replace(package_root, "")
     func = frameinfo.function
     number = frameinfo.lineno - 1
@@ -79,7 +90,8 @@ def embed_kw(verbosity=2, **kwargs):
     return {"header": header}
 
 
-def format_list(list_of_strings, linker="and", quote="'"):
+def format_list(list_of_strings: List[str], linker: str = "and",
+                quote: str = "'") -> str:
     # TODO: Document
     string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
     if len(list_of_strings) == 2:
@@ -89,7 +101,7 @@ def format_list(list_of_strings, linker="and", quote="'"):
     return string
 
 
-def get_simplified_hanzi(text, verbosity=1):
+def get_simplified_hanzi(text: str, verbosity: int = 1) -> str:
     """
     Converts traditional hanzi to simplified
 
@@ -112,7 +124,8 @@ def get_simplified_hanzi(text, verbosity=1):
     return simplified
 
 
-def get_pinyin(text, language="mandarin", verbosity=1):
+def get_pinyin(text: str, language: str = "mandarin",
+               verbosity: int = 1) -> str:
     """
     Converts hanzi to pinyin
 
@@ -174,7 +187,7 @@ def get_pinyin(text, language="mandarin", verbosity=1):
     return romanization
 
 
-def get_truecase(text):
+def get_truecase(text: str) -> str:
     """
     Converts English text to truecase.
 
@@ -202,7 +215,7 @@ def get_truecase(text):
     return truecased
 
 
-def get_single_line_text(text, language="english"):
+def get_single_line_text(text: str, language: str = "english") -> str:
     """
     Arranges multi-line text on a single line.
 
@@ -241,7 +254,7 @@ def get_single_line_text(text, language="english"):
     return single_line
 
 
-def in_ipython():
+def in_ipython() -> Union[bool, str]:
     """
     Determines if inside IPython prompt
 
@@ -249,7 +262,7 @@ def in_ipython():
         str: Type of shell in use
     """
     try:
-        shell = get_ipython().__class__.__name__
+        shell = str(get_ipython().__class__.__name__)
         if shell == "ZMQInteractiveShell":
             # IPython in Jupyter Notebook
             return shell
@@ -267,20 +280,14 @@ def in_ipython():
         return False
 
 
-def is_readable(path):
-    from os import access, R_OK
-    from os.path import isfile
-
+def is_readable(path: str) -> bool:
     if isfile(path) and access(path, R_OK):
         return True
     else:
         return False
 
 
-def is_writable(path):
-    from os import access, getcwd, W_OK
-    from os.path import dirname
-
+def is_writable(path: str) -> bool:
     path = dirname(path)
     if path == "":
         path = getcwd()
@@ -290,7 +297,7 @@ def is_writable(path):
         return False
 
 
-def input_prefill(prompt, prefill):
+def input_prefill(prompt: str, prefill: str) -> str:
     """
     Prompts user for input with pre-filled text
 
@@ -305,9 +312,8 @@ def input_prefill(prompt, prefill):
     Returns:
         str: Text inputted by user
     """
-    from readline import insert_text, redisplay, set_pre_input_hook
 
-    def pre_input_hook():
+    def pre_input_hook() -> None:
         insert_text(prefill)
         redisplay()
 
@@ -318,7 +324,7 @@ def input_prefill(prompt, prefill):
     return result
 
 
-def merge_subtitles(upper, lower):
+def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     """
     Merges and synchronizes two sets of subtitles.
 
@@ -330,7 +336,7 @@ def merge_subtitles(upper, lower):
         DataFrame: Merged and synchronized subtitles
     """
 
-    def add_event(merged):
+    def add_event(merged: List[Tuple[int, int, str]]) -> None:
         if start != time:
             if upper_text is None:
                 merged += [pd.DataFrame.from_records(
@@ -353,17 +359,17 @@ def merge_subtitles(upper, lower):
 
     # Organize transitions
     # TODO: Validate that events within each series do not overlap
-    transitions = []
+    transitions: List[Tuple[int, str, Optional[str]]] = []
     for _, event in upper.iterrows():
-        transitions += [[event["start"], "upper_start", event["text"]],
-                        [event["end"], "upper_end", None]]
+        transitions += [(event["start"], "upper_start", event["text"]),
+                        (event["end"], "upper_end", None)]
     for _, event in lower.iterrows():
-        transitions += [[event["start"], "lower_start", event["text"]],
-                        [event["end"], "lower_end", None]]
+        transitions += [(event["start"], "lower_start", event["text"]),
+                        (event["end"], "lower_end", None)]
     transitions.sort()
 
     # Merge events
-    merged = []
+    merged: List[Tuple[int, int, str]] = []
     start = upper_text = lower_text = None
     for time, kind, text in transitions:
         if kind == "upper_start":
@@ -406,9 +412,9 @@ def merge_subtitles(upper, lower):
         ["upper text", "lower text", "start", "end"]]
 
     # Synchronize events
-    synced_df = [merged_df.iloc[0].copy()]
+    synced_list = [merged_df.iloc[0].copy()]
     for index in range(1, merged_df.shape[0]):
-        last = synced_df[-1]
+        last = synced_list[-1]
         next = merged_df.iloc[index].copy()
         if last["upper text"] == next["upper text"]:
             if isinstance(last["lower text"], float) and np.isnan(
@@ -427,7 +433,7 @@ def merge_subtitles(upper, lower):
                     # Probably long upper split into two lower
                     last["end"] = next["start"] = last["end"] + (gap / 2)
                 # Otherwise, probably upper repeated with different lower
-                synced_df += [next]
+                synced_list += [next]
         elif last["lower text"] == next["lower text"]:
             if isinstance(last["upper text"], float) and np.isnan(
                     last["upper text"]):
@@ -438,7 +444,7 @@ def merge_subtitles(upper, lower):
                     next["upper text"]):
                 # Upper started before lower
                 if last.end < next["start"]:
-                    synced_df += [next]
+                    synced_list += [next]
                 else:
                     last["end"] = next["end"]
             else:
@@ -447,10 +453,10 @@ def merge_subtitles(upper, lower):
                     # Probably long lower split into two upper
                     last["end"] = next["start"] = last["end"] + (gap / 2)
                 # Otherwise, probably lower repeated with different upper
-                synced_df += [next]
+                synced_list += [next]
         else:
-            synced_df += [next]
-    synced_df = pd.DataFrame(synced_df)
+            synced_list += [next]
+    synced_df = pd.DataFrame(synced_list)
 
     # Filter very short events
     # TODO: Do this interactively, somewhere else
@@ -460,13 +466,40 @@ def merge_subtitles(upper, lower):
     return synced_df
 
 
-def todo(func):
+def todo(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
     """Decorator be used to annotate unimplemented functions in a useful way"""
 
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError()
 
     return wrapper
+
+
+def infile_argument(value: str) -> str:
+    value = expandvars(value)
+
+    if not isfile(value):
+        raise ArgumentError(f"infile '{value}' does not exist")
+    elif not access(value, R_OK):
+        raise ArgumentError(f"infile '{value}' cannot be read")
+
+    return value
+
+
+def outfile_argument(value: str) -> str:
+    value = expandvars(value)
+
+    if isfile(value):
+        if not access(value, W_OK):
+            raise ArgumentError(f"outfile '{value}' cannot be written")
+    else:
+        directory = dirname(value)
+        if directory == "":
+            directory = getcwd()
+        if not access(directory, W_OK):
+            raise ArgumentError(f"outfile '{value}' cannot be written")
+
+    return value
 
 
 ################################### CLASSES ###################################
@@ -475,7 +508,7 @@ class Base(ABC):
 
     # region Builtins
 
-    def __init__(self, verbosity=None, **kwargs):
+    def __init__(self, verbosity: int = 1, **kwargs: Any) -> None:
         """
         Initializes class
 
@@ -485,19 +518,19 @@ class Base(ABC):
         """
 
         # Store property values
-        if verbosity is not None:
-            self.verbosity = verbosity
+        self.verbosity = verbosity
 
     # endregion
 
     # region Properties
 
     @property
-    def embed_kw(self):
+    def embed_kw(self) -> Dict[str, str]:
         """Use ``IPython.embed(**self.embed_kw)`` for better prompt"""
-        from inspect import currentframe, getframeinfo
-
-        frameinfo = getframeinfo(currentframe().f_back)
+        frame = currentframe()
+        if frame is None:
+            raise ValueError()
+        frameinfo = getframeinfo(frame.f_back)
         file = frameinfo.filename.replace(package_root, "")
         func = frameinfo.function
         number = frameinfo.lineno - 1
@@ -518,14 +551,14 @@ class Base(ABC):
         return {"header": header}
 
     @property
-    def verbosity(self):
+    def verbosity(self) -> int:
         """int: Level of output to provide"""
         if not hasattr(self, "_verbosity"):
             self._verbosity = 1
         return self._verbosity
 
     @verbosity.setter
-    def verbosity(self, value):
+    def verbosity(self, value: int) -> None:
         if not isinstance(value, int) and value >= 0:
             raise ValueError(self._generate_setter_exception(value))
         self._verbosity = value
@@ -534,16 +567,17 @@ class Base(ABC):
 
     # region Private methods
 
-    def _generate_setter_exception(self, value):
+    def _generate_setter_exception(self, value: Any) -> str:
         """
         Generates Exception text for setters that are passed invalid values
 
         Returns:
             str: Exception text
         """
-        from inspect import currentframe, getframeinfo
-
-        frameinfo = getframeinfo(currentframe().f_back)
+        frame = currentframe()
+        if frame is None:
+            raise ValueError()
+        frameinfo = getframeinfo(frame.f_back)
         return f"Property '{type(self).__name__}.{frameinfo.function}' " \
                f"was passed invalid value '{value}' " \
                f"of type '{type(value).__name__}'. " \
@@ -558,7 +592,7 @@ class CLToolBase(Base, ABC):
     # region Builtins
 
     @abstractmethod
-    def __call__(self):
+    def __call__(self) -> None:
         """ Core logic """
         pass
 
@@ -567,27 +601,28 @@ class CLToolBase(Base, ABC):
     # region Public Class Methods
 
     @classmethod
-    def construct_argparser(cls, description=None, parser=None, **kwargs):
+    def construct_argparser(cls, description: Optional[str] = None,
+                            parser: Optional[ArgumentParser] = None,
+                            **kwargs: Any) -> ArgumentParser:
         """
         Constructs argument parser
 
         Returns:
-            parser (argparse.ArgumentParser): Argument parser
+            parser (ArgumentParser): Argument parser
         """
-        import argparse
 
-        if isinstance(parser, argparse.ArgumentParser):
+        if isinstance(parser, ArgumentParser):
             parser = parser
-        elif isinstance(parser, argparse._SubParsersAction):
+        elif isinstance(parser, _SubParsersAction):
             parser = parser.add_parser(
                 name=cls.__name__.lower(),
                 description=description,
                 help=description,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
+                formatter_class=RawDescriptionHelpFormatter)
         elif parser is None:
-            parser = argparse.ArgumentParser(
+            parser = ArgumentParser(
                 description=description,
-                formatter_class=argparse.RawDescriptionHelpFormatter)
+                formatter_class=RawDescriptionHelpFormatter)
 
         # General
         verbosity = parser.add_mutually_exclusive_group()
@@ -608,7 +643,7 @@ class CLToolBase(Base, ABC):
     # endregion
 
     @classmethod
-    def main(cls):
+    def main(cls) -> None:
         """Parses and validates arguments, constructs and calls object"""
         pd.set_option("display.width", 110)
         pd.set_option("display.max_colwidth", 16)
@@ -619,39 +654,32 @@ class CLToolBase(Base, ABC):
         cls(**args)()
 
 
-class StdoutLogger(object):
+class StdoutLogger():
     """Logs print statements to both stdout and file; use with 'with'"""
 
     # region Builtins
 
-    def __init__(self, outfile, mode="a", process_carriage_returns=True):
+    def __init__(self, outfile: str, mode: str = "a",
+                 process_carriage_returns: bool = True) -> None:
         self.process_carriage_returns = process_carriage_returns
         self.outfile = outfile
         self.mode = mode
 
-    def __enter__(self):
-        import sys
-
+    def __enter__(self) -> None:
         self.file = open(self.outfile, self.mode)
         self.stdout = sys.stdout
         sys.stdout = self
 
-    def __exit__(self, _type, _value, _traceback):
-        import sys
-
+    def __exit__(self, _type: Any, _value: Any, _traceback: Any) -> None:
         sys.stdout = self.stdout
         self.file.close()
 
         if self.process_carriage_returns:
-            from io import open
-            from re import sub
-            from shutil import copyfile
-            from tempfile import NamedTemporaryFile
 
-            with open(self.file.name, "r", newline="\n") as file:
+            with io.open(self.file.name, "r", newline="\n") as file:
                 with NamedTemporaryFile("w") as temp:
                     for i, line in enumerate(file):
-                        temp.write(sub("^.*\r", "", line))
+                        temp.write(re.sub("^.*\r", "", line))
                     temp.flush()
                     copyfile(temp.name, f"{file.name}")
 
@@ -659,12 +687,12 @@ class StdoutLogger(object):
 
     # region Public Methods
 
-    def flush(self):
+    def flush(self) -> None:
         self.file.flush()
 
-    def write(self, data):
-        self.file.write(data)
-        self.stdout.write(data)
+    def write(self, text: str) -> None:
+        self.file.write(text)
+        self.stdout.write(text)
 
     # endregion
 

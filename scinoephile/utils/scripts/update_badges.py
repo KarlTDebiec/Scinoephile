@@ -1,8 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!python
 #   update_badges.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -130,7 +129,7 @@ if __name__ == "__main__":
                          r"(?P<undocumented>\d+\s+|$)")
 
 
-    def get_build_color(passing):
+    def get_build_color(build):
         if build == "Passing":
             return "#4c1"
         else:

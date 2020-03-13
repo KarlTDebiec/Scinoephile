@@ -1,8 +1,7 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 #   scinoephile.SubtitleSeries.py
 #
-#   Copyright (C) 2017-2019 Karl T Debiec
+#   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
@@ -57,19 +56,19 @@ class SubtitleSeries(Base, SSAFile):
             from pysubs2.time import ms_to_str
 
             return f"<{self.__class__.__name__} " \
-                f"with {len(self.events):d} events " \
-                f"and {len(self.styles):d} styles, " \
-                f"last timestamp " \
-                f"{ms_to_str(max(e.end for e in self.events)):s}>"
+                   f"with {len(self.events):d} events " \
+                   f"and {len(self.styles):d} styles, " \
+                   f"last timestamp " \
+                   f"{ms_to_str(max(e.end for e in self.events)):s}>"
         else:
             return f"<SubtitleSeries with 0 events " \
-                f"and {len(self.styles):d} styles>"
+                   f"and {len(self.styles):d} styles>"
 
     # endregion
 
     # region Public Methods
 
-    def get_dataframe(self):
+    def get_dataframe(self) -> pd.DataFrame:
         df = pd.DataFrame.from_records(
             data=[(e.text, e.start, e.end) for e in self.events],
             columns=["text", "start", "end"])
