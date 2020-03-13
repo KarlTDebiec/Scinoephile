@@ -548,14 +548,6 @@ class Compositor(CLToolBase):
             parser (ArgumentParser): Argument parser
         """
 
-        def pinyin_language_argument(value: str) -> str:
-            value = value.lower()
-            if value not in ["mandarin", "cantonese"]:
-                raise ArgumentError(f"Pinyin language must be either "
-                                    f"'mandarin' or 'cantonese'; '{value}' "
-                                    f"provided")
-            return value
-
         parser = super().construct_argparser(description=__doc__, **kwargs)
 
         # Input
@@ -604,7 +596,6 @@ class Compositor(CLToolBase):
             const="mandarin",
             default="mandarin",
             dest="pinyin_language",
-            type=pinyin_language_argument,
             help="add Mandarin Hanyu pinyin (汉语拼音)")
         parser_ops.add_argument(
             "-s", "--simplify",
