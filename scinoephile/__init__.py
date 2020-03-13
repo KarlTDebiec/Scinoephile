@@ -241,11 +241,11 @@ def get_single_line_text(text: str, language: str = "english") -> str:
                              r"\1 \2",
                              single_line, re.M)
     elif language == "hanzi":
-        single_line = re.sub(r"^\s*﹣\s*(.+)\s*\n\s*﹣(.+)\s*$",
-                             r"﹣\1　　﹣\2",
-                             single_line, re.M)
         single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$",
                              r"\1　\2",
+                             single_line, re.M)
+        single_line = re.sub(r"^\s*﹣?\s*(.+)\s+﹣(.+)\s*$",
+                             r"﹣\1　　﹣\2",
                              single_line, re.M)
     else:
         raise ValueError("Invalid value for argument 'language'; must be "

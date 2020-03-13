@@ -7,8 +7,10 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from collections import namedtuple
 from os.path import expandvars
 from typing import Any
+import pytest
 
 from scinoephile.Compositor import Compositor
 
@@ -17,102 +19,94 @@ input_directory = expandvars("$SUBTITLES_ROOT/input")
 expected_output_directory = expandvars("$SUBTITLES_ROOT/expected_output/")
 actual_output_directory = expandvars("$SUBTITLES_ROOT/actual_output/")
 
+################################## VARIABLES ##################################
+Movie = namedtuple("Movie", ["input", "output"])
 
-################################## FUNCTIONS ##################################
-def run_tests(**kwargs: Any) -> None:
-    compositor = Compositor(**kwargs)
-    compositor()
+king_of_beggars = Movie(f"{input_directory}/king_of_beggars",
+                        f"{actual_output_directory}/king_of_beggars")
+saving_mr_wu = Movie(f"{input_directory}/saving_mr_wu",
+                     f"{actual_output_directory}/saving_mr_wu")
+trivisa = Movie(f"{input_directory}/trivisa",
+                f"{actual_output_directory}/trivisa")
 
 
 #################################### TESTS ####################################
-def test_Compositor_miscellaneous(**kwargs: Any) -> None:
+
+
+def test_argparser_helptext(**kwargs: Any) -> None:
     Compositor.construct_argparser().print_help()
-    try:
-        Compositor.main()
-    except SystemExit:
-        pass
-    except ValueError:
-        pass
 
 
-def test_Compositor_read_bilingual(**kwargs: Any) -> None:
-    run_tests(
-        bilingual_infile=f"{input_directory}/trivisa/cmn-hans_en.srt",
-        **kwargs)
+@pytest.mark.xfail(raises=SystemExit)
+def test_argparser_missing(**kwargs: Any) -> None:
+    Compositor.main()
 
 
-def test_Compositor_read_english(**kwargs: Any) -> None:
-    run_tests(
-        bilingual_infile=f"{input_directory}/trivisa/en.srt",
-        **kwargs)
+@pytest.mark.parametrize(
+    "bilingual_infile",
+    [f"{m.input}/cmn-hans_en.srt" for m in [saving_mr_wu, trivisa]])
+def test_read_bilingual(bilingual_infile: str, **kwargs: Any) -> None:
+    Compositor(bilingual_infile=bilingual_infile, **kwargs)()
 
 
-def test_Compositor_read_hanzi(**kwargs: Any) -> None:
-    run_tests(
-        bilingual_infile=f"{input_directory}/trivisa/cmn-Hans.srt",
-        **kwargs)
+@pytest.mark.parametrize(
+    "english_infile",
+    [f"{m.input}/en.srt" for m in [king_of_beggars, saving_mr_wu, trivisa]])
+def test_read_english(english_infile: str, **kwargs: Any) -> None:
+    Compositor(english_infile=english_infile, **kwargs)()
 
 
-def test_Compositor_merge_hanzi_english(**kwargs: Any) -> None:
-    run_tests(
-        bilingual_outfile=f"{actual_output_directory}/trivisa/cmn-hans_en.srt",
-        english_infile=f"{input_directory}/trivisa/en.srt",
-        hanzi_infile=f"{input_directory}/trivisa/cmn-Hans.srt",
-        overwrite=True,
-        **kwargs)
-    # TODO: Valudate that actual_output matches expected_output
+@pytest.mark.parametrize(
+    "hanzi_infile",
+    [f"{m.input}/cmn-hans.srt" for m in [saving_mr_wu, trivisa]] +
+    [f"{m.input}/yue-hans.srt" for m in [king_of_beggars]])
+def test_read_hanzi(hanzi_infile: str, **kwargs: Any) -> None:
+    Compositor(hanzi_infile=hanzi_infile, **kwargs)()
 
 
-# def test_Compositor_read_pinyin(**kwargs: Any) -> None:
-#     run_tests(pinyin_infile=f"{input_directory}/trivisa/cmn-pinyin.srt",
-#               **kwargs)
+@pytest.mark.parametrize(
+    "pinyin_infile",
+    [f"{m.input}/cmn-pinyin.srt" for m in [saving_mr_wu]] +
+    [f"{m.input}/yue-pinyin.srt" for m in [king_of_beggars]])
+def test_read_pinyin(pinyin_infile: str, **kwargs: Any) -> None:
+    Compositor(pinyin_infile=pinyin_infile, **kwargs)()
 
 
-# def test_Compositor_read_hanzi_write_pinyin_cantonese(**kwargs: Any) -> None:
-#     run_tests(
-#         hanzi_infile=f"{input_directory}/trivisa/yue-Hans.srt",
-#         overwrite=True,
-#         pinyin_outfile=f"{actual_output_directory}/trivisa/yue-Yale.srt",
-#         pinyin_language="cantonese",
-#         **kwargs)
-#     # TODO: Valudate that actual_output matches expected_output
+@pytest.mark.parametrize(
+    ("bilingual_outfile", "english_infile", "hanzi_infile"),
+    [(f"{m.output}/cmn-hans_en.srt", f"{m.input}/en.srt",
+      f"{m.input}/cmn-Hans.srt") for m in [saving_mr_wu, trivisa]] +
+    [(f"{m.output}/yue-hans_en.srt", f"{m.input}/en.srt",
+      f"{m.input}/yue-Hans.srt") for m in [king_of_beggars]])
+def test_merge_hanzi_english(bilingual_outfile: str, english_infile: str,
+                             hanzi_infile: str, **kwargs: Any) -> None:
+    Compositor(bilingual_outfile=bilingual_outfile,
+               english_infile=english_infile, hanzi_infile=hanzi_infile,
+               overwrite=True, combine_lines=True, **kwargs)()
+    # TODO: Validate that actual_output matches expected_output
 
 
-# def test_Compositor_pinyin_zhongwen_to_mandarin(**kwargs: Any) -> None:
-#     run_tests(
-#         hanzi_infile=f"{input_directory}/trivisa/cmn-Hant.srt",
-#         overwrite=True,
-#         pinyin_outfile=f"{actual_output_directory}/trivisa/cmn-pinyin.srt",
-#         pinyin_language="mandarin",
-#         simplify=True,
-#         **kwargs)
-#     # TODO: Valudate that actual_output matches expected_output
-
-# def test_Compositor_translate_chinese_to_english(**kwargs):
-#    run_tests(
-#        english=f"{output_dir}/trivisa/en-HK.srt",
-#        english_overwrite=True,
-#        hanzi=f"{input_dir}/trivisa/original/cmn-Hant.srt",
-#        **kwargs)
-#     # TODO: Valudate that actual_output matches expected_output
-
-# def test_Compositor_translate_english_to_chinese(**kwargs):
-#    run_tests(
-#        english=f"{input_dir}/trivisa/original/en-HK.srt",
-#        hanzi=f"{output_dir}/trivisa/cmn-Hans.srt",
-#        hanzi_overwrite=True,
-#        **kwargs)
-#     # TODO: Valudate that actual_output matches expected_output
-
+@pytest.mark.parametrize(
+    ("hanzi_infile", "pinyin_language", "pinyin_outfile"),
+    [(f"{m.input}/cmn-hans.srt", "mandarin", f"{m.output}/cmn-pinyin.srt")
+     for m in [saving_mr_wu]] +
+    [(f"{m.input}/yue-hans.srt", "cantonese", f"{m.output}/yue-pinyin.srt")
+     for m in [king_of_beggars]])
+def test_read_hanzi_write_pinyin(hanzi_infile: str, pinyin_language: str,
+                                 pinyin_outfile: str, **kwargs: Any) -> None:
+    Compositor(hanzi_infile=hanzi_infile, overwrite=True,
+               pinyin_outfile=pinyin_outfile, pinyin_language=pinyin_language,
+               **kwargs)()
+    # TODO: Validate that actual_output matches expected_output
 
 #################################### MAIN #####################################
-if __name__ == "__main__":
-    # test_Compositor_bilingual(verbosity=2)
-    # test_Compositor_pinyin(verbosity=2)
-    test_Compositor_merge_hanzi_english(verbosity=2)
-    test_Compositor_miscellaneous(verbosity=2)
-    # test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
-    # test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
-    # test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
-    # test_Compositor_translate_chinese_to_english(verbosity=2)
-    # test_Compositor_translate_english_to_chinese(verbosity=2)
+# if __name__ == "__main__":
+#     test_Compositor_bilingual(verbosity=2)
+#     test_Compositor_pinyin(verbosity=2)
+#     test_Compositor_merge_hanzi_english(verbosity=2)
+#     test_Compositor_miscellaneous(verbosity=2)
+#     test_Compositor_pinyin_yuewen_to_cantonese(verbosity=2)
+#     test_Compositor_pinyin_zhongwen_to_cantonese(verbosity=2)
+#     test_Compositor_pinyin_zhongwen_to_mandarin(verbosity=2)
+#     test_Compositor_translate_chinese_to_english(verbosity=2)
+#     test_Compositor_translate_english_to_chinese(verbosity=2)

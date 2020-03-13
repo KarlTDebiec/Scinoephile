@@ -126,7 +126,7 @@ class Compositor(CLToolBase):
                                     f"'{hanzi_outfile}' already exists")
             self.operations["save_hanzi"] = hanzi_outfile
         if pinyin_outfile:
-            if not isfile(pinyin_outfile) or overwrite:
+            if isfile(pinyin_outfile) and not overwrite:
                 raise ArgumentError(f"Chinese pinyin subtitle outfile "
                                     f"'{pinyin_outfile}' already exists")
             self.operations["save_pinyin"] = pinyin_outfile
