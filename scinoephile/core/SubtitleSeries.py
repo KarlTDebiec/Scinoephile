@@ -1,5 +1,5 @@
-#!/usr/bin/python
-#   scinoephile.SubtitleSeries.py
+#!python
+#   scinoephile.core.SubtitleSeries.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
@@ -7,11 +7,15 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from os.path import expandvars
+
 import numpy as np
 import pandas as pd
-from IPython import embed
-from pysubs2 import SSAFile
-from scinoephile import Base, SubtitleEvent
+
+from pysubs2 import SSAFile, SSAStyle
+from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
+from pysubs2.time import ms_to_str
+from scinoephile.core import Base, SubtitleEvent
 
 
 ################################### CLASSES ###################################
@@ -53,8 +57,6 @@ class SubtitleSeries(Base, SSAFile):
             str: String representation of this series
         """
         if self.events:
-            from pysubs2.time import ms_to_str
-
             return f"<{self.__class__.__name__} " \
                    f"with {len(self.events):d} events " \
                    f"and {len(self.styles):d} styles, " \
@@ -87,8 +89,6 @@ class SubtitleSeries(Base, SSAFile):
             format_ (str, optional): Output file format
             **kwargs: Additional keyword arguments
         """
-        from os.path import expandvars
-
         # Process arguments
         path = expandvars(path).replace("//", "/")
         if self.verbosity >= 1:
@@ -138,7 +138,6 @@ class SubtitleSeries(Base, SSAFile):
         Returns:
             SubtitleSeries: Loaded subtitles
         """
-        from os.path import expandvars
 
         # Process arguments
         path = expandvars(path).replace("//", "/")
@@ -179,7 +178,6 @@ class SubtitleSeries(Base, SSAFile):
             fp (h5py._hl.files.File): Open hdf5 output file
             **kwargs: Additional keyword arguments
         """
-        from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
 
         def style_value_to_string(field, style_):
             """
@@ -265,7 +263,6 @@ class SubtitleSeries(Base, SSAFile):
         Returns:
             SubtitleSeries: Loaded subtitles
         """
-        from pysubs2 import SSAStyle
 
         def style_value_from_string(field, value):
             from pysubs2.time import timestamp_to_ms

@@ -1,18 +1,15 @@
 #!python
-#   scinoephile.utils.tests.py
+#   scinoephile.testing.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
 #
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
-"""
-TODO: Rename test.py
-"""
 ################################## MODULES ###################################
 from hashlib import md5
 from os import devnull
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 
 ################################## FUNCTIONS ##################################

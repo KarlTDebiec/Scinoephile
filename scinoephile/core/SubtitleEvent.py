@@ -1,5 +1,5 @@
 #!python
-#   scinoephile.SubtitleEvent.py
+#   scinoephile.core.SubtitleEvent.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
@@ -7,9 +7,9 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from IPython import embed
 from pysubs2 import SSAEvent
-from scinoephile import Base
+from scinoephile.core import Base
+from pysubs2.time import ms_to_str
 
 
 ################################### CLASSES ###################################
@@ -22,7 +22,7 @@ class SubtitleEvent(Base, SSAEvent):
 
     # region Builtins
 
-    def __init__(self, series=None, **kwargs):
+    def __init__(self, **kwargs):
         """
         Initializes
 
@@ -38,36 +38,11 @@ class SubtitleEvent(Base, SSAEvent):
         SSAEvent.__init__(self, **{k: v for k, v in kwargs.items()
                                    if k in SSAEvent.FIELDS})
 
-        # Store property values
-        if series is not None:
-            self.series = series
-
     def __str__(self):
-        from pysubs2.time import ms_to_str
-
         return f"<{self.__class__.__name__}— " \
-            f"type={self.type} " \
-            f"start={ms_to_str(self.start)} " \
-            f"end={ms_to_str(self.end)} " \
-            f"text='{self.text}'>"
+               f"type={self.type} " \
+               f"start={ms_to_str(self.start)} " \
+               f"end={ms_to_str(self.end)} " \
+               f"text='{self.text}'>"
 
-    # endregion
-
-    # region Public Properties
-
-    @property
-    def series(self):
-        """SubtitleSeries: Subtitle series of which this subtitle is a part"""
-        if not hasattr(self, "_series"):
-            self._series = None
-        return self._series
-
-    @series.setter
-    def series(self, value):
-        from scinoephile import SubtitleSeries
-
-        if not isinstance(value, SubtitleSeries):
-            raise ValueError(self._generate_setter_exception(value))
-        self._series = value
-
-    # endregion
+    # endregionåååååååååååååååååå

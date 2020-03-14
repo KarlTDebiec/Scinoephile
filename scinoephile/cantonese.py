@@ -1,5 +1,5 @@
 #!python
-#   scinoephile.cantonese.__init__.py
+#   scinoephile.cantonese.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.

@@ -42,10 +42,11 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 from IPython import embed
 
-from scinoephile import (CLToolBase, SubtitleSeries, get_pinyin,
-                         get_simplified_hanzi, get_single_line_text,
-                         get_truecase, infile_argument, merge_subtitles,
-                         outfile_argument)
+from scinoephile.core import (CLToolBase, get_pinyin,
+                              get_simplified_hanzi, get_single_line_text,
+                              get_truecase, infile_argument, merge_subtitles,
+                              outfile_argument)
+from scinoephile.core import SubtitleSeries
 
 
 ################################### CLASSES ###################################
@@ -483,7 +484,7 @@ class Compositor(CLToolBase):
 
     def _translate_chinese_to_english(self) -> None:
         # TODO: Move most to language-independent function
-        from scinoephile.translation import client
+        from scinoephile.translation import translate_client
 
         # Process arguments
         self._english_subtitles = deepcopy(self.hanzi_subtitles)
@@ -499,9 +500,10 @@ class Compositor(CLToolBase):
         translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
-                             client.translate(list(texts[i:i + 100]),
-                                              source_language="zh",
-                                              target_language="en")]
+                             translate_client.translate(
+                                 list(texts[i:i + 100]),
+                                 source_language="zh",
+                                 target_language="en")]
         for i, translation in enumerate(translations):
             if self.verbosity >= 2:
                 print(f"{self._english_subtitles.events[i].text} -> "
@@ -510,7 +512,7 @@ class Compositor(CLToolBase):
 
     def _translate_english_to_chinese(self) -> None:
         # TODO: Move most to language-independent function
-        from scinoephile.translation import client
+        from scinoephile.translation import translate_client
 
         # Process arguments
         self._hanzi_subtitles = deepcopy(self.english_subtitles)
@@ -526,9 +528,10 @@ class Compositor(CLToolBase):
         translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
-                             client.translate(list(texts[i:i + 100]),
-                                              source_language="en",
-                                              target_language="zh")]
+                             translate_client.translate(
+                                 list(texts[i:i + 100]),
+                                 source_language="en",
+                                 target_language="zh")]
         for i, translation in enumerate(translations):
             if self.verbosity >= 2:
                 print(f"{self._hanzi_subtitles.events[i].text} -> "
@@ -547,7 +550,6 @@ class Compositor(CLToolBase):
         Returns:
             parser (ArgumentParser): Argument parser
         """
-
         parser = super().construct_argparser(description=__doc__, **kwargs)
 
         # Input

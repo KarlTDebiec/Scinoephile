@@ -7,8 +7,8 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
-from google.cloud import translate
+from google.cloud import translate_v2
 
 ################################## VARIABLES ##################################
 
-client = translate.Client()
+translate_client = translate_v2.Client()
