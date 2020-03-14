@@ -14,7 +14,7 @@ from typing import Any, Optional
 
 import pandas as pd
 
-from scinoephile.core import Base
+from scinoephile.core.Base import Base
 
 
 ################################### CLASSES ###################################

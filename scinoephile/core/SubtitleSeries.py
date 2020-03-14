@@ -7,19 +7,25 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from numbers import Number
 from os.path import expandvars
+from typing import Any, Optional, List, Tuple
 
 import numpy as np
 import pandas as pd
+import h5py
 
 from pysubs2 import SSAFile, SSAStyle
-from pysubs2.substation import EVENT_FIELDS, STYLE_FIELDS
-from pysubs2.time import ms_to_str
-from scinoephile.core import Base, SubtitleEvent
+from pysubs2.common import Color
+from pysubs2.substation import (EVENT_FIELDS, STYLE_FIELDS, ass_rgba_to_color,
+                                color_to_ass_rgba, ms_to_timestamp)
+from pysubs2.time import TIMESTAMP, ms_to_str, timestamp_to_ms
+from scinoephile.core.Base import Base
+from scinoephile.core.SubtitleEvent import SubtitleEvent
 
 
 ################################### CLASSES ###################################
-class SubtitleSeries(Base, SSAFile):
+class SubtitleSeries(Base, SSAFile):  # type: ignore
     """
     A series of subtitles
 
@@ -37,7 +43,7 @@ class SubtitleSeries(Base, SSAFile):
 
     # region Builtins
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """
         Initializes
 
@@ -49,7 +55,7 @@ class SubtitleSeries(Base, SSAFile):
         # SSAFile.__init__ accepts no arguments
         SSAFile.__init__(self)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Provides a string representation of series
 
@@ -76,7 +82,8 @@ class SubtitleSeries(Base, SSAFile):
             columns=["text", "start", "end"])
         return df
 
-    def save(self, path, format_=None, **kwargs):
+    def save(self, path: str, format_: Optional[str] = None,
+             **kwargs: Any) -> None:
         """
         Saves subtitles to an output file
 
@@ -109,7 +116,8 @@ class SubtitleSeries(Base, SSAFile):
     # region Public Class Methods
 
     @classmethod
-    def from_dataframe(cls, df, verbosity=1, **kwargs):
+    def from_dataframe(cls, df: pd.DataFrame, verbosity: int = 1,
+                       **kwargs: Any) -> "SubtitleSeries":
         subs = cls(verbosity=verbosity)
 
         for _, event in df.iterrows():
@@ -120,7 +128,9 @@ class SubtitleSeries(Base, SSAFile):
         return subs
 
     @classmethod
-    def load(cls, path, encoding="utf-8", format_=None, verbosity=1, **kwargs):
+    def load(cls, path: str, encoding: str = "utf-8",
+             format_: Optional[str] = None, verbosity: int = 1,
+             **kwargs: Any) -> "SubtitleSeries":
         """
         Loads subtitles from an input file
 
@@ -162,13 +172,13 @@ class SubtitleSeries(Base, SSAFile):
                                               **ssaevent.as_dict()))
             subs.events = events
 
-            return subs
+            return subs  # type:ignore
 
     # endregion
 
     # region Private Methods
 
-    def _save_hdf5(self, fp, **kwargs):
+    def _save_hdf5(self, fp: Any, **kwargs: Any) -> None:
         """
         Saves subtitles to an output hdf5 file
 
@@ -179,25 +189,21 @@ class SubtitleSeries(Base, SSAFile):
             **kwargs: Additional keyword arguments
         """
 
-        def style_value_to_string(field, style_):
+        def style_value_to_string(field: str, style_: SSAStyle) -> str:
             """
             Converts values of Substation style to string format
 
             Args:
                 field (str): Name of fields
-                style_ (pysubs2.ssastyle.SSAStyle): SubStation Alpha style
+                style_ (SSAStyle): SubStation Alpha style
 
             Returns:
                 str: Value of field in string format
             """
-            from numbers import Number
-            from pysubs2.common import Color
-            from pysubs2.substation import color_to_ass_rgba, ms_to_timestamp
-
             value = getattr(style_, field)
 
             if field in {"start", "end"}:
-                return ms_to_timestamp(value)
+                return str(ms_to_timestamp(value))
             elif field == "marked":
                 return f"Marked={value:d}"
             elif isinstance(value, bool):
@@ -205,7 +211,7 @@ class SubtitleSeries(Base, SSAFile):
             elif isinstance(value, (str, Number)):
                 return str(value)
             elif isinstance(value, Color):
-                return color_to_ass_rgba(value)
+                return str(color_to_ass_rgba(value))
             else:
                 raise TypeError(f"Unexpected type when writing a SubStation "
                                 f"field {value:!r} for line {style_:!r}")
@@ -219,7 +225,7 @@ class SubtitleSeries(Base, SSAFile):
             del fp["styles"]
         dtypes = [("name", "S255"),
                   *((field.strip(), "S255") for field in STYLE_FIELDS["ass"])]
-        styles = []
+        styles: List[Tuple[Any,...]] = []
         for name, style in self.styles.items():
             styles += [(name.encode("utf8"),
                         *(style_value_to_string(field, style).encode("utf8")
@@ -234,7 +240,7 @@ class SubtitleSeries(Base, SSAFile):
             del fp["events"]
         dtypes = [("type", "S255"),
                   *((field.strip(), "S255") for field in EVENT_FIELDS["ass"])]
-        events = []
+        events: List[Tuple[Any,...]] = []
         for event in self.events:
             events += [(event.type.encode("utf8"),
                         *(style_value_to_string(field, event).encode("utf8")
@@ -249,7 +255,8 @@ class SubtitleSeries(Base, SSAFile):
     # region Private Class Methods
 
     @classmethod
-    def _load_hdf5(cls, fp, verbosity=1, **kwargs):
+    def _load_hdf5(cls, fp: h5py._hl.files.File, verbosity: int = 1,
+                   **kwargs: Any) -> "SubtitleSeries":
         """
         Loads subtitles from an input hdf5 file
 
@@ -264,10 +271,7 @@ class SubtitleSeries(Base, SSAFile):
             SubtitleSeries: Loaded subtitles
         """
 
-        def style_value_from_string(field, value):
-            from pysubs2.time import timestamp_to_ms
-            from pysubs2.time import TIMESTAMP
-            from pysubs2.substation import ass_rgba_to_color
+        def style_value_from_string(field: str, value: Any) -> Any:
 
             if field in {"start", "end"}:
                 return timestamp_to_ms(TIMESTAMP.match(value).groups())

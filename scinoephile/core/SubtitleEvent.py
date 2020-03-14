@@ -7,13 +7,15 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from typing import Any
+
 from pysubs2 import SSAEvent
-from scinoephile.core import Base
+from scinoephile.core.Base import Base
 from pysubs2.time import ms_to_str
 
 
 ################################### CLASSES ###################################
-class SubtitleEvent(Base, SSAEvent):
+class SubtitleEvent(Base, SSAEvent):  # type: ignore
     """
     An individual subtitle
 
@@ -22,7 +24,7 @@ class SubtitleEvent(Base, SSAEvent):
 
     # region Builtins
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         """
         Initializes
 
@@ -38,11 +40,11 @@ class SubtitleEvent(Base, SSAEvent):
         SSAEvent.__init__(self, **{k: v for k, v in kwargs.items()
                                    if k in SSAEvent.FIELDS})
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.__class__.__name__}— " \
                f"type={self.type} " \
                f"start={ms_to_str(self.start)} " \
                f"end={ms_to_str(self.end)} " \
                f"text='{self.text}'>"
 
-    # endregionåååååååååååååååååå
+    # endregion

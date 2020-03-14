@@ -297,14 +297,14 @@ class Compositor(CLToolBase):
                       and self.pinyin_subtitles is not None):
                     self._initialize_bilingual_subtitles("pinyin")
                 else:
-                    self._bilingual_subtitles = None
+                    self._bilingual_subtitles: Optional[SubtitleSeries] = None
             else:
                 self._bilingual_subtitles = None
         return self._bilingual_subtitles
 
     @bilingual_subtitles.setter
     def bilingual_subtitles(self, value: Optional[SubtitleSeries]) -> None:
-        if not isinstance(value, SubtitleSeries):
+        if not (isinstance(value, SubtitleSeries) or value is None):
             raise ValueError(self._generate_setter_exception(value))
         self._bilingual_subtitles = value
 
@@ -316,12 +316,12 @@ class Compositor(CLToolBase):
                     and self.hanzi_subtitles is not None):
                 self._translate_chinese_to_english()
             else:
-                self._english_subtitles = None
+                self._english_subtitles: Optional[SubtitleSeries] = None
         return self._english_subtitles
 
     @english_subtitles.setter
     def english_subtitles(self, value: Optional[SubtitleSeries]) -> None:
-        if not isinstance(value, SubtitleSeries):
+        if not (isinstance(value, SubtitleSeries) or value is None):
             raise ValueError(self._generate_setter_exception(value))
         self._english_subtitles = value
 
@@ -338,7 +338,7 @@ class Compositor(CLToolBase):
 
     @hanzi_subtitles.setter
     def hanzi_subtitles(self, value: Optional[SubtitleSeries]) -> None:
-        if not isinstance(value, SubtitleSeries):
+        if not (isinstance(value, SubtitleSeries) or value is None):
             raise ValueError(self._generate_setter_exception(value))
         self._hanzi_subtitles = value
 
@@ -358,12 +358,12 @@ class Compositor(CLToolBase):
                     and self.hanzi_subtitles is not None):
                 self._initialize_pinyin_subtitles()
             else:
-                self._pinyin_subtitles = None
+                self._pinyin_subtitles: Optional[SubtitleSeries] = None
         return self._pinyin_subtitles
 
     @pinyin_subtitles.setter
     def pinyin_subtitles(self, value: Optional[SubtitleSeries]) -> None:
-        if not isinstance(value, SubtitleSeries):
+        if not (isinstance(value, SubtitleSeries) or value is None):
             raise ValueError(self._generate_setter_exception(value))
         self._pinyin_subtitles = value
 
