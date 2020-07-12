@@ -42,11 +42,10 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 from IPython import embed
 
-from scinoephile.core import (CLToolBase, get_pinyin,
+from scinoephile.core import (CLToolBase, SubtitleSeries, get_pinyin,
                               get_simplified_hanzi, get_single_line_text,
                               get_truecase, infile_argument, merge_subtitles,
                               outfile_argument)
-from scinoephile.core import SubtitleSeries
 
 
 ################################### CLASSES ###################################

@@ -43,8 +43,9 @@ re_western = re.compile(r"[a-zA-Z0-9]")
 
 
 ################################## FUNCTIONS ##################################
-def format_list(list_of_strings: List[str], linker: str = "and",
-                quote: str = "'") -> str:
+def get_list_formatted_for_display(list_of_strings: List[str],
+                                   linker: str = "and",
+                                   quote: str = "'") -> str:
     # TODO: Document
     string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
     if len(list_of_strings) == 2:

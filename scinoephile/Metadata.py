@@ -8,7 +8,20 @@
 #   BSD license. See the LICENSE file for details.
 """Adds Apple/iTunes-compatible metadata to MP4 files."""
 ################################### MODULES ###################################
-from scinoephile import CLToolBase
+import re
+from argparse import ArgumentParser
+from glob import glob
+from os import rename
+from os.path import expandvars, getctime, isfile
+from shlex import quote
+from subprocess import Popen
+from typing import Any
+
+import dateutil
+import lxml.etree as etree
+from scinoephile.core import (CLToolBase, date_argument,
+                              get_list_formatted_for_display,
+                              infile_argument, outfile_argument)
 
 
 ################################### CLASSES ###################################
@@ -16,7 +29,6 @@ class Metadata(CLToolBase):
     """
     Adds Metadata
     """
-
     genres = {"Action & Adventure": 4401, "Anime": 4402, "Classics": 4403,
               "Comedy": 4404, "Documentary": 4405, "Drama": 4406,
               "Foreign": 4407, "Horror": 4408, "Independent": 4409,
@@ -35,71 +47,40 @@ class Metadata(CLToolBase):
     def __init__(self, infile, outfile, cast=None, catalog_id=None, date=None,
                  description=None, director=None, language=None, genre=None,
                  overwrite=False, producer=None, rating=None, studio=None,
-                 title=None, writer=None, **kwargs):
+                 title=None, writer=None, **kwargs: Any) -> None:
         """
         Initializes command-line tool and compiles list of operations
 
         Args:
             **kwargs: Additional keyword arguments
         """
-        import dateutil
-        import re
-        import lxml.etree as etree
-        from os.path import expandvars, isfile
-        from shlex import quote
-        from scinoephile import format_list, is_readable, is_writable
-
         super().__init__(**kwargs)
 
         # TODO: Document
         # TODO: Move xml lists into static function
 
         # Compile input operations
-        infile = expandvars(str(infile))
-        if is_readable(infile):
-            self.args.insert(0, quote(infile))
-        else:
-            raise IOError(f"MP4 infile '{infile}' cannot be read")
+        self.args.insert(0, quote(infile))
 
         # Compile metadata operations
         if title:
-            if isinstance(title, str):
-                self.args.append(f"--title {quote(title)}")
-            else:
-                raise ValueError(f"title must be a string; '{title}' provided")
+            self.args.append(f"--title {quote(title)}")
         if date:
-            if isinstance(date, str):
-                try:
-                    date = dateutil.parser.parse(date)
-                except ValueError:
-                    raise ValueError(f"Unable to parse provided date '{date}'")
-                self.args.append(f"--year {quote(date.strftime('%Y-%m-%d'))}")
-            else:
-                raise ValueError(f"date must be a string; '{date}' provided")
+            self.args.append(f"--year {quote(date.strftime('%Y-%m-%d'))}")
         if description:
-            if isinstance(description, str):
-                if is_readable(expandvars(description)):
-                    with open(expandvars(description), "r") as file:
-                        description = re.sub(r'\s+', ' ', file.read()).strip()
-                self.args.append(f"--longdesc {quote(description)}")
-                self.args.append(f"--storedesc {quote(description)}")
-            else:
-                raise ValueError(f"description must be a string; "
-                                 f"'{description}' provided")
+            self.args.append(f"--longdesc {quote(description)}")
+            self.args.append(f"--storedesc {quote(description)}")
         if genre:
-            if isinstance(genre, str):
-                if genre in self.genres:
-                    self.args.append(f"--genre {quote(genre)}")
-                    self.args.append(f"--geID {self.genres[genre]}")
-                else:
-                    raise ValueError(f"Genre must be one of "
-                                     f"{format_list(self.genres, 'or')}; "
-                                     f"'{genre}' provided")
+            if genre in self.genres:
+                self.args.append(f"--genre {quote(genre)}")
+                self.args.append(f"--geID {self.genres[genre]}")
             else:
-                raise ValueError(f"genre must be a string; '{genre}' provided")
+                raise ValueError(f"Genre must be one of "
+                                 f"{get_list_formatted_for_display(self.genres, 'or')}; "
+                                 f"'{genre}' provided")
         if language:
             if isinstance(language, list):
-                grouping = format_list(language, "", "")
+                grouping = get_list_formatted_for_display(language, "", "")
                 self.args.append(f"--grouping  {quote(grouping)}")
             else:
                 raise ValueError(
@@ -112,7 +93,7 @@ class Metadata(CLToolBase):
                     self.args.append(f"--contentRating {quote(rating)}")
                 else:
                     raise ValueError(f"Rating must be one of "
-                                     f"{format_list(self.ratings, 'or')}; "
+                                     f"{get_list_formatted_for_display(self.ratings, 'or')}; "
                                      f"'{rating}' provided")
             else:
                 raise ValueError(
@@ -140,7 +121,7 @@ class Metadata(CLToolBase):
                     f"'{cast}' provided")
         if director:
             if isinstance(director, list):
-                artist = format_list(director, "and", "")
+                artist = get_list_formatted_for_display(director, "and", "")
                 self.args.append(f"--artist {quote(artist)}")
 
                 etree.SubElement(xmldict, "key").text = "directors"
@@ -181,7 +162,7 @@ class Metadata(CLToolBase):
             if isinstance(studio, list):
                 etree.SubElement(xmldict, "key").text = "studio"
                 etree.SubElement(xmldict, "string").text = \
-                    format_list(studio, "and", "")
+                    get_list_formatted_for_display(studio, "and", "")
             else:
                 raise ValueError(
                     f"studio must be a list of strings; "
@@ -207,23 +188,15 @@ class Metadata(CLToolBase):
                 raise ValueError(f"outfile must be provided, or overwrite "
                                  f"must be true to overwrite infile")
         outfile = expandvars(str(outfile))
-        if is_writable(outfile):
-            if not isfile(outfile) or overwrite:
-                self.args.append(f"-o {quote(outfile)}")
-            else:
-                raise ValueError(f"MP4 outfile '{outfile}' already exists")
+        if not isfile(outfile) or overwrite:
+            self.args.append(f"-o {quote(outfile)}")
         else:
-            raise IOError(f"MP4 outfile '{outfile}' is not writable")
+            raise ValueError(f"MP4 outfile '{outfile}' already exists")
 
     def __call__(self):
         """
         Performs operations
         """
-        from os import rename
-        from os.path import getctime
-        from subprocess import Popen
-        from glob import glob
-
         # Run AtomicParsley
         cmd = " ".join(self.args)
         if self.verbosity >= 1:
@@ -270,65 +243,88 @@ class Metadata(CLToolBase):
     # region Class Methods
 
     @classmethod
-    def construct_argparser(cls, **kwargs):
+    def construct_argparser(cls, **kwargs: Any) -> ArgumentParser:
         """
         Constructs argument parser
 
         Returns:
-            parser (argparse.ArgumentParser): Argument parser
+            parser (ArgumentParser): Argument parser
         """
         parser = super().construct_argparser(description=__doc__, **kwargs)
 
         # Input
         parser_input = parser.add_argument_group("input arguments")
-        parser_input.add_argument("-if", "--infile",
-                                  help="MP4 infile",
-                                  metavar="FILE",
-                                  required=True)
+        parser_input.add_argument(
+            "-if", "--infile",
+            help="MP4 infile",
+            metavar="FILE",
+            type=infile_argument,
+            required=True)
 
         # Metadata
         parser_metadata = parser.add_argument_group("metadata arguments")
-        parser_metadata.add_argument("--title",
-                                     help="Title")
-        parser_metadata.add_argument("--date",
-                                     help="Date of release")
-        parser_metadata.add_argument("--description",
-                                     help="Description")
-        parser_metadata.add_argument("--genre",
-                                     help="Genre")
-        parser_metadata.add_argument("--language",
-                                     action="append",
-                                     help="Language")
-        parser_metadata.add_argument("--rating",
-                                     default="Unrated",
-                                     help="MPAA Rating")
-        parser_metadata.add_argument("--catalog_id",
-                                     help="Apple Catalog ID",
-                                     type=int)
-        parser_metadata.add_argument("--studio",
-                                     action="append",
-                                     help="Production Studio")
-        parser_metadata.add_argument("--cast",
-                                     action="append",
-                                     help="Cast member")
-        parser_metadata.add_argument("--director",
-                                     action="append",
-                                     help="Director")
-        parser_metadata.add_argument("--producer",
-                                     action="append",
-                                     help="Producer")
-        parser_metadata.add_argument("--writer",
-                                     action="append",
-                                     help="Writer")
+        parser_metadata.add_argument(
+            "--title",
+            type=str,
+            help="Title")
+        parser_metadata.add_argument(
+            "--date",
+            type=date_argument,
+            help="Date of release")
+        parser_metadata.add_argument(
+            "--description",
+            type=str,
+            help="Description")
+        parser_metadata.add_argument(
+            "--genre",
+            type=str,
+            help="Genre")
+        parser_metadata.add_argument(
+            "--language",
+            action="append",
+            type=str,
+            help="Language")
+        parser_metadata.add_argument(
+            "--rating",
+            default="Unrated",
+            type=str,
+            help="MPAA Rating")
+        parser_metadata.add_argument(
+            "--catalog_id",
+            help="Apple Catalog ID",
+            type=int)
+        parser_metadata.add_argument(
+            "--studio",
+            action="append",
+            help="Production Studio")
+        parser_metadata.add_argument(
+            "--cast",
+            action="append",
+            help="Cast member")
+        parser_metadata.add_argument(
+            "--director",
+            action="append",
+            help="Director")
+        parser_metadata.add_argument(
+            "--producer",
+            action="append",
+            help="Producer")
+        parser_metadata.add_argument(
+            "--writer",
+            action="append",
+            help="Writer")
 
         # Output
         parser_output = parser.add_argument_group("output arguments")
-        parser_output.add_argument("-of", "--outfile",
-                                   help="MP4 outfile",
-                                   metavar="FILE")
-        parser_output.add_argument("-o", "--overwrite",
-                                   action="store_true",
-                                   help="overwrite outfiles if they exist")
+        parser_output.add_argument(
+            "-of", "--outfile",
+            help="MP4 outfile",
+            type=outfile_argument,
+            metavar="FILE")
+        parser_output.add_argument(
+            "-o", "--overwrite",
+            action="store_true",
+            help="overwrite outfiles if they exist")
 
         return parser
 

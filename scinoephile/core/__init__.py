@@ -1,5 +1,5 @@
 #!python
-#   scinoephile.core.__init__.py
+#   scinoephile/core/__init__.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
 #   All rights reserved.
@@ -14,10 +14,12 @@ from scinoephile.core.CLToolBase import CLToolBase
 from scinoephile.core.StdoutLogger import StdoutLogger
 from scinoephile.core.SubtitleEvent import SubtitleEvent
 from scinoephile.core.SubtitleSeries import SubtitleSeries
-from scinoephile.core.cltools import infile_argument, outfile_argument
+from scinoephile.core.cltools import (date_argument, infile_argument,
+                                      outfile_argument)
 from scinoephile.core.general import merge_subtitles
-from scinoephile.core.text import (get_pinyin, get_simplified_hanzi,
-                                   get_single_line_text, get_truecase)
+from scinoephile.core.text import (get_list_formatted_for_display, get_pinyin,
+                                   get_simplified_hanzi, get_single_line_text,
+                                   get_truecase)
 
 ##################################### ALL #####################################
 __all__: List[str] = [
@@ -26,7 +28,9 @@ __all__: List[str] = [
     "StdoutLogger",
     "SubtitleEvent",
     "SubtitleSeries",
+    "date_argument"
     "get_pinyin",
+    "get_list_formatted_for_display",
     "get_simplified_hanzi",
     "get_single_line_text",
     "get_truecase",
