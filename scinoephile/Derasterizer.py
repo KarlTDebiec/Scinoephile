@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python3
 #   scinoephile.Derasterizer.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec

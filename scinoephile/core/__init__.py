@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python3
 #   scinoephile/core/__init__.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
@@ -28,7 +28,7 @@ __all__: List[str] = [
     "StdoutLogger",
     "SubtitleEvent",
     "SubtitleSeries",
-    "date_argument"
+    "date_argument",
     "get_pinyin",
     "get_list_formatted_for_display",
     "get_simplified_hanzi",
