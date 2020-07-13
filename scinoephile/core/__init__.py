@@ -15,7 +15,8 @@ from scinoephile.core.StdoutLogger import StdoutLogger
 from scinoephile.core.SubtitleEvent import SubtitleEvent
 from scinoephile.core.SubtitleSeries import SubtitleSeries
 from scinoephile.core.cltools import (date_argument, infile_argument,
-                                      outfile_argument)
+                                      outfile_argument,
+                                      string_or_infile_argument)
 from scinoephile.core.general import merge_subtitles
 from scinoephile.core.text import (get_list_formatted_for_display, get_pinyin,
                                    get_simplified_hanzi, get_single_line_text,
@@ -35,6 +36,7 @@ __all__: List[str] = [
     "get_single_line_text",
     "get_truecase",
     "infile_argument",
+    "merge_subtitles",
     "outfile_argument",
-    "merge_subtitles"
+    "string_or_infile_argument"
 ]

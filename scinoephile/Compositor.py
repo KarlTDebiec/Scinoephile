@@ -51,14 +51,14 @@ from scinoephile.core import (CLToolBase, SubtitleSeries, get_pinyin,
 ################################### CLASSES ###################################
 class Compositor(CLToolBase):
     """
-    Combines Chinese and English subtitles into synchronized bilingual
-    subtitles
+    Combines Chinese and English subtitles
     """
     _bilingual_subtitles: Optional[SubtitleSeries]
 
     # region Builtins
 
-    def __init__(self, bilingual_infile: Optional[str] = None,
+    def __init__(self,
+                 bilingual_infile: Optional[str] = None,
                  bilingual_outfile: Optional[str] = None,
                  combine_lines: bool = False,
                  english_infile: Optional[str] = None,
@@ -76,21 +76,25 @@ class Compositor(CLToolBase):
         Initializes command-line tool and compiles list of operations
 
         Args:
-            bilingual_infile (str): Path to bilingual subtitle infile
-            bilingual_outfile (str): Path to bilingual subtitle outfile
+            bilingual_infile (Optional[str]): Path to bilingual subtitle infile
+            bilingual_outfile (Optional[str]): Path to bilingual subtitle
+              outfile
             combine_lines (bool): combine multi-line subtitles into a single
               line
-            english_infile (str): Path to English subtitle infile
-            english_outfile (str): Path to English subtitle outfile
-            hanzi_infile (str): Path to Chinese Hanzi subtitle infile
-            hanzi_outfile (str): Path to Chinese Hanzi subtitle outfile
+            english_infile (Optional[str]): Path to English subtitle infile
+            english_outfile (Optional[str]): Path to English subtitle outfile
+            hanzi_infile (Optional[str]): Path to Chinese Hanzi subtitle infile
+            hanzi_outfile (Optional[str]): Path to Chinese Hanzi subtitle
+              outfile
             interactive (bool): show IPython prompt after loading and
               processing
             overwrite (bool): Overwrite outfiles if they exist
-            pinyin_infile (str): Path to pinyin Chinese subtitle infile
-            pinyin_outfile (str): Path to pinyin Chinese subtitle outfile
-            pinyin_language (bool, str): Langauge for which to add pinyin; may
-              be 'mandarin' or 'cantonese'
+            pinyin_infile (Optional[str]): Path to pinyin Chinese subtitle
+              infile
+            pinyin_outfile (Optional[str]): Path to pinyin Chinese subtitle
+              outfile
+            pinyin_language (Optional[str]): Langauge for which to add pinyin;
+              may be 'mandarin' or 'cantonese'
             simplify (bool): Convert traditional Hanzi to simplified
             **kwargs: Additional keyword arguments
         """
@@ -140,7 +144,7 @@ class Compositor(CLToolBase):
                 if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                     self.operations["translate_english"] = True
                 else:
-                    raise ArgumentError("Transation requires that "
+                    raise ArgumentError("Translation requires that "
                                         "GOOGLE_APPLICATION_CREDENTIALS is "
                                         "set to the path to a Google service "
                                         "account key")
@@ -153,7 +157,7 @@ class Compositor(CLToolBase):
                 if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                     self.operations["translate_chinese"] = True
                 else:
-                    raise ArgumentError("Transation requires that "
+                    raise ArgumentError("Translation requires that "
                                         "GOOGLE_APPLICATION_CREDENTIALS is "
                                         "set to the path to a Google service "
                                         "account key")
@@ -196,7 +200,7 @@ class Compositor(CLToolBase):
                     if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                         self.operations["translate_english"] = True
                     else:
-                        raise ArgumentError("Transation requires that "
+                        raise ArgumentError("Translation requires that "
                                             "GOOGLE_APPLICATION_CREDENTIALS "
                                             "is set to the path to a Google "
                                             "service account key")
@@ -209,7 +213,7 @@ class Compositor(CLToolBase):
                     if "GOOGLE_APPLICATION_CREDENTIALS" in environ:
                         self.operations["translate_english"] = True
                     else:
-                        raise ArgumentError("Transation requires that "
+                        raise ArgumentError("Translation requires that "
                                             "GOOGLE_APPLICATION_CREDENTIALS "
                                             "is set to the path to a Google "
                                             "service account key")
@@ -217,7 +221,6 @@ class Compositor(CLToolBase):
                     raise ArgumentError("Bilingual subtitle output requires "
                                         "either Chinese Hanzi or English "
                                         "subtitle input")
-            self.operations["combine_lines"] = True
             self.operations["merge_bilingual"] = True
 
     def __call__(self) -> None:
@@ -263,20 +266,12 @@ class Compositor(CLToolBase):
 
         # Save outfiles
         if "save_bilingual" in self.operations:
-            if self.bilingual_subtitles is None:
-                raise ValueError()
             self.bilingual_subtitles.save(self.operations["save_bilingual"])
         if "save_english" in self.operations:
-            if self.english_subtitles is None:
-                raise ValueError()
             self.english_subtitles.save(self.operations["save_english"])
         if "save_hanzi" in self.operations:
-            if self.hanzi_subtitles is None:
-                raise ValueError()
             self.hanzi_subtitles.save(self.operations["save_hanzi"])
         if "save_pinyin" in self.operations:
-            if self.pinyin_subtitles is None:
-                raise ValueError()
             self.pinyin_subtitles.save(self.operations["save_pinyin"])
 
     # endregion
@@ -285,7 +280,7 @@ class Compositor(CLToolBase):
 
     @property
     def bilingual_subtitles(self) -> Optional[SubtitleSeries]:
-        """SubtitleSeries: Bilingual subtitles"""
+        """Optional[SubtitleSeries]: Bilingual subtitles"""
         if not hasattr(self, "_bilingual_subtitles"):
             if (hasattr(self, "_english_subtitles")
                     and self.english_subtitles is not None):
@@ -309,7 +304,7 @@ class Compositor(CLToolBase):
 
     @property
     def english_subtitles(self) -> Optional[SubtitleSeries]:
-        """SubtitleSeries: English subtitles"""
+        """Optional[SubtitleSeries]: English subtitles"""
         if not hasattr(self, "_english_subtitles"):
             if (hasattr(self, "_hanzi_subtitles")
                     and self.hanzi_subtitles is not None):
@@ -326,7 +321,7 @@ class Compositor(CLToolBase):
 
     @property
     def hanzi_subtitles(self) -> Optional[SubtitleSeries]:
-        """SubtitleSeries: Hanzi Chinse subtitles"""
+        """Optional[SubtitleSeries]: Hanzi Chinse subtitles"""
         if not hasattr(self, "_hanzi_subtitles"):
             if (hasattr(self, "_english_subtitles")
                     and self.english_subtitles is not None):
@@ -343,7 +338,7 @@ class Compositor(CLToolBase):
 
     @property
     def operations(self) -> Dict[str, Any]:
-        """dict: Collection of operations to perform, with associated
+        """Dict[str, Any]: Collection of operations to perform, with associated
         arguments"""
         if not hasattr(self, "_operations"):
             self._operations: Dict[str, Any] = {}
@@ -351,7 +346,7 @@ class Compositor(CLToolBase):
 
     @property
     def pinyin_subtitles(self) -> Optional[SubtitleSeries]:
-        """SubtitleSeries: Pinyin Chinese subtitles"""
+        """Optional[SubtitleSeries]: Pinyin Chinese subtitles"""
         if not hasattr(self, "_pinyin_subtitles"):
             if (hasattr(self, "_hanzi_subtitles")
                     and self.hanzi_subtitles is not None):
@@ -376,7 +371,7 @@ class Compositor(CLToolBase):
                              "must be 'english', 'hanzi', or 'pinyin'")
         elif language == "english":
             if self.english_subtitles is None:
-                raise ValueError("Comining of english lines requres "
+                raise ValueError("Combining of english lines requres "
                                  "initialized English subtitles")
             for i, e in enumerate(self.english_subtitles.events):
                 e.text = get_single_line_text(e.text, "english")
@@ -456,19 +451,19 @@ class Compositor(CLToolBase):
                 merged_text += [f"{e['upper text']}\n{e['lower text']}"]
         merged_df["text"] = merged_text
 
-        self._bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
+        self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
 
     def _initialize_pinyin_subtitles(self, language: str = "mandarin") -> None:
         from copy import deepcopy
 
         # Process arguments
-        self._pinyin_subtitles = deepcopy(self.hanzi_subtitles)
-        if self._pinyin_subtitles is None:
+        if self.hanzi_subtitles is None:
             raise ValueError("Initialization of pinyin subtitles requires "
                              "initialized hanzi subtitles")
         if language not in ["cantonese", "mandarin"]:
             raise ValueError("Invalid value provided for argument 'language'; "
                              "must be either 'cantonese' or 'mandarin'")
+        pinyin_subtitles = deepcopy(self.hanzi_subtitles)
 
         if self.verbosity >= 1:
             if language == "mandarin":
@@ -477,25 +472,27 @@ class Compositor(CLToolBase):
                 print("Adding Cantonese romanization")
 
         # Copy and convert to pinyin
-        for event in self._pinyin_subtitles.events:
+        for event in pinyin_subtitles.events:
             event.text = get_pinyin(event.text, language,
                                     verbosity=self.verbosity)
+
+        self.pinyin_subtitles = pinyin_subtitles
 
     def _translate_chinese_to_english(self) -> None:
         # TODO: Move most to language-independent function
         from scinoephile.translation import translate_client
 
         # Process arguments
-        self._english_subtitles = deepcopy(self.hanzi_subtitles)
-        if self._english_subtitles is None:
+        if self.hanzi_subtitles is None:
             raise ValueError("English translation requires Chinese subtitles "
                              "as source")
+        english_subtitles = deepcopy(self.hanzi_subtitles)
 
         if self.verbosity >= 1:
             print("Initializing English translation")
 
         # Translate
-        texts = [e.text for e in self._english_subtitles.events]
+        texts = [e.text for e in self.hanzi_subtitles.events]
         translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
@@ -505,25 +502,27 @@ class Compositor(CLToolBase):
                                  target_language="en")]
         for i, translation in enumerate(translations):
             if self.verbosity >= 2:
-                print(f"{self._english_subtitles.events[i].text} -> "
+                print(f"{english_subtitles.events[i].text} -> "
                       f"{translation}")
-            self._english_subtitles.events[i].text = translation
+            english_subtitles.events[i].text = translation
+
+        self.english_subtitles = english_subtitles
 
     def _translate_english_to_chinese(self) -> None:
         # TODO: Move most to language-independent function
         from scinoephile.translation import translate_client
 
         # Process arguments
-        self._hanzi_subtitles = deepcopy(self.english_subtitles)
-        if self._hanzi_subtitles is None:
+        if self.english_subtitles is None:
             raise ValueError("Chinese translation requires English subtitles "
                              "as source")
+        hanzi_subtitles = deepcopy(self.english_subtitles)
 
         if self.verbosity >= 1:
             print("Initializing Chinese translation")
 
         # Translate
-        texts = [e.text for e in self._hanzi_subtitles.events]
+        texts = [e.text for e in self.english_subtitles.events]
         translations: List[str] = []
         for i in range(0, len(texts), 100):
             translations += [e["translatedText"] for e in
@@ -533,9 +532,11 @@ class Compositor(CLToolBase):
                                  target_language="zh")]
         for i, translation in enumerate(translations):
             if self.verbosity >= 2:
-                print(f"{self._hanzi_subtitles.events[i].text} -> "
+                print(f"{hanzi_subtitles.events[i].text} -> "
                       f"{translation}")
-            self._hanzi_subtitles.events[i].text = translation
+            hanzi_subtitles.events[i].text = translation
+
+        self.hanzi_subtitles = hanzi_subtitles
 
     # endregion
 

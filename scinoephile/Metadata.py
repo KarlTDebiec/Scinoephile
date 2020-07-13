@@ -8,7 +8,6 @@
 #   BSD license. See the LICENSE file for details.
 """Adds Apple/iTunes-compatible metadata to MP4 files."""
 ################################### MODULES ###################################
-import re
 from argparse import ArgumentParser
 from glob import glob
 from os import rename
@@ -17,11 +16,12 @@ from shlex import quote
 from subprocess import Popen
 from typing import Any
 
-import dateutil
 import lxml.etree as etree
+
 from scinoephile.core import (CLToolBase, date_argument,
                               get_list_formatted_for_display,
-                              infile_argument, outfile_argument)
+                              infile_argument, outfile_argument,
+                              string_or_infile_argument)
 
 
 ################################### CLASSES ###################################
@@ -273,7 +273,7 @@ class Metadata(CLToolBase):
             help="Date of release")
         parser_metadata.add_argument(
             "--description",
-            type=str,
+            type=string_or_infile_argument,
             help="Description")
         parser_metadata.add_argument(
             "--genre",

@@ -4,6 +4,7 @@ h5py
 hanziconv
 imgcat
 IPython
+lxml
 matplotlib
 nltk
 numba
@@ -13,5 +14,9 @@ pillow
 pycantonese
 pypinyin
 pysubs2
+python-dateutil
 snownlp
 tensorflow
+setuptools
+pytest
+readline
