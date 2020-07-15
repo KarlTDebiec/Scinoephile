@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python3
 #   test_Compositor.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
@@ -10,6 +10,7 @@
 from collections import namedtuple
 from os.path import expandvars
 from typing import Any
+
 import pytest
 
 from scinoephile.Compositor import Compositor
@@ -17,17 +18,17 @@ from scinoephile.Compositor import Compositor
 ################################ CONFIGURATION ################################
 input_directory = expandvars("$SUBTITLES_ROOT/input")
 expected_output_directory = expandvars("$SUBTITLES_ROOT/expected_output/")
-actual_output_directory = expandvars("$SUBTITLES_ROOT/actual_output/")
+observed_output_directory = expandvars("$SUBTITLES_ROOT/observed_output/")
 
 ################################## VARIABLES ##################################
 Movie = namedtuple("Movie", ["input", "output"])
 
 king_of_beggars = Movie(f"{input_directory}/king_of_beggars",
-                        f"{actual_output_directory}/king_of_beggars")
+                        f"{observed_output_directory}/king_of_beggars")
 saving_mr_wu = Movie(f"{input_directory}/saving_mr_wu",
-                     f"{actual_output_directory}/saving_mr_wu")
+                     f"{observed_output_directory}/saving_mr_wu")
 trivisa = Movie(f"{input_directory}/trivisa",
-                f"{actual_output_directory}/trivisa")
+                f"{observed_output_directory}/trivisa")
 
 
 #################################### TESTS ####################################

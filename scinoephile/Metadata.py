@@ -9,17 +9,17 @@
 """Adds Apple/iTunes-compatible metadata to MP4 files."""
 ################################### MODULES ###################################
 from argparse import ArgumentParser
+from datetime import datetime
 from glob import glob
 from os import rename
 from os.path import expandvars, getctime, isfile
 from shlex import quote
 from subprocess import Popen
-from typing import Any
+from typing import Any, List, Optional
 
 import lxml.etree as etree
 
-from scinoephile.core import (CLToolBase, date_argument,
-                              get_list_formatted_for_display,
+from scinoephile.core import (CLToolBase, date_argument, get_list_for_display,
                               infile_argument, outfile_argument,
                               string_or_infile_argument)
 
@@ -27,7 +27,7 @@ from scinoephile.core import (CLToolBase, date_argument,
 ################################### CLASSES ###################################
 class Metadata(CLToolBase):
     """
-    Adds Metadata
+    Adds Apple/iTunes-compatible metadata to MP4 files
     """
     genres = {"Action & Adventure": 4401, "Anime": 4402, "Classics": 4403,
               "Comedy": 4404, "Documentary": 4405, "Drama": 4406,
@@ -44,19 +44,47 @@ class Metadata(CLToolBase):
 
     # region Builtins
 
-    def __init__(self, infile, outfile, cast=None, catalog_id=None, date=None,
-                 description=None, director=None, language=None, genre=None,
-                 overwrite=False, producer=None, rating=None, studio=None,
-                 title=None, writer=None, **kwargs: Any) -> None:
+    def __init__(self,
+                 infile: Optional[str],
+                 outfile: Optional[str],
+                 cast: Optional[List[str]] = None,
+                 catalog_id: Optional[int] = None,
+                 date: Optional[datetime] = None,
+                 description: Optional[str] = None,
+                 director: Optional[List[str]] = None,
+                 language: Optional[List[str]] = None,
+                 genre: Optional[str] = None,
+                 overwrite: bool = False,
+                 producer: Optional[List[str]] = None,
+                 rating: Optional[str] = None,
+                 studio: Optional[List[str]] = None,
+                 title: Optional[str] = None,
+                 writer: Optional[List[str]] = None,
+                 **kwargs: Any) -> None:
         """
         Initializes command-line tool and compiles list of operations
 
         Args:
+            infile (Optional[str]): Path to infile
+            outfile (Optional[str]): Path to outfile
+            cast (Optional[List[str]]): Names of cast members
+            catalog_id (Optional[int]): iTunes catalog ID
+            date (Optional[datetime]): Date of release
+            description (Optional[str]): Media description
+            director (Optional[List[str]]): Names of directors
+            language (Optional[List[str]]): Media languages
+            genre (Optional[str]): Media Genre
+            overwrite (bool): Overwrite outfile if it exists, or overwrite
+              infile if outfile is not provided
+            producer (Optional[List[str]]): Names of producers
+            rating (Optional[str]): Media rating
+            studio (Optional[List[str]]): Names of studios
+            title (Optional[str]): Media title
+            writer (Optional[List[str]]): Names of writers
             **kwargs: Additional keyword arguments
         """
         super().__init__(**kwargs)
 
-        # TODO: Document
         # TODO: Move xml lists into static function
 
         # Compile input operations
@@ -75,26 +103,28 @@ class Metadata(CLToolBase):
                 self.args.append(f"--genre {quote(genre)}")
                 self.args.append(f"--geID {self.genres[genre]}")
             else:
-                raise ValueError(f"Genre must be one of "
-                                 f"{get_list_formatted_for_display(self.genres, 'or')}; "
-                                 f"'{genre}' provided")
+                raise ValueError(
+                    f"Genre must be one of "
+                    f"{get_list_for_display(self.genres, 'or')}; '{genre}' "
+                    f"provided")
         if language:
             if isinstance(language, list):
-                grouping = get_list_formatted_for_display(language, "", "")
+                grouping = get_list_for_display(language, "", "")
                 self.args.append(f"--grouping  {quote(grouping)}")
             else:
                 raise ValueError(
                     f"language must be a list of strings; "
                     f"'{language}' provided")
-            # TODO: Is there some other tag? VLC does not seem to recognize yue
+            # TODO: VLC does not recognize yue, is there an alternative?
         if rating:
             if isinstance(rating, str):
                 if rating in self.ratings:
                     self.args.append(f"--contentRating {quote(rating)}")
                 else:
-                    raise ValueError(f"Rating must be one of "
-                                     f"{get_list_formatted_for_display(self.ratings, 'or')}; "
-                                     f"'{rating}' provided")
+                    raise ValueError(
+                        f"Rating must be one of "
+                        f"{get_list_for_display(self.ratings, 'or')}; "
+                        f"'{rating}' provided")
             else:
                 raise ValueError(
                     f"rating must be a string; '{rating}' provided")
@@ -121,7 +151,7 @@ class Metadata(CLToolBase):
                     f"'{cast}' provided")
         if director:
             if isinstance(director, list):
-                artist = get_list_formatted_for_display(director, "and", "")
+                artist = get_list_for_display(director, "and", "")
                 self.args.append(f"--artist {quote(artist)}")
 
                 etree.SubElement(xmldict, "key").text = "directors"
@@ -162,7 +192,7 @@ class Metadata(CLToolBase):
             if isinstance(studio, list):
                 etree.SubElement(xmldict, "key").text = "studio"
                 etree.SubElement(xmldict, "string").text = \
-                    get_list_formatted_for_display(studio, "and", "")
+                    get_list_for_display(studio, "and", "")
             else:
                 raise ValueError(
                     f"studio must be a list of strings; "

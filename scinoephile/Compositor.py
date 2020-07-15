@@ -51,7 +51,7 @@ from scinoephile.core import (CLToolBase, SubtitleSeries, get_pinyin,
 ################################### CLASSES ###################################
 class Compositor(CLToolBase):
     """
-    Combines Chinese and English subtitles
+    Compiles Chinese and English subtitles into a single file
     """
     _bilingual_subtitles: Optional[SubtitleSeries]
 
