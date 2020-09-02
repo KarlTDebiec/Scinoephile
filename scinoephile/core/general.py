@@ -245,13 +245,13 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     # Filter very short events
     # TODO: Do this interactively, somewhere else
     synced_df = synced_df.drop(
-        index=synced_df[synced_df["end"] - synced_df["start"] < 500].index)
+        index=synced_df[synced_df["end"] - synced_df["start"] < 300].index)
 
     return synced_df
 
 
 def todo(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
-    """Decorator be used to annotate unimplemented functions in a useful way"""
+    """Decorator used to annotate unimplemented functions in a useful way"""
 
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError()

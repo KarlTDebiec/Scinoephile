@@ -73,7 +73,7 @@ class Metadata(CLToolBase):
             description (Optional[str]): Media description
             director (Optional[List[str]]): Names of directors
             language (Optional[List[str]]): Media languages
-            genre (Optional[str]): Media Genre
+            genre (Optional[str]): Media genre
             overwrite (bool): Overwrite outfile if it exists, or overwrite
               infile if outfile is not provided
             producer (Optional[List[str]]): Names of producers

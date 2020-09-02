@@ -13,7 +13,7 @@ from datetime import datetime
 from os import R_OK, W_OK, access, getcwd
 from os.path import dirname, expandvars, isfile
 
-import dateutil
+import dateutil1
 
 
 ################################## FUNCTIONS ##################################

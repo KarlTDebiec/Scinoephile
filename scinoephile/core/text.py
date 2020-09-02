@@ -195,12 +195,17 @@ def get_single_line_text(text: str, language: str = "english") -> str:
                              r"\1 \2",
                              single_line, re.M)
     elif language == "hanzi":
-        single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$",
+        print(text)
+        single_line = re.sub(r"^(.+)\n(.+)$",
                              r"\1　\2",
                              single_line, re.M)
-        single_line = re.sub(r"^\s*﹣?\s*(.+)\s+﹣(.+)\s*$",
-                             r"﹣\1　　﹣\2",
-                             single_line, re.M)
+        print(single_line)
+        conversation = re.match(r"^﹣?(?P<first>.+)\s+﹣(?P<second>.+)$",
+                                single_line)
+        if conversation is not None:
+            single_line = f"﹣{conversation.groupdict(['first'])}　　" \
+                          f"﹣{conversation.groupdict(['second'])}"
+        print(single_line)
     else:
         raise ValueError("Invalid value for argument 'language'; must be "
                          "'english', 'hanzi', or 'pinyin'")
