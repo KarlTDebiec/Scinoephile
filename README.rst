@@ -6,7 +6,7 @@
 
 .. |license| image:: docs/static/license.svg
 
-.. |black| image:: Ahttps://img.shields.io/badge/code%20style-black-000000.svg
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
 
 |build| |coverage| |docs| |license| |black|
 
