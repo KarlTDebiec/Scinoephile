@@ -6,7 +6,9 @@
 
 .. |license| image:: docs/static/license.svg
 
-|build| |coverage| |docs| |license|
+.. |black| image:: Ahttps://img.shields.io/badge/code%20style-black-000000.svg
+
+|build| |coverage| |docs| |license| |black|
 
 .. github_header_end
 
