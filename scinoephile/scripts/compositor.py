@@ -40,7 +40,6 @@ from os import environ
 from os.path import isfile
 from typing import Any, Dict, List, Optional
 
-import numpy as np
 from IPython import embed
 
 from scinoephile.common import (
@@ -56,7 +55,7 @@ from scinoephile.core import (
     get_simplified_hanzi,
     get_single_line_text,
     get_truecase,
-    merge_subtitles,
+    merge_subtitles2,
 )
 
 
@@ -412,8 +411,7 @@ class Compositor(CLTool):
         # Process arguments
         if self._english_subtitles is None:
             raise GetterError(
-                "Conversion of capitalized English to truecase requires initialized "
-                "English subtitles"
+                "Conversion of English to truecase requires English subtitles"
             )
 
         if self.verbosity >= 1:
@@ -423,50 +421,43 @@ class Compositor(CLTool):
             event.text = get_truecase(event.text)
 
     def _initialize_bilingual_subtitles(self, chinese: str = "hanzi") -> None:
-        from copy import deepcopy
 
         # Process arguments
         if self.english_subtitles is None:
             raise GetterError(
-                "Initialization of bilingual subtitles requires initialized English "
-                "subtitles"
+                "Initialization of bilingual subtitles requires English subtitles"
             )
-        if (
-            chinese == "hanzi"
-            and self.hanzi_subtitles is None
-            or (chinese == "pinyin" and self.pinyin_subtitles is None)
+        if (chinese == "hanzi" and self.hanzi_subtitles is None) or (
+            chinese == "pinyin" and self.pinyin_subtitles is None
         ):
             raise GetterError(
-                "Initialization of bilingual subtitles requires initialized Chinese "
-                "subtitles"
+                "Initialization of bilingual subtitles requires Chinese subtitles"
             )
         if chinese == "hanzi":
             chinese_subtitles = deepcopy(self.hanzi_subtitles)
         elif chinese == "pinyin":
             chinese_subtitles = deepcopy(self.pinyin_subtitles)
         else:
-            raise GetterError(
-                "Invalid value provided for argument 'chinese'; must be 'hanzi' or "
-                "'pinyin'"
-            )
+            raise ValueError("Argument 'chinese'; must be 'hanzi' or 'pinyin'")
         english_subtitles = deepcopy(self.english_subtitles)
 
         if self.verbosity >= 1:
             print("Preparing bilingual subtitles")
 
         # Merge
-        merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
-        merged_text: List[str] = []
-        for _, e in merged_df.iterrows():
-            if isinstance(e["upper text"], float) and np.isnan(e["upper text"]):
-                merged_text += [e["lower text"]]
-            elif isinstance(e["lower text"], float) and np.isnan(e["lower text"]):
-                merged_text += [e["upper text"]]
-            else:
-                merged_text += [f"{e['upper text']}\n{e['lower text']}"]
-        merged_df["text"] = merged_text
-
-        self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
+        merged_df = merge_subtitles2(chinese_subtitles, english_subtitles)
+        # merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
+        # merged_text: List[str] = []
+        # for _, e in merged_df.iterrows():
+        #     if isinstance(e["upper text"], float) and np.isnan(e["upper text"]):
+        #         merged_text += [e["lower text"]]
+        #     elif isinstance(e["lower text"], float) and np.isnan(e["lower text"]):
+        #         merged_text += [e["upper text"]]
+        #     else:
+        #         merged_text += [f"{e['upper text']}\n{e['lower text']}"]
+        # merged_df["text"] = merged_text
+        #
+        # self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
 
     def _initialize_pinyin_subtitles(self, language: str = "mandarin") -> None:
         from copy import deepcopy

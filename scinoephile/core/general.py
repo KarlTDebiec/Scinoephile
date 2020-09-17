@@ -13,6 +13,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from IPython import embed
 
 from scinoephile import package_root
 from scinoephile.core import SubtitleSeries
@@ -21,7 +22,7 @@ from scinoephile.core import SubtitleSeries
 ################################## FUNCTIONS ##################################
 def embed_kw(verbosity: int = 2, **kwargs: Any) -> Dict[str, str]:
     """
-    Prepares header for IPython prompt showing current location in code
+    Prepares header for IPython prompt showing current location in code.
 
     Use ``IPython.embed(**embed_kw())``.
 
@@ -41,23 +42,24 @@ def embed_kw(verbosity: int = 2, **kwargs: Any) -> Dict[str, str]:
     number = frameinfo.lineno - 1
     header = ""
     if verbosity >= 1:
-        header = f"IPython prompt in file {file}, function {func}," \
-                 f" line {number}\n"
+        header = f"IPython prompt in file {file}, function {func}," f" line {number}\n"
     if verbosity >= 2:
         header += "\n"
         with open(frameinfo.filename, "r") as infile:
-            lines = [(i, line) for i, line in enumerate(infile)
-                     if i in range(number - 5, number + 6)]
+            lines = [
+                (i, line)
+                for i, line in enumerate(infile)
+                if i in range(number - 5, number + 6)
+            ]
         for i, line in lines:
-            header += f"{i:5d} {'>' if i == number else ' '} " \
-                      f"{line.rstrip()}\n"
+            header += f"{i:5d} {'>' if i == number else ' '} " f"{line.rstrip()}\n"
 
     return {"header": header}
 
 
 def in_ipython() -> Union[bool, str]:
     """
-    Determines if inside IPython prompt
+    Determines if inside IPython prompt.
 
     Returns:
         str: Type of shell in use
@@ -83,7 +85,7 @@ def in_ipython() -> Union[bool, str]:
 
 def input_prefill(prompt: str, prefill: str) -> str:
     """
-    Prompts user for input with pre-filled text
+    Prompts user for input with pre-filled text.
 
     Does not handle colored prompt correctly
 
@@ -108,6 +110,30 @@ def input_prefill(prompt: str, prefill: str) -> str:
     return result
 
 
+def merge_subtitles2(upper: Any, lower: Any) -> pd.DataFrame:
+    # Process arguments
+    if isinstance(upper, SubtitleSeries):
+        upper = upper.get_dataframe()
+    if isinstance(lower, SubtitleSeries):
+        lower = lower.get_dataframe()
+
+    # Need setting to favor either upper or lower
+    # Need to track assignments
+
+    overlap = np.zeros((upper.shape[0], lower.shape[0]))
+    for i, up in upper.iterrows():
+        potential_matches = []
+        for j, low in lower.iterrows():
+            numerator = min(up.end, low.end) - max(up.start, low.start)
+            if numerator >= 1:
+                denominator = max(up.end, low.end) - min(up.start, low.start)
+                overlap[i, j] = numerator / denominator
+                print(f"{i:4d}, {j:4d}, {overlap[i, j]:4.2f}")
+                potential_matches.append(j)
+        print(f"{i:4d},    {potential_matches}")
+    embed()
+
+
 def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     """
     Merges and synchronizes two sets of subtitles.
@@ -123,17 +149,26 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     def add_event(merged: List[Tuple[int, int, str]]) -> None:
         if start != time:
             if upper_text is None:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, lower_text)],
-                    columns=["start", "end", "lower text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, lower_text)],
+                        columns=["start", "end", "lower text"],
+                    )
+                ]
             elif lower_text is None:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, upper_text)],
-                    columns=["start", "end", "upper text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, upper_text)],
+                        columns=["start", "end", "upper text"],
+                    )
+                ]
             else:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, upper_text, lower_text)],
-                    columns=["start", "end", "upper text", "lower text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, upper_text, lower_text)],
+                        columns=["start", "end", "upper text", "lower text"],
+                    )
+                ]
 
     # Process arguments
     if isinstance(upper, SubtitleSeries):
@@ -145,11 +180,15 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     # TODO: Validate that events within each series do not overlap
     transitions: List[Tuple[int, str, Optional[str]]] = []
     for _, event in upper.iterrows():
-        transitions += [(event["start"], "upper_start", event["text"]),
-                        (event["end"], "upper_end", None)]
+        transitions += [
+            (event["start"], "upper_start", event["text"]),
+            (event["end"], "upper_end", None),
+        ]
     for _, event in lower.iterrows():
-        transitions += [(event["start"], "lower_start", event["text"]),
-                        (event["end"], "lower_end", None)]
+        transitions += [
+            (event["start"], "lower_start", event["text"]),
+            (event["end"], "lower_end", None),
+        ]
     transitions.sort()
 
     # Merge events
@@ -193,7 +232,8 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
                 # Transition from CE -> E_
                 start = time
     merged_df = pd.concat(merged, sort=False, ignore_index=True)[
-        ["upper text", "lower text", "start", "end"]]
+        ["upper text", "lower text", "start", "end"]
+    ]
 
     # Synchronize events
     synced_list = [merged_df.iloc[0].copy()]
@@ -201,13 +241,11 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
         last = synced_list[-1]
         next = merged_df.iloc[index].copy()
         if last["upper text"] == next["upper text"]:
-            if isinstance(last["lower text"], float) and np.isnan(
-                    last["lower text"]):
+            if isinstance(last["lower text"], float) and np.isnan(last["lower text"]):
                 # Upper started before lower
                 last["lower text"] = next["lower text"]
                 last["end"] = next["end"]
-            elif isinstance(next["lower text"], float) and np.isnan(
-                    next["lower text"]):
+            elif isinstance(next["lower text"], float) and np.isnan(next["lower text"]):
                 # Lower started before upper
                 last["end"] = next["end"]
             else:
@@ -219,13 +257,11 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
                 # Otherwise, probably upper repeated with different lower
                 synced_list += [next]
         elif last["lower text"] == next["lower text"]:
-            if isinstance(last["upper text"], float) and np.isnan(
-                    last["upper text"]):
+            if isinstance(last["upper text"], float) and np.isnan(last["upper text"]):
                 # Lower started before upper
                 last["upper text"] = next["upper text"]
                 last["end"] = next["end"]
-            elif isinstance(next["upper text"], float) and np.isnan(
-                    next["upper text"]):
+            elif isinstance(next["upper text"], float) and np.isnan(next["upper text"]):
                 # Upper started before lower
                 if last.end < next["start"]:
                     synced_list += [next]
@@ -245,13 +281,14 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     # Filter very short events
     # TODO: Do this interactively, somewhere else
     synced_df = synced_df.drop(
-        index=synced_df[synced_df["end"] - synced_df["start"] < 300].index)
+        index=synced_df[synced_df["end"] - synced_df["start"] < 300].index
+    )
 
     return synced_df
 
 
 def todo(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
-    """Decorator used to annotate unimplemented functions in a useful way"""
+    """Decorator used to annotate unimplemented functions in a useful way."""
 
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError()
