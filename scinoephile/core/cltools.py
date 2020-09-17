@@ -13,13 +13,13 @@ from datetime import datetime
 from os import R_OK, W_OK, access, getcwd
 from os.path import dirname, expandvars, isfile
 
-import dateutil1
+import dateutil
 
 
 ################################## FUNCTIONS ##################################
 def infile_argument(value: str) -> str:
     """
-    argparse argument type for input files
+    argparse argument type for input files.
 
     Args:
         value (str): path to file; may contain environment variables
@@ -44,7 +44,7 @@ def infile_argument(value: str) -> str:
 
 def outfile_argument(value: str) -> str:
     """
-    argparse argument type for output files
+    argparse argument type for output files.
 
     Args:
        value (str): path to file; may contain environment variables
@@ -74,7 +74,7 @@ def outfile_argument(value: str) -> str:
 
 def date_argument(value: str) -> datetime:
     """
-    argparse argument type for dates
+    argparse argument type for dates.
 
     Args:
        value (str): date expressed as a string
@@ -98,7 +98,7 @@ def date_argument(value: str) -> datetime:
 
 def string_or_infile_argument(value: str) -> str:
     """
-    argparse argument type for either raw text or path to file containing text
+    argparse argument type for either raw text or path to file containing text.
 
     Args:
        value (str): raw text, or path to file containing text; may contain

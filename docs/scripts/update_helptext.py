@@ -14,15 +14,17 @@ if __name__ == "__main__":
     from os.path import dirname, realpath
     from subprocess import Popen, PIPE
 
-    root = dirname(dirname(dirname(dirname(realpath(
-        getframeinfo(currentframe()).filename)))))
+    root = dirname(
+        dirname(dirname(dirname(realpath(getframeinfo(currentframe()).filename))))
+    )
     re_helptext = re.compile(
         r"(?P<block_1>.*:name: derasterizer_helptext\n\n)"
         r"(?P<derasterizer_helptext>.*?(?=^\S+))"
         r"(?P<block_2>.*:name: compositor_helptext\n\n)"
         r"(?P<compositor_helptext>.*?(?=^\S+))"
         r"(?P<block_3>.*)",
-        re.M | re.S)
+        re.M | re.S,
+    )
 
     # Read current README and split into sections
     with open(f"{root}/README.rst", "r") as infile:
@@ -36,17 +38,29 @@ if __name__ == "__main__":
 
     # Read current Derasterizer.py usage
     with open(devnull, "w") as fnull:
-        derasterizer_helptext = Popen(
-            f"python {root}/scinoephile/Derasterizer.py -h",
-            stdout=PIPE, stderr=fnull, shell=True).stdout.read().decode(
-            "utf-8")
+        derasterizer_helptext = (
+            Popen(
+                f"python {root}/scinoephile/Derasterizer.py -h",
+                stdout=PIPE,
+                stderr=fnull,
+                shell=True,
+            )
+            .stdout.read()
+            .decode("utf-8")
+        )
 
     # Read current Compositor.py usage
     with open(devnull, "w") as fnull:
-        compositor_helptext = Popen(
-            f"python {root}/scinoephile/Compositor.py -h",
-            stdout=PIPE, stderr=fnull, shell=True).stdout.read().decode(
-            "utf-8")
+        compositor_helptext = (
+            Popen(
+                f"python {root}/scinoephile/Compositor.py -h",
+                stdout=PIPE,
+                stderr=fnull,
+                shell=True,
+            )
+            .stdout.read()
+            .decode("utf-8")
+        )
 
     # Write updated README
     with open(f"{root}/README.rst", "w") as outfile:
