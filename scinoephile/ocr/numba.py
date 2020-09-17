@@ -15,7 +15,7 @@ import numpy as np
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image(bytes_, height, width):
     """
-    Reads a palette-compressed image from a block of bytes
+    Reads a palette-compressed image from a block of bytes.
 
     Args:
         bytes_ (bytearray): Block of bytes
@@ -58,7 +58,7 @@ def read_sup_image(bytes_, height, width):
                     n_pixels = byte_2
                     color = 0
                     byte_i += 2
-                img[row_i, col_i:col_i + n_pixels] = color
+                img[row_i, col_i : col_i + n_pixels] = color
                 col_i += n_pixels
         else:  # XX | Color X, once
             color = byte_1
@@ -71,7 +71,7 @@ def read_sup_image(bytes_, height, width):
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_palette(bytes_):
     """
-    Reads a color palette from a block of bytes
+    Reads a color palette from a block of bytes.
 
     Args:
         bytes_ (bytearray): Block of bytes
@@ -87,7 +87,7 @@ def read_sup_palette(bytes_):
         cb = bytes_[byte_i + 2]
         cr = bytes_[byte_i + 3]
         palette[color_i, 0] = y + 1.402 * (cr - 128)
-        palette[color_i, 1] = y - .34414 * (cb - 128) - .71414 * (cr - 128)
+        palette[color_i, 1] = y - 0.34414 * (cb - 128) - 0.71414 * (cr - 128)
         palette[color_i, 2] = y + 1.772 * (cb - 128)
         palette[color_i, 3] = bytes_[byte_i + 4]
         byte_i += 5
@@ -99,7 +99,7 @@ def read_sup_palette(bytes_):
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_subtitles(bytes_):
     """
-    Reads subtitle images and times from a block of bytes
+    Reads subtitle images and times from a block of bytes.
 
     Args:
         bytes_ (bytearray): block of bytes
@@ -118,8 +118,12 @@ def read_sup_subtitles(bytes_):
 
         # Load header
         byte_i += 2
-        timestamp = bytes_[byte_i] * 16777216 + bytes_[byte_i + 1] * 65536 \
-                    + bytes_[byte_i + 2] * 256 + bytes_[byte_i + 3]
+        timestamp = (
+            bytes_[byte_i] * 16777216
+            + bytes_[byte_i + 1] * 65536
+            + bytes_[byte_i + 2] * 256
+            + bytes_[byte_i + 3]
+        )
         byte_i += 8
         segment_kind = bytes_[byte_i]
         byte_i += 1
@@ -128,12 +132,12 @@ def read_sup_subtitles(bytes_):
 
         # Load content
         if segment_kind == 0x14:  # Palette
-            palette_bytes = bytes_[byte_i + 2:byte_i + size]
+            palette_bytes = bytes_[byte_i + 2 : byte_i + size]
             palette = read_sup_palette(palette_bytes)
         elif segment_kind == 0x15:  # Image
             width = bytes_[byte_i + 7] * 256 + bytes_[byte_i + 8]
             height = bytes_[byte_i + 9] * 256 + bytes_[byte_i + 10]
-            image_bytes = bytes_[byte_i + 11:byte_i + size]
+            image_bytes = bytes_[byte_i + 11 : byte_i + size]
             compressed_image = read_sup_image(image_bytes, height, width)
         elif segment_kind == 0x80:  # End
             if seeking_start:

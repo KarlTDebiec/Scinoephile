@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #   update_badges.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
@@ -111,30 +111,36 @@ if __name__ == "__main__":
 
     # TODO: Use a single template SVG
 
-    root = dirname(dirname(dirname(dirname(realpath(
-        getframeinfo(currentframe()).filename)))))
-    re_build = re.compile(r"^=+ "
-                          r"((?P<failed>\d+) failed)?,? ?"
-                          r"((?P<passed>\d+) passed)?,? ?"
-                          r"((?P<warnings>\d+) warnings)? in "
-                          r"(?P<duration>\d+\.?\d*)? seconds =+$")
-    re_coverage = re.compile(r"^TOTAL\s+"
-                             r"(?P<statements>\d+)+\s+"
-                             r"(?P<missed>\d+)+\s+"
-                             r"(?P<coverage>\d+)+%$")
-    re_coverage_html = re.compile(r"^\s*<span class=\"pc_cov\">"
-                                  r"(?P<coverage>\d+)%</span>$")
-    re_docs = re.compile(r"^\| TOTAL\s+\|\s+"
-                         r"(?P<docs>\d+\.?\d+)%\s+\|\s+"
-                         r"(?P<undocumented>\d+\s+|$)")
-
+    root = dirname(
+        dirname(dirname(dirname(realpath(getframeinfo(currentframe()).filename))))
+    )
+    re_build = re.compile(
+        r"^=+ "
+        r"((?P<failed>\d+) failed)?,? ?"
+        r"((?P<passed>\d+) passed)?,? ?"
+        r"((?P<warnings>\d+) warnings)? in "
+        r"(?P<duration>\d+\.?\d*)? seconds =+$"
+    )
+    re_coverage = re.compile(
+        r"^TOTAL\s+"
+        r"(?P<statements>\d+)+\s+"
+        r"(?P<missed>\d+)+\s+"
+        r"(?P<coverage>\d+)+%$"
+    )
+    re_coverage_html = re.compile(
+        r"^\s*<span class=\"pc_cov\">" r"(?P<coverage>\d+)%</span>$"
+    )
+    re_docs = re.compile(
+        r"^\| TOTAL\s+\|\s+"
+        r"(?P<docs>\d+\.?\d+)%\s+\|\s+"
+        r"(?P<undocumented>\d+\s+|$)"
+    )
 
     def get_build_color(build):
         if build == "Passing":
             return "#4c1"
         else:
             return "#e05d44"
-
 
     def get_coverage_color(coverage):
         if coverage >= 95:
@@ -149,7 +155,6 @@ if __name__ == "__main__":
             return "#fe7d37"
         else:
             return "#e05d44"
-
 
     # Read test log, and html coverage is necessary
     coverage = None
@@ -180,23 +185,29 @@ if __name__ == "__main__":
 
     # Write build badge
     with open(f"{root}/docs/static/build.svg", "w") as outfile:
-        outfile.write(build_template.strip().replace(
-            "VALUE", f"{build}").replace(
-            "COLOR", get_build_color(build)))
+        outfile.write(
+            build_template.strip()
+            .replace("VALUE", f"{build}")
+            .replace("COLOR", get_build_color(build))
+        )
         outfile.write("\n")
 
     # Write coverage badge
     with open(f"{root}/docs/static/coverage.svg", "w") as outfile:
-        outfile.write(coverage_template.strip().replace(
-            "VALUE", f"{coverage}%").replace(
-            "COLOR", get_coverage_color(coverage)))
+        outfile.write(
+            coverage_template.strip()
+            .replace("VALUE", f"{coverage}%")
+            .replace("COLOR", get_coverage_color(coverage))
+        )
         outfile.write("\n")
 
     # Write documentation badge
     with open(f"{root}/docs/static/docs.svg", "w") as outfile:
-        outfile.write(docs_template.strip().replace(
-            "VALUE", f"{docs}%").replace(
-            "COLOR", get_coverage_color(docs)))
+        outfile.write(
+            docs_template.strip()
+            .replace("VALUE", f"{docs}%")
+            .replace("COLOR", get_coverage_color(docs))
+        )
         outfile.write("\n")
 
     # Write license badge
