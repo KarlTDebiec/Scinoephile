@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #   scinoephile.Extractor.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
@@ -14,15 +14,13 @@ from scinoephile import CLToolBase
 
 ################################### CLASSES ###################################
 class Extractor(CLToolBase):
-    """
-    Extracts burned-in subtitles
-    """
+    """Extracts burned-in subtitles."""
 
     # region Builtins
 
     def __init__(self, infile, **kwargs):
         """
-        Initializes command-line tool and compiles list of operations
+        Initializes command-line tool and compiles list of operations.
 
         Args:
             **kwargs: Additional keyword arguments
@@ -40,9 +38,7 @@ class Extractor(CLToolBase):
             raise IOError(f"MP4 infile '{infile}' cannot be read")
 
     def __call__(self):
-        """
-        Performs operations
-        """
+        """Performs operations."""
         from PIL import Image
         import cv2
         import numpy as np
@@ -78,7 +74,7 @@ class Extractor(CLToolBase):
     @classmethod
     def construct_argparser(cls, **kwargs):
         """
-        Constructs argument parser
+        Constructs argument parser.
 
         Returns:
             parser (argparse.ArgumentParser): Argument parser
@@ -87,10 +83,9 @@ class Extractor(CLToolBase):
 
         # Input
         parser_input = parser.add_argument_group("input arguments")
-        parser_input.add_argument("-if", "--infile",
-                                  help="MP4 infile",
-                                  metavar="FILE",
-                                  required=True)
+        parser_input.add_argument(
+            "-if", "--infile", help="MP4 infile", metavar="FILE", required=True
+        )
 
         return parser
 
