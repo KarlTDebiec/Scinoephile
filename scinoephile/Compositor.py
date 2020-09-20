@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #   scinoephile.Compositor.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
