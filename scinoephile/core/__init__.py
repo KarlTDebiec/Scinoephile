@@ -20,7 +20,7 @@ from scinoephile.core.cltools import (
     outfile_argument,
     string_or_infile_argument,
 )
-from scinoephile.core.general import merge_subtitles, merge_subtitles2
+from scinoephile.core.general import merge_subtitles, align_subtitles
 from scinoephile.core.text import (
     get_list_for_display,
     get_pinyin,
@@ -44,7 +44,7 @@ __all__: List[str] = [
     "get_truecase",
     "infile_argument",
     "merge_subtitles",
-    "merge_subtitles2",
+    "align_subtitles",
     "outfile_argument",
     "string_or_infile_argument",
 ]

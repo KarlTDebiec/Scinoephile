@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #   scinoephile.core.general.py
 #
 #   Copyright (C) 2017-2020 Karl T Debiec
@@ -110,7 +110,7 @@ def input_prefill(prompt: str, prefill: str) -> str:
     return result
 
 
-def merge_subtitles2(upper: Any, lower: Any) -> pd.DataFrame:
+def align_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     # Process arguments
     if isinstance(upper, SubtitleSeries):
         upper = upper.get_dataframe()

@@ -55,7 +55,7 @@ from scinoephile.core import (
     get_simplified_hanzi,
     get_single_line_text,
     get_truecase,
-    merge_subtitles2,
+    align_subtitles,
 )
 
 
@@ -445,7 +445,7 @@ class Compositor(CLTool):
             print("Preparing bilingual subtitles")
 
         # Merge
-        merged_df = merge_subtitles2(chinese_subtitles, english_subtitles)
+        merged_df = align_subtitles(chinese_subtitles, english_subtitles)
         # merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
         # merged_text: List[str] = []
         # for _, e in merged_df.iterrows():
