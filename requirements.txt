@@ -14,6 +14,7 @@ pillow
 pycantonese
 pypinyin
 pysubs2
+pytest
 python-dateutil
 snownlp
 tensorflow
