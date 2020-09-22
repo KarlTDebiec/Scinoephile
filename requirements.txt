@@ -1,109 +1,23 @@
-absl-py==0.9.0
-appnope==0.1.0
-astor==0.8.1
-attrs==19.3.0
-backcall==0.2.0
-brotlipy==0.7.0
-cachetools==4.1.1
-certifi==2020.6.20
-cffi @ file:///opt/concourse/worker/volumes/live/6ecf3c92-cc45-4825-7707-d9a7636cce94/volume/cffi_1596809957475/work
-chardet==3.0.4
-click==7.1.2
-colorama==0.4.3
-coverage==5.2.1
-coveralls @ file:///tmp/build/80754af9/coveralls_1597334783710/work
-cryptography==2.9.2
-cycler==0.10.0
-decorator==4.4.2
-Deprecated==1.2.10
-docopt==0.6.2
-Flask==1.1.2
-gast==0.2.2
-google-api-core==1.22.1
-google-auth==1.20.1
-google-cloud-core==1.4.1
-google-cloud-translate==3.0.1
-google-pasta==0.2.0
-googleapis-common-protos==1.52.0
-grpcio @ file:///opt/concourse/worker/volumes/live/b5e6cc9f-d048-411b-5e0a-34cf579ea9aa/volume/grpcio_1597424489035/work
-h5py @ file:///opt/concourse/worker/volumes/live/98bee3fd-2687-4017-5421-d742d1f18c35/volume/h5py_1593454156895/work
-hanziconv==0.3.2
-idna @ file:///tmp/build/80754af9/idna_1593446292537/work
-imgcat==0.5.0
-importlib-metadata @ file:///opt/concourse/worker/volumes/live/84197498-cbc0-4436-7ce0-03c4490b7a28/volume/importlib-metadata_1593446431408/work
-iniconfig @ file:///tmp/build/80754af9/iniconfig_1596827328212/work
-ipython @ file:///opt/concourse/worker/volumes/live/7ea70a71-5624-4799-50b3-3b90e07922f3/volume/ipython_1593447385860/work
-ipython-genutils==0.2.0
-itsdangerous==1.1.0
-jedi @ file:///opt/concourse/worker/volumes/live/114a62c0-dd60-4a40-6382-85abb31b5f6e/volume/jedi_1592841953086/work
-Jinja2==2.11.2
-Keras-Applications @ file:///tmp/build/80754af9/keras-applications_1594366238411/work
-Keras-Preprocessing==1.1.0
-kiwisolver==1.2.0
-libcst==0.3.10
-llvmlite==0.33.0+1.g022ab0f
-Markdown @ file:///opt/concourse/worker/volumes/live/78511e82-5679-42c1-42a8-b983fac7e7ab/volume/markdown_1597433265500/work
-MarkupSafe==1.1.1
-matplotlib @ file:///opt/concourse/worker/volumes/live/34dd81d3-0a70-4e5e-5ad6-be36ca7e59f7/volume/matplotlib-base_1592846084794/work
-mkl-fft==1.1.0
-mkl-random==1.1.1
-mkl-service==2.3.0
-more-itertools==8.4.0
-mypy @ file:///tmp/build/80754af9/mypy_1593442617121/work
-mypy-extensions==0.4.3
-numba==0.50.1
-numpy @ file:///opt/concourse/worker/volumes/live/40d975a3-7e82-44c8-53df-feccdbce8b96/volume/numpy_and_numpy_base_1596233859108/work
-olefile==0.46
-opt-einsum==3.1.0
-packaging==20.4
-pandas @ file:///opt/concourse/worker/volumes/live/8386378f-860c-458e-6b3d-426dc3c0374b/volume/pandas_1596825862710/work
-parso==0.7.0
-pexpect==4.8.0
-pickleshare==0.7.5
-Pillow @ file:///opt/concourse/worker/volumes/live/05b3bc99-cf9f-44f2-42cf-267ed3a55922/volume/pillow_1594307311725/work
-pluggy==0.13.1
-prompt-toolkit==3.0.5
-proto-plus==1.7.1
-protobuf==3.12.4
-psutil==5.7.0
-ptyprocess==0.6.0
-py @ file:///tmp/build/80754af9/py_1593446248552/work
-pyasn1==0.4.8
-pyasn1-modules==0.2.8
-pycantonese==2.3.0
-pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
-PyGithub==1.53
-Pygments==2.6.1
-PyJWT==1.7.1
-pylangacq==0.11.0
-pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1594392929924/work
-pyparsing==2.4.7
-pypinyin==0.39.0
-PySocks==1.7.1
-pysubs2==0.2.4
-pytesseract==0.3.5
-pytest==6.0.1
-pytest-cov @ file:///tmp/build/80754af9/pytest-cov_1597600886872/work
-python-dateutil==2.8.1
-pytz==2020.1
-PyYAML==5.3.1
-requests @ file:///tmp/build/80754af9/requests_1592841827918/work
-rsa==4.6
-scipy @ file:///opt/concourse/worker/volumes/live/14622691-c324-4e90-5a99-87aced91207b/volume/scipy_1592930535761/work
-six==1.15.0
-snownlp==0.12.3
-tensorboard==2.0.0
-tensorflow==2.0.0
-tensorflow-estimator==2.0.0
-termcolor==1.1.0
-toml @ file:///tmp/build/80754af9/toml_1592853716807/work
-tornado==6.0.4
-traitlets==4.3.3
-typed-ast==1.4.1
-typing-extensions @ file:///tmp/build/80754af9/typing_extensions_1592847887441/work
-typing-inspect==0.6.0
-urllib3 @ file:///tmp/build/80754af9/urllib3_1597086586889/work
-wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
-Werkzeug==1.0.1
-wrapt==1.12.1
-zipp==3.1.0
+colorama
+google-cloud-translate
+h5py
+hanziconv
+imgcat
+IPython
+lxml
+matplotlib
+nltk
+numba
+numpy
+pandas
+pillow
+pycantonese
+pypinyin
+pysubs2
+pytest
+python-dateutil
+snownlp
+tensorflow
+setuptools
+pytest
+readline
