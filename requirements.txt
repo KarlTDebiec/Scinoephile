@@ -15,8 +15,5 @@ pycantonese
 pypinyin
 pysubs2
 python-dateutil
-snownlp
-tensorflow
 setuptools
-pytest
 readline
