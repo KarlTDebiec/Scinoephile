@@ -180,15 +180,15 @@ class Compositor(CLTool):
                     "English subtitle input"
                 )
         if combine_lines:
-            if "load_english" or "translate_english" in self.operations:
+            if {"load_english", "translate_english"}.intersection(self.operations):
                 self.operations["combine_english_lines"] = True
-            if "load_hanzi" or "translate_chinese" in self.operations:
+            if {"load_hanzi", "translate_chinese"}.intersection(self.operations):
                 self.operations["combine_hanzi_lines"] = True
-            if (
-                "load_pinyin"
-                or "convert_pinyin_mandarin"
-                or "convert_pinyin_canontese" in self.operations
-            ):
+            if {
+                "load_pinyin",
+                "convert_pinyin_mandarin",
+                "convert_pinyin_canontese",
+            }.intersection(self.operations):
                 self.operations["combine_pinyin_lines"] = True
         if simplify:
             if "load_hanzi" or "translate_chinese" in self.operations:
@@ -292,6 +292,9 @@ class Compositor(CLTool):
         if "save_english" in self.operations:
             self.english_subtitles.save(self.operations["save_english"])
         if "save_hanzi" in self.operations:
+            self.hanzi_subtitles = align_subtitles(
+                self.hanzi_subtitles, self.english_subtitles, (0, 0)
+            )
             self.hanzi_subtitles.save(self.operations["save_hanzi"])
         if "save_pinyin" in self.operations:
             self.pinyin_subtitles.save(self.operations["save_pinyin"])
@@ -364,6 +367,7 @@ class Compositor(CLTool):
     # region Private Methods
 
     def _combine_lines(self, language: str) -> None:
+        embed()
         if language not in ["english", "hanzi", "pinyin"]:
             raise ValueError(
                 "Invalid value provided for argument 'language'; must be 'english', "
@@ -445,19 +449,18 @@ class Compositor(CLTool):
             print("Preparing bilingual subtitles")
 
         # Merge
-        merged_df = align_subtitles(chinese_subtitles, english_subtitles)
-        # merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
-        # merged_text: List[str] = []
-        # for _, e in merged_df.iterrows():
-        #     if isinstance(e["upper text"], float) and np.isnan(e["upper text"]):
-        #         merged_text += [e["lower text"]]
-        #     elif isinstance(e["lower text"], float) and np.isnan(e["lower text"]):
-        #         merged_text += [e["upper text"]]
-        #     else:
-        #         merged_text += [f"{e['upper text']}\n{e['lower text']}"]
-        # merged_df["text"] = merged_text
-        #
-        # self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
+        merged_df = merge_subtitles(chinese_subtitles, english_subtitles)
+        merged_text: List[str] = []
+        for _, e in merged_df.iterrows():
+            if isinstance(e["upper text"], float) and np.isnan(e["upper text"]):
+                merged_text += [e["lower text"]]
+            elif isinstance(e["lower text"], float) and np.isnan(e["lower text"]):
+                merged_text += [e["upper text"]]
+            else:
+                merged_text += [f"{e['upper text']}\n{e['lower text']}"]
+        merged_df["text"] = merged_text
+
+        self.bilingual_subtitles = SubtitleSeries.from_dataframe(merged_df)
 
     def _initialize_pinyin_subtitles(self, language: str = "mandarin") -> None:
         from copy import deepcopy

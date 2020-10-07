@@ -110,28 +110,63 @@ def input_prefill(prompt: str, prefill: str) -> str:
     return result
 
 
-def align_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
+def align_subtitles(
+    align: Any, target: Any, sync_pair: Optional[Tuple[int, int]] = None
+) -> SubtitleSeries:
     # Process arguments
-    if isinstance(upper, SubtitleSeries):
-        upper = upper.get_dataframe()
-    if isinstance(lower, SubtitleSeries):
-        lower = lower.get_dataframe()
+    align = align.get_dataframe()
+    align_starts = align["start"].values
+    align_ends = align["end"].values
+    target = target.get_dataframe()
+    target_starts = target["start"].values
+    target_ends = target["end"].values
 
-    # Need setting to favor either upper or lower
-    # Need to track assignments
+    # Sync pair of subtitles, if accurate
+    if sync_pair is not None:
+        adjustment = int(
+            ((target_ends[sync_pair[1]] + target_starts[sync_pair[1]]) / 2)
+            - ((align_ends[sync_pair[0]] + align_starts[sync_pair[0]]) / 2)
+        )
+        align_starts += adjustment
+        align_ends += adjustment
 
-    overlap = np.zeros((upper.shape[0], lower.shape[0]))
-    for i, up in upper.iterrows():
-        potential_matches = []
-        for j, low in lower.iterrows():
-            numerator = min(up.end, low.end) - max(up.start, low.start)
-            if numerator >= 1:
-                denominator = max(up.end, low.end) - min(up.start, low.start)
-                overlap[i, j] = numerator / denominator
-                print(f"{i:4d}, {j:4d}, {overlap[i, j]:4.2f}")
-                potential_matches.append(j)
-        print(f"{i:4d},    {potential_matches}")
-    embed()
+    #
+    align_starts_tiled = np.tile(align_starts, (target_starts.size, 1))
+    align_ends_tiled = np.tile(align_ends, (target_ends.size, 1))
+    target_starts_tiled = np.transpose(np.tile(target_starts, (align_starts.size, 1)))
+    target_ends_tiled = np.transpose(np.tile(target_ends, (align_ends.size, 1)))
+
+    #
+    numerator = np.minimum(align_ends_tiled, target_ends_tiled) - np.maximum(
+        align_starts_tiled, target_starts_tiled
+    )
+    numerator[numerator < 0] = 0
+    denominator = np.maximum(align_ends_tiled, target_ends_tiled) - np.minimum(
+        align_starts_tiled, target_starts_tiled
+    )
+    overlap = numerator / denominator
+    overlapping_pairs = np.squeeze(np.dstack(np.where(overlap > 0)))
+    for i in range(target.shape[0]):
+        pairs = overlapping_pairs[overlapping_pairs[:, 0] == i]
+
+        # Single overlapping match
+        if len(pairs) == 1:
+            pair = pairs[0]
+            if overlap[pair[0], pair[1]] >= 0.9:
+                print(f"{i}, {pair}, {overlap[pair[0], pair[1]]}")
+                align.loc[pair[1], ["start", "end"]] = target.loc[
+                    pair[0], ["start", "end"]
+                ]
+        # Two overlapping matches, may be one subtitle in target and two in align
+        if len(pairs) == 2:
+            pair_1, pair_2 = pairs
+            target_midpoint = int(
+                (target_ends[pair_1[0]] + target_starts[pair_1[0]]) / 2
+            )
+            for pair in pairs:
+                print(f"{i}, {pair}, {overlap[pair[0], pair[1]]}")
+            embed()
+    return SubtitleSeries.from_dataframe(align)
 
 
 def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
