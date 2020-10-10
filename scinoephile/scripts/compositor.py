@@ -40,6 +40,7 @@ from os import environ
 from os.path import isfile
 from typing import Any, Dict, List, Optional
 
+import numpy as np
 from IPython import embed
 
 from scinoephile.common import (
@@ -51,11 +52,12 @@ from scinoephile.common import (
 )
 from scinoephile.core import (
     SubtitleSeries,
+    align_subtitles,
     get_pinyin,
     get_simplified_hanzi,
     get_single_line_text,
     get_truecase,
-    align_subtitles,
+    merge_subtitles,
 )
 
 
@@ -367,7 +369,6 @@ class Compositor(CLTool):
     # region Private Methods
 
     def _combine_lines(self, language: str) -> None:
-        embed()
         if language not in ["english", "hanzi", "pinyin"]:
             raise ValueError(
                 "Invalid value provided for argument 'language'; must be 'english', "

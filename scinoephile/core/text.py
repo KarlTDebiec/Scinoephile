@@ -12,40 +12,43 @@ from typing import Any, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
+from IPython import embed
 
 from scinoephile.core import SubtitleSeries
 
 ################################## VARIABLES ##################################
-punctuation = {"\n": "\n",
-               "　": " ",
-               " ": " ",
-               "？": "?",
-               "，": ",",
-               "、": ",",
-               ".": ".",
-               "！": "!",
-               "…": "...",
-               "...": "...",
-               "﹣": "-",
-               "─": "─",
-               "-": "-",
-               "“": "\"",
-               "”": "\"",
-               "\"": "\"",
-               "《": "<",
-               "》": ">",
-               "「": "[",
-               "」": "]",
-               "：": ":"}
+punctuation = {
+    "\n": "\n",
+    "　": " ",
+    " ": " ",
+    "？": "?",
+    "，": ",",
+    "、": ",",
+    ".": ".",
+    "！": "!",
+    "…": "...",
+    "...": "...",
+    "﹣": "-",
+    "─": "─",
+    "-": "-",
+    "“": '"',
+    "”": '"',
+    '"': '"',
+    "《": "<",
+    "》": ">",
+    "「": "[",
+    "」": "]",
+    "：": ":",
+}
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 re_western = re.compile(r"[a-zA-Z0-9]")
 
 
 ################################## FUNCTIONS ##################################
-def get_list_for_display(list_of_strings: List[str],
-                         linker: str = "and",
-                         quote: str = "'") -> str:
+def get_list_for_display(
+    list_of_strings: List[str], linker: str = "and", quote: str = "'"
+) -> str:
     # TODO: Document
     string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
     if len(list_of_strings) == 2:
@@ -57,7 +60,7 @@ def get_list_for_display(list_of_strings: List[str],
 
 def get_simplified_hanzi(text: str, verbosity: int = 1) -> str:
     """
-    Converts traditional hanzi to simplified
+    Converts traditional hanzi to simplified.
 
     Args:
         text (str): Text to simplify
@@ -78,10 +81,9 @@ def get_simplified_hanzi(text: str, verbosity: int = 1) -> str:
     return simplified
 
 
-def get_pinyin(text: str, language: str = "mandarin",
-               verbosity: int = 1) -> str:
+def get_pinyin(text: str, language: str = "mandarin", verbosity: int = 1) -> str:
     """
-    Converts hanzi to pinyin
+    Converts hanzi to pinyin.
 
     Args:
         text (str): Text to convert
@@ -106,7 +108,8 @@ def get_pinyin(text: str, language: str = "mandarin",
                         section_romanization += punctuation[word]
                     else:
                         section_romanization += " " + "".join(
-                            [a[0] for a in pinyin(word)])
+                            [a[0] for a in pinyin(word)]
+                        )
                 line_romanization += "  " + section_romanization.strip()
             romanization += "\n" + line_romanization.strip()
         romanization = romanization.strip()
@@ -134,8 +137,10 @@ def get_pinyin(text: str, language: str = "mandarin",
             romanization += "\n" + line_romanization.strip()
         romanization = romanization.strip()
     else:
-        raise ValueError("Invalid value provided for argument 'language'; "
-                         "must of 'cantonese' or 'mandarin'")
+        raise ValueError(
+            "Invalid value provided for argument 'language'; "
+            "must of 'cantonese' or 'mandarin'"
+        )
     if verbosity >= 2:
         print(f"{text} -> {romanization}")
     return romanization
@@ -156,16 +161,18 @@ def get_truecase(text: str) -> str:
     import nltk
 
     tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
-    normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in
-                  tagged]
+    normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in tagged]
     normalized[0] = normalized[0].capitalize()
     truecased = re.sub(r" (?=[.,'!?:;])", "", " ".join(normalized))
     truecased = truecased.replace(" n't", "n't")
     truecased = truecased.replace(" i ", " I ")
-    truecased = truecased.replace("``", "\"")
-    truecased = truecased.replace("''", "\"")
-    truecased = re.sub(r"(\A\w)|(?<!\.\w)([.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
-                       lambda s: s.group().upper(), truecased)
+    truecased = truecased.replace("``", '"')
+    truecased = truecased.replace("''", '"')
+    truecased = re.sub(
+        r"(\A\w)|(?<!\.\w)([.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
+        lambda s: s.group().upper(),
+        truecased,
+    )
     return truecased
 
 
@@ -188,27 +195,27 @@ def get_single_line_text(text: str, language: str = "english") -> str:
     # Revert strange substitution in pysubs2/subrip.py:66
     single_line = re.sub(r"\\N", r"\n", text)
     if language == "english" or language == "pinyin":
-        single_line = re.sub(r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
-                             r"- \1    - \2",
-                             single_line, re.M)
-        single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$",
-                             r"\1 \2",
-                             single_line, re.M)
+        single_line = re.sub(
+            r"^\s*-\s*(.+)\n-\s*(.+)\s*$", r"- \1    - \2", single_line, re.M
+        )
+        single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$", r"\1 \2", single_line, re.M)
     elif language == "hanzi":
         print(text)
-        single_line = re.sub(r"^(.+)\n(.+)$",
-                             r"\1　\2",
-                             single_line, re.M)
+        single_line = re.sub(r"^(.+)\n(.+)$", r"\1　\2", single_line, re.M)
         print(single_line)
-        conversation = re.match(r"^﹣?(?P<first>.+)\s+﹣(?P<second>.+)$",
-                                single_line)
+        conversation = re.match(
+            r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", single_line
+        )
         if conversation is not None:
-            single_line = f"﹣{conversation.groupdict(['first'])}　　" \
-                          f"﹣{conversation.groupdict(['second'])}"
+            single_line = (
+                f"﹣{conversation['first'].strip()}　　﹣{conversation['second'].strip()}"
+            )
         print(single_line)
     else:
-        raise ValueError("Invalid value for argument 'language'; must be "
-                         "'english', 'hanzi', or 'pinyin'")
+        raise ValueError(
+            "Invalid value for argument 'language'; must be "
+            "'english', 'hanzi', or 'pinyin'"
+        )
 
     return single_line
 
@@ -228,17 +235,26 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     def add_event(merged: List[Tuple[int, int, str]]) -> None:
         if start != time:
             if upper_text is None:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, lower_text)],
-                    columns=["start", "end", "lower text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, lower_text)],
+                        columns=["start", "end", "lower text"],
+                    )
+                ]
             elif lower_text is None:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, upper_text)],
-                    columns=["start", "end", "upper text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, upper_text)],
+                        columns=["start", "end", "upper text"],
+                    )
+                ]
             else:
-                merged += [pd.DataFrame.from_records(
-                    [(start, time, upper_text, lower_text)],
-                    columns=["start", "end", "upper text", "lower text"])]
+                merged += [
+                    pd.DataFrame.from_records(
+                        [(start, time, upper_text, lower_text)],
+                        columns=["start", "end", "upper text", "lower text"],
+                    )
+                ]
 
     # Process arguments
     if isinstance(upper, SubtitleSeries):
@@ -250,11 +266,15 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     # TODO: Validate that events within each series do not overlap
     transitions: List[Tuple[int, str, Optional[str]]] = []
     for _, event in upper.iterrows():
-        transitions += [(event["start"], "upper_start", event["text"]),
-                        (event["end"], "upper_end", None)]
+        transitions += [
+            (event["start"], "upper_start", event["text"]),
+            (event["end"], "upper_end", None),
+        ]
     for _, event in lower.iterrows():
-        transitions += [(event["start"], "lower_start", event["text"]),
-                        (event["end"], "lower_end", None)]
+        transitions += [
+            (event["start"], "lower_start", event["text"]),
+            (event["end"], "lower_end", None),
+        ]
     transitions.sort()
 
     # Merge events
@@ -298,7 +318,8 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
                 # Transition from CE -> E_
                 start = time
     merged_df = pd.concat(merged, sort=False, ignore_index=True)[
-        ["upper text", "lower text", "start", "end"]]
+        ["upper text", "lower text", "start", "end"]
+    ]
 
     # Synchronize events
     synced_list = [merged_df.iloc[0].copy()]
@@ -306,13 +327,11 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
         last = synced_list[-1]
         next = merged_df.iloc[index].copy()
         if last["upper text"] == next["upper text"]:
-            if isinstance(last["lower text"], float) and np.isnan(
-                    last["lower text"]):
+            if isinstance(last["lower text"], float) and np.isnan(last["lower text"]):
                 # Upper started before lower
                 last["lower text"] = next["lower text"]
                 last["end"] = next["end"]
-            elif isinstance(next["lower text"], float) and np.isnan(
-                    next["lower text"]):
+            elif isinstance(next["lower text"], float) and np.isnan(next["lower text"]):
                 # Lower started before upper
                 last["end"] = next["end"]
             else:
@@ -324,13 +343,11 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
                 # Otherwise, probably upper repeated with different lower
                 synced_list += [next]
         elif last["lower text"] == next["lower text"]:
-            if isinstance(last["upper text"], float) and np.isnan(
-                    last["upper text"]):
+            if isinstance(last["upper text"], float) and np.isnan(last["upper text"]):
                 # Lower started before upper
                 last["upper text"] = next["upper text"]
                 last["end"] = next["end"]
-            elif isinstance(next["upper text"], float) and np.isnan(
-                    next["upper text"]):
+            elif isinstance(next["upper text"], float) and np.isnan(next["upper text"]):
                 # Upper started before lower
                 if last.end < next["start"]:
                     synced_list += [next]

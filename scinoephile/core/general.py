@@ -111,62 +111,98 @@ def input_prefill(prompt: str, prefill: str) -> str:
 
 
 def align_subtitles(
-    align: Any, target: Any, sync_pair: Optional[Tuple[int, int]] = None
+    mobile: Any, target: Any, sync_pair: Optional[Tuple[int, int]] = None
 ) -> SubtitleSeries:
     # Process arguments
-    align = align.get_dataframe()
-    align_starts = align["start"].values
-    align_ends = align["end"].values
+    mobile = mobile.get_dataframe()
+    mobile_starts = mobile["start"].values
+    mobile_ends = mobile["end"].values
     target = target.get_dataframe()
     target_starts = target["start"].values
     target_ends = target["end"].values
 
-    # Sync pair of subtitles, if accurate
+    # Sync a specific mobile subtitle to a specific target subtitle
     if sync_pair is not None:
         adjustment = int(
             ((target_ends[sync_pair[1]] + target_starts[sync_pair[1]]) / 2)
-            - ((align_ends[sync_pair[0]] + align_starts[sync_pair[0]]) / 2)
+            - ((mobile_ends[sync_pair[0]] + mobile_starts[sync_pair[0]]) / 2)
         )
-        align_starts += adjustment
-        align_ends += adjustment
+        mobile_starts += adjustment
+        mobile_ends += adjustment
 
     #
-    align_starts_tiled = np.tile(align_starts, (target_starts.size, 1))
-    align_ends_tiled = np.tile(align_ends, (target_ends.size, 1))
-    target_starts_tiled = np.transpose(np.tile(target_starts, (align_starts.size, 1)))
-    target_ends_tiled = np.transpose(np.tile(target_ends, (align_ends.size, 1)))
+    mobile_starts_tiled = np.tile(mobile_starts, (target_starts.size, 1))
+    mobile_ends_tiled = np.tile(mobile_ends, (target_ends.size, 1))
+    target_starts_tiled = np.transpose(np.tile(target_starts, (mobile_starts.size, 1)))
+    target_ends_tiled = np.transpose(np.tile(target_ends, (mobile_ends.size, 1)))
 
     #
-    numerator = np.minimum(align_ends_tiled, target_ends_tiled) - np.maximum(
-        align_starts_tiled, target_starts_tiled
+    overlap = (
+        np.minimum(mobile_ends_tiled, target_ends_tiled)  # First end
+        - np.maximum(mobile_starts_tiled, target_starts_tiled)  # Last start
+    ) / (
+        np.maximum(mobile_ends_tiled, target_ends_tiled)  # Last end
+        - np.minimum(mobile_starts_tiled, target_starts_tiled)  # First start
     )
-    numerator[numerator < 0] = 0
-    denominator = np.maximum(align_ends_tiled, target_ends_tiled) - np.minimum(
-        align_starts_tiled, target_starts_tiled
-    )
-    overlap = numerator / denominator
+    overlap[overlap < 0] = 0
     overlapping_pairs = np.squeeze(np.dstack(np.where(overlap > 0)))
-    for i in range(target.shape[0]):
-        pairs = overlapping_pairs[overlapping_pairs[:, 0] == i]
+    for t_i in range(target.shape[0]):
+        m_is = overlapping_pairs[overlapping_pairs[:, 0] == t_i][:, 1]
 
-        # Single overlapping match
-        if len(pairs) == 1:
-            pair = pairs[0]
-            if overlap[pair[0], pair[1]] >= 0.9:
-                print(f"{i}, {pair}, {overlap[pair[0], pair[1]]}")
-                align.loc[pair[1], ["start", "end"]] = target.loc[
-                    pair[0], ["start", "end"]
-                ]
-        # Two overlapping matches, may be one subtitle in target and two in align
-        if len(pairs) == 2:
-            pair_1, pair_2 = pairs
-            target_midpoint = int(
-                (target_ends[pair_1[0]] + target_starts[pair_1[0]]) / 2
-            )
-            for pair in pairs:
-                print(f"{i}, {pair}, {overlap[pair[0], pair[1]]}")
+        # No matches; do not adjust
+        if len(m_is) == 0:
+            continue
+
+        # Single overlapping match; move mobile to target time
+        if len(m_is) == 1:
+            m_i = m_is[0]
+            print(f"1 | {t_i}, {m_i}, {overlap[t_i, m_i]:4.2f}")
+            if overlap[t_i, m_i] >= 0.50:
+                mobile.loc[m_i, ["start", "end"]] = target.loc[t_i, ["start", "end"]]
+            else:
+                embed()
+
+        # Two overlapping matches
+        if len(m_is) == 2:
+            m0_i, m1_i = m_is
+            print(f"2 | {t_i}, {m0_i}, {overlap[t_i, m0_i]:4.2f}")
+            print(f"  | {t_i}, {m1_i}, {overlap[t_i, m1_i]:4.2f}")
+            t_s, t_e = target.loc[t_i, ["start", "end"]]
+            m0_s, m0_e = mobile.loc[m0_i, ["start", "end"]]
+            m1_s, m1_e = mobile.loc[m1_i, ["start", "end"]]
+            if overlap[t_i, m0_i] > 0.25:
+                if overlap[t_i, m1_i] > 0.25:
+                    t_m = int((t_s + t_e) / 2)
+                    overlap_first_half = (min(m0_e, t_m) - max(m0_s, t_s)) / (
+                        max(m0_e, t_m) - min(m0_s, t_s)
+                    )
+                    overlap_second_half = (min(m1_e, t_e) - max(m1_s, t_m)) / (
+                        max(m1_e, t_e) - min(m1_s, t_m)
+                    )
+                    if overlap_first_half >= 0.25 and overlap_second_half >= 0.25:
+                        mobile.loc[m0_i, "start"] = target.loc[t_i, "start"]
+                        mobile.loc[m0_i, "end"] = t_m
+                        mobile.loc[m1_i, "start"] = t_m
+                        mobile.loc[m1_i, "start"] = target.loc[t_i, "end"]
+                    else:
+                        print(
+                            f"    {overlap_first_half:4.2f} {overlap_second_half:4.2f}"
+                        )
+                        embed()
+                elif overlap[t_i, m0_i] > 0.50:
+                    mobile.loc[m0_i, ["start", "end"]] = target.loc[
+                        t_i, ["start", "end"]
+                    ]
+                else:
+                    embed()
+            else:
+                embed()
+
+        # More overlapping matches
+        if len(m_is) >= 3:
             embed()
-    return SubtitleSeries.from_dataframe(align)
+
+    return SubtitleSeries.from_dataframe(mobile)
 
 
 def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
