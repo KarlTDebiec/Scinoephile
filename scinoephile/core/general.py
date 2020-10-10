@@ -130,13 +130,11 @@ def align_subtitles(
         mobile_starts += adjustment
         mobile_ends += adjustment
 
-    #
+    # Calculate overlap between all pairs
     mobile_starts_tiled = np.tile(mobile_starts, (target_starts.size, 1))
     mobile_ends_tiled = np.tile(mobile_ends, (target_ends.size, 1))
     target_starts_tiled = np.transpose(np.tile(target_starts, (mobile_starts.size, 1)))
     target_ends_tiled = np.transpose(np.tile(target_ends, (mobile_ends.size, 1)))
-
-    #
     overlap = (
         np.minimum(mobile_ends_tiled, target_ends_tiled)  # First end
         - np.maximum(mobile_starts_tiled, target_starts_tiled)  # Last start
@@ -146,6 +144,7 @@ def align_subtitles(
     )
     overlap[overlap < 0] = 0
     overlapping_pairs = np.squeeze(np.dstack(np.where(overlap > 0)))
+
     for t_i in range(target.shape[0]):
         m_is = overlapping_pairs[overlapping_pairs[:, 0] == t_i][:, 1]
 
