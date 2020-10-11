@@ -69,6 +69,7 @@ class Compositor(CLTool):
 
     def __init__(
         self,
+        align_to: Optional[str] = None,
         bilingual_infile: Optional[str] = None,
         bilingual_outfile: Optional[str] = None,
         combine_lines: bool = False,
@@ -88,6 +89,8 @@ class Compositor(CLTool):
         Initializes command-line tool and compiles list of operations.
 
         Args:
+            align_to (Optional[str]): Subtitle track to which to align others,
+              may be 'chinese' or 'english'
             bilingual_infile (Optional[str]): Path to bilingual subtitle infile
             bilingual_outfile (Optional[str]): Path to bilingual subtitle
               outfile
@@ -181,6 +184,23 @@ class Compositor(CLTool):
                     "Chinese Hanzi subtitle output requires either Chinese Hanzi or "
                     "English subtitle input"
                 )
+        if align_to:
+            if align_to == "chinese":
+                if {"load_hanzi", "load_english"}.issubset(self.operations):
+                    self.operations["align_english_to_chinese"] = True
+                else:
+                    raise ArgumentConflictError(
+                        "Alignment of English subtitles to Chinese requires English "
+                        "and Chinese hanzi subtitle input"
+                    )
+            else:
+                if {"load_hanzi", "load_english"}.issubset(self.operations):
+                    self.operations["align_chinese_to_english"] = True
+                else:
+                    raise ArgumentConflictError(
+                        "Alignment of Chinese subtitles to English requires English "
+                        "and Chinese hanzi subtitle input"
+                    )
         if combine_lines:
             if {"load_english", "translate_english"}.intersection(self.operations):
                 self.operations["combine_english_lines"] = True
@@ -193,7 +213,7 @@ class Compositor(CLTool):
             }.intersection(self.operations):
                 self.operations["combine_pinyin_lines"] = True
         if simplify:
-            if "load_hanzi" or "translate_chinese" in self.operations:
+            if {"load_hanzi", "translate_chinese"}.intersection(self.operations):
                 self.operations["simplify_chinese"] = True
             else:
                 raise ArgumentConflictError(
@@ -201,10 +221,7 @@ class Compositor(CLTool):
                     "subtitle input"
                 )
         if "save_pinyin" in self.operations and "load_pinyin" not in self.operations:
-            if (
-                "load_hanzi" in self.operations
-                or "translate_chinese" in self.operations
-            ):
+            if {"load_hanzi", "translate_chinese"}.intersection(self.operations):
                 self.operations[f"convert_pinyin_{pinyin_language}"] = True
             else:
                 raise ArgumentConflictError(
@@ -283,6 +300,14 @@ class Compositor(CLTool):
             self._combine_lines("hanzi")
         if "combine_pinyin_lines" in self.operations:
             self._combine_lines("pinyin")
+        if "align_chinese_to_english" in self.operations:
+            self.hanzi_subtitles = align_subtitles(
+                self.hanzi_subtitles, self.english_subtitles, (0, 0)
+            )
+        if "align_english_to_chinese" in self.operations:
+            self.english_subtitles = align_subtitles(
+                self.english_subtitles, self.hanzi_subtitles, (0, 0)
+            )
         if "merge_bilingual" in self.operations:
             self._initialize_bilingual_subtitles()
         if "interactive" in self.operations:
@@ -294,9 +319,6 @@ class Compositor(CLTool):
         if "save_english" in self.operations:
             self.english_subtitles.save(self.operations["save_english"])
         if "save_hanzi" in self.operations:
-            self.hanzi_subtitles = align_subtitles(
-                self.hanzi_subtitles, self.english_subtitles, (0, 0)
-            )
             self.hanzi_subtitles.save(self.operations["save_hanzi"])
         if "save_pinyin" in self.operations:
             self.pinyin_subtitles.save(self.operations["save_pinyin"])
@@ -601,6 +623,23 @@ class Compositor(CLTool):
 
         # Operations
         parser_ops = parser.add_argument_group("operation arguments")
+        align_to = parser_ops.add_mutually_exclusive_group()
+        align_to.add_argument(
+            "-ac",
+            "--align_to_chinese",
+            action="store_const",
+            const="chinese",
+            dest="align_to",
+            help="align English subtitle times to Chinese",
+        )
+        align_to.add_argument(
+            "-ae",
+            "--align_to_english",
+            action="store_const",
+            const="english",
+            dest="align_to",
+            help="align Chinese subtitle times to English",
+        )
         parser_ops.add_argument(
             "-l",
             "--line",
