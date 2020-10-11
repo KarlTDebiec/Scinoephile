@@ -7,14 +7,14 @@
 #   This software may be modified and distributed under the terms of the
 #   BSD license. See the LICENSE file for details.
 ################################### MODULES ###################################
+from collections import OrderedDict
 from typing import Any, List, Optional, Set, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from IPython import embed
 
 from scinoephile.common import input_prefill, validate_int
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import SubtitleSeries, get_pinyin
 
 
 ################################## FUNCTIONS ##################################
@@ -33,56 +33,105 @@ def sync_subtitles(
 def align_iteration(
     mobile: pd.DataFrame,
     target: pd.DataFrame,
-    aligned: Set[int],
-    low_threshold: int = 0.25,
-    mid_threshold: int = 0.60,
-    high_threshold: int = 0.75,
+    targets_aligned: Set[int],
+    mobiles_aligned: Set[int],
     interactive: bool = False,
 ) -> int:
     CURSOR_UP = "\033[F"
     ERASE_LINE = "\033[K"
+    min_cut: int = 0.05
+    low_cut: int = 0.25
+    diff_cut = 0.40
+    high_cut: int = 0.75
 
-    def align(mobile_i: int, target_i: int):
+    def align(mobile_i: int, target_i: int) -> None:
         mobile.loc[mobile_i, "start"] = target.loc[target_i, "start"]
         mobile.loc[mobile_i, "end"] = target.loc[target_i, "end"]
         align.n_aligned += 1
-        aligned.add(mobile_i)
+        targets_aligned.add(target_i)
+        mobiles_aligned.add(mobile_i)
+
+    def align_two_target_one_mobile(
+        mobile_i: int, target_0_i: int, target_1_i: int
+    ) -> None:
+        mobile.loc[mobile_i, "start"] = target.loc[target_0_i, "start"]
+        mobile.loc[mobile_i, "end"] = target.loc[target_1_i, "end"]
+        midpoint = int(
+            (target.loc[target_0_i, "start"] + target.loc[target_1_i, "end"]) / 2
+        )
+        target.loc[target_0_i, "end"] = midpoint
+        target.loc[target_0_i, "start"] = midpoint
+        align.n_aligned += 1
+        targets_aligned.add(target_0_i)
+        targets_aligned.add(target_1_i)
+        mobiles_aligned.add(mobile_i)
+
+    def align_one_target_two_mobbile():
+        pass
 
     def get_confirmation_one(mobile_i: int, target_i: int, overlap: float) -> bool:
-        confirmation = "y" if overlap >= low_threshold else "n"
+        confirmation = "y" if overlap >= low_cut else "n"
         prompt = get_line(
             target_i,
             mobile_i,
             overlap,
             f"Align '{mobile.loc[mobile_i, 'text']}' to "
-            f"'{target.loc[target_i, 'text']}' (y/n)?: ",
+            f"'{target.loc[target_i, 'text']}' "
+            f"({get_pinyin(target.loc[target_i, 'text'])}) "
+            f"(y/n)?: ",
         )
         confirmation = input_prefill(prompt, confirmation)
         print(CURSOR_UP + ERASE_LINE + CURSOR_UP)
 
         return confirmation.lower().startswith("y")
 
-    def get_confirmation_two(
-        mobile_0_i: int,
-        mobile_1_i: int,
-        target_i: int,
-        overlap_0: float,
-        overlap_1: float,
-    ) -> Union[bool, int]:
-        confirmation = ""
-        if overlap_0 > overlap_1 and overlap_0 >= low_threshold:
-            confirmation = mobile_0_i + 1
-        elif overlap_1 >= low_threshold:
-            confirmation = mobile_1_i + 1
-        prompt = get_line(
-            target_i, mobile_0_i, overlap_0, f"'{mobile.loc[mobile_0_i, 'text']}'\n",
-        ) + get_line(
-            target_i,
-            mobile_1_i,
-            overlap_1,
-            f"'{mobile.loc[mobile_1_i, 'text']}'  Align which subtitle to "
-            f"'{target.loc[target_i, 'text']}'?: ",
+    def get_confirmation_two_target_one_mobile_merge(
+        mobile_i: int, target_0_i: int, target_1_i: int
+    ) -> str:
+        mobile_text = mobile.loc[mobile_i, "text"]
+        target_0_text = target.loc[target_0_i, "text"]
+        target_1_text = target.loc[target_1_i, "text"]
+        target_0_overlap = overlaps[target_0_i, mobile_i]
+        target_1_overlap = overlaps[target_1_i, mobile_i]
+
+        confirmation = "n"
+        if np.abs(target_0_overlap - target_1_overlap) < low_cut:
+            confirmation = "y"
+        prompt = get_line(target_0_i, mobile_i, target_0_overlap)
+        prompt += f"'{target_0_text}'\n"
+        prompt += get_line(target_1_i, mobile_i, target_1_overlap)
+        prompt += f"'{target_1_text}'\n"
+        prompt += f"{' ' * 25}Align '{mobile_text}' to these two subtitles?: "
+
+        confirmation = input_prefill(prompt, confirmation)
+        print(
+            f"{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}"
+            f"{CURSOR_UP}"
         )
+
+        return confirmation.lower().startswith("y")
+
+    def get_confirmation_one_target_two_mobile(
+        mobile_0_i: int, mobile_1_i: int, target_i: int,
+    ) -> Union[bool, int]:
+        mobile_0_text = mobile.loc[mobile_0_i, "text"]
+        mobile_1_text = mobile.loc[mobile_1_i, "text"]
+        target_text = target.loc[target_i, "text"]
+        mobile_0_overlap = overlaps[target_i, mobile_0_i]
+        mobile_1_overlap = overlaps[target_i, mobile_1_i]
+
+        confirmation = ""
+        if mobile_0_overlap > mobile_1_overlap and mobile_0_overlap >= low_cut:
+            confirmation = mobile_0_i + 1
+        elif mobile_1_overlap >= low_cut:
+            confirmation = mobile_1_i + 1
+        prompt = get_line(target_i, mobile_0_i, mobile_0_overlap)
+        prompt += f"'{mobile_0_text}'\n"
+        prompt += get_line(target_i, mobile_1_i, mobile_1_overlap,)
+        prompt += f"'{mobile_1_text}'\n"
+        prompt += f"{' ' * 25}Align '{target_text}' "
+        prompt += f"({get_pinyin(target.loc[target_i, 'text'])}) to which subtitle?: "
+
         confirmation = input_prefill(prompt, confirmation)
         try:
             confirmation = validate_int(
@@ -90,7 +139,10 @@ def align_iteration(
             )
         except TypeError:
             confirmation = False
-        print(CURSOR_UP + ERASE_LINE + CURSOR_UP + ERASE_LINE + CURSOR_UP)
+        print(
+            f"{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}"
+            f"{CURSOR_UP}"
+        )
 
         return confirmation
 
@@ -117,165 +169,215 @@ def align_iteration(
             np.maximum(mobile_ends_tiled, target_ends_tiled)
             - np.minimum(mobile_starts_tiled, target_starts_tiled)
         )
-        overlaps[overlaps < 0] = 0
+        overlaps[overlaps < min_cut] = 0
 
         return overlaps
 
     overlaps = get_overlaps(mobile, target)
-    overlapping_pairs = np.squeeze(np.dstack(np.where(overlaps > 0)))
+    pairs = np.squeeze(np.dstack(np.where(overlaps > 0)))
+    mobile_to_target = OrderedDict()
+    for mobile_0_i in range(mobile.shape[0]):
+        mobile_to_target[mobile_0_i] = pairs[pairs[:, 1] == mobile_0_i][:, 0]
+    target_to_mobile = OrderedDict()
+    for target_0_i in range(target.shape[0]):
+        target_to_mobile[target_0_i] = pairs[pairs[:, 0] == target_0_i][:, 1]
+
     align.n_aligned = 0
 
     print(f"Target  Mobile  Overlap  Status")
-    for target_i in range(target.shape[0]):
-        mobile_is = overlapping_pairs[overlapping_pairs[:, 0] == target_i][:, 1]
+    for target_0_i in range(0, 200):
+        # for target_0_i in range(target.shape[0]):
+        target_0_text = target.loc[target_0_i, "text"]
 
-        # Zero overlapping matches
-        if len(mobile_is) == 0:
-            print(f"{target_i + 1:6d}                   Zero matches")
+        # Zero overlapping mobiles
+        if target_0_i not in target_to_mobile:
+            print(f"{target_0_i + 1:6d}{' ' * 19}'{target_0_text}' does not overlap")
+            continue
 
-        # One overlapping match
-        elif len(mobile_is) == 1:
-            mobile_i = mobile_is[0]
-            overlap = overlaps[target_i, mobile_i]
+        mobile_is = target_to_mobile[target_0_i]
+
+        # One overlapping mobile
+        if len(mobile_is) == 1:
+            mobile_0_i = mobile_is[0]
+            mobile_0_text = mobile.loc[mobile_0_i, "text"]
+            mobile_0_target_is = mobile_to_target[mobile_0_i]
+            mobile_0_overlap = overlaps[target_0_i, mobile_0_i]
 
             # Already aligned
-            if overlap == 1.0:
-                status = (
-                    f"Already aligned '{mobile.loc[mobile_i, 'text']}' to "
-                    f"'{target.loc[target_i, 'text']}'"
-                )
-                aligned.add(mobile_i)
+            if mobile_0_overlap == 1.0:
+                status = f"Already aligned '{mobile_0_text}' to '{target_0_text}'"
+                targets_aligned.add(target_0_i)
+                mobiles_aligned.add(mobile_0_i)
 
-            # Automatically align
-            elif overlap >= high_threshold:
+            # This target's single matching mobile also overlaps only this target
+            elif len(mobile_0_target_is) == 1:
                 status = (
-                    f"Automatically aligned '{mobile.loc[mobile_i, 'text']}' to "
-                    f"'{target.loc[target_i, 'text']}' because "
-                    f"{overlap:4.2f} ≥ {high_threshold:4.2f}"
+                    f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                    f"because they are a unique pair"
                 )
-                align(mobile_i, target_i)
+                align(mobile_0_i, target_0_i)
 
-            # Interactive
-            elif overlap >= mid_threshold and interactive:
-                if get_confirmation_one(mobile_i, target_i, overlap):
+            # This target's single matching mobile overlaps with one other target
+            elif len(mobile_0_target_is) == 2:
+                target_1_i = mobile_0_target_is[mobile_0_target_is != target_0_i][0]
+                target_1_overlap = overlaps[target_1_i, mobile_0_i]
+                target_1_text = target.loc[target_1_i, "text"]
+
+                # Automatically align based on process of elimination
+                if target_1_i in targets_aligned and target_0_i not in targets_aligned:
                     status = (
-                        f"User aligned '{mobile.loc[mobile_i, 'text']}' to "
-                        f"'{target.loc[target_i, 'text']}'"
+                        f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                        f"by process of elimination"
                     )
-                    align(mobile_i, target_i)
+                    align(mobile_0_i, target_0_i)
+
+                # Automatically align based on threshold
+                elif mobile_0_overlap - target_1_overlap >= diff_cut:
+                    status = (
+                        f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                        f"because {mobile_0_overlap:4.2f} - {target_1_overlap:4.2f} "
+                        f"≥ {diff_cut:4.2f}"
+                    )
+                    align(mobile_0_i, target_0_i)
+
+                # Already aligned
+                elif {target_0_i, target_1_i}.issubset(targets_aligned):
+                    status = (
+                        f"Already aligned '{mobile_0_text}' to both "
+                        f"'{target_0_text}' and '{target_1_text}'"
+                    )
+
+                # Align two mobile subtitles into this target
+                elif np.abs(mobile_0_overlap - target_1_overlap) < low_cut:
+                    status = (
+                        f"Automatically aligned '{mobile_0_text}' to both "
+                        f"'{target_0_text}' and '{target_1_text}' "
+                        f"because {mobile_0_overlap:4.2f} - {target_1_overlap:4.2f} "
+                        f"= {np.abs(mobile_0_overlap - target_1_overlap):4.2f} "
+                        f"< {low_cut:4.2f}"
+                    )
+                    align_two_target_one_mobile(mobile_0_i, target_0_i, target_1_i)
+
+                # Interactive
+                elif interactive:
+                    confirmation = get_confirmation_two_target_one_mobile_merge(
+                        mobile_0_i, target_0_i, target_1_i
+                    )
+                    if confirmation:
+                        status = (
+                            f"User chose to align '{mobile_0_text}' to both "
+                            f"'{target_0_text}' and '{target_1_text}'"
+                        )
+                        align_two_target_one_mobile(mobile_0_i, target_0_i, target_1_i)
+                    else:
+                        status = (
+                            f"User chose not to align '{mobile_0_text}' to both "
+                            f"'{target_0_text}' and '{target_1_text}'"
+                        )
+
+                # Otherwise, skip
                 else:
-                    status = "User chose not to align"
+                    status = (
+                        f"Skipping... 1.1 "
+                        f"{mobile_0_overlap:4.2f} {target_1_overlap:4.2f} "
+                        f"{np.abs(mobile_0_overlap - target_1_overlap):4.2f}"
+                    )
+
+            # This target's single matching mobile also overlaps with two other targets
+            elif len(mobile_0_target_is) == 3:
+                target_1_i = mobile_0_target_is[mobile_0_target_is != target_0_i][0]
+                target_1_overlap = overlaps[target_1_i, mobile_0_i]
+                target_2_i = mobile_0_target_is[mobile_0_target_is != target_0_i][1]
+                target_2_overlap = overlaps[target_2_i, mobile_0_i]
+
+                # Automatically align based on process of elimination
+                if {target_1_i, target_2_i}.issubset(targets_aligned):
+                    status = (
+                        f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                        f"by process of elimination"
+                    )
+                    align(mobile_0_i, target_0_i)
+
+                # Otherwise, skip
+                else:
+                    status = (
+                        f"Skipping... 1.2 "
+                        f"{mobile_0_overlap:4.2f} {target_1_overlap:4.2f} "
+                        f"{target_2_overlap:4.2f}"
+                    )
 
             # Otherwise, skip
             else:
-                status = "Skipping..."
+                status = "Skipping... 1.3"
 
             # Print status
-            print(get_line(target_i, mobile_i, overlap, status))
+            print(get_line(target_0_i, mobile_0_i, mobile_0_overlap, status))
 
-        # Two overlapping matches
+        # Two overlapping mobiles
         elif len(mobile_is) == 2:
             mobile_0_i, mobile_1_i = mobile_is
-            overlap_0 = overlaps[target_i, mobile_0_i]
-            overlap_1 = overlaps[target_i, mobile_1_i]
+            mobile_0_text = mobile.loc[mobile_0_i, "text"]
+            mobile_1_text = mobile.loc[mobile_1_i, "text"]
+            mobile_0_target_is = mobile_to_target[mobile_0_i]
+            mobile_1_target_is = mobile_to_target[mobile_1_i]
+            mobile_0_overlap = overlaps[target_0_i, mobile_0_i]
+            mobile_1_overlap = overlaps[target_0_i, mobile_1_i]
 
             # Already aligned
-            if overlap_0 == 1.0:
-                status = (
-                    f"Already aligned '{mobile.loc[mobile_0_i, 'text']}' to "
-                    f"'{target.loc[target_i, 'text']}'"
-                )
-                aligned.add(mobile_0_i)
-            elif overlap_1 == 1.0:
-                status = (
-                    f"Already aligned '{mobile.loc[mobile_1_i, 'text']}' to "
-                    f"'{target.loc[target_i, 'text']}'"
-                )
-                aligned.add(mobile_1_i)
+            if mobile_0_overlap == 1.0:
+                status = f"Already aligned '{mobile_0_text}' to '{target_0_text}'"
+                targets_aligned.add(target_0_i)
+                mobiles_aligned.add(mobile_0_i)
+            elif mobile_1_overlap == 1.0:
+                status = f"Already aligned '{mobile_1_text}' to '{target_0_text}'"
+                targets_aligned.add(target_0_i)
+                mobiles_aligned.add(mobile_1_i)
 
             # Automatically align mobile 0 to target
-            elif overlap_0 >= high_threshold:
-                if overlap_1 < low_threshold:
-                    status = (
-                        f"Automatically aligned '{mobile.loc[mobile_0_i, 'text']}' to"
-                        f"'{target.loc[target_i, 'text']}' because "
-                        f"{overlap_0:4.2f} ≥ {high_threshold:4.2f} and "
-                        f"{overlap_1:4.2f} < {low_threshold:4.2f}"
-                    )
-                    align(mobile_0_i, target_i)
-                elif mobile_1_i in aligned:
-                    status = (
-                        f"Automatically aligned '{mobile.loc[mobile_0_i, 'text']}' to"
-                        f"'{target.loc[target_i, 'text']}' because "
-                        f"{overlap_0:4.2f} ≥ {high_threshold:4.2f} and "
-                        f"{mobile_1_i} is already aligned"
-                    )
-                    align(mobile_0_i, target_i)
-                else:
-                    status = "Skipping..."
-                    print(get_line(target_i, mobile_0_i, overlap_0, "."))
-                    print(get_line(target_i, mobile_1_i, overlap_1, status))
-                    embed()
+            elif mobile_0_overlap - mobile_1_overlap >= diff_cut:
+                status = (
+                    f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                    f"because {mobile_0_overlap:4.2f} - {mobile_1_overlap:4.2f} "
+                    f"≥ {diff_cut:4.2f}"
+                )
+                align(mobile_0_i, target_0_i)
 
             # Automatically align mobile 1 to target
-            elif overlap_1 >= high_threshold:
-                if overlap_0 < low_threshold:
-                    status = (
-                        f"Automatically aligned '{mobile.loc[mobile_1_i, 'text']}' to"
-                        f"'{target.loc[target_i, 'text']}' because "
-                        f"{overlap_1:4.2f} ≥ {high_threshold:4.2f} and "
-                        f"{overlap_0:4.2f} < {low_threshold:4.2f}"
-                    )
-                    align(mobile_1_i, target_i)
-                elif mobile_0_i in aligned:
-                    status = (
-                        f"Automatically aligned '{mobile.loc[mobile_1_i, 'text']}' to"
-                        f"'{target.loc[target_i, 'text']}' because "
-                        f"{overlap_1:4.2f} ≥ {high_threshold:4.2f} and "
-                        f"{mobile_0_i} is already aligned"
-                    )
-                    align(mobile_1_i, target_i)
-                else:
-                    status = "In an unexpected state..."
-                    print(get_line(target_i, mobile_0_i, overlap_0, "."))
-                    print(get_line(target_i, mobile_1_i, overlap_1, status))
-                    embed()
+            elif mobile_1_overlap - mobile_0_overlap >= diff_cut:
+                status = (
+                    f"Automatically aligned '{mobile_1_text}' to '{target_0_text}' "
+                    f"because {mobile_1_overlap:4.2f} - {mobile_0_overlap:4.2f} "
+                    f"≥ {diff_cut:4.2f}"
+                )
+                align(mobile_1_i, target_0_i)
 
             # Interactive
-            elif (
-                overlap_0 >= mid_threshold or overlap_1 >= mid_threshold
-            ) and interactive:
-                confirmation = get_confirmation_two(
-                    mobile_0_i, mobile_1_i, target_i, overlap_0, overlap_1
+            elif interactive:
+                confirmation = get_confirmation_one_target_two_mobile(
+                    mobile_0_i, mobile_1_i, target_0_i,
                 )
                 if confirmation == mobile_0_i + 1:
-                    status = (
-                        f"User aligned '{mobile.loc[mobile_0_i, 'text']}' to "
-                        f"'{target.loc[target_i, 'text']}'"
-                    )
-                    align(mobile_0_i, target_i)
+                    status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"
+                    align(mobile_0_i, target_0_i)
                 elif confirmation == mobile_1_i + 1:
-                    status = (
-                        f"User aligned '{mobile.loc[mobile_1_i, 'text']}' to "
-                        f"'{target.loc[target_i, 'text']}'"
-                    )
-                    align(mobile_1_i, target_i)
+                    status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"
+                    align(mobile_1_i, target_0_i)
                 else:
                     status = "User chose not to align"
 
             # Otherwise, skip
             else:
-                status = "Skipping..."
+                status = "Skipping... 2"
 
             # print status
-            print(get_line(target_i, mobile_0_i, overlap_0, "."))
-            print(get_line(target_i, mobile_1_i, overlap_1, status))
+            print(get_line(target_0_i, mobile_0_i, mobile_0_overlap, "."))
+            print(get_line(target_0_i, mobile_1_i, mobile_1_overlap, status))
 
         # Move than two overlapping matches
         else:
             for mobile_i in mobile_is:
-                overlap = overlaps[target_i, mobile_i]
-                print(get_line(target_i, mobile_i, overlap))
+                overlap = overlaps[target_0_i, mobile_i]
+                print(get_line(target_0_i, mobile_i, overlap))
 
     return align.n_aligned
 
@@ -290,46 +392,26 @@ def align_subtitles(
     target = target.get_dataframe()
     if sync_pair is not None:
         sync_subtitles(mobile, target, sync_pair[0], sync_pair[1])
-    aligned = set()
+    targets_aligned = set()
+    mobiles_aligned = set()
 
     # First set of iterations
     n_aligned = 1
     while n_aligned > 0:
-        n_aligned = align_iteration(mobile, target, aligned, 0.25, 0.50, 0.75, False)
-        input(f"{0.75:4.2f}, {n_aligned}, {len(aligned)}")
+        n_aligned = align_iteration(mobile, target, targets_aligned, mobiles_aligned)
+        input(f"{0.75:4.2f}, {n_aligned}, {len(mobiles_aligned)}")
 
     # Second set of iterations
     n_aligned = 1
     while n_aligned > 0:
         try:
-            n_aligned = align_iteration(mobile, target, aligned, 0.25, 0.50, 0.75, True)
+            n_aligned = align_iteration(
+                mobile, target, targets_aligned, mobiles_aligned, True
+            )
         except KeyboardInterrupt:
             print()
             break
-        input(f"{0.75:4.2f}, {n_aligned}, {len(aligned)}")
-
-    #     if overlap[t_i, m1_i] > low_threshold:
-    #         t_m = int((t_s + t_e) / 2)
-    #         overlap_first_half = (min(m0_e, t_m) - max(m0_s, t_s)) / (
-    #             max(m0_e, t_m) - min(m0_s, t_s)
-    #         )
-    #         overlap_second_half = (min(m1_e, t_e) - max(m1_s, t_m)) / (
-    #             max(m1_e, t_e) - min(m1_s, t_m)
-    #         )
-    #         if overlap_first_half >= 0.25 and overlap_second_half >= 0.25:
-    #             mobile.loc[m0_i, "start"] = target.loc[t_i, "start"]
-    #             mobile.loc[m0_i, "end"] = t_m
-    #             mobile.loc[m1_i, "start"] = t_m
-    #             mobile.loc[m1_i, "start"] = target.loc[t_i, "end"]
-    #         else:
-    #             print(
-    #                 f"    {overlap_first_half:4.2f} {overlap_second_half:4.2f}"
-    #             )
-    #             embed()
-    #     elif overlap[t_i, m0_i] > high_threshold:
-    #         mobile.loc[m0_i, ["start", "end"]] = target.loc[
-    #             t_i, ["start", "end"]
-    #         ]
+        input(f"{0.75:4.2f}, {n_aligned}, {len(mobiles_aligned)}")
 
     return SubtitleSeries.from_dataframe(mobile)
 
@@ -483,5 +565,6 @@ def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
     synced_df = synced_df.drop(
         index=synced_df[synced_df["end"] - synced_df["start"] < 300].index
     )
+    synced_df = synced_df.dropna()
 
     return synced_df
