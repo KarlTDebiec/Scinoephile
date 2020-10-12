@@ -182,6 +182,7 @@ def align_iteration(
     align.n_aligned = 0
 
     print(f"Target  Mobile  Overlap  Status")
+    # for target_0_i in range(200):
     for target_0_i in range(target.shape[0]):
         target_0_text = target.loc[target_0_i, "text"]
 
@@ -205,7 +206,7 @@ def align_iteration(
                 targets_aligned.add(target_0_i)
                 mobiles_aligned.add(mobile_0_i)
 
-            # This target's single matching mobile also overlaps only this target
+            # Automatically align because they are a unique pair
             elif len(mobile_0_target_is) == 1:
                 status = (
                     f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
@@ -344,6 +345,20 @@ def align_iteration(
                     f"Already aligned both '{mobile_0_text}' and "
                     f"'{mobile_1_text}' to '{target_0_text}'"
                 )
+
+            # Automatically align based on process of elimination
+            elif mobile_0_i in mobiles_aligned and mobile_1_i not in mobiles_aligned:
+                status = (
+                    f"Automatically aligned '{mobile_0_text}' to '{target_0_text}' "
+                    f"by process of elimination"
+                )
+                align(mobile_0_i, target_0_i)
+            elif mobile_1_i in mobiles_aligned and mobile_0_i not in mobiles_aligned:
+                status = (
+                    f"Automatically aligned '{mobile_1_text}' to '{target_0_text}' "
+                    f"by process of elimination"
+                )
+                align(mobile_1_i, target_0_i)
 
             # Automatically align mobile 0 to target
             elif mobile_0_overlap - mobile_1_overlap >= diff_cut:
