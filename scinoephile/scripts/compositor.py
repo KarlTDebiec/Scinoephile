@@ -301,11 +301,11 @@ class Compositor(CLTool):
         if "combine_pinyin_lines" in self.operations:
             self._combine_lines("pinyin")
         if "align_chinese_to_english" in self.operations:
-            self.hanzi_subtitles = align_subtitles(
+            self.hanzi_subtitles, self.english_subtitles = align_subtitles(
                 self.hanzi_subtitles, self.english_subtitles, (0, 0)
             )
         if "align_english_to_chinese" in self.operations:
-            self.english_subtitles = align_subtitles(
+            self.english_subtitles, self.hanzi_subtitles = align_subtitles(
                 self.english_subtitles, self.hanzi_subtitles, (0, 0)
             )
         if "merge_bilingual" in self.operations:

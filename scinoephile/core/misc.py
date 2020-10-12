@@ -12,6 +12,7 @@ from typing import Any, List, Optional, Set, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from IPython import embed
 
 from scinoephile.common import input_prefill, validate_int
 from scinoephile.core import SubtitleSeries, get_pinyin
@@ -54,36 +55,30 @@ def align_iteration(
     def align_two_target_one_mobile(
         mobile_i: int, target_0_i: int, target_1_i: int
     ) -> None:
-        mobile.loc[mobile_i, "start"] = target.loc[target_0_i, "start"]
-        mobile.loc[mobile_i, "end"] = target.loc[target_1_i, "end"]
         midpoint = int(
             (target.loc[target_0_i, "start"] + target.loc[target_1_i, "end"]) / 2
         )
+        mobile.loc[mobile_i, "start"] = target.loc[target_0_i, "start"]
+        mobile.loc[mobile_i, "end"] = target.loc[target_1_i, "end"]
         target.loc[target_0_i, "end"] = midpoint
-        target.loc[target_0_i, "start"] = midpoint
+        target.loc[target_1_i, "start"] = midpoint
         align.n_aligned += 1
         targets_aligned.add(target_0_i)
         targets_aligned.add(target_1_i)
         mobiles_aligned.add(mobile_i)
 
-    def align_one_target_two_mobbile():
-        pass
-
-    def get_confirmation_one(mobile_i: int, target_i: int, overlap: float) -> bool:
-        confirmation = "y" if overlap >= low_cut else "n"
-        prompt = get_line(
-            target_i,
-            mobile_i,
-            overlap,
-            f"Align '{mobile.loc[mobile_i, 'text']}' to "
-            f"'{target.loc[target_i, 'text']}' "
-            f"({get_pinyin(target.loc[target_i, 'text'])}) "
-            f"(y/n)?: ",
+    def align_one_target_two_mobile(mobile_0_i: int, mobile_1_i: int, target_i: int):
+        midpoint = int(
+            (target.loc[target_i, "start"] + target.loc[target_i, "end"]) / 2
         )
-        confirmation = input_prefill(prompt, confirmation)
-        print(CURSOR_UP + ERASE_LINE + CURSOR_UP)
-
-        return confirmation.lower().startswith("y")
+        mobile.loc[mobile_0_i, "start"] = target.loc[target_i, "start"]
+        mobile.loc[mobile_0_i, "end"] = midpoint
+        mobile.loc[mobile_1_i, "start"] = midpoint
+        mobile.loc[mobile_1_i, "end"] = target.loc[target_i, "end"]
+        align.n_aligned += 2
+        targets_aligned.add(target_i)
+        mobiles_aligned.add(mobile_0_i)
+        mobiles_aligned.add(mobile_1_i)
 
     def get_confirmation_two_target_one_mobile_merge(
         mobile_i: int, target_0_i: int, target_1_i: int
@@ -94,26 +89,30 @@ def align_iteration(
         target_0_overlap = overlaps[target_0_i, mobile_i]
         target_1_overlap = overlaps[target_1_i, mobile_i]
 
-        confirmation = "n"
-        if np.abs(target_0_overlap - target_1_overlap) < low_cut:
-            confirmation = "y"
-        prompt = get_line(target_0_i, mobile_i, target_0_overlap)
-        prompt += f"'{target_0_text}'\n"
-        prompt += get_line(target_1_i, mobile_i, target_1_overlap)
-        prompt += f"'{target_1_text}'\n"
-        prompt += f"{' ' * 25}Align '{mobile_text}' to these two subtitles?: "
-
+        confirmation = ""
+        if target_0_overlap > target_1_overlap and target_0_overlap >= low_cut:
+            confirmation = target_0_i + 1
+        elif target_1_overlap >= low_cut:
+            confirmation = target_1_i + 1
+        prompt = (
+            get_line(target_0_i, mobile_i, target_0_overlap)
+            + f"'{target_0_text}'\n"
+            + get_line(target_1_i, mobile_i, target_1_overlap)
+            + f"'{target_1_text}'\n"
+            + f"{' ' * 25}Align '{mobile_text}' to which subtitle "
+            f"({target_0_i + 1}, {target_1_i + 1}, both)?:"
+        )
         confirmation = input_prefill(prompt, confirmation)
+
         print(
             f"{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}"
             f"{CURSOR_UP}"
         )
-
-        return confirmation.lower().startswith("y")
+        return confirmation
 
     def get_confirmation_one_target_two_mobile(
         mobile_0_i: int, mobile_1_i: int, target_i: int,
-    ) -> Union[bool, int]:
+    ) -> Union[bool, int, str]:
         mobile_0_text = mobile.loc[mobile_0_i, "text"]
         mobile_1_text = mobile.loc[mobile_1_i, "text"]
         target_text = target.loc[target_i, "text"]
@@ -125,25 +124,23 @@ def align_iteration(
             confirmation = mobile_0_i + 1
         elif mobile_1_overlap >= low_cut:
             confirmation = mobile_1_i + 1
-        prompt = get_line(target_i, mobile_0_i, mobile_0_overlap)
-        prompt += f"'{mobile_0_text}'\n"
-        prompt += get_line(target_i, mobile_1_i, mobile_1_overlap,)
-        prompt += f"'{mobile_1_text}'\n"
-        prompt += f"{' ' * 25}Align '{target_text}' "
-        prompt += f"({get_pinyin(target.loc[target_i, 'text'])}) to which subtitle?: "
-
+        prompt = (
+            get_line(target_i, mobile_0_i, mobile_0_overlap)
+            + f"'{mobile_0_text}'\n"
+            + get_line(target_i, mobile_1_i, mobile_1_overlap,)
+            + f"'{mobile_1_text}'\n"
+            + f"{' ' * 25}Align '{target_text}' "
+            + f"({get_pinyin(target_text)}) to which subtitle "
+            + f"({mobile_0_i + 1}, {mobile_1_i + 1}, both)?:"
+        )
         confirmation = input_prefill(prompt, confirmation)
-        try:
-            confirmation = validate_int(
-                confirmation, choices=(mobile_0_i + 1, mobile_1_i + 1)
-            )
-        except TypeError:
+        if confirmation not in (str(mobile_0_i + 1), str(mobile_1_i + 1), "both"):
             confirmation = False
+
         print(
             f"{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}{CURSOR_UP}{ERASE_LINE}"
             f"{CURSOR_UP}"
         )
-
         return confirmation
 
     def get_line(target_i: int, mobile_i: int, overlap: float, status: str = ""):
@@ -185,8 +182,7 @@ def align_iteration(
     align.n_aligned = 0
 
     print(f"Target  Mobile  Overlap  Status")
-    for target_0_i in range(0, 200):
-        # for target_0_i in range(target.shape[0]):
+    for target_0_i in range(target.shape[0]):
         target_0_text = target.loc[target_0_i, "text"]
 
         # Zero overlapping mobiles
@@ -241,6 +237,11 @@ def align_iteration(
                     align(mobile_0_i, target_0_i)
 
                 # Already aligned
+                elif mobile_0_overlap == 0.5 and target_1_overlap == 0.5:
+                    status = (
+                        f"Already aligned '{mobile_0_text}' to both "
+                        f"'{target_0_text}' and '{target_1_text}'"
+                    )
                 elif {target_0_i, target_1_i}.issubset(targets_aligned):
                     status = (
                         f"Already aligned '{mobile_0_text}' to both "
@@ -263,9 +264,15 @@ def align_iteration(
                     confirmation = get_confirmation_two_target_one_mobile_merge(
                         mobile_0_i, target_0_i, target_1_i
                     )
-                    if confirmation:
+                    if confirmation == str(target_0_i + 1):
+                        status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"
+                        align(mobile_0_i, target_0_i)
+                    elif confirmation == str(target_1_i + 1):
+                        status = f"User aligned '{mobile_0_text}' to '{target_1_text}'"
+                        align(mobile_0_i, target_1_i)
+                    elif confirmation == "both":
                         status = (
-                            f"User chose to align '{mobile_0_text}' to both "
+                            f"User aligned '{mobile_0_text}' to both "
                             f"'{target_0_text}' and '{target_1_text}'"
                         )
                         align_two_target_one_mobile(mobile_0_i, target_0_i, target_1_i)
@@ -332,6 +339,11 @@ def align_iteration(
                 status = f"Already aligned '{mobile_1_text}' to '{target_0_text}'"
                 targets_aligned.add(target_0_i)
                 mobiles_aligned.add(mobile_1_i)
+            elif mobile_0_overlap == 0.5 and mobile_1_overlap == 0.5:
+                status = (
+                    f"Already aligned both '{mobile_0_text}' and "
+                    f"'{mobile_1_text}' to '{target_0_text}'"
+                )
 
             # Automatically align mobile 0 to target
             elif mobile_0_overlap - mobile_1_overlap >= diff_cut:
@@ -356,12 +368,18 @@ def align_iteration(
                 confirmation = get_confirmation_one_target_two_mobile(
                     mobile_0_i, mobile_1_i, target_0_i,
                 )
-                if confirmation == mobile_0_i + 1:
+                if confirmation == str(mobile_0_i + 1):
                     status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"
                     align(mobile_0_i, target_0_i)
-                elif confirmation == mobile_1_i + 1:
-                    status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"
+                elif confirmation == str(mobile_1_i + 1):
+                    status = f"User aligned '{mobile_1_text}' to '{target_0_text}'"
                     align(mobile_1_i, target_0_i)
+                elif confirmation == "both":
+                    status = (
+                        f"User aligned '{mobile_0_text}' and '{mobile_1_text}' "
+                        f"to '{target_0_text}'"
+                    )
+                    align_one_target_two_mobile(mobile_0_i, mobile_1_i, target_0_i)
                 else:
                     status = "User chose not to align"
 
@@ -413,7 +431,7 @@ def align_subtitles(
             break
         input(f"{0.75:4.2f}, {n_aligned}, {len(mobiles_aligned)}")
 
-    return SubtitleSeries.from_dataframe(mobile)
+    return SubtitleSeries.from_dataframe(mobile), SubtitleSeries.from_dataframe(target)
 
 
 def merge_subtitles(upper: Any, lower: Any) -> pd.DataFrame:
