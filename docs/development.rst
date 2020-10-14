@@ -6,6 +6,11 @@ Development
 Compositor
 __________
 
+- [x] Drop short events
+- [ ] Improve interactivity
+- [ ] Option to use one input subtitle track as primary
+- [ ] For each subtitle in primary, List all overlapping subtitles in secondary
+- [ ] Show visualization of overlap
 - [ ] Clean up documentation and README
 - [ ] Extend test coverage
 - [ ] Restore support for Hanzi, pinyin, and English together
@@ -17,17 +22,29 @@ __________
 Derasterizer
 ____________
 
-- [ ] Clean up and organize into functions
-- [ ] Color output intelligently when comparing to standard
+- [x] Color output intelligently when comparing to standard
+- [x] Store character confirmations
+- [x] Interactively reassign and confirm characters
+- [x] Merge characters and update data structures
+- [x] Save char_bounds for each event
+- [x] Load char_bounds for each event
+- [x] Track reassigned characters
+- [x] Merge sets of three characters
+- [x] Score incorrectly-segmented lines more precisely
+- [x] For unmatchable chars, print out unicode blocks
+- [x] Print out list of misassigned chars
+- [x] Organize misassigned and unmatchable chars by block
 - [ ] Clean up documentation and README
-- [ ] To '--overwrite' flag, add option to back up file
+- [ ] Backup files (-o to backup pre-existing file, -oo to overwrite)
 - [ ] Figure out if characters can be stored in model
+- [ ] Figure out how to host model online
 
 Documentation
 _____________
 
 - [ ] Review
-- [ ] Move badge generator to utils, and cut down to a single template
+- [ ] Move update_badges.py to utils
+- [ ] cut update_badges.py down to a single template
 
 Future
 ______

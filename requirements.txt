@@ -1,16 +1,19 @@
+colorama
 google-cloud-translate
 h5py
 hanziconv
 imgcat
 IPython
+lxml
 matplotlib
 nltk
 numba
 numpy
 pandas
 pillow
--e git://github.com/pycantonese/pycantonese#egg=pycantonese
+pycantonese
 pypinyin
 pysubs2
-snownlp
-tensorflow
+python-dateutil
+setuptools
+readline
