@@ -9,6 +9,8 @@
 ################################### MODULES ###################################
 from typing import Any
 
+from IPython import embed
+
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 from scinoephile.core.Base import Base
@@ -22,6 +24,21 @@ class SubtitleEvent(Base, SSAEvent):  # type: ignore
     Extension of pysubs2's SSAEvent with additional features.
     """
 
+    fields = {
+        "start",
+        "end",
+        "text",
+        "marked",
+        "layer",
+        "style",
+        "name",
+        "marginl",
+        "marginr",
+        "marginv",
+        "effect",
+        "type",
+    }
+
     # region Builtins
 
     def __init__(self, **kwargs: Any) -> None:
@@ -33,14 +50,10 @@ class SubtitleEvent(Base, SSAEvent):  # type: ignore
               a part
             **kwargs: Additional keyword arguments
         """
-        super().__init__(
-            **{k: v for k, v in kwargs.items() if k not in SSAEvent.FIELDS}
-        )
+        super().__init__(**{k: v for k, v in kwargs.items() if k not in self.fields})
 
         # SSAEvent.__init__ accepts arguments
-        SSAEvent.__init__(
-            self, **{k: v for k, v in kwargs.items() if k in SSAEvent.FIELDS}
-        )
+        SSAEvent.__init__(self, **{k: v for k, v in kwargs.items() if k in self.fields})
 
     def __str__(self) -> str:
         return (

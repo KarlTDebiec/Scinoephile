@@ -20,7 +20,7 @@ from pysubs2.common import Color
 from pysubs2.substation import (
     EVENT_FIELDS,
     STYLE_FIELDS,
-    ass_rgba_to_color,
+    # ass_rgba_to_color,
     color_to_ass_rgba,
     ms_to_timestamp,
 )
