@@ -23,4 +23,6 @@ class Subtitle(SSAEvent):
             series (SubtitleSeries): Subtitle series of which this subtitle is a part
             **kwargs: Additional keyword arguments
         """
-        super().__init__(**{k: v for k, v in kwargs.items() if k in fields(SSAEvent)})
+        super_field_names = {f.name for f in fields(SSAEvent)}
+        super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
+        super().__init__(**super_kwargs)
