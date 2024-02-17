@@ -2,13 +2,13 @@
 *.swp
 .DS_Store
 .idea
-Makefile
+.mypy_cache
 __pycache__
+Makefile
 build
 dist
 docs/doctrees
-src
 scinoephile.egg-info
 test/.coverage
 test/htmlcov
-test/test.log
+/scinoephile/data/cantonese/corpus.pkl
