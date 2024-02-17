@@ -15,6 +15,7 @@ pip install `
     hanziconv `
     isort `
     mypy `
+    nltk `
     numpy `
     opencv-python `
     pandas `

@@ -11,3 +11,4 @@ docs/doctrees
 scinoephile.egg-info
 test/.coverage
 test/htmlcov
+/scinoephile/data/cantonese/corpus.pkl

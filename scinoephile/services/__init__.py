@@ -2,6 +2,4 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 from __future__ import annotations
 
-from google.cloud import translate_v2
-
-translate_client = translate_v2.Client()
+__all__ = []
