@@ -1,20 +1,16 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.RecognitionTestDataset,py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-import numpy as np
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from collections import OrderedDict
+
+import numpy as np
+
 from scinoephile import todo
 from scinoephile.ocr import OCRTestDataset
 from scinoephile.ocr.recognition import RecognitionDataset
 
 
-################################### CLASSES ###################################
 class RecognitionTestDataset(RecognitionDataset, OCRTestDataset):
     """
     A collection of labeled character images for testing

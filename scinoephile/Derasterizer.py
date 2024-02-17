@@ -1,25 +1,21 @@
-#!/usr/bin/env python
-#   scinoephile.Derasterizer.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Converts image-based subtitles into text using a deep neural network-based
 optical character recognition model."""
-################################### MODULES ###################################
-from IPython import embed
+from __future__ import annotations
+
 import numpy as np
 from tensorflow import keras
+
 from scinoephile import (
+    CLToolBase,
+    SubtitleSeries,
     input_prefill,
     is_readable,
     is_writable,
-    CLToolBase,
-    SubtitleSeries,
 )
 from scinoephile.ocr import (
+    ImageSubtitleSeries,
     analyze_text_accuracy,
     eastern_punctuation_chars,
     get_reconstructed_text,
@@ -28,11 +24,9 @@ from scinoephile.ocr import (
     numeric_chars,
     western_chars,
     western_punctuation_chars,
-    ImageSubtitleSeries,
 )
 
 
-################################### CLASSES ###################################
 class Derasterizer(CLToolBase):
     """Converts image-based Chinese subtitles to text."""
 
@@ -259,7 +253,7 @@ class Derasterizer(CLToolBase):
     @property
     def standard_subtitles(self):
         """SubtitleSeries: Standard subtitles against which to compare
-         results"""
+        results"""
         if not hasattr(self, "_standard_subtitles"):
             self._standard_subtitles = None
         return self._standard_subtitles
@@ -386,11 +380,11 @@ class Derasterizer(CLToolBase):
                 self._validate_event_interactively(event)
             except KeyboardInterrupt:
                 print("\nQuitting subtitle validation")
-                embed(**self.embed_kw)
                 break
 
     def _validate_event_interactively(self, event):
         from difflib import SequenceMatcher
+
         from colorama import Fore, Style
 
         # Show user subtitle image and predicted text, and prompt for update
@@ -604,6 +598,5 @@ class Derasterizer(CLToolBase):
     # endregion
 
 
-#################################### MAIN #####################################
 if __name__ == "__main__":
     Derasterizer.main()

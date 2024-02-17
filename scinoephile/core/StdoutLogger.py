@@ -1,12 +1,7 @@
-#!/usr/bin/env python3
-#   scinoephile.core.StdoutLogger.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import io
 import re
 import sys
@@ -15,14 +10,14 @@ from tempfile import NamedTemporaryFile
 from typing import Any
 
 
-################################### CLASSES ###################################
-class StdoutLogger():
+class StdoutLogger:
     """Logs print statements to both stdout and file; use with 'with'"""
 
     # region Builtins
 
-    def __init__(self, outfile: str, mode: str = "a",
-                 process_carriage_returns: bool = True) -> None:
+    def __init__(
+        self, outfile: str, mode: str = "a", process_carriage_returns: bool = True
+    ) -> None:
         self.process_carriage_returns = process_carriage_returns
         self.outfile = outfile
         self.mode = mode

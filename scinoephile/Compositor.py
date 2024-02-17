@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-#   scinoephile.Compositor.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """
 Compiles Chinese and English subtitles into a single file, optionally adding
 Mandarin or Cantonese pinyin, converting traditional characters to simplified,
@@ -33,7 +27,8 @@ Operations are inferred from provided infiles and outfiles, e.g.:
                   -bof /bilingual/outfile
                   --simplify
 """
-####################################### MODULES ########################################
+from __future__ import annotations
+
 from argparse import ArgumentError, ArgumentParser
 from copy import deepcopy
 from os import environ
@@ -41,7 +36,6 @@ from os.path import isfile
 from typing import Any, Dict, List, Optional
 
 import numpy as np
-from IPython import embed
 
 from scinoephile.core import (
     CLToolBase,
@@ -56,7 +50,6 @@ from scinoephile.core import (
 )
 
 
-####################################### CLASSES ########################################
 class Compositor(CLToolBase):
     """Compiles Chinese and English subtitles into a single file."""
 
@@ -307,8 +300,6 @@ class Compositor(CLToolBase):
             self._combine_lines("pinyin")
         if "merge_bilingual" in self.operations:
             self._initialize_bilingual_subtitles()
-        if "interactive" in self.operations:
-            embed(**self.embed_kw)
 
         # Save outfiles
         if "save_bilingual" in self.operations:
@@ -743,6 +734,5 @@ class Compositor(CLToolBase):
     # endregion
 
 
-######################################### MAIN #########################################
 if __name__ == "__main__":
     Compositor.main()

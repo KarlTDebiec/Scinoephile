@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-#   scinoephile/scripts/compositor.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """
 Compiles Chinese and English subtitles into a single file, optionally adding
 Mandarin or Cantonese pinyin, converting traditional characters to simplified,
@@ -33,7 +27,8 @@ Operations are inferred from provided infiles and outfiles, e.g.:
                   -bof /bilingual/outfile
                   --simplify
 """
-####################################### MODULES ########################################
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from copy import deepcopy
 from os import environ
@@ -41,14 +36,12 @@ from os.path import isfile
 from typing import Any, Dict, List, Optional
 
 import numpy as np
-from IPython import embed
 
 from scinoephile.common import (
     ArgumentConflictError,
     CLTool,
     GetterError,
     SetterError,
-    embed_kw,
 )
 from scinoephile.core import (
     SubtitleSeries,
@@ -61,29 +54,28 @@ from scinoephile.core import (
 )
 
 
-####################################### CLASSES ########################################
 class Compositor(CLTool):
     """Compiles Chinese and English subtitles into a single file."""
 
     # region Builtins
 
     def __init__(
-        self,
-        align_to: Optional[str] = None,
-        bilingual_infile: Optional[str] = None,
-        bilingual_outfile: Optional[str] = None,
-        combine_lines: bool = False,
-        english_infile: Optional[str] = None,
-        english_outfile: Optional[str] = None,
-        hanzi_infile: Optional[str] = None,
-        hanzi_outfile: Optional[str] = None,
-        interactive: bool = False,
-        overwrite: bool = False,
-        pinyin_infile: Optional[str] = None,
-        pinyin_outfile: Optional[str] = None,
-        pinyin_language: Optional[str] = None,
-        simplify: bool = False,
-        **kwargs: Any,
+            self,
+            align_to: Optional[str] = None,
+            bilingual_infile: Optional[str] = None,
+            bilingual_outfile: Optional[str] = None,
+            combine_lines: bool = False,
+            english_infile: Optional[str] = None,
+            english_outfile: Optional[str] = None,
+            hanzi_infile: Optional[str] = None,
+            hanzi_outfile: Optional[str] = None,
+            interactive: bool = False,
+            overwrite: bool = False,
+            pinyin_infile: Optional[str] = None,
+            pinyin_outfile: Optional[str] = None,
+            pinyin_language: Optional[str] = None,
+            simplify: bool = False,
+            **kwargs: Any,
     ) -> None:
         """
         Initializes command-line tool and compiles list of operations.
@@ -229,8 +221,8 @@ class Compositor(CLTool):
                     "Chinese pinyin, or English subtitle input"
                 )
         if (
-            "save_bilingual" in self.operations
-            and "load_bilingual" not in self.operations
+                "save_bilingual" in self.operations
+                and "load_bilingual" not in self.operations
         ):
             if "load_english" not in self.operations:
                 if "load_hanzi" in self.operations:
@@ -310,8 +302,6 @@ class Compositor(CLTool):
             )
         if "merge_bilingual" in self.operations:
             self._initialize_bilingual_subtitles()
-        if "interactive" in self.operations:
-            embed(**embed_kw())
 
         # Save outfiles
         if "save_bilingual" in self.operations:
@@ -455,7 +445,7 @@ class Compositor(CLTool):
                 "Initialization of bilingual subtitles requires English subtitles"
             )
         if (chinese == "hanzi" and self.hanzi_subtitles is None) or (
-            chinese == "pinyin" and self.pinyin_subtitles is None
+                chinese == "pinyin" and self.pinyin_subtitles is None
         ):
             raise GetterError(
                 "Initialization of bilingual subtitles requires Chinese subtitles"
@@ -534,7 +524,7 @@ class Compositor(CLTool):
             translations += [
                 e["translatedText"]
                 for e in translate_client.translate(
-                    list(texts[i : i + 100]), source_language="zh", target_language="en"
+                    list(texts[i: i + 100]), source_language="zh", target_language="en"
                 )
             ]
         for i, translation in enumerate(translations):
@@ -565,7 +555,7 @@ class Compositor(CLTool):
             translations += [
                 e["translatedText"]
                 for e in translate_client.translate(
-                    list(texts[i : i + 100]), source_language="en", target_language="zh"
+                    list(texts[i: i + 100]), source_language="en", target_language="zh"
                 )
             ]
         for i, translation in enumerate(translations):
@@ -655,8 +645,8 @@ class Compositor(CLTool):
             const="cantonese",
             dest="pinyin_language",
             help="add Cantonese Yale pinyin (耶鲁粤语拼音); mainly useful for older Hong "
-            "Kong movies (1980s to early 1990s) whose Chinese subtitles are in 粤文 "
-            "(i.e. using 係, 喺, and 唔 rather than 是, 在, and 不, etc.)",
+                 "Kong movies (1980s to early 1990s) whose Chinese subtitles are in 粤文 "
+                 "(i.e. using 係, 喺, and 唔 rather than 是, 在, and 不, etc.)",
         )
         pinyin_language.add_argument(
             "-m",
@@ -723,6 +713,5 @@ class Compositor(CLTool):
     # endregion
 
 
-######################################### MAIN #########################################
 if __name__ == "__main__":
     Compositor.main()

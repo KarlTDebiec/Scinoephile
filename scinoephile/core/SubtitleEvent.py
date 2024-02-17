@@ -1,22 +1,15 @@
-#!/usr/bin/env python3
-#   scinoephile.core.SubtitleEvent.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-from typing import Any
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
 
-from IPython import embed
+from typing import Any
 
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
+
 from scinoephile.core.Base import Base
 
 
-################################### CLASSES ###################################
 class SubtitleEvent(Base, SSAEvent):  # type: ignore
     """
     An individual subtitle.

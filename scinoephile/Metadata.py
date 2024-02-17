@@ -1,13 +1,8 @@
-#!/usr/bin/env python
-#   scinoephile.Metadata.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Adds Apple/iTunes-compatible metadata to MP4 files."""
-################################### MODULES ###################################
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
@@ -29,7 +24,6 @@ from scinoephile.core import (
 )
 
 
-################################### CLASSES ###################################
 class Metadata(CLToolBase):
     """Adds Apple/iTunes-compatible metadata to MP4 files."""
 
@@ -68,23 +62,23 @@ class Metadata(CLToolBase):
     # region Builtins
 
     def __init__(
-        self,
-        infile: Optional[str],
-        outfile: Optional[str],
-        cast: Optional[List[str]] = None,
-        catalog_id: Optional[int] = None,
-        date: Optional[datetime] = None,
-        description: Optional[str] = None,
-        director: Optional[List[str]] = None,
-        language: Optional[List[str]] = None,
-        genre: Optional[str] = None,
-        overwrite: bool = False,
-        producer: Optional[List[str]] = None,
-        rating: Optional[str] = None,
-        studio: Optional[List[str]] = None,
-        title: Optional[str] = None,
-        writer: Optional[List[str]] = None,
-        **kwargs: Any,
+            self,
+            infile: Optional[str],
+            outfile: Optional[str],
+            cast: Optional[List[str]] = None,
+            catalog_id: Optional[int] = None,
+            date: Optional[datetime] = None,
+            description: Optional[str] = None,
+            director: Optional[List[str]] = None,
+            language: Optional[List[str]] = None,
+            genre: Optional[str] = None,
+            overwrite: bool = False,
+            producer: Optional[List[str]] = None,
+            rating: Optional[str] = None,
+            studio: Optional[List[str]] = None,
+            title: Optional[str] = None,
+            writer: Optional[List[str]] = None,
+            **kwargs: Any,
     ) -> None:
         """
         Initializes command-line tool and compiles list of operations.
@@ -371,6 +365,5 @@ class Metadata(CLToolBase):
     # endregion
 
 
-#################################### MAIN #####################################
 if __name__ == "__main__":
     Metadata.main()

@@ -1,17 +1,12 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.TestOCRDataset,py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-from abc import abstractmethod, ABC
-from scinoephile.ocr import (ImageSubtitleSeries, OCRDataset)
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+
+from scinoephile.ocr import ImageSubtitleSeries, OCRDataset
 
 
-################################### CLASSES ###################################
 class OCRTestDataset(OCRDataset, ABC):
     """
     A collection of labeled character images for testing

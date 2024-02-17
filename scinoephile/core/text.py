@@ -1,16 +1,10 @@
-#!/usr/bin/env python3
-#   scinoephile.core.text.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import re
 from typing import List
 
-################################## VARIABLES ##################################
 punctuation = {
     "\n": "\n",
     "　": " ",
@@ -39,9 +33,8 @@ re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 re_western = re.compile(r"[a-zA-Z0-9]")
 
 
-################################## FUNCTIONS ##################################
 def get_list_for_display(
-    list_of_strings: List[str], linker: str = "and", quote: str = "'"
+        list_of_strings: List[str], linker: str = "and", quote: str = "'"
 ) -> str:
     # TODO: Document
     string = quote + f"{quote}, {quote}".join(list_of_strings) + quote
@@ -200,9 +193,7 @@ def get_single_line_text(text: str, language: str = "english") -> str:
             r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", single_line
         )
         if conversation is not None:
-            single_line = (
-                f"﹣{conversation['first'].strip()}　　﹣{conversation['second'].strip()}"
-            )
+            single_line = f"﹣{conversation['first'].strip()}　　﹣{conversation['second'].strip()}"
         print(single_line)
     else:
         raise ValueError(

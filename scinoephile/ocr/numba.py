@@ -1,17 +1,12 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.numba.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-import numba as nb
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import numpy as np
 
+import numba as nb
 
-################################## FUNCTIONS ##################################
+
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image(bytes_, height, width):
     """
