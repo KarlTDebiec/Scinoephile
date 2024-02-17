@@ -39,9 +39,8 @@ import numpy as np
 
 from scinoephile.core import (
     CLToolBase,
-    SubtitleSeries,
+    get_hanzi_simplified,
     get_pinyin,
-    get_simplified_hanzi,
     get_single_line_text,
     get_truecase,
     infile_argument,
@@ -54,8 +53,6 @@ class Compositor(CLToolBase):
     """Compiles Chinese and English subtitles into a single file."""
 
     _bilingual_subtitles: Optional[SubtitleSeries]
-
-    # region Builtins
 
     def __init__(
         self,
@@ -311,10 +308,6 @@ class Compositor(CLToolBase):
         if "save_pinyin" in self.operations:
             self.pinyin_subtitles.save(self.operations["save_pinyin"])
 
-    # endregion
-
-    # region Public Properties
-
     @property
     def bilingual_subtitles(self) -> Optional[SubtitleSeries]:
         """Optional[SubtitleSeries]: Bilingual subtitles"""
@@ -404,10 +397,6 @@ class Compositor(CLToolBase):
             raise ValueError(self._generate_setter_exception(value))
         self._pinyin_subtitles = value
 
-    # endregion
-
-    # region Private Methods
-
     def _combine_lines(self, language: str) -> None:
         if language not in ["english", "hanzi", "pinyin"]:
             raise ValueError(
@@ -450,7 +439,7 @@ class Compositor(CLToolBase):
             print("Converting traditional characters to simplified")
 
         for event in self._hanzi_subtitles:
-            event.text = get_simplified_hanzi(event.text, self.verbosity)
+            event.text = get_hanzi_simplified(event.text, self.verbosity)
 
     def _convert_capital_english_to_truecase(self) -> None:
 
@@ -603,10 +592,6 @@ class Compositor(CLToolBase):
 
         self.hanzi_subtitles = hanzi_subtitles
 
-    # endregion
-
-    # region Class Methods
-
     @classmethod
     def construct_argparser(cls, **kwargs: Any) -> ArgumentParser:
         """
@@ -730,8 +715,6 @@ class Compositor(CLToolBase):
         )
 
         return parser
-
-    # endregion
 
 
 if __name__ == "__main__":

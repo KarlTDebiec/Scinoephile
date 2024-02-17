@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from scinoephile.common import input_prefill
-from scinoephile.core import SubtitleSeries, get_pinyin
+from scinoephile.core import get_pinyin
 
 
 def sync_subtitles(

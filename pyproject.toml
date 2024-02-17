@@ -32,6 +32,9 @@ pandas-stubs = "^2.1.4.231227"
 pysubs2 = "^1.6.1"
 python = "^3.11"
 pycantonese = "^3.4.0"
+nltk = "^3.8.1"
+pypinyin = "^0.50.0"
+snownlp = "^0.12.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
