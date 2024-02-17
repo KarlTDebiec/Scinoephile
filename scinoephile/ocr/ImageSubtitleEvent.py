@@ -1,17 +1,12 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.ImageSubtitleEvent.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import numpy as np
+
 from scinoephile import SubtitleEvent
 
 
-################################### CLASSES ###################################
 class ImageSubtitleEvent(SubtitleEvent):
     """
     An individual image-based subtitle
@@ -61,7 +56,7 @@ class ImageSubtitleEvent(SubtitleEvent):
     @property
     def char_indexes(self):
         """ndarray(int): Indexes of character images within series'
-         deduplicated character image data"""
+        deduplicated character image data"""
         if not hasattr(self, "_char_indexes"):
             self._char_indexes = np.zeros(self.char_count, np.int)
         return self._char_indexes
@@ -99,8 +94,7 @@ class ImageSubtitleEvent(SubtitleEvent):
 
             if len(value.shape) == 3:  # Convert RGB to L
                 trans_bg = Image.fromarray(value)
-                white_bg = Image.new("RGBA", trans_bg.size,
-                                     (255, 255, 255, 255))
+                white_bg = Image.new("RGBA", trans_bg.size, (255, 255, 255, 255))
                 white_bg.paste(trans_bg, mask=trans_bg)
                 value = np.array(white_bg.convert("L"))
 
@@ -178,25 +172,28 @@ class ImageSubtitleEvent(SubtitleEvent):
         white_cols = (self.full_data == self.full_data.max()).all(axis=0)
         diff = np.diff(np.array(white_cols, np.int))
         # Get starts of chars, ends of chars, first nonwhite, last nonwhite
-        bounds = np.unique(((np.where(diff == -1)[0] + 1).tolist()
-                            + np.where(diff == 1)[0].tolist()
-                            + [np.argmin(white_cols)]
-                            + [white_cols.size - 1
-                               - np.argmin(white_cols[::-1])]))
+        bounds = np.unique(
+            (
+                    (np.where(diff == -1)[0] + 1).tolist()
+                    + np.where(diff == 1)[0].tolist()
+                    + [np.argmin(white_cols)]
+                    + [white_cols.size - 1 - np.argmin(white_cols[::-1])]
+            )
+        )
         bounds = bounds.reshape((-1, 2))
         self._char_bounds = bounds
 
     def _initialize_char_data(self):
-        char_data = np.ones((self.char_bounds.shape[0], 80, 80),
-                            np.uint8) * 255
+        char_data = np.ones((self.char_bounds.shape[0], 80, 80), np.uint8) * 255
         for i, (x1, x2) in enumerate(self.char_bounds):
-            char = self.full_data[:, x1:x2 + 1]
+            char = self.full_data[:, x1: x2 + 1]
             white_rows = (char == char.max()).all(axis=1)
-            char = char[np.argmin(white_rows):
-                        white_rows.size - np.argmin(white_rows[::-1])]
+            char = char[
+                   np.argmin(white_rows): white_rows.size - np.argmin(white_rows[::-1])
+                   ]
             x = int(np.floor((80 - char.shape[1]) / 2))
             y = int(np.floor((80 - char.shape[0]) / 2))
-            char_data[i, y:y + char.shape[0], x:x + char.shape[1]] = char
+            char_data[i, y: y + char.shape[0], x: x + char.shape[1]] = char
         self._char_data = char_data
 
     # endregion

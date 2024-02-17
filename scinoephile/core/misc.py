@@ -1,24 +1,17 @@
-#!/usr/bin/env python
-#   scinoephile.core.misc.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from collections import OrderedDict
 from typing import Any, List, Optional, Set, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from IPython import embed
 
-from scinoephile.common import input_prefill, validate_int
+from scinoephile.common import input_prefill
 from scinoephile.core import SubtitleSeries, get_pinyin
 
 
-################################## FUNCTIONS ##################################
 def sync_subtitles(
     mobile: pd.DataFrame, target: pd.DataFrame, mobile_i: int, target_i: int
 ) -> None:
@@ -111,7 +104,9 @@ def align_iteration(
         return confirmation
 
     def get_confirmation_one_target_two_mobile(
-        mobile_0_i: int, mobile_1_i: int, target_i: int,
+        mobile_0_i: int,
+        mobile_1_i: int,
+        target_i: int,
     ) -> Union[bool, int, str]:
         mobile_0_text = mobile.loc[mobile_0_i, "text"]
         mobile_1_text = mobile.loc[mobile_1_i, "text"]
@@ -127,7 +122,11 @@ def align_iteration(
         prompt = (
             get_line(target_i, mobile_0_i, mobile_0_overlap)
             + f"'{mobile_0_text}'\n"
-            + get_line(target_i, mobile_1_i, mobile_1_overlap,)
+            + get_line(
+                target_i,
+                mobile_1_i,
+                mobile_1_overlap,
+            )
             + f"'{mobile_1_text}'\n"
             + f"{' ' * 25}Align '{target_text}' "
             + f"({get_pinyin(target_text)}) to which subtitle "
@@ -381,7 +380,9 @@ def align_iteration(
             # Interactive
             elif interactive:
                 confirmation = get_confirmation_one_target_two_mobile(
-                    mobile_0_i, mobile_1_i, target_0_i,
+                    mobile_0_i,
+                    mobile_1_i,
+                    target_0_i,
                 )
                 if confirmation == str(mobile_0_i + 1):
                     status = f"User aligned '{mobile_0_text}' to '{target_0_text}'"

@@ -1,21 +1,15 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.ImageSubtitleSeries.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-from IPython import embed
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import numpy as np
 import pandas as pd
+
 from scinoephile import SubtitleSeries
-from scinoephile.ocr import (ImageSubtitleEvent)
+from scinoephile.ocr import ImageSubtitleEvent
 from scinoephile.ocr.numba import read_sup_subtitles
 
 
-################################### CLASSES ###################################
 class ImageSubtitleSeries(SubtitleSeries):
     """
     A series of image-based subtitles
@@ -51,8 +45,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         if not hasattr(self, "_spec_dtypes"):
             from collections import OrderedDict
 
-            self._spec_dtypes = OrderedDict(char=str, indexes=object,
-                                            confirmed=bool)
+            self._spec_dtypes = OrderedDict(char=str, indexes=object, confirmed=bool)
         return self._spec_dtypes
 
     # endregion
@@ -208,8 +201,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         for event_index, event in enumerate(self.events):
             for event_char_index, datum in enumerate(event.char_data):
                 raw_data[char_index] = datum
-                raw_subchar_indexes[char_index] = (
-                    event_index, event_char_index)
+                raw_subchar_indexes[char_index] = (event_index, event_char_index)
                 char_index += 1
 
         # Clear prior indexes
@@ -221,7 +213,8 @@ class ImageSubtitleSeries(SubtitleSeries):
         sorted_index = np.lexsort(raw_data.T)
         sorted_data = raw_data[sorted_index]
         datum_is_unique = np.append(
-            [True], np.any(np.diff(sorted_data, axis=0) != 0, axis=1), 0)
+            [True], np.any(np.diff(sorted_data, axis=0) != 0, axis=1), 0
+        )
         unique_indexes = np.sort(sorted_index[datum_is_unique])
         n_unique_chars = datum_is_unique.sum()
         data = raw_data[unique_indexes].reshape(-1, 80, 80)
@@ -230,22 +223,26 @@ class ImageSubtitleSeries(SubtitleSeries):
         chars = np.array([""] * n_unique_chars)
         subchar_indexes = np.empty(n_unique_chars, dtype="O")
         confirmed = np.array([False] * n_unique_chars)
-        for a, unique, subchar_index in zip(sorted_index, datum_is_unique,
-                                            raw_subchar_indexes[sorted_index]):
+        for a, unique, subchar_index in zip(
+                sorted_index, datum_is_unique, raw_subchar_indexes[sorted_index]
+        ):
             if unique:
                 final_index = np.where(unique_indexes == a)[0][0]
                 subchar_indexes[final_index] = [subchar_index]
             else:
                 subchar_indexes[final_index] += [subchar_index]
-            self.events[subchar_index[0]].char_indexes[
-                subchar_index[1]] = final_index
+            self.events[subchar_index[0]].char_indexes[subchar_index[1]] = final_index
         spec = pd.DataFrame.from_dict(
-            {"char": chars, "indexes": subchar_indexes,
-             "confirmed": confirmed})
+            {"char": chars, "indexes": subchar_indexes, "confirmed": confirmed}
+        )
 
         # Transfer prior character assignments
-        if (hasattr(self, "_data") and self._data is not None and
-                hasattr(self, "_spec") and self._spec is not None):
+        if (
+                hasattr(self, "_data")
+                and self._data is not None
+                and hasattr(self, "_spec")
+                and self._spec is not None
+        ):
             if verbosity >= 1:
                 print("Transferring prior character assignments")
             sums = np.array([datum.sum() for datum in self._data])
@@ -253,11 +250,13 @@ class ImageSubtitleSeries(SubtitleSeries):
                 for j in np.where(sums == datum.sum())[0]:
                     if np.all(datum == self._data[j]):
                         if verbosity >= 3:
-                            print(f"Copying assingment of char {j} as "
-                                  f"'{self._spec.at[j, 'char']}'")
+                            print(
+                                f"Copying assingment of char {j} as "
+                                f"'{self._spec.at[j, 'char']}'"
+                            )
 
-                        spec.at[i, 'char'] = self._spec.at[j, 'char']
-                        spec.at[i, 'confirmed'] = self._spec.at[j, 'confirmed']
+                        spec.at[i, "char"] = self._spec.at[j, "char"]
+                        spec.at[i, "confirmed"] = self._spec.at[j, "confirmed"]
 
         # Store
         self._data = data
@@ -285,16 +284,34 @@ class ImageSubtitleSeries(SubtitleSeries):
             event = self.events[sub_i]
             if index_3 is None:
                 event._char_bounds = np.concatenate(
-                    (event.char_bounds[:char_i],
-                     np.array([[event.char_bounds[char_i, 0],
-                                event.char_bounds[char_i + 1, 1]]]),
-                     event.char_bounds[char_i + 2:]))
+                    (
+                        event.char_bounds[:char_i],
+                        np.array(
+                            [
+                                [
+                                    event.char_bounds[char_i, 0],
+                                    event.char_bounds[char_i + 1, 1],
+                                ]
+                            ]
+                        ),
+                        event.char_bounds[char_i + 2:],
+                    )
+                )
             else:
                 event._char_bounds = np.concatenate(
-                    (event.char_bounds[:char_i],
-                     np.array([[event.char_bounds[char_i, 0],
-                                event.char_bounds[char_i + 2, 1]]]),
-                     event.char_bounds[char_i + 3:]))
+                    (
+                        event.char_bounds[:char_i],
+                        np.array(
+                            [
+                                [
+                                    event.char_bounds[char_i, 0],
+                                    event.char_bounds[char_i + 2, 1],
+                                ]
+                            ]
+                        ),
+                        event.char_bounds[char_i + 3:],
+                    )
+                )
             event._initialize_char_data()
 
         # Re-intialize series data structures
@@ -317,11 +334,13 @@ class ImageSubtitleSeries(SubtitleSeries):
             **kwargs: Additional keyword arguments
         """
 
-        dtypes = [("series char index", "i8"),
-                  ("char", "S3"),
-                  ("subtitle index", "i8"),
-                  ("subtitle char index", "i8"),
-                  ("confirmed", "?")]
+        dtypes = [
+            ("series char index", "i8"),
+            ("char", "S3"),
+            ("subtitle index", "i8"),
+            ("subtitle char index", "i8"),
+            ("confirmed", "?"),
+        ]
         encode = lambda x: x.encode("utf8")
 
         # Save info, styles and subtitles
@@ -333,38 +352,51 @@ class ImageSubtitleSeries(SubtitleSeries):
         fp.create_group("full_data")
         for i, event in enumerate(self.events):
             if hasattr(event, "full_data"):
-                fp["full_data"].create_dataset(f"{i:04d}",
-                                               data=event.full_data,
-                                               dtype=np.uint8,
-                                               chunks=True,
-                                               compression="gzip")
-                fp["full_data"][f"{i:04d}"].attrs[
-                    "char_bounds"] = event.char_bounds
+                fp["full_data"].create_dataset(
+                    f"{i:04d}",
+                    data=event.full_data,
+                    dtype=np.uint8,
+                    chunks=True,
+                    compression="gzip",
+                )
+                fp["full_data"][f"{i:04d}"].attrs["char_bounds"] = event.char_bounds
 
         # Save char image specs
         if "spec" in fp:
             del fp["spec"]
         if hasattr(self, "_spec"):
-            fp.create_dataset("spec",
-                              data=np.array(list(map(tuple, list(pd.DataFrame(
-                                  [(i, encode(s["char"]), j, k, s["confirmed"])
-                                   for i, s in self.spec.iterrows()
-                                   for j, k in s["indexes"]],
-                                  columns=[d[0] for d in dtypes]).values))),
-                                            dtype=dtypes),
-                              dtype=dtypes,
-                              chunks=True,
-                              compression="gzip")
+            fp.create_dataset(
+                "spec",
+                data=np.array(
+                    list(
+                        map(
+                            tuple,
+                            list(
+                                pd.DataFrame(
+                                    [
+                                        (i, encode(s["char"]), j, k, s["confirmed"])
+                                        for i, s in self.spec.iterrows()
+                                        for j, k in s["indexes"]
+                                    ],
+                                    columns=[d[0] for d in dtypes],
+                                ).values
+                            ),
+                        )
+                    ),
+                    dtype=dtypes,
+                ),
+                dtype=dtypes,
+                chunks=True,
+                compression="gzip",
+            )
 
         # Save char image data
         if "data" in fp:
             del fp["data"]
         if hasattr(self, "_data"):
-            fp.create_dataset("data",
-                              data=self.data,
-                              dtype=np.uint8,
-                              chunks=True,
-                              compression="gzip")
+            fp.create_dataset(
+                "data", data=self.data, dtype=np.uint8, chunks=True, compression="gzip"
+            )
 
     def _save_png(self, fp, **kwargs):
         """
@@ -410,8 +442,7 @@ class ImageSubtitleSeries(SubtitleSeries):
         if "full_data" in fp and "events" in fp:
 
             for i, event in enumerate(subs.events):
-                event.full_data = np.array(fp["full_data"][f"{i:04d}"],
-                                           np.uint8)
+                event.full_data = np.array(fp["full_data"][f"{i:04d}"], np.uint8)
                 attrs = dict(fp["full_data"][f"{i:04d}"].attrs)
                 if "char_bounds" in attrs:
                     event._char_bounds = attrs["char_bounds"]
@@ -419,15 +450,18 @@ class ImageSubtitleSeries(SubtitleSeries):
             # Load char image specs
             if "spec" in fp:
                 encoded = np.array(fp["spec"])
-                encoded = pd.DataFrame(data=encoded,
-                                       index=range(encoded.size),
-                                       columns=encoded.dtype.names)
+                encoded = pd.DataFrame(
+                    data=encoded, index=range(encoded.size), columns=encoded.dtype.names
+                )
                 n_unique_chars = encoded["series char index"].max() + 1
                 # np.empty and tolist are used to create unique empty lists
                 spec = pd.DataFrame(
-                    {"char": [""] * n_unique_chars,
-                     "indexes": np.empty((n_unique_chars, 0)).tolist(),
-                     "confirmed": [False] * n_unique_chars, })
+                    {
+                        "char": [""] * n_unique_chars,
+                        "indexes": np.empty((n_unique_chars, 0)).tolist(),
+                        "confirmed": [False] * n_unique_chars,
+                    }
+                )
                 for i, char, j, k, confirmed in encoded.values:
                     spec.at[i, "char"] = decode(char)
                     spec.at[i, "indexes"] += [(j, k)]
@@ -464,11 +498,14 @@ class ImageSubtitleSeries(SubtitleSeries):
         bytes = fp.read()
         starts, ends, images = read_sup_subtitles(bytes)
         for start, end, image in zip(starts, ends, images):
-            subs.events.append(cls.event_class(
-                start=make_time(s=start),
-                end=make_time(s=end),
-                data=image,
-                series=subs))
+            subs.events.append(
+                cls.event_class(
+                    start=make_time(s=start),
+                    end=make_time(s=end),
+                    data=image,
+                    series=subs,
+                )
+            )
 
         return subs
 

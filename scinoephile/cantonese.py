@@ -1,22 +1,18 @@
-#!/usr/bin/env python3
-#   scinoephile.cantonese.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 import pickle
 import re
-import pycantonese as pc
 from collections import Counter
 from os.path import isfile
 from warnings import catch_warnings, filterwarnings
+
+import pycantonese as pc
 from hanziconv import HanziConv
+
 from scinoephile import package_root
 
-################################## VARIABLES ##################################
 data_root = f"{package_root}/data/cantonese/"
 if isfile(f"{data_root}/corpus.pkl"):
     with open(f"{data_root}/corpus.pkl", "rb") as infile:
@@ -41,7 +37,6 @@ else:
 re_jyutping = re.compile(r"[a-z]+\d")
 
 
-################################## FUNCTIONS ##################################
 def get_cantonese_pinyin(hanzi: str) -> str:
     """
     Gets the Yale Cantonese romanization of a provided Hanzi
@@ -71,8 +66,7 @@ def get_cantonese_pinyin(hanzi: str) -> str:
                 yale = get_cantonese_pinyin(trad_hanzi)
                 hanzi_to_pinyin[hanzi] = yale
                 with open(f"{data_root}/hanzi_to_yale.pkl", "wb") as outfile:
-                    pickle.dump(hanzi_to_pinyin, outfile,
-                                pickle.HIGHEST_PROTOCOL)
+                    pickle.dump(hanzi_to_pinyin, outfile, pickle.HIGHEST_PROTOCOL)
                 return yale
 
             # Truly no instance of hanzi in corpus

@@ -1,18 +1,14 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.RecognitionDataset.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-import numpy as np
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from abc import ABC
-from scinoephile.ocr import hanzi_chars, OCRDataset
+
+import numpy as np
+
+from scinoephile.ocr import OCRDataset, hanzi_chars
 
 
-################################### CLASSES ###################################
 class RecognitionDataset(OCRDataset, ABC):
     """
     Base dataset for character recognition
@@ -64,8 +60,7 @@ class RecognitionDataset(OCRDataset, ABC):
 
         # Return labels
         sorter = np.argsort(self.chars)
-        return np.array(
-            sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
+        return np.array(sorter[np.searchsorted(self.chars, chars, sorter=sorter)])
 
     def get_chars_of_labels(self, labels):
         """
@@ -92,11 +87,16 @@ class RecognitionDataset(OCRDataset, ABC):
 
     def get_present_specs_of_char(self, char, as_set=True):
         if as_set:
-            return set(map(tuple, self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1).values))
+            return set(
+                map(
+                    tuple,
+                    self.spec.loc[self.spec["char"] == char]
+                    .drop("char", axis=1)
+                    .values,
+                )
+            )
         else:
-            return self.spec.loc[
-                self.spec["char"] == char].drop("char", axis=1)
+            return self.spec.loc[self.spec["char"] == char].drop("char", axis=1)
 
     def show(self, indexes=None, data=None, **kwargs):
         """

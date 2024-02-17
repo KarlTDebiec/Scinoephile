@@ -1,18 +1,12 @@
-#!/usr/bin/env python3
-#   scinoephile.testing.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################## MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from hashlib import md5
 from os import devnull
 from subprocess import PIPE, Popen
 
 
-################################## FUNCTIONS ##################################
 def cmp_h5(file_1, file_2):
     """
     Checks if two hdf5 files contain the same data
@@ -25,8 +19,11 @@ def cmp_h5(file_1, file_2):
         bool: True if the files are identical, false otherwise
     """
     with open(devnull, "w") as fnull:
-        output = Popen(f"h5diff {file_1} {file_2}", stdout=PIPE,
-                       stderr=fnull, shell=True).stdout.read().decode("utf-8")
+        output = (
+            Popen(f"h5diff {file_1} {file_2}", stdout=PIPE, stderr=fnull, shell=True)
+            .stdout.read()
+            .decode("utf-8")
+        )
 
     if output == "":
         return True

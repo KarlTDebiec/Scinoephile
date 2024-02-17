@@ -1,19 +1,15 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.OCRDataset.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+
 import numpy as np
 import pandas as pd
-from abc import abstractmethod, ABC
+
 from scinoephile import Base
 
 
-################################### CLASSES ###################################
 class OCRDataset(Base, ABC):
     """
     Base dataset for optical character recognition
@@ -50,16 +46,18 @@ class OCRDataset(Base, ABC):
         if not hasattr(self, "_figure"):
             from matplotlib.pyplot import figure
 
-            self._figure = figure(figsize=(self.data_shape[0] / 80,
-                                           self.data_shape[1] / 80), dpi=80)
+            self._figure = figure(
+                figsize=(self.data_shape[0] / 80, self.data_shape[1] / 80), dpi=80
+            )
         return self._figure
 
     @property
     def spec(self):
         """pandas.DataFrame: Image specifications"""
         if not hasattr(self, "_spec"):
-            self._spec = pd.DataFrame({c: pd.Series([], dtype=d)
-                                       for c, d in self.spec_dtypes.items()})
+            self._spec = pd.DataFrame(
+                {c: pd.Series([], dtype=d) for c, d in self.spec_dtypes.items()}
+            )
         return self._spec
 
     @spec.setter
@@ -90,8 +88,7 @@ class OCRDataset(Base, ABC):
 
         new = spec.apply(spec_is_new, axis=1).values
         if new.sum() >= 1:
-            self.spec = self.spec.append(
-                spec.loc[new], ignore_index=True, sort=False)
+            self.spec = self.spec.append(spec.loc[new], ignore_index=True, sort=False)
             self.data = np.append(self.data, data[new], axis=0)
 
     @abstractmethod

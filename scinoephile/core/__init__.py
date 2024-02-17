@@ -1,13 +1,6 @@
-#!/usr/bin/env python
-#   scinoephile/core/__init__.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-from typing import List
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
 
 from scinoephile.core.Base import Base
 from scinoephile.core.CLToolBase import CLToolBase
@@ -20,6 +13,7 @@ from scinoephile.core.cltools import (
     outfile_argument,
     string_or_infile_argument,
 )
+from scinoephile.core.misc import align_subtitles, merge_subtitles
 from scinoephile.core.text import (
     get_list_for_display,
     get_pinyin,
@@ -27,10 +21,8 @@ from scinoephile.core.text import (
     get_single_line_text,
     get_truecase,
 )
-from scinoephile.core.misc import merge_subtitles, align_subtitles
 
-##################################### ALL #####################################
-__all__: List[str] = [
+__all__: list[str] = [
     "Base",
     "CLToolBase",
     "StdoutLogger",

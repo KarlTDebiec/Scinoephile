@@ -1,12 +1,7 @@
-#!/usr/bin/env python3
-#   scinoephile.core.SubtitleSeries.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from numbers import Number
 from sys import stderr
 from typing import Any, List, Optional, Tuple
@@ -14,7 +9,6 @@ from typing import Any, List, Optional, Tuple
 import h5py
 import numpy as np
 import pandas as pd
-
 from pysubs2 import SSAFile, SSAStyle
 from pysubs2.common import Color
 from pysubs2.substation import (
@@ -25,12 +19,12 @@ from pysubs2.substation import (
     ms_to_timestamp,
 )
 from pysubs2.time import TIMESTAMP, ms_to_str, timestamp_to_ms
+
 from scinoephile.common import validate_input_path, validate_output_path
 from scinoephile.core.Base import Base
 from scinoephile.core.SubtitleEvent import SubtitleEvent
 
 
-################################### CLASSES ###################################
 class SubtitleSeries(Base, SSAFile):  # type: ignore
     """
     A series of subtitles.
@@ -125,7 +119,7 @@ class SubtitleSeries(Base, SSAFile):  # type: ignore
 
     @classmethod
     def from_dataframe(
-        cls, df: pd.DataFrame, verbosity: int = 1, **kwargs: Any
+            cls, df: pd.DataFrame, verbosity: int = 1, **kwargs: Any
     ) -> "SubtitleSeries":
         subs = cls(verbosity=verbosity)
 
@@ -144,12 +138,12 @@ class SubtitleSeries(Base, SSAFile):  # type: ignore
 
     @classmethod
     def load(
-        cls,
-        path: str,
-        encoding: str = "utf-8",
-        format_: Optional[str] = None,
-        verbosity: int = 1,
-        **kwargs: Any,
+            cls,
+            path: str,
+            encoding: str = "utf-8",
+            format_: Optional[str] = None,
+            verbosity: int = 1,
+            **kwargs: Any,
     ) -> "SubtitleSeries":
         """
         Loads subtitles from an input file.
@@ -296,7 +290,7 @@ class SubtitleSeries(Base, SSAFile):  # type: ignore
 
     @classmethod
     def _load_hdf5(
-        cls, fp: h5py._hl.files.File, verbosity: int = 1, **kwargs: Any
+            cls, fp: h5py._hl.files.File, verbosity: int = 1, **kwargs: Any
     ) -> "SubtitleSeries":
         """
         Loads subtitles from an input hdf5 file.

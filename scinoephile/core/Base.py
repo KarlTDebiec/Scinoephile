@@ -1,12 +1,7 @@
-#!/usr/bin/env python3
-#   scinoephile.core.Base.py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from abc import ABC
 from inspect import currentframe, getframeinfo
 from typing import Any, Dict
@@ -14,7 +9,6 @@ from typing import Any, Dict
 from scinoephile import package_root
 
 
-################################### CLASSES ###################################
 class Base(ABC):
     """Base including convenience methods and properties"""
 
@@ -49,16 +43,19 @@ class Base(ABC):
         header = ""
 
         if self.verbosity >= 1:
-            header = f"IPython prompt in file {file}, function {func}," \
-                     f" line {number}\n"
+            header = (
+                f"IPython prompt in file {file}, function {func}," f" line {number}\n"
+            )
         if self.verbosity >= 2:
             header += "\n"
             with open(frameinfo.filename, "r") as infile:
-                lines = [(i, line) for i, line in enumerate(infile)
-                         if i in range(number - 5, number + 6)]
+                lines = [
+                    (i, line)
+                    for i, line in enumerate(infile)
+                    if i in range(number - 5, number + 6)
+                ]
             for i, line in lines:
-                header += f"{i:5d} {'>' if i == number else ' '} " \
-                          f"{line.rstrip()}\n"
+                header += f"{i:5d} {'>' if i == number else ' '} " f"{line.rstrip()}\n"
 
         return {"header": header}
 
@@ -90,9 +87,11 @@ class Base(ABC):
         if frame is None:
             raise ValueError()
         frameinfo = getframeinfo(frame.f_back)
-        return f"Property '{type(self).__name__}.{frameinfo.function}' " \
-               f"was passed invalid value '{value}' " \
-               f"of type '{type(value).__name__}'. " \
-               f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
+        return (
+            f"Property '{type(self).__name__}.{frameinfo.function}' "
+            f"was passed invalid value '{value}' "
+            f"of type '{type(value).__name__}'. "
+            f"Expects '{getattr(type(self), frameinfo.function).__doc__}'."
+        )
 
     # endregion

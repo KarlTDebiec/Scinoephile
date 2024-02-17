@@ -11,9 +11,17 @@ conda activate scinoephile
 
 pip install `
     black `
+    h5py `
+    hanziconv `
     isort `
     mypy `
+    numpy `
+    opencv-python `
+    pandas `
+    pandas-stubs `
     prospector `
+    pycantonese `
+    pysubs2 `
     pytest `
     pytest-cov `
     pytest-xdist

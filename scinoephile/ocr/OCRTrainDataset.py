@@ -1,17 +1,12 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.TrainOCRDataset,py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-from abc import abstractmethod, ABC
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+
 from scinoephile.ocr import OCRDataset
 
 
-################################### CLASSES ###################################
 class OCRTrainDataset(OCRDataset, ABC):
     """
     A collection of images for training
@@ -21,9 +16,16 @@ class OCRTrainDataset(OCRDataset, ABC):
 
     # region Builtins
 
-    def __init__(self, chars=None, font_names=None, font_sizes=None,
-                 font_widths=None, x_offsets=None, y_offsets=None,
-                 **kwargs):
+    def __init__(
+        self,
+        chars=None,
+        font_names=None,
+        font_sizes=None,
+        font_widths=None,
+        x_offsets=None,
+        y_offsets=None,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
 
         # Store property values
@@ -51,7 +53,8 @@ class OCRTrainDataset(OCRDataset, ABC):
             self._font_names = [
                 "/System/Library/Fonts/STHeiti Light.ttc",
                 "/System/Library/Fonts/STHeiti Medium.ttc",
-                "/Library/Fonts/Songti.ttc"]
+                "/Library/Fonts/Songti.ttc",
+            ]
         return self._font_names
 
     @font_names.setter

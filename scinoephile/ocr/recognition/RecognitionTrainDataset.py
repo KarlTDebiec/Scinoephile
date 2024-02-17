@@ -1,20 +1,16 @@
-#!/usr/bin/env python3
-#   scinoephile.ocr.RecognitionTrainDataset,py
-#
-#   Copyright (C) 2017-2020 Karl T Debiec
-#   All rights reserved.
-#
-#   This software may be modified and distributed under the terms of the
-#   BSD license. See the LICENSE file for details.
-################################### MODULES ###################################
-import pandas as pd
-import numpy as np
+#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+from __future__ import annotations
+
 from collections import OrderedDict
+
+import numpy as np
+import pandas as pd
+
 from scinoephile.ocr import OCRTrainDataset
 from scinoephile.ocr.recognition import RecognitionDataset
 
 
-################################### CLASSES ###################################
 class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
     """
     A collection of character images for training
@@ -25,8 +21,9 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
     @property
     def spec_dtypes(self):
         """OrderedDict(str, type): Names and dtypes of columns in spec"""
-        return OrderedDict(char=str, font=str, size=int, width=int,
-                           x_offset=int, y_offset=int)
+        return OrderedDict(
+            char=str, font=str, size=int, width=int, x_offset=int, y_offset=int
+        )
 
     # endregion
 
@@ -41,54 +38,61 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
         # TODO: Parallelize
 
         # Process arguments
-        fonts, sizes, widths, x_offsets, y_offsets = tuple(zip(*product(
-            self.font_names, self.font_sizes, self.font_widths,
-            self.x_offsets, self.y_offsets)))
-        spec_all = pd.DataFrame({
-            "font": pd.Series(
-                fonts,
-                dtype=self.spec_dtypes["font"]),
-            "size": pd.Series(
-                sizes,
-                dtype=self.spec_dtypes["size"]),
-            "width": pd.Series(
-                widths,
-                dtype=self.spec_dtypes["width"]),
-            "x_offset": pd.Series(
-                x_offsets,
-                dtype=self.spec_dtypes["x_offset"]),
-            "y_offset": pd.Series(
-                y_offsets,
-                dtype=self.spec_dtypes["y_offset"])})
-        spec_min = pd.DataFrame({
-            "font": pd.Series(
-                self.font_names,
-                dtype=self.spec_dtypes["font"]),
-            "size": pd.Series(
-                [self.font_sizes[0]] * len(self.font_names),
-                dtype=self.spec_dtypes["size"]),
-            "width": pd.Series(
-                [self.font_widths[0]] * len(self.font_names),
-                dtype=self.spec_dtypes["width"]),
-            "x_offset": pd.Series(
-                [self.x_offsets[0]] * len(self.font_names),
-                dtype=self.spec_dtypes["x_offset"]),
-            "y_offset": pd.Series(
-                [self.y_offsets[0]] * len(self.font_names),
-                dtype=self.spec_dtypes["y_offset"])})
+        fonts, sizes, widths, x_offsets, y_offsets = tuple(
+            zip(
+                *product(
+                    self.font_names,
+                    self.font_sizes,
+                    self.font_widths,
+                    self.x_offsets,
+                    self.y_offsets,
+                )
+            )
+        )
+        spec_all = pd.DataFrame(
+            {
+                "font": pd.Series(fonts, dtype=self.spec_dtypes["font"]),
+                "size": pd.Series(sizes, dtype=self.spec_dtypes["size"]),
+                "width": pd.Series(widths, dtype=self.spec_dtypes["width"]),
+                "x_offset": pd.Series(x_offsets, dtype=self.spec_dtypes["x_offset"]),
+                "y_offset": pd.Series(y_offsets, dtype=self.spec_dtypes["y_offset"]),
+            }
+        )
+        spec_min = pd.DataFrame(
+            {
+                "font": pd.Series(self.font_names, dtype=self.spec_dtypes["font"]),
+                "size": pd.Series(
+                    [self.font_sizes[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["size"],
+                ),
+                "width": pd.Series(
+                    [self.font_widths[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["width"],
+                ),
+                "x_offset": pd.Series(
+                    [self.x_offsets[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["x_offset"],
+                ),
+                "y_offset": pd.Series(
+                    [self.y_offsets[0]] * len(self.font_names),
+                    dtype=self.spec_dtypes["y_offset"],
+                ),
+            }
+        )
         spec_all_set = set(map(tuple, spec_all.values))
         spec_min_set = set(map(tuple, spec_min.values))
         if min_images is None:
             min_images = len(spec_min_set)
         min_images = max(len(spec_min_set), min_images)
         if self.verbosity >= 1:
-            print(f"Checking that at least {min_images} images are present "
-                  f"for each of {len(self.chars)} characters")
+            print(
+                f"Checking that at least {min_images} images are present "
+                f"for each of {len(self.chars)} characters"
+            )
 
         # Build queue of needed specs
         kws = []
-        to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(),
-                                                  (char, *x))}
+        to_dict = lambda x: {k: v for k, v in zip(self.spec_dtypes.keys(), (char, *x))}
         for char in self.chars:
             existing = self.get_present_specs_of_char(char, True)
             minimal = spec_min_set.difference(existing)
@@ -96,16 +100,14 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
             n_additional = min_images - len(existing) - len(minimal)
 
             if n_additional >= 1:
-                available = spec_all_set.difference(existing).difference(
-                    minimal)
+                available = spec_all_set.difference(existing).difference(minimal)
                 selected = sample(available, min(n_additional, len(available)))
                 kws.extend(map(to_dict, selected))
 
         # Generate and add images
         if len(kws) >= 1:
             if self.verbosity >= 1:
-                print(f"Generating {len(kws)} new images for minimal "
-                      f"set")
+                print(f"Generating {len(kws)} new images for minimal " f"set")
 
             data = np.zeros((len(kws), 80, 80), np.uint8)
             complete_kw = []
@@ -115,10 +117,12 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
                     data[i] = generate_char_datum(fig=self.figure, **kw)
                 except ValueError:
                     if self.verbosity >= 1:
-                        print(f"Image generation failed for spec: "
-                              f"{kw['char']} {kw['font']} {kw['size']} "
-                              f"{kw['width']} {kw['x_offset']} "
-                              f"{kw['y_offset']}")
+                        print(
+                            f"Image generation failed for spec: "
+                            f"{kw['char']} {kw['font']} {kw['size']} "
+                            f"{kw['width']} {kw['x_offset']} "
+                            f"{kw['y_offset']}"
+                        )
                     continue
                 complete_kw += [kw]
                 i += 1
@@ -145,7 +149,8 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
         # Prepare trn and val sets with at least one image of each character
         for char in self.chars:
             all_indexes_of_char = set(
-                self.get_present_specs_of_char(char, as_set=False).index)
+                self.get_present_specs_of_char(char, as_set=False).index
+            )
 
             # Add at least one image of each character to val and trn
             trn_index, val_index = sample(all_indexes_of_char, 2)
@@ -164,10 +169,12 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
         # Organize data
         trn_img = self.data[complete_trn_indexes]
         trn_lbl = self.get_labels_of_chars(
-            self.spec["char"].loc[complete_trn_indexes].values)
+            self.spec["char"].loc[complete_trn_indexes].values
+        )
         val_img = self.data[complete_val_indexes]
         val_lbl = self.get_labels_of_chars(
-            self.spec["char"].loc[complete_val_indexes].values)
+            self.spec["char"].loc[complete_val_indexes].values
+        )
 
         trn_img = trn_img.astype(np.float16) / 255.0
         val_img = val_img.astype(np.float16) / 255.0
@@ -214,15 +221,16 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
             ("size", "i1"),
             ("width", "i1"),
             ("x_offset", "i1"),
-            ("y_offset", "i1")]
+            ("y_offset", "i1"),
+        ]
 
         # Save characters
         if "chars" in fp:
             del fp["chars"]
         encoded = np.char.encode(self.chars, "utf8")
-        fp.create_dataset("chars",
-                          data=encoded, dtype="S3",
-                          chunks=True, compression="gzip")
+        fp.create_dataset(
+            "chars", data=encoded, dtype="S3", chunks=True, compression="gzip"
+        )
 
         # Save character image specs
         if "spec" in fp:
@@ -230,18 +238,17 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
         encoded = self.spec.copy()
         encoded["char"] = np.char.encode(encoded["char"].values.astype(str))
         encoded["font"] = np.char.encode(encoded["font"].values.astype(str))
-        encoded = np.array(list(map(tuple, list(encoded.values))),
-                           dtype=dtypes)
-        fp.create_dataset("spec",
-                          data=encoded, dtype=dtypes,
-                          chunks=True, compression="gzip")
+        encoded = np.array(list(map(tuple, list(encoded.values))), dtype=dtypes)
+        fp.create_dataset(
+            "spec", data=encoded, dtype=dtypes, chunks=True, compression="gzip"
+        )
 
         # Save character image data
         if "data" in fp:
             del fp["data"]
-        fp.create_dataset("data",
-                          data=self.data, dtype=np.uint8,
-                          chunks=True, compression="gzip")
+        fp.create_dataset(
+            "data", data=self.data, dtype=np.uint8, chunks=True, compression="gzip"
+        )
 
     # endregion
 
@@ -275,11 +282,9 @@ class RecognitionTrainDataset(RecognitionDataset, OCRTrainDataset):
         if "spec" not in fp:
             raise ValueError()
         spec = np.array(fp["spec"])
-        spec = pd.DataFrame(data=spec, index=range(spec.size),
-                            columns=spec.dtype.names)
+        spec = pd.DataFrame(data=spec, index=range(spec.size), columns=spec.dtype.names)
         spec["char"] = np.char.decode(spec["char"].values.astype("S3"), "utf8")
-        spec["font"] = np.char.decode(spec["font"].values.astype("S255"),
-                                      "utf8")
+        spec["font"] = np.char.decode(spec["font"].values.astype("S255"), "utf8")
 
         # Load image data
         if "data" not in fp:
