@@ -3,19 +3,36 @@
 """Core code related to Mandarin Chinese text."""
 from __future__ import annotations
 
+from copy import deepcopy
+
 from pypinyin import pinyin
 from snownlp import SnowNLP
 
+from scinoephile.core.subtitle_series import SubtitleSeries
 from scinoephile.core.text import punctuation
 
 
-def get_mandarin_pinyin(text: str) -> str:
-    """Get the pinyin romanization of hanzi text.
+def get_mandarin_pinyin_subtitles(subtitles: SubtitleSeries) -> SubtitleSeries:
+    """Get the Mandarin pinyin romanization of Hanzi subtitles.
 
     Arguments:
-        text: hanzi text
+        subtitles: Subtitles for which to get Mandarin pinyin romanization
     Returns:
-        pinyin romanization
+        Mandarin pinyin romanization of subtitles
+    """
+    subtitles = deepcopy(subtitles)
+    for subtitle in subtitles:
+        subtitle.text = get_mandarin_pinyin_text(subtitle.text)
+    return subtitles
+
+
+def get_mandarin_pinyin_text(text: str) -> str:
+    """Get the Mandarin pinyin romanization of Hanzi text.
+
+    Arguments:
+        text: Hanzi text
+    Returns:
+        Mandarin pinyin romanization
     """
     romanization = ""
     for line in text.split("\n"):

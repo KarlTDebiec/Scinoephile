@@ -5,7 +5,26 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import get_mandarin_pinyin
+from scinoephile.core import (
+    SubtitleSeries,
+    get_mandarin_pinyin_subtitles,
+    get_mandarin_pinyin_text,
+)
+from scinoephile.testing import get_test_file_path
+
+
+@pytest.mark.parametrize(
+    ("relative_input_path"),
+    [
+        ("b/input/cmn-hans.srt"),
+        ("t/input/cmn-hans.srt"),
+    ],
+)
+def test_get_mandarin_pinyin_subtitles(relative_input_path: str) -> None:
+    input_path = get_test_file_path(relative_input_path)
+    input_subtitles = SubtitleSeries.load(input_path)
+    output_subtitles = get_mandarin_pinyin_subtitles(input_subtitles)
+    assert len(input_subtitles.events) == len(output_subtitles.events)
 
 
 @pytest.mark.parametrize(
@@ -14,6 +33,6 @@ from scinoephile.core import get_mandarin_pinyin
         ("你好世界", "nǐ hǎo shìjiè"),
     ],
 )
-def test_get_mandarin_pinyin(text: str, expected: str) -> None:
+def test_get_mandarin_pinyin_text(text: str, expected: str) -> None:
     """Test get_mandarin_pinyin"""
-    assert get_mandarin_pinyin(text) == expected
+    assert get_mandarin_pinyin_text(text) == expected

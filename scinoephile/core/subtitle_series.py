@@ -8,7 +8,10 @@ from typing import Any
 
 from pysubs2 import SSAFile
 
-from scinoephile.common import validate_input_file_path, validate_output_file_path
+from scinoephile.common.validation import (
+    validate_input_file_path,
+    validate_output_file_path,
+)
 from scinoephile.core.subtitle import Subtitle
 
 
@@ -32,6 +35,42 @@ class SubtitleSeries(SSAFile):
         path = validate_output_file_path(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved subtitles to {path}")
+
+    def slice(self, start: int, end: int) -> SubtitleSeries:
+        """Slice subtitles.
+
+        Arguments:
+            start: start index
+            end: end index
+        Returns:
+            sliced subtitles
+        """
+        sliced = SubtitleSeries()
+        sliced.events = self.events[start:end]
+        return sliced
+
+    @classmethod
+    def from_string(
+        cls,
+        string: str,
+        format_: str | None = None,
+        fps: float | None = None,
+        **kwargs: Any,
+    ) -> SubtitleSeries:
+        """Parse subtitles from string.
+
+        Arguments:
+            string: string to parse
+        Returns:
+            parse subtitles
+        """
+        subtitles = super().from_string(string, format_, fps=fps, **kwargs)
+        events = []
+        for ssaevent in subtitles.events:
+            events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
+        subtitles.events = events
+
+        return subtitles
 
     @classmethod
     def load(

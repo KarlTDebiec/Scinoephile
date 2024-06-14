@@ -39,7 +39,7 @@ import numpy as np
 
 from scinoephile.core import (
     CLToolBase,
-    get_hanzi_simplified,
+    get_hanzi_text_simplified,
     get_pinyin,
     get_single_line_text,
     get_truecase,
@@ -439,7 +439,7 @@ class Compositor(CLToolBase):
             print("Converting traditional characters to simplified")
 
         for event in self._hanzi_subtitles:
-            event.text = get_hanzi_simplified(event.text, self.verbosity)
+            event.text = get_hanzi_text_simplified(event.text, self.verbosity)
 
     def _convert_capital_english_to_truecase(self) -> None:
 

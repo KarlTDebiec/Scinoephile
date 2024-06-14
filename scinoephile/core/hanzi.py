@@ -4,35 +4,48 @@
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 
 from hanziconv import HanziConv
+
+from scinoephile.core.subtitle_series import SubtitleSeries
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
-def get_hanzi_simplified(text: str) -> str:
-    """Get the simplified version of a string containing traditional hanzi.
+def get_hanzi_subtitles_simplified(subtitles: SubtitleSeries) -> SubtitleSeries:
+    """Get traditional hanzi subtitles simplified.
 
     Arguments:
-        text: text for which to get simplified hanzi
-
+        subtitles: subtitles to simplify
     Returns:
-        simplified text
+        simplified subtitles
     """
-    simplified = ""
-
-    for char in text:
-        if re_hanzi.match(char) or re_hanzi_rare.match(char):
-            simplified += HanziConv.toSimplified(char)
-        else:
-            simplified += char
-
-    return simplified
+    subtitles = deepcopy(subtitles)
+    for subtitle in subtitles:
+        subtitle.text = get_hanzi_text_simplified(subtitle.text)
+    return subtitles
 
 
-def get_hanzi_single_line_text(text: str) -> str:
-    """Merge multi-line text on a single line.
+def get_hanzi_subtitles_merged_to_single_line(
+    subtitles: SubtitleSeries,
+) -> SubtitleSeries:
+    """Get multi-line hanzi subtitles merged to single lines.
+
+    Arguments:
+        subtitles: subtitles to merge
+    Returns:
+        merged subtitles
+    """
+    subtitles = deepcopy(subtitles)
+    for subtitle in subtitles:
+        subtitle.text = get_hanzi_text_merged_to_single_line(subtitle.text)
+    return subtitles
+
+
+def get_hanzi_text_merged_to_single_line(text: str) -> str:
+    """Get multi-line hanzi text merged to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 
@@ -59,3 +72,22 @@ def get_hanzi_single_line_text(text: str) -> str:
         )
 
     return single_line
+
+
+def get_hanzi_text_simplified(text: str) -> str:
+    """Get traditional hanzi text simplified.
+
+    Arguments:
+        text: text to simplify
+    Returns:
+        simplified text
+    """
+    simplified = ""
+
+    for char in text:
+        if re_hanzi.match(char) or re_hanzi_rare.match(char):
+            simplified += HanziConv.toSimplified(char)
+        else:
+            simplified += char
+
+    return simplified

@@ -4,13 +4,70 @@
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 from logging import info
 
 import nltk
 
+from scinoephile.core.subtitle_series import SubtitleSeries
 
-def get_english_truecase(text: str) -> str:
-    """Get truecased English text, useful for subtiltes stored in all capital letters.
+
+def get_english_subtitles_merged_to_single_line(
+    subtitles: SubtitleSeries,
+) -> SubtitleSeries:
+    """Get multi-line English subtitles merged to single lines.
+
+    Arguments:
+        subtitles: subtitles to merge
+    Returns:
+        merged subtitles
+    """
+    subtitles = deepcopy(subtitles)
+    for subtitle in subtitles:
+        subtitle.text = get_english_text_merged_to_single_line(subtitle.text)
+    return subtitles
+
+
+def get_english_subtitles_truecased(subtitles: SubtitleSeries) -> SubtitleSeries:
+    """Get all-caps English subtitltes truecased.
+
+    Arguments:
+        subtitles: subtitles to truecase
+    Returns:
+        truecased subtitles
+    """
+    subtitles = deepcopy(subtitles)
+    for subtitle in subtitles:
+        subtitle.text = get_english_text_truecased(subtitle.text)
+    return subtitles
+
+
+def get_english_text_merged_to_single_line(text: str) -> str:
+    """Get multi-line English text merged to a single line.
+
+    Accounts for dashes ('-') used for dialogue from multiple sources.
+
+    Arguments:
+        text: text to merge
+    Returns:
+        merged text
+    """
+    # Revert strange substitution in pysubs2/subrip.py:66
+    single_line = re.sub(r"\\N", r"\n", text)
+
+    # Merge conversations
+    single_line = re.sub(
+        r"^\s*-\s*(.+)\n-\s*(.+)\s*$", r"- \1    - \2", single_line, re.M
+    )
+
+    # Merge lines
+    single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$", r"\1 \2", single_line, re.M)
+
+    return single_line
+
+
+def get_english_text_truecased(text: str) -> str:
+    """Get all-caps English text truecased.
 
     Arguments:
         text: text for which to get truecase
@@ -40,28 +97,3 @@ def get_english_truecase(text: str) -> str:
     )
 
     return truecased
-
-
-def get_english_single_line_text(text: str) -> str:
-    """Merge multi-line English text on a single line.
-
-    Accounts for dashes ('-') used for dialogue from multiple sources.
-
-
-    Arguments:
-        text: text to merge
-    Returns:
-        merged text
-    """
-    # Revert strange substitution in pysubs2/subrip.py:66
-    single_line = re.sub(r"\\N", r"\n", text)
-
-    # Merge conversations
-    single_line = re.sub(
-        r"^\s*-\s*(.+)\n-\s*(.+)\s*$", r"- \1    - \2", single_line, re.M
-    )
-
-    # Merge lines
-    single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$", r"\1 \2", single_line, re.M)
-
-    return single_line
