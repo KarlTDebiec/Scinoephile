@@ -3,7 +3,8 @@
 """Tests for SubtitleSeries."""
 from __future__ import annotations
 
-from scinoephile.common import get_temp_file_path, package_root
+from scinoephile.common import package_root
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import SubtitleSeries
 
 subtitles_0 = package_root.parent / "test" / "data" / "subtitles_0.srt"

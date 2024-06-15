@@ -14,9 +14,9 @@ from scinoephile.testing import get_test_file_path
 
 
 @pytest.mark.parametrize(
-    ("relative_input_path"),
+    "relative_input_path",
     [
-        ("b/input/yue-hant.srt"),
+        "b/input/yue-hant.srt",
     ],
 )
 def test_get_cantonese_pinyin_subtitles(relative_input_path: str) -> None:

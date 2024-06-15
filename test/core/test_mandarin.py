@@ -14,10 +14,10 @@ from scinoephile.testing import get_test_file_path
 
 
 @pytest.mark.parametrize(
-    ("relative_input_path"),
+    "relative_input_path",
     [
-        ("b/input/cmn-hans.srt"),
-        ("t/input/cmn-hans.srt"),
+        "b/input/cmn-hans.srt",
+        "t/input/cmn-hans.srt",
     ],
 )
 def test_get_mandarin_pinyin_subtitles(relative_input_path: str) -> None:

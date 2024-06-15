@@ -41,10 +41,10 @@ def test_get_hanzi_subtitles_merged_to_single_line(
 
 
 @pytest.mark.parametrize(
-    ("relative_input_path"),
+    "relative_input_path",
     [
-        ("b/input/yue-hant.srt"),
-        ("t/input/cmn-hant.srt"),
+        "b/input/yue-hant.srt",
+        "t/input/cmn-hant.srt",
     ],
 )
 def test_get_hanzi_subtitles_simplified(relative_input_path: str) -> None:
