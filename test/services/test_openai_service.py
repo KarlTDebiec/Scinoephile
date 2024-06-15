@@ -10,7 +10,7 @@ import pytest
 
 from scinoephile.core import SubtitleSeries
 from scinoephile.services import OpenAiService
-from scinoephile.testing import get_test_file_path
+from ..fixtures import mnt_english, mnt_hanzi  # noqa: F401
 
 
 @pytest.fixture
@@ -18,28 +18,22 @@ def openai_service():
     return OpenAiService()
 
 
-@pytest.fixture
-def lm_english():
-    return SubtitleSeries.load(get_test_file_path("mnt/input/en-US.srt"))
-
-
-@pytest.fixture
-def lm_hanzi():
-    return SubtitleSeries.load(get_test_file_path("mnt/input/cmn-Hant.srt"))
-
-
 @pytest.mark.parametrize(
     (
+        "hanzi",
         "hanzi_start",
         "hanzi_end",
+        "english",
         "english_start",
         "english_end",
         "expected_synchronization",
     ),
     [
         (
+            "mnt_hanzi",
             1,
             7,
+            "mnt_english",
             24,
             30,
             [
@@ -76,8 +70,10 @@ def lm_hanzi():
             ],
         ),
         (
+            "mnt_hanzi",
             30,
             41,
+            "mnt_english",
             53,
             64,
             [
@@ -150,8 +146,10 @@ def lm_hanzi():
             ],
         ),
         (
+            "mnt_hanzi",
             45,
             57,
+            "mnt_english",
             68,
             78,
             [
@@ -224,19 +222,20 @@ def lm_hanzi():
             ],
         ),
     ],
+    indirect=["hanzi", "english"],
 )
-def test_1(
+def test_block(
     openai_service: OpenAiService,
-    lm_hanzi: SubtitleSeries,
-    lm_english: SubtitleSeries,
+    hanzi: SubtitleSeries,
     hanzi_start: int,
     hanzi_end: int,
+    english: SubtitleSeries,
     english_start: int,
     english_end: int,
     expected_synchronization: list[dict[str, Any]],
 ) -> None:
-    hanzi_block = lm_hanzi.slice(hanzi_start, hanzi_end)
-    english_block = lm_english.slice(english_start, english_end)
+    hanzi_block = hanzi.slice(hanzi_start, hanzi_end)
+    english_block = english.slice(english_start, english_end)
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
     recieved_explanation = received.get("explanation")

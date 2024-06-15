@@ -24,7 +24,7 @@ Instructions:
 * The subtitle index may not align between the two languages, as one language may have subtitles not present in the other.
 * The timing may not align between the two languages, as they may originate from different sources with different timing.
 * Use the text of the subtitles as the primary guide for alignment, considering your understanding of both languages. The meaning of the subtitles should roughly align, though there may be variations between the sets of subtitles.
-* You may expect to see a consistent offset. For example, the English subtitles may consistently be 4 seconds ahead of the Chinese subtitles.
+* Exclude any timing offset information from the synchronization elements. Only include subtitle indices in the synchronization output.
 * In some cases, two Chinese subtitles may have a single corresponding English subtitle. In this case, the set of two Chinese and one English subtitle form a single element in the JSON response.
 * In some cases, one Chinese subtitle may have two corresponding English subtitles. In this case, the set of one Chinese and two English subtitles form a single element in the JSON response.
 * In some cases, a Chinese subtitle may have no corresponding English subtitle. In this case, the Chinese subtitle should form a single element in the JSON response.
