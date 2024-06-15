@@ -20,12 +20,12 @@ def openai_service():
 
 @pytest.fixture
 def lm_english():
-    return SubtitleSeries.load(get_test_file_path("lm/input/en-US.srt"))
+    return SubtitleSeries.load(get_test_file_path("mnt/input/en-US.srt"))
 
 
 @pytest.fixture
 def lm_hanzi():
-    return SubtitleSeries.load(get_test_file_path("lm/input/cmn-Hant.srt"))
+    return SubtitleSeries.load(get_test_file_path("mnt/input/cmn-Hant.srt"))
 
 
 @pytest.mark.parametrize(

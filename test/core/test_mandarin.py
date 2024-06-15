@@ -16,7 +16,7 @@ from scinoephile.testing import get_test_file_path
 @pytest.mark.parametrize(
     "relative_input_path",
     [
-        "b/input/cmn-hans.srt",
+        "kob/input/cmn-hans.srt",
         "t/input/cmn-hans.srt",
     ],
 )

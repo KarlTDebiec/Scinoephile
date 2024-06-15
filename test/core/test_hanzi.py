@@ -33,17 +33,28 @@ def test_get_hanzi_subtitles_merged_to_single_line(
     expected_output_path = get_test_file_path(relative_output_path)
     expected_output_subtitles = SubtitleSeries.load(expected_output_path)
 
-    for output_subtitle, expected_output_subtitle in zip(
-        output_subtitles.events, expected_output_subtitles.events
+    errors = []
+    for i, (output_subtitle, expected_output_subtitle) in enumerate(
+        zip(output_subtitles.events, expected_output_subtitles.events), 1
     ):
-        assert output_subtitle.text.count("\n") == 0
-        assert output_subtitle == expected_output_subtitle
+        if output_subtitle.text.count("\n") != 0:
+            errors.append(f"Subtitle {i} contains newline")
+        if output_subtitle != expected_output_subtitle:
+            errors.append(
+                f"Subtitle {i} does not match: "
+                f"{output_subtitle} != {expected_output_subtitle}"
+            )
+
+    if errors:
+        for error in errors:
+            print(error)
+        pytest.fail(f"Found {len(errors)} discrepancies")
 
 
 @pytest.mark.parametrize(
     "relative_input_path",
     [
-        "b/input/yue-hant.srt",
+        "kob/input/yue-hant.srt",
         "t/input/cmn-hant.srt",
     ],
 )

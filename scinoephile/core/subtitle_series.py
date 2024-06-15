@@ -8,6 +8,7 @@ from typing import Any
 
 from pysubs2 import SSAFile
 
+from scinoephile.common.validation import validate_input_file, validate_output_file
 from scinoephile.core.subtitle import Subtitle
 
 
@@ -28,7 +29,7 @@ class SubtitleSeries(SSAFile):
             format_: output file format
             **kwargs: additional keyword arguments
         """
-        path = validate_output_file_path(path)
+        path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved subtitles to {path}")
 
@@ -88,7 +89,7 @@ class SubtitleSeries(SSAFile):
         Returns:
             loaded subtitles
         """
-        path = validate_input_file_path(path)
+        path = validate_input_file(path)
 
         with open(path, encoding=encoding) as fp:
             subtitles = cls.from_file(fp, format_=format_, **kwargs)

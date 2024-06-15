@@ -16,7 +16,7 @@ Show me your ID.
 
 5
 00:02:12,874 --> 00:02:17,166
-- Let me see.    - please verify ID number C532743…
+- Let me see.    - Please verify ID number C532743…
 
 6
 00:02:17,208 --> 00:02:18,791
