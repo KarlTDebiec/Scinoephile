@@ -1,41 +1,53 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Service for interacting with OpenAI API."""
 from __future__ import annotations
 
 import json
-from pprint import pformat
 from typing import Any
 
 from openai import OpenAI
 
-from scinoephile.core import (
-    SubtitleSeries,
-    get_subtitle_blocks_for_synchronization,
-)
+from scinoephile.core import SubtitleSeries
 
 
 class OpenAiService:
     synchronize_bilingual_subtitle_block_prompt = """
 Instructions:
-
 * Each request will start with CHINESE: followed by a series of Chinese subtitles in SRT format, and then ENGLISH: followed by a series of English subtitles in SRT format.
-* Provide a JSON response describing the synchronization of the Chinese and English subtitles.
+* You are tasked with synchronizing Chinese and English subtitles. Your response should be a JSON object following this exact specification:
+{
+    "explanation": [<list of explanations of ONLY subtitles that did not map cleanly 1:1; specific examples of situations that warrant explanation are outlined below>],
+    "synchronization":
+        [
+            {
+                "chinese": [<list of Chinese subtitle indexes>],
+                "english": [<list of English subtitle indexes>],
+                "start": ["chinese", <starting Chinese subtitle index>],
+                "end": ["chinese", <ending Chinese subtitle index>]
+            },
+            ...
+        ]
+}
+*"chinese" and "english" fields should contain lists of indices of the corresponding subtitles that match.
+*"start" and "end" fields should specify the range of the Chinese subtitles that correspond to the English subtitles.
+*Ensure the "start" and "end" fields are correctly set using the indices from the "chinese" list.
+*IMPORTANT: DO NOT include any additional fields or modify this structure in any way. Adhere strictly to the given format.
 * Special attention is needed for cases where the two languages do not align perfectly in number or content.
 * The subtitle index may not align between the two languages, as one language may have subtitles not present in the other.
 * The timing may not align between the two languages, as they may originate from different sources with different timing.
 * Use the text of the subtitles as the primary guide for alignment, considering your understanding of both languages. The meaning of the subtitles should roughly align, though there may be variations between the sets of subtitles.
 * Exclude any timing offset information from the synchronization elements. Only include subtitle indices in the synchronization output.
-* In some cases, two Chinese subtitles may have a single corresponding English subtitle. In this case, the set of two Chinese and one English subtitle form a single element in the JSON response.
-* In some cases, one Chinese subtitle may have two corresponding English subtitles. In this case, the set of one Chinese and two English subtitles form a single element in the JSON response.
-* In some cases, a Chinese subtitle may have no corresponding English subtitle. In this case, the Chinese subtitle should form a single element in the JSON response.
-* In some cases, an English subtitle may have no corresponding Chinese subtitle. In this case, there should be no element in the JSON response. Exclude such instances from the JSON response.
-* When judging if a Chinese subtitle has no corresponding English subtitle, consider both the meaning and the timing, after accounting for the apparent offset.
-* When judging if an English subtitle has no corresponding Chinese subtitle, consider both the meaning and the timing, after accounting for the apparent offset.
-* These types of anomalies should be relatively infrequent. Most subtitles will match 1:1, even if the meaning is a little different.
+
+Special Cases Handling:
+* Multiple Chinese to Single English: Two Chinese subtitles may correspond to a single English subtitle. Include both Chinese and the single English subtitle in one element.
+* Single Chinese to Multiple English: One Chinese subtitle may correspond to two English subtitles. Include the Chinese and both English subtitles in one element.
+* Chinese without English: If a Chinese subtitle has no corresponding English subtitle, include it as a single element.
+* English without Chinese: Exclude English subtitles with no corresponding Chinese subtitle from the synchronization elements.
+* Anomalies should be infrequent. Most subtitles will match 1:1, even if the meaning is slightly different.
 * Provide explanations for each anomaly separately from the synchronization elements. Do not include the explanations within the synchronization elements.
-* Ensure that all Chinese subtitles are included in the response, even if they do not have a corresponding English subtitle. English subtitles without a corresponding Chinese subtitle should be excluded from the synchronization elements.
-* Prioritize exact 1:1 mapping of Chinese and English subtitles where possible, only diverging when absolutely necessary.
-* Combine multiple subtitles into one element only when a clear 1:1 mapping is not possible and the meanings and timings make it necessary. Avoid combining subtitles if clear 1:1 mappings are possible.
+* Ensure all Chinese subtitles are included in the response, even if they do not have a corresponding English subtitle. Exclude English subtitles without a corresponding Chinese subtitle from the synchronization elements.
+* Prioritize exact 1:1 mapping of Chinese and English subtitles where possible. Only combine subtitles when a clear 1:1 mapping is not possible due to differences in meaning or timing.
 * Ensure all Chinese subtitles are represented in the synchronization output, even if no corresponding English subtitle exists. English subtitles should only be included if there is a corresponding Chinese subtitle.
 
 Here are some examples to help you understand the task better:
@@ -120,7 +132,7 @@ The expected output is:
                 "english": [29],
                 "start": ["chinese", 6],
             },
-        ]
+        ],
 }
 
 2. Given the following input:
@@ -209,7 +221,7 @@ The expected output is:
                 "english": [62],
                 "start": ["chinese", 39],
             },
-        ]
+        ],
 }
 
 3. Given the following input:
@@ -284,7 +296,7 @@ The expected output is:
                 "english": [75],
                 "start": ["chinese", 54],
             },
-        ]
+        ],
 }
 
 4. Given the following input:
@@ -412,68 +424,6 @@ The expected output is:
         self.model = "gpt-4o"
         self.client = OpenAI()
 
-    def synchronize_bilingual_subtitles(
-        self,
-        hanzi: SubtitleSeries,
-        english: SubtitleSeries,
-    ) -> SubtitleSeries:
-        # 1
-        #   Get subtitles 0-15 from hanzi, and the amount of time that they cover
-        #   Get the corresponding subtitles from english
-        #   Prompt LLM to synchronize the subtitles
-        #   Ensure that the output can be parsed into a SubtitleSeries
-
-        # 2
-        #   Get subtitles 11-25 from hanzi, and the amount of time that they cover
-        #   Get the corresponding subtitles from english
-        #   Prompt LLM to synchronize the subtitles
-        #   Ensure that the output can be parsed into a SubtitleSeries
-
-        # 3
-        #   Validate that subtitles 11-14 are the same from both queries
-        #   If not, prompt LLM to reconcile the two
-
-        # 4
-        #   Get subtitles 21-35 from hanzi, and the amount of time that they cover
-        #   Get the corresponding subtitles from english
-        #   Prompt LLM to synchronize the subtitles
-        #   Ensure that the output can be parsed into a SubtitleSeries
-
-        # 5
-        #   Validate that subtitles 21-24 are the same from both queries
-        #   If not, prompt LLM to reconcile the two
-
-        block_size = 16
-        overlap = 12
-
-        start_index = 0
-        end_index = 0
-
-        bilingual = SubtitleSeries()
-        blocks = get_subtitle_blocks_for_synchronization(
-            hanzi, english, block_size, overlap
-        )
-        last_bilingual_block = None
-        for i, (hanzi_block, english_block) in enumerate(blocks):
-            print(f"Processing block {i + 1}/{len(blocks)}")
-            bilingual_block = self.get_synchronization(hanzi_block, english_block)
-
-            if last_bilingual_block:
-                overlap_previous_events = last_bilingual_block.events[-overlap:]
-                overlap_current_events = bilingual_block.events[:overlap]
-                if overlap_previous_events != overlap_current_events:
-                    print(
-                        f"Mismatch between last and current block:\n\n",
-                        f"{pformat(overlap_previous_events)}\n\n",
-                        f"{pformat(overlap_current_events)}",
-                    )
-
-            bilingual.events.extend(bilingual_block.events[: (block_size - overlap)])
-
-            last_bilingual_block = bilingual_block
-
-        return bilingual
-
     def get_synchronization(
         self, hanzi: SubtitleSeries, english: SubtitleSeries
     ) -> dict[str, Any]:
@@ -503,8 +453,3 @@ The expected output is:
         parsed_response = json.loads(response)
 
         return parsed_response
-
-    def check_bilingual_subtitle_block(
-        self, hanzi: SubtitleSeries, english: SubtitleSeries
-    ) -> SubtitleSeries:
-        pass

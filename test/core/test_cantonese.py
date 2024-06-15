@@ -10,20 +10,20 @@ from scinoephile.core import (
     get_cantonese_pinyin_subtitles,
     get_cantonese_pinyin_text,
 )
-from scinoephile.testing import get_test_file_path
+from ..fixtures import kob_input_hanzi
 
 
-@pytest.mark.parametrize(
-    "relative_input_path",
-    [
-        "kob/input/yue-hant.srt",
-    ],
-)
-def test_get_cantonese_pinyin_subtitles(relative_input_path: str) -> None:
-    input_path = get_test_file_path(relative_input_path)
-    input_subtitles = SubtitleSeries.load(input_path)
+def _test_get_cantonese_pinyin_subtitles(
+    input_subtitles: SubtitleSeries,
+) -> None:
     output_subtitles = get_cantonese_pinyin_subtitles(input_subtitles)
     assert len(input_subtitles.events) == len(output_subtitles.events)
+
+
+def test_get_cantonese_pinyin_subtitles_kob(
+    kob_input_hanzi: SubtitleSeries,
+) -> None:
+    _test_get_cantonese_pinyin_subtitles(kob_input_hanzi)
 
 
 @pytest.mark.parametrize(

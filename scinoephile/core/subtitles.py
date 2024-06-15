@@ -2,9 +2,73 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to subtitles."""
 from copy import deepcopy
+from pprint import pformat
 
 from scinoephile.core.exceptions import ScinoephileException
 from scinoephile.core.subtitle_series import SubtitleSeries
+
+
+def get_synchronized_bilingual_subtitles(
+    self,
+    hanzi: SubtitleSeries,
+    english: SubtitleSeries,
+) -> SubtitleSeries:
+    # 1
+    #   Get subtitles 0-15 from hanzi, and the amount of time that they cover
+    #   Get the corresponding subtitles from english
+    #   Prompt LLM to synchronize the subtitles
+    #   Ensure that the output can be parsed into a SubtitleSeries
+
+    # 2
+    #   Get subtitles 11-25 from hanzi, and the amount of time that they cover
+    #   Get the corresponding subtitles from english
+    #   Prompt LLM to synchronize the subtitles
+    #   Ensure that the output can be parsed into a SubtitleSeries
+
+    # 3
+    #   Validate that subtitles 11-14 are the same from both queries
+    #   If not, prompt LLM to reconcile the two
+
+    # 4
+    #   Get subtitles 21-35 from hanzi, and the amount of time that they cover
+    #   Get the corresponding subtitles from english
+    #   Prompt LLM to synchronize the subtitles
+    #   Ensure that the output can be parsed into a SubtitleSeries
+
+    # 5
+    #   Validate that subtitles 21-24 are the same from both queries
+    #   If not, prompt LLM to reconcile the two
+
+    block_size = 16
+    overlap = 12
+
+    start_index = 0
+    end_index = 0
+
+    bilingual = SubtitleSeries()
+    blocks = get_subtitle_blocks_for_synchronization(
+        hanzi, english, block_size, overlap
+    )
+    last_bilingual_block = None
+    for i, (hanzi_block, english_block) in enumerate(blocks):
+        print(f"Processing block {i + 1}/{len(blocks)}")
+        bilingual_block = self.get_synchronization(hanzi_block, english_block)
+
+        if last_bilingual_block:
+            overlap_previous_events = last_bilingual_block.events[-overlap:]
+            overlap_current_events = bilingual_block.events[:overlap]
+            if overlap_previous_events != overlap_current_events:
+                print(
+                    f"Mismatch between last and current block:\n\n",
+                    f"{pformat(overlap_previous_events)}\n\n",
+                    f"{pformat(overlap_current_events)}",
+                )
+
+        bilingual.events.extend(bilingual_block.events[: (block_size - overlap)])
+
+        last_bilingual_block = bilingual_block
+
+    return bilingual
 
 
 def get_subtitle_blocks_for_synchronization(

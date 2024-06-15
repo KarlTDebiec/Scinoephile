@@ -10,7 +10,7 @@ import pytest
 
 from scinoephile.core import SubtitleSeries
 from scinoephile.services import OpenAiService
-from ..fixtures import mnt_english, mnt_hanzi  # noqa: F401
+from ..fixtures import mnt_input_english, mnt_input_hanzi
 
 
 @pytest.fixture
@@ -20,20 +20,16 @@ def openai_service():
 
 @pytest.mark.parametrize(
     (
-        "hanzi",
         "hanzi_start",
         "hanzi_end",
-        "english",
         "english_start",
         "english_end",
         "expected_synchronization",
     ),
     [
         (
-            "mnt_hanzi",
             1,
             7,
-            "mnt_english",
             24,
             30,
             [
@@ -70,10 +66,8 @@ def openai_service():
             ],
         ),
         (
-            "mnt_hanzi",
             30,
             41,
-            "mnt_english",
             53,
             64,
             [
@@ -146,10 +140,8 @@ def openai_service():
             ],
         ),
         (
-            "mnt_hanzi",
             45,
             57,
-            "mnt_english",
             68,
             78,
             [
@@ -222,20 +214,19 @@ def openai_service():
             ],
         ),
     ],
-    indirect=["hanzi", "english"],
 )
-def test_block(
+def test_mnt(
     openai_service: OpenAiService,
-    hanzi: SubtitleSeries,
+    mnt_input_hanzi: SubtitleSeries,
     hanzi_start: int,
     hanzi_end: int,
-    english: SubtitleSeries,
+    mnt_input_english: SubtitleSeries,
     english_start: int,
     english_end: int,
     expected_synchronization: list[dict[str, Any]],
 ) -> None:
-    hanzi_block = hanzi.slice(hanzi_start, hanzi_end)
-    english_block = english.slice(english_start, english_end)
+    hanzi_block = mnt_input_hanzi.slice(hanzi_start, hanzi_end)
+    english_block = mnt_input_english.slice(english_start, english_end)
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
     recieved_explanation = received.get("explanation")
