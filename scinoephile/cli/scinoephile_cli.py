@@ -8,7 +8,11 @@ from pathlib import Path
 from typing import Any
 
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+    output_file_arg,
+)
 from scinoephile.core import (
     ScinoephileException,
     SubtitleSeries,
@@ -43,7 +47,7 @@ class ScinoephileCli(CommandLineInterface):
             "-bif",
             "--bilingual-infile",
             metavar="FILE",
-            type=input_file_path_arg(),
+            type=input_file_arg(),
             help="bilingual subtitle infile",
         )
         arg_groups["input arguments"].add_argument(
@@ -51,14 +55,14 @@ class ScinoephileCli(CommandLineInterface):
             "--chinese-infile",
             dest="hanzi_infile",
             metavar="FILE",
-            type=input_file_path_arg(),
+            type=input_file_arg(),
             help="Chinese Hanzi subtitle infile",
         )
         arg_groups["input arguments"].add_argument(
             "-eif",
             "--english-infile",
             metavar="FILE",
-            type=input_file_path_arg(),
+            type=input_file_arg(),
             help="English subtitle infile",
         )
 
@@ -81,7 +85,7 @@ class ScinoephileCli(CommandLineInterface):
             "-bof",
             "--bilingual-outfile",
             metavar="FILE",
-            type=output_file_path_arg(),
+            type=output_file_arg(),
             help="bilingual subtitle outfile",
         )
         arg_groups["output arguments"].add_argument(
@@ -89,14 +93,14 @@ class ScinoephileCli(CommandLineInterface):
             "--chinese-outfile",
             dest="hanzi_outfile",
             metavar="FILE",
-            type=output_file_path_arg(),
+            type=output_file_arg(),
             help="Chinese Hanzi subtitle outfile",
         )
         arg_groups["output arguments"].add_argument(
             "-eof",
             "--english-outfile",
             metavar="FILE",
-            type=output_file_path_arg(),
+            type=output_file_arg(),
             help="English subtitle outfile",
         )
         arg_groups["output arguments"].add_argument(

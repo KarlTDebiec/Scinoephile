@@ -8,10 +8,6 @@ from typing import Any
 
 from pysubs2 import SSAFile
 
-from scinoephile.common.validation import (
-    validate_input_file_path,
-    validate_output_file_path,
-)
 from scinoephile.core.subtitle import Subtitle
 
 
@@ -61,10 +57,12 @@ class SubtitleSeries(SSAFile):
 
         Arguments:
             string: string to parse
+            format_: input file format
+            fps: frames per second
         Returns:
             parse subtitles
         """
-        subtitles = super().from_string(string, format_, fps=fps, **kwargs)
+        subtitles = super().from_string(string, format_=format_, fps=fps, **kwargs)
         events = []
         for ssaevent in subtitles.events:
             events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
