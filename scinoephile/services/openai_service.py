@@ -16,24 +16,29 @@ class OpenAiService:
 Instructions:
 * Each request will start with CHINESE: followed by a series of Chinese subtitles in SRT format, and then ENGLISH: followed by a series of English subtitles in SRT format.
 * You are tasked with synchronizing Chinese and English subtitles. Your response should be a JSON object following this exact specification:
+
 {
     "explanation": [<list of explanations of ONLY subtitles that did not map cleanly 1:1; specific examples of situations that warrant explanation are outlined below>],
-    "synchronization":
-        [
-            {
-                "chinese": [<list of Chinese subtitle indexes>],
-                "english": [<list of English subtitle indexes>],
-                "start": ["chinese", <starting Chinese subtitle index>],
-                "end": ["chinese", <ending Chinese subtitle index>]
-            },
-            ...
-        ]
+    "synchronization": [
+        {
+            "chinese": [<list of Chinese subtitle indexes>],
+            "english": [<list of English subtitle indexes>],
+            "start": ["chinese", <starting Chinese subtitle index>],
+            "end": ["chinese", <ending Chinese subtitle index>]
+        },
+        ...
+    ]
 }
-*"chinese" and "english" fields should contain lists of indices of the corresponding subtitles that match.
-*"start" and "end" fields should specify the range of the Chinese subtitles that correspond to the English subtitles.
-*Ensure the "start" and "end" fields are correctly set using the indices from the "chinese" list.
-*IMPORTANT: DO NOT include any additional fields or modify this structure in any way. Adhere strictly to the given format.
-* Special attention is needed for cases where the two languages do not align perfectly in number or content.
+
+* "chinese" and "english" fields should contain lists of indices of the corresponding subtitles that match.
+* "start" and "end" fields should specify the range of the Chinese subtitles that correspond to the English subtitles.
+* Ensure the "start" and "end" fields are correctly set using the indices from the "chinese" list.
+* IMPORTANT: DO NOT include any additional fields or modify this structure in any way. Adhere strictly to the given format. This means:
+  - DO NOT add any keys or fields that are not specified in the above JSON structure.
+  - DO NOT include any text or explanation within the synchronization elements.
+  - DO NOT include any additional metadata, such as timing or offsets.
+
+Special attention is needed for cases where the two languages do not align perfectly in number or content:
 * The subtitle index may not align between the two languages, as one language may have subtitles not present in the other.
 * The timing may not align between the two languages, as they may originate from different sources with different timing.
 * Use the text of the subtitles as the primary guide for alignment, considering your understanding of both languages. The meaning of the subtitles should roughly align, though there may be variations between the sets of subtitles.
@@ -418,6 +423,8 @@ The expected output is:
             },
         ]
 }
+
+* Please ensure you follow the above instructions strictly and do not add any additional fields or modify the given JSON structure.
 """
 
     def __init__(self):
