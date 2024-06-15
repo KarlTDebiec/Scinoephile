@@ -56,45 +56,45 @@ Here are some examples to help you understand the task better:
 
 CHINESE:
 
-2
+1
 00:02:32,152 --> 00:02:34,029
 爸爸，牛奶糖
 
-3
+2
 00:02:34,154 --> 00:02:35,197
-謝謝
+谢谢
+
+3
+00:02:35,906 --> 00:02:36,907
+妳们两个累不累啊？
 
 4
-00:02:35,906 --> 00:02:36,907
-妳們兩個累不累啊？
-
-5
 00:02:37,741 --> 00:02:38,867
 就快到了
 
-6
+5
 00:02:50,796 --> 00:02:51,588
-小梅，快躲起來
+小梅，快躲起来
 
 ENGLISH:
 
-25
+1
 00:02:32,152 --> 00:02:33,904
 Dad, do you want a caramel?
 
-26
+2
 00:02:34,112 --> 00:02:36,865
 Thanks. Aren't you tired?
 
-27
+3
 00:02:37,072 --> 00:02:37,584
 All right.
 
-28
+4
 00:02:37,912 --> 00:02:38,981
 We're almost there.
 
-29
+5
 00:02:50,472 --> 00:02:51,382
 Mei, hide!
 
@@ -103,34 +103,34 @@ The expected output is:
 {
     "explanation":
         [
-            "'謝謝' and '妳們兩個累不累啊？' correspond to 'Thanks. Aren't you tired?'",
+            "'谢谢' and '妳们两个累不累啊？' correspond to 'Thanks. Aren't you tired?'",
             "No corresponding Chinese for 'All right.'",
         ],
     "synchronization": 
         [
             {
-                "chinese": [2],
-                "end": ["chinese", 2],
-                "english": [25],
+                "chinese": [1],
+                "end": ["chinese", 1],
+                "english": [1],
+                "start": ["chinese", 1],
+            },
+            {
+                "chinese": [2, 3],
+                "end": ["chinese", 3],
+                "english": [2],
                 "start": ["chinese", 2],
             },
             {
-                "chinese": [3, 4],
+                "chinese": [4],
                 "end": ["chinese", 4],
-                "english": [26],
-                "start": ["chinese", 3],
+                "english": [4],
+                "start": ["chinese", 4],
             },
             {
                 "chinese": [5],
                 "end": ["chinese", 5],
-                "english": [28],
+                "english": [5],
                 "start": ["chinese", 5],
-            },
-            {
-                "chinese": [6],
-                "end": ["chinese", 6],
-                "english": [29],
-                "start": ["chinese", 6],
             },
         ],
 }
@@ -139,45 +139,45 @@ The expected output is:
 
 CHINESE:
 
-35
+34
 00:06:12,789 --> 00:06:14,624
-那叫做樟樹
+那叫做樟树
+
+35
+00:06:16,627 --> 00:06:17,503
+樟树耶
 
 36
-00:06:16,627 --> 00:06:17,503
-樟樹耶
+00:06:17,628 --> 00:06:18,629
+樟树
 
 37
-00:06:17,628 --> 00:06:18,629
-樟樹
-
-38
 00:06:31,475 --> 00:06:32,351
 橡果子
 
-39
+38
 00:06:34,144 --> 00:06:36,229
 我看一下
 
 ENGLISH:
 
-58
+34
 00:06:12,632 --> 00:06:14,350
 It's a camphor tree.
 
-59
+35
 00:06:16,472 --> 00:06:18,428
 Camphor tree...
 
-60
+36
 00:06:27,712 --> 00:06:28,622
 Oops!
 
-61
+37
 00:06:31,512 --> 00:06:32,308
 An acorn!
 
-62
+38
 00:06:34,072 --> 00:06:35,744
 Show me.
 
@@ -186,40 +186,40 @@ The expected output is:
 {
     "explanation":
         [
-            "'樟樹' has no corresponding English",
+            "'樟树' has no corresponding English",
             "No corresponding Chinese for 'Oops!'",
         ],
     "synchronization":
         [
             {
+                "chinese": [34],
+                "end": ["chinese", 34],
+                "english": [34],
+                "start": ["chinese", 34],
+            },
+            {
                 "chinese": [35],
                 "end": ["chinese", 35],
-                "english": [58],
+                "english": [35],
                 "start": ["chinese", 35],
             },
             {
                 "chinese": [36],
                 "end": ["chinese", 36],
-                "english": [59],
+                "english": [],
                 "start": ["chinese", 36],
             },
             {
                 "chinese": [37],
                 "end": ["chinese", 37],
-                "english": [],
+                "english": [37],
                 "start": ["chinese", 37],
             },
             {
                 "chinese": [38],
                 "end": ["chinese", 38],
-                "english": [61],
+                "english": [38],
                 "start": ["chinese", 38],
-            },
-            {
-                "chinese": [39],
-                "end": ["chinese", 39],
-                "english": [62],
-                "start": ["chinese", 39],
             },
         ],
 }
@@ -228,37 +228,37 @@ The expected output is:
 
 CHINESE:
 
-50
+49
 00:07:16,353 --> 00:07:18,355
-這要搬到哪兒呢？
+这要搬到哪儿呢？
+
+50
+00:07:18,981 --> 00:07:21,150
+放这里，我这就开门
 
 51
-00:07:18,981 --> 00:07:21,150
-放這裡，我這就開門
+00:07:21,358 --> 00:07:23,151
+小月，妳去把后门打开
 
 52
-00:07:21,358 --> 00:07:23,151
-小月，妳去把後門打開
-
-53
 00:07:23,277 --> 00:07:24,028
 好
 
-54
+53
 00:07:24,152 --> 00:07:25,737
 去了就看得到
 
 ENGLISH:
 
-73
+49
 00:07:16,312 --> 00:07:18,268
 Where shall I put this?
 
-74
+50
 00:07:18,872 --> 00:07:23,468
 Here, I'll get the door for you. Satsuki, open up the kitchen.
 
-75
+51
 00:07:24,112 --> 00:07:25,511
 It's just round the back.
 
@@ -267,34 +267,34 @@ The expected output is:
 {
     "explanation":
         [
-            "'放這裡，我這就開門' and '小月，妳去把後門打開' correspond to 'Here, I'll get the door for you. Satsuki, open up the kitchen.'",
+            "'放这里，我这就开门' and '小月，妳去把后门打开' correspond to 'Here, I'll get the door for you. Satsuki, open up the kitchen.'",
             "'好' has no corresponding English",
         ],
     "synchronization":
         [
             {
-                "chinese": [50],
-                "end": ["chinese", 50],
-                "english": [73],
+                "chinese": [49],
+                "end": ["chinese", 49],
+                "english": [49],
+                "start": ["chinese", 49],
+            },
+            {
+                "chinese": [50, 51],
+                "end": ["chinese", 51],
+                "english": [50],
                 "start": ["chinese", 50],
             },
             {
-                "chinese": [51, 52],
+                "chinese": [52],
                 "end": ["chinese", 52],
-                "english": [74],
-                "start": ["chinese", 51],
+                "english": [],
+                "start": ["chinese", 52],
             },
             {
                 "chinese": [53],
                 "end": ["chinese", 53],
-                "english": [],
+                "english": [51],
                 "start": ["chinese", 53],
-            },
-            {
-                "chinese": [54],
-                "end": ["chinese", 54],
-                "english": [75],
-                "start": ["chinese", 54],
             },
         ],
 }
@@ -303,118 +303,118 @@ The expected output is:
 
 CHINESE:
 
-62
+61
 00:08:39,228 --> 00:08:41,021
-爸爸，有怪東西耶
+爸爸，有怪东西耶
+
+62
+00:08:41,146 --> 00:08:41,980
+松鼠吗？
 
 63
-00:08:41,146 --> 00:08:41,980
-松鼠嗎？
-
-64
 00:08:42,105 --> 00:08:43,106
 不知道
 
-65
+64
 00:08:43,273 --> 00:08:45,400
 不像蟑螂也不像老鼠
 
-66
+65
 00:08:45,526 --> 00:08:46,944
-只知道是一堆黑黑的東西
+只知道是一堆黑黑的东西
+
+66
+00:09:00,290 --> 00:09:01,416
+有没有？
 
 67
-00:09:00,290 --> 00:09:01,416
-有沒有？
+00:09:02,709 --> 00:09:04,502
+那一定是「灰尘精灵」
 
 68
-00:09:02,709 --> 00:09:04,502
-那一定是「灰塵精靈」
+00:09:04,920 --> 00:09:06,213
+灰尘精灵
 
 69
-00:09:04,920 --> 00:09:06,213
-灰塵精靈
-
-70
 00:09:06,380 --> 00:09:07,381
-畫冊裡有嗎？
+画册里有吗？
 
 ENGLISH:
 
-83
-00:08:43,120 --> 00:08:44,792
+59
+00:08:39,152 --> 00:08:40,824
 Dad, there's something in here.
 
-84
-00:08:45,000 --> 00:08:45,716
+60
+00:08:41,032 --> 00:08:41,748
 A squirrel?
 
-85
-00:08:45,960 --> 00:08:50,590
+61
+00:08:41,992 --> 00:08:46,622
 Dunno. A bunch of black things but not roaches or mice.
 
-86
-00:08:50,840 --> 00:08:52,592
+62
+00:08:46,872 --> 00:08:48,624
 Really?
 
-87
-00:09:04,160 --> 00:09:05,229
+63
+00:09:00,192 --> 00:09:01,261
 Can you see 'em?
 
-88
-00:09:06,680 --> 00:09:08,398
+64
+00:09:02,712 --> 00:09:04,430
 I think they were... soot gremlins.
 
-89
-00:09:08,680 --> 00:09:11,433
-'Gremlins’? Like in my picture book?
+65
+00:09:04,712 --> 00:09:07,465
+'Gremlins'? Like in my picture book?
 
 The expected output is:
 
 {
     "explanation":
         [
-            "'不知道', '不像蟑螂也不像老鼠', and '只知道是一堆黑黑的東西' correspond to 'Dunno. A bunch of black things but not roaches or mice.'",
+            "'不知道', '不像蟑螂也不像老鼠', and '只知道是一堆黑黑的东西' correspond to 'Dunno. A bunch of black things but not roaches or mice.'",
             "No corresponding Chinese for 'Really?'",
-            "'灰塵精靈' and '畫冊裡有嗎？' correspond to ''Gremlins'? Like in my picture book?'",
+            "'灰尘精灵' and '画册里有吗？' correspond to ''Gremlins'? Like in my picture book?'",
         ],
     "synchronization":
         [
             {
+                "chinese": [61],
+                "end": ["chinese", 61],
+                "english": [59],
+                "start": ["chinese", 61],
+            },
+            {
                 "chinese": [62],
                 "end": ["chinese", 62],
-                "english": [83],
+                "english": [60],
                 "start": ["chinese", 62],
             },
             {
-                "chinese": [63],
-                "end": ["chinese", 63],
-                "english": [84],
+                "chinese": [63, 64, 65],
+                "end": ["chinese", 65],
+                "english": [61],
                 "start": ["chinese", 63],
             },
             {
-                "chinese": [64, 65, 66],
+                "chinese": [66],
                 "end": ["chinese", 66],
-                "english": [85],
-                "start": ["chinese", 64],
+                "english": [63],
+                "start": ["chinese", 66],
             },
             {
                 "chinese": [67],
                 "end": ["chinese", 67],
-                "english": [87],
+                "english": [64],
                 "start": ["chinese", 67],
             },
             {
-                "chinese": [68],
-                "end": ["chinese", 68],
-                "english": [88],
+                "chinese": [68, 69],
+                "end": ["chinese", 69],
+                "english": [65],
                 "start": ["chinese", 68],
-            },
-            {
-                "chinese": [69, 70],
-                "end": ["chinese", 70],
-                "english": [89],
-                "start": ["chinese", 69],
             },
         ]
 }

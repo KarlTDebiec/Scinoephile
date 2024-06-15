@@ -10,7 +10,7 @@ from scinoephile.core import (
     get_mandarin_pinyin_subtitles,
     get_mandarin_pinyin_text,
 )
-from ..fixtures import (
+from ..data import (
     kob_input_hanzi,
     t_input_hanzi,
 )

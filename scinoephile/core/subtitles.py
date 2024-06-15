@@ -139,7 +139,16 @@ def get_subtitles_block_by_index(
 def get_subtitles_block_by_time(
     subtitles: SubtitleSeries, start_time: float, end_time: float
 ) -> SubtitleSeries:
-    """Get block from subtitle."""
+    """Get a block from a subtitle series by time.
+
+    Arguments:
+        subtitles: SubtitleSeries from which to extract block
+        start_time: Start time of block
+        end_time: End time of block
+    Returns:
+        SubtitleSeries containing only subtitles that fall within the
+        specified time range
+    """
     block = SubtitleSeries()
     block.events = [
         event for event in subtitles.events if start_time <= event.start <= end_time

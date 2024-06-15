@@ -11,7 +11,7 @@ from scinoephile.core import (
     get_english_text_merged_to_single_line,
     get_english_text_truecased,
 )
-from ..fixtures import (
+from ..data import (
     kob_input_english,
     kob_output_english,
     t_input_english,

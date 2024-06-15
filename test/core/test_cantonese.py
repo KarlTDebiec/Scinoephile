@@ -10,7 +10,7 @@ from scinoephile.core import (
     get_cantonese_pinyin_subtitles,
     get_cantonese_pinyin_text,
 )
-from ..fixtures import kob_input_hanzi
+from ..data import kob_input_hanzi
 
 
 def _test_get_cantonese_pinyin_subtitles(

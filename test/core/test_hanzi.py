@@ -12,7 +12,7 @@ from scinoephile.core import (
     get_hanzi_text_merged_to_single_line,
     get_hanzi_text_simplified,
 )
-from ..fixtures import (
+from ..data import (
     kob_input_hanzi,
     t_input_hanzi,
     t_output_hanzi,

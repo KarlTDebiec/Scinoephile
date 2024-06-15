@@ -1,6 +1,6 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fixtures for tests."""
+"""Data fixtures for tests."""
 from __future__ import annotations
 
 import pytest
@@ -31,7 +31,7 @@ def mnt_input_english():
 
 @pytest.fixture
 def mnt_input_hanzi():
-    return SubtitleSeries.load(get_test_file_path("mnt/input/cmn-Hant.srt"))
+    return SubtitleSeries.load(get_test_file_path("mnt/input/cmn-Hans.srt"))
 
 
 @pytest.fixture

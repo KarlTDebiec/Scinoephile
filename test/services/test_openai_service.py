@@ -10,7 +10,7 @@ import pytest
 
 from scinoephile.core import SubtitleSeries
 from scinoephile.services import OpenAiService
-from ..fixtures import mnt_input_english, mnt_input_hanzi
+from ..data import mnt_input_english, mnt_input_hanzi
 
 
 @pytest.fixture
@@ -28,10 +28,10 @@ def openai_service():
     ),
     [
         (
-            1,
-            7,
-            24,
-            30,
+            0,
+            6,
+            0,
+            6,
             [
                 {
                     "chinese": [1],
@@ -66,10 +66,10 @@ def openai_service():
             ],
         ),
         (
-            30,
-            41,
-            53,
-            64,
+            29,
+            40,
+            29,
+            40,
             [
                 {
                     "chinese": [1],
@@ -140,10 +140,10 @@ def openai_service():
             ],
         ),
         (
+            44,
+            56,
             45,
-            57,
-            68,
-            78,
+            54,
             [
                 {
                     "chinese": [1],
