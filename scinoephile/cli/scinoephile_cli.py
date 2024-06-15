@@ -7,12 +7,8 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common import (
-    Cli,
-    get_arg_groups_by_name,
-    input_file_path_arg,
-    output_file_path_arg,
-)
+from scinoephile.common import CommandLineInterface
+from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.core import (
     ScinoephileException,
     SubtitleSeries,
@@ -23,7 +19,7 @@ from scinoephile.core import (
 from scinoephile.services import OpenAiService
 
 
-class ScinoephileCli(Cli):
+class ScinoephileCli(CommandLineInterface):
     """Command-line interface for Scinoephile."""
 
     @classmethod
