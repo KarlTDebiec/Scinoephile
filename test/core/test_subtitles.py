@@ -30,5 +30,6 @@ def test_get_subtitle_blocks_for_synchronization(
         mnt_input_hanzi,
         mnt_input_english,
         16,
-        12,
+        4,
     )
+    print(blocks)

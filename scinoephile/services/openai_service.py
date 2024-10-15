@@ -6,9 +6,19 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from openai import OpenAI
+from openai import BaseModel, OpenAI
 
 from scinoephile.core import SubtitleSeries
+
+
+class Step(BaseModel):
+    explanation: str
+    output: str
+
+
+class MathResponse(BaseModel):
+    steps: list[Step]
+    final_answer: str
 
 
 class OpenAiService:
@@ -443,7 +453,7 @@ The expected output is:
 
         completion = self.client.chat.completions.create(
             model=self.model,
-            response_format={"type": "json_object"},
+            response_format=MathResponse,
             messages=[
                 {
                     "role": "system",

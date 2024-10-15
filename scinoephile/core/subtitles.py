@@ -85,7 +85,7 @@ def get_subtitle_blocks_for_synchronization(
         block_size: size of each block in seconds
         overlap: overlap between blocks in seconds
     Returns:
-        list of tuples of subtitle blocks for each round of synchronization
+        subtitle block pairs for each round of synchronization
     """
     start_index = 0
     end_index = 0
@@ -119,8 +119,16 @@ def get_subtitle_blocks_for_synchronization(
 def get_subtitles_block_by_index(
     subtitles: SubtitleSeries, start_index: int, end_index: int
 ) -> SubtitleSeries:
+    """Get a block of subtitles from a subtitle series by index.
+
+    Arguments:
+        subtitles: SubtitleSeries from which to extract block
+        start_index: start index of block
+        end_index: end index of block
+    Returns:
+        SubtitleSeries containing only subtitles that fall within the
+        specified index range
     """
-    Get block from subtitle."""
     if start_index < 0 or start_index > len(subtitles.events) - 1:
         raise ScinoephileException(
             f"Invalid start_index: {start_index}, must be in range "
@@ -139,12 +147,12 @@ def get_subtitles_block_by_index(
 def get_subtitles_block_by_time(
     subtitles: SubtitleSeries, start_time: float, end_time: float
 ) -> SubtitleSeries:
-    """Get a block from a subtitle series by time.
+    """Get a block of subtitles from a subtitle series by time.
 
     Arguments:
         subtitles: SubtitleSeries from which to extract block
-        start_time: Start time of block
-        end_time: End time of block
+        start_time: start time of block
+        end_time: end time of block
     Returns:
         SubtitleSeries containing only subtitles that fall within the
         specified time range
