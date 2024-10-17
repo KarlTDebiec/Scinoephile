@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import (
-    SubtitleSeries,
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.hanzi import (
     get_hanzi_subtitles_merged_to_single_line,
     get_hanzi_subtitles_simplified,
     get_hanzi_text_merged_to_single_line,

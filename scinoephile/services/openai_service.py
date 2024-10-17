@@ -3,56 +3,63 @@
 """Service for interacting with OpenAI API."""
 from __future__ import annotations
 
-import json
-from typing import Any
-
-from openai import BaseModel, OpenAI
+from openai import OpenAI
+from pydantic import BaseModel, ValidationError
 
 from scinoephile.core import SubtitleSeries
 
 
-class Step(BaseModel):
-    explanation: str
-    output: str
+class SubtitleGroupResponse(BaseModel):
+    chinese: list[int]
+    english: list[int]
 
 
-class MathResponse(BaseModel):
-    steps: list[Step]
-    final_answer: str
+class SubtitleSeriesResponse(BaseModel):
+    explanation: list[str]
+    synchronization: list[SubtitleGroupResponse]
 
 
 class OpenAiService:
     synchronize_bilingual_subtitle_block_prompt = """
 Instructions:
-* Each request will start with CHINESE: followed by a series of Chinese subtitles in SRT format, and then ENGLISH: followed by a series of English subtitles in SRT format.
-* You are tasked with synchronizing Chinese and English subtitles. Your response should be a JSON object following this exact specification:
+* Each request will start with CHINESE: followed by a series of Chinese subtitles in SRT
+  format, and then ENGLISH: followed by a series of English subtitles in SRT format.
+* You are tasked with mapping the English subtitles to their corresponding Chinese
+  subtitles, based on their meaning and timing.
+* Your response should be a JSON object following this exact specification:
 
 {
-    "explanation": [<list of explanations of ONLY subtitles that did not map cleanly 1:1; specific examples of situations that warrant explanation are outlined below>],
     "synchronization": [
         {
             "chinese": [<list of Chinese subtitle indexes>],
             "english": [<list of English subtitle indexes>],
-            "start": ["chinese", <starting Chinese subtitle index>],
-            "end": ["chinese", <ending Chinese subtitle index>]
         },
         ...
     ]
+    "explanation": [<list of explanations of ONLY subtitles that did not map cleanly
+      1:1; specific examples of situations that warrant explanation are list below>],
 }
 
-* "chinese" and "english" fields should contain lists of indices of the corresponding subtitles that match.
-* "start" and "end" fields should specify the range of the Chinese subtitles that correspond to the English subtitles.
-* Ensure the "start" and "end" fields are correctly set using the indices from the "chinese" list.
-* IMPORTANT: DO NOT include any additional fields or modify this structure in any way. Adhere strictly to the given format. This means:
-  - DO NOT add any keys or fields that are not specified in the above JSON structure.
-  - DO NOT include any text or explanation within the synchronization elements.
-  - DO NOT include any additional metadata, such as timing or offsets.
-
-Special attention is needed for cases where the two languages do not align perfectly in number or content:
-* The subtitle index may not align between the two languages, as one language may have subtitles not present in the other.
-* The timing may not align between the two languages, as they may originate from different sources with different timing.
-* Use the text of the subtitles as the primary guide for alignment, considering your understanding of both languages. The meaning of the subtitles should roughly align, though there may be variations between the sets of subtitles.
-* Exclude any timing offset information from the synchronization elements. Only include subtitle indices in the synchronization output.
+* "synchronization" defines a list of synchronization groups. Each group contains a
+  group of Chinese and English subtitles that contain the same meaning.
+* Within each synchronization group:
+    * The "chinese" field lists the indices of the Chinese subtitles in the group.
+    * The "english" field lists the indices of the English subtitles in the group
+* The following rules should never be violated:
+  * A Chinese subtitle should never be skipped.
+  * Chinese subtitles should never be reordered.
+  * English subtitles should never be reordered.
+* The following guidelines should be followed:
+  * Use the text of the subtitles as the primary guide for alignment, considering your
+    understanding of both languages. The meaning of the subtitles should roughly align,
+    though there may be variations between the sets of subtitles.
+  * Timing should roughly align between Chinese and English sources, but may not be
+    exact.
+  * Most of the time, the Chinese and English subtitles will align 1:1. In these cases,
+    "chinese" and "english" for the synchronization group will contain only a single
+    index each.
+  * English subtitles may be skipped if there is no corresponding Chinese subtitle. This
+    should be relatively rare.
 
 Special Cases Handling:
 * Multiple Chinese to Single English: Two Chinese subtitles may correspond to a single English subtitle. Include both Chinese and the single English subtitle in one element.
@@ -64,6 +71,7 @@ Special Cases Handling:
 * Ensure all Chinese subtitles are included in the response, even if they do not have a corresponding English subtitle. Exclude English subtitles without a corresponding Chinese subtitle from the synchronization elements.
 * Prioritize exact 1:1 mapping of Chinese and English subtitles where possible. Only combine subtitles when a clear 1:1 mapping is not possible due to differences in meaning or timing.
 * Ensure all Chinese subtitles are represented in the synchronization output, even if no corresponding English subtitle exists. English subtitles should only be included if there is a corresponding Chinese subtitle.
+* Do not skip any Chinese subtitles.
 
 Here are some examples to help you understand the task better:
 
@@ -72,45 +80,45 @@ Here are some examples to help you understand the task better:
 CHINESE:
 
 1
-00:02:32,152 --> 00:02:34,029
+00:00:00,000 --> 00:00:01,877
 爸爸，牛奶糖
 
 2
-00:02:34,154 --> 00:02:35,197
+00:00:02,002 --> 00:00:03,045
 谢谢
 
 3
-00:02:35,906 --> 00:02:36,907
+00:00:03,754 --> 00:00:04,755
 妳们两个累不累啊？
 
 4
-00:02:37,741 --> 00:02:38,867
+00:00:05,589 --> 00:00:06,715
 就快到了
 
 5
-00:02:50,796 --> 00:02:51,588
+00:00:18,644 --> 00:00:19,436
 小梅，快躲起来
 
 ENGLISH:
 
 1
-00:02:32,152 --> 00:02:33,904
+00:00:00,000 --> 00:00:01,752
 Dad, do you want a caramel?
 
 2
-00:02:34,112 --> 00:02:36,865
+00:00:01,960 --> 00:00:04,713
 Thanks. Aren't you tired?
 
 3
-00:02:37,072 --> 00:02:37,584
+00:00:04,920 --> 00:00:05,432
 All right.
 
 4
-00:02:37,912 --> 00:02:38,981
+00:00:05,760 --> 00:00:06,829
 We're almost there.
 
 5
-00:02:50,472 --> 00:02:51,382
+00:00:18,320 --> 00:00:19,230
 Mei, hide!
 
 The expected output is:
@@ -125,27 +133,19 @@ The expected output is:
         [
             {
                 "chinese": [1],
-                "end": ["chinese", 1],
                 "english": [1],
-                "start": ["chinese", 1],
             },
             {
                 "chinese": [2, 3],
-                "end": ["chinese", 3],
                 "english": [2],
-                "start": ["chinese", 2],
             },
             {
                 "chinese": [4],
-                "end": ["chinese", 4],
                 "english": [4],
-                "start": ["chinese", 4],
             },
             {
                 "chinese": [5],
-                "end": ["chinese", 5],
                 "english": [5],
-                "start": ["chinese", 5],
             },
         ],
 }
@@ -154,46 +154,46 @@ The expected output is:
 
 CHINESE:
 
-34
-00:06:12,789 --> 00:06:14,624
+1
+00:00:00,157 --> 00:00:01,992
 那叫做樟树
 
-35
-00:06:16,627 --> 00:06:17,503
+2
+00:00:03,995 --> 00:00:04,871
 樟树耶
 
-36
-00:06:17,628 --> 00:06:18,629
+3
+00:00:04,996 --> 00:00:05,997
 樟树
 
-37
-00:06:31,475 --> 00:06:32,351
+4
+00:00:18,843 --> 00:00:19,719
 橡果子
 
-38
-00:06:34,144 --> 00:06:36,229
+5
+00:00:21,512 --> 00:00:23,597
 我看一下
 
 ENGLISH:
 
-34
-00:06:12,632 --> 00:06:14,350
+1
+00:00:00,000 --> 00:00:01,718
 It's a camphor tree.
 
-35
-00:06:16,472 --> 00:06:18,428
+2
+00:00:03,840 --> 00:00:05,796
 Camphor tree...
 
-36
-00:06:27,712 --> 00:06:28,622
+3
+00:00:15,080 --> 00:00:15,990
 Oops!
 
-37
-00:06:31,512 --> 00:06:32,308
+4
+00:00:18,880 --> 00:00:19,676
 An acorn!
 
-38
-00:06:34,072 --> 00:06:35,744
+5
+00:00:21,440 --> 00:00:23,112
 Show me.
 
 The expected output is:
@@ -207,34 +207,24 @@ The expected output is:
     "synchronization":
         [
             {
-                "chinese": [34],
-                "end": ["chinese", 34],
-                "english": [34],
-                "start": ["chinese", 34],
+                "chinese": [1],
+                "english": [1],
             },
             {
-                "chinese": [35],
-                "end": ["chinese", 35],
-                "english": [35],
-                "start": ["chinese", 35],
+                "chinese": [2],
+                "english": [2],
             },
             {
-                "chinese": [36],
-                "end": ["chinese", 36],
+                "chinese": [3],
                 "english": [],
-                "start": ["chinese", 36],
             },
             {
-                "chinese": [37],
-                "end": ["chinese", 37],
-                "english": [37],
-                "start": ["chinese", 37],
+                "chinese": [4],
+                "english": [4],
             },
             {
-                "chinese": [38],
-                "end": ["chinese", 38],
-                "english": [38],
-                "start": ["chinese", 38],
+                "chinese": [5],
+                "english": [5],
             },
         ],
 }
@@ -243,38 +233,38 @@ The expected output is:
 
 CHINESE:
 
-49
-00:07:16,353 --> 00:07:18,355
+1
+00:00:00,041 --> 00:00:02,043
 这要搬到哪儿呢？
 
-50
-00:07:18,981 --> 00:07:21,150
+2
+00:00:02,669 --> 00:00:04,838
 放这里，我这就开门
 
-51
-00:07:21,358 --> 00:07:23,151
+3
+00:00:05,046 --> 00:00:06,839
 小月，妳去把后门打开
 
-52
-00:07:23,277 --> 00:07:24,028
+4
+00:00:06,965 --> 00:00:07,716
 好
 
-53
-00:07:24,152 --> 00:07:25,737
+5
+00:00:07,840 --> 00:00:09,425
 去了就看得到
 
 ENGLISH:
 
-49
-00:07:16,312 --> 00:07:18,268
+1
+00:00:00,000 --> 00:00:01,956
 Where shall I put this?
 
-50
-00:07:18,872 --> 00:07:23,468
+2
+00:00:02,560 --> 00:00:07,156
 Here, I'll get the door for you. Satsuki, open up the kitchen.
 
-51
-00:07:24,112 --> 00:07:25,511
+3
+00:00:07,800 --> 00:00:09,199
 It's just round the back.
 
 The expected output is:
@@ -288,28 +278,20 @@ The expected output is:
     "synchronization":
         [
             {
-                "chinese": [49],
-                "end": ["chinese", 49],
-                "english": [49],
-                "start": ["chinese", 49],
+                "chinese": [1],
+                "english": [1],
             },
             {
-                "chinese": [50, 51],
-                "end": ["chinese", 51],
-                "english": [50],
-                "start": ["chinese", 50],
+                "chinese": [2, 3],
+                "english": [2],
             },
             {
-                "chinese": [52],
-                "end": ["chinese", 52],
+                "chinese": [4],
                 "english": [],
-                "start": ["chinese", 52],
             },
             {
-                "chinese": [53],
-                "end": ["chinese", 53],
-                "english": [51],
-                "start": ["chinese", 53],
+                "chinese": [5],
+                "english": [3],
             },
         ],
 }
@@ -318,70 +300,70 @@ The expected output is:
 
 CHINESE:
 
-61
-00:08:39,228 --> 00:08:41,021
+1
+00:00:00,076 --> 00:00:01,869
 爸爸，有怪东西耶
 
-62
-00:08:41,146 --> 00:08:41,980
+2
+00:00:01,994 --> 00:00:02,828
 松鼠吗？
 
-63
-00:08:42,105 --> 00:08:43,106
+3
+00:00:02,953 --> 00:00:03,954
 不知道
 
-64
-00:08:43,273 --> 00:08:45,400
+4
+00:00:04,121 --> 00:00:06,248
 不像蟑螂也不像老鼠
 
-65
-00:08:45,526 --> 00:08:46,944
+5
+00:00:06,374 --> 00:00:07,792
 只知道是一堆黑黑的东西
 
-66
-00:09:00,290 --> 00:09:01,416
+6
+00:00:21,138 --> 00:00:22,264
 有没有？
 
-67
-00:09:02,709 --> 00:09:04,502
+7
+00:00:23,557 --> 00:00:25,350
 那一定是「灰尘精灵」
 
-68
-00:09:04,920 --> 00:09:06,213
+8
+00:00:25,768 --> 00:00:27,061
 灰尘精灵
 
-69
-00:09:06,380 --> 00:09:07,381
+9
+00:00:27,228 --> 00:00:28,229
 画册里有吗？
 
 ENGLISH:
 
-59
-00:08:39,152 --> 00:08:40,824
+1
+00:00:00,000 --> 00:00:01,672
 Dad, there's something in here.
 
-60
-00:08:41,032 --> 00:08:41,748
+2
+00:00:01,880 --> 00:00:02,596
 A squirrel?
 
-61
-00:08:41,992 --> 00:08:46,622
+3
+00:00:02,840 --> 00:00:07,470
 Dunno. A bunch of black things but not roaches or mice.
 
-62
-00:08:46,872 --> 00:08:48,624
+4
+00:00:07,720 --> 00:00:09,472
 Really?
 
-63
-00:09:00,192 --> 00:09:01,261
+5
+00:00:21,040 --> 00:00:22,109
 Can you see 'em?
 
-64
-00:09:02,712 --> 00:09:04,430
+6
+00:00:23,560 --> 00:00:25,278
 I think they were... soot gremlins.
 
-65
-00:09:04,712 --> 00:09:07,465
+7
+00:00:25,560 --> 00:00:28,313
 'Gremlins'? Like in my picture book?
 
 The expected output is:
@@ -396,45 +378,31 @@ The expected output is:
     "synchronization":
         [
             {
-                "chinese": [61],
-                "end": ["chinese", 61],
-                "english": [59],
-                "start": ["chinese", 61],
+                "chinese": [1],
+                "english": [1],
             },
             {
-                "chinese": [62],
-                "end": ["chinese", 62],
-                "english": [60],
-                "start": ["chinese", 62],
+                "chinese": [2],
+                "english": [2],
             },
             {
-                "chinese": [63, 64, 65],
-                "end": ["chinese", 65],
-                "english": [61],
-                "start": ["chinese", 63],
+                "chinese": [3, 4, 5],
+                "english": [3],
             },
             {
-                "chinese": [66],
-                "end": ["chinese", 66],
-                "english": [63],
-                "start": ["chinese", 66],
+                "chinese": [6],
+                "english": [5],
             },
             {
-                "chinese": [67],
-                "end": ["chinese", 67],
-                "english": [64],
-                "start": ["chinese", 67],
+                "chinese": [7],
+                "english": [6],
             },
             {
-                "chinese": [68, 69],
-                "end": ["chinese", 69],
-                "english": [65],
-                "start": ["chinese", 68],
+                "chinese": [8, 9],
+                "english": [7],
             },
         ]
 }
-
-* Please ensure you follow the above instructions strictly and do not add any additional fields or modify the given JSON structure.
 """
 
     def __init__(self):
@@ -443,7 +411,7 @@ The expected output is:
 
     def get_synchronization(
         self, hanzi: SubtitleSeries, english: SubtitleSeries
-    ) -> dict[str, Any]:
+    ) -> SubtitleSeriesResponse:
         query = (
             f"CHINESE:\n\n"
             f"{hanzi.to_string('srt')}\n\n"
@@ -451,9 +419,9 @@ The expected output is:
             f"{english.to_string('srt')}"
         )
 
-        completion = self.client.chat.completions.create(
+        completion = self.client.beta.chat.completions.parse(
             model=self.model,
-            response_format=MathResponse,
+            response_format=SubtitleSeriesResponse,
             messages=[
                 {
                     "role": "system",
@@ -466,7 +434,12 @@ The expected output is:
             ],
         )
 
-        response = completion.choices[0].message.content
-        parsed_response = json.loads(response)
-
-        return parsed_response
+        # Deserialize
+        message = completion.choices[0].message
+        content = message.content
+        try:
+            subtitle_series_response = SubtitleSeriesResponse.parse_raw(content)
+            return subtitle_series_response
+        except ValidationError as e:
+            print(f"Validation error: {e}")
+            raise e

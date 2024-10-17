@@ -3,8 +3,8 @@
 """Tests for subtitle processing."""
 from __future__ import annotations
 
-from scinoephile.core import (
-    SubtitleSeries,
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.subtitles import (
     get_subtitle_blocks_for_synchronization,
     get_subtitles_block_by_time,
 )

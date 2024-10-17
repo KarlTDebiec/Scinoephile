@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import (
-    SubtitleSeries,
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.english import (
     get_english_subtitles_merged_to_single_line,
     get_english_text_merged_to_single_line,
     get_english_text_truecased,

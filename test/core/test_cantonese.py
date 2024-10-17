@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import (
-    SubtitleSeries,
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.cantonese import (
     get_cantonese_pinyin_subtitles,
     get_cantonese_pinyin_text,
 )

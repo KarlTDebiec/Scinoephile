@@ -162,3 +162,26 @@ def get_subtitles_block_by_time(
         event for event in subtitles.events if start_time <= event.start <= end_time
     ]
     return block
+
+
+def get_subtitles_pair_with_start_shifted_to_zero(
+    subtitles_one: SubtitleSeries,
+    subtitles_two: SubtitleSeries,
+) -> tuple[SubtitleSeries, SubtitleSeries]:
+    """Shift the start time of two subtitle sets to zero.
+
+    Arguments:
+        subtitles_one: first subtitle series
+        subtitles_two: second subtitle series
+    Returns:
+        tuple containing the two subtitle series with their start times
+        shifted to zero
+    """
+    subtitles_one_shifted = deepcopy(subtitles_one)
+    subtitles_two_shifted = deepcopy(subtitles_two)
+    start_time = min(
+        subtitles_one_shifted.events[0].start, subtitles_two_shifted.events[0].start
+    )
+    subtitles_one_shifted.shift(ms=-start_time)
+    subtitles_two_shifted.shift(ms=-start_time)
+    return subtitles_one_shifted, subtitles_two_shifted

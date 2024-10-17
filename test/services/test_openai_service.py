@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 from pprint import pformat
-from typing import Any
 
 import pytest
 
 from scinoephile.core import SubtitleSeries
+from scinoephile.core.subtitles import get_subtitles_pair_with_start_shifted_to_zero
 from scinoephile.services import OpenAiService
+from scinoephile.services.openai_service import (
+    SubtitleGroupResponse,
+    SubtitleSeriesResponse,
+)
 from ..data import mnt_input_english, mnt_input_hanzi
 
 
@@ -24,7 +28,7 @@ def openai_service():
         "hanzi_end",
         "english_start",
         "english_end",
-        "expected_synchronization",
+        "expected",
     ),
     [
         (
@@ -32,186 +36,141 @@ def openai_service():
             6,
             0,
             6,
-            [
-                {
-                    "chinese": [1],
-                    "end": ["chinese", 1],
-                    "english": [1],
-                    "start": ["chinese", 1],
-                },
-                {
-                    "chinese": [2, 3],
-                    "end": ["chinese", 3],
-                    "english": [2],
-                    "start": ["chinese", 2],
-                },
-                {
-                    "chinese": [4],
-                    "end": ["chinese", 4],
-                    "english": [4],
-                    "start": ["chinese", 4],
-                },
-                {
-                    "chinese": [5],
-                    "end": ["chinese", 5],
-                    "english": [5],
-                    "start": ["chinese", 5],
-                },
-                {
-                    "chinese": [6],
-                    "end": ["chinese", 6],
-                    "english": [6],
-                    "start": ["chinese", 6],
-                },
-            ],
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(
+                        chinese=[1],
+                        english=[1],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[2, 3],
+                        english=[2],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[4],
+                        english=[4],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[5],
+                        english=[5],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[6],
+                        english=[6],
+                    ),
+                ],
+            ),
         ),
         (
             29,
             40,
             29,
             40,
-            [
-                {
-                    "chinese": [1],
-                    "end": ["chinese", 1],
-                    "english": [1],
-                    "start": ["chinese", 1],
-                },
-                {
-                    "chinese": [2],
-                    "end": ["chinese", 2],
-                    "english": [2],
-                    "start": ["chinese", 2],
-                },
-                {
-                    "chinese": [3],
-                    "end": ["chinese", 3],
-                    "english": [3],
-                    "start": ["chinese", 3],
-                },
-                {
-                    "chinese": [4],
-                    "end": ["chinese", 4],
-                    "english": [4],
-                    "start": ["chinese", 4],
-                },
-                {
-                    "chinese": [5],
-                    "end": ["chinese", 5],
-                    "english": [5],
-                    "start": ["chinese", 5],
-                },
-                {
-                    "chinese": [6],
-                    "end": ["chinese", 6],
-                    "english": [6],
-                    "start": ["chinese", 6],
-                },
-                {
-                    "chinese": [7],
-                    "end": ["chinese", 7],
-                    "english": [],
-                    "start": ["chinese", 7],
-                },
-                {
-                    "chinese": [8],
-                    "end": ["chinese", 8],
-                    "english": [8],
-                    "start": ["chinese", 8],
-                },
-                {
-                    "chinese": [9],
-                    "end": ["chinese", 9],
-                    "english": [9],
-                    "start": ["chinese", 9],
-                },
-                {
-                    "chinese": [10],
-                    "end": ["chinese", 10],
-                    "english": [10],
-                    "start": ["chinese", 10],
-                },
-                {
-                    "chinese": [11],
-                    "end": ["chinese", 11],
-                    "english": [11],
-                    "start": ["chinese", 11],
-                },
-            ],
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(
+                        chinese=[1],
+                        english=[1],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[2],
+                        english=[2],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[3],
+                        english=[3],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[4],
+                        english=[4],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[5],
+                        english=[5],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[6],
+                        english=[6],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[7],
+                        english=[],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[8],
+                        english=[8],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[9],
+                        english=[9],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[10],
+                        english=[10],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[11],
+                        english=[11],
+                    ),
+                ],
+            ),
         ),
         (
             44,
             56,
-            45,
+            44,
             54,
-            [
-                {
-                    "chinese": [1],
-                    "end": ["chinese", 1],
-                    "english": [1],
-                    "start": ["chinese", 1],
-                },
-                {
-                    "chinese": [2],
-                    "end": ["chinese", 2],
-                    "english": [2],
-                    "start": ["chinese", 2],
-                },
-                {
-                    "chinese": [3],
-                    "end": ["chinese", 3],
-                    "english": [3],
-                    "start": ["chinese", 3],
-                },
-                {
-                    "chinese": [4],
-                    "end": ["chinese", 4],
-                    "english": [4],
-                    "start": ["chinese", 4],
-                },
-                {
-                    "chinese": [5],
-                    "end": ["chinese", 5],
-                    "english": [5],
-                    "start": ["chinese", 5],
-                },
-                {
-                    "chinese": [6, 7],
-                    "end": ["chinese", 7],
-                    "english": [6],
-                    "start": ["chinese", 6],
-                },
-                {
-                    "chinese": [8],
-                    "end": ["chinese", 8],
-                    "english": [],
-                    "start": ["chinese", 8],
-                },
-                {
-                    "chinese": [9],
-                    "end": ["chinese", 9],
-                    "english": [7],
-                    "start": ["chinese", 9],
-                },
-                {
-                    "chinese": [10],
-                    "end": ["chinese", 10],
-                    "english": [8],
-                    "start": ["chinese", 10],
-                },
-                {
-                    "chinese": [11],
-                    "end": ["chinese", 11],
-                    "english": [9],
-                    "start": ["chinese", 11],
-                },
-                {
-                    "chinese": [12],
-                    "end": ["chinese", 12],
-                    "english": [10],
-                    "start": ["chinese", 12],
-                },
-            ],
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(
+                        chinese=[1],
+                        english=[1],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[2],
+                        english=[2],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[3],
+                        english=[3],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[4],
+                        english=[4],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[5],
+                        english=[5],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[6, 7],
+                        english=[6],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[8],
+                        english=[],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[9],
+                        english=[7],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[10],
+                        english=[8],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[11],
+                        english=[9],
+                    ),
+                    SubtitleGroupResponse(
+                        chinese=[12],
+                        english=[10],
+                    ),
+                ],
+            ),
         ),
     ],
 )
@@ -223,23 +182,24 @@ def test_mnt(
     mnt_input_english: SubtitleSeries,
     english_start: int,
     english_end: int,
-    expected_synchronization: list[dict[str, Any]],
+    expected: SubtitleSeriesResponse,
 ) -> None:
     hanzi_block = mnt_input_hanzi.slice(hanzi_start, hanzi_end)
     english_block = mnt_input_english.slice(english_start, english_end)
+    hanzi_block, english_block = get_subtitles_pair_with_start_shifted_to_zero(
+        hanzi_block, english_block
+    )
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
-    recieved_explanation = received.get("explanation")
-    received_synchronization = received.get("synchronization")
 
     print()
     print(f"Chinese input:\n{hanzi_block.to_string('srt')}")
     print(f"English input:\n{english_block.to_string('srt')}")
-    print(f"Expected synchronization:\n{pformat(expected_synchronization)}")
-    print(f"Received synchronization:\n{pformat(received_synchronization)}")
+    print(f"Expected synchronization:\n{pformat(expected.synchronization)}")
+    print(f"Received synchronization:\n{pformat(received.synchronization)}")
     print(
         "Received explanation (not validated for accuracy):\n"
-        f"{pformat(recieved_explanation)}"
+        f"{pformat(received.explanation)}"
     )
 
-    assert received_synchronization == expected_synchronization
+    assert received.synchronization == expected.synchronization

@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import (
-    SubtitleSeries,
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.mandarin import (
     get_mandarin_pinyin_subtitles,
     get_mandarin_pinyin_text,
 )
