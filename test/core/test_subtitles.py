@@ -7,6 +7,7 @@ from scinoephile.core import SubtitleSeries
 from scinoephile.core.subtitles import (
     get_subtitle_blocks_for_synchronization,
     get_subtitles_block_by_time,
+    get_subtitles_pair_split_into_natural_blocks,
 )
 from ..data import mnt_input_english, mnt_input_hanzi
 
@@ -33,3 +34,16 @@ def test_get_subtitle_blocks_for_synchronization(
         4,
     )
     print(blocks)
+
+
+def test_get_subtitles_pair_split_into_natural_blocks(
+    mnt_input_hanzi: SubtitleSeries,
+    mnt_input_english: SubtitleSeries,
+):
+    blocks = get_subtitles_pair_split_into_natural_blocks(
+        mnt_input_hanzi,
+        mnt_input_english,
+    )
+
+    assert len(mnt_input_hanzi) == sum([len(b[0].events) for b in blocks])
+    assert len(mnt_input_english) == sum([len(b[1].events) for b in blocks])

@@ -45,7 +45,7 @@ class Subtitle(SSAEvent):
             and self.text == other.text
         )
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Subtitle) -> bool:
         """Whether this subtitle is not equal to another.
 
         Arguments:
@@ -59,7 +59,7 @@ class Subtitle(SSAEvent):
             or self.text != other.text
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<{self.__class__.__name__} "
             f"start={ms_to_str(self.start,True)} "

@@ -22,11 +22,12 @@ class SubtitleSeriesResponse(BaseModel):
 class OpenAiService:
     synchronize_bilingual_subtitle_block_prompt = """
 Instructions:
-* Each request will start with CHINESE: followed by a series of Chinese subtitles in SRT
-  format, and then ENGLISH: followed by a series of English subtitles in SRT format.
-* You are tasked with mapping the English subtitles to their corresponding Chinese
-  subtitles, based on their meaning and timing.
-* Your response should be a JSON object following this exact specification:
+  * Each request will start with CHINESE: followed by a series of Chinese subtitles in
+    SRT format, and then ENGLISH: followed by a series of English subtitles in SRT
+    format.
+  * You are tasked with mapping the English subtitles to their corresponding Chinese
+    subtitles, based on their meaning and timing.
+  * Your response should be a JSON object following this exact specification:
 
 {
     "synchronization": [
@@ -35,43 +36,42 @@ Instructions:
             "english": [<list of English subtitle indexes>],
         },
         ...
-    ]
+    ],
     "explanation": [<list of explanations of ONLY subtitles that did not map cleanly
-      1:1; specific examples of situations that warrant explanation are list below>],
+      1:1; specific examples of situations that warrant explanation are listed
+      below>],
 }
-
-* "synchronization" defines a list of synchronization groups. Each group contains a
-  group of Chinese and English subtitles that contain the same meaning.
-* Within each synchronization group:
+    
+  * "synchronization" defines a list of synchronization groups. Each group contains a
+    group of Chinese and English subtitles that contain the same meaning.
+  * Within each synchronization group:
     * The "chinese" field lists the indices of the Chinese subtitles in the group.
     * The "english" field lists the indices of the English subtitles in the group
-* The following rules should never be violated:
-  * A Chinese subtitle should never be skipped.
-  * Chinese subtitles should never be reordered.
-  * English subtitles should never be reordered.
-* The following guidelines should be followed:
+
+The following rules must never be violated:
+  * A Chinese subtitle must never be skipped.
+  * Chinese subtitles must never be reordered.
+  * English subtitles must never be reordered.
+  * Each synchronization group must contain either:
+    * One Chinese subtitle and one English subtitle.
+    * One Chinese subtitle and multiple English subtitles.
+    * Multiple Chinese subtitles and one English subtitle.
+  * Synchronization groups must not contain both multiple Chinese and multiple English
+    subtitles.
+  * Seriously, synchronization groups must not contain both multiple Chinese and
+    multiple English subtitles.
+
+The following guidelines should be followed:
   * Use the text of the subtitles as the primary guide for alignment, considering your
-    understanding of both languages. The meaning of the subtitles should roughly align,
-    though there may be variations between the sets of subtitles.
+    understanding of both languages.
   * Timing should roughly align between Chinese and English sources, but may not be
     exact.
-  * Most of the time, the Chinese and English subtitles will align 1:1. In these cases,
-    "chinese" and "english" for the synchronization group will contain only a single
-    index each.
-  * English subtitles may be skipped if there is no corresponding Chinese subtitle. This
-    should be relatively rare.
-
-Special Cases Handling:
-* Multiple Chinese to Single English: Two Chinese subtitles may correspond to a single English subtitle. Include both Chinese and the single English subtitle in one element.
-* Single Chinese to Multiple English: One Chinese subtitle may correspond to two English subtitles. Include the Chinese and both English subtitles in one element.
-* Chinese without English: If a Chinese subtitle has no corresponding English subtitle, include it as a single element.
-* English without Chinese: Exclude English subtitles with no corresponding Chinese subtitle from the synchronization elements.
-* Anomalies should be infrequent. Most subtitles will match 1:1, even if the meaning is slightly different.
-* Provide explanations for each anomaly separately from the synchronization elements. Do not include the explanations within the synchronization elements.
-* Ensure all Chinese subtitles are included in the response, even if they do not have a corresponding English subtitle. Exclude English subtitles without a corresponding Chinese subtitle from the synchronization elements.
-* Prioritize exact 1:1 mapping of Chinese and English subtitles where possible. Only combine subtitles when a clear 1:1 mapping is not possible due to differences in meaning or timing.
-* Ensure all Chinese subtitles are represented in the synchronization output, even if no corresponding English subtitle exists. English subtitles should only be included if there is a corresponding Chinese subtitle.
-* Do not skip any Chinese subtitles.
+  * Meaning should roughly align between Chinese and English, but may be fairly loose.
+  * Most of the time, the Chinese and English subtitles will align 1:1. In these
+    cases, "chinese" and "english" for the synchronization group will contain only a
+    single index each.
+  * English subtitles may be skipped if there is no corresponding Chinese subtitle.
+    This should be relatively rare.
 
 Here are some examples to help you understand the task better:
 
@@ -403,6 +403,31 @@ The expected output is:
             },
         ]
 }
+
+The following rules must never be violated:
+  * A Chinese subtitle must never be skipped.
+  * Chinese subtitles must never be reordered.
+  * English subtitles must never be reordered.
+  * Each synchronization group must contain either:
+    * One Chinese subtitle and one English subtitle.
+    * One Chinese subtitle and multiple English subtitles.
+    * Multiple Chinese subtitles and one English subtitle.
+  * Synchronization groups must not contain both multiple Chinese and multiple English
+    subtitles.
+  * Seriously, synchronization groups must not contain both multiple Chinese and
+    multiple English subtitles.
+
+The following guidelines should be followed:
+  * Use the text of the subtitles as the primary guide for alignment, considering your
+    understanding of both languages.
+  * Timing should roughly align between Chinese and English sources, but may not be
+    exact.
+  * Meaning should roughly align between Chinese and English, but may be fairly loose.
+  * Most of the time, the Chinese and English subtitles will align 1:1. In these
+    cases, "chinese" and "english" for the synchronization group will contain only a
+    single index each.
+  * English subtitles may be skipped if there is no corresponding Chinese subtitle.
+    This should be relatively rare.
 """
 
     def __init__(self):

@@ -185,3 +185,82 @@ def get_subtitles_pair_with_start_shifted_to_zero(
     subtitles_one_shifted.shift(ms=-start_time)
     subtitles_two_shifted.shift(ms=-start_time)
     return subtitles_one_shifted, subtitles_two_shifted
+
+
+def get_subtitles_pair_split_into_natural_blocks(
+    subtitles_one: SubtitleSeries,
+    subtitles_two: SubtitleSeries,
+    gap_length: int = 3000,
+) -> list[tuple[SubtitleSeries, SubtitleSeries]]:
+    """Split a pair of subtitles into natural blocks using gaps without text in either.
+
+    Arguments:
+        subtitles_one: first subtitle series
+        subtitles_two: second subtitle series
+        gap_length: split whenever a gap of this length is encountered
+    Returns:
+        pairs of subtitles split into natural blocks
+    """
+    blocks = []
+    source_one = deepcopy(subtitles_one.events)
+    source_two = deepcopy(subtitles_two.events)
+
+    def get_nascent_block_cutoff():
+        return (
+            max(
+                nascent_block_one[-1].end if nascent_block_one else 0,
+                nascent_block_two[-1].end if nascent_block_two else 0,
+            )
+            + gap_length
+        )
+
+    # Split into blocks
+    while source_one or source_two:
+        # Start a new block
+        nascent_block_one = []
+        nascent_block_two = []
+        if source_one and source_one[0].start <= source_two[0].start:
+            nascent_block_one.append(source_one.pop(0))
+        else:
+            nascent_block_two.append(source_two.pop(0))
+
+        # Extend block until a long enough gat is hit or sources are empty
+        changed = True
+        while changed:
+            changed = False
+            while source_one and source_one[0].start < get_nascent_block_cutoff():
+                nascent_block_one.append(source_one.pop(0))
+                changed = True
+            while source_two and source_two[0].start < get_nascent_block_cutoff():
+                nascent_block_two.append(source_two.pop(0))
+                changed = True
+
+        # Store blocks
+        block_one = SubtitleSeries()
+        block_two = SubtitleSeries()
+        block_one.events = nascent_block_one
+        block_two.events = nascent_block_two
+        blocks.append((block_one, block_two))
+
+    end = 0
+    for i, (block_one, block_two) in enumerate(blocks):
+        start = 10000000
+        if block_one.events:
+            start = min(start, block_one.events[0].start)
+        if block_two.events:
+            start = min(start, block_two.events[0].start)
+        diff = start - end
+        if block_one.events:
+            end = max(end, block_one.events[-1].end)
+        if block_two.events:
+            end = max(end, block_two.events[-1].end)
+        print(
+            f"{i:3d} "
+            f"{len(block_one.events):3} "
+            f"{len(block_two.events):3} "
+            f"{start:8d} "
+            f"{end:8d} "
+            f"{diff:8d}"
+        )
+
+    return blocks

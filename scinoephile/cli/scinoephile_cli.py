@@ -16,7 +16,9 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import (
     ScinoephileException,
     SubtitleSeries,
-    get_english_subtitles_merged_to_single_line,
+)
+from scinoephile.core.english import get_english_subtitles_merged_to_single_line
+from scinoephile.core.hanzi import (
     get_hanzi_subtitles_merged_to_single_line,
     get_hanzi_subtitles_simplified,
 )
