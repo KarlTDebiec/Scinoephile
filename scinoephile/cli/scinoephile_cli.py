@@ -241,8 +241,6 @@ class ScinoephileCli(CommandLineInterface):
             if not hanzi_infile or bilingual_infile:
                 raise ScinoephileException("Hanzi infile required for simplify")
             operations["simplify_hanzi"] = True
-
-        # Validate operations
         if "save_bilingual" in operations and "load_bilingual" not in operations:
             if "load_english" not in operations and "load_hanzi" not in operations:
                 raise ScinoephileException(

@@ -8,7 +8,7 @@ from pprint import pformat
 import pytest
 
 from scinoephile.core import SubtitleSeries
-from scinoephile.core.subtitles import get_subtitles_pair_with_start_shifted_to_zero
+from scinoephile.core.subtitles import get_pair_with_zero_start
 from scinoephile.services import OpenAiService
 from scinoephile.services.openai_service import (
     SubtitleGroupResponse,
@@ -186,9 +186,7 @@ def test_mnt(
 ) -> None:
     hanzi_block = mnt_input_hanzi.slice(hanzi_start, hanzi_end)
     english_block = mnt_input_english.slice(english_start, english_end)
-    hanzi_block, english_block = get_subtitles_pair_with_start_shifted_to_zero(
-        hanzi_block, english_block
-    )
+    hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
 
