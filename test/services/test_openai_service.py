@@ -6,14 +6,14 @@ from __future__ import annotations
 from pprint import pformat
 
 import pytest
+from scinoephile.services import OpenAiService
 
 from scinoephile.core import SubtitleSeries
-from scinoephile.core.subtitles import get_pair_with_zero_start
-from scinoephile.services import OpenAiService
-from scinoephile.services.openai_service import (
+from scinoephile.core.openai.openai_service import (
     SubtitleGroupResponse,
     SubtitleSeriesResponse,
 )
+from scinoephile.core.subtitles import get_pair_with_zero_start
 from ..data import mnt_input_english, mnt_input_hanzi
 
 

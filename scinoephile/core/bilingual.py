@@ -3,11 +3,14 @@
 """Core code related to bilingual text."""
 from __future__ import annotations
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import ScinoephileException, SubtitleSeries
+from scinoephile.core.openai import get_synced_subtitles
+from scinoephile.core.openai.openai_service import OpenAiService
 from scinoephile.core.subtitles import (
     check_if_pair_is_cleanly_mapped,
     get_merged_from_blocks,
     get_pair_blocks_by_pause,
+    get_pair_with_zero_start,
     get_synced_from_cleanly_mapped_pair,
 )
 
@@ -16,6 +19,7 @@ def get_bilingual_subtitles(
     hanzi: SubtitleSeries,
     english: SubtitleSeries,
 ) -> SubtitleSeries:
+    openai_service = OpenAiService()
     blocks = get_pair_blocks_by_pause(hanzi, english)
     bilingual_blocks = []
 
@@ -25,22 +29,41 @@ def get_bilingual_subtitles(
                 hanzi_block, english_block
             )
         else:
-            # TODO: Use OpenAI API to synchronize subtitles
-            bilingual_block = []
+            length = max(len(hanzi_block.events), len(english_block.events))
+            if length <= 10:
+                hanzi_block_shifted, english_block_shifted = get_pair_with_zero_start(
+                    hanzi_block, english_block
+                )
+                synchronization = openai_service.get_synchronization(
+                    hanzi_block_shifted, english_block_shifted
+                )
+                try:
+                    bilingual_block = get_synced_subtitles(
+                        hanzi_block, english_block, synchronization
+                    )
+                    print(
+                        f"CHINESE:\n{hanzi_block_shifted.to_string('srt')}\n\n"
+                        f"ENGLISH:\n{english_block_shifted.to_string('srt')}\n\n"
+                        f"SYNCHRONIZATION:\n{synchronization.model_dump_json(indent=4)}"
+                    )
+                except ScinoephileException as e:
+                    raise ScinoephileException(
+                        f"Inappropriate synchronization received for :\n\n"
+                        f"CHINESE:\n{hanzi_block_shifted.to_string('srt')}\n\n"
+                        f"ENGLISH:\n{english_block_shifted.to_string('srt')}\n\n"
+                        f"SYNCHRONIZATION:\n{synchronization.model_dump_json(indent=4)}"
+                    ) from e
 
-            # If LENGTH is less than MAX_LENGTH
-            #   Shift time to 0:00:00 using get_pair_with_zero_start
-            #   Ask OpenAI service to synchronize
-            #   Build bilingual block from OpenAI response
-            # If LENGTH is greater than MAX_LENGTH
-            #   Split into blocks of BLOCK_LENGTH, with OVERLAP_LENGTH overlap
-            #   For each block
-            #       Shift time to 0:00:00 using get_pair_with_zero_start
-            #       Ask OpenAI service to synchronize
-            #   For each block after the first, shift indexes to match
-            #   Compare overlapping sections of blocks
-            #   If there is a mismatch, ask OpenAI service to resolvez
-            #   Build bilingual block from OpenAI response
+            else:
+                bilingual_block = []
+                # Split into blocks of BLOCK_LENGTH, with OVERLAP_LENGTH overlap
+                # For each block
+                #   Shift time to 0:00:00 using get_pair_with_zero_start
+                #   Ask OpenAI service to synchronize
+                # For each block after the first, shift indexes to match
+                # Compare overlapping sections of blocks
+                # If there is a mismatch, ask OpenAI service to resolvez
+                # Build bilingual block from OpenAI response
 
         bilingual_blocks.append(bilingual_block)
 
