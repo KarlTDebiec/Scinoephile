@@ -23,6 +23,10 @@ def get_bilingual_subtitles(
     blocks = get_pair_blocks_by_pause(hanzi, english)
     bilingual_blocks = []
 
+    hanzi_index = 0
+    english_index = 0
+    request_count = 0
+
     for hanzi_block, english_block in blocks:
         if check_if_pair_is_cleanly_mapped(hanzi_block, english_block):
             bilingual_block = get_synced_from_cleanly_mapped_pair(
@@ -31,6 +35,10 @@ def get_bilingual_subtitles(
         else:
             length = max(len(hanzi_block.events), len(english_block.events))
             if length <= 10:
+                request_count += 1
+                if request_count == 10:
+                    break
+
                 hanzi_block_shifted, english_block_shifted = get_pair_with_zero_start(
                     hanzi_block, english_block
                 )
@@ -44,7 +52,11 @@ def get_bilingual_subtitles(
                     print(
                         f"CHINESE:\n{hanzi_block_shifted.to_string('srt')}\n\n"
                         f"ENGLISH:\n{english_block_shifted.to_string('srt')}\n\n"
-                        f"SYNCHRONIZATION:\n{synchronization.model_dump_json(indent=4)}"
+                        f"({hanzi_index}, {hanzi_index + len(hanzi_block)}, "
+                        f"{english_index}, {english_index + len(english_block)}, "
+                        f"SubtitleSeriesResponse("
+                        f"explanation={synchronization.explanation},"
+                        f"synchronization={synchronization.synchronization}))"
                     )
                 except ScinoephileException as e:
                     raise ScinoephileException(
@@ -66,6 +78,8 @@ def get_bilingual_subtitles(
                 # Build bilingual block from OpenAI response
 
         bilingual_blocks.append(bilingual_block)
+        hanzi_index += len(hanzi_block)
+        english_index += len(english_block)
 
     print("")
 

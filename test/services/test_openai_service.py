@@ -6,10 +6,10 @@ from __future__ import annotations
 from pprint import pformat
 
 import pytest
-from scinoephile.services import OpenAiService
 
 from scinoephile.core import SubtitleSeries
-from scinoephile.core.openai.openai_service import (
+from scinoephile.core.openai import (
+    OpenAiService,
     SubtitleGroupResponse,
     SubtitleSeriesResponse,
 )
@@ -33,142 +33,132 @@ def openai_service():
     [
         (
             0,
-            6,
+            4,
             0,
-            6,
+            4,
             SubtitleSeriesResponse(
                 explanation=[],
                 synchronization=[
-                    SubtitleGroupResponse(
-                        chinese=[1],
-                        english=[1],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[2, 3],
-                        english=[2],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[4],
-                        english=[4],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[5],
-                        english=[5],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[6],
-                        english=[6],
-                    ),
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
                 ],
             ),
         ),
         (
-            29,
-            40,
-            29,
-            40,
+            22,
+            26,
+            22,
+            26,
             SubtitleSeriesResponse(
                 explanation=[],
                 synchronization=[
-                    SubtitleGroupResponse(
-                        chinese=[1],
-                        english=[1],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[2],
-                        english=[2],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[3],
-                        english=[3],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[4],
-                        english=[4],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[5],
-                        english=[5],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[6],
-                        english=[6],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[7],
-                        english=[],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[8],
-                        english=[8],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[9],
-                        english=[9],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[10],
-                        english=[10],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[11],
-                        english=[11],
-                    ),
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
                 ],
             ),
         ),
         (
-            44,
+            27,
+            29,
+            27,
+            29,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                ],
+            ),
+        ),
+        (
+            32,
+            36,
+            32,
+            36,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3, 4], english=[3]),
+                ],
+            ),
+        ),
+        (
+            36,
+            39,
+            35,
+            39,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[2]),
+                    SubtitleGroupResponse(chinese=[2], english=[3]),
+                    SubtitleGroupResponse(chinese=[3], english=[4]),
+                ],
+            ),
+        ),
+        (
+            58,
+            65,
             56,
-            44,
-            54,
+            62,
             SubtitleSeriesResponse(
                 explanation=[],
                 synchronization=[
-                    SubtitleGroupResponse(
-                        chinese=[1],
-                        english=[1],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[2],
-                        english=[2],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[3],
-                        english=[3],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[4],
-                        english=[4],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[5],
-                        english=[5],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[6, 7],
-                        english=[6],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[8],
-                        english=[],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[9],
-                        english=[7],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[10],
-                        english=[8],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[11],
-                        english=[9],
-                    ),
-                    SubtitleGroupResponse(
-                        chinese=[12],
-                        english=[10],
-                    ),
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
+                    SubtitleGroupResponse(chinese=[5, 6, 7], english=[5]),
+                ],
+            ),
+        ),
+        (
+            65,
+            71,
+            62,
+            66,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3, 4], english=[3]),
+                    SubtitleGroupResponse(chinese=[5, 6], english=[4]),
+                ],
+            ),
+        ),
+        (
+            71,
+            76,
+            66,
+            70,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4, 5], english=[4]),
+                ],
+            ),
+        ),
+        (
+            76,
+            82,
+            70,
+            74,
+            SubtitleSeriesResponse(
+                explanation=[],
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1, 2], english=[1]),
+                    SubtitleGroupResponse(chinese=[3, 4], english=[2]),
+                    SubtitleGroupResponse(chinese=[5], english=[3]),
+                    SubtitleGroupResponse(chinese=[6], english=[4]),
                 ],
             ),
         ),
