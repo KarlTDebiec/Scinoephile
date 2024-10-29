@@ -13,7 +13,10 @@ from scinoephile.core.openai import (
     SubtitleGroupResponse,
     SubtitleSeriesResponse,
 )
-from scinoephile.core.subtitles import get_pair_with_zero_start
+from scinoephile.core.subtitles import (
+    get_pair_strings_with_proportional_timings,
+    get_pair_with_zero_start,
+)
 from ..data import mnt_input_english, mnt_input_hanzi
 
 
@@ -37,7 +40,7 @@ def openai_service():
             0,
             4,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2, 3], english=[2]),
@@ -51,7 +54,7 @@ def openai_service():
             22,
             26,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -66,7 +69,7 @@ def openai_service():
             27,
             29,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -79,7 +82,7 @@ def openai_service():
             32,
             36,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -93,7 +96,7 @@ def openai_service():
             35,
             39,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[2]),
                     SubtitleGroupResponse(chinese=[2], english=[3]),
@@ -107,7 +110,7 @@ def openai_service():
             56,
             62,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -123,7 +126,7 @@ def openai_service():
             62,
             66,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -138,7 +141,7 @@ def openai_service():
             66,
             70,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1], english=[1]),
                     SubtitleGroupResponse(chinese=[2], english=[2]),
@@ -153,13 +156,53 @@ def openai_service():
             70,
             74,
             SubtitleSeriesResponse(
-                explanation=[],
+                explanation="",
                 synchronization=[
                     SubtitleGroupResponse(chinese=[1, 2], english=[1]),
                     SubtitleGroupResponse(chinese=[3, 4], english=[2]),
                     SubtitleGroupResponse(chinese=[5], english=[3]),
                     SubtitleGroupResponse(chinese=[6], english=[4]),
                 ],
+            ),
+        ),
+        (
+            82,
+            87,
+            74,
+            76,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[]),
+                    SubtitleGroupResponse(chinese=[4], english=[]),
+                    SubtitleGroupResponse(chinese=[5], english=[]),
+                ],
+            ),
+        ),
+        (
+            87,
+            90,
+            76,
+            78,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[]),
+                    SubtitleGroupResponse(chinese=[2], english=[1]),
+                    SubtitleGroupResponse(chinese=[3], english=[2]),
+                ],
+            ),
+        ),
+        (
+            95,
+            97,
+            83,
+            84,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
             ),
         ),
     ],
@@ -177,17 +220,17 @@ def test_mnt(
     hanzi_block = mnt_input_hanzi.slice(hanzi_start, hanzi_end)
     english_block = mnt_input_english.slice(english_start, english_end)
     hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
+    hanzi_str, english_str = get_pair_strings_with_proportional_timings(
+        hanzi_block, english_block
+    )
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
 
     print()
-    print(f"Chinese input:\n{hanzi_block.to_string('srt')}")
-    print(f"English input:\n{english_block.to_string('srt')}")
-    print(f"Expected synchronization:\n{pformat(expected.synchronization)}")
-    print(f"Received synchronization:\n{pformat(received.synchronization)}")
-    print(
-        "Received explanation (not validated for accuracy):\n"
-        f"{pformat(received.explanation)}"
-    )
+    print(f"CHINESE:\n{hanzi_str}\n")
+    print(f"ENGLISH:\n{english_str}\n")
+    print(f"Expected synchronization:\n{pformat(expected.synchronization)}\n")
+    print(f"Received synchronization:\n{pformat(received.synchronization)}\n")
+    print(f"Received explanation (not validated for accuracy):\n{received.explanation}")
 
     assert received.synchronization == expected.synchronization

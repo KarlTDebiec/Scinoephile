@@ -9,5 +9,5 @@ from scinoephile.core.openai.subtitle_group_response import SubtitleGroupRespons
 
 
 class SubtitleSeriesResponse(BaseModel):
-    explanation: list[str]
+    explanation: str
     synchronization: list[SubtitleGroupResponse]

@@ -174,6 +174,48 @@ def get_pair_with_zero_start(
     return subtitles_one_shifted, subtitles_two_shifted
 
 
+def get_pair_strings_with_proportional_timings(
+    subtitles_one: SubtitleSeries,
+    subtitles_two: SubtitleSeries,
+) -> tuple[str, str]:
+    """Get SRT-style string representations of two series, but with proportional timings.
+
+    Arguments:
+        subtitles_one: first subtitle series
+        subtitles_two: second subtitle series
+    Returns:
+        SRT-style strings of each series, but with proportional timings
+    """
+    subtitles_one, subtitles_two = get_pair_with_zero_start(
+        subtitles_one, subtitles_two
+    )
+    start = min(subtitles_one.events[0].start, subtitles_two.events[0].start)
+    duration = max(subtitles_one.events[-1].end, subtitles_two.events[-1].end) - start
+    str_one = ""
+    for i, event in enumerate(subtitles_one.events, 1):
+        str_one += (
+            f"{i}\n"
+            f"{round(100 * (event.start - start) / duration)} "
+            f"--> "
+            f"{round(100 * (event.end - start) / duration)}\n"
+            f"{event.text}\n\n"
+        )
+    str_one = str_one.strip()
+
+    str_two = ""
+    for i, event in enumerate(subtitles_two.events, 1):
+        str_two += (
+            f"{i}\n"
+            f"{round(100 * (event.start - start) / duration)} "
+            f"--> "
+            f"{round(100 * (event.end - start) / duration)}\n"
+            f"{event.text}\n\n"
+        )
+    str_two = str_two.strip()
+
+    return str_one, str_two
+
+
 def get_synced_from_cleanly_mapped_pair(
     subtitles_one: SubtitleSeries,
     subtitles_two: SubtitleSeries,
