@@ -3,6 +3,8 @@
 """Core code related to bilingual text."""
 from __future__ import annotations
 
+from logging import warning
+
 from scinoephile.core import ScinoephileException, SubtitleSeries
 from scinoephile.core.openai import get_synced_subtitles
 from scinoephile.core.openai.openai_service import OpenAiService
@@ -36,7 +38,7 @@ def get_bilingual_subtitles(
             length = max(len(hanzi_block.events), len(english_block.events))
             if length <= 10:
                 request_count += 1
-                if request_count == 20:
+                if request_count == 30:
                     break
 
                 hanzi_block_shifted, english_block_shifted = get_pair_with_zero_start(
@@ -55,16 +57,19 @@ def get_bilingual_subtitles(
                         f"({hanzi_index}, {hanzi_index + len(hanzi_block)}, "
                         f"{english_index}, {english_index + len(english_block)}, "
                         f"SubtitleSeriesResponse("
-                        f"explanation={synchronization.explanation},"
+                        f'explanation="{synchronization.explanation}",'
                         f"synchronization={synchronization.synchronization}))"
                     )
                 except ScinoephileException as e:
-                    raise ScinoephileException(
+                    # raise ScinoephileException(
+                    warning(
                         f"Inappropriate synchronization received for :\n\n"
                         f"CHINESE:\n{hanzi_block_shifted.to_string('srt')}\n\n"
                         f"ENGLISH:\n{english_block_shifted.to_string('srt')}\n\n"
                         f"SYNCHRONIZATION:\n{synchronization.model_dump_json(indent=4)}"
-                    ) from e
+                    )
+                    bilingual_block = []
+                    # ) from e
 
             else:
                 bilingual_block = []

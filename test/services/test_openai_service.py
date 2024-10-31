@@ -205,6 +205,193 @@ def openai_service():
                 synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
             ),
         ),
+        (
+            97,
+            101,
+            84,
+            87,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[3]),
+                ],
+            ),
+        ),
+        (
+            136,
+            146,
+            109,
+            117,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
+                    SubtitleGroupResponse(chinese=[5, 6], english=[5]),
+                    SubtitleGroupResponse(chinese=[7, 8], english=[6]),
+                    SubtitleGroupResponse(chinese=[9], english=[7]),
+                    SubtitleGroupResponse(chinese=[10], english=[8]),
+                ],
+            ),
+        ),
+        (
+            148,
+            152,
+            119,
+            122,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[3]),
+                ],
+            ),
+        ),
+        (
+            159,
+            164,
+            129,
+            133,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[3]),
+                    SubtitleGroupResponse(chinese=[5], english=[4]),
+                ],
+            ),
+        ),
+        (
+            168,
+            172,
+            137,
+            140,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1, 2], english=[1]),
+                    SubtitleGroupResponse(chinese=[3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[3]),
+                ],
+            ),
+        ),
+        (
+            172,
+            175,
+            140,
+            142,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                ],
+            ),
+        ),
+        (
+            177,
+            185,
+            144,
+            150,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
+                    SubtitleGroupResponse(chinese=[5], english=[5]),
+                    SubtitleGroupResponse(chinese=[6, 7], english=[6]),
+                    SubtitleGroupResponse(chinese=[8], english=[]),
+                ],
+            ),
+        ),
+        (
+            225,
+            234,
+            182,
+            190,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2, 3], english=[2]),
+                    SubtitleGroupResponse(chinese=[4], english=[3]),
+                    SubtitleGroupResponse(chinese=[5], english=[4]),
+                    SubtitleGroupResponse(chinese=[6], english=[5]),
+                    SubtitleGroupResponse(chinese=[7], english=[6]),
+                    SubtitleGroupResponse(chinese=[8], english=[7]),
+                    SubtitleGroupResponse(chinese=[9], english=[8]),
+                ],
+            ),
+        ),
+        (
+            234,
+            236,
+            190,
+            191,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
+            ),
+        ),
+        (
+            258,
+            262,
+            213,
+            217,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                    SubtitleGroupResponse(chinese=[3], english=[3]),
+                    SubtitleGroupResponse(chinese=[4], english=[4]),
+                ],
+            ),
+        ),
+        (
+            262,
+            264,
+            217,
+            219,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[2]),
+                ],
+            ),
+        ),
+        (
+            268,
+            270,
+            223,
+            224,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
+            ),
+        ),
+        (
+            271,
+            273,
+            225,
+            226,
+            SubtitleSeriesResponse(
+                explanation="",
+                synchronization=[
+                    SubtitleGroupResponse(chinese=[1], english=[1]),
+                    SubtitleGroupResponse(chinese=[2], english=[]),
+                ],
+            ),
+        ),
     ],
 )
 def test_mnt(
@@ -226,7 +413,6 @@ def test_mnt(
 
     received = openai_service.get_synchronization(hanzi_block, english_block)
 
-    print()
     print(f"CHINESE:\n{hanzi_str}\n")
     print(f"ENGLISH:\n{english_str}\n")
     print(f"Expected synchronization:\n{pformat(expected.synchronization)}\n")
