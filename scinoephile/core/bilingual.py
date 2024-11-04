@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from logging import warning
 
-from scinoephile.core import ScinoephileException, SubtitleSeries
 from scinoephile.core.openai import get_synced_subtitles
-from scinoephile.core.openai.openai_service import OpenAiService
+
+from scinoephile.core import ScinoephileException, SubtitleSeries
 from scinoephile.core.subtitles import (
     check_if_pair_is_cleanly_mapped,
     get_merged_from_blocks,
@@ -15,6 +15,7 @@ from scinoephile.core.subtitles import (
     get_pair_with_zero_start,
     get_synced_from_cleanly_mapped_pair,
 )
+from scinoephile.open_ai.openai_service import OpenAiService
 
 
 def get_bilingual_subtitles(

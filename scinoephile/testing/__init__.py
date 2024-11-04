@@ -5,8 +5,10 @@ from __future__ import annotations
 
 from scinoephile.testing.file import get_test_file_path
 from scinoephile.testing.fixture import parametrized_fixture
+from scinoephile.testing.sync_test_case import SyncTestCase
 
 __all__ = [
+    "SyncTestCase",
     "get_test_file_path",
     "parametrized_fixture",
 ]

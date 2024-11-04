@@ -25,16 +25,6 @@ def kob_output_english():
 
 
 @pytest.fixture
-def mnt_input_english():
-    return SubtitleSeries.load(get_test_file_path("mnt/input/en-US.srt"))
-
-
-@pytest.fixture
-def mnt_input_hanzi():
-    return SubtitleSeries.load(get_test_file_path("mnt/input/cmn-Hans.srt"))
-
-
-@pytest.fixture
 def t_input_english():
     return SubtitleSeries.load(get_test_file_path("t/input/en-hk.srt"))
 

@@ -216,6 +216,36 @@ def get_pair_strings_with_proportional_timings(
     return str_one, str_two
 
 
+def get_series_pair_strings(
+    series_one: SubtitleSeries,
+    series_two: SubtitleSeries,
+) -> tuple[str, str]:
+    """Get string representations of two series.
+
+    Arguments:
+        series_one: first subtitle series
+        series_two: second subtitle series
+    Returns:
+        strings of each series
+    """
+    series_one, series_two = get_pair_with_zero_start(series_one, series_two)
+    start = min(series_one.events[0].start, series_two.events[0].start)
+    duration = max(series_one.events[-1].end, series_two.events[-1].end) - start
+
+    def get_string(subitles):
+        string = ""
+        for i, event in enumerate(subitles.events, 1):
+            string += (
+                f"{i:2d} |"
+                f"{round(100 * (event.start - start) / duration):4d} |"
+                f"{round(100 * (event.end - start) / duration):4d} | "
+                f"{event.text}\n"
+            )
+        return string.rstrip()
+
+    return get_string(series_one), get_string(series_two)
+
+
 def get_synced_from_cleanly_mapped_pair(
     subtitles_one: SubtitleSeries,
     subtitles_two: SubtitleSeries,
