@@ -9,7 +9,6 @@ from scinoephile.core import SubtitleSeries
 from scinoephile.open_ai import (
     SubtitleGroupResponse,
     SubtitleSeriesResponse,
-    SyncNotesResponse,
 )
 from scinoephile.testing import SyncTestCase, get_test_file_path
 
@@ -30,29 +29,6 @@ mnt_test_cases = [
         hanzi_end=4,
         english_start=0,
         english_end=4,
-        example_sync_notes=SyncNotesResponse(
-            chinese=[
-                "Chinese 1 corresponds to English 1; "
-                "both express offering or referencing caramel to Dad.",
-                "Chinese 2 corresponds to the first part of English 2; "
-                "both saying 'thanks.'",
-                "Chinese 3 corresponds to the second part of English 2; "
-                "both asking about being tired.",
-                "Chinese 4 corresponds to English 4; "
-                "both indicating that they are almost there.",
-            ],
-            english=[
-                "English 1 corresponds to Chinese 1; "
-                "both involve offering or referencing caramel to Dad.",
-                "English 2 corresponds to Chinese 2 and Chinese 3; "
-                "starting with 'thanks,' then asking about tiredness.",
-                "English 3 has no corresponding Chinese; "
-                "as it says 'All right,' which is not present in the Chinese set, and "
-                "no Chinese subtitle is displayed at that time.",
-                "English 4 corresponds to Chinese 4; "
-                "both indicating that they are almost there.",
-            ],
-        ),
         expected_sync_response=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
@@ -100,7 +76,8 @@ mnt_test_cases = [
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
                 SubtitleGroupResponse(chinese=[2], english=[2]),
-                SubtitleGroupResponse(chinese=[3, 4], english=[3]),
+                SubtitleGroupResponse(chinese=[3], english=[3]),
+                SubtitleGroupResponse(chinese=[4], english=[]),
             ],
         ),
     ),
@@ -229,7 +206,7 @@ mnt_test_cases = [
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
                 SubtitleGroupResponse(chinese=[2, 3], english=[2]),
-                SubtitleGroupResponse(chinese=[4], english=[3]),
+                SubtitleGroupResponse(chinese=[4], english=[]),
             ],
         ),
     ),

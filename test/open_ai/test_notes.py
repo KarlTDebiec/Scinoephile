@@ -12,6 +12,11 @@ from scinoephile.core.subtitles import get_pair_with_zero_start, get_series_pair
 from scinoephile.open_ai import (
     OpenAiService,
 )
+from scinoephile.open_ai.functions import (
+    get_sync_from_sync_groups,
+    get_sync_groups_from_indexes,
+    get_sync_indexes_from_notes,
+)
 from scinoephile.testing import SyncTestCase
 from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
 
@@ -21,12 +26,16 @@ def openai_service():
     return OpenAiService()
 
 
-@pytest.mark.parametrize("test_case", mnt_test_cases)
-def test_notes(
+@pytest.mark.parametrize(
+    "test_case, language",
+    [(case, lang) for case in mnt_test_cases for lang in ["chinese", "english"]],
+)
+def test_get_sync_notes(
     openai_service: OpenAiService,
     mnt_input_hanzi: SubtitleSeries,
     mnt_input_english: SubtitleSeries,
     test_case: SyncTestCase,
+    language: str,
 ) -> None:
     hanzi_block = mnt_input_hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
     english_block = mnt_input_english.slice(
@@ -35,13 +44,32 @@ def test_notes(
     hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
     hanzi_str, english_str = get_series_pair_strings(hanzi_block, english_block)
 
-    notes = openai_service.get_sync_notes_yat(hanzi_block, english_block)
+    notes = openai_service.get_sync_notes(hanzi_block, english_block, language)
+    notes_dict = notes.model_dump()
 
     print(f"CHINESE:\n{hanzi_str}\n")
     print(f"ENGLISH:\n{english_str}\n")
-    print(f"CHINESE NOTES:\n{pformat(notes.chinese,width=120)}\n")
-    print(f"ENGLISH NOTES:\n{pformat(notes.english,width=120)}\n")
-    # print(f"NOTES:\n{pformat(notes,width=120)}\n")
+    print(f"{language.upper()} NOTES:\n{pformat(notes_dict, width=120)}\n")
 
-    assert len(notes.chinese) == len(hanzi_block)
-    assert len(notes.english) == len(english_block)
+    if language == "english":
+        assert len(notes_dict) == len(english_block)
+    elif language == "chinese":
+        assert len(notes_dict) == len(hanzi_block)
+
+    mapping = get_sync_indexes_from_notes(notes_dict)
+    print(f"MAPPING:\n{pformat(mapping, width=120)}\n")
+
+    if language == "english":
+        assert len(mapping) == len(english_block)
+    elif language == "chinese":
+        assert len(mapping) == len(hanzi_block)
+
+    groups = get_sync_groups_from_indexes(mapping)
+
+    sync = get_sync_from_sync_groups(groups, "chinese", len(hanzi_block.events))
+    print(f"RECIEVED SYNC:\n{pformat(sync, width=120)}\n")
+    print(
+        f"EXPECTED SYNC:\n{pformat(test_case.expected_sync_response.synchronization, width=120)}\n"
+    )
+
+    assert sync == test_case.expected_sync_response.synchronization

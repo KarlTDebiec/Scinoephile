@@ -8,7 +8,7 @@ from pprint import pformat
 import pytest
 
 from scinoephile.core import SubtitleSeries
-from scinoephile.core.subtitles import get_pair_with_zero_start, get_series_pair_strings
+from scinoephile.core.subtitles import get_series_pair_strings
 from scinoephile.open_ai import (
     OpenAiService,
 )
@@ -33,26 +33,30 @@ def test_group_notes(
     english_block = mnt_input_english.slice(
         test_case.english_start, test_case.english_end
     )
-    hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
     hanzi_str, english_str = get_series_pair_strings(hanzi_block, english_block)
 
-    notes = openai_service.get_sync_notes_yat(hanzi_block, english_block)
+    chinese_notes = openai_service.get_sync_notes(hanzi_block, english_block, "chinese")
+    chinese_notes_dict = chinese_notes.model_dump()
+    english_notes = openai_service.get_sync_notes(hanzi_block, english_block, "english")
+    english_notes_dict = english_notes.model_dump()
 
     print(f"CHINESE:\n{hanzi_str}\n")
     print(f"ENGLISH:\n{english_str}\n")
-    print(f"Received Chinese notes:\n{pformat(notes.chinese,width=120)}\n")
-    print(f"Received English notes:\n{pformat(notes.english,width=120)}\n")
+    print(f"CHINESE NOTES:\n{pformat(chinese_notes_dict,width=120)}\n")
+    print(f"ENGLISH NOTES:\n{pformat(english_notes_dict,width=120)}\n")
 
-    assert len(hanzi_block) == len(notes.chinese)
-    assert len(english_block) == len(notes.english)
+    # Do not need to assert notes lengths, since they cannot be wrong
 
     group_notes = openai_service.get_synchronization_group_notes(
-        hanzi_block, english_block, notes
+        hanzi_block,
+        english_block,
+        chinese_notes_dict.values(),
+        english_notes_dict.values(),
     )
 
-    print(f"Received Group notes:\n{pformat(group_notes.groups,width=120)}\n")
+    print(f"GROUP NOTES:\n{pformat(group_notes.groups,width=120)}\n")
     print(
-        f"Expected synchronization:\n{pformat(test_case.expected_sync_response.synchronization,width=120)}\n"
+        f"EXPECTED SYNC:\n{pformat(test_case.expected_sync_response.synchronization, width=120)}\n"
     )
 
     assert len(test_case.expected_sync_response.synchronization) == len(

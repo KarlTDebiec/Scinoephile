@@ -9,7 +9,7 @@ import pytest
 
 from scinoephile.core import SubtitleSeries
 from scinoephile.core.subtitles import (
-    get_pair_strings_with_proportional_timings,
+    get_pair_strings_with_relative_time,
     get_pair_with_zero_start,
 )
 from scinoephile.open_ai import (
@@ -47,7 +47,7 @@ def test_mnt(
     hanzi_block = mnt_input_hanzi.slice(hanzi_start, hanzi_end)
     english_block = mnt_input_english.slice(english_start, english_end)
     hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
-    hanzi_str, english_str = get_pair_strings_with_proportional_timings(
+    hanzi_str, english_str = get_pair_strings_with_relative_time(
         hanzi_block, english_block
     )
 

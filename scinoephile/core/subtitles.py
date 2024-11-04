@@ -174,7 +174,7 @@ def get_pair_with_zero_start(
     return subtitles_one_shifted, subtitles_two_shifted
 
 
-def get_pair_strings_with_proportional_timings(
+def get_pair_strings_with_relative_time(
     subtitles_one: SubtitleSeries,
     subtitles_two: SubtitleSeries,
 ) -> tuple[str, str]:
