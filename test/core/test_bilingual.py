@@ -4,12 +4,11 @@
 from __future__ import annotations
 
 from scinoephile.core import SubtitleSeries
-from scinoephile.core.bilingual import get_bilingual_subtitles
-from ..data import mnt_input_english, mnt_input_hanzi
+from scinoephile.synchronization.functions import get_synced_bilingual_subtitles
 
 
 def test_get_bilingual_subtitles(
     mnt_input_hanzi: SubtitleSeries,
     mnt_input_english: SubtitleSeries,
 ):
-    bilingual = get_bilingual_subtitles(mnt_input_hanzi, mnt_input_english)
+    bilingual = get_synced_bilingual_subtitles(mnt_input_hanzi, mnt_input_english)

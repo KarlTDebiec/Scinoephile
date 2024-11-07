@@ -19,4 +19,4 @@ class SyncTestCase:
     english_end: int
     example_sync_notes: SyncNotesResponse | None = None
     example_sync_group_notes: SyncGroupNotesResponse | None = None
-    expected_sync_response: SubtitleSeriesResponse | None = None
+    expected_sync: SubtitleSeriesResponse | None = None

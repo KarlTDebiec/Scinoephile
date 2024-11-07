@@ -7,16 +7,77 @@ from typing import Any
 
 from pydantic import BaseModel, create_model
 
+from scinoephile.core import SubtitleSeries
+from scinoephile.core.pairs import get_pair_with_zero_start
 from scinoephile.open_ai.subtitle_group_response import SubtitleGroupResponse
 
 
-def get_sync_notes_response_model(language: str, count: int) -> BaseModel:
+def get_sync_notes_model(language: str, count: int) -> BaseModel:
     model_name = f"SyncNotes{language.capitalize()}{count}ResponseModel"
     keys = [f"{language}_{i}" for i in range(1, count + 1)]
     fields = {key: (str, ...) for key in keys}
     model = create_model(model_name, **fields)
 
     return model
+
+
+def get_sync_overlap_notes(
+    hanzi: SubtitleSeries, english: SubtitleSeries, primary: str
+) -> dict[str, str]:
+    """Get notes describing the overlap in timing between two subtitle series.
+
+    Arguments:
+        hanzi: Hanzi subtitles
+        english: English subtitles
+        primary: Language to treat as primary
+    Returns:
+        Dictionary whose keys are the subtitle index in the primary language, and
+        whose values are text describing which subtitles each overlaps with in the
+        secondary language
+    """
+    if not (hanzi.events[0].start == 0 or english.events[0].start == 0):
+        hanzi, english = get_pair_with_zero_start(hanzi, english)
+
+    primary_series = hanzi if primary == "chinese" else english
+    secondary_series = english if primary == "chinese" else hanzi
+    primary_label = primary.capitalize()
+    secondary_label = "English" if primary == "chinese" else "Chinese"
+
+    notes = {}
+
+    for primary_index, primary_event in enumerate(primary_series.events, 1):
+        primary_start, primary_end = primary_event.start, primary_event.end
+        primary_duration = primary_end - primary_start
+
+        # Find overlapping secondary subtitles
+        overlaps = []
+        for secondary_index, secondary_event in enumerate(secondary_series.events, 1):
+            secondary_start, secondary_end = secondary_event.start, secondary_event.end
+
+            # Calculate overlap
+            overlap_start = max(primary_start, secondary_start)
+            overlap_end = min(primary_end, secondary_end)
+            overlap_duration = max(0, overlap_end - overlap_start)
+
+            # Calculate percentage of overlap relative to primary subtitle
+            if overlap_duration > 0:
+                overlap_percentage = (overlap_duration / primary_duration) * 100
+                overlaps.append(
+                    f"overlaps with {overlap_percentage:.0f}% of "
+                    f"{secondary_label} {secondary_index}"
+                )
+
+        # Combine overlap descriptions for the primary subtitle
+        if overlaps:
+            notes[f"{primary}_{primary_index}"] = (
+                f"{primary_label} {primary_index} {', '.join(overlaps)}."
+            )
+        else:
+            notes[f"{primary}_{primary_index}"] = (
+                f"{primary_label} {primary_index} has no overlapping {secondary_label} subtitles."
+            )
+
+    return notes
 
 
 def get_sync_indexes_from_notes(notes: dict[str, str]) -> dict[str, list[int]]:

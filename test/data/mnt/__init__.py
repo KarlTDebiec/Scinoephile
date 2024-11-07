@@ -29,7 +29,7 @@ mnt_test_cases = [
         hanzi_end=4,
         english_start=0,
         english_end=4,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -43,7 +43,7 @@ mnt_test_cases = [
         hanzi_end=26,
         english_start=22,
         english_end=26,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -58,7 +58,7 @@ mnt_test_cases = [
         hanzi_end=29,
         english_start=27,
         english_end=29,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -71,13 +71,12 @@ mnt_test_cases = [
         hanzi_end=36,
         english_start=32,
         english_end=36,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
                 SubtitleGroupResponse(chinese=[2], english=[2]),
-                SubtitleGroupResponse(chinese=[3], english=[3]),
-                SubtitleGroupResponse(chinese=[4], english=[]),
+                SubtitleGroupResponse(chinese=[3, 4], english=[3]),
             ],
         ),
     ),
@@ -86,7 +85,7 @@ mnt_test_cases = [
         hanzi_end=39,
         english_start=35,
         english_end=39,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[2]),
@@ -100,7 +99,7 @@ mnt_test_cases = [
         hanzi_end=65,
         english_start=56,
         english_end=62,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -116,7 +115,7 @@ mnt_test_cases = [
         hanzi_end=71,
         english_start=62,
         english_end=66,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -131,7 +130,7 @@ mnt_test_cases = [
         hanzi_end=76,
         english_start=66,
         english_end=70,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -146,7 +145,7 @@ mnt_test_cases = [
         hanzi_end=82,
         english_start=70,
         english_end=74,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1, 2], english=[1]),
@@ -161,7 +160,7 @@ mnt_test_cases = [
         hanzi_end=87,
         english_start=74,
         english_end=76,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -177,7 +176,7 @@ mnt_test_cases = [
         hanzi_end=90,
         english_start=76,
         english_end=78,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[]),
@@ -191,7 +190,7 @@ mnt_test_cases = [
         hanzi_end=97,
         english_start=83,
         english_end=84,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
         ),
@@ -201,7 +200,7 @@ mnt_test_cases = [
         hanzi_end=101,
         english_start=84,
         english_end=87,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -215,7 +214,7 @@ mnt_test_cases = [
         hanzi_end=146,
         english_start=109,
         english_end=117,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -234,7 +233,7 @@ mnt_test_cases = [
         hanzi_end=152,
         english_start=119,
         english_end=122,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -248,7 +247,7 @@ mnt_test_cases = [
         hanzi_end=164,
         english_start=129,
         english_end=133,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -263,7 +262,7 @@ mnt_test_cases = [
         hanzi_end=172,
         english_start=137,
         english_end=140,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1, 2], english=[1]),
@@ -277,7 +276,7 @@ mnt_test_cases = [
         hanzi_end=175,
         english_start=140,
         english_end=142,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -290,7 +289,7 @@ mnt_test_cases = [
         hanzi_end=185,
         english_start=144,
         english_end=150,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -308,7 +307,7 @@ mnt_test_cases = [
         hanzi_end=234,
         english_start=182,
         english_end=190,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -327,7 +326,7 @@ mnt_test_cases = [
         hanzi_end=236,
         english_start=190,
         english_end=191,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
         ),
@@ -337,7 +336,7 @@ mnt_test_cases = [
         hanzi_end=262,
         english_start=213,
         english_end=217,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -352,7 +351,7 @@ mnt_test_cases = [
         hanzi_end=264,
         english_start=217,
         english_end=219,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
@@ -365,7 +364,7 @@ mnt_test_cases = [
         hanzi_end=270,
         english_start=223,
         english_end=224,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[SubtitleGroupResponse(chinese=[1, 2], english=[1])],
         ),
@@ -375,7 +374,7 @@ mnt_test_cases = [
         hanzi_end=273,
         english_start=225,
         english_end=226,
-        expected_sync_response=SubtitleSeriesResponse(
+        expected_sync=SubtitleSeriesResponse(
             explanation="",
             synchronization=[
                 SubtitleGroupResponse(chinese=[1], english=[1]),
