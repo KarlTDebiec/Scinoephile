@@ -4,11 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.open_ai import (
-    SubtitleSeriesResponse,
-    SyncGroupNotesResponse,
-    SyncNotesResponse,
-)
+from scinoephile.core.synchronization import SyncGroupList
 
 
 @dataclass
@@ -17,6 +13,4 @@ class SyncTestCase:
     hanzi_end: int
     english_start: int
     english_end: int
-    example_sync_notes: SyncNotesResponse | None = None
-    example_sync_group_notes: SyncGroupNotesResponse | None = None
-    expected_sync: SubtitleSeriesResponse | None = None
+    sync_groups: SyncGroupList | None = None

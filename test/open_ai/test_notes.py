@@ -71,8 +71,8 @@ def test_get_sync_notes(
     sync = get_sync_from_sync_groups(groups, "chinese", len(hanzi_block.events))
     output += f"SYNC:\n{pformat(sync, width=120)}\n"
 
-    expected = test_case.expected_sync.synchronization
+    expected = test_case.sync_groups.synchronization
     output += f"EXPECTED:\n{pformat(expected, width=120)}\n"
 
     print(output)
-    assert sync == test_case.expected_sync.synchronization, output
+    assert sync == test_case.sync_groups.synchronization, output

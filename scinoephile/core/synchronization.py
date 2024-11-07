@@ -7,6 +7,9 @@ import numpy as np
 from scinoephile.core import ScinoephileException
 from scinoephile.core.subtitle_series import SubtitleSeries
 
+SyncGroup = list[list[int], list[int]]
+SyncGroupList = list[SyncGroup]
+
 
 def get_sync_overlap_matrix(one: SubtitleSeries, two: SubtitleSeries) -> np.ndarray:
     """Get a matrix of the proprtions of each subtitle in one series with another.
@@ -36,9 +39,7 @@ def get_sync_overlap_matrix(one: SubtitleSeries, two: SubtitleSeries) -> np.ndar
     return overlap_matrix
 
 
-def get_sync_groups(
-    one: SubtitleSeries, two: SubtitleSeries
-) -> list[list[list[int], list[int]]]:
+def get_sync_groups(one: SubtitleSeries, two: SubtitleSeries) -> SyncGroupList:
     sync_groups = []
 
     one_to_two_overlap = get_sync_overlap_matrix(one, two)
@@ -101,6 +102,9 @@ def get_sync_groups(
                                 sync_groups.append([[i, i2, i3], [j]])
                                 continue
 
+        raise ScinoephileException()
+
+    if len(one_available) > 0:
         raise ScinoephileException()
 
     # Add 1 to all indexes

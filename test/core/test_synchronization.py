@@ -16,7 +16,7 @@ from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
 
 
 @pytest.mark.parametrize("test_case", mnt_test_cases)
-def test_get_sync_overlap_matrix(
+def test_get_sync_groups(
     mnt_input_hanzi: SubtitleSeries,
     mnt_input_english: SubtitleSeries,
     test_case: SyncTestCase,
@@ -28,19 +28,13 @@ def test_get_sync_overlap_matrix(
     hanzi_to_english_overlap = get_sync_overlap_matrix(hanzi, english)
     english_to_hanzi_overlap = get_sync_overlap_matrix(english, hanzi)
     print()
-    print("CHINESE:")
-    print(hanzi_str)
-    print()
-    print("ENGLISH:")
-    print(english_str)
-    print()
-    print("CHINESE TO ENGLISH OVERLAP:")
+    print(f"\nCHINESE:\n{hanzi_str}")
+    print(f"\nENGLISH:\n{english_str}")
+    print("\nCHINESE TO ENGLISH OVERLAP:")
     print(np.array2string(hanzi_to_english_overlap, precision=2, suppress_small=True))
-    print()
-    print("ENGLISH TO CHINESE OVERLAP:")
+    print("\nENGLISH TO CHINESE OVERLAP:")
     print(np.array2string(english_to_hanzi_overlap, precision=2, suppress_small=True))
+    sync_groups = get_sync_groups(hanzi, english)
+    print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
-    sam = get_sync_groups(hanzi, english)
-    print()
-    print("SYNC GROUPS:")
-    print(pformat(sam, width=120))
+    assert sync_groups == test_case.sync_groups
