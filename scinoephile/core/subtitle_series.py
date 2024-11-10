@@ -46,6 +46,26 @@ class SubtitleSeries(SSAFile):
         sliced.events = self.events[start:end]
         return sliced
 
+    def to_simple_string(self, start: int | None = None, duration: int | None = None):
+        if not self.events:
+            return ""
+
+        if start is None:
+            start = self.events[0].start
+        if duration is None:
+            duration = self.events[-1].end - self.events[0].start
+
+        string = ""
+        for i, event in enumerate(self.events, 1):
+            text = event.text.replace("\n", " ")
+            string += (
+                f"{i:2d} | "
+                f"{round(100 * (event.start - start) / duration):3d}-"
+                f"{round(100 * (event.end - start) / duration):<3d} | "
+                f"{text}\n"
+            )
+        return string.rstrip()
+
     @classmethod
     def from_string(
         cls,

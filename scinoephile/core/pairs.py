@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from scinoephile.core import ScinoephileException
 from scinoephile.core.subtitle_series import SubtitleSeries
 
 
@@ -150,7 +151,14 @@ def get_pair_with_zero_start(
     Returns:
         pair with their start times shifted to zero
     """
-    start_time = min(one.events[0].start, two.events[0].start)
+    if one.events and two.events:
+        start_time = min(one.events[0].start, two.events[0].start)
+    elif one.events:
+        start_time = one.events[0].start
+    elif two.events:
+        start_time = two.events[0].start
+    else:
+        raise ScinoephileException("Both subtitle series are empty")
 
     subtitles_one_shifted = deepcopy(one)
     subtitles_two_shifted = deepcopy(two)
@@ -170,18 +178,18 @@ def get_pair_strings(one: SubtitleSeries, two: SubtitleSeries) -> tuple[str, str
         strings of each series
     """
     one, two = get_pair_with_zero_start(one, two)
-    start = min(one.events[0].start, two.events[0].start)
-    duration = max(one.events[-1].end, two.events[-1].end) - start
+    if one.events and two.events:
+        start = min(one.events[0].start, two.events[0].start)
+        duration = max(one.events[-1].end, two.events[-1].end) - start
+    elif one.events:
+        start = one.events[0].start
+        duration = one.events[-1].end - start
+    elif two.events:
+        start = two.events[0].start
+        duration = two.events[-1].end - start
+    else:
+        raise ScinoephileException("Both subtitle series are empty")
 
-    def get_string(subitles):
-        string = ""
-        for i, event in enumerate(subitles.events, 1):
-            string += (
-                f"{i:2d} | "
-                f"{round(100 * (event.start - start) / duration):3d}-"
-                f"{round(100 * (event.end - start) / duration):<3d} | "
-                f"{event.text}\n"
-            )
-        return string.rstrip()
-
-    return get_string(one), get_string(two)
+    one_string = one.to_simple_string(start=start, duration=duration)
+    two_string = two.to_simple_string(start=start, duration=duration)
+    return one_string, two_string
