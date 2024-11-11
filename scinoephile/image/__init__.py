@@ -6,6 +6,6 @@ from scinoephile.image.image_series import ImageSeries
 from scinoephile.image.image_subtitle import ImageSubtitle
 
 __all__ = [
-    "ImageSubtitle",
     "ImageSeries",
+    "ImageSubtitle",
 ]
