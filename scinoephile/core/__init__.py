@@ -15,6 +15,6 @@ from scinoephile.core.subtitle import Subtitle
 
 __all__ = [
     "ScinoephileException",
-    "Subtitle",
     "Series",
+    "Subtitle",
 ]
