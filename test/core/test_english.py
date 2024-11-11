@@ -9,7 +9,6 @@ from scinoephile.core import SubtitleSeries
 from scinoephile.core.english import (
     get_english_subtitles_merged_to_single_line,
     get_english_text_merged_to_single_line,
-    get_english_text_truecased,
 )
 from ..data import (
     kob_input_english,
@@ -58,17 +57,6 @@ def test_get_english_subtitles_merged_to_single_line_t(
     t_output_english: SubtitleSeries,
 ) -> None:
     _test_get_english_subtitles_merged_to_single_line(t_input_english, t_output_english)
-
-
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("HELLO WORLD", "Hello World"),
-    ],
-)
-def test_get_english_text_truecased(text: str, expected: str) -> None:
-    """Test get_english_truecase"""
-    assert get_english_text_truecased(text) == expected
 
 
 @pytest.mark.parametrize(
