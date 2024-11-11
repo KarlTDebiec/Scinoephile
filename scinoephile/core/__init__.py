@@ -10,11 +10,11 @@ Most functions herein follow the naming convention:
 from __future__ import annotations
 
 from scinoephile.core.exceptions import ScinoephileException
+from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
-from scinoephile.core.subtitle_series import SubtitleSeries
 
 __all__ = [
     "ScinoephileException",
     "Subtitle",
-    "SubtitleSeries",
+    "Series",
 ]

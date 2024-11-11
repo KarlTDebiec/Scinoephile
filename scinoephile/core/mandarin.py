@@ -8,11 +8,11 @@ from copy import deepcopy
 from pypinyin import pinyin
 from snownlp import SnowNLP
 
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 from scinoephile.core.text import punctuation
 
 
-def get_mandarin_pinyin_subtitles(subtitles: SubtitleSeries) -> SubtitleSeries:
+def get_mandarin_pinyin_subtitles(subtitles: Series) -> Series:
     """Get the Mandarin pinyin romanization of Hanzi subtitles.
 
     Arguments:

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from pprint import pformat
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.synchronization import (
     are_series_one_to_one,
@@ -21,8 +21,8 @@ from ..data.t import t_input_english, t_input_hanzi
 
 @skip_if_ci()
 def test_get_test_cases_t(
-    t_input_hanzi: SubtitleSeries,
-    t_input_english: SubtitleSeries,
+    t_input_hanzi: Series,
+    t_input_english: Series,
 ) -> None:
     pair_blocks = get_pair_blocks_by_pause(t_input_hanzi, t_input_english)
     bilingual_blocks = []

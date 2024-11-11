@@ -7,7 +7,7 @@ from pprint import pformat
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
     get_overlap_string,
@@ -22,8 +22,8 @@ from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
 
 @pytest.mark.parametrize("test_case", mnt_test_cases)
 def test_blocks_mnt(
-    mnt_input_hanzi: SubtitleSeries,
-    mnt_input_english: SubtitleSeries,
+    mnt_input_hanzi: Series,
+    mnt_input_english: Series,
     test_case: SyncTestCase,
 ) -> None:
     hanzi = mnt_input_hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
@@ -47,8 +47,8 @@ def test_blocks_mnt(
 
 
 def test_complete_mnt(
-    mnt_input_hanzi: SubtitleSeries,
-    mnt_input_english: SubtitleSeries,
+    mnt_input_hanzi: Series,
+    mnt_input_english: Series,
 ) -> None:
     bilingual = get_synced_subtitles(mnt_input_hanzi, mnt_input_english)
     print(bilingual.to_string("srt"))

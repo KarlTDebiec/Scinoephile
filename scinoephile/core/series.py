@@ -12,7 +12,7 @@ from scinoephile.common.validation import validate_input_file, validate_output_f
 from scinoephile.core.subtitle import Subtitle
 
 
-class SubtitleSeries(SSAFile):
+class Series(SSAFile):
     """Series of subtitles.
 
     TODO: Add support for loading from and saving to hdf5
@@ -33,7 +33,7 @@ class SubtitleSeries(SSAFile):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved subtitles to {path}")
 
-    def slice(self, start: int, end: int) -> SubtitleSeries:
+    def slice(self, start: int, end: int) -> Series:
         """Slice subtitles.
 
         Arguments:
@@ -42,7 +42,7 @@ class SubtitleSeries(SSAFile):
         Returns:
             sliced subtitles
         """
-        sliced = SubtitleSeries()
+        sliced = Series()
         sliced.events = self.events[start:end]
         return sliced
 
@@ -73,7 +73,7 @@ class SubtitleSeries(SSAFile):
         format_: str | None = None,
         fps: float | None = None,
         **kwargs: Any,
-    ) -> SubtitleSeries:
+    ) -> Series:
         """Parse subtitles from string.
 
         Arguments:
@@ -98,7 +98,7 @@ class SubtitleSeries(SSAFile):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> SubtitleSeries:
+    ) -> Series:
         """Load subtitles from an input file.
 
         Arguments:

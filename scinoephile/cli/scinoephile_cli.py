@@ -15,7 +15,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import (
     ScinoephileException,
-    SubtitleSeries,
+    Series,
 )
 from scinoephile.core.english import get_english_subtitles_merged_to_single_line
 from scinoephile.core.hanzi import (
@@ -134,11 +134,11 @@ class ScinoephileCli(CommandLineInterface):
 
         # Input operations
         if "load_bilingual" in operations:
-            bilingual = SubtitleSeries.load(operations["load_bilingual"])
+            bilingual = Series.load(operations["load_bilingual"])
         if "load_english" in operations:
-            english = SubtitleSeries.load(operations["load_english"])
+            english = Series.load(operations["load_english"])
         if "load_hanzi" in operations:
-            hanzi = SubtitleSeries.load(operations["load_hanzi"])
+            hanzi = Series.load(operations["load_hanzi"])
 
         # Operation operations
         if "merge_english" in operations:

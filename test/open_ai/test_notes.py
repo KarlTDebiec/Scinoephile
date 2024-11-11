@@ -7,7 +7,7 @@ from pprint import pformat
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_strings, get_pair_with_zero_start
 from scinoephile.open_ai import (
     OpenAiService,
@@ -35,8 +35,8 @@ def open_ai_service():
 )
 def test_get_sync_notes(
     open_ai_service: OpenAiService,
-    mnt_input_hanzi: SubtitleSeries,
-    mnt_input_english: SubtitleSeries,
+    mnt_input_hanzi: Series,
+    mnt_input_english: Series,
     test_case: SyncTestCase,
     language: str,
 ) -> None:

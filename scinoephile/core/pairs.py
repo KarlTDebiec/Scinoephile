@@ -6,14 +6,14 @@ from __future__ import annotations
 from copy import deepcopy
 
 from scinoephile.core import ScinoephileException
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 
 def get_pair_blocks_by_pause(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
+    one: Series,
+    two: Series,
     pause_length: int = 3000,
-) -> list[tuple[SubtitleSeries, SubtitleSeries]]:
+) -> list[tuple[Series, Series]]:
     """Split a pair of subtitles into blocks using pauses without text in either.
 
     Arguments:
@@ -62,8 +62,8 @@ def get_pair_blocks_by_pause(
                 changed = True
 
         # Store block
-        block_one = SubtitleSeries()
-        block_two = SubtitleSeries()
+        block_one = Series()
+        block_two = Series()
         block_one.events = nascent_block_one
         block_two.events = nascent_block_two
         blocks.append((block_one, block_two))
@@ -92,10 +92,7 @@ def get_pair_blocks_by_pause(
     return blocks
 
 
-def get_pair_with_zero_start(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> tuple[SubtitleSeries, SubtitleSeries]:
+def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
     """Shift a pair of subtitles' start times to zero.
 
     If the two subtitles have the same start time, both will be shifted to zero. If they
@@ -125,10 +122,7 @@ def get_pair_with_zero_start(
     return subtitles_one_shifted, subtitles_two_shifted
 
 
-def get_pair_strings(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> tuple[str, str]:
+def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:

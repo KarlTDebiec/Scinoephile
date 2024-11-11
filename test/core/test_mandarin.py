@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.mandarin import (
     get_mandarin_pinyin_subtitles,
     get_mandarin_pinyin_text,
@@ -16,16 +16,16 @@ from ..data import (
 )
 
 
-def _test_get_mandarin_pinyin_subtitles(input_subtitles: SubtitleSeries) -> None:
+def _test_get_mandarin_pinyin_subtitles(input_subtitles: Series) -> None:
     output_subtitles = get_mandarin_pinyin_subtitles(input_subtitles)
     assert len(input_subtitles.events) == len(output_subtitles.events)
 
 
-def test_get_mandarin_pinyin_subtitles_kob(kob_input_hanzi: SubtitleSeries) -> None:
+def test_get_mandarin_pinyin_subtitles_kob(kob_input_hanzi: Series) -> None:
     _test_get_mandarin_pinyin_subtitles(kob_input_hanzi)
 
 
-def test_get_mandarin_pinyin_subtitles_t(t_input_hanzi: SubtitleSeries) -> None:
+def test_get_mandarin_pinyin_subtitles_t(t_input_hanzi: Series) -> None:
     _test_get_mandarin_pinyin_subtitles(t_input_hanzi)
 
 

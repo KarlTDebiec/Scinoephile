@@ -9,12 +9,10 @@ from logging import info
 
 import nltk
 
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 
-def get_english_subtitles_merged_to_single_line(
-    subtitles: SubtitleSeries,
-) -> SubtitleSeries:
+def get_english_subtitles_merged_to_single_line(subtitles: Series) -> Series:
     """Get multi-line English subtitles merged to single lines.
 
     Arguments:
@@ -28,7 +26,7 @@ def get_english_subtitles_merged_to_single_line(
     return subtitles
 
 
-def get_english_subtitles_truecased(subtitles: SubtitleSeries) -> SubtitleSeries:
+def get_english_subtitles_truecased(subtitles: Series) -> Series:
     """Get all-caps English subtitltes truecased.
 
     Arguments:

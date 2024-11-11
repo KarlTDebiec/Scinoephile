@@ -6,7 +6,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.testing import get_test_file_path
 
 
@@ -21,7 +21,7 @@ from scinoephile.testing import get_test_file_path
 def test_subtitle_series(relative_input_path: str):
     input_path = get_test_file_path(relative_input_path)
 
-    input_subtitles = SubtitleSeries.load(input_path)
+    input_subtitles = Series.load(input_path)
     assert len(input_subtitles) > 0
 
     # Assert that all lines have text

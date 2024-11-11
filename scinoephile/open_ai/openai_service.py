@@ -12,7 +12,7 @@ from scinoephile.core import ScinoephileException
 from scinoephile.core.pairs import (
     get_pair_strings,
 )
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 from scinoephile.open_ai.functions import (
     get_sync_notes_model,
     get_sync_overlap_notes,
@@ -51,8 +51,8 @@ Instructions:
 
     def get_sync_notes(
         self,
-        hanzi: SubtitleSeries,
-        english: SubtitleSeries,
+        hanzi: Series,
+        english: Series,
         language: str,
     ) -> BaseModel:
         hanzi_str, english_str = get_pair_strings(hanzi, english)
@@ -104,8 +104,8 @@ Instructions:
 
     def get_reconciled_sync_notes(
         self,
-        hanzi: SubtitleSeries,
-        english: SubtitleSeries,
+        hanzi: Series,
+        english: Series,
         chinese_notes_in: dict[str, str],
         english_notes_in: dict[str, str],
         language: str,

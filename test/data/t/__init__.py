@@ -5,18 +5,18 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.testing import get_test_file_path
 
 
 @pytest.fixture
 def t_input_english():
-    return SubtitleSeries.load(get_test_file_path("t/input/en-HK.srt"))
+    return Series.load(get_test_file_path("t/input/en-HK.srt"))
 
 
 @pytest.fixture
 def t_input_hanzi():
-    return SubtitleSeries.load(get_test_file_path("t/input/cmn-Hans.srt"))
+    return Series.load(get_test_file_path("t/input/cmn-Hans.srt"))
 
 
 test_cases = []

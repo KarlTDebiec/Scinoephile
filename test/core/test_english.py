@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.english import (
     get_english_subtitles_merged_to_single_line,
     get_english_text_merged_to_single_line,
@@ -19,7 +19,7 @@ from ..data import (
 
 
 def _test_get_english_subtitles_merged_to_single_line(
-    input_subtitles: SubtitleSeries, expected_output_subtitles: SubtitleSeries
+    input_subtitles: Series, expected_output_subtitles: Series
 ) -> None:
     output_subtitles = get_english_subtitles_merged_to_single_line(input_subtitles)
 
@@ -44,8 +44,8 @@ def _test_get_english_subtitles_merged_to_single_line(
 
 
 def test_get_english_subtitles_merged_to_single_line_kob(
-    kob_input_english: SubtitleSeries,
-    kob_output_english: SubtitleSeries,
+    kob_input_english: Series,
+    kob_output_english: Series,
 ) -> None:
     _test_get_english_subtitles_merged_to_single_line(
         kob_input_english, kob_output_english
@@ -53,8 +53,8 @@ def test_get_english_subtitles_merged_to_single_line_kob(
 
 
 def test_get_english_subtitles_merged_to_single_line_t(
-    t_input_english: SubtitleSeries,
-    t_output_english: SubtitleSeries,
+    t_input_english: Series,
+    t_output_english: Series,
 ) -> None:
     _test_get_english_subtitles_merged_to_single_line(t_input_english, t_output_english)
 

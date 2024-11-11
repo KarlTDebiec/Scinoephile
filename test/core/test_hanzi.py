@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.hanzi import (
     get_hanzi_subtitles_merged_to_single_line,
     get_hanzi_subtitles_simplified,
@@ -20,7 +20,7 @@ from ..data import (
 
 
 def _test_get_hanzi_subtitles_merged_to_single_line(
-    input_subtitles: SubtitleSeries, expected_output_subtitles: SubtitleSeries
+    input_subtitles: Series, expected_output_subtitles: Series
 ) -> None:
     output_subtitles = get_hanzi_subtitles_merged_to_single_line(input_subtitles)
     assert len(input_subtitles.events) == len(output_subtitles.events)
@@ -44,22 +44,22 @@ def _test_get_hanzi_subtitles_merged_to_single_line(
 
 
 def test_get_hanzi_subtitles_merged_to_single_line_t(
-    t_input_hanzi: SubtitleSeries,
-    t_output_hanzi: SubtitleSeries,
+    t_input_hanzi: Series,
+    t_output_hanzi: Series,
 ) -> None:
     _test_get_hanzi_subtitles_merged_to_single_line(t_input_hanzi, t_output_hanzi)
 
 
-def _test_get_hanzi_subtitles_simplified(input_subtitles: SubtitleSeries) -> None:
+def _test_get_hanzi_subtitles_simplified(input_subtitles: Series) -> None:
     output_subtitles = get_hanzi_subtitles_simplified(input_subtitles)
     assert len(input_subtitles.events) == len(output_subtitles.events)
 
 
-def test_get_hanzi_subtitles_simplified_kob(kob_input_hanzi: SubtitleSeries) -> None:
+def test_get_hanzi_subtitles_simplified_kob(kob_input_hanzi: Series) -> None:
     _test_get_hanzi_subtitles_simplified(kob_input_hanzi)
 
 
-def test_get_hanzi_subtitles_simplified_t(t_input_hanzi: SubtitleSeries) -> None:
+def test_get_hanzi_subtitles_simplified_t(t_input_hanzi: Series) -> None:
     _test_get_hanzi_subtitles_simplified(t_input_hanzi)
 
 

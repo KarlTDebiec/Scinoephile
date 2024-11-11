@@ -14,7 +14,7 @@ from hanziconv import HanziConv
 
 from scinoephile.common import package_root
 from scinoephile.core.exceptions import ScinoephileException
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 from scinoephile.core.text import punctuation, re_hanzi, re_hanzi_rare, re_western
 
 data_root = package_root / "data/cantonese/"
@@ -122,7 +122,7 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
         return None
 
 
-def get_cantonese_pinyin_subtitles(subtitles: SubtitleSeries) -> SubtitleSeries:
+def get_cantonese_pinyin_subtitles(subtitles: Series) -> Series:
     """Get the Yale Cantonese romanization of Hanzi subtitles.
 
     Arguments:

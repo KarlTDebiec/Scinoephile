@@ -17,11 +17,9 @@ class Subtitle(SSAEvent):
     """
 
     def __init__(self, **kwargs: Any) -> None:
-        """
-        Initializes.
+        """Initialize.
 
-        Args:
-            series (SubtitleSeries): Subtitle series of which this subtitle is a part
+        Arguments:
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(SSAEvent)}

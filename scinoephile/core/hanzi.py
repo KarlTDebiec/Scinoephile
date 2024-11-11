@@ -8,13 +8,13 @@ from copy import deepcopy
 
 from hanziconv import HanziConv
 
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
-def get_hanzi_subtitles_simplified(subtitles: SubtitleSeries) -> SubtitleSeries:
+def get_hanzi_subtitles_simplified(subtitles: Series) -> Series:
     """Get traditional hanzi subtitles simplified.
 
     Arguments:
@@ -28,9 +28,7 @@ def get_hanzi_subtitles_simplified(subtitles: SubtitleSeries) -> SubtitleSeries:
     return subtitles
 
 
-def get_hanzi_subtitles_merged_to_single_line(
-    subtitles: SubtitleSeries,
-) -> SubtitleSeries:
+def get_hanzi_subtitles_merged_to_single_line(subtitles: Series) -> Series:
     """Get multi-line hanzi subtitles merged to single lines.
 
     Arguments:
