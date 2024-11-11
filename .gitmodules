@@ -1,0 +1,4 @@
+[submodule "scinoephile/common"]
+    path    = scinoephile/common
+    url     = https://github.com/KarlTDebiec/common.git
+    branch  = master
