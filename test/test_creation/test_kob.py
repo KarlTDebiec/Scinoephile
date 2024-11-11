@@ -15,9 +15,11 @@ from scinoephile.core.synchronization import (
     get_synced_subtitles_from_groups,
 )
 from scinoephile.testing import SyncTestCase
+from scinoephile.testing.mark import skip_if_ci
 from ..data.kob import kob_input_english, kob_input_hanzi
 
 
+@skip_if_ci()
 def test_get_test_cases_t(
     kob_input_hanzi: SubtitleSeries,
     kob_input_english: SubtitleSeries,

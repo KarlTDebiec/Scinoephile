@@ -19,6 +19,7 @@ from scinoephile.open_ai.functions import (
     get_sync_overlap_notes,
 )
 from scinoephile.testing import SyncTestCase
+from scinoephile.testing.mark import skip_if_ci
 from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
 
 
@@ -27,6 +28,7 @@ def open_ai_service():
     return OpenAiService()
 
 
+@skip_if_ci()
 @pytest.mark.parametrize(
     "test_case, language",
     [(case, lang) for case in mnt_test_cases for lang in ["chinese", "english"]],
