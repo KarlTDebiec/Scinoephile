@@ -2,23 +2,20 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 from __future__ import annotations
 
-import numpy as np
-
 import numba as nb
+import numpy as np
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_image(bytes_, height, width):
-    """
-    Reads a palette-compressed image from a block of bytes.
+def read_sup_image(bytes_: bytearray, height: int, width: int) -> np.ndarray:
+    """Read a palette-compressed image from a block of bytes.
 
-    Args:
-        bytes_ (bytearray): Block of bytes
-        height (int): Height of image
-        width (int): Width of image
-
+    Arguments:
+        bytes_: block of bytes
+        height: height of image
+        width: width of image
     Returns:
-        ndarray: compressed image
+        compressed image
     """
     img = np.zeros((height, width), np.uint8)
     byte_i = 0
@@ -64,15 +61,13 @@ def read_sup_image(bytes_, height, width):
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_palette(bytes_):
-    """
-    Reads a color palette from a block of bytes.
+def read_sup_palette(bytes_: bytearray) -> np.ndarray:
+    """Read a color palette from a block of bytes.
 
-    Args:
-        bytes_ (bytearray): Block of bytes
-
+    Arguments:
+        bytes_: block of bytes
     Returns:
-        ndarray: palette; first index is color, second is channel
+        palette; first index is color, second is channel
     """
     palette = np.zeros((256, 4), np.uint8)
     byte_i = 0
@@ -92,16 +87,15 @@ def read_sup_palette(bytes_):
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_subtitles(bytes_):
-    """
-    Reads subtitle images and times from a block of bytes.
+def read_sup_series(
+    bytes_: bytearray,
+) -> tuple[list[float], list[float], list[np.ndarray]]:
+    """Read subtitle images and times from a block of bytes.
 
-    Args:
-        bytes_ (bytearray): block of bytes
-
+    Arguments:
+        bytes_: block of bytes
     Returns:
-        tuple(list(float), list(float), list(ndarray)): Subtitle starts, ends,
-          and images
+        Subtitle starts, ends, and images
     """
     starts = []
     ends = []

@@ -1,27 +1,27 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to pairs of subtitles."""
+"""Core code related to pairs of series."""
 from __future__ import annotations
 
 from copy import deepcopy
 
 from scinoephile.core import ScinoephileException
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 
 def get_pair_blocks_by_pause(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
+    one: Series,
+    two: Series,
     pause_length: int = 3000,
-) -> list[tuple[SubtitleSeries, SubtitleSeries]]:
-    """Split a pair of subtitles into blocks using pauses without text in either.
+) -> list[tuple[Series, Series]]:
+    """Split a pair of series into blocks using pauses without text in either.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
         pause_length: split whenever a pause of this length is encountered
     Returns:
-        pairs of subtitles split into blocks
+        pairs of series split into blocks
     """
     blocks = []
     source_one = deepcopy(one.events)
@@ -62,8 +62,8 @@ def get_pair_blocks_by_pause(
                 changed = True
 
         # Store block
-        block_one = SubtitleSeries()
-        block_two = SubtitleSeries()
+        block_one = Series()
+        block_two = Series()
         block_one.events = nascent_block_one
         block_two.events = nascent_block_two
         blocks.append((block_one, block_two))
@@ -92,19 +92,16 @@ def get_pair_blocks_by_pause(
     return blocks
 
 
-def get_pair_with_zero_start(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> tuple[SubtitleSeries, SubtitleSeries]:
-    """Shift a pair of subtitles' start times to zero.
+def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
+    """Shift a pair of series' start times to zero.
 
-    If the two subtitles have the same start time, both will be shifted to zero. If they
+    If the two series have the same start time, both will be shifted to zero. If they
     have different start times, the earlier start time will be shifted to zero, and the
     later will be shifted by the same amount.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
     Returns:
         pair with their start times shifted to zero
     """
@@ -117,23 +114,20 @@ def get_pair_with_zero_start(
     else:
         raise ScinoephileException("Both subtitle series are empty")
 
-    subtitles_one_shifted = deepcopy(one)
-    subtitles_two_shifted = deepcopy(two)
-    subtitles_one_shifted.shift(ms=-start_time)
-    subtitles_two_shifted.shift(ms=-start_time)
+    one_shifted = deepcopy(one)
+    two_shifted = deepcopy(two)
+    one_shifted.shift(ms=-start_time)
+    two_shifted.shift(ms=-start_time)
 
-    return subtitles_one_shifted, subtitles_two_shifted
+    return one_shifted, two_shifted
 
 
-def get_pair_strings(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> tuple[str, str]:
+def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
     Returns:
         strings of each series
     """

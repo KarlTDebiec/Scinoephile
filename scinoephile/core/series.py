@@ -12,7 +12,7 @@ from scinoephile.common.validation import validate_input_file, validate_output_f
 from scinoephile.core.subtitle import Subtitle
 
 
-class SubtitleSeries(SSAFile):
+class Series(SSAFile):
     """Series of subtitles.
 
     TODO: Add support for loading from and saving to hdf5
@@ -22,7 +22,7 @@ class SubtitleSeries(SSAFile):
     """Class of individual subtitle events."""
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
-        """Save subtitles to an output file.
+        """Save series to an output file.
 
         Arguments:
             path: output file path
@@ -31,18 +31,18 @@ class SubtitleSeries(SSAFile):
         """
         path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
-        info(f"Saved subtitles to {path}")
+        info(f"Saved series to {path}")
 
-    def slice(self, start: int, end: int) -> SubtitleSeries:
-        """Slice subtitles.
+    def slice(self, start: int, end: int) -> Series:
+        """Slice series.
 
         Arguments:
             start: start index
             end: end index
         Returns:
-            sliced subtitles
+            sliced series
         """
-        sliced = SubtitleSeries()
+        sliced = Series()
         sliced.events = self.events[start:end]
         return sliced
 
@@ -73,23 +73,23 @@ class SubtitleSeries(SSAFile):
         format_: str | None = None,
         fps: float | None = None,
         **kwargs: Any,
-    ) -> SubtitleSeries:
-        """Parse subtitles from string.
+    ) -> Series:
+        """Parse series from string.
 
         Arguments:
             string: string to parse
             format_: input file format
             fps: frames per second
         Returns:
-            parse subtitles
+            parsed series
         """
-        subtitles = super().from_string(string, format_=format_, fps=fps, **kwargs)
+        series = super().from_string(string, format_=format_, fps=fps, **kwargs)
         events = []
-        for ssaevent in subtitles.events:
-            events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
-        subtitles.events = events
+        for ssaevent in series.events:
+            events.append(cls.event_class(series=series, **ssaevent.as_dict()))
+        series.events = events
 
-        return subtitles
+        return series
 
     @classmethod
     def load(
@@ -98,8 +98,8 @@ class SubtitleSeries(SSAFile):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> SubtitleSeries:
-        """Load subtitles from an input file.
+    ) -> Series:
+        """Load series from an input file.
 
         Arguments:
             path : input file path
@@ -107,16 +107,16 @@ class SubtitleSeries(SSAFile):
             format_: input file format
             **kwargs: additional keyword arguments
         Returns:
-            loaded subtitles
+            loaded series
         """
         path = validate_input_file(path)
 
         with open(path, encoding=encoding) as fp:
-            subtitles = cls.from_file(fp, format_=format_, **kwargs)
+            series = cls.from_file(fp, format_=format_, **kwargs)
             events = []
-            for ssaevent in subtitles.events:
-                events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
-            subtitles.events = events
+            for ssaevent in series.events:
+                events.append(cls.event_class(series=series, **ssaevent.as_dict()))
+            series.events = events
 
-        info(f"Loaded subtitles from {path}")
-        return subtitles
+        info(f"Loaded series from {path}")
+        return series

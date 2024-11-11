@@ -5,16 +5,16 @@
 Code within this module may import only from scinoephile.common.
 
 Most functions herein follow the naming convention:
-    get_(english|hanzi|cantonese_pinyin|mandarin_pinyin)_(character|text|subtitles)_(description)
+    get_(english|hanzi|cantonese_pinyin|mandarin_pinyin)_(character|text|series)_(description)
 """
 from __future__ import annotations
 
 from scinoephile.core.exceptions import ScinoephileException
+from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
-from scinoephile.core.subtitle_series import SubtitleSeries
 
 __all__ = [
     "ScinoephileException",
+    "Series",
     "Subtitle",
-    "SubtitleSeries",
 ]

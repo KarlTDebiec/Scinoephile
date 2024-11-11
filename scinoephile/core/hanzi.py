@@ -8,40 +8,38 @@ from copy import deepcopy
 
 from hanziconv import HanziConv
 
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
-def get_hanzi_subtitles_simplified(subtitles: SubtitleSeries) -> SubtitleSeries:
-    """Get traditional hanzi subtitles simplified.
+def get_hanzi_series_simplified(series: Series) -> Series:
+    """Get traditional hanzi series simplified.
 
     Arguments:
-        subtitles: subtitles to simplify
+        series: series to simplify
     Returns:
-        simplified subtitles
+        simplified series
     """
-    subtitles = deepcopy(subtitles)
-    for subtitle in subtitles:
+    series = deepcopy(series)
+    for subtitle in series:
         subtitle.text = get_hanzi_text_simplified(subtitle.text)
-    return subtitles
+    return series
 
 
-def get_hanzi_subtitles_merged_to_single_line(
-    subtitles: SubtitleSeries,
-) -> SubtitleSeries:
-    """Get multi-line hanzi subtitles merged to single lines.
+def get_hanzi_series_merged_to_single_line(series: Series) -> Series:
+    """Get multi-line hanzi series merged to single lines.
 
     Arguments:
-        subtitles: subtitles to merge
+        series: series to merge
     Returns:
-        merged subtitles
+        merged series
     """
-    subtitles = deepcopy(subtitles)
-    for subtitle in subtitles:
+    series = deepcopy(series)
+    for subtitle in series:
         subtitle.text = get_hanzi_text_merged_to_single_line(subtitle.text)
-    return subtitles
+    return series
 
 
 def get_hanzi_text_merged_to_single_line(text: str) -> str:

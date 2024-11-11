@@ -7,7 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, create_model
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_with_zero_start
 from scinoephile.open_ai.subtitle_group_response import SubtitleGroupResponse
 
@@ -22,13 +22,15 @@ def get_sync_notes_model(language: str, count: int) -> BaseModel:
 
 
 def get_sync_overlap_notes(
-    hanzi: SubtitleSeries, english: SubtitleSeries, primary: str
+    hanzi: Series,
+    english: Series,
+    primary: str,
 ) -> dict[str, str]:
-    """Get notes describing the overlap in timing between two subtitle series.
+    """Get notes describing the overlap in timing between two series.
 
     Arguments:
-        hanzi: Hanzi subtitles
-        english: English subtitles
+        hanzi: Hanzi series
+        english: English series
         primary: Language to treat as primary
     Returns:
         Dictionary whose keys are the subtitle index in the primary language, and

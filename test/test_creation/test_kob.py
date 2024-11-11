@@ -5,14 +5,14 @@ from __future__ import annotations
 
 from pprint import pformat
 
-from scinoephile.core import SubtitleSeries
+from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.synchronization import (
     are_series_one_to_one,
     get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
-    get_synced_subtitles_from_groups,
+    get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
 from scinoephile.testing.mark import skip_if_ci
@@ -21,8 +21,8 @@ from ..data.kob import kob_input_english, kob_input_hanzi
 
 @skip_if_ci()
 def test_get_test_cases_t(
-    kob_input_hanzi: SubtitleSeries,
-    kob_input_english: SubtitleSeries,
+    kob_input_hanzi: Series,
+    kob_input_english: Series,
 ) -> None:
     pair_blocks = get_pair_blocks_by_pause(kob_input_hanzi, kob_input_english)
     bilingual_blocks = []
@@ -62,12 +62,12 @@ def test_get_test_cases_t(
         sync_groups = get_sync_groups(hanzi_block, english_block)
         print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
-        sync_subtitles = get_synced_subtitles_from_groups(
+        sync_series = get_synced_series_from_groups(
             hanzi_block, english_block, sync_groups
         )
-        print(f"\nSYNCED SUBTITLES:\n{sync_subtitles.to_simple_string()}")
+        print(f"\nSYNCED SUBTITLES:\n{sync_series.to_simple_string()}")
 
-        bilingual_blocks.append(sync_subtitles)
+        bilingual_blocks.append(sync_series)
 
         test_case = SyncTestCase(
             hanzi_start=hanzi_start,

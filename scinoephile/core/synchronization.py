@@ -8,16 +8,13 @@ import numpy as np
 
 from scinoephile.core import ScinoephileException, Subtitle
 from scinoephile.core.pairs import get_pair_blocks_by_pause
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 
 SyncGroup = list[list[int], list[int]]
 SyncGroupList = list[SyncGroup]
 
 
-def are_series_one_to_one(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> bool:
+def are_series_one_to_one(one: Series, two: Series) -> bool:
     if len(one.events) != len(two.events):
         return False
 
@@ -28,20 +25,15 @@ def are_series_one_to_one(
     return True
 
 
-def get_merged_series(
-    blocks: list[SubtitleSeries],
-) -> SubtitleSeries:
-    merged = SubtitleSeries()
+def get_merged_series(blocks: list[Series]) -> Series:
+    merged = Series()
     for block in blocks:
         merged.events.extend(block.events)
     merged.events.sort(key=lambda x: x.start)
     return merged
 
 
-def get_sync_overlap_matrix(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> np.ndarray:
+def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
     """Get a matrix of the overlap between two series, modeled as Gaussians.
 
     Arguments:
@@ -65,10 +57,7 @@ def get_sync_overlap_matrix(
     return overlap
 
 
-def get_sync_groups(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> SyncGroupList:
+def get_sync_groups(one: Series, two: Series) -> SyncGroupList:
     if len(one.events) == 0:
         return []
     if len(two.events) == 0:
@@ -177,28 +166,25 @@ def get_sync_groups(
     return sync_groups
 
 
-def get_synced_subtitles(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
-) -> SubtitleSeries:
+def get_synced_series(one: Series, two: Series) -> Series:
     synced_blocks = []
 
     pair_blocks = get_pair_blocks_by_pause(one, two)
     for one_block, two_block in pair_blocks:
         groups = get_sync_groups(one_block, two_block)
-        synced_block = get_synced_subtitles_from_groups(one_block, two_block, groups)
+        synced_block = get_synced_series_from_groups(one_block, two_block, groups)
         synced_blocks.append(synced_block)
 
     synced = get_merged_series(synced_blocks)
     return synced
 
 
-def get_synced_subtitles_from_groups(
-    one: SubtitleSeries,
-    two: SubtitleSeries,
+def get_synced_series_from_groups(
+    one: Series,
+    two: Series,
     groups: SyncGroupList,
-) -> SubtitleSeries:
-    synced = SubtitleSeries()
+) -> Series:
+    synced = Series()
 
     for group in groups:
         one_events = [one.events[i - 1] for i in group[0]]

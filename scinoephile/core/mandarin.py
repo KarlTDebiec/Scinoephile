@@ -8,22 +8,22 @@ from copy import deepcopy
 from pypinyin import pinyin
 from snownlp import SnowNLP
 
-from scinoephile.core.subtitle_series import SubtitleSeries
+from scinoephile.core.series import Series
 from scinoephile.core.text import punctuation
 
 
-def get_mandarin_pinyin_subtitles(subtitles: SubtitleSeries) -> SubtitleSeries:
-    """Get the Mandarin pinyin romanization of Hanzi subtitles.
+def get_mandarin_pinyin_series(series: Series) -> Series:
+    """Get the Mandarin pinyin romanization of Hanzi series.
 
     Arguments:
-        subtitles: Subtitles for which to get Mandarin pinyin romanization
+        series: series for which to get Mandarin pinyin romanization
     Returns:
-        Mandarin pinyin romanization of subtitles
+        Mandarin pinyin romanization of series
     """
-    subtitles = deepcopy(subtitles)
-    for subtitle in subtitles:
+    series = deepcopy(series)
+    for subtitle in series:
         subtitle.text = get_mandarin_pinyin_text(subtitle.text)
-    return subtitles
+    return series
 
 
 def get_mandarin_pinyin_text(text: str) -> str:
