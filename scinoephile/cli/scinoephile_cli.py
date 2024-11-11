@@ -22,6 +22,7 @@ from scinoephile.core.hanzi import (
     get_hanzi_subtitles_merged_to_single_line,
     get_hanzi_subtitles_simplified,
 )
+from scinoephile.core.synchronization import get_synced_subtitles
 
 
 class ScinoephileCli(CommandLineInterface):
@@ -147,7 +148,7 @@ class ScinoephileCli(CommandLineInterface):
         if "simplify_hanzi" in operations:
             hanzi = get_hanzi_subtitles_simplified(hanzi)
         if "sync_bilingual" in operations:
-            bilingual = openai_service.synchronize_bilingual_subtitles(hanzi, english)
+            bilingual = get_synced_subtitles(hanzi, english)
 
         # Output operations
         if "save_bilingual" in operations:

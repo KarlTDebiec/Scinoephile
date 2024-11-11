@@ -9,50 +9,6 @@ from scinoephile.core import ScinoephileException
 from scinoephile.core.subtitle_series import SubtitleSeries
 
 
-def is_pair_one_to_one_mapped(one: SubtitleSeries, two: SubtitleSeries) -> bool:
-    """Check if a pair of subtitles have clean 1:1 mapping with no other overlap.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-    Returns:
-        True if subtitles are cleanly mapped, False otherwise
-    """
-    if len(one.events) != len(two.events):
-        return False
-
-    for i, (event_one, event_two) in enumerate(zip(one.events, two.events)):
-        # Ensure event_one overlaps event_two
-        if not (event_one.start <= event_two.end and event_two.start <= event_one.end):
-            return False
-
-        # Ensure event_two overlaps with event_one
-        if not (event_two.start <= event_one.end and event_one.start <= event_two.end):
-            return False
-
-        # Ensure event_one does not overlap with any other event in subtitles_two
-        for j, other_event_two in enumerate(two.events):
-            if i == j:
-                continue
-            if (
-                event_one.start <= other_event_two.end
-                and other_event_two.start <= event_one.end
-            ):
-                return False
-
-        # Ensure event_two does not overlap with any other event in subtitles_one
-        for j, other_event_one in enumerate(one.events):
-            if i == j:
-                continue
-            if (
-                event_two.start <= other_event_one.end
-                and other_event_one.start <= event_two.end
-            ):
-                return False
-
-    return True
-
-
 def get_pair_blocks_by_pause(
     one: SubtitleSeries,
     two: SubtitleSeries,
@@ -137,7 +93,8 @@ def get_pair_blocks_by_pause(
 
 
 def get_pair_with_zero_start(
-    one: SubtitleSeries, two: SubtitleSeries
+    one: SubtitleSeries,
+    two: SubtitleSeries,
 ) -> tuple[SubtitleSeries, SubtitleSeries]:
     """Shift a pair of subtitles' start times to zero.
 
@@ -168,7 +125,10 @@ def get_pair_with_zero_start(
     return subtitles_one_shifted, subtitles_two_shifted
 
 
-def get_pair_strings(one: SubtitleSeries, two: SubtitleSeries) -> tuple[str, str]:
+def get_pair_strings(
+    one: SubtitleSeries,
+    two: SubtitleSeries,
+) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:
