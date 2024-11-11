@@ -12,7 +12,7 @@ from scinoephile.core.synchronization import (
     get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
-    get_synced_subtitles_from_groups,
+    get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
 from scinoephile.testing.mark import skip_if_ci
@@ -62,12 +62,12 @@ def test_get_test_cases_t(
         sync_groups = get_sync_groups(hanzi_block, english_block)
         print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
-        sync_subtitles = get_synced_subtitles_from_groups(
+        sync_series = get_synced_series_from_groups(
             hanzi_block, english_block, sync_groups
         )
-        print(f"\nSYNCED SUBTITLES:\n{sync_subtitles.to_simple_string()}")
+        print(f"\nSYNCED SUBTITLES:\n{sync_series.to_simple_string()}")
 
-        bilingual_blocks.append(sync_subtitles)
+        bilingual_blocks.append(sync_series)
 
         test_case = SyncTestCase(
             hanzi_start=hanzi_start,

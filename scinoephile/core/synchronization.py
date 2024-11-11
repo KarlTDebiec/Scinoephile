@@ -166,20 +166,20 @@ def get_sync_groups(one: Series, two: Series) -> SyncGroupList:
     return sync_groups
 
 
-def get_synced_subtitles(one: Series, two: Series) -> Series:
+def get_synced_series(one: Series, two: Series) -> Series:
     synced_blocks = []
 
     pair_blocks = get_pair_blocks_by_pause(one, two)
     for one_block, two_block in pair_blocks:
         groups = get_sync_groups(one_block, two_block)
-        synced_block = get_synced_subtitles_from_groups(one_block, two_block, groups)
+        synced_block = get_synced_series_from_groups(one_block, two_block, groups)
         synced_blocks.append(synced_block)
 
     synced = get_merged_series(synced_blocks)
     return synced
 
 
-def get_synced_subtitles_from_groups(
+def get_synced_series_from_groups(
     one: Series,
     two: Series,
     groups: SyncGroupList,

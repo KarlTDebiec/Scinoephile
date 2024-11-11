@@ -24,7 +24,7 @@ class ImageSeries(Series):
     """Class of individual subtitle events"""
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
-        """Save subtitles to an output file.
+        """Save series to an output file.
 
         Arguments:
             path: output file path
@@ -37,21 +37,21 @@ class ImageSeries(Series):
         if format_ == "hdf5" or path.suffix in (".hdf5", ".h5"):
             with h5py.File(path) as fp:
                 self._save_hdf5(fp, **kwargs)
-            info(f"Saved subtitles to {path}")
+            info(f"Saved series to {path}")
             return
 
         # Check if directory
         if format_ == "png" or path.is_dir():
             self._save_png(path, **kwargs)
-            info(f"Saved subtitles to {path}")
+            info(f"Saved series to {path}")
             return
 
         # Otherwise, continue as superclass SSAFile
         SSAFile.save(self, path, format_=format_, **kwargs)
-        info(f"Saved subtitles to {path}")
+        info(f"Saved series to {path}")
 
     def _save_hdf5(self, fp: File, **kwargs: Any) -> None:
-        """Save subtitles to an output hdf5 file.
+        """Save series to an output hdf5 file.
 
         Arguments
             fp: open hdf5 output file
@@ -60,7 +60,7 @@ class ImageSeries(Series):
         raise NotImplementedError()
 
     def _save_png(self, fp: Path, **kwargs: Any) -> None:
-        """Save subtitles to directory of png files.
+        """Save series to directory of png files.
 
         Arguments:
             fp: path to outpt directory
@@ -76,7 +76,7 @@ class ImageSeries(Series):
         format_: str | None = None,
         **kwargs: Any,
     ) -> Series:
-        """Load subtitles from an input file.
+        """Load series from an input file.
 
         Arguments:
             path : input file path
@@ -84,7 +84,7 @@ class ImageSeries(Series):
             format_: input file format
             **kwargs: additional keyword arguments
         Returns:
-            loaded subtitles
+            loaded series
         """
         path = validate_input_file(path)
 
@@ -104,41 +104,41 @@ class ImageSeries(Series):
 
     @classmethod
     def _load_hdf5(cls, fp: File, **kwargs: Any) -> ImageSeries:
-        """Load subtitles from an input hdf5 file.
+        """Load series from an input hdf5 file.
 
         Arguments:
             fp: open hdf5 input file
             **kwargs: additional keyword arguments
         Returns:
-            Loaded subtitles
+            Loaded series
         """
         raise NotImplementedError()
 
     @classmethod
     def _load_sup(cls, fp: BinaryIO, **kwargs: Any) -> ImageSeries:
-        """Load subtitles from an input sup file.
+        """Load series from an input sup file.
 
         Args:
             fp: open binary file
             **kwargs: additional keyword arguments
         Returns:
-            loaded subtitles
+            loaded series
         """
         # Initialize
-        subtitles = cls()
-        subtitles.format = "sup"
+        series = cls()
+        series.format = "sup"
 
         # Parse infile
         bytes = fp.read()
         starts, ends, images = read_sup_series(bytes)
         for start, end, image in zip(starts, ends, images):
-            subtitles.events.append(
+            series.events.append(
                 cls.event_class(
                     start=make_time(s=start),
                     end=make_time(s=end),
                     data=image,
-                    series=subtitles,
+                    series=series,
                 )
             )
 
-        return subtitles
+        return series

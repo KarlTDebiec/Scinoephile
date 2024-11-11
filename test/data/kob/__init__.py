@@ -19,8 +19,14 @@ def kob_input_hanzi():
     return Series.load(get_test_file_path("kob/input/cmn-Hans.srt"))
 
 
+@pytest.fixture
+def kob_output_english():
+    return Series.load(get_test_file_path("kob/output/en-hk.srt"))
+
+
 test_cases = []
 ___all__ = [
     "kob_input_english",
     "kob_input_hanzi",
+    "kob_output_english",
 ]

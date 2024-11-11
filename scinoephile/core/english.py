@@ -12,32 +12,32 @@ import nltk
 from scinoephile.core.series import Series
 
 
-def get_english_subtitles_merged_to_single_line(subtitles: Series) -> Series:
-    """Get multi-line English subtitles merged to single lines.
+def get_english_series_merged_to_single_line(series: Series) -> Series:
+    """Get multi-line English series merged to single lines.
 
     Arguments:
-        subtitles: subtitles to merge
+        series: series to merge
     Returns:
-        merged subtitles
+        merged series
     """
-    subtitles = deepcopy(subtitles)
-    for subtitle in subtitles:
+    series = deepcopy(series)
+    for subtitle in series:
         subtitle.text = get_english_text_merged_to_single_line(subtitle.text)
-    return subtitles
+    return series
 
 
-def get_english_subtitles_truecased(subtitles: Series) -> Series:
-    """Get all-caps English subtitltes truecased.
+def get_english_series_truecased(series: Series) -> Series:
+    """Get all-caps English series truecased.
 
     Arguments:
-        subtitles: subtitles to truecase
+        series: series to truecase
     Returns:
-        truecased subtitles
+        truecased series
     """
-    subtitles = deepcopy(subtitles)
-    for subtitle in subtitles:
+    series = deepcopy(series)
+    for subtitle in series:
         subtitle.text = get_english_text_truecased(subtitle.text)
-    return subtitles
+    return series
 
 
 def get_english_text_merged_to_single_line(text: str) -> str:

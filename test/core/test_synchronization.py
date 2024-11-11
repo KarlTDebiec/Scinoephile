@@ -13,8 +13,8 @@ from scinoephile.core.synchronization import (
     get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
-    get_synced_subtitles,
-    get_synced_subtitles_from_groups,
+    get_synced_series,
+    get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
 from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
@@ -42,14 +42,14 @@ def test_blocks_mnt(
 
     assert sync_groups == test_case.sync_groups
 
-    subtitles = get_synced_subtitles_from_groups(hanzi, english, sync_groups)
-    print(f"\nSYNCED SUBTITLES:\n{subtitles.to_simple_string()}")
+    series = get_synced_series_from_groups(hanzi, english, sync_groups)
+    print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
 def test_complete_mnt(
     mnt_input_hanzi: Series,
     mnt_input_english: Series,
 ) -> None:
-    bilingual = get_synced_subtitles(mnt_input_hanzi, mnt_input_english)
+    bilingual = get_synced_series(mnt_input_hanzi, mnt_input_english)
     print(bilingual.to_string("srt"))
     assert len(bilingual) == 733

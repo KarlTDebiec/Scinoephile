@@ -26,11 +26,11 @@ def get_sync_overlap_notes(
     english: Series,
     primary: str,
 ) -> dict[str, str]:
-    """Get notes describing the overlap in timing between two subtitle series.
+    """Get notes describing the overlap in timing between two series.
 
     Arguments:
-        hanzi: Hanzi subtitles
-        english: English subtitles
+        hanzi: Hanzi series
+        english: English series
         primary: Language to treat as primary
     Returns:
         Dictionary whose keys are the subtitle index in the primary language, and

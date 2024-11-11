@@ -5,4 +5,7 @@ from __future__ import annotations
 from scinoephile.image.image_series import ImageSeries
 from scinoephile.image.image_subtitle import ImageSubtitle
 
-__all__ = ["ImageSubtitle", "ImageSeries"]
+__all__ = [
+    "ImageSubtitle",
+    "ImageSeries",
+]

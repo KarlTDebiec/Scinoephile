@@ -13,16 +13,13 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.core import (
-    ScinoephileException,
-    Series,
-)
-from scinoephile.core.english import get_english_subtitles_merged_to_single_line
+from scinoephile.core import ScinoephileException, Series
+from scinoephile.core.english import get_english_series_merged_to_single_line
 from scinoephile.core.hanzi import (
-    get_hanzi_subtitles_merged_to_single_line,
-    get_hanzi_subtitles_simplified,
+    get_hanzi_series_merged_to_single_line,
+    get_hanzi_series_simplified,
 )
-from scinoephile.core.synchronization import get_synced_subtitles
+from scinoephile.core.synchronization import get_synced_series
 
 
 class ScinoephileCli(CommandLineInterface):
@@ -142,13 +139,13 @@ class ScinoephileCli(CommandLineInterface):
 
         # Operation operations
         if "merge_english" in operations:
-            english = get_english_subtitles_merged_to_single_line(english)
+            english = get_english_series_merged_to_single_line(english)
         if "merge_hanzi" in operations:
-            hanzi = get_hanzi_subtitles_merged_to_single_line(hanzi)
+            hanzi = get_hanzi_series_merged_to_single_line(hanzi)
         if "simplify_hanzi" in operations:
-            hanzi = get_hanzi_subtitles_simplified(hanzi)
+            hanzi = get_hanzi_series_simplified(hanzi)
         if "sync_bilingual" in operations:
-            bilingual = get_synced_subtitles(hanzi, english)
+            bilingual = get_synced_series(hanzi, english)
 
         # Output operations
         if "save_bilingual" in operations:

@@ -7,19 +7,19 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.cantonese import (
-    get_cantonese_pinyin_subtitles,
+    get_cantonese_pinyin_series,
     get_cantonese_pinyin_text,
 )
-from ..data import kob_input_hanzi
+from ..data.kob import kob_input_hanzi
 
 
-def _test_get_cantonese_pinyin_subtitles(input_subtitles: Series) -> None:
-    output_subtitles = get_cantonese_pinyin_subtitles(input_subtitles)
-    assert len(input_subtitles.events) == len(output_subtitles.events)
+def _test_get_cantonese_pinyin_series(input_series: Series) -> None:
+    output_series = get_cantonese_pinyin_series(input_series)
+    assert len(input_series.events) == len(output_series.events)
 
 
-def test_get_cantonese_pinyin_subtitles_kob(kob_input_hanzi: Series) -> None:
-    _test_get_cantonese_pinyin_subtitles(kob_input_hanzi)
+def test_get_cantonese_pinyin_series_kob(kob_input_hanzi: Series) -> None:
+    _test_get_cantonese_pinyin_series(kob_input_hanzi)
 
 
 @pytest.mark.parametrize(

@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 from scinoephile.core import Series
-from scinoephile.core.english import get_english_subtitles_merged_to_single_line
-from scinoephile.core.hanzi import get_hanzi_subtitles_merged_to_single_line
+from scinoephile.core.english import get_english_series_merged_to_single_line
+from scinoephile.core.hanzi import get_hanzi_series_merged_to_single_line
 
 english = Series.load(r"C:\Users\karls\Code\Scinoephile\test\data\mnt\input\en-US.srt")
-english = get_english_subtitles_merged_to_single_line(english)
+english = get_english_series_merged_to_single_line(english)
 english.save("en-US.srt")
 
 hanzi = Series.load(r"C:\Users\karls\Code\Scinoephile\test\data\mnt\input\cmn-Hans.srt")
-hanzi = get_hanzi_subtitles_merged_to_single_line(hanzi)
+hanzi = get_hanzi_series_merged_to_single_line(hanzi)
 hanzi.save("cmn-Hans.srt")

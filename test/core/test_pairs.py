@@ -8,9 +8,8 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause
 from ..data.mnt import mnt_input_english, mnt_input_hanzi
 
 
-def test_get_pair_blocks_by_pause(
-    mnt_input_hanzi: Series,
-    mnt_input_english: Series,
+def test_get_pair_blocks_by_pause_mnt(
+    mnt_input_hanzi: Series, mnt_input_english: Series
 ) -> None:
     pair_blocks = get_pair_blocks_by_pause(mnt_input_hanzi, mnt_input_english)
     assert len(pair_blocks) == 176

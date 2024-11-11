@@ -7,27 +7,24 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.hanzi import (
-    get_hanzi_subtitles_merged_to_single_line,
-    get_hanzi_subtitles_simplified,
+    get_hanzi_series_merged_to_single_line,
+    get_hanzi_series_simplified,
     get_hanzi_text_merged_to_single_line,
     get_hanzi_text_simplified,
 )
-from ..data import (
-    kob_input_hanzi,
-    t_input_hanzi,
-    t_output_hanzi,
-)
+from ..data.kob import kob_input_hanzi
+from ..data.t import t_input_hanzi, t_output_hanzi
 
 
-def _test_get_hanzi_subtitles_merged_to_single_line(
-    input_subtitles: Series, expected_output_subtitles: Series
+def _test_get_hanzi_series_merged_to_single_line(
+    input_series: Series, expected_output_series: Series
 ) -> None:
-    output_subtitles = get_hanzi_subtitles_merged_to_single_line(input_subtitles)
-    assert len(input_subtitles.events) == len(output_subtitles.events)
+    output_series = get_hanzi_series_merged_to_single_line(input_series)
+    assert len(input_series.events) == len(output_series.events)
 
     errors = []
     for i, (output_subtitle, expected_output_subtitle) in enumerate(
-        zip(output_subtitles.events, expected_output_subtitles.events), 1
+        zip(output_series.events, expected_output_series.events), 1
     ):
         if output_subtitle.text.count("\n") != 0:
             errors.append(f"Subtitle {i} contains newline")
@@ -43,24 +40,24 @@ def _test_get_hanzi_subtitles_merged_to_single_line(
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def test_get_hanzi_subtitles_merged_to_single_line_t(
+def test_get_hanzi_series_merged_to_single_line_t(
     t_input_hanzi: Series,
     t_output_hanzi: Series,
 ) -> None:
-    _test_get_hanzi_subtitles_merged_to_single_line(t_input_hanzi, t_output_hanzi)
+    _test_get_hanzi_series_merged_to_single_line(t_input_hanzi, t_output_hanzi)
 
 
-def _test_get_hanzi_subtitles_simplified(input_subtitles: Series) -> None:
-    output_subtitles = get_hanzi_subtitles_simplified(input_subtitles)
-    assert len(input_subtitles.events) == len(output_subtitles.events)
+def _test_get_hanzi_series_simplified(input_series: Series) -> None:
+    output_series = get_hanzi_series_simplified(input_series)
+    assert len(input_series.events) == len(output_series.events)
 
 
-def test_get_hanzi_subtitles_simplified_kob(kob_input_hanzi: Series) -> None:
-    _test_get_hanzi_subtitles_simplified(kob_input_hanzi)
+def test_get_hanzi_series_simplified_kob(kob_input_hanzi: Series) -> None:
+    _test_get_hanzi_series_simplified(kob_input_hanzi)
 
 
-def test_get_hanzi_subtitles_simplified_t(t_input_hanzi: Series) -> None:
-    _test_get_hanzi_subtitles_simplified(t_input_hanzi)
+def test_get_hanzi_series_simplified_t(t_input_hanzi: Series) -> None:
+    _test_get_hanzi_series_simplified(t_input_hanzi)
 
 
 @pytest.mark.parametrize(

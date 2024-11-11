@@ -5,7 +5,7 @@
 Code within this module may import only from scinoephile.common.
 
 Most functions herein follow the naming convention:
-    get_(english|hanzi|cantonese_pinyin|mandarin_pinyin)_(character|text|subtitles)_(description)
+    get_(english|hanzi|cantonese_pinyin|mandarin_pinyin)_(character|text|series)_(description)
 """
 from __future__ import annotations
 

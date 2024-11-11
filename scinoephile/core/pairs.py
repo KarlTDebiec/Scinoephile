@@ -1,6 +1,6 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to pairs of subtitles."""
+"""Core code related to pairs of series."""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -14,14 +14,14 @@ def get_pair_blocks_by_pause(
     two: Series,
     pause_length: int = 3000,
 ) -> list[tuple[Series, Series]]:
-    """Split a pair of subtitles into blocks using pauses without text in either.
+    """Split a pair of series into blocks using pauses without text in either.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
         pause_length: split whenever a pause of this length is encountered
     Returns:
-        pairs of subtitles split into blocks
+        pairs of series split into blocks
     """
     blocks = []
     source_one = deepcopy(one.events)
@@ -93,15 +93,15 @@ def get_pair_blocks_by_pause(
 
 
 def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
-    """Shift a pair of subtitles' start times to zero.
+    """Shift a pair of series' start times to zero.
 
-    If the two subtitles have the same start time, both will be shifted to zero. If they
+    If the two series have the same start time, both will be shifted to zero. If they
     have different start times, the earlier start time will be shifted to zero, and the
     later will be shifted by the same amount.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
     Returns:
         pair with their start times shifted to zero
     """
@@ -114,20 +114,20 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
     else:
         raise ScinoephileException("Both subtitle series are empty")
 
-    subtitles_one_shifted = deepcopy(one)
-    subtitles_two_shifted = deepcopy(two)
-    subtitles_one_shifted.shift(ms=-start_time)
-    subtitles_two_shifted.shift(ms=-start_time)
+    one_shifted = deepcopy(one)
+    two_shifted = deepcopy(two)
+    one_shifted.shift(ms=-start_time)
+    two_shifted.shift(ms=-start_time)
 
-    return subtitles_one_shifted, subtitles_two_shifted
+    return one_shifted, two_shifted
 
 
 def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        one: first series
+        two: second series
     Returns:
         strings of each series
     """

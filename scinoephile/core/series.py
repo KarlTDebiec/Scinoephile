@@ -22,7 +22,7 @@ class Series(SSAFile):
     """Class of individual subtitle events."""
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
-        """Save subtitles to an output file.
+        """Save series to an output file.
 
         Arguments:
             path: output file path
@@ -31,16 +31,16 @@ class Series(SSAFile):
         """
         path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
-        info(f"Saved subtitles to {path}")
+        info(f"Saved series to {path}")
 
     def slice(self, start: int, end: int) -> Series:
-        """Slice subtitles.
+        """Slice series.
 
         Arguments:
             start: start index
             end: end index
         Returns:
-            sliced subtitles
+            sliced series
         """
         sliced = Series()
         sliced.events = self.events[start:end]
@@ -74,22 +74,22 @@ class Series(SSAFile):
         fps: float | None = None,
         **kwargs: Any,
     ) -> Series:
-        """Parse subtitles from string.
+        """Parse series from string.
 
         Arguments:
             string: string to parse
             format_: input file format
             fps: frames per second
         Returns:
-            parse subtitles
+            parsed series
         """
-        subtitles = super().from_string(string, format_=format_, fps=fps, **kwargs)
+        series = super().from_string(string, format_=format_, fps=fps, **kwargs)
         events = []
-        for ssaevent in subtitles.events:
-            events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
-        subtitles.events = events
+        for ssaevent in series.events:
+            events.append(cls.event_class(series=series, **ssaevent.as_dict()))
+        series.events = events
 
-        return subtitles
+        return series
 
     @classmethod
     def load(
@@ -99,7 +99,7 @@ class Series(SSAFile):
         format_: str | None = None,
         **kwargs: Any,
     ) -> Series:
-        """Load subtitles from an input file.
+        """Load series from an input file.
 
         Arguments:
             path : input file path
@@ -107,16 +107,16 @@ class Series(SSAFile):
             format_: input file format
             **kwargs: additional keyword arguments
         Returns:
-            loaded subtitles
+            loaded series
         """
         path = validate_input_file(path)
 
         with open(path, encoding=encoding) as fp:
-            subtitles = cls.from_file(fp, format_=format_, **kwargs)
+            series = cls.from_file(fp, format_=format_, **kwargs)
             events = []
-            for ssaevent in subtitles.events:
-                events.append(cls.event_class(series=subtitles, **ssaevent.as_dict()))
-            subtitles.events = events
+            for ssaevent in series.events:
+                events.append(cls.event_class(series=series, **ssaevent.as_dict()))
+            series.events = events
 
-        info(f"Loaded subtitles from {path}")
-        return subtitles
+        info(f"Loaded series from {path}")
+        return series
