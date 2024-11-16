@@ -46,6 +46,17 @@ jobs:
           write_output_files: true
           json: true
 
+      - name: Run Prospector
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          poetry run prospector -A -u flask -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
+      - name: Annotate with Prospector results
+        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
+        with:
+          tool: prospector
+          tool_infile: .github/outputs/prospector.json
+          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
+
       - name: pytest
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
