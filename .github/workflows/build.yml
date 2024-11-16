@@ -39,6 +39,13 @@ jobs:
         run: |
           poetry install --no-interaction
 
+      - name: Identify changes
+        id: files
+        uses: tj-actions/changed-files@v41
+        with:
+          write_output_files: true
+          json: true
+
       - name: pytest
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
