@@ -1,14 +1,16 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Core code related to synchronization of subtitles."""
 from __future__ import annotations
 
 from copy import deepcopy
 
 import numpy as np
 
-from scinoephile.core import ScinoephileException, Subtitle
+from scinoephile.core.exceptions import ScinoephileException
 from scinoephile.core.pairs import get_pair_blocks_by_pause
 from scinoephile.core.series import Series
+from scinoephile.core.subtitle import Subtitle
 
 SyncGroup = list[list[int], list[int]]
 SyncGroupList = list[SyncGroup]
