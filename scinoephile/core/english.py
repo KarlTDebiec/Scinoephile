@@ -22,7 +22,7 @@ def get_english_series_merged_to_single_line(series: Series) -> Series:
     """
     series = deepcopy(series)
     for subtitle in series:
-        subtitle.text = get_english_text_merged_to_single_line(subtitle.text)
+        subtitle.text = get_english_text_merged_to_single_line(subtitle.text.strip())
     return series
 
 
@@ -55,12 +55,19 @@ def get_english_text_merged_to_single_line(text: str) -> str:
 
     # Merge conversations
     single_line = re.sub(
-        r"^\s*-\s*(.+)\n-\s*(.+)\s*$", r"- \1    - \2", single_line, re.M
+        r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
+        lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
+        single_line,
+        flags=re.M,
     )
 
     # Merge lines
-    single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$", r"\1 \2", single_line, re.M)
-
+    single_line = re.sub(
+        r"^\s*(.+)\s*\n\s*(.+)\s*$",
+        lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
+        single_line,
+        flags=re.M,
+    )
     return single_line
 
 

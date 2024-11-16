@@ -11,6 +11,7 @@ from scinoephile.core.english import (
     get_english_text_merged_to_single_line,
 )
 from ..data.kob import kob_input_english, kob_output_english
+from ..data.pdp import pdp_input_en, pdp_output_en_merge
 from ..data.t import t_input_english, t_output_english
 
 
@@ -47,6 +48,12 @@ def test_get_english_series_merged_to_single_line_kob(
     _test_get_english_series_merged_to_single_line(
         kob_input_english, kob_output_english
     )
+
+
+def test_get_english_series_merged_to_single_line_pdp(
+    pdp_input_en: Series, pdp_output_en_merge: Series
+) -> None:
+    _test_get_english_series_merged_to_single_line(pdp_input_en, pdp_output_en_merge)
 
 
 def test_get_english_series_merged_to_single_line_t(
