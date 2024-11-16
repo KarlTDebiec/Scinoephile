@@ -50,41 +50,16 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           poetry run prospector -A -u flask -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
-      - name: Annotate with prospector results
-        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
-        with:
-          tool: prospector
-          tool_infile: .github/outputs/prospector.json
-          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
-      - name: pydocstyle # Run separately because prospector does not honor pyproject.toml
+      - name: Run pydocstyle # Run separately because prospector does not honor pyproject.toml
         run: |
           cd ${GITHUB_WORKSPACE}
           poetry run pydocstyle . | tee ${GITHUB_WORKSPACE}/.github/outputs/pydocstyle.txt || echo
-      - name: Annotate with pydocstyle results
-        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
-        with:
-          tool: pydocstyle
-          tool_infile: .github/outputs/pydocstyle.txt
-          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
-      - name: pyright
+      - name: Run pyright
         run: |
           cd ${GITHUB_WORKSPACE}
           poetry run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
-      - name: Annotate with pyright results
-        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
-        with:
-          tool: pyright
-          tool_infile: .github/outputs/pyright.txt
-          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
-
-      - name: pytest
+      - name: Run pytest
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
           poetry run pytest -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt
-      - name: Annotate with pytest results
-        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
-        with:
-          tool: pytest
-          tool_infile: .github/outputs/pytest.txt
-          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
