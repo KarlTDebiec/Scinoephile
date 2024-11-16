@@ -46,15 +46,25 @@ jobs:
           write_output_files: true
           json: true
 
-      - name: Run Prospector
+      - name: Run prospector
         run: |
           cd ${GITHUB_WORKSPACE}
           poetry run prospector -A -u flask -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
-      - name: Annotate with Prospector results
+      - name: Annotate with prospector results
         uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
         with:
           tool: prospector
           tool_infile: .github/outputs/prospector.json
+          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
+      - name: pydocstyle # Run separately because prospector does not honor pyproject.toml
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          poetry run pydocstyle . | tee ${GITHUB_WORKSPACE}/.github/outputs/pydocstyle.txt || echo
+      - name: Annotate with pydocstyle results
+        uses: KarlTDebiec/LinterPrinter@feature/initial-implementation
+        with:
+          tool: pydocstyle
+          tool_infile: .github/outputs/pydocstyle.txt
           files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
 
       - name: pytest
