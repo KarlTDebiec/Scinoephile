@@ -116,9 +116,16 @@ def _get_english_text_merged(text: str) -> str:
         flags=re.M,
     )
 
+    # Merge italics
+    merged = re.sub(
+        r"{\\i0}[^\S\n]*\n[^\S\n]*{\\i1}[^\S\n]*",
+        " ",
+        merged,
+    )
+
     # Merge lines
     merged = re.sub(
-        r"^\s*(.+)\s*\n\s*(.+)\s*$",
+        r"\s*(.+)\s*\n\s*(.+)\s*",
         lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
         merged,
         flags=re.M,

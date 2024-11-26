@@ -1940,7 +1940,7 @@ and that's when I found you.
 
 430
 00:24:20,826 --> 00:24:23,527
-♪<i> Jigglypuff♪</i>          
+<i>♪Jigglypuff♪</i>          
 
 431
 00:24:23,562 --> 00:24:24,995
@@ -7225,36 +7225,36 @@ You got it, Cynthia.
 1606
 01:18:16,358 --> 01:18:19,526
 [Detective Pikachu]      
-<i> ♪ Searching far and wide♪</i>    
+<i>♪Searching far and wide♪</i>    
 
 1607
 01:18:19,561 --> 01:18:22,496
-[sniffling]<i> ♪ Teach Pokemon</i>  
+[sniffling]<i>♪Teach Pokemon</i>  
 <i> to understand♪</i>         
 
 1608
 01:18:22,531 --> 01:18:25,866
-♪<i> The power that's inside♪</i>   
+<i>♪The power that's inside♪</i>   
 
 1609
 01:18:25,901 --> 01:18:27,101
-♪<i> Pokemon!♪</i>           
+<i>♪Pokemon!♪</i>           
 
 1610
 01:18:27,136 --> 01:18:29,503
-♪<i> Gotta catch 'em all♪</i>     
+<i>♪Gotta catch 'em all♪</i>     
 
 1611
 01:18:29,538 --> 01:18:31,371
-♪<i> It's you and me♪</i>       
+<i>♪It's you and me♪</i>       
 
 1612
 01:18:31,406 --> 01:18:34,074
-♪<i> I know it's my destiny♪</i>    
+<i>♪I know it's my destiny♪</i>    
 
 1613
 01:18:34,109 --> 01:18:35,409
-<i> ♪ Pokemon! ♪</i>          
+<i>♪Pokemon!♪</i>          
 
 1614
 01:18:35,444 --> 01:18:36,644
@@ -8516,212 +8516,212 @@ music playing]
 
 1901
 01:37:33,080 --> 01:37:36,916
-<i> ♪ Walking alone</i>        
-<i> And the shores are longing ♪</i>  
+<i>♪Walking alone</i>        
+<i> And the shores are longing♪</i>  
 
 1902
 01:37:36,951 --> 01:37:40,953
-<i> ♪ I miss your footprints</i>    
-<i> Next to mine ♪</i>         
+<i>♪I miss your footprints</i>    
+<i> Next to mine♪</i>         
 
 1903
 01:37:40,988 --> 01:37:44,857
-<i> ♪ Sure as the waves</i>      
-<i> On the sand are washing ♪</i>   
+<i>♪Sure as the waves</i>      
+<i> On the sand are washing♪</i>   
 
 1904
 01:37:44,892 --> 01:37:48,694
-♪<i> Your rhythm keeps</i>      
+<i>♪Your rhythm keeps</i>      
 <i> My heart in time♪</i>       
 
 1905
 01:37:48,729 --> 01:37:52,598
-♪<i> You, you found me♪</i>      
+<i>♪You, you found me♪</i>      
 
 1906
 01:37:52,633 --> 01:37:56,802
-♪<i> Made me into something new♪</i>  
+<i>♪Made me into something new♪</i>  
 
 1907
 01:37:56,837 --> 01:37:59,972
-♪<i> Led me through</i>        
+<i>♪Led me through</i>        
 <i> The deepest waters♪</i>       
 
 1908
 01:38:00,007 --> 01:38:02,842
-♪<i> I promise loud</i>       
+<i>♪I promise loud</i>       
 <i> To carry on for you♪</i>      
 
 1909
 01:38:02,877 --> 01:38:09,448
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1910
 01:38:09,483 --> 01:38:14,320
-♪<i> You, to carry on for you♪</i>   
+<i>♪You, to carry on for you♪</i>   
 
 1911
 01:38:14,355 --> 01:38:18,558
-♪<i> I'll carry on for you♪</i>    
+<i>♪I'll carry on for you♪</i>    
 
 1912
 01:38:34,175 --> 01:38:37,877
-♪<i> Talk to the wind</i>      
+<i>♪Talk to the wind</i>      
 <i> On the open ocean♪</i>       
 
 1913
 01:38:37,912 --> 01:38:41,847
-♪<i> I wonder if you hear me too♪</i> 
+<i>♪I wonder if you hear me too♪</i> 
 
 1914
 01:38:41,882 --> 01:38:45,885
-♪<i> Wrapped in my arms</i>     
+<i>♪Wrapped in my arms</i>     
 <i> With every moment, yeah♪</i>    
 
 1915
 01:38:45,920 --> 01:38:49,956
-♪<i> The memories</i>         
+<i>♪The memories</i>         
 <i> That pull me through♪</i>      
 
 1916
 01:38:49,991 --> 01:38:53,826
-♪<i> You, you found me♪</i>      
+<i>♪You, you found me♪</i>      
 
 1917
 01:38:53,861 --> 01:38:56,562
-♪<i> Made me into something new♪</i>  
+<i>♪Made me into something new♪</i>  
 
 1918
 01:38:56,597 --> 01:38:57,997
-♪<i> Oh, yeah♪</i>           
+<i>♪Oh, yeah♪</i>           
 
 1919
 01:38:58,032 --> 01:39:00,933
-♪<i> Led me through</i>        
+<i>♪Led me through</i>        
 <i> The deepest waters♪</i>       
 
 1920
 01:39:00,968 --> 01:39:04,737
-♪<i> I promise loud</i>        
+<i>♪I promise loud</i>        
 <i> To carry on to you♪</i>       
 
 1921
 01:39:04,772 --> 01:39:06,272
-♪<i> Ooh♪</i>             
+<i>♪Ooh♪</i>             
 
 1922
 01:39:06,307 --> 01:39:12,578
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1923
 01:39:12,613 --> 01:39:14,113
-♪<i> To carry on for you♪</i>      
+<i>♪To carry on for you♪</i>      
 
 1924
 01:39:14,148 --> 01:39:20,052
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1925
 01:39:20,087 --> 01:39:21,620
-♪<i> I'll carry on for you♪</i>    
+<i>♪I'll carry on for you♪</i>    
 
 1926
 01:39:21,655 --> 01:39:24,290
-♪<i> You, you found me♪</i>      
+<i>♪You, you found me♪</i>      
 
 1927
 01:39:24,325 --> 01:39:25,491
-♪<i> Oh, yeah♪</i>           
+<i>♪Oh, yeah♪</i>           
 
 1928
 01:39:25,526 --> 01:39:27,760
-♪<i> Made me into something new♪</i>  
+<i>♪Made me into something new♪</i>  
 
 1929
 01:39:27,795 --> 01:39:29,261
-♪<i> Into something new♪</i>      
+<i>♪Into something new♪</i>      
 
 1930
 01:39:29,296 --> 01:39:32,832
-♪<i> Led me through</i>        
+<i>♪Led me through</i>        
 <i> the deepest waters♪</i>       
 
 1931
 01:39:32,867 --> 01:39:35,601
-♪<i> I promise loud</i>       
+<i>♪I promise loud</i>       
 <i> To carry on for you♪</i>      
 
 1932
 01:39:35,636 --> 01:39:37,804
-♪<i> Oh, carry on for you♪</i>     
+<i>♪Oh, carry on for you♪</i>     
 
 1933
 01:39:53,120 --> 01:39:59,792
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1934
 01:40:01,195 --> 01:40:07,667
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1935
 01:40:09,170 --> 01:40:13,039
-♪<i> Keep me running,</i>       
+<i>♪Keep me running,</i>       
 <i> keep me coming back to you♪</i>   
 
 1936
 01:40:13,074 --> 01:40:17,009
-♪<i> Hold me harder,</i>       
+<i>♪Hold me harder,</i>       
 <i>love me like you know you do♪</i>   
 
 1937
 01:40:17,044 --> 01:40:20,880
-♪<i> Keep me running,</i>       
+<i>♪Keep me running,</i>       
 <i> keep me coming back to you♪</i>   
 
 1938
 01:40:20,915 --> 01:40:24,550
-♪<i> Hold me harder,</i>       
+<i>♪Hold me harder,</i>       
 <i>love me like you know you do♪</i>   
 
 1939
 01:40:24,585 --> 01:40:28,087
-♪<i> You, you found me♪</i>      
+<i>♪You, you found me♪</i>      
 
 1940
 01:40:28,122 --> 01:40:32,058
-♪<i> Made me into something new♪</i>  
+<i>♪Made me into something new♪</i>  
 
 1941
 01:40:32,093 --> 01:40:35,828
-♪<i> Led me through</i>        
+<i>♪Led me through</i>        
 <i> The deepest waters♪</i>       
 
 1942
 01:40:35,863 --> 01:40:39,098
-♪<i> I promise loud</i>       
+<i>♪I promise loud</i>       
 <i> To carry on for you♪</i>      
 
 1943
 01:40:40,401 --> 01:40:47,040
-♪<i> You, to carry on for you,</i>  
+<i>♪You, to carry on for you,</i>  
 <i> for you♪</i>            
 
 1944
 01:40:48,175 --> 01:40:50,576
-♪<i> You, to carry on for you...♪</i> 
+<i>♪You, to carry on for you...♪</i> 
 
 1945
 01:40:50,611 --> 01:40:54,080
-♪<i> In the deepest waters♪</i>    
+<i>♪In the deepest waters♪</i>    
 
 1946
 01:40:54,115 --> 01:40:57,216
-♪<i> Oh, I'll carry on for you♪</i>  
+<i>♪Oh, I'll carry on for you♪</i>  
 
 1947
 01:41:01,989 --> 01:41:05,058
@@ -8730,146 +8730,146 @@ music playing]
 
 1948
 01:41:24,578 --> 01:41:26,045
-♪<i> Aye, aye, aye!♪</i>        
+<i>♪Aye, aye, aye!♪</i>        
 
 1949
 01:41:26,080 --> 01:41:28,981
-<i>-♪ No, no I could not give up ♪</i> 
-<i> -♪ No!♪</i>            
+<i>-♪No, no I could not give up♪</i> 
+<i> -♪No!♪</i>            
 
 1950
 01:41:29,016 --> 01:41:31,984
-♪<i> If you choose me</i>       
+<i>♪If you choose me</i>       
 <i> I'll never leave♪</i>        
 
 1951
 01:41:32,019 --> 01:41:34,920
-<i>-♪ Some of us play with fire ♪</i>  
-<i> -♪ Wow!♪</i>            
+<i>-♪Some of us play with fire♪</i>  
+<i> -♪Wow!♪</i>            
 
 1952
 01:41:34,955 --> 01:41:37,756
-♪<i> Some of us live down</i>     
+<i>♪Some of us live down</i>     
 <i> in the sea♪</i>           
 
 1953
 01:41:37,791 --> 01:41:40,826
-<i> -♪ Some only come out</i>     
-<i> at nightfall ♪</i>        
-<i> -♪ Yes!♪</i>            
+<i> -♪Some only come out</i>     
+<i> at nightfall♪</i>        
+<i> -♪Yes!♪</i>            
 
 1954
 01:41:40,861 --> 01:41:43,696
-♪<i> Daytime is when</i>       
+<i>♪Daytime is when</i>       
 <i> They get their sleep♪</i>      
 
 1955
 01:41:43,731 --> 01:41:46,565
-♪<i> Some need trees</i>       
+<i>♪Some need trees</i>       
 <i> And leaves just to breathe♪</i>   
 
 1956
 01:41:46,600 --> 01:41:49,835
-♪<i> But I'm different than all,</i> 
+<i>♪But I'm different than all,</i> 
 <i> I'm electricity!♪</i>       
 
 1957
 01:41:49,870 --> 01:41:52,705
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1958
 01:41:52,740 --> 01:41:55,541
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1959
 01:41:55,576 --> 01:41:58,511
--♪<i> Hey, hey, hey,</i>       
+<i>-♪Hey, hey, hey,</i>
 <i> hey, hey, hey!♪</i>        
-<i> -♪ Yeah!♪</i>           
+<i> -♪Yeah!♪</i>           
 
 1960
 01:41:58,546 --> 01:42:01,247
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1961
 01:42:01,282 --> 01:42:04,450
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1962
 01:42:04,485 --> 01:42:07,219
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1963
 01:42:07,254 --> 01:42:10,156
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1964
 01:42:10,191 --> 01:42:13,726
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1965
 01:42:48,495 --> 01:42:50,029
-♪<i> Let's go!♪</i>          
+<i>♪Let's go!♪</i>          
 
 1966
 01:43:21,395 --> 01:43:24,830
-♪<i> But I'm different than all,</i> 
+<i>♪But I'm different than all,</i> 
 <i> I'm electricity!♪</i>       
 
 1967
 01:43:24,865 --> 01:43:27,533
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1968
 01:43:27,568 --> 01:43:30,536
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1969
 01:43:30,571 --> 01:43:33,505
--♪<i> Hey, hey, hey,</i>        
+<i>-♪Hey, hey, hey,</i>
 <i> hey, hey, hey!♪</i>         
-<i> -♪ Yeah!♪</i>            
+<i> -♪Yeah!♪</i>            
 
 1970
 01:43:33,540 --> 01:43:36,442
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1971
 01:43:36,477 --> 01:43:39,345
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1972
 01:43:39,380 --> 01:43:42,248
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1973
 01:43:42,283 --> 01:43:45,284
-♪<i> Hey, hey, hey,</i>        
+<i>♪Hey, hey, hey,</i>        
 <i> hey, hey, hey!♪</i>         
 
 1974
 01:43:45,319 --> 01:43:48,287
-♪<i> I'm different than all,</i>   
+<i>♪I'm different than all,</i>   
 <i> I'm electricity!♪</i>       
 
 1975
 01:43:48,322 --> 01:43:53,626
-♪<i> Aye, aye, aye, aye,</i>     
+<i>♪Aye, aye, aye, aye,</i>     
 <i> aye, aye, aye, aye!♪</i>      
 
 1976
 01:43:53,661 --> 01:43:55,294
-♪<i> Let's go!♪</i>          
+<i>♪Let's go!♪</i>          
 

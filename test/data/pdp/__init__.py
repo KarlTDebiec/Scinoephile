@@ -30,6 +30,11 @@ def pdp_output_en_clean():
 
 
 @pytest.fixture
+def pdp_output_en_clean_merge():
+    return Series.load(get_test_file_path("pdp/output/en_clean_merge.srt"))
+
+
+@pytest.fixture
 def pdp_output_en_merge():
     return Series.load(get_test_file_path("pdp/output/en_merge.srt"))
 
@@ -54,6 +59,7 @@ __all__ = [
     "pdp_input_cmn_hant",
     "pdp_input_yue_hant",
     "pdp_output_en_clean",
+    "pdp_output_en_clean_merge",
     "pdp_output_en_merge",
     "pdp_output_yue_hans",
     "pdp_output_yue_hans_merge",
