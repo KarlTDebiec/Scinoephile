@@ -21,12 +21,12 @@ def t_input_hanzi():
 
 @pytest.fixture
 def t_output_english():
-    return Series.load(get_test_file_path("t/output/en-hk.srt"))
+    return Series.load(get_test_file_path("t/output/en-HK.srt"))
 
 
 @pytest.fixture
 def t_output_hanzi():
-    return Series.load(get_test_file_path("t/output/cmn-hans.srt"))
+    return Series.load(get_test_file_path("t/output/cmn-Hans.srt"))
 
 
 test_cases = []

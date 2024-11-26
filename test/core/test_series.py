@@ -13,9 +13,9 @@ from scinoephile.testing import get_test_file_path
 @pytest.mark.parametrize(
     "relative_input_path",
     [
-        "kob/input/en-hk.srt",
+        "kob/input/en-HK.srt",
         "mnt/input/en-US.srt",
-        "t/input/en-hk.srt",
+        "t/input/en-HK.srt",
     ],
 )
 def test_series(relative_input_path: str):

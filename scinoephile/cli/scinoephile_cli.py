@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileException, Series
-from scinoephile.core.english import get_english_series_merged_to_single_line
+from scinoephile.core.english import get_english_cleaned, get_english_merged
 from scinoephile.core.hanzi import (
     get_hanzi_series_merged_to_single_line,
     get_hanzi_series_simplified,
@@ -66,6 +66,12 @@ class ScinoephileCli(CommandLineInterface):
         )
 
         # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "-c",
+            "--clean",
+            action="store_true",
+            help="clean subtitles of closed-caption annotations and other anomalies",
+        )
         arg_groups["operation arguments"].add_argument(
             "-m",
             "--merge",
@@ -138,8 +144,10 @@ class ScinoephileCli(CommandLineInterface):
             hanzi = Series.load(operations["load_hanzi"])
 
         # Operation operations
+        if "clean_english" in operations:
+            english = get_english_cleaned(english)
         if "merge_english" in operations:
-            english = get_english_series_merged_to_single_line(english)
+            english = get_english_merged(english)
         if "merge_hanzi" in operations:
             hanzi = get_hanzi_series_merged_to_single_line(hanzi)
         if "simplify_hanzi" in operations:
@@ -158,12 +166,14 @@ class ScinoephileCli(CommandLineInterface):
     @classmethod
     def _determine_operations(
         cls,
+        *,
         bilingual_infile: Path | None = None,
         bilingual_outfile: Path | None = None,
         english_infile: Path | None = None,
         english_outfile: Path | None = None,
         hanzi_infile: Path | None = None,
         hanzi_outfile: Path | None = None,
+        clean: bool = False,
         merge: bool = False,
         overwrite: bool = False,
         simplify: bool = False,
@@ -221,6 +231,9 @@ class ScinoephileCli(CommandLineInterface):
             operations["save_hanzi"] = hanzi_outfile
 
         # Compile operations
+        if clean:
+            if english_infile:
+                operations["clean_english"] = True
         if merge:
             if not (english_infile and (bilingual_outfile or english_outfile)) and not (
                 hanzi_infile and (bilingual_outfile or hanzi_outfile)

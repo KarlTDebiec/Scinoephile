@@ -12,7 +12,26 @@ import nltk
 from scinoephile.core.series import Series
 
 
-def get_english_series_merged_to_single_line(series: Series) -> Series:
+def get_english_cleaned(series: Series) -> Series:
+    """Get English series cleaned.
+
+    Arguments
+        series: series to clean
+    Returns:
+        cleaned series
+    """
+    series = deepcopy(series)
+    new_events = []
+    for event in series.events:
+        text = _get_english_text_cleaned(event.text.strip())
+        if text:
+            event.text = text
+            new_events.append(event)
+    series.events = new_events
+    return series
+
+
+def get_english_merged(series: Series) -> Series:
     """Get multi-line English series merged to single lines.
 
     Arguments:
@@ -21,12 +40,12 @@ def get_english_series_merged_to_single_line(series: Series) -> Series:
         merged series
     """
     series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_english_text_merged_to_single_line(subtitle.text)
+    for event in series:
+        event.text = _get_english_text_merged(event.text.strip())
     return series
 
 
-def get_english_series_truecased(series: Series) -> Series:
+def get_english_truecased(series: Series) -> Series:
     """Get all-caps English series truecased.
 
     Arguments:
@@ -35,12 +54,48 @@ def get_english_series_truecased(series: Series) -> Series:
         truecased series
     """
     series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_english_text_truecased(subtitle.text)
+    for event in series:
+        event.text = _get_english_text_truecased(event.text.strip())
     return series
 
 
-def get_english_text_merged_to_single_line(text: str) -> str:
+def _get_english_text_cleaned(text: str) -> str | None:
+    """Get English text cleaned.
+
+    Arguments:
+        text: text to clean
+    Returns:
+        cleaned text, or None if no text remains
+    """
+    # Revert strange substitution in pysubs2/subrip.py:66
+    cleaned = re.sub(r"\\N", r"\n", text).strip()
+
+    # Remove closed caption annotations ([...])
+    cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned).strip()
+
+    # Remove lines starting with dashes if they are otherwise empty
+    cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)
+
+    # Remove leading dash if there is now only one line
+    cleaned = re.sub(r"^\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned)
+
+    # Remove empty lines
+    cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
+
+    # Remove whitespace around <i> and <\i>
+    cleaned = re.sub(r"[^\S\n]*{\\i1}[^\S\n]*", r"{\\i1}", cleaned)
+    cleaned = re.sub(r"[^\S\n]*{\\i0}[^\S\n]*", r"{\\i0}", cleaned)
+
+    # Check if any substantive text remains
+    if not cleaned:
+        return None
+    if re.fullmatch(r"^\s*-?\s*\n\s*-?\s*", cleaned):
+        return None
+
+    return cleaned
+
+
+def _get_english_text_merged(text: str) -> str:
     """Get multi-line English text merged to a single line.
 
     Accounts for dashes ('-') used for dialogue from multiple sources.
@@ -51,20 +106,34 @@ def get_english_text_merged_to_single_line(text: str) -> str:
         merged text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
-    single_line = re.sub(r"\\N", r"\n", text)
+    merged = re.sub(r"\\N", r"\n", text)
 
     # Merge conversations
-    single_line = re.sub(
-        r"^\s*-\s*(.+)\n-\s*(.+)\s*$", r"- \1    - \2", single_line, re.M
+    merged = re.sub(
+        r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
+        lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
+        merged,
+        flags=re.M,
+    )
+
+    # Merge italics
+    merged = re.sub(
+        r"{\\i0}[^\S\n]*\n[^\S\n]*{\\i1}[^\S\n]*",
+        " ",
+        merged,
     )
 
     # Merge lines
-    single_line = re.sub(r"^\s*(.+)\s*\n\s*(.+)\s*$", r"\1 \2", single_line, re.M)
+    merged = re.sub(
+        r"\s*(.+)\s*\n\s*(.+)\s*",
+        lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
+        merged,
+        flags=re.M,
+    )
+    return merged
 
-    return single_line
 
-
-def get_english_text_truecased(text: str) -> str:
+def _get_english_text_truecased(text: str) -> str:
     """Get all-caps English text truecased.
 
     Arguments:
@@ -95,3 +164,10 @@ def get_english_text_truecased(text: str) -> str:
     )
 
     return truecased
+
+
+__all__ = [
+    "get_english_cleaned",
+    "get_english_merged",
+    "get_english_truecased",
+]
