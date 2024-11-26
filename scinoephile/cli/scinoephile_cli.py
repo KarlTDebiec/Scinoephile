@@ -206,7 +206,8 @@ class ScinoephileCli(CommandLineInterface):
 
         # Compile input operations
         if not (bilingual_infile or english_infile or hanzi_infile):
-            raise ScinoephileException("At least one infile required")
+            parser = cls.argparser()
+            parser.error("At least one infile required")
         if bilingual_infile:
             operations["load_bilingual"] = bilingual_infile
         if english_infile:

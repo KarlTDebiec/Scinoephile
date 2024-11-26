@@ -6,6 +6,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
+
 # noinspection PyProtectedMember
 from scinoephile.core.english import (
     _get_english_text_cleaned,
