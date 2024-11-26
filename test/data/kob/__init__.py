@@ -11,12 +11,12 @@ from scinoephile.testing import get_test_file_path
 
 @pytest.fixture
 def kob_input_english():
-    return Series.load(get_test_file_path("kob/input/en-HK.srt"))
+    return Series.load(get_test_file_path("input/en-HK.srt"))
 
 
 @pytest.fixture
 def kob_input_hanzi():
-    return Series.load(get_test_file_path("kob/input/cmn-Hans.srt"))
+    return Series.load(get_test_file_path("input/cmn-Hans.srt"))
 
 
 @pytest.fixture
