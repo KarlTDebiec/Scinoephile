@@ -106,24 +106,24 @@ def _get_english_text_merged(text: str) -> str:
         merged text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
-    single_line = re.sub(r"\\N", r"\n", text)
+    merged = re.sub(r"\\N", r"\n", text)
 
     # Merge conversations
-    single_line = re.sub(
+    merged = re.sub(
         r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
         lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
-        single_line,
+        merged,
         flags=re.M,
     )
 
     # Merge lines
-    single_line = re.sub(
+    merged = re.sub(
         r"^\s*(.+)\s*\n\s*(.+)\s*$",
         lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
-        single_line,
+        merged,
         flags=re.M,
     )
-    return single_line
+    return merged
 
 
 def _get_english_text_truecased(text: str) -> str:
