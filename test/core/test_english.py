@@ -10,22 +10,37 @@ from scinoephile.core import Series
 from scinoephile.core.english import (
     _get_english_text_cleaned,
     _get_english_text_merged,
+    get_english_cleaned,
     get_english_merged,
 )
 from ..data.kob import kob_input_english, kob_output_english
-from ..data.pdp import pdp_input_en, pdp_output_en_merge
+from ..data.pdp import pdp_input_en, pdp_output_en_clean, pdp_output_en_merge
 from ..data.t import t_input_english, t_output_english
 
 
-def _test_get_english_merged(series: Series, expected_output: Series) -> None:
+def _test_get_english_cleaned(series: Series, expected: Series):
+    output = get_english_cleaned(series)
+
+    errors = []
+    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+        if event != expected_event:
+            errors.append(
+                f"Subtitle {i} does not match: " f"{event} != {expected_event}"
+            )
+
+    if errors:
+        for error in errors:
+            print(error)
+        pytest.fail(f"Found {len(errors)} discrepancies")
+
+
+def _test_get_english_merged(series: Series, expected: Series):
     output = get_english_merged(series)
 
     assert len(series.events) == len(output.events)
 
     errors = []
-    for i, (event, expected_event) in enumerate(
-        zip(output.events, expected_output.events), 1
-    ):
+    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
         if event.text.count("\n") != 0:
             errors.append(f"Subtitle {i} contains newline")
         if event != expected_event:
@@ -39,21 +54,19 @@ def _test_get_english_merged(series: Series, expected_output: Series) -> None:
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def test_get_english_merged_kob(
-    kob_input_english: Series, kob_output_english: Series
-) -> None:
+def test_get_english_cleaned_pdp(pdp_input_en: Series, pdp_output_en_clean: Series):
+    _test_get_english_cleaned(pdp_input_en, pdp_output_en_clean)
+
+
+def test_get_english_merged_kob(kob_input_english: Series, kob_output_english: Series):
     _test_get_english_merged(kob_input_english, kob_output_english)
 
 
-def test_get_english_series_merged_pdp(
-    pdp_input_en: Series, pdp_output_en_merge: Series
-) -> None:
+def test_get_english_merged_pdp(pdp_input_en: Series, pdp_output_en_merge: Series):
     _test_get_english_merged(pdp_input_en, pdp_output_en_merge)
 
 
-def test_get_english_series_merged_t(
-    t_input_english: Series, t_output_english: Series
-) -> None:
+def test_get_english_merged_t(t_input_english: Series, t_output_english: Series):
     _test_get_english_merged(t_input_english, t_output_english)
 
 
@@ -75,7 +88,7 @@ def test_get_english_series_merged_t(
         ("{\\i1} abcd{\\i0}", "{\\i1}abcd{\\i0}"),
     ],
 )
-def test_get_english_text_cleaned(text: str, expected: str) -> None:
+def test_get_english_text_cleaned(text: str, expected: str):
     """Test get_english_text_cleaned"""
     assert _get_english_text_cleaned(text) == expected
 
@@ -86,6 +99,6 @@ def test_get_english_text_cleaned(text: str, expected: str) -> None:
         ("line 1\nline 2", "line 1 line 2"),
     ],
 )
-def test_get_english_text_merged(text: str, expected: str) -> None:
+def test_get_english_text_merged(text: str, expected: str):
     """Test get_english_single_line_text"""
     assert _get_english_text_merged(text) == expected

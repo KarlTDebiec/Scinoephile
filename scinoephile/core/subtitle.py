@@ -37,11 +37,17 @@ class Subtitle(SSAEvent):
         Returns:
             Whether this subtitle is equal to another
         """
-        return (
-            self.start == other.start
-            and self.end == other.end
-            and self.text == other.text
-        )
+        if self.start != other.start:
+            return False
+
+        if self.end != other.end:
+            return False
+
+        if self.text == other.text:
+            return True
+        if self.text.replace("\n", "\\N") == other.text.replace("\n", "\\N"):
+            return True
+        return False
 
     def __ne__(self, other: SSAEvent) -> bool:
         """Whether this subtitle is not equal to another.
@@ -51,11 +57,17 @@ class Subtitle(SSAEvent):
         Returns:
             Whether this subtitle is not equal to another
         """
-        return (
-            self.start != other.start
-            or self.end != other.end
-            or self.text != other.text
-        )
+        if self.start != other.start:
+            return True
+
+        if self.end != other.end:
+            return True
+
+        if self.text == other.text:
+            return False
+        if self.text.replace("\n", "\\N") == other.text.replace("\n", "\\N"):
+            return False
+        return True
 
     def __repr__(self) -> str:
         return (
