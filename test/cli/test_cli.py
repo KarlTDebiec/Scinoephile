@@ -17,46 +17,46 @@ from scinoephile.common.testing import run_cli_with_args
 
 
 @pytest.mark.parametrize(
-    "commands",
+    "cli",
     [
         (ScinoephileCli,),
     ],
 )
-def test_help(commands: tuple[Type[CommandLineInterface], ...]):
-    subcommands = " ".join(f"{command.name()}" for command in commands[1:])
+def test_help(cli):
+    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
     stderr = StringIO()
     try:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
-                run_cli_with_args(commands[0], f"{subcommands} -h")
+                run_cli_with_args(cli[0], f"{subcommands} -h")
     except SystemExit as error:
         assert error.code == 0
         assert stdout.getvalue().startswith(
-            f"usage: {Path(getfile(commands[0])).name} {subcommands}"
+            f"usage: {Path(getfile(cli[0])).name} {subcommands}"
         )
         assert stderr.getvalue() == ""
 
 
 @pytest.mark.parametrize(
-    "commands",
+    "cli",
     [
         (ScinoephileCli,),
     ],
 )
-def test_usage(commands: tuple[Type[CommandLineInterface], ...]):
-    subcommands = " ".join(f"{command.name()}" for command in commands[1:])
+def test_usage(cli: tuple[Type[CommandLineInterface], ...]):
+    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
     stderr = StringIO()
     try:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
-                run_cli_with_args(commands[0], subcommands)
+                run_cli_with_args(cli[0], subcommands)
     except SystemExit as error:
         assert error.code == 2
         assert stdout.getvalue() == ""
         assert stderr.getvalue().startswith(
-            f"usage: {Path(getfile(commands[0])).name} {subcommands}"
+            f"usage: {Path(getfile(cli[0])).name} {subcommands}"
         )

@@ -6,7 +6,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing import get_test_file_path
+from scinoephile.testing.file import get_test_file_path
 
 
 @pytest.fixture
