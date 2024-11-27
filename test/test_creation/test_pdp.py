@@ -3,28 +3,25 @@
 """Tests for creatings tests for mnt."""
 from __future__ import annotations
 
-from pprint import pformat
-
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.synchronization import (
     are_series_one_to_one,
-    get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from scinoephile.testing.mark import skip_if_ci
-from ..data.pdp import pdp_input_en, pdp_input_yue_hant
+from ..data.pdp import pdp_output_en_clean_merge, pdp_output_yue_hant_merge
 
 
-@skip_if_ci()
-def test_get_test_cases_pdp(
-    pdp_input_yue_hant: Series,
-    pdp_input_en: Series,
-) -> None:
-    pair_blocks = get_pair_blocks_by_pause(pdp_input_yue_hant, pdp_input_en)
+def _test_get_test_cases_pdp(
+    pdp_output_yue_hant_merge: Series,
+    pdp_output_en_clean_merge: Series,
+):
+    pair_blocks = get_pair_blocks_by_pause(
+        pdp_output_yue_hant_merge, pdp_output_en_clean_merge
+    )
     bilingual_blocks = []
 
     hanzi_start = 0
@@ -49,23 +46,24 @@ def test_get_test_cases_pdp(
         #     english_start = english_end
         #     continue
 
-        print((hanzi_start, hanzi_end, english_start, english_end))
+        # print(f"\n{'=' * 80}")
+        # print((hanzi_start, hanzi_end, english_start, english_end))
 
         hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
-        print(f"\nCHINESE:\n{hanzi_str}")
-        print(f"\nENGLISH:\n{english_str}")
+        # print(f"\nCHINESE:\n{hanzi_str}")
+        # print(f"\nENGLISH:\n{english_str}")
 
         overlap = get_sync_overlap_matrix(hanzi_block, english_block)
-        print("\nOVERLAP:")
-        print(get_overlap_string(overlap))
+        # print("\nOVERLAP:")
+        # print(get_overlap_string(overlap))
 
         sync_groups = get_sync_groups(hanzi_block, english_block)
-        print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+        # print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
         sync_series = get_synced_series_from_groups(
             hanzi_block, english_block, sync_groups
         )
-        print(f"\nSYNCED SUBTITLES:\n{sync_series.to_simple_string()}")
+        # print(f"\nSYNCED SUBTITLES:\n{sync_series.to_simple_string()}")
 
         bilingual_blocks.append(sync_series)
 
@@ -76,7 +74,8 @@ def test_get_test_cases_pdp(
             english_end=english_end,
             sync_groups=sync_groups,
         )
-        print(test_case)
+        # print(f"\nTEST CASE:\n{test_case}")
+        print(f"{test_case},")
 
         hanzi_start = hanzi_end
         english_start = english_end
