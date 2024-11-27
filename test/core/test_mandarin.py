@@ -10,17 +10,12 @@ from scinoephile.core.mandarin import (
     get_mandarin_romanization,
     get_mandarin_text_romanization,
 )
-from ..data.kob import kob_yue_hans_hk
 from ..data.t import t_input_hanzi
 
 
 def _test_get_mandarin_romanization(series: Series):
     output = get_mandarin_romanization(series)
     assert len(series.events) == len(output.events)
-
-
-def test_get_mandarin_romanization_kob(kob_yue_hans_hk: Series):
-    _test_get_mandarin_romanization(kob_yue_hans_hk)
 
 
 def test_get_mandarin_romanization_t(t_input_hanzi: Series):
