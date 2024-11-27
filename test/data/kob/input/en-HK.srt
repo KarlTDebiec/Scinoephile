@@ -987,7 +987,7 @@ Let's go
 
 231
 00:13:09,289 --> 00:13:12,625
-Master, you can't fool this guy
+Master, you can't fool this guy.
 Let's go
 
 232
@@ -1471,7 +1471,7 @@ where are your busts?
 345
 00:20:26,726 --> 00:20:29,604
 It's early in the morning,
-they haven't waken up yet
+they haven't woken up yet
 
 346
 00:20:30,146 --> 00:20:31,690
@@ -2052,7 +2052,7 @@ Last call
 
 480
 00:32:01,880 --> 00:32:04,883
-So, one to ten
+So, one to ten.
 Po, one to one
 
 481
@@ -3267,7 +3267,7 @@ You two can only be beggars
 
 767
 00:48:19,691 --> 00:48:21,901
-I am carrying my duty only
+I am carrying my duty only.
 Men!
 
 768
@@ -4681,7 +4681,7 @@ Now, I will teach you the
 
 1101
 01:08:05,377 --> 01:08:07,837
-Hope you can make good use of it
+Hope you can make good use of it.
 Come on
 
 1102
@@ -4769,7 +4769,7 @@ Let's chase them
 
 1122
 01:11:05,015 --> 01:11:08,226
-Stop
+Stop.
 The Emperor is setting off soon
 
 1123
@@ -5840,7 +5840,7 @@ Chan!
 
 1374
 01:34:21,244 --> 01:34:23,496
-I've got it
+I've got it.
 Just mix the 17 stances,
 
 1375
