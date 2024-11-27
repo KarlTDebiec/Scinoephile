@@ -39,7 +39,7 @@ def test_get_sync_notes(
     mnt_en_us: Series,
     test_case: SyncTestCase,
     language: str,
-) -> None:
+):
     hanzi_block = mnt_cmn_hant_hk.slice(test_case.hanzi_start, test_case.hanzi_end)
     english_block = mnt_en_us.slice(test_case.english_start, test_case.english_end)
     hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)

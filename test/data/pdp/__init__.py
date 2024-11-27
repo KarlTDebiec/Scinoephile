@@ -10,49 +10,68 @@ from scinoephile.testing import SyncTestCase
 from scinoephile.testing.file import get_test_file_path
 
 
+# Traditional Standard Chinese
 @pytest.fixture
-def pdp_input_en():
-    return Series.load(get_test_file_path("pdp/input/en.srt"))
-
-
-@pytest.fixture
-def pdp_input_cmn_hant():
-    return Series.load(get_test_file_path("pdp/input/cmn-Hant.srt"))
+def pdp_cmn_hant_hk():
+    return Series.load(get_test_file_path("pdp/input/cmn-Hant-HK.srt"))
 
 
 @pytest.fixture
-def pdp_input_yue_hant():
-    return Series.load(get_test_file_path("pdp/input/yue-Hant.srt"))
+def pdp_cmn_hant_hk_merge():
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_merge.srt"))
 
 
 @pytest.fixture
-def pdp_output_en_clean():
-    return Series.load(get_test_file_path("pdp/output/en_clean.srt"))
+def pdp_cmn_hant_hk_simplify():
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_simplify.srt"))
+
+
+# Traditional Cantonese Chinese
+@pytest.fixture
+def pdp_yue_hant_hk():
+    return Series.load(get_test_file_path("pdp/input/yue-Hant-HK.srt"))
 
 
 @pytest.fixture
-def pdp_output_en_clean_merge():
-    return Series.load(get_test_file_path("pdp/output/en_clean_merge.srt"))
+def pdp_yue_hant_hk_merge():
+    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge.srt"))
 
 
 @pytest.fixture
-def pdp_output_en_merge():
-    return Series.load(get_test_file_path("pdp/output/en_merge.srt"))
-
-
-@pytest.fixture()
-def pdp_output_yue_hans():
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_simplify.srt"))
+def pdp_yue_hant_hk_simplify():
+    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_simplify.srt"))
 
 
 @pytest.fixture
-def pdp_output_yue_hans_merge():
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_merge_simplify.srt"))
+def pdp_yue_hant_hk_merge_simplify():
+    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge_simplify.srt"))
+
+
+# English
+@pytest.fixture
+def pdp_en_hk():
+    return Series.load(get_test_file_path("pdp/input/en-HK.srt"))
 
 
 @pytest.fixture
-def pdp_output_yue_hant_merge():
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_merge.srt"))
+def pdp_en_hk_clean():
+    return Series.load(get_test_file_path("pdp/output/en-HK_clean.srt"))
+
+
+@pytest.fixture
+def pdp_en_hk_merge():
+    return Series.load(get_test_file_path("pdp/output/en-HK_merge.srt"))
+
+
+@pytest.fixture
+def pdp_en_hk_clean_merge():
+    return Series.load(get_test_file_path("pdp/output/en-HK_clean_merge.srt"))
+
+
+# Bilingual Simplified Cantonese Chinese and English
+@pytest.fixture
+def pdp_yue_hans_hk_en_hk():
+    return Series.load(get_test_file_path("pdp/output/yue-Hans-HK_en-HK.srt"))
 
 
 pdp_test_cases = [
@@ -888,7 +907,7 @@ pdp_test_cases = [
             [[15], [18]],
         ],
     ),
-    SyncTestCase(
+    SyncTestCase(  # Review
         hanzi_start=481,
         hanzi_end=503,
         english_start=624,
@@ -1182,7 +1201,7 @@ pdp_test_cases = [
             [[1], [1]],
         ],
     ),
-    SyncTestCase(
+    SyncTestCase(  # Review
         hanzi_start=660,
         hanzi_end=681,
         english_start=845,
@@ -1501,7 +1520,7 @@ pdp_test_cases = [
             [[33], [42]],
         ],
     ),
-    SyncTestCase(
+    SyncTestCase(  # Review
         hanzi_start=832,
         hanzi_end=853,
         english_start=1050,
@@ -2653,14 +2672,17 @@ pdp_test_cases = [
 ]
 
 __all__ = [
-    "pdp_input_en",
-    "pdp_input_cmn_hant",
-    "pdp_input_yue_hant",
-    "pdp_output_en_clean",
-    "pdp_output_en_clean_merge",
-    "pdp_output_en_merge",
-    "pdp_output_yue_hans",
-    "pdp_output_yue_hans_merge",
-    "pdp_output_yue_hant_merge",
+    "pdp_cmn_hant_hk",
+    "pdp_cmn_hant_hk_merge",
+    "pdp_cmn_hant_hk_simplify",
+    "pdp_yue_hant_hk",
+    "pdp_yue_hant_hk_merge",
+    "pdp_yue_hant_hk_simplify",
+    "pdp_yue_hant_hk_merge_simplify",
+    "pdp_en_hk",
+    "pdp_en_hk_clean",
+    "pdp_en_hk_merge",
+    "pdp_en_hk_clean_merge",
+    "pdp_yue_hans_hk_en_hk",
     "pdp_test_cases",
 ]

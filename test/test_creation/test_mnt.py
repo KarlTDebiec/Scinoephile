@@ -1,6 +1,6 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for creatings tests for MNT."""
+"""Test for creating tests for MNT."""
 from __future__ import annotations
 
 from pprint import pformat
@@ -15,15 +15,11 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from scinoephile.testing.mark import skip_if_ci
 from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us
 
 
-@skip_if_ci()
-def test_get_test_cases_mnt(
-    mnt_cmn_hant_hk: Series,
-    mnt_en_us: Series,
-) -> None:
+# Remove underscore to test
+def _test_get_test_cases_mnt(mnt_cmn_hant_hk: Series, mnt_en_us: Series):
     pair_blocks = get_pair_blocks_by_pause(mnt_cmn_hant_hk, mnt_en_us)
     bilingual_blocks = []
 

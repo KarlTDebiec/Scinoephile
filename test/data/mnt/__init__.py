@@ -10,11 +10,7 @@ from scinoephile.testing import SyncTestCase
 from scinoephile.testing.file import get_test_file_path
 
 
-@pytest.fixture
-def mnt_cmn_hans_hk_en_us():
-    return Series.load(get_test_file_path("mnt/input/cmn-Hans-HK_en-US.srt"))
-
-
+# Traditional Cantonese Chinese
 @pytest.fixture
 def mnt_cmn_hant_hk():
     return Series.load(get_test_file_path("mnt/input/cmn-Hant-HK.srt"))
@@ -31,6 +27,12 @@ def mnt_cmn_hant_hk_simplify():
 
 
 @pytest.fixture
+def mnt_cmn_hant_hk_merge_simplify():
+    return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_merge_simplify.srt"))
+
+
+# English
+@pytest.fixture
 def mnt_en_us():
     return Series.load(get_test_file_path("mnt/input/en-US.srt"))
 
@@ -43,6 +45,17 @@ def mnt_en_us_clean():
 @pytest.fixture
 def mnt_en_us_merge():
     return Series.load(get_test_file_path("mnt/output/en-US_merge.srt"))
+
+
+@pytest.fixture
+def mnt_en_us_clean_merge():
+    return Series.load(get_test_file_path("mnt/output/en-US_clean_merge.srt"))
+
+
+# Bilingual Simplified Cantonese Chinese and English
+@pytest.fixture
+def mnt_cmn_hans_hk_en_us():
+    return Series.load(get_test_file_path("mnt/output/cmn-Hans-HK_en-US.srt"))
 
 
 mnt_test_cases = [
@@ -890,7 +903,7 @@ mnt_test_cases = [
             [[8], [6]],
         ],
     ),
-    SyncTestCase(
+    SyncTestCase(  # Review
         hanzi_start=559,
         hanzi_end=572,
         english_start=442,
@@ -1167,12 +1180,12 @@ mnt_test_cases = [
 ]
 
 ___all__ = [
-    "mnt_cmn_hans_hk_en_us",
     "mnt_cmn_hant_hk",
     "mnt_cmn_hant_hk_merge",
     "mnt_cmn_hant_hk_simplify",
     "mnt_en_us",
     "mnt_en_us_clean",
     "mnt_en_us_merge",
+    "mnt_cmn_hans_hk_en_us",
     "mnt_test_cases",
 ]

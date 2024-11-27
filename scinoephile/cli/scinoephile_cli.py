@@ -181,9 +181,12 @@ class ScinoephileCli(CommandLineInterface):
 
         bif bof eif eof cif cof m   s   Actions
         --- --- --- --- --- --- --- --- ------------------------------------------------
-        0   1   1   0   1   0   1   1   load_english, load_hanzi, merge_english, merge_hanzi, simplify_hanzi, sync_bilingual, save_bilingual
+        0   1   1   0   1   0   1   1   load_english, load_hanzi, merge_english,
+                                        merge_hanzi, simplify_hanzi, sync_bilingual,
+                                        save_bilingual
         0   0   1   1   0   0   1   0   load_english, merge_english, save_english
-        0   0   0   0   1   1   1   1   load_hanzi, merge_hanzi, simplify_hanzi, save_hanzi
+        0   0   0   0   1   1   1   1   load_hanzi, merge_hanzi, simplify_hanzi,
+                                        save_hanzi
 
         Arguments:
             bilingual_infile: Bilingual subtitle infile

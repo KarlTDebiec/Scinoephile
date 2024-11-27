@@ -12,17 +12,10 @@ from scinoephile.core.english import (
     get_english_cleaned,
     get_english_merged,
 )
-from ..data.kob import (
-    kob_en_hk,
-    kob_en_hk_clean,
-    kob_en_hk_merge,
-)
-from ..data.pdp import (
-    pdp_input_en,
-    pdp_output_en_clean,
-    pdp_output_en_merge,
-)
-from ..data.t import t_input_english, t_output_english
+from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_merge
+from ..data.mnt import mnt_en_us, mnt_en_us_clean, mnt_en_us_merge
+from ..data.pdp import pdp_en_hk, pdp_en_hk_clean, pdp_en_hk_merge
+from ..data.t import t_en_hk, t_en_hk_clean, t_en_hk_merge
 
 
 def _test_get_english_cleaned(series: Series, expected: Series):
@@ -57,24 +50,38 @@ def _test_get_english_merged(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
+# get_english_cleaned
 def test_get_english_cleaned_kob(kob_en_hk: Series, kob_en_hk_clean: Series):
     _test_get_english_cleaned(kob_en_hk, kob_en_hk_clean)
 
 
-def test_get_english_cleaned_pdp(pdp_input_en: Series, pdp_output_en_clean: Series):
-    _test_get_english_cleaned(pdp_input_en, pdp_output_en_clean)
+def test_get_english_cleaned_mnt(mnt_en_us: Series, mnt_en_us_clean: Series):
+    _test_get_english_cleaned(mnt_en_us, mnt_en_us_clean)
 
 
+def test_get_english_cleaned_pdp(pdp_en_hk: Series, pdp_en_hk_clean: Series):
+    _test_get_english_cleaned(pdp_en_hk, pdp_en_hk_clean)
+
+
+def test_get_english_cleaned_t(t_en_hk: Series, t_en_hk_clean: Series):
+    _test_get_english_cleaned(t_en_hk, t_en_hk_clean)
+
+
+# get_english_merged
 def test_get_english_merged_kob(kob_en_hk: Series, kob_en_hk_merge: Series):
     _test_get_english_merged(kob_en_hk, kob_en_hk_merge)
 
 
-def test_get_english_merged_pdp(pdp_input_en: Series, pdp_output_en_merge: Series):
-    _test_get_english_merged(pdp_input_en, pdp_output_en_merge)
+def test_get_english_merged_mnt(mnt_en_us: Series, mnt_en_us_merge: Series):
+    _test_get_english_merged(mnt_en_us, mnt_en_us_merge)
 
 
-def test_get_english_merged_t(t_input_english: Series, t_output_english: Series):
-    _test_get_english_merged(t_input_english, t_output_english)
+def test_get_english_merged_pdp(pdp_en_hk: Series, pdp_en_hk_merge: Series):
+    _test_get_english_merged(pdp_en_hk, pdp_en_hk_merge)
+
+
+def test_get_english_merged_t(t_en_hk: Series, t_en_hk_merge: Series):
+    _test_get_english_merged(t_en_hk, t_en_hk_merge)
 
 
 @pytest.mark.parametrize(

@@ -11,6 +11,7 @@ from scinoephile.core.cantonese import (
     get_cantonese_romanization,
 )
 from ..data.kob import kob_yue_hant_hk
+from ..data.pdp import pdp_yue_hant_hk
 
 
 def _test_get_cantonese_romanization(series: Series):
@@ -18,8 +19,13 @@ def _test_get_cantonese_romanization(series: Series):
     assert len(series.events) == len(output.events)
 
 
+# get_cantonese_romanization
 def test_get_cantonese_romanization_kob(kob_yue_hant_hk: Series):
     _test_get_cantonese_romanization(kob_yue_hant_hk)
+
+
+def test_get_cantonese_romanization_pdp(pdp_yue_hant_hk: Series):
+    _test_get_cantonese_romanization(pdp_yue_hant_hk)
 
 
 @pytest.mark.parametrize(

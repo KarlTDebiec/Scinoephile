@@ -15,6 +15,7 @@ from scinoephile.testing.file import get_test_file_path
     [
         "kob/input/en-HK.srt",
         "mnt/input/en-US.srt",
+        "pdp/input/en-HK.srt",
         "t/input/en-HK.srt",
     ],
 )

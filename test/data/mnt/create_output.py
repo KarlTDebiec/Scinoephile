@@ -17,19 +17,25 @@ if __name__ == "__main__":
     def get_output_path(relative_path: str) -> Path:
         return package_root.parent / "test" / "data" / Path(relative_path)
 
-    # English
-    en_us = Series.load(get_test_file_path("mnt/input/en-US.srt"))
-    en_us_clean = get_english_cleaned(en_us)
-    en_us_clean.save(get_output_path("mnt/output/en-US_clean.srt"))
-    en_us_merge = get_english_merged(en_us)
-    en_us_merge.save(get_output_path("mnt/output/en-US_merge.srt"))
-
     # Traditional Cantonese Chinese
     cmn_hant_hk = Series.load(get_test_file_path("mnt/input/cmn-Hant-HK.srt"))
     cmn_hant_hk_merge = get_hanzi_merged(cmn_hant_hk)
     cmn_hant_hk_merge.save(get_output_path("mnt/output/cmn-Hant-HK_merge.srt"))
     cmn_hant_hk_simplify = get_hanzi_simplified(cmn_hant_hk)
     cmn_hant_hk_simplify.save(get_output_path("mnt/output/cmn-Hant-HK_simplify.srt"))
+    cmn_hant_hk_merge_simplify = get_hanzi_merged(cmn_hant_hk_simplify)
+    cmn_hant_hk_merge_simplify.save(
+        get_output_path("mnt/output/cmn-Hant-HK_merge_simplify.srt")
+    )
+
+    # English
+    en_us = Series.load(get_test_file_path("mnt/input/en-US.srt"))
+    en_us_clean = get_english_cleaned(en_us)
+    en_us_clean.save(get_output_path("mnt/output/en-US_clean.srt"))
+    en_us_merge = get_english_merged(en_us)
+    en_us_merge.save(get_output_path("mnt/output/en-US_merge.srt"))
+    en_us_clean_merge = get_english_merged(en_us_clean)
+    en_us_clean_merge.save(get_output_path("mnt/output/en-US_clean_merge.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
     en_us_clean_merge = get_english_merged(en_us_clean)

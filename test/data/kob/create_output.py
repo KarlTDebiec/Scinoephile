@@ -17,13 +17,6 @@ if __name__ == "__main__":
     def get_output_path(relative_path: str) -> Path:
         return package_root.parent / "test" / "data" / Path(relative_path)
 
-    # English
-    en_hk = Series.load(get_test_file_path("kob/input/en-HK.srt"))
-    en_hk_clean = get_english_cleaned(en_hk)
-    en_hk_clean.save(get_output_path("kob/output/en-HK_clean.srt"))
-    en_hk_merge = get_english_merged(en_hk)
-    en_hk_merge.save(get_output_path("kob/output/en-HK_merge.srt"))
-
     # Simplified Cantonese Chinese
     yue_hans_hk = Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
     yue_hans_hk_merge = get_hanzi_merged(yue_hans_hk)
@@ -33,6 +26,13 @@ if __name__ == "__main__":
     yue_hant_hk = Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
     yue_hant_hk_simplify = get_hanzi_simplified(yue_hant_hk)
     yue_hant_hk_simplify.save(get_output_path("kob/output/yue-Hant-HK_simplify.srt"))
+
+    # English
+    en_hk = Series.load(get_test_file_path("kob/input/en-HK.srt"))
+    en_hk_clean = get_english_cleaned(en_hk)
+    en_hk_clean.save(get_output_path("kob/output/en-HK_clean.srt"))
+    en_hk_merge = get_english_merged(en_hk)
+    en_hk_merge.save(get_output_path("kob/output/en-HK_merge.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
     en_hk_clean_merge = get_english_merged(en_hk_clean)

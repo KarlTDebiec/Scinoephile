@@ -76,7 +76,8 @@ def get_sync_overlap_notes(
             )
         else:
             notes[f"{primary}_{primary_index}"] = (
-                f"{primary_label} {primary_index} has no overlapping {secondary_label} subtitles."
+                f"{primary_label} {primary_index} has no overlapping "
+                f"{secondary_label} subtitles."
             )
 
     return notes
@@ -145,7 +146,8 @@ def get_sync_from_sync_groups(
     # Collect all primary language indices that are already grouped
     existing_primary_indexes = {idx for group in groups for idx in group[primary]}
 
-    # Prepare SubtitleGroupResponse objects only for valid groups (where primary language has entries)
+    # Prepare SubtitleGroupResponse objects only for valid groups
+    # (where primary language has entries)
     filled_groups = [
         SubtitleGroupResponse(
             **{

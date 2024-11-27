@@ -9,6 +9,29 @@ from scinoephile.core import Series
 from scinoephile.testing.file import get_test_file_path
 
 
+# Simplified Cantonese Chinese
+@pytest.fixture
+def kob_yue_hans_hk():
+    return Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
+
+
+@pytest.fixture
+def kob_yue_hans_hk_merge():
+    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_merge.srt"))
+
+
+# Traditional Cantonese Chinese
+@pytest.fixture
+def kob_yue_hant_hk():
+    return Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
+
+
+@pytest.fixture
+def kob_yue_hant_hk_simplify():
+    return Series.load(get_test_file_path("kob/output/yue-Hant-HK_simplify.srt"))
+
+
+# English
 @pytest.fixture
 def kob_en_hk():
     return Series.load(get_test_file_path("kob/input/en-HK.srt"))
@@ -24,38 +47,19 @@ def kob_en_hk_merge():
     return Series.load(get_test_file_path("kob/output/en-HK_merge.srt"))
 
 
+# Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture()
 def kob_yue_hans_hk_en_hk():
     return Series.load(get_test_file_path("kob/output/yue-Hans-HK_en-HK.srt"))
 
 
-@pytest.fixture
-def kob_yue_hans_hk():
-    return Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
-
-
-@pytest.fixture
-def kob_yue_hans_hk_merge():
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_merge.srt"))
-
-
-@pytest.fixture
-def kob_yue_hant_hk():
-    return Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
-
-
-@pytest.fixture
-def kob_yue_hant_hk_simplify():
-    return Series.load(get_test_file_path("kob/output/yue-Hant-HK_simplify.srt"))
-
-
 ___all__ = [
+    "kob_yue_hans_hk",
+    "kob_yue_hans_hk_merge",
+    "kob_yue_hant_hk",
+    "kob_yue_hant_hk_simplify",
     "kob_en_hk",
     "kob_en_hk_clean",
     "kob_en_hk_merge",
-    "kob_yue_hans_hk",
-    "kob_yue_hans_hk_merge",
     "kob_yue_hans_hk_en_hk",
-    "kob_yue_hant_hk",
-    "kob_yue_hant_hk_simplify",
 ]
