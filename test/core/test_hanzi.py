@@ -13,7 +13,7 @@ from scinoephile.core.hanzi import (
     get_hanzi_merged,
     get_hanzi_simplified,
 )
-from ..data.kob import kob_cmn_hans_hk
+from ..data.kob import kob_yue_hant_hk, kob_yue_hant_hk_simplify
 from ..data.t import t_input_hanzi, t_output_hanzi
 
 
@@ -34,17 +34,29 @@ def _test_get_hanzi_merged(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_hanzi_simplified(series: Series):
+def _test_get_hanzi_simplified(series: Series, expected: Series = None):
     output = get_hanzi_simplified(series)
     assert len(series.events) == len(output.events)
+
+    errors = []
+    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+        if event != expected_event:
+            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
+
+    if errors:
+        for error in errors:
+            print(error)
+        pytest.fail(f"Found {len(errors)} discrepancies")
 
 
 def test_get_hanzi_merged_t(t_input_hanzi: Series, t_output_hanzi: Series):
     _test_get_hanzi_merged(t_input_hanzi, t_output_hanzi)
 
 
-def test_get_hanzi_simplified_kob(kob_cmn_hans_hk: Series):
-    _test_get_hanzi_simplified(kob_cmn_hans_hk)
+def test_get_hanzi_simplified_kob(
+    kob_yue_hant_hk: Series, kob_yue_hant_hk_simplify: Series
+):
+    _test_get_hanzi_simplified(kob_yue_hant_hk, kob_yue_hant_hk_simplify)
 
 
 def test_get_hanzi_simplified_t(t_input_hanzi: Series):

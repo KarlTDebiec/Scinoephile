@@ -14,16 +14,16 @@ from ..data.kob import kob_cmn_hans_hk
 from ..data.t import t_input_hanzi
 
 
-def _test_get_mandarin_romanization(series: Series) -> None:
+def _test_get_mandarin_romanization(series: Series):
     output = get_mandarin_romanization(series)
     assert len(series.events) == len(output.events)
 
 
-def test_get_mandarin_romanization_kob(kob_cmn_hans_hk: Series) -> None:
+def test_get_mandarin_romanization_kob(kob_cmn_hans_hk: Series):
     _test_get_mandarin_romanization(kob_cmn_hans_hk)
 
 
-def test_get_mandarin_romanization_t(t_input_hanzi: Series) -> None:
+def test_get_mandarin_romanization_t(t_input_hanzi: Series):
     _test_get_mandarin_romanization(t_input_hanzi)
 
 
@@ -33,5 +33,5 @@ def test_get_mandarin_romanization_t(t_input_hanzi: Series) -> None:
         ("你好世界", "nǐ hǎo shìjiè"),
     ],
 )
-def test_get_mandarin_text_romanization(text: str, expected: str) -> None:
+def test_get_mandarin_text_romanization(text: str, expected: str):
     assert get_mandarin_text_romanization(text) == expected

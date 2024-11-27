@@ -13,7 +13,12 @@ from scinoephile.core.english import (
     get_english_cleaned,
     get_english_merged,
 )
-from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_merge
+from ..data.kob import (
+    kob_en_hk,
+    kob_en_hk_clean,
+    kob_en_hk_clean_merge,
+    kob_en_hk_merge,
+)
 from ..data.pdp import (
     pdp_input_en,
     pdp_output_en_clean,
