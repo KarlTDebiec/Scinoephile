@@ -16,7 +16,7 @@ if __name__ == "__main__":
     def get_output_path(relative_path: str) -> Path:
         return package_root.parent / "test" / "data" / Path(relative_path)
 
-    yue_hans_hk = Series.load(get_test_file_path("input/yue-Hans-HK.srt"))
+    yue_hans_hk = Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
     en_hk = Series.load(get_test_file_path("kob/input/en-HK.srt"))
     yue_hant_hk = Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
 
