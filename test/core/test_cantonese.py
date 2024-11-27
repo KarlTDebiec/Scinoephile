@@ -6,9 +6,8 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-# noinspection PyProtectedMember
 from scinoephile.core.cantonese import (
-    _get_cantonese_text_romanization,
+    _get_cantonese_text_romanization,  # noqa
     get_cantonese_romanization,
 )
 from ..data.kob import kob_yue_hant_hk

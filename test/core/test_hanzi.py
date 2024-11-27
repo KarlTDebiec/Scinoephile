@@ -6,10 +6,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-# noinspection PyProtectedMember
 from scinoephile.core.hanzi import (
-    _get_hanzi_text_merged,
-    _get_hanzi_text_simplified,
+    _get_hanzi_text_merged,  # noqa
+    _get_hanzi_text_simplified,  # noqa
     get_hanzi_merged,
     get_hanzi_simplified,
 )

@@ -6,10 +6,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-# noinspection PyProtectedMember
 from scinoephile.core.english import (
-    _get_english_text_cleaned,
-    _get_english_text_merged,
+    _get_english_text_cleaned,  # noqa
+    _get_english_text_merged,  # noqa
     get_english_cleaned,
     get_english_merged,
 )
