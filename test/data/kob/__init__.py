@@ -11,7 +11,7 @@ from scinoephile.testing.file import get_test_file_path
 
 @pytest.fixture
 def kob_input_english():
-    return Series.load(get_test_file_path("kob/input/en-HK.srt"))
+    return Series.load(get_test_file_path("kob/input/en.srt"))
 
 
 @pytest.fixture
@@ -21,7 +21,7 @@ def kob_input_hanzi():
 
 @pytest.fixture
 def kob_output_english():
-    return Series.load(get_test_file_path("kob/output/en-hk.srt"))
+    return Series.load(get_test_file_path("output/en.srt"))
 
 
 test_cases = []

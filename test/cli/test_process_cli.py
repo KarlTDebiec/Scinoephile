@@ -135,9 +135,9 @@ def test_chinese(
         (
             (ScinoephileCli,),
             "mnt/input/cmn-Hans.srt",
-            "mnt/input/en-US.srt",
+            "mnt/input/en.srt",
             "--clean",
-            "mnt/output/cmn-Hans_en-US.srt",
+            "mnt/output/cmn-Hans_en.srt",
         ),
         (
             (ScinoephileCli,),

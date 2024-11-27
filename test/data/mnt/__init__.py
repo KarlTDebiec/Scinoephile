@@ -12,7 +12,7 @@ from scinoephile.testing.file import get_test_file_path
 
 @pytest.fixture
 def mnt_input_english():
-    return Series.load(get_test_file_path("mnt/input/en-US.srt"))
+    return Series.load(get_test_file_path("mnt/input/en.srt"))
 
 
 @pytest.fixture
