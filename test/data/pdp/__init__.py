@@ -216,6 +216,15 @@ pdp_test_cases = [
         ],
     ),
     SyncTestCase(
+        hanzi_start=73,
+        hanzi_end=74,
+        english_start=94,
+        english_end=94,
+        sync_groups=[
+            [[0], []],
+        ],
+    ),
+    SyncTestCase(
         hanzi_start=74,
         hanzi_end=77,
         english_start=94,
@@ -815,9 +824,9 @@ pdp_test_cases = [
     ),
     SyncTestCase(
         hanzi_start=439,
-        hanzi_end=466,
+        hanzi_end=445,
         english_start=573,
-        english_end=607,
+        english_end=581,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -825,34 +834,42 @@ pdp_test_cases = [
             [[4], [5, 6]],
             [[5], [7]],
             [[6], [8]],
-            [[7], [10]],
-            [[8], [11]],
-            [[9], [12]],
-            [[10], [13]],
-            [[11], [14]],
-            [[12], [15]],
-            [[13], [16]],
-            [[14], [17]],
-            [[15], [18, 19]],
-            [[16], [20]],
-            [[17], [21]],
-            [[18], [22]],
-            [[19], [23]],
-            [[20], [24]],
+        ],
+    ),
+    SyncTestCase(
+        hanzi_start=445,
+        hanzi_end=466,
+        english_start=581,
+        english_end=606,
+        sync_groups=[
+            [[1], [1]],
+            [[2], [2]],
+            [[3], [3]],
+            [[4], [4]],
+            [[5], [5]],
+            [[6], [6]],
+            [[7], [7]],
+            [[8], [8]],
+            [[9], [9, 10]],
+            [[10], [11]],
+            [[11], [12]],
+            [[12], [13]],
+            [[13], [14]],
+            [[14], [15]],
+            [[15], [16]],
+            [[16], [17, 18]],
+            [[17], [19, 20]],
+            [[18], [21]],
+            [[19], [22]],
+            [[20], [23]],
             [[21], [25]],
-            [[22], [26, 27]],
-            [[23], [28, 29]],
-            [[24], [30]],
-            [[25], [31]],
-            [[26], [32]],
-            [[27], [34]],
         ],
     ),
     SyncTestCase(
         hanzi_start=466,
         hanzi_end=481,
-        english_start=607,
-        english_end=625,
+        english_start=606,
+        english_end=624,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -874,8 +891,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=481,
         hanzi_end=503,
-        english_start=625,
-        english_end=657,
+        english_start=624,
+        english_end=656,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3, 4]],
@@ -904,8 +921,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=503,
         hanzi_end=565,
-        english_start=657,
-        english_end=734,
+        english_start=656,
+        english_end=733,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -974,8 +991,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=566,
         hanzi_end=567,
-        english_start=735,
-        english_end=735,
+        english_start=734,
+        english_end=734,
         sync_groups=[
             [[0], []],
         ],
@@ -983,8 +1000,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=567,
         hanzi_end=570,
-        english_start=735,
-        english_end=738,
+        english_start=734,
+        english_end=737,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -994,8 +1011,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=571,
         hanzi_end=609,
-        english_start=739,
-        english_end=782,
+        english_start=738,
+        english_end=781,
         sync_groups=[
             [[1], []],
             [[2], [1]],
@@ -1040,8 +1057,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=609,
         hanzi_end=634,
-        english_start=782,
-        english_end=813,
+        english_start=781,
+        english_end=812,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1073,8 +1090,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=634,
         hanzi_end=639,
-        english_start=813,
-        english_end=820,
+        english_start=812,
+        english_end=819,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1086,8 +1103,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=639,
         hanzi_end=641,
-        english_start=820,
-        english_end=822,
+        english_start=819,
+        english_end=821,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1096,8 +1113,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=641,
         hanzi_end=643,
-        english_start=822,
-        english_end=824,
+        english_start=821,
+        english_end=823,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1106,8 +1123,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=643,
         hanzi_end=645,
-        english_start=824,
-        english_end=826,
+        english_start=823,
+        english_end=825,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1116,8 +1133,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=645,
         hanzi_end=647,
-        english_start=826,
-        english_end=828,
+        english_start=825,
+        english_end=827,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1126,8 +1143,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=647,
         hanzi_end=649,
-        english_start=828,
-        english_end=830,
+        english_start=827,
+        english_end=829,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1135,16 +1152,9 @@ pdp_test_cases = [
     ),
     SyncTestCase(
         hanzi_start=650,
-        hanzi_end=650,
-        english_start=831,
-        english_end=832,
-        sync_groups=[],
-    ),
-    SyncTestCase(
-        hanzi_start=650,
         hanzi_end=653,
-        english_start=832,
-        english_end=838,
+        english_start=830,
+        english_end=836,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -1154,8 +1164,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=654,
         hanzi_end=658,
-        english_start=839,
-        english_end=844,
+        english_start=837,
+        english_end=842,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1166,8 +1176,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=658,
         hanzi_end=659,
-        english_start=844,
-        english_end=846,
+        english_start=842,
+        english_end=844,
         sync_groups=[
             [[1], [1]],
         ],
@@ -1175,8 +1185,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=660,
         hanzi_end=681,
-        english_start=847,
-        english_end=876,
+        english_start=845,
+        english_end=874,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1204,8 +1214,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=681,
         hanzi_end=683,
-        english_start=876,
-        english_end=878,
+        english_start=874,
+        english_end=876,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1214,8 +1224,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=683,
         hanzi_end=686,
-        english_start=878,
-        english_end=881,
+        english_start=876,
+        english_end=879,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1225,8 +1235,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=686,
         hanzi_end=694,
-        english_start=881,
-        english_end=891,
+        english_start=879,
+        english_end=889,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1241,8 +1251,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=694,
         hanzi_end=698,
-        english_start=891,
-        english_end=895,
+        english_start=889,
+        english_end=893,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1253,8 +1263,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=698,
         hanzi_end=702,
-        english_start=895,
-        english_end=899,
+        english_start=893,
+        english_end=897,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1265,8 +1275,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=702,
         hanzi_end=704,
-        english_start=899,
-        english_end=902,
+        english_start=897,
+        english_end=900,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1275,8 +1285,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=704,
         hanzi_end=713,
-        english_start=902,
-        english_end=914,
+        english_start=900,
+        english_end=912,
         sync_groups=[
             [[1], [1]],
             [[2], [3]],
@@ -1292,8 +1302,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=713,
         hanzi_end=715,
-        english_start=914,
-        english_end=916,
+        english_start=912,
+        english_end=914,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1302,8 +1312,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=715,
         hanzi_end=722,
-        english_start=916,
-        english_end=924,
+        english_start=914,
+        english_end=922,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -1317,8 +1327,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=723,
         hanzi_end=727,
-        english_start=925,
-        english_end=929,
+        english_start=923,
+        english_end=927,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1329,8 +1339,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=728,
         hanzi_end=733,
-        english_start=930,
-        english_end=935,
+        english_start=928,
+        english_end=933,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1342,8 +1352,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=733,
         hanzi_end=765,
-        english_start=935,
-        english_end=971,
+        english_start=933,
+        english_end=969,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1382,8 +1392,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=766,
         hanzi_end=776,
-        english_start=972,
-        english_end=982,
+        english_start=970,
+        english_end=980,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1400,8 +1410,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=777,
         hanzi_end=784,
-        english_start=983,
-        english_end=992,
+        english_start=981,
+        english_end=990,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1415,8 +1425,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=784,
         hanzi_end=787,
-        english_start=992,
-        english_end=995,
+        english_start=990,
+        english_end=993,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1426,8 +1436,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=788,
         hanzi_end=791,
-        english_start=996,
-        english_end=999,
+        english_start=994,
+        english_end=997,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1437,8 +1447,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=791,
         hanzi_end=799,
-        english_start=999,
-        english_end=1010,
+        english_start=997,
+        english_end=1008,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -1453,8 +1463,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=799,
         hanzi_end=832,
-        english_start=1010,
-        english_end=1052,
+        english_start=1008,
+        english_end=1050,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1494,37 +1504,37 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=832,
         hanzi_end=853,
-        english_start=1052,
-        english_end=1081,
+        english_start=1050,
+        english_end=1078,
         sync_groups=[
-            [[1], [2]],
-            [[2], [3, 4]],
-            [[3], [5]],
-            [[4], [6]],
-            [[5], [7]],
-            [[6], [8]],
-            [[7], [9]],
-            [[8], [10]],
-            [[9], [11]],
-            [[10], [12, 13]],
-            [[11], [14]],
-            [[12], [15, 16]],
-            [[13], [17]],
-            [[14], [18]],
-            [[15], [19]],
-            [[16], [20]],
-            [[17], [21, 22]],
-            [[18], [23]],
-            [[19], [25]],
-            [[20], [26, 27]],
-            [[21], [28, 29]],
+            [[1], [1]],
+            [[2], [2, 3]],
+            [[3], [4]],
+            [[4], [5]],
+            [[5], [6]],
+            [[6], [7]],
+            [[7], [8]],
+            [[8], [9]],
+            [[9], [10]],
+            [[10], [11, 12]],
+            [[11], [13]],
+            [[12], [14, 15]],
+            [[13], [16]],
+            [[14], [17]],
+            [[15], [18]],
+            [[16], [19]],
+            [[17], [20, 21]],
+            [[18], [22]],
+            [[19], [24]],
+            [[20], [25, 26]],
+            [[21], [27, 28]],
         ],
     ),
     SyncTestCase(
         hanzi_start=853,
         hanzi_end=874,
-        english_start=1081,
-        english_end=1104,
+        english_start=1078,
+        english_end=1101,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1552,8 +1562,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=874,
         hanzi_end=877,
-        english_start=1104,
-        english_end=1106,
+        english_start=1101,
+        english_end=1103,
         sync_groups=[
             [[1], []],
             [[2], [1]],
@@ -1563,8 +1573,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=877,
         hanzi_end=878,
-        english_start=1106,
-        english_end=1108,
+        english_start=1103,
+        english_end=1105,
         sync_groups=[
             [[1], [2]],
         ],
@@ -1572,8 +1582,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=878,
         hanzi_end=889,
-        english_start=1108,
-        english_end=1121,
+        english_start=1105,
+        english_end=1118,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -1591,8 +1601,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=890,
         hanzi_end=897,
-        english_start=1122,
-        english_end=1130,
+        english_start=1119,
+        english_end=1127,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -1606,8 +1616,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=897,
         hanzi_end=899,
-        english_start=1130,
-        english_end=1132,
+        english_start=1127,
+        english_end=1129,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1616,8 +1626,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=899,
         hanzi_end=903,
-        english_start=1132,
-        english_end=1137,
+        english_start=1129,
+        english_end=1134,
         sync_groups=[
             [[1], [2]],
             [[2], [3]],
@@ -1628,8 +1638,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=903,
         hanzi_end=906,
-        english_start=1137,
-        english_end=1140,
+        english_start=1134,
+        english_end=1137,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1639,8 +1649,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=908,
         hanzi_end=910,
-        english_start=1142,
-        english_end=1144,
+        english_start=1139,
+        english_end=1141,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1649,8 +1659,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=910,
         hanzi_end=921,
-        english_start=1144,
-        english_end=1157,
+        english_start=1141,
+        english_end=1154,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -1668,8 +1678,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=921,
         hanzi_end=926,
-        english_start=1157,
-        english_end=1163,
+        english_start=1154,
+        english_end=1160,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1681,8 +1691,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=926,
         hanzi_end=929,
-        english_start=1163,
-        english_end=1168,
+        english_start=1160,
+        english_end=1165,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3, 4]],
@@ -1692,8 +1702,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=929,
         hanzi_end=935,
-        english_start=1168,
-        english_end=1176,
+        english_start=1165,
+        english_end=1173,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -1706,8 +1716,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=935,
         hanzi_end=942,
-        english_start=1176,
-        english_end=1186,
+        english_start=1173,
+        english_end=1183,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3, 4]],
@@ -1721,8 +1731,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=942,
         hanzi_end=944,
-        english_start=1186,
-        english_end=1188,
+        english_start=1183,
+        english_end=1185,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1731,15 +1741,15 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=945,
         hanzi_end=945,
-        english_start=1189,
-        english_end=1190,
+        english_start=1186,
+        english_end=1187,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=945,
         hanzi_end=947,
-        english_start=1190,
-        english_end=1193,
+        english_start=1187,
+        english_end=1190,
         sync_groups=[
             [[1], [1]],
             [[2], [3]],
@@ -1748,8 +1758,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=947,
         hanzi_end=948,
-        english_start=1193,
-        english_end=1195,
+        english_start=1190,
+        english_end=1192,
         sync_groups=[
             [[1], [1, 2]],
         ],
@@ -1757,8 +1767,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=948,
         hanzi_end=970,
-        english_start=1195,
-        english_end=1220,
+        english_start=1192,
+        english_end=1217,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1787,8 +1797,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=970,
         hanzi_end=972,
-        english_start=1220,
-        english_end=1222,
+        english_start=1217,
+        english_end=1219,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1797,8 +1807,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=973,
         hanzi_end=978,
-        english_start=1223,
-        english_end=1230,
+        english_start=1220,
+        english_end=1227,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1810,8 +1820,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=978,
         hanzi_end=980,
-        english_start=1230,
-        english_end=1233,
+        english_start=1227,
+        english_end=1230,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -1820,8 +1830,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=980,
         hanzi_end=986,
-        english_start=1233,
-        english_end=1240,
+        english_start=1230,
+        english_end=1237,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -1834,8 +1844,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=986,
         hanzi_end=988,
-        english_start=1240,
-        english_end=1242,
+        english_start=1237,
+        english_end=1239,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1844,8 +1854,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=988,
         hanzi_end=992,
-        english_start=1242,
-        english_end=1246,
+        english_start=1239,
+        english_end=1243,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1856,8 +1866,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=992,
         hanzi_end=998,
-        english_start=1246,
-        english_end=1253,
+        english_start=1243,
+        english_end=1250,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1870,8 +1880,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=998,
         hanzi_end=1001,
-        english_start=1253,
-        english_end=1256,
+        english_start=1250,
+        english_end=1253,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1881,8 +1891,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1001,
         hanzi_end=1005,
-        english_start=1256,
-        english_end=1260,
+        english_start=1253,
+        english_end=1257,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1893,8 +1903,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1005,
         hanzi_end=1008,
-        english_start=1260,
-        english_end=1263,
+        english_start=1257,
+        english_end=1260,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1904,8 +1914,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1009,
         hanzi_end=1021,
-        english_start=1264,
-        english_end=1276,
+        english_start=1261,
+        english_end=1273,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1924,8 +1934,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1021,
         hanzi_end=1026,
-        english_start=1276,
-        english_end=1281,
+        english_start=1273,
+        english_end=1278,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1937,8 +1947,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1028,
         hanzi_end=1032,
-        english_start=1283,
-        english_end=1287,
+        english_start=1280,
+        english_end=1284,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1949,8 +1959,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1033,
         hanzi_end=1034,
-        english_start=1288,
-        english_end=1290,
+        english_start=1285,
+        english_end=1287,
         sync_groups=[
             [[1], [2]],
         ],
@@ -1958,8 +1968,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1034,
         hanzi_end=1036,
-        english_start=1290,
-        english_end=1292,
+        english_start=1287,
+        english_end=1289,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1968,8 +1978,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1038,
         hanzi_end=1042,
-        english_start=1294,
-        english_end=1298,
+        english_start=1291,
+        english_end=1295,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1980,8 +1990,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1042,
         hanzi_end=1044,
-        english_start=1298,
-        english_end=1300,
+        english_start=1295,
+        english_end=1297,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -1990,8 +2000,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1044,
         hanzi_end=1053,
-        english_start=1300,
-        english_end=1309,
+        english_start=1297,
+        english_end=1306,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2007,8 +2017,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1053,
         hanzi_end=1055,
-        english_start=1309,
-        english_end=1311,
+        english_start=1306,
+        english_end=1308,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2017,8 +2027,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1055,
         hanzi_end=1059,
-        english_start=1311,
-        english_end=1315,
+        english_start=1308,
+        english_end=1312,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2029,8 +2039,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1060,
         hanzi_end=1081,
-        english_start=1316,
-        english_end=1340,
+        english_start=1313,
+        english_end=1337,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2058,8 +2068,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1081,
         hanzi_end=1092,
-        english_start=1340,
-        english_end=1352,
+        english_start=1337,
+        english_end=1349,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -2077,8 +2087,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1092,
         hanzi_end=1095,
-        english_start=1352,
-        english_end=1358,
+        english_start=1349,
+        english_end=1355,
         sync_groups=[
             [[1], [2]],
             [[2], [3, 4]],
@@ -2088,8 +2098,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1095,
         hanzi_end=1105,
-        english_start=1358,
-        english_end=1372,
+        english_start=1355,
+        english_end=1369,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3, 4, 5]],
@@ -2106,8 +2116,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1105,
         hanzi_end=1106,
-        english_start=1372,
-        english_end=1372,
+        english_start=1369,
+        english_end=1369,
         sync_groups=[
             [[0], []],
         ],
@@ -2115,8 +2125,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1106,
         hanzi_end=1111,
-        english_start=1372,
-        english_end=1381,
+        english_start=1369,
+        english_end=1378,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -2128,8 +2138,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1111,
         hanzi_end=1121,
-        english_start=1381,
-        english_end=1391,
+        english_start=1378,
+        english_end=1388,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2146,8 +2156,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1122,
         hanzi_end=1124,
-        english_start=1392,
-        english_end=1394,
+        english_start=1389,
+        english_end=1391,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2156,8 +2166,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1125,
         hanzi_end=1138,
-        english_start=1395,
-        english_end=1409,
+        english_start=1392,
+        english_end=1406,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -2177,8 +2187,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1138,
         hanzi_end=1140,
-        english_start=1409,
-        english_end=1411,
+        english_start=1406,
+        english_end=1408,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2187,8 +2197,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1140,
         hanzi_end=1153,
-        english_start=1411,
-        english_end=1427,
+        english_start=1408,
+        english_end=1424,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2208,8 +2218,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1153,
         hanzi_end=1167,
-        english_start=1427,
-        english_end=1449,
+        english_start=1424,
+        english_end=1446,
         sync_groups=[
             [[1], [1, 2]],
             [[2], [3]],
@@ -2230,8 +2240,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1167,
         hanzi_end=1174,
-        english_start=1449,
-        english_end=1456,
+        english_start=1446,
+        english_end=1453,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2245,8 +2255,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1174,
         hanzi_end=1176,
-        english_start=1456,
-        english_end=1458,
+        english_start=1453,
+        english_end=1455,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2255,8 +2265,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1176,
         hanzi_end=1179,
-        english_start=1458,
-        english_end=1461,
+        english_start=1455,
+        english_end=1458,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2266,8 +2276,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1179,
         hanzi_end=1182,
-        english_start=1461,
-        english_end=1464,
+        english_start=1458,
+        english_end=1461,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2277,8 +2287,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1182,
         hanzi_end=1187,
-        english_start=1464,
-        english_end=1470,
+        english_start=1461,
+        english_end=1467,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -2290,8 +2300,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1187,
         hanzi_end=1194,
-        english_start=1470,
-        english_end=1477,
+        english_start=1467,
+        english_end=1474,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2305,8 +2315,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1194,
         hanzi_end=1196,
-        english_start=1477,
-        english_end=1480,
+        english_start=1474,
+        english_end=1477,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -2315,8 +2325,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1196,
         hanzi_end=1199,
-        english_start=1480,
-        english_end=1483,
+        english_start=1477,
+        english_end=1480,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2326,15 +2336,15 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1199,
         hanzi_end=1199,
-        english_start=1483,
-        english_end=1484,
+        english_start=1480,
+        english_end=1481,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1203,
         hanzi_end=1205,
-        english_start=1488,
-        english_end=1490,
+        english_start=1485,
+        english_end=1487,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2343,8 +2353,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1205,
         hanzi_end=1209,
-        english_start=1490,
-        english_end=1494,
+        english_start=1487,
+        english_end=1491,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2355,8 +2365,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1210,
         hanzi_end=1212,
-        english_start=1495,
-        english_end=1498,
+        english_start=1492,
+        english_end=1495,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -2365,8 +2375,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1212,
         hanzi_end=1214,
-        english_start=1498,
-        english_end=1500,
+        english_start=1495,
+        english_end=1497,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2375,8 +2385,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1215,
         hanzi_end=1217,
-        english_start=1501,
-        english_end=1503,
+        english_start=1498,
+        english_end=1500,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2385,8 +2395,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1218,
         hanzi_end=1223,
-        english_start=1504,
-        english_end=1509,
+        english_start=1501,
+        english_end=1506,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2398,8 +2408,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1224,
         hanzi_end=1226,
-        english_start=1510,
-        english_end=1512,
+        english_start=1507,
+        english_end=1509,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2408,8 +2418,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1226,
         hanzi_end=1228,
-        english_start=1512,
-        english_end=1514,
+        english_start=1509,
+        english_end=1511,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2418,8 +2428,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1228,
         hanzi_end=1230,
-        english_start=1514,
-        english_end=1516,
+        english_start=1511,
+        english_end=1513,
         sync_groups=[
             [[1, 2], [1]],
         ],
@@ -2427,8 +2437,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1230,
         hanzi_end=1236,
-        english_start=1516,
-        english_end=1523,
+        english_start=1513,
+        english_end=1520,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2441,8 +2451,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1236,
         hanzi_end=1239,
-        english_start=1523,
-        english_end=1526,
+        english_start=1520,
+        english_end=1523,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2452,8 +2462,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1239,
         hanzi_end=1246,
-        english_start=1526,
-        english_end=1534,
+        english_start=1523,
+        english_end=1531,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2467,34 +2477,34 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1247,
         hanzi_end=1265,
-        english_start=1535,
-        english_end=1560,
+        english_start=1532,
+        english_end=1556,
         sync_groups=[
-            [[1], [2]],
-            [[2], [3]],
-            [[3], [4]],
-            [[4], [5, 6]],
-            [[5], [7, 8]],
-            [[6], [9, 10]],
-            [[7], [11]],
-            [[8], [12, 13]],
-            [[9], [14]],
-            [[10], [15]],
-            [[11], [16]],
-            [[12], [17]],
-            [[13], [18, 19]],
-            [[14], [20]],
-            [[15], [21]],
-            [[16], [22]],
-            [[17], [24]],
-            [[18], [25]],
+            [[1], [1]],
+            [[2], [2]],
+            [[3], [3]],
+            [[4], [4, 5]],
+            [[5], [6, 7]],
+            [[6], [8, 9]],
+            [[7], [10]],
+            [[8], [11, 12]],
+            [[9], [13]],
+            [[10], [14]],
+            [[11], [15]],
+            [[12], [16]],
+            [[13], [17, 18]],
+            [[14], [19]],
+            [[15], [20]],
+            [[16], [21]],
+            [[17], [23]],
+            [[18], [24]],
         ],
     ),
     SyncTestCase(
         hanzi_start=1265,
         hanzi_end=1269,
-        english_start=1560,
-        english_end=1565,
+        english_start=1556,
+        english_end=1561,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3]],
@@ -2505,8 +2515,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1269,
         hanzi_end=1280,
-        english_start=1565,
-        english_end=1578,
+        english_start=1561,
+        english_end=1574,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2523,20 +2533,19 @@ pdp_test_cases = [
     ),
     SyncTestCase(
         hanzi_start=1280,
-        hanzi_end=1283,
-        english_start=1578,
-        english_end=1582,
+        hanzi_end=1282,
+        english_start=1574,
+        english_end=1576,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
-            [[3], [4]],
         ],
     ),
     SyncTestCase(
         hanzi_start=1283,
         hanzi_end=1285,
-        english_start=1582,
-        english_end=1584,
+        english_start=1577,
+        english_end=1579,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2545,8 +2554,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1285,
         hanzi_end=1287,
-        english_start=1584,
-        english_end=1586,
+        english_start=1579,
+        english_end=1581,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2555,8 +2564,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1288,
         hanzi_end=1294,
-        english_start=1587,
-        english_end=1593,
+        english_start=1582,
+        english_end=1588,
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
@@ -2569,8 +2578,8 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1294,
         hanzi_end=1301,
-        english_start=1593,
-        english_end=1602,
+        english_start=1588,
+        english_end=1597,
         sync_groups=[
             [[1], [1]],
             [[2], [2, 3, 4]],
@@ -2583,16 +2592,9 @@ pdp_test_cases = [
     ),
     SyncTestCase(
         hanzi_start=1301,
-        hanzi_end=1301,
-        english_start=1602,
-        english_end=1603,
-        sync_groups=[],
-    ),
-    SyncTestCase(
-        hanzi_start=1301,
         hanzi_end=1302,
-        english_start=1603,
-        english_end=1603,
+        english_start=1597,
+        english_end=1597,
         sync_groups=[
             [[0], []],
         ],
@@ -2600,57 +2602,50 @@ pdp_test_cases = [
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1603,
-        english_end=1614,
+        english_start=1597,
+        english_end=1608,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1614,
-        english_end=1635,
+        english_start=1608,
+        english_end=1629,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1635,
-        english_end=1649,
+        english_start=1629,
+        english_end=1643,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1649,
-        english_end=1650,
+        english_start=1643,
+        english_end=1660,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1650,
-        english_end=1667,
+        english_start=1660,
+        english_end=1661,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1302,
-        english_start=1667,
-        english_end=1668,
-        sync_groups=[],
-    ),
-    SyncTestCase(
-        hanzi_start=1302,
-        hanzi_end=1302,
-        english_start=1668,
-        english_end=1679,
+        english_start=1661,
+        english_end=1672,
         sync_groups=[],
     ),
     SyncTestCase(
         hanzi_start=1302,
         hanzi_end=1303,
-        english_start=1679,
-        english_end=1679,
+        english_start=1672,
+        english_end=1672,
         sync_groups=[
             [[0], []],
         ],

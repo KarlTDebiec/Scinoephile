@@ -6,7 +6,6 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-
 # noinspection PyProtectedMember
 from scinoephile.core.english import (
     _get_english_text_cleaned,
@@ -99,6 +98,7 @@ def test_get_english_merged_t(t_input_english: Series, t_output_english: Series)
         ("[test] ", None),
         ("[test] abcd", "abcd"),
         ("[test]\nabcd", "abcd"),
+        ("[test\ntest]", None),
         ("abcd [test]", "abcd"),
         ("abcd\ndefg [test]", "abcd\ndefg"),
         ("-[test] abcd\n-defg", "-abcd\n-defg"),

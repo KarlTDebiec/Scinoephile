@@ -71,7 +71,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Remove closed caption annotations ([...])
-    cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned).strip()
+    cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned, flags=re.DOTALL).strip()
 
     # Remove lines starting with dashes if they are otherwise empty
     cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)
