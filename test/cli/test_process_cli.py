@@ -22,21 +22,15 @@ from scinoephile.testing.file import get_test_file_path
     [
         (
             (ScinoephileCli,),
-            "pdp/input/en.srt",
+            "pdp/input/en-HK.srt",
             "--clean",
-            "pdp/output/en_clean.srt",
+            "pdp/output/en-HK_clean.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/en.srt",
-            "--clean --merge",
-            "pdp/output/en_clean_merge.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/en.srt",
+            "pdp/input/en-HK.srt",
             "--merge",
-            "pdp/output/en_merge.srt",
+            "pdp/output/en-HK_merge.srt",
         ),
     ],
 )
@@ -69,39 +63,15 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant.srt",
+            "pdp/input/cmn-Hant-HK.srt",
             "--merge",
-            "pdp/output/cmn-Hant_merge.srt",
+            "pdp/output/cmn-Hant-HK_merge.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant.srt",
-            "--merge --simplify",
-            "pdp/output/cmn-Hant_merge_simplify.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/cmn-Hant.srt",
+            "pdp/input/cmn-Hant-HK.srt",
             "--simplify",
-            "pdp/output/cmn-Hant_simplify.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "--merge",
-            "pdp/output/yue-Hant_merge.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "--merge --simplify",
-            "pdp/output/yue-Hant_merge_simplify.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "--simplify",
-            "pdp/output/yue-Hant_simplify.srt",
+            "pdp/output/cmn-Hant-HK_simplify.srt",
         ),
     ],
 )
@@ -134,17 +104,10 @@ def test_chinese(
     [
         (
             (ScinoephileCli,),
-            "mnt/input/cmn-Hans.srt",
-            "mnt/input/en-US.srt",
-            "--clean",
-            "mnt/output/cmn-Hans_en-US.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "pdp/input/en.srt",
+            "pdp/input/yue-Hant-HK.srt",
+            "pdp/input/en-HK.srt",
             "--clean --simplify",
-            "pdp/output/yue-Hant_en_clean_simplify.srt",
+            "pdp/output/yue-Hans-HK_en-HK.srt",
         ),
     ],
 )

@@ -20,7 +20,7 @@ from scinoephile.open_ai.functions import (
 )
 from scinoephile.testing import SyncTestCase
 from scinoephile.testing.mark import skip_if_ci
-from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
+from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us, mnt_test_cases
 
 
 @pytest.fixture
@@ -35,15 +35,13 @@ def open_ai_service():
 )
 def test_get_sync_notes(
     open_ai_service: OpenAiService,
-    mnt_input_hanzi: Series,
-    mnt_input_english: Series,
+    mnt_cmn_hant_hk: Series,
+    mnt_en_us: Series,
     test_case: SyncTestCase,
     language: str,
-) -> None:
-    hanzi_block = mnt_input_hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
-    english_block = mnt_input_english.slice(
-        test_case.english_start, test_case.english_end
-    )
+):
+    hanzi_block = mnt_cmn_hant_hk.slice(test_case.hanzi_start, test_case.hanzi_end)
+    english_block = mnt_en_us.slice(test_case.english_start, test_case.english_end)
     hanzi_block, english_block = get_pair_with_zero_start(hanzi_block, english_block)
     hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
     output = f"CHINESE:\n{hanzi_str}\nENGLISH:\n{english_str}\n"

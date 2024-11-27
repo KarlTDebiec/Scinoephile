@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.core.synchronization import SyncGroupList
+from scinoephile.core.synchronization import SyncGroup
 
 
 @dataclass
@@ -13,4 +13,4 @@ class SyncTestCase:
     hanzi_end: int
     english_start: int
     english_end: int
-    sync_groups: SyncGroupList | None = None
+    sync_groups: list[SyncGroup] | None = None

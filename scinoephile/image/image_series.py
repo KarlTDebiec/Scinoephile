@@ -118,7 +118,7 @@ class ImageSeries(Series):
     def _load_sup(cls, fp: BinaryIO, **kwargs: Any) -> ImageSeries:
         """Load series from an input sup file.
 
-        Args:
+        Arguments:
             fp: open binary file
             **kwargs: additional keyword arguments
         Returns:

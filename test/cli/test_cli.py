@@ -22,7 +22,7 @@ from scinoephile.common.testing import run_cli_with_args
         (ScinoephileCli,),
     ],
 )
-def test_help(cli):
+def test_help(cli: tuple[Type[CommandLineInterface], ...]):
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()

@@ -1,6 +1,6 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for creatings tests for PDP."""
+"""Test for creating tests for PDP."""
 from __future__ import annotations
 
 from scinoephile.core import Series
@@ -12,16 +12,11 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from ..data.pdp import pdp_output_en_clean_merge, pdp_output_yue_hant_merge
 
 
-def _test_get_test_cases_pdp(
-    pdp_output_yue_hant_merge: Series,
-    pdp_output_en_clean_merge: Series,
-):
-    pair_blocks = get_pair_blocks_by_pause(
-        pdp_output_yue_hant_merge, pdp_output_en_clean_merge
-    )
+# Remove underscore to test
+def _test_get_test_cases_pdp(pdp_yue_hant_hk_simplify: Series, pdp_en_hk_clean: Series):
+    pair_blocks = get_pair_blocks_by_pause(pdp_yue_hant_hk_simplify, pdp_en_hk_clean)
     bilingual_blocks = []
 
     hanzi_start = 0
