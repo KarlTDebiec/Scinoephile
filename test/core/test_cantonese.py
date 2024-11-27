@@ -14,13 +14,13 @@ from scinoephile.core.cantonese import (
 from ..data.kob import kob_input_hanzi
 
 
-def _test_get_cantonese_pinyin_series(input_series: Series) -> None:
-    output_series = get_cantonese_romanization(input_series)
-    assert len(input_series.events) == len(output_series.events)
+def _test_get_cantonese_romanization(series: Series):
+    output = get_cantonese_romanization(series)
+    assert len(series.events) == len(output.events)
 
 
-def test_get_cantonese_pinyin_series_kob(kob_input_hanzi: Series) -> None:
-    _test_get_cantonese_pinyin_series(kob_input_hanzi)
+def test_get_cantonese_romanization_kob(kob_input_hanzi: Series):
+    _test_get_cantonese_romanization(kob_input_hanzi)
 
 
 @pytest.mark.parametrize(
@@ -29,6 +29,5 @@ def test_get_cantonese_pinyin_series_kob(kob_input_hanzi: Series) -> None:
         ("你好世界", "néih hóu sai gaai"),
     ],
 )
-def test_get_cantonese_pinyin_text(text: str, expected: str) -> None:
-    """Test get_cantonese_pinyin"""
+def test_get_cantonese_text_romanization(text: str, expected: str):
     assert _get_cantonese_text_romanization(text) == expected

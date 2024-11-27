@@ -25,24 +25,24 @@ from ..data.pdp import (
 )
 
 
-def _test_blocks(input_hanzi: Series, input_english: Series, test_case: SyncTestCase):
-    hanzi = input_hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
-    english = input_english.slice(test_case.english_start, test_case.english_end)
+def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
+    hanzi_block = hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
+    english_block = english.slice(test_case.english_start, test_case.english_end)
 
-    hanzi_str, english_str = get_pair_strings(hanzi, english)
+    hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
     print(f"\nCHINESE:\n{hanzi_str}")
     print(f"\nENGLISH:\n{english_str}")
 
-    overlap = get_sync_overlap_matrix(hanzi, english)
+    overlap = get_sync_overlap_matrix(hanzi_block, english_block)
     print("\nOVERLAP:")
     print(get_overlap_string(overlap))
 
-    sync_groups = get_sync_groups(hanzi, english)
+    sync_groups = get_sync_groups(hanzi_block, english_block)
     print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
     assert sync_groups == test_case.sync_groups
 
-    series = get_synced_series_from_groups(hanzi, english, sync_groups)
+    series = get_synced_series_from_groups(hanzi_block, english_block, sync_groups)
     print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
@@ -54,9 +54,7 @@ def _test_complete(hanzi: Series, english: Series, expected_length: int):
 
 @pytest.mark.parametrize("test_case", mnt_test_cases)
 def test_blocks_mnt(
-    mnt_input_hanzi: Series,
-    mnt_input_english: Series,
-    test_case: SyncTestCase,
+    mnt_input_hanzi: Series, mnt_input_english: Series, test_case: SyncTestCase
 ):
     _test_blocks(mnt_input_hanzi, mnt_input_english, test_case)
 
@@ -70,15 +68,11 @@ def test_blocks_pdp(
     _test_blocks(pdp_output_yue_hant_merge, pdp_output_en_clean_merge, test_case)
 
 
-def test_complete_mnt(
-    mnt_input_hanzi: Series,
-    mnt_input_english: Series,
-):
+def test_complete_mnt(mnt_input_hanzi: Series, mnt_input_english: Series):
     _test_complete(mnt_input_hanzi, mnt_input_english, 733)
 
 
 def test_complete_pdp(
-    pdp_output_yue_hant_merge: Series,
-    pdp_output_en_clean_merge: Series,
+    pdp_output_yue_hant_merge: Series, pdp_output_en_clean_merge: Series
 ):
     _test_complete(pdp_output_yue_hant_merge, pdp_output_en_clean_merge, 1595)

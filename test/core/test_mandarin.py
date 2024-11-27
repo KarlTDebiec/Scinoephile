@@ -7,24 +7,24 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.mandarin import (
-    get_mandarin_pinyin_series,
-    get_mandarin_pinyin_text,
+    get_mandarin_romanization,
+    get_mandarin_text_romanization,
 )
 from ..data.kob import kob_input_hanzi
 from ..data.t import t_input_hanzi
 
 
-def _test_get_mandarin_pinyin_series(input_series: Series) -> None:
-    output_series = get_mandarin_pinyin_series(input_series)
-    assert len(input_series.events) == len(output_series.events)
+def _test_get_mandarin_romanization(series: Series) -> None:
+    output = get_mandarin_romanization(series)
+    assert len(series.events) == len(output.events)
 
 
-def test_get_mandarin_pinyin_series_kob(kob_input_hanzi: Series) -> None:
-    _test_get_mandarin_pinyin_series(kob_input_hanzi)
+def test_get_mandarin_romanization_kob(kob_input_hanzi: Series) -> None:
+    _test_get_mandarin_romanization(kob_input_hanzi)
 
 
-def test_get_mandarin_pinyin_series_t(t_input_hanzi: Series) -> None:
-    _test_get_mandarin_pinyin_series(t_input_hanzi)
+def test_get_mandarin_romanization_t(t_input_hanzi: Series) -> None:
+    _test_get_mandarin_romanization(t_input_hanzi)
 
 
 @pytest.mark.parametrize(
@@ -33,6 +33,5 @@ def test_get_mandarin_pinyin_series_t(t_input_hanzi: Series) -> None:
         ("你好世界", "nǐ hǎo shìjiè"),
     ],
 )
-def test_get_mandarin_pinyin_text(text: str, expected: str) -> None:
-    """Test get_mandarin_pinyin"""
-    assert get_mandarin_pinyin_text(text) == expected
+def test_get_mandarin_text_romanization(text: str, expected: str) -> None:
+    assert get_mandarin_text_romanization(text) == expected
