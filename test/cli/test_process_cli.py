@@ -160,7 +160,7 @@ def test_bilingual(
             with get_temp_file_path(".srt") as output_path:
                 run_cli_with_args(
                     cli[0],
-                    f"{subcommands} -cif {chinese_input_path} -eif {english_input_path} {args} -cof {output_path}",
+                    f"{subcommands} -cif {chinese_input_path} -eif {english_input_path} {args} -bof {output_path}",
                 )
                 output = Series.load(output_path)
                 expected = Series.load(get_test_file_path(expected_path))
