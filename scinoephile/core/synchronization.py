@@ -91,7 +91,7 @@ def _get_sync_groups(
             if overlap[i, j] / scale < cutoff:
                 overlap[i, j] = 0
 
-    print(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
+    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
 
     available_is = set(range(len(one.events)))
     available_js = set(range(len(two.events)))
@@ -193,7 +193,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         return [[[i], []] for i in range(len(one.events))]
 
     overlap = get_sync_overlap_matrix(one, two)
-    print(f"OVERLAP:\n{get_overlap_string(overlap,1000)}")
+    debug(f"OVERLAP:\n{get_overlap_string(overlap,1000)}")
 
     while True:
         try:
