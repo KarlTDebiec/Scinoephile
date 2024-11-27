@@ -15,10 +15,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_merged
-from scinoephile.core.hanzi import (
-    get_hanzi_merged,
-    get_hanzi_simplified,
-)
+from scinoephile.core.hanzi import get_hanzi_merged, get_hanzi_simplified
 from scinoephile.core.synchronization import get_synced_series
 
 
