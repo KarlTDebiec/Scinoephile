@@ -21,7 +21,7 @@ def kob_input_hanzi():
 
 @pytest.fixture
 def kob_output_english():
-    return Series.load(get_test_file_path("output/en.srt"))
+    return Series.load(get_test_file_path("kob/output/en.srt"))
 
 
 test_cases = []

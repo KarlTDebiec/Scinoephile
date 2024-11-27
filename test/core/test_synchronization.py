@@ -3,14 +3,11 @@
 """Tests for scinoephile.core.synchronization"""
 from __future__ import annotations
 
-from pprint import pformat
-
 import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
-    get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
     get_synced_series,
@@ -30,25 +27,25 @@ def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
     english_block = english.slice(test_case.english_start, test_case.english_end)
 
     hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
-    print(f"\nCHINESE:\n{hanzi_str}")
-    print(f"\nENGLISH:\n{english_str}")
+    # print(f"\nCHINESE:\n{hanzi_str}")
+    # print(f"\nENGLISH:\n{english_str}")
 
     overlap = get_sync_overlap_matrix(hanzi_block, english_block)
-    print("\nOVERLAP:")
-    print(get_overlap_string(overlap))
+    # print("\nOVERLAP:")
+    # print(get_overlap_string(overlap))
 
     sync_groups = get_sync_groups(hanzi_block, english_block)
-    print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+    # print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
     assert sync_groups == test_case.sync_groups
 
     series = get_synced_series_from_groups(hanzi_block, english_block, sync_groups)
-    print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
+    # print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
 def _test_complete(hanzi: Series, english: Series, expected_length: int):
     bilingual = get_synced_series(hanzi, english)
-    print(bilingual.to_string("srt"))
+    # print(bilingual.to_string("srt"))
     assert len(bilingual) == expected_length
 
 

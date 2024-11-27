@@ -42,12 +42,12 @@ def pdp_output_en_merge():
 
 @pytest.fixture()
 def pdp_output_yue_hans():
-    return Series.load(get_test_file_path("output/yue-Hant_simplify.srt"))
+    return Series.load(get_test_file_path("pdp/output/yue-Hant_simplify.srt"))
 
 
 @pytest.fixture
 def pdp_output_yue_hans_merge():
-    return Series.load(get_test_file_path("output/yue-Hant_merge_simplify.srt"))
+    return Series.load(get_test_file_path("pdp/output/yue-Hant_merge_simplify.srt"))
 
 
 @pytest.fixture
