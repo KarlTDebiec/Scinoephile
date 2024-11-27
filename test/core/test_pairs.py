@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause
-from ..data.mnt import mnt_input_english, mnt_input_hanzi
+from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us
 
 
 def _test_get_pair_blocks_by_pause(
@@ -15,7 +15,5 @@ def _test_get_pair_blocks_by_pause(
     assert len(pair_blocks) == expected
 
 
-def test_get_pair_blocks_by_pause_mnt(
-    mnt_input_hanzi: Series, mnt_input_english: Series
-):
-    _test_get_pair_blocks_by_pause(mnt_input_hanzi, mnt_input_english, 176)
+def test_get_pair_blocks_by_pause_mnt(mnt_cmn_hant_hk: Series, mnt_en_us: Series):
+    _test_get_pair_blocks_by_pause(mnt_cmn_hant_hk, mnt_en_us, 176)

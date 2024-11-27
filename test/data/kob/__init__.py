@@ -20,18 +20,23 @@ def kob_en_hk_clean():
 
 
 @pytest.fixture
-def kob_en_hk_clean_merge():
-    return Series.load(get_test_file_path("kob/output/en-HK_clean_merge.srt"))
-
-
-@pytest.fixture
 def kob_en_hk_merge():
     return Series.load(get_test_file_path("kob/output/en-HK_merge.srt"))
+
+
+@pytest.fixture()
+def kob_yue_hans_hk_en_hk():
+    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_en-HK.srt"))
 
 
 @pytest.fixture
 def kob_yue_hans_hk():
     return Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
+
+
+@pytest.fixture
+def kob_yue_hans_hk_merge():
+    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_merge.srt"))
 
 
 @pytest.fixture
@@ -45,11 +50,12 @@ def kob_yue_hant_hk_simplify():
 
 
 ___all__ = [
-    "kob_cmn_hans_hk",
     "kob_en_hk",
     "kob_en_hk_clean",
-    "kob_en_hk_clean_merge",
     "kob_en_hk_merge",
+    "kob_yue_hans_hk",
+    "kob_yue_hans_hk_merge",
+    "kob_yue_hans_hk_en_hk",
     "kob_yue_hant_hk",
     "kob_yue_hant_hk_simplify",
 ]

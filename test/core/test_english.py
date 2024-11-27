@@ -15,13 +15,11 @@ from scinoephile.core.english import (
 from ..data.kob import (
     kob_en_hk,
     kob_en_hk_clean,
-    kob_en_hk_clean_merge,
     kob_en_hk_merge,
 )
 from ..data.pdp import (
     pdp_input_en,
     pdp_output_en_clean,
-    pdp_output_en_clean_merge,
     pdp_output_en_merge,
 )
 from ..data.t import t_input_english, t_output_english
@@ -29,20 +27,6 @@ from ..data.t import t_input_english, t_output_english
 
 def _test_get_english_cleaned(series: Series, expected: Series):
     output = get_english_cleaned(series)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
-
-
-def _test_get_english_cleaned_merged(series: Series, expected: Series):
-    output = get_english_merged(get_english_cleaned(series))
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
@@ -79,18 +63,6 @@ def test_get_english_cleaned_kob(kob_en_hk: Series, kob_en_hk_clean: Series):
 
 def test_get_english_cleaned_pdp(pdp_input_en: Series, pdp_output_en_clean: Series):
     _test_get_english_cleaned(pdp_input_en, pdp_output_en_clean)
-
-
-def test_get_english_cleaned_merged_kob(
-    kob_en_hk: Series, kob_en_hk_clean_merge: Series
-):
-    _test_get_english_cleaned_merged(kob_en_hk, kob_en_hk_clean_merge)
-
-
-def test_get_english_cleaned_merged_pdp(
-    pdp_input_en: Series, pdp_output_en_clean_merge: Series
-):
-    _test_get_english_cleaned_merged(pdp_input_en, pdp_output_en_clean_merge)
 
 
 def test_get_english_merged_kob(kob_en_hk: Series, kob_en_hk_merge: Series):

@@ -11,12 +11,12 @@ from scinoephile.testing.file import get_test_file_path
 
 @pytest.fixture
 def t_input_english():
-    return Series.load(get_test_file_path("t/input/en.srt"))
+    return Series.load(get_test_file_path("input/en-HK.srt"))
 
 
 @pytest.fixture
 def t_input_hanzi():
-    return Series.load(get_test_file_path("t/input/cmn-Hans.srt"))
+    return Series.load(get_test_file_path("input/cmn-Hans-HK.srt"))
 
 
 @pytest.fixture

@@ -14,7 +14,7 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from ..data.mnt import mnt_input_english, mnt_input_hanzi, mnt_test_cases
+from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us, mnt_test_cases
 from ..data.pdp import (
     pdp_output_en_clean_merge,
     pdp_output_yue_hant_merge,
@@ -51,9 +51,9 @@ def _test_complete(hanzi: Series, english: Series, expected_length: int):
 
 @pytest.mark.parametrize("test_case", mnt_test_cases)
 def test_blocks_mnt(
-    mnt_input_hanzi: Series, mnt_input_english: Series, test_case: SyncTestCase
+    mnt_cmn_hant_hk: Series, mnt_en_us: Series, test_case: SyncTestCase
 ):
-    _test_blocks(mnt_input_hanzi, mnt_input_english, test_case)
+    _test_blocks(mnt_cmn_hant_hk, mnt_en_us, test_case)
 
 
 @pytest.mark.parametrize("test_case", pdp_test_cases)
@@ -65,8 +65,8 @@ def test_blocks_pdp(
     _test_blocks(pdp_output_yue_hant_merge, pdp_output_en_clean_merge, test_case)
 
 
-def test_complete_mnt(mnt_input_hanzi: Series, mnt_input_english: Series):
-    _test_complete(mnt_input_hanzi, mnt_input_english, 733)
+def test_complete_mnt(mnt_cmn_hant_hk: Series, mnt_en_us: Series):
+    _test_complete(mnt_cmn_hant_hk, mnt_en_us, 733)
 
 
 def test_complete_pdp(

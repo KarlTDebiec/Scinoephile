@@ -16,15 +16,15 @@ from scinoephile.core.synchronization import (
 )
 from scinoephile.testing import SyncTestCase
 from scinoephile.testing.mark import skip_if_ci
-from ..data.mnt import mnt_input_english, mnt_input_hanzi
+from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us
 
 
 @skip_if_ci()
 def test_get_test_cases_mnt(
-    mnt_input_hanzi: Series,
-    mnt_input_english: Series,
+    mnt_cmn_hant_hk: Series,
+    mnt_en_us: Series,
 ) -> None:
-    pair_blocks = get_pair_blocks_by_pause(mnt_input_hanzi, mnt_input_english)
+    pair_blocks = get_pair_blocks_by_pause(mnt_cmn_hant_hk, mnt_en_us)
     bilingual_blocks = []
 
     hanzi_start = 0
