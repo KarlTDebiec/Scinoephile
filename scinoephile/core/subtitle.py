@@ -57,17 +57,7 @@ class Subtitle(SSAEvent):
         Returns:
             Whether this subtitle is not equal to another
         """
-        if self.start != other.start:
-            return True
-
-        if self.end != other.end:
-            return True
-
-        if self.text == other.text:
-            return False
-        if self.text.replace("\n", "\\N") == other.text.replace("\n", "\\N"):
-            return False
-        return True
+        return not self == other
 
     def __repr__(self) -> str:
         return (

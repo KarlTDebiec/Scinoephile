@@ -6,7 +6,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing import get_test_file_path
+from scinoephile.testing.file import get_test_file_path
 
 
 @pytest.fixture
@@ -41,12 +41,12 @@ def pdp_output_en_merge():
 
 @pytest.fixture()
 def pdp_output_yue_hans():
-    return Series.load(get_test_file_path("pdp/output/yue-Hans.srt"))
+    return Series.load(get_test_file_path("output/yue-Hant_simplify.srt"))
 
 
 @pytest.fixture
 def pdp_output_yue_hans_merge():
-    return Series.load(get_test_file_path("pdp/output/yue-Hans_merge.srt"))
+    return Series.load(get_test_file_path("output/yue-Hant_merge_simplify.srt"))
 
 
 @pytest.fixture

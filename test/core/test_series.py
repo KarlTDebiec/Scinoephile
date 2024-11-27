@@ -7,7 +7,7 @@ import pytest
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Series
-from scinoephile.testing import get_test_file_path
+from scinoephile.testing.file import get_test_file_path
 
 
 @pytest.mark.parametrize(

@@ -21,6 +21,33 @@ class Series(SSAFile):
     event_class = Subtitle
     """Class of individual subtitle events."""
 
+    def __eq__(self, other: SSAFile) -> bool:
+        """Whether this series is equal to another.
+
+        Arguments:
+            other: Series to which to compare
+        Returns:
+            Whether this series is equal to another
+        """
+        if len(self.events) != len(other.events):
+            return False
+
+        for self_event, other_event in zip(self.events, other.events):
+            if self_event != other_event:
+                return False
+
+        return True
+
+    def __ne__(self, other: SSAFile) -> bool:
+        """Whether this series is not equal to another.
+
+        Arguments:
+            other: Series to which to compare
+        Returns:
+            Whether this series is not equal to another
+        """
+        return not self == other
+
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 

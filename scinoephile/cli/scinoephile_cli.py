@@ -13,7 +13,7 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.core import ScinoephileException, Series
+from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_merged
 from scinoephile.core.hanzi import (
     get_hanzi_series_merged_to_single_line,
@@ -206,7 +206,7 @@ class ScinoephileCli(CommandLineInterface):
 
         # Compile input operations
         if not (bilingual_infile or english_infile or hanzi_infile):
-            raise ScinoephileException("At least one infile required")
+            cls.argparser().error("At least one infile required")
         if bilingual_infile:
             operations["load_bilingual"] = bilingual_infile
         if english_infile:
@@ -216,18 +216,18 @@ class ScinoephileCli(CommandLineInterface):
 
         # Compile output operations
         if not (bilingual_outfile or english_outfile or hanzi_outfile):
-            raise ScinoephileException("At least one outfile required")
+            cls.argparser().error("At least one outfile required")
         if bilingual_outfile:
             if bilingual_outfile.exists() and not overwrite:
-                raise ScinoephileException(f"{bilingual_outfile} already exists")
+                cls.argparser().error(f"{bilingual_outfile} already exists")
             operations["save_bilingual"] = bilingual_outfile
         if english_outfile:
             if english_outfile.exists() and not overwrite:
-                raise ScinoephileException(f"{english_outfile} already exists")
+                cls.argparser().error(f"{english_outfile} already exists")
             operations["save_english"] = english_outfile
         if hanzi_outfile:
             if hanzi_outfile.exists() and not overwrite:
-                raise ScinoephileException(f"{hanzi_outfile} already exists")
+                cls.argparser().error(f"{hanzi_outfile} already exists")
             operations["save_hanzi"] = hanzi_outfile
 
         # Compile operations
@@ -238,7 +238,7 @@ class ScinoephileCli(CommandLineInterface):
             if not (english_infile and (bilingual_outfile or english_outfile)) and not (
                 hanzi_infile and (bilingual_outfile or hanzi_outfile)
             ):
-                raise ScinoephileException(
+                cls.argparser().error(
                     "At least one infile and one outfile including the same language "
                     "required for merge"
                 )
@@ -248,11 +248,11 @@ class ScinoephileCli(CommandLineInterface):
                 operations["merge_hanzi"] = True
         if simplify:
             if not hanzi_infile or bilingual_infile:
-                raise ScinoephileException("Hanzi infile required for simplify")
+                cls.argparser().error("Hanzi infile required for simplify")
             operations["simplify_hanzi"] = True
         if "save_bilingual" in operations and "load_bilingual" not in operations:
             if "load_english" not in operations and "load_hanzi" not in operations:
-                raise ScinoephileException(
+                cls.argparser().error(
                     "Bilingual outfile requires English and Hanzi infiles"
                 )
             operations["sync_bilingual"] = True
