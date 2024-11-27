@@ -13,7 +13,7 @@ from scinoephile.core.hanzi import (
     get_hanzi_merged,
     get_hanzi_simplified,
 )
-from ..data.kob import kob_input_hanzi
+from ..data.kob import kob_cmn_hans_hk
 from ..data.t import t_input_hanzi, t_output_hanzi
 
 
@@ -43,8 +43,8 @@ def test_get_hanzi_merged_t(t_input_hanzi: Series, t_output_hanzi: Series):
     _test_get_hanzi_merged(t_input_hanzi, t_output_hanzi)
 
 
-def test_get_hanzi_simplified_kob(kob_input_hanzi: Series):
-    _test_get_hanzi_simplified(kob_input_hanzi)
+def test_get_hanzi_simplified_kob(kob_cmn_hans_hk: Series):
+    _test_get_hanzi_simplified(kob_cmn_hans_hk)
 
 
 def test_get_hanzi_simplified_t(t_input_hanzi: Series):

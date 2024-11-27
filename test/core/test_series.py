@@ -13,7 +13,7 @@ from scinoephile.testing.file import get_test_file_path
 @pytest.mark.parametrize(
     "relative_path",
     [
-        "kob/input/en.srt",
+        "kob/input/en-HK.srt",
         "mnt/input/en.srt",
         "t/input/en.srt",
     ],
