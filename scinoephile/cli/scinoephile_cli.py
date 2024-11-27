@@ -15,10 +15,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_merged
-from scinoephile.core.hanzi import (
-    get_hanzi_series_merged_to_single_line,
-    get_hanzi_series_simplified,
-)
+from scinoephile.core.hanzi import get_hanzi_merged, get_hanzi_simplified
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -149,9 +146,9 @@ class ScinoephileCli(CommandLineInterface):
         if "merge_english" in operations:
             english = get_english_merged(english)
         if "merge_hanzi" in operations:
-            hanzi = get_hanzi_series_merged_to_single_line(hanzi)
+            hanzi = get_hanzi_merged(hanzi)
         if "simplify_hanzi" in operations:
-            hanzi = get_hanzi_series_simplified(hanzi)
+            hanzi = get_hanzi_simplified(hanzi)
         if "sync_bilingual" in operations:
             bilingual = get_synced_series(hanzi, english)
 

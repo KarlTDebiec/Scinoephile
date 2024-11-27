@@ -111,7 +111,6 @@ def test_get_english_merged_t(t_input_english: Series, t_output_english: Series)
     ],
 )
 def test_get_english_text_cleaned(text: str, expected: str):
-    """Test get_english_text_cleaned"""
     assert _get_english_text_cleaned(text) == expected
 
 
@@ -122,5 +121,4 @@ def test_get_english_text_cleaned(text: str, expected: str):
     ],
 )
 def test_get_english_text_merged(text: str, expected: str):
-    """Test get_english_single_line_text"""
     assert _get_english_text_merged(text) == expected

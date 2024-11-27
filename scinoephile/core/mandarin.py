@@ -12,7 +12,7 @@ from scinoephile.core.series import Series
 from scinoephile.core.text import punctuation
 
 
-def get_mandarin_pinyin_series(series: Series) -> Series:
+def get_mandarin_romanization(series: Series) -> Series:
     """Get the Mandarin pinyin romanization of Hanzi series.
 
     Arguments:
@@ -21,12 +21,12 @@ def get_mandarin_pinyin_series(series: Series) -> Series:
         Mandarin pinyin romanization of series
     """
     series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_mandarin_pinyin_text(subtitle.text)
+    for event in series:
+        event.text = get_mandarin_text_romanization(event.text)
     return series
 
 
-def get_mandarin_pinyin_text(text: str) -> str:
+def get_mandarin_text_romanization(text: str) -> str:
     """Get the Mandarin pinyin romanization of Hanzi text.
 
     Arguments:
@@ -34,7 +34,7 @@ def get_mandarin_pinyin_text(text: str) -> str:
     Returns:
         Mandarin pinyin romanization
     """
-    romanization = ""
+    text_romanization = ""
     for line in text.split("\n"):
         line_romanization = ""
         for section in line.split():
@@ -45,7 +45,7 @@ def get_mandarin_pinyin_text(text: str) -> str:
                 else:
                     section_romanization += " " + "".join([a[0] for a in pinyin(word)])
             line_romanization += "  " + section_romanization.strip()
-        romanization += "\n" + line_romanization.strip()
-    romanization = romanization.strip()
+        text_romanization += "\n" + line_romanization.strip()
+    text_romanization = text_romanization.strip()
 
-    return romanization
+    return text_romanization

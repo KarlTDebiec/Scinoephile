@@ -11,25 +11,25 @@ from scinoephile.testing.file import get_test_file_path
 
 
 @pytest.mark.parametrize(
-    "relative_input_path",
+    "relative_path",
     [
         "kob/input/en-HK.srt",
         "mnt/input/en-US.srt",
         "t/input/en-HK.srt",
     ],
 )
-def test_series(relative_input_path: str):
-    input_path = get_test_file_path(relative_input_path)
+def test_series(relative_path):
+    path = get_test_file_path(relative_path)
 
-    input_series = Series.load(input_path)
-    assert len(input_series) > 0
+    series = Series.load(path)
+    assert len(series) > 0
 
     # Assert that all lines have text
-    for subtitle in input_series:
-        assert subtitle.text
-        assert subtitle.text.strip()
+    for event in series:
+        assert event.text
+        assert event.text.strip()
 
-    with get_temp_file_path(".srt") as temp_file_path:
-        input_series.save(temp_file_path)
-        assert temp_file_path.exists()
-        assert temp_file_path.stat().st_size > 0
+    with get_temp_file_path(".srt") as output_path:
+        series.save(output_path)
+        assert output_path.exists()
+        assert output_path.stat().st_size > 0

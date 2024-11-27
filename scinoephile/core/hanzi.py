@@ -14,21 +14,7 @@ re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
-def get_hanzi_series_simplified(series: Series) -> Series:
-    """Get traditional hanzi series simplified.
-
-    Arguments:
-        series: series to simplify
-    Returns:
-        simplified series
-    """
-    series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_hanzi_text_simplified(subtitle.text)
-    return series
-
-
-def get_hanzi_series_merged_to_single_line(series: Series) -> Series:
+def get_hanzi_merged(series: Series) -> Series:
     """Get multi-line hanzi series merged to single lines.
 
     Arguments:
@@ -37,12 +23,26 @@ def get_hanzi_series_merged_to_single_line(series: Series) -> Series:
         merged series
     """
     series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_hanzi_text_merged_to_single_line(subtitle.text)
+    for event in series:
+        event.text = _get_hanzi_text_merged(event.text)
     return series
 
 
-def get_hanzi_text_merged_to_single_line(text: str) -> str:
+def get_hanzi_simplified(series: Series) -> Series:
+    """Get traditional hanzi series simplified.
+
+    Arguments:
+        series: series to simplify
+    Returns:
+        simplified series
+    """
+    series = deepcopy(series)
+    for event in series:
+        event.text = _get_hanzi_text_simplified(event.text)
+    return series
+
+
+def _get_hanzi_text_merged(text: str) -> str:
     """Get multi-line hanzi text merged to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
@@ -72,7 +72,7 @@ def get_hanzi_text_merged_to_single_line(text: str) -> str:
     return single_line
 
 
-def get_hanzi_text_simplified(text: str) -> str:
+def _get_hanzi_text_simplified(text: str) -> str:
     """Get traditional hanzi text simplified.
 
     Arguments:
