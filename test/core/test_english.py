@@ -6,7 +6,6 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-
 # noinspection PyProtectedMember
 from scinoephile.core.english import (
     _get_english_text_cleaned,
@@ -14,6 +13,7 @@ from scinoephile.core.english import (
     get_english_cleaned,
     get_english_merged,
 )
+from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_merge
 from ..data.pdp import (
     pdp_input_en,
     pdp_output_en_clean,
@@ -69,8 +69,18 @@ def _test_get_english_merged(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
+def test_get_english_cleaned_kob(kob_en_hk: Series, kob_en_hk_clean: Series):
+    _test_get_english_cleaned(kob_en_hk, kob_en_hk_clean)
+
+
 def test_get_english_cleaned_pdp(pdp_input_en: Series, pdp_output_en_clean: Series):
     _test_get_english_cleaned(pdp_input_en, pdp_output_en_clean)
+
+
+def test_get_english_cleaned_merged_kob(
+    kob_en_hk: Series, kob_en_hk_clean_merge: Series
+):
+    _test_get_english_cleaned_merged(kob_en_hk, kob_en_hk_clean_merge)
 
 
 def test_get_english_cleaned_merged_pdp(
@@ -79,8 +89,8 @@ def test_get_english_cleaned_merged_pdp(
     _test_get_english_cleaned_merged(pdp_input_en, pdp_output_en_clean_merge)
 
 
-def test_get_english_merged_kob(kob_input_en: Series, kob_output_english: Series):
-    _test_get_english_merged(kob_input_en, kob_output_english)
+def test_get_english_merged_kob(kob_en_hk: Series, kob_en_hk_merge: Series):
+    _test_get_english_merged(kob_en_hk, kob_en_hk_merge)
 
 
 def test_get_english_merged_pdp(pdp_input_en: Series, pdp_output_en_merge: Series):
