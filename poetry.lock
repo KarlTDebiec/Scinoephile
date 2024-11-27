@@ -1514,13 +1514,13 @@ pylint = ">=1.7"
 
 [[package]]
 name = "pypinyin"
-version = "0.50.0"
+version = "0.53.0"
 description = "汉字拼音转换模块/工具."
 optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, <4"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,<4,>=2.6"
 files = [
-    {file = "pypinyin-0.50.0-py2.py3-none-any.whl", hash = "sha256:a6ff9a58b8c3ba4599e5ebccf7fab7850257114be70c05a7baab435d1208358f"},
-    {file = "pypinyin-0.50.0.tar.gz", hash = "sha256:72e77c4b9b78bad102aca5fefccebdb23439b02717c626039be14a78643980fb"},
+    {file = "pypinyin-0.53.0-py2.py3-none-any.whl", hash = "sha256:a906768919da3c31771f2c5e0e5a759214dc38d0087e15e6ff67649e03df8097"},
+    {file = "pypinyin-0.53.0.tar.gz", hash = "sha256:a2d39ddc2bd31b55897bbb10d2e11a0c4d399988a97c00ad489c151afd9b106d"},
 ]
 
 [[package]]
@@ -2053,4 +2053,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "647803039f4134b6a65a2ee6ec34ed68d25f0edfdca0b02812c75d66efea93b6"
+content-hash = "18ac3461646c753a2dc34ba65309b2a5ab96f26d5f9573e42b7355ddffc8e4f2"
