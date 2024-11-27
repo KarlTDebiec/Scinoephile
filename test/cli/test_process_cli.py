@@ -139,6 +139,13 @@ def test_chinese(
             "--clean",
             "mnt/output/cmn-Hans_en-US.srt",
         ),
+        (
+            (ScinoephileCli,),
+            "pdp/input/yue-Hant.srt",
+            "pdp/input/en.srt",
+            "--clean --simplify",
+            "pdp/output/yue-Hant_en_clean_simplify.srt",
+        ),
     ],
 )
 def test_bilingual(

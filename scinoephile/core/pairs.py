@@ -43,7 +43,12 @@ def get_pair_blocks_by_pause(
         # Start a new block, with one event from the earlier of the two sources
         nascent_block_one = []
         nascent_block_two = []
-        if source_one and source_one[0].start <= source_two[0].start:
+        if source_one and source_two:
+            if source_one[0].start <= source_two[0].start:
+                nascent_block_one.append(source_one.pop(0))
+            else:
+                nascent_block_two.append(source_two.pop(0))
+        elif source_one:
             nascent_block_one.append(source_one.pop(0))
         else:
             nascent_block_two.append(source_two.pop(0))

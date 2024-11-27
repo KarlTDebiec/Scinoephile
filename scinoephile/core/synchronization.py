@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from logging import debug
+from pprint import pformat
 
 import numpy as np
 
 from scinoephile.core.exceptions import ScinoephileException
-from scinoephile.core.pairs import get_pair_blocks_by_pause
+from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
@@ -79,8 +81,7 @@ def get_sync_groups(one: Series, two: Series) -> SyncGroupList:
                 if overlap[i, j] / scale < cutoff:
                     overlap[i, j] = 0
 
-        # print()
-        # print(get_overlap_string(overlap))
+        debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap,1000)}")
 
         available_is = set(range(len(one.events)))
         available_js = set(range(len(two.events)))
@@ -146,14 +147,11 @@ def get_sync_groups(one: Series, two: Series) -> SyncGroupList:
         return sync_groups
 
     overlap = get_sync_overlap_matrix(one, two)
-
-    # print()
-    # print(get_overlap_string(overlap))
+    debug(f"OVERLAP:\n{get_overlap_string(overlap,1000)}")
 
     cutoff = 0.16
     while True:
         try:
-            # print(cutoff)
             sync_groups = get_groups_for_cutoff(overlap.copy(), cutoff)
         except:
             cutoff += 0.01
@@ -173,8 +171,15 @@ def get_synced_series(one: Series, two: Series) -> Series:
 
     pair_blocks = get_pair_blocks_by_pause(one, two)
     for one_block, two_block in pair_blocks:
+        hanzi_str, english_str = get_pair_strings(one_block, two_block)
+        debug(f"ONE:\n{hanzi_str}")
+        debug(f"TWO:\n{english_str}")
+
         groups = get_sync_groups(one_block, two_block)
+        debug(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
+
         synced_block = get_synced_series_from_groups(one_block, two_block, groups)
+        debug(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
     synced = get_merged_series(synced_blocks)
@@ -234,7 +239,20 @@ def get_synced_series_from_groups(
     return synced
 
 
-def get_overlap_string(overlap):
+def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
+    """Get a string representation of the overlap matrix between two series.
+
+    Arguments:
+        overlap: overlap matrix
+        max_line_width: Maximum width of the returned string
+    Returns:
+        string representation of the overlap matrix
+    """
     return np.array2string(
-        overlap, precision=2, suppress_small=True, max_line_width=160
+        overlap,
+        precision=2,
+        suppress_small=True,
+        max_line_width=max_line_width,
+        threshold=np.inf,
+        edgeitems=np.inf,
     ).replace("0.  ", "____")
