@@ -10,11 +10,6 @@ from scinoephile.testing.file import get_test_file_path
 
 
 @pytest.fixture
-def kob_cmn_hans_hk():
-    return Series.load(get_test_file_path("kob/input/cmn-Hans-HK.srt"))
-
-
-@pytest.fixture
 def kob_en_hk():
     return Series.load(get_test_file_path("kob/input/en-HK.srt"))
 
@@ -32,6 +27,11 @@ def kob_en_hk_clean_merge():
 @pytest.fixture
 def kob_en_hk_merge():
     return Series.load(get_test_file_path("kob/output/en-HK_merge.srt"))
+
+
+@pytest.fixture
+def kob_yue_hans_hk():
+    return Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
 
 
 @pytest.fixture
