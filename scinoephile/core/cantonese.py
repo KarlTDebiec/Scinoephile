@@ -34,11 +34,11 @@ else:
             pickle.dump(corpus, outfile, pickle.HIGHEST_PROTOCOL)
 
 # Load Hanzi to Yale mapping
-hanzi_to_pinyin = {}
+hanzi_to_romanization = {}
 hanzi_to_yale_file_path = data_root / "hanzi_to_yale.pkl"
 if hanzi_to_yale_file_path.exists():
     with open(hanzi_to_yale_file_path, "rb") as infile:
-        hanzi_to_pinyin = pickle.load(infile)
+        hanzi_to_romanization = pickle.load(infile)
 
 # Load unmatched Hanzi set
 unmatched = set()
@@ -50,7 +50,21 @@ if unmatched_hanzi_file_path.exists():
 re_jyutping = re.compile(r"[a-z]+\d")
 
 
-def get_cantonese_pinyin_character(hanzi: str) -> str:
+def get_cantonese_romanization(series: Series) -> Series:
+    """Get the Yale Cantonese romanization of Hanzi series.
+
+    Arguments:
+        series: series for which to get Yale Cantonese romanization
+    Returns:
+        Yale Cantonese romanization of series
+    """
+    series = deepcopy(series)
+    for event in series:
+        event.text = _get_cantonese_text_romanization(event.text)
+    return series
+
+
+def _get_cantonese_character_romanization(hanzi: str) -> str:
     """Get the Yale Cantonese romanization of a single Hanzi.
 
     Arguments:
@@ -60,7 +74,7 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
     """
     if len(hanzi) != 1:
         raise ScinoephileException(
-            "get_cantonese_pinyin_for_single_hanzi only accepts single hanzi"
+            "get_cantonese_character_romanization only accepts single hanzi"
         )
 
     # If known to be unmatched, stop early
@@ -68,8 +82,8 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
         return None
 
     # If cached, use that value
-    elif hanzi in hanzi_to_pinyin:
-        return hanzi_to_pinyin[hanzi]
+    elif hanzi in hanzi_to_romanization:
+        return hanzi_to_romanization[hanzi]
 
     # Otherwise search corpus for value
     matches = corpus.search(character=hanzi)
@@ -78,10 +92,10 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
     if len(matches) == 0:
         trad_hanzi = HanziConv.toTraditional(hanzi)
         if trad_hanzi != hanzi:
-            yale = get_cantonese_pinyin_character(trad_hanzi)
-            hanzi_to_pinyin[hanzi] = yale
+            yale = _get_cantonese_character_romanization(trad_hanzi)
+            hanzi_to_romanization[hanzi] = yale
             with open(hanzi_to_yale_file_path, "wb") as outfile:
-                pickle.dump(hanzi_to_pinyin, outfile, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
             return yale
 
         # Truly no instance of hanzi in corpus
@@ -108,12 +122,12 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
                 pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
             return None
 
-    # Convert from jyutping to yale
+    # Convert from jyutping to Yale
     try:
         yale = pycantonese.jyutping2yale(jyutping)[0]
-        hanzi_to_pinyin[hanzi] = yale
+        hanzi_to_romanization[hanzi] = yale
         with open(hanzi_to_yale_file_path, "wb") as outfile:
-            pickle.dump(hanzi_to_pinyin, outfile, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
         return yale
     except ValueError:
         unmatched.add(hanzi)
@@ -122,21 +136,7 @@ def get_cantonese_pinyin_character(hanzi: str) -> str:
         return None
 
 
-def get_cantonese_pinyin_series(series: Series) -> Series:
-    """Get the Yale Cantonese romanization of Hanzi series.
-
-    Arguments:
-        series: series for which to get Yale Cantonese romanization
-    Returns:
-        Yale Cantonese romanization of series
-    """
-    series = deepcopy(series)
-    for subtitle in series:
-        subtitle.text = get_cantonese_pinyin_text(subtitle.text)
-    return series
-
-
-def get_cantonese_pinyin_text(text: str) -> str:
+def _get_cantonese_text_romanization(text: str) -> str:
     """Get the Yale Cantonese romanization of Hanzi text.
 
     Arguments:
@@ -144,7 +144,7 @@ def get_cantonese_pinyin_text(text: str) -> str:
     Returns:
         Yale Cantonese romanization
     """
-    romanization = ""
+    text_romanization = ""
     for line in text.split("\n"):
         line_romanization = ""
         for section in line.split():
@@ -155,13 +155,13 @@ def get_cantonese_pinyin_text(text: str) -> str:
                 elif re_western.match(char):
                     section_romanization += char
                 elif re_hanzi.match(char) or re_hanzi_rare.match(char):
-                    pinyin = get_cantonese_pinyin_character(char)
-                    if pinyin is not None:
-                        section_romanization += " " + pinyin
+                    romanization = _get_cantonese_character_romanization(char)
+                    if romanization is not None:
+                        section_romanization += " " + romanization
                     else:
                         section_romanization += char
             line_romanization += "  " + section_romanization.strip()
-        romanization += "\n" + line_romanization.strip()
-    romanization = romanization.strip()
+        text_romanization += "\n" + line_romanization.strip()
+    text_romanization = text_romanization.strip()
 
-    return romanization
+    return text_romanization
