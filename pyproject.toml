@@ -4,15 +4,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ['py313']
 
 [tool.isort]
 profile = 'black'
-
-[tool.mypy]
-python_version = "3.11"
-warn_return_any = true
-warn_unused_configs = true
 
 [tool.poetry]
 name = "scinoephile"
@@ -36,13 +31,12 @@ pillow = "^11.0.0"
 pycantonese = "^3.4.0"
 pypinyin = "^0.53.0"
 pysubs2 = "^1.7.3"
-python = "^3.11"
+python = "^3.13"
 snownlp = "^0.12.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
 isort = "^5.13.2"
-mypy = "^1.12.0"
 prospector = "^1.13.3"
 pyright = "^1.1.389"
 pytest = "^8.3.3"
@@ -58,7 +52,7 @@ ignore = ['CVS']
 jobs = 1
 limit-inference-results = 100
 persistent = ['yes']
-py-version = "3.11"
+py-version = "3.13"
 suggestion-mode = ['yes']
 unsafe-load-any-extension = ['no']
 
