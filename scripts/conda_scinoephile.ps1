@@ -6,7 +6,7 @@ $ErrorActionPreference="Stop"
 
 conda deactivate
 conda remove -y --name scinoephile --all
-conda create -y --name scinoephile python=3.11
+conda create -y --name scinoephile python=3.13
 conda activate scinoephile
 
 pip install `
@@ -17,16 +17,19 @@ pip install `
     mypy `
     nltk `
     numpy `
+    openai `
     opencv-python `
     pandas `
     pandas-stubs `
+    pillow `
     prospector `
     pycantonese `
+    pypinyin `
+    pyright `
     pysubs2 `
     pytest `
     pytest-cov `
-    pytest-xdist
-if (!$?)
-{
-    Exit $LASTEXITCODE
-}
+    pytest-xdist `
+    snownlp
+pip install `
+    numba==0.61.0rc1
