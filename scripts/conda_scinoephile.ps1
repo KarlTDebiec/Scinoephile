@@ -16,7 +16,6 @@ pip install `
     isort `
     mypy `
     nltk `
-    numba `
     numpy `
     openai `
     opencv-python `
@@ -32,7 +31,5 @@ pip install `
     pytest-cov `
     pytest-xdist `
     snownlp
-if (!$?)
-{
-    Exit $LASTEXITCODE
-}
+pip install `
+    numba==0.61.0rc1
