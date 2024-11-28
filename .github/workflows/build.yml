@@ -65,4 +65,5 @@ jobs:
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
-          poetry run pytest -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt
+          poetry run pytest -v --cov=scinoephile --cov-report term .
+        continue-on-error: false
