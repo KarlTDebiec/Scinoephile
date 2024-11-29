@@ -9,12 +9,14 @@ from pprint import pformat
 
 import numpy as np
 
+from scinoephile.core.blocks import get_concatenated_blocks
 from scinoephile.core.exceptions import ScinoephileException
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
 SyncGroup = list[list[int], list[int]]
+"""Group of subtitles; items are indexes in first and second series, respectively."""
 
 
 def are_series_one_to_one(one: Series, two: Series) -> bool:
@@ -34,21 +36,6 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
         return False
 
     return True
-
-
-def get_concatenated_series(blocks: list[Series]) -> Series:
-    """Contatenate a list of sequential series blocks into a single series.
-
-    Arguments:
-        blocks: series to merge
-    Returns:
-        Merged series
-    """
-    merged = Series()
-    for block in blocks:
-        merged.events.extend(block.events)
-    merged.events.sort(key=lambda x: x.start)
-    return merged
 
 
 def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
@@ -167,12 +154,12 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     standard deviations are one quarter of their duration. The overlaps between all
     subtitles in the two series are calculated and stored in a matrix whose rows are
     subtitles in the first series and whose columns are subtitles in the second series.
-    The matrix is then iteratively pruned using an increasing cutoff value. Within each
-    row, each value is divided by the max value in that row, and if that is less than
-    the cutoff, it is set to zero. The same process is then repeated for columns. The
-    process repeats with an increasing cutoff until each non-zero value in the
-    matrix is either the only value in its row, the only value in its column, or both,
-    which provides a clean assignment of subtitles to sync groups.
+    The matrix is then iteratively pruned by zeroing cells below an increasing cutoff
+    value. Within each row, each value is divided by the max value in that row, and if
+    the result is less than the cutoff, the cell is zeroed. The same process is then
+    repeated for columns. The process repeats with an increasing cutoff until each
+    non-zero value in the matrix is either the only value in its row, the only value in
+    its column, or both, which provides a clean assignment of subtitles to sync groups.
 
     The cutoff starts at a minimum value, which defaults to 0.16. This serves as a lower
     bound; if a subtitle in series two overlaps less than this amount with a subtitle
@@ -235,7 +222,7 @@ def get_synced_series(one: Series, two: Series) -> Series:
         debug(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
-    synced = get_concatenated_series(synced_blocks)
+    synced = get_concatenated_blocks(synced_blocks)
     return synced
 
 

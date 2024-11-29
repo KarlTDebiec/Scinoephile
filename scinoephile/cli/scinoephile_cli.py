@@ -113,16 +113,6 @@ class ScinoephileCli(CommandLineInterface):
         )
 
     @classmethod
-    def main_internal(cls, **kwargs: Any) -> None:
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            kwargs: Keyword arguments
-        """
-        operations = cls._determine_operations(**kwargs)
-        cls.run(operations)
-
-    @classmethod
     def run(cls, operations: dict[str, Any]) -> None:
         """Run operations.
 
@@ -260,6 +250,16 @@ class ScinoephileCli(CommandLineInterface):
             operations["merge_hanzi"] = True
 
         return operations
+
+    @classmethod
+    def _main(cls, **kwargs: Any) -> None:
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            kwargs: Keyword arguments
+        """
+        operations = cls._determine_operations(**kwargs)
+        cls.run(operations)
 
 
 if __name__ == "__main__":

@@ -11,45 +11,45 @@ from scinoephile.testing.file import get_test_file_path
 
 # Simplified Standard Chinese
 @pytest.fixture
-def t_cmn_hans_hk():
+def t_cmn_hans_hk() -> Series:
     return Series.load(get_test_file_path("t/input/cmn-Hans-HK.srt"))
 
 
 @pytest.fixture
-def t_cmn_hans_hk_merge():
+def t_cmn_hans_hk_merge() -> Series:
     return Series.load(get_test_file_path("t/output/cmn-Hans-HK_merge.srt"))
 
 
 # Traditional Standard Chinese
 @pytest.fixture
-def t_cmn_hant_hk():
+def t_cmn_hant_hk() -> Series:
     return Series.load(get_test_file_path("t/input/cmn-Hant-HK.srt"))
 
 
 @pytest.fixture
-def t_cmn_hant_hk_simplify():
+def t_cmn_hant_hk_simplify() -> Series:
     return Series.load(get_test_file_path("t/output/cmn-Hant-HK_simplify.srt"))
 
 
 # English
 @pytest.fixture
-def t_en_hk():
+def t_en_hk() -> Series:
     return Series.load(get_test_file_path("t/input/en-HK.srt"))
 
 
 @pytest.fixture
-def t_en_hk_clean():
+def t_en_hk_clean() -> Series:
     return Series.load(get_test_file_path("t/output/en-HK_clean.srt"))
 
 
 @pytest.fixture
-def t_en_hk_merge():
+def t_en_hk_merge() -> Series:
     return Series.load(get_test_file_path("t/output/en-HK_merge.srt"))
 
 
 # Bilingual Simplified Chinese and English
 @pytest.fixture
-def t_cmn_hans_hk_en_hk():
+def t_cmn_hans_hk_en_hk() -> Series:
     return Series.load(get_test_file_path("t/output/cmn-Hans-HK_en-HK.srt"))
 
 

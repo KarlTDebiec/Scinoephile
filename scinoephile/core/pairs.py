@@ -67,8 +67,8 @@ def get_pair_blocks_by_pause(
                 changed = True
 
         # Store block
-        block_one = Series()
-        block_two = Series()
+        block_one = one.__class__()
+        block_two = two.__class__()
         block_one.events = nascent_block_one
         block_two.events = nascent_block_two
         blocks.append((block_one, block_two))

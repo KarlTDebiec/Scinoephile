@@ -12,65 +12,65 @@ from scinoephile.testing.file import get_test_file_path
 
 # Traditional Standard Chinese
 @pytest.fixture
-def pdp_cmn_hant_hk():
+def pdp_cmn_hant_hk() -> Series:
     return Series.load(get_test_file_path("pdp/input/cmn-Hant-HK.srt"))
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_merge():
+def pdp_cmn_hant_hk_merge() -> Series:
     return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_merge.srt"))
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_simplify():
+def pdp_cmn_hant_hk_simplify() -> Series:
     return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_simplify.srt"))
 
 
 # Traditional Cantonese Chinese
 @pytest.fixture
-def pdp_yue_hant_hk():
+def pdp_yue_hant_hk() -> Series:
     return Series.load(get_test_file_path("pdp/input/yue-Hant-HK.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_merge():
+def pdp_yue_hant_hk_merge() -> Series:
     return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_simplify():
+def pdp_yue_hant_hk_simplify() -> Series:
     return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_simplify.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_merge_simplify():
+def pdp_yue_hant_hk_merge_simplify() -> Series:
     return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge_simplify.srt"))
 
 
 # English
 @pytest.fixture
-def pdp_en_hk():
+def pdp_en_hk() -> Series:
     return Series.load(get_test_file_path("pdp/input/en-HK.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_clean():
+def pdp_en_hk_clean() -> Series:
     return Series.load(get_test_file_path("pdp/output/en-HK_clean.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_merge():
+def pdp_en_hk_merge() -> Series:
     return Series.load(get_test_file_path("pdp/output/en-HK_merge.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_clean_merge():
+def pdp_en_hk_clean_merge() -> Series:
     return Series.load(get_test_file_path("pdp/output/en-HK_clean_merge.srt"))
 
 
 # Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture
-def pdp_yue_hans_hk_en_hk():
+def pdp_yue_hans_hk_en_hk() -> Series:
     return Series.load(get_test_file_path("pdp/output/yue-Hans-HK_en-HK.srt"))
 
 

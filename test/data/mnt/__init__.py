@@ -12,49 +12,49 @@ from scinoephile.testing.file import get_test_file_path
 
 # Traditional Cantonese Chinese
 @pytest.fixture
-def mnt_cmn_hant_hk():
+def mnt_cmn_hant_hk() -> Series:
     return Series.load(get_test_file_path("mnt/input/cmn-Hant-HK.srt"))
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_merge():
+def mnt_cmn_hant_hk_merge() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_merge.srt"))
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_simplify():
+def mnt_cmn_hant_hk_simplify() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_simplify.srt"))
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_merge_simplify():
+def mnt_cmn_hant_hk_merge_simplify() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_merge_simplify.srt"))
 
 
 # English
 @pytest.fixture
-def mnt_en_us():
+def mnt_en_us() -> Series:
     return Series.load(get_test_file_path("mnt/input/en-US.srt"))
 
 
 @pytest.fixture
-def mnt_en_us_clean():
+def mnt_en_us_clean() -> Series:
     return Series.load(get_test_file_path("mnt/output/en-US_clean.srt"))
 
 
 @pytest.fixture
-def mnt_en_us_merge():
+def mnt_en_us_merge() -> Series:
     return Series.load(get_test_file_path("mnt/output/en-US_merge.srt"))
 
 
 @pytest.fixture
-def mnt_en_us_clean_merge():
+def mnt_en_us_clean_merge() -> Series:
     return Series.load(get_test_file_path("mnt/output/en-US_clean_merge.srt"))
 
 
 # Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture
-def mnt_cmn_hans_hk_en_us():
+def mnt_cmn_hans_hk_en_us() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hans-HK_en-US.srt"))
 
 

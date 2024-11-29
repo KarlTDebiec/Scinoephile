@@ -7,12 +7,16 @@ from logging import info
 from pathlib import Path
 from typing import Any, BinaryIO
 
-import h5py
-from h5py import File
+import numpy as np
+from PIL import Image
 from pysubs2 import SSAFile, make_time
 
-from scinoephile.common.validation import validate_input_file, validate_output_file
-from scinoephile.core import Series
+from scinoephile.common.validation import (
+    validate_input_file,
+    validate_output_directory,
+    validate_output_file,
+)
+from scinoephile.core import ScinoephileException, Series
 from scinoephile.image.image_subtitle import ImageSubtitle
 from scinoephile.image.sup import read_sup_series
 
@@ -23,6 +27,9 @@ class ImageSeries(Series):
     event_class = ImageSubtitle
     """Class of individual subtitle events"""
 
+    events: list[ImageSubtitle]
+    """Individual subtitle events."""
+
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 
@@ -31,33 +38,19 @@ class ImageSeries(Series):
             format_: output file format
             **kwargs: additional keyword arguments
         """
-        path = validate_output_file(path)
-
-        # Check if hdf5
-        if format_ == "hdf5" or path.suffix in (".hdf5", ".h5"):
-            with h5py.File(path) as fp:
-                self._save_hdf5(fp, **kwargs)
-            info(f"Saved series to {path}")
-            return
+        path = Path(path)
 
         # Check if directory
-        if format_ == "png" or path.is_dir():
+        if format_ == "png" or (not format_ and path.suffix == ""):
+            path = validate_output_directory(path)
             self._save_png(path, **kwargs)
             info(f"Saved series to {path}")
             return
 
         # Otherwise, continue as superclass SSAFile
+        path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
-
-    def _save_hdf5(self, fp: File, **kwargs: Any) -> None:
-        """Save series to an output hdf5 file.
-
-        Arguments
-            fp: open hdf5 output file
-            **kwargs: Additional keyword arguments
-        """
-        raise NotImplementedError()
 
     def _save_png(self, fp: Path, **kwargs: Any) -> None:
         """Save series to directory of png files.
@@ -66,7 +59,22 @@ class ImageSeries(Series):
             fp: path to outpt directory
             **kwargs: dditional keyword arguments
         """
-        raise NotImplementedError()
+        # Prepare empty directory, deleting existing files if needed
+        if fp.exists() and fp.is_dir():
+            for file in fp.iterdir():
+                file.unlink()
+        else:
+            fp.mkdir(parents=True)
+
+        # Save images
+        for i, event in enumerate(self.events, 1):
+            outfile_path = fp / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
+            event.image.save(outfile_path)
+            info(f"Saved image to {outfile_path}")
+
+        # Save text
+        outfile_path = fp / f"{fp.stem}.srt"
+        super().save(outfile_path, format_="srt")
 
     @classmethod
     def load(
@@ -75,7 +83,7 @@ class ImageSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> Series:
+    ) -> ImageSeries:
         """Load series from an input file.
 
         Arguments:
@@ -86,33 +94,21 @@ class ImageSeries(Series):
         Returns:
             loaded series
         """
-        path = validate_input_file(path)
-
-        # Check if hdf5
-        if format_ == "hdf5" or path.suffix in (".hdf5", ".h5"):
-            with h5py.File(path) as fp:
-                return cls._load_hdf5(fp, **kwargs)
+        path = Path(path)
 
         # Check if sup
         if format_ == "sup" or path.suffix == ".sup":
+            path = validate_input_file(path)
             with open(path, "rb") as fp:
                 return cls._load_sup(fp, **kwargs)
 
+        # Check if directory
+        if format_ == "png" or path.is_dir():
+            return cls._load_png(path, **kwargs)
+
         raise ValueError(
-            f"{cls.__name__} does not support format {format_}, must be hdf5 or sup"
+            f"{cls.__name__} does not support format {format_}, must be sup or png"
         )
-
-    @classmethod
-    def _load_hdf5(cls, fp: File, **kwargs: Any) -> ImageSeries:
-        """Load series from an input hdf5 file.
-
-        Arguments:
-            fp: open hdf5 input file
-            **kwargs: additional keyword arguments
-        Returns:
-            Loaded series
-        """
-        raise NotImplementedError()
 
     @classmethod
     def _load_sup(cls, fp: BinaryIO, **kwargs: Any) -> ImageSeries:
@@ -129,9 +125,14 @@ class ImageSeries(Series):
         series.format = "sup"
 
         # Parse infile
-        bytes = fp.read()
-        starts, ends, images = read_sup_series(bytes)
+        data = fp.read()
+        starts, ends, images = read_sup_series(data)
         for start, end, image in zip(starts, ends, images):
+
+            # Skip completely transparent images
+            if np.all(image[:, :, 3] == 0):
+                continue
+
             series.events.append(
                 cls.event_class(
                     start=make_time(s=start),
@@ -140,5 +141,45 @@ class ImageSeries(Series):
                     series=series,
                 )
             )
+
+        return series
+
+    @classmethod
+    def _load_png(cls, fp: Path, **kwargs: Any) -> ImageSeries:
+        """Load series from a directory of png files.
+
+        Arguments:
+            fp: path to input directory
+            **kwargs: additional keyword arguments
+        Returns:
+            loaded series
+        """
+        series = cls()
+        series.format = "png"
+
+        # Load images
+        for path in sorted([path for path in fp.iterdir() if path.suffix == ".png"]):
+            image = Image.open(path)
+            data = np.array(image)
+            series.events.append(
+                cls.event_class(
+                    start=make_time(ms=int(path.stem.split("_")[1])),
+                    end=make_time(ms=int(path.stem.split("_")[2])),
+                    data=data,
+                )
+            )
+
+        # If srt exists, load it
+        srt_path = fp / f"{fp.stem}.srt"
+        if srt_path.exists():
+            text_series = Series.load(srt_path)
+            if len(text_series) != len(series):
+                raise ScinoephileException(
+                    f"Number of images in {fp} ({len(series)}) "
+                    f"does not match number of subtitles in {srt_path} "
+                    f"({len(text_series)})"
+                )
+            for i, (event, text_event) in enumerate(zip(series, text_series)):
+                event.text = text_event.text
 
         return series
