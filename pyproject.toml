@@ -18,7 +18,6 @@ license = "BSD 3-Clause"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-h5py = "^3.12.1"
 hanziconv = "^0.3.2"
 llvmlite = "^0.44.0rc1"
 nltk = "^3.9.1"
@@ -33,8 +32,10 @@ pycantonese = "^3.4.0"
 pypinyin = "^0.53.0"
 pysubs2 = "^1.7.3"
 python = "^3.13"
+rlpycairo = "^0.3.0"
 snownlp = "^0.12.3"
 setuptools = "^75.6.0"
+svglib = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"

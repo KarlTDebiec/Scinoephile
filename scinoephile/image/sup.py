@@ -1,5 +1,6 @@
 #  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Image code related to the SUP subtitle format."""
 from __future__ import annotations
 
 import numba as nb
@@ -7,7 +8,7 @@ import numpy as np
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_image(bytes_: bytearray, height: int, width: int) -> np.ndarray:
+def read_sup_image_array(bytes_: bytearray, height: int, width: int) -> np.ndarray:
     """Read a palette-compressed image from a block of bytes.
 
     Arguments:
@@ -17,7 +18,7 @@ def read_sup_image(bytes_: bytearray, height: int, width: int) -> np.ndarray:
     Returns:
         compressed image
     """
-    img = np.zeros((height, width), np.uint8)
+    array = np.zeros((height, width), np.uint8)
     byte_i = 0
     row_i = 0
     col_i = 0
@@ -50,14 +51,14 @@ def read_sup_image(bytes_: bytearray, height: int, width: int) -> np.ndarray:
                     n_pixels = byte_2
                     color = 0
                     byte_i += 2
-                img[row_i, col_i : col_i + n_pixels] = color
+                array[row_i, col_i : col_i + n_pixels] = color
                 col_i += n_pixels
         else:  # XX | Color X, once
             color = byte_1
-            img[row_i, col_i] = color
+            array[row_i, col_i] = color
             col_i += 1
             byte_i += 1
-    return img
+    return array
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
@@ -127,7 +128,7 @@ def read_sup_series(
             width = bytes_[byte_i + 7] * 256 + bytes_[byte_i + 8]
             height = bytes_[byte_i + 9] * 256 + bytes_[byte_i + 10]
             image_bytes = bytes_[byte_i + 11 : byte_i + size]
-            compressed_image = read_sup_image(image_bytes, height, width)
+            compressed_image = read_sup_image_array(image_bytes, height, width)
         elif segment_kind == 0x80:  # End
             if seeking_start:
                 starts.append(timestamp / 90000)

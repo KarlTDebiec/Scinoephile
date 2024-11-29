@@ -21,6 +21,9 @@ class Series(SSAFile):
     event_class = Subtitle
     """Class of individual subtitle events."""
 
+    events: list[Subtitle]
+    """Individual subtitle events."""
+
     def __eq__(self, other: SSAFile) -> bool:
         """Whether this series is equal to another.
 

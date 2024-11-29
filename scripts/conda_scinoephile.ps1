@@ -30,6 +30,8 @@ pip install `
     pytest `
     pytest-cov `
     pytest-xdist `
-    snownlp
+    rlpycairo `
+    snownlp `
+    svglib
 pip install `
     numba==0.61.0rc1

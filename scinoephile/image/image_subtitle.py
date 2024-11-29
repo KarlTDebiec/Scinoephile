@@ -10,6 +10,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.core import Subtitle
+from scinoephile.image.base64 import get_base64_image
 
 
 class ImageSubtitle(Subtitle):
@@ -28,8 +29,22 @@ class ImageSubtitle(Subtitle):
         self.data = data
 
     @property
-    def img(self) -> Image:
+    def image(self) -> Image:
         """Image of subtitle."""
-        if not hasattr(self, "_img"):
-            self._img = Image.fromarray(self.data)
-        return self._img
+        if not hasattr(self, "_image") or self._image is None:
+            self._image = Image.fromarray(self.data)
+        return self._image
+
+    @image.setter
+    def image(self, image: Image) -> None:
+        """Set image of subtitle."""
+        self._image = image
+        self.data = np.array(image)
+        self._base64 = None
+
+    @property
+    def base64(self) -> str:
+        """Base64 encoding of image."""
+        if not hasattr(self, "_base64") or self._base64 is None:
+            self._base64 = get_base64_image(self.image)
+        return self._base64
