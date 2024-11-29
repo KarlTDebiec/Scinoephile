@@ -10,6 +10,13 @@ from PIL import Image
 
 
 def get_base64_image(image: Image) -> str:
+    """Get base64 encoding of image.
+
+    Arguments:
+        image: Image to encode
+    Returns:
+        Base64 encoding of image
+    """
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     return b64encode(buffered.getvalue()).decode("utf-8")
