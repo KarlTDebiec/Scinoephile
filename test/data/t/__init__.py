@@ -16,8 +16,8 @@ def t_cmn_hans_hk() -> Series:
 
 
 @pytest.fixture
-def t_cmn_hans_hk_merge() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_merge.srt"))
+def t_cmn_hans_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_flatten.srt"))
 
 
 # Traditional Standard Chinese
@@ -43,8 +43,8 @@ def t_en_hk_clean() -> Series:
 
 
 @pytest.fixture
-def t_en_hk_merge() -> Series:
-    return Series.load(get_test_file_path("t/output/en-HK_merge.srt"))
+def t_en_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/en-HK_flatten.srt"))
 
 
 # Bilingual Simplified Chinese and English
@@ -55,11 +55,11 @@ def t_cmn_hans_hk_en_hk() -> Series:
 
 ___all__ = [
     "t_cmn_hans_hk",
-    "t_cmn_hans_hk_merge",
+    "t_cmn_hans_hk_flatten",
     "t_cmn_hant_hk",
     "t_cmn_hant_hk_simplify",
     "t_en_hk",
     "t_en_hk_clean",
-    "t_en_hk_merge",
+    "t_en_hk_flatten",
     "t_cmn_hans_hk_en_hk",
 ]

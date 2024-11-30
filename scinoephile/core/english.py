@@ -31,17 +31,17 @@ def get_english_cleaned(series: Series) -> Series:
     return series
 
 
-def get_english_merged(series: Series) -> Series:
-    """Get multi-line English series merged to single lines.
+def get_english_flattened(series: Series) -> Series:
+    """Get multi-line English series flattened to single lines.
 
     Arguments:
-        series: series to merge
+        series: series to flatten
     Returns:
-        merged series
+        flattened series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_english_text_merged(event.text.strip())
+        event.text = _get_english_text_flattened(event.text.strip())
     return series
 
 
@@ -95,42 +95,42 @@ def _get_english_text_cleaned(text: str) -> str | None:
     return cleaned
 
 
-def _get_english_text_merged(text: str) -> str:
-    """Get multi-line English text merged to a single line.
+def _get_english_text_flattened(text: str) -> str:
+    """Get multi-line English text flattened to a single line.
 
     Accounts for dashes ('-') used for dialogue from multiple sources.
 
     Arguments:
-        text: text to merge
+        text: text to flatten
     Returns:
-        merged text
+        flattened text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
-    merged = re.sub(r"\\N", r"\n", text)
+    flattened = re.sub(r"\\N", r"\n", text)
 
     # Merge conversations
-    merged = re.sub(
+    flattened = re.sub(
         r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
         lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
-        merged,
+        flattened,
         flags=re.M,
     )
 
     # Merge italics
-    merged = re.sub(
+    flattened = re.sub(
         r"{\\i0}[^\S\n]*\n[^\S\n]*{\\i1}[^\S\n]*",
         " ",
-        merged,
+        flattened,
     )
 
     # Merge lines
-    merged = re.sub(
+    flattened = re.sub(
         r"\s*(.+)\s*\n\s*(.+)\s*",
         lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
-        merged,
+        flattened,
         flags=re.M,
     )
-    return merged
+    return flattened
 
 
 def _get_english_text_truecased(text: str) -> str:
@@ -168,6 +168,6 @@ def _get_english_text_truecased(text: str) -> str:
 
 __all__ = [
     "get_english_cleaned",
-    "get_english_merged",
+    "get_english_flattened",
     "get_english_truecased",
 ]
