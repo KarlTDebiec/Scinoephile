@@ -17,8 +17,8 @@ def mnt_cmn_hant_hk() -> Series:
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_merge() -> Series:
-    return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_merge.srt"))
+def mnt_cmn_hant_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_flatten.srt"))
 
 
 @pytest.fixture
@@ -27,8 +27,10 @@ def mnt_cmn_hant_hk_simplify() -> Series:
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_merge_simplify() -> Series:
-    return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_merge_simplify.srt"))
+def mnt_cmn_hant_hk_flatten_simplify() -> Series:
+    return Series.load(
+        get_test_file_path("mnt/output/cmn-Hant-HK_flatten_simplify.srt")
+    )
 
 
 # English
@@ -43,13 +45,13 @@ def mnt_en_us_clean() -> Series:
 
 
 @pytest.fixture
-def mnt_en_us_merge() -> Series:
-    return Series.load(get_test_file_path("mnt/output/en-US_merge.srt"))
+def mnt_en_us_flatten() -> Series:
+    return Series.load(get_test_file_path("mnt/output/en-US_flatten.srt"))
 
 
 @pytest.fixture
-def mnt_en_us_clean_merge() -> Series:
-    return Series.load(get_test_file_path("mnt/output/en-US_clean_merge.srt"))
+def mnt_en_us_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("mnt/output/en-US_clean_flatten.srt"))
 
 
 # Bilingual Simplified Cantonese Chinese and English
@@ -1181,11 +1183,11 @@ mnt_test_cases = [
 
 ___all__ = [
     "mnt_cmn_hant_hk",
-    "mnt_cmn_hant_hk_merge",
+    "mnt_cmn_hant_hk_flatten",
     "mnt_cmn_hant_hk_simplify",
     "mnt_en_us",
     "mnt_en_us_clean",
-    "mnt_en_us_merge",
+    "mnt_en_us_flatten",
     "mnt_cmn_hans_hk_en_us",
     "mnt_test_cases",
 ]

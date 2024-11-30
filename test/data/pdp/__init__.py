@@ -17,8 +17,8 @@ def pdp_cmn_hant_hk() -> Series:
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_merge() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_merge.srt"))
+def pdp_cmn_hant_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_flatten.srt"))
 
 
 @pytest.fixture
@@ -33,8 +33,8 @@ def pdp_yue_hant_hk() -> Series:
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_merge() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge.srt"))
+def pdp_yue_hant_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_flatten.srt"))
 
 
 @pytest.fixture
@@ -43,8 +43,10 @@ def pdp_yue_hant_hk_simplify() -> Series:
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_merge_simplify() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_merge_simplify.srt"))
+def pdp_yue_hant_hk_flatten_simplify() -> Series:
+    return Series.load(
+        get_test_file_path("pdp/output/yue-Hant-HK_flatten_simplify.srt")
+    )
 
 
 # English
@@ -59,13 +61,13 @@ def pdp_en_hk_clean() -> Series:
 
 
 @pytest.fixture
-def pdp_en_hk_merge() -> Series:
-    return Series.load(get_test_file_path("pdp/output/en-HK_merge.srt"))
+def pdp_en_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/en-HK_flatten.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_clean_merge() -> Series:
-    return Series.load(get_test_file_path("pdp/output/en-HK_clean_merge.srt"))
+def pdp_en_hk_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/en-HK_clean_flatten.srt"))
 
 
 # Bilingual Simplified Cantonese Chinese and English
@@ -2673,16 +2675,16 @@ pdp_test_cases = [
 
 __all__ = [
     "pdp_cmn_hant_hk",
-    "pdp_cmn_hant_hk_merge",
+    "pdp_cmn_hant_hk_flatten",
     "pdp_cmn_hant_hk_simplify",
     "pdp_yue_hant_hk",
-    "pdp_yue_hant_hk_merge",
+    "pdp_yue_hant_hk_flatten",
     "pdp_yue_hant_hk_simplify",
-    "pdp_yue_hant_hk_merge_simplify",
+    "pdp_yue_hant_hk_flatten_simplify",
     "pdp_en_hk",
     "pdp_en_hk_clean",
-    "pdp_en_hk_merge",
-    "pdp_en_hk_clean_merge",
+    "pdp_en_hk_flatten",
+    "pdp_en_hk_clean_flatten",
     "pdp_yue_hans_hk_en_hk",
     "pdp_test_cases",
 ]

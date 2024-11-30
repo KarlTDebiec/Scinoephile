@@ -29,8 +29,8 @@ from scinoephile.testing.file import get_test_file_path
         (
             (ScinoephileCli,),
             "pdp/input/en-HK.srt",
-            "--merge",
-            "pdp/output/en-HK_merge.srt",
+            "--flatten",
+            "pdp/output/en-HK_flatten.srt",
         ),
     ],
 )
@@ -64,8 +64,8 @@ def test_english(
         (
             (ScinoephileCli,),
             "pdp/input/cmn-Hant-HK.srt",
-            "--merge",
-            "pdp/output/cmn-Hant-HK_merge.srt",
+            "--flatten",
+            "pdp/output/cmn-Hant-HK_flatten.srt",
         ),
         (
             (ScinoephileCli,),

@@ -14,17 +14,17 @@ re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
-def get_hanzi_merged(series: Series) -> Series:
-    """Get multi-line hanzi series merged to single lines.
+def get_hanzi_flattened(series: Series) -> Series:
+    """Get multi-line hanzi series flattened to single lines.
 
     Arguments:
-        series: series to merge
+        series: series to flatten
     Returns:
-        merged series
+        flattened series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_hanzi_text_merged(event.text)
+        event.text = _get_hanzi_text_flattened(event.text)
     return series
 
 
@@ -42,34 +42,34 @@ def get_hanzi_simplified(series: Series) -> Series:
     return series
 
 
-def _get_hanzi_text_merged(text: str) -> str:
-    """Get multi-line hanzi text merged to a single line.
+def _get_hanzi_text_flattened(text: str) -> str:
+    """Get multi-line hanzi text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 
     # TODO: Consider replacing two western spaces with one eastern space
 
     Arguments:
-        text: text to merge
+        text: text to flatten
     Returns:
-        merged text
+        flattened text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
-    single_line = re.sub(r"\\N", r"\n", text)
+    flattened = re.sub(r"\\N", r"\n", text)
 
     # Merge lines
-    single_line = re.sub(r"^(.+)\n(.+)$", r"\1　\2", single_line, re.M)
+    flattened = re.sub(r"^(.+)\n(.+)$", r"\1　\2", flattened, re.M)
 
     # Merge conversations
     conversation = re.match(
-        r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", single_line
+        r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", flattened
     )
     if conversation is not None:
-        single_line = (
+        flattened = (
             f"﹣{conversation['first'].strip()}　　﹣{conversation['second'].strip()}"
         )
 
-    return single_line
+    return flattened
 
 
 def _get_hanzi_text_simplified(text: str) -> str:

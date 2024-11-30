@@ -57,13 +57,13 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
     """Contatenate a list of sequential series blocks into a single series.
 
     Arguments:
-        blocks: series to merge
+        blocks: series to concatenate
     Returns:
-        Merged series
+        Concatenated series
     """
     cls = blocks[0].__class__ if blocks else Series
-    merged = cls()
+    concatenated = cls()
     for block in blocks:
-        merged.events.extend(block.events)
-    merged.events.sort(key=lambda x: x.start)
-    return merged
+        concatenated.events.extend(block.events)
+    concatenated.events.sort(key=lambda x: x.start)
+    return concatenated

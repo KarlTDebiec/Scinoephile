@@ -16,8 +16,8 @@ def kob_yue_hans_hk() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans_hk_merge() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_merge.srt"))
+def kob_yue_hans_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_flatten.srt"))
 
 
 # Traditional Cantonese Chinese
@@ -43,8 +43,8 @@ def kob_en_hk_clean() -> Series:
 
 
 @pytest.fixture
-def kob_en_hk_merge() -> Series:
-    return Series.load(get_test_file_path("kob/output/en-HK_merge.srt"))
+def kob_en_hk_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/en-HK_flatten.srt"))
 
 
 # Bilingual Simplified Cantonese Chinese and English
@@ -55,11 +55,11 @@ def kob_yue_hans_hk_en_hk() -> Series:
 
 ___all__ = [
     "kob_yue_hans_hk",
-    "kob_yue_hans_hk_merge",
+    "kob_yue_hans_hk_flatten",
     "kob_yue_hant_hk",
     "kob_yue_hant_hk_simplify",
     "kob_en_hk",
     "kob_en_hk_clean",
-    "kob_en_hk_merge",
+    "kob_en_hk_flatten",
     "kob_yue_hans_hk_en_hk",
 ]

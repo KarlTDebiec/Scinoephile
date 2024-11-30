@@ -14,8 +14,8 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import Series
-from scinoephile.core.english import get_english_cleaned, get_english_merged
-from scinoephile.core.hanzi import get_hanzi_merged, get_hanzi_simplified
+from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.hanzi import get_hanzi_flattened, get_hanzi_simplified
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -70,10 +70,10 @@ class ScinoephileCli(CommandLineInterface):
             help="clean subtitles of closed-caption annotations and other anomalies",
         )
         arg_groups["operation arguments"].add_argument(
-            "-m",
-            "--merge",
+            "-f",
+            "--flatten",
             action="store_true",
-            help="merge multi-line subtitles into single lines",
+            help="flatten multi-line subtitles into single lines",
         )
         arg_groups["operation arguments"].add_argument(
             "-s",
@@ -133,10 +133,10 @@ class ScinoephileCli(CommandLineInterface):
         # Operation operations
         if "clean_english" in operations:
             english = get_english_cleaned(english)
-        if "merge_english" in operations:
-            english = get_english_merged(english)
-        if "merge_hanzi" in operations:
-            hanzi = get_hanzi_merged(hanzi)
+        if "flatten_english" in operations:
+            english = get_english_flattened(english)
+        if "flatten_hanzi" in operations:
+            hanzi = get_hanzi_flattened(hanzi)
         if "simplify_hanzi" in operations:
             hanzi = get_hanzi_simplified(hanzi)
         if "sync_bilingual" in operations:
@@ -161,7 +161,7 @@ class ScinoephileCli(CommandLineInterface):
         hanzi_infile: Path | None = None,
         hanzi_outfile: Path | None = None,
         clean: bool = False,
-        merge: bool = False,
+        flatten: bool = False,
         overwrite: bool = False,
         simplify: bool = False,
     ) -> dict[str, Any]:
@@ -169,13 +169,13 @@ class ScinoephileCli(CommandLineInterface):
 
         Examples of valid argument combinations and their corresponding actions:
 
-        bif bof eif eof cif cof m   s   Actions
+        bif bof eif eof cif cof f   s   Actions
         --- --- --- --- --- --- --- --- ------------------------------------------------
-        0   1   1   0   1   0   1   1   load_english, load_hanzi, merge_english,
-                                        merge_hanzi, simplify_hanzi, sync_bilingual,
+        0   1   1   0   1   0   1   1   load_english, load_hanzi, flatten_english,
+                                        flatten_hanzi, simplify_hanzi, sync_bilingual,
                                         save_bilingual
-        0   0   1   1   0   0   1   0   load_english, merge_english, save_english
-        0   0   0   0   1   1   1   1   load_hanzi, merge_hanzi, simplify_hanzi,
+        0   0   1   1   0   0   1   0   load_english, flatten_english, save_english
+        0   0   0   0   1   1   1   1   load_hanzi, flatten_hanzi, simplify_hanzi,
                                         save_hanzi
 
         Arguments:
@@ -185,7 +185,7 @@ class ScinoephileCli(CommandLineInterface):
             english_outfile: English subtitle outfile
             hanzi_infile: Hanzi subtitle infile
             hanzi_outfile: Hanzi subtitle outfile
-            merge: Merge multi-line subtitles into single lines
+            flatten: Flatten multi-line subtitles into single lines
             overwrite: Overwrite outfiles if they exist
             simplify: Convert traditional Hanzi characters to simplified
         Returns:
@@ -224,18 +224,18 @@ class ScinoephileCli(CommandLineInterface):
         if clean:
             if english_infile:
                 operations["clean_english"] = True
-        if merge:
+        if flatten:
             if not (english_infile and (bilingual_outfile or english_outfile)) and not (
                 hanzi_infile and (bilingual_outfile or hanzi_outfile)
             ):
                 cls.argparser().error(
                     "At least one infile and one outfile including the same language "
-                    "required for merge"
+                    "required for flatten"
                 )
             if english_infile and (bilingual_outfile or english_outfile):
-                operations["merge_english"] = True
+                operations["flatten_english"] = True
             if hanzi_infile and (bilingual_outfile or hanzi_outfile):
-                operations["merge_hanzi"] = True
+                operations["flatten_hanzi"] = True
         if simplify:
             if not hanzi_infile or bilingual_infile:
                 cls.argparser().error("Hanzi infile required for simplify")
@@ -246,8 +246,8 @@ class ScinoephileCli(CommandLineInterface):
                     "Bilingual outfile requires English and Hanzi infiles"
                 )
             operations["sync_bilingual"] = True
-            operations["merge_english"] = True
-            operations["merge_hanzi"] = True
+            operations["flatten_english"] = True
+            operations["flatten_hanzi"] = True
 
         return operations
 

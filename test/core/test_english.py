@@ -8,14 +8,14 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.english import (
     _get_english_text_cleaned,  # noqa
-    _get_english_text_merged,  # noqa
+    _get_english_text_flattened,  # noqa
     get_english_cleaned,
-    get_english_merged,
+    get_english_flattened,
 )
-from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_merge
-from ..data.mnt import mnt_en_us, mnt_en_us_clean, mnt_en_us_merge
-from ..data.pdp import pdp_en_hk, pdp_en_hk_clean, pdp_en_hk_merge
-from ..data.t import t_en_hk, t_en_hk_clean, t_en_hk_merge
+from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_flatten
+from ..data.mnt import mnt_en_us, mnt_en_us_clean, mnt_en_us_flatten
+from ..data.pdp import pdp_en_hk, pdp_en_hk_clean, pdp_en_hk_flatten
+from ..data.t import t_en_hk, t_en_hk_clean, t_en_hk_flatten
 
 
 def _test_get_english_cleaned(series: Series, expected: Series):
@@ -32,8 +32,8 @@ def _test_get_english_cleaned(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_english_merged(series: Series, expected: Series):
-    output = get_english_merged(series)
+def _test_get_english_flattened(series: Series, expected: Series):
+    output = get_english_flattened(series)
 
     assert len(series.events) == len(output.events)
 
@@ -67,21 +67,21 @@ def test_get_english_cleaned_t(t_en_hk: Series, t_en_hk_clean: Series):
     _test_get_english_cleaned(t_en_hk, t_en_hk_clean)
 
 
-# get_english_merged
-def test_get_english_merged_kob(kob_en_hk: Series, kob_en_hk_merge: Series):
-    _test_get_english_merged(kob_en_hk, kob_en_hk_merge)
+# get_english_flattened
+def test_get_english_flattened_kob(kob_en_hk: Series, kob_en_hk_flatten: Series):
+    _test_get_english_flattened(kob_en_hk, kob_en_hk_flatten)
 
 
-def test_get_english_merged_mnt(mnt_en_us: Series, mnt_en_us_merge: Series):
-    _test_get_english_merged(mnt_en_us, mnt_en_us_merge)
+def test_get_english_flattened_mnt(mnt_en_us: Series, mnt_en_us_flatten: Series):
+    _test_get_english_flattened(mnt_en_us, mnt_en_us_flatten)
 
 
-def test_get_english_merged_pdp(pdp_en_hk: Series, pdp_en_hk_merge: Series):
-    _test_get_english_merged(pdp_en_hk, pdp_en_hk_merge)
+def test_get_english_flattened_pdp(pdp_en_hk: Series, pdp_en_hk_flatten: Series):
+    _test_get_english_flattened(pdp_en_hk, pdp_en_hk_flatten)
 
 
-def test_get_english_merged_t(t_en_hk: Series, t_en_hk_merge: Series):
-    _test_get_english_merged(t_en_hk, t_en_hk_merge)
+def test_get_english_flattened_t(t_en_hk: Series, t_en_hk_flatten: Series):
+    _test_get_english_flattened(t_en_hk, t_en_hk_flatten)
 
 
 @pytest.mark.parametrize(
@@ -113,5 +113,5 @@ def test_get_english_text_cleaned(text: str, expected: str):
         ("line 1\nline 2", "line 1 line 2"),
     ],
 )
-def test_get_english_text_merged(text: str, expected: str):
-    assert _get_english_text_merged(text) == expected
+def test_get_english_text_flattened(text: str, expected: str):
+    assert _get_english_text_flattened(text) == expected
