@@ -1,4 +1,4 @@
-#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to English text."""
 from __future__ import annotations
@@ -72,6 +72,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
 
     # Remove closed caption annotations ([...])
     cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned, flags=re.DOTALL).strip()
+
+    # Replace '...' with '…'
+    cleaned = re.sub(r"\.\.\.", "…", cleaned)
 
     # Remove lines starting with dashes if they are otherwise empty
     cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)

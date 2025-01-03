@@ -1,4 +1,4 @@
-#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to hanzi text."""
 from __future__ import annotations
@@ -12,6 +12,25 @@ from scinoephile.core.series import Series
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
+
+
+def get_hanzi_cleaned(series: Series) -> Series:
+    """Get hanzi series cleaned.
+
+    Arguments:
+        series: series to clean
+    Returns:
+        cleaned series
+    """
+    series = deepcopy(series)
+    new_events = []
+    for event in series.events:
+        text = _get_hanzi_text_cleaned(event.text.strip())
+        if text:
+            event.text = text
+            new_events.append(event)
+    series.events = new_events
+    return series
 
 
 def get_hanzi_flattened(series: Series) -> Series:
@@ -40,6 +59,35 @@ def get_hanzi_simplified(series: Series) -> Series:
     for event in series:
         event.text = _get_hanzi_text_simplified(event.text)
     return series
+
+
+def _get_hanzi_text_cleaned(text: str) -> str | None:
+    """Get hanzi text cleaned.
+
+    Arguments:
+        text: text to clean
+    Returns:
+        cleaned text
+    """
+    # Revert strange substitution in pysubs2/subrip.py:66
+    cleaned = re.sub(r"\\N", r"\n", text).strip()
+
+    # Replace '...' with '⋯'
+    cleaned = re.sub(r"\.\.\.", "⋯", cleaned)
+
+    # Replace '…' with '⋯'
+    cleaned = re.sub(r"…", "⋯", cleaned)
+
+    # Remove empty lines
+    cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
+
+    # Check if any substantive text remains
+    if not cleaned:
+        return None
+    if re.fullmatch(r"^\s*-?\s*\n\s*-?\s*", cleaned):
+        return None
+
+    return cleaned
 
 
 def _get_hanzi_text_flattened(text: str) -> str:
