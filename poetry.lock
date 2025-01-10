@@ -672,32 +672,32 @@ files = [
 
 [[package]]
 name = "llvmlite"
-version = "0.44.0rc1"
+version = "0.44.0rc2"
 description = "lightweight wrapper around basic LLVM functionality"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "llvmlite-0.44.0rc1-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:f30cd4761cf287edbfa211236529e7afc518449f1aa7906af8b4b5d70c5b25aa"},
-    {file = "llvmlite-0.44.0rc1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:67d65ad4ae212f168ba6e79c01ef66eca8d398d690f2fcb624be3be24824f17f"},
-    {file = "llvmlite-0.44.0rc1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:af1ebba5f676db38e56a6eb1cb23f5f400280670acb47fb0d4b99eef02f6bf67"},
-    {file = "llvmlite-0.44.0rc1-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c1c486c6cc445902643bcabd941a20a141635b40d3432948be32f01439594e99"},
-    {file = "llvmlite-0.44.0rc1-cp310-cp310-win_amd64.whl", hash = "sha256:b6aaa4a8e84c56aa157804857214af595a056b63191e5fbf6a63eabf30d8eabb"},
-    {file = "llvmlite-0.44.0rc1-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:b63d1d70a3ff3d4683564e6be8441818b5857e057c6830b6d95e4f7fce122e10"},
-    {file = "llvmlite-0.44.0rc1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:8bb87f80ef690bff3bf5b1104f23d7fa659adb646ed8b536dd85435c4b6f10b9"},
-    {file = "llvmlite-0.44.0rc1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3f18edf4f1dfbae921ef3240c5514418f28435e23b9ab45ee0eaedf3f28eac95"},
-    {file = "llvmlite-0.44.0rc1-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a8b8bc10d798d8e8464c92857adde17000cb22ac291925628206b83001924def"},
-    {file = "llvmlite-0.44.0rc1-cp311-cp311-win_amd64.whl", hash = "sha256:ec5cf833d7e470a21f72e88140a38c4b6a81f5ee201011469078c3638dc96d3b"},
-    {file = "llvmlite-0.44.0rc1-cp312-cp312-macosx_10_15_x86_64.whl", hash = "sha256:cda47261b39c505a3538d670329d3c302e10b8d12f9afe3238dcd754810bf036"},
-    {file = "llvmlite-0.44.0rc1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:8594e690cad7a8882264d2cfee9084f6d60416ec67fe73feb32615ff2dfac135"},
-    {file = "llvmlite-0.44.0rc1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:906802f622f3f441580de08611bf5033183b4b89e1d8949cc66e749cd1331274"},
-    {file = "llvmlite-0.44.0rc1-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:20b14a499d2040c0c25f64a3a4f88f69c28b4ffcb189a244331209aef9d4eac1"},
-    {file = "llvmlite-0.44.0rc1-cp312-cp312-win_amd64.whl", hash = "sha256:ad148e6dc21bc6a96ecf410435fb4daa7af8ebbe9d01959300a368ec62ec1458"},
-    {file = "llvmlite-0.44.0rc1-cp313-cp313-macosx_10_15_x86_64.whl", hash = "sha256:86f4984d76f957a605053d90aaec7a144f317b83b134ae5546cc0e0b931328d8"},
-    {file = "llvmlite-0.44.0rc1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:7c9402bf00a70b053a6901261b4b0958aa387e25c619174ddf3fdeb498e03b31"},
-    {file = "llvmlite-0.44.0rc1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f093904317d06607a54516cbfab7b0062b7e8c9a14fb053a76131983f93e2cae"},
-    {file = "llvmlite-0.44.0rc1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3292005013ae2d23d37b2baafb0ae76121702a2ee45ab1bfcf59708bee35d393"},
-    {file = "llvmlite-0.44.0rc1-cp313-cp313-win_amd64.whl", hash = "sha256:1610f3fb145e4f72b3c06036ae1cf079b5c0ed8fd56bf3e53553875f65ec7020"},
-    {file = "llvmlite-0.44.0rc1.tar.gz", hash = "sha256:ff2b3fb2aa21e92c328da53fc8db52c89746ee8b2e550ca5facec5ef51340757"},
+    {file = "llvmlite-0.44.0rc2-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:2361232623575929bdebfe863f7d8d3cdb9d11bc797f35471ff279066ac442de"},
+    {file = "llvmlite-0.44.0rc2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:cdd695293102d0ffe71d4b82a9d62614fd85e98348ad0018cb66768992afa974"},
+    {file = "llvmlite-0.44.0rc2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3060c556ca075066f1503542051b4dd17224bff0cc6eef882225275ed76106f6"},
+    {file = "llvmlite-0.44.0rc2-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:36e25e70ffa24c7250caf8fb44fdca6cf999c94be411fffa391a131b8715aea3"},
+    {file = "llvmlite-0.44.0rc2-cp310-cp310-win_amd64.whl", hash = "sha256:769b045c9214b1952be8973ba1b243b2d65f177e844e117dc0b7e2a82c76b741"},
+    {file = "llvmlite-0.44.0rc2-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:19f432d8f2d399f735b783646d109553fdf4020d80f3d0dd7b01eb57a8084b3c"},
+    {file = "llvmlite-0.44.0rc2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a18c621b625aef39b0be504c89c382464488af0a900fb34a4d7df4a0afd10d88"},
+    {file = "llvmlite-0.44.0rc2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:784eecc2ae4cb7cafc95268fdaea766d0b97b42af0e69da1c21b2049b268b5ba"},
+    {file = "llvmlite-0.44.0rc2-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4d7108d74c7ddeb87881c4fcfef55a0e413a9ddb3ee065b8d71b30c4b077bc10"},
+    {file = "llvmlite-0.44.0rc2-cp311-cp311-win_amd64.whl", hash = "sha256:abc082dea48a999ad6af894d6b9a99869a8a43ccdfbc2d38d33b75a4f0d8dc56"},
+    {file = "llvmlite-0.44.0rc2-cp312-cp312-macosx_10_14_x86_64.whl", hash = "sha256:4a3022e67e52e01c69145499295d726eb44f8ae14e46a2b87fd334fd5430b14c"},
+    {file = "llvmlite-0.44.0rc2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:b775e2c238574fc3b0c58d972db632a85523c8a39d9c45448b272c5c0ddd13b5"},
+    {file = "llvmlite-0.44.0rc2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6e1ff57aa5f7745a4a776c8e91511f4b27614cf942b34bda7739453df8aee8ba"},
+    {file = "llvmlite-0.44.0rc2-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:f2a09df18b9af81157cf889b7db9907708e47daf1e8b939d394a6e1f785c9d41"},
+    {file = "llvmlite-0.44.0rc2-cp312-cp312-win_amd64.whl", hash = "sha256:e7fedaaa41427bb7f87fa7262e3d1b04d7f279f3f571f7370442f115bf29a5b8"},
+    {file = "llvmlite-0.44.0rc2-cp313-cp313-macosx_10_14_x86_64.whl", hash = "sha256:90469b05004a04435377a3de6aee04e12a4f6d2c9a7d62e262681b34a28c7080"},
+    {file = "llvmlite-0.44.0rc2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:cf3040e9e00e22fd62750e1e045393f0d28ee1c7a92adfc7486b6701c3212a49"},
+    {file = "llvmlite-0.44.0rc2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:87e9fc737b1323b76a51f18620c41577cbcb5c66f8c83a546431ea562ae1b9d9"},
+    {file = "llvmlite-0.44.0rc2-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4450f1086db328cdd3a4a1aa9960273730646ee6ff3d4cb99e6e5e17e7872e47"},
+    {file = "llvmlite-0.44.0rc2-cp313-cp313-win_amd64.whl", hash = "sha256:04fde53f84591e13fcd3e89a38159017b3536902c62594418584c796d3d38fc0"},
+    {file = "llvmlite-0.44.0rc2.tar.gz", hash = "sha256:7731d125071842c2465ecd9fd59736da7ae70d8c6d04566ede98296e8779a8ed"},
 ]
 
 [[package]]
@@ -2294,4 +2294,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "da113a73637e46ce6a46f4a0dfbad391b66dfb9f671031e86bcdc46f25f59d77"
+content-hash = "feccb8ad1ba3d920612a74d8f1d59abd2c79fbd7997df78dfd9ecf7125dd9b10"
