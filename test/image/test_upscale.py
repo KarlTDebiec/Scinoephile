@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from PIL import Image
 
-from scinoephile.image.upscale import get_upscaled_image
+from scinoephile.image.upscaling import get_upscaled_image
 from scinoephile.testing.mark import skip_if_ci
 from ..data.mlamd import (
     mlamd_cmn_hans_hk_image,

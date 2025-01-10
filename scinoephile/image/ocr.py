@@ -11,7 +11,7 @@ from scinoephile.core.blocks import get_blocks_by_pause, get_concatenated_blocks
 from scinoephile.core.pairs import get_pair_blocks_by_pause
 from scinoephile.image import ImageSeries
 from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.upscale import get_upscaled_image
+from scinoephile.image.upscaling import get_upscaled_image
 from scinoephile.openai import OpenAiService
 
 
