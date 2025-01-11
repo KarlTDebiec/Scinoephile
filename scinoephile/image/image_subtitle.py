@@ -38,7 +38,7 @@ class ImageSubtitle(Subtitle):
         self._image: Image.Image | None = None
         self._image_diff: Image.Image | None = None
         self._image_from_text: Image.Image | None = None
-        self._image_stack: Image.Image | None = None
+        self._image_diff_stack: Image.Image | None = None
 
     @property
     def base64(self) -> str:
@@ -81,14 +81,14 @@ class ImageSubtitle(Subtitle):
         return self._image_diff
 
     @property
-    def image_stack(self) -> Image.Image | None:
+    def image_diff_stack(self) -> Image.Image | None:
         """Image, image generated from text and diff, vertically stacked."""
         if self.image_from_text is None:
             return None
-        if not hasattr(self, "_image_stack") or self._image_stack is None:
+        if not hasattr(self, "_image_diff_stack") or self._image_diff_stack is None:
             image_l = get_grayscale_image_on_white(self.image)
             image_from_text_scaled = get_scaled_image(image_l, self.image_from_text)
-            self._image_stack = get_stacked_image(
+            self._image_diff_stack = get_stacked_image(
                 image_l, image_from_text_scaled, self.image_diff
             )
-        return self._image_stack
+        return self._image_diff_stack

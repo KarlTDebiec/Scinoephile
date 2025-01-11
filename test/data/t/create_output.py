@@ -1,4 +1,4 @@
-#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Script for creating expected test output for T."""
 from __future__ import annotations
@@ -43,8 +43,9 @@ if __name__ == "__main__":
     en_hk_clean.save(get_output_path("t/output/en-HK_clean.srt"))
     en_hk_flatten = get_english_flattened(en_hk)
     en_hk_flatten.save(get_output_path("t/output/en-HK_flatten.srt"))
+    en_hk_clean_flatten = get_english_flattened(en_hk_clean)
+    en_hk_clean_flatten.save(get_output_path("t/output/en-HK_clean_flatten.srt"))
 
     # Bilingual Simplified Chinese and English
-    en_hk_clean_flatten = get_english_flattened(en_hk_clean)
     cmn_hans_hk_en_hk = get_synced_series(cmn_hans_hk_flatten, en_hk_clean_flatten)
     cmn_hans_hk_en_hk.save(get_output_path("t/output/cmn-Hans-HK_en-HK.srt"))

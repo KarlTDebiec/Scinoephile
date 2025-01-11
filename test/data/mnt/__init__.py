@@ -1,4 +1,4 @@
-#  Copyright 2017-2024 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Test data for MNT."""
 from __future__ import annotations
@@ -10,7 +10,7 @@ from scinoephile.testing import SyncTestCase
 from scinoephile.testing.file import get_test_file_path
 
 
-# Traditional Cantonese Chinese
+# region Traditional Standard Chinese
 @pytest.fixture
 def mnt_cmn_hant_hk() -> Series:
     return Series.load(get_test_file_path("mnt/input/cmn-Hant-HK.srt"))
@@ -38,7 +38,10 @@ def mnt_cmn_hant_hk_clean_flatten_simplify() -> Series:
     )
 
 
-# English
+# endregion
+
+
+# region English
 @pytest.fixture
 def mnt_en_us() -> Series:
     return Series.load(get_test_file_path("mnt/input/en-US.srt"))
@@ -59,12 +62,19 @@ def mnt_en_us_clean_flatten() -> Series:
     return Series.load(get_test_file_path("mnt/output/en-US_clean_flatten.srt"))
 
 
-# Bilingual Simplified Cantonese Chinese and English
+# endregion
+
+
+# region Bilingual Simplified Standard Chinese and English
 @pytest.fixture
 def mnt_cmn_hans_hk_en_us() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hans-HK_en-US.srt"))
 
 
+# endregion
+
+
+# region Synchronization Test Cases
 mnt_test_cases = [
     SyncTestCase(
         hanzi_start=0,
@@ -1185,6 +1195,7 @@ mnt_test_cases = [
         ],
     ),
 ]
+# endregion
 
 ___all__ = [
     "mnt_cmn_hant_hk",

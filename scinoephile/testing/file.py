@@ -12,6 +12,19 @@ else:
     from scinoephile.common import package_root
 
 
+def get_test_directory_path(relative_path: str) -> Path:
+    """Get full path of directory within test data directory.
+
+    Arguments:
+        relative_path: relative path to directory within test/data/
+    Returns:
+        Full path to directory
+    """
+    full_path = package_root.parent / "test" / "data" / Path(relative_path)
+
+    return full_path
+
+
 def get_test_file_path(relative_path: str) -> Path:
     """Get full path of infile within test data directory.
 
