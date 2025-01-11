@@ -163,8 +163,13 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
     """
     traditionalized = ""
 
+    exclusions = {"出", "了", "札", "面", "向", "只", "志", "疴"}
+    # TODO: 疴 to 痾?
+
     for char in text:
         if re_hanzi.match(char) or re_hanzi_rare.match(char):
+            if char in exclusions:
+                traditionalized += char
             traditionalized += HanziConv.toTraditional(char)
         else:
             traditionalized += char
