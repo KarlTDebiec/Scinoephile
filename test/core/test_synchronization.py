@@ -16,7 +16,7 @@ from scinoephile.core.synchronization import (
 from scinoephile.testing import SyncTestCase
 from ..data.mnt import (
     mnt_cmn_hans_hk_en_us,
-    mnt_cmn_hant_hk_flatten_simplify,
+    mnt_cmn_hant_hk_clean_flatten_simplify,
     mnt_en_us_clean_flatten,
     mnt_test_cases,
 )
@@ -24,7 +24,7 @@ from ..data.pdp import (
     pdp_en_hk_clean_flatten,
     pdp_test_cases,
     pdp_yue_hans_hk_en_hk,
-    pdp_yue_hant_hk_flatten_simplify,
+    pdp_yue_hant_hk_clean_flatten_simplify,
 )
 
 
@@ -69,38 +69,46 @@ def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
 # blocks
 @pytest.mark.parametrize("test_case", mnt_test_cases)
 def test_blocks_mnt(
-    mnt_cmn_hant_hk_flatten_simplify: Series,
+    mnt_cmn_hant_hk_clean_flatten_simplify: Series,
     mnt_en_us_clean_flatten: Series,
     test_case: SyncTestCase,
 ):
-    _test_blocks(mnt_cmn_hant_hk_flatten_simplify, mnt_en_us_clean_flatten, test_case)
+    _test_blocks(
+        mnt_cmn_hant_hk_clean_flatten_simplify, mnt_en_us_clean_flatten, test_case
+    )
 
 
 @pytest.mark.parametrize("test_case", pdp_test_cases)
 def test_blocks_pdp(
-    pdp_yue_hant_hk_flatten_simplify: Series,
+    pdp_yue_hant_hk_clean_flatten_simplify: Series,
     pdp_en_hk_clean_flatten: Series,
     test_case: SyncTestCase,
 ):
-    _test_blocks(pdp_yue_hant_hk_flatten_simplify, pdp_en_hk_clean_flatten, test_case)
+    _test_blocks(
+        pdp_yue_hant_hk_clean_flatten_simplify, pdp_en_hk_clean_flatten, test_case
+    )
 
 
 # get_synced_series
 def test_get_synced_series_mnt(
-    mnt_cmn_hant_hk_flatten_simplify: Series,
+    mnt_cmn_hant_hk_clean_flatten_simplify: Series,
     mnt_en_us_clean_flatten: Series,
     mnt_cmn_hans_hk_en_us: Series,
 ):
     _test_get_synced_series(
-        mnt_cmn_hant_hk_flatten_simplify, mnt_en_us_clean_flatten, mnt_cmn_hans_hk_en_us
+        mnt_cmn_hant_hk_clean_flatten_simplify,
+        mnt_en_us_clean_flatten,
+        mnt_cmn_hans_hk_en_us,
     )
 
 
 def test_get_synced_series_pdp(
-    pdp_yue_hant_hk_flatten_simplify: Series,
+    pdp_yue_hant_hk_clean_flatten_simplify: Series,
     pdp_en_hk_clean_flatten: Series,
     pdp_yue_hans_hk_en_hk: Series,
 ):
     _test_get_synced_series(
-        pdp_yue_hant_hk_flatten_simplify, pdp_en_hk_clean_flatten, pdp_yue_hans_hk_en_hk
+        pdp_yue_hant_hk_clean_flatten_simplify,
+        pdp_en_hk_clean_flatten,
+        pdp_yue_hans_hk_en_hk,
     )

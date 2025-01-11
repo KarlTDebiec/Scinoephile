@@ -9,6 +9,7 @@ from scinoephile.core import Series
 from scinoephile.core.hanzi import (
     _get_hanzi_text_flattened,  # noqa
     _get_hanzi_text_simplified,  # noqa
+    get_hanzi_cleaned,
     get_hanzi_flattened,
     get_hanzi_simplified,
 )
@@ -34,6 +35,20 @@ from ..data.t import (
     t_cmn_hant_hk,
     t_cmn_hant_hk_simplify,
 )
+
+
+def _test_get_hanzi_cleaned(series: Series, expected: Series):
+    output = get_hanzi_cleaned(series)
+
+    errors = []
+    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+        if event != expected_event:
+            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
+
+    if errors:
+        for error in errors:
+            print(error)
+        pytest.fail(f"Found {len(errors)} discrepancies")
 
 
 def _test_get_hanzi_flattened(series: Series, expected: Series):
@@ -66,6 +81,15 @@ def _test_get_hanzi_simplified(series: Series, expected: Series = None):
         for error in errors:
             print(error)
         pytest.fail(f"Found {len(errors)} discrepancies")
+
+
+# get_hanzi_cleaned
+def test_get_hanzi_cleaned_mnt(mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_clean: Series):
+    _test_get_hanzi_cleaned(mnt_cmn_hant_hk, mnt_cmn_hant_hk_clean)
+
+
+def test_get_hanzi_cleaned_pdp(pdp_yue_hant_hk: Series, pdp_yue_hant_hk_clean: Series):
+    _test_get_hanzi_cleaned(pdp_yue_hant_hk, pdp_yue_hant_hk_clean)
 
 
 # get_hanzi_flattened

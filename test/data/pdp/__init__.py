@@ -17,6 +17,11 @@ def pdp_cmn_hant_hk() -> Series:
 
 
 @pytest.fixture
+def pdp_cmn_hant_hk_clean() -> Series:
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_clean.srt"))
+
+
+@pytest.fixture
 def pdp_cmn_hant_hk_flatten() -> Series:
     return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_flatten.srt"))
 
@@ -33,6 +38,11 @@ def pdp_yue_hant_hk() -> Series:
 
 
 @pytest.fixture
+def pdp_yue_hant_hk_clean() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_clean.srt"))
+
+
+@pytest.fixture
 def pdp_yue_hant_hk_flatten() -> Series:
     return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_flatten.srt"))
 
@@ -43,9 +53,9 @@ def pdp_yue_hant_hk_simplify() -> Series:
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_flatten_simplify() -> Series:
+def pdp_yue_hant_hk_clean_flatten_simplify() -> Series:
     return Series.load(
-        get_test_file_path("pdp/output/yue-Hant-HK_flatten_simplify.srt")
+        get_test_file_path("pdp/output/yue-Hant-HK_clean_flatten_simplify.srt")
     )
 
 
@@ -2680,7 +2690,7 @@ __all__ = [
     "pdp_yue_hant_hk",
     "pdp_yue_hant_hk_flatten",
     "pdp_yue_hant_hk_simplify",
-    "pdp_yue_hant_hk_flatten_simplify",
+    "pdp_yue_hant_hk_clean_flatten_simplify",
     "pdp_en_hk",
     "pdp_en_hk_clean",
     "pdp_en_hk_flatten",

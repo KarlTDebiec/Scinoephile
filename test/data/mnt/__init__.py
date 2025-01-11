@@ -17,6 +17,11 @@ def mnt_cmn_hant_hk() -> Series:
 
 
 @pytest.fixture
+def mnt_cmn_hant_hk_clean() -> Series:
+    return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_clean.srt"))
+
+
+@pytest.fixture
 def mnt_cmn_hant_hk_flatten() -> Series:
     return Series.load(get_test_file_path("mnt/output/cmn-Hant-HK_flatten.srt"))
 
@@ -27,9 +32,9 @@ def mnt_cmn_hant_hk_simplify() -> Series:
 
 
 @pytest.fixture
-def mnt_cmn_hant_hk_flatten_simplify() -> Series:
+def mnt_cmn_hant_hk_clean_flatten_simplify() -> Series:
     return Series.load(
-        get_test_file_path("mnt/output/cmn-Hant-HK_flatten_simplify.srt")
+        get_test_file_path("mnt/output/cmn-Hant-HK_clean_flatten_simplify.srt")
     )
 
 

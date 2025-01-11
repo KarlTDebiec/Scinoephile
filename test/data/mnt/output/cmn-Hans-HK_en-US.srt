@@ -171,12 +171,12 @@ It's a camphor tree.
 35
 00:06:16,626 --> 00:06:17,627
 樟树耶
-Camphor tree...
+Camphor tree…
 
 36
 00:06:17,627 --> 00:06:18,628
 樟树
-Camphor tree...
+Camphor tree…
 
 37
 00:06:31,474 --> 00:06:32,350
@@ -330,7 +330,7 @@ Can you see 'em?
 67
 00:09:02,709 --> 00:09:04,502
 那一定是「灰尘精灵」
-I think they were... soot gremlins.
+I think they were… soot gremlins.
 
 68
 00:09:04,919 --> 00:09:06,149
@@ -456,7 +456,7 @@ It's pitch black!
 93
 00:10:42,934 --> 00:10:44,561
 灰尘精灵呢？
-Soot gremlins...
+Soot gremlins…
 
 94
 00:10:52,819 --> 00:10:54,154
@@ -566,12 +566,12 @@ No, you've done plenty.
 115
 00:14:03,259 --> 00:14:05,866
 现在这时节田里农事可忙呢
-Lately I've been so busy in the rice paddies, I only did a bit of dusting...
+Lately I've been so busy in the rice paddies, I only did a bit of dusting…
 
 116
 00:14:05,866 --> 00:14:08,473
 不过我还是偶尔会来打扫
-Lately I've been so busy in the rice paddies, I only did a bit of dusting...
+Lately I've been so busy in the rice paddies, I only did a bit of dusting…
 
 117
 00:14:09,808 --> 00:14:11,184
@@ -586,7 +586,7 @@ What have you done to your hands?
 119
 00:14:12,686 --> 00:14:14,938
 灰尘精灵跑掉了
-The soot gremlin got away...
+The soot gremlin got away…
 
 120
 00:14:15,063 --> 00:14:16,981
@@ -760,7 +760,7 @@ May I help you?
 154
 00:17:05,567 --> 00:17:08,111
 我妈妈要给婆婆的
-Huh... my Mom... for Granny.
+Huh… my Mom… for Granny.
 
 155
 00:17:10,155 --> 00:17:11,322
@@ -855,22 +855,22 @@ I mean it. I'm not scared!
 173
 00:20:54,170 --> 00:20:57,340
 一，二，一，二，一，二
-One-two, one-two...
+One-two, one-two…
 
 174
 00:20:57,465 --> 00:20:59,154
 很好，加油
-Come on, keep up the good work...
+Come on, keep up the good work…
 
 175
 00:20:59,154 --> 00:21:00,844
 用力，加把劲
-Come on, keep up the good work...
+Come on, keep up the good work…
 
 176
 00:21:06,182 --> 00:21:09,060
 好了　衣服通通洗好了
-Okay! Washing... finished!
+Okay! Washing… finished!
 
 177
 00:21:18,528 --> 00:21:20,447
@@ -1179,7 +1179,7 @@ Wake up!
 238
 00:25:24,774 --> 00:25:26,401
 对不起，爸爸又睡过头了
-Sorry, I overslept again...
+Sorry, I overslept again…
 
 239
 00:25:26,526 --> 00:25:27,861
@@ -1846,7 +1846,7 @@ Yes, Satsuki?
 373
 00:42:36,222 --> 00:42:37,974
 我妹妹…
-It's my sister...
+It's my sister…
 
 374
 00:42:45,065 --> 00:42:46,858
@@ -1891,12 +1891,12 @@ You promised to be a good girl at Nanny's.
 382
 00:43:02,540 --> 00:43:04,709
 姊姊还要再上两个小时的课
-I still have two more classes and Nanny's too busy for this...
+I still have two more classes and Nanny's too busy for this…
 
 383
 00:43:04,709 --> 00:43:06,878
 婆婆的田里又那么忙
-I still have two more classes and Nanny's too busy for this...
+I still have two more classes and Nanny's too busy for this…
 
 384
 00:43:07,212 --> 00:43:11,508
@@ -1988,7 +1988,7 @@ I won't cry. Aren't I good?
 402
 00:44:44,184 --> 00:44:46,186
 可是真伤脑筋耶
-It's getting worse...
+It's getting worse…
 
 403
 00:44:48,980 --> 00:44:51,900
@@ -1998,7 +1998,7 @@ Dear Guardian Spirit, let us stay until the rain stops.
 404
 00:45:36,027 --> 00:45:37,237
 可是…
-But...
+But…
 
 405
 00:45:57,549 --> 00:45:59,676
@@ -2211,7 +2211,7 @@ It won't be much longer. Hang in there.
 447
 00:49:44,275 --> 00:49:46,277
 公车怎么这么慢？
-It's late...
+It's late…
 
 448
 00:49:54,536 --> 00:49:55,537
@@ -2251,7 +2251,7 @@ Here's the bus!
 455
 00:54:16,423 --> 00:54:20,051
 大龙猫　把爸爸的伞给带走了
-He took Daddy's umbrella...
+He took Daddy's umbrella…
 
 456
 00:54:33,231 --> 00:54:34,774
@@ -2336,17 +2336,17 @@ It was the scariest, funniest day I've ever had.
 472
 00:55:30,580 --> 00:55:33,708
 而且大龙猫送给我们的礼物　实在是太棒了
-Totoro gave us a lovely present...
+Totoro gave us a lovely present…
 
 473
 00:55:34,084 --> 00:55:35,940
 是一个用竹叶包着
-...wrapped in bamboo leaves and tied with dragon whiskers.
+…wrapped in bamboo leaves and tied with dragon whiskers.
 
 474
 00:55:35,940 --> 00:55:37,796
 然后外面再用　龙的胡须绑着的小包包
-...wrapped in bamboo leaves and tied with dragon whiskers.
+…wrapped in bamboo leaves and tied with dragon whiskers.
 
 475
 00:55:38,463 --> 00:55:40,965
@@ -2679,7 +2679,7 @@ Open it, it might be important.
 541
 01:04:39,170 --> 01:04:43,133
 发电处七国山医院
-PLEASE CONTACT, HOSPITAL...
+PLEASE CONTACT, HOSPITAL…
 
 542
 01:04:43,258 --> 01:04:44,968
@@ -2764,12 +2764,12 @@ Hello? Yes?
 558
 01:06:20,188 --> 01:06:22,690
 请问是考古学教室吗？
-Hello, may I speak to Dad... er... Mr. Kusakabe?
+Hello, may I speak to Dad… er… Mr. Kusakabe?
 
 559
 01:06:22,690 --> 01:06:25,193
 我爸爸…　麻烦请草壁先生听电话
-Hello, may I speak to Dad... er... Mr. Kusakabe?
+Hello, may I speak to Dad… er… Mr. Kusakabe?
 
 560
 01:06:25,944 --> 01:06:28,196
@@ -2942,7 +2942,7 @@ I hate you, Satsuki!
 594
 01:09:00,515 --> 01:09:03,768
 衣服该收收了
-We should bring the washing in...
+We should bring the washing in…
 
 595
 01:09:04,811 --> 01:09:07,091
@@ -2977,12 +2977,12 @@ Besides, it's just a cold; she'll be back next week.
 601
 01:09:31,546 --> 01:09:33,423
 之前也是这样
-They said it was just a cold...
+They said it was just a cold…
 
 602
 01:09:33,423 --> 01:09:35,300
 医生说只要住数天就会好了
-They said it was just a cold...
+They said it was just a cold…
 
 603
 01:09:36,301 --> 01:09:37,927
@@ -3002,7 +3002,7 @@ Don't be silly, Satsuki.
 606
 01:09:44,017 --> 01:09:46,269
 我妈妈要是死了那我们…
-Maybe Mom will...
+Maybe Mom will…
 
 607
 01:09:49,814 --> 01:09:53,505
@@ -3067,12 +3067,12 @@ That's strange. Where has she gone?
 619
 01:11:14,232 --> 01:11:15,963
 我刚刚跟小梅吵了一架
-I was nasty to her, 'cause she was being silly...
+I was nasty to her, 'cause she was being silly…
 
 620
 01:11:15,963 --> 01:11:17,694
 因为她…
-I was nasty to her, 'cause she was being silly...
+I was nasty to her, 'cause she was being silly…
 
 621
 01:11:18,028 --> 01:11:20,739
@@ -3132,12 +3132,12 @@ Have you seen a little girl pass by? She's my sister.
 632
 01:12:13,792 --> 01:12:16,461
 这个嘛…小女孩啊
-No, I don't think so. I'm sure I would've noticed...
+No, I don't think so. I'm sure I would've noticed…
 
 633
 01:12:16,461 --> 01:12:19,130
 没什么印象耶
-No, I don't think so. I'm sure I would've noticed...
+No, I don't think so. I'm sure I would've noticed…
 
 634
 01:12:20,131 --> 01:12:21,925
@@ -3202,12 +3202,12 @@ Did you see anyone?
 646
 01:13:33,496 --> 01:13:36,270
 我们两个　就是从那个方向来的
-No. We just came from there... but we didn't see anyone.
+No. We just came from there… but we didn't see anyone.
 
 647
 01:13:36,270 --> 01:13:39,044
 不过　好像没有看到那样的小孩耶
-No. We just came from there... but we didn't see anyone.
+No. We just came from there… but we didn't see anyone.
 
 648
 01:13:40,045 --> 01:13:41,838
@@ -3306,7 +3306,7 @@ Did you find her?
 667
 01:15:26,985 --> 01:15:31,489
 喃呒阿弥陀佛
-Dear Lord, please protect her and...
+Dear Lord, please protect her and…
 
 668
 01:15:31,614 --> 01:15:34,034
@@ -3396,17 +3396,17 @@ Please, help me Totoro!
 685
 01:17:10,380 --> 01:17:12,326
 我的妹妹走丢了
-Mei is lost. It'll be dark soon. I'm sure she's scared somewhere...
+Mei is lost. It'll be dark soon. I'm sure she's scared somewhere…
 
 686
 01:17:12,326 --> 01:17:14,272
 不久天就要黑了
-Mei is lost. It'll be dark soon. I'm sure she's scared somewhere...
+Mei is lost. It'll be dark soon. I'm sure she's scared somewhere…
 
 687
 01:17:14,272 --> 01:17:16,219
 她一定在哪里迷了路
-Mei is lost. It'll be dark soon. I'm sure she's scared somewhere...
+Mei is lost. It'll be dark soon. I'm sure she's scared somewhere…
 
 688
 01:17:47,083 --> 01:17:48,168
@@ -3441,7 +3441,7 @@ She must be scared, please help me find her.
 694
 01:18:01,389 --> 01:18:03,058
 我现在不知道该怎么办好
-I don't know what to do...
+I don't know what to do…
 
 695
 01:19:02,534 --> 01:19:04,160
