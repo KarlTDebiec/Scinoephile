@@ -149,12 +149,12 @@ I've thought long and hard about this, okay?
 
 31
 00:04:12,919 --> 00:04:14,353
-水系唔啱你，火系都唔啱　但系卡拉卡拉…
+水系唔啱你，火系都唔啱　但系卡拉卡拉⋯
 Water-type is not right for you.
 
 32
 00:04:14,353 --> 00:04:15,787
-水系唔啱你，火系都唔啱　但系卡拉卡拉…
+水系唔啱你，火系都唔啱　但系卡拉卡拉⋯
 Neither is Fire-type. But Cubone is--
 
 33
@@ -219,12 +219,12 @@ So make it wanna be your partner.
 
 45
 00:04:43,416 --> 00:04:45,133
-喂，卡拉卡拉，你好吗？　你知嘛…
+喂，卡拉卡拉，你好吗？　你知嘛⋯
 Hey, Cubone. What's up, buddy?
 
 46
 00:04:45,133 --> 00:04:46,851
-喂，卡拉卡拉，你好吗？　你知嘛…
+喂，卡拉卡拉，你好吗？　你知嘛⋯
 You know,
 
 47
@@ -344,12 +344,12 @@ Cubone!
 
 70
 00:05:58,324 --> 00:06:00,025
-即系咁，我都唔想太老套…
+即系咁，我都唔想太老套⋯
 So, um, I don't know if this is gonna sound
 
 71
 00:06:00,025 --> 00:06:01,726
-即系咁，我都唔想太老套…
+即系咁，我都唔想太老套⋯
 corny or whatever--
 
 72
@@ -613,12 +613,12 @@ Anybody? No?
 
 124
 00:08:41,354 --> 00:08:43,088
-于是霍华德克里佛　建设咗莱姆市…
+于是霍华德克里佛　建设咗莱姆市⋯
 <i>This is what inspired</i>
 
 125
 00:08:43,088 --> 00:08:44,822
-于是霍华德克里佛　建设咗莱姆市…
+于是霍华德克里佛　建设咗莱姆市⋯
 <i>Howard Clifford to build Ryme City,</i>
 
 126
@@ -628,7 +628,7 @@ Anybody? No?
 
 127
 00:08:49,779 --> 00:08:53,491
-其他地区嘅Pokémon　生活喺野外…
+其他地区嘅Pokémon　生活喺野外⋯
 <i>Unlike other regions, where Pokemon live in the wild,</i>
 
 128
@@ -722,7 +722,7 @@ His Pokemon.
 
 146
 00:11:02,579 --> 00:11:03,705
-我都唔知…
+我都唔知⋯
 Oh, I didn't…
 
 147
@@ -762,7 +762,7 @@ how come you don't have a Pokemon?
 
 154
 00:11:21,973 --> 00:11:24,392
-我记得哈利讲过…
+我记得哈利讲过⋯
 I thought I remember Harry saying
 
 155
@@ -787,7 +787,7 @@ I understand.
 
 159
 00:11:35,278 --> 00:11:36,488
-但系提姆…
+但系提姆⋯
 But, Tim,
 
 160
@@ -802,7 +802,7 @@ No one should go through this type of thing alone.
 
 162
 00:11:42,202 --> 00:11:44,454
-如果你同你爸爸有一丝相似…
+如果你同你爸爸有一丝相似⋯
 If you are anything like your dad--
 
 163
@@ -857,7 +857,7 @@ Tim.
 
 173
 00:12:13,692 --> 00:12:14,984
-呢份工…
+呢份工⋯
 This job,
 
 174
@@ -1016,7 +1016,7 @@ I'm working a source. Just one more minute.
 
 205
 00:14:49,514 --> 00:14:50,932
-好啦，我…
+好啦，我⋯
 Okay, I'm gonna…
 
 206
@@ -1191,7 +1191,7 @@ I'll always have a place for you to stay."
 
 241
 00:17:34,929 --> 00:17:36,014
-6号月台列车…
+6号月台列车⋯
 <i>The train on platform…</i>
 
 242
@@ -1260,7 +1260,7 @@ Ahh! That's a sprain.
 
 255
 00:19:13,820 --> 00:19:15,196
-唔理你系边个…
+唔理你系边个⋯
 Whoever you are,
 
 256
@@ -1570,7 +1570,7 @@ Look out! Run!
 
 317
 00:22:22,759 --> 00:22:26,429
-快啲走！佢哋…
+快啲走！佢哋⋯
 Go! Go! Go! Go! Go! They're… Go! They…
 
 318
@@ -1630,17 +1630,17 @@ It's me. It's that stuff that I put up my nose.
 
 329
 00:22:56,375 --> 00:22:57,876
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外…
+唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
 Not like that. No, it was a gas.
 
 330
 00:22:57,876 --> 00:22:59,377
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外…
+唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
 - I was breathing gas.    - Hey, hey, hey.
 
 331
 00:22:59,377 --> 00:23:00,878
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外…
+唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
 Accidentally. I was accidentally…
 
 332
@@ -2168,7 +2168,7 @@ We're gonna do this. You and me.
 
 437
 00:27:09,379 --> 00:27:10,547
-我唔敢相信…
+我唔敢相信⋯
 I can't belie…
 
 438
@@ -2333,12 +2333,12 @@ Oh, I might.
 
 470
 00:28:09,154 --> 00:28:10,888
-咪住，咁多Pokémon卡　仲有对战海报…
+咪住，咁多Pokémon卡　仲有对战海报⋯
 Hang on, hang on, hang on.
 
 471
 00:28:10,888 --> 00:28:12,622
-咪住，咁多Pokémon卡　仲有对战海报…
+咪住，咁多Pokémon卡　仲有对战海报⋯
 All these Pokemon cards and the battle posters…
 
 472
@@ -2563,12 +2563,12 @@ to send out hired goons to deliver the big hush-hush.
 
 516
 00:30:06,938 --> 00:30:08,439
-我哋要追溯哈利嘅步伐　然后自己破案…
+我哋要追溯哈利嘅步伐　然后自己破案⋯
 We need to retrace Harry's steps.
 
 517
 00:30:08,439 --> 00:30:09,940
-我哋要追溯哈利嘅步伐　然后自己破案…
+我哋要追溯哈利嘅步伐　然后自己破案⋯
 Either solve the case ourselves
 
 518
@@ -2598,12 +2598,12 @@ The answer is in this room.
 
 523
 00:30:19,918 --> 00:30:22,553
-呢间唔叫房，简直系火警高危区　周围都系垃圾废纸…
+呢间唔叫房，简直系火警高危区　周围都系垃圾废纸⋯
 This isn't a room. This is a fire hazard.
 
 524
 00:30:22,553 --> 00:30:25,189
-呢间唔叫房，简直系火警高危区　周围都系垃圾废纸…
+呢间唔叫房，简直系火警高危区　周围都系垃圾废纸⋯
 It's just junk and papers and…
 
 525
@@ -2667,12 +2667,12 @@ Uh, I was drinking that.
 
 537
 00:30:47,712 --> 00:30:49,096
-嗰杯都未饮…随便踩啦　只不过系我毕生成就
+嗰杯都未饮⋯随便踩啦　只不过系我毕生成就
 I was also drink… Just step anywhere.
 
 538
 00:30:49,096 --> 00:30:50,480
-嗰杯都未饮…随便踩啦　只不过系我毕生成就
+嗰杯都未饮⋯随便踩啦　只不过系我毕生成就
 It's only my life's work.
 
 539
@@ -2957,7 +2957,7 @@ He's cute.
 
 595
 00:33:04,025 --> 00:33:06,361
-佢想色诱我，但系唔使担心　我定力十足…
+佢想色诱我，但系唔使担心　我定力十足⋯
 She's trying to work me, kid. But, trust me, I can…
 
 596
@@ -2967,7 +2967,7 @@ Oh, sweet Mother of Arceus, that feels so good.
 
 597
 00:33:09,406 --> 00:33:11,408
-﹣即系咁…　　﹣舒服死我
+﹣即系咁⋯　　﹣舒服死我
 - So, listen…    - Oh, my God.
 
 598
@@ -2977,12 +2977,12 @@ What happened?
 
 599
 00:33:12,957 --> 00:33:14,858
-我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我…
+我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我⋯
 I found something in Harry's desk,
 
 600
 00:33:14,858 --> 00:33:16,760
-我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我…
+我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我⋯
 nearly choked me to death, and I was--
 
 601
@@ -3112,7 +3112,7 @@ That's not… That's not what I meant to say. Um…
 
 626
 00:34:20,352 --> 00:34:22,103
-﹣唔紧要　　﹣我都系…
+﹣唔紧要　　﹣我都系⋯
 - It's okay.    - I'm just gonna…
 
 627
@@ -3132,7 +3132,7 @@ Good God, have you ever talked to a woman before?
 
 630
 00:34:28,818 --> 00:34:30,862
-﹣你背嵴…　　﹣可达
+﹣你背嵴⋯　　﹣可达
 - You've got some…    - Psyduck.
 
 631
@@ -4025,7 +4025,7 @@ You just gotta use your powers.
 
 809
 00:41:35,120 --> 00:41:38,206
-你可以用电光一闪　放电或者电球…
+你可以用电光一闪　放电或者电球⋯
 You can use Quick Attack, Discharge, or Electro Ball,
 
 810
@@ -4060,7 +4060,7 @@ Begin!
 
 816
 00:41:49,676 --> 00:41:51,094
-﹣小心！　　﹣死喇…
+﹣小心！　　﹣死喇⋯
 - Look out!    - Whoa, whoa, whoa!
 
 817
@@ -4090,7 +4090,7 @@ Come on. You got it, you got it!
 
 822
 00:42:12,449 --> 00:42:13,950
-快啲啦…
+快啲啦⋯
 Come on, come on, come on.
 
 823
@@ -4130,7 +4130,7 @@ Pikachu, run!
 
 830
 00:42:33,928 --> 00:42:35,347
-死喇…
+死喇⋯
 Whoa, whoa, whoa!
 
 831
@@ -4350,7 +4350,7 @@ I'm not gonna say that.
 
 874
 00:45:57,882 --> 00:46:00,093
-探长，我…骨头深处都感觉到
+探长，我⋯骨头深处都感觉到
 I can feel it, Lieutenant, in my bones.
 
 875
@@ -4395,7 +4395,7 @@ He's… He's out there.
 
 883
 00:46:24,993 --> 00:46:27,162
-我一直唔想畀你睇…
+我一直唔想畀你睇⋯
 I never wanted to show you this,
 
 884
@@ -4505,7 +4505,7 @@ And now it's too late.
 
 905
 00:48:14,936 --> 00:48:16,187
-我真系…
+我真系⋯
 I really…
 
 906
@@ -4520,7 +4520,7 @@ Listen, kid.
 
 908
 00:48:32,829 --> 00:48:34,956
-我可能失咗忆…
+我可能失咗忆⋯
 Look, I may not have memories,
 
 909
@@ -4540,7 +4540,7 @@ It wasn't anybody's fault.
 
 912
 00:48:48,887 --> 00:48:51,389
-我肯定，如果你爸爸喺度…
+我肯定，如果你爸爸喺度⋯
 And I'm sure that if your dad was here,
 
 913
@@ -4580,7 +4580,7 @@ No, you really haven't.
 
 920
 00:49:18,541 --> 00:49:19,626
-咁…
+咁⋯
 Well…
 
 921
@@ -4655,7 +4655,7 @@ Whoa. A Flareon.
 
 935
 00:50:27,444 --> 00:50:30,238
-试想像，如果你可以进化…
+试想像，如果你可以进化⋯
 Imagine being able to evolve
 
 936
@@ -4700,7 +4700,7 @@ You knew Harry?
 
 944
 00:50:52,177 --> 00:50:54,387
-哈利查嗰单案…
+哈利查嗰单案⋯
 The case Harry was working on,
 
 945
@@ -4770,7 +4770,7 @@ Roger resents the Pokemon.
 
 958
 00:51:33,635 --> 00:51:36,680
-我谂佢活喺我阴影下太耐…
+我谂佢活喺我阴影下太耐⋯
 I think he's lived in my shadow for so long,
 
 959
@@ -4795,7 +4795,7 @@ But, Mr. Clifford, how could you let him do that?
 
 963
 00:51:45,355 --> 00:51:48,066
-自从我因病要坐轮椅…
+自从我因病要坐轮椅⋯
 Ever since my illness put me in this chair,
 
 964
@@ -4845,7 +4845,7 @@ Oh, no, Tim.
 
 973
 00:52:10,171 --> 00:52:11,548
-你爸爸…
+你爸爸⋯
 Your father
 
 974
@@ -4865,7 +4865,7 @@ Advanced holographic imaging.
 
 977
 00:52:24,936 --> 00:52:27,147
-自从我要依靠轮椅…
+自从我要依靠轮椅⋯
 Since being confined to this chair,
 
 978
@@ -4880,7 +4880,7 @@ This was recreated from police footage.
 
 980
 00:52:34,821 --> 00:52:37,407
-可以睇到佢哋睇唔到…
+可以睇到佢哋睇唔到⋯
 It allows us to see things that they cannot
 
 981
@@ -4945,7 +4945,7 @@ I can't believe it.
 
 993
 00:53:13,068 --> 00:53:15,111
-如果佢喺嚟自梦幻…
+如果佢喺嚟自梦幻⋯
 If that thing came from Mew,
 
 994
@@ -5025,7 +5025,7 @@ You gotta tell me where. You're the detective.
 
 1009
 00:54:07,997 --> 00:54:10,917
-好，如果核心人物　系罗杰克里佛…
+好，如果核心人物　系罗杰克里佛⋯
 Okay. If Roger Clifford is the key to all of this…
 
 1010
@@ -5100,7 +5100,7 @@ Look at this.
 
 1024
 00:54:51,374 --> 00:54:52,500
-唔好意思…
+唔好意思⋯
 - Ow!    - Sorry. I'm sorry.
 
 1025
@@ -5160,12 +5160,12 @@ I targeted the property rights in the region
 
 1036
 00:55:07,237 --> 00:55:09,421
-然后比对市政局记录　佢家族资助嘅公司，终于搵到…
+然后比对市政局记录　佢家族资助嘅公司，终于搵到⋯
 and I cross-checked that with city records
 
 1037
 00:55:09,421 --> 00:55:11,606
-然后比对市政局记录　佢家族资助嘅公司，终于搵到…
+然后比对市政局记录　佢家族资助嘅公司，终于搵到⋯
 for any Clifford-financed businesses until I found it.
 
 1038
@@ -5330,7 +5330,7 @@ What?
 
 1070
 00:56:34,686 --> 00:56:37,022
-没嘢，我只系好奇…佢系边个
+没嘢，我只系好奇⋯佢系边个
 Nothing.
 
 1071
@@ -5788,12 +5788,12 @@ The neural link is operational.
 
 1162
 01:02:17,987 --> 01:02:19,489
-大件事…
+大件事⋯
 No. No, no, no!
 
 1163
 01:02:19,781 --> 01:02:21,408
-密闭室能源不足…
+密闭室能源不足⋯
 We're losing power in the containment…
 
 1164
@@ -5828,12 +5828,12 @@ Day 1. The lab is almostfully operational.
 
 1170
 01:02:52,402 --> 01:02:54,887
-而家我哋只需要捕捉　人类史上最强嘅Pokémon…
+而家我哋只需要捕捉　人类史上最强嘅Pokémon⋯
 All that remains now is to capture
 
 1171
 01:02:54,887 --> 01:02:57,372
-而家我哋只需要捕捉　人类史上最强嘅Pokémon…
+而家我哋只需要捕捉　人类史上最强嘅Pokémon⋯
 the most powerful Pokemon known to mankind:
 
 1172
@@ -5908,7 +5908,7 @@ We gotta get back to the city.
 
 1186
 01:03:31,227 --> 01:03:34,147
-露丝，露丝，我哋要快啲返去…
+露丝，露丝，我哋要快啲返去⋯
 Lucy. Lucy, we gotta get back to…
 
 1187
@@ -6223,12 +6223,12 @@ That's a great fifth option. Let's work on the first four.
 
 1249
 01:07:56,772 --> 01:07:58,373
-我哋大把选择　但系跌死咗就…
+我哋大把选择　但系跌死咗就⋯
 We have a lot of choices.
 
 1250
 01:07:58,373 --> 01:07:59,974
-我哋大把选择　但系跌死咗就…
+我哋大把选择　但系跌死咗就⋯
 Falling to our death is not one of…
 
 1251
@@ -6248,12 +6248,12 @@ Come on!
 
 1254
 01:08:15,720 --> 01:08:18,723
-我以为…我以为我…
+我以为⋯我以为我⋯
 I thought I was gonna… I thought I was gonna…
 
 1255
 01:08:18,890 --> 01:08:21,184
-我…我…
+我⋯我⋯
 I… I…
 
 1256
@@ -6318,7 +6318,7 @@ Yeah, of course. You're my partner.
 
 1268
 01:09:41,264 --> 01:09:43,475
-没错，你…
+没错，你⋯
 Yeah, that's right. You've, er…
 
 1269
@@ -6328,12 +6328,12 @@ You've got my back.
 
 1270
 01:09:47,312 --> 01:09:48,813
-喂…老友
+喂⋯老友
 Hey, hey, hey. Bud.
 
 1271
 01:09:49,356 --> 01:09:52,984
-喂…Pikachu！
+喂⋯Pikachu！
 Hey! Hey, Pikachu!
 
 1272
@@ -6528,7 +6528,7 @@ Humanity is evil.
 
 1310
 01:14:47,404 --> 01:14:49,656
-我一直相信Pokémon…
+我一直相信Pokémon⋯
 I've always believed Pokemon are…
 
 1311
@@ -6593,7 +6593,7 @@ We don't know that.
 
 1323
 01:15:51,259 --> 01:15:55,513
-大家有眼见　我背叛咗你老窦，即系…
+大家有眼见　我背叛咗你老窦，即系⋯
 We both saw it. I betrayed your father. Which means
 
 1324
@@ -6613,7 +6613,7 @@ You wouldn't do that. I don't care what I saw.
 
 1327
 01:16:01,853 --> 01:16:02,979
-因为我…
+因为我⋯
 Because, I…
 
 1328
@@ -6803,7 +6803,7 @@ when the guy who runs the news is the breaking news?
 
 1365
 01:17:32,652 --> 01:17:36,781
-预备，仙妮亚，5、4、3…
+预备，仙妮亚，5、4、3⋯
 Okay, Cynthia. We're live in five, four, three…
 
 1366
@@ -6832,7 +6832,7 @@ Mrs. McMaster. Hi, it's Lucy Stevens,
 
 1371
 01:17:58,261 --> 01:17:59,554
-﹣CNM嗰个　　﹣可唔可以…
+﹣CNM嗰个　　﹣可唔可以⋯
 - At CNM?    - Could you…
 
 1372
@@ -6847,12 +6847,12 @@ that's really important that the people need to hear.
 
 1374
 01:18:03,145 --> 01:18:04,762
-希望妳可以报导，我要…
+希望妳可以报导，我要⋯
 And I was really hoping you could help me tell it.
 
 1375
 01:18:04,762 --> 01:18:06,380
-希望妳可以报导，我要…
+希望妳可以报导，我要⋯
 I just need--
 
 1376
@@ -6877,37 +6877,37 @@ You got it, Cynthia.
 
 1380
 01:18:19,532 --> 01:18:22,327
-「…教Pokémon清楚…」
+「⋯教Pokémon清楚⋯」
 <i>♪Teach Pokemon to understand♪</i>
 
 1381
 01:18:22,494 --> 01:18:25,497
-「…内里的力量…」
+「⋯内里的力量⋯」
 <i>♪The power that's inside♪</i>
 
 1382
 01:18:25,705 --> 01:18:26,831
-「…Pokémon！」
+「⋯Pokémon！」
 <i>♪Pokemon!♪</i>
 
 1383
 01:18:26,998 --> 01:18:29,292
-「…将他们收服！」
+「⋯将他们收服！」
 <i>♪Gotta catch 'em all♪</i>
 
 1384
 01:18:29,501 --> 01:18:31,127
-「…是你和我…」
+「⋯是你和我⋯」
 <i>♪It's you and me♪</i>
 
 1385
 01:18:31,378 --> 01:18:33,838
-「…我知道这是我们的命运！」
+「⋯我知道这是我们的命运！」
 <i>♪I know it's my destiny♪</i>
 
 1386
 01:18:34,005 --> 01:18:35,090
-「…Pokémon！」
+「⋯Pokémon！」
 <i>♪Pokemon!♪</i>
 
 1387
@@ -6927,7 +6927,7 @@ This is the scene of the crash.
 
 1390
 01:18:55,151 --> 01:18:56,569
-嗰啲系…？
+嗰啲系⋯？
 What is that?
 
 1391
@@ -6947,7 +6947,7 @@ to cause the crash. Which…
 
 1394
 01:19:08,957 --> 01:19:10,417
-咁即系…
+咁即系⋯
 Which means…
 
 1395
@@ -6962,7 +6962,7 @@ Mewtwo was trying to protect us?
 
 1397
 01:19:18,258 --> 01:19:20,927
-可以睇到佢哋睇唔到…
+可以睇到佢哋睇唔到⋯
 It allows us to see things that they cannot
 
 1398
@@ -6977,7 +6977,7 @@ Wait, Howard would have seen this in his hologram.
 
 1400
 01:19:26,349 --> 01:19:28,226
-弊啦…
+弊啦⋯
 Oh, no. No, no, no, no.
 
 1401
@@ -6987,7 +6987,7 @@ Tim!
 
 1402
 01:19:30,395 --> 01:19:32,939
-霍华德！克里佛先生！你个仔…
+霍华德！克里佛先生！你个仔⋯
 Howard! Mr. Clifford! Your son,
 
 1403
@@ -6997,7 +6997,7 @@ he has Mewtwo here.
 
 1404
 01:19:35,900 --> 01:19:37,569
-﹣等阵，点解你…　　﹣提姆
+﹣等阵，点解你⋯　　﹣提姆
 - Wait, why do you…    - Tim.
 
 1405
@@ -7107,7 +7107,7 @@ we are more than happy with the turnout today.
 
 1426
 01:20:53,853 --> 01:20:55,230
-好多人一家大细…
+好多人一家大细⋯
 So many families…
 
 1427
@@ -7177,17 +7177,17 @@ I have found a path forward for all of us.
 
 1440
 01:21:22,077 --> 01:21:23,689
-超梦有能力将人类灵魂　注入Pokémon体内…
+超梦有能力将人类灵魂　注入Pokémon体内⋯
 Mewtwo has the power
 
 1441
 01:21:23,689 --> 01:21:25,301
-超梦有能力将人类灵魂　注入Pokémon体内…
+超梦有能力将人类灵魂　注入Pokémon体内⋯
 to transfer the soul of a human
 
 1442
 01:21:25,301 --> 01:21:26,914
-超梦有能力将人类灵魂　注入Pokémon体内…
+超梦有能力将人类灵魂　注入Pokémon体内⋯
 into the body of a Pokemon,
 
 1443
@@ -7217,7 +7217,7 @@ I've finally discovered a cure.
 
 1448
 01:21:53,121 --> 01:21:55,081
-唔单只可以医好我…
+唔单只可以医好我⋯
 Not just for me,
 
 1449
@@ -7257,7 +7257,7 @@ This is Yoshida requesting backup!
 
 1456
 01:22:35,205 --> 01:22:37,165
-所有单位前往…
+所有单位前往⋯
 All units should proceed to the…
 
 1457
@@ -7272,7 +7272,7 @@ Don't let your Pokemon breathe the gas!
 
 1459
 01:22:52,347 --> 01:22:53,598
-唔好畀Pokémon…
+唔好畀Pokémon⋯
 Don't let your Pokemon…
 
 1460
@@ -7287,12 +7287,12 @@ Tell them!
 
 1462
 01:23:00,275 --> 01:23:01,992
-露丝史提芬报告，全市进入紧急状态　千祈唔好畀Pokémon吸入…
+露丝史提芬报告，全市进入紧急状态　千祈唔好畀Pokémon吸入⋯
 This is Lucy Stevens reporting a citywide emergency.
 
 1463
 01:23:01,992 --> 01:23:03,710
-露丝史提芬报告，全市进入紧急状态　千祈唔好畀Pokémon吸入…
+露丝史提芬报告，全市进入紧急状态　千祈唔好畀Pokémon吸入⋯
 Do not let your Pokemon breathe…
 
 1464
@@ -7312,7 +7312,7 @@ Psyduck?
 
 1467
 01:23:22,711 --> 01:23:25,964
-睇嚟系…　有史以来最差嘅巡游
+睇嚟系⋯　有史以来最差嘅巡游
 Okay. Worst parade I've ever seen.
 
 1468
@@ -7532,7 +7532,7 @@ Psyduck. Ditto.
 
 1511
 01:28:44,157 --> 01:28:46,076
-百变怪…
+百变怪⋯
 Psyduck. Ditto.
 
 1512
@@ -7602,7 +7602,7 @@ just when you needed me the most.
 
 1525
 01:29:53,018 --> 01:29:55,145
-我好高兴你返咗嚟…
+我好高兴你返咗嚟⋯
 I'm just happy you're back…
 
 1526
@@ -7627,12 +7627,12 @@ Let's never do that again, okay?
 
 1530
 01:30:55,914 --> 01:30:59,292
-最奇怪嘅系　无论佢有几多缺点…
+最奇怪嘅系　无论佢有几多缺点⋯
 The strange thing is that, no matter what his flaws,
 
 1531
 01:30:59,459 --> 01:31:01,044
-到头来…
+到头来⋯
 deep down,
 
 1532
@@ -7672,17 +7672,17 @@ for CNM tonight, primetime.
 
 1539
 01:31:16,976 --> 01:31:18,603
-记住最后要讲…
+记住最后要讲⋯
 And make sure you close with:
 
 1540
 01:31:18,640 --> 01:31:20,908
-「罗杰克里佛承诺弥补　佢父亲做成嘅祸害…」
+「罗杰克里佛承诺弥补　佢父亲做成嘅祸害⋯」
 "Roger Clifford pledges to undo
 
 1541
 01:31:20,908 --> 01:31:23,176
-「罗杰克里佛承诺弥补　佢父亲做成嘅祸害…」
+「罗杰克里佛承诺弥补　佢父亲做成嘅祸害⋯」
 all the harm his father caused
 
 1542
@@ -7717,7 +7717,7 @@ Oh, I hope we never
 
 1548
 01:31:39,791 --> 01:31:42,877
-﹣今晚夜啲见？　　﹣掂，我系指…好呀
+﹣今晚夜啲见？　　﹣掂，我系指⋯好呀
 - Meet me later tonight?    - Cool. I mean, yeah.
 
 1549
@@ -7762,7 +7762,7 @@ What's he talking about?
 
 1557
 01:32:12,824 --> 01:32:14,034
-我唔…
+我唔⋯
 I don't…
 
 1558

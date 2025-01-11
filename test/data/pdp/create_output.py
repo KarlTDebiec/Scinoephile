@@ -55,9 +55,7 @@ if __name__ == "__main__":
     en_hk_clean_flatten.save(get_output_path("pdp/output/en-HK_clean_flatten.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
-    en_hk_clean_flatten = get_english_flattened(en_hk_clean)
-    yue_hant_flatten_simplify = get_hanzi_flattened(yue_hant_hk_simplify)
     yue_hans_hk_en_hk = get_synced_series(
-        yue_hant_flatten_simplify, en_hk_clean_flatten
+        yue_hant_hk_clean_flatten_simplify, en_hk_clean_flatten
     )
     yue_hans_hk_en_hk.save(get_output_path("pdp/output/yue-Hans-HK_en-HK.srt"))

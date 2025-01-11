@@ -15,22 +15,26 @@ from scinoephile.core.hanzi import (
 )
 from ..data.kob import (
     kob_yue_hans_hk,
+    kob_yue_hans_hk_clean,
     kob_yue_hans_hk_flatten,
     kob_yue_hant_hk,
     kob_yue_hant_hk_simplify,
 )
 from ..data.mnt import (
     mnt_cmn_hant_hk,
+    mnt_cmn_hant_hk_clean,
     mnt_cmn_hant_hk_flatten,
     mnt_cmn_hant_hk_simplify,
 )
 from ..data.pdp import (
     pdp_yue_hant_hk,
+    pdp_yue_hant_hk_clean,
     pdp_yue_hant_hk_flatten,
     pdp_yue_hant_hk_simplify,
 )
 from ..data.t import (
     t_cmn_hans_hk,
+    t_cmn_hans_hk_clean,
     t_cmn_hans_hk_flatten,
     t_cmn_hant_hk,
     t_cmn_hant_hk_simplify,
@@ -84,12 +88,20 @@ def _test_get_hanzi_simplified(series: Series, expected: Series = None):
 
 
 # get_hanzi_cleaned
+def test_get_hanzi_cleaned_kob(kob_yue_hans_hk: Series, kob_yue_hans_hk_clean: Series):
+    _test_get_hanzi_cleaned(kob_yue_hans_hk, kob_yue_hans_hk_clean)
+
+
 def test_get_hanzi_cleaned_mnt(mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_clean: Series):
     _test_get_hanzi_cleaned(mnt_cmn_hant_hk, mnt_cmn_hant_hk_clean)
 
 
 def test_get_hanzi_cleaned_pdp(pdp_yue_hant_hk: Series, pdp_yue_hant_hk_clean: Series):
     _test_get_hanzi_cleaned(pdp_yue_hant_hk, pdp_yue_hant_hk_clean)
+
+
+def test_get_hanzi_cleaned_t(t_cmn_hans_hk: Series, t_cmn_hans_hk_clean: Series):
+    _test_get_hanzi_cleaned(t_cmn_hans_hk, t_cmn_hans_hk_clean)
 
 
 # get_hanzi_flattened

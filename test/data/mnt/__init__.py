@@ -1188,8 +1188,10 @@ mnt_test_cases = [
 
 ___all__ = [
     "mnt_cmn_hant_hk",
+    "mnt_cmn_hant_hk_clean",
     "mnt_cmn_hant_hk_flatten",
     "mnt_cmn_hant_hk_simplify",
+    "mnt_cmn_hant_hk_clean_flatten_simplify",
     "mnt_en_us",
     "mnt_en_us_clean",
     "mnt_en_us_flatten",

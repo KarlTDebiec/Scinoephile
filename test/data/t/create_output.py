@@ -27,6 +27,10 @@ if __name__ == "__main__":
     cmn_hans_hk_clean.save(get_output_path("t/output/cmn-Hans-HK_clean.srt"))
     cmn_hans_hk_flatten = get_hanzi_flattened(cmn_hans_hk)
     cmn_hans_hk_flatten.save(get_output_path("t/output/cmn-Hans-HK_flatten.srt"))
+    cmn_hans_hk_clean_flatten = get_hanzi_flattened(cmn_hans_hk_clean)
+    cmn_hans_hk_clean_flatten.save(
+        get_output_path("t/output/cmn-Hans-HK_clean_flatten.srt")
+    )
 
     # Traditional Standard Chinese
     cmn_hant_hk = Series.load(get_test_file_path("t/input/cmn-Hant-HK.srt"))

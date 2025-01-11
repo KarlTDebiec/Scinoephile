@@ -29,7 +29,7 @@ if __name__ == "__main__":
     cmn_hant_hk_flatten.save(get_output_path("mnt/output/cmn-Hant-HK_flatten.srt"))
     cmn_hant_hk_simplify = get_hanzi_simplified(cmn_hant_hk)
     cmn_hant_hk_simplify.save(get_output_path("mnt/output/cmn-Hant-HK_simplify.srt"))
-    cmn_hant_hk_clean_flatten_simplify = get_hanzi_flattened(
+    cmn_hant_hk_clean_flatten_simplify = get_hanzi_simplified(
         get_hanzi_flattened(cmn_hant_hk_clean)
     )
     cmn_hant_hk_clean_flatten_simplify.save(

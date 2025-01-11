@@ -16,6 +16,16 @@ def t_cmn_hans_hk() -> Series:
 
 
 @pytest.fixture
+def t_cmn_hans_hk_clean() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_clean.srt"))
+
+
+@pytest.fixture
+def t_cmn_hans_hk_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_clean_flatten.srt"))
+
+
+@pytest.fixture
 def t_cmn_hans_hk_flatten() -> Series:
     return Series.load(get_test_file_path("t/output/cmn-Hans-HK_flatten.srt"))
 
@@ -55,6 +65,7 @@ def t_cmn_hans_hk_en_hk() -> Series:
 
 ___all__ = [
     "t_cmn_hans_hk",
+    "t_cmn_hans_hk_clean",
     "t_cmn_hans_hk_flatten",
     "t_cmn_hant_hk",
     "t_cmn_hant_hk_simplify",
