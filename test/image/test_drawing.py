@@ -18,7 +18,7 @@ from ..data.mlamd import (
 
 
 def _test_get_image_of_text(series: ImageSeries):
-    series.events[0].image_diff_stack.show()
+    series.events[0].image_stack.show()
 
 
 # diff
