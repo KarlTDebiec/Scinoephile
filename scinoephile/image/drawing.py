@@ -11,7 +11,13 @@ from matplotlib.patheffects import Normal, Stroke
 
 
 def get_grayscale_image_on_white(image: Image.Image) -> Image.Image:
-    """Get grayscale image on white background"""
+    """Get grayscale image on white background.
+
+    Arguments:
+        image: Image
+    Returns:
+        Grayscale image on white background
+    """
     image_l = Image.new("LA", image.size, (255, 255))
     image_l.paste(image, (0, 0), image)
     image_l = image_l.convert("L")
@@ -123,6 +129,34 @@ def get_non_white_bbox(image: Image.Image) -> tuple[int, int, int, int]:
     return bbox
 
 
+def get_stacked_image_diff(
+    reference: Image.Image, test: Image.Image, diff: Image.Image | None = None
+) -> Image.Image:
+    """Get image of text.
+
+    Arguments:
+        reference: Reference image
+        test: Test image
+        diff: Difference between reference and teset
+    Returns:
+        Image of text
+    """
+    if reference.size != test.size:
+        raise ValueError("Images must be the same size")
+
+    reference_l = get_grayscale_image_on_white(reference)
+    test_l = get_stretched_image(reference_l, test)
+
+    diff = get_image_diff(reference_l, test_l)
+
+    stack = Image.new("RGB", (reference.width, reference.height * 3))
+    stack.paste(reference_l, (0, 0))
+    stack.paste(test_l, (0, reference.height))
+    stack.paste(diff, (0, reference.height * 2))
+
+    return stack
+
+
 def get_stretched_image(reference: Image.Image, test: Image.Image) -> Image.Image:
     """Get image with non-white/transparent contents streched to size of reference.
 
@@ -151,31 +185,3 @@ def get_stretched_image(reference: Image.Image, test: Image.Image) -> Image.Imag
     test_l = test_updated.convert("L")
 
     return test_l
-
-
-def get_stacked_image_diff(
-    reference: Image.Image, test: Image.Image, diff: Image.Image | None = None
-) -> Image.Image:
-    """Get image of text.
-
-    Arguments:
-        reference: Reference image
-        test: Test image
-        diff: Difference between reference and teset
-    Returns:
-        Image of text
-    """
-    if reference.size != test.size:
-        raise ValueError("Images must be the same size")
-
-    reference_l = get_grayscale_image_on_white(reference)
-    test_l = get_stretched_image(reference_l, test)
-
-    diff = get_image_diff(reference_l, test_l)
-
-    stack = Image.new("RGB", (reference.width, reference.height * 3))
-    stack.paste(reference_l, (0, 0))
-    stack.paste(test_l, (0, reference.height))
-    stack.paste(diff, (0, reference.height * 2))
-
-    return stack
