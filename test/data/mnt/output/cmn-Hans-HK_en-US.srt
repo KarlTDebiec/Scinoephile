@@ -704,7 +704,7 @@ Okay then, I won't walk you to the bathroom at night.
 
 143
 00:15:34,684 --> 00:15:37,186
-来来…快来打扫吧
+来来⋯快来打扫吧
 Okay, cleaning time. Could you get some water from the stream?
 
 144
@@ -1845,7 +1845,7 @@ Yes, Satsuki?
 
 373
 00:42:36,222 --> 00:42:37,974
-我妹妹…
+我妹妹⋯
 It's my sister…
 
 374
@@ -1860,7 +1860,7 @@ I'm sorry. She insisted that she be with you.
 
 376
 00:42:49,339 --> 00:42:51,696
-她一直吵着　要到姊姊那边去所以…
+她一直吵着　要到姊姊那边去所以⋯
 I'm sorry. She insisted that she be with you.
 
 377
@@ -1997,7 +1997,7 @@ Dear Guardian Spirit, let us stay until the rain stops.
 
 404
 00:45:36,027 --> 00:45:37,237
-可是…
+可是⋯
 But…
 
 405
@@ -2082,7 +2082,7 @@ Kanta lent us this umbrella.
 
 421
 00:47:02,447 --> 00:47:04,470
-这孩子…
+这孩子⋯
 He did? A broken old thing like that!
 
 422
@@ -2768,7 +2768,7 @@ Hello, may I speak to Dad… er… Mr. Kusakabe?
 
 559
 01:06:22,690 --> 01:06:25,193
-我爸爸…　麻烦请草壁先生听电话
+我爸爸⋯　麻烦请草壁先生听电话
 Hello, may I speak to Dad… er… Mr. Kusakabe?
 
 560
@@ -3001,7 +3001,7 @@ Don't be silly, Satsuki.
 
 606
 01:09:44,017 --> 01:09:46,269
-我妈妈要是死了那我们…
+我妈妈要是死了那我们⋯
 Maybe Mom will…
 
 607
@@ -3071,7 +3071,7 @@ I was nasty to her, 'cause she was being silly…
 
 620
 01:11:15,963 --> 01:11:17,694
-因为她…
+因为她⋯
 I was nasty to her, 'cause she was being silly…
 
 621
@@ -3116,7 +3116,7 @@ Mei!
 
 629
 01:12:05,200 --> 01:12:07,243
-打搅了，伯伯，请问…
+打搅了，伯伯，请问⋯
 Excuse me.
 
 630
@@ -3131,7 +3131,7 @@ Have you seen a little girl pass by? She's my sister.
 
 632
 01:12:13,792 --> 01:12:16,461
-这个嘛…小女孩啊
+这个嘛⋯小女孩啊
 No, I don't think so. I'm sure I would've noticed…
 
 633

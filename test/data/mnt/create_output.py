@@ -46,9 +46,7 @@ if __name__ == "__main__":
     en_us_clean_flatten.save(get_output_path("mnt/output/en-US_clean_flatten.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
-    en_us_clean_flatten = get_english_flattened(en_us_clean)
-    cmn_hant_flatten_simplify = get_hanzi_flattened(cmn_hant_hk_simplify)
     cmn_hans_hk_en_us = get_synced_series(
-        cmn_hant_flatten_simplify, en_us_clean_flatten
+        cmn_hant_hk_clean_flatten_simplify, en_us_clean_flatten
     )
     cmn_hans_hk_en_us.save(get_output_path("mnt/output/cmn-Hans-HK_en-US.srt"))
