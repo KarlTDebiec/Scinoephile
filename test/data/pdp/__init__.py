@@ -2685,7 +2685,7 @@ pdp_test_cases = [
 
 __all__ = [
     "pdp_cmn_hant_hk",
-    "pdp_yue_hant_hk_clean",
+    "pdp_cmn_hant_hk_clean",
     "pdp_cmn_hant_hk_flatten",
     "pdp_cmn_hant_hk_simplify",
     "pdp_yue_hant_hk",

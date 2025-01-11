@@ -66,6 +66,7 @@ def t_cmn_hans_hk_en_hk() -> Series:
 ___all__ = [
     "t_cmn_hans_hk",
     "t_cmn_hans_hk_clean",
+    "t_cmn_hans_hk_clean_flatten",
     "t_cmn_hans_hk_flatten",
     "t_cmn_hant_hk",
     "t_cmn_hant_hk_simplify",
