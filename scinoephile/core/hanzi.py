@@ -61,6 +61,20 @@ def get_hanzi_simplified(series: Series) -> Series:
     return series
 
 
+def get_hanzi_traditionalized(series: Series) -> Series:
+    """Get simplified hanzi series traditionalized.
+
+    Arguments:
+        series: series to traditionalize
+    Returns:
+        traditionalized series
+    """
+    series = deepcopy(series)
+    for event in series:
+        event.text = _get_hanzi_text_tradionalized(event.text)
+    return series
+
+
 def _get_hanzi_text_cleaned(text: str) -> str | None:
     """Get hanzi text cleaned.
 
@@ -137,3 +151,22 @@ def _get_hanzi_text_simplified(text: str) -> str:
             simplified += char
 
     return simplified
+
+
+def _get_hanzi_text_tradionalized(text: str) -> str:
+    """Get simplified hanzi text traditionalized.
+
+    Arguments:
+        text: text to traditionalize
+    Returns:
+        traditionalized text
+    """
+    traditionalized = ""
+
+    for char in text:
+        if re_hanzi.match(char) or re_hanzi_rare.match(char):
+            traditionalized += HanziConv.toTraditional(char)
+        else:
+            traditionalized += char
+
+    return traditionalized
