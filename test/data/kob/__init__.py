@@ -16,6 +16,11 @@ def kob_yue_hans_hk() -> Series:
 
 
 @pytest.fixture
+def kob_yue_hans_hk_clean() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_clean.srt"))
+
+
+@pytest.fixture
 def kob_yue_hans_hk_flatten() -> Series:
     return Series.load(get_test_file_path("kob/output/yue-Hans-HK_flatten.srt"))
 
