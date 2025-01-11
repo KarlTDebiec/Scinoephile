@@ -9,31 +9,51 @@ from scinoephile.core import Series
 from scinoephile.core.hanzi import (
     _get_hanzi_text_flattened,  # noqa
     _get_hanzi_text_simplified,  # noqa
+    get_hanzi_cleaned,
     get_hanzi_flattened,
     get_hanzi_simplified,
 )
 from ..data.kob import (
     kob_yue_hans_hk,
+    kob_yue_hans_hk_clean,
     kob_yue_hans_hk_flatten,
     kob_yue_hant_hk,
     kob_yue_hant_hk_simplify,
 )
 from ..data.mnt import (
     mnt_cmn_hant_hk,
+    mnt_cmn_hant_hk_clean,
     mnt_cmn_hant_hk_flatten,
     mnt_cmn_hant_hk_simplify,
 )
 from ..data.pdp import (
     pdp_yue_hant_hk,
+    pdp_yue_hant_hk_clean,
     pdp_yue_hant_hk_flatten,
     pdp_yue_hant_hk_simplify,
 )
 from ..data.t import (
     t_cmn_hans_hk,
+    t_cmn_hans_hk_clean,
     t_cmn_hans_hk_flatten,
     t_cmn_hant_hk,
     t_cmn_hant_hk_simplify,
 )
+
+
+# region Implementations
+def _test_get_hanzi_cleaned(series: Series, expected: Series):
+    output = get_hanzi_cleaned(series)
+
+    errors = []
+    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+        if event != expected_event:
+            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
+
+    if errors:
+        for error in errors:
+            print(error)
+        pytest.fail(f"Found {len(errors)} discrepancies")
 
 
 def _test_get_hanzi_flattened(series: Series, expected: Series):
@@ -68,7 +88,30 @@ def _test_get_hanzi_simplified(series: Series, expected: Series = None):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-# get_hanzi_flattened
+# endregion
+
+
+# region get_hanzi_cleaned
+def test_get_hanzi_cleaned_kob(kob_yue_hans_hk: Series, kob_yue_hans_hk_clean: Series):
+    _test_get_hanzi_cleaned(kob_yue_hans_hk, kob_yue_hans_hk_clean)
+
+
+def test_get_hanzi_cleaned_mnt(mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_clean: Series):
+    _test_get_hanzi_cleaned(mnt_cmn_hant_hk, mnt_cmn_hant_hk_clean)
+
+
+def test_get_hanzi_cleaned_pdp(pdp_yue_hant_hk: Series, pdp_yue_hant_hk_clean: Series):
+    _test_get_hanzi_cleaned(pdp_yue_hant_hk, pdp_yue_hant_hk_clean)
+
+
+def test_get_hanzi_cleaned_t(t_cmn_hans_hk: Series, t_cmn_hans_hk_clean: Series):
+    _test_get_hanzi_cleaned(t_cmn_hans_hk, t_cmn_hans_hk_clean)
+
+
+# endregion
+
+
+# region get_hanzi_flattened
 def test_get_hanzi_flattened_kob(
     kob_yue_hans_hk: Series, kob_yue_hans_hk_flatten: Series
 ):
@@ -91,7 +134,10 @@ def test_get_hanzi_flattened_t(t_cmn_hans_hk: Series, t_cmn_hans_hk_flatten: Ser
     _test_get_hanzi_flattened(t_cmn_hans_hk, t_cmn_hans_hk_flatten)
 
 
-# get_hanzi_simplified
+# endregion
+
+
+# region get_hanzi_simplified
 def test_get_hanzi_simplified_kob(
     kob_yue_hant_hk: Series, kob_yue_hant_hk_simplify: Series
 ):
@@ -112,6 +158,9 @@ def test_get_hanzi_simplified_pdp(
 
 def test_get_hanzi_simplified_t(t_cmn_hant_hk: Series, t_cmn_hant_hk_simplify: Series):
     _test_get_hanzi_simplified(t_cmn_hant_hk, t_cmn_hant_hk_simplify)
+
+
+# endregion
 
 
 @pytest.mark.parametrize(

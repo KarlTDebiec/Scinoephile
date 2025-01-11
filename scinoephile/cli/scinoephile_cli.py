@@ -15,7 +15,11 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
-from scinoephile.core.hanzi import get_hanzi_flattened, get_hanzi_simplified
+from scinoephile.core.hanzi import (
+    get_hanzi_cleaned,
+    get_hanzi_flattened,
+    get_hanzi_simplified,
+)
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -131,6 +135,8 @@ class ScinoephileCli(CommandLineInterface):
             hanzi = Series.load(operations["load_hanzi"])
 
         # Operation operations
+        if "clean_hanzi" in operations:
+            hanzi = get_hanzi_cleaned(hanzi)
         if "clean_english" in operations:
             english = get_english_cleaned(english)
         if "flatten_english" in operations:
@@ -151,7 +157,7 @@ class ScinoephileCli(CommandLineInterface):
             hanzi.save(operations["save_hanzi"])
 
     @classmethod
-    def _determine_operations(
+    def determine_operations(
         cls,
         *,
         bilingual_infile: Path | None = None,
@@ -185,6 +191,7 @@ class ScinoephileCli(CommandLineInterface):
             english_outfile: English subtitle outfile
             hanzi_infile: Hanzi subtitle infile
             hanzi_outfile: Hanzi subtitle outfile
+            clean: Clean subtitles of closed-caption annotations and other anomalies
             flatten: Flatten multi-line subtitles into single lines
             overwrite: Overwrite outfiles if they exist
             simplify: Convert traditional Hanzi characters to simplified
@@ -222,6 +229,8 @@ class ScinoephileCli(CommandLineInterface):
 
         # Compile operations
         if clean:
+            if hanzi_infile:
+                operations["clean_hanzi"] = True
             if english_infile:
                 operations["clean_english"] = True
         if flatten:
@@ -258,7 +267,7 @@ class ScinoephileCli(CommandLineInterface):
         Arguments:
             kwargs: Keyword arguments
         """
-        operations = cls._determine_operations(**kwargs)
+        operations = cls.determine_operations(**kwargs)
         cls.run(operations)
 
 

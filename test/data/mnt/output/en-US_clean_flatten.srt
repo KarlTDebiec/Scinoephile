@@ -136,7 +136,7 @@ It's a camphor tree.
 
 35
 00:06:16,472 --> 00:06:18,428
-Camphor tree...
+Camphor tree…
 
 36
 00:06:27,712 --> 00:06:28,622
@@ -252,7 +252,7 @@ Can you see 'em?
 
 64
 00:09:02,712 --> 00:09:04,430
-I think they were... soot gremlins.
+I think they were… soot gremlins.
 
 65
 00:09:04,712 --> 00:09:07,465
@@ -320,7 +320,7 @@ It's pitch black!
 
 81
 00:10:42,752 --> 00:10:44,424
-Soot gremlins...
+Soot gremlins…
 
 82
 00:10:52,832 --> 00:10:53,981
@@ -380,7 +380,7 @@ No, you've done plenty.
 
 96
 00:14:03,032 --> 00:14:08,311
-Lately I've been so busy in the rice paddies, I only did a bit of dusting...
+Lately I've been so busy in the rice paddies, I only did a bit of dusting…
 
 97
 00:14:09,752 --> 00:14:12,425
@@ -388,7 +388,7 @@ What have you done to your hands?
 
 98
 00:14:12,632 --> 00:14:14,702
-The soot gremlin got away...
+The soot gremlin got away…
 
 99
 00:14:14,872 --> 00:14:16,988
@@ -492,7 +492,7 @@ May I help you?
 
 124
 00:17:05,432 --> 00:17:08,071
-Huh... my Mom... for Granny.
+Huh… my Mom… for Granny.
 
 125
 00:17:10,192 --> 00:17:11,102
@@ -560,15 +560,15 @@ I mean it. I'm not scared!
 
 141
 00:20:54,112 --> 00:20:56,068
-One-two, one-two...
+One-two, one-two…
 
 142
 00:20:57,192 --> 00:21:00,707
-Come on, keep up the good work...
+Come on, keep up the good work…
 
 143
 00:21:06,192 --> 00:21:08,945
-Okay! Washing... finished!
+Okay! Washing… finished!
 
 144
 00:21:18,312 --> 00:21:20,382
@@ -768,7 +768,7 @@ Wake up!
 
 193
 00:25:24,592 --> 00:25:26,310
-Sorry, I overslept again...
+Sorry, I overslept again…
 
 194
 00:25:26,512 --> 00:25:28,343
@@ -1196,7 +1196,7 @@ Yes, Satsuki?
 
 300
 00:42:36,272 --> 00:42:37,910
-It's my sister...
+It's my sister…
 
 301
 00:42:45,072 --> 00:42:46,710
@@ -1216,7 +1216,7 @@ You promised to be a good girl at Nanny's.
 
 305
 00:43:02,672 --> 00:43:06,745
-I still have two more classes and Nanny's too busy for this...
+I still have two more classes and Nanny's too busy for this…
 
 306
 00:43:07,232 --> 00:43:12,181
@@ -1284,7 +1284,7 @@ I won't cry. Aren't I good?
 
 322
 00:44:44,232 --> 00:44:46,666
-It's getting worse...
+It's getting worse…
 
 323
 00:44:48,912 --> 00:44:52,382
@@ -1292,7 +1292,7 @@ Dear Guardian Spirit, let us stay until the rain stops.
 
 324
 00:45:35,992 --> 00:45:37,220
-But...
+But…
 
 325
 00:45:57,672 --> 00:45:59,742
@@ -1424,7 +1424,7 @@ It won't be much longer. Hang in there.
 
 357
 00:49:44,272 --> 00:49:46,945
-It's late...
+It's late…
 
 358
 00:49:54,552 --> 00:49:55,462
@@ -1456,7 +1456,7 @@ Here's the bus!
 
 365
 00:54:16,392 --> 00:54:20,067
-He took Daddy's umbrella...
+He took Daddy's umbrella…
 
 366
 00:54:33,392 --> 00:54:34,541
@@ -1516,11 +1516,11 @@ It was the scariest, funniest day I've ever had.
 
 380
 00:55:31,392 --> 00:55:33,667
-Totoro gave us a lovely present...
+Totoro gave us a lovely present…
 
 381
 00:55:33,992 --> 00:55:38,304
-...wrapped in bamboo leaves and tied with dragon whiskers.
+…wrapped in bamboo leaves and tied with dragon whiskers.
 
 382
 00:55:38,512 --> 00:55:43,381
@@ -1712,7 +1712,7 @@ Open it, it might be important.
 
 429
 01:04:39,112 --> 01:04:42,946
-PLEASE CONTACT, HOSPITAL...
+PLEASE CONTACT, HOSPITAL…
 
 430
 01:04:43,232 --> 01:04:48,386
@@ -1760,7 +1760,7 @@ Hello? Yes?
 
 441
 01:06:20,152 --> 01:06:25,101
-Hello, may I speak to Dad... er... Mr. Kusakabe?
+Hello, may I speak to Dad… er… Mr. Kusakabe?
 
 442
 01:06:26,032 --> 01:06:27,784
@@ -1848,7 +1848,7 @@ I hate you, Satsuki!
 
 463
 01:09:00,512 --> 01:09:04,300
-We should bring the washing in...
+We should bring the washing in…
 
 464
 01:09:04,832 --> 01:09:11,590
@@ -1864,7 +1864,7 @@ Besides, it's just a cold; she'll be back next week.
 
 467
 01:09:31,512 --> 01:09:35,187
-They said it was just a cold...
+They said it was just a cold…
 
 468
 01:09:36,192 --> 01:09:37,910
@@ -1880,7 +1880,7 @@ Don't be silly, Satsuki.
 
 471
 01:09:44,152 --> 01:09:46,347
-Maybe Mom will...
+Maybe Mom will…
 
 472
 01:09:49,792 --> 01:09:56,709
@@ -1920,7 +1920,7 @@ That's strange. Where has she gone?
 
 481
 01:11:14,392 --> 01:11:17,623
-I was nasty to her, 'cause she was being silly...
+I was nasty to her, 'cause she was being silly…
 
 482
 01:11:18,152 --> 01:11:20,712
@@ -1956,7 +1956,7 @@ Have you seen a little girl pass by? She's my sister.
 
 490
 01:12:13,792 --> 01:12:19,150
-No, I don't think so. I'm sure I would've noticed...
+No, I don't think so. I'm sure I would've noticed…
 
 491
 01:12:20,192 --> 01:12:21,864
@@ -2000,7 +2000,7 @@ Did you see anyone?
 
 501
 01:13:33,432 --> 01:13:38,904
-No. We just came from there... but we didn't see anyone.
+No. We just came from there… but we didn't see anyone.
 
 502
 01:13:40,072 --> 01:13:41,744
@@ -2064,7 +2064,7 @@ Did you find her?
 
 517
 01:15:26,792 --> 01:15:31,149
-Dear Lord, please protect her and...
+Dear Lord, please protect her and…
 
 518
 01:15:31,592 --> 01:15:33,822
@@ -2128,7 +2128,7 @@ Please, help me Totoro!
 
 533
 01:17:10,232 --> 01:17:16,023
-Mei is lost. It'll be dark soon. I'm sure she's scared somewhere...
+Mei is lost. It'll be dark soon. I'm sure she's scared somewhere…
 
 534
 01:17:46,872 --> 01:17:47,987
@@ -2144,7 +2144,7 @@ She must be scared, please help me find her.
 
 537
 01:18:01,312 --> 01:18:03,826
-I don't know what to do...
+I don't know what to do…
 
 538
 01:19:02,472 --> 01:19:03,985

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from PIL import Image
 
-from scinoephile.image.upscale import get_upscaled_image
+from scinoephile.image.upscaling import get_upscaled_image
 from scinoephile.testing.mark import skip_if_ci
 from ..data.mlamd import (
     mlamd_cmn_hans_hk_image,
@@ -14,22 +14,22 @@ from ..data.mlamd import (
 )
 
 
-def _test_get_upscaled_image(image: Image):
+def _test_get_upscaled_image(image: Image.Image):
     upscaled = get_upscaled_image(image)
     assert max(upscaled.size) == 2000
 
 
 # get_upscaled_image
 @skip_if_ci()
-def test_get_upscaled_image_mlamd_cmn_hans_hk(mlamd_cmn_hans_hk_image: Image):
+def test_get_upscaled_image_mlamd_cmn_hans_hk(mlamd_cmn_hans_hk_image: Image.Image):
     _test_get_upscaled_image(mlamd_cmn_hans_hk_image)
 
 
 @skip_if_ci()
-def test_get_upscaled_image_mlamd_cmn_hant_hk(mlamd_cmn_hant_hk_image: Image):
+def test_get_upscaled_image_mlamd_cmn_hant_hk(mlamd_cmn_hant_hk_image: Image.Image):
     _test_get_upscaled_image(mlamd_cmn_hant_hk_image)
 
 
 @skip_if_ci()
-def test_get_upscaled_image_mlamd_en_hk(mlamd_en_hk_image: Image):
+def test_get_upscaled_image_mlamd_en_hk(mlamd_en_hk_image: Image.Image):
     _test_get_upscaled_image(mlamd_en_hk_image)

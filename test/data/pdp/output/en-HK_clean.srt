@@ -647,7 +647,7 @@ His Pokemon.
 
 144
 00:11:02,528 --> 00:11:03,828
-Oh, I didn't...
+Oh, I didn't…
 
 145
 00:11:03,863 --> 00:11:06,197
@@ -700,7 +700,7 @@ work out.
 155
 00:11:29,622 --> 00:11:32,924
 Uh, I work
-in insurance now, so...
+in insurance now, so…
 
 156
 00:11:32,959 --> 00:11:34,492
@@ -916,7 +916,7 @@ Just one more minute.
 
 202
 00:14:49,555 --> 00:14:51,923
-Okay, I'm gonna...
+Okay, I'm gonna…
 
 203
 00:14:51,958 --> 00:14:53,758
@@ -1057,7 +1057,7 @@ for you to stay."
 
 233
 00:17:34,587 --> 00:17:36,320
-<i>The train on platform...</i>
+<i>The train on platform…</i>
 
 234
 00:17:36,355 --> 00:17:38,556
@@ -1286,7 +1286,7 @@ Eat this!
 284
 00:20:38,570 --> 00:20:41,739
 You are so welcome. He was
-just a hungry little guy...
+just a hungry little guy…
 
 285
 00:20:41,774 --> 00:20:44,541
@@ -1316,7 +1316,7 @@ Help! Help! Oh, my God! Help!
 
 291
 00:21:14,006 --> 00:21:15,339
-Oh, sh...
+Oh, sh…
 
 292
 00:21:16,742 --> 00:21:19,376
@@ -1404,7 +1404,7 @@ Look out! Run!
 311
 00:22:22,641 --> 00:22:26,643
 Go! Go! Go! Go! Go!
-They're... Go! They...
+They're… Go! They…
 
 312
 00:22:28,213 --> 00:22:31,215
@@ -1472,7 +1472,7 @@ No, it was a gas.
 325
 00:22:59,545 --> 00:23:00,878
 Accidentally.
-I was accidentally...
+I was accidentally…
 
 326
 00:23:00,913 --> 00:23:02,746
@@ -1574,7 +1574,7 @@ You want a coffee?
 347
 00:23:50,028 --> 00:23:51,929
 'Cause I could use a coffee.
-I mean...
+I mean…
 
 348
 00:23:51,964 --> 00:23:54,031
@@ -1866,7 +1866,7 @@ We're done here.
 409
 00:26:13,238 --> 00:26:14,671
 -No, we are not done here.
--This is...
+-This is…
 
 410
 00:26:14,706 --> 00:26:16,840
@@ -1960,7 +1960,7 @@ You and me.
 
 429
 00:27:09,394 --> 00:27:11,828
-I can't belie...
+I can't belie…
 
 430
 00:27:11,863 --> 00:27:14,064
@@ -2113,7 +2113,7 @@ Hang on, hang on, hang on.
 463
 00:28:10,622 --> 00:28:12,622
 All these Pokemon cards
-and the battle posters...
+and the battle posters…
 
 464
 00:28:12,657 --> 00:28:15,058
@@ -2184,7 +2184,7 @@ She passed away when I was 11.
 
 479
 00:28:40,352 --> 00:28:43,386
-Oh. I'm sorry. I...
+Oh. I'm sorry. I…
 
 480
 00:28:43,421 --> 00:28:45,022
@@ -2353,7 +2353,7 @@ This is a fire hazard.
 516
 00:30:21,953 --> 00:30:25,189
 It's just junk
-and papers and...
+and papers and…
 
 517
 00:30:27,425 --> 00:30:29,059
@@ -2369,7 +2369,7 @@ I literally just met someone.
 
 520
 00:30:32,230 --> 00:30:34,798
-She was a... She was
+She was a… She was
 a junior reporter at CNM.
 
 521
@@ -2407,7 +2407,7 @@ Uh, I was drinking that.
 
 528
 00:30:47,712 --> 00:30:49,112
-I was also drink...
+I was also drink…
 Just step anywhere.
 
 529
@@ -2467,7 +2467,7 @@ You won't wanna miss it.
 541
 00:31:15,006 --> 00:31:17,007
 So, at the weekend,
-we invite the people...
+we invite the people…
 
 542
 00:31:17,042 --> 00:31:18,842
@@ -2561,7 +2561,7 @@ why you were so excited.
 
 562
 00:31:55,046 --> 00:31:57,681
-I was... Okay,
+I was… Okay,
 I was not that excited.
 
 563
@@ -2631,7 +2631,7 @@ What are you doing here?
 
 577
 00:32:40,825 --> 00:32:42,359
-Hey, again. Uh...
+Hey, again. Uh…
 
 578
 00:32:42,394 --> 00:32:43,793
@@ -2671,7 +2671,7 @@ He's cute.
 586
 00:33:04,449 --> 00:33:06,349
 She's trying to work me, kid.
-But, trust me, I can...
+But, trust me, I can…
 
 587
 00:33:06,384 --> 00:33:09,452
@@ -2680,7 +2680,7 @@ that feels so good.
 
 588
 00:33:09,487 --> 00:33:11,621
--So, listen...
+-So, listen…
 -Oh, my God.
 
 589
@@ -2813,13 +2813,13 @@ at all.
 
 617
 00:34:16,354 --> 00:34:20,223
-That's not... That's not
-what I meant to say. Um...
+That's not… That's not
+what I meant to say. Um…
 
 618
 00:34:20,258 --> 00:34:22,358
 -It's okay.
--I'm just gonna...
+-I'm just gonna…
 
 619
 00:34:22,393 --> 00:34:23,927
@@ -2837,7 +2837,7 @@ to a woman before?
 
 622
 00:34:28,833 --> 00:34:30,767
--You've got some...
+-You've got some…
 -Psyduck.
 
 623
@@ -2848,7 +2848,7 @@ No, I don't need your help.
 624
 00:34:33,037 --> 00:34:35,305
 Was it during
-the birth canal, or...
+the birth canal, or…
 
 625
 00:34:40,145 --> 00:34:41,444
@@ -3168,7 +3168,7 @@ Oh, what's this?
 695
 00:36:57,148 --> 00:36:58,648
 Oh, there's a door there.
-I didn't...
+I didn't…
 
 696
 00:36:58,683 --> 00:37:00,016
@@ -3220,7 +3220,7 @@ What are you talking about?
 706
 00:37:15,700 --> 00:37:18,067
 Gas. You're pouring
-gasoline on...
+gasoline on…
 
 707
 00:37:18,102 --> 00:37:20,903
@@ -3325,7 +3325,7 @@ Uh, round.
 
 730
 00:38:11,055 --> 00:38:12,422
-Round house. Uh...
+Round house. Uh…
 
 731
 00:38:12,457 --> 00:38:14,390
@@ -3527,7 +3527,7 @@ And I want a rematch.
 
 775
 00:40:31,562 --> 00:40:33,796
-You give me my rematch...
+You give me my rematch…
 
 776
 00:40:35,366 --> 00:40:37,667
@@ -3536,7 +3536,7 @@ you want to know. What I know.
 
 777
 00:40:39,370 --> 00:40:41,438
--Er...
+-Er…
 -Tell him he's on,<i>amigo.</i>
 
 778
@@ -3836,7 +3836,7 @@ I saw that differently.
 
 844
 00:44:55,493 --> 00:44:57,894
-Er...
+Er…
 
 845
 00:45:12,042 --> 00:45:13,876
@@ -3949,7 +3949,7 @@ understand Pikachu,
 
 869
 00:46:04,995 --> 00:46:06,896
-like, word perfect, so...
+like, word perfect, so…
 
 870
 00:46:08,699 --> 00:46:10,366
@@ -3972,7 +3972,7 @@ I'm right, I know it!
 
 874
 00:46:16,807 --> 00:46:19,041
-He's... He's out there.
+He's… He's out there.
 
 875
 00:46:24,949 --> 00:46:27,383
@@ -4016,7 +4016,7 @@ my dad and I drifted apart.
 
 884
 00:47:13,898 --> 00:47:15,064
-Er...
+Er…
 
 885
 00:47:15,099 --> 00:47:18,968
@@ -4065,7 +4065,7 @@ that he did care.
 
 895
 00:47:59,376 --> 00:48:02,378
-But I didn't know...
+But I didn't know…
 
 896
 00:48:03,714 --> 00:48:06,616
@@ -4078,7 +4078,7 @@ And now it's too late.
 
 898
 00:48:14,858 --> 00:48:16,859
-I really...
+I really…
 
 899
 00:48:19,096 --> 00:48:21,931
@@ -4095,7 +4095,7 @@ Listen, kid.
 
 902
 00:48:31,308 --> 00:48:32,708
-Um...
+Um…
 
 903
 00:48:32,743 --> 00:48:35,577
@@ -4150,7 +4150,7 @@ No, you really haven't.
 
 915
 00:49:18,555 --> 00:49:19,822
-Well...
+Well…
 
 916
 00:49:20,991 --> 00:49:23,025
@@ -4548,7 +4548,7 @@ You're the detective.
 1004
 00:54:07,811 --> 00:54:11,046
 Okay. If Roger Clifford is
-the key to all of this...
+the key to all of this…
 
 1005
 00:54:11,081 --> 00:54:13,915
@@ -4562,7 +4562,7 @@ lover boy.
 
 1007
 00:54:16,586 --> 00:54:17,953
-Okay, come on, that's...
+Okay, come on, that's…
 
 1008
 00:54:17,988 --> 00:54:19,922
@@ -5255,7 +5255,7 @@ No. No, no, no!
 1160
 01:02:19,736 --> 01:02:21,669
 We're losing power
-in the containment...
+in the containment…
 
 1161
 01:02:33,817 --> 01:02:35,650
@@ -5363,7 +5363,7 @@ get back to the city.
 1183
 01:03:31,140 --> 01:03:34,442
 Lucy. Lucy,
-we gotta get back to...
+we gotta get back to…
 
 1184
 01:03:38,848 --> 01:03:40,015
@@ -5650,7 +5650,7 @@ We have a lot of choices.
 1250
 01:07:58,241 --> 01:07:59,974
 Falling to our death
-is not one of...
+is not one of…
 
 1251
 01:08:06,782 --> 01:08:08,916
@@ -5666,12 +5666,12 @@ Come on!
 
 1254
 01:08:15,892 --> 01:08:18,292
-I thought I was gonna...
-I thought I was gonna...
+I thought I was gonna…
+I thought I was gonna…
 
 1255
 01:08:18,327 --> 01:08:21,462
-I... I...
+I… I…
 
 1256
 01:08:21,497 --> 01:08:22,663
@@ -5727,7 +5727,7 @@ You're my partner.
 1268
 01:09:41,210 --> 01:09:43,778
 Yeah, that's right.
-You've, er...
+You've, er…
 
 1269
 01:09:44,914 --> 01:09:47,415
@@ -5906,7 +5906,7 @@ Humanity is evil.
 1311
 01:14:47,316 --> 01:14:49,717
 I've always believed
-Pokemon are...
+Pokemon are…
 
 1312
 01:14:51,220 --> 01:14:53,687
@@ -5982,7 +5982,7 @@ I don't care what I saw.
 
 1328
 01:16:01,957 --> 01:16:03,257
-Because, I...
+Because, I…
 
 1329
 01:16:03,292 --> 01:16:04,992
@@ -5990,7 +5990,7 @@ I can feel it in my jellies.
 
 1330
 01:16:05,027 --> 01:16:06,427
-I... I made that up.
+I… I made that up.
 
 1331
 01:16:06,462 --> 01:16:08,395
@@ -6007,7 +6007,7 @@ You're better off on your own.
 
 1334
 01:16:10,666 --> 01:16:11,999
--Come on, Pikachu...
+-Come on, Pikachu…
 -No! No!
 
 1335
@@ -6133,7 +6133,7 @@ I'm gonna go talk to Howard.
 
 1363
 01:17:25,641 --> 01:17:27,007
-How...
+How…
 
 1364
 01:17:27,042 --> 01:17:28,275
@@ -6152,7 +6152,7 @@ is the breaking news?
 1367
 01:17:32,581 --> 01:17:36,951
 Okay, Cynthia. We're live
-in five, four, three...
+in five, four, three…
 
 1368
 01:17:38,587 --> 01:17:40,087
@@ -6175,7 +6175,7 @@ Hi, it's Lucy Stevens,
 1372
 01:17:58,307 --> 01:17:59,640
 -At CNM?
--Could you...
+-Could you…
 
 1373
 01:17:59,675 --> 01:18:01,575
@@ -6243,7 +6243,7 @@ You got it, Cynthia.
 
 1388
 01:18:37,713 --> 01:18:39,780
-What... What is this?
+What… What is this?
 
 1389
 01:18:45,087 --> 01:18:46,520
@@ -6269,11 +6269,11 @@ sent the Greninjas
 
 1394
 01:19:06,742 --> 01:19:09,042
-to cause the crash. Which...
+to cause the crash. Which…
 
 1395
 01:19:09,077 --> 01:19:11,345
-Which means...
+Which means…
 
 1396
 01:19:11,380 --> 01:19:14,048
@@ -6317,7 +6317,7 @@ he has Mewtwo here.
 
 1405
 01:19:35,838 --> 01:19:38,105
--Wait, why do you...
+-Wait, why do you…
 -Tim.
 
 1406
@@ -6412,7 +6412,7 @@ with the turnout today.
 
 1427
 01:20:53,849 --> 01:20:55,449
-So many families...
+So many families…
 
 1428
 01:20:55,484 --> 01:20:57,050
@@ -6550,7 +6550,7 @@ requesting backup!
 1457
 01:22:35,083 --> 01:22:37,851
 All units should proceed
-to the...
+to the…
 
 1458
 01:22:37,886 --> 01:22:40,254
@@ -6563,7 +6563,7 @@ breathe the gas!
 
 1460
 01:22:52,367 --> 01:22:53,667
-Don't let your Pokemon...
+Don't let your Pokemon…
 
 1461
 01:22:53,702 --> 01:22:55,635
@@ -6581,7 +6581,7 @@ a citywide emergency.
 1464
 01:23:02,044 --> 01:23:03,710
 Do not let
-your Pokemon breathe...
+your Pokemon breathe…
 
 1465
 01:23:03,745 --> 01:23:05,145
@@ -6796,7 +6796,7 @@ Psyduck. Ditto.
 
 1513
 01:28:44,586 --> 01:28:46,320
-Ditto...
+Ditto…
 
 1514
 01:28:58,666 --> 01:29:00,200
@@ -6861,7 +6861,7 @@ the most.
 
 1528
 01:29:53,054 --> 01:29:55,355
-I'm just happy you're back...
+I'm just happy you're back…
 
 1529
 01:29:56,558 --> 01:29:57,591
@@ -7010,7 +7010,7 @@ What's he talking about?
 
 1561
 01:32:12,961 --> 01:32:14,327
-I don't...
+I don't…
 
 1562
 01:32:33,548 --> 01:32:34,847
@@ -7156,7 +7156,7 @@ What are you thinking?
 
 1595
 01:35:31,092 --> 01:35:34,260
-Erm... maybe I could give
+Erm… maybe I could give
 detective work a try?
 
 1596
@@ -7367,7 +7367,7 @@ he likes that idea.
 
 1641
 01:40:48,175 --> 01:40:50,576
-<i>♪You, to carry on for you...♪</i>
+<i>♪You, to carry on for you…♪</i>
 
 1642
 01:40:50,611 --> 01:40:54,080
