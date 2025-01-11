@@ -47,7 +47,6 @@ if __name__ == "__main__":
     en_hk_clean_flatten.save(get_output_path("kob/output/en-HK_clean_flatten.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
-    en_hk_clean_flatten = get_english_flattened(en_hk_clean)
     yue_hans_hk_en_hk = get_synced_series(
         yue_hans_hk_clean_flatten, en_hk_clean_flatten
     )
