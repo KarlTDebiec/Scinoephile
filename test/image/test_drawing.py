@@ -24,8 +24,8 @@ def _test_get_image_of_text(series: ImageSeries, image: Image.Image):
 #     mlamd_cmn_hans_hk: ImageSeries, mlamd_cmn_hans_hk_image: Image
 # ):
 #     _test_get_image_of_text(mlamd_cmn_hans_hk, mlamd_cmn_hans_hk_image)
-#
-#
+
+
 # def test_get_upscaled_image_mlamd_cmn_hant_hk(
 #     mlamd_cmn_hant_hk: ImageSeries, mlamd_cmn_hant_hk_image: Image
 # ):

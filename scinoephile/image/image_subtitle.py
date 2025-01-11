@@ -7,11 +7,15 @@ from dataclasses import fields
 from typing import Any
 
 import numpy as np
-from PIL import Image, ImageChops
+from PIL import Image
 
 from scinoephile.core import Subtitle
 from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.drawing import get_image_of_text, get_stacked_image_diff
+from scinoephile.image.drawing import (
+    get_image_diff,
+    get_image_of_text,
+    get_stacked_image_diff,
+)
 
 
 class ImageSubtitle(Subtitle):
@@ -70,7 +74,7 @@ class ImageSubtitle(Subtitle):
         if self.image_from_text is None:
             return None
         if not hasattr(self, "_image_diff") or self._image_diff is None:
-            self._image_diff = ImageChops.difference(self.image, self.image_from_text)
+            self._image_diff = get_image_diff(self.image, self.image_from_text)
         return self._image_diff
 
     @property
