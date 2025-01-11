@@ -8,6 +8,10 @@ from PIL import Image
 from scinoephile.image import ImageSeries
 from scinoephile.image.drawing import get_image_of_text, get_stacked_image_diff
 from ..data.mlamd import (
+    mlamd_cmn_hans_hk,
+    mlamd_cmn_hans_hk_image,
+    mlamd_cmn_hant_hk,
+    mlamd_cmn_hant_hk_image,
     mlamd_en_hk,
     mlamd_en_hk_image,
 )
@@ -20,16 +24,16 @@ def _test_get_image_of_text(series: ImageSeries, image: Image.Image):
 
 
 # get_upscaled_image
-# def test_get_upscaled_image_mlamd_cmn_hans_hk(
-#     mlamd_cmn_hans_hk: ImageSeries, mlamd_cmn_hans_hk_image: Image
-# ):
-#     _test_get_image_of_text(mlamd_cmn_hans_hk, mlamd_cmn_hans_hk_image)
+def test_get_upscaled_image_mlamd_cmn_hans_hk(
+    mlamd_cmn_hans_hk: ImageSeries, mlamd_cmn_hans_hk_image: Image
+):
+    _test_get_image_of_text(mlamd_cmn_hans_hk, mlamd_cmn_hans_hk_image)
 
 
-# def test_get_upscaled_image_mlamd_cmn_hant_hk(
-#     mlamd_cmn_hant_hk: ImageSeries, mlamd_cmn_hant_hk_image: Image
-# ):
-#     _test_get_image_of_text(mlamd_cmn_hant_hk, mlamd_cmn_hant_hk_image)
+def test_get_upscaled_image_mlamd_cmn_hant_hk(
+    mlamd_cmn_hant_hk: ImageSeries, mlamd_cmn_hant_hk_image: Image
+):
+    _test_get_image_of_text(mlamd_cmn_hant_hk, mlamd_cmn_hant_hk_image)
 
 
 def test_get_upscaled_image_mlamd_en_hk(

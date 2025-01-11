@@ -41,20 +41,19 @@ def get_image_diff(reference: Image.Image, test: Image.Image) -> Image.Image:
 
     diff_data = np.array(reference_l).astype(int) - np.array(test_l).astype(int)
 
-    too_dark_data = diff_data.copy()
-    too_dark_data[too_dark_data > 0] = 0
-    too_dark_data = (too_dark_data * -1).astype(np.uint8)
+    darker_data = diff_data.copy()
+    darker_data[darker_data > 0] = 0
+    darker_data = (darker_data * -1).astype(np.uint8)
 
-    too_light_data = diff_data.copy()
-    too_light_data[too_light_data < 0] = 0
-    too_light_data = too_light_data.astype(np.uint8)
+    lighter_data = diff_data.copy()
+    lighter_data[lighter_data < 0] = 0
+    lighter_data = lighter_data.astype(np.uint8)
 
-    color_diff_data = np.zeros((reference.size[1], reference.size[0], 3), np.uint8)
-    color_diff_data[:] = 255
-    color_diff_data[..., 1] -= too_dark_data  # Subtract too dark from green and blue
-    color_diff_data[..., 2] -= too_dark_data  # to make too dark pixels redder
-    color_diff_data[..., 0] -= too_light_data  # Subtract too light from red and green
-    color_diff_data[..., 1] -= too_light_data  # to make too light pixels bluer
+    color_diff_data = np.ones((reference.size[1], reference.size[0], 3), np.uint8) * 255
+    color_diff_data[..., 1] -= darker_data  # Subtract darker from green and blue
+    color_diff_data[..., 2] -= darker_data  # to make darker pixels redder
+    color_diff_data[..., 0] -= lighter_data  # Subtract lighter from red and green
+    color_diff_data[..., 1] -= lighter_data  # to make lighter pixels bluer
     color_diff = Image.fromarray(color_diff_data)
 
     return color_diff
@@ -84,7 +83,10 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
         s=text,
         ha="center",
         va="center",
-        fontproperties=FontProperties(fname=font, size=font_size),
+        fontproperties=FontProperties(
+            fname=font,
+            size=font_size,
+        ),
         color=(0.8549, 0.8549, 0.8549),
     )
     text.set_path_effects(
@@ -121,17 +123,14 @@ def get_non_white_bbox(image: Image.Image) -> tuple[int, int, int, int]:
     return bbox
 
 
-def get_stacked_image_diff(
-    reference: Image.Image, test: Image.Image, diff: Image.Image | None = None
-) -> Image.Image:
-    """Get image of text.
+def get_stretched_image(reference: Image.Image, test: Image.Image) -> Image.Image:
+    """Get image with non-white/transparent contents streched to size of reference.
 
     Arguments:
         reference: Reference image
         test: Test image
-        diff: Difference between reference and teset
     Returns:
-        Image of text
+        Stretched image
     """
     if reference.size != test.size:
         raise ValueError("Images must be the same size")
@@ -150,6 +149,27 @@ def get_stacked_image_diff(
     test_updated = Image.new("LA", reference.size, (255, 255))
     test_updated.paste(test_scaled, (reference_bbox[0], reference_bbox[1]), test_scaled)
     test_l = test_updated.convert("L")
+
+    return test_l
+
+
+def get_stacked_image_diff(
+    reference: Image.Image, test: Image.Image, diff: Image.Image | None = None
+) -> Image.Image:
+    """Get image of text.
+
+    Arguments:
+        reference: Reference image
+        test: Test image
+        diff: Difference between reference and teset
+    Returns:
+        Image of text
+    """
+    if reference.size != test.size:
+        raise ValueError("Images must be the same size")
+
+    reference_l = get_grayscale_image_on_white(reference)
+    test_l = get_stretched_image(reference_l, test)
 
     diff = get_image_diff(reference_l, test_l)
 
