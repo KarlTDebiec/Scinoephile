@@ -11,7 +11,7 @@ from PIL import Image, ImageChops
 
 from scinoephile.core import Subtitle
 from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.drawing import get_image_of_text
+from scinoephile.image.drawing import get_image_of_text, get_stacked_image_diff
 
 
 class ImageSubtitle(Subtitle):
@@ -79,10 +79,7 @@ class ImageSubtitle(Subtitle):
         if self.image_from_text is None:
             return None
         if not hasattr(self, "_image_stack") or self._image_stack is None:
-            self._image_stack = Image.new(
-                "RGBA", (self.image.width, self.image.height * 3)
+            self._image_stack = get_stacked_image_diff(
+                self.image, self.image_from_text, self.image_diff
             )
-            self._image_stack.paste(self.image, (0, 0))
-            self._image_stack.paste(self.image_from_text, (0, self.image.height))
-            self._image_stack.paste(self.image_diff, (0, self.image.height * 2))
         return self._image_stack
