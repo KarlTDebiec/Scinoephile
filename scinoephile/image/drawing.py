@@ -10,7 +10,7 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.patheffects import Normal, Stroke
 
 
-def get_image_of_text(text: str, size: tuple[int, int]) -> str:
+def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
     """Get image of text.
 
     Arguments:
