@@ -12,9 +12,11 @@ from PIL import Image
 from scinoephile.core import Subtitle
 from scinoephile.image.base64 import get_base64_image
 from scinoephile.image.drawing import (
+    get_grayscale_image_on_white,
     get_image_diff,
     get_image_of_text,
-    get_stacked_image_diff,
+    get_scaled_image,
+    get_stacked_image,
 )
 
 
@@ -74,7 +76,8 @@ class ImageSubtitle(Subtitle):
         if self.image_from_text is None:
             return None
         if not hasattr(self, "_image_diff") or self._image_diff is None:
-            self._image_diff = get_image_diff(self.image, self.image_from_text)
+            image_from_text_scaled = get_scaled_image(self.image, self.image_from_text)
+            self._image_diff = get_image_diff(self.image, image_from_text_scaled)
         return self._image_diff
 
     @property
@@ -83,7 +86,9 @@ class ImageSubtitle(Subtitle):
         if self.image_from_text is None:
             return None
         if not hasattr(self, "_image_stack") or self._image_stack is None:
-            self._image_stack = get_stacked_image_diff(
-                self.image, self.image_from_text, self.image_diff
+            image_l = get_grayscale_image_on_white(self.image)
+            image_from_text_scaled = get_scaled_image(image_l, self.image_from_text)
+            self._image_stack = get_stacked_image(
+                image_l, image_from_text_scaled, self.image_diff
             )
         return self._image_stack

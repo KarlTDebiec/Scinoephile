@@ -66,20 +66,23 @@ def get_image_diff(reference: Image.Image, test: Image.Image) -> Image.Image:
 
 
 def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
-    """Get image of text.
+    """Get image of text, drawn using matplotlib.
 
     Arguments:
-        text: Text to encode
+        text: Text to draw
         size: Size of image
     Returns:
         Image of text
     """
-    # Generate figure of height and width
+    # Prepare Figure of appropriate height and width
     figure = plt.figure(figsize=(size[0] / 100, size[1] / 100), dpi=100)
     figure.patch.set_alpha(0)
     figure.patch.set_facecolor("none")
 
-    # Draw image using matplotlib
+    # Draw text on Figure
+    # TODO: Make styling configurable.
+    # TODO: Support OSes other than Windows.
+    # TODO: Determine optimized settings for Chinese.
     font = r"C:\WINDOWS\FONTS\MSYH.TTC"
     font_size = 41.5
     width = 4
@@ -100,7 +103,7 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
     )
     figure.canvas.draw()
 
-    # Make a new image of desired size and paste on it, to ensure correct size
+    # Convert Figure to Image
     image = Image.new("RGBA", size, color=255)
     image_array = np.array(figure.canvas.renderer._renderer)  # noqa
     image.paste(Image.fromarray(image_array), (0, 0))
@@ -109,62 +112,51 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
 
 
 def get_non_white_bbox(image: Image.Image) -> tuple[int, int, int, int]:
-    """Get bounding box of non-white/transparent pixels in the image.
+    """Get bounding box of non-white/transparent pixels in an image.
 
     Arguments:
         image: Image
     Returns:
-        Bounding box of non-white/transparent pixels in the image
+        Bounding box of non-white/transparent pixels
     """
-    # Convert image to grayscale if not already
+    image_l = image
     if image.mode != "L":
-        image = get_grayscale_image_on_white(image)
-
-    # Create a mask of non-white pixels
-    non_white_mask = ImageChops.invert(image).point(lambda p: p > 0 and 255)
-
-    # Get the bounding box of the non-white pixels
-    bbox = non_white_mask.getbbox()
+        image_l = get_grayscale_image_on_white(image)
+    mask = ImageChops.invert(image_l).point(lambda p: p > 0 and 255)
+    bbox = mask.getbbox()
 
     return bbox
 
 
-def get_stacked_image_diff(
-    reference: Image.Image, test: Image.Image, diff: Image.Image | None = None
-) -> Image.Image:
-    """Get image of text.
+def get_stacked_image(*images: Image.Image) -> Image.Image:
+    """Get images stacked vertically.
 
     Arguments:
-        reference: Reference image
-        test: Test image
-        diff: Difference between reference and teset
+        *images: Images
     Returns:
         Image of text
     """
-    if reference.size != test.size:
-        raise ValueError("Images must be the same size")
+    if not images:
+        raise ValueError("No images provided")
+    size = images[0].size
 
-    reference_l = get_grayscale_image_on_white(reference)
-    test_l = get_stretched_image(reference_l, test)
-
-    diff = get_image_diff(reference_l, test_l)
-
-    stack = Image.new("RGB", (reference.width, reference.height * 3))
-    stack.paste(reference_l, (0, 0))
-    stack.paste(test_l, (0, reference.height))
-    stack.paste(diff, (0, reference.height * 2))
+    stack = Image.new("RGB", (size[0], size[1] * len(images)))
+    for i, image in enumerate(images):
+        if image.size != size:
+            raise ValueError("Images must be the same size")
+        stack.paste(image, (0, size[1] * i))
 
     return stack
 
 
-def get_stretched_image(reference: Image.Image, test: Image.Image) -> Image.Image:
-    """Get image with non-white/transparent contents streched to size of reference.
+def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
+    """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
         reference: Reference image
         test: Test image
     Returns:
-        Stretched image
+        Scaled image
     """
     if reference.size != test.size:
         raise ValueError("Images must be the same size")
