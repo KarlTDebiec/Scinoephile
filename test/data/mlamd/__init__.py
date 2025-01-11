@@ -7,7 +7,7 @@ import pytest
 from PIL import Image
 
 from scinoephile.image import ImageSeries
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing.file import get_test_directory_path, get_test_file_path
 
 
 # region Simplified Standard Chinese
@@ -28,7 +28,7 @@ def mlamd_cmn_hans_hk_image() -> Image:
 
 @pytest.fixture
 def mlamd_cmn_hans_hk_validation_directory() -> str:
-    return get_test_file_path("mlamd/output/cmn-Hans-HK_validation")
+    return get_test_directory_path("mlamd/output/cmn-Hans-HK_validation")
 
 
 # endregion
@@ -52,7 +52,7 @@ def mlamd_cmn_hant_hk_image() -> Image:
 
 @pytest.fixture
 def mlamd_cmn_hant_hk_validation_directory() -> str:
-    return get_test_file_path("mlamd/output/cmn-Hant-HK_validation")
+    return get_test_directory_path("mlamd/output/cmn-Hant-HK_validation")
 
 
 # endregion
@@ -76,7 +76,7 @@ def mlamd_en_hk_image() -> Image:
 
 @pytest.fixture
 def mlamd_en_hk_validation_directory() -> str:
-    return get_test_file_path("mlamd/output/en-HK_validation")
+    return get_test_directory_path("mlamd/output/en-HK_validation")
 
 
 # endregion

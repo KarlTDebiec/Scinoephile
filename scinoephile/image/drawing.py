@@ -3,31 +3,11 @@
 """Image code related to image drawing."""
 from __future__ import annotations
 
-from logging import info
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageChops
 from matplotlib.font_manager import FontProperties
 from matplotlib.patheffects import Normal, Stroke
-
-from scinoephile.common.validation import validate_output_directory
-from scinoephile.image import ImageSeries
-
-
-def validate_ocr(series: ImageSeries, output_path: Path) -> None:
-    """Validates the OCR of an image series.
-
-    Arguments:
-        series: Series to validate
-        output_path: Directory in which to save validation results
-    """
-    output_path = validate_output_directory(output_path)
-
-    for i, event in enumerate(series.events, 1):
-        event.image_diff_stack.save(output_path / f"{i:04d}.png")
-        info(f"Saved {output_path / f'{i:04d}.png'}")
 
 
 def get_grayscale_image_on_white(image: Image.Image) -> Image.Image:
