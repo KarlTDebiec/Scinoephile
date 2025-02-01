@@ -21,52 +21,52 @@ if __name__ == "__main__":
     openai_service = OpenAiService()
 
     # Simplified Standard Chinese
-    # cmn_hans_hk = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans-HK.sup"))
-    # cmn_hans_hk.save(get_output_path("mlamd/output/cmn-Hans-HK"))
-    cmn_hans_hk = ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans-HK"))
-    # cmn_hans_hk_simplify = get_hanzi_simplified(cmn_hans_hk)
-    # cmn_hans_hk_simplify.save(get_output_path("mlamd/output/cmn-Hans-HK"))
-    # cmn_hans_hk_text = Series.load(
-    #     get_output_path("mlamd/output/cmn-Hans-HK/cmn-Hans-HK.srt")
+    # cmn_hans = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans.sup"))
+    # cmn_hans.save(get_output_path("mlamd/output/cmn-Hans"))
+    cmn_hans = ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans"))
+    # cmn_hans_simplify = get_hanzi_simplified(cmn_hans)
+    # cmn_hans_simplify.save(get_output_path("mlamd/output/cmn-Hans"))
+    # cmn_hans_text = Series.load(
+    #     get_output_path("mlamd/output/cmn-Hans/cmn-Hans.srt")
     # )
-    # cmn_hans_hk_text_traditionalize = get_hanzi_traditionalized(cmn_hans_hk_text)
-    # cmn_hans_hk_text_traditionalize.save(
-    #     get_output_path("mlamd/output/cmn-Hant-HK/cmn-Hant-HK.srt")
+    # cmn_hans_text_traditionalize = get_hanzi_traditionalized(cmn_hans_text)
+    # cmn_hans_text_traditionalize.save(
+    #     get_output_path("mlamd/output/cmn-Hant/cmn-Hant.srt")
     # )
-    # cmn_hans_hk = get_transcriptions(
+    # cmn_hans = get_transcriptions(
     #     openai_service,
-    #     cmn_hans_hk,
+    #     cmn_hans,
     #     upscale=True,
     #     language="Simplified Chinese, specifically Standard Chinese, Hong Kong",
     # )
-    # cmn_hans_hk.save(get_output_path("mlamd/output/cmn-Hans-HK"))
+    # cmn_hans.save(get_output_path("mlamd/output/cmn-Hans"))
 
     # Traditional Standard Chinese
-    # cmn_hant_hk = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant-HK.sup"))
-    # cmn_hant_hk.save(get_output_path("mlamd/output/cmn-Hant-HK"))
-    # cmn_hant_hk = ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hant-HK"))
-    # cmn_hant_hk = get_transcriptions(
+    # cmn_hant = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant.sup"))
+    # cmn_hant.save(get_output_path("mlamd/output/cmn-Hant"))
+    # cmn_hant = ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hant"))
+    # cmn_hant = get_transcriptions(
     #     openai_service,
-    #     cmn_hant_hk,
+    #     cmn_hant,
     #     upscale=True,
     #     language="Traditional Chinese, specifically Standard Chinese, Hong Kong",
     # )
-    # cmn_hant_hk.save(get_output_path("mlamd/output/cmn-Hant-HK"))
+    # cmn_hant.save(get_output_path("mlamd/output/cmn-Hant"))
 
     # Simplified and Traditional Chinese Together
-    # cmn_hans_hk, cmn_hant_hk = get_revised_chinese_transcriptions(
-    #     openai_service, cmn_hans_hk, cmn_hant_hk
+    # cmn_hans, cmn_hant = get_revised_chinese_transcriptions(
+    #     openai_service, cmn_hans, cmn_hant
     # )
-    # cmn_hans_hk.save(get_output_path("mlamd/output/cmn-Hans-HK"))
-    # cmn_hant_hk.save(get_output_path("mlamd/output/cmn-Hant-HK"))
+    # cmn_hans.save(get_output_path("mlamd/output/cmn-Hans"))
+    # cmn_hant.save(get_output_path("mlamd/output/cmn-Hant"))
 
     # English
-    # en_hk = ImageSeries.load(get_test_file_path("mlamd/input/en-HK.sup"))
-    # en_hk.save(get_output_path("mlamd/output/en-HK"))
-    en_hk = ImageSeries.load(get_test_file_path("mlamd/output/en-HK"))
-    # en_hk = get_transcriptions(openai_service, en_hk)
-    # en_hk.save(get_output_path("mlamd/output/en-HK"))
+    # eng = ImageSeries.load(get_test_file_path("mlamd/input/eng.sup"))
+    # eng.save(get_output_path("mlamd/output/eng"))
+    eng = ImageSeries.load(get_test_file_path("mlamd/output/eng"))
+    # eng = get_transcriptions(openai_service, eng)
+    # eng.save(get_output_path("mlamd/output/eng"))
 
     # Bilingual Simplified Standard Chinese and English
-    cmn_hans_hk_en_hk = get_synced_series(cmn_hans_hk, en_hk)
-    cmn_hans_hk_en_hk.save(get_output_path("mlamd/output/cmn-Hans-HK_en-HK.srt"))
+    cmn_hans_eng = get_synced_series(cmn_hans, eng)
+    cmn_hans_eng.save(get_output_path("mlamd/output/cmn-Hans_eng.srt"))

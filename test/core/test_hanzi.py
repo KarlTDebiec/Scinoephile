@@ -14,30 +14,30 @@ from scinoephile.core.hanzi import (
     get_hanzi_simplified,
 )
 from ..data.kob import (
-    kob_yue_hans_hk,
-    kob_yue_hans_hk_clean,
-    kob_yue_hans_hk_flatten,
-    kob_yue_hant_hk,
-    kob_yue_hant_hk_simplify,
+    kob_yue_hans,
+    kob_yue_hans_clean,
+    kob_yue_hans_flatten,
+    kob_yue_hant,
+    kob_yue_hant_simplify,
 )
 from ..data.mnt import (
-    mnt_cmn_hant_hk,
-    mnt_cmn_hant_hk_clean,
-    mnt_cmn_hant_hk_flatten,
-    mnt_cmn_hant_hk_simplify,
+    mnt_cmn_hant,
+    mnt_cmn_hant_clean,
+    mnt_cmn_hant_flatten,
+    mnt_cmn_hant_simplify,
 )
 from ..data.pdp import (
-    pdp_yue_hant_hk,
-    pdp_yue_hant_hk_clean,
-    pdp_yue_hant_hk_flatten,
-    pdp_yue_hant_hk_simplify,
+    pdp_yue_hant,
+    pdp_yue_hant_clean,
+    pdp_yue_hant_flatten,
+    pdp_yue_hant_simplify,
 )
 from ..data.t import (
-    t_cmn_hans_hk,
-    t_cmn_hans_hk_clean,
-    t_cmn_hans_hk_flatten,
-    t_cmn_hant_hk,
-    t_cmn_hant_hk_simplify,
+    t_cmn_hans,
+    t_cmn_hans_clean,
+    t_cmn_hans_flatten,
+    t_cmn_hant,
+    t_cmn_hant_simplify,
 )
 
 
@@ -92,72 +92,60 @@ def _test_get_hanzi_simplified(series: Series, expected: Series = None):
 
 
 # region get_hanzi_cleaned
-def test_get_hanzi_cleaned_kob(kob_yue_hans_hk: Series, kob_yue_hans_hk_clean: Series):
-    _test_get_hanzi_cleaned(kob_yue_hans_hk, kob_yue_hans_hk_clean)
+def test_get_hanzi_cleaned_kob(kob_yue_hans: Series, kob_yue_hans_clean: Series):
+    _test_get_hanzi_cleaned(kob_yue_hans, kob_yue_hans_clean)
 
 
-def test_get_hanzi_cleaned_mnt(mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_clean: Series):
-    _test_get_hanzi_cleaned(mnt_cmn_hant_hk, mnt_cmn_hant_hk_clean)
+def test_get_hanzi_cleaned_mnt(mnt_cmn_hant: Series, mnt_cmn_hant_clean: Series):
+    _test_get_hanzi_cleaned(mnt_cmn_hant, mnt_cmn_hant_clean)
 
 
-def test_get_hanzi_cleaned_pdp(pdp_yue_hant_hk: Series, pdp_yue_hant_hk_clean: Series):
-    _test_get_hanzi_cleaned(pdp_yue_hant_hk, pdp_yue_hant_hk_clean)
+def test_get_hanzi_cleaned_pdp(pdp_yue_hant: Series, pdp_yue_hant_clean: Series):
+    _test_get_hanzi_cleaned(pdp_yue_hant, pdp_yue_hant_clean)
 
 
-def test_get_hanzi_cleaned_t(t_cmn_hans_hk: Series, t_cmn_hans_hk_clean: Series):
-    _test_get_hanzi_cleaned(t_cmn_hans_hk, t_cmn_hans_hk_clean)
+def test_get_hanzi_cleaned_t(t_cmn_hans: Series, t_cmn_hans_clean: Series):
+    _test_get_hanzi_cleaned(t_cmn_hans, t_cmn_hans_clean)
 
 
 # endregion
 
 
 # region get_hanzi_flattened
-def test_get_hanzi_flattened_kob(
-    kob_yue_hans_hk: Series, kob_yue_hans_hk_flatten: Series
-):
-    _test_get_hanzi_flattened(kob_yue_hans_hk, kob_yue_hans_hk_flatten)
+def test_get_hanzi_flattened_kob(kob_yue_hans: Series, kob_yue_hans_flatten: Series):
+    _test_get_hanzi_flattened(kob_yue_hans, kob_yue_hans_flatten)
 
 
-def test_get_hanzi_flattened_mnt(
-    mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_flatten: Series
-):
-    _test_get_hanzi_flattened(mnt_cmn_hant_hk, mnt_cmn_hant_hk_flatten)
+def test_get_hanzi_flattened_mnt(mnt_cmn_hant: Series, mnt_cmn_hant_flatten: Series):
+    _test_get_hanzi_flattened(mnt_cmn_hant, mnt_cmn_hant_flatten)
 
 
-def test_get_hanzi_flattened_pdp(
-    pdp_yue_hant_hk: Series, pdp_yue_hant_hk_flatten: Series
-):
-    _test_get_hanzi_flattened(pdp_yue_hant_hk, pdp_yue_hant_hk_flatten)
+def test_get_hanzi_flattened_pdp(pdp_yue_hant: Series, pdp_yue_hant_flatten: Series):
+    _test_get_hanzi_flattened(pdp_yue_hant, pdp_yue_hant_flatten)
 
 
-def test_get_hanzi_flattened_t(t_cmn_hans_hk: Series, t_cmn_hans_hk_flatten: Series):
-    _test_get_hanzi_flattened(t_cmn_hans_hk, t_cmn_hans_hk_flatten)
+def test_get_hanzi_flattened_t(t_cmn_hans: Series, t_cmn_hans_flatten: Series):
+    _test_get_hanzi_flattened(t_cmn_hans, t_cmn_hans_flatten)
 
 
 # endregion
 
 
 # region get_hanzi_simplified
-def test_get_hanzi_simplified_kob(
-    kob_yue_hant_hk: Series, kob_yue_hant_hk_simplify: Series
-):
-    _test_get_hanzi_simplified(kob_yue_hant_hk, kob_yue_hant_hk_simplify)
+def test_get_hanzi_simplified_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Series):
+    _test_get_hanzi_simplified(kob_yue_hant, kob_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_mnt(
-    mnt_cmn_hant_hk: Series, mnt_cmn_hant_hk_simplify: Series
-):
-    _test_get_hanzi_simplified(mnt_cmn_hant_hk, mnt_cmn_hant_hk_simplify)
+def test_get_hanzi_simplified_mnt(mnt_cmn_hant: Series, mnt_cmn_hant_simplify: Series):
+    _test_get_hanzi_simplified(mnt_cmn_hant, mnt_cmn_hant_simplify)
 
 
-def test_get_hanzi_simplified_pdp(
-    pdp_yue_hant_hk: Series, pdp_yue_hant_hk_simplify: Series
-):
-    _test_get_hanzi_simplified(pdp_yue_hant_hk, pdp_yue_hant_hk_simplify)
+def test_get_hanzi_simplified_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
+    _test_get_hanzi_simplified(pdp_yue_hant, pdp_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_t(t_cmn_hant_hk: Series, t_cmn_hant_hk_simplify: Series):
-    _test_get_hanzi_simplified(t_cmn_hant_hk, t_cmn_hant_hk_simplify)
+def test_get_hanzi_simplified_t(t_cmn_hant: Series, t_cmn_hant_simplify: Series):
+    _test_get_hanzi_simplified(t_cmn_hant, t_cmn_hant_simplify)
 
 
 # endregion

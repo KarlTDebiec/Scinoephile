@@ -11,23 +11,23 @@ from scinoephile.testing.file import get_test_file_path
 
 # region Simplified Standard Chinese
 @pytest.fixture
-def t_cmn_hans_hk() -> Series:
-    return Series.load(get_test_file_path("t/input/cmn-Hans-HK.srt"))
+def t_cmn_hans() -> Series:
+    return Series.load(get_test_file_path("t/input/cmn-Hans.srt"))
 
 
 @pytest.fixture
-def t_cmn_hans_hk_clean() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_clean.srt"))
+def t_cmn_hans_clean() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans_clean.srt"))
 
 
 @pytest.fixture
-def t_cmn_hans_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_flatten.srt"))
+def t_cmn_hans_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans_flatten.srt"))
 
 
 @pytest.fixture
-def t_cmn_hans_hk_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_clean_flatten.srt"))
+def t_cmn_hans_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans_clean_flatten.srt"))
 
 
 # endregion
@@ -35,13 +35,13 @@ def t_cmn_hans_hk_clean_flatten() -> Series:
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def t_cmn_hant_hk() -> Series:
-    return Series.load(get_test_file_path("t/input/cmn-Hant-HK.srt"))
+def t_cmn_hant() -> Series:
+    return Series.load(get_test_file_path("t/input/cmn-Hant.srt"))
 
 
 @pytest.fixture
-def t_cmn_hant_hk_simplify() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hant-HK_simplify.srt"))
+def t_cmn_hant_simplify() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hant_simplify.srt"))
 
 
 # endregion
@@ -49,23 +49,23 @@ def t_cmn_hant_hk_simplify() -> Series:
 
 # region English
 @pytest.fixture
-def t_en_hk() -> Series:
-    return Series.load(get_test_file_path("t/input/en-HK.srt"))
+def t_eng() -> Series:
+    return Series.load(get_test_file_path("t/input/eng.srt"))
 
 
 @pytest.fixture
-def t_en_hk_clean() -> Series:
-    return Series.load(get_test_file_path("t/output/en-HK_clean.srt"))
+def t_eng_clean() -> Series:
+    return Series.load(get_test_file_path("t/output/eng_clean.srt"))
 
 
 @pytest.fixture
-def t_en_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/en-HK_flatten.srt"))
+def t_eng_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/eng_flatten.srt"))
 
 
 @pytest.fixture
-def t_en_hk_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/en-HK_clean_flatten.srt"))
+def t_eng_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("t/output/eng_clean_flatten.srt"))
 
 
 # endregion
@@ -73,22 +73,22 @@ def t_en_hk_clean_flatten() -> Series:
 
 # region Bilingual Simplified Chinese and English
 @pytest.fixture
-def t_cmn_hans_hk_en_hk() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans-HK_en-HK.srt"))
+def t_cmn_hans_eng() -> Series:
+    return Series.load(get_test_file_path("t/output/cmn-Hans_eng.srt"))
 
 
 # endregion
 
 ___all__ = [
-    "t_cmn_hans_hk",
-    "t_cmn_hans_hk_clean",
-    "t_cmn_hans_hk_flatten",
-    "t_cmn_hans_hk_clean_flatten",
-    "t_cmn_hant_hk",
-    "t_cmn_hant_hk_simplify",
-    "t_en_hk",
-    "t_en_hk_clean",
-    "t_en_hk_flatten",
-    "t_en_hk_clean_flatten",
-    "t_cmn_hans_hk_en_hk",
+    "t_cmn_hans",
+    "t_cmn_hans_clean",
+    "t_cmn_hans_flatten",
+    "t_cmn_hans_clean_flatten",
+    "t_cmn_hant",
+    "t_cmn_hant_simplify",
+    "t_eng",
+    "t_eng_clean",
+    "t_eng_flatten",
+    "t_eng_clean_flatten",
+    "t_cmn_hans_eng",
 ]

@@ -15,12 +15,12 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from ..data.mnt import mnt_cmn_hant_hk, mnt_en_us
+from ..data.mnt import mnt_cmn_hant, mnt_eng
 
 
 # Remove underscore to test
-def _test_get_test_cases_mnt(mnt_cmn_hant_hk: Series, mnt_en_us: Series):
-    pair_blocks = get_pair_blocks_by_pause(mnt_cmn_hant_hk, mnt_en_us)
+def _test_get_test_cases_mnt(mnt_cmn_hant: Series, mnt_eng: Series):
+    pair_blocks = get_pair_blocks_by_pause(mnt_cmn_hant, mnt_eng)
     bilingual_blocks = []
 
     hanzi_start = 0

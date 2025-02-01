@@ -22,31 +22,29 @@ if __name__ == "__main__":
         return package_root.parent / "test" / "data" / Path(relative_path)
 
     # Traditional Cantonese Chinese
-    cmn_hant_hk = Series.load(get_test_file_path("mnt/input/cmn-Hant-HK.srt"))
-    cmn_hant_hk_clean = get_hanzi_cleaned(cmn_hant_hk)
-    cmn_hant_hk_clean.save(get_output_path("mnt/output/cmn-Hant-HK_clean.srt"))
-    cmn_hant_hk_flatten = get_hanzi_flattened(cmn_hant_hk)
-    cmn_hant_hk_flatten.save(get_output_path("mnt/output/cmn-Hant-HK_flatten.srt"))
-    cmn_hant_hk_simplify = get_hanzi_simplified(cmn_hant_hk)
-    cmn_hant_hk_simplify.save(get_output_path("mnt/output/cmn-Hant-HK_simplify.srt"))
-    cmn_hant_hk_clean_flatten_simplify = get_hanzi_simplified(
-        get_hanzi_flattened(cmn_hant_hk_clean)
+    cmn_hant = Series.load(get_test_file_path("mnt/input/cmn-Hant.srt"))
+    cmn_hant_clean = get_hanzi_cleaned(cmn_hant)
+    cmn_hant_clean.save(get_output_path("mnt/output/cmn-Hant_clean.srt"))
+    cmn_hant_flatten = get_hanzi_flattened(cmn_hant)
+    cmn_hant_flatten.save(get_output_path("mnt/output/cmn-Hant_flatten.srt"))
+    cmn_hant_simplify = get_hanzi_simplified(cmn_hant)
+    cmn_hant_simplify.save(get_output_path("mnt/output/cmn-Hant_simplify.srt"))
+    cmn_hant_clean_flatten_simplify = get_hanzi_simplified(
+        get_hanzi_flattened(cmn_hant_clean)
     )
-    cmn_hant_hk_clean_flatten_simplify.save(
-        get_output_path("mnt/output/cmn-Hant-HK_clean_flatten_simplify.srt")
+    cmn_hant_clean_flatten_simplify.save(
+        get_output_path("mnt/output/cmn-Hant_clean_flatten_simplify.srt")
     )
 
     # English
-    en_us = Series.load(get_test_file_path("mnt/input/en-US.srt"))
-    en_us_clean = get_english_cleaned(en_us)
-    en_us_clean.save(get_output_path("mnt/output/en-US_clean.srt"))
-    en_us_flatten = get_english_flattened(en_us)
-    en_us_flatten.save(get_output_path("mnt/output/en-US_flatten.srt"))
-    en_us_clean_flatten = get_english_flattened(en_us_clean)
-    en_us_clean_flatten.save(get_output_path("mnt/output/en-US_clean_flatten.srt"))
+    eng = Series.load(get_test_file_path("mnt/input/eng.srt"))
+    eng_clean = get_english_cleaned(eng)
+    eng_clean.save(get_output_path("mnt/output/eng_clean.srt"))
+    eng_flatten = get_english_flattened(eng)
+    eng_flatten.save(get_output_path("mnt/output/eng_flatten.srt"))
+    eng_clean_flatten = get_english_flattened(eng_clean)
+    eng_clean_flatten.save(get_output_path("mnt/output/eng_clean_flatten.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
-    cmn_hans_hk_en_us = get_synced_series(
-        cmn_hant_hk_clean_flatten_simplify, en_us_clean_flatten
-    )
-    cmn_hans_hk_en_us.save(get_output_path("mnt/output/cmn-Hans-HK_en-US.srt"))
+    cmn_hans_eng = get_synced_series(cmn_hant_clean_flatten_simplify, eng_clean_flatten)
+    cmn_hans_eng.save(get_output_path("mnt/output/cmn-Hans_eng.srt"))

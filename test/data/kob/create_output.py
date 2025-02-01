@@ -22,32 +22,30 @@ if __name__ == "__main__":
         return package_root.parent / "test" / "data" / Path(relative_path)
 
     # Simplified Cantonese Chinese
-    yue_hans_hk = Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
-    yue_hans_hk_clean = get_hanzi_cleaned(yue_hans_hk)
-    yue_hans_hk_clean.save(get_output_path("kob/output/yue-Hans-HK_clean.srt"))
-    yue_hans_hk_flatten = get_hanzi_flattened(yue_hans_hk)
-    yue_hans_hk_flatten.save(get_output_path("kob/output/yue-Hans-HK_flatten.srt"))
-    yue_hans_hk_clean_flatten = get_hanzi_flattened(yue_hans_hk_clean)
-    yue_hans_hk_clean_flatten.save(
-        get_output_path("kob/output/yue-Hans-HK_clean_flatten.srt")
+    yue_hans = Series.load(get_test_file_path("kob/input/yue-Hans.srt"))
+    yue_hans_clean = get_hanzi_cleaned(yue_hans)
+    yue_hans_clean.save(get_output_path("kob/output/yue-Hans_clean.srt"))
+    yue_hans_flatten = get_hanzi_flattened(yue_hans)
+    yue_hans_flatten.save(get_output_path("kob/output/yue-Hans_flatten.srt"))
+    yue_hans_clean_flatten = get_hanzi_flattened(yue_hans_clean)
+    yue_hans_clean_flatten.save(
+        get_output_path("kob/output/yue-Hans_clean_flatten.srt")
     )
 
     # Traditional Cantonese Chinese
-    yue_hant_hk = Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
-    yue_hant_hk_simplify = get_hanzi_simplified(yue_hant_hk)
-    yue_hant_hk_simplify.save(get_output_path("kob/output/yue-Hant-HK_simplify.srt"))
+    yue_hant = Series.load(get_test_file_path("kob/input/yue-Hant.srt"))
+    yue_hant_simplify = get_hanzi_simplified(yue_hant)
+    yue_hant_simplify.save(get_output_path("kob/output/yue-Hant_simplify.srt"))
 
     # English
-    en_hk = Series.load(get_test_file_path("kob/input/en-HK.srt"))
-    en_hk_clean = get_english_cleaned(en_hk)
-    en_hk_clean.save(get_output_path("kob/output/en-HK_clean.srt"))
-    en_hk_flatten = get_english_flattened(en_hk)
-    en_hk_flatten.save(get_output_path("kob/output/en-HK_flatten.srt"))
-    en_hk_clean_flatten = get_english_flattened(en_hk_clean)
-    en_hk_clean_flatten.save(get_output_path("kob/output/en-HK_clean_flatten.srt"))
+    eng = Series.load(get_test_file_path("kob/input/eng.srt"))
+    eng_clean = get_english_cleaned(eng)
+    eng_clean.save(get_output_path("kob/output/eng_clean.srt"))
+    eng_flatten = get_english_flattened(eng)
+    eng_flatten.save(get_output_path("kob/output/eng_flatten.srt"))
+    eng_clean_flatten = get_english_flattened(eng_clean)
+    eng_clean_flatten.save(get_output_path("kob/output/eng_clean_flatten.srt"))
 
     # Bilingual Simplified Cantonese Chinese and English
-    yue_hans_hk_en_hk = get_synced_series(
-        yue_hans_hk_clean_flatten, en_hk_clean_flatten
-    )
-    yue_hans_hk_en_hk.save(get_output_path("kob/output/yue-Hans-HK_en-HK.srt"))
+    yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
+    yue_hans_eng.save(get_output_path("kob/output/yue-Hans_eng.srt"))

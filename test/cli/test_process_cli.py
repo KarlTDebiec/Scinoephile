@@ -22,15 +22,15 @@ from scinoephile.testing.file import get_test_file_path
     [
         (
             (ScinoephileCli,),
-            "pdp/input/en-HK.srt",
+            "pdp/input/eng.srt",
             "--clean",
-            "pdp/output/en-HK_clean.srt",
+            "pdp/output/eng_clean.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/en-HK.srt",
+            "pdp/input/eng.srt",
             "--flatten",
-            "pdp/output/en-HK_flatten.srt",
+            "pdp/output/eng_flatten.srt",
         ),
     ],
 )
@@ -63,15 +63,15 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant-HK.srt",
+            "pdp/input/cmn-Hant.srt",
             "--flatten",
-            "pdp/output/cmn-Hant-HK_flatten.srt",
+            "pdp/output/cmn-Hant_flatten.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant-HK.srt",
+            "pdp/input/cmn-Hant.srt",
             "--simplify",
-            "pdp/output/cmn-Hant-HK_simplify.srt",
+            "pdp/output/cmn-Hant_simplify.srt",
         ),
     ],
 )
@@ -104,10 +104,10 @@ def test_chinese(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/yue-Hant-HK.srt",
-            "pdp/input/en-HK.srt",
+            "pdp/input/yue-Hant.srt",
+            "pdp/input/eng.srt",
             "--clean --simplify",
-            "pdp/output/yue-Hans-HK_en-HK.srt",
+            "pdp/output/yue-Hans_eng.srt",
         ),
     ],
 )

@@ -12,23 +12,23 @@ from scinoephile.testing.file import get_test_directory_path, get_test_file_path
 
 # region Simplified Standard Chinese
 @pytest.fixture
-def mlamd_cmn_hans_hk() -> ImageSeries:
+def mlamd_cmn_hans() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans-HK"))
+        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans"))
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans-HK.sup"))
+        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans.sup"))
 
 
 @pytest.fixture()
-def mlamd_cmn_hans_hk_image() -> Image:
+def mlamd_cmn_hans_image() -> Image:
     return Image.open(
-        get_test_file_path("mlamd/output/cmn-Hans-HK/0001_00048792_00051125.png")
+        get_test_file_path("mlamd/output/cmn-Hans/0001_00048792_00051125.png")
     )
 
 
 @pytest.fixture
-def mlamd_cmn_hans_hk_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/cmn-Hans-HK_validation")
+def mlamd_cmn_hans_validation_directory() -> str:
+    return get_test_directory_path("mlamd/output/cmn-Hans_validation")
 
 
 # endregion
@@ -36,23 +36,23 @@ def mlamd_cmn_hans_hk_validation_directory() -> str:
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def mlamd_cmn_hant_hk() -> ImageSeries:
+def mlamd_cmn_hant() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hant-HK"))
+        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hant"))
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant-HK.sup"))
+        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant.sup"))
 
 
 @pytest.fixture()
-def mlamd_cmn_hant_hk_image() -> Image:
+def mlamd_cmn_hant_image() -> Image:
     return Image.open(
-        get_test_file_path("mlamd/output/cmn-Hant-HK/0001_00048792_00051125.png")
+        get_test_file_path("mlamd/output/cmn-Hant/0001_00048792_00051125.png")
     )
 
 
 @pytest.fixture
-def mlamd_cmn_hant_hk_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/cmn-Hant-HK_validation")
+def mlamd_cmn_hant_validation_directory() -> str:
+    return get_test_directory_path("mlamd/output/cmn-Hant_validation")
 
 
 # endregion
@@ -60,35 +60,33 @@ def mlamd_cmn_hant_hk_validation_directory() -> str:
 
 # region English
 @pytest.fixture
-def mlamd_en_hk() -> ImageSeries:
+def mlamd_eng() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/en-HK"))
+        return ImageSeries.load(get_test_file_path("mlamd/output/eng"))
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/en-HK.sup"))
+        return ImageSeries.load(get_test_file_path("mlamd/input/eng.sup"))
 
 
 @pytest.fixture()
-def mlamd_en_hk_image() -> Image:
-    return Image.open(
-        get_test_file_path("mlamd/output/en-HK/0001_00048792_00051125.png")
-    )
+def mlamd_eng_image() -> Image:
+    return Image.open(get_test_file_path("mlamd/output/eng/0001_00048792_00051125.png"))
 
 
 @pytest.fixture
-def mlamd_en_hk_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/en-HK_validation")
+def mlamd_eng_validation_directory() -> str:
+    return get_test_directory_path("mlamd/output/eng_validation")
 
 
 # endregion
 
 ___all__ = [
-    "mlamd_cmn_hans_hk",
-    "mlamd_cmn_hans_hk_image",
-    "mlamd_cmn_hans_hk_validation_directory",
-    "mlamd_cmn_hant_hk",
-    "mlamd_cmn_hant_hk_image",
-    "mlamd_cmn_hant_hk_validation_directory",
-    "mlamd_en_hk",
-    "mlamd_en_hk_image",
-    "mlamd_en_hk_validation_directory",
+    "mlamd_cmn_hans",
+    "mlamd_cmn_hans_image",
+    "mlamd_cmn_hans_validation_directory",
+    "mlamd_cmn_hant",
+    "mlamd_cmn_hant_image",
+    "mlamd_cmn_hant_validation_directory",
+    "mlamd_eng",
+    "mlamd_eng_image",
+    "mlamd_eng_validation_directory",
 ]

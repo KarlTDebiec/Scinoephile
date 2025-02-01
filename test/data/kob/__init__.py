@@ -11,23 +11,23 @@ from scinoephile.testing.file import get_test_file_path
 
 # region Simplified Cantonese Chinese
 @pytest.fixture
-def kob_yue_hans_hk() -> Series:
-    return Series.load(get_test_file_path("kob/input/yue-Hans-HK.srt"))
+def kob_yue_hans() -> Series:
+    return Series.load(get_test_file_path("kob/input/yue-Hans.srt"))
 
 
 @pytest.fixture
-def kob_yue_hans_hk_clean() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_clean.srt"))
+def kob_yue_hans_clean() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans_clean.srt"))
 
 
 @pytest.fixture
-def kob_yue_hans_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_flatten.srt"))
+def kob_yue_hans_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans_flatten.srt"))
 
 
 @pytest.fixture
-def kob_yue_hans_hk_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_clean_flatten.srt"))
+def kob_yue_hans_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans_clean_flatten.srt"))
 
 
 # endregion
@@ -35,13 +35,13 @@ def kob_yue_hans_hk_clean_flatten() -> Series:
 
 # region Traditional Cantonese Chinese
 @pytest.fixture
-def kob_yue_hant_hk() -> Series:
-    return Series.load(get_test_file_path("kob/input/yue-Hant-HK.srt"))
+def kob_yue_hant() -> Series:
+    return Series.load(get_test_file_path("kob/input/yue-Hant.srt"))
 
 
 @pytest.fixture
-def kob_yue_hant_hk_simplify() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hant-HK_simplify.srt"))
+def kob_yue_hant_simplify() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hant_simplify.srt"))
 
 
 # endregion
@@ -49,23 +49,23 @@ def kob_yue_hant_hk_simplify() -> Series:
 
 # region English
 @pytest.fixture
-def kob_en_hk() -> Series:
-    return Series.load(get_test_file_path("kob/input/en-HK.srt"))
+def kob_eng() -> Series:
+    return Series.load(get_test_file_path("kob/input/eng.srt"))
 
 
 @pytest.fixture
-def kob_en_hk_clean() -> Series:
-    return Series.load(get_test_file_path("kob/output/en-HK_clean.srt"))
+def kob_eng_clean() -> Series:
+    return Series.load(get_test_file_path("kob/output/eng_clean.srt"))
 
 
 @pytest.fixture
-def kob_en_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/en-HK_flatten.srt"))
+def kob_eng_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/eng_flatten.srt"))
 
 
 @pytest.fixture
-def kob_en_hk_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/en-HK_clean_flatten.srt"))
+def kob_eng_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("kob/output/eng_clean_flatten.srt"))
 
 
 # endregion
@@ -73,22 +73,22 @@ def kob_en_hk_clean_flatten() -> Series:
 
 # region Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture()
-def kob_yue_hans_hk_en_hk() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans-HK_en-HK.srt"))
+def kob_yue_hans_eng() -> Series:
+    return Series.load(get_test_file_path("kob/output/yue-Hans_eng.srt"))
 
 
 # endregion
 
 ___all__ = [
-    "kob_yue_hans_hk",
-    "kob_yue_hans_hk_clean",
-    "kob_yue_hans_hk_flatten",
-    "kob_yue_hans_hk_clean_flatten",
-    "kob_yue_hant_hk",
-    "kob_yue_hant_hk_simplify",
-    "kob_en_hk",
-    "kob_en_hk_clean",
-    "kob_en_hk_flatten",
-    "kob_en_hk_clean_flatten",
-    "kob_yue_hans_hk_en_hk",
+    "kob_yue_hans",
+    "kob_yue_hans_clean",
+    "kob_yue_hans_flatten",
+    "kob_yue_hans_clean_flatten",
+    "kob_yue_hant",
+    "kob_yue_hant_simplify",
+    "kob_eng",
+    "kob_eng_clean",
+    "kob_eng_flatten",
+    "kob_eng_clean_flatten",
+    "kob_yue_hans_eng",
 ]

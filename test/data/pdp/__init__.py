@@ -12,23 +12,23 @@ from scinoephile.testing.file import get_test_file_path
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def pdp_cmn_hant_hk() -> Series:
-    return Series.load(get_test_file_path("pdp/input/cmn-Hant-HK.srt"))
+def pdp_cmn_hant() -> Series:
+    return Series.load(get_test_file_path("pdp/input/cmn-Hant.srt"))
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_clean.srt"))
+def pdp_cmn_hant_clean() -> Series:
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant_clean.srt"))
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_flatten.srt"))
+def pdp_cmn_hant_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant_flatten.srt"))
 
 
 @pytest.fixture
-def pdp_cmn_hant_hk_simplify() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant-HK_simplify.srt"))
+def pdp_cmn_hant_simplify() -> Series:
+    return Series.load(get_test_file_path("pdp/output/cmn-Hant_simplify.srt"))
 
 
 # endregion
@@ -36,29 +36,29 @@ def pdp_cmn_hant_hk_simplify() -> Series:
 
 # region Traditional Cantonese Chinese
 @pytest.fixture
-def pdp_yue_hant_hk() -> Series:
-    return Series.load(get_test_file_path("pdp/input/yue-Hant-HK.srt"))
+def pdp_yue_hant() -> Series:
+    return Series.load(get_test_file_path("pdp/input/yue-Hant.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_clean.srt"))
+def pdp_yue_hant_clean() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hant_clean.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_flatten.srt"))
+def pdp_yue_hant_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hant_flatten.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_simplify() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant-HK_simplify.srt"))
+def pdp_yue_hant_simplify() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hant_simplify.srt"))
 
 
 @pytest.fixture
-def pdp_yue_hant_hk_clean_flatten_simplify() -> Series:
+def pdp_yue_hant_clean_flatten_simplify() -> Series:
     return Series.load(
-        get_test_file_path("pdp/output/yue-Hant-HK_clean_flatten_simplify.srt")
+        get_test_file_path("pdp/output/yue-Hant_clean_flatten_simplify.srt")
     )
 
 
@@ -67,23 +67,23 @@ def pdp_yue_hant_hk_clean_flatten_simplify() -> Series:
 
 # region English
 @pytest.fixture
-def pdp_en_hk() -> Series:
-    return Series.load(get_test_file_path("pdp/input/en-HK.srt"))
+def pdp_eng() -> Series:
+    return Series.load(get_test_file_path("pdp/input/eng.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/en-HK_clean.srt"))
+def pdp_eng_clean() -> Series:
+    return Series.load(get_test_file_path("pdp/output/eng_clean.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/en-HK_flatten.srt"))
+def pdp_eng_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/eng_flatten.srt"))
 
 
 @pytest.fixture
-def pdp_en_hk_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/en-HK_clean_flatten.srt"))
+def pdp_eng_clean_flatten() -> Series:
+    return Series.load(get_test_file_path("pdp/output/eng_clean_flatten.srt"))
 
 
 # endregion
@@ -91,8 +91,8 @@ def pdp_en_hk_clean_flatten() -> Series:
 
 # region Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture
-def pdp_yue_hans_hk_en_hk() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hans-HK_en-HK.srt"))
+def pdp_yue_hans_eng() -> Series:
+    return Series.load(get_test_file_path("pdp/output/yue-Hans_eng.srt"))
 
 
 # endregion
@@ -2699,19 +2699,19 @@ pdp_test_cases = [
 # endregion
 
 __all__ = [
-    "pdp_cmn_hant_hk",
-    "pdp_cmn_hant_hk_clean",
-    "pdp_cmn_hant_hk_flatten",
-    "pdp_cmn_hant_hk_simplify",
-    "pdp_yue_hant_hk",
-    "pdp_yue_hant_hk_clean",
-    "pdp_yue_hant_hk_flatten",
-    "pdp_yue_hant_hk_simplify",
-    "pdp_yue_hant_hk_clean_flatten_simplify",
-    "pdp_en_hk",
-    "pdp_en_hk_clean",
-    "pdp_en_hk_flatten",
-    "pdp_en_hk_clean_flatten",
-    "pdp_yue_hans_hk_en_hk",
+    "pdp_cmn_hant",
+    "pdp_cmn_hant_clean",
+    "pdp_cmn_hant_flatten",
+    "pdp_cmn_hant_simplify",
+    "pdp_yue_hant",
+    "pdp_yue_hant_clean",
+    "pdp_yue_hant_flatten",
+    "pdp_yue_hant_simplify",
+    "pdp_yue_hant_clean_flatten_simplify",
+    "pdp_eng",
+    "pdp_eng_clean",
+    "pdp_eng_flatten",
+    "pdp_eng_clean_flatten",
+    "pdp_yue_hans_eng",
     "pdp_test_cases",
 ]
