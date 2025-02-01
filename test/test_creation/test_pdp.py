@@ -15,8 +15,8 @@ from scinoephile.testing import SyncTestCase
 
 
 # Remove underscore to test
-def _test_get_test_cases_pdp(pdp_yue_hant_hk_simplify: Series, pdp_en_hk_clean: Series):
-    pair_blocks = get_pair_blocks_by_pause(pdp_yue_hant_hk_simplify, pdp_en_hk_clean)
+def _test_get_test_cases_pdp(pdp_yue_hant_simplify: Series, pdp_eng_clean: Series):
+    pair_blocks = get_pair_blocks_by_pause(pdp_yue_hant_simplify, pdp_eng_clean)
     bilingual_blocks = []
 
     hanzi_start = 0

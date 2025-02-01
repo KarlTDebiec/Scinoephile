@@ -12,10 +12,10 @@ from scinoephile.core.english import (
     get_english_cleaned,
     get_english_flattened,
 )
-from ..data.kob import kob_en_hk, kob_en_hk_clean, kob_en_hk_flatten
-from ..data.mnt import mnt_en_us, mnt_en_us_clean, mnt_en_us_flatten
-from ..data.pdp import pdp_en_hk, pdp_en_hk_clean, pdp_en_hk_flatten
-from ..data.t import t_en_hk, t_en_hk_clean, t_en_hk_flatten
+from ..data.kob import kob_eng, kob_eng_clean, kob_eng_flatten
+from ..data.mnt import mnt_eng, mnt_eng_clean, mnt_eng_flatten
+from ..data.pdp import pdp_eng, pdp_eng_clean, pdp_eng_flatten
+from ..data.t import t_eng, t_eng_clean, t_eng_flatten
 
 
 def _test_get_english_cleaned(series: Series, expected: Series):
@@ -51,37 +51,37 @@ def _test_get_english_flattened(series: Series, expected: Series):
 
 
 # get_english_cleaned
-def test_get_english_cleaned_kob(kob_en_hk: Series, kob_en_hk_clean: Series):
-    _test_get_english_cleaned(kob_en_hk, kob_en_hk_clean)
+def test_get_english_cleaned_kob(kob_eng: Series, kob_eng_clean: Series):
+    _test_get_english_cleaned(kob_eng, kob_eng_clean)
 
 
-def test_get_english_cleaned_mnt(mnt_en_us: Series, mnt_en_us_clean: Series):
-    _test_get_english_cleaned(mnt_en_us, mnt_en_us_clean)
+def test_get_english_cleaned_mnt(mnt_eng: Series, mnt_eng_clean: Series):
+    _test_get_english_cleaned(mnt_eng, mnt_eng_clean)
 
 
-def test_get_english_cleaned_pdp(pdp_en_hk: Series, pdp_en_hk_clean: Series):
-    _test_get_english_cleaned(pdp_en_hk, pdp_en_hk_clean)
+def test_get_english_cleaned_pdp(pdp_eng: Series, pdp_eng_clean: Series):
+    _test_get_english_cleaned(pdp_eng, pdp_eng_clean)
 
 
-def test_get_english_cleaned_t(t_en_hk: Series, t_en_hk_clean: Series):
-    _test_get_english_cleaned(t_en_hk, t_en_hk_clean)
+def test_get_english_cleaned_t(t_eng: Series, t_eng_clean: Series):
+    _test_get_english_cleaned(t_eng, t_eng_clean)
 
 
 # get_english_flattened
-def test_get_english_flattened_kob(kob_en_hk: Series, kob_en_hk_flatten: Series):
-    _test_get_english_flattened(kob_en_hk, kob_en_hk_flatten)
+def test_get_english_flattened_kob(kob_eng: Series, kob_eng_flatten: Series):
+    _test_get_english_flattened(kob_eng, kob_eng_flatten)
 
 
-def test_get_english_flattened_mnt(mnt_en_us: Series, mnt_en_us_flatten: Series):
-    _test_get_english_flattened(mnt_en_us, mnt_en_us_flatten)
+def test_get_english_flattened_mnt(mnt_eng: Series, mnt_eng_flatten: Series):
+    _test_get_english_flattened(mnt_eng, mnt_eng_flatten)
 
 
-def test_get_english_flattened_pdp(pdp_en_hk: Series, pdp_en_hk_flatten: Series):
-    _test_get_english_flattened(pdp_en_hk, pdp_en_hk_flatten)
+def test_get_english_flattened_pdp(pdp_eng: Series, pdp_eng_flatten: Series):
+    _test_get_english_flattened(pdp_eng, pdp_eng_flatten)
 
 
-def test_get_english_flattened_t(t_en_hk: Series, t_en_hk_flatten: Series):
-    _test_get_english_flattened(t_en_hk, t_en_hk_flatten)
+def test_get_english_flattened_t(t_eng: Series, t_eng_flatten: Series):
+    _test_get_english_flattened(t_eng, t_eng_flatten)
 
 
 @pytest.mark.parametrize(

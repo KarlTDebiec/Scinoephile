@@ -10,9 +10,9 @@ from scinoephile.core.mandarin import (
     get_mandarin_romanization,
     get_mandarin_text_romanization,
 )
-from ..data.mnt import mnt_cmn_hant_hk
-from ..data.pdp import pdp_cmn_hant_hk
-from ..data.t import t_cmn_hans_hk
+from ..data.mnt import mnt_cmn_hant
+from ..data.pdp import pdp_cmn_hant
+from ..data.t import t_cmn_hans
 
 
 def _test_get_mandarin_romanization(series: Series):
@@ -21,16 +21,16 @@ def _test_get_mandarin_romanization(series: Series):
 
 
 # get_mandarin_romanization
-def test_get_mandarin_romanization_mnt(mnt_cmn_hant_hk: Series):
-    _test_get_mandarin_romanization(mnt_cmn_hant_hk)
+def test_get_mandarin_romanization_mnt(mnt_cmn_hant: Series):
+    _test_get_mandarin_romanization(mnt_cmn_hant)
 
 
-def test_get_mandarin_romanization_pdp(pdp_cmn_hant_hk: Series):
-    _test_get_mandarin_romanization(pdp_cmn_hant_hk)
+def test_get_mandarin_romanization_pdp(pdp_cmn_hant: Series):
+    _test_get_mandarin_romanization(pdp_cmn_hant)
 
 
-def test_get_mandarin_romanization_t(t_cmn_hans_hk: Series):
-    _test_get_mandarin_romanization(t_cmn_hans_hk)
+def test_get_mandarin_romanization_t(t_cmn_hans: Series):
+    _test_get_mandarin_romanization(t_cmn_hans)
 
 
 @pytest.mark.parametrize(
