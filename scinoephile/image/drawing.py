@@ -72,64 +72,30 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
         Image of text
     """
     # Create a new image with white background
-    image = Image.new("L", size, "white")
+    image = Image.new("L", (size[0] * 2, size[1] * 2), 255)
     draw = ImageDraw.Draw(image)
 
     # Load a font
     font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
-    font_size = 41
+    font_size = 50 * 2
     font = ImageFont.truetype(font_path, font_size)
 
     # Calculate text size and position
     text_bbox = draw.textbbox((0, 0), text, font=font)
     text_width, text_height = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
-    text_x = (size[0] - text_width) // 2
-    text_y = (size[1] - text_height) // 2
+    text_x = (image.size[0] - text_width) // 2
+    text_y = (image.size[1] - text_height) // 2
+    text_y -= text_bbox[1]
 
     # Draw text with outline
-    outline_width = 2
+    outline_width = 2 * 2
     for dx in range(-outline_width, outline_width + 1):
         for dy in range(-outline_width, outline_width + 1):
             if dx != 0 or dy != 0:
                 draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
     draw.text((text_x, text_y), text, font=font, fill=235)
 
-    return image
-
-    # # Prepare Figure of appropriate height and width
-    # figure = plt.figure(figsize=(size[0] / 100, size[1] / 100), dpi=100)
-    # figure.patch.set_alpha(0)
-    # figure.patch.set_facecolor("none")
-    #
-    # # Draw text on Figure
-    # # TODO: Make styling configurable.
-    # # TODO: Support OSes other than Windows.
-    # # TODO: Determine optimized settings for Chinese.
-    # font = r"C:\WINDOWS\FONTS\MSYH.TTC"
-    # font_size = 41.5
-    # width = 4
-    # text = figure.text(
-    #     x=0.5,
-    #     y=0.5,
-    #     s=text,
-    #     ha="center",
-    #     va="center",
-    #     fontproperties=FontProperties(
-    #         fname=font,
-    #         size=font_size,
-    #     ),
-    #     color=(0.8549, 0.8549, 0.8549),
-    # )
-    # text.set_path_effects(
-    #     [Stroke(linewidth=width, foreground=(0.1, 0.1, 0.1)), Normal()]
-    # )
-    # figure.canvas.draw()
-    #
-    # # Convert Figure to Image
-    # image = Image.new("RGBA", size, color=255)
-    # image_array = np.array(figure.canvas.renderer._renderer)  # noqa
-    # image.paste(Image.fromarray(image_array), (0, 0))
-
+    image = image.resize(size, Image.LANCZOS)  # noqa
     return image
 
 
