@@ -22,3 +22,4 @@ def validate_ocr(series: ImageSeries, output_path: Path) -> None:
     for i, event in enumerate(series.events, 1):
         event.image_stack.save(output_path / f"{i:04d}.png")
         info(f"Saved {output_path / f'{i:04d}.png'}")
+        break

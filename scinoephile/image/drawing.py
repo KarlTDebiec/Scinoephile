@@ -3,11 +3,8 @@
 """Image code related to image drawing."""
 from __future__ import annotations
 
-import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image, ImageChops
-from matplotlib.font_manager import FontProperties
-from matplotlib.patheffects import Normal, Stroke
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 
 def get_grayscale_image_on_white(image: Image.Image) -> Image.Image:
@@ -74,39 +71,64 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
     Returns:
         Image of text
     """
-    # Prepare Figure of appropriate height and width
-    figure = plt.figure(figsize=(size[0] / 100, size[1] / 100), dpi=100)
-    figure.patch.set_alpha(0)
-    figure.patch.set_facecolor("none")
+    # Create a new image with white background
+    image = Image.new("L", size, "white")
+    draw = ImageDraw.Draw(image)
 
-    # Draw text on Figure
-    # TODO: Make styling configurable.
-    # TODO: Support OSes other than Windows.
-    # TODO: Determine optimized settings for Chinese.
-    font = r"C:\WINDOWS\FONTS\MSYH.TTC"
-    font_size = 41.5
-    width = 4
-    text = figure.text(
-        x=0.5,
-        y=0.5,
-        s=text,
-        ha="center",
-        va="center",
-        fontproperties=FontProperties(
-            fname=font,
-            size=font_size,
-        ),
-        color=(0.8549, 0.8549, 0.8549),
-    )
-    text.set_path_effects(
-        [Stroke(linewidth=width, foreground=(0.1, 0.1, 0.1)), Normal()]
-    )
-    figure.canvas.draw()
+    # Load a font
+    font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    font_size = 41
+    font = ImageFont.truetype(font_path, font_size)
 
-    # Convert Figure to Image
-    image = Image.new("RGBA", size, color=255)
-    image_array = np.array(figure.canvas.renderer._renderer)  # noqa
-    image.paste(Image.fromarray(image_array), (0, 0))
+    # Calculate text size and position
+    text_bbox = draw.textbbox((0, 0), text, font=font)
+    text_width, text_height = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
+    text_x = (size[0] - text_width) // 2
+    text_y = (size[1] - text_height) // 2
+
+    # Draw text with outline
+    outline_width = 2
+    for dx in range(-outline_width, outline_width + 1):
+        for dy in range(-outline_width, outline_width + 1):
+            if dx != 0 or dy != 0:
+                draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
+    draw.text((text_x, text_y), text, font=font, fill=235)
+
+    return image
+
+    # # Prepare Figure of appropriate height and width
+    # figure = plt.figure(figsize=(size[0] / 100, size[1] / 100), dpi=100)
+    # figure.patch.set_alpha(0)
+    # figure.patch.set_facecolor("none")
+    #
+    # # Draw text on Figure
+    # # TODO: Make styling configurable.
+    # # TODO: Support OSes other than Windows.
+    # # TODO: Determine optimized settings for Chinese.
+    # font = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    # font_size = 41.5
+    # width = 4
+    # text = figure.text(
+    #     x=0.5,
+    #     y=0.5,
+    #     s=text,
+    #     ha="center",
+    #     va="center",
+    #     fontproperties=FontProperties(
+    #         fname=font,
+    #         size=font_size,
+    #     ),
+    #     color=(0.8549, 0.8549, 0.8549),
+    # )
+    # text.set_path_effects(
+    #     [Stroke(linewidth=width, foreground=(0.1, 0.1, 0.1)), Normal()]
+    # )
+    # figure.canvas.draw()
+    #
+    # # Convert Figure to Image
+    # image = Image.new("RGBA", size, color=255)
+    # image_array = np.array(figure.canvas.renderer._renderer)  # noqa
+    # image.paste(Image.fromarray(image_array), (0, 0))
 
     return image
 
@@ -161,10 +183,8 @@ def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
     if reference.size != test.size:
         raise ValueError("Images must be the same size")
 
-    reference_l = get_grayscale_image_on_white(reference)
-    test_l = get_grayscale_image_on_white(test)
-    reference_bbox = get_non_white_bbox(reference_l)
-    test_bbox = get_non_white_bbox(test_l)
+    reference_bbox = get_non_white_bbox(reference)
+    test_bbox = get_non_white_bbox(test)
     reference_bbox_size = (
         reference_bbox[2] - reference_bbox[0],
         reference_bbox[3] - reference_bbox[1],
@@ -172,8 +192,8 @@ def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
     test_bbox_size = (test_bbox[2] - test_bbox[0], test_bbox[3] - test_bbox[1])
     test_cropped = test.crop(test_bbox)
     test_scaled = test_cropped.resize(reference_bbox_size, Image.LANCZOS)  # noqa
-    test_updated = Image.new("LA", reference.size, (255, 255))
-    test_updated.paste(test_scaled, (reference_bbox[0], reference_bbox[1]), test_scaled)
-    test_l = test_updated.convert("L")
+    # test_updated = Image.new("LA", reference.size, (255, 255))
+    # test_updated.paste(test_scaled, (reference_bbox[0], reference_bbox[1]), test_scaled)
+    # test_l = test_updated.convert("L")
 
-    return test_l
+    return test_scaled

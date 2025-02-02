@@ -85,7 +85,7 @@ class ImageSubtitle(Subtitle):
         """Image and image generated from text, vertically stacked."""
         if self.image_from_text is None:
             return None
-        if not hasattr(self, "_image_diff_stack") or self._image_stack is None:
+        if not hasattr(self, "_image_stack") or self._image_stack is None:
             image_l = get_grayscale_image_on_white(self.image)
             image_from_text_scaled = get_scaled_image(image_l, self.image_from_text)
             self._image_stack = get_stacked_image(image_l, image_from_text_scaled)
