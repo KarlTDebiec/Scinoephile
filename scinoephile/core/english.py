@@ -31,16 +31,22 @@ def get_english_cleaned(series: Series) -> Series:
     return series
 
 
-def get_english_flattened(series: Series) -> Series:
+def get_english_flattened(series: Series, exceptions: list[int] = None) -> Series:
     """Get multi-line English series flattened to single lines.
 
     Arguments:
         series: series to flatten
+        exceptions: list of subtitle indexes to exclude from flattening
     Returns:
         flattened series
     """
+    if not exceptions:
+        exceptions = []
     series = deepcopy(series)
-    for event in series:
+    for i, event in enumerate(series, 1):
+        if i in exceptions:
+            info(f"Skipping flattening of subtitle {i}, with text:\n{event.text}")
+            continue
         event.text = _get_english_text_flattened(event.text.strip())
     return series
 

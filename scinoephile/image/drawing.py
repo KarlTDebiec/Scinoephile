@@ -6,6 +6,8 @@ from __future__ import annotations
 import numpy as np
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
+from scinoephile.core.text import is_chinese
+
 
 def get_grayscale_image_on_white(image: Image.Image) -> Image.Image:
     """Get grayscale image on white background.
@@ -77,23 +79,53 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
 
     # Load a font
     font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
-    font_size = 50 * 2
+    font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
 
-    # Calculate text size and position
-    text_bbox = draw.textbbox((0, 0), text, font=font)
-    text_width, text_height = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
-    text_x = (image.size[0] - text_width) // 2
-    text_y = (image.size[1] - text_height) // 2
-    text_y -= text_bbox[1]
+    if is_chinese(text):
+        spacing: int = 14
 
-    # Draw text with outline
-    outline_width = 2 * 2
-    for dx in range(-outline_width, outline_width + 1):
-        for dy in range(-outline_width, outline_width + 1):
-            if dx != 0 or dy != 0:
-                draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
-    draw.text((text_x, text_y), text, font=font, fill=235)
+        # Calculate initial position for text drawing
+        x = (
+            image.size[0] - (len(text) * font_size // 2 + (len(text) - 1) * spacing)
+        ) // 2
+        y = (image.size[1] - font_size) // 2
+
+        # Draw each character with custom spacing
+        for char in text:
+            text_bbox = draw.textbbox((0, 0), char, font=font)
+            char_width = text_bbox[2] - text_bbox[0]
+
+            # Draw character outline
+            outline_width = 3
+            for dx in range(-outline_width, outline_width + 1):
+                for dy in range(-outline_width, outline_width + 1):
+                    if dx != 0 or dy != 0:
+                        draw.text((x + dx, y + dy), char, font=font, fill=31)
+
+            # Draw character fill
+            draw.text((x, y), char, font=font, fill=235)
+
+            # Move to next character position
+            x += char_width + spacing
+    else:
+        # Calculate text size and position
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width, text_height = (
+            text_bbox[2] - text_bbox[0],
+            text_bbox[3] - text_bbox[1],
+        )
+        text_x = (image.size[0] - text_width) // 2
+        text_y = (image.size[1] - text_height) // 2
+        text_y -= text_bbox[1]
+
+        # Draw text with outline
+        outline_width = 2 * 2
+        for dx in range(-outline_width, outline_width + 1):
+            for dy in range(-outline_width, outline_width + 1):
+                if dx != 0 or dy != 0:
+                    draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
+        draw.text((text_x, text_y), text, font=font, fill=235)
 
     image = image.resize(size, Image.LANCZOS)  # noqa
     return image
