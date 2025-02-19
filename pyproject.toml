@@ -37,6 +37,8 @@ rlpycairo = "^0.3.0"
 snownlp = "^0.12.3"
 setuptools = "^75.8.0"
 svglib = "^1.5.1"
+scipy = "^1.15.2"
+scikit-image = "^0.25.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
