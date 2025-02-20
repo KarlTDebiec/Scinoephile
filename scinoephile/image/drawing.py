@@ -70,13 +70,18 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
 
     diff_arr = np.array(ref).astype(int) - np.array(tst).astype(int)
 
-    darker_arr = diff_arr.copy()
-    darker_arr[darker_arr > 0] = 0
-    darker_arr = (darker_arr * -1).astype(np.uint8)
+    # darker_arr = diff_arr.copy()
+    # darker_arr[darker_arr > 0] = 0
+    # darker_arr = (darker_arr * -1).astype(np.uint8)
 
-    lighter_arr = diff_arr.copy()
-    lighter_arr[lighter_arr < 0] = 0
-    lighter_arr = lighter_arr.astype(np.uint8)
+    # lighter_arr = diff_arr.copy()
+    # lighter_arr[lighter_arr < 0] = 0
+    # lighter_arr = lighter_arr.astype(np.uint8)
+
+    diff_sq = np.sign(diff_arr) * (diff_arr**2)
+    diff_sq = (diff_sq / 65025) * 255
+    darker_arr = np.clip(-diff_sq, 0, 255).astype(np.uint8)
+    lighter_arr = np.clip(diff_sq, 0, 255).astype(np.uint8)
 
     color_diff_arr = np.ones((ref.size[1], ref.size[0], 3), np.uint8) * 255
     color_diff_arr[..., 1] -= darker_arr  # Subtract darker from green and blue
@@ -169,7 +174,7 @@ def get_image_of_text_with_char_alignment(
     Returns:
         Image of text
     """
-    filtered_text = "".join([char for char in text if char not in ("\u3000",)])
+    filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
     if len(bboxes) != len(filtered_text):
         raise ScinoephileException(
             f"Number of characters in text ({len(filtered_text)})"

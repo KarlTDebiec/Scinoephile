@@ -3,7 +3,7 @@
 """Image code related to OCR validation."""
 from __future__ import annotations
 
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from PIL import Image
@@ -46,7 +46,7 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path) -> None:
                 event.text, event.img.size, bboxes
             )
         except ScinoephileException as e:
-            info(f"Subtitle {i} encountered the following exception: {e}")
+            warning(f"Subtitle {i} encountered the following exception: {e}")
             img_of_text = get_image_of_text(event.text, event.img.size)
         img_of_text_scaled = get_image_scaled(img_with_white_bg, img_of_text)
 

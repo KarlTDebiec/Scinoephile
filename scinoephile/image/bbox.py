@@ -111,7 +111,7 @@ def _merge_ellipsis_bboxes(
 
 def _merge_split_hanzi_bboxes(
     bboxes: list[tuple[int, int, int, int]],
-    aspect_ratio_cutoff: float = 1.45,
+    aspect_ratio_cutoff: float = 1.41,
     gap_cutoff: int = 8,
 ) -> list[tuple[int, int, int, int]]:
     """Identify split hanzi and merge their bounding boxes.
