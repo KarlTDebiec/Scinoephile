@@ -111,15 +111,15 @@ def _merge_ellipsis_bboxes(
 
 def _merge_split_hanzi_bboxes(
     bboxes: list[tuple[int, int, int, int]],
-    aspect_ratio_cutoff: float = 1.41,
-    gap_cutoff: int = 8,
+    min_aspect_ratio: float = 1.41,
+    max_gap: int = 8,
 ) -> list[tuple[int, int, int, int]]:
     """Identify split hanzi and merge their bounding boxes.
 
     Arguments:
         bboxes: Nascent list of bounding boxes [(x1, y1, x2, y2), ...]
-        aspect_ratio_cutoff: Min aspect ratio to be considered part of split hanzi
-        gap_cutoff: Max gap to be considered part of split hanzi
+        min_aspect_ratio: Min aspect ratio to be considered part of split hanzi
+        max_gap: Max gap between halves to be considered part of split hanzi
     Returns:
         bboxes with split hanzi merged
     """
@@ -137,9 +137,9 @@ def _merge_split_hanzi_bboxes(
 
             # If split hanzi, merge
             if (
-                b1_aspect_ratio >= aspect_ratio_cutoff
-                and b2_aspect_ratio >= aspect_ratio_cutoff
-                and b1_b2_gap <= gap_cutoff
+                b1_aspect_ratio >= min_aspect_ratio
+                and b2_aspect_ratio >= min_aspect_ratio
+                and b1_b2_gap <= max_gap
             ):
                 merged_bboxes.append((b1x1, min(b1y1, b2y1), b2x2, max(b1y2, b2y2)))
                 i += 2

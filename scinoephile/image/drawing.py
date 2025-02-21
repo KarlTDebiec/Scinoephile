@@ -174,6 +174,7 @@ def get_image_of_text_with_char_alignment(
     Returns:
         Image of text
     """
+    # Check if alignment is possible
     filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
     if len(bboxes) != len(filtered_text):
         raise ScinoephileException(
