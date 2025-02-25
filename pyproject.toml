@@ -39,7 +39,7 @@ setuptools = "^75.8.0"
 svglib = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.10.0"
+black = "^25.1.0"
 isort = "^5.13.2"
 prospector = "^1.14.1"
 pyright = "^1.1.391"
