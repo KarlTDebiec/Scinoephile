@@ -1615,13 +1615,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "prospector"
-version = "1.14.1"
+version = "1.15.2"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector-1.14.1-py3-none-any.whl", hash = "sha256:3cdb71c20c26a72a370e94de7f47f8492299d8843af3be5c5d7d5118d591e910"},
-    {file = "prospector-1.14.1.tar.gz", hash = "sha256:4f969c7d3df9f81c3c626e92ea25c243627da2d707285805ad36ed7c378ee3ec"},
+    {file = "prospector-1.15.2-py3-none-any.whl", hash = "sha256:06f8986e96a2d7f82904821710745418496e5c163241a922cac8dc3e3bc7dd43"},
+    {file = "prospector-1.15.2.tar.gz", hash = "sha256:e080667fc33baa93f5b2ab3d88650bbef201a9edcb1982a3ccf6b0696e1f4ab0"},
 ]
 
 [package.dependencies]
@@ -2611,4 +2611,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "161737699e650d801d8f2d89126d3d1c786bf7f1ea35bc6418238fb54a2db810"
+content-hash = "5f6ca5e52878cc0055a5cbc9115554137263b142adc72de3e79e0046ae2337ce"
