@@ -152,6 +152,12 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
             else:
                 break
 
+        # TODO
+        #   * When max_gap is exceeded, but whitespace is present, output appropriate
+        #     info, since this is expected
+        #   * When max_gap is not exceeded, and whitespace is present, output
+        #     appropriate warning, since this is not expected
+
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
         try:
