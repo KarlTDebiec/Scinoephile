@@ -24,49 +24,23 @@ from scinoephile.image.drawing import (
 )
 from scinoephile.image.image_series import ImageSeries
 
-max_gaps = np.loadtxt(
-    package_root / "data" / "ocr" / "max_gaps.csv", delimiter=",", dtype=int
-)
 
-
-def create_max_gap_array(max_gaps: dict[tuple[int, int], int]) -> np.ndarray:
-    """Create a 2D NumPy array from a dictionary of (x, y) -> z mappings.
-
-    Arguments:
-        max_gaps: Dictionary mapping (x, y) pairs to z values.
-
-    Returns:
-        A NumPy array of shape (max_x + 1, max_y + 1) where known (x, y) pairs
-        are filled with z, and all other positions are 0.
-    """
-    # Find max x and y to determine array size
-    max_x = max(x for x, y in max_gaps)
-    max_y = max(y for x, y in max_gaps)
-
-    # Initialize 2D array filled with zeros
-    arr = np.zeros((max_x + 1, max_y + 1), dtype=int)
-
-    # Fill the array with z values from the dictionary
-    for (x, y), z in max_gaps.items():
-        arr[x, y] = z
-
-    return arr
-
-
-def get_max_gap(x: int, y: int) -> int:
+def get_max_gap(max_gaps: np.ndarray, x: int, y: int, interpolate: bool = False) -> int:
     """Retrieve value from array or interpolate using the average of all neighbors.
 
     Arguments:
-        x: X-coordinate (row index).
-        y: Y-coordinate (column index).
+        max_gaps: Array of maximum gaps
+        x: Width of first character in pixels; used as row index
+        y: Width of second character in pixels; used as column index
+        interpolate: Whether to interpolate if value is zero
     Returns:
-        Interpolated or original value.
+        Interpolated or original value
     """
     # If value is nonzero, return it directly
-    try:
-        if max_gaps[x, y] != 0:
-            return max_gaps[x, y]
-    except IndexError:
+    if max_gaps[x, y] != 0:
+        return max_gaps[x, y]
+
+    if not interpolate:
         return 0
 
     # Get neighboring values (8-way connectivity)
@@ -77,9 +51,9 @@ def get_max_gap(x: int, y: int) -> int:
         for dy in [-1, 0, 1]:
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and (dx != 0 or dy != 0):
-                neighbors.append(max_gaps[nx, ny])  # Include zeros
+                neighbors.append(max_gaps[nx, ny])
 
-    # Average all neighbors (zeros included)
+    # Average all neighbors
     return int(sum(neighbors) / len(neighbors)) if neighbors else 0
 
 
@@ -132,6 +106,11 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
         text: Text to validate
         bboxes: Bounding boxes [(x1, y1, x2, y2), ...]
     """
+
+    # Load maximum gaps
+    max_gaps_path = package_root / "data" / "ocr" / "max_gaps.csv"
+    max_gaps = np.loadtxt(max_gaps_path, delimiter=",", dtype=int)
+
     # Check if validation is possible
     filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
     if len(filtered_text) != len(bboxes):
@@ -151,6 +130,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
     while True:
         if char_1_i > len(text) - 2:
             break
+
         # Get char 1 and its width
         char_1 = text[char_1_i]
         char_1_width = widths[char_1_width_i]
@@ -165,7 +145,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
         whitespace = ""
         while char_2_i < len(text) - 1:
             char_2 = text[char_2_i]
-            if char_2 in (" ", "\u3000"):
+            if char_2 in ("\u3000", " "):
                 whitespace += char_2
                 char_2_i += 1
                 continue
@@ -174,21 +154,70 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
 
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
-        max_gap = get_max_gap(char_1_width, char_2_width)
+        try:
+            max_gap = get_max_gap(max_gaps, char_1_width, char_2_width, False)
+        except IndexError:
+            # Expand max_gaps to fit new width(s) and resave
+            max_gaps = np.pad(
+                max_gaps,
+                (
+                    (0, max(0, char_1_width - max_gaps.shape[0] + 1)),
+                    (0, max(0, char_2_width - max_gaps.shape[1] + 1)),
+                ),
+                "constant",
+                constant_values=0,
+            )
+            np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+            info(
+                f"Expanded max_gaps to new size of {max_gaps.shape} and saved to "
+                f"{max_gaps_path}."
+            )
+            max_gap = 0
 
-        if gap > max_gap:
-            if whitespace:
-                warning(
+        if max_gap > 0:
+            if gap <= max_gap:
+                pass
+            elif gap <= max(max_gap + 1, np.floor(max_gap * 1.1)):
+                max_gaps[char_1_width, char_2_width] = gap
+                np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+                info(
                     f"{char_1} and {char_2} are separated by "
-                    f"{gap} pixels, exceeding max of {max_gap}. "
-                    f"Separated by whitespace '{whitespace}'."
+                    f"{gap:2d} pixels, "
+                    f"exceeding max of {max_gap:2d} by less than 10%. "
+                    f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                    f"to max_gaps and saved to {max_gaps_path}."
                 )
             else:
                 warning(
                     f"{char_1} and {char_2} are separated by "
-                    f"{gap} pixels, exceeding max of {max_gap}. "
-                    f"(May add  ({char_1_width+1},{char_2_width+1}):{gap},  to max_gaps)"
+                    f"{gap:2d} pixels, "
+                    f"exceeding max of {max_gap:2d} by more than 10%. "
+                    f"May add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                    f"to max_gaps."
                 )
+        else:
+            max_gap_interpolate = get_max_gap(
+                max_gaps, char_1_width, char_2_width, True
+            )
+            if gap <= max_gap_interpolate:
+                max_gaps[char_1_width, char_2_width] = gap
+                np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+                info(
+                    f"{char_1} and {char_2} are separated by "
+                    f"{gap:2d} pixels, "
+                    f"within interpolated max of {max_gap_interpolate:2d}. "
+                    f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                    f"to max_gaps and saved to {max_gaps_path}."
+                )
+            else:
+                warning(
+                    f"{char_1} and {char_2} are separated by "
+                    f"{gap:2d} pixels, "
+                    f"exceeding interpolated max of {max_gap_interpolate:2d}. "
+                    f"May add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                    f"to max_gaps."
+                )
+
         char_1_i = char_2_i
         char_1_width_i = char_2_width_i
         gap_i += 1
