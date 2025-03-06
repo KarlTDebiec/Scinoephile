@@ -68,7 +68,7 @@ def get_char_bboxes(img: Image.Image) -> list[tuple[int, int, int, int]]:
 def _merge_ellipsis_bboxes(
     bboxes: list[tuple[int, int, int, int]],
     max_size: int = 30,
-    max_spacing: int = 10,
+    max_spacing: int = 11,
 ) -> list[tuple[int, int, int, int]]:
     """Identify ellipsis and merge their bounding boxes.
 

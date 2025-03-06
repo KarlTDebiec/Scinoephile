@@ -3,6 +3,8 @@
 """Image code related to OCR validation."""
 from __future__ import annotations
 
+import logging
+from contextlib import contextmanager
 from logging import info, warning
 from pathlib import Path
 
@@ -23,6 +25,32 @@ from scinoephile.image.drawing import (
     get_images_stacked,
 )
 from scinoephile.image.image_series import ImageSeries
+
+
+@contextmanager
+def capture_logs(event_index):
+    class EventLogHandler(logging.Handler):
+        def __init__(self):
+            super().__init__()
+            self._processing = False
+
+        def emit(self, record):
+            if not self._processing:
+                self._processing = True
+                record.msg = f"Subtitle {event_index}: {record.msg}"
+                logging.getLogger().handle(record)
+                self._processing = False
+
+    handler = EventLogHandler()
+    root_logger = logging.getLogger()
+    root_logger.addHandler(handler)
+    root_logger.propagate = False
+
+    try:
+        yield
+    finally:
+        root_logger.removeHandler(handler)
+        root_logger.propagate = True
 
 
 def get_max_gap(max_gaps: np.ndarray, x: int, y: int, interpolate: bool = False) -> int:
@@ -81,10 +109,10 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path) -> None:
             img_of_text = get_image_of_text_with_char_alignment(
                 event.text, event.img.size, bboxes
             )
-
-            validate_spaces_hanzi(event.text, bboxes)
+            with capture_logs(i):
+                validate_spaces_hanzi(event.text, bboxes)
         except ScinoephileException as e:
-            warning(f"Subtitle {i} encountered the following exception: {e}")
+            warning(f"Subtitle {i}: {e}")
             img_of_text = get_image_of_text(event.text, event.img.size)
         img_of_text_scaled = get_image_scaled(img_with_white_bg, img_of_text)
 
@@ -177,7 +205,6 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
             )
             max_gap = 0
 
-        # If we have a max gap
         if max_gap > 0:
             if gap <= max_gap:
                 if whitespace:
@@ -190,7 +217,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
             elif gap <= max(max_gap + 1, np.floor(max_gap * 1.1)):
                 max_gaps[char_1_width, char_2_width] = gap
                 np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
-                info(
+                warning(
                     f"{char_1} and {char_2} are separated by "
                     f"{gap:2d} pixels, "
                     f"exceeding max of {max_gap:2d} by less than 10%. "
@@ -199,10 +226,10 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                 )
             else:
                 if whitespace:
-                    info(
+                    warning(
                         f"{char_1} and {char_2} are separated by "
                         f"{gap:2d} pixels, "
-                        f"exceeding max of {max_gap:2d}%, "
+                        f"exceeding max of {max_gap:2d}, "
                         f"however they are separated by whitespace '{whitespace}'."
                     )
                 else:
@@ -217,11 +244,10 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                     if response.lower() == "y":
                         max_gaps[char_1_width, char_2_width] = gap
                         np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
-                        info(
+                        warning(
                             f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
                             f"to max_gaps and saved to {max_gaps_path}."
                         )
-        # Otherwise, interpolate the max gap
         else:
             max_gap_interpolate = get_max_gap(
                 max_gaps, char_1_width, char_2_width, True
@@ -237,7 +263,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                 else:
                     max_gaps[char_1_width, char_2_width] = gap
                     np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
-                    info(
+                    warning(
                         f"{char_1} and {char_2} are separated by "
                         f"{gap:2d} pixels, "
                         f"within interpolated max of {max_gap_interpolate:2d}. "
@@ -246,7 +272,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                     )
             else:
                 if whitespace:
-                    info(
+                    warning(
                         f"{char_1} and {char_2} are separated by "
                         f"{gap:2d} pixels, "
                         f"exceeding interpolated max of {max_gap_interpolate:2d}, "
@@ -264,7 +290,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                     if response.lower() == "y":
                         max_gaps[char_1_width, char_2_width] = gap
                         np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
-                        info(
+                        warning(
                             f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
                             f"to max_gaps and saved to {max_gaps_path}."
                         )
