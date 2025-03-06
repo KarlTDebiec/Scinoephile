@@ -152,12 +152,6 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
             else:
                 break
 
-        # TODO
-        #   * When max_gap is exceeded, but whitespace is present, output appropriate
-        #     info, since this is expected
-        #   * When max_gap is not exceeded, and whitespace is present, output
-        #     appropriate warning, since this is not expected
-
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
         try:
@@ -182,7 +176,13 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
 
         if max_gap > 0:
             if gap <= max_gap:
-                pass
+                if whitespace:
+                    warning(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"within max of {max_gap:2d}, however they are separated by "
+                        f"whitespace '{whitespace}'."
+                    )
             elif gap <= max(max_gap + 1, np.floor(max_gap * 1.1)):
                 max_gaps[char_1_width, char_2_width] = gap
                 np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
@@ -194,13 +194,28 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                     f"to max_gaps and saved to {max_gaps_path}."
                 )
             else:
-                warning(
-                    f"{char_1} and {char_2} are separated by "
-                    f"{gap:2d} pixels, "
-                    f"exceeding max of {max_gap:2d} by more than 10%. "
-                    f"May add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                    f"to max_gaps."
-                )
+                if whitespace:
+                    info(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"exceeding max of {max_gap:2d}%, "
+                        f"however they are separated by whitespace: {whitespace}."
+                    )
+                else:
+                    response = input(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"exceeding max of {max_gap:2d} by more than 10%. "
+                        f"Would you like to add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                        f"to max_gaps? (y/n): "
+                    )
+                    if response.lower() == "y":
+                        max_gaps[char_1_width, char_2_width] = gap
+                        np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+                        info(
+                            f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                            f"to max_gaps and saved to {max_gaps_path}."
+                        )
         else:
             max_gap_interpolate = get_max_gap(
                 max_gaps, char_1_width, char_2_width, True
@@ -216,13 +231,20 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                     f"to max_gaps and saved to {max_gaps_path}."
                 )
             else:
-                warning(
+                response = input(
                     f"{char_1} and {char_2} are separated by "
                     f"{gap:2d} pixels, "
                     f"exceeding interpolated max of {max_gap_interpolate:2d}. "
-                    f"May add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                    f"to max_gaps."
+                    f"Would you like to add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                    f"to max_gaps? (y/n): "
                 )
+                if response.lower() == "y":
+                    max_gaps[char_1_width, char_2_width] = gap
+                    np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+                    info(
+                        f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                        f"to max_gaps and saved to {max_gaps_path}."
+                    )
 
         char_1_i = char_2_i
         char_1_width_i = char_2_width_i
