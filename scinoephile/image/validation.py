@@ -43,18 +43,20 @@ def get_max_gap(max_gaps: np.ndarray, x: int, y: int, interpolate: bool = False)
     if not interpolate:
         return 0
 
-    # Get neighboring values (8-way connectivity)
+    # Get average of all non-zero neighbors
     neighbors = []
     rows, cols = max_gaps.shape
-
     for dx in [-1, 0, 1]:
         for dy in [-1, 0, 1]:
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and (dx != 0 or dy != 0):
-                neighbors.append(max_gaps[nx, ny])
+                neighbor_value = max_gaps[nx, ny]
+                if neighbor_value != 0:
+                    neighbors.append(neighbor_value)
+    if neighbors:
+        return int(sum(neighbors) / len(neighbors))
 
-    # Average all neighbors
-    return int(sum(neighbors) / len(neighbors)) if neighbors else 0
+    return 0
 
 
 def validate_ocr_hanzi(series: ImageSeries, output_path: Path) -> None:
@@ -79,6 +81,7 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path) -> None:
             img_of_text = get_image_of_text_with_char_alignment(
                 event.text, event.img.size, bboxes
             )
+
             validate_spaces_hanzi(event.text, bboxes)
         except ScinoephileException as e:
             warning(f"Subtitle {i} encountered the following exception: {e}")
@@ -143,7 +146,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
 
         # If char 2 is whitespace, iterate to next real char and track whitespace
         whitespace = ""
-        while char_2_i < len(text) - 1:
+        while char_2_i < len(text):
             char_2 = text[char_2_i]
             if char_2 in ("\u3000", " "):
                 whitespace += char_2
@@ -174,6 +177,7 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
             )
             max_gap = 0
 
+        # If we have a max gap
         if max_gap > 0:
             if gap <= max_gap:
                 if whitespace:
@@ -199,15 +203,16 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                         f"{char_1} and {char_2} are separated by "
                         f"{gap:2d} pixels, "
                         f"exceeding max of {max_gap:2d}%, "
-                        f"however they are separated by whitespace: {whitespace}."
+                        f"however they are separated by whitespace '{whitespace}'."
                     )
                 else:
                     response = input(
                         f"{char_1} and {char_2} are separated by "
                         f"{gap:2d} pixels, "
                         f"exceeding max of {max_gap:2d} by more than 10%. "
-                        f"Would you like to add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                        f"to max_gaps? (y/n): "
+                        "Would you like to add "
+                        f"({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                        "to max_gaps? (y/n): "
                     )
                     if response.lower() == "y":
                         max_gaps[char_1_width, char_2_width] = gap
@@ -216,35 +221,53 @@ def validate_spaces_hanzi(text: str, bboxes: list[tuple[int, int, int, int]]) ->
                             f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
                             f"to max_gaps and saved to {max_gaps_path}."
                         )
+        # Otherwise, interpolate the max gap
         else:
             max_gap_interpolate = get_max_gap(
                 max_gaps, char_1_width, char_2_width, True
             )
             if gap <= max_gap_interpolate:
-                max_gaps[char_1_width, char_2_width] = gap
-                np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
-                info(
-                    f"{char_1} and {char_2} are separated by "
-                    f"{gap:2d} pixels, "
-                    f"within interpolated max of {max_gap_interpolate:2d}. "
-                    f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                    f"to max_gaps and saved to {max_gaps_path}."
-                )
-            else:
-                response = input(
-                    f"{char_1} and {char_2} are separated by "
-                    f"{gap:2d} pixels, "
-                    f"exceeding interpolated max of {max_gap_interpolate:2d}. "
-                    f"Would you like to add ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                    f"to max_gaps? (y/n): "
-                )
-                if response.lower() == "y":
+                if whitespace:
+                    warning(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"within interpolated max of {max_gap_interpolate:2d}, "
+                        f"however they are separated by whitespace '{whitespace}'."
+                    )
+                else:
                     max_gaps[char_1_width, char_2_width] = gap
                     np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
                     info(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"within interpolated max of {max_gap_interpolate:2d}. "
                         f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
                         f"to max_gaps and saved to {max_gaps_path}."
                     )
+            else:
+                if whitespace:
+                    info(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"exceeding interpolated max of {max_gap_interpolate:2d}, "
+                        f"however they are separated by whitespace '{whitespace}'."
+                    )
+                else:
+                    response = input(
+                        f"{char_1} and {char_2} are separated by "
+                        f"{gap:2d} pixels, "
+                        f"exceeding interpolated max of {max_gap_interpolate:2d}. "
+                        "Would you like to add "
+                        f"({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                        "to max_gaps? (y/n): "
+                    )
+                    if response.lower() == "y":
+                        max_gaps[char_1_width, char_2_width] = gap
+                        np.savetxt(max_gaps_path, max_gaps, delimiter=",", fmt="%d")
+                        info(
+                            f"Added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
+                            f"to max_gaps and saved to {max_gaps_path}."
+                        )
 
         char_1_i = char_2_i
         char_1_width_i = char_2_width_i
