@@ -63,8 +63,11 @@ def get_max_gap(x: int, y: int) -> int:
         Interpolated or original value.
     """
     # If value is nonzero, return it directly
-    if max_gaps[x, y] != 0:
-        return max_gaps[x, y]
+    try:
+        if max_gaps[x, y] != 0:
+            return max_gaps[x, y]
+    except IndexError:
+        return 0
 
     # Get neighboring values (8-way connectivity)
     neighbors = []
