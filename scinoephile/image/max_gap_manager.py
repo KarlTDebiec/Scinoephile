@@ -10,6 +10,7 @@ import unicodedata
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileException
+from scinoephile.core.text import full_punc_dict, half_punc_dict
 
 
 class MaxGapManager:
@@ -87,22 +88,40 @@ class MaxGapManager:
                 )
         else:
             if whitespace_fit_for_adj_chars:
-                if gap <= 10:
+                if gap <= 20:
                     self._update_max_gaps(
                         type_1, type_2, char_1_width, char_2_width, gap
                     )
                     message = (
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(>{max_gap:2d}), but are within 10 pixels of each other, "
-                        f"added ({char_1_width+1:2d},{char_2_width+1:2d}):{gap:2d} "
-                        f"to max_gaps."
+                        f"(>{max_gap:2d}), but are within 20 pixels of each other, "
+                        f"added ({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                        f"to max_gaps[{type_1},{type_2}]."
                     )
                 else:
-                    message = (
+                    response = input(
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(>{max_gap:2d}), and appear to have whitespace between them, "
-                        f"but are not separated by whitespace."
+                        f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
                     )
+                    if response.lower().startswith("y"):
+                        self._update_max_gaps(
+                            type_1, type_2, char_1_width, char_2_width, gap
+                        )
+                        message = (
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(>{max_gap:2d}), and appear to have whitespace between "
+                            f"them, but are not separated by whitespace; added "
+                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                            f"to max_gaps[{type_1},{type_2}]."
+                        )
+                    else:
+                        message = (
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(>{max_gap:2d}), and appear to have whitespace between "
+                            f"them, but are not separated by whitespace; did not add "
+                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                            f"to max_gaps[{type_1},{type_2}]."
+                        )
             else:
                 message = (
                     f"{char_1} and {char_2} are separated by {gap:2d} pixels "
@@ -111,24 +130,31 @@ class MaxGapManager:
                 )
         return message
 
-    def _expand_max_gaps(self, type_1: str, type_2: str, x: int, y: int) -> None:
+    def _expand_max_gaps(
+        self, type_1: str, type_2: str, width_1: int, width_2: int
+    ) -> None:
         """Expand max_gaps to fit new width(s) and resave.
 
         Arguments:
             type_1: First character type
             type_2: Second character type
-            x: Width of first character in pixels
-            y: Width of second character in pixels
+            width_1: Width of first character in pixels
+            width_2: Width of second character in pixels
         """
         max_gaps = self.max_gaps[type_1, type_2]
+        current_width = max_gaps.shape[0]
+        current_height = max_gaps.shape[1]
+        needed_width = max(width_1 + 1, current_width)
+        needed_height = max(width_2 + 1, current_height)
+        width_pad = needed_width - current_width
+        height_pad = needed_height - current_height
+        info(
+            f"Expanding max_gaps[{type_1},{type_2}] from "
+            f"{current_width}x{current_height} to "
+            f"{needed_width}x{needed_height}."
+        )
         max_gaps = np.pad(
-            max_gaps,
-            (
-                (0, max(0, x - max_gaps.shape[0] + 1)),
-                (0, max(0, y - max_gaps.shape[1] + 1)),
-            ),
-            "constant",
-            constant_values=0,
+            max_gaps, ((0, width_pad), (0, height_pad)), "constant", constant_values=0
         )
         self.max_gaps[type_1, type_2] = max_gaps
         self._save_max_gaps(type_1, type_2)
@@ -147,7 +173,7 @@ class MaxGapManager:
         max_gaps = self.max_gaps[type_1, type_2]
         try:
             return max_gaps[width_1, width_2]
-        except IndexError:
+        except IndexError as e:
             self._expand_max_gaps(type_1, type_2, width_1, width_2)
             return self._get_max_gap(type_1, type_2, width_1, width_2)
 
@@ -221,7 +247,13 @@ class MaxGapManager:
         Raises:
             ScinoephileException: If character type is not recognized
         """
-        # Check if character is CJK (full-width)
+        punctuation = set(half_punc_dict.values()) | set(full_punc_dict.values())
+
+        # Check if character is punctuation
+        if char in punctuation:
+            return "punc"
+
+        # Check if character is full-width (CJK)
         if any(
             [
                 "\u4E00" <= char <= "\u9FFF",  # CJK Unified Ideographs
@@ -248,9 +280,7 @@ class MaxGapManager:
         ):
             return "half"
 
-        # Check if character is punctuation
-        if unicodedata.category(char).startswith("P"):
-            return "punc"
-
         # Raise exception if character type is not recognized
-        raise ScinoephileException(f"Unrecognized character type for '{char}'")
+        raise ScinoephileException(
+            f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
+        )
