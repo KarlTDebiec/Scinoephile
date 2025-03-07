@@ -9,6 +9,7 @@ from copy import deepcopy
 from hanziconv import HanziConv
 
 from scinoephile.core.series import Series
+from scinoephile.core.text import full_punc_dict, half_punc_dict
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
@@ -87,22 +88,21 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Replace '...' with '⋯'
-    cleaned = re.sub(r"\.\.\.", "⋯", cleaned)
+    cleaned = re.sub(r"\s*\.\.\.\s*", "⋯", cleaned)
 
     # Replace '…' with '⋯'
     cleaned = re.sub(r"\s*…\s*", "⋯", cleaned)
 
-    # Replace ',' with '，'
-    cleaned = re.sub(r"\s*,\s*", "，", cleaned)
-
-    # Replace '!' with '！'
-    cleaned = re.sub(r"\s*!\s*", "！", cleaned)
-
-    # Replace '?' with '？'
-    cleaned = re.sub(r"\s*\?\s*", "？", cleaned)
-
-    # Replace '~' with '～'
-    cleaned = re.sub(r"\s*~\s*", "～", cleaned)
+    # Replace half-width punctuation with full-width punctuation
+    punc_map = {
+        half_punc_dict[key]: full_punc_dict[f"FULLWIDTH {key}"]
+        for key in half_punc_dict
+        if f"FULLWIDTH {key}" in full_punc_dict
+    }
+    punc_map["“"] = "〝"
+    punc_map["”"] = "〞"
+    for half_punc, full_punc in punc_map.items():
+        cleaned = re.sub(rf"\s*{re.escape(half_punc)}\s*", full_punc, cleaned)
 
     # Remove whitespace before and after specified characters
     cleaned = re.sub(r"\s*([、「」『』《》])\s*", r"\1", cleaned)

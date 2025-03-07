@@ -79,7 +79,41 @@ class MaxGapManager:
         message = None
         if gap_fit_for_adj_chars:
             if whitespace_fit_for_adj_chars:
-                pass
+                if max_gap_was_interpolated:
+                    if gap <= 20:
+                        self._update_max_gaps(
+                            type_1, type_2, char_1_width, char_2_width, gap
+                        )
+                        message = (
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(<{max_gap:2d}), and appear to be adjacent, "
+                            f"but are within 20 pixels of each other, added "
+                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                            f"to max_gaps[{type_1},{type_2}]."
+                        )
+                    else:
+                        response = input(
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(<{max_gap:2d}). Do you want to update the max gaps? (y/n): "
+                        )
+                        if response.lower().startswith("y"):
+                            self._update_max_gaps(
+                                type_1, type_2, char_1_width, char_2_width, gap
+                            )
+                            message = (
+                                f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                                f"(<{max_gap:2d}), and appear to be adjacent, "
+                                f"added ({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                                f"to max_gaps[{type_1},{type_2}]."
+                            )
+                        else:
+                            message = (
+                                f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                                f"(<{max_gap:2d}), and appear to be adjacent, "
+                                f"but are within 20 pixels of each other, did not add "
+                                f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                                f"to max_gaps[{type_1},{type_2}]."
+                            )
             else:
                 message = (
                     f"{char_1} and {char_2} are separated by {gap:2d} pixels "
