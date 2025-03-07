@@ -90,7 +90,22 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"\.\.\.", "⋯", cleaned)
 
     # Replace '…' with '⋯'
-    cleaned = re.sub(r"…", "⋯", cleaned)
+    cleaned = re.sub(r"\s*…\s*", "⋯", cleaned)
+
+    # Replace ',' with '，'
+    cleaned = re.sub(r"\s*,\s*", "，", cleaned)
+
+    # Replace '!' with '！'
+    cleaned = re.sub(r"\s*!\s*", "！", cleaned)
+
+    # Replace '?' with '？'
+    cleaned = re.sub(r"\s*\?\s*", "？", cleaned)
+
+    # Replace '~' with '～'
+    cleaned = re.sub(r"\s*~\s*", "～", cleaned)
+
+    # Remove whitespace before and after specified characters
+    cleaned = re.sub(r"\s*([、「」『』《》])\s*", r"\1", cleaned)
 
     # Remove empty lines
     cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
