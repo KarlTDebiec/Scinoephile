@@ -269,11 +269,11 @@ class MaxGapManager:
                 "\u4E00" <= char <= "\u9FFF",  # CJK Unified Ideographs
                 "\u3400" <= char <= "\u4DBF",  # CJK Unified Ideographs Extension A
                 "\uF900" <= char <= "\uFAFF",  # CJK Compatibility Ideographs
-                "\u20000" <= char <= "\u2A6DF",  # CJK Unified Ideographs Extension B
-                "\u2A700" <= char <= "\u2B73F",  # CJK Unified Ideographs Extension C
-                "\u2B740" <= char <= "\u2B81F",  # CJK Unified Ideographs Extension D
-                "\u2B820" <= char <= "\u2CEAF",  # CJK Unified Ideographs Extension E
-                "\u2CEB0" <= char <= "\u2EBEF",  # CJK Unified Ideographs Extension F
+                "\U00020000" <= char <= "\U0002A6DF",  # CJK Unified Ideographs Ext B
+                "\U0002A700" <= char <= "\U0002B73F",  # CJK Unified Ideographs Ext C
+                "\U0002B740" <= char <= "\U0002B81F",  # CJK Unified Ideographs Ext D
+                "\U0002B820" <= char <= "\U0002CEAF",  # CJK Unified Ideographs Ext E
+                "\U0002CEB0" <= char <= "\U0002EBEF",  # CJK Unified Ideographs Ext F
                 "\u3000" <= char <= "\u303F",  # CJK Symbols and Punctuation
             ]
         ):
