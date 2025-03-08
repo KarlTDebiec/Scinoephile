@@ -33,6 +33,11 @@ class BboxManager:
             self.merge_threes = self._load_merge_dict(self.merge_three_file_path)
             self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
 
+    @property
+    def merge_two_chars(self):
+        """Characters that are known to potentially be spread across two bboxes."""
+        return set(char for chars in self.merge_twos.values() for char in chars)
+
     def get_char_bboxes(
         self,
         img: Image.Image,
@@ -94,54 +99,32 @@ class BboxManager:
         Returns:
             bboxes with sets of three adjacent bboxes matching specifications merged
         """
-
         merged_bboxes = []
-        i = 0
-        n_merged = 0
-        while i < len(bboxes):
-            # Check if ellipsis
-            if i <= len(bboxes) - 3:
-                b1_x1, b1_y1, b1_x2, b1_y2 = bboxes[i]
-                b2_x1, b2_y1, b2_x2, b2_y2 = bboxes[i + 1]
-                b3_x1, b3_y1, b3_x2, b3_y2 = bboxes[i + 2]
-
-                b1_width = b1_x2 - b1_x1
-                b1_height = b1_y2 - b1_y1
-                b1_b2_gap = b2_x1 - b1_x2
-                b2_width = b2_x2 - b2_x1
-                b2_height = b2_y2 - b2_y1
-                b2_b3_gap = b3_x1 - b2_x2
-                b3_width = b3_x2 - b3_x1
-                b3_height = b3_y2 - b3_y1
-                key = (
-                    b1_width,
-                    b1_height,
-                    b1_b2_gap,
-                    b2_width,
-                    b2_height,
-                    b2_b3_gap,
-                    b3_width,
-                    b3_height,
+        bbox_i = 0
+        char_i = 0
+        while bbox_i < len(bboxes):
+            if bbox_i <= len(bboxes) - 3:
+                key, merged_bbox = self._get_key_and_merged_bbox(
+                    bboxes[bbox_i],
+                    bboxes[bbox_i + 1],
+                    bboxes[bbox_i + 2],
                 )
 
                 # Merge if appropriate
                 if key in self.merge_threes:
-                    if text[i - n_merged] in str(self.merge_threes[key]):
-                        merged_bboxes.append(
-                            (
-                                b1_x1,
-                                min(b1_y1, b2_y1, b3_y1),
-                                b3_x2,
-                                max(b1_y2, b2_y2, b3_y2),
-                            )
-                        )
-                        i += 3
-                        n_merged += 2
+                    char = text[char_i]
+
+                    # Dimensions, gaps, and char match
+                    if char in self.merge_threes[key]:
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 3
+                        char_i = self._get_next_char_i(text, char_i)
                         continue
 
             # Otherwise, keep as is
-            merged_bboxes.append(bboxes[i])
-            i += 1
+            merged_bboxes.append(bboxes[bbox_i])
+            bbox_i += 1
+            char_i = self._get_next_char_i(text, char_i)
 
         return merged_bboxes
 
@@ -159,35 +142,53 @@ class BboxManager:
             bboxes with sets of two adjacent bboxes matching specifications merged
         """
         merged_bboxes = []
-        i = 0
-        n_merged = 0
-        while i < len(bboxes):
-            if i <= len(bboxes) - 2:
-                b1_x1, b1_y1, b1_x2, b1_y2 = bboxes[i]
-                b2_x1, b2_y1, b2_x2, b2_y2 = bboxes[i + 1]
-
-                b1_width = b1_x2 - b1_x1
-                b1_height = b1_y2 - b1_y1
-                b1_b2_gap = b2_x1 - b1_x2
-                b2_width = b2_x2 - b2_x1
-                b2_height = b2_y2 - b2_y1
-                key = (b1_width, b1_height, b1_b2_gap, b2_width, b2_height)
+        bbox_i = 0
+        char_i = 0
+        while bbox_i < len(bboxes):
+            if bbox_i <= len(bboxes) - 2:
+                key, merged_bbox = self._get_key_and_merged_bbox(
+                    bboxes[bbox_i],
+                    bboxes[bbox_i + 1],
+                )
 
                 # Merge if appropriate
                 if key in self.merge_twos:
-                    if text[i - n_merged] in str(self.merge_twos[key]):
-                        merged_bboxes.append(
-                            (b1_x1, min(b1_y1, b2_y1), b2_x2, max(b1_y2, b2_y2))
-                        )
-                        i += 2
-                        n_merged += 1
+                    char = text[char_i]
+
+                    # Dimensions, gaps, and char match
+                    if char in self.merge_twos[key]:
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 2
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
+                    # Dimensions and gaps match, and char is known as mergable
+                    if char in self.merge_two_chars:
+                        self._update_merge_twos(key, char)
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 2
+                        char_i = self._get_next_char_i(text, char_i)
                         continue
 
             # Otherwise, keep as is
-            merged_bboxes.append(bboxes[i])
-            i += 1
+            merged_bboxes.append(bboxes[bbox_i])
+            bbox_i += 1
+            char_i = self._get_next_char_i(text, char_i)
 
         return merged_bboxes
+
+    def _update_merge_twos(
+        self,
+        key: tuple[int, int, int, int, int],
+        value: str,
+    ) -> None:
+        """Update merge_twos dictionary."""
+        if key in self.merge_twos:
+            self.merge_twos[key] += value
+        else:
+            self.merge_twos[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to merge_twos")
+        self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
 
     @staticmethod
     def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
@@ -202,6 +203,51 @@ class BboxManager:
         mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
         bbox = mask.getbbox()
         return bbox
+
+    @staticmethod
+    def _get_key_and_merged_bbox(
+        *bboxes: tuple[int, int, int, int]
+    ) -> tuple[tuple[int, ...], tuple[int, int, int, int]]:
+        """Get key and merged bbox from bboxes.
+
+        Arguments:
+            *bboxes: Bboxes
+        Returns:
+            Key and merged bbox
+        """
+        widths = [bbox[2] - bbox[0] for bbox in bboxes]
+        heights = [bbox[3] - bbox[1] for bbox in bboxes]
+        gaps = [bboxes[i + 1][0] - bboxes[i][2] for i in range(len(bboxes) - 1)]
+        key = tuple(
+            [dim for group in zip(widths, heights, gaps + [0]) for dim in group][:-1]
+        )
+        merged_bbox = (
+            min(bbox[0] for bbox in bboxes),
+            min(bbox[1] for bbox in bboxes),
+            max(bbox[2] for bbox in bboxes),
+            max(bbox[3] for bbox in bboxes),
+        )
+
+        return key, merged_bbox
+
+    @staticmethod
+    def _get_next_char_i(text: str, char_i: int) -> int:
+        """Get index of next non-whitespace character.
+
+        Arguments:
+            text: Provisional text present in image
+            char_i: Index of current character
+        Returns:
+            Index of next non-whitespace character
+        """
+        char_i += 1
+        while char_i < len(text):
+            char = text[char_i]
+            if char in ("\u3000", " "):
+                char_i += 1
+                continue
+            break
+        return char_i
 
     @staticmethod
     def _load_merge_dict(
@@ -221,8 +267,9 @@ class BboxManager:
             if key in merge_dict:
                 merge_dict[key] += value
             else:
-                merge_dict[key] = value
+                merge_dict[key] = str(value)
 
+        info(f"Loaded {file_path}")
         return merge_dict
 
     @staticmethod
@@ -239,7 +286,8 @@ class BboxManager:
         """
         rows = []
         for key, value in merge_dict.items():
-            rows.append([value, *key])
+            for char in value:
+                rows.append([char, *key])
         arr = np.array(sorted(rows))
         np.savetxt(
             file_path,
