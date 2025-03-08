@@ -219,7 +219,7 @@ class MaxGapManager:
         return 0
 
     def _save_max_gaps(self, type_1: str, type_2: str) -> None:
-        """Save maximum gaps for a given pair of character types.
+        """Save max gaps file for a given pair of character types.
 
         Arguments:
             type_1: First character type

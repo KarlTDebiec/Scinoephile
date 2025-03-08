@@ -117,7 +117,7 @@ def _merge_split_hanzi_bboxes(
     """Identify split hanzi and merge their bounding boxes.
 
     Arguments:
-        bboxes: Nascent list of bounding boxes [(x1, y1, x2, y2), ...]
+        bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
         min_aspect_ratio: Min aspect ratio to be considered part of split hanzi
         max_gap: Max gap between halves to be considered part of split hanzi
     Returns:
