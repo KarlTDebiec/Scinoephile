@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from logging import info
+from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageChops
@@ -26,21 +27,11 @@ class BboxManager:
     def __init__(self):
         """Initialize."""
         if self.merge_two_file_path.exists():
-            merge_twos_arr = np.genfromtxt(
-                self.merge_two_file_path, delimiter=",", dtype=str, encoding="utf-8"
-            )
-            self.merge_twos = {
-                tuple(map(int, row[1:])): row[0] for row in merge_twos_arr
-            }
-            self._save_merge_twos()
+            self.merge_twos = self._load_merge_dict(self.merge_two_file_path)
+            self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
         if self.merge_three_file_path.exists():
-            merge_threes_arr = np.genfromtxt(
-                self.merge_three_file_path, delimiter=",", dtype=str, encoding="utf-8"
-            )
-            self.merge_threes = {
-                tuple(map(int, row[1:])): row[0] for row in merge_threes_arr
-            }
-            self._save_merge_threes()
+            self.merge_threes = self._load_merge_dict(self.merge_three_file_path)
+            self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
 
     def get_char_bboxes(
         self,
@@ -106,6 +97,7 @@ class BboxManager:
 
         merged_bboxes = []
         i = 0
+        n_merged = 0
         while i < len(bboxes):
             # Check if ellipsis
             if i <= len(bboxes) - 3:
@@ -134,16 +126,18 @@ class BboxManager:
 
                 # Merge if appropriate
                 if key in self.merge_threes:
-                    merged_bboxes.append(
-                        (
-                            b1_x1,
-                            min(b1_y1, b2_y1, b3_y1),
-                            b3_x2,
-                            max(b1_y2, b2_y2, b3_y2),
+                    if text[i - n_merged] in str(self.merge_threes[key]):
+                        merged_bboxes.append(
+                            (
+                                b1_x1,
+                                min(b1_y1, b2_y1, b3_y1),
+                                b3_x2,
+                                max(b1_y2, b2_y2, b3_y2),
+                            )
                         )
-                    )
-                    i += 3
-                    continue
+                        i += 3
+                        n_merged += 2
+                        continue
 
             # Otherwise, keep as is
             merged_bboxes.append(bboxes[i])
@@ -166,6 +160,7 @@ class BboxManager:
         """
         merged_bboxes = []
         i = 0
+        n_merged = 0
         while i < len(bboxes):
             if i <= len(bboxes) - 2:
                 b1_x1, b1_y1, b1_x2, b1_y2 = bboxes[i]
@@ -180,45 +175,19 @@ class BboxManager:
 
                 # Merge if appropriate
                 if key in self.merge_twos:
-                    merged_bboxes.append(
-                        (b1_x1, min(b1_y1, b2_y1), b2_x2, max(b1_y2, b2_y2))
-                    )
-                    i += 2
-                    continue
+                    if text[i - n_merged] in str(self.merge_twos[key]):
+                        merged_bboxes.append(
+                            (b1_x1, min(b1_y1, b2_y1), b2_x2, max(b1_y2, b2_y2))
+                        )
+                        i += 2
+                        n_merged += 1
+                        continue
 
             # Otherwise, keep as is
             merged_bboxes.append(bboxes[i])
             i += 1
 
         return merged_bboxes
-
-    def _save_merge_twos(self):
-        """Save merge_twos to file."""
-        merge_two_arr = np.array(
-            sorted([[value, *key] for key, value in self.merge_twos.items()])
-        )
-        np.savetxt(
-            self.merge_two_file_path,
-            merge_two_arr,
-            delimiter=",",
-            fmt="%s",
-            encoding="utf-8",
-        )
-        info(f"Saved {self.merge_two_file_path}")
-
-    def _save_merge_threes(self):
-        """Save merge_threes to file."""
-        merge_three_arr = np.array(
-            sorted([[value, *key] for key, value in self.merge_twos.items()])
-        )
-        np.savetxt(
-            self.merge_three_file_path,
-            merge_three_arr,
-            delimiter=",",
-            fmt="%s",
-            encoding="utf-8",
-        )
-        info(f"Saved {self.merge_three_file_path}")
 
     @staticmethod
     def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
@@ -233,3 +202,50 @@ class BboxManager:
         mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
         bbox = mask.getbbox()
         return bbox
+
+    @staticmethod
+    def _load_merge_dict(
+        file_path: Path,
+    ) -> dict[tuple[int, int, int, int, int, int, int, int], str]:
+        """Load merge dict from file.
+
+        Arguments:
+            file_path: Path to file
+        """
+        arr = np.genfromtxt(file_path, delimiter=",", dtype=str, encoding="utf-8")
+
+        merge_dict = {}
+        for row in arr:
+            key = tuple(map(int, row[1:]))
+            value = row[0]
+            if key in merge_dict:
+                merge_dict[key] += value
+            else:
+                merge_dict[key] = value
+
+        return merge_dict
+
+    @staticmethod
+    def _save_merge_dict(
+        merge_dict: dict[tuple[int, int, int, int], str],
+        file_path: Path,
+    ) -> None:
+        """Save merge dict to file.
+
+        Arguments:
+            merge_dict: Dictionary to save
+            file_path: Path to file
+        1st column: valuez
+        """
+        rows = []
+        for key, value in merge_dict.items():
+            rows.append([value, *key])
+        arr = np.array(sorted(rows))
+        np.savetxt(
+            file_path,
+            arr,
+            delimiter=",",
+            fmt="%s",
+            encoding="utf-8",
+        )
+        info(f"Saved {file_path}")
