@@ -61,84 +61,80 @@ class MaxGapManager:
         type_1 = self.get_char_type(char_1)
         type_2 = self.get_char_type(char_2)
 
-        # Get max gap
-        max_gap_was_interpolated = False
-        max_gap = self._get_max_gap(type_1, type_2, char_1_width, char_2_width)
-        if max_gap == 0:
-            max_gap = self._get_max_gap_interpolated(
-                type_1, type_2, char_1_width, char_2_width
-            )
-            max_gap_was_interpolated = True
-
-        # Validate gap
-        gap_fit_for_adj_chars = gap <= max_gap
-
-        # Validate whitespace
+        # Check if whitespace is appropriate for adjacent characters
         whitespace_fit_for_adj_chars = len(whitespace) == 0
 
-        message = None
+        # First test if this gap is within the specific limit for these widths
+        max_gap = self._get_max_gap(type_1, type_2, char_1_width, char_2_width)
+        gap_fit_for_adj_chars = gap <= max_gap
         if gap_fit_for_adj_chars:
+            # Expect no space, have no space
             if whitespace_fit_for_adj_chars:
-                if max_gap_was_interpolated:
-                    self._update_max_gaps(
-                        type_1, type_2, char_1_width, char_2_width, gap
-                    )
-                    message = (
-                        f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(<{max_gap:2d}), and appear to be adjacent, "
-                        f"and are within interpolated max gap, added "
-                        f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
-                        f"to max_gaps[{type_1},{type_2}]."
-                    )
+                return
+            # Expect no space, have space
             else:
-                message = (
+                return (
                     f"{char_1} and {char_2} are separated by {gap:2d} pixels "
                     f"(<={max_gap:2d}), and appear to be adjacent, "
                     f"but are separated by whitespace '{whitespace}'."
                 )
-        else:
+
+        # Next try a limit based on neighbors
+        max_gap = self._get_max_gap_extended(type_1, type_2, char_1_width, char_2_width)
+        gap_fit_for_adj_chars = gap <= max_gap
+        if gap_fit_for_adj_chars:
+            # Expect no space, have no space
             if whitespace_fit_for_adj_chars:
-                if gap <= 20:
+                self._update_max_gaps(type_1, type_2, char_1_width, char_2_width, gap)
+                return (
+                    f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                    f"(<{max_gap:2d}), and appear to be adjacent, "
+                    f"and are within extended max gap, added "
+                    f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                    f"to max_gaps[{type_1},{type_2}]."
+                )
+            # Expect no space, have space
+            else:
+                return (
+                    f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                    f"(<={max_gap:2d}), and appear to be adjacent, "
+                    f"but are separated by whitespace '{whitespace}'."
+                )
+                # TODO: Automate correction
+        else:
+            # Expect space, have no space
+            if whitespace_fit_for_adj_chars:
+                response = input(
+                    f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                    f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
+                )
+                if response.lower().startswith("y"):
                     self._update_max_gaps(
                         type_1, type_2, char_1_width, char_2_width, gap
                     )
-                    message = (
+                    return (
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(>{max_gap:2d}), but are within 20 pixels of each other, "
-                        f"added ({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                        f"(>{max_gap:2d}), and appear to have whitespace between "
+                        f"them, but are not separated by whitespace; added "
+                        f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
                         f"to max_gaps[{type_1},{type_2}]."
                     )
                 else:
-                    response = input(
+                    return (
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
+                        f"(>{max_gap:2d}), and appear to have whitespace between "
+                        f"them, but are not separated by whitespace; did not add "
+                        f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                        f"to max_gaps[{type_1},{type_2}]."
                     )
-                    if response.lower().startswith("y"):
-                        self._update_max_gaps(
-                            type_1, type_2, char_1_width, char_2_width, gap
-                        )
-                        message = (
-                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                            f"(>{max_gap:2d}), and appear to have whitespace between "
-                            f"them, but are not separated by whitespace; added "
-                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
-                            f"to max_gaps[{type_1},{type_2}]."
-                        )
-                    else:
-                        message = (
-                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                            f"(>{max_gap:2d}), and appear to have whitespace between "
-                            f"them, but are not separated by whitespace; did not add "
-                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
-                            f"to max_gaps[{type_1},{type_2}]."
-                        )
+            # Expect space, have space
             else:
-                message = (
+                return (
                     f"{char_1} and {char_2} are separated by {gap:2d} pixels "
                     f"(>{max_gap:2d}), and appear to have whitespace between them, "
                     f"and as expected are separated by whitespace '{whitespace}'."
                 )
-        return message
+                # TODO: Validate that amount of whitespace is appropriate for gap
 
     def _expand_max_gaps(
         self, type_1: str, type_2: str, width_1: int, width_2: int
@@ -187,10 +183,10 @@ class MaxGapManager:
             self._expand_max_gaps(type_1, type_2, width_1, width_2)
             return self._get_max_gap(type_1, type_2, width_1, width_2)
 
-    def _get_max_gap_interpolated(
+    def _get_max_gap_extended(
         self, type_1: str, type_2: str, width_1: int, width_2: int
     ) -> int:
-        """Get interpolated max gap between characters of provided type and widths.
+        """Get extended max gap between characters of provided type and widths.
 
         Arguments:
             type_1: Type of first character
@@ -198,25 +194,18 @@ class MaxGapManager:
             width_1: Width of first character in pixels, used as row index
             width_2: Width of second character in pixels, used as column index
         Returns:
-            Interpolated max gap between characters in pixels
+            Extended max gap between characters in pixels
         """
         max_gaps = self.max_gaps[type_1, type_2]
 
-        # Sum neighbors
-        neighbors = []
-        rows, cols = max_gaps.shape
-        for dx in [-1, 0, 1]:
-            for dy in [-1, 0, 1]:
-                nx, ny = width_1 + dx, width_2 + dy
-                if 0 <= nx < rows and 0 <= ny < cols and (dx != 0 or dy != 0):
-                    neighbor_value = max_gaps[nx, ny]
-                    if neighbor_value != 0:
-                        neighbors.append(neighbor_value)
+        # Define the slice boundaries
+        x1 = max(0, width_1 - 1)
+        x2 = min(max_gaps.shape[0], width_1 + 2)
+        y1 = max(0, width_2 - 1)
+        y2 = min(max_gaps.shape[1], width_2 + 2)
 
-        # Return average of neighbors, or 0 if no neighbors
-        if neighbors:
-            return int(sum(neighbors) / len(neighbors))
-        return 0
+        # Return the maximum value in the slice plus 1
+        return max(np.nanmax(max_gaps[x1:x2, y1:y2]) + 1, 20)
 
     def _save_max_gaps(self, type_1: str, type_2: str) -> None:
         """Save max gaps file for a given pair of character types.
