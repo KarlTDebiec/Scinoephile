@@ -7,7 +7,7 @@ from logging import info
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageChops
+from PIL import Image
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileException
@@ -39,19 +39,10 @@ class BboxManager:
         """Characters that are known to potentially be spread across two bboxes."""
         return set(char for chars in self.merge_twos.values() for char in chars)
 
-    @staticmethod
-    def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
-        """Get bbox of non-white/transparent pixels in an image.
-
-        Arguments:
-            img: Image
-        Returns:
-            bbox of non-white/transparent pixels
-        """
-        img_l = img if img.mode == "L" else img.convert("L")
-        mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
-        bbox = mask.getbbox()
-        return bbox
+    @property
+    def merge_three_chars(self):
+        """Characters that are known to potentially be spread across three bboxes."""
+        return set(char for chars in self.merge_threes.values() for char in chars)
 
     def get_char_bboxes(
         self,
@@ -71,7 +62,7 @@ class BboxManager:
 
         arr = np.array(img)
 
-        # Split over x-axis into sections separated by white space
+        # Determine left and right of each section separated by whitespace
         sections = []
         section = None
         for i, nonwhite_pixels in enumerate(np.sum(arr < 255, axis=0)):
@@ -95,33 +86,18 @@ class BboxManager:
             y2 = int(len(nonwhite_pixels) - np.argmax(nonwhite_pixels[::-1] > 0) - 1)
             bboxes.append((x1, y1, x2, y2))
 
-        # Clean up bboxes
-        bboxes = self._merge(bboxes, text)
+        # Merge sets of adjacent bboxes known to have vertical whitespace within them
+        bboxes = self._apply_known_merges(bboxes, text)
+
+        # Propose additional merges of adjacent boxes, if found
+        filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
+        if len(filtered_text) != len(bboxes):
+            self._propose_merges(bboxes, text)
+            bboxes = self._apply_known_merges(bboxes, text)
 
         return bboxes
 
-    def _fuzzy_match(self, key: tuple[int, ...]) -> set[str]:
-        """Fuzzy match keys in merge_threes and merge_twos.
-
-        Arguments:
-            key: Key to match
-        """
-        length = len(key)
-        if length == 5:
-            merge_dict = self.merge_twos
-        elif length == 8:
-            merge_dict = self.merge_threes
-        else:
-            raise ScinoephileException(f"Key must be of length 5 or 8, not {len(key)}")
-
-        known_values = set()
-        for known_key in merge_dict.keys():
-            if all(abs(known_key[i] - key[i]) <= 1 for i in range(length)):
-                known_values.update(list(merge_dict[known_key]))
-
-        return known_values
-
-    def _merge(
+    def _apply_known_merges(
         self,
         bboxes: list[tuple[int, int, int, int]],
         text: str,
@@ -153,8 +129,16 @@ class BboxManager:
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
+                    # Dimensions match, and char is known as mergable
+                    if char in self.merge_three_chars:
+                        self._update_merge_threes(key, char)
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 3
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
                 # Dimensions are close to those known to be mergable for char
-                fuzzy_matches = self._fuzzy_match(key)
+                fuzzy_matches = self._fuzzy_match_key(key)
                 if char in fuzzy_matches:
                     self._update_merge_threes(key, char)
                     merged_bboxes.append(merged_bbox)
@@ -184,7 +168,7 @@ class BboxManager:
                         continue
 
                 # Dimensions are close to those known to be mergable for char
-                fuzzy_matches = self._fuzzy_match(key)
+                fuzzy_matches = self._fuzzy_match_key(key)
                 if char in fuzzy_matches:
                     self._update_merge_twos(key, char)
                     merged_bboxes.append(merged_bbox)
@@ -201,6 +185,71 @@ class BboxManager:
                 break
 
         return merged_bboxes
+
+    def _fuzzy_match_key(self, key: tuple[int, ...]) -> set[str]:
+        """Fuzzy match keys in merge_threes and merge_twos.
+
+        Arguments:
+            key: Key to match
+        """
+        length = len(key)
+        if length == 5:
+            merge_dict = self.merge_twos
+        elif length == 8:
+            merge_dict = self.merge_threes
+        else:
+            raise ScinoephileException(f"Key must be of length 5 or 8, not {len(key)}")
+
+        known_values = set()
+        for known_key in merge_dict.keys():
+            if all(abs(known_key[i] - key[i]) <= 1 for i in range(length)):
+                known_values.update(list(merge_dict[known_key]))
+
+        return known_values
+
+    def _propose_merges(
+        self, bboxes: list[tuple[int, int, int, int]], text: str
+    ) -> None:
+        """Propose merges of adjacent bboxes.
+
+        Arguments:
+            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
+            text: Provisional text present in image
+        """
+        bbox_i = 0
+        char_i = 0
+        print(text)
+        while char_i < len(text):
+            char = text[char_i]
+            print(char)
+
+            # If char is known to be a merge_three, check key for next three bboxes
+            if char in self.merge_three_chars and bbox_i <= len(bboxes) - 3:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
+                response = input(
+                    f"{char} may be split across three bboxes with dimensions "
+                    f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}), "
+                    f"{key[5]}, ({key[6]}, {key[7]})). "
+                    f"Do you want to update merge_threes? (y/n):"
+                )
+                if response.lower() == "y":
+                    self._update_merge_threes(key, char)
+                    bbox_i += 3
+
+            # If char is known to be a merge_two, check key for next two bboxes
+            if char in self.merge_two_chars and bbox_i <= len(bboxes) - 2:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
+                response = input(
+                    f"{char} may be split across two bboxes with dimensions "
+                    f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}). "
+                    f"Do you want to update merge_twos? (y/n):"
+                )
+                if response.lower() == "y":
+                    self._update_merge_twos(key, char)
+                    bbox_i += 2
+
+            char_i = self._get_next_char_i(text, char_i)
+            bbox_i += 1
 
     def _update_merge_threes(
         self,

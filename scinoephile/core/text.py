@@ -91,8 +91,6 @@ full_punc_dict = {
 }
 """Selected full-width punctuation characters."""
 
-"""Mapping of punctuation characters, some full-width, to single-width counterparts."""
-
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 """Regular expression for Hanzi characters."""
 
