@@ -3,43 +3,30 @@
 """Script for creating expected test output for MLAMD."""
 from __future__ import annotations
 
-from pathlib import Path
-
 from scinoephile.common import package_root
 from scinoephile.common.logging import set_logging_verbosity
-from scinoephile.core.synchronization import get_synced_series
 from scinoephile.image import ImageSeries
-from scinoephile.openai import OpenAiService
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.image.validation import validate_ocr_hanzi
 
 if __name__ == "__main__":
-
-    def get_output_path(relative_path: str) -> Path:
-        return package_root.parent / "test" / "data" / Path(relative_path)
+    data_root = package_root.parent / "test" / "data"
 
     set_logging_verbosity(2)
-    openai_service = OpenAiService()
 
     # Simplified Standard Chinese
-    # cmn_hans = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans.sup"))
-    # cmn_hans.save(get_output_path("mlamd/output/cmn-Hans"))
-    cmn_hans = ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans"))
-    # cmn_hans_simplify = get_hanzi_simplified(cmn_hans)
-    # cmn_hans_simplify.save(get_output_path("mlamd/output/cmn-Hans"))
-    # cmn_hans_text = Series.load(
-    #     get_output_path("mlamd/output/cmn-Hans/cmn-Hans.srt")
-    # )
-    # cmn_hans_text_traditionalize = get_hanzi_traditionalized(cmn_hans_text)
-    # cmn_hans_text_traditionalize.save(
-    #     get_output_path("mlamd/output/cmn-Hant/cmn-Hant.srt")
-    # )
-    # cmn_hans = get_transcriptions(
-    #     openai_service,
-    #     cmn_hans,
-    #     upscale=True,
-    #     language="Simplified Chinese, specifically Standard Chinese, Hong Kong",
-    # )
-    # cmn_hans.save(get_output_path("mlamd/output/cmn-Hans"))
+    # zho_hans = ImageSeries.load(data_root / "mlamd" / "input" / "cmn-Hans.sup")
+    # zho_hans.save(data_root / "mlamd" / "output" / "cmn-Hans")
+
+    # zho_hans = ImageSeries.load(data_root / "mlamd" / "output" / "cmn-Hans")
+    # zho_hans = get_hanzi_cleaned(zho_hans)
+    # zho_hans = get_hanzi_flattened(zho_hans)
+    # zho_hans.save(data_root / "mlamd" / "output" / "cmn-Hans" / "cmn-Hans.srt")
+
+    zho_hans = ImageSeries.load(data_root / "mlamd" / "output" / "cmn-Hans")
+    validate_ocr_hanzi(
+        zho_hans,
+        data_root / "mlamd" / "output" / "cmn-Hans_validation",
+    )
 
     # Traditional Standard Chinese
     # cmn_hant = ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant.sup"))
@@ -63,10 +50,10 @@ if __name__ == "__main__":
     # English
     # eng = ImageSeries.load(get_test_file_path("mlamd/input/eng.sup"))
     # eng.save(get_output_path("mlamd/output/eng"))
-    eng = ImageSeries.load(get_test_file_path("mlamd/output/eng"))
+    # eng = ImageSeries.load(get_test_file_path("mlamd/output/eng"))
     # eng = get_transcriptions(openai_service, eng)
     # eng.save(get_output_path("mlamd/output/eng"))
 
     # Bilingual Simplified Standard Chinese and English
-    cmn_hans_eng = get_synced_series(cmn_hans, eng)
-    cmn_hans_eng.save(get_output_path("mlamd/output/cmn-Hans_eng.srt"))
+    # cmn_hans_eng = get_synced_series(zho_hans, eng)
+    # cmn_hans_eng.save(get_output_path("mlamd/output/cmn-Hans_eng.srt"))
