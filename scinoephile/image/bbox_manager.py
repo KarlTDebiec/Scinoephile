@@ -10,6 +10,7 @@ import numpy as np
 from PIL import Image, ImageChops
 
 from scinoephile.common import package_root
+from scinoephile.core import ScinoephileException
 
 
 class BboxManager:
@@ -37,6 +38,20 @@ class BboxManager:
     def merge_two_chars(self):
         """Characters that are known to potentially be spread across two bboxes."""
         return set(char for chars in self.merge_twos.values() for char in chars)
+
+    @staticmethod
+    def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
+        """Get bbox of non-white/transparent pixels in an image.
+
+        Arguments:
+            img: Image
+        Returns:
+            bbox of non-white/transparent pixels
+        """
+        img_l = img if img.mode == "L" else img.convert("L")
+        mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
+        bbox = mask.getbbox()
+        return bbox
 
     def get_char_bboxes(
         self,
@@ -81,88 +96,86 @@ class BboxManager:
             bboxes.append((x1, y1, x2, y2))
 
         # Clean up bboxes
-        bboxes = self._merge_twos(bboxes, text)
-        bboxes = self._merge_threes(bboxes, text)
+        bboxes = self._merge(bboxes, text)
 
         return bboxes
 
-    def _merge_threes(
+    def _fuzzy_match(self, key: tuple[int, ...]) -> set[str]:
+        """Fuzzy match keys in merge_threes and merge_twos.
+
+        Arguments:
+            key: Key to match
+        """
+        length = len(key)
+        if length == 5:
+            merge_dict = self.merge_twos
+        elif length == 8:
+            merge_dict = self.merge_threes
+        else:
+            raise ScinoephileException(f"Key must be of length 5 or 8, not {len(key)}")
+
+        known_values = set()
+        for known_key in merge_dict.keys():
+            if all(abs(known_key[i] - key[i]) <= 1 for i in range(length)):
+                known_values.update(list(merge_dict[known_key]))
+
+        return known_values
+
+    def _merge(
         self,
         bboxes: list[tuple[int, int, int, int]],
         text: str,
     ) -> list[tuple[int, int, int, int]]:
-        """Merge sets of three adjacent bboxes that match specifications.
+        """Merge sets of adjacent bboxes that match specifications.
 
         Arguments:
             bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
             text: Provisional text present in image
         Returns:
-            bboxes with sets of three adjacent bboxes matching specifications merged
+            bboxes with sets of adjacent bboxes matching specifications merged
         """
         merged_bboxes = []
         bbox_i = 0
         char_i = 0
         while bbox_i < len(bboxes):
+            char = text[char_i]
+
+            # Merge set of three bboxes if appropriate
             if bbox_i <= len(bboxes) - 3:
-                key, merged_bbox = self._get_key_and_merged_bbox(
-                    bboxes[bbox_i],
-                    bboxes[bbox_i + 1],
-                    bboxes[bbox_i + 2],
-                )
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
 
-                # Merge if appropriate
+                # Dimensions are known to be mergable
                 if key in self.merge_threes:
-                    char = text[char_i]
-
-                    # Dimensions, gaps, and char match
+                    # Dimensions and char match
                     if char in self.merge_threes[key]:
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 3
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
-            # Otherwise, keep as is
-            merged_bboxes.append(bboxes[bbox_i])
-            bbox_i += 1
-            char_i = self._get_next_char_i(text, char_i)
+                # Dimensions are close to those known to be mergable for char
+                fuzzy_matches = self._fuzzy_match(key)
+                if char in fuzzy_matches:
+                    self._update_merge_threes(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 3
+                    char_i = self._get_next_char_i(text, char_i)
+                    continue
 
-        return merged_bboxes
-
-    def _merge_twos(
-        self,
-        bboxes: list[tuple[int, int, int, int]],
-        text: str,
-    ) -> list[tuple[int, int, int, int]]:
-        """Merge sets of two adjacent bboxes that match specifications.
-
-        Arguments:
-            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
-            text: Provisional text present in image
-        Returns:
-            bboxes with sets of two adjacent bboxes matching specifications merged
-        """
-        merged_bboxes = []
-        bbox_i = 0
-        char_i = 0
-        while bbox_i < len(bboxes):
+            # Merge set of two bboxes if appropriate
             if bbox_i <= len(bboxes) - 2:
-                key, merged_bbox = self._get_key_and_merged_bbox(
-                    bboxes[bbox_i],
-                    bboxes[bbox_i + 1],
-                )
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
 
-                # Merge if appropriate
+                # Dimensions are known to be mergable
                 if key in self.merge_twos:
-                    char = text[char_i]
-
-                    # Dimensions, gaps, and char match
+                    # Dimensions and char match
                     if char in self.merge_twos[key]:
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 2
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
-                    # Dimensions and gaps match, and char is known as mergable
+                    # Dimensions match, and char is known as mergable
                     if char in self.merge_two_chars:
                         self._update_merge_twos(key, char)
                         merged_bboxes.append(merged_bbox)
@@ -170,19 +183,54 @@ class BboxManager:
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
+                # Dimensions are close to those known to be mergable for char
+                fuzzy_matches = self._fuzzy_match(key)
+                if char in fuzzy_matches:
+                    self._update_merge_twos(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 2
+                    char_i = self._get_next_char_i(text, char_i)
+                    continue
+
             # Otherwise, keep as is
             merged_bboxes.append(bboxes[bbox_i])
             bbox_i += 1
             char_i = self._get_next_char_i(text, char_i)
+            if char_i >= len(text):
+                merged_bboxes += bboxes[bbox_i:]
+                break
 
         return merged_bboxes
+
+    def _update_merge_threes(
+        self,
+        key: tuple[int, int, int, int, int, int, int, int],
+        value: str,
+    ) -> None:
+        """Update merge_threes dictionary.
+
+        Arguments:
+            key: Key including width, height, gap, width, height, gap, width, height
+            value: Character
+        """
+        if key in self.merge_threes:
+            self.merge_threes[key] += value
+        else:
+            self.merge_threes[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to merge_threes")
+        self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
 
     def _update_merge_twos(
         self,
         key: tuple[int, int, int, int, int],
         value: str,
     ) -> None:
-        """Update merge_twos dictionary."""
+        """Update merge_twos dictionary.
+
+        Arguments:
+            key: Key including width, height, gap, width, height
+            value: Character
+        """
         if key in self.merge_twos:
             self.merge_twos[key] += value
         else:
@@ -191,41 +239,35 @@ class BboxManager:
         self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
 
     @staticmethod
-    def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
-        """Get bbox of non-white/transparent pixels in an image.
-
-        Arguments:
-            img: Image
-        Returns:
-            bbox of non-white/transparent pixels
-        """
-        img_l = img if img.mode == "L" else img.convert("L")
-        mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
-        bbox = mask.getbbox()
-        return bbox
-
-    @staticmethod
     def _get_key_and_merged_bbox(
-        *bboxes: tuple[int, int, int, int]
+        bboxes: list[tuple[int, int, int, int]],
+        i: int,
+        n: int,
     ) -> tuple[tuple[int, ...], tuple[int, int, int, int]]:
         """Get key and merged bbox from bboxes.
 
         Arguments:
-            *bboxes: Bboxes
+            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
+            i: Index of first bbox
+            n: Number of bboxes whose merging is under consideration
         Returns:
             Key and merged bbox
         """
-        widths = [bbox[2] - bbox[0] for bbox in bboxes]
-        heights = [bbox[3] - bbox[1] for bbox in bboxes]
-        gaps = [bboxes[i + 1][0] - bboxes[i][2] for i in range(len(bboxes) - 1)]
+        bboxes_slice = bboxes[i : i + n]
+        widths = [bbox[2] - bbox[0] for bbox in bboxes_slice]
+        heights = [bbox[3] - bbox[1] for bbox in bboxes_slice]
+        gaps = [
+            bboxes_slice[i + 1][0] - bboxes_slice[i][2]
+            for i in range(len(bboxes_slice) - 1)
+        ]
         key = tuple(
             [dim for group in zip(widths, heights, gaps + [0]) for dim in group][:-1]
         )
         merged_bbox = (
-            min(bbox[0] for bbox in bboxes),
-            min(bbox[1] for bbox in bboxes),
-            max(bbox[2] for bbox in bboxes),
-            max(bbox[3] for bbox in bboxes),
+            min(bbox[0] for bbox in bboxes_slice),
+            min(bbox[1] for bbox in bboxes_slice),
+            max(bbox[2] for bbox in bboxes_slice),
+            max(bbox[3] for bbox in bboxes_slice),
         )
 
         return key, merged_bbox
