@@ -104,28 +104,35 @@ class MaxGapManager:
         else:
             # Expect space, have no space
             if whitespace_fit_for_adj_chars:
-                response = input(
-                    f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                    f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
-                )
-                if response.lower().startswith("y"):
-                    self._update_max_gaps(
-                        type_1, type_2, char_1_width, char_2_width, gap
-                    )
-                    return (
+                if gap < 100:
+                    response = input(
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
-                        f"(>{max_gap:2d}), and appear to have whitespace between "
-                        f"them, but are not separated by whitespace; added "
-                        f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
-                        f"to max_gaps[{type_1},{type_2}]."
+                        f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
                     )
+                    if response.lower().startswith("y"):
+                        self._update_max_gaps(
+                            type_1, type_2, char_1_width, char_2_width, gap
+                        )
+                        return (
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(>{max_gap:2d}), and appear to have whitespace between "
+                            f"them, but are not separated by whitespace; added "
+                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                            f"to max_gaps[{type_1},{type_2}]."
+                        )
+                    else:
+                        return (
+                            f"{char_1} and {char_2} are separated by {gap:2d} pixels "
+                            f"(>{max_gap:2d}), and appear to have whitespace between "
+                            f"them, but are not separated by whitespace; did not add "
+                            f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
+                            f"to max_gaps[{type_1},{type_2}]."
+                        )
                 else:
                     return (
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
                         f"(>{max_gap:2d}), and appear to have whitespace between "
-                        f"them, but are not separated by whitespace; did not add "
-                        f"({char_1_width:2d},{char_2_width:2d}):{gap:2d} "
-                        f"to max_gaps[{type_1},{type_2}]."
+                        f"them, but are not separated by whitespace."
                     )
             # Expect space, have space
             else:
