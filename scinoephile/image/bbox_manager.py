@@ -218,10 +218,8 @@ class BboxManager:
         """
         bbox_i = 0
         char_i = 0
-        print(text)
         while char_i < len(text):
             char = text[char_i]
-            print(char)
 
             # If char is known to be a merge_three, check key for next three bboxes
             if char in self.merge_three_chars and bbox_i <= len(bboxes) - 3:
