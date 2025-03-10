@@ -6,8 +6,6 @@ from __future__ import annotations
 from logging import info, warning
 from pathlib import Path
 
-from PIL import Image
-
 from scinoephile.common.validation import validate_output_directory
 from scinoephile.core import ScinoephileException
 from scinoephile.image.bbox_manager import BboxManager
@@ -73,12 +71,9 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path | None = None) -> 
 
         # Stack images
         img_stack = get_images_stacked(img_with_bboxes, img_of_text_scaled, img_diff)
-        img_resized = img_stack.resize(
-            (img_stack.width * 10, img_stack.height * 10), Image.NEAREST  # noqa
-        )
 
         # Save image
-        img_resized.save(output_path / f"{i:04d}.png")
+        img_stack.save(output_path / f"{i:04d}.png")
         info(f"Saved {output_path / f'{i:04d}.png'}")
 
 
