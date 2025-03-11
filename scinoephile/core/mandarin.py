@@ -9,7 +9,7 @@ from pypinyin import pinyin
 from snownlp import SnowNLP
 
 from scinoephile.core.series import Series
-from scinoephile.core.text import punctuation
+from scinoephile.core.text import full_to_half_punc
 
 
 def get_mandarin_romanization(series: Series) -> Series:
@@ -22,11 +22,11 @@ def get_mandarin_romanization(series: Series) -> Series:
     """
     series = deepcopy(series)
     for event in series:
-        event.text = get_mandarin_text_romanization(event.text)
+        event.text = _get_mandarin_text_romanization(event.text)
     return series
 
 
-def get_mandarin_text_romanization(text: str) -> str:
+def _get_mandarin_text_romanization(text: str) -> str:
     """Get the Mandarin pinyin romanization of Hanzi text.
 
     Arguments:
@@ -40,8 +40,8 @@ def get_mandarin_text_romanization(text: str) -> str:
         for section in line.split():
             section_romanization = ""
             for word in SnowNLP(section).words:
-                if word in punctuation:
-                    section_romanization += punctuation[word]
+                if word in full_to_half_punc:
+                    section_romanization += full_to_half_punc[word]
                 else:
                     section_romanization += " " + "".join([a[0] for a in pinyin(word)])
             line_romanization += "  " + section_romanization.strip()

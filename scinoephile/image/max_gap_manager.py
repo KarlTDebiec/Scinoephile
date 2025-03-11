@@ -10,7 +10,7 @@ import unicodedata
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileException
-from scinoephile.core.text import full_punc_dict, half_punc_dict
+from scinoephile.core.text import full_punc, half_punc
 
 
 class MaxGapManager:
@@ -253,7 +253,7 @@ class MaxGapManager:
         Raises:
             ScinoephileException: If character type is not recognized
         """
-        punctuation = set(half_punc_dict.values()) | set(full_punc_dict.values())
+        punctuation = set(half_punc.values()) | set(full_punc.values())
 
         # Check if character is punctuation
         if char in punctuation:

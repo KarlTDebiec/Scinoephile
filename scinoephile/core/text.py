@@ -7,7 +7,7 @@ import re
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
-half_punc_dict = {
+half_punc = {
     "APOSTROPHE": "'",
     "BULLET": "•",
     "BULLET OPERATOR": "∙",
@@ -52,7 +52,7 @@ half_punc_dict = {
 }
 """Selected half-width punctuation characters."""
 
-full_punc_dict = {
+full_punc = {
     "DOUBLE PRIME QUOTATION MARK": "〞",
     "FULLWIDTH APOSTROPHE": "＇",
     "FULLWIDTH COLON": "：",
@@ -90,6 +90,20 @@ full_punc_dict = {
     "RIGHT WHITE CORNER BRACKET": "』",
 }
 """Selected full-width punctuation characters."""
+
+half_to_full_punc = {
+    **{
+        half_punc[key]: full_punc[f"FULLWIDTH {key}"]
+        for key in half_punc
+        if f"FULLWIDTH {key}" in full_punc
+    },
+    "“": "〝",
+    "”": "〞",
+}
+"""Mapping from half-width to full-width punctuation characters."""
+
+full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
+"""Mapping from full-width to half-width punctuation characters."""
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 """Regular expression for Hanzi characters."""
