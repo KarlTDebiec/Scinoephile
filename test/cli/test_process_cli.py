@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
-from typing import Type
 
 import pytest
 
@@ -35,7 +34,7 @@ from scinoephile.testing.file import get_test_file_path
     ],
 )
 def test_english(
-    cli: tuple[Type[CommandLineInterface], ...],
+    cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
     expected_path: str,
@@ -76,7 +75,7 @@ def test_english(
     ],
 )
 def test_chinese(
-    cli: tuple[Type[CommandLineInterface], ...],
+    cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
     expected_path: str,
@@ -112,7 +111,7 @@ def test_chinese(
     ],
 )
 def test_bilingual(
-    cli: tuple[Type[CommandLineInterface], ...],
+    cli: tuple[type[CommandLineInterface], ...],
     chinese_input_path: str,
     english_input_path: str,
     args: str,

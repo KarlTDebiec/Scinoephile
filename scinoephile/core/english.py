@@ -15,7 +15,7 @@ from scinoephile.core.series import Series
 def get_english_cleaned(series: Series) -> Series:
     """Get English series cleaned.
 
-    Arguments
+    Arguments:
         series: series to clean
     Returns:
         cleaned series
@@ -150,7 +150,6 @@ def _get_english_text_truecased(text: str) -> str:
     Returns:
         truecased text
     """
-
     try:
         tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
     except LookupError:
