@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Any, Type
+from typing import Any
 
 from pytest import fixture
 
 
-def parametrized_fixture(cls: Type, params: list[dict[str, Any]]):
+def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
     """Decorator for parametrized test fixtures which provides clearer test output.
 
     Arguments:
