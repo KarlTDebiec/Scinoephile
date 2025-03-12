@@ -41,15 +41,10 @@ jobs:
           write_output_files: true
           json: true
 
-      - name: Run prospector
+      - name: Run ruff
         run: |
           cd ${GITHUB_WORKSPACE}
-          uv run prospector -A -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
-
-      - name: Run pydocstyle # Run separately because prospector does not honor pyproject.toml
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          uv run pydocstyle . | tee ${GITHUB_WORKSPACE}/.github/outputs/pydocstyle.txt || echo
+          uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
 
       - name: Run pyright
         run: |
