@@ -44,7 +44,12 @@ jobs:
       - name: Run ruff
         run: |
           cd ${GITHUB_WORKSPACE}
-          uv run ruff check
+          uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
+
+      - name: Run pyright
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
 
       - name: Run pytest
         run: |
