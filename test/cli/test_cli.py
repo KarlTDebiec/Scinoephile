@@ -7,7 +7,6 @@ from contextlib import redirect_stderr, redirect_stdout
 from inspect import getfile
 from io import StringIO
 from pathlib import Path
-from typing import Type
 
 import pytest
 
@@ -22,7 +21,7 @@ from scinoephile.common.testing import run_cli_with_args
         (ScinoephileCli,),
     ],
 )
-def test_help(cli: tuple[Type[CommandLineInterface], ...]):
+def test_help(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
@@ -45,7 +44,7 @@ def test_help(cli: tuple[Type[CommandLineInterface], ...]):
         (ScinoephileCli,),
     ],
 )
-def test_usage(cli: tuple[Type[CommandLineInterface], ...]):
+def test_usage(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
