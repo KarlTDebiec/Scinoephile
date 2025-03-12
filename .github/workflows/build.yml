@@ -14,33 +14,20 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Set up Python
-        id: setup-python
+
+      - name: Define a cache dependency glob
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.5.1
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-      - name: Load cached virtual environment
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          poetry install --no-interaction --no-root
-      - name: Install library
-        run: |
-          poetry install --no-interaction
+          python-version-file: "pyproject.toml"
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
 
       - name: Identify changes
         id: files
@@ -52,18 +39,21 @@ jobs:
       - name: Run prospector
         run: |
           cd ${GITHUB_WORKSPACE}
-          poetry run prospector -A -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
+          uv run prospector -A -T -0 -o text -o json:${GITHUB_WORKSPACE}/.github/outputs/prospector.json .
+
       - name: Run pydocstyle # Run separately because prospector does not honor pyproject.toml
         run: |
           cd ${GITHUB_WORKSPACE}
-          poetry run pydocstyle . | tee ${GITHUB_WORKSPACE}/.github/outputs/pydocstyle.txt || echo
+          uv run pydocstyle . | tee ${GITHUB_WORKSPACE}/.github/outputs/pydocstyle.txt || echo
+
       - name: Run pyright
         run: |
           cd ${GITHUB_WORKSPACE}
-          poetry run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+          uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+
       - name: Run pytest
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
-          poetry run pytest -v --cov=scinoephile --cov-report term .
+          uv run pytest -v --cov=scinoephile --cov-report term .
         continue-on-error: false
