@@ -9,43 +9,48 @@ target-version = ['py313']
 [tool.isort]
 profile = 'black'
 
-[tool.poetry]
+[project]
 name = "scinoephile"
 version = "0.1.0"
 description = ""
-authors = ["Karl Debiec <karl.t.debiec@gmail.com>"]
-license = "BSD 3-Clause"
+authors = [
+    { name = "Karl Debiec", email = "karl.t.debiec@gmail.com" }
+]
+license = { text = "BSD 3-Clause" }
 readme = "README.md"
+requires-python = ">=3.13"
 
-[tool.poetry.dependencies]
-hanziconv = "^0.3.2"
-llvmlite = "^0.44.0rc2"
-matplotlib = "^3.10.0"
-nltk = "^3.9.1"
-numba = "^0.61.0"
-numpy = "^2.0.2"
-openai = "^1.60.1"
-opencv-python = "^4.10.0.84"
-pandas = "^2.2.3"
-pandas-stubs = "^2.2.3.241126"
-pillow = "^11.1.0"
-pycantonese = "^3.4.0"
-pypinyin = "^0.53.0"
-pysubs2 = "^1.8.0"
-python = "^3.13"
-rlpycairo = "^0.3.0"
-snownlp = "^0.12.3"
-setuptools = "^75.8.0"
-svglib = "^1.5.1"
+dependencies = [
+    "hanziconv>=0.3.2",
+    "llvmlite>=0.44.0rc2",
+    "matplotlib>=3.10.0",
+    "nltk>=3.9.1",
+    "numba>=0.61.0",
+    "numpy>=2.0.2",
+    "openai>=1.60.1",
+    "opencv-python>=4.10.0.84",
+    "pandas>=2.2.3",
+    "pandas-stubs>=2.2.3.241126",
+    "pillow>=11.1.0",
+    "pycantonese>=3.4.0",
+    "pypinyin>=0.53.0",
+    "pysubs2>=1.8.0",
+    "rlpycairo>=0.3.0",
+    "snownlp>=0.12.3",
+    "setuptools>=75.8.0",
+    "svglib>=1.5.1"
+]
 
-[tool.poetry.group.dev.dependencies]
-black = "^25.1.0"
-isort = "^5.13.2"
-prospector = "^1.14.1"
-pyright = "^1.1.391"
-pytest = "^8.3.4"
-pytest-cov = "^6.0.0"
-pytest-xdist = "^3.6.1"
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "prospector>=1.13.3",
+    "pyright>=1.1.391",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "pytest-xdist>=3.6.1"
+]
 
 [tool.pydocstyle]
 convention = 'google'
