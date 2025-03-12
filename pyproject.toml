@@ -54,7 +54,6 @@ line-length = 88
 [tool.ruff.lint]
 extend-select = [
     "D",   # pydocstyle
-    "DOC", # pydoclint
     "E",   # pycodestyle
     "F",   # pyflakes
     "I",   # isort
