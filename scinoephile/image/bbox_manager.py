@@ -48,12 +48,14 @@ class BboxManager:
         self,
         img: Image.Image,
         text: str,
+        interactive: bool = False,
     ) -> list[tuple[int, int, int, int]]:
         """Get character bboxes within an image.
 
         Arguments:
             img: Image
             text: Provisional text present in image
+            interactive: Whether to prompt user for input on proposed updates
         Returns:
             Character bounding boxes [(x1, y1, x2, y2), ...]
         """
@@ -92,7 +94,8 @@ class BboxManager:
         # Propose additional merges of adjacent boxes, if found
         filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
         if len(filtered_text) != len(bboxes):
-            self._propose_merges(bboxes, text)
+            if interactive:
+                self._propose_merges(bboxes, text)
             bboxes = self._apply_known_merges(bboxes, text)
 
         return bboxes

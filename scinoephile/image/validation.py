@@ -22,12 +22,17 @@ from scinoephile.image.image_series import ImageSeries
 from scinoephile.image.max_gap_manager import MaxGapManager
 
 
-def validate_ocr_hanzi(series: ImageSeries, output_path: Path | None = None) -> None:
+def validate_ocr_hanzi(
+    series: ImageSeries,
+    output_path: Path | None = None,
+    interactive: bool = True,
+) -> None:
     """Validate OCR of a hanzi image series.
 
     Arguments:
         series: Series to validate
         output_path: Directory in which to save validation results
+        interactive: Whether to prompt user for input on proposed updates
     """
     if output_path:
         output_path = validate_output_directory(output_path)
@@ -38,10 +43,14 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path | None = None) -> 
     for i, event in enumerate(series.events, 1):
         # Prepare source image
         img_with_white_bg = get_image_with_white_bg(event.img)
-        bboxes = bbox_manager.get_char_bboxes(img_with_white_bg, event.text)
+        bboxes = bbox_manager.get_char_bboxes(
+            img_with_white_bg, event.text, interactive
+        )
 
         try:
-            messages = _validate_spaces_hanzi(event.text, bboxes, max_gap_manager)
+            messages = _validate_spaces_hanzi(
+                event.text, bboxes, max_gap_manager, interactive
+            )
             if messages:
                 for message in messages:
                     warning(f"Subtitle {i}: {message}")
@@ -78,7 +87,10 @@ def validate_ocr_hanzi(series: ImageSeries, output_path: Path | None = None) -> 
 
 
 def _validate_spaces_hanzi(
-    text: str, bboxes: list[tuple[int, int, int, int]], max_gap_manager: MaxGapManager
+    text: str,
+    bboxes: list[tuple[int, int, int, int]],
+    max_gap_manager: MaxGapManager,
+    interactive: bool = True,
 ) -> list[str]:
     """Validate spacing in text by comparing with bbox gaps.
 
@@ -86,6 +98,7 @@ def _validate_spaces_hanzi(
         text: Provisional text
         bboxes: Bounding boxes [(x1, y1, x2, y2), ...]
         max_gap_manager: Manages maximum gaps between characters of different types
+        interactive: Whether to prompt user for input on proposed updates
     """
     # Calculate widths and gaps
     widths = [bboxes[i][2] - bboxes[i][0] for i in range(len(bboxes))]
@@ -144,7 +157,7 @@ def _validate_spaces_hanzi(
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
         message = max_gap_manager.validate_gap(
-            char_1, char_2, char_1_width, char_2_width, gap, whitespace
+            char_1, char_2, char_1_width, char_2_width, gap, whitespace, interactive
         )
         if message:
             messages.append(message)
