@@ -1300,12 +1300,12 @@ or I will electrocute you.
 
 263
 00:19:46,144 --> 00:19:47,520
-你啱啱讲嘢?
+你啱啱讲嘢？
 Did you just talk?
 
 264
 00:19:47,687 --> 00:19:49,814
-哗！你听得明我?
+哗！你听得明我？
 Whoa. Did you just understand me?
 
 265
@@ -1610,12 +1610,12 @@ Uh, you can hear him, right? You can hear him talking?
 
 325
 00:22:45,490 --> 00:22:47,450
-Pika-Pika
+Pika﹣Pika
 - Pika-Pika. Pika. Pikachu.    - Aw.
 
 326
 00:22:47,617 --> 00:22:50,662
-听到，Pika-Pika　佢好可爱
+听到，Pika﹣Pika　佢好可爱
 Yeah. Pika-Pika. Pika. He's adorable.
 
 327
@@ -1675,12 +1675,12 @@ He's saying words.
 
 338
 00:23:09,254 --> 00:23:10,254
-我讲嘢　个个都只听到「Pika-Pika」
+我讲嘢　个个都只听到「Pika﹣Pika」
 Try to talk to people all the time.
 
 339
 00:23:10,254 --> 00:23:11,255
-我讲嘢　个个都只听到「Pika-Pika」
+我讲嘢　个个都只听到「Pika﹣Pika」
 All they hear is "Pika-Pika".
 
 340
@@ -3267,7 +3267,7 @@ I meant that.
 
 657
 00:35:22,580 --> 00:35:23,748
-佢?
+佢？
 That.
 
 658
@@ -4150,7 +4150,7 @@ You don't wanna do this! I'm adorable.
 
 834
 00:42:53,948 --> 00:42:55,408
-Pika-Pika？
+Pika﹣Pika？
 Pika-Pika?
 
 835
@@ -7937,7 +7937,7 @@ Erm… maybe I could give detective work a try?
 
 1592
 01:35:34,192 --> 01:35:35,860
-Pika-Pika！
+Pika﹣Pika！
 Pika-Pika!
 
 1593

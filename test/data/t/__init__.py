@@ -6,28 +6,31 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing import test_data_root
+
+input_dir = test_data_root / "t" / "input"
+output_dir = test_data_root / "t" / "output"
 
 
 # region Simplified Standard Chinese
 @pytest.fixture
 def t_cmn_hans() -> Series:
-    return Series.load(get_test_file_path("t/input/cmn-Hans.srt"))
+    return Series.load(input_dir / "cmn-Hans.srt")
 
 
 @pytest.fixture
 def t_cmn_hans_clean() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans_clean.srt"))
+    return Series.load(output_dir / "cmn-Hans_clean.srt")
 
 
 @pytest.fixture
 def t_cmn_hans_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans_flatten.srt"))
+    return Series.load(output_dir / "cmn-Hans_flatten.srt")
 
 
 @pytest.fixture
 def t_cmn_hans_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans_clean_flatten.srt"))
+    return Series.load(output_dir / "cmn-Hans_clean_flatten.srt")
 
 
 # endregion
@@ -36,12 +39,12 @@ def t_cmn_hans_clean_flatten() -> Series:
 # region Traditional Standard Chinese
 @pytest.fixture
 def t_cmn_hant() -> Series:
-    return Series.load(get_test_file_path("t/input/cmn-Hant.srt"))
+    return Series.load(input_dir / "cmn-Hant.srt")
 
 
 @pytest.fixture
 def t_cmn_hant_simplify() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hant_simplify.srt"))
+    return Series.load(output_dir / "cmn-Hant_simplify.srt")
 
 
 # endregion
@@ -50,22 +53,22 @@ def t_cmn_hant_simplify() -> Series:
 # region English
 @pytest.fixture
 def t_eng() -> Series:
-    return Series.load(get_test_file_path("t/input/eng.srt"))
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def t_eng_clean() -> Series:
-    return Series.load(get_test_file_path("t/output/eng_clean.srt"))
+    return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def t_eng_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/eng_flatten.srt"))
+    return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def t_eng_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("t/output/eng_clean_flatten.srt"))
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
@@ -74,7 +77,7 @@ def t_eng_clean_flatten() -> Series:
 # region Bilingual Simplified Chinese and English
 @pytest.fixture
 def t_cmn_hans_eng() -> Series:
-    return Series.load(get_test_file_path("t/output/cmn-Hans_eng.srt"))
+    return Series.load(output_dir / "cmn-Hans_eng.srt")
 
 
 # endregion

@@ -13,7 +13,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Series
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing import test_data_root
 
 
 @pytest.mark.parametrize(
@@ -39,7 +39,7 @@ def test_english(
     args: str,
     expected_path: str,
 ):
-    input_path = get_test_file_path(input_path)
+    input_path = test_data_root / input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
@@ -52,7 +52,7 @@ def test_english(
                     cli[0], f"{subcommands} -eif {input_path} {args} -eof {output_path}"
                 )
                 output = Series.load(output_path)
-                expected = Series.load(get_test_file_path(expected_path))
+                expected = Series.load(test_data_root / expected_path)
 
                 assert output == expected
 
@@ -80,7 +80,7 @@ def test_chinese(
     args: str,
     expected_path: str,
 ):
-    input_path = get_test_file_path(input_path)
+    input_path = test_data_root / input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
@@ -93,7 +93,7 @@ def test_chinese(
                     cli[0], f"{subcommands} -cif {input_path} {args} -cof {output_path}"
                 )
                 output = Series.load(output_path)
-                expected = Series.load(get_test_file_path(expected_path))
+                expected = Series.load(test_data_root / expected_path)
 
                 assert output == expected
 
@@ -117,8 +117,8 @@ def test_bilingual(
     args: str,
     expected_path: str,
 ):
-    chinese_input_path = get_test_file_path(chinese_input_path)
-    english_input_path = get_test_file_path(english_input_path)
+    chinese_input_path = test_data_root / chinese_input_path
+    english_input_path = test_data_root / english_input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
@@ -132,6 +132,6 @@ def test_bilingual(
                     f"{subcommands} -cif {chinese_input_path} -eif {english_input_path} {args} -bof {output_path}",
                 )
                 output = Series.load(output_path)
-                expected = Series.load(get_test_file_path(expected_path))
+                expected = Series.load(test_data_root / expected_path)
 
                 assert output == expected
