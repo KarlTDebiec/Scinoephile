@@ -94,7 +94,7 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
 
 
 def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
-    """Get image of text, drawn using matplotlib.
+    """Get image of text, drawn using pillow.
 
     Arguments:
         text: Text to draw
