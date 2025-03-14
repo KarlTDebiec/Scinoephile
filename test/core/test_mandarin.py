@@ -7,8 +7,8 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.mandarin import (
+    _get_mandarin_text_romanization,
     get_mandarin_romanization,
-    get_mandarin_text_romanization,
 )
 from ..data.mnt import mnt_cmn_hant
 from ..data.pdp import pdp_cmn_hant
@@ -40,4 +40,4 @@ def test_get_mandarin_romanization_t(t_cmn_hans: Series):
     ],
 )
 def test_get_mandarin_text_romanization(text: str, expected: str):
-    assert get_mandarin_text_romanization(text) == expected
+    assert _get_mandarin_text_romanization(text) == expected

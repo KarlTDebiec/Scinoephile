@@ -9,6 +9,7 @@ from copy import deepcopy
 from hanziconv import HanziConv
 
 from scinoephile.core.series import Series
+from scinoephile.core.text import half_to_full_punc
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
@@ -87,10 +88,20 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Replace '...' with '⋯'
-    cleaned = re.sub(r"\.\.\.", "⋯", cleaned)
+    cleaned = re.sub(r"\s*\.\.\.\s*", "⋯", cleaned)
 
     # Replace '…' with '⋯'
-    cleaned = re.sub(r"…", "⋯", cleaned)
+    cleaned = re.sub(r"\s*…\s*", "⋯", cleaned)
+
+    # Replace half-width punctuation with full-width punctuation
+    old_to_new_punc = deepcopy(half_to_full_punc)
+    old_to_new_punc["-"] = "﹣"
+    old_to_new_punc["－"] = "﹣"
+    for old_punc, new_punc in old_to_new_punc.items():
+        cleaned = re.sub(rf"\s*{re.escape(old_punc)}\s*", new_punc, cleaned)
+
+    # Remove whitespace before and after specified characters
+    cleaned = re.sub(r"\s*([、「」『』《》])\s*", r"\1", cleaned)
 
     # Remove empty lines
     cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)

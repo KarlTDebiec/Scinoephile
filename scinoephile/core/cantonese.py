@@ -15,7 +15,7 @@ from hanziconv import HanziConv
 from scinoephile.common import package_root
 from scinoephile.core.exceptions import ScinoephileException
 from scinoephile.core.series import Series
-from scinoephile.core.text import punctuation, re_hanzi, re_hanzi_rare, re_western
+from scinoephile.core.text import full_to_half_punc, re_hanzi, re_hanzi_rare, re_western
 
 data_root = package_root / "data/cantonese/"
 
@@ -150,8 +150,8 @@ def _get_cantonese_text_romanization(text: str) -> str:
         for section in line.split():
             section_romanization = ""
             for char in section:
-                if char in punctuation:
-                    section_romanization += punctuation[char]
+                if char in full_to_half_punc:
+                    section_romanization += full_to_half_punc[char]
                 elif re_western.match(char):
                     section_romanization += char
                 elif re_hanzi.match(char) or re_hanzi_rare.match(char):
