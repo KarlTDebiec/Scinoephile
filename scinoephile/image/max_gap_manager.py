@@ -6,11 +6,9 @@ from __future__ import annotations
 from logging import info
 
 import numpy as np
-import unicodedata
 
 from scinoephile.common import package_root
-from scinoephile.core import ScinoephileException
-from scinoephile.core.text import full_punc, half_punc
+from scinoephile.core.text import get_char_type
 
 
 class MaxGapManager:
@@ -58,8 +56,8 @@ class MaxGapManager:
             gap: Gap between characters in pixels
             whitespace: Whitespace between characters
         """
-        type_1 = self.get_char_type(char_1)
-        type_2 = self.get_char_type(char_2)
+        type_1 = get_char_type(char_1)
+        type_2 = get_char_type(char_2)
 
         # Check if whitespace is appropriate for adjacent characters
         whitespace_fit_for_adj_chars = len(whitespace) == 0
@@ -241,52 +239,3 @@ class MaxGapManager:
         max_gaps = self.max_gaps[type_1, type_2]
         max_gaps[width_1, width_2] = gap
         self._save_max_gaps(type_1, type_2)
-
-    @staticmethod
-    def get_char_type(char: str) -> str:
-        """Return character type.
-
-        Arguments:
-            char: Character
-        Returns:
-            Character type
-        Raises:
-            ScinoephileException: If character type is not recognized
-        """
-        punctuation = set(half_punc.values()) | set(full_punc.values())
-
-        # Check if character is punctuation
-        if char in punctuation:
-            return "punc"
-
-        # Check if character is full-width (CJK)
-        if any(
-            [
-                "\u4E00" <= char <= "\u9FFF",  # CJK Unified Ideographs
-                "\u3400" <= char <= "\u4DBF",  # CJK Unified Ideographs Extension A
-                "\uF900" <= char <= "\uFAFF",  # CJK Compatibility Ideographs
-                "\U00020000" <= char <= "\U0002A6DF",  # CJK Unified Ideographs Ext B
-                "\U0002A700" <= char <= "\U0002B73F",  # CJK Unified Ideographs Ext C
-                "\U0002B740" <= char <= "\U0002B81F",  # CJK Unified Ideographs Ext D
-                "\U0002B820" <= char <= "\U0002CEAF",  # CJK Unified Ideographs Ext E
-                "\U0002CEB0" <= char <= "\U0002EBEF",  # CJK Unified Ideographs Ext F
-                "\u3000" <= char <= "\u303F",  # CJK Symbols and Punctuation
-            ]
-        ):
-            return "full"
-
-        # Check if character is half-width (Western)
-        if any(
-            [
-                "\u0020" <= char <= "\u007F",  # Basic Latin
-                "\u00A0" <= char <= "\u00FF",  # Latin-1 Supplement
-                "\u0100" <= char <= "\u017F",  # Latin Extended-A
-                "\u0180" <= char <= "\u024F",  # Latin Extended-B
-            ]
-        ):
-            return "half"
-
-        # Raise exception if character type is not recognized
-        raise ScinoephileException(
-            f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
-        )

@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from scinoephile.core import ScinoephileException
-from scinoephile.core.text import is_chinese
+from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
 
 
@@ -111,7 +111,7 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
 
-    if is_chinese(text):
+    if get_text_type(text) == "full":
         spacing: int = 14
 
         # Calculate initial position for text drawing

@@ -9,14 +9,11 @@ from copy import deepcopy
 from hanziconv import HanziConv
 
 from scinoephile.core.series import Series
-from scinoephile.core.text import half_to_full_punc
+from scinoephile.core.text import get_char_type, half_to_full_punc
 
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
-
-re_hanzi = re.compile(r"[\u4e00-\u9fff]")
-re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 
 def get_hanzi_cleaned(series: Series) -> Series:
@@ -151,7 +148,7 @@ def _get_hanzi_text_simplified(text: str) -> str:
     simplified = ""
 
     for char in text:
-        if re_hanzi.match(char) or re_hanzi_rare.match(char):
+        if get_char_type(char) == "full":
             simplified += HanziConv.toSimplified(char)
         else:
             simplified += char
@@ -173,7 +170,7 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
     # TODO: 疴 to 痾?
 
     for char in text:
-        if re_hanzi.match(char) or re_hanzi_rare.match(char):
+        if get_char_type(char) == "full":
             if char in exclusions:
                 traditionalized += char
             traditionalized += HanziConv.toTraditional(char)
