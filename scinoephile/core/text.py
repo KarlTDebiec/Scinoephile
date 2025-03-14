@@ -57,6 +57,7 @@ half_punc = {
 """Selected half-width punctuation characters."""
 
 full_punc = {
+    "BOX DRAWINGS LIGHT HORIZONTAL": "─",
     "DOUBLE PRIME QUOTATION MARK": "〞",
     "FULLWIDTH APOSTROPHE": "＇",
     "FULLWIDTH COLON": "：",
@@ -92,6 +93,7 @@ full_punc = {
     "RIGHT CORNER BRACKET": "」",
     "RIGHT DOUBLE ANGLE BRACKET": "》",
     "RIGHT WHITE CORNER BRACKET": "』",
+    "SMALL HYPHEN-MINUS": "﹣",
 }
 """Selected full-width punctuation characters."""
 

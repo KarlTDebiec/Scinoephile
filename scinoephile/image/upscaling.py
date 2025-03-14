@@ -77,11 +77,11 @@ def _get_potrace_upscaled_image(image: Image):
             if not traced_drawing:
                 raise ValueError("No drawing found in SVG")
             traced_drawing.scale(
-                (image.size[0] / traced_drawing.sei_width) * 2,
-                (image.size[1] / traced_drawing.sei_height) * 2,
+                (image.size[0] / traced_drawing.width) * 2,
+                (image.size[1] / traced_drawing.height) * 2,
             )
-            traced_drawing.sei_width = int(image.size[0] * 2)
-            traced_drawing.sei_height = int(image.size[1] * 2)
+            traced_drawing.width = int(image.size[0] * 2)
+            traced_drawing.height = int(image.size[1] * 2)
 
             with get_temp_file_path(".png") as temp_png_path:
                 drawToFile(traced_drawing, temp_png_path, fmt="png")
