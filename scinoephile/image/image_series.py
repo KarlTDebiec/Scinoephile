@@ -69,7 +69,7 @@ class ImageSeries(Series):
         # Save images
         for i, event in enumerate(self.events, 1):
             outfile_path = fp / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
-            event.image.save(outfile_path)
+            event.img.save(outfile_path)
             info(f"Saved image to {outfile_path}")
 
         # Save text
@@ -157,29 +157,28 @@ class ImageSeries(Series):
         series = cls()
         series.format = "png"
 
+        # Load text
+        srt_path = fp / f"{fp.stem}.srt"
+        text_series = Series.load(srt_path)
+
         # Load images
-        for path in sorted([path for path in fp.iterdir() if path.suffix == ".png"]):
-            image = Image.open(path)
-            data = np.array(image)
+        infiles = sorted([path for path in fp.iterdir() if path.suffix == ".png"])
+        if len(text_series) != len(infiles):
+            raise ScinoephileException(
+                f"Number of images in {fp} ({len(series)}) "
+                f"does not match number of subtitles in {srt_path} "
+                f"({len(text_series)})"
+            )
+        for text_event, infile in zip(text_series, infiles):
+            image = Image.open(infile)
             series.events.append(
                 cls.event_class(
-                    start=make_time(ms=int(path.stem.split("_")[1])),
-                    end=make_time(ms=int(path.stem.split("_")[2])),
-                    data=data,
+                    start=text_event.start,
+                    end=text_event.end,
+                    data=np.array(image),
+                    text=text_event.text,
+                    series=series,
                 )
             )
-
-        # If srt exists, load it
-        srt_path = fp / f"{fp.stem}.srt"
-        if srt_path.exists():
-            text_series = Series.load(srt_path)
-            if len(text_series) != len(series):
-                raise ScinoephileException(
-                    f"Number of images in {fp} ({len(series)}) "
-                    f"does not match number of subtitles in {srt_path} "
-                    f"({len(text_series)})"
-                )
-            for i, (event, text_event) in enumerate(zip(series, text_series)):
-                event.text = text_event.text
 
         return series

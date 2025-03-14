@@ -1,72 +1,100 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Image code related to image drawing."""
+"""Image code related to drawing."""
 from __future__ import annotations
 
-import matplotlib.pyplot as plt
+import colorsys
+
 import numpy as np
-from PIL import Image, ImageChops
-from matplotlib.font_manager import FontProperties
-from matplotlib.patheffects import Normal, Stroke
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+from scinoephile.core import ScinoephileException
+from scinoephile.core.text import get_text_type
+from scinoephile.image.bbox import get_bbox
 
 
-def get_grayscale_image_on_white(image: Image.Image) -> Image.Image:
-    """Get grayscale image on white background.
-
-    Arguments:
-        image: Image
-    Returns:
-        Grayscale image on white background
-    """
-    image_l = Image.new("LA", image.size, (255, 255))
-    image_l.paste(image, (0, 0), image)
-    image_l = image_l.convert("L")
-    return image_l
-
-
-def get_image_diff(reference: Image.Image, test: Image.Image) -> Image.Image:
-    """Get image diff. Darker or lighter pixels are red and blue, respectively.
+def get_image_annotated_with_char_bboxes(
+    img: Image.Image, bboxes: list[tuple[int, ...]]
+) -> Image.Image:
+    """Draw bounding boxes on an image with rainbow colors for debugging.
 
     Arguments:
-        reference: reference image
-        test: test image
+        img: Reference image
+        bboxes: Bounding boxes [(x1, y1, x2, y2)].
     Returns:
-        color diff image in which pixels that are dark in the test image are red, and
-        pixels that are too light in the test image are blue.
+        Image with bounding boxes drawn.
     """
-    if reference.size != test.size:
+    img_annotated = img.copy().convert("RGB")
+    draw = ImageDraw.Draw(img_annotated)
+
+    # Generate palette
+    palette = [
+        tuple(
+            int(c * 255)
+            for c in np.array(colorsys.hsv_to_rgb(i / len(bboxes), 1.0, 1.0))
+        )
+        for i in range(len(bboxes))
+    ]
+
+    # Draw boxes
+    for i, (x1, y1, x2, y2) in enumerate(bboxes):
+        draw.rectangle(
+            [x1, y1, x2, y2],
+            outline=palette[i],
+            width=1,
+        )
+
+    return img_annotated
+
+
+def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
+    """Get diff between two grayscale images.
+
+    Arguments:
+        ref: Reference image; must be of mode "L"
+        tst: Test image; must be of mode "L" and the same size as ref
+    Returns:
+        color diff image in which pixels that are darker in the test image are red, and
+        pixels that are lighter in the test image are blue.
+    """
+    if ref.size != tst.size:
         raise ValueError("Images must be the same size")
-    if reference.mode != "L":
-        reference_l = get_grayscale_image_on_white(reference)
-    else:
-        reference_l = reference
-    if test.mode != "L":
-        test_l = get_grayscale_image_on_white(test)
-    else:
-        test_l = test
+    if ref.mode != "L":
+        raise ValueError(f"Reference image must be of mode 'L', is {ref.mode}")
+    if tst.mode != "L":
+        raise ValueError(f"Test image must be of mode 'L', is {tst.mode}")
 
-    diff_data = np.array(reference_l).astype(int) - np.array(test_l).astype(int)
+    blur_radius = 2
+    ref = ref.filter(ImageFilter.GaussianBlur(blur_radius))
+    tst = tst.filter(ImageFilter.GaussianBlur(blur_radius))
 
-    darker_data = diff_data.copy()
-    darker_data[darker_data > 0] = 0
-    darker_data = (darker_data * -1).astype(np.uint8)
+    diff_arr = np.array(ref).astype(int) - np.array(tst).astype(int)
 
-    lighter_data = diff_data.copy()
-    lighter_data[lighter_data < 0] = 0
-    lighter_data = lighter_data.astype(np.uint8)
+    # darker_arr = diff_arr.copy()
+    # darker_arr[darker_arr > 0] = 0
+    # darker_arr = (darker_arr * -1).astype(np.uint8)
 
-    color_diff_data = np.ones((reference.size[1], reference.size[0], 3), np.uint8) * 255
-    color_diff_data[..., 1] -= darker_data  # Subtract darker from green and blue
-    color_diff_data[..., 2] -= darker_data  # to make darker pixels redder
-    color_diff_data[..., 0] -= lighter_data  # Subtract lighter from red and green
-    color_diff_data[..., 1] -= lighter_data  # to make lighter pixels bluer
-    color_diff = Image.fromarray(color_diff_data)
+    # lighter_arr = diff_arr.copy()
+    # lighter_arr[lighter_arr < 0] = 0
+    # lighter_arr = lighter_arr.astype(np.uint8)
+
+    diff_sq = np.sign(diff_arr) * (diff_arr**2)
+    diff_sq = (diff_sq / 65025) * 255
+    darker_arr = np.clip(-diff_sq, 0, 255).astype(np.uint8)
+    lighter_arr = np.clip(diff_sq, 0, 255).astype(np.uint8)
+
+    color_diff_arr = np.ones((ref.size[1], ref.size[0], 3), np.uint8) * 255
+    color_diff_arr[..., 1] -= darker_arr  # Subtract darker from green and blue
+    color_diff_arr[..., 2] -= darker_arr  # to make darker pixels redder
+    color_diff_arr[..., 0] -= lighter_arr  # Subtract lighter from red and green
+    color_diff_arr[..., 1] -= lighter_arr  # to make lighter pixels bluer
+    color_diff = Image.fromarray(color_diff_arr)
 
     return color_diff
 
 
 def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
-    """Get image of text, drawn using matplotlib.
+    """Get image of text, drawn using pillow.
 
     Arguments:
         text: Text to draw
@@ -74,82 +102,142 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
     Returns:
         Image of text
     """
-    # Prepare Figure of appropriate height and width
-    figure = plt.figure(figsize=(size[0] / 100, size[1] / 100), dpi=100)
-    figure.patch.set_alpha(0)
-    figure.patch.set_facecolor("none")
+    # Create a new image with white background
+    image = Image.new("L", (size[0] * 2, size[1] * 2), 255)
+    draw = ImageDraw.Draw(image)
 
-    # Draw text on Figure
-    # TODO: Make styling configurable.
-    # TODO: Support OSes other than Windows.
-    # TODO: Determine optimized settings for Chinese.
-    font = r"C:\WINDOWS\FONTS\MSYH.TTC"
-    font_size = 41.5
-    width = 4
-    text = figure.text(
-        x=0.5,
-        y=0.5,
-        s=text,
-        ha="center",
-        va="center",
-        fontproperties=FontProperties(
-            fname=font,
-            size=font_size,
-        ),
-        color=(0.8549, 0.8549, 0.8549),
-    )
-    text.set_path_effects(
-        [Stroke(linewidth=width, foreground=(0.1, 0.1, 0.1)), Normal()]
-    )
-    figure.canvas.draw()
+    # Load a font
+    font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    font_size = 40 * 2
+    font = ImageFont.truetype(font_path, font_size)
 
-    # Convert Figure to Image
-    image = Image.new("RGBA", size, color=255)
-    image_array = np.array(figure.canvas.renderer._renderer)  # noqa
-    image.paste(Image.fromarray(image_array), (0, 0))
+    if get_text_type(text) == "full":
+        spacing: int = 14
 
+        # Calculate initial position for text drawing
+        x = (
+            image.size[0] - (len(text) * font_size // 2 + (len(text) - 1) * spacing)
+        ) // 2
+        y = (image.size[1] - font_size) // 2
+
+        # Draw each character with custom spacing
+        for char in text:
+            text_bbox = draw.textbbox((0, 0), char, font=font)
+            char_width = text_bbox[2] - text_bbox[0]
+
+            # Draw character outline
+            outline_width = 3
+            for dx in range(-outline_width, outline_width + 1):
+                for dy in range(-outline_width, outline_width + 1):
+                    if dx != 0 or dy != 0:
+                        draw.text((x + dx, y + dy), char, font=font, fill=31)
+
+            # Draw character fill
+            draw.text((x, y), char, font=font, fill=235)
+
+            # Move to next character position
+            x += char_width + spacing
+    else:
+        # Calculate text size and position
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width, text_height = (
+            text_bbox[2] - text_bbox[0],
+            text_bbox[3] - text_bbox[1],
+        )
+        text_x = (image.size[0] - text_width) // 2
+        text_y = (image.size[1] - text_height) // 2
+        text_y -= text_bbox[1]
+
+        # Draw text with outline
+        outline_width = 2 * 2
+        for dx in range(-outline_width, outline_width + 1):
+            for dy in range(-outline_width, outline_width + 1):
+                if dx != 0 or dy != 0:
+                    draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
+        draw.text((text_x, text_y), text, font=font, fill=235)
+
+    image = image.resize(size, Image.LANCZOS)  # noqa
     return image
 
 
-def get_non_white_bbox(image: Image.Image) -> tuple[int, int, int, int]:
-    """Get bounding box of non-white/transparent pixels in an image.
+def get_image_of_text_with_char_alignment(
+    text: str,
+    size: tuple[int, int],
+    bboxes: list[tuple[int, int, int, int]],
+) -> Image.Image:
+    """Generate an image of text, aligning each character to the reference image.
 
     Arguments:
-        image: Image
-    Returns:
-        Bounding box of non-white/transparent pixels
-    """
-    image_l = image
-    if image.mode != "L":
-        image_l = get_grayscale_image_on_white(image)
-    mask = ImageChops.invert(image_l).point(lambda p: p > 0 and 255)
-    bbox = mask.getbbox()
-
-    return bbox
-
-
-def get_stacked_image(*images: Image.Image) -> Image.Image:
-    """Get images stacked vertically.
-
-    Arguments:
-        *images: Images
+        text: OCRed text believed to be present in image
+        size: Size of image
+        bboxes: Bounding boxes of characters in reference image
     Returns:
         Image of text
     """
-    if not images:
-        raise ValueError("No images provided")
-    size = images[0].size
+    # Check if alignment is possible
+    filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
+    if len(bboxes) != len(filtered_text):
+        raise ScinoephileException(
+            f"Number of characters in text ({len(filtered_text)})"
+            f" does not match number of boxes ({len(bboxes)})"
+        )
 
-    stack = Image.new("RGB", (size[0], size[1] * len(images)))
-    for i, image in enumerate(images):
-        if image.size != size:
-            raise ValueError("Images must be the same size")
-        stack.paste(image, (0, size[1] * i))
+    # Create a blank canvas for the final image
+    img = Image.new("L", size, 255)
+    draw = ImageDraw.Draw(img)
 
-    return stack
+    # Load a font
+    font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    font_size = 40 * 2
+    font = ImageFont.truetype(font_path, font_size)
+    outline_width = 3
+    outline_fill = 31
+    fill = 235
+
+    for ref_box, char in zip(bboxes, filtered_text):
+        if char == "⋯":
+            char = "…"
+
+        ref_x1, ref_y1, ref_x2, ref_y2 = ref_box
+        ref_size = (ref_x2 - ref_x1, ref_y2 - ref_y1)
+
+        # Create a separate 2X canvas to draw the character
+        char_size = (160, 160)
+        char_img = Image.new("L", char_size, 255)
+        char_draw = ImageDraw.Draw(char_img)
+
+        # Draw character outline and fill
+        for dx in range(-outline_width, outline_width + 1):
+            for dy in range(-outline_width, outline_width + 1):
+                if dx != 0 or dy != 0:
+                    char_draw.text(
+                        (80 + dx, 80 + dy),
+                        char,
+                        font=font,
+                        fill=outline_fill,
+                        anchor="mm",
+                    )
+        char_draw.text((80, 80), char, font=font, fill=fill, anchor="mm")
+        # char_img.show()
+
+        # Downscale character to fit final bounding box
+        crop_bbox = get_bbox(char_img)
+        # Extend crop bbox by one pixel
+        crop_bbox = (
+            max(0, crop_bbox[0] - 1),
+            max(0, crop_bbox[1] - 1),
+            min(char_size[0], crop_bbox[2] + 1),
+            min(char_size[1], crop_bbox[3] + 1),
+        )
+        char_resized = char_img.crop(crop_bbox).resize(ref_size, Image.LANCZOS)
+
+        # Paste into the final image at the correct position
+        img.paste(char_resized, (ref_x1, ref_y1))
+
+    return img
 
 
-def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
+def get_image_scaled(reference: Image.Image, test: Image.Image) -> Image.Image:
     """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
@@ -161,10 +249,8 @@ def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
     if reference.size != test.size:
         raise ValueError("Images must be the same size")
 
-    reference_l = get_grayscale_image_on_white(reference)
-    test_l = get_grayscale_image_on_white(test)
-    reference_bbox = get_non_white_bbox(reference_l)
-    test_bbox = get_non_white_bbox(test_l)
+    reference_bbox = get_bbox(reference)
+    test_bbox = get_bbox(test)
     reference_bbox_size = (
         reference_bbox[2] - reference_bbox[0],
         reference_bbox[3] - reference_bbox[1],
@@ -172,8 +258,38 @@ def get_scaled_image(reference: Image.Image, test: Image.Image) -> Image.Image:
     test_bbox_size = (test_bbox[2] - test_bbox[0], test_bbox[3] - test_bbox[1])
     test_cropped = test.crop(test_bbox)
     test_scaled = test_cropped.resize(reference_bbox_size, Image.LANCZOS)  # noqa
-    test_updated = Image.new("LA", reference.size, (255, 255))
-    test_updated.paste(test_scaled, (reference_bbox[0], reference_bbox[1]), test_scaled)
-    test_l = test_updated.convert("L")
 
-    return test_l
+    return test_scaled
+
+
+def get_image_with_white_bg(img: Image.Image) -> Image.Image:
+    """Get grayscale image on white background.
+
+    Arguments:
+        img: Image
+    Returns:
+        Grayscale image on white background
+    """
+    img_la = Image.new("LA", img.size, (255, 255))
+    img_la.paste(img, (0, 0), img)
+    img_l = img_la.convert("L")
+    return img_l
+
+
+def get_images_stacked(*imgs: Image.Image) -> Image.Image:
+    """Get images stacked vertically.
+
+    Arguments:
+        *imgs: Images to stack
+    Returns:
+        Stack of images
+    """
+    size = imgs[0].size
+
+    stack = Image.new("RGB", (size[0], size[1] * len(imgs)))
+    for i, img in enumerate(imgs):
+        if img.size != size:
+            raise ValueError("Images must be the same size")
+        stack.paste(img, (0, size[1] * i))
+
+    return stack

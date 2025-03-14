@@ -46,9 +46,9 @@ def get_transcriptions(
         for j, event in enumerate(block.events):
             info(f"Processing event {j + j_offset}, ({j + 1} / {len(block.events)})")
             if upscale:
-                image = get_upscaled_image(event.image)
+                image = get_upscaled_image(event.img)
             else:
-                image = event.image
+                image = event.img
             base64_image = get_base64_image(image)
 
             # Get initial transcription
@@ -140,11 +140,11 @@ def get_revised_chinese_transcriptions(
                 f"Processing event {j + j_offset}, ({j + 1} / {len(simp_block.events)})"
             )
             if upscale:
-                simp_image = get_upscaled_image(simp_event.image)
-                trad_image = get_upscaled_image(trad_event.image)
+                simp_image = get_upscaled_image(simp_event.img)
+                trad_image = get_upscaled_image(trad_event.img)
             else:
-                simp_image = simp_event.image
-                trad_image = trad_event.image
+                simp_image = simp_event.img
+                trad_image = trad_event.img
             simp_base64_image = get_base64_image(simp_image)
             trad_base64_image = get_base64_image(trad_image)
             simp_transcription = simp_event.text

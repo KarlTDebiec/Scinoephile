@@ -5,6 +5,10 @@ from __future__ import annotations
 
 import re
 
+import unicodedata
+
+from scinoephile.core.exceptions import ScinoephileException
+
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
 half_punc = {
@@ -53,6 +57,7 @@ half_punc = {
 """Selected half-width punctuation characters."""
 
 full_punc = {
+    "BOX DRAWINGS LIGHT HORIZONTAL": "─",
     "DOUBLE PRIME QUOTATION MARK": "〞",
     "FULLWIDTH APOSTROPHE": "＇",
     "FULLWIDTH COLON": "：",
@@ -88,6 +93,7 @@ full_punc = {
     "RIGHT CORNER BRACKET": "」",
     "RIGHT DOUBLE ANGLE BRACKET": "》",
     "RIGHT WHITE CORNER BRACKET": "』",
+    "SMALL HYPHEN-MINUS": "﹣",
 }
 """Selected full-width punctuation characters."""
 
@@ -113,3 +119,66 @@ re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
 
 re_western = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
+
+
+def get_char_type(char: str) -> str:
+    """Return character type.
+
+    Arguments:
+        char: Character
+    Returns:
+        Character type
+    Raises:
+        ScinoephileException: If character type is not recognized
+    """
+    punctuation = set(half_punc.values()) | set(full_punc.values())
+
+    # Check if character is punctuation
+    if char in punctuation:
+        return "punc"
+
+    # Check if character is full-width (CJK)
+    if any(
+        [
+            "\u4E00" <= char <= "\u9FFF",  # CJK Unified Ideographs
+            "\u3400" <= char <= "\u4DBF",  # CJK Unified Ideographs Extension A
+            "\uF900" <= char <= "\uFAFF",  # CJK Compatibility Ideographs
+            "\U00020000" <= char <= "\U0002A6DF",  # CJK Unified Ideographs Ext B
+            "\U0002A700" <= char <= "\U0002B73F",  # CJK Unified Ideographs Ext C
+            "\U0002B740" <= char <= "\U0002B81F",  # CJK Unified Ideographs Ext D
+            "\U0002B820" <= char <= "\U0002CEAF",  # CJK Unified Ideographs Ext E
+            "\U0002CEB0" <= char <= "\U0002EBEF",  # CJK Unified Ideographs Ext F
+            "\u3000" <= char <= "\u303F",  # CJK Symbols and Punctuation
+        ]
+    ):
+        return "full"
+
+    # Check if character is half-width (Western)
+    if any(
+        [
+            "\u0020" <= char <= "\u007F",  # Basic Latin
+            "\u00A0" <= char <= "\u00FF",  # Latin-1 Supplement
+            "\u0100" <= char <= "\u017F",  # Latin Extended-A
+            "\u0180" <= char <= "\u024F",  # Latin Extended-B
+        ]
+    ):
+        return "half"
+
+    # Raise exception if character type is not recognized
+    raise ScinoephileException(
+        f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
+    )
+
+
+def get_text_type(text: str) -> str:
+    """Determine whether a string contains Chinese characters.
+
+    Arguments:
+        text: Text to analyze
+    Returns:
+        Whether the text contains Chinese characters
+    """
+    for char in text:
+        if get_char_type(char) == "full":
+            return "full"
+        return "half"
