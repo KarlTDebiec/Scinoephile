@@ -7,7 +7,7 @@ import pytest
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Series
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing import test_data_root
 
 
 @pytest.mark.parametrize(
@@ -20,7 +20,7 @@ from scinoephile.testing.file import get_test_file_path
     ],
 )
 def test_series(relative_path):
-    path = get_test_file_path(relative_path)
+    path = test_data_root / relative_path
 
     series = Series.load(path)
     assert len(series) > 0
