@@ -14,23 +14,23 @@ output_dir = test_data_root / "t" / "output"
 
 # region Simplified Standard Chinese
 @pytest.fixture
-def t_cmn_hans() -> Series:
-    return Series.load(input_dir / "cmn-Hans.srt")
+def t_zho_hans() -> Series:
+    return Series.load(input_dir / "zho-Hans.srt")
 
 
 @pytest.fixture
-def t_cmn_hans_clean() -> Series:
-    return Series.load(output_dir / "cmn-Hans_clean.srt")
+def t_zho_hans_clean() -> Series:
+    return Series.load(output_dir / "zho-Hans_clean.srt")
 
 
 @pytest.fixture
-def t_cmn_hans_flatten() -> Series:
-    return Series.load(output_dir / "cmn-Hans_flatten.srt")
+def t_zho_hans_flatten() -> Series:
+    return Series.load(output_dir / "zho-Hans_flatten.srt")
 
 
 @pytest.fixture
-def t_cmn_hans_clean_flatten() -> Series:
-    return Series.load(output_dir / "cmn-Hans_clean_flatten.srt")
+def t_zho_hans_clean_flatten() -> Series:
+    return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
 
 
 # endregion
@@ -38,13 +38,13 @@ def t_cmn_hans_clean_flatten() -> Series:
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def t_cmn_hant() -> Series:
-    return Series.load(input_dir / "cmn-Hant.srt")
+def t_zho_hant() -> Series:
+    return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
-def t_cmn_hant_simplify() -> Series:
-    return Series.load(output_dir / "cmn-Hant_simplify.srt")
+def t_zho_hant_simplify() -> Series:
+    return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 # endregion
@@ -76,22 +76,22 @@ def t_eng_clean_flatten() -> Series:
 
 # region Bilingual Simplified Chinese and English
 @pytest.fixture
-def t_cmn_hans_eng() -> Series:
-    return Series.load(output_dir / "cmn-Hans_eng.srt")
+def t_zho_hans_eng() -> Series:
+    return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 # endregion
 
 ___all__ = [
-    "t_cmn_hans",
-    "t_cmn_hans_clean",
-    "t_cmn_hans_flatten",
-    "t_cmn_hans_clean_flatten",
-    "t_cmn_hant",
-    "t_cmn_hant_simplify",
+    "t_zho_hans",
+    "t_zho_hans_clean",
+    "t_zho_hans_flatten",
+    "t_zho_hans_clean_flatten",
+    "t_zho_hant",
+    "t_zho_hant_simplify",
     "t_eng",
     "t_eng_clean",
     "t_eng_flatten",
     "t_eng_clean_flatten",
-    "t_cmn_hans_eng",
+    "t_zho_hans_eng",
 ]

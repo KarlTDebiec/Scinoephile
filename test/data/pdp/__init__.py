@@ -14,23 +14,23 @@ output_dir = test_data_root / "pdp" / "output"
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def pdp_cmn_hant() -> Series:
-    return Series.load(input_dir / "cmn-Hant.srt")
+def pdp_zho_hant() -> Series:
+    return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
-def pdp_cmn_hant_clean() -> Series:
-    return Series.load(output_dir / "cmn-Hant_clean.srt")
+def pdp_zho_hant_clean() -> Series:
+    return Series.load(output_dir / "zho-Hant_clean.srt")
 
 
 @pytest.fixture
-def pdp_cmn_hant_flatten() -> Series:
-    return Series.load(output_dir / "cmn-Hant_flatten.srt")
+def pdp_zho_hant_flatten() -> Series:
+    return Series.load(output_dir / "zho-Hant_flatten.srt")
 
 
 @pytest.fixture
-def pdp_cmn_hant_simplify() -> Series:
-    return Series.load(output_dir / "cmn-Hant_simplify.srt")
+def pdp_zho_hant_simplify() -> Series:
+    return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 # endregion
@@ -2699,10 +2699,10 @@ pdp_test_cases = [
 # endregion
 
 __all__ = [
-    "pdp_cmn_hant",
-    "pdp_cmn_hant_clean",
-    "pdp_cmn_hant_flatten",
-    "pdp_cmn_hant_simplify",
+    "pdp_zho_hant",
+    "pdp_zho_hant_clean",
+    "pdp_zho_hant_flatten",
+    "pdp_zho_hant_simplify",
     "pdp_yue_hant",
     "pdp_yue_hant_clean",
     "pdp_yue_hant_flatten",

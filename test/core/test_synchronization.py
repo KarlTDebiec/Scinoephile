@@ -15,8 +15,8 @@ from scinoephile.core.synchronization import (
 )
 from scinoephile.testing import SyncTestCase
 from ..data.mnt import (
-    mnt_cmn_hans_eng,
-    mnt_cmn_hant_clean_flatten_simplify,
+    mnt_zho_hans_eng,
+    mnt_zho_hant_clean_flatten_simplify,
     mnt_eng_clean_flatten,
     mnt_test_cases,
 )
@@ -69,11 +69,11 @@ def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
 # blocks
 @pytest.mark.parametrize("test_case", mnt_test_cases)
 def test_blocks_mnt(
-    mnt_cmn_hant_clean_flatten_simplify: Series,
+    mnt_zho_hant_clean_flatten_simplify: Series,
     mnt_eng_clean_flatten: Series,
     test_case: SyncTestCase,
 ):
-    _test_blocks(mnt_cmn_hant_clean_flatten_simplify, mnt_eng_clean_flatten, test_case)
+    _test_blocks(mnt_zho_hant_clean_flatten_simplify, mnt_eng_clean_flatten, test_case)
 
 
 @pytest.mark.parametrize("test_case", pdp_test_cases)
@@ -87,14 +87,14 @@ def test_blocks_pdp(
 
 # get_synced_series
 def test_get_synced_series_mnt(
-    mnt_cmn_hant_clean_flatten_simplify: Series,
+    mnt_zho_hant_clean_flatten_simplify: Series,
     mnt_eng_clean_flatten: Series,
-    mnt_cmn_hans_eng: Series,
+    mnt_zho_hans_eng: Series,
 ):
     _test_get_synced_series(
-        mnt_cmn_hant_clean_flatten_simplify,
+        mnt_zho_hant_clean_flatten_simplify,
         mnt_eng_clean_flatten,
-        mnt_cmn_hans_eng,
+        mnt_zho_hans_eng,
     )
 
 

@@ -14,28 +14,28 @@ output_dir = test_data_root / "mnt" / "output"
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def mnt_cmn_hant() -> Series:
-    return Series.load(input_dir / "cmn-Hant.srt")
+def mnt_zho_hant() -> Series:
+    return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
-def mnt_cmn_hant_clean() -> Series:
-    return Series.load(output_dir / "cmn-Hant_clean.srt")
+def mnt_zho_hant_clean() -> Series:
+    return Series.load(output_dir / "zho-Hant_clean.srt")
 
 
 @pytest.fixture
-def mnt_cmn_hant_flatten() -> Series:
-    return Series.load(output_dir / "cmn-Hant_flatten.srt")
+def mnt_zho_hant_flatten() -> Series:
+    return Series.load(output_dir / "zho-Hant_flatten.srt")
 
 
 @pytest.fixture
-def mnt_cmn_hant_simplify() -> Series:
-    return Series.load(output_dir / "cmn-Hant_simplify.srt")
+def mnt_zho_hant_simplify() -> Series:
+    return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 @pytest.fixture
-def mnt_cmn_hant_clean_flatten_simplify() -> Series:
-    return Series.load(output_dir / "cmn-Hant_clean_flatten_simplify.srt")
+def mnt_zho_hant_clean_flatten_simplify() -> Series:
+    return Series.load(output_dir / "zho-Hant_clean_flatten_simplify.srt")
 
 
 # endregion
@@ -67,8 +67,8 @@ def mnt_eng_clean_flatten() -> Series:
 
 # region Bilingual Simplified Standard Chinese and English
 @pytest.fixture
-def mnt_cmn_hans_eng() -> Series:
-    return Series.load(output_dir / "cmn-Hans_eng.srt")
+def mnt_zho_hans_eng() -> Series:
+    return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 # endregion
@@ -1198,14 +1198,14 @@ mnt_test_cases = [
 # endregion
 
 ___all__ = [
-    "mnt_cmn_hant",
-    "mnt_cmn_hant_clean",
-    "mnt_cmn_hant_flatten",
-    "mnt_cmn_hant_simplify",
-    "mnt_cmn_hant_clean_flatten_simplify",
+    "mnt_zho_hant",
+    "mnt_zho_hant_clean",
+    "mnt_zho_hant_flatten",
+    "mnt_zho_hant_simplify",
+    "mnt_zho_hant_clean_flatten_simplify",
     "mnt_eng",
     "mnt_eng_clean",
     "mnt_eng_flatten",
-    "mnt_cmn_hans_eng",
+    "mnt_zho_hans_eng",
     "mnt_test_cases",
 ]

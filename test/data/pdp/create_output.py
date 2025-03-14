@@ -20,13 +20,13 @@ if __name__ == "__main__":
     set_logging_verbosity(2)
 
     # Traditional Standard Chinese
-    cmn_hant = Series.load(input_dir / "cmn-Hant.srt")
-    cmn_hant_clean = get_hanzi_cleaned(cmn_hant)
-    cmn_hant_clean.save(output_dir / "cmn-Hant_clean.srt")
-    cmn_hant_flatten = get_hanzi_flattened(cmn_hant)
-    cmn_hant_flatten.save(output_dir / "cmn-Hant_flatten.srt")
-    cmn_hant_simplify = get_hanzi_simplified(cmn_hant)
-    cmn_hant_simplify.save(output_dir / "cmn-Hant_simplify.srt")
+    zho_hant = Series.load(input_dir / "zho-Hant.srt")
+    zho_hant_clean = get_hanzi_cleaned(zho_hant)
+    zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
+    zho_hant_flatten = get_hanzi_flattened(zho_hant)
+    zho_hant_flatten.save(output_dir / "zho-Hant_flatten.srt")
+    zho_hant_simplify = get_hanzi_simplified(zho_hant)
+    zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
 
     # Traditional Cantonese Chinese
     yue_hant = Series.load(input_dir / "yue-Hant.srt")

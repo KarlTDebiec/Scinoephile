@@ -62,15 +62,15 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant.srt",
+            "pdp/input/zho-Hant.srt",
             "--flatten",
-            "pdp/output/cmn-Hant_flatten.srt",
+            "pdp/output/zho-Hant_flatten.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/cmn-Hant.srt",
+            "pdp/input/zho-Hant.srt",
             "--simplify",
-            "pdp/output/cmn-Hant_simplify.srt",
+            "pdp/output/zho-Hant_simplify.srt",
         ),
     ],
 )
