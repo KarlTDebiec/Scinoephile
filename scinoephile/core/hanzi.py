@@ -130,7 +130,7 @@ def _get_hanzi_text_flattened(text: str) -> str:
 
     # Merge conversations
     conversation = re.match(
-        r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", flattened
+        r"^[-﹣]?[^\S\n]*(?P<first>.+)[\s]+[-﹣][^\S\n]*(?P<second>.+)$", flattened
     )
     if conversation is not None:
         flattened = (
