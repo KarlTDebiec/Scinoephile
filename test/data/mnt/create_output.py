@@ -44,4 +44,4 @@ if __name__ == "__main__":
 
     # Bilingual Simplified Cantonese Chinese and English
     cmn_hans_eng = get_synced_series(cmn_hant_clean_flatten_simplify, eng_clean_flatten)
-    cmn_hans_eng.save(data_root / "output" / "cmn-Hant_eng.srt")
+    cmn_hans_eng.save(data_root / "output" / "cmn-Hans_eng.srt")

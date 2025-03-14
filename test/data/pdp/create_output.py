@@ -53,4 +53,4 @@ if __name__ == "__main__":
 
     # Bilingual Simplified Cantonese Chinese and English
     yue_hans_eng = get_synced_series(yue_hant_clean_flatten_simplify, eng_clean_flatten)
-    yue_hans_eng.save(data_root / "output" / "yue-Hant_eng.srt")
+    yue_hans_eng.save(data_root / "output" / "yue-Hans_eng.srt")
