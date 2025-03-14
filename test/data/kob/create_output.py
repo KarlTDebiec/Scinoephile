@@ -3,7 +3,6 @@
 """Script for creating expected test output for KOB."""
 from __future__ import annotations
 
-from scinoephile.common import package_root
 from scinoephile.common.logging import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
@@ -13,34 +12,36 @@ from scinoephile.core.hanzi import (
     get_hanzi_simplified,
 )
 from scinoephile.core.synchronization import get_synced_series
+from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
-    data_root = package_root.parent / "test" / "data" / "kob"
+    input_dir = test_data_root / "kob" / "input"
+    output_dir = test_data_root / "kob" / "output"
     set_logging_verbosity(2)
 
     # Simplified Cantonese Chinese
-    yue_hans = Series.load(data_root / "input" / "yue-Hans.srt")
+    yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_clean = get_hanzi_cleaned(yue_hans)
-    yue_hans_clean.save(data_root / "output" / "yue-Hans_clean.srt")
+    yue_hans_clean.save(output_dir / "yue-Hans_clean.srt")
     yue_hans_flatten = get_hanzi_flattened(yue_hans)
-    yue_hans_flatten.save(data_root / "output" / "yue-Hans_flatten.srt")
+    yue_hans_flatten.save(output_dir / "yue-Hans_flatten.srt")
     yue_hans_clean_flatten = get_hanzi_flattened(yue_hans_clean)
-    yue_hans_clean_flatten.save(data_root / "output" / "yue-Hans_clean_flatten.srt")
+    yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
 
     # Traditional Cantonese Chinese
-    yue_hant = Series.load(data_root / "input" / "yue-Hant.srt")
+    yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_simplify = get_hanzi_simplified(yue_hant)
-    yue_hant_simplify.save(data_root / "output" / "yue-Hant_simplify.srt")
+    yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
     # English
-    eng = Series.load(data_root / "input" / "eng.srt")
+    eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
-    eng_clean.save(data_root / "output" / "eng_clean.srt")
+    eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
-    eng_flatten.save(data_root / "output" / "eng_flatten.srt")
+    eng_flatten.save(output_dir / "eng_flatten.srt")
     eng_clean_flatten = get_english_flattened(eng_clean)
-    eng_clean_flatten.save(data_root / "output" / "eng_clean_flatten.srt")
+    eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
     # Bilingual Simplified Cantonese Chinese and English
     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
-    yue_hans_eng.save(data_root / "output" / "yue-Hans_eng.srt")
+    yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")

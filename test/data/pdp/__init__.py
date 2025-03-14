@@ -6,29 +6,31 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing import SyncTestCase
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing import SyncTestCase, test_data_root
+
+input_dir = test_data_root / "pdp" / "input"
+output_dir = test_data_root / "pdp" / "output"
 
 
 # region Traditional Standard Chinese
 @pytest.fixture
 def pdp_cmn_hant() -> Series:
-    return Series.load(get_test_file_path("pdp/input/cmn-Hant.srt"))
+    return Series.load(input_dir / "cmn-Hant.srt")
 
 
 @pytest.fixture
 def pdp_cmn_hant_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant_clean.srt"))
+    return Series.load(output_dir / "cmn-Hant_clean.srt")
 
 
 @pytest.fixture
 def pdp_cmn_hant_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant_flatten.srt"))
+    return Series.load(output_dir / "cmn-Hant_flatten.srt")
 
 
 @pytest.fixture
 def pdp_cmn_hant_simplify() -> Series:
-    return Series.load(get_test_file_path("pdp/output/cmn-Hant_simplify.srt"))
+    return Series.load(output_dir / "cmn-Hant_simplify.srt")
 
 
 # endregion
@@ -37,29 +39,27 @@ def pdp_cmn_hant_simplify() -> Series:
 # region Traditional Cantonese Chinese
 @pytest.fixture
 def pdp_yue_hant() -> Series:
-    return Series.load(get_test_file_path("pdp/input/yue-Hant.srt"))
+    return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_clean.srt"))
+    return Series.load(output_dir / "yue-Hant_clean.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_flatten.srt"))
+    return Series.load(output_dir / "yue-Hant_flatten.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_simplify() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hant_simplify.srt"))
+    return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_clean_flatten_simplify() -> Series:
-    return Series.load(
-        get_test_file_path("pdp/output/yue-Hant_clean_flatten_simplify.srt")
-    )
+    return Series.load(output_dir / "yue-Hant_clean_flatten_simplify.srt")
 
 
 # endregion
@@ -68,22 +68,22 @@ def pdp_yue_hant_clean_flatten_simplify() -> Series:
 # region English
 @pytest.fixture
 def pdp_eng() -> Series:
-    return Series.load(get_test_file_path("pdp/input/eng.srt"))
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def pdp_eng_clean() -> Series:
-    return Series.load(get_test_file_path("pdp/output/eng_clean.srt"))
+    return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def pdp_eng_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/eng_flatten.srt"))
+    return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def pdp_eng_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("pdp/output/eng_clean_flatten.srt"))
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
@@ -92,7 +92,7 @@ def pdp_eng_clean_flatten() -> Series:
 # region Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture
 def pdp_yue_hans_eng() -> Series:
-    return Series.load(get_test_file_path("pdp/output/yue-Hans_eng.srt"))
+    return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 # endregion

@@ -6,28 +6,31 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing.file import get_test_file_path
+from scinoephile.testing import test_data_root
+
+input_dir = test_data_root / "kob" / "input"
+output_dir = test_data_root / "kob" / "output"
 
 
 # region Simplified Cantonese Chinese
 @pytest.fixture
 def kob_yue_hans() -> Series:
-    return Series.load(get_test_file_path("kob/input/yue-Hans.srt"))
+    return Series.load(input_dir / "yue-Hans.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans_clean.srt"))
+    return Series.load(output_dir / "yue-Hans_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans_flatten.srt"))
+    return Series.load(output_dir / "yue-Hans_flatten.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans_clean_flatten.srt"))
+    return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
 
 
 # endregion
@@ -36,12 +39,12 @@ def kob_yue_hans_clean_flatten() -> Series:
 # region Traditional Cantonese Chinese
 @pytest.fixture
 def kob_yue_hant() -> Series:
-    return Series.load(get_test_file_path("kob/input/yue-Hant.srt"))
+    return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_simplify() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hant_simplify.srt"))
+    return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
 # endregion
@@ -50,22 +53,22 @@ def kob_yue_hant_simplify() -> Series:
 # region English
 @pytest.fixture
 def kob_eng() -> Series:
-    return Series.load(get_test_file_path("kob/input/eng.srt"))
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def kob_eng_clean() -> Series:
-    return Series.load(get_test_file_path("kob/output/eng_clean.srt"))
+    return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def kob_eng_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/eng_flatten.srt"))
+    return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def kob_eng_clean_flatten() -> Series:
-    return Series.load(get_test_file_path("kob/output/eng_clean_flatten.srt"))
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
@@ -74,7 +77,7 @@ def kob_eng_clean_flatten() -> Series:
 # region Bilingual Simplified Cantonese Chinese and English
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
-    return Series.load(get_test_file_path("kob/output/yue-Hans_eng.srt"))
+    return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 # endregion
