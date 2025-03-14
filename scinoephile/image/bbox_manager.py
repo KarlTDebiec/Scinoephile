@@ -116,8 +116,13 @@ class BboxManager:
         merged_bboxes = []
         bbox_i = 0
         char_i = 0
-        while bbox_i < len(bboxes):
+        while True:
+            if char_i >= len(text):
+                merged_bboxes += bboxes[bbox_i:]
+                break
             char = text[char_i]
+            if bbox_i >= len(bboxes):
+                break
 
             # Merge set of three bboxes if appropriate
             if bbox_i <= len(bboxes) - 3:
@@ -183,9 +188,6 @@ class BboxManager:
             merged_bboxes.append(bboxes[bbox_i])
             bbox_i += 1
             char_i = self._get_next_char_i(text, char_i)
-            if char_i >= len(text):
-                merged_bboxes += bboxes[bbox_i:]
-                break
 
         return merged_bboxes
 
