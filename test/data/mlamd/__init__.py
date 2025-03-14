@@ -15,21 +15,21 @@ output_dir = test_data_root / "mlamd" / "output"
 
 # region Simplified Standard Chinese
 @pytest.fixture
-def mlamd_cmn_hans() -> ImageSeries:
+def mlamd_zho_hans() -> ImageSeries:
     try:
-        return ImageSeries.load(output_dir / "cmn-Hans")
+        return ImageSeries.load(output_dir / "zho-Hans")
     except FileNotFoundError:
-        return ImageSeries.load(input_dir / "cmn-Hans.sup")
+        return ImageSeries.load(input_dir / "zho-Hans.sup")
 
 
 @pytest.fixture()
-def mlamd_cmn_hans_image() -> Image:
-    return Image.open(output_dir / "cmn-Hans" / "0001.png")
+def mlamd_zho_hans_image() -> Image:
+    return Image.open(output_dir / "zho-Hans" / "0001.png")
 
 
 @pytest.fixture
-def mlamd_cmn_hans_validation_directory() -> str:
-    return output_dir / "cmn-Hans_validation"
+def mlamd_zho_hans_validation_directory() -> str:
+    return output_dir / "zho-Hans_validation"
 
 
 # endregion
@@ -37,21 +37,21 @@ def mlamd_cmn_hans_validation_directory() -> str:
 
 # region Traditional Standard Chinese
 @pytest.fixture
-def mlamd_cmn_hant() -> ImageSeries:
+def mlamd_zho_hant() -> ImageSeries:
     try:
-        return ImageSeries.load(output_dir / "cmn-Hant")
+        return ImageSeries.load(output_dir / "zho-Hant")
     except FileNotFoundError:
-        return ImageSeries.load(input_dir / "cmn-Hant.sup")
+        return ImageSeries.load(input_dir / "zho-Hant.sup")
 
 
 @pytest.fixture()
-def mlamd_cmn_hant_image() -> Image:
-    return Image.open(output_dir / "cmn-Hant" / "0001.png")
+def mlamd_zho_hant_image() -> Image:
+    return Image.open(output_dir / "zho-Hant" / "0001.png")
 
 
 @pytest.fixture
-def mlamd_cmn_hant_validation_directory() -> str:
-    return output_dir / "cmn-Hant_validation"
+def mlamd_zho_hant_validation_directory() -> str:
+    return output_dir / "zho-Hant_validation"
 
 
 # endregion
@@ -79,12 +79,12 @@ def mlamd_eng_validation_directory() -> str:
 # endregion
 
 ___all__ = [
-    "mlamd_cmn_hans",
-    "mlamd_cmn_hans_image",
-    "mlamd_cmn_hans_validation_directory",
-    "mlamd_cmn_hant",
-    "mlamd_cmn_hant_image",
-    "mlamd_cmn_hant_validation_directory",
+    "mlamd_zho_hans",
+    "mlamd_zho_hans_image",
+    "mlamd_zho_hans_validation_directory",
+    "mlamd_zho_hant",
+    "mlamd_zho_hant_image",
+    "mlamd_zho_hant_validation_directory",
     "mlamd_eng",
     "mlamd_eng_image",
     "mlamd_eng_validation_directory",

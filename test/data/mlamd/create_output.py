@@ -18,18 +18,18 @@ if __name__ == "__main__":
     set_logging_verbosity(2)
 
     # Simplified Standard Chinese
-    cmn_hans = Series.load(output_dir / "cmn-Hans" / "cmn-Hans.srt")
-    cmn_hans = get_hanzi_cleaned(cmn_hans)
-    cmn_hans.save(output_dir / "cmn-Hans" / "cmn-Hans.srt")
+    zho_hans = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
+    zho_hans = get_hanzi_cleaned(zho_hans)
+    zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
 
-    cmn_hans = ImageSeries.load(output_dir / "cmn-Hans")
-    validate_ocr_hanzi(cmn_hans, output_dir / "cmn-Hans_validation")
+    zho_hans = ImageSeries.load(output_dir / "zho-Hans")
+    validate_ocr_hanzi(zho_hans, output_dir / "zho-Hans_validation")
 
     # Traditional Standard Chinese
-    cmn_hant = Series.load(output_dir / "cmn-Hant" / "cmn-Hant.srt")
-    cmn_hant = get_hanzi_cleaned(cmn_hant)
-    cmn_hant = get_hanzi_flattened(cmn_hant)
-    cmn_hant.save(output_dir / "cmn-Hant" / "cmn-Hant.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")
+    zho_hant = get_hanzi_cleaned(zho_hant)
+    zho_hant = get_hanzi_flattened(zho_hant)
+    zho_hant.save(output_dir / "zho-Hant" / "zho-Hant.srt")
 
     # English
     eng = Series.load(output_dir / "eng" / "eng.srt")
@@ -38,5 +38,5 @@ if __name__ == "__main__":
     eng.save(output_dir / "eng" / "eng.srt")
 
     # Bilingual Simplified Standard Chinese and English
-    cmn_hans_eng = get_synced_series(cmn_hans, eng)
-    cmn_hans_eng.save(output_dir / "cmn-Hans_eng.srt")
+    zho_hans_eng = get_synced_series(zho_hans, eng)
+    zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
