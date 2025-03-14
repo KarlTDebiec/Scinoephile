@@ -9,6 +9,11 @@ from copy import deepcopy
 from hanziconv import HanziConv
 
 from scinoephile.core.series import Series
+from scinoephile.core.text import half_to_full_punc
+
+half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
+half_to_full_punc_for_cleaning["-"] = "﹣"
+half_to_full_punc_for_cleaning["－"] = "﹣"
 
 re_hanzi = re.compile(r"[\u4e00-\u9fff]")
 re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
@@ -87,19 +92,20 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Replace '...' with '⋯'
-    cleaned = re.sub(r"\.\.\.", "⋯", cleaned)
+    cleaned = re.sub(r"[^\S\n]*\.\.\.[^\S\n]*", "⋯", cleaned)
 
     # Replace '…' with '⋯'
-    cleaned = re.sub(r"…", "⋯", cleaned)
+    cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
 
-    # Remove empty lines
-    cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
+    # Replace half-width punctuation with full-width punctuation
+    for old_punc, new_punc in half_to_full_punc_for_cleaning.items():
+        cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
 
-    # Check if any substantive text remains
-    if not cleaned:
-        return None
-    if re.fullmatch(r"^\s*-?\s*\n\s*-?\s*", cleaned):
-        return None
+    # Remove whitespace before and after specified characters
+    cleaned = re.sub(r"[^\S\n]*([、「」『』《》])[^\S\n]*", r"\1", cleaned)
+
+    # Remove empty lines but preserve newlines
+    cleaned = re.sub(r"[ \t]*\n[ \t]*", "\n", cleaned)
 
     return cleaned
 
@@ -124,7 +130,7 @@ def _get_hanzi_text_flattened(text: str) -> str:
 
     # Merge conversations
     conversation = re.match(
-        r"^[-﹣]?\s*(?P<first>.+)[\s]+[-﹣]\s*(?P<second>.+)$", flattened
+        r"^[-﹣]?[^\S\n]*(?P<first>.+)[\s]+[-﹣][^\S\n]*(?P<second>.+)$", flattened
     )
     if conversation is not None:
         flattened = (

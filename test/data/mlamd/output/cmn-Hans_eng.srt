@@ -310,22 +310,22 @@ Spring Flower offers white teachers!
 
 63
 00:05:31,292 --> 00:05:35,958
-"鹅满是快烙滴好耳痛⋯"
+〝鹅满是快烙滴好耳痛⋯〞
 "We are all happy children…"
 
 64
 00:05:36,042 --> 00:05:40,917
-"鹅闷天天一戏个窗！"
+〝鹅闷天天一戏个窗！〞
 "We sing everyday!"
 
 65
 00:05:41,042 --> 00:05:45,625
-“鹅们在壳习，鹅闷载升胀⋯”
+〝鹅们在壳习，鹅闷载升胀⋯〞
 "We learn as we grow…"
 
 66
 00:05:45,750 --> 00:05:50,792
-"鹅闷是春天滴化！"
+〝鹅闷是春天滴化！〞
 "We are the flowers of spring!"
 
 67
@@ -370,18 +370,18 @@ I had difficulty hearing him.
 
 75
 00:06:14,625 --> 00:06:17,833
-﹣蛋挞！　　﹣蛋挞！
-- Tart!    - Tart!
+蛋挞！　　蛋挞！
+Tart!    - Tart!
 
 76
 00:06:18,000 --> 00:06:23,583
-﹣荔芋火鸭礼！　　﹣荔芋火鸭礼！
-- Duck dumpling!    - Duck dumpling!
+荔芋火鸭礼！　　荔芋火鸭礼！
+Duck dumpling!    - Duck dumpling!
 
 77
 00:06:23,750 --> 00:06:29,792
-﹣忘记校训九十七⋯　　﹣忘记校训九十七⋯
-- The 97 Rule…    - The 97 Rule…
+忘记校训九十七⋯　　忘记校训九十七⋯
+The 97 Rule…    - The 97 Rule…
 
 78
 00:06:29,958 --> 00:06:33,083
@@ -465,43 +465,43 @@ Roll call now.
 
 94
 00:07:21,083 --> 00:07:22,708
-﹣麦唛同学！　　﹣到！
-- McMug!    - Present!
+麦唛同学！　　到！
+McMug!    - Present!
 
 95
 00:07:22,917 --> 00:07:24,375
-﹣亚辉同学！　　﹣到！
-- Fail!    - Present!
+亚辉同学！　　到！
+Fail!    - Present!
 
 96
 00:07:24,500 --> 00:07:26,667
-﹣菇时同学！　　﹣到！
-- Goosie!    - Present!
+菇时同学！　　到！
+Goosie!    - Present!
 
 97
 00:07:26,833 --> 00:07:28,750
-﹣得巴同学！　　﹣到！
-- Darby!    - Present!
+得巴同学！　　到！
+Darby!    - Present!
 
 98
 00:07:28,917 --> 00:07:31,708
-﹣阿May同学！　　﹣到！
-- May!    - Present!
+阿May同学！　　到！
+May!    - Present!
 
 99
 00:07:31,875 --> 00:07:33,750
-﹣阿June同学！　　﹣到！
-- June!    - Present!
+阿June同学！　　到！
+June!    - Present!
 
 100
 00:07:33,917 --> 00:07:36,667
-﹣阿May同学！　　﹣到！
-- May!    - Present!
+阿May同学！　　到！
+May!    - Present!
 
 101
 00:07:36,958 --> 00:07:40,000
-﹣麦唛同学！　　﹣到！
-- McMug!    - Present!
+麦唛同学！　　到！
+McMug!    - Present!
 
 102
 00:07:40,167 --> 00:07:41,292
@@ -535,38 +535,38 @@ Back to roll call.
 
 108
 00:07:55,792 --> 00:07:57,583
-﹣阿June同学！　　﹣到！
-- Fail!    - Present!
+阿June同学！　　到！
+Fail!    - Present!
 
 109
 00:07:57,792 --> 00:07:58,958
-﹣亚辉同学！　　﹣到！
-- Fail!    - Present!
+亚辉同学！　　到！
+Fail!    - Present!
 
 110
 00:07:59,167 --> 00:08:01,333
-﹣得巴同学！　　﹣到！
-- Darby!    - Present!
+得巴同学！　　到！
+Darby!    - Present!
 
 111
 00:08:02,125 --> 00:08:03,250
-﹣阿May同学！　　﹣到！
-- May!    - Present!
+阿May同学！　　到！
+May!    - Present!
 
 112
 00:08:03,500 --> 00:08:05,500
-﹣麦唛同学！　　﹣到！
-- McMug!    - Present!
+麦唛同学！　　到！
+McMug!    - Present!
 
 113
 00:08:05,750 --> 00:08:07,875
-﹣菇时同学！　　﹣到！
-- Goosie!    - Present!
+菇时同学！　　到！
+Goosie!    - Present!
 
 114
 00:08:08,125 --> 00:08:09,458
-﹣菇时同学！　　﹣到！
-- Goosie!    - Present!
+菇时同学！　　到！
+Goosie!    - Present!
 
 115
 00:08:09,625 --> 00:08:11,375
@@ -620,7 +620,7 @@ I was contemplating something academic:
 
 125
 00:08:33,833 --> 00:08:36,917
-橙，为什么会是「疴-烂-煮」呢？
+橙，为什么会是「疴﹣烂﹣煮」呢？
 How does this universe work?
 
 126
@@ -630,17 +630,17 @@ I mean, I ate 6 oranges that morning…
 
 127
 00:08:40,042 --> 00:08:44,542
-「疴」这个我明白，可是「烂-煮」呢？
+「疴」这个我明白，可是「烂﹣煮」呢？
 And my stomach wouldn't stop.
 
 128
 00:08:44,708 --> 00:08:47,125
-还有这个「芭-娜-娜」香蕉
+还有这个「芭﹣娜﹣娜」香蕉
 Then I ate 3 bananas this morning.
 
 129
 00:08:47,292 --> 00:08:50,375
-为什么雨伞又会是「暗-芭-娜-娜」呢？
+为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？
 Again my stomach wouldn't stop…
 
 130
@@ -710,23 +710,23 @@ Which we kids frequent after class.
 
 143
 00:09:27,583 --> 00:09:30,125
-﹣鱼蛋粗面，麻烦你　　﹣粗面买光了
-- Fishball noodle, please.    - No noodle left.
+鱼蛋粗面，麻烦你　　粗面买光了
+Fishball noodle, please.    - No noodle left.
 
 144
 00:09:30,417 --> 00:09:33,917
-﹣那样子⋯来碗鱼蛋河粉吧　　﹣鱼蛋买光了
-- Fishball rice noodle then.    - No fishball left.
+那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了
+Fishball rice noodle then.    - No fishball left.
 
 145
 00:09:34,083 --> 00:09:37,792
-﹣那么⋯金钱肚粗面好了　　﹣粗面买光了
-- Chicken wing noodle then.    - No noodle left.
+那么⋯金钱肚粗面好了　　粗面买光了
+Chicken wing noodle then.    - No noodle left.
 
 146
 00:09:38,958 --> 00:09:41,833
-﹣那么要鱼蛋油面吧　　﹣鱼蛋买光了
-- How about fishball congee?    - No fishball left.
+那么要鱼蛋油面吧　　鱼蛋买光了
+How about fishball congee?    - No fishball left.
 
 147
 00:09:42,000 --> 00:09:43,417
@@ -735,8 +735,8 @@ Nothing left today?
 
 148
 00:09:43,833 --> 00:09:46,625
-﹣来个墨鱼丸粗面吧　　﹣粗面买光了
-- How about beef noodle?    - No noodle left.
+来个墨鱼丸粗面吧　　粗面买光了
+How about beef noodle?    - No noodle left.
 
 149
 00:09:46,917 --> 00:09:47,958
@@ -745,8 +745,8 @@ Again?
 
 150
 00:09:48,167 --> 00:09:51,708
-﹣麻烦来碗鱼蛋濑吧　　﹣鱼蛋买光了
-- Fried chicken wing with fishball…    - No fishball left.
+麻烦来碗鱼蛋濑吧　　鱼蛋买光了
+Fried chicken wing with fishball…    - No fishball left.
 
 151
 00:09:51,917 --> 00:09:55,333
@@ -765,13 +765,13 @@ Can't combine them?
 
 154
 00:10:02,458 --> 00:10:04,917
-麻烦你，净要鱼蛋吧。鱼蛋买光了。
-- A bowl of fishball then.    - No fishball left.
+麻烦你，净要鱼蛋吧　　鱼蛋买光了
+A bowl of fishball then.    - No fishball left.
 
 155
 00:10:05,083 --> 00:10:06,667
-﹣那么净要粗面呢？　　﹣粗面买光了
-- A bowl of noodle?    - No noodle left.
+那么净要粗面呢？　　粗面买光了
+A bowl of noodle?    - No noodle left.
 
 156
 00:10:07,792 --> 00:10:08,708
@@ -905,7 +905,7 @@ At the height of IT, she even sets up her cooking site…
 
 182
 00:13:15,750 --> 00:13:19,500
-www.麦太世界.com
+www．麦太世界．com
 www.MrsMcBing.com
 
 183
@@ -950,7 +950,7 @@ Now we have a bun paper.
 
 191
 00:13:46,125 --> 00:13:49,375
-把鸡包纸，一反反转
+把鸡包纸一反反转
 Turn the paper over like this…
 
 192
@@ -1220,7 +1220,7 @@ I did try hard, but then…
 
 245
 00:17:38,375 --> 00:17:40,625
-可是⋯我们仍然有梦
+可是⋯我仍然有梦
 But then, I still have dreams.
 
 246
@@ -1260,7 +1260,7 @@ Brilliant Touring Agency, license no. 350999
 
 253
 00:18:22,792 --> 00:18:25,625
-妈妈你知道马尔代夫在哪里吗？
+妈妈你知道马尔代夫在哪儿吗？
 Mother, you know where Maldives is?
 
 254
@@ -1665,8 +1665,8 @@ We will go to Maldives.
 
 334
 00:26:13,875 --> 00:26:15,542
-﹣真的吗？　　﹣对
-- Really?    - Yes.
+真的吗？　　对
+Really?    - Yes.
 
 335
 00:26:15,750 --> 00:26:17,000
@@ -1710,8 +1710,8 @@ Hey, I'm leaving tomorrow.
 
 343
 00:27:06,458 --> 00:27:08,667
-﹣对　　﹣⋯是吗？
-- Yes…    - Is that right?
+对　　⋯是吗？
+Yes…    - Is that right?
 
 344
 00:27:08,833 --> 00:27:10,292
@@ -1856,7 +1856,7 @@ If only for one small piece.
 372
 00:33:06,042 --> 00:33:08,250
 妈妈晚安！
-- Goodnight, mother!    - Goodnight!
+Goodnight, mother!    - Goodnight!
 
 373
 00:33:46,542 --> 00:33:48,000
@@ -1890,12 +1890,12 @@ Helps prove that Hong Kong athletes are horrible…
 
 379
 00:34:09,292 --> 00:34:13,708
-﹣对不起，应该　　﹣是垃圾，不是腊鸭！
+对不起，应该　　是垃圾，不是腊鸭！
 Excuse me, it should be "honourable".
 
 380
 00:34:13,875 --> 00:34:18,875
-﹣对不起，应该　　﹣不是垃圾，也不是腊鸭！
+对不起，应该　　不是垃圾，也不是腊鸭！
 Hong Kong athletes are honourable athletes.
 
 381
@@ -2010,7 +2010,7 @@ Kiddo, this is Lamma Island.
 
 403
 00:36:14,667 --> 00:36:19,542
-南Y岛？它也孕育了周润发！
+南丫岛？它也孕育了周润发！
 Lamma Island? Where Chow Yun Fat grew up?
 
 404
@@ -2030,7 +2030,7 @@ And so many kids came to seek me out.
 
 407
 00:36:45,250 --> 00:36:47,833
-我才过来南Y岛避一避
+我才过来南丫岛避一避
 So I came to live here.
 
 408
@@ -2270,7 +2270,7 @@ Logan looks strange after the song.
 
 455
 00:39:33,542 --> 00:39:36,958
-我一定要好好把握这个机会
+我一定要好好把握这机会
 I must grab my chance.
 
 456
@@ -2330,7 +2330,7 @@ Oranges and the chicken to the ancestral tablet.
 
 467
 00:40:30,500 --> 00:40:34,250
-妈妈叫我跪低，向祖先请请。
+妈妈叫我跪低，向祖先请请
 Mother then tells me to kneel down.
 
 468
@@ -2875,7 +2875,7 @@ But, looking at those steely veins…
 
 576
 00:48:08,042 --> 00:48:12,542
-我想起麦兜的爸爸，阿炳。
+我想起麦兜的爸爸，阿炳
 I am reminded of Dull's pa, Bing.
 
 577
@@ -2950,12 +2950,12 @@ It is addressed to the Olympic Committee Chairman.
 
 591
 00:49:20,042 --> 00:49:22,125
-「好朋友，我认为」
+「好朋友，我认为
 "Dear friend,"
 
 592
 00:49:22,250 --> 00:49:25,125
-抢劫那些包，十分重要！
+抢劫那些包，十分重要」
 "It is important to snatch buns."
 
 593
@@ -2975,12 +2975,12 @@ It is addressed to the Olympic Committee Chairman.
 
 596
 00:49:35,000 --> 00:49:38,958
-抢劫那些包，是奥运会比赛。
+「抢劫那些包，是奥运会比赛」
 "Snatching bun is an Olympic game."
 
 597
 00:49:39,083 --> 00:49:41,958
-让全世界的体育家，抢过！
+「让全世界的体育家，抢过！」
 "Let athletes all over the world snatch!"
 
 598
@@ -3760,7 +3760,7 @@ It was at my mother's cremation.
 
 753
 00:59:08,875 --> 00:59:12,833
-那天，我看着天空几缕灰色的烟。
+那天，我看着天空几缕灰色的烟
 That day, I was looking at the smoke rising up.
 
 754
@@ -3770,7 +3770,7 @@ Suddenly, the smell of the turkey returned.
 
 755
 00:59:18,000 --> 00:59:22,542
-我好后悔要妈妈扔掉最后几件火鸡。
+我好后悔要妈妈扔掉最后几件火鸡
 I regretted I made mother throw the turkey away.
 
 756

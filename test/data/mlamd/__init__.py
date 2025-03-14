@@ -7,28 +7,29 @@ import pytest
 from PIL import Image
 
 from scinoephile.image import ImageSeries
-from scinoephile.testing.file import get_test_directory_path, get_test_file_path
+from scinoephile.testing import test_data_root
+
+input_dir = test_data_root / "mlamd" / "input"
+output_dir = test_data_root / "mlamd" / "output"
 
 
 # region Simplified Standard Chinese
 @pytest.fixture
 def mlamd_cmn_hans() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hans"))
+        return ImageSeries.load(output_dir / "cmn-Hans")
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hans.sup"))
+        return ImageSeries.load(input_dir / "cmn-Hans.sup")
 
 
 @pytest.fixture()
 def mlamd_cmn_hans_image() -> Image:
-    return Image.open(
-        get_test_file_path("mlamd/output/cmn-Hans/0001_00048792_00051125.png")
-    )
+    return Image.open(output_dir / "cmn-Hans" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_cmn_hans_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/cmn-Hans_validation")
+    return output_dir / "cmn-Hans_validation"
 
 
 # endregion
@@ -38,21 +39,19 @@ def mlamd_cmn_hans_validation_directory() -> str:
 @pytest.fixture
 def mlamd_cmn_hant() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/cmn-Hant"))
+        return ImageSeries.load(output_dir / "cmn-Hant")
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/cmn-Hant.sup"))
+        return ImageSeries.load(input_dir / "cmn-Hant.sup")
 
 
 @pytest.fixture()
 def mlamd_cmn_hant_image() -> Image:
-    return Image.open(
-        get_test_file_path("mlamd/output/cmn-Hant/0001_00048792_00051125.png")
-    )
+    return Image.open(output_dir / "cmn-Hant" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_cmn_hant_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/cmn-Hant_validation")
+    return output_dir / "cmn-Hant_validation"
 
 
 # endregion
@@ -62,19 +61,19 @@ def mlamd_cmn_hant_validation_directory() -> str:
 @pytest.fixture
 def mlamd_eng() -> ImageSeries:
     try:
-        return ImageSeries.load(get_test_file_path("mlamd/output/eng"))
+        return ImageSeries.load(output_dir / "eng")
     except FileNotFoundError:
-        return ImageSeries.load(get_test_file_path("mlamd/input/eng.sup"))
+        return ImageSeries.load(input_dir / "eng.sup")
 
 
 @pytest.fixture()
 def mlamd_eng_image() -> Image:
-    return Image.open(get_test_file_path("mlamd/output/eng/0001_00048792_00051125.png"))
+    return Image.open(output_dir / "eng" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_eng_validation_directory() -> str:
-    return get_test_directory_path("mlamd/output/eng_validation")
+    return output_dir / "eng_validation"
 
 
 # endregion
