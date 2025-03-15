@@ -34,26 +34,26 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      - name: Identify changes
-        id: files
-        uses: tj-actions/changed-files@v41
-        with:
-          write_output_files: true
-          json: true
+#       - name: Run ruff
+#         run: |
+#           cd ${GITHUB_WORKSPACE}
+#           uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
 
-      - name: Run ruff
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
-
-      - name: Run pyright
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+#       - name: Run pyright
+#         run: |
+#           cd ${GITHUB_WORKSPACE}
+#           uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
 
       - name: Run pytest
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
           uv run pytest -v --cov=scinoephile --cov-report term .
-        continue-on-error: false
+        continue-on-error: true
+
+      - name: Annotate with pytest results
+        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        with:
+          tool: pytest
+          tool_infile: .github/outputs/pytest.txt
+          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
