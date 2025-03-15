@@ -34,10 +34,17 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-#       - name: Run ruff
-#         run: |
-#           cd ${GITHUB_WORKSPACE}
-#           uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
+      - name: Run ruff
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
+          cd ${GITHUB_WORKSPACE}
+          uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
+
+      - name: Annotate with ruff results
+        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        with:
+          tool: ruff
+          tool_infile: .github/outputs/ruff.txt
 
 #       - name: Run pyright
 #         run: |
