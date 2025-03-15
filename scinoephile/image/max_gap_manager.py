@@ -45,6 +45,7 @@ class MaxGapManager:
         char_2_width: int,
         gap: int,
         whitespace: str,
+        interactive: bool = True,
     ) -> str:
         """Validate gap between two characters.
 
@@ -55,6 +56,7 @@ class MaxGapManager:
             char_2_width: Width of second character in pixels
             gap: Gap between characters in pixels
             whitespace: Whitespace between characters
+            interactive: Whether to prompt user for input on proposed updates
         """
         type_1 = get_char_type(char_1)
         type_2 = get_char_type(char_2)
@@ -102,7 +104,7 @@ class MaxGapManager:
         else:
             # Expect space, have no space
             if whitespace_fit_for_adj_chars:
-                if gap < 100:
+                if interactive and gap < 100:
                     response = input(
                         f"{char_1} and {char_2} are separated by {gap:2d} pixels "
                         f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
@@ -185,8 +187,7 @@ class MaxGapManager:
         try:
             return max_gaps[width_1, width_2]
         except IndexError as e:
-            self._expand_max_gaps(type_1, type_2, width_1, width_2)
-            return self._get_max_gap(type_1, type_2, width_1, width_2)
+            return 0
 
     def _get_max_gap_extended(
         self, type_1: str, type_2: str, width_1: int, width_2: int
@@ -210,7 +211,10 @@ class MaxGapManager:
         y2 = min(max_gaps.shape[1], width_2 + 2)
 
         # Return the maximum value in the slice plus 1
-        return max(np.nanmax(max_gaps[x1:x2, y1:y2]) + 1, 20)
+        try:
+            return max(np.nanmax(max_gaps[x1:x2, y1:y2]) + 1, 20)
+        except ValueError:
+            return 0
 
     def _save_max_gaps(self, type_1: str, type_2: str) -> None:
         """Save max gaps file for a given pair of character types.

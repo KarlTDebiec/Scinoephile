@@ -58,7 +58,9 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
         pixels that are lighter in the test image are blue.
     """
     if ref.size != tst.size:
-        raise ValueError("Images must be the same size")
+        raise ValueError(
+            f"Images must be the same size; ref: {ref.size}, tst: {tst.size}"
+        )
     if ref.mode != "L":
         raise ValueError(f"Reference image must be of mode 'L', is {ref.mode}")
     if tst.mode != "L":
@@ -237,29 +239,28 @@ def get_image_of_text_with_char_alignment(
     return img
 
 
-def get_image_scaled(reference: Image.Image, test: Image.Image) -> Image.Image:
+def get_image_scaled(ref: Image.Image, tst: Image.Image) -> Image.Image:
     """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
-        reference: Reference image
-        test: Test image
+        ref: Reference image
+        tst: Test image
     Returns:
         Scaled image
     """
-    if reference.size != test.size:
+    if ref.size != tst.size:
         raise ValueError("Images must be the same size")
 
-    reference_bbox = get_bbox(reference)
-    test_bbox = get_bbox(test)
-    reference_bbox_size = (
-        reference_bbox[2] - reference_bbox[0],
-        reference_bbox[3] - reference_bbox[1],
-    )
-    test_bbox_size = (test_bbox[2] - test_bbox[0], test_bbox[3] - test_bbox[1])
-    test_cropped = test.crop(test_bbox)
-    test_scaled = test_cropped.resize(reference_bbox_size, Image.LANCZOS)  # noqa
+    ref_bbox = get_bbox(ref)
+    tst_bbox = get_bbox(tst)
+    ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
+    tst_bbox_size = (tst_bbox[2] - tst_bbox[0], tst_bbox[3] - tst_bbox[1])
+    tst_cropped = tst.crop(tst_bbox)
+    tst_scaled = tst_cropped.resize(ref_bbox_size, Image.LANCZOS)  # noqa
+    tst_final = Image.new("L", ref.size, 255)
+    tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 
-    return test_scaled
+    return tst_final
 
 
 def get_image_with_white_bg(img: Image.Image) -> Image.Image:
