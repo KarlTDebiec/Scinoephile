@@ -48,7 +48,7 @@ jobs:
         run: |
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
-          uv run pytest -v --cov=scinoephile --cov-report term .
+          uv run pytest -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt || echo
         continue-on-error: true
 
       - name: Annotate with pytest results
@@ -56,4 +56,3 @@ jobs:
         with:
           tool: pytest
           tool_infile: .github/outputs/pytest.txt
-          files_to_annotate_infile: .github/outputs/all_changed_and_modified_files.json
