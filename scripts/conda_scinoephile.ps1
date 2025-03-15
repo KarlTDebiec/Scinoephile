@@ -11,18 +11,12 @@ conda activate scinoephile
 
 pip install `
     black `
-    h5py `
     hanziconv `
     isort `
-    mypy `
-    nltk `
+    numba `
     numpy `
     openai `
-    opencv-python `
-    pandas `
-    pandas-stubs `
     pillow `
-    prospector `
     pycantonese `
     pypinyin `
     pyright `
@@ -31,7 +25,7 @@ pip install `
     pytest-cov `
     pytest-xdist `
     rlpycairo `
+    ruff `
     snownlp `
-    svglib
-pip install `
-    numba==0.61.0rc1
+    svglib `
+    uv

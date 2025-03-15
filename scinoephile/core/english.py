@@ -7,8 +7,6 @@ import re
 from copy import deepcopy
 from logging import info
 
-import nltk
-
 from scinoephile.core.series import Series
 
 
@@ -48,20 +46,6 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
             info(f"Skipping flattening of subtitle {i}, with text:\n{event.text}")
             continue
         event.text = _get_english_text_flattened(event.text.strip())
-    return series
-
-
-def get_english_truecased(series: Series) -> Series:
-    """Get all-caps English series truecased.
-
-    Arguments:
-        series: series to truecase
-    Returns:
-        truecased series
-    """
-    series = deepcopy(series)
-    for event in series:
-        event.text = _get_english_text_truecased(event.text.strip())
     return series
 
 
@@ -141,41 +125,7 @@ def _get_english_text_flattened(text: str) -> str:
     )
     return flattened
 
-
-def _get_english_text_truecased(text: str) -> str:
-    """Get all-caps English text truecased.
-
-    Arguments:
-        text: text for which to get truecase
-    Returns:
-        truecased text
-    """
-    try:
-        tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
-    except LookupError:
-        info("Downloading NLTK data")
-        nltk.download("punkt")
-        tagged = nltk.pos_tag([word.lower() for word in nltk.word_tokenize(text)])
-
-    normalized = [w.capitalize() if t in ["NN", "NNS"] else w for (w, t) in tagged]
-    normalized[0] = normalized[0].capitalize()
-
-    truecased = re.sub(r" (?=[.,'!?:;])", "", " ".join(normalized))
-    truecased = truecased.replace(" n't", "n't")
-    truecased = truecased.replace(" i ", " I ")
-    truecased = truecased.replace("``", '"')
-    truecased = truecased.replace("''", '"')
-    truecased = re.sub(
-        r"(\A\w)|(?<!\.\w)([.?!] )\w|\w(?:\.\w)|(?<=\w\.)\w",
-        lambda s: s.group().upper(),
-        truecased,
-    )
-
-    return truecased
-
-
 __all__ = [
     "get_english_cleaned",
     "get_english_flattened",
-    "get_english_truecased",
 ]
