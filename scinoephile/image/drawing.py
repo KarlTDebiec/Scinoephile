@@ -21,6 +21,7 @@ def get_image_annotated_with_char_bboxes(
     Arguments:
         img: Reference image
         bboxes: Bounding boxes [(x1, y1, x2, y2)].
+
     Returns:
         Image with bounding boxes drawn.
     """
