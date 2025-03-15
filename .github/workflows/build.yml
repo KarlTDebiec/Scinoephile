@@ -46,10 +46,17 @@ jobs:
           tool: ruff
           tool_infile: .github/outputs/ruff.txt
 
-#       - name: Run pyright
-#         run: |
-#           cd ${GITHUB_WORKSPACE}
-#           uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+      - name: Run pyright
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
+          cd ${GITHUB_WORKSPACE}
+          uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+
+      - name: Annotate with pyright results
+        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        with:
+          tool: pyright
+          tool_infile: .github/outputs/pyright.txt
 
       - name: Run pytest
         run: |
