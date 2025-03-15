@@ -13,7 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+            fetch-depth: 0
           submodules: true
+
+      - name: Fetch main
+        run: git fetch origin main
 
       - name: Define a cache dependency glob
         uses: astral-sh/setup-uv@v5
