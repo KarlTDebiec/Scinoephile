@@ -16,8 +16,11 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Fetch master
-        run: git fetch origin master
+      - name: Determine default branch
+        run: echo "DEFAULT_BRANCH=${GITHUB_BASE_REF:-${{ github.event.repository.default_branch }}}" >> $GITHUB_ENV
+
+      - name: Fetch default branch
+        run: git fetch origin $DEFAULT_BRANCH
 
       - name: Define a cache dependency glob
         uses: astral-sh/setup-uv@v5
