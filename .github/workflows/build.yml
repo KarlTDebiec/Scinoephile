@@ -48,7 +48,7 @@ jobs:
           uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
 
       - name: Annotate with ruff results
-        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        uses: KarlTDebiec/LinterPrinter@main
         with:
           tool: ruff
           tool_infile: .github/outputs/ruff.txt
@@ -60,7 +60,7 @@ jobs:
           uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
 
       - name: Annotate with pyright results
-        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        uses: KarlTDebiec/LinterPrinter@main
         with:
           tool: pyright
           tool_infile: .github/outputs/pyright.txt
@@ -74,7 +74,7 @@ jobs:
         continue-on-error: true
 
       - name: Annotate with pytest results
-        uses: KarlTDebiec/LinterPrinter@feature/js-is-trash
+        uses: KarlTDebiec/LinterPrinter@main
         with:
           tool: pytest
           tool_infile: .github/outputs/pytest.txt
