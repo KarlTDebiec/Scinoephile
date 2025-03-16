@@ -699,6 +699,7 @@ dependencies = [
     { name = "pypinyin" },
     { name = "pysubs2" },
     { name = "rlpycairo" },
+    { name = "setuptools" },
     { name = "snownlp" },
     { name = "svglib" },
 ]
@@ -725,6 +726,7 @@ requires-dist = [
     { name = "pypinyin", specifier = ">=0.53.0" },
     { name = "pysubs2", specifier = ">=1.8.0" },
     { name = "rlpycairo", specifier = ">=0.3.0" },
+    { name = "setuptools", specifier = ">=76.0.0" },
     { name = "snownlp", specifier = ">=0.12.3" },
     { name = "svglib", specifier = ">=1.5.1" },
 ]
@@ -738,6 +740,15 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "ruff", specifier = ">=0.9.10" },
+]
+
+[[package]]
+name = "setuptools"
+version = "76.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/32/d2/7b171caf085ba0d40d8391f54e1c75a1cda9255f542becf84575cfd8a732/setuptools-76.0.0.tar.gz", hash = "sha256:43b4ee60e10b0d0ee98ad11918e114c70701bc6051662a9a675a0496c1a158f4", size = 1349387 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/37/66/d2d7e6ad554f3a7c7297c3f8ef6e22643ad3d35ef5c63bf488bc89f32f31/setuptools-76.0.0-py3-none-any.whl", hash = "sha256:199466a166ff664970d0ee145839f5582cb9bca7a0a3a2e795b6a9cb2308e9c6", size = 1236106 },
 ]
 
 [[package]]

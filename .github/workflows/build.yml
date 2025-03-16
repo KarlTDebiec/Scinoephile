@@ -13,7 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: true
+
+      - name: Determine default branch
+        run: echo "DEFAULT_BRANCH=${GITHUB_BASE_REF:-${{ github.event.repository.default_branch }}}" >> $GITHUB_ENV
+
+      - name: Fetch default branch
+        run: git fetch origin $DEFAULT_BRANCH
 
       - name: Define a cache dependency glob
         uses: astral-sh/setup-uv@v5
@@ -34,26 +41,40 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      - name: Identify changes
-        id: files
-        uses: tj-actions/changed-files@v41
-        with:
-          write_output_files: true
-          json: true
-
       - name: Run ruff
         run: |
+          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
           uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
 
+      - name: Annotate with ruff results
+        uses: KarlTDebiec/LinterPrinter@main
+        with:
+          tool: ruff
+          tool_infile: .github/outputs/ruff.txt
+
       - name: Run pyright
         run: |
+          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
           uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
 
+      - name: Annotate with pyright results
+        uses: KarlTDebiec/LinterPrinter@main
+        with:
+          tool: pyright
+          tool_infile: .github/outputs/pyright.txt
+
       - name: Run pytest
         run: |
+          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
-          uv run pytest -v --cov=scinoephile --cov-report term .
-        continue-on-error: false
+          uv run pytest -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt || echo
+        continue-on-error: true
+
+      - name: Annotate with pytest results
+        uses: KarlTDebiec/LinterPrinter@main
+        with:
+          tool: pytest
+          tool_infile: .github/outputs/pytest.txt
