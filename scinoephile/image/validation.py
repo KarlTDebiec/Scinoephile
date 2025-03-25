@@ -69,10 +69,19 @@ def validate_ocr_hanzi(
         # Draw image of OCRed text, aligned to source image
         try:
             img_of_text = get_image_of_text_with_char_alignment(
-                event.text, event.img.size, bboxes
+                event.text,
+                event.img.size,
+                bboxes,
+                series.inner_color,
+                series.outer_color,
             )
         except ScinoephileException as e:
-            img_of_text = get_image_of_text(event.text, event.img.size)
+            img_of_text = get_image_of_text(
+                event.text,
+                event.img.size,
+                series.inner_color,
+                series.outer_color,
+            )
         img_of_text_scaled = get_image_scaled(img_with_white_bg, img_of_text)
 
         # Draw difference between source and OCRed text images
