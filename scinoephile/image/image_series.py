@@ -41,14 +41,14 @@ class ImageSeries(Series):
 
     @property
     def inner_color(self):
-        if not self._inner_color:
+        if self._inner_color is None:
             arrs = [e.data for e in self.events]
             self._inner_color, self._outer_color = get_text_colors(arrs)
         return self._inner_color
 
     @property
     def outer_color(self):
-        if not self._outer_color:
+        if self._outer_color is None:
             arrs = [e.data for e in self.events]
             self._inner_color, self._outer_color = get_text_colors(arrs)
         return self._outer_color
