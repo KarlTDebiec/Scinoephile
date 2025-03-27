@@ -52,8 +52,8 @@ def validate_ocr_hanzi(
             if messages:
                 for message in messages:
                     warning(f"Subtitle {i}: {message}")
-        except ScinoephileException as e:
-            warning(f"Subtitle {i}: {e}")
+        except ScinoephileException as exc:
+            warning(f"Subtitle {i}: {exc}")
 
         # Skip if no output path
         if not output_path:
@@ -71,7 +71,8 @@ def validate_ocr_hanzi(
                 series.fill_color,
                 series.outline_color,
             )
-        except ScinoephileException as e:
+        except ScinoephileException as exc:
+            warning(f"Subtitle {i}: {exc}")
             tst_img = get_image_of_text(
                 event.text,
                 event.img.size,
