@@ -23,7 +23,8 @@ def get_text_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
         np.add.at(hist, values, 1)
 
     light, dark = map(int, np.argsort(hist)[-2:])
-
+    if dark > light:
+        light, dark = dark, light
     return light, dark
 
 
