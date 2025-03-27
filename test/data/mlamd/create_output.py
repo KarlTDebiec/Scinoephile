@@ -23,11 +23,11 @@ if __name__ == "__main__":
     zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
 
     zho_hans = ImageSeries.load(output_dir / "zho-Hans")
-    # validate_ocr_hanzi(
-    #     zho_hans,
-    #     output_dir / "zho-Hans_validation",
-    #     False,
-    # )
+    validate_ocr_hanzi(
+        zho_hans,
+        output_dir / "zho-Hans_validation",
+        False,
+    )
 
     # Traditional Standard Chinese
     zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")

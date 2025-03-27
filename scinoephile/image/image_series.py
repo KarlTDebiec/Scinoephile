@@ -10,7 +10,6 @@ from typing import Any, BinaryIO
 import numpy as np
 from PIL import Image
 from pysubs2 import SSAFile, make_time
-from scipy.signal import find_peaks
 
 from scinoephile.common.validation import (
     validate_input_file,
@@ -18,7 +17,7 @@ from scinoephile.common.validation import (
     validate_output_file,
 )
 from scinoephile.core import ScinoephileException, Series
-from scinoephile.image.drawing import get_text_colors
+from scinoephile.image.drawing import get_text_fill_and_outline_colors
 from scinoephile.image.image_subtitle import ImageSubtitle
 from scinoephile.image.sup import read_sup_series
 
@@ -36,22 +35,28 @@ class ImageSeries(Series):
         """Initialize."""
         super().__init__()
 
-        self._inner_color = None
-        self._outer_color = None
+        self._fill_color = None
+        self._outline_color = None
 
     @property
-    def inner_color(self):
-        if self._inner_color is None:
+    def fill_color(self):
+        """Fill color of text images."""
+        if self._fill_color is None:
             arrs = [e.data for e in self.events]
-            self._inner_color, self._outer_color = get_text_colors(arrs)
-        return self._inner_color
+            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
+                arrs
+            )
+        return self._fill_color
 
     @property
-    def outer_color(self):
-        if self._outer_color is None:
+    def outline_color(self):
+        """Outline color of text images."""
+        if self._outline_color is None:
             arrs = [e.data for e in self.events]
-            self._inner_color, self._outer_color = get_text_colors(arrs)
-        return self._outer_color
+            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
+                arrs
+            )
+        return self._outline_color
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
@@ -74,36 +79,6 @@ class ImageSeries(Series):
         path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
-
-    def _get_colors(self):
-        # Calculate histogram of grayscale shades, excluding pixels with transparency
-        hist = np.zeros(256, dtype=np.uint64)
-        for event in self.events:
-            grayscale = event.data[:, :, 0]
-            alpha = event.data[:, :, 1]
-            mask = alpha > 0
-            values = grayscale[mask]
-            np.add.at(hist, values, 1)
-
-        # Determine if image is 4-bit
-        yat = {17, 35, 54, 70, 88, 106, 123, 132, 149, 167, 185, 203, 220, 238, 255}
-        nonzero_indices = set(map(int, np.nonzero(hist)[0]))
-        four_bit = nonzero_indices.issubset(yat)
-
-        # Find two largest peaks in histogram
-        if four_bit:
-            folded = np.zeros(16, dtype=hist.dtype)
-            for i in range(16):
-                folded[i] = hist[i * 16]
-            peaks, _ = find_peaks(folded, distance=1, height=np.max(folded) * 0.1)
-            sorted_peaks = sorted(peaks, key=lambda p: folded[p], reverse=True)
-            light, dark = sorted(sorted_peaks[:2])
-        else:
-            peaks, _ = find_peaks(hist, distance=10, height=np.max(hist) * 0.1)
-            sorted_peaks = sorted(peaks, key=lambda p: hist[p], reverse=True)
-            light, dark = sorted(sorted_peaks[:2])
-
-        return light, dark
 
     def _save_png(self, fp: Path, **kwargs: Any) -> None:
         """Save series to directory of png files.

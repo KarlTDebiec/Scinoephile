@@ -14,7 +14,7 @@ from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
 
 
-def get_text_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
+def get_text_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
     """Get the fill and outline colors used in a collection of text image arrays.
 
     * Uses the most common two colors, which works correctly for tested images.
@@ -23,7 +23,7 @@ def get_text_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
     Arguments:
         arrs:  Image arrays; should have 2 channels for grayscale and alpha.
     Returns:
-        Light and dark colors
+        Fill and outline colors
     """
     hist = np.zeros(256, dtype=np.uint64)
     for arr in arrs:
@@ -33,10 +33,10 @@ def get_text_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
         values = grayscale[mask]
         np.add.at(hist, values, 1)
 
-    light, dark = map(int, np.argsort(hist)[-2:])
-    if dark > light:
-        light, dark = dark, light
-    return light, dark
+    fill, outline = map(int, np.argsort(hist)[-2:])
+    if outline > fill:
+        fill, outline = outline, fill
+    return fill, outline
 
 
 def get_image_annotated_with_char_bboxes(
@@ -246,7 +246,8 @@ def get_image_of_text_with_char_alignment(
     font = ImageFont.truetype(font_path, font_size)
     outline_width = 3
 
-    for ref_box, char in zip(bboxes, filtered_text):
+    for i, ref_box in enumerate(bboxes):
+        char = filtered_text[i]
         if char == "⋯":
             char = "…"
 

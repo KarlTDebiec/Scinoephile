@@ -59,7 +59,9 @@ select = [
     "W",   # pycodestyle
 ]
 ignore = [
-    'PLR2004' # Magic value used in comparison
+    "D410", # Missing blank line after section
+    "D411", # Missing blank line before section
+    "PLR2004" # Magic value used in comparison
 ]
 
 [tool.ruff.lint.pydocstyle]
