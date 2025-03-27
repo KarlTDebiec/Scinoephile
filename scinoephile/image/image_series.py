@@ -17,6 +17,7 @@ from scinoephile.common.validation import (
     validate_output_file,
 )
 from scinoephile.core import ScinoephileException, Series
+from scinoephile.image.drawing import get_text_fill_and_outline_colors
 from scinoephile.image.image_subtitle import ImageSubtitle
 from scinoephile.image.sup import read_sup_series
 
@@ -29,6 +30,33 @@ class ImageSeries(Series):
 
     events: list[ImageSubtitle]
     """Individual subtitle events."""
+
+    def __init__(self) -> None:
+        """Initialize."""
+        super().__init__()
+
+        self._fill_color = None
+        self._outline_color = None
+
+    @property
+    def fill_color(self):
+        """Fill color of text images."""
+        if self._fill_color is None:
+            arrs = [e.data for e in self.events]
+            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
+                arrs
+            )
+        return self._fill_color
+
+    @property
+    def outline_color(self):
+        """Outline color of text images."""
+        if self._outline_color is None:
+            arrs = [e.data for e in self.events]
+            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
+                arrs
+            )
+        return self._outline_color
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
@@ -171,6 +199,14 @@ class ImageSeries(Series):
             )
         for text_event, infile in zip(text_series, infiles):
             image = Image.open(infile)
+            if image.mode == "RGBA":
+                arr = np.array(image)
+                if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
+                    arr[:, :, 1] == arr[:, :, 2]
+                ):
+                    image = image.convert("LA")
+                    image.save(infile)
+                    info(f"Converted {infile} to LA and resaved")
             series.events.append(
                 cls.event_class(
                     start=text_event.start,

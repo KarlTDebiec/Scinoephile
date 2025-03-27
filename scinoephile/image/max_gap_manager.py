@@ -241,5 +241,17 @@ class MaxGapManager:
             gap: New max gap between characters in pixels
         """
         max_gaps = self.max_gaps[type_1, type_2]
-        max_gaps[width_1, width_2] = gap
+        try:
+            max_gaps[width_1, width_2] = gap
+        except IndexError as error:
+            # If needed size is under 5% larger than current size, expand max_gaps
+            if (
+                width_1 <= max_gaps.shape[0] * 1.05
+                and width_2 <= max_gaps.shape[1] * 1.05
+            ):
+                self._expand_max_gaps(type_1, type_2, width_1, width_2)
+                max_gaps = self.max_gaps[type_1, type_2]
+                max_gaps[width_1, width_2] = gap
+            else:
+                raise error
         self._save_max_gaps(type_1, type_2)

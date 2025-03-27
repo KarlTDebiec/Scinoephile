@@ -14,7 +14,7 @@ from scinoephile.image.drawing import (
     get_image_diff,
     get_image_of_text,
     get_image_of_text_with_char_alignment,
-    get_image_scaled,
+    get_image_with_contents_scaled_to_ref,
     get_image_with_white_bg,
     get_images_stacked,
 )
@@ -37,52 +37,58 @@ def validate_ocr_hanzi(
     if output_path:
         output_path = validate_output_directory(output_path)
 
-    bbox_manager = BboxManager()
-    max_gap_manager = MaxGapManager()
+    bbox_mgr = BboxManager()
+    max_gap_mgr = MaxGapManager()
 
     for i, event in enumerate(series.events, 1):
         # Prepare source image
-        img_with_white_bg = get_image_with_white_bg(event.img)
-        bboxes = bbox_manager.get_char_bboxes(
-            img_with_white_bg, event.text, interactive
-        )
+        ref_img = get_image_with_white_bg(event.img)
+        bboxes = bbox_mgr.get_char_bboxes(ref_img, event.text, interactive)
 
         try:
             messages = _validate_spaces_hanzi(
-                event.text, bboxes, max_gap_manager, interactive
+                event.text, bboxes, max_gap_mgr, interactive
             )
             if messages:
                 for message in messages:
                     warning(f"Subtitle {i}: {message}")
-        except ScinoephileException as e:
-            warning(f"Subtitle {i}: {e}")
+        except ScinoephileException as exc:
+            warning(f"Subtitle {i}: {exc}")
 
         # Skip if no output path
         if not output_path:
             continue
 
         # Draw annotated source image
-        img_with_bboxes = get_image_annotated_with_char_bboxes(
-            img_with_white_bg, bboxes
-        )
+        ref_annotated_img = get_image_annotated_with_char_bboxes(ref_img, bboxes)
 
         # Draw image of OCRed text, aligned to source image
         try:
-            img_of_text = get_image_of_text_with_char_alignment(
-                event.text, event.img.size, bboxes
+            tst_img = get_image_of_text_with_char_alignment(
+                event.text,
+                event.img.size,
+                bboxes,
+                series.fill_color,
+                series.outline_color,
             )
-        except ScinoephileException as e:
-            img_of_text = get_image_of_text(event.text, event.img.size)
-        img_of_text_scaled = get_image_scaled(img_with_white_bg, img_of_text)
+        except ScinoephileException as exc:
+            warning(f"Subtitle {i}: {exc}")
+            tst_img = get_image_of_text(
+                event.text,
+                event.img.size,
+                series.fill_color,
+                series.outline_color,
+            )
+        tst_scaled_img = get_image_with_contents_scaled_to_ref(ref=ref_img, tst=tst_img)
 
         # Draw difference between source and OCRed text images
-        img_diff = get_image_diff(img_with_white_bg, img_of_text_scaled)
+        diff_img = get_image_diff(ref_img, tst_scaled_img)
 
         # Stack images
-        img_stack = get_images_stacked(img_with_bboxes, img_of_text_scaled, img_diff)
+        stack_img = get_images_stacked(ref_annotated_img, tst_scaled_img, diff_img)
 
         # Save image
-        img_stack.save(output_path / f"{i:04d}.png")
+        stack_img.save(output_path / f"{i:04d}.png")
         info(f"Saved {output_path / f'{i:04d}.png'}")
 
 
@@ -157,7 +163,13 @@ def _validate_spaces_hanzi(
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
         message = max_gap_manager.validate_gap(
-            char_1, char_2, char_1_width, char_2_width, gap, whitespace, interactive
+            char_1,
+            char_2,
+            char_1_width,
+            char_2_width,
+            gap,
+            whitespace,
+            interactive,
         )
         if message:
             messages.append(message)

@@ -7,10 +7,36 @@ import colorsys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL.Image import Resampling
 
 from scinoephile.core import ScinoephileException
 from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
+
+
+def get_text_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
+    """Get the fill and outline colors used in a collection of text image arrays.
+
+    * Uses the most common two colors, which works correctly for tested images.
+    * Tested images used a 16-color palette.
+
+    Arguments:
+        arrs:  Image arrays; should have 2 channels for grayscale and alpha.
+    Returns:
+        Fill and outline colors
+    """
+    hist = np.zeros(256, dtype=np.uint64)
+    for arr in arrs:
+        grayscale = arr[:, :, 0]
+        alpha = arr[:, :, 1]
+        mask = alpha != 0
+        values = grayscale[mask]
+        np.add.at(hist, values, 1)
+
+    fill, outline = map(int, np.argsort(hist)[-2:])
+    if outline > fill:
+        fill, outline = outline, fill
+    return fill, outline
 
 
 def get_image_annotated_with_char_bboxes(
@@ -96,12 +122,16 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     return color_diff
 
 
-def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
+def get_image_of_text(
+    text: str, size: tuple[int, int], inner_color: int = 31, outer_color: int = 235
+) -> Image.Image:
     """Get image of text, drawn using pillow.
 
     Arguments:
         text: Text to draw
         size: Size of image
+        inner_color: Inner color of text
+        outer_color: Outer color of text
     Returns:
         Image of text
     """
@@ -128,15 +158,23 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
             text_bbox = draw.textbbox((0, 0), char, font=font)
             char_width = text_bbox[2] - text_bbox[0]
 
-            # Draw character outline
+            # Draw character outline and fill
             outline_width = 3
             for dx in range(-outline_width, outline_width + 1):
                 for dy in range(-outline_width, outline_width + 1):
                     if dx != 0 or dy != 0:
-                        draw.text((x + dx, y + dy), char, font=font, fill=31)
-
-            # Draw character fill
-            draw.text((x, y), char, font=font, fill=235)
+                        draw.text(
+                            (x + dx, y + dy),
+                            char,
+                            font=font,
+                            fill=outer_color,
+                        )
+            draw.text(
+                (x, y),
+                char,
+                font=font,
+                fill=inner_color,
+            )
 
             # Move to next character position
             x += char_width + spacing
@@ -151,15 +189,25 @@ def get_image_of_text(text: str, size: tuple[int, int]) -> Image.Image:
         text_y = (image.size[1] - text_height) // 2
         text_y -= text_bbox[1]
 
-        # Draw text with outline
+        # Draw text outline and fill
         outline_width = 2 * 2
         for dx in range(-outline_width, outline_width + 1):
             for dy in range(-outline_width, outline_width + 1):
                 if dx != 0 or dy != 0:
-                    draw.text((text_x + dx, text_y + dy), text, font=font, fill=31)
-        draw.text((text_x, text_y), text, font=font, fill=235)
+                    draw.text(
+                        (text_x + dx, text_y + dy),
+                        text,
+                        font=font,
+                        fill=outer_color,
+                    )
+        draw.text(
+            (text_x, text_y),
+            text,
+            font=font,
+            fill=inner_color,
+        )
 
-    image = image.resize(size, Image.LANCZOS)  # noqa
+    image = image.resize(size, Resampling.LANCZOS)
     return image
 
 
@@ -167,6 +215,8 @@ def get_image_of_text_with_char_alignment(
     text: str,
     size: tuple[int, int],
     bboxes: list[tuple[int, int, int, int]],
+    inner_color: int = 31,
+    outer_color: int = 235,
 ) -> Image.Image:
     """Generate an image of text, aligning each character to the reference image.
 
@@ -174,6 +224,8 @@ def get_image_of_text_with_char_alignment(
         text: OCRed text believed to be present in image
         size: Size of image
         bboxes: Bounding boxes of characters in reference image
+        inner_color: Inner color of text
+        outer_color: Outer color of text
     Returns:
         Image of text
     """
@@ -187,17 +239,15 @@ def get_image_of_text_with_char_alignment(
 
     # Create a blank canvas for the final image
     img = Image.new("L", size, 255)
-    draw = ImageDraw.Draw(img)
 
     # Load a font
     font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
     outline_width = 3
-    outline_fill = 31
-    fill = 235
 
-    for ref_box, char in zip(bboxes, filtered_text):
+    for i, ref_box in enumerate(bboxes):
+        char = filtered_text[i]
         if char == "⋯":
             char = "…"
 
@@ -217,11 +267,16 @@ def get_image_of_text_with_char_alignment(
                         (80 + dx, 80 + dy),
                         char,
                         font=font,
-                        fill=outline_fill,
+                        fill=outer_color,
                         anchor="mm",
                     )
-        char_draw.text((80, 80), char, font=font, fill=fill, anchor="mm")
-        # char_img.show()
+        char_draw.text(
+            (80, 80),
+            char,
+            font=font,
+            fill=inner_color,
+            anchor="mm",
+        )
 
         # Downscale character to fit final bounding box
         crop_bbox = get_bbox(char_img)
@@ -232,7 +287,7 @@ def get_image_of_text_with_char_alignment(
             min(char_size[0], crop_bbox[2] + 1),
             min(char_size[1], crop_bbox[3] + 1),
         )
-        char_resized = char_img.crop(crop_bbox).resize(ref_size, Image.LANCZOS)
+        char_resized = char_img.crop(crop_bbox).resize(ref_size, Resampling.LANCZOS)
 
         # Paste into the final image at the correct position
         img.paste(char_resized, (ref_x1, ref_y1))
@@ -240,7 +295,10 @@ def get_image_of_text_with_char_alignment(
     return img
 
 
-def get_image_scaled(ref: Image.Image, tst: Image.Image) -> Image.Image:
+def get_image_with_contents_scaled_to_ref(
+    ref: Image.Image,
+    tst: Image.Image,
+) -> Image.Image:
     """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
@@ -255,9 +313,8 @@ def get_image_scaled(ref: Image.Image, tst: Image.Image) -> Image.Image:
     ref_bbox = get_bbox(ref)
     tst_bbox = get_bbox(tst)
     ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
-    tst_bbox_size = (tst_bbox[2] - tst_bbox[0], tst_bbox[3] - tst_bbox[1])
     tst_cropped = tst.crop(tst_bbox)
-    tst_scaled = tst_cropped.resize(ref_bbox_size, Image.LANCZOS)  # noqa
+    tst_scaled = tst_cropped.resize(ref_bbox_size, Resampling.LANCZOS)
     tst_final = Image.new("L", ref.size, 255)
     tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 
