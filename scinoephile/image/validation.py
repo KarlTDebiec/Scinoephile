@@ -14,7 +14,7 @@ from scinoephile.image.drawing import (
     get_image_diff,
     get_image_of_text,
     get_image_of_text_with_char_alignment,
-    get_image_scaled,
+    get_image_with_contents_scaled_to_ref,
     get_image_with_white_bg,
     get_images_stacked,
 )
@@ -82,7 +82,9 @@ def validate_ocr_hanzi(
                 series.inner_color,
                 series.outer_color,
             )
-        img_of_text_scaled = get_image_scaled(img_with_white_bg, img_of_text)
+        img_of_text_scaled = get_image_with_contents_scaled_to_ref(
+            img_with_white_bg, img_of_text
+        )
 
         # Draw difference between source and OCRed text images
         img_diff = get_image_diff(img_with_white_bg, img_of_text_scaled)

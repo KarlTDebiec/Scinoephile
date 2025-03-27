@@ -7,6 +7,7 @@ import colorsys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL.Image import Resampling
 
 from scinoephile.core import ScinoephileException
 from scinoephile.core.text import get_text_type
@@ -14,6 +15,16 @@ from scinoephile.image.bbox import get_bbox
 
 
 def get_text_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
+    """Get the fill and outline colors used in a collection of text image arrays.
+
+    * Uses the most common two colors, which works correctly for tested images.
+    * Tested images used a 16-color palette.
+
+    Arguments:
+        arrs:  Image arrays; should have 2 channels for grayscale and alpha.
+    Returns:
+        Light and dark colors
+    """
     hist = np.zeros(256, dtype=np.uint64)
     for arr in arrs:
         grayscale = arr[:, :, 0]
@@ -196,7 +207,7 @@ def get_image_of_text(
             fill=inner_color,
         )
 
-    image = image.resize(size, Image.LANCZOS)  # noqa
+    image = image.resize(size, Resampling.LANCZOS)
     return image
 
 
@@ -228,7 +239,6 @@ def get_image_of_text_with_char_alignment(
 
     # Create a blank canvas for the final image
     img = Image.new("L", size, 255)
-    draw = ImageDraw.Draw(img)
 
     # Load a font
     font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
@@ -276,7 +286,7 @@ def get_image_of_text_with_char_alignment(
             min(char_size[0], crop_bbox[2] + 1),
             min(char_size[1], crop_bbox[3] + 1),
         )
-        char_resized = char_img.crop(crop_bbox).resize(ref_size, Image.LANCZOS)
+        char_resized = char_img.crop(crop_bbox).resize(ref_size, Resampling.LANCZOS)
 
         # Paste into the final image at the correct position
         img.paste(char_resized, (ref_x1, ref_y1))
@@ -284,7 +294,10 @@ def get_image_of_text_with_char_alignment(
     return img
 
 
-def get_image_scaled(ref: Image.Image, tst: Image.Image) -> Image.Image:
+def get_image_with_contents_scaled_to_ref(
+    ref: Image.Image,
+    tst: Image.Image,
+) -> Image.Image:
     """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
@@ -299,9 +312,8 @@ def get_image_scaled(ref: Image.Image, tst: Image.Image) -> Image.Image:
     ref_bbox = get_bbox(ref)
     tst_bbox = get_bbox(tst)
     ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
-    tst_bbox_size = (tst_bbox[2] - tst_bbox[0], tst_bbox[3] - tst_bbox[1])
     tst_cropped = tst.crop(tst_bbox)
-    tst_scaled = tst_cropped.resize(ref_bbox_size, Image.LANCZOS)  # noqa
+    tst_scaled = tst_cropped.resize(ref_bbox_size, Resampling.LANCZOS)
     tst_final = Image.new("L", ref.size, 255)
     tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 
