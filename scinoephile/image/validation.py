@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.common.validation import validate_output_directory
 from scinoephile.core import ScinoephileException
 from scinoephile.image.bbox_manager import BboxManager
+from scinoephile.image.char_pair import CharPair
 from scinoephile.image.drawing import (
     get_image_annotated_with_char_bboxes,
     get_image_diff,
@@ -19,7 +20,7 @@ from scinoephile.image.drawing import (
     get_images_stacked,
 )
 from scinoephile.image.image_series import ImageSeries
-from scinoephile.image.max_gap_manager import MaxGapManager
+from scinoephile.image.whitespace_manager import WhitespaceManager
 
 
 def validate_ocr_hanzi(
@@ -38,7 +39,7 @@ def validate_ocr_hanzi(
         output_path = validate_output_directory(output_path)
 
     bbox_mgr = BboxManager()
-    max_gap_mgr = MaxGapManager()
+    whitespace_mgr = WhitespaceManager()
 
     for i, event in enumerate(series.events, 1):
         # Prepare source image
@@ -47,7 +48,7 @@ def validate_ocr_hanzi(
 
         try:
             messages = _validate_spaces_hanzi(
-                event.text, bboxes, max_gap_mgr, interactive
+                event.text, bboxes, whitespace_mgr, interactive
             )
             if messages:
                 for message in messages:
@@ -95,7 +96,7 @@ def validate_ocr_hanzi(
 def _validate_spaces_hanzi(
     text: str,
     bboxes: list[tuple[int, int, int, int]],
-    max_gap_manager: MaxGapManager,
+    whitespace_mgr: WhitespaceManager,
     interactive: bool = True,
 ) -> list[str]:
     """Validate spacing in text by comparing with bbox gaps.
@@ -103,7 +104,7 @@ def _validate_spaces_hanzi(
     Arguments:
         text: Provisional text
         bboxes: Bounding boxes [(x1, y1, x2, y2), ...]
-        max_gap_manager: Manages maximum gaps between characters of different types
+        whitespace_mgr: Manages maximum gaps between characters of different types
         interactive: Whether to prompt user for input on proposed updates
     """
     # Calculate widths and gaps
@@ -133,7 +134,7 @@ def _validate_spaces_hanzi(
     # Iterate through text and assess gaps
     messages = []
     char_1_i = 0
-    char_1_width_i = 0
+    width_1_i = 0
     gap_i = 0
     while True:
         if char_1_i > len(text) - 2:
@@ -141,13 +142,13 @@ def _validate_spaces_hanzi(
 
         # Get char 1 and its width
         char_1 = text[char_1_i]
-        char_1_width = widths[char_1_width_i]
+        width_1 = widths[width_1_i]
 
         # Get provisional char 2 and its width
         char_2_i = char_1_i + 1
         char_2 = text[char_2_i]
-        char_2_width_i = char_1_width_i + 1
-        char_2_width = widths[char_2_width_i]
+        width_2_i = width_1_i + 1
+        width_2 = widths[width_2_i]
 
         # If char 2 is whitespace, iterate to next real char and track whitespace
         whitespace = ""
@@ -162,20 +163,13 @@ def _validate_spaces_hanzi(
 
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
-        message = max_gap_manager.validate_gap(
-            char_1,
-            char_2,
-            char_1_width,
-            char_2_width,
-            gap,
-            whitespace,
-            interactive,
-        )
+        pair = CharPair(char_1, char_2, width_1, width_2, gap, whitespace)
+        message = whitespace_mgr.validate_gap(pair, interactive)
         if message:
             messages.append(message)
 
         char_1_i = char_2_i
-        char_1_width_i = char_2_width_i
+        width_1_i = width_2_i
         gap_i += 1
 
     return messages
