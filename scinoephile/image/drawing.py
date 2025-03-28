@@ -149,14 +149,7 @@ def get_image_of_text(
 
     # Determine font.
     if font_path is None:
-        if system() == "Windows":
-            font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
-        if system() == "Darwin":
-            font_path = r"/System/Library/Fonts/STHeiti Medium.ttc"
-        else:
-            raise ScinoephileException(
-                "Font path must be provided for non-Windows systems"
-            )
+        font_path = _get_default_font_path()
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
 
@@ -261,14 +254,7 @@ def get_image_of_text_with_char_alignment(
 
     # Load font
     if font_path is None:
-        if system() == "Windows":
-            font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
-        if system() == "Darwin":
-            font_path = r"/System/Library/Fonts/STHeiti Medium.ttc"
-        else:
-            raise ScinoephileException(
-                "Font path must be provided for non-Windows systems"
-            )
+        font_path = _get_default_font_path()
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
     outline_width = 3
@@ -379,3 +365,16 @@ def get_images_stacked(*imgs: Image.Image) -> Image.Image:
         stack.paste(img, (0, size[1] * i))
 
     return stack
+
+
+def _get_default_font_path() -> PathLike:
+    """Get path to font file.
+
+    Returns:
+        Path to font file
+    """
+    if system() == "Windows":
+        return r"C:\WINDOWS\FONTS\MSYH.TTC"
+    if system() == "Darwin":
+        return r"/System/Library/Fonts/STHeiti Medium.ttc"
+    raise ScinoephileException("Font path must be provided for non-Windows systems")
