@@ -167,7 +167,7 @@ class WhitespaceManager:
         max_gaps = self.max_gaps[pair.type_1, pair.type_2]
         try:
             return max_gaps[pair.width_1, pair.width_2]
-        except IndexError as e:
+        except IndexError:
             return 0
 
     def _get_max_gap_extended(self, pair: CharPair) -> int:
@@ -212,13 +212,11 @@ class WhitespaceManager:
         """
         max_gaps = self.max_gaps[pair.type_1, pair.type_2]
         try:
-            max_gaps[pair.type_1, pair.type_2] = pair.gap
+            max_gaps[pair.width_1, pair.width_2] = pair.gap
         except IndexError as error:
             # If needed size is under 5% larger than current size, expand max_gaps
-            if (
-                pair.width_1 <= max_gaps.shape[0] * 1.05
-                and pair.width_2 <= max_gaps.shape[1] * 1.05
-            ):
+            shape = max_gaps.shape
+            if pair.width_1 <= shape[0] * 1.05 and pair.width_2 <= shape[1] * 1.05:
                 self._expand_max_gaps(pair)
                 max_gaps = self.max_gaps[pair.type_1, pair.type_2]
                 max_gaps[pair.width_1, pair.width_2] = pair.gap
