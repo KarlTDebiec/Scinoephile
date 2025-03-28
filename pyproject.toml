@@ -18,10 +18,8 @@ dependencies = [
     "pycantonese>=3.4.0",
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
-    "rlpycairo>=0.3.0",
     "setuptools>=76.0.0",
     "snownlp>=0.12.3",
-    "svglib>=1.5.1",
 ]
 
 [dependency-groups]

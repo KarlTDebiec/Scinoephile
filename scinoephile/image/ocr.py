@@ -11,14 +11,12 @@ from scinoephile.core.blocks import get_blocks_by_pause, get_concatenated_blocks
 from scinoephile.core.pairs import get_pair_blocks_by_pause
 from scinoephile.image import ImageSeries
 from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.upscaling import get_upscaled_image
 from scinoephile.openai import OpenAiService
 
 
 def get_transcriptions(
     openai_service: OpenAiService,
     series: ImageSeries,
-    upscale=False,
     language: str = "English",
 ) -> ImageSeries:
     """Get transcriptions of text from images.
@@ -26,7 +24,6 @@ def get_transcriptions(
     Arguments:
         openai_service: OpenAI service to use
         series: Image series to transcribe
-        upscale: Whether to upscale images to 2000 pixels on the longest side
         language: Language of text in images
     Returns:
         Series with transcriptions added
@@ -45,10 +42,7 @@ def get_transcriptions(
         info(f"Processing block {i + 1} of {len(blocks)}")
         for j, event in enumerate(block.events):
             info(f"Processing event {j + j_offset}, ({j + 1} / {len(block.events)})")
-            if upscale:
-                image = get_upscaled_image(event.img)
-            else:
-                image = event.img
+            image = event.img
             base64_image = get_base64_image(image)
 
             # Get initial transcription
@@ -139,12 +133,8 @@ def get_revised_chinese_transcriptions(
             info(
                 f"Processing event {j + j_offset}, ({j + 1} / {len(simp_block.events)})"
             )
-            if upscale:
-                simp_image = get_upscaled_image(simp_event.img)
-                trad_image = get_upscaled_image(trad_event.img)
-            else:
-                simp_image = simp_event.img
-                trad_image = trad_event.img
+            simp_image = simp_event.img
+            trad_image = trad_event.img
             simp_base64_image = get_base64_image(simp_image)
             trad_base64_image = get_base64_image(trad_image)
             simp_transcription = simp_event.text
