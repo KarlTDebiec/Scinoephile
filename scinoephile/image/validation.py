@@ -68,16 +68,16 @@ def validate_ocr_hanzi(
                 event.text,
                 event.img.size,
                 bboxes,
-                series.fill_color,
-                series.outline_color,
+                fill_color=series.fill_color,
+                outline_color=series.outline_color,
             )
         except ScinoephileException as exc:
             warning(f"Subtitle {i}: {exc}")
             tst_img = get_image_of_text(
                 event.text,
                 event.img.size,
-                series.fill_color,
-                series.outline_color,
+                fill_color=series.fill_color,
+                outline_color=series.outline_color,
             )
         tst_scaled_img = get_image_with_contents_scaled_to_ref(ref=ref_img, tst=tst_img)
 

@@ -24,7 +24,6 @@ pip install `
     pytest `
     pytest-cov `
     pytest-xdist `
-    rlpycairo `
     ruff `
     snownlp `
     svglib `
