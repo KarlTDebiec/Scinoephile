@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import colorsys
+from platform import system
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from PIL.Image import Resampling
 
+from scinoephile.common.typing import PathLike
 from scinoephile.core import ScinoephileException
 from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
@@ -123,15 +125,21 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
 
 
 def get_image_of_text(
-    text: str, size: tuple[int, int], inner_color: int = 31, outer_color: int = 235
+    text: str,
+    size: tuple[int, int],
+    *,
+    font_path: PathLike | None = None,
+    fill_color: int = 31,
+    outline_color: int = 235,
 ) -> Image.Image:
     """Get image of text, drawn using pillow.
 
     Arguments:
         text: Text to draw
         size: Size of image
-        inner_color: Inner color of text
-        outer_color: Outer color of text
+        font_path: Path to font file
+        fill_color: Fill color of text
+        outline_color: Outline color of text
     Returns:
         Image of text
     """
@@ -139,8 +147,16 @@ def get_image_of_text(
     image = Image.new("L", (size[0] * 2, size[1] * 2), 255)
     draw = ImageDraw.Draw(image)
 
-    # Load a font
-    font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    # Determine font.
+    if font_path is None:
+        if system() == "Windows":
+            font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+        if system() == "Darwin":
+            font_path = r"/System/Library/Fonts/STHeiti Medium.ttc"
+        else:
+            raise ScinoephileException(
+                "Font path must be provided for non-Windows systems"
+            )
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
 
@@ -167,13 +183,13 @@ def get_image_of_text(
                             (x + dx, y + dy),
                             char,
                             font=font,
-                            fill=outer_color,
+                            fill=outline_color,
                         )
             draw.text(
                 (x, y),
                 char,
                 font=font,
-                fill=inner_color,
+                fill=fill_color,
             )
 
             # Move to next character position
@@ -198,13 +214,13 @@ def get_image_of_text(
                         (text_x + dx, text_y + dy),
                         text,
                         font=font,
-                        fill=outer_color,
+                        fill=outline_color,
                     )
         draw.text(
             (text_x, text_y),
             text,
             font=font,
-            fill=inner_color,
+            fill=fill_color,
         )
 
     image = image.resize(size, Resampling.LANCZOS)
@@ -215,8 +231,10 @@ def get_image_of_text_with_char_alignment(
     text: str,
     size: tuple[int, int],
     bboxes: list[tuple[int, int, int, int]],
-    inner_color: int = 31,
-    outer_color: int = 235,
+    *,
+    font_path: PathLike | None = None,
+    fill_color: int = 31,
+    outline_color: int = 235,
 ) -> Image.Image:
     """Generate an image of text, aligning each character to the reference image.
 
@@ -224,8 +242,9 @@ def get_image_of_text_with_char_alignment(
         text: OCRed text believed to be present in image
         size: Size of image
         bboxes: Bounding boxes of characters in reference image
-        inner_color: Inner color of text
-        outer_color: Outer color of text
+        font_path: Path to font file
+        fill_color: Fill of text
+        outline_color: Outline of text
     Returns:
         Image of text
     """
@@ -240,8 +259,16 @@ def get_image_of_text_with_char_alignment(
     # Create a blank canvas for the final image
     img = Image.new("L", size, 255)
 
-    # Load a font
-    font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+    # Load font
+    if font_path is None:
+        if system() == "Windows":
+            font_path = r"C:\WINDOWS\FONTS\MSYH.TTC"
+        if system() == "Darwin":
+            font_path = r"/System/Library/Fonts/STHeiti Medium.ttc"
+        else:
+            raise ScinoephileException(
+                "Font path must be provided for non-Windows systems"
+            )
     font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
     outline_width = 3
@@ -267,14 +294,14 @@ def get_image_of_text_with_char_alignment(
                         (80 + dx, 80 + dy),
                         char,
                         font=font,
-                        fill=outer_color,
+                        fill=outline_color,
                         anchor="mm",
                     )
         char_draw.text(
             (80, 80),
             char,
             font=font,
-            fill=inner_color,
+            fill=fill_color,
             anchor="mm",
         )
 
