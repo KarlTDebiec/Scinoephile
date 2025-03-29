@@ -9,17 +9,18 @@ from pathlib import Path
 from scinoephile.common.validation import validate_output_directory
 from scinoephile.core import ScinoephileException
 from scinoephile.image.bbox_manager import BboxManager
+from scinoephile.image.char_pair import CharPair
 from scinoephile.image.drawing import (
-    get_image_annotated_with_char_bboxes,
-    get_image_diff,
-    get_image_of_text,
-    get_image_of_text_with_char_alignment,
-    get_image_with_contents_scaled_to_ref,
-    get_image_with_white_bg,
     get_images_stacked,
+    get_img_diff,
+    get_img_of_text,
+    get_img_of_text_with_bboxes,
+    get_img_with_bbox,
+    get_img_with_bboxes,
+    get_img_with_white_bg,
 )
 from scinoephile.image.image_series import ImageSeries
-from scinoephile.image.max_gap_manager import MaxGapManager
+from scinoephile.image.whitespace_manager import WhitespaceManager
 
 
 def validate_ocr_hanzi(
@@ -38,16 +39,16 @@ def validate_ocr_hanzi(
         output_path = validate_output_directory(output_path)
 
     bbox_mgr = BboxManager()
-    max_gap_mgr = MaxGapManager()
+    whitespace_mgr = WhitespaceManager()
 
     for i, event in enumerate(series.events, 1):
         # Prepare source image
-        ref_img = get_image_with_white_bg(event.img)
-        bboxes = bbox_mgr.get_char_bboxes(ref_img, event.text, interactive)
+        ref_img = get_img_with_white_bg(event.img)
+        bboxes = bbox_mgr.get_bboxes(ref_img, event.text, interactive)
 
         try:
             messages = _validate_spaces_hanzi(
-                event.text, bboxes, max_gap_mgr, interactive
+                event.text, bboxes, whitespace_mgr, interactive
             )
             if messages:
                 for message in messages:
@@ -60,11 +61,11 @@ def validate_ocr_hanzi(
             continue
 
         # Draw annotated source image
-        ref_annotated_img = get_image_annotated_with_char_bboxes(ref_img, bboxes)
+        ref_annotated_img = get_img_with_bboxes(ref_img, bboxes)
 
         # Draw image of OCRed text, aligned to source image
         try:
-            tst_img = get_image_of_text_with_char_alignment(
+            tst_img = get_img_of_text_with_bboxes(
                 event.text,
                 event.img.size,
                 bboxes,
@@ -73,16 +74,16 @@ def validate_ocr_hanzi(
             )
         except ScinoephileException as exc:
             warning(f"Subtitle {i}: {exc}")
-            tst_img = get_image_of_text(
+            tst_img = get_img_of_text(
                 event.text,
                 event.img.size,
                 fill_color=series.fill_color,
                 outline_color=series.outline_color,
             )
-        tst_scaled_img = get_image_with_contents_scaled_to_ref(ref=ref_img, tst=tst_img)
+        tst_scaled_img = get_img_with_bbox(ref=ref_img, tst=tst_img)
 
         # Draw difference between source and OCRed text images
-        diff_img = get_image_diff(ref_img, tst_scaled_img)
+        diff_img = get_img_diff(ref_img, tst_scaled_img)
 
         # Stack images
         stack_img = get_images_stacked(ref_annotated_img, tst_scaled_img, diff_img)
@@ -95,7 +96,7 @@ def validate_ocr_hanzi(
 def _validate_spaces_hanzi(
     text: str,
     bboxes: list[tuple[int, int, int, int]],
-    max_gap_manager: MaxGapManager,
+    whitespace_mgr: WhitespaceManager,
     interactive: bool = True,
 ) -> list[str]:
     """Validate spacing in text by comparing with bbox gaps.
@@ -103,7 +104,7 @@ def _validate_spaces_hanzi(
     Arguments:
         text: Provisional text
         bboxes: Bounding boxes [(x1, y1, x2, y2), ...]
-        max_gap_manager: Manages maximum gaps between characters of different types
+        whitespace_mgr: Manages maximum gaps between characters of different types
         interactive: Whether to prompt user for input on proposed updates
     """
     # Calculate widths and gaps
@@ -133,7 +134,7 @@ def _validate_spaces_hanzi(
     # Iterate through text and assess gaps
     messages = []
     char_1_i = 0
-    char_1_width_i = 0
+    width_1_i = 0
     gap_i = 0
     while True:
         if char_1_i > len(text) - 2:
@@ -141,13 +142,13 @@ def _validate_spaces_hanzi(
 
         # Get char 1 and its width
         char_1 = text[char_1_i]
-        char_1_width = widths[char_1_width_i]
+        width_1 = widths[width_1_i]
 
         # Get provisional char 2 and its width
         char_2_i = char_1_i + 1
         char_2 = text[char_2_i]
-        char_2_width_i = char_1_width_i + 1
-        char_2_width = widths[char_2_width_i]
+        width_2_i = width_1_i + 1
+        width_2 = widths[width_2_i]
 
         # If char 2 is whitespace, iterate to next real char and track whitespace
         whitespace = ""
@@ -162,20 +163,13 @@ def _validate_spaces_hanzi(
 
         # Get gap between char 1 and char 2, and maximum expected gap
         gap = gaps[gap_i]
-        message = max_gap_manager.validate_gap(
-            char_1,
-            char_2,
-            char_1_width,
-            char_2_width,
-            gap,
-            whitespace,
-            interactive,
-        )
+        pair = CharPair(char_1, char_2, width_1, width_2, gap, whitespace)
+        message = whitespace_mgr.validate_gap(pair, interactive)
         if message:
             messages.append(message)
 
         char_1_i = char_2_i
-        char_1_width_i = char_2_width_i
+        width_1_i = width_2_i
         gap_i += 1
 
     return messages

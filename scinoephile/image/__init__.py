@@ -3,10 +3,18 @@
 """Code related to images."""
 from __future__ import annotations
 
+from scinoephile.image.bbox_manager import BboxManager
+from scinoephile.image.char_pair import CharPair
 from scinoephile.image.image_series import ImageSeries
 from scinoephile.image.image_subtitle import ImageSubtitle
+from scinoephile.image.validation_manager import ValidationManager
+from scinoephile.image.whitespace_manager import WhitespaceManager
 
 __all__ = [
+    "BboxManager",
+    "CharPair",
     "ImageSeries",
     "ImageSubtitle",
+    "ValidationManager",
+    "WhitespaceManager",
 ]

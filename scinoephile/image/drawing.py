@@ -16,7 +16,7 @@ from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
 
 
-def get_text_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
+def get_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
     """Get the fill and outline colors used in a collection of text image arrays.
 
     * Uses the most common two colors, which works correctly for tested images.
@@ -41,20 +41,17 @@ def get_text_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
     return fill, outline
 
 
-def get_image_annotated_with_char_bboxes(
-    img: Image.Image, bboxes: list[tuple[int, ...]]
-) -> Image.Image:
+def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Image.Image:
     """Draw bounding boxes on an image with rainbow colors for debugging.
 
     Arguments:
         img: Reference image
         bboxes: Bounding boxes [(x1, y1, x2, y2)].
-
     Returns:
         Image with bounding boxes drawn.
     """
-    img_annotated = img.copy().convert("RGB")
-    draw = ImageDraw.Draw(img_annotated)
+    img_with_bboxes = img.convert("RGB")
+    draw = ImageDraw.Draw(img_with_bboxes)
 
     # Generate palette
     palette = [
@@ -73,10 +70,10 @@ def get_image_annotated_with_char_bboxes(
             width=1,
         )
 
-    return img_annotated
+    return img_with_bboxes
 
 
-def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
+def get_img_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     """Get diff between two grayscale images.
 
     Arguments:
@@ -124,7 +121,7 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     return color_diff
 
 
-def get_image_of_text(
+def get_img_of_text(
     text: str,
     size: tuple[int, int],
     *,
@@ -220,7 +217,7 @@ def get_image_of_text(
     return image
 
 
-def get_image_of_text_with_char_alignment(
+def get_img_of_text_with_bboxes(
     text: str,
     size: tuple[int, int],
     bboxes: list[tuple[int, int, int, int]],
@@ -308,7 +305,7 @@ def get_image_of_text_with_char_alignment(
     return img
 
 
-def get_image_with_contents_scaled_to_ref(
+def get_img_with_bbox(
     ref: Image.Image,
     tst: Image.Image,
 ) -> Image.Image:
@@ -334,18 +331,28 @@ def get_image_with_contents_scaled_to_ref(
     return tst_final
 
 
-def get_image_with_white_bg(img: Image.Image) -> Image.Image:
-    """Get grayscale image on white background.
+def get_img_with_white_bg(img: Image.Image) -> Image.Image:
+    """Get image with transparency on white background.
 
     Arguments:
-        img: Image
+        img: Image with transparency
     Returns:
-        Grayscale image on white background
+        Image on white background
     """
-    img_la = Image.new("LA", img.size, (255, 255))
-    img_la.paste(img, (0, 0), img)
-    img_l = img_la.convert("L")
-    return img_l
+    if img.mode == "LA":
+        img_la = Image.new("LA", img.size, (255, 255))
+        img_la.paste(img, (0, 0), img)
+        img_l = img_la.convert("L")
+        return img_l
+    elif img.mode == "RGBA":
+        img_rgba = Image.new("RGBA", img.size, (255, 255, 255, 255))
+        img_rgba.paste(img, (0, 0), img)
+        img_rgb = img_rgba.convert("RGB")
+        return img_rgb
+    else:
+        raise ScinoephileException(
+            f"Image must be in mode 'LA' or 'RGBA', is {img.mode}"
+        )
 
 
 def get_images_stacked(*imgs: Image.Image) -> Image.Image:

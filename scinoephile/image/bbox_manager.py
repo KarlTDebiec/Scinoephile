@@ -1,20 +1,20 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Manages bboxes."""
+"""Manages bboxes around characters."""
 from __future__ import annotations
 
 from logging import info
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileException
+from scinoephile.image import ImageSubtitle
 
 
 class BboxManager:
-    """Manages bboxes."""
+    """Manages bboxes around characters."""
 
     merge_three_file_path = package_root / "data" / "ocr" / "merge_threes.csv"
     """Path to file containing specs for sets of three bboxes that should be merged."""
@@ -44,25 +44,20 @@ class BboxManager:
         """Characters that are known to potentially be spread across three bboxes."""
         return set(char for chars in self.merge_threes.values() for char in chars)
 
-    def get_char_bboxes(
+    def get_bboxes(
         self,
-        img: Image.Image,
-        text: str,
+        subtitle: ImageSubtitle,
         interactive: bool = False,
     ) -> list[tuple[int, int, int, int]]:
         """Get character bboxes within an image.
 
         Arguments:
-            img: Image
-            text: Provisional text present in image
+            subtitle: Subtitle for which to get bboxes
             interactive: Whether to prompt user for input on proposed updates
         Returns:
             Character bounding boxes [(x1, y1, x2, y2), ...]
         """
-        if img.mode != "L":
-            raise ValueError("Image must be of mode 'L'")
-
-        arr = np.array(img)
+        arr = np.array(subtitle.img_with_white_bg)
 
         # Determine left and right of each section separated by whitespace
         sections = []
@@ -89,14 +84,16 @@ class BboxManager:
             bboxes.append((x1, y1, x2, y2))
 
         # Merge sets of adjacent bboxes known to have vertical whitespace within them
-        bboxes = self._apply_known_merges(bboxes, text)
+        bboxes = self._apply_known_merges(bboxes, subtitle.text)
 
         # Propose additional merges of adjacent boxes, if found
-        filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
+        filtered_text = "".join(
+            [char for char in subtitle.text if char not in ("\u3000", " ")]
+        )
         if len(filtered_text) != len(bboxes):
             if interactive:
-                self._propose_merges(bboxes, text)
-            bboxes = self._apply_known_merges(bboxes, text)
+                self._propose_merges(bboxes, subtitle.text)
+            bboxes = self._apply_known_merges(bboxes, subtitle.text)
 
         return bboxes
 

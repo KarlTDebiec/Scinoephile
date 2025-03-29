@@ -10,13 +10,15 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.core import Subtitle
+from scinoephile.core.text import whitespace
 from scinoephile.image.base64 import get_base64_image
+from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
 
 
 class ImageSubtitle(Subtitle):
     """Individual subtitle with image."""
 
-    def __init__(self, data: np.ndarray, **kwargs: Any) -> None:
+    def __init__(self, img: Image, **kwargs: Any) -> None:
         """Initialize.
 
         Arguments:
@@ -26,27 +28,66 @@ class ImageSubtitle(Subtitle):
         super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
         super().__init__(**super_kwargs)
 
-        self.data = data
+        self.img = img
+        self._arr: np.ndarray | None = None
         self._base64: str | None = None
-        self._img: Image.Image | None = None
+        self._bboxes: list[tuple[int, int]] | None = None
+        self._img_with_bboxes: Image.Image | None = None
+        self._img_on_white_bg: Image.Image | None = None
 
     @property
     def base64(self) -> str:
-        """Base64 encoding of image."""
-        if not hasattr(self, "_base64") or self._base64 is None:
+        """Image encoded as base64."""
+        if self._base64 is None:
             self._base64 = get_base64_image(self.img)
         return self._base64
 
     @property
+    def bboxes(self) -> list[tuple[int, int]]:
+        """Bounding boxes of characters in image."""
+        return self._bboxes
+
+    @bboxes.setter
+    def bboxes(self, bboxes: list[tuple[int, int]]) -> None:
+        """Set bounding boxes of characters in image."""
+        self._bboxes = bboxes
+
+    @property
+    def arr(self) -> np.ndarray:
+        """Image as numpy array."""
+        if self._arr is None:
+            self._arr = np.array(self.img)
+        return self._arr
+
+    @property
     def img(self) -> Image.Image:
         """Image of subtitle."""
-        if not hasattr(self, "_img") or self._img is None:
-            self._img = Image.fromarray(self.data)
+        if self._img is None:
+            self._img = Image.fromarray(self.arr)
         return self._img
 
     @img.setter
     def img(self, img: Image.Image) -> None:
         """Set image of subtitle."""
         self._img = img
-        self.data = np.array(img)
+        self._arr = None
         self._base64 = None
+
+    @property
+    def img_with_bboxes(self) -> Image.Image:
+        """Image with bounding boxes."""
+        if self._img_with_bboxes is None:
+            self._img_with_bboxes = get_img_with_bboxes(self.img_with_white_bg)
+        return self._img_with_bboxes
+
+    @property
+    def img_with_white_bg(self):
+        """Image with white background."""
+        if self._img_on_white_bg is None:
+            self._img_on_white_bg = get_img_with_white_bg(self.img)
+        return self._img_on_white_bg
+
+    @property
+    def text_excluding_whitespace(self) -> str:
+        """Text excluding whitespace."""
+        return "".join([c for c in self.text if c not in whitespace])
