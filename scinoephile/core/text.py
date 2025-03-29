@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import re
-
 import unicodedata
 
 from scinoephile.core.exceptions import ScinoephileException
@@ -97,6 +96,12 @@ full_punc = {
 }
 """Selected full-width punctuation characters."""
 
+whitespace = {
+    "IDEOGRAPHIC SPACE": "　",
+    "SPACE": " ",
+}
+"""Selected whitespace characters."""
+
 half_to_full_punc = {
     **{
         half_punc[key]: full_punc[f"FULLWIDTH {key}"]
@@ -140,15 +145,15 @@ def get_char_type(char: str) -> str:
     # Check if character is full-width (CJK)
     if any(
         [
-            "\u4E00" <= char <= "\u9FFF",  # CJK Unified Ideographs
-            "\u3400" <= char <= "\u4DBF",  # CJK Unified Ideographs Extension A
-            "\uF900" <= char <= "\uFAFF",  # CJK Compatibility Ideographs
-            "\U00020000" <= char <= "\U0002A6DF",  # CJK Unified Ideographs Ext B
-            "\U0002A700" <= char <= "\U0002B73F",  # CJK Unified Ideographs Ext C
-            "\U0002B740" <= char <= "\U0002B81F",  # CJK Unified Ideographs Ext D
-            "\U0002B820" <= char <= "\U0002CEAF",  # CJK Unified Ideographs Ext E
-            "\U0002CEB0" <= char <= "\U0002EBEF",  # CJK Unified Ideographs Ext F
-            "\u3000" <= char <= "\u303F",  # CJK Symbols and Punctuation
+            "\u4e00" <= char <= "\u9fff",  # CJK Unified Ideographs
+            "\u3400" <= char <= "\u4dbf",  # CJK Unified Ideographs Extension A
+            "\uf900" <= char <= "\ufaff",  # CJK Compatibility Ideographs
+            "\U00020000" <= char <= "\U0002a6df",  # CJK Unified Ideographs Ext B
+            "\U0002a700" <= char <= "\U0002b73f",  # CJK Unified Ideographs Ext C
+            "\U0002b740" <= char <= "\U0002b81f",  # CJK Unified Ideographs Ext D
+            "\U0002b820" <= char <= "\U0002ceaf",  # CJK Unified Ideographs Ext E
+            "\U0002ceb0" <= char <= "\U0002ebef",  # CJK Unified Ideographs Ext F
+            "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
         ]
     ):
         return "full"
@@ -156,10 +161,10 @@ def get_char_type(char: str) -> str:
     # Check if character is half-width (Western)
     if any(
         [
-            "\u0020" <= char <= "\u007F",  # Basic Latin
-            "\u00A0" <= char <= "\u00FF",  # Latin-1 Supplement
-            "\u0100" <= char <= "\u017F",  # Latin Extended-A
-            "\u0180" <= char <= "\u024F",  # Latin Extended-B
+            "\u0020" <= char <= "\u007f",  # Basic Latin
+            "\u00a0" <= char <= "\u00ff",  # Latin-1 Supplement
+            "\u0100" <= char <= "\u017f",  # Latin Extended-A
+            "\u0180" <= char <= "\u024f",  # Latin Extended-B
         ]
     ):
         return "half"

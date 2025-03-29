@@ -11,13 +11,13 @@ from scinoephile.core import ScinoephileException
 from scinoephile.image.bbox_manager import BboxManager
 from scinoephile.image.char_pair import CharPair
 from scinoephile.image.drawing import (
-    get_image_annotated_with_char_bboxes,
-    get_image_diff,
-    get_image_of_text,
-    get_image_of_text_with_char_alignment,
-    get_image_with_contents_scaled_to_ref,
-    get_image_with_white_bg,
     get_images_stacked,
+    get_img_diff,
+    get_img_of_text,
+    get_img_of_text_with_bboxes,
+    get_img_with_bbox,
+    get_img_with_bboxes,
+    get_img_with_white_bg,
 )
 from scinoephile.image.image_series import ImageSeries
 from scinoephile.image.whitespace_manager import WhitespaceManager
@@ -43,8 +43,8 @@ def validate_ocr_hanzi(
 
     for i, event in enumerate(series.events, 1):
         # Prepare source image
-        ref_img = get_image_with_white_bg(event.img)
-        bboxes = bbox_mgr.get_char_bboxes(ref_img, event.text, interactive)
+        ref_img = get_img_with_white_bg(event.img)
+        bboxes = bbox_mgr.get_bboxes(ref_img, event.text, interactive)
 
         try:
             messages = _validate_spaces_hanzi(
@@ -61,11 +61,11 @@ def validate_ocr_hanzi(
             continue
 
         # Draw annotated source image
-        ref_annotated_img = get_image_annotated_with_char_bboxes(ref_img, bboxes)
+        ref_annotated_img = get_img_with_bboxes(ref_img, bboxes)
 
         # Draw image of OCRed text, aligned to source image
         try:
-            tst_img = get_image_of_text_with_char_alignment(
+            tst_img = get_img_of_text_with_bboxes(
                 event.text,
                 event.img.size,
                 bboxes,
@@ -74,16 +74,16 @@ def validate_ocr_hanzi(
             )
         except ScinoephileException as exc:
             warning(f"Subtitle {i}: {exc}")
-            tst_img = get_image_of_text(
+            tst_img = get_img_of_text(
                 event.text,
                 event.img.size,
                 fill_color=series.fill_color,
                 outline_color=series.outline_color,
             )
-        tst_scaled_img = get_image_with_contents_scaled_to_ref(ref=ref_img, tst=tst_img)
+        tst_scaled_img = get_img_with_bbox(ref=ref_img, tst=tst_img)
 
         # Draw difference between source and OCRed text images
-        diff_img = get_image_diff(ref_img, tst_scaled_img)
+        diff_img = get_img_diff(ref_img, tst_scaled_img)
 
         # Stack images
         stack_img = get_images_stacked(ref_annotated_img, tst_scaled_img, diff_img)

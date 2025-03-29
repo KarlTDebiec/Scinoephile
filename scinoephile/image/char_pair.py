@@ -23,7 +23,7 @@ class CharPair:
     """Width of the second character."""
     gap: int
     """Gap between the two characters."""
-    whitespace: int
+    whitespace: str
     """Whitespace between the two characters."""
 
     @cached_property

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Manages whitespace between char pairs."""
+"""Manages whitespace between characters."""
 from __future__ import annotations
 
 from logging import info
@@ -8,11 +8,12 @@ from logging import info
 import numpy as np
 
 from scinoephile.common import package_root
+from scinoephile.image import ImageSubtitle
 from scinoephile.image.char_pair import CharPair
 
 
 class WhitespaceManager:
-    """Manages whitespace between char pairs."""
+    """Manages whitespace between characters."""
 
     file_paths = {}
     """Paths to files containing max gaps for each char type pair."""
@@ -35,6 +36,68 @@ class WhitespaceManager:
                 arr = np.zeros((8, 8), dtype=int)
                 self.max_gaps[type_1, type_2] = arr
                 self._save_max_gaps(type_1, type_2)
+
+    def validate(
+        self,
+        subtitle: ImageSubtitle,
+        interactive: bool = True,
+    ) -> list[str]:
+        """Validate spacing in text by comparing with bbox gaps.
+
+        Arguments:
+            subtitle: Subtitle which to validate
+            interactive: Whether to prompt user for input on proposed updates
+        """
+        bboxes = subtitle.bboxes
+        text = subtitle.text
+
+        # Calculate widths and gaps
+        widths = [bboxes[i][2] - bboxes[i][0] for i in range(len(bboxes))]
+        heights = [bboxes[i][3] - bboxes[i][1] for i in range(len(bboxes))]
+        gaps = [bboxes[i + 1][0] - bboxes[i][2] for i in range(len(bboxes) - 1)]
+
+        # Iterate through text and assess gaps
+        messages = []
+        char_1_i = 0
+        width_1_i = 0
+        gap_i = 0
+        while True:
+            if char_1_i > len(text) - 2:
+                break
+
+            # Get char 1 and its width
+            char_1 = text[char_1_i]
+            width_1 = widths[width_1_i]
+
+            # Get provisional char 2 and its width
+            char_2_i = char_1_i + 1
+            char_2 = text[char_2_i]
+            width_2_i = width_1_i + 1
+            width_2 = widths[width_2_i]
+
+            # If char 2 is whitespace, iterate to next real char and track whitespace
+            whitespace = ""
+            while char_2_i < len(text):
+                char_2 = text[char_2_i]
+                if char_2 in ("\u3000", " "):
+                    whitespace += char_2
+                    char_2_i += 1
+                    continue
+                else:
+                    break
+
+            # Get gap between char 1 and char 2, and maximum expected gap
+            gap = gaps[gap_i]
+            pair = CharPair(char_1, char_2, width_1, width_2, gap, whitespace)
+            message = self.validate_gap(pair, interactive)
+            if message:
+                messages.append(message)
+
+            char_1_i = char_2_i
+            width_1_i = width_2_i
+            gap_i += 1
+
+        return messages
 
     def validate_gap(self, pair: CharPair, interactive: bool = True) -> str:
         """Validate that whitespace between two chars matches visual gap between them.
@@ -155,6 +218,16 @@ class WhitespaceManager:
         )
         self.max_gaps[pair.type_1, pair.type_2] = max_gaps
         self._save_max_gaps(pair.type_1, pair.type_2)
+
+    def _get_expected_whitespace(self, pair: CharPair) -> str:
+        """Get expected whitespace between a pair of chars.
+
+        Arguments:
+            pair: Char pair
+        Returns:
+            Expected whitespace between chars
+        """
+        max_gap = self._get_max_gap(pair)
 
     def _get_max_gap(self, pair: CharPair) -> int:
         """Get max gap between a pair of chars for them to be adjacent.
