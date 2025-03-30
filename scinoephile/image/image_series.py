@@ -17,7 +17,6 @@ from scinoephile.common.validation import (
     validate_output_file,
 )
 from scinoephile.core import ScinoephileException, Series
-from scinoephile.image.drawing import get_fill_and_outline_colors
 from scinoephile.image.image_subtitle import ImageSubtitle
 
 
@@ -41,16 +40,14 @@ class ImageSeries(Series):
     def fill_color(self):
         """Fill color of text images."""
         if self._fill_color is None:
-            arrs = [e.arr for e in self.events]
-            self._fill_color, self._outline_color = get_fill_and_outline_colors(arrs)
+            self._init_fill_and_outline_colors()
         return self._fill_color
 
     @property
     def outline_color(self):
         """Outline color of text images."""
         if self._outline_color is None:
-            arrs = [e.arr for e in self.events]
-            self._fill_color, self._outline_color = get_fill_and_outline_colors(arrs)
+            self._init_fill_and_outline_colors()
         return self._outline_color
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
@@ -175,3 +172,23 @@ class ImageSeries(Series):
             )
 
         return series
+
+    def _init_fill_and_outline_colors(self) -> tuple[int, int]:
+        """Initialzie the fill and outline colors used in this series.
+
+        * Uses the most common two colors, which works correctly for tested images.
+        * Tested images used a 16-color palette.
+        """
+        hist = np.zeros(256, dtype=np.uint64)
+        for subtitle in self.events:
+            grayscale = subtitle.arr[:, :, 0]
+            alpha = subtitle.arr[:, :, 1]
+            mask = alpha != 0
+            values = grayscale[mask]
+            np.add.at(hist, values, 1)
+
+        fill, outline = map(int, np.argsort(hist)[-2:])
+        if outline > fill:
+            fill, outline = outline, fill
+        self._fill_color = fill
+        self._outline_color = outline

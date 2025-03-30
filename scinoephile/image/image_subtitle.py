@@ -18,10 +18,11 @@ from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
 class ImageSubtitle(Subtitle):
     """Individual subtitle with image."""
 
-    def __init__(self, img: Image, **kwargs: Any) -> None:
+    def __init__(self, img: Image.Image, **kwargs: Any) -> None:
         """Initialize.
 
         Arguments:
+            img: Image of subtitle
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
@@ -112,7 +113,7 @@ class ImageSubtitle(Subtitle):
         return self._img_with_bboxes
 
     @property
-    def img_with_white_bg(self):
+    def img_with_white_bg(self) -> Image.Image:
         """Image with white background."""
         if self._img_on_white_bg is None:
             self._img_on_white_bg = get_img_with_white_bg(self.img)

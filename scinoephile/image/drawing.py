@@ -8,37 +8,11 @@ from platform import system
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
-from PIL.Image import Resampling
 
 from scinoephile.common.typing import PathLike
 from scinoephile.core import ScinoephileException
 from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
-
-
-def get_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
-    """Get the fill and outline colors used in a collection of text image arrays.
-
-    * Uses the most common two colors, which works correctly for tested images.
-    * Tested images used a 16-color palette.
-
-    Arguments:
-        arrs:  Image arrays; should have 2 channels for grayscale and alpha.
-    Returns:
-        Fill and outline colors
-    """
-    hist = np.zeros(256, dtype=np.uint64)
-    for arr in arrs:
-        grayscale = arr[:, :, 0]
-        alpha = arr[:, :, 1]
-        mask = alpha != 0
-        values = grayscale[mask]
-        np.add.at(hist, values, 1)
-
-    fill, outline = map(int, np.argsort(hist)[-2:])
-    if outline > fill:
-        fill, outline = outline, fill
-    return fill, outline
 
 
 def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Image.Image:
@@ -213,7 +187,7 @@ def get_img_of_text(
             fill=fill_color,
         )
 
-    image = image.resize(size, Resampling.LANCZOS)
+    image = image.resize(size, Image.Resampling.LANCZOS)
     return image
 
 
@@ -297,7 +271,9 @@ def get_img_of_text_with_bboxes(
             min(char_size[0], crop_bbox[2] + 1),
             min(char_size[1], crop_bbox[3] + 1),
         )
-        char_resized = char_img.crop(crop_bbox).resize(ref_size, Resampling.LANCZOS)
+        char_resized = char_img.crop(crop_bbox).resize(
+            ref_size, Image.Resampling.LANCZOS
+        )
 
         # Paste into the final image at the correct position
         img.paste(char_resized, (ref_x1, ref_y1))
@@ -324,7 +300,7 @@ def get_img_scaled_to_bbox(
     tst_bbox = get_bbox(tst)
     ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
     tst_cropped = tst.crop(tst_bbox)
-    tst_scaled = tst_cropped.resize(ref_bbox_size, Resampling.LANCZOS)
+    tst_scaled = tst_cropped.resize(ref_bbox_size, Image.Resampling.LANCZOS)
     tst_final = Image.new("L", ref.size, 255)
     tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 

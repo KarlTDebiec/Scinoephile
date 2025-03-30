@@ -83,20 +83,6 @@ class ValidationManager:
 
         try:
             if len(subtitle.text_excluding_whitespace) != len(subtitle.bboxes):
-                # dimensions_str = (
-                #         ",".join(
-                #             f"{w:3d},{h:3d},{g:3d}" for w, h, g in
-                #             zip(widths, heights, gaps)
-                #         )
-                #         + f",{widths[-1]:3d},{heights[-1]:3d}"
-                # )
-                # labels_str = (
-                #         ",".join(
-                #             f"W{i + 1:<2d},H{i + 1:<2d},G{i + 1:<2d}" for i in
-                #             range(len(gaps))
-                #         )
-                #         + f",W{len(widths):<2d},H{len(heights):<2d}"
-                # )
                 raise ScinoephileException(
                     f"Number of characters in text "
                     f"({len(subtitle.text_excluding_whitespace)}) "
@@ -112,6 +98,11 @@ class ValidationManager:
             self._save_validation_img(subtitle, i)
 
     def _save_validation_img(self, subtitle: ImageSubtitle, i: int) -> None:
+        if self.validation_dir_path is None:
+            raise ScinoephileException(
+                "Validation directory path is not set; cannot save validation image."
+            )
+
         # Draw image of OCRed text
         try:
             tst_img = get_img_of_text_with_bboxes(
