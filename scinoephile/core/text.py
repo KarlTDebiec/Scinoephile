@@ -102,6 +102,15 @@ whitespace = {
 }
 """Selected whitespace characters."""
 
+half_punc_chars = set(half_punc.values())
+"""Set of half-width punctuation characters."""
+
+full_punc_chars = set(full_punc.values())
+"""Set of full-width punctuation characters."""
+
+whitespace_chars = set(whitespace.values())
+"""Set of whitespace characters."""
+
 half_to_full_punc = {
     **{
         half_punc[key]: full_punc[f"FULLWIDTH {key}"]
