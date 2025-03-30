@@ -305,7 +305,7 @@ def get_img_of_text_with_bboxes(
     return img
 
 
-def get_img_with_bbox(
+def get_img_scaled_to_bbox(
     ref: Image.Image,
     tst: Image.Image,
 ) -> Image.Image:

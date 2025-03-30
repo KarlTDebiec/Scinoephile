@@ -17,7 +17,7 @@ from scinoephile.image.drawing import (
     get_img_diff,
     get_img_of_text,
     get_img_of_text_with_bboxes,
-    get_img_with_bbox,
+    get_img_scaled_to_bbox,
 )
 from scinoephile.image.whitespace_manager import WhitespaceManager
 
@@ -104,7 +104,7 @@ class ValidationManager:
                     f"({len(subtitle.bboxes)});\n"
                     f"Text: {subtitle.text}\n"
                 )
-            self.whitespace_mgr.validate(subtitle, i)
+            self.whitespace_mgr.validate(subtitle, i, self.interactive)
         except Exception as exc:
             warning(f"Subtitle {i}: {exc}")
 
@@ -123,14 +123,13 @@ class ValidationManager:
             )
         except ScinoephileException as exc:
             warning(f"Subtitle {i}: {exc}")
-            ## TODO: Combine into single function that takes in bbox like above
             tst_img = get_img_of_text(
                 subtitle.text,
                 subtitle.img.size,
                 fill_color=self.series.fill_color,
                 outline_color=self.series.outline_color,
             )
-            tst_img = get_img_with_bbox(subtitle.img_with_bboxes, tst_img)
+            tst_img = get_img_scaled_to_bbox(subtitle.img, tst_img)
 
         # Draw diff between source and OCRed text images
         diff_img = get_img_diff(subtitle.img_with_white_bg, tst_img)

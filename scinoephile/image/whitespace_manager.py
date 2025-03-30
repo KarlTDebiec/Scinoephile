@@ -40,21 +40,21 @@ class WhitespaceManager:
     def validate(
         self,
         subtitle: ImageSubtitle,
+        i: int,
         interactive: bool = True,
     ) -> list[str]:
         """Validate spacing in text by comparing with bbox gaps.
 
         Arguments:
-            subtitle: Subtitle which to validate
+            subtitle: Subtitle to validate
+            i: Subtitle index
             interactive: Whether to prompt user for input on proposed updates
         """
         bboxes = subtitle.bboxes
         text = subtitle.text
-
-        # Calculate widths and gaps
-        widths = [bboxes[i][2] - bboxes[i][0] for i in range(len(bboxes))]
-        heights = [bboxes[i][3] - bboxes[i][1] for i in range(len(bboxes))]
-        gaps = [bboxes[i + 1][0] - bboxes[i][2] for i in range(len(bboxes) - 1)]
+        widths = subtitle.bbox_widths
+        heights = subtitle.bbox_heights
+        gaps = subtitle.bbox_gaps
 
         # Iterate through text and assess gaps
         messages = []

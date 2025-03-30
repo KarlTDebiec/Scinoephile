@@ -10,7 +10,7 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileException
-from scinoephile.image import ImageSubtitle
+from scinoephile.image.image_subtitle import ImageSubtitle
 
 
 class BboxManager:

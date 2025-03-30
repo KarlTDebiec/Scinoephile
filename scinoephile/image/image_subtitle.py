@@ -43,6 +43,34 @@ class ImageSubtitle(Subtitle):
         return self._base64
 
     @property
+    def bbox_widths(self) -> list[int]:
+        """Widths of bounding boxes of characters in image."""
+        if self._bboxes is None:
+            return None
+        return [
+            self._bboxes[i][2] - self._bboxes[i][0] for i in range(len(self._bboxes))
+        ]
+
+    @property
+    def bbox_heights(self) -> list[int]:
+        """Heights of bounding boxes of characters in image."""
+        if self._bboxes is None:
+            return None
+        return [
+            self._bboxes[i][3] - self._bboxes[i][1] for i in range(len(self._bboxes))
+        ]
+
+    @property
+    def bbox_gaps(self) -> list[int]:
+        """Gaps between bounding boxes of characters in image."""
+        if self._bboxes is None:
+            return None
+        return [
+            self._bboxes[i + 1][0] - self._bboxes[i][2]
+            for i in range(len(self._bboxes) - 1)
+        ]
+
+    @property
     def bboxes(self) -> list[tuple[int, int]]:
         """Bounding boxes of characters in image."""
         return self._bboxes
@@ -77,7 +105,10 @@ class ImageSubtitle(Subtitle):
     def img_with_bboxes(self) -> Image.Image:
         """Image with bounding boxes."""
         if self._img_with_bboxes is None:
-            self._img_with_bboxes = get_img_with_bboxes(self.img_with_white_bg)
+            self._img_with_bboxes = get_img_with_bboxes(
+                self.img_with_white_bg,
+                self.bboxes,
+            )
         return self._img_with_bboxes
 
     @property
