@@ -331,7 +331,7 @@ def get_img_with_white_bg(img: Image.Image) -> Image.Image:
         )
 
 
-def get_images_stacked(*imgs: Image.Image) -> Image.Image:
+def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
     """Get images stacked vertically.
 
     Arguments:

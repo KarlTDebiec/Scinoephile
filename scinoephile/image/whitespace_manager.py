@@ -8,9 +8,8 @@ from logging import info
 import numpy as np
 
 from scinoephile.common import package_root
-from scinoephile.core.text import whitespace_chars
-from scinoephile.image import ImageSubtitle
 from scinoephile.image.char_pair import CharPair
+from scinoephile.image.image_subtitle import ImageSubtitle
 
 
 class WhitespaceManager:
@@ -51,66 +50,30 @@ class WhitespaceManager:
             i: Subtitle index
             interactive: Whether to prompt user for input on proposed updates
         """
-        char_pairs = self._get_char_pairs(subtitle)
+        for pair in subtitle.char_pairs:
+            self.validate_gap(pair, i, interactive=interactive)
 
-        messages = []
-        for pair in char_pairs:
-            message = self.validate_gap(pair, interactive=interactive)
-            if message:
-                messages.append(message)
-                info(f"Subtitle {i}: {message}")
-        return messages
-
-    def _get_char_pairs(self, subtitle: ImageSubtitle) -> list[CharPair]:
-        # Iterate through text and assess gaps
-        char_1_i = 0
-        width_1_i = 0
-        gap_i = 0
-        char_pairs = []
-        while True:
-            if char_1_i > len(subtitle.text) - 2:
-                break
-
-            # Get char 1 and its width
-            char_1 = subtitle.text[char_1_i]
-            width_1 = subtitle.bbox_widths[width_1_i]
-
-            # Get provisional char 2 and its width
-            char_2_i = char_1_i + 1
-            char_2 = subtitle.text[char_2_i]
-            width_2_i = width_1_i + 1
-            width_2 = subtitle.bbox_widths[width_2_i]
-
-            # If char 2 is whitespace, iterate to next real char and track whitespace
-            gap_whitespace = ""
-            while char_2_i < len(subtitle.text):
-                char_2 = subtitle.text[char_2_i]
-                if char_2 in whitespace_chars:
-                    gap_whitespace += char_2
-                    char_2_i += 1
-                    continue
-                else:
-                    break
-
-            # Get gap between char 1 and char 2, and maximum expected gap
-            gap = subtitle.bbox_gaps[gap_i]
-            pair = CharPair(char_1, char_2, width_1, width_2, gap, gap_whitespace)
-            char_pairs.append(pair)
-
-            char_1_i = char_2_i
-            width_1_i = width_2_i
-            gap_i += 1
-        return char_pairs
-
-    def validate_gap(self, pair: CharPair, interactive: bool = True) -> str:
+    def validate_gap(self, pair: CharPair, i: int, interactive: bool = True) -> str:
         """Validate that whitespace between two chars matches visual gap between them.
 
         Arguments:
             pair: Character pair to validate
+            i: Subtitle index
             interactive: Whether to prompt user for input on proposed updates
         """
-        # Check if whitespace is appropriate for adjacent characters
-        # TODO: Determine appropriate whitespace characters, rather than just boolean
+        # gap <= max_gap: expect no whitespace
+        # max_gap < gap <= 2 * max_gap: expect small whitespace
+        # 2 * max_gap < gap: expect large whitespace
+
+        # The small and large whitespace  depends on the type of characters
+        # If one or both are full width, small whitespace is one IDEOGRAPHIC SPACE
+        # If both are half width, small whitespace is one SPACE
+        # If one or both are full width, large whitespace is two IDEOGRAPHIC SPACES
+        # If both are half width, large whitespace is four SPACES
+
+        # If expected whitespace does not match actual whitespace,
+        # return updated copy of pair
+
         whitespace_fit_for_adj_chars = len(pair.whitespace) == 0
 
         # First test if this gap is within the specific limit for these widths
@@ -231,20 +194,23 @@ class WhitespaceManager:
             Expected whitespace between chars
         """
         max_gap = self._get_max_gap(pair)
+        if max_gap == 0:
+            max_gap = self._get_max_gap_extended(pair)
 
     def _get_max_gap(self, pair: CharPair) -> int:
-        """Get max gap between a pair of chars for them to be adjacent.
+        """Get max gap between a pair of characters for them to be adjacent.
 
         Arguments:
-            pair: Char pair
+            pair: Character pair
         Returns:
             Max gap between chars in pixels, or 0 if not found
         """
         max_gaps = self.max_gaps[pair.type_1, pair.type_2]
-        try:
-            return max_gaps[pair.width_1, pair.width_2]
-        except IndexError:
+        if pair.width_1 >= max_gaps.shape[0]:
             return 0
+        if pair.width_2 >= max_gaps.shape[1]:
+            return 0
+        return max_gaps[pair.width_1, pair.width_2]
 
     def _get_max_gap_extended(self, pair: CharPair) -> int:
         """Get extended max gap between a pair of chars for them to be adjacent.

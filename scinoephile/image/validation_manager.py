@@ -10,15 +10,16 @@ from pathlib import Path
 from scinoephile.common.typing import PathLike
 from scinoephile.common.validation import validate_input_directory, validate_input_file
 from scinoephile.core import ScinoephileException
-from scinoephile.image import ImageSeries, ImageSubtitle
 from scinoephile.image.bbox_manager import BboxManager
 from scinoephile.image.drawing import (
-    get_images_stacked,
     get_img_diff,
     get_img_of_text,
     get_img_of_text_with_bboxes,
     get_img_scaled_to_bbox,
+    get_imgs_stacked,
 )
+from scinoephile.image.image_series import ImageSeries
+from scinoephile.image.image_subtitle import ImageSubtitle
 from scinoephile.image.whitespace_manager import WhitespaceManager
 
 
@@ -126,7 +127,7 @@ class ValidationManager:
         diff_img = get_img_diff(subtitle.img_with_white_bg, tst_img)
 
         # Draw stacked image
-        stack_img = get_images_stacked(subtitle.img_with_bboxes, tst_img, diff_img)
+        stack_img = get_imgs_stacked(subtitle.img_with_bboxes, tst_img, diff_img)
 
         # Save image
         img_path = self.validation_dir_path / f"{i:04d}.png"
