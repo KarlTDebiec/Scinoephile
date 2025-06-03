@@ -5,21 +5,19 @@ from __future__ import annotations
 
 from logging import info
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import Any
 
 import numpy as np
 from PIL import Image
-from pysubs2 import SSAFile, make_time
+from pysubs2 import SSAFile
 
 from scinoephile.common.validation import (
-    validate_input_file,
+    validate_input_directory,
     validate_output_directory,
     validate_output_file,
 )
 from scinoephile.core import ScinoephileException, Series
-from scinoephile.image.drawing import get_text_fill_and_outline_colors
 from scinoephile.image.image_subtitle import ImageSubtitle
-from scinoephile.image.sup import read_sup_series
 
 
 class ImageSeries(Series):
@@ -42,20 +40,14 @@ class ImageSeries(Series):
     def fill_color(self):
         """Fill color of text images."""
         if self._fill_color is None:
-            arrs = [e.data for e in self.events]
-            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
-                arrs
-            )
+            self._init_fill_and_outline_colors()
         return self._fill_color
 
     @property
     def outline_color(self):
         """Outline color of text images."""
         if self._outline_color is None:
-            arrs = [e.data for e in self.events]
-            self._fill_color, self._outline_color = get_text_fill_and_outline_colors(
-                arrs
-            )
+            self._init_fill_and_outline_colors()
         return self._outline_color
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
@@ -91,8 +83,10 @@ class ImageSeries(Series):
         if fp.exists() and fp.is_dir():
             for file in fp.iterdir():
                 file.unlink()
+                info(f"Deleted {file}")
         else:
             fp.mkdir(parents=True)
+            info(f"Created directory {fp}")
 
         # Save images
         for i, event in enumerate(self.events, 1):
@@ -122,55 +116,15 @@ class ImageSeries(Series):
         Returns:
             loaded series
         """
-        path = Path(path)
-
-        # Check if sup
-        if format_ == "sup" or path.suffix == ".sup":
-            path = validate_input_file(path)
-            with open(path, "rb") as fp:
-                return cls._load_sup(fp, **kwargs)
+        path = validate_input_directory(path)
 
         # Check if directory
         if format_ == "png" or path.is_dir():
             return cls._load_png(path, **kwargs)
 
         raise ValueError(
-            f"{cls.__name__} does not support format {format_}, must be sup or png"
+            f"{cls.__name__} does not support format {format_}, must be png"
         )
-
-    @classmethod
-    def _load_sup(cls, fp: BinaryIO, **kwargs: Any) -> ImageSeries:
-        """Load series from an input sup file.
-
-        Arguments:
-            fp: open binary file
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        # Initialize
-        series = cls()
-        series.format = "sup"
-
-        # Parse infile
-        data = fp.read()
-        starts, ends, images = read_sup_series(data)
-        for start, end, image in zip(starts, ends, images):
-
-            # Skip completely transparent images
-            if np.all(image[:, :, 3] == 0):
-                continue
-
-            series.events.append(
-                cls.event_class(
-                    start=make_time(s=start),
-                    end=make_time(s=end),
-                    data=image,
-                    series=series,
-                )
-            )
-
-        return series
 
     @classmethod
     def _load_png(cls, fp: Path, **kwargs: Any) -> ImageSeries:
@@ -198,23 +152,43 @@ class ImageSeries(Series):
                 f"({len(text_series)})"
             )
         for text_event, infile in zip(text_series, infiles):
-            image = Image.open(infile)
-            if image.mode == "RGBA":
-                arr = np.array(image)
+            img = Image.open(infile)
+            if img.mode == "RGBA":
+                arr = np.array(img)
                 if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
                     arr[:, :, 1] == arr[:, :, 2]
                 ):
-                    image = image.convert("LA")
-                    image.save(infile)
+                    img = img.convert("LA")
+                    img.save(infile)
                     info(f"Converted {infile} to LA and resaved")
             series.events.append(
                 cls.event_class(
                     start=text_event.start,
                     end=text_event.end,
-                    data=np.array(image),
+                    img=img,
                     text=text_event.text,
                     series=series,
                 )
             )
 
         return series
+
+    def _init_fill_and_outline_colors(self) -> tuple[int, int]:
+        """Initialzie the fill and outline colors used in this series.
+
+        * Uses the most common two colors, which works correctly for tested images.
+        * Tested images used a 16-color palette.
+        """
+        hist = np.zeros(256, dtype=np.uint64)
+        for subtitle in self.events:
+            grayscale = subtitle.arr[:, :, 0]
+            alpha = subtitle.arr[:, :, 1]
+            mask = alpha != 0
+            values = grayscale[mask]
+            np.add.at(hist, values, 1)
+
+        fill, outline = map(int, np.argsort(hist)[-2:])
+        if outline > fill:
+            fill, outline = outline, fill
+        self._fill_color = fill
+        self._outline_color = outline

@@ -8,7 +8,6 @@ from platform import system
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
-from PIL.Image import Resampling
 
 from scinoephile.common.typing import PathLike
 from scinoephile.core import ScinoephileException
@@ -16,45 +15,17 @@ from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
 
 
-def get_text_fill_and_outline_colors(arrs: list[np.ndarray]) -> tuple[int, int]:
-    """Get the fill and outline colors used in a collection of text image arrays.
-
-    * Uses the most common two colors, which works correctly for tested images.
-    * Tested images used a 16-color palette.
-
-    Arguments:
-        arrs:  Image arrays; should have 2 channels for grayscale and alpha.
-    Returns:
-        Fill and outline colors
-    """
-    hist = np.zeros(256, dtype=np.uint64)
-    for arr in arrs:
-        grayscale = arr[:, :, 0]
-        alpha = arr[:, :, 1]
-        mask = alpha != 0
-        values = grayscale[mask]
-        np.add.at(hist, values, 1)
-
-    fill, outline = map(int, np.argsort(hist)[-2:])
-    if outline > fill:
-        fill, outline = outline, fill
-    return fill, outline
-
-
-def get_image_annotated_with_char_bboxes(
-    img: Image.Image, bboxes: list[tuple[int, ...]]
-) -> Image.Image:
+def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Image.Image:
     """Draw bounding boxes on an image with rainbow colors for debugging.
 
     Arguments:
         img: Reference image
         bboxes: Bounding boxes [(x1, y1, x2, y2)].
-
     Returns:
         Image with bounding boxes drawn.
     """
-    img_annotated = img.copy().convert("RGB")
-    draw = ImageDraw.Draw(img_annotated)
+    img_with_bboxes = img.convert("RGB")
+    draw = ImageDraw.Draw(img_with_bboxes)
 
     # Generate palette
     palette = [
@@ -73,10 +44,10 @@ def get_image_annotated_with_char_bboxes(
             width=1,
         )
 
-    return img_annotated
+    return img_with_bboxes
 
 
-def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
+def get_img_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     """Get diff between two grayscale images.
 
     Arguments:
@@ -124,7 +95,7 @@ def get_image_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     return color_diff
 
 
-def get_image_of_text(
+def get_img_of_text(
     text: str,
     size: tuple[int, int],
     *,
@@ -216,11 +187,11 @@ def get_image_of_text(
             fill=fill_color,
         )
 
-    image = image.resize(size, Resampling.LANCZOS)
+    image = image.resize(size, Image.Resampling.LANCZOS)
     return image
 
 
-def get_image_of_text_with_char_alignment(
+def get_img_of_text_with_bboxes(
     text: str,
     size: tuple[int, int],
     bboxes: list[tuple[int, int, int, int]],
@@ -300,7 +271,9 @@ def get_image_of_text_with_char_alignment(
             min(char_size[0], crop_bbox[2] + 1),
             min(char_size[1], crop_bbox[3] + 1),
         )
-        char_resized = char_img.crop(crop_bbox).resize(ref_size, Resampling.LANCZOS)
+        char_resized = char_img.crop(crop_bbox).resize(
+            ref_size, Image.Resampling.LANCZOS
+        )
 
         # Paste into the final image at the correct position
         img.paste(char_resized, (ref_x1, ref_y1))
@@ -308,7 +281,7 @@ def get_image_of_text_with_char_alignment(
     return img
 
 
-def get_image_with_contents_scaled_to_ref(
+def get_img_scaled_to_bbox(
     ref: Image.Image,
     tst: Image.Image,
 ) -> Image.Image:
@@ -327,28 +300,38 @@ def get_image_with_contents_scaled_to_ref(
     tst_bbox = get_bbox(tst)
     ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
     tst_cropped = tst.crop(tst_bbox)
-    tst_scaled = tst_cropped.resize(ref_bbox_size, Resampling.LANCZOS)
+    tst_scaled = tst_cropped.resize(ref_bbox_size, Image.Resampling.LANCZOS)
     tst_final = Image.new("L", ref.size, 255)
     tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 
     return tst_final
 
 
-def get_image_with_white_bg(img: Image.Image) -> Image.Image:
-    """Get grayscale image on white background.
+def get_img_with_white_bg(img: Image.Image) -> Image.Image:
+    """Get image with transparency on white background.
 
     Arguments:
-        img: Image
+        img: Image with transparency
     Returns:
-        Grayscale image on white background
+        Image on white background
     """
-    img_la = Image.new("LA", img.size, (255, 255))
-    img_la.paste(img, (0, 0), img)
-    img_l = img_la.convert("L")
-    return img_l
+    if img.mode == "LA":
+        img_la = Image.new("LA", img.size, (255, 255))
+        img_la.paste(img, (0, 0), img)
+        img_l = img_la.convert("L")
+        return img_l
+    elif img.mode == "RGBA":
+        img_rgba = Image.new("RGBA", img.size, (255, 255, 255, 255))
+        img_rgba.paste(img, (0, 0), img)
+        img_rgb = img_rgba.convert("RGB")
+        return img_rgb
+    else:
+        raise ScinoephileException(
+            f"Image must be in mode 'LA' or 'RGBA', is {img.mode}"
+        )
 
 
-def get_images_stacked(*imgs: Image.Image) -> Image.Image:
+def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
     """Get images stacked vertically.
 
     Arguments:
