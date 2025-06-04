@@ -11,9 +11,7 @@ source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate scinoephile
 
 pip install \
-    black \
     hanziconv \
-    isort \
     numba \
     numpy \
     openai \

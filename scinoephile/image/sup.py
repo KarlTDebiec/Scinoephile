@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Image code related to the SUP subtitle format."""
+
 from __future__ import annotations
 
 import numba as nb
@@ -105,7 +106,6 @@ def read_sup_series(
     byte_i = 0
     seeking_start = True
     while byte_i < len(bytes_):
-
         # Load header
         byte_i += 2
         timestamp = (

@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to English text."""
+
 from __future__ import annotations
 
 import re
@@ -124,6 +125,7 @@ def _get_english_text_flattened(text: str) -> str:
         flags=re.M,
     )
     return flattened
+
 
 __all__ = [
     "get_english_cleaned",

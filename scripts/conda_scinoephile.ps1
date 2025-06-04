@@ -10,9 +10,7 @@ conda create -y --name scinoephile python=3.13
 conda activate scinoephile
 
 pip install `
-    black `
     hanziconv `
-    isort `
     numba `
     numpy `
     openai `

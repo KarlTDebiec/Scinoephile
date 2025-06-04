@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to synchronization of subtitles."""
+
 from __future__ import annotations
 
 from copy import deepcopy
@@ -140,10 +141,95 @@ def _get_sync_groups(
             sync_groups.append(sync_group)
             continue
 
+    # Raise exception if there are any remaining subtitles in series one
     if len(available_is) > 0:
         raise ScinoephileException()
 
+    # Add remaining subtitles from series two
+    for j in available_js:
+        sync_groups.append([[], [j]])
+
+    # Sort sync groups by their indexes
+    sync_groups = _sort_sync_groups(sync_groups)
+
     return sync_groups
+
+
+def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
+    """Sort sync groups using `_compare_groups`, with fallback to deeper comparison."""
+    sorted_groups = []
+
+    for group in sync_groups:
+        inserted = False
+        for i in range(len(sorted_groups) + 1):
+            # Try inserting at position i
+            if i == len(sorted_groups):
+                sorted_groups.append(group)
+                inserted = True
+                break
+
+            result = _compare_groups(group, sorted_groups[i])
+            if result is None:
+                continue  # Try comparing with the next one
+            elif result < 0:
+                sorted_groups.insert(i, group)
+                inserted = True
+                break
+        if not inserted:
+            raise ScinoephileException(
+                "Could not determine correct position for sync group"
+            )
+
+    return sorted_groups
+
+
+def _compare_groups(first: SyncGroup, second: SyncGroup) -> int | None:
+    """Compare two sync groups.
+
+    Arguments:
+        first: first sync group
+        second: second sync group
+    Returns:
+        -1 if first is less than second, 0 if they are equal, 1 if first is greater,
+        and None if they cannot be compared
+    """
+    first_min_one = min(first[0]) if first[0] else None
+    first_min_two = min(first[1]) if first[1] else None
+    second_min_one = min(second[0]) if second[0] else None
+    second_min_two = min(second[1]) if second[1] else None
+    first_order = None
+    second_order = None
+    if first_min_one is not None and second_min_one is not None:
+        if first_min_one < second_min_one:
+            first_order = -1
+        elif first_min_one > second_min_one:
+            first_order = 1
+        else:
+            first_order = 0
+    if first_min_two is not None and second_min_two is not None:
+        if first_min_two < second_min_two:
+            second_order = -1
+        elif first_min_two > second_min_two:
+            second_order = 1
+        else:
+            second_order = 0
+    match (first_order, second_order):
+        case (None, None):
+            return None
+        case (None, _):
+            return second_order
+        case (_, None):
+            return first_order
+        case (-1, -1):
+            return -1
+        case (0, 0):
+            return 0
+        case (1, 1):
+            return 1
+        case _:
+            raise ScinoephileException(
+                "Unexpected comparison result between sync groups"
+            )
 
 
 def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[SyncGroup]:
@@ -163,7 +249,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
 
     The cutoff starts at a minimum value, which defaults to 0.16. This serves as a lower
     bound; if a subtitle in series two overlaps less than this amount with a subtitle
-    in series one, it is simply dropped.
+    in series one, it is included without a partner.
 
     Arguments:
         one: first series
@@ -180,7 +266,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         return [[[i], []] for i in range(len(one.events))]
 
     overlap = get_sync_overlap_matrix(one, two)
-    debug(f"OVERLAP:\n{get_overlap_string(overlap,1000)}")
+    debug(f"OVERLAP:\n{get_overlap_string(overlap, 1000)}")
 
     while True:
         try:
@@ -190,10 +276,10 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
             continue
         break
 
-    # Add 1 to all indexes
+    # Add 1 to all indexes and convert to regular integers
     for sync_group in sync_groups:
-        sync_group[0] = sorted([i + 1 for i in sync_group[0]])
-        sync_group[1] = sorted([j + 1 for j in sync_group[1]])
+        sync_group[0] = sorted([int(i + 1) for i in sync_group[0]])
+        sync_group[1] = sorted([int(j + 1) for j in sync_group[1]])
 
     return sync_groups
 
@@ -250,6 +336,11 @@ def get_synced_series_from_groups(
         # One to zero mapping
         if len(one_events) == 1 and len(two_events) == 0:
             synced.events.append(deepcopy(one_events[0]))
+            continue
+
+        # Zero to one mapping
+        if len(one_events) == 0 and len(two_events) == 1:
+            synced.events.append(deepcopy(two_events[0]))
             continue
 
         # One to one mapping

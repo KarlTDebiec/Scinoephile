@@ -7,6 +7,7 @@ Code within this module may import only from scinoephile.common.
 Many functions herein follow the naming convention:
     get_(english|hanzi|cantonese|mandarin)_(character|text|[series])_(description)
 """
+
 from __future__ import annotations
 
 from scinoephile.core.exceptions import ScinoephileException

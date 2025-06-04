@@ -5,10 +5,9 @@ description = ""
 authors = [
     { name = "Karl Debiec", email = "karl.t.debiec@gmail.com" }
 ]
-license = { text = "BSD 3-Clause" }
+license = "BSD-3-Clause"
 readme = "README.md"
 requires-python = ">=3.13"
-
 dependencies = [
     "hanziconv>=0.3.2",
     "numba>=0.61.0",
@@ -24,8 +23,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "black>=25.1.0",
-    "isort>=6.0.1",
     "pyright>=1.1.396",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
@@ -45,16 +42,16 @@ line-length = 88
 
 [tool.ruff.lint]
 select = [
-    "D",   # pydocstyle
-    "E",   # pycodestyle
-    "F",   # pyflakes
-    "I",   # isort
-    "N",   # pep8-naming
+    "D", # pydocstyle
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "N", # pep8-naming
     "NPY", # numpy-specific rules
-    "PERF",# perflint
-    "PL",  # pylint
-    "UP",  # pyupgrade
-    "W",   # pycodestyle
+    "PERF", # perflint
+    "PL", # pylint
+    "UP", # pyupgrade
+    "W", # pycodestyle
 ]
 ignore = [
     "D410", # Missing blank line after section
@@ -64,3 +61,6 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
+
+[tool.setuptools]
+packages = { find = { include = ["scinoephile*"] } }
