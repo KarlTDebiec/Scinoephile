@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Individual subtitle."""
+
 from __future__ import annotations
 
 from dataclasses import fields
@@ -62,8 +63,8 @@ class Subtitle(SSAEvent):
     def __repr__(self) -> str:
         return (
             f"<{self.__class__.__name__} "
-            f"start={ms_to_str(self.start,True)} "
-            f"end={ms_to_str(self.end,True)} "
+            f"start={ms_to_str(self.start, True)} "
+            f"end={ms_to_str(self.end, True)} "
             f"text={self.text!r}"
             f">"
         )

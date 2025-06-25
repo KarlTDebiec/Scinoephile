@@ -1,13 +1,17 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Tests of scinoephile.core.synchronization."""
+
 from __future__ import annotations
+
+from pprint import pformat
 
 import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
+    get_overlap_string,
     get_sync_groups,
     get_sync_overlap_matrix,
     get_synced_series,
@@ -29,24 +33,27 @@ from ..data.pdp import (
 
 
 def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
+    # print start and end indices, plus one to match SRT
+    print(f"\nCHINESE: {test_case.hanzi_start + 1} - {test_case.hanzi_end}")
+    print(f"ENGLISH: {test_case.english_start + 1} - {test_case.english_end}")
     hanzi_block = hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
     english_block = english.slice(test_case.english_start, test_case.english_end)
 
     hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
-    # print(f"\nCHINESE:\n{hanzi_str}")
-    # print(f"\nENGLISH:\n{english_str}")
+    print(f"\nCHINESE:\n{hanzi_str}")
+    print(f"\nENGLISH:\n{english_str}")
 
     overlap = get_sync_overlap_matrix(hanzi_block, english_block)
-    # print("\nOVERLAP:")
-    # print(get_overlap_string(overlap))
+    print("\nOVERLAP:")
+    print(get_overlap_string(overlap))
 
     sync_groups = get_sync_groups(hanzi_block, english_block)
-    # print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+    print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
     assert sync_groups == test_case.sync_groups
 
     series = get_synced_series_from_groups(hanzi_block, english_block, sync_groups)
-    # print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
+    print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
 def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):

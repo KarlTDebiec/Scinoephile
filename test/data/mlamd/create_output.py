@@ -1,15 +1,15 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Script for creating expected test output for MLAMD."""
+
 from __future__ import annotations
 
-from scinoephile.common.logging import set_logging_verbosity
+from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import get_hanzi_cleaned, get_hanzi_flattened
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.image import ImageSeries
-from scinoephile.image.validation import validate_ocr_hanzi
+from scinoephile.image import ValidationManager
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -22,12 +22,11 @@ if __name__ == "__main__":
     zho_hans = get_hanzi_cleaned(zho_hans)
     zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
 
-    zho_hans = ImageSeries.load(output_dir / "zho-Hans")
-    validate_ocr_hanzi(
-        zho_hans,
+    ValidationManager(
+        output_dir / "zho-Hans",
         output_dir / "zho-Hans_validation",
         False,
-    )
+    ).validate()
 
     # Traditional Standard Chinese
     zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")
@@ -35,12 +34,11 @@ if __name__ == "__main__":
     zho_hant = get_hanzi_flattened(zho_hant)
     zho_hant.save(output_dir / "zho-Hant" / "zho-Hant.srt")
 
-    zho_hant = ImageSeries.load(output_dir / "zho-Hant")
-    validate_ocr_hanzi(
-        zho_hant,
+    ValidationManager(
+        output_dir / "zho-Hant",
         output_dir / "zho-Hant_validation",
         False,
-    )
+    ).validate()
 
     # English
     eng = Series.load(output_dir / "eng" / "eng.srt")

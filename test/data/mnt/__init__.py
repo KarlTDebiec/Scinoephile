@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Test data for MNT."""
+
 from __future__ import annotations
 
 import pytest
@@ -84,6 +85,7 @@ mnt_test_cases = [
         sync_groups=[
             [[1], [1]],
             [[2, 3], [2]],
+            [[], [3]],
             [[4], [4]],
         ],
     ),
@@ -118,6 +120,7 @@ mnt_test_cases = [
             [[1], [1]],
             [[2], [2]],
             [[3, 4], [3]],
+            [[], [4]],
         ],
     ),
     SyncTestCase(
@@ -126,6 +129,7 @@ mnt_test_cases = [
         english_start=35,
         english_end=39,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
             [[2], [3]],
             [[3], [4]],
@@ -161,6 +165,7 @@ mnt_test_cases = [
             [[3], [3]],
             [[4], [4]],
             [[5, 6, 7], [5]],
+            [[], [6]],
         ],
     ),
     SyncTestCase(
@@ -578,7 +583,9 @@ mnt_test_cases = [
         english_end=256,
         sync_groups=[
             [[1], [1]],
+            [[], [2]],
             [[2], [3]],
+            [[], [4]],
             [[3], [5]],
             [[4], [6]],
             [[5], [7]],
@@ -688,6 +695,7 @@ mnt_test_cases = [
             [[5], [4]],
             [[6], []],
             [[7], [5]],
+            [[], [6]],
         ],
     ),
     SyncTestCase(
@@ -726,6 +734,7 @@ mnt_test_cases = [
             [[10, 11], [8]],
             [[12, 13, 14], [9]],
             [[15], [10]],
+            [[], [11]],
             [[16], [12]],
             [[17, 18], [13]],
         ],
@@ -774,6 +783,7 @@ mnt_test_cases = [
             [[5], [4]],
             [[6], [5]],
             [[7], [6]],
+            [[], [7]],
             [[8], [8]],
             [[9, 10], [9]],
             [[11], [10]],
@@ -880,6 +890,7 @@ mnt_test_cases = [
             [[15, 16], [9]],
             [[17], [10]],
             [[18], [11]],
+            [[], [12]],
         ],
     ),
     SyncTestCase(
@@ -1087,6 +1098,7 @@ mnt_test_cases = [
             [[6], [5]],
             [[7], [6]],
             [[8, 9], [7]],
+            [[], [8]],
         ],
     ),
     SyncTestCase(
@@ -1117,6 +1129,8 @@ mnt_test_cases = [
         english_start=538,
         english_end=541,
         sync_groups=[
+            [[], [1]],
+            [[], [2]],
             [[1], [3]],
         ],
     ),
@@ -1178,6 +1192,7 @@ mnt_test_cases = [
         sync_groups=[
             [[1], [1]],
             [[2], []],
+            [[], [2]],
         ],
     ),
     SyncTestCase(

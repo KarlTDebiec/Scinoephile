@@ -1,6 +1,7 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Test data for PDP."""
+
 from __future__ import annotations
 
 import pytest
@@ -276,6 +277,7 @@ pdp_test_cases = [
         english_end=98,
         sync_groups=[
             [[1], [1]],
+            [[], [2]],
             [[2], [3]],
             [[3], [4]],
         ],
@@ -537,6 +539,7 @@ pdp_test_cases = [
         english_start=244,
         english_end=246,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
         ],
     ),
@@ -546,6 +549,7 @@ pdp_test_cases = [
         english_start=246,
         english_end=249,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
             [[2], [3]],
         ],
@@ -619,6 +623,7 @@ pdp_test_cases = [
             [[2], [2, 3]],
             [[3], [4]],
             [[4], [5]],
+            [[], [6]],
             [[5], [7]],
             [[6], [8]],
             [[7], [9, 10]],
@@ -907,6 +912,7 @@ pdp_test_cases = [
             [[18], [21]],
             [[19], [22]],
             [[20], [23]],
+            [[], [24]],
             [[21], [25]],
         ],
     ),
@@ -954,6 +960,7 @@ pdp_test_cases = [
             [[13], [21, 22]],
             [[14], [23]],
             [[15], [24]],
+            [[], [25]],
             [[16], [26]],
             [[17], [27]],
             [[18], [28]],
@@ -1225,6 +1232,7 @@ pdp_test_cases = [
         english_end=844,
         sync_groups=[
             [[1], [1]],
+            [[], [2]],
         ],
     ),
     SyncTestCase(  # Review
@@ -1287,6 +1295,7 @@ pdp_test_cases = [
             [[2], [2]],
             [[3], [3]],
             [[4], [4]],
+            [[], [5]],
             [[5], [6]],
             [[6], [7, 8]],
             [[7], [9]],
@@ -1325,6 +1334,7 @@ pdp_test_cases = [
         sync_groups=[
             [[1], [1]],
             [[2], [2]],
+            [[], [3]],
         ],
     ),
     SyncTestCase(
@@ -1334,6 +1344,7 @@ pdp_test_cases = [
         english_end=912,
         sync_groups=[
             [[1], [1]],
+            [[], [2]],
             [[2], [3]],
             [[3], [4]],
             [[4], [5]],
@@ -1542,6 +1553,7 @@ pdp_test_cases = [
             [[29], [37]],
             [[30], [38]],
             [[31], [39]],
+            [[], [40]],
             [[32], [41]],
             [[33], [42]],
         ],
@@ -1570,6 +1582,7 @@ pdp_test_cases = [
             [[16], [19]],
             [[17], [20, 21]],
             [[18], [22]],
+            [[], [23]],
             [[19], [24]],
             [[20], [25, 26]],
             [[21], [27, 28]],
@@ -1621,6 +1634,7 @@ pdp_test_cases = [
         english_start=1103,
         english_end=1105,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
         ],
     ),
@@ -1674,6 +1688,7 @@ pdp_test_cases = [
         english_start=1129,
         english_end=1134,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
             [[2], [3]],
             [[3], [4]],
@@ -1784,20 +1799,24 @@ pdp_test_cases = [
         ],
     ),
     SyncTestCase(
-        hanzi_start=945,
+        hanzi_start=944,
         hanzi_end=945,
-        english_start=1186,
-        english_end=1187,
-        sync_groups=[],
+        english_start=1185,
+        english_end=1186,
+        sync_groups=[
+            [[1], [1]],
+        ],
     ),
     SyncTestCase(
         hanzi_start=945,
         hanzi_end=947,
-        english_start=1187,
+        english_start=1186,
         english_end=1190,
         sync_groups=[
-            [[1], [1]],
-            [[2], [3]],
+            [[], [1]],
+            [[1], [2]],
+            [[], [3]],
+            [[2], [4]],
         ],
     ),
     SyncTestCase(
@@ -1860,6 +1879,7 @@ pdp_test_cases = [
             [[3], [3]],
             [[4], [4]],
             [[5], [5, 6]],
+            [[], [7]],
         ],
     ),
     SyncTestCase(
@@ -2007,6 +2027,7 @@ pdp_test_cases = [
         english_start=1285,
         english_end=1287,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
         ],
     ),
@@ -2135,6 +2156,7 @@ pdp_test_cases = [
         english_start=1349,
         english_end=1355,
         sync_groups=[
+            [[], [1]],
             [[1], [2]],
             [[2], [3, 4]],
             [[3], [5, 6]],
@@ -2477,6 +2499,7 @@ pdp_test_cases = [
         english_end=1513,
         sync_groups=[
             [[1, 2], [1]],
+            [[], [2]],
         ],
     ),
     SyncTestCase(
@@ -2489,6 +2512,7 @@ pdp_test_cases = [
             [[2], [2]],
             [[3], [3]],
             [[4], [4]],
+            [[], [5]],
             [[5], [6]],
             [[6], [7]],
         ],
@@ -2541,6 +2565,7 @@ pdp_test_cases = [
             [[14], [19]],
             [[15], [20]],
             [[16], [21]],
+            [[], [22]],
             [[17], [23]],
             [[18], [24]],
         ],
