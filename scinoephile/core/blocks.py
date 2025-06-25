@@ -23,7 +23,7 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
     source = deepcopy(series.events)
 
     def get_nascent_block_cutoff():
-        """Get latest acceptable start for an event to be added to the nascent block"""
+        """Get latest acceptable start for an event to be added to the nascent block."""
         cutoff = 0
         if nascent_block:
             cutoff = max(cutoff, nascent_block[-1].end)

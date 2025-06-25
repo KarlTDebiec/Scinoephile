@@ -16,7 +16,7 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
-SyncGroup = tuple[list[int], list[int]]
+SyncGroup = list[list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
 
 
@@ -75,9 +75,10 @@ def _get_sync_groups(
                 overlap[i, j] = 0
     for j in range(len(two.events)):
         scale = np.max(overlap[:, j])
-        for i in range(len(one.events)):
-            if overlap[i, j] / scale < cutoff:
-                overlap[i, j] = 0
+        if scale > 0:
+            for i in range(len(one.events)):
+                if overlap[i, j] / scale < cutoff:
+                    overlap[i, j] = 0
 
     debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
 
