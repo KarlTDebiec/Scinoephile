@@ -16,7 +16,7 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
-SyncGroup = list[list[int], list[int]]
+SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
 
 
@@ -156,7 +156,13 @@ def _get_sync_groups(
 
 
 def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
-    """Sort sync groups using `_compare_groups`, with fallback to deeper comparison."""
+    """Sort sync groups.
+
+    Arguments:
+        sync_groups: sync groups to sort
+    Returns:
+        sorted sync groups
+    """
     sorted_groups = []
 
     for group in sync_groups:
