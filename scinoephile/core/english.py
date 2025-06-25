@@ -15,9 +15,9 @@ def get_english_cleaned(series: Series) -> Series:
     """Get English series cleaned.
 
     Arguments:
-        series: series to clean
+        series: Series to clean
     Returns:
-        cleaned series
+        Cleaned series
     """
     series = deepcopy(series)
     new_events = []
@@ -34,10 +34,10 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
     """Get multi-line English series flattened to single lines.
 
     Arguments:
-        series: series to flatten
-        exclusions: list of subtitle indexes to exclude from flattening
+        series: Series to flatten
+        exclusions: List of subtitle indexes to exclude from flattening
     Returns:
-        flattened series
+        Flattened series
     """
     if not exclusions:
         exclusions = []
@@ -54,9 +54,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
     """Get English text cleaned.
 
     Arguments:
-        text: text to clean
+        text: Text to clean
     Returns:
-        cleaned text, or None if no text remains
+        Cleaned text, or None if no text remains
     """
     # Revert strange substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
@@ -95,9 +95,9 @@ def _get_english_text_flattened(text: str) -> str:
     Accounts for dashes ('-') used for dialogue from multiple sources.
 
     Arguments:
-        text: text to flatten
+        text: Text to flatten
     Returns:
-        flattened text
+        Flattened text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
     flattened = re.sub(r"\\N", r"\n", text)

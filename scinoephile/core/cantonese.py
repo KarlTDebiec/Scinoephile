@@ -55,7 +55,7 @@ def get_cantonese_romanization(series: Series) -> Series:
     """Get the Yale Cantonese romanization of Hanzi series.
 
     Arguments:
-        series: series for which to get Yale Cantonese romanization
+        series: Series for which to get Yale Cantonese romanization
     Returns:
         Yale Cantonese romanization of series
     """

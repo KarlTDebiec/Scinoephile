@@ -21,7 +21,6 @@ class Series(SSAFile):
 
     event_class = Subtitle
     """Class of individual subtitle events."""
-
     events: list[Subtitle]
     """Individual subtitle events."""
 
@@ -56,9 +55,9 @@ class Series(SSAFile):
         """Save series to an output file.
 
         Arguments:
-            path: output file path
-            format_: output file format
-            **kwargs: additional keyword arguments
+            path: Output file path
+            format_: Output file format
+            **kwargs: Additional keyword arguments
         """
         path = validate_output_file(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
@@ -68,10 +67,10 @@ class Series(SSAFile):
         """Slice series.
 
         Arguments:
-            start: start index
-            end: end index
+            start: Start index
+            end: End index
         Returns:
-            sliced series
+            Sliced series
         """
         sliced = Series()
         sliced.events = self.events[start:end]
@@ -108,11 +107,11 @@ class Series(SSAFile):
         """Parse series from string.
 
         Arguments:
-            string: string to parse
-            format_: input file format
-            fps: frames per second
+            string: String to parse
+            format_: Input file format
+            fps: Frames per second
         Returns:
-            parsed series
+            Parsed series
         """
         series = super().from_string(string, format_=format_, fps=fps, **kwargs)
         events = []
@@ -133,21 +132,21 @@ class Series(SSAFile):
         """Load series from an input file.
 
         Arguments:
-            path : input file path
-            encoding: input file encoding
-            format_: input file format
-            **kwargs: additional keyword arguments
+            path : Input file path
+            encoding: Input file encoding
+            format_: Input file format
+            **kwargs: Additional keyword arguments
         Returns:
-            loaded series
+            Loaded series
         """
-        path = validate_input_file(path)
+        validated_path = validate_input_file(path)
 
-        with open(path, encoding=encoding) as fp:
+        with open(validated_path, encoding=encoding) as fp:
             series = cls.from_file(fp, format_=format_, **kwargs)
             events = []
             for ssaevent in series.events:
                 events.append(cls.event_class(series=series, **ssaevent.as_dict()))
             series.events = events
 
-        info(f"Loaded series from {path}")
+        info(f"Loaded series from {validated_path}")
         return series

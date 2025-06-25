@@ -14,7 +14,7 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
 
     Arguments:
         series: Series to split
-        pause_length: split whenever a pause of this length is encountered
+        pause_length: Split whenever a pause of this length is encountered
     Returns:
         Series split into blocks
     """
@@ -58,7 +58,7 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
     """Contatenate a list of sequential series blocks into a single series.
 
     Arguments:
-        blocks: series to concatenate
+        blocks: Series to concatenate
     Returns:
         Concatenated series
     """

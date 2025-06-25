@@ -9,16 +9,22 @@ license = "BSD-3-Clause"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "audioop-lts>=0.2.1",
+    "ffmpeg-python>=0.2.0",
     "hanziconv>=0.3.2",
     "numba>=0.61.0",
     "numpy>=2.0.2",
     "openai>=1.60.1",
     "pillow>=11.1.0",
     "pycantonese>=3.4.0",
+    "pydub>=0.25.1",
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
     "snownlp>=0.12.3",
+    "torch>=2.7.1",
+    "torchaudio>=2.7.1",
+    "transformers>=4.53.0",
 ]
 
 [dependency-groups]

@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image
 from pysubs2 import SSAFile
 
+from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
     validate_input_directory,
     validate_output_directory,
@@ -25,8 +26,7 @@ class ImageSeries(Series):
     """Series of subtitles with images."""
 
     event_class = ImageSubtitle
-    """Class of individual subtitle events"""
-
+    """Class of individual subtitle events."""
     events: list[ImageSubtitle]
     """Individual subtitle events."""
 
@@ -38,14 +38,14 @@ class ImageSeries(Series):
         self._outline_color = None
 
     @property
-    def fill_color(self):
+    def fill_color(self) -> int:
         """Fill color of text images."""
         if self._fill_color is None:
             self._init_fill_and_outline_colors()
         return self._fill_color
 
     @property
-    def outline_color(self):
+    def outline_color(self) -> int:
         """Outline color of text images."""
         if self._outline_color is None:
             self._init_fill_and_outline_colors()
@@ -55,9 +55,9 @@ class ImageSeries(Series):
         """Save series to an output file.
 
         Arguments:
-            path: output file path
-            format_: output file format
-            **kwargs: additional keyword arguments
+            path: Output file path
+            format_: Output file format
+            **kwargs: Additional keyword arguments
         """
         path = Path(path)
 
@@ -77,8 +77,8 @@ class ImageSeries(Series):
         """Save series to directory of png files.
 
         Arguments:
-            fp: path to outpt directory
-            **kwargs: dditional keyword arguments
+            fp: Path to outpt directory
+            **kwargs: Additional keyword arguments
         """
         # Prepare empty directory, deleting existing files if needed
         if fp.exists() and fp.is_dir():
@@ -110,32 +110,31 @@ class ImageSeries(Series):
         """Load series from an input file.
 
         Arguments:
-            path : input file path
-            encoding: input file encoding
-            format_: input file format
-            **kwargs: additional keyword arguments
+            path: Input file path
+            encoding: Input file encoding
+            format_: Input file format
+            **kwargs: Additional keyword arguments
         Returns:
-            loaded series
+            Loaded series
         """
-        path = validate_input_directory(path)
-
-        # Check if directory
-        if format_ == "png" or path.is_dir():
-            return cls._load_png(path, **kwargs)
-
-        raise ValueError(
-            f"{cls.__name__} does not support format {format_}, must be png"
-        )
+        try:
+            validated_path = validate_input_directory(path)
+            return cls._load_png(validated_path, **kwargs)
+        except (DirectoryNotFoundError, NotADirectoryError) as exc:
+            raise ValueError(
+                f"{cls.__name__}'s path must be path to a directory containing one srt "
+                "file containing N subtitles and N png files."
+            ) from exc
 
     @classmethod
     def _load_png(cls, fp: Path, **kwargs: Any) -> ImageSeries:
         """Load series from a directory of png files.
 
         Arguments:
-            fp: path to input directory
-            **kwargs: additional keyword arguments
+            fp: Path to input directory
+            **kwargs: Additional keyword arguments
         Returns:
-            loaded series
+            Loaded series
         """
         series = cls()
         series.format = "png"

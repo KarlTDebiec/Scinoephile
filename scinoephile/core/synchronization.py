@@ -24,8 +24,8 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     """Check whether two series are one-to-one matched.
 
     Arguments:
-        one: first series to compare
-        two: second series to compare
+        one: First series to compare
+        two: Second series to compare
     Returns:
         Whether all subtitles are one-to-one matches between the two series
     """
@@ -43,8 +43,8 @@ def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
     """Quantify the overlap between two series and compile the results in a matrix.
 
     Arguments:
-        one: first series
-        two: second series
+        one: First series
+        two: Second series
     Returns:
         Two-dimensional array whose rows correspond to subtitle indexes within series
         one, whose columns correspond to subtitle indexes within series two, and whose
@@ -160,9 +160,9 @@ def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
     """Sort sync groups.
 
     Arguments:
-        sync_groups: sync groups to sort
+        sync_groups: Sync groups to sort
     Returns:
-        sorted sync groups
+        Sorted sync groups
     """
     sorted_groups = []
 
@@ -194,8 +194,8 @@ def _compare_groups(first: SyncGroup, second: SyncGroup) -> int | None:
     """Compare two sync groups.
 
     Arguments:
-        first: first sync group
-        second: second sync group
+        first: First sync group
+        second: Second sync group
     Returns:
         -1 if first is less than second, 0 if they are equal, 1 if first is greater,
         and None if they cannot be compared
@@ -259,9 +259,9 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     in series one, it is included without a partner.
 
     Arguments:
-        one: first series
-        two: second series
-        cutoff: initial overlap cutoff used to adjust overlap matrix
+        one: First series
+        two: Second series
+        cutoff: Initial overlap cutoff used to adjust overlap matrix
     Returns:
         List of sync groups, each of which is a list of two lists of subtitle indexes,
         the first list corresponding to subtitles in series one and the second list
@@ -295,8 +295,8 @@ def get_synced_series(one: Series, two: Series) -> Series:
     """Compile synchonized subtitles from two series.
 
     Arguments:
-        one: first Series
-        two: second Series
+        one: First Series
+        two: Second Series
     Returns:
         Synchonized subtitles
     """
@@ -327,9 +327,9 @@ def get_synced_series_from_groups(
     """Compile synchronized subtitles from two series based on sync groups.
 
     Arguments:
-        one: first series
-        two: second series
-        groups: sync groups including the indexes of subtitles in each series
+        one: First series
+        two: Second series
+        groups: Sync groups including the indexes of subtitles in each series
     Returns:
         Series whose subtitles are composed of the text of the subtitles from the two
         input series as indicated by the sync groups
@@ -391,7 +391,7 @@ def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
     """Get a string representation of the overlap matrix between two series.
 
     Arguments:
-        overlap: overlap matrix
+        overlap: Overlap matrix
         max_line_width: Maximum width of the returned string
     Returns:
         string representation of the overlap matrix

@@ -10,13 +10,18 @@ conda create -y --name scinoephile python=3.13
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate scinoephile
 
-pip install \
+pip install uv
+
+uv pip install \
+    audioop-lts \
+    ffmpeg-python \
     hanziconv \
     numba \
     numpy \
     openai \
     pillow \
     pycantonese \
+    pydub \
     pypinyin \
     pyright \
     pysubs2 \
@@ -26,4 +31,8 @@ pip install \
     ruff \
     snownlp \
     svglib \
-    uv
+    transformers
+
+conda install -y -c pytorch \
+    pytorch \
+    torchaudio

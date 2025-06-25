@@ -17,7 +17,7 @@ def get_mandarin_romanization(series: Series) -> Series:
     """Get the Mandarin pinyin romanization of Hanzi series.
 
     Arguments:
-        series: series for which to get Mandarin pinyin romanization
+        series: Series for which to get Mandarin pinyin romanization
     Returns:
         Mandarin pinyin romanization of series
     """

@@ -7,15 +7,21 @@ $ErrorActionPreference="Stop"
 conda deactivate
 conda remove -y --name scinoephile --all
 conda create -y --name scinoephile python=3.13
+
 conda activate scinoephile
 
-pip install `
+pip install uv
+
+uv pip install `
+    audioop-lts `
+    ffmpeg-python `
     hanziconv `
     numba `
     numpy `
     openai `
     pillow `
     pycantonese `
+    pydub `
     pypinyin `
     pyright `
     pysubs2 `
@@ -25,4 +31,9 @@ pip install `
     ruff `
     snownlp `
     svglib `
-    uv
+    transformers
+
+conda install -y -c pytorch \
+    pytorch \
+    torchaudio
+
