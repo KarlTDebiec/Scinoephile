@@ -67,7 +67,7 @@ def read_sup_palette(bytes_: bytearray) -> np.ndarray:
     """Read a color palette from a block of bytes.
 
     Arguments:
-        bytes_: block of bytes
+        bytes_: Block of bytes
     Returns:
         Palette; first index is color, second is channel
     """

@@ -394,7 +394,7 @@ def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
         overlap: Overlap matrix
         max_line_width: Maximum width of the returned string
     Returns:
-        string representation of the overlap matrix
+        String representation of the overlap matrix
     """
     return np.array2string(
         overlap,

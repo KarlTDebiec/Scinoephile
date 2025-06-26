@@ -56,7 +56,7 @@ def get_hanzi_simplified(series: Series) -> Series:
     Arguments:
         series: Series to simplify
     Returns:
-        simplified series
+        Simplified series
     """
     series = deepcopy(series)
     for event in series:
