@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from platform import system
 
 import torch
 import torchaudio
@@ -69,9 +70,17 @@ class TranscriptionManager:
 if __name__ == "__main__":
     # For testing purposes, instantiate the TranscriptionManager
     mgr = TranscriptionManager()
-    infile = Path(
-        "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/Movies/"
-        "My Life as McDull/output/yue-Hans_audio/0001-0033_00048792-00158875.wav"
-    )
+    if system() == "Windows":
+        infile = Path(
+            r"C:\Users\karls\Code\ScinoephileProjects\scinoephile_projects\data"
+            r"\Movies\My Life as McDull\output\yue-Hans_audio"
+            r"\0001-0033_00048792-00158875.wav"
+        )
+    elif system() == "Darwin":
+        infile = Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data"
+            "/Movies/My Life as McDull/output/yue-Hans_audio"
+            "/0001-0033_00048792-00158875.wav"
+        )
     text = mgr.transcribe_file(infile)
     print(f"Transcription:\n{text}")

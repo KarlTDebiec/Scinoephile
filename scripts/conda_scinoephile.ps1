@@ -33,7 +33,7 @@ uv pip install `
     svglib `
     transformers
 
-conda install -y -c pytorch \
-    pytorch \
+conda install -y -c pytorch `
+    pytorch `
     torchaudio
 
