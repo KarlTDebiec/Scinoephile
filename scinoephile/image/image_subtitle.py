@@ -158,7 +158,7 @@ class ImageSubtitle(Subtitle):
         """Text excluding whitespace."""
         return "".join([c for c in self.text if c not in whitespace_chars])
 
-    def _init_char_pairs(self) -> list[CharPair]:
+    def _init_char_pairs(self) -> None:
         """Initialize character pairs."""
         char_1_i = 0
         width_1_i = 0

@@ -7,14 +7,15 @@ from __future__ import annotations
 from dataclasses import fields
 from typing import Any
 
-from scinoephile.core import Subtitle
 from pydub import AudioSegment
+
+from scinoephile.core import Subtitle
 
 
 class AudioSubtitle(Subtitle):
     """Individual subtitle with audio."""
 
-    def __init__(self, aud: AudioSegment, **kwargs: Any) -> None:
+    def __init__(self, audio: AudioSegment, **kwargs: Any) -> None:
         """Initialize.
 
         Arguments:
@@ -25,18 +26,18 @@ class AudioSubtitle(Subtitle):
         super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
         super().__init__(**super_kwargs)
 
-        self.aud = aud
+        self.audio = audio
 
     @property
-    def aud(self) -> AudioSegment:
+    def audio(self) -> AudioSegment:
         """Audio of subtitle."""
-        return self._aud
+        return self._audio
 
-    @aud.setter
-    def aud(self, aud: AudioSegment) -> None:
+    @audio.setter
+    def audio(self, audio: AudioSegment) -> None:
         """Set audio of subtitle.
 
         Arguments:
-            aud: Audio of subtitle
+            audio: Audio of subtitle
         """
-        self._aud = aud
+        self._audio = audio

@@ -29,7 +29,7 @@ def get_pair_blocks_by_pause(
     source_two = deepcopy(two.events)
 
     def get_nascent_block_cutoff():
-        """Get latest acceptable start for an event to be added to the nascent block"""
+        """Get latest acceptable start for an event to be added to the nascent block."""
         cutoff = 0
         if nascent_block_one:
             cutoff = max(cutoff, nascent_block_one[-1].end)

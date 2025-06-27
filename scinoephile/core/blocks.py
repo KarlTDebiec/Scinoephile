@@ -13,7 +13,7 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
     """Split a Series into blocks using pauses without text.
 
     Arguments:
-        series: Series to split
+        series: Series to split into blocks
         pause_length: Split whenever a pause of this length is encountered
     Returns:
         Series split into blocks
@@ -52,6 +52,35 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
         blocks.append(block)
 
     return blocks
+
+
+def get_block_indexes_by_pause(
+    series: Series, pause_length: int = 3000
+) -> list[tuple[int, int]]:
+    """Get indexes of blocks in a Series split by pauses without text.
+
+    Blocks are 1-indexed and the start and end indexes are inclusive.
+
+    Arguments:
+        series: Series to split into blocks
+        pause_length: Split whenever a pause of this length is encountered
+    Returns:
+        Start and end indexes of each block
+    """
+    if not series.events:
+        return []
+    block_indexes = []
+    start = 1
+    prev_end = None
+
+    for i, event in enumerate(series.events, start=1):
+        if prev_end is not None and event.start - prev_end >= pause_length:
+            block_indexes.append((start, i - 1))
+            start = i
+        prev_end = event.end
+    block_indexes.append((start, len(series.events)))
+
+    return block_indexes
 
 
 def get_concatenated_blocks(blocks: list[Series]) -> Series:

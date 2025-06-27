@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import re
+from functools import cached_property
 from logging import info
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,7 @@ import ffmpeg
 from pydub import AudioSegment
 from pysubs2 import SSAFile
 
+from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.common import NotAFileError
 from scinoephile.common.file import get_temp_directory_path
@@ -23,7 +25,8 @@ from scinoephile.common.validation import (
     validate_output_file,
 )
 from scinoephile.core import ScinoephileException, Series
-from scinoephile.core.blocks import get_blocks_by_pause
+from scinoephile.core.block import Block
+from scinoephile.core.blocks import get_block_indexes_by_pause
 
 
 class AudioSeries(Series):
@@ -33,7 +36,11 @@ class AudioSeries(Series):
     """Class of individual subtitle events."""
     events: list[AudioSubtitle]
     """Individual subtitle events."""
-    block_audio_pattern = re.compile(r"^\d{4}-\d{4}_\d{8}-\d{8}\.wav$")
+    block_audio_pattern = re.compile(
+        r"^(?P<start_idx>\d{4})-(?P<end_idx>\d{4})_"
+        r"(?P<buffered_start>\d{8})-(?P<buffered_end>\d{8})\.wav$"
+    )
+
     """Pattern for block audio files."""
     subtitle_audio_pattern = re.compile(r"^\d{4}_\d{8}-\d{8}\.wav$")
     """Pattern for subtitle audio files."""
@@ -43,8 +50,6 @@ class AudioSeries(Series):
         super().__init__()
 
         self._audio = None
-        self._blocks = None
-        self._block_audio = None
 
     @property
     def audio(self) -> AudioSegment:
@@ -61,25 +66,20 @@ class AudioSeries(Series):
         self._audio = audio
 
     @property
-    def blocks(self) -> list[tuple[int, int, int, int]]:
-        """Blocks of audio in series."""
+    def blocks(self) -> list[AudioBlock]:
+        """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
         return self._blocks
 
-    @property
-    def block_audio(self) -> list[AudioSegment]:
-        """Audio of blocks in series."""
-        return self._block_audio
-
-    @block_audio.setter
-    def block_audio(self, block_audio: list[AudioSegment]) -> None:
-        """Set audio of blocks in series.
+    @blocks.setter
+    def blocks(self, blocks: list[AudioBlock]) -> None:
+        """Set blocks of the series.
 
         Arguments:
-            block_audio: Audio of blocks in series
+            blocks: List of blocks in the series
         """
-        self._block_audio = block_audio
+        self._blocks = blocks
 
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
@@ -125,13 +125,14 @@ class AudioSeries(Series):
         info(f"Saved full audio to {outfile_path}")
         for i, event in enumerate(self.events, 1):
             outfile_path = fp / f"{i:04d}_{event.start:08d}-{event.end:08d}.wav"
-            event.aud.export(outfile_path, format="wav")
+            event.audio.export(outfile_path, format="wav")
             info(f"Saved audio to {outfile_path}")
-        for block, block_audio in zip(self.blocks, self.block_audio):
+        for block in self.blocks:
             outfile_path = (
-                fp / f"{block[0]:04d}-{block[1]:04d}_{block[2]:08d}-{block[3]:08d}.wav"
+                fp / f"{block.start_idx:04d}-{block.end_idx:04d}_"
+                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
             )
-            block_audio.export(outfile_path, format="wav")
+            block.audio.export(outfile_path, format="wav")
             info(f"Saved block audio to {outfile_path}")
 
         # Save text
@@ -159,7 +160,7 @@ class AudioSeries(Series):
         try:
             validated_path = validate_input_directory(path)
             return cls._load_wav(validated_path, **kwargs)
-        except NotADirectoryError as exc:
+        except NotADirectoryError:
             try:
                 validated_path = validate_input_file(path)
                 video_path = kwargs.pop("video_path", None)
@@ -220,23 +221,19 @@ class AudioSeries(Series):
                     f"Extracting center channel of audio stream {audio_track} "
                     f"from {video_fp} to {full_audio_path}"
                 )
-                (
-                    ffmpeg.input(
-                        str(video_fp),
-                    )
-                    .output(
-                        str(full_audio_path),
-                        format="wav",
-                        ar=16000,
-                        **{
-                            "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
-                            "map": "[out]",
-                        },
-                    )
-                    .run(
-                        quiet=False,
-                        overwrite_output=True,
-                    )
+                ffmpeg.input(
+                    str(video_fp),
+                ).output(
+                    str(full_audio_path),
+                    format="wav",
+                    ar=16000,
+                    **{
+                        "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
+                        "map": "[out]",
+                    },
+                ).run(
+                    quiet=False,
+                    overwrite_output=True,
                 )
             else:
                 info(
@@ -266,7 +263,7 @@ class AudioSeries(Series):
             original_start = event.start
             original_end = event.end
 
-            # Previous and next events (may be None at boundaries)
+            # Previous and next events
             prev_event = text_series[i - 2] if i > 1 else None
             next_event = text_series[i] if i < len(text_series) else None
 
@@ -292,40 +289,11 @@ class AudioSeries(Series):
                 cls.event_class(
                     start=original_start,
                     end=original_end,
-                    aud=clip,
+                    audio=clip,
                     text=event.text,
                     series=series,
                 )
             )
-
-        # Slice block audio
-        block_audio = []
-        for i, (start_idx, end_idx, start_ms, end_ms) in enumerate(series.blocks):
-            # Determine buffered start
-            if i > 0:
-                _, _, prev_start, prev_end = series.blocks[i - 1]
-                max_start = start_ms - buffer
-                midpoint = (start_ms + prev_end) // 2
-                buffered_start = max(midpoint, max_start)
-            else:
-                buffered_start = max(0, start_ms - buffer)
-
-            # Determine buffered end
-            if i + 1 < len(series.blocks):
-                _, _, next_start, next_end = series.blocks[i + 1]
-                min_end = end_ms + buffer
-                midpoint = (end_ms + next_start) // 2
-                buffered_end = min(midpoint, min_end)
-            else:
-                buffered_end = min(len(full_audio), end_ms + buffer)
-
-            info(
-                f"Slicing audio for block {start_idx}-{end_idx} "
-                f"({buffered_start} - {buffered_end})"
-            )
-            block_clip = full_audio[buffered_start:buffered_end]
-            block_audio.append(block_clip)
-        series.block_audio = block_audio
 
         return series
 
@@ -370,43 +338,77 @@ class AudioSeries(Series):
                 cls.event_class(
                     start=text_event.start,
                     end=text_event.end,
-                    aud=audio,
+                    audio=audio,
                     text=text_event.text,
                     series=series,
                 )
             )
 
         # Load block audio files
-        infiles = sorted(
-            path
-            for path in fp.iterdir()
-            if path.suffix == ".wav" and cls.block_audio_pattern.match(path.name)
-        )
-        if len(series.blocks) != len(infiles):
-            raise ScinoephileException(
-                f"Number of block audio files in {fp} ({len(infiles)}) "
-                f"does not match number of blocks in series ({len(series.blocks)})"
-            )
-        block_audio = []
-        for infile, (start_idx, end_idx, start_ms, end_ms) in zip(
-            infiles, series.blocks
-        ):
+        infiles_with_match = [
+            (infile, match)
+            for infile in fp.iterdir()
+            if infile.suffix == ".wav"
+            and (match := cls.block_audio_pattern.match(infile.name))
+        ]
+        blocks = []
+        for infile, match in sorted(infiles_with_match):
+            start_idx = int(match.group("start_idx"))
+            end_idx = int(match.group("end_idx"))
+            buffered_start = int(match.group("buffered_start"))
+            buffered_end = int(match.group("buffered_end"))
             audio = AudioSegment.from_wav(infile)
-            block_audio.append(audio)
-        series.block_audio = block_audio
+
+            block = AudioBlock(
+                series=series,
+                start_idx=start_idx,
+                end_idx=end_idx,
+                buffered_start=buffered_start,
+                buffered_end=buffered_end,
+                audio=audio,
+            )
+            blocks.append(block)
+        series._blocks = blocks
 
         return series
 
     def _init_blocks(self) -> None:
-        """Initialize blocks of audio in series."""
-        blocks_series = get_blocks_by_pause(self)
-        blocks = []
-        i = 1
-        for block in blocks_series:
-            start = i
-            end = i + len(block.events) - 1
-            start_time = block.events[0].start
-            end_time = block.events[-1].end
-            i += len(block.events)
-            blocks.append((start, end, start_time, end_time))
-        self._blocks = blocks
+        """Initialize blocks."""
+        blocks = [
+            Block(self, start_idx, end_idx)
+            for start_idx, end_idx in get_block_indexes_by_pause(self)
+        ]
+        audio_blocks = []
+        for i, block in enumerate(blocks):
+            # Buffer start
+            if i == 0:
+                buffered_start = max(0, block.start - 1000)
+            else:
+                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
+                buffered_start = max(max_unbuffered_end, block.start - 1000)
+
+            # Buffer end
+            if i < len(blocks) - 1:
+                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
+                buffered_end = min(block.end + 1000, min_unbuffered_start)
+            else:
+                buffered_end = min(len(self.audio), block.end + 1000)
+
+            # Slice audio
+            info(
+                f"Slicing audio for block {block.start}-{block.end} "
+                f"({buffered_start} - {buffered_end})"
+            )
+            audio = self.audio[buffered_start:buffered_end]
+
+            # Create Audio Block
+            audio_block = AudioBlock(
+                series=self,
+                start_idx=block.start_idx,
+                end_idx=block.end_idx,
+                buffered_start=buffered_start,
+                buffered_end=buffered_end,
+                audio=audio,
+            )
+            audio_blocks.append(audio_block)
+        self._blocks = audio_blocks

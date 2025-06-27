@@ -173,7 +173,7 @@ class ImageSeries(Series):
 
         return series
 
-    def _init_fill_and_outline_colors(self) -> tuple[int, int]:
+    def _init_fill_and_outline_colors(self) -> None:
         """Initialzie the fill and outline colors used in this series.
 
         * Uses the most common two colors, which works correctly for tested images.
