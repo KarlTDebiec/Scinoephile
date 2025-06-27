@@ -14,3 +14,4 @@ test/htmlcov
 /scinoephile/data/cantonese/*.pkl
 /test/data/*/output/*/*.png
 /test/data/*/output/*/*.html
+/.venv/
