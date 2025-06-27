@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from platform import system
 
@@ -82,5 +83,9 @@ if __name__ == "__main__":
             "/Movies/My Life as McDull/output/yue-Hans_audio"
             "/0001-0033_00048792-00158875.wav"
         )
+    start_time = time.time()
     text = mgr.transcribe_file(infile)
+    elapsed = time.time() - start_time
+
     print(f"Transcription:\n{text}")
+    print(f"\nElapsed time: {elapsed:.2f} seconds")
