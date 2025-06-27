@@ -4,14 +4,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from pydub import AudioSegment
 
 from scinoephile.core.block import Block
-
-if TYPE_CHECKING:
-    from scinoephile.audio.audio_series import AudioSeries
 
 
 class AudioBlock(Block):
@@ -19,22 +14,20 @@ class AudioBlock(Block):
 
     def __init__(
         self,
-        series: AudioSeries,
-        start_idx: int,
-        end_idx: int,
         buffered_start: int,
         buffered_end: int,
         audio: AudioSegment,
+        **kwargs: object,
     ) -> None:
         """Initialize.
 
         Arguments:
-            series: AudioSeries containing block
-            start_idx: Start index of block
-            end_idx: End index of block
+            buffered_start: Start index of buffered audio
+            buffered_end: End index of buffered audio
             audio: Audio of block
+            **kwargs: Additional keyword arguments passed to Block constructor
         """
-        super().__init__(series, start_idx, end_idx)
+        super().__init__(**kwargs)
         self.buffered_start = buffered_start
         self.buffered_end = buffered_end
         self.audio = audio

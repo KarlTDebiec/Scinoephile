@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import re
-from functools import cached_property
 from logging import info
 from pathlib import Path
 from typing import Any
