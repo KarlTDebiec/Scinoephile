@@ -22,6 +22,7 @@ dependencies = [
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
     "snownlp>=0.12.3",
+    "soundfile>=0.13.1",
     "torch>=2.7.1",
     "torchaudio>=2.7.1",
     "transformers>=4.53.0",
