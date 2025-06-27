@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from typing import TYPE_CHECKING
 
-from scinoephile.core import Series
+if TYPE_CHECKING:
+    from scinoephile.core.series import Series
 
 
 def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series]:

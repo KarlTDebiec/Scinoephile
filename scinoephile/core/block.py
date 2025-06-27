@@ -5,10 +5,12 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Iterator
+from typing import Iterator, TYPE_CHECKING
 
-from scinoephile.core import Subtitle
-from scinoephile.core.series import Series
+from scinoephile.core.subtitle import Subtitle
+
+if TYPE_CHECKING:
+    from scinoephile.core.series import Series
 
 
 class Block:

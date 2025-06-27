@@ -4,10 +4,14 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pydub import AudioSegment
 
-from scinoephile.audio import AudioSeries
 from scinoephile.core.block import Block
+
+if TYPE_CHECKING:
+    from scinoephile.audio.audio_series import AudioSeries
 
 
 class AudioBlock(Block):
