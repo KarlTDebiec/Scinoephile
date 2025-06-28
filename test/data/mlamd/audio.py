@@ -31,12 +31,14 @@ if __name__ == "__main__":
     # LLM: Transcribe audio to Cantonese
     transcriber = Transcriber("khleeloo/whisper-large-v3-cantonese")
     # Code: Convert simplified Chinese to traditional
-    hanzi_converter = HanziConverter("s2hk")
+    hanzi_converter = HanziConverter("hk2s")
     # Code: Convert transcriptions to subtitles
     #   AudioSubtitle will need to store metadata such as words, timings, and confidence
     # Code: Get sync groups between source subtitles and transcribed subtitles
-    #   Several source subtitles may map to each transcribed subtitle
-    # LLM:
+    #   Several source subtitles expected to map to each transcribed subtitle
+    # LLM: Re-split each transcribed subtitle to timings of source subtitles
+    #   After this, mapping should be 1:1
+    # LLM: Proofread transcribed subtitles using source subtitles
 
     # Pipeline
     pipeline = transcriber | hanzi_converter
