@@ -6,11 +6,33 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
+from pprint import pprint
+from typing import Any
 
-from scinoephile.audio import AudioSeries, Transcriber
+from langchain_core.runnables import Runnable, RunnableConfig
+
+from scinoephile.audio import AudioSeries, HanziConverter, Transcriber
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core.hanzi import HanziConverter
 from scinoephile.testing import test_data_root
+
+
+class SeriesMerger(Runnable):
+    def invoke(
+        self,
+        input: dict,
+        config: RunnableConfig | None = None,
+        **kwargs: dict[str, Any],
+    ) -> AudioSeries:
+        block = input["block"]
+        segments = input["segments"]
+        series = AudioSeries()
+        series.audio = block.audio
+        series.events = block.events
+        print(f"{len(series.events), len(segments)}")
+        pprint([event.text for event in series.events])
+        pprint([segment.text for segment in segments])
+        return input
+
 
 if __name__ == "__main__":
     bluray_root = Path("/Volumes/Backup/Video/Disc")
@@ -33,6 +55,7 @@ if __name__ == "__main__":
     # Code: Convert simplified Chinese to traditional
     hanzi_converter = HanziConverter("hk2s")
     # Code: Convert transcriptions to subtitles
+    series_merger = SeriesMerger()
     #   AudioSubtitle will need to store metadata such as words, timings, and confidence
     # Code: Get sync groups between source subtitles and transcribed subtitles
     #   Several source subtitles expected to map to each transcribed subtitle
@@ -41,13 +64,13 @@ if __name__ == "__main__":
     # LLM: Proofread transcribed subtitles using source subtitles
 
     # Pipeline
-    pipeline = transcriber | hanzi_converter
+    pipeline = transcriber | hanzi_converter | series_merger
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
         start_time = time.perf_counter()
-        timestamped_transcription = pipeline.invoke(block)
+        timestamped_transcription = pipeline.invoke({"block": block})
         elapsed = time.perf_counter() - start_time
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)

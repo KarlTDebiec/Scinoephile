@@ -71,6 +71,11 @@ class Block:
         return self._series.events[self.end_idx - 1].end
 
     @cached_property
+    def events(self) -> list[Subtitle]:
+        """List of subtitles in the block."""
+        return self._series.slice(self.start_idx - 1, self.end_idx).events
+
+    @cached_property
     def start(self) -> int:
         """Start time of block."""
         return self._series.events[self.start_idx - 1].start

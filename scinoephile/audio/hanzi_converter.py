@@ -4,10 +4,12 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from langchain_core.runnables import Runnable, RunnableConfig
 from opencc import OpenCC
 
-from scinoephile.audio import TranscribedSegment
+from scinoephile.audio import AudioBlock, TranscribedSegment
 
 
 class HanziConverter(Runnable):
@@ -19,11 +21,13 @@ class HanziConverter(Runnable):
 
     def invoke(
         self,
-        input: list[TranscribedSegment],
+        input: dict[str, AudioBlock | list[TranscribedSegment]],
         config: RunnableConfig | None = None,
-        **kwargs,
-    ) -> list[TranscribedSegment]:
-        for segment in input:
+        **kwargs: dict[str, Any],
+    ) -> dict[str, AudioBlock | list[TranscribedSegment]]:
+        block: AudioBlock = input["block"]
+        segments: list[TranscribedSegment] = input["segments"]
+        for segment in segments:
             segment.text = self.converter.convert(segment.text)
             if segment.words:
                 i = 0
@@ -32,4 +36,4 @@ class HanziConverter(Runnable):
                     word.text = segment.text[i : i + word_length]
                     i += word_length
                 joined = "".join([w.text for w in segment.words])
-        return input
+        return {"block": block, "segments": segments}

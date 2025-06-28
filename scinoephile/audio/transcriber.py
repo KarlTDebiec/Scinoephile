@@ -11,7 +11,7 @@ from typing import Any
 import whisper_timestamped as whisper
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio import TranscribedSegment
+from scinoephile.audio import AudioBlock, TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 
 
@@ -23,17 +23,22 @@ class Transcriber(Runnable):
         self.model = whisper.load_model(model_name)
 
     def invoke(
-        self, input: Any, config: RunnableConfig | None = None, **kwargs
-    ) -> list[dict]:
+        self,
+        input: dict[str, AudioBlock],
+        config: RunnableConfig | None = None,
+        **kwargs: dict[str, Any],
+    ) -> dict[str, AudioBlock | list[TranscribedSegment]]:
+        block = input["block"]
         cache_path = Path("transcriber_cache.json")
 
         if cache_path.exists():
             print("📂 Using cached transcription")
             with cache_path.open("r", encoding="utf-8") as f:
-                return [TranscribedSegment.model_validate(s) for s in json.load(f)]
+                segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
+            return {"block": block, "segments": segments}
 
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            input.audio.export(temp_audio_path, format="wav")
+            block.audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
@@ -48,4 +53,4 @@ class Transcriber(Runnable):
             )
             print("💾 Saved transcription cache")
 
-        return segments
+        return {"block": block, "segments": segments}
