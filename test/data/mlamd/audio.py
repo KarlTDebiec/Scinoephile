@@ -4,112 +4,87 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from typing import Any
 
-import openai
-import torch
-import torchaudio
+import whisper_timestamped as whisper
 from langchain_core.runnables import Runnable, RunnableConfig
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, GenerationConfig
+from opencc import OpenCC
+from pydantic import BaseModel, Field
 
 from scinoephile.audio import AudioSeries
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
 
-bluray_root = Path("/Volumes/Backup/Video/Disc")
+
+class TimestampedWord(BaseModel):
+    """Single word within a transcribed segment."""
+
+    text: str = Field(..., description="Word's transcription.")
+    start: float = Field(..., description="Start time of word in seconds.")
+    end: float = Field(..., description="End time of word in seconds.")
+    confidence: float = Field(..., description="Confidence of transcription.")
 
 
-class LocalWhisperTranscriber(Runnable):
+class TimestampedSegment(BaseModel):
+    """Transcribed segment."""
+
+    id: int = Field(..., description="Segment ID, usually sequential.")
+    seek: int = Field(..., description="Audio seek offset where segment starts.")
+    start: float = Field(..., description="Start time of segment in seconds.")
+    end: float = Field(..., description="End time of the segment in seconds.")
+    text: str = Field(..., description="Full transcription of segment.")
+    tokens: list[int] | None = Field(None, description="Token IDs for segment.")
+    temperature: float | None = Field(None, description="Sampling temperature.")
+    avg_logprob: float | None = Field(None, description="Average log-probability.")
+    compression_ratio: float | None = Field(None, description="Compression ratio.")
+    no_speech_prob: float | None = Field(None, description="Probability of no speech.")
+    words: list[TimestampedWord] | None = Field(None, description="Words in segments.")
+
+
+class Transcriber(Runnable):
     def __init__(self, model_name: str = "khleeloo/whisper-large-v3-cantonese"):
-        self.device = self._select_device()
         self.model_name = model_name
-        self.processor = AutoProcessor.from_pretrained(self.model_name)
-        self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
-            self.model_name,
-            torch_dtype=torch.float32,
-            low_cpu_mem_usage=True,
-            use_safetensors=True,
-            attn_implementation="sdpa",
-        ).to(self.device)
-        self.forced_decoder_ids = self.processor.get_decoder_prompt_ids(
-            language="yue", task="transcribe"
-        )
-
-    def _select_device(self):
-        if torch.cuda.is_available():
-            return torch.device("cuda")
-        elif torch.backends.mps.is_available():
-            return torch.device("mps")
-        else:
-            return torch.device("cpu")
+        self.model = whisper.load_model(model_name)
 
     def invoke(
-        self,
-        input: Any,  # noqa: A002
-        config: RunnableConfig | None = None,
-        **kwargs,
-    ) -> str:
-        audio_block = input
-
-        # Export audio block to a temp WAV file
+        self, input: Any, config: RunnableConfig | None = None, **kwargs
+    ) -> list[dict]:
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            audio_block.audio.export(temp_audio_path, format="wav")
-            waveform, sr = torchaudio.load(temp_audio_path)
-            waveform = waveform.numpy()
-
-        # Preprocess and transcribe
-        inputs = self.processor(
-            waveform, sampling_rate=sr, return_tensors="pt", return_attention_mask=True
-        ).to(self.device)
-
-        generation_config = GenerationConfig.from_pretrained(self.model_name)
-        generation_config.forced_decoder_ids = self.forced_decoder_ids
-
-        with torch.no_grad():
-            output = self.model.generate(
-                inputs.input_features,
-                attention_mask=inputs.attention_mask,
-                generation_config=generation_config,
-                return_dict_in_generate=True,
+            input.audio.export(temp_audio_path, format="wav")
+            result = whisper.transcribe(
+                self.model,
+                str(temp_audio_path),
+                language="yue",
             )
-
-        text = self.processor.batch_decode(output.sequences, skip_special_tokens=True)[
-            0
-        ]
-        return text
+        return [TimestampedSegment(**s) for s in result["segments"]]
 
 
-class OpenAITranscriber(Runnable):
-    def __init__(self, model: str = "gpt-4o-transcribe", language: str = "yue"):
-        self.model = model
-        self.language = language
-        self.client = openai.OpenAI()
+class HanziConverter(Runnable):
+    def __init__(self, config: str = "s2hk"):
+        self.config = config
+        self.converter = OpenCC(config)
 
     def invoke(
         self,
-        input: Any,  # noqa: A002
+        input: list[TimestampedSegment],
         config: RunnableConfig | None = None,
         **kwargs,
-    ) -> str:
-        audio_block = input
-
-        with get_temp_file_path(suffix=".mp3") as temp_audio_path:
-            audio_block.audio.export(temp_audio_path, format="mp3")
-
-            with open(temp_audio_path, "rb") as f:
-                transcript = self.client.audio.transcriptions.create(
-                    model=self.model,
-                    file=f,
-                    language=self.language,
-                    response_format="text",
-                )
-
-        return transcript
+    ) -> list[TimestampedSegment]:
+        for segment in input:
+            segment.text = self.converter.convert(segment.text)
+            if segment.words:
+                for word in segment.words:
+                    word.text = self.converter.convert(word.text)
+            print(f"{len(segment.text)}, {len(segment.words)} words in segment")
+            print(f"|{segment.text}|{''.join([w.text for w in segment.words])}|")
+        return input
 
 
 if __name__ == "__main__":
+    bluray_root = Path("/Volumes/Backup/Video/Disc")
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
     title = Path(__file__).parent.name
@@ -122,17 +97,20 @@ if __name__ == "__main__":
     # yue_hans.save(test_output_dir / "yue-Hans_audio")
     yue_hans = AudioSeries.load(test_output_dir / "yue-Hans_audio")
 
-    openai_transcriber = OpenAITranscriber(model="whisper-1", language="zh")
-    whisper_transcriber = LocalWhisperTranscriber(
-        # model_name="khleeloo/whisper-large-v3-cantonese"
-        model_name="alvanlii/whisper-small-cantonese"
-    )
+    # Runnables
+    transcriber = Transcriber("khleeloo/whisper-large-v3-cantonese")
+    hanzi_converter = HanziConverter("s2hk")
+
+    # Pipeline
+    pipeline = transcriber | hanzi_converter
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
-        # openai_transcription = openai_transcriber.invoke(block)
-        # print("📝 OpenAI Transcription:", openai_transcription)
-        whisper_transcription = whisper_transcriber.invoke(block)
-        print("📝 Whisper Transcription:", whisper_transcription)
+        start_time = time.perf_counter()
+        timestamped_transcription = pipeline.invoke(block)
+        elapsed = time.perf_counter() - start_time
+
+        print("📝 Timestamped Whisper Transcription:", timestamped_transcription)
+        print(f"⏱️ Transcription time: {elapsed:.2f} seconds")
         break
