@@ -12,6 +12,7 @@ scinoephile.egg-info
 test/.coverage
 test/htmlcov
 /scinoephile/data/cantonese/*.pkl
-/test/data/*/output/*/*.png
 /test/data/*/output/*/*.html
+/test/data/*/output/*/*.png
+/test/data/*/output/*/*.wav
 /.venv/
