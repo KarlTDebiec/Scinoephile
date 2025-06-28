@@ -23,6 +23,9 @@ SyncGroup = list[list[int]]
 def are_series_one_to_one(one: Series, two: Series) -> bool:
     """Check whether two series are one-to-one matched.
 
+    This is useful for preparing test cases, specifically for excluding one-to-one
+    mappings, which are simple and not of interest for testing.
+
     Arguments:
         one: First series to compare
         two: Second series to compare
@@ -39,204 +42,23 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     return True
 
 
-def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
-    """Quantify the overlap between two series and compile the results in a matrix.
+def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
+    """Get a string representation of the overlap matrix between two series.
 
     Arguments:
-        one: First series
-        two: Second series
+        overlap: Overlap matrix
+        max_line_width: Maximum width of the returned string
     Returns:
-        Two-dimensional array whose rows correspond to subtitle indexes within series
-        one, whose columns correspond to subtitle indexes within series two, and whose
-        values are the proportion of each subtitle in series two which overlaps with
-        each subtitle in series one.
+        String representation of the overlap matrix
     """
-    one_mu = np.array([e.start + (e.end - e.start) / 2 for e in one.events])
-    one_sigma = np.array([(e.end - e.start) / 4 for e in one.events])
-    two_mu = np.array([e.start + (e.end - e.start) / 2 for e in two.events])
-    two_sigma = np.array([(e.end - e.start) / 4 for e in two.events])
-
-    mu_diff_sq = (one_mu[:, np.newaxis] - two_mu[np.newaxis, :]) ** 2
-    sigma_sq_sum = one_sigma[:, np.newaxis] ** 2 + two_sigma[np.newaxis, :] ** 2
-    overlap = np.exp(-mu_diff_sq / (2 * sigma_sq_sum))
-
-    return overlap
-
-
-def _get_sync_groups(
-    one: Series, two: Series, overlap: np.ndarray, cutoff: float
-) -> list[SyncGroup]:
-    sync_groups = []
-
-    for i in range(len(one.events)):
-        scale = np.max(overlap[i])
-        for j in range(len(two.events)):
-            if overlap[i, j] / scale < cutoff:
-                overlap[i, j] = 0
-    for j in range(len(two.events)):
-        scale = np.max(overlap[:, j])
-        if scale > 0:
-            for i in range(len(one.events)):
-                if overlap[i, j] / scale < cutoff:
-                    overlap[i, j] = 0
-
-    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
-
-    available_is = set(range(len(one.events)))
-    available_js = set(range(len(two.events)))
-
-    nonzero = np.argwhere(overlap)
-
-    js_that_match_each_i = {}
-    for i in range(len(one.events)):
-        js_that_match_each_i[i] = sorted(nonzero[nonzero[:, 0] == i, 1])
-
-    is_that_match_each_j = {}
-    for j in range(len(two.events)):
-        is_that_match_each_j[j] = sorted(nonzero[nonzero[:, 1] == j, 0])
-
-    for i, js_that_match_this_i in js_that_match_each_i.items():
-        if i not in available_is:
-            continue
-
-        # One to zero
-        if len(js_that_match_this_i) == 0:
-            sync_group = [[i], []]
-            available_is.remove(i)
-            sync_groups.append(sync_group)
-            continue
-
-        if len(js_that_match_this_i) == 1:
-            j = js_that_match_this_i[0]
-            is_that_match_this_j = is_that_match_each_j[j]
-
-            # One to one
-            if len(is_that_match_this_j) == 1:
-                sync_group = [[i], [j]]
-                available_is.remove(i)
-                available_js.remove(j)
-                sync_groups.append(sync_group)
-                continue
-
-            # Many to one
-            if len(is_that_match_this_j) > 1:
-                if not all(i2 in available_is for i2 in is_that_match_this_j):
-                    raise ScinoephileException()
-                sync_group = [is_that_match_this_j, [j]]
-                for i2 in is_that_match_this_j:
-                    available_is.remove(i2)
-                available_js.remove(j)
-                sync_groups.append(sync_group)
-                continue
-
-        # One to many
-        if len(js_that_match_this_i) > 1:
-            for j in js_that_match_this_i:
-                is_that_match_this_j = is_that_match_each_j[j]
-                if len(is_that_match_this_j) != 1:
-                    raise ScinoephileException()
-            sync_group = [[i], js_that_match_this_i]
-            available_is.remove(i)
-            for j in js_that_match_this_i:
-                available_js.remove(j)
-            sync_groups.append(sync_group)
-            continue
-
-    # Raise exception if there are any remaining subtitles in series one
-    if len(available_is) > 0:
-        raise ScinoephileException()
-
-    # Add remaining subtitles from series two
-    for j in available_js:
-        sync_groups.append([[], [j]])
-
-    # Sort sync groups by their indexes
-    sync_groups = _sort_sync_groups(sync_groups)
-
-    return sync_groups
-
-
-def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
-    """Sort sync groups.
-
-    Arguments:
-        sync_groups: Sync groups to sort
-    Returns:
-        Sorted sync groups
-    """
-    sorted_groups = []
-
-    for group in sync_groups:
-        inserted = False
-        for i in range(len(sorted_groups) + 1):
-            # Try inserting at position i
-            if i == len(sorted_groups):
-                sorted_groups.append(group)
-                inserted = True
-                break
-
-            result = _compare_groups(group, sorted_groups[i])
-            if result is None:
-                continue  # Try comparing with the next one
-            elif result < 0:
-                sorted_groups.insert(i, group)
-                inserted = True
-                break
-        if not inserted:
-            raise ScinoephileException(
-                "Could not determine correct position for sync group"
-            )
-
-    return sorted_groups
-
-
-def _compare_groups(first: SyncGroup, second: SyncGroup) -> int | None:
-    """Compare two sync groups.
-
-    Arguments:
-        first: First sync group
-        second: Second sync group
-    Returns:
-        -1 if first is less than second, 0 if they are equal, 1 if first is greater,
-        and None if they cannot be compared
-    """
-    first_min_one = min(first[0]) if first[0] else None
-    first_min_two = min(first[1]) if first[1] else None
-    second_min_one = min(second[0]) if second[0] else None
-    second_min_two = min(second[1]) if second[1] else None
-    first_order = None
-    second_order = None
-    if first_min_one is not None and second_min_one is not None:
-        if first_min_one < second_min_one:
-            first_order = -1
-        elif first_min_one > second_min_one:
-            first_order = 1
-        else:
-            first_order = 0
-    if first_min_two is not None and second_min_two is not None:
-        if first_min_two < second_min_two:
-            second_order = -1
-        elif first_min_two > second_min_two:
-            second_order = 1
-        else:
-            second_order = 0
-    match (first_order, second_order):
-        case (None, None):
-            return None
-        case (None, _):
-            return second_order
-        case (_, None):
-            return first_order
-        case (-1, -1):
-            return -1
-        case (0, 0):
-            return 0
-        case (1, 1):
-            return 1
-        case _:
-            raise ScinoephileException(
-                "Unexpected comparison result between sync groups"
-            )
+    return np.array2string(
+        overlap,
+        precision=2,
+        suppress_small=True,
+        max_line_width=max_line_width,
+        threshold=np.inf,
+        edgeitems=np.inf,
+    ).replace("0.  ", "____")
 
 
 def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[SyncGroup]:
@@ -289,6 +111,30 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         sync_group[1] = sorted([int(j + 1) for j in sync_group[1]])
 
     return sync_groups
+
+
+def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
+    """Quantify the overlap between two series and compile the results in a matrix.
+
+    Arguments:
+        one: First series
+        two: Second series
+    Returns:
+        Two-dimensional array whose rows correspond to subtitle indexes within series
+        one, whose columns correspond to subtitle indexes within series two, and whose
+        values are the proportion of each subtitle in series two which overlaps with
+        each subtitle in series one.
+    """
+    one_mu = np.array([e.start + (e.end - e.start) / 2 for e in one.events])
+    one_sigma = np.array([(e.end - e.start) / 4 for e in one.events])
+    two_mu = np.array([e.start + (e.end - e.start) / 2 for e in two.events])
+    two_sigma = np.array([(e.end - e.start) / 4 for e in two.events])
+
+    mu_diff_sq = (one_mu[:, np.newaxis] - two_mu[np.newaxis, :]) ** 2
+    sigma_sq_sum = one_sigma[:, np.newaxis] ** 2 + two_sigma[np.newaxis, :] ** 2
+    overlap = np.exp(-mu_diff_sq / (2 * sigma_sq_sum))
+
+    return overlap
 
 
 def get_synced_series(one: Series, two: Series) -> Series:
@@ -387,20 +233,180 @@ def get_synced_series_from_groups(
     return synced
 
 
-def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
-    """Get a string representation of the overlap matrix between two series.
+def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
+    """Compare two sync groups.
 
     Arguments:
-        overlap: Overlap matrix
-        max_line_width: Maximum width of the returned string
+        first: First sync group
+        second: Second sync group
     Returns:
-        String representation of the overlap matrix
+        -1 if first is less than second, 0 if they are equal, 1 if first is greater,
+        and None if they cannot be compared
     """
-    return np.array2string(
-        overlap,
-        precision=2,
-        suppress_small=True,
-        max_line_width=max_line_width,
-        threshold=np.inf,
-        edgeitems=np.inf,
-    ).replace("0.  ", "____")
+    first_min_one = min(first[0]) if first[0] else None
+    first_min_two = min(first[1]) if first[1] else None
+    second_min_one = min(second[0]) if second[0] else None
+    second_min_two = min(second[1]) if second[1] else None
+    first_order = None
+    second_order = None
+    if first_min_one is not None and second_min_one is not None:
+        if first_min_one < second_min_one:
+            first_order = -1
+        elif first_min_one > second_min_one:
+            first_order = 1
+        else:
+            first_order = 0
+    if first_min_two is not None and second_min_two is not None:
+        if first_min_two < second_min_two:
+            second_order = -1
+        elif first_min_two > second_min_two:
+            second_order = 1
+        else:
+            second_order = 0
+    match (first_order, second_order):
+        case (None, None):
+            return None
+        case (None, _):
+            return second_order
+        case (_, None):
+            return first_order
+        case (-1, -1):
+            return -1
+        case (0, 0):
+            return 0
+        case (1, 1):
+            return 1
+        case _:
+            raise ScinoephileException(
+                "Unexpected comparison result between sync groups"
+            )
+
+
+def _get_sync_groups(
+    one: Series, two: Series, overlap: np.ndarray, cutoff: float
+) -> list[SyncGroup]:
+    sync_groups = []
+
+    for i in range(len(one.events)):
+        scale = np.max(overlap[i])
+        for j in range(len(two.events)):
+            if overlap[i, j] / scale < cutoff:
+                overlap[i, j] = 0
+    for j in range(len(two.events)):
+        scale = np.max(overlap[:, j])
+        if scale > 0:
+            for i in range(len(one.events)):
+                if overlap[i, j] / scale < cutoff:
+                    overlap[i, j] = 0
+
+    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
+
+    available_is = set(range(len(one.events)))
+    available_js = set(range(len(two.events)))
+
+    nonzero = np.argwhere(overlap)
+
+    js_that_match_each_i = {}
+    for i in range(len(one.events)):
+        js_that_match_each_i[i] = sorted(nonzero[nonzero[:, 0] == i, 1])
+
+    is_that_match_each_j = {}
+    for j in range(len(two.events)):
+        is_that_match_each_j[j] = sorted(nonzero[nonzero[:, 1] == j, 0])
+
+    for i, js_that_match_this_i in js_that_match_each_i.items():
+        if i not in available_is:
+            continue
+
+        # One to zero
+        if len(js_that_match_this_i) == 0:
+            sync_group = [[i], []]
+            available_is.remove(i)
+            sync_groups.append(sync_group)
+            continue
+
+        if len(js_that_match_this_i) == 1:
+            j = js_that_match_this_i[0]
+            is_that_match_this_j = is_that_match_each_j[j]
+
+            # One to one
+            if len(is_that_match_this_j) == 1:
+                sync_group = [[i], [j]]
+                available_is.remove(i)
+                available_js.remove(j)
+                sync_groups.append(sync_group)
+                continue
+
+            # Many to one
+            if len(is_that_match_this_j) > 1:
+                if not all(i2 in available_is for i2 in is_that_match_this_j):
+                    raise ScinoephileException()
+                sync_group = [is_that_match_this_j, [j]]
+                for i2 in is_that_match_this_j:
+                    available_is.remove(i2)
+                available_js.remove(j)
+                sync_groups.append(sync_group)
+                continue
+
+        # One to many
+        if len(js_that_match_this_i) > 1:
+            for j in js_that_match_this_i:
+                is_that_match_this_j = is_that_match_each_j[j]
+                if len(is_that_match_this_j) != 1:
+                    raise ScinoephileException()
+            sync_group = [[i], js_that_match_this_i]
+            available_is.remove(i)
+            for j in js_that_match_this_i:
+                available_js.remove(j)
+            sync_groups.append(sync_group)
+            continue
+
+    # Raise exception if there are any remaining subtitles in series one
+    if len(available_is) > 0:
+        raise ScinoephileException()
+
+    # Add remaining subtitles from series two
+    for j in available_js:
+        sync_groups.append([[], [j]])
+
+    # Sort sync groups by their indexes
+    sync_groups = _sort_sync_groups(sync_groups)
+
+    return sync_groups
+
+
+def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
+    """Sort sync groups.
+
+    May not correctly handle all initial orders, but should work for the cases
+    encountered.
+
+    Arguments:
+        sync_groups: Sync groups to sort
+    Returns:
+        Sorted sync groups
+    """
+    sorted_groups = []
+
+    for group in sync_groups:
+        inserted = False
+        for i in range(len(sorted_groups) + 1):
+            # Try inserting at position i
+            if i == len(sorted_groups):
+                sorted_groups.append(group)
+                inserted = True
+                break
+
+            result = _compare_sync_groups(group, sorted_groups[i])
+            if result is None:
+                continue  # Try comparing with the next one
+            elif result < 0:
+                sorted_groups.insert(i, group)
+                inserted = True
+                break
+        if not inserted:
+            raise ScinoephileException(
+                "Could not determine correct position for sync group"
+            )
+
+    return sorted_groups

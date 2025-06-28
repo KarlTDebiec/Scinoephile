@@ -9,6 +9,7 @@ from copy import deepcopy
 
 from hanziconv import HanziConv
 
+from scinoephile.core.hanzi.hanzi_converter import HanziConverter
 from scinoephile.core.series import Series
 from scinoephile.core.text import get_char_type, half_to_full_punc
 
@@ -179,3 +180,13 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
             traditionalized += char
 
     return traditionalized
+
+
+__all__ = [
+    "HanziConverter",
+    "get_hanzi_cleaned",
+    "get_hanzi_flattened",
+    "get_hanzi_simplified",
+    "get_hanzi_traditionalized",
+    "half_to_full_punc_for_cleaning",
+]

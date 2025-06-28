@@ -7,11 +7,17 @@ from __future__ import annotations
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
+from scinoephile.audio.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcribed_word import TranscribedWord
+from scinoephile.audio.transcriber import Transcriber
 from scinoephile.audio.transcription_manager import TranscriptionManager
 
 __all__ = [
     "AudioBlock",
     "AudioSeries",
     "AudioSubtitle",
+    "TranscribedWord",
+    "TranscribedSegment",
+    "Transcriber",
     "TranscriptionManager",
 ]
