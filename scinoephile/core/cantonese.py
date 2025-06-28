@@ -55,7 +55,7 @@ def get_cantonese_romanization(series: Series) -> Series:
     """Get the Yale Cantonese romanization of Hanzi series.
 
     Arguments:
-        series: series for which to get Yale Cantonese romanization
+        series: Series for which to get Yale Cantonese romanization
     Returns:
         Yale Cantonese romanization of series
     """
@@ -166,3 +166,8 @@ def _get_cantonese_text_romanization(text: str) -> str:
     text_romanization = text_romanization.strip()
 
     return text_romanization
+
+
+__all__ = [
+    "get_cantonese_romanization",
+]

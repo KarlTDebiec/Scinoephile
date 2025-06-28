@@ -21,9 +21,9 @@ def get_hanzi_cleaned(series: Series) -> Series:
     """Get hanzi series cleaned.
 
     Arguments:
-        series: series to clean
+        series: Series to clean
     Returns:
-        cleaned series
+        Cleaned series
     """
     series = deepcopy(series)
     new_events = []
@@ -40,9 +40,9 @@ def get_hanzi_flattened(series: Series) -> Series:
     """Get multi-line hanzi series flattened to single lines.
 
     Arguments:
-        series: series to flatten
+        series: Series to flatten
     Returns:
-        flattened series
+        Flattened series
     """
     series = deepcopy(series)
     for event in series:
@@ -54,9 +54,9 @@ def get_hanzi_simplified(series: Series) -> Series:
     """Get traditional hanzi series simplified.
 
     Arguments:
-        series: series to simplify
+        series: Series to simplify
     Returns:
-        simplified series
+        Simplified series
     """
     series = deepcopy(series)
     for event in series:
@@ -68,9 +68,9 @@ def get_hanzi_traditionalized(series: Series) -> Series:
     """Get simplified hanzi series traditionalized.
 
     Arguments:
-        series: series to traditionalize
+        series: Series to traditionalize
     Returns:
-        traditionalized series
+        Traditionalized series
     """
     series = deepcopy(series)
     for event in series:
@@ -82,9 +82,9 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     """Get hanzi text cleaned.
 
     Arguments:
-        text: text to clean
+        text: Text to clean
     Returns:
-        cleaned text
+        Cleaned text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
@@ -116,9 +116,9 @@ def _get_hanzi_text_flattened(text: str) -> str:
     # TODO: Consider replacing two western spaces with one eastern space
 
     Arguments:
-        text: text to flatten
+        text: Text to flatten
     Returns:
-        flattened text
+        Flattened text
     """
     # Revert strange substitution in pysubs2/subrip.py:66
     flattened = re.sub(r"\\N", r"\n", text)
@@ -142,9 +142,9 @@ def _get_hanzi_text_simplified(text: str) -> str:
     """Get traditional hanzi text simplified.
 
     Arguments:
-        text: text to simplify
+        text: Text to simplify
     Returns:
-        simplified text
+        Simplified text
     """
     simplified = ""
 
@@ -161,9 +161,9 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
     """Get simplified hanzi text traditionalized.
 
     Arguments:
-        text: text to traditionalize
+        text: Text to traditionalize
     Returns:
-        traditionalized text
+        Traditionalized text
     """
     traditionalized = ""
 
@@ -179,3 +179,12 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
             traditionalized += char
 
     return traditionalized
+
+
+__all__ = [
+    "get_hanzi_cleaned",
+    "get_hanzi_flattened",
+    "get_hanzi_simplified",
+    "get_hanzi_traditionalized",
+    "half_to_full_punc_for_cleaning",
+]

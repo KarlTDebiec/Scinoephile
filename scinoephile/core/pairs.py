@@ -18,18 +18,18 @@ def get_pair_blocks_by_pause(
     """Split a pair of series into blocks using pauses without text in either.
 
     Arguments:
-        one: first series
-        two: second series
-        pause_length: split whenever a pause of this length is encountered
+        one: First series
+        two: Second series
+        pause_length: Split whenever a pause of this length is encountered
     Returns:
-        pairs of series split into blocks
+        Pairs of series split into blocks
     """
     blocks = []
     source_one = deepcopy(one.events)
     source_two = deepcopy(two.events)
 
     def get_nascent_block_cutoff():
-        """Get latest acceptable start for an event to be added to the nascent block"""
+        """Get latest acceptable start for an event to be added to the nascent block."""
         cutoff = 0
         if nascent_block_one:
             cutoff = max(cutoff, nascent_block_one[-1].end)
@@ -106,10 +106,10 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
     later will be shifted by the same amount.
 
     Arguments:
-        one: first series
-        two: second series
+        one: First series
+        two: Second series
     Returns:
-        pair with their start times shifted to zero
+        Pair with their start times shifted to zero
     """
     if one.events and two.events:
         start_time = min(one.events[0].start, two.events[0].start)
@@ -132,10 +132,10 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:
-        one: first series
-        two: second series
+        one: First series
+        two: Second series
     Returns:
-        strings of each series
+        Strings of each series
     """
     one, two = get_pair_with_zero_start(one, two)
     if one.events and two.events:
@@ -153,3 +153,10 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     one_string = one.to_simple_string(start=start, duration=duration)
     two_string = two.to_simple_string(start=start, duration=duration)
     return one_string, two_string
+
+
+__all__ = [
+    "get_pair_blocks_by_pause",
+    "get_pair_with_zero_start",
+    "get_pair_strings",
+]
