@@ -11,7 +11,6 @@ from scinoephile.audio.hanzi_converter import HanziConverter
 from scinoephile.audio.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcribed_word import TranscribedWord
 from scinoephile.audio.transcriber import Transcriber
-from scinoephile.audio.transcription_manager import TranscriptionManager
 from scinoephile.audio.transcription_payload import TranscriptionPayload
 
 __all__ = [
@@ -22,6 +21,5 @@ __all__ = [
     "TranscribedWord",
     "TranscribedSegment",
     "Transcriber",
-    "TranscriptionManager",
     "TranscriptionPayload",
 ]
