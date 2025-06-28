@@ -31,3 +31,15 @@ class AudioBlock(Block):
         self.buffered_start = buffered_start
         self.buffered_end = buffered_end
         self.audio = audio
+
+    def __repr__(self) -> str:
+        """Get string representation."""
+        return (
+            f"{self.__class__.__name__}("
+            f"start_idx={self.start_idx}, "
+            f"end_idx={self.end_idx}, "
+            f"start={self.start}, "
+            f"end={self.end}, "
+            f"buffered_start={self.buffered_start}, "
+            f"buffered_end={self.buffered_end})"
+        )

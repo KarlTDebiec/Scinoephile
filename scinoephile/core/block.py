@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from functools import cached_property
-from typing import Iterator, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from scinoephile.core.subtitle import Subtitle
 
@@ -53,6 +54,16 @@ class Block:
             Number of subtitles in block
         """
         return self.end_idx - self.start_idx + 1
+
+    def __repr__(self) -> str:
+        """Get string representation."""
+        return (
+            f"{self.__class__.__name__}("
+            f"start_idx={self.start_idx}, "
+            f"end_idx={self.end_idx}, "
+            f"start={self.start}, "
+            f"end={self.end})"
+        )
 
     @cached_property
     def end(self) -> int:

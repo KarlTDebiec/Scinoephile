@@ -4,22 +4,19 @@
 
 from __future__ import annotations
 
-import time
 from logging import info
 from pathlib import Path
-from platform import system
 
 import numpy as np
 import torch
 import torchaudio
+from pydub import AudioSegment
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, GenerationConfig
 
 from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.common.typing import PathLike
 from scinoephile.common.validation import validate_input_directory, validate_input_file
-from pydub import AudioSegment
 
 
 class TranscriptionManager:
