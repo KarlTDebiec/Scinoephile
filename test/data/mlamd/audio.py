@@ -11,7 +11,13 @@ from typing import Any
 
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio import AudioSeries, HanziConverter, Transcriber
+from scinoephile.audio import (
+    AudioSeries,
+    AudioSubtitle,
+    HanziConverter,
+    Transcriber,
+    TranscriptionPayload,
+)
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
 
@@ -19,18 +25,33 @@ from scinoephile.testing import test_data_root
 class SeriesMerger(Runnable):
     def invoke(
         self,
-        input: dict,
+        input: TranscriptionPayload,
         config: RunnableConfig | None = None,
-        **kwargs: dict[str, Any],
-    ) -> AudioSeries:
+        **kwargs: Any,
+    ) -> TranscriptionPayload:
         block = input["block"]
         segments = input["segments"]
+
+        events = []
+        for segment in segments:
+            start = block.start + int(segment.start * 1000)
+            end = block.start + int(segment.end * 1000)
+            text = segment.text.strip()
+            event = AudioSubtitle(
+                start=start,
+                end=end,
+                text=text,
+                segment=segment,
+            )
+            events.append(event)
+
         series = AudioSeries()
         series.audio = block.audio
-        series.events = block.events
+        series.events = events
         print(f"{len(series.events), len(segments)}")
         pprint([event.text for event in series.events])
         pprint([segment.text for segment in segments])
+        pprint(series)
         return input
 
 
@@ -70,7 +91,8 @@ if __name__ == "__main__":
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
         start_time = time.perf_counter()
-        timestamped_transcription = pipeline.invoke({"block": block})
+        payload = TranscriptionPayload(block=block)
+        timestamped_transcription = pipeline.invoke(payload)
         elapsed = time.perf_counter() - start_time
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)

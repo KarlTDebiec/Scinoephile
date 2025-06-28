@@ -9,7 +9,9 @@ from typing import Any
 from langchain_core.runnables import Runnable, RunnableConfig
 from opencc import OpenCC
 
-from scinoephile.audio import AudioBlock, TranscribedSegment
+from scinoephile.audio.audio_block import AudioBlock
+from scinoephile.audio.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription_payload import TranscriptionPayload
 
 
 class HanziConverter(Runnable):
@@ -21,10 +23,10 @@ class HanziConverter(Runnable):
 
     def invoke(
         self,
-        input: dict[str, AudioBlock | list[TranscribedSegment]],
+        input: TranscriptionPayload,
         config: RunnableConfig | None = None,
-        **kwargs: dict[str, Any],
-    ) -> dict[str, AudioBlock | list[TranscribedSegment]]:
+        **kwargs: Any,
+    ) -> TranscriptionPayload:
         block: AudioBlock = input["block"]
         segments: list[TranscribedSegment] = input["segments"]
         for segment in segments:
@@ -36,4 +38,4 @@ class HanziConverter(Runnable):
                     word.text = segment.text[i : i + word_length]
                     i += word_length
                 joined = "".join([w.text for w in segment.words])
-        return {"block": block, "segments": segments}
+        return TranscriptionPayload(block=block, segments=segments)

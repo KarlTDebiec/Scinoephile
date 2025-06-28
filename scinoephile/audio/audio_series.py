@@ -339,7 +339,6 @@ class AudioSeries(Series):
                     end=text_event.end,
                     audio=audio,
                     text=text_event.text,
-                    series=series,
                 )
             )
 

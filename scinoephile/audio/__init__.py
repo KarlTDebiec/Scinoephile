@@ -12,6 +12,7 @@ from scinoephile.audio.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcribed_word import TranscribedWord
 from scinoephile.audio.transcriber import Transcriber
 from scinoephile.audio.transcription_manager import TranscriptionManager
+from scinoephile.audio.transcription_payload import TranscriptionPayload
 
 __all__ = [
     "AudioBlock",
@@ -22,4 +23,5 @@ __all__ = [
     "TranscribedSegment",
     "Transcriber",
     "TranscriptionManager",
+    "TranscriptionPayload",
 ]

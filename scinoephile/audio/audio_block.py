@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from pydub import AudioSegment
 
 from scinoephile.core.block import Block
@@ -17,7 +19,7 @@ class AudioBlock(Block):
         buffered_start: int,
         buffered_end: int,
         audio: AudioSegment,
-        **kwargs: object,
+        **kwargs: Any,
     ) -> None:
         """Initialize.
 
