@@ -34,16 +34,16 @@ if __name__ == "__main__":
     yue_hans = AudioSeries.load(test_output_dir / "yue-Hans_audio")
 
     # Runnables
-    # Code: Preprocess audio for transcription
-    # LLM: Transcribe audio to Cantonese
+    # Code: Preprocess 广东话 audio for transcription
+    # Whisper: Transcribe 广东话 audio to 粤文
     transcriber = WhisperTranscriber("khleeloo/whisper-large-v3-cantonese")
-    # Code: Convert simplified Chinese to traditional
+    # Code: Convert 繁体中文 into 简体中文
     hanzi_converter = HanziConverter("hk2s")
     # Code: Split transcribed segments
     segment_splitter = SegmentSplitter()
     # Code: Convert transcriptions to subtitles
     series_merger = SegmentToSeriesConverter()
-    # Code: Get sync groups between source subtitles and transcribed subtitles
+    # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
     sync_grouper = SyncGrouper()
     # LLM: Re-split each transcribed subtitle to timings of source subtitles
     #   After this, mapping should be 1:1
