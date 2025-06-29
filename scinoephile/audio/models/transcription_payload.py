@@ -10,17 +10,17 @@ from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.core.synchronization import SyncGroup
 
 if TYPE_CHECKING:
-    from scinoephile.audio.core import AudioBlock, AudioSeries
+    from scinoephile.audio import AudioSeries
 
 
 class TranscriptionPayload(TypedDict):
     """Payload for audio transcription."""
 
-    block: AudioBlock
-    """Audio block to be transcribed."""
+    source: AudioSeries
+    """Source series."""
     segments: NotRequired[list[TranscribedSegment]]
     """Transcribed segments."""
     series: NotRequired[AudioSeries | None]
-    """Transcribed subtitles."""
+    """Transcribed series."""
     sync_groups: NotRequired[SyncGroup]
     """Sync groups."""

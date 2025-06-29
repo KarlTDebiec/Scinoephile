@@ -9,7 +9,6 @@ from typing import Any
 
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio.core import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
@@ -28,28 +27,23 @@ class SyncGrouper(Runnable):
         config: RunnableConfig | None = None,
         **kwargs: Any,
     ) -> TranscriptionPayload:
-        block = input["block"]
-        source_series = AudioSeries()
-        source_series.audio = block.audio
-        source_series.events = block.events
-        transcribed_series = input["series"]
+        source = input["source"]
+        series = input["series"]
 
-        source_str, transcribed_str = get_pair_strings(
-            source_series, transcribed_series
-        )
+        source_str, transcribed_str = get_pair_strings(source, series)
         print(f"\nMANDARIN:\n{source_str}")
         print(f"\nCANTONESE:\n{transcribed_str}")
 
-        overlap = get_sync_overlap_matrix(source_series, transcribed_series)
+        overlap = get_sync_overlap_matrix(source, series)
         print("\nOVERLAP:")
         print(get_overlap_string(overlap))
 
-        sync_groups = get_sync_groups(source_series, transcribed_series)
+        sync_groups = get_sync_groups(source, series)
         print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
         return TranscriptionPayload(
-            block=block,
+            source=source,
             segments=input["segments"],
-            series=transcribed_series,
+            series=series,
             sync_groups=sync_groups,
         )

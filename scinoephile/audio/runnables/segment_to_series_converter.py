@@ -4,12 +4,11 @@
 
 from __future__ import annotations
 
-from pprint import pprint
 from typing import Any
 
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio.core import AudioSeries, AudioSubtitle
+from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.models import TranscriptionPayload
 
 
@@ -31,15 +30,14 @@ class SegmentToSeriesConverter(Runnable):
         Returns:
             Transcription payload with audio series created from segments
         """
-        block = input["block"]
+        source = input["source"]
         segments = input["segments"]
+        source_start = source.events[0].start
 
         events = []
         for segment in segments:
-            pprint(segment)
-            pprint(segment.words)
-            start = block.start + int(segment.start * 1000)
-            end = block.start + int(segment.end * 1000)
+            start = source_start + int(segment.start * 1000)
+            end = source_start + int(segment.end * 1000)
             text = segment.text.strip()
             event = AudioSubtitle(
                 start=start,
@@ -50,6 +48,10 @@ class SegmentToSeriesConverter(Runnable):
             events.append(event)
 
         series = AudioSeries()
-        series.audio = block.audio
+        series.audio = source.audio
         series.events = events
-        return TranscriptionPayload(block=block, segments=segments, series=series)
+        return TranscriptionPayload(
+            source=source,
+            segments=segments,
+            series=series,
+        )

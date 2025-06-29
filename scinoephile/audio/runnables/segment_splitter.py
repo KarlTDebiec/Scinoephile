@@ -66,6 +66,6 @@ class SegmentSplitter(Runnable):
                 nascent_words = []
 
         return TranscriptionPayload(
-            block=input["block"],
+            source=input["source"],
             segments=split_segments,
         )

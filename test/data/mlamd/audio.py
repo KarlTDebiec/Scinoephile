@@ -7,7 +7,7 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from scinoephile.audio.core import AudioSeries
+from scinoephile.audio import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.audio.runnables import (
     HanziConverter,
@@ -42,24 +42,30 @@ if __name__ == "__main__":
     # Code: Split transcribed segments
     segment_splitter = SegmentSplitter()
     # Code: Convert transcriptions to subtitles
-    series_merger = SegmentToSeriesConverter()
+    segment_to_series_converter = SegmentToSeriesConverter()
     # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
     sync_grouper = SyncGrouper()
-    # LLM: Re-split each transcribed subtitle to timings of source subtitles
+    # LLM: Merge transcribed 粤文 subtitles to match source 中文 subtitles
     #   After this, mapping should be 1:1
-    # LLM: Proofread transcribed subtitles using source subtitles
-    #   Probably also need to copy over punctutation
+    # LLM: Proofread transcribed 粤文 subtitles using source 中文 subtitles
 
     # Pipeline
     pipeline = (
-        transcriber | hanzi_converter | segment_splitter | series_merger | sync_grouper
+        transcriber
+        | hanzi_converter
+        | segment_splitter
+        | segment_to_series_converter
+        | sync_grouper
     )
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
         start_time = time.perf_counter()
-        payload = TranscriptionPayload(block=block)
+        source = AudioSeries()
+        source.audio = block.audio
+        source.events = block.events
+        payload = TranscriptionPayload(source=source)
         timestamped_transcription = pipeline.invoke(payload)
         elapsed = time.perf_counter() - start_time
 

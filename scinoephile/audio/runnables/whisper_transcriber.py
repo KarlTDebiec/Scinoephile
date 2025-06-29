@@ -42,17 +42,17 @@ class WhisperTranscriber(Runnable):
         Returns:
             Transcription payload with transcribed segments
         """
-        block = input["block"]
+        source = input["source"]
         cache_path = Path("transcriber_cache.json")
 
         if cache_path.exists():
             print("📂 Using cached transcription")
             with cache_path.open("r", encoding="utf-8") as f:
                 segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
-            return {"block": block, "segments": segments}
+            return {"source": source, "segments": segments}
 
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            block.audio.export(temp_audio_path, format="wav")
+            source.audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
@@ -67,4 +67,7 @@ class WhisperTranscriber(Runnable):
             )
             print("💾 Saved transcription cache")
 
-        return TranscriptionPayload(block=block, segments=segments)
+        return TranscriptionPayload(
+            source=source,
+            segments=segments,
+        )

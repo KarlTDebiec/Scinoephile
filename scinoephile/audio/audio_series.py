@@ -13,8 +13,8 @@ import ffmpeg
 from pydub import AudioSegment
 from pysubs2 import SSAFile
 
-from scinoephile.audio.core.audio_block import AudioBlock
-from scinoephile.audio.core.audio_subtitle import AudioSubtitle
+from scinoephile.audio.audio_block import AudioBlock
+from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.common import NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
