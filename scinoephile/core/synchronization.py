@@ -410,3 +410,14 @@ def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
             )
 
     return sorted_groups
+
+
+__all__ = [
+    "SyncGroup",
+    "are_series_one_to_one",
+    "get_overlap_string",
+    "get_sync_groups",
+    "get_sync_overlap_matrix",
+    "get_synced_series",
+    "get_synced_series_from_groups",
+]
