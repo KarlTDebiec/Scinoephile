@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, NotRequired, TypedDict
 
 from scinoephile.audio.models.transcribed_segment import TranscribedSegment
+from scinoephile.core.synchronization import SyncGroup
 
 if TYPE_CHECKING:
     from scinoephile.audio.core import AudioBlock, AudioSeries
@@ -21,3 +22,5 @@ class TranscriptionPayload(TypedDict):
     """Transcribed segments."""
     series: NotRequired[AudioSeries | None]
     """Transcribed subtitles."""
+    sync_groups: NotRequired[SyncGroup]
+    """Sync groups."""

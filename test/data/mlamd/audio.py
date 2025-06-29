@@ -11,8 +11,10 @@ from scinoephile.audio.core import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.audio.runnables import (
     HanziConverter,
+    SegmentSplitter,
     SegmentToSeriesConverter,
-    Transcriber,
+    SyncGrouper,
+    WhisperTranscriber,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
@@ -34,20 +36,24 @@ if __name__ == "__main__":
     # Runnables
     # Code: Preprocess audio for transcription
     # LLM: Transcribe audio to Cantonese
-    transcriber = Transcriber("khleeloo/whisper-large-v3-cantonese")
+    transcriber = WhisperTranscriber("khleeloo/whisper-large-v3-cantonese")
     # Code: Convert simplified Chinese to traditional
     hanzi_converter = HanziConverter("hk2s")
+    # Code: Split transcribed segments
+    segment_splitter = SegmentSplitter()
     # Code: Convert transcriptions to subtitles
     series_merger = SegmentToSeriesConverter()
-    #   AudioSubtitle will need to store metadata such as words, timings, and confidence
     # Code: Get sync groups between source subtitles and transcribed subtitles
-    #   Several source subtitles expected to map to each transcribed subtitle
+    sync_grouper = SyncGrouper()
     # LLM: Re-split each transcribed subtitle to timings of source subtitles
     #   After this, mapping should be 1:1
     # LLM: Proofread transcribed subtitles using source subtitles
+    #   Probably also need to copy over punctutation
 
     # Pipeline
-    pipeline = transcriber | hanzi_converter | series_merger
+    pipeline = (
+        transcriber | hanzi_converter | segment_splitter | series_merger | sync_grouper
+    )
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")

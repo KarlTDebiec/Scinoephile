@@ -5,13 +5,17 @@
 from __future__ import annotations
 
 from scinoephile.audio.runnables.hanzi_converter import HanziConverter
+from scinoephile.audio.runnables.segment_splitter import SegmentSplitter
 from scinoephile.audio.runnables.segment_to_series_converter import (
     SegmentToSeriesConverter,
 )
-from scinoephile.audio.runnables.whisper_transcriber import Transcriber
+from scinoephile.audio.runnables.sync_grouper import SyncGrouper
+from scinoephile.audio.runnables.whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "HanziConverter",
+    "SegmentSplitter",
     "SegmentToSeriesConverter",
-    "Transcriber",
+    "SyncGrouper",
+    "WhisperTranscriber",
 ]

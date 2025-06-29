@@ -15,7 +15,7 @@ from scinoephile.audio.models import TranscribedSegment, TranscriptionPayload
 from scinoephile.common.file import get_temp_file_path
 
 
-class Transcriber(Runnable):
+class WhisperTranscriber(Runnable):
     """Runnable for transcribing audio using Whisper."""
 
     def __init__(self, model_name: str = "khleeloo/whisper-large-v3-cantonese"):

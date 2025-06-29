@@ -1,7 +1,10 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Runnable for converting segments to an audio series."""
+
 from __future__ import annotations
 
+from pprint import pprint
 from typing import Any
 
 from langchain_core.runnables import Runnable, RunnableConfig
@@ -33,6 +36,8 @@ class SegmentToSeriesConverter(Runnable):
 
         events = []
         for segment in segments:
+            pprint(segment)
+            pprint(segment.words)
             start = block.start + int(segment.start * 1000)
             end = block.start + int(segment.end * 1000)
             text = segment.text.strip()
@@ -47,4 +52,4 @@ class SegmentToSeriesConverter(Runnable):
         series = AudioSeries()
         series.audio = block.audio
         series.events = events
-        return input
+        return TranscriptionPayload(block=block, segments=segments, series=series)
