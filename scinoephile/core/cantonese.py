@@ -166,3 +166,8 @@ def _get_cantonese_text_romanization(text: str) -> str:
     text_romanization = text_romanization.strip()
 
     return text_romanization
+
+
+__all__ = [
+    "get_cantonese_romanization",
+]

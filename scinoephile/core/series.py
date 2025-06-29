@@ -98,6 +98,14 @@ class Series(SSAFile):
         return sliced
 
     def to_simple_string(self, start: int | None = None, duration: int | None = None):
+        """Convert series to a simple string representation.
+
+        Arguments:
+            start: Start time (default is the start of the first event)
+            duration: Duration (default is the duration from the first to last event)
+        Returns:
+            String representation of series
+        """
         if not self.events:
             return ""
 

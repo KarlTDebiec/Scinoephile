@@ -61,7 +61,7 @@ class Subtitle(SSAEvent):
         return not self == other
 
     def __repr__(self) -> str:
-        """String representation of this subtitle."""
+        """String representation."""
         return (
             f"<{self.__class__.__name__} "
             f"start={ms_to_str(self.start, True)} "

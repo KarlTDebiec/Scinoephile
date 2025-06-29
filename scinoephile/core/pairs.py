@@ -153,3 +153,10 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     one_string = one.to_simple_string(start=start, duration=duration)
     two_string = two.to_simple_string(start=start, duration=duration)
     return one_string, two_string
+
+
+__all__ = [
+    "get_pair_blocks_by_pause",
+    "get_pair_with_zero_start",
+    "get_pair_strings",
+]
