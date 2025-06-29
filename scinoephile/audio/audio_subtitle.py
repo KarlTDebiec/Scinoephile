@@ -25,7 +25,8 @@ class AudioSubtitle(Subtitle):
         """Initialize.
 
         Arguments:
-            audio: Audio of subtitle
+            audio: Audio
+            segment: Transcribed segment
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}

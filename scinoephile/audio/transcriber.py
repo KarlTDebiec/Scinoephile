@@ -20,6 +20,11 @@ class Transcriber(Runnable):
     """Runnable for transcribing audio using Whisper."""
 
     def __init__(self, model_name: str = "khleeloo/whisper-large-v3-cantonese"):
+        """Initialize the transcriber with a Whisper model.
+
+        Arguments:
+            model_name: Name of Whisper model to use
+        """
         self.model_name = model_name
         self.model = whisper.load_model(model_name)
 
@@ -29,6 +34,15 @@ class Transcriber(Runnable):
         config: RunnableConfig | None = None,
         **kwargs: Any,
     ) -> TranscriptionPayload:
+        """Transcribe audio block.
+
+        Arguments:
+            input: Transcription payload containing audio block
+            config: Runnable configuration
+            **kwargs: Additional keyword arguments
+        Returns:
+            Transcription payload with transcribed segments
+        """
         block = input["block"]
         cache_path = Path("transcriber_cache.json")
 

@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from typing import TYPE_CHECKING
 
-from scinoephile.core.series import Series
+if TYPE_CHECKING:
+    from scinoephile.core.series import Series
 
 
 def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series]:
@@ -91,7 +93,7 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
     Returns:
         Concatenated series
     """
-    cls = blocks[0].__class__ if blocks else Series
+    cls = blocks[0].__class__
     concatenated = cls()
     for block in blocks:
         concatenated.events.extend(block.events)

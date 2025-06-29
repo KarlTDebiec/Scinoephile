@@ -18,6 +18,13 @@ class HanziConverter(Runnable):
     """Runnable for converting between Hanzi characters."""
 
     def __init__(self, config: str = "s2hk"):
+        """Initialize.
+
+        Arguments:
+            config: OpenCC configuration string (default: "s2hk")
+        """
+        super().__init__()
+
         self.config = config
         self.converter = OpenCC(config)
 
@@ -27,6 +34,15 @@ class HanziConverter(Runnable):
         config: RunnableConfig | None = None,
         **kwargs: Any,
     ) -> TranscriptionPayload:
+        """Convert Hanzi characters.
+
+        Arguments:
+            input: Transcription payload containing audio block and segments
+            config: Runnable configuration
+            **kwargs: Additional keyword arguments
+        Returns:
+            Transcription payload with converted segments
+        """
         block: AudioBlock = input["block"]
         segments: list[TranscribedSegment] = input["segments"]
         for segment in segments:
@@ -37,5 +53,4 @@ class HanziConverter(Runnable):
                     word_length = len(word.text)
                     word.text = segment.text[i : i + word_length]
                     i += word_length
-                joined = "".join([w.text for w in segment.words])
         return TranscriptionPayload(block=block, segments=segments)

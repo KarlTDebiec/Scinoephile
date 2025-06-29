@@ -139,6 +139,7 @@ class Series(SSAFile):
             string: String to parse
             format_: Input file format
             fps: Frames per second
+            **kwargs: Additional keyword arguments
         Returns:
             Parsed series
         """
