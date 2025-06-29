@@ -13,11 +13,11 @@ def read_sup_image_array(bytes_: bytearray, height: int, width: int) -> np.ndarr
     """Read a palette-compressed image from a block of bytes.
 
     Arguments:
-        bytes_: block of bytes
+        bytes_: Block of bytes
         height: height of image
         width: width of image
     Returns:
-        compressed image
+        Compressed image
     """
     array = np.zeros((height, width), np.uint8)
     byte_i = 0
@@ -67,9 +67,9 @@ def read_sup_palette(bytes_: bytearray) -> np.ndarray:
     """Read a color palette from a block of bytes.
 
     Arguments:
-        bytes_: block of bytes
+        bytes_: Block of bytes
     Returns:
-        palette; first index is color, second is channel
+        Palette; first index is color, second is channel
     """
     palette = np.zeros((256, 4), np.uint8)
     byte_i = 0
@@ -95,7 +95,7 @@ def read_sup_series(
     """Read subtitle images and times from a block of bytes.
 
     Arguments:
-        bytes_: block of bytes
+        bytes_: Block of bytes
     Returns:
         Subtitle starts, ends, and images
     """

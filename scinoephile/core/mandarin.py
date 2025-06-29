@@ -17,7 +17,7 @@ def get_mandarin_romanization(series: Series) -> Series:
     """Get the Mandarin pinyin romanization of Hanzi series.
 
     Arguments:
-        series: series for which to get Mandarin pinyin romanization
+        series: Series for which to get Mandarin pinyin romanization
     Returns:
         Mandarin pinyin romanization of series
     """
@@ -50,3 +50,8 @@ def _get_mandarin_text_romanization(text: str) -> str:
     text_romanization = text_romanization.strip()
 
     return text_romanization
+
+
+__all__ = [
+    "get_mandarin_romanization",
+]
