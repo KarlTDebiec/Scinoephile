@@ -7,6 +7,8 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import TYPE_CHECKING
 
+from scinoephile.core import ScinoephileException
+
 if TYPE_CHECKING:
     from scinoephile.core.series import Series
 
@@ -93,8 +95,9 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
     Returns:
         Concatenated series
     """
-    cls = blocks[0].__class__
-    concatenated = cls()
+    if len(blocks) == 0:
+        raise ScinoephileException("No blocks to concatenate")
+    concatenated = type(blocks[0])()
     for block in blocks:
         concatenated.events.extend(block.events)
     concatenated.events.sort(key=lambda x: x.start)

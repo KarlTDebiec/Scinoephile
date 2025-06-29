@@ -4,7 +4,7 @@
 
 from pydantic import BaseModel, Field
 
-from scinoephile.audio.transcribed_word import TranscribedWord
+from scinoephile.audio.models.transcribed_word import TranscribedWord
 
 
 class TranscribedSegment(BaseModel):

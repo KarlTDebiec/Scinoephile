@@ -11,8 +11,7 @@ from typing import Any
 import whisper_timestamped as whisper
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio.transcribed_segment import TranscribedSegment
-from scinoephile.audio.transcription_payload import TranscriptionPayload
+from scinoephile.audio.models import TranscribedSegment, TranscriptionPayload
 from scinoephile.common.file import get_temp_file_path
 
 

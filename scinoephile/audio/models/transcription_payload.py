@@ -4,11 +4,12 @@
 
 from __future__ import annotations
 
-from typing import NotRequired, TypedDict
+from typing import TYPE_CHECKING, NotRequired, TypedDict
 
-from scinoephile.audio.audio_block import AudioBlock
-from scinoephile.audio.audio_series import AudioSeries
-from scinoephile.audio.transcribed_segment import TranscribedSegment
+from scinoephile.audio.models.transcribed_segment import TranscribedSegment
+
+if TYPE_CHECKING:
+    from scinoephile.audio.core import AudioBlock, AudioSeries
 
 
 class TranscriptionPayload(TypedDict):

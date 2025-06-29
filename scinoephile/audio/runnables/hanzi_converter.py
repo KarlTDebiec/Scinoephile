@@ -9,9 +9,8 @@ from typing import Any
 from langchain_core.runnables import Runnable, RunnableConfig
 from opencc import OpenCC
 
-from scinoephile.audio.audio_block import AudioBlock
-from scinoephile.audio.transcribed_segment import TranscribedSegment
-from scinoephile.audio.transcription_payload import TranscriptionPayload
+from scinoephile.audio.core import AudioBlock
+from scinoephile.audio.models import TranscribedSegment, TranscriptionPayload
 
 
 class HanziConverter(Runnable):

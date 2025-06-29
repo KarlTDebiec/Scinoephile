@@ -6,54 +6,16 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from pprint import pprint
-from typing import Any
 
-from langchain_core.runnables import Runnable, RunnableConfig
-
-from scinoephile.audio import (
-    AudioSeries,
-    AudioSubtitle,
+from scinoephile.audio.core import AudioSeries
+from scinoephile.audio.models import TranscriptionPayload
+from scinoephile.audio.runnables import (
     HanziConverter,
+    SegmentToSeriesConverter,
     Transcriber,
-    TranscriptionPayload,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
-
-
-class SeriesMerger(Runnable):
-    def invoke(
-        self,
-        input: TranscriptionPayload,
-        config: RunnableConfig | None = None,
-        **kwargs: Any,
-    ) -> TranscriptionPayload:
-        block = input["block"]
-        segments = input["segments"]
-
-        events = []
-        for segment in segments:
-            start = block.start + int(segment.start * 1000)
-            end = block.start + int(segment.end * 1000)
-            text = segment.text.strip()
-            event = AudioSubtitle(
-                start=start,
-                end=end,
-                text=text,
-                segment=segment,
-            )
-            events.append(event)
-
-        series = AudioSeries()
-        series.audio = block.audio
-        series.events = events
-        print(f"{len(series.events), len(segments)}")
-        pprint([event.text for event in series.events])
-        pprint([segment.text for segment in segments])
-        pprint(series)
-        return input
-
 
 if __name__ == "__main__":
     bluray_root = Path("/Volumes/Backup/Video/Disc")
@@ -76,7 +38,7 @@ if __name__ == "__main__":
     # Code: Convert simplified Chinese to traditional
     hanzi_converter = HanziConverter("hk2s")
     # Code: Convert transcriptions to subtitles
-    series_merger = SeriesMerger()
+    series_merger = SegmentToSeriesConverter()
     #   AudioSubtitle will need to store metadata such as words, timings, and confidence
     # Code: Get sync groups between source subtitles and transcribed subtitles
     #   Several source subtitles expected to map to each transcribed subtitle

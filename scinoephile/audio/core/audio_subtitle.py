@@ -9,7 +9,7 @@ from typing import Any
 
 from pydub import AudioSegment
 
-from scinoephile.audio.transcribed_segment import TranscribedSegment
+from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.core import Subtitle
 
 
