@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
+from scinoephile.audio.models.merge_payload import MergePayload
 from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.audio.models.transcribed_word import TranscribedWord
 from scinoephile.audio.models.transcription_payload import TranscriptionPayload
 
 __all__ = [
+    "MergePayload",
     "TranscribedWord",
     "TranscribedSegment",
     "TranscriptionPayload",

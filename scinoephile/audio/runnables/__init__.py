@@ -4,20 +4,52 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.runnables.cantonese_merger import CantoneseMerger
+from langchain_core.runnables import Runnable, RunnableLambda
+
+from scinoephile.audio.runnables.cantonese_merger_inner import CantoneseMergerInner
+from scinoephile.audio.runnables.cantonese_merger_outer import CantoneseMergerOuter
 from scinoephile.audio.runnables.hanzi_converter import HanziConverter
 from scinoephile.audio.runnables.segment_splitter import SegmentSplitter
-from scinoephile.audio.runnables.segment_to_series_converter import (
-    SegmentToSeriesConverter,
+from scinoephile.audio.runnables.series_compiler import (
+    SeriesCompiler,
 )
 from scinoephile.audio.runnables.sync_grouper import SyncGrouper
 from scinoephile.audio.runnables.whisper_transcriber import WhisperTranscriber
 
+
+def map_field(
+    input_field: str,
+    runnable: Runnable,
+    output_field: str | None = None,
+    flatten: bool = False,
+) -> Runnable:
+    """Apply a Runnable to each element in an iterable stored under a specified field.
+
+    Arguments:
+        input_field: Field from which to load input
+        runnable: Runnable over which to map
+        output_field: Field in which to store output (default: input_field)
+        flatten: Whether to flatten output
+    """
+    if output_field is None:
+        output_field = input_field
+
+    def _map_and_store(x):
+        result = runnable.map().invoke(x[input_field])
+        if flatten:
+            result = [item for sublist in result for item in sublist]
+        return {**x, output_field: result}
+
+    return RunnableLambda(_map_and_store)
+
+
 __all__ = [
-    "CantoneseMerger",
+    "CantoneseMergerInner",
+    "CantoneseMergerOuter",
     "HanziConverter",
     "SegmentSplitter",
-    "SegmentToSeriesConverter",
+    "SeriesCompiler",
     "SyncGrouper",
     "WhisperTranscriber",
+    "map_field",
 ]

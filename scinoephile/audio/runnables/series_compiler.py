@@ -12,7 +12,7 @@ from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.models import TranscriptionPayload
 
 
-class SegmentToSeriesConverter(Runnable):
+class SeriesCompiler(Runnable):
     """Runnable for converting segments to an audio series."""
 
     def invoke(

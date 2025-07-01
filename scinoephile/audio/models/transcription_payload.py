@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 class TranscriptionPayload(TypedDict):
     """Payload for audio transcription."""
 
-    source: AudioSeries
-    """Source series."""
-    segments: NotRequired[list[TranscribedSegment]]
-    """Transcribed segments."""
-    series: NotRequired[AudioSeries | None]
-    """Transcribed series."""
-    sync_groups: NotRequired[SyncGroup]
+    zhongwen_subs: AudioSeries
+    """Source 中文 series."""
+    yuewen_segments: NotRequired[list[TranscribedSegment]]
+    """Transcribed 粤文 segments."""
+    yuewen_subs: NotRequired[AudioSeries | None]
+    """Transcribed 粤文 series."""
+    sync_groups: NotRequired[list[SyncGroup]]
     """Sync groups."""

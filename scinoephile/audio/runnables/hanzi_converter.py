@@ -4,12 +4,13 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 from langchain_core.runnables import Runnable, RunnableConfig
 from opencc import OpenCC
 
-from scinoephile.audio.models import TranscriptionPayload
+from scinoephile.audio.models import TranscribedSegment
 
 
 class HanziConverter(Runnable):
@@ -28,30 +29,25 @@ class HanziConverter(Runnable):
 
     def invoke(
         self,
-        input: TranscriptionPayload,
+        input: TranscribedSegment,
         config: RunnableConfig | None = None,
         **kwargs: Any,
-    ) -> TranscriptionPayload:
-        """Convert Hanzi characters.
+    ) -> TranscribedSegment:
+        """Convert Hanzi between character sets.
 
         Arguments:
-            input: Transcription payload containing audio block and segments
+            input: Transcribed segment containing text and words
             config: Runnable configuration
             **kwargs: Additional keyword arguments
         Returns:
-            Transcription payload with converted segments
+            TranscribedSegment with converted text and words
         """
-        zhongwen_subs = input["zhongwen_subs"]
-        yuewen_segments = input["yuewen_segments"]
-        for segment in yuewen_segments:
-            segment.text = self.converter.convert(segment.text)
-            if segment.words:
-                i = 0
-                for word in segment.words:
-                    word_length = len(word.text)
-                    word.text = segment.text[i : i + word_length]
-                    i += word_length
-        return TranscriptionPayload(
-            zhongwen_subs=zhongwen_subs,
-            yuewen_segments=yuewen_segments,
-        )
+        output = deepcopy(input)
+        output.text = self.converter.convert(output.text)
+        if output.words:
+            i = 0
+            for word in output.words:
+                word_length = len(word.text)
+                word.text = output.text[i : i + word_length]
+                i += word_length
+        return output

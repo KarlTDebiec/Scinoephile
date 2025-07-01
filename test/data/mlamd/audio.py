@@ -7,15 +7,19 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
+from data.mlamd import mlamd_merge_test_cases
+
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.audio.runnables import (
-    CantoneseMerger,
+    CantoneseMergerInner,
+    CantoneseMergerOuter,
     HanziConverter,
     SegmentSplitter,
-    SegmentToSeriesConverter,
+    SeriesCompiler,
     SyncGrouper,
     WhisperTranscriber,
+    map_field,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
@@ -26,6 +30,7 @@ if __name__ == "__main__":
     test_output_dir = test_data_root / "mlamd" / "output"
     title = Path(__file__).parent.name
     set_logging_verbosity(2)
+    examples = mlamd_merge_test_cases
 
     # Cantonese
     subtitle_path = test_output_dir / "zho-Hans" / "zho-Hans.srt"
@@ -33,32 +38,34 @@ if __name__ == "__main__":
     # yue_hans = AudioSeries.load(subtitle_path, video_path=video_path, audio_track=0)
     # yue_hans.save(test_output_dir / "yue-Hans_audio")
     yue_hans = AudioSeries.load(test_output_dir / "yue-Hans_audio")
-
     # Runnables
     # Code: Preprocess 广东话 audio for transcription
     # Whisper: Transcribe 广东话 audio to 粤文
     transcriber = WhisperTranscriber("khleeloo/whisper-large-v3-cantonese")
     # Code: Convert 繁体中文 into 简体中文
-    hanzi_converter = HanziConverter("hk2s")
+    hanzi_converter = map_field("yuewen_segments", HanziConverter("hk2s"))
     # Code: Split transcribed segments into smaller segments
-    segment_splitter = SegmentSplitter()
+    segment_splitter = map_field("yuewen_segments", SegmentSplitter(), flatten=True)
     # Code: Convert transcriptions to subtitles
-    segment_to_series_converter = SegmentToSeriesConverter()
+    series_compiler = SeriesCompiler()
     # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
     sync_grouper = SyncGrouper()
     # LLM: Merge transcribed 粤文 subtitles to match source 中文 subtitles
-    cantonese_merger = CantoneseMerger()
+    cantonese_merger = CantoneseMergerOuter(
+        inner=CantoneseMergerInner(examples=mlamd_merge_test_cases)
+    )
     # LLM: Proofread transcribed 粤文 subtitles using source 中文 subtitles
 
     # Pipeline
-    pipeline = (
+    chain = (
         transcriber
         | hanzi_converter
         | segment_splitter
-        | segment_to_series_converter
+        | series_compiler
         | sync_grouper
         | cantonese_merger
     )
+    chain.get_graph().print_ascii()
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")
@@ -68,7 +75,7 @@ if __name__ == "__main__":
         zhongwen_subs.audio = block.audio
         zhongwen_subs.events = block.events
         payload = TranscriptionPayload(zhongwen_subs=zhongwen_subs)
-        timestamped_transcription = pipeline.invoke(payload)
+        timestamped_transcription = chain.invoke(payload)
         elapsed = time.perf_counter() - start_time
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)
