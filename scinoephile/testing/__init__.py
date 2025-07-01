@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.common import package_root
+from scinoephile.testing.merge_test_case import MergeTestCase
 from scinoephile.testing.sync_test_case import SyncTestCase
 
 test_data_root = package_root.parent / "test" / "data"
 
 __all__ = [
+    "MergeTestCase",
     "SyncTestCase",
     "test_data_root",
 ]

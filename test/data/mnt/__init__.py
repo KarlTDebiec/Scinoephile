@@ -76,7 +76,7 @@ def mnt_zho_hans_eng() -> Series:
 
 
 # region Synchronization Test Cases
-mnt_test_cases = [
+mnt_sync_test_cases = [
     SyncTestCase(
         hanzi_start=0,
         hanzi_end=4,

@@ -27,23 +27,23 @@ class SyncGrouper(Runnable):
         config: RunnableConfig | None = None,
         **kwargs: Any,
     ) -> TranscriptionPayload:
-        source = input["source"]
-        series = input["series"]
+        zhongwen_subs = input["zhongwen_subs"]
+        yuewen_subs = input["yuewen_subs"]
 
-        source_str, transcribed_str = get_pair_strings(source, series)
-        print(f"\nMANDARIN:\n{source_str}")
-        print(f"\nCANTONESE:\n{transcribed_str}")
+        zhongwen_str, yuewen_str = get_pair_strings(zhongwen_subs, yuewen_subs)
+        print(f"\nMANDARIN:\n{zhongwen_str}")
+        print(f"\nCANTONESE:\n{yuewen_str}")
 
-        overlap = get_sync_overlap_matrix(source, series)
+        overlap = get_sync_overlap_matrix(zhongwen_subs, yuewen_subs)
         print("\nOVERLAP:")
         print(get_overlap_string(overlap))
 
-        sync_groups = get_sync_groups(source, series)
+        sync_groups = get_sync_groups(zhongwen_subs, yuewen_subs)
         print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
 
         return TranscriptionPayload(
-            source=source,
-            segments=input["segments"],
-            series=series,
+            zhongwen_subs=zhongwen_subs,
+            yuewen_segments=input["yuewen_segments"],
+            yuewen_subs=yuewen_subs,
             sync_groups=sync_groups,
         )

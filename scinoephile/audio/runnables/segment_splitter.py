@@ -29,10 +29,10 @@ class SegmentSplitter(Runnable):
         Returns:
             Transcription payload with audio series created from segments
         """
-        segments = input["segments"]
+        yuewen_segments = input["yuewen_segments"]
         split_segments = []
         id = 1
-        for segment in segments:
+        for segment in yuewen_segments:
             nascent_words = []
             # Groups of words
             for word in segment.words:
@@ -66,6 +66,6 @@ class SegmentSplitter(Runnable):
                 nascent_words = []
 
         return TranscriptionPayload(
-            source=input["source"],
-            segments=split_segments,
+            zhongwen_subs=input["zhongwen_subs"],
+            yuewen_segments=split_segments,
         )

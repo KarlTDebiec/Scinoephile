@@ -42,32 +42,40 @@ class WhisperTranscriber(Runnable):
         Returns:
             Transcription payload with transcribed segments
         """
-        source = input["source"]
+        zhongwen_subs = input["zhongwen_subs"]
         cache_path = Path("transcriber_cache.json")
 
         if cache_path.exists():
             print("📂 Using cached transcription")
             with cache_path.open("r", encoding="utf-8") as f:
-                segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
-            return {"source": source, "segments": segments}
+                yuewen_segments = [
+                    TranscribedSegment.model_validate(s) for s in json.load(f)
+                ]
+            return TranscriptionPayload(
+                zhongwen_subs=zhongwen_subs,
+                yuewen_segments=yuewen_segments,
+            )
 
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            source.audio.export(temp_audio_path, format="wav")
+            zhongwen_subs.audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
                 language="yue",
             )
 
-        segments = [TranscribedSegment(**s) for s in result["segments"]]
+        yuewen_segments = [TranscribedSegment(**s) for s in result["segments"]]
 
         with cache_path.open("w", encoding="utf-8") as f:
             json.dump(
-                [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
+                [s.model_dump() for s in yuewen_segments],
+                f,
+                ensure_ascii=False,
+                indent=2,
             )
             print("💾 Saved transcription cache")
 
         return TranscriptionPayload(
-            source=source,
-            segments=segments,
+            zhongwen_subs=zhongwen_subs,
+            yuewen_segments=yuewen_segments,
         )

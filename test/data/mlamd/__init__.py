@@ -8,7 +8,7 @@ import pytest
 from PIL import Image
 
 from scinoephile.image import ImageSeries
-from scinoephile.testing import test_data_root
+from scinoephile.testing import MergeTestCase, test_data_root
 
 input_dir = test_data_root / "mlamd" / "input"
 output_dir = test_data_root / "mlamd" / "output"
@@ -76,6 +76,39 @@ def mlamd_eng_image() -> Image:
 def mlamd_eng_validation_directory() -> str:
     return output_dir / "eng_validation"
 
+
+# endregion
+
+# region 粤文 Merging Test Cases
+
+mlamd_merge_test_cases = [
+    MergeTestCase(
+        zhongwen_input="沿荔枝角道直出大角咀道",
+        yuewen_input=[
+            "沿住荔枝角度",
+            "直出大角咀度",
+        ],
+        yuewen_output="沿住荔枝角度直出大角咀度",
+    ),
+    MergeTestCase(
+        zhongwen_input="经好彩酒家左转花园街乐园牛丸王⋯",
+        yuewen_input=[
+            "经过好彩走家",
+            "再左转返出花园街",
+            "乐园牛园望对上",
+        ],
+        yuewen_output="经过好彩走家再左转返出花园街乐园牛园望对上⋯",
+    ),
+    MergeTestCase(
+        zhongwen_input="转呀，转⋯再更正一下",
+        yuewen_input=[
+            "转下",
+            "转下",
+            "都系唔好",
+        ],
+        yuewen_output="转下，转下⋯再更正一下：",
+    ),
+]
 
 # endregion
 

@@ -30,12 +30,12 @@ class SegmentToSeriesConverter(Runnable):
         Returns:
             Transcription payload with audio series created from segments
         """
-        source = input["source"]
-        segments = input["segments"]
-        source_start = source.events[0].start
+        zhongwen_subs = input["zhongwen_subs"]
+        yuewen_segments = input["yuewen_segments"]
+        source_start = zhongwen_subs.events[0].start
 
         events = []
-        for segment in segments:
+        for segment in yuewen_segments:
             start = source_start + int(segment.start * 1000)
             end = source_start + int(segment.end * 1000)
             text = segment.text.strip()
@@ -47,11 +47,11 @@ class SegmentToSeriesConverter(Runnable):
             )
             events.append(event)
 
-        series = AudioSeries()
-        series.audio = source.audio
-        series.events = events
+        yuewen_subs = AudioSeries()
+        yuewen_subs.audio = zhongwen_subs.audio
+        yuewen_subs.events = events
         return TranscriptionPayload(
-            source=source,
-            segments=segments,
-            series=series,
+            zhongwen_subs=zhongwen_subs,
+            yuewen_segments=yuewen_segments,
+            yuewen_subs=yuewen_subs,
         )

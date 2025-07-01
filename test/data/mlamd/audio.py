@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.audio.runnables import (
+    CantoneseMerger,
     HanziConverter,
     SegmentSplitter,
     SegmentToSeriesConverter,
@@ -39,14 +40,14 @@ if __name__ == "__main__":
     transcriber = WhisperTranscriber("khleeloo/whisper-large-v3-cantonese")
     # Code: Convert 繁体中文 into 简体中文
     hanzi_converter = HanziConverter("hk2s")
-    # Code: Split transcribed segments
+    # Code: Split transcribed segments into smaller segments
     segment_splitter = SegmentSplitter()
     # Code: Convert transcriptions to subtitles
     segment_to_series_converter = SegmentToSeriesConverter()
     # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
     sync_grouper = SyncGrouper()
     # LLM: Merge transcribed 粤文 subtitles to match source 中文 subtitles
-    #   After this, mapping should be 1:1
+    cantonese_merger = CantoneseMerger()
     # LLM: Proofread transcribed 粤文 subtitles using source 中文 subtitles
 
     # Pipeline
@@ -56,16 +57,17 @@ if __name__ == "__main__":
         | segment_splitter
         | segment_to_series_converter
         | sync_grouper
+        | cantonese_merger
     )
 
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
         start_time = time.perf_counter()
-        source = AudioSeries()
-        source.audio = block.audio
-        source.events = block.events
-        payload = TranscriptionPayload(source=source)
+        zhongwen_subs = AudioSeries()
+        zhongwen_subs.audio = block.audio
+        zhongwen_subs.events = block.events
+        payload = TranscriptionPayload(zhongwen_subs=zhongwen_subs)
         timestamped_transcription = pipeline.invoke(payload)
         elapsed = time.perf_counter() - start_time
 
