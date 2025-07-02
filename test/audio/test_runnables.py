@@ -5,11 +5,12 @@
 from pprint import pformat
 
 import pytest
-from data.mlamd import mlamd_merge_test_cases
 
 from scinoephile.audio.models import MergePayload
 from scinoephile.audio.runnables import CantoneseMergerInner
 from scinoephile.testing import MergeTestCase
+
+from ..data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 
 @pytest.fixture

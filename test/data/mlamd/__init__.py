@@ -91,6 +91,7 @@ mlamd_merge_test_cases = [
         zhongwen_input="经好彩酒家左转花园街乐园牛丸王⋯",
         yuewen_input=["经过好彩走家", "再左转返出花园街", "乐园牛园望对上"],
         yuewen_output="经过好彩走家再左转返出花园街乐园牛园望对上⋯",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen_input="转呀，转⋯再更正一下：",

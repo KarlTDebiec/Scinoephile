@@ -20,10 +20,16 @@ from scinoephile.core.synchronization import (
 from scinoephile.testing import SyncTestCase
 
 from ..data.mnt import (
+    mnt_eng_clean_flatten,  # noqa: F401
     mnt_sync_test_cases,
+    mnt_zho_hans_eng,  # noqa: F401
+    mnt_zho_hant_clean_flatten_simplify,  # noqa: F401
 )
 from ..data.pdp import (
+    pdp_eng_clean_flatten,  # noqa: F401
     pdp_sync_test_cases,
+    pdp_yue_hans_eng,  # noqa: F401
+    pdp_yue_hant_clean_flatten_simplify,  # noqa: F401
 )
 
 
