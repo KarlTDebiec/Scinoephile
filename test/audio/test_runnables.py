@@ -9,6 +9,7 @@ import pytest
 from scinoephile.audio.models import MergePayload
 from scinoephile.audio.runnables import CantoneseMergerInner
 from scinoephile.testing import MergeTestCase
+from scinoephile.testing.mark import skip_if_ci
 
 from ..data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
@@ -37,8 +38,12 @@ def _test_merge(cantonese_merger: CantoneseMergerInner, test_case: MergeTestCase
 @pytest.mark.parametrize(
     "merger_fixture_name",
     [
-        "cantonese_merger_few_shot",
-        "cantonese_merger_zero_shot",
+        skip_if_ci()(
+            "cantonese_merger_few_shot",
+        ),
+        skip_if_ci()(
+            "cantonese_merger_zero_shot",
+        ),
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_merge_test_cases)
