@@ -39,7 +39,7 @@ class CantoneseMergerOuter(Runnable):
                 raise ScinoephileException("Expected at least one 粤文 subtitle.")
             zhongwen_sub = zhongwen_subs.events[zhongwen_indexes[0]]
             yat = "　".join(yuewen_subs.events[i].text.strip() for i in yuewen_indexes)
-            print(f"Group {i:02d} | 中文: {zhongwen_sub.text} | 粤文: {yat}")
+            # print(f"Group {i:02d} | 中文: {zhongwen_sub.text} | 粤文: {yat}")
             if len(yuewen_indexes) == 1:
                 yuewen_merged = yuewen_subs.events[yuewen_indexes[0]].text.strip()
             else:
@@ -47,9 +47,9 @@ class CantoneseMergerOuter(Runnable):
                 yuewen = [yuewen_subs.events[i].text.strip() for i in yuewen_indexes]
                 payload = MergePayload(zhongwen=zhongwen, yuewen=yuewen)
                 yuewen_merged = self.inner.invoke(payload)
-                print(
-                    f"Group {i:02d} | 中文: {zhongwen_sub.text} | 粤文: {yuewen_merged}"
-                )
+                # print(
+                #     f"Group {i:02d} | 中文: {zhongwen_sub.text} | 粤文: {yuewen_merged}"
+                # )
             merged_yuewen_subs.events.append(
                 AudioSubtitle(
                     start=zhongwen_sub.start,

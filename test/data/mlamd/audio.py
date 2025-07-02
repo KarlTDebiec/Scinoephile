@@ -21,7 +21,6 @@ from scinoephile.audio.runnables import (
     WhisperTranscriber,
     map_field,
 )
-from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -29,7 +28,7 @@ if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
     title = Path(__file__).parent.name
-    set_logging_verbosity(2)
+    # set_logging_verbosity(2)
     examples = mlamd_merge_test_cases
 
     # Cantonese
@@ -41,7 +40,10 @@ if __name__ == "__main__":
     # Runnables
     # Code: Preprocess 广东话 audio for transcription
     # Whisper: Transcribe 广东话 audio to 粤文
-    transcriber = WhisperTranscriber("khleeloo/whisper-large-v3-cantonese")
+    transcriber = WhisperTranscriber(
+        "khleeloo/whisper-large-v3-cantonese",
+        cache_dir_path="/Users/karldebiec/Code/Scinoephile/test/data/mlamd/output/yue-Hans_audio/cache/",
+    )
     # Code: Convert 繁体中文 into 简体中文
     hanzi_converter = map_field("yuewen_segments", HanziConverter("hk2s"))
     # Code: Split transcribed segments into smaller segments
@@ -52,7 +54,10 @@ if __name__ == "__main__":
     sync_grouper = SyncGrouper()
     # LLM: Merge transcribed 粤文 subtitles to match source 中文 subtitles
     cantonese_merger = CantoneseMergerOuter(
-        inner=CantoneseMergerInner(examples=mlamd_merge_test_cases)
+        inner=CantoneseMergerInner(
+            examples=mlamd_merge_test_cases,
+            print_test_case=True,
+        ),
     )
     # LLM: Proofread transcribed 粤文 subtitles using source 中文 subtitles
 
@@ -80,4 +85,5 @@ if __name__ == "__main__":
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)
         print(f"⏱️ Transcription time: {elapsed:.2f} seconds")
-        break
+        # if i == 2:
+        #     break

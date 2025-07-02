@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+import textwrap
+from pprint import pprint
+
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import Runnable, RunnableConfig
 from openai import OpenAI
@@ -26,16 +29,24 @@ class CantoneseMergerInner(Runnable):
         "the 中文 subtitle."
     )
 
-    def __init__(self, model: str = "gpt-4.1", examples: list[MergeTestCase] = None):
+    def __init__(
+        self,
+        model: str = "gpt-4.1",
+        examples: list[MergeTestCase] = None,
+        print_test_case: bool = False,
+    ):
         self.client = OpenAI()
         self.model = model
+        self.print_test_case = print_test_case
 
-        self.system_prompt = (
-            "You are a helpful assistant that merges multi-line 粤文 subtitles of "
-            "spoken Cantonese to match the spacing and punctuation of a single-line "
-            "中文 subtitle. Preserve all 粤文 characters and merge them into one line. "
-            "Adjust punctuation and spacing to match the 中文 version."
-        )
+        self.system_prompt = textwrap.dedent("""
+                You are a helpful assistant that merges multi-line 粤文 subtitles of
+                spoken Cantonese to match the spacing and punctuation of a single-line
+                中文 subtitle. Include all 粤文 characters and merge them into one line.
+                All 汉字 in the output must come from the 粤文 input. No 汉字 in the
+                output may come from the 中文 input. Adjust punctuation and spacing to 
+                match the 中文 input.
+            """).strip()
         if examples:
             self.system_prompt += (
                 "\n\nHere are some examples of inputs and expected outputs:\n"
@@ -64,5 +75,13 @@ class CantoneseMergerInner(Runnable):
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0,
+            seed=0,
         )
+        if self.print_test_case:
+            test_case = MergeTestCase(
+                zhongwen_input=input.zhongwen,
+                yuewen_input=input.yuewen,
+                yuewen_output=response.choices[0].message.content.strip(),
+            )
+            pprint(test_case)
         return response.choices[0].message.content.strip()

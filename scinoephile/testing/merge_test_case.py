@@ -17,3 +17,5 @@ class MergeTestCase:
     """Input multi-line 粤文 text."""
     yuewen_output: str
     """Output single-line 粤文 text."""
+    include_in_prompt: bool = False
+    """Whether to include test case in prompt examples."""
