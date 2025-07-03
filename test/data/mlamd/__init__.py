@@ -168,6 +168,7 @@ mlamd_merge_test_cases = [
         zhongwen_input="嘀督？嘀督，就是答应了",
         yuewen_input=["滴嘟", "滴嘟㖞", "即系应承啦"],
         yuewen_output="滴嘟？滴嘟㖞，即系应承啦",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen_input="麦太想，这次走运了！",

@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from langchain_core.runnables import Runnable, RunnableLambda
 
-from scinoephile.audio.runnables.cantonese_merger_inner import CantoneseMergerInner
-from scinoephile.audio.runnables.cantonese_merger_outer import CantoneseMergerOuter
+from scinoephile.audio.runnables.cantonese_distributor import CantoneseDistributor
+from scinoephile.audio.runnables.cantonese_merger import CantoneseMerger
 from scinoephile.audio.runnables.hanzi_converter import HanziConverter
 from scinoephile.audio.runnables.segment_splitter import SegmentSplitter
 from scinoephile.audio.runnables.series_compiler import (
@@ -44,8 +44,8 @@ def map_field(
 
 
 __all__ = [
-    "CantoneseMergerInner",
-    "CantoneseMergerOuter",
+    "CantoneseMerger",
+    "CantoneseDistributor",
     "HanziConverter",
     "SegmentSplitter",
     "SeriesCompiler",

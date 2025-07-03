@@ -7,7 +7,7 @@ from pprint import pformat
 import pytest
 
 from scinoephile.audio.models import MergePayload
-from scinoephile.audio.runnables import CantoneseMergerInner
+from scinoephile.audio.runnables import CantoneseMerger
 from scinoephile.testing import MergeTestCase
 from scinoephile.testing.mark import skip_if_ci
 
@@ -15,18 +15,18 @@ from ..data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def cantonese_merger_few_shot() -> CantoneseMergerInner:
-    return CantoneseMergerInner(
+def cantonese_merger_few_shot() -> CantoneseMerger:
+    return CantoneseMerger(
         examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt]
     )
 
 
 @pytest.fixture
-def cantonese_merger_zero_shot() -> CantoneseMergerInner:
-    return CantoneseMergerInner()
+def cantonese_merger_zero_shot() -> CantoneseMerger:
+    return CantoneseMerger()
 
 
-def _test_merge(cantonese_merger: CantoneseMergerInner, test_case: MergeTestCase):
+def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):
     payload = MergePayload(
         zhongwen=test_case.zhongwen_input,
         yuewen=test_case.yuewen_input,
@@ -38,17 +38,13 @@ def _test_merge(cantonese_merger: CantoneseMergerInner, test_case: MergeTestCase
 @pytest.mark.parametrize(
     "merger_fixture_name",
     [
-        skip_if_ci()(
-            "cantonese_merger_few_shot",
-        ),
-        skip_if_ci()(
-            "cantonese_merger_zero_shot",
-        ),
+        skip_if_ci()("cantonese_merger_few_shot"),
+        skip_if_ci()("cantonese_merger_zero_shot"),
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_merge_test_cases)
 def test_merge_mlamd(
     request: pytest.FixtureRequest, merger_fixture_name: str, test_case: MergeTestCase
 ):
-    merger: CantoneseMergerInner = request.getfixturevalue(merger_fixture_name)
+    merger: CantoneseMerger = request.getfixturevalue(merger_fixture_name)
     _test_merge(merger, test_case)

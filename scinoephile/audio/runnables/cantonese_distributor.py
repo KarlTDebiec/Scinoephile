@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Runnable that merges Cantonese subtitles into one."""
+"""Distributes transcribed 粤文 subs across corresponding 中文 sub timings."""
 
 from __future__ import annotations
 
@@ -8,14 +8,14 @@ from langchain_core.runnables import Runnable, RunnableConfig
 
 from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.models import MergePayload, TranscriptionPayload
-from scinoephile.audio.runnables.cantonese_merger_inner import CantoneseMergerInner
+from scinoephile.audio.runnables.cantonese_merger import CantoneseMerger
 from scinoephile.core import ScinoephileException
 
 
-class CantoneseMergerOuter(Runnable):
-    """Runnable that merges Cantonese subtitles into one."""
+class CantoneseDistributor(Runnable):
+    """Distributes transcribed 粤文 subs across corresponding 中文 sub timings."""
 
-    def __init__(self, inner: CantoneseMergerInner):
+    def __init__(self, inner: CantoneseMerger):
         self.inner = inner
 
     def invoke(

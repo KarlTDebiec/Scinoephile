@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import time
+from logging import error
 from pathlib import Path
 
 from data.mlamd import mlamd_merge_test_cases
@@ -12,8 +13,8 @@ from data.mlamd import mlamd_merge_test_cases
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.models import TranscriptionPayload
 from scinoephile.audio.runnables import (
-    CantoneseMergerInner,
-    CantoneseMergerOuter,
+    CantoneseDistributor,
+    CantoneseMerger,
     HanziConverter,
     SegmentSplitter,
     SeriesCompiler,
@@ -21,6 +22,7 @@ from scinoephile.audio.runnables import (
     WhisperTranscriber,
     map_field,
 )
+from scinoephile.core import ScinoephileException
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -53,8 +55,8 @@ if __name__ == "__main__":
     # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
     sync_grouper = SyncGrouper()
     # LLM: Merge transcribed 粤文 subtitles to match source 中文 subtitles
-    cantonese_merger = CantoneseMergerOuter(
-        inner=CantoneseMergerInner(
+    cantonese_merger = CantoneseDistributor(
+        inner=CantoneseMerger(
             examples=mlamd_merge_test_cases,
             print_test_case=True,
         ),
@@ -80,7 +82,11 @@ if __name__ == "__main__":
         zhongwen_subs.audio = block.audio
         zhongwen_subs.events = block.events
         payload = TranscriptionPayload(zhongwen_subs=zhongwen_subs)
-        timestamped_transcription = chain.invoke(payload)
+        try:
+            timestamped_transcription = chain.invoke(payload)
+        except ScinoephileException as e:
+            error(f"Error processing block {i}:\n{e}")
+            continue
         elapsed = time.perf_counter() - start_time
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)

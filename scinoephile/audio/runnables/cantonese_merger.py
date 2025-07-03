@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Runnable that merges Cantonese subtitles into one."""
+"""Merges transcribed 粤文 subs to match 中文 sub punctuation and spacing."""
 
 from __future__ import annotations
 
@@ -15,8 +15,8 @@ from scinoephile.audio.models import MergePayload
 from scinoephile.testing import MergeTestCase
 
 
-class CantoneseMergerInner(Runnable):
-    """Runnable that merges Cantonese subtitles into one."""
+class CantoneseMerger(Runnable):
+    """Merges transcribed 粤文 subs to match 中文 sub punctuation and spacing."""
 
     merge_prompt_template = PromptTemplate.from_template(
         "中文 subtitle:\n"
