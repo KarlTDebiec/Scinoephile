@@ -12,7 +12,8 @@ from typing import Any
 import whisper_timestamped as whisper
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from scinoephile.audio.models import TranscribedSegment, TranscriptionPayload
+from scinoephile.audio import AudioSeries
+from scinoephile.audio.models import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import validate_output_directory
 
@@ -39,10 +40,10 @@ class WhisperTranscriber(Runnable):
 
     def invoke(
         self,
-        input: TranscriptionPayload,
+        input: AudioSeries,
         config: RunnableConfig | None = None,
         **kwargs: Any,
-    ) -> TranscriptionPayload:
+    ) -> list[TranscribedSegment]:
         """Transcribe audio block.
 
         Arguments:
@@ -52,8 +53,7 @@ class WhisperTranscriber(Runnable):
         Returns:
             Transcription payload with transcribed segments
         """
-        zhongwen_subs = input["zhongwen_subs"]
-        audio = zhongwen_subs.audio
+        audio = input.audio
         cache_path = self._get_cache_path(audio.raw_data)
 
         # Load transcription from cache if available
@@ -63,14 +63,11 @@ class WhisperTranscriber(Runnable):
                 yuewen_segments = [
                     TranscribedSegment.model_validate(s) for s in json.load(f)
                 ]
-            return TranscriptionPayload(
-                zhongwen_subs=zhongwen_subs,
-                yuewen_segments=yuewen_segments,
-            )
+            return yuewen_segments
 
         # Transcribe using Whisper
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
-            zhongwen_subs.audio.export(temp_audio_path, format="wav")
+            audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
@@ -88,10 +85,7 @@ class WhisperTranscriber(Runnable):
             )
             print(f"Saved transcription to cache: {cache_path}")
 
-        return TranscriptionPayload(
-            zhongwen_subs=zhongwen_subs,
-            yuewen_segments=yuewen_segments,
-        )
+        return yuewen_segments
 
     def _get_cache_path(self, audio_data: bytes) -> Path:
         """Get cache path based on hash of audio data.

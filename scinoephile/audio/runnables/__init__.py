@@ -21,6 +21,28 @@ def map_field(
     input_field: str,
     runnable: Runnable,
     output_field: str | None = None,
+) -> Runnable:
+    """Apply a Runnable to value stored under a specified field.
+
+    Arguments:
+        input_field: Field from which to load input
+        runnable: Runnable to which to apply
+        output_field: Field in which to store output (default: input_field)
+    """
+    if output_field is None:
+        output_field = input_field
+
+    def map_and_store(x):
+        output = runnable.invoke(x[input_field])
+        return {**x, output_field: output}
+
+    return RunnableLambda(map_and_store)
+
+
+def map_iterable_field(
+    input_field: str,
+    runnable: Runnable,
+    output_field: str | None = None,
     flatten: bool = False,
 ) -> Runnable:
     """Apply a Runnable to each element in an iterable stored under a specified field.
@@ -34,13 +56,13 @@ def map_field(
     if output_field is None:
         output_field = input_field
 
-    def _map_and_store(x):
-        result = runnable.map().invoke(x[input_field])
+    def map_and_store(x):
+        output = runnable.map().invoke(x[input_field])
         if flatten:
-            result = [item for sublist in result for item in sublist]
-        return {**x, output_field: result}
+            output = [item for sublist in output for item in sublist]
+        return {**x, output_field: output}
 
-    return RunnableLambda(_map_and_store)
+    return RunnableLambda(map_and_store)
 
 
 __all__ = [
@@ -52,4 +74,5 @@ __all__ = [
     "SyncGrouper",
     "WhisperTranscriber",
     "map_field",
+    "map_iterable_field",
 ]

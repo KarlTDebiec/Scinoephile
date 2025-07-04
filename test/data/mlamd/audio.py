@@ -21,6 +21,7 @@ from scinoephile.audio.runnables import (
     SyncGrouper,
     WhisperTranscriber,
     map_field,
+    map_iterable_field,
 )
 from scinoephile.core import ScinoephileException
 from scinoephile.testing import test_data_root
@@ -42,14 +43,20 @@ if __name__ == "__main__":
     # Runnables
     # Code: Preprocess 广东话 audio for transcription
     # Whisper: Transcribe 广东话 audio to 粤文
-    transcriber = WhisperTranscriber(
-        "khleeloo/whisper-large-v3-cantonese",
-        cache_dir_path="/Users/karldebiec/Code/Scinoephile/test/data/mlamd/output/yue-Hans_audio/cache/",
+    transcriber = map_field(
+        "zhongwen_subs",
+        WhisperTranscriber(
+            "khleeloo/whisper-large-v3-cantonese",
+            cache_dir_path="/Users/karldebiec/Code/Scinoephile/test/data/mlamd/output/yue-Hans_audio/cache/",
+        ),
+        output_field="yuewen_segments",
     )
     # Code: Convert 繁体中文 into 简体中文
-    hanzi_converter = map_field("yuewen_segments", HanziConverter("hk2s"))
+    hanzi_converter = map_iterable_field("yuewen_segments", HanziConverter("hk2s"))
     # Code: Split transcribed segments into smaller segments
-    segment_splitter = map_field("yuewen_segments", SegmentSplitter(), flatten=True)
+    segment_splitter = map_iterable_field(
+        "yuewen_segments", SegmentSplitter(), flatten=True
+    )
     # Code: Convert transcriptions to subtitles
     series_compiler = SeriesCompiler()
     # Code: Get sync groups between source 中文 subtitles and transcribed 粤文 subtitles
@@ -72,9 +79,10 @@ if __name__ == "__main__":
         | sync_grouper
         | cantonese_merger
     )
-    chain.get_graph().print_ascii()
 
     for i, block in enumerate(yue_hans.blocks, start=1):
+        if i != 3:
+            continue
         print(f"\n🧱 Block {i}: {block}")
         print("🔊 Audio:", block.audio)
         start_time = time.perf_counter()
@@ -91,5 +99,3 @@ if __name__ == "__main__":
 
         print("📝 Timestamped Whisper Transcription:", timestamped_transcription)
         print(f"⏱️ Transcription time: {elapsed:.2f} seconds")
-        # if i == 2:
-        #     break
