@@ -18,17 +18,18 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
+
 from ..data.mnt import (
-    mnt_zho_hans_eng,
-    mnt_zho_hant_clean_flatten_simplify,
-    mnt_eng_clean_flatten,
-    mnt_test_cases,
+    mnt_eng_clean_flatten,  # noqa: F401
+    mnt_sync_test_cases,
+    mnt_zho_hans_eng,  # noqa: F401
+    mnt_zho_hant_clean_flatten_simplify,  # noqa: F401
 )
 from ..data.pdp import (
-    pdp_eng_clean_flatten,
-    pdp_test_cases,
-    pdp_yue_hans_eng,
-    pdp_yue_hant_clean_flatten_simplify,
+    pdp_eng_clean_flatten,  # noqa: F401
+    pdp_sync_test_cases,
+    pdp_yue_hans_eng,  # noqa: F401
+    pdp_yue_hant_clean_flatten_simplify,  # noqa: F401
 )
 
 
@@ -74,7 +75,7 @@ def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
 
 
 # blocks
-@pytest.mark.parametrize("test_case", mnt_test_cases)
+@pytest.mark.parametrize("test_case", mnt_sync_test_cases)
 def test_blocks_mnt(
     mnt_zho_hant_clean_flatten_simplify: Series,
     mnt_eng_clean_flatten: Series,
@@ -83,7 +84,7 @@ def test_blocks_mnt(
     _test_blocks(mnt_zho_hant_clean_flatten_simplify, mnt_eng_clean_flatten, test_case)
 
 
-@pytest.mark.parametrize("test_case", pdp_test_cases)
+@pytest.mark.parametrize("test_case", pdp_sync_test_cases)
 def test_blocks_pdp(
     pdp_yue_hant_clean_flatten_simplify: Series,
     pdp_eng_clean_flatten: Series,
