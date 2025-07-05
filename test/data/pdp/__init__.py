@@ -101,7 +101,7 @@ def pdp_yue_hans_eng() -> Series:
 
 # region Synchronization Test Cases
 
-pdp_test_cases = [
+pdp_sync_test_cases = [
     SyncTestCase(
         hanzi_start=0,
         hanzi_end=1,
@@ -2738,5 +2738,5 @@ __all__ = [
     "pdp_eng_flatten",
     "pdp_eng_clean_flatten",
     "pdp_yue_hans_eng",
-    "pdp_test_cases",
+    "pdp_sync_test_cases",
 ]
