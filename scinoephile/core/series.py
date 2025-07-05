@@ -10,6 +10,8 @@ from typing import Any
 from pysubs2 import SSAFile
 
 from scinoephile.common.validation import validate_input_file, validate_output_file
+from scinoephile.core.block import Block
+from scinoephile.core.blocks import get_block_indexes_by_pause
 from scinoephile.core.subtitle import Subtitle
 
 
@@ -18,9 +20,14 @@ class Series(SSAFile):
 
     event_class = Subtitle
     """Class of individual subtitle events."""
-
     events: list[Subtitle]
     """Individual subtitle events."""
+
+    def __init__(self):
+        """Initialize."""
+        super().__init__()
+
+        self._blocks = None
 
     def __eq__(self, other: SSAFile) -> bool:
         """Whether this series is equal to another.
@@ -49,6 +56,22 @@ class Series(SSAFile):
         """
         return not self == other
 
+    @property
+    def blocks(self) -> list[Block]:
+        """List of blocks in the series."""
+        if self._blocks is None:
+            self._init_blocks()
+        return self._blocks
+
+    @blocks.setter
+    def blocks(self, blocks: list[Block]) -> None:
+        """Set blocks of the series.
+
+        Arguments:
+            blocks: List of blocks in the series
+        """
+        self._blocks = blocks
+
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 
@@ -70,7 +93,7 @@ class Series(SSAFile):
         Returns:
             Sliced series
         """
-        sliced = Series()
+        sliced = type(self)()
         sliced.events = self.events[start:end]
         return sliced
 
@@ -116,6 +139,7 @@ class Series(SSAFile):
             string: String to parse
             format_: Input file format
             fps: Frames per second
+            **kwargs: Additional keyword arguments
         Returns:
             Parsed series
         """
@@ -156,3 +180,10 @@ class Series(SSAFile):
 
         info(f"Loaded series from {validated_path}")
         return series
+
+    def _init_blocks(self) -> None:
+        """Initialize blocks."""
+        self._blocks = [
+            Block(self, start_idx, end_idx)
+            for start_idx, end_idx in get_block_indexes_by_pause(self)
+        ]
