@@ -5,8 +5,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from logging import warn
+from typing import TYPE_CHECKING
 
-from scinoephile.core.series import Series
+from scinoephile.core import ScinoephileException
+
+if TYPE_CHECKING:
+    from scinoephile.core.series import Series
 
 
 def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series]:
@@ -18,6 +23,12 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
     Returns:
         Series split into blocks
     """
+    warn(
+        "get_blocks_by_pause() is deprecated and will be removed in a future version. "
+        "Use get_block_indexes_by_pause() instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     blocks = []
 
     source = deepcopy(series.events)
@@ -54,6 +65,35 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
     return blocks
 
 
+def get_block_indexes_by_pause(
+    series: Series, pause_length: int = 3000
+) -> list[tuple[int, int]]:
+    """Get indexes of blocks in a Series split by pauses without text.
+
+    Blocks are 1-indexed and the start and end indexes are inclusive.
+
+    Arguments:
+        series: Series to split into blocks
+        pause_length: Split whenever a pause of this length is encountered
+    Returns:
+        Start and end indexes of each block
+    """
+    if not series.events:
+        return []
+    block_indexes = []
+    start = 1
+    prev_end = None
+
+    for i, event in enumerate(series.events, start=1):
+        if prev_end is not None and event.start - prev_end >= pause_length:
+            block_indexes.append((start, i - 1))
+            start = i
+        prev_end = event.end
+    block_indexes.append((start, len(series.events)))
+
+    return block_indexes
+
+
 def get_concatenated_blocks(blocks: list[Series]) -> Series:
     """Contatenate a list of sequential series blocks into a single series.
 
@@ -62,8 +102,9 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
     Returns:
         Concatenated series
     """
-    cls = blocks[0].__class__ if blocks else Series
-    concatenated = cls()
+    if len(blocks) == 0:
+        raise ScinoephileException("No blocks to concatenate")
+    concatenated = type(blocks[0])()
     for block in blocks:
         concatenated.events.extend(block.events)
     concatenated.events.sort(key=lambda x: x.start)
@@ -72,5 +113,6 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
 
 __all__ = [
     "get_blocks_by_pause",
+    "get_block_indexes_by_pause",
     "get_concatenated_blocks",
 ]
