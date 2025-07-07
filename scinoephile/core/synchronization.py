@@ -16,7 +16,7 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
-SyncGroup = list[list[int]]
+SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
 
 
@@ -56,8 +56,8 @@ def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
         precision=2,
         suppress_small=True,
         max_line_width=max_line_width,
-        threshold=np.inf,
-        edgeitems=np.inf,
+        threshold=None,
+        edgeitems=None,
     )
     matrix = matrix.replace("0.  ", "____").replace("[", " ").replace("]", " ")
     columns = [f"{j:>5}" for j in range(1, overlap.shape[1] + 1)]
@@ -98,11 +98,12 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     if len(one.events) == 0:
         return []
     if len(two.events) == 0:
-        return [[[i], []] for i in range(len(one.events))]
+        return [([i], []) for i in range(len(one.events))]
 
     overlap = get_sync_overlap_matrix(one, two)
     debug(f"OVERLAP:\n{get_overlap_string(overlap, 1000)}")
 
+    sync_groups = None
     while True:
         try:
             sync_groups = _get_sync_groups(one, two, overlap.copy(), cutoff)
@@ -112,11 +113,17 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         break
 
     # Add 1 to all indexes and convert to regular integers
+    if sync_groups is None:
+        return []
+    final_sync_groups = []
     for sync_group in sync_groups:
-        sync_group[0] = sorted([int(i + 1) for i in sync_group[0]])
-        sync_group[1] = sorted([int(j + 1) for j in sync_group[1]])
+        final_sync_group = (
+            sorted([int(i + 1) for i in sync_group[0]]),
+            sorted([int(j + 1) for j in sync_group[1]]),
+        )
+        final_sync_groups.append(final_sync_group)
 
-    return sync_groups
+    return final_sync_groups
 
 
 def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
@@ -326,9 +333,8 @@ def _get_sync_groups(
 
         # One to zero
         if len(js_that_match_this_i) == 0:
-            sync_group = [[i], []]
             available_is.remove(i)
-            sync_groups.append(sync_group)
+            sync_groups.append(([i], []))
             continue
 
         if len(js_that_match_this_i) == 1:
@@ -337,21 +343,19 @@ def _get_sync_groups(
 
             # One to one
             if len(is_that_match_this_j) == 1:
-                sync_group = [[i], [j]]
                 available_is.remove(i)
                 available_js.remove(j)
-                sync_groups.append(sync_group)
+                sync_groups.append(([i], [j]))
                 continue
 
             # Many to one
             if len(is_that_match_this_j) > 1:
                 if not all(i2 in available_is for i2 in is_that_match_this_j):
                     raise ScinoephileException()
-                sync_group = [is_that_match_this_j, [j]]
                 for i2 in is_that_match_this_j:
                     available_is.remove(i2)
                 available_js.remove(j)
-                sync_groups.append(sync_group)
+                sync_groups.append((is_that_match_this_j, [j]))
                 continue
 
         # One to many
@@ -360,11 +364,10 @@ def _get_sync_groups(
                 is_that_match_this_j = is_that_match_each_j[j]
                 if len(is_that_match_this_j) != 1:
                     raise ScinoephileException()
-            sync_group = [[i], js_that_match_this_i]
             available_is.remove(i)
             for j in js_that_match_this_i:
                 available_js.remove(j)
-            sync_groups.append(sync_group)
+            sync_groups.append(([i], js_that_match_this_i))
             continue
 
     # Raise exception if there are any remaining subtitles in series one
@@ -373,7 +376,7 @@ def _get_sync_groups(
 
     # Add remaining subtitles from series two
     for j in available_js:
-        sync_groups.append([[], [j]])
+        sync_groups.append(([], [j]))
 
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)
