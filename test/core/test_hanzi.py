@@ -9,10 +9,10 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.hanzi import (
     _get_hanzi_text_flattened,  # noqa
-    _get_hanzi_text_simplified,  # noqa
     get_hanzi_cleaned,
+    get_hanzi_converted,
+    get_hanzi_converter,
     get_hanzi_flattened,
-    get_hanzi_simplified,
 )
 
 from ..data.kob import (
@@ -75,8 +75,8 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_hanzi_simplified(series: Series, expected: Series = None):
-    output = get_hanzi_simplified(series)
+def _test_get_hanzi_converted(series: Series, expected: Series = None):
+    output = get_hanzi_converted(series)
     assert len(series.events) == len(output.events)
 
     errors = []
@@ -133,34 +133,35 @@ def test_get_hanzi_flattened_t(t_zho_hans: Series, t_zho_hans_flatten: Series):
 # endregion
 
 
-# region get_hanzi_simplified
-def test_get_hanzi_simplified_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Series):
-    _test_get_hanzi_simplified(kob_yue_hant, kob_yue_hant_simplify)
+# region get_hanzi_converted
+def test_get_hanzi_converted_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Series):
+    _test_get_hanzi_converted(kob_yue_hant, kob_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Series):
-    _test_get_hanzi_simplified(mnt_zho_hant, mnt_zho_hant_simplify)
+def test_get_hanzi_converted_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Series):
+    _test_get_hanzi_converted(mnt_zho_hant, mnt_zho_hant_simplify)
 
 
-def test_get_hanzi_simplified_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
-    _test_get_hanzi_simplified(pdp_yue_hant, pdp_yue_hant_simplify)
+def test_get_hanzi_converted_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
+    _test_get_hanzi_converted(pdp_yue_hant, pdp_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
-    _test_get_hanzi_simplified(t_zho_hant, t_zho_hant_simplify)
+def test_get_hanzi_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
+    _test_get_hanzi_converted(t_zho_hant, t_zho_hant_simplify)
 
 
 # endregion
 
 
 @pytest.mark.parametrize(
-    ("text", "expected"),
+    ("text", "config", "expected"),
     [
-        ("你好世界", "你好世界"),
+        ("你好世界", "t2s", "你好世界"),
+        ("你好世界", "s2t", "你好世界"),
     ],
 )
-def test_get_hanzi_text_simplified(text: str, expected: str):
-    assert _get_hanzi_text_simplified(text) == expected
+def test_get_hanzi_converter(text: str, config: str, expected: str):
+    assert get_hanzi_converter(config).convert(text) == expected
 
 
 @pytest.mark.parametrize(
