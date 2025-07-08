@@ -75,7 +75,7 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_hanzi_simplified(series: Series, expected: Series = None):
+def _test_get_hanzi_converted(series: Series, expected: Series = None):
     output = get_hanzi_converted(series)
     assert len(series.events) == len(output.events)
 
@@ -133,21 +133,21 @@ def test_get_hanzi_flattened_t(t_zho_hans: Series, t_zho_hans_flatten: Series):
 # endregion
 
 
-# region get_hanzi_simplified
-def test_get_hanzi_simplified_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Series):
-    _test_get_hanzi_simplified(kob_yue_hant, kob_yue_hant_simplify)
+# region get_hanzi_converted
+def test_get_hanzi_converted_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Series):
+    _test_get_hanzi_converted(kob_yue_hant, kob_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Series):
-    _test_get_hanzi_simplified(mnt_zho_hant, mnt_zho_hant_simplify)
+def test_get_hanzi_converted_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Series):
+    _test_get_hanzi_converted(mnt_zho_hant, mnt_zho_hant_simplify)
 
 
-def test_get_hanzi_simplified_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
-    _test_get_hanzi_simplified(pdp_yue_hant, pdp_yue_hant_simplify)
+def test_get_hanzi_converted_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
+    _test_get_hanzi_converted(pdp_yue_hant, pdp_yue_hant_simplify)
 
 
-def test_get_hanzi_simplified_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
-    _test_get_hanzi_simplified(t_zho_hant, t_zho_hant_simplify)
+def test_get_hanzi_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
+    _test_get_hanzi_converted(t_zho_hant, t_zho_hant_simplify)
 
 
 # endregion
