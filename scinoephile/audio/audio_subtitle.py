@@ -9,6 +9,7 @@ from typing import Any
 
 from pydub import AudioSegment
 
+from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.core import Subtitle
 
 
@@ -18,12 +19,14 @@ class AudioSubtitle(Subtitle):
     def __init__(
         self,
         audio: AudioSegment | None = None,
+        segment: TranscribedSegment | None = None,
         **kwargs: Any,
     ) -> None:
         """Initialize.
 
         Arguments:
             audio: Audio
+            segment: Transcribed segment
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
@@ -31,6 +34,7 @@ class AudioSubtitle(Subtitle):
         super().__init__(**super_kwargs)
 
         self._audio = audio
+        self._segment = segment
 
     @property
     def audio(self) -> AudioSegment:
@@ -45,3 +49,17 @@ class AudioSubtitle(Subtitle):
             audio: Audio of subtitle
         """
         self._audio = audio
+
+    @property
+    def segment(self) -> TranscribedSegment:
+        """Transcribed segment of subtitle."""
+        return self._segment
+
+    @segment.setter
+    def segment(self, segment: TranscribedSegment) -> None:
+        """Set transcribed segment of subtitle.
+
+        Arguments:
+            segment: Transcribed segment of subtitle
+        """
+        self._segment = segment

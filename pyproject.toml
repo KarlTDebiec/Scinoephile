@@ -18,10 +18,13 @@ dependencies = [
     "opencc>=1.1.9",
     "pillow>=11.1.0",
     "pycantonese>=3.4.0",
+    "pydantic>=2.10.6",
     "pydub>=0.25.1",
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
+    "transformers>=4.53.1",
+    "whisper-timestamped>=1.15.8",
 ]
 
 [dependency-groups]
