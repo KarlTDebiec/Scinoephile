@@ -2,12 +2,14 @@ FROM debian:trixie
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
-    git \
+    build-essential \
+    cmake \
     curl \
+    git \
+    pkg-config \
     python3.13 \
     python3.13-venv \
     python3.13-dev \
-    # other packages...
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.13 1 && \
