@@ -14,31 +14,32 @@ from scinoephile.core.hanzi import (
     get_hanzi_flattened,
     get_hanzi_simplified,
 )
+
 from ..data.kob import (
-    kob_yue_hans,
-    kob_yue_hans_clean,
-    kob_yue_hans_flatten,
-    kob_yue_hant,
-    kob_yue_hant_simplify,
+    kob_yue_hans,  # noqa: F401
+    kob_yue_hans_clean,  # noqa: F401
+    kob_yue_hans_flatten,  # noqa: F401
+    kob_yue_hant,  # noqa: F401
+    kob_yue_hant_simplify,  # noqa: F401
 )
 from ..data.mnt import (
-    mnt_zho_hant,
-    mnt_zho_hant_clean,
-    mnt_zho_hant_flatten,
-    mnt_zho_hant_simplify,
+    mnt_zho_hant,  # noqa: F401
+    mnt_zho_hant_clean,  # noqa: F401
+    mnt_zho_hant_flatten,  # noqa: F401
+    mnt_zho_hant_simplify,  # noqa: F401
 )
 from ..data.pdp import (
-    pdp_yue_hant,
-    pdp_yue_hant_clean,
-    pdp_yue_hant_flatten,
-    pdp_yue_hant_simplify,
+    pdp_yue_hant,  # noqa: F401
+    pdp_yue_hant_clean,  # noqa: F401
+    pdp_yue_hant_flatten,  # noqa: F401
+    pdp_yue_hant_simplify,  # noqa: F401
 )
 from ..data.t import (
-    t_zho_hans,
-    t_zho_hans_clean,
-    t_zho_hans_flatten,
-    t_zho_hant,
-    t_zho_hant_simplify,
+    t_zho_hans,  # noqa: F401
+    t_zho_hans_clean,  # noqa: F401
+    t_zho_hans_flatten,  # noqa: F401
+    t_zho_hant,  # noqa: F401
+    t_zho_hant_simplify,  # noqa: F401
 )
 
 
