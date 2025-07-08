@@ -8,7 +8,7 @@ from logging import error, info, warning
 
 from openai import OpenAIError
 
-from scinoephile.core.blocks import get_blocks_by_pause, get_concatenated_blocks
+from scinoephile.core.blocks import get_blocks_by_pause, get_concatenated_series
 from scinoephile.core.pairs import get_pair_blocks_by_pause
 from scinoephile.image import ImageSeries
 from scinoephile.image.base64 import get_base64_image
@@ -57,7 +57,7 @@ def get_transcriptions(
                 except OpenAIError:
                     error("API connection error; returning results so far")
                     blocks[i] = block
-                    return get_concatenated_blocks(blocks)
+                    return get_concatenated_series(blocks)
                 event.text = transcription
             info(f"Initial transcription: {transcription}")
 
@@ -78,7 +78,7 @@ def get_transcriptions(
                 except OpenAIError:
                     error("API connection error; returning results so far")
                     blocks[i] = block
-                    return get_concatenated_blocks(blocks)
+                    return get_concatenated_series(blocks)
                 if revision == transcription:
                     info(f"No further revision of transcription: {transcription}")
                     break
@@ -92,7 +92,7 @@ def get_transcriptions(
         j_offset += len(block.events)
 
     # Prepare output and return
-    output = get_concatenated_blocks(blocks)
+    output = get_concatenated_series(blocks)
     return output
 
 
@@ -165,9 +165,9 @@ def get_revised_chinese_transcriptions(
                     error("API connection error; returning results so far")
                     simp_blocks[i] = simp_block
                     trad_blocks[i] = trad_block
-                    return get_concatenated_blocks(
+                    return get_concatenated_series(
                         simp_blocks
-                    ), get_concatenated_blocks(trad_blocks)
+                    ), get_concatenated_series(trad_blocks)
                 if simp_revision == simp_transcription:
                     info(
                         "No further revision of Simplified Chinese transcription: "
@@ -207,6 +207,6 @@ def get_revised_chinese_transcriptions(
         j_offset += len(simp_block.events)
 
     # Prepare output and return
-    simp_output = get_concatenated_blocks(simp_blocks)
-    trad_output = get_concatenated_blocks(trad_blocks)
+    simp_output = get_concatenated_series(simp_blocks)
+    trad_output = get_concatenated_series(trad_blocks)
     return simp_output, trad_output

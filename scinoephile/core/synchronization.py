@@ -10,7 +10,7 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.core.blocks import get_concatenated_blocks
+from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
@@ -174,7 +174,7 @@ def get_synced_series(one: Series, two: Series) -> Series:
         debug(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
-    synced = get_concatenated_blocks(synced_blocks)
+    synced = get_concatenated_series(synced_blocks)
     return synced
 
 

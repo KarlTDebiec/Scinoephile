@@ -94,7 +94,7 @@ def get_block_indexes_by_pause(
     return block_indexes
 
 
-def get_concatenated_blocks(blocks: list[Series]) -> Series:
+def get_concatenated_series(blocks: list[Series]) -> Series:
     """Contatenate a list of sequential series blocks into a single series.
 
     Arguments:
@@ -114,5 +114,5 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
 __all__ = [
     "get_blocks_by_pause",
     "get_block_indexes_by_pause",
-    "get_concatenated_blocks",
+    "get_concatenated_series",
 ]
