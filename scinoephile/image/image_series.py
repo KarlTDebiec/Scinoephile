@@ -18,7 +18,7 @@ from scinoephile.common.validation import (
     validate_output_directory,
     validate_output_file,
 )
-from scinoephile.core import ScinoephileException, Series
+from scinoephile.core import ScinoephileError, Series
 from scinoephile.image.image_subtitle import ImageSubtitle
 
 
@@ -146,7 +146,7 @@ class ImageSeries(Series):
         # Load images
         infiles = sorted([path for path in fp.iterdir() if path.suffix == ".png"])
         if len(text_series) != len(infiles):
-            raise ScinoephileException(
+            raise ScinoephileError(
                 f"Number of images in {fp} ({len(series)}) "
                 f"does not match number of subtitles in {srt_path} "
                 f"({len(text_series)})"

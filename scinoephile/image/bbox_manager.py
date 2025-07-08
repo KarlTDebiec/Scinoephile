@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from scinoephile.common import package_root
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 from scinoephile.image.image_subtitle import ImageSubtitle
 
 
@@ -201,7 +201,7 @@ class BboxManager:
         elif length == 8:
             merge_dict = self.merge_threes
         else:
-            raise ScinoephileException(f"Key must be of length 5 or 8, not {len(key)}")
+            raise ScinoephileError(f"Key must be of length 5 or 8, not {len(key)}")
 
         known_values = set()
         for known_key in merge_dict.keys():
