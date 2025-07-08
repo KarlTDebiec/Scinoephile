@@ -11,7 +11,7 @@ from pprint import pformat
 import numpy as np
 
 from scinoephile.core.blocks import get_concatenated_blocks
-from scinoephile.core.exceptions import ScinoephileException
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
@@ -107,7 +107,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     while True:
         try:
             sync_groups = _get_sync_groups(one, two, overlap.copy(), cutoff)
-        except ScinoephileException:
+        except ScinoephileError:
             cutoff += 0.01
             continue
         break
@@ -241,7 +241,7 @@ def get_synced_series_from_groups(
             continue
 
         # Anything else is unsupported
-        raise ScinoephileException()
+        raise ScinoephileError()
 
     return synced
 
@@ -290,9 +290,7 @@ def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
         case (1, 1):
             return 1
         case _:
-            raise ScinoephileException(
-                "Unexpected comparison result between sync groups"
-            )
+            raise ScinoephileError("Unexpected comparison result between sync groups")
 
 
 def _get_sync_groups(
@@ -351,7 +349,7 @@ def _get_sync_groups(
             # Many to one
             if len(is_that_match_this_j) > 1:
                 if not all(i2 in available_is for i2 in is_that_match_this_j):
-                    raise ScinoephileException()
+                    raise ScinoephileError()
                 for i2 in is_that_match_this_j:
                     available_is.remove(i2)
                 available_js.remove(j)
@@ -363,7 +361,7 @@ def _get_sync_groups(
             for j in js_that_match_this_i:
                 is_that_match_this_j = is_that_match_each_j[j]
                 if len(is_that_match_this_j) != 1:
-                    raise ScinoephileException()
+                    raise ScinoephileError()
             available_is.remove(i)
             for j in js_that_match_this_i:
                 available_js.remove(j)
@@ -372,11 +370,11 @@ def _get_sync_groups(
 
     # Raise exception if there are any remaining subtitles in series one
     if len(available_is) > 0:
-        raise ScinoephileException()
+        raise ScinoephileError()
 
     # Add remaining subtitles from series two
     for j in available_js:
-        sync_groups.append(([], [j]))
+        sync_groups.extend([([], [j])])
 
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)
@@ -414,7 +412,7 @@ def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
                 inserted = True
                 break
         if not inserted:
-            raise ScinoephileException(
+            raise ScinoephileError(
                 "Could not determine correct position for sync group"
             )
 

@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from scinoephile.common.typing import PathLike
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
 
@@ -216,7 +216,7 @@ def get_img_of_text_with_bboxes(
     # Check if alignment is possible
     filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
     if len(bboxes) != len(filtered_text):
-        raise ScinoephileException(
+        raise ScinoephileError(
             f"Number of characters in text ({len(filtered_text)})"
             f" does not match number of boxes ({len(bboxes)})"
         )
@@ -327,9 +327,7 @@ def get_img_with_white_bg(img: Image.Image) -> Image.Image:
         img_rgb = img_rgba.convert("RGB")
         return img_rgb
     else:
-        raise ScinoephileException(
-            f"Image must be in mode 'LA' or 'RGBA', is {img.mode}"
-        )
+        raise ScinoephileError(f"Image must be in mode 'LA' or 'RGBA', is {img.mode}")
 
 
 def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
@@ -361,4 +359,4 @@ def _get_default_font_path() -> PathLike:
         return r"C:\WINDOWS\FONTS\MSYH.TTC"
     if system() == "Darwin":
         return r"/System/Library/Fonts/STHeiti Medium.ttc"
-    raise ScinoephileException("Font path must be provided for non-Windows systems")
+    raise ScinoephileError("Font path must be provided for non-Windows systems")

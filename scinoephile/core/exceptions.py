@@ -5,5 +5,5 @@
 from __future__ import annotations
 
 
-class ScinoephileException(Exception):
-    """Scinoephile exception."""
+class ScinoephileError(Exception):
+    """Scinoephile error."""

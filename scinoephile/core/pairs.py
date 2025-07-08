@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 from scinoephile.core.series import Series
 
 
@@ -118,7 +118,7 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
     elif two.events:
         start_time = two.events[0].start
     else:
-        raise ScinoephileException("Both subtitle series are empty")
+        raise ScinoephileError("Both subtitle series are empty")
 
     one_shifted = deepcopy(one)
     two_shifted = deepcopy(two)
@@ -148,7 +148,7 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
         start = two.events[0].start
         duration = two.events[-1].end - start
     else:
-        raise ScinoephileException("Both subtitle series are empty")
+        raise ScinoephileError("Both subtitle series are empty")
 
     one_string = one.to_simple_string(start=start, duration=duration)
     two_string = two.to_simple_string(start=start, duration=duration)

@@ -10,7 +10,7 @@ from pathlib import Path
 
 from scinoephile.common.typing import PathLike
 from scinoephile.common.validation import validate_input_directory, validate_input_file
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox_manager import BboxManager
 from scinoephile.image.drawing import (
     get_img_diff,
@@ -85,7 +85,7 @@ class ValidationManager:
 
         try:
             if len(subtitle.text_excluding_whitespace) != len(subtitle.bboxes):
-                raise ScinoephileException(
+                raise ScinoephileError(
                     f"Number of characters in text "
                     f"({len(subtitle.text_excluding_whitespace)}) "
                     f"does not match number of boxes "
@@ -101,7 +101,7 @@ class ValidationManager:
 
     def _save_validation_img(self, subtitle: ImageSubtitle, i: int) -> None:
         if self.validation_dir_path is None:
-            raise ScinoephileException(
+            raise ScinoephileError(
                 "Validation directory path is not set; cannot save validation image."
             )
 
@@ -114,7 +114,7 @@ class ValidationManager:
                 fill_color=self.series.fill_color,
                 outline_color=self.series.outline_color,
             )
-        except ScinoephileException as exc:
+        except ScinoephileError as exc:
             warning(f"Subtitle {i}: {exc}")
             tst_img = get_img_of_text(
                 subtitle.text,
