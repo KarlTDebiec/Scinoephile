@@ -113,5 +113,6 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
 
 __all__ = [
     "get_blocks_by_pause",
+    "get_block_indexes_by_pause",
     "get_concatenated_blocks",
 ]
