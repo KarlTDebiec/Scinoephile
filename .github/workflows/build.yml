@@ -9,6 +9,8 @@ on:
 jobs:
   Linux:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/karltdebiec/scinoephile-ci:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,10 +34,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: pyproject.toml
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get install -y libcairo2-dev pkg-config python3-dev
 
       - name: Install the project
         run: uv sync --all-extras --dev
