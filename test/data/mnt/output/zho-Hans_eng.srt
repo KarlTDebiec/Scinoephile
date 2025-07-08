@@ -386,7 +386,7 @@ Come here, soot gremlins. Come out, come out, wherever you are!
 
 79
 00:09:27,358 --> 00:09:30,653
-你要躲着不出来　我就把你眼睛挖出来！
+你要躲著不出来　我就把你眼睛挖出来！
 Come here, soot gremlins. Come out, come out, wherever you are!
 
 80
@@ -562,7 +562,7 @@ I'd have cleaned up if I'd known you'd be this quick.
 
 115
 00:13:56,266 --> 00:13:58,407
-如果你们不急着搬进来
+如果你们不急著搬进来
 I'd have cleaned up if I'd known you'd be this quick.
 
 116
@@ -736,7 +736,7 @@ I'm coming, too!
 
 150
 00:15:45,820 --> 00:15:46,821
-小梅，妳在一边等着
+小梅，妳在一边等著
 Mei, wait there.
 
 151
@@ -1309,7 +1309,7 @@ Do I look all grown up?
 
 265
 00:26:38,890 --> 00:26:40,183
-妳揹着便当要上哪儿去？
+妳揹著便当要上哪儿去？
 Yes dear. And where might you be going?
 
 266
@@ -1636,12 +1636,12 @@ He doesn't come out very often.
 
 332
 00:38:54,250 --> 00:38:56,544
-对了，我们还没有跟它打招唿
+对了，我们还没有跟它打招呼
 We should pay our respects at the shrine.
 
 333
 00:38:56,670 --> 00:38:57,545
-打招唿？
+打招呼？
 Pay our respects?
 
 334
@@ -1880,7 +1880,7 @@ I'm sorry. She insisted that she be with you.
 
 381
 00:42:49,339 --> 00:42:51,696
-她一直吵着　要到姊姊那边去所以⋯
+她一直吵著　要到姊姊那边去所以⋯
 I'm sorry. She insisted that she be with you.
 
 382
@@ -2237,7 +2237,7 @@ I told you. Wanna go to Nanny's?
 
 454
 00:49:36,101 --> 00:49:37,894
-爸爸就快到了　撑着点啊
+爸爸就快到了　撑著点啊
 It won't be much longer. Hang in there.
 
 455
@@ -2376,12 +2376,12 @@ Totoro gave us a lovely present…
 
 482
 00:55:34,084 --> 00:55:35,940
-是一个用竹叶包着
+是一个用竹叶包著
 …wrapped in bamboo leaves and tied with dragon whiskers.
 
 483
 00:55:35,940 --> 00:55:37,796
-然后外面再用　龙的胡须绑着的小包包
+然后外面再用　龙的胡须绑著的小包包
 …wrapped in bamboo leaves and tied with dragon whiskers.
 
 484
@@ -3066,7 +3066,7 @@ I'll be here until Daddy comes back, okay?
 
 621
 01:10:03,828 --> 01:10:06,289
-婆婆都会陪着妳的　好不好呀？
+婆婆都会陪著妳的　好不好呀？
 I'll be here until Daddy comes back, okay?
 
 622

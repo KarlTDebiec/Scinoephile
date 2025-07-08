@@ -64,12 +64,12 @@ We're not catching you a Pokemon, are we?
 
 14
 00:03:36,950 --> 00:03:38,434
-﹣咩话？　　﹣话我知你没预谋，杰克
+﹣咩话？　　﹣话我知你冇预谋，杰克
 What?
 
 15
 00:03:38,434 --> 00:03:39,918
-﹣咩话？　　﹣话我知你没预谋，杰克
+﹣咩话？　　﹣话我知你冇预谋，杰克
 Tell me you didn't plan this, Jack.
 
 16
@@ -84,7 +84,7 @@ Jack, tell me
 
 18
 00:03:42,305 --> 00:03:45,350
-你斗胆质疑我？我梗系没
+你斗胆质疑我？我梗系冇
 How dare you. Okay? Of course not. Come on.
 
 19
@@ -94,12 +94,12 @@ Okay, maybe.
 
 20
 00:03:49,029 --> 00:03:50,462
-噚晚月圆　阿妈听到佢咿哇鬼叫
+㖊晚月圆　阿妈听到佢咿哇鬼叫
 There was a full moon last night
 
 21
 00:03:50,462 --> 00:03:51,896
-噚晚月圆　阿妈听到佢咿哇鬼叫
+㖊晚月圆　阿妈听到佢咿哇鬼叫
 and my mom heard it crying its eyes out.
 
 22
@@ -159,12 +159,12 @@ Neither is Fire-type. But Cubone is--
 
 33
 00:04:15,822 --> 00:04:17,389
-﹣够孤独　　﹣没错
+﹣够孤独　　﹣冇错
 Lonely.
 
 34
 00:04:17,389 --> 00:04:18,957
-﹣够孤独　　﹣没错
+﹣够孤独　　﹣冇错
 Exactly.
 
 35
@@ -174,12 +174,12 @@ Okay, thank you, Jack. Thank you for that.
 
 36
 00:04:21,227 --> 00:04:22,778
-仲有没其他情感真相要揭晓？
+仲有冇其他情感真相要揭晓？
 Are there any other emotional truth-bombs
 
 37
 00:04:22,778 --> 00:04:24,329
-仲有没其他情感真相要揭晓？
+仲有冇其他情感真相要揭晓？
 you wanna drop on me?
 
 38
@@ -294,7 +294,7 @@ Still got it.
 
 60
 00:05:29,204 --> 00:05:31,081
-盏灯没变绿色
+盏灯冇变绿色
 The light's not green.
 
 61
@@ -334,12 +334,12 @@ Cubone!
 
 68
 00:05:54,554 --> 00:05:56,421
-嗰只卡拉卡拉好燥底　令我谂起我阿妈
+𠮶只卡拉卡拉好燥底　令我谂起我阿妈
 <i>That was one angry Cubone.</i>
 
 69
 00:05:56,421 --> 00:05:58,289
-嗰只卡拉卡拉好燥底　令我谂起我阿妈
+𠮶只卡拉卡拉好燥底　令我谂起我阿妈
 <i>He reminded me a lot of my mom.</i>
 
 70
@@ -354,7 +354,7 @@ corny or whatever--
 
 72
 00:06:01,653 --> 00:06:03,905
-照直讲啦，杰克　我已经攰到没力嬲
+照直讲啦，杰克　我已经攰到冇力嬲
 Just say it, Jack. I'm too tired to be angry.
 
 73
@@ -384,17 +384,17 @@ Yeah, but that's okay.
 
 78
 00:06:11,337 --> 00:06:12,504
-大家都要把握光阴　为自己着想，我都系
+大家都要把握光阴　为自己著想，我都系
 You gotta do what's best for you
 
 79
 00:06:12,504 --> 00:06:13,671
-大家都要把握光阴　为自己着想，我都系
+大家都要把握光阴　为自己著想，我都系
 with the time that you got.
 
 80
 00:06:13,671 --> 00:06:14,839
-大家都要把握光阴　为自己着想，我都系
+大家都要把握光阴　为自己著想，我都系
 That's what I'm doing.
 
 81
@@ -502,7 +502,7 @@ Does this Lickitung belong to anyone?
 
 102
 00:07:40,794 --> 00:07:42,295
-有没人认？
+有冇人认？
 Anybody? No?
 
 103
@@ -642,7 +642,7 @@ Anybody? No?
 
 130
 00:08:56,828 --> 00:09:00,957
-没对战，没训练员，没精灵球
+冇对战，冇训练员，冇精灵球
 <i>No battles. No Trainers. No Poke Balls.</i>
 
 131
@@ -711,7 +711,7 @@ Thank you. Thank you for saying that.
 
 144
 00:10:55,739 --> 00:10:59,367
-没咗佢同埋佢拍档　实在可惜
+冇咗佢同埋佢拍档　实在可惜
 It was a terrible tragedy, losing him and his partner.
 
 145
@@ -756,12 +756,12 @@ but I assure you, he is adorable on the inside.
 
 153
 00:11:17,510 --> 00:11:19,678
-唔好介意我问　点解你没Pokémon？
+唔好介意我问　点解你冇Pokémon？
 If you don't mind me asking,
 
 154
 00:11:19,678 --> 00:11:21,846
-唔好介意我问　点解你没Pokémon？
+唔好介意我问　点解你冇Pokémon？
 how come you don't have a Pokemon?
 
 155
@@ -811,7 +811,7 @@ If you are anything like your dad--
 
 164
 00:11:44,621 --> 00:11:45,705
-一丝都没
+一丝都冇
 I'm not.
 
 165
@@ -821,12 +821,12 @@ I was just really raised by my grandmother.
 
 166
 00:11:49,475 --> 00:11:51,259
-你有没佢屋企锁匙？　我想睇下有咩要处理
+你有冇佢屋企锁匙？　我想睇下有咩要处理
 Do you have the spare keys for his apartment?
 
 167
 00:11:51,259 --> 00:11:53,044
-你有没佢屋企锁匙？　我想睇下有咩要处理
+你有冇佢屋企锁匙？　我想睇下有咩要处理
 I should go wrap things up there.
 
 168
@@ -836,7 +836,7 @@ Of course.
 
 169
 00:11:54,923 --> 00:11:55,924
-没问题
+冇问题
 Of course.
 
 170
@@ -925,12 +925,12 @@ Are you trying to rob me, or just annoy me?
 
 187
 00:14:06,445 --> 00:14:07,779
-我一直喺度等　等人打开嗰个信箱
+我一直喺度等　等人打开𠮶个信箱
 I've been waiting to see
 
 188
 00:14:07,779 --> 00:14:09,113
-我一直喺度等　等人打开嗰个信箱
+我一直喺度等　等人打开𠮶个信箱
 who would open up that mailbox.
 
 189
@@ -955,12 +955,12 @@ I walk the walk and I talk the talk.
 
 193
 00:14:19,191 --> 00:14:21,359
-我愿意不顾一切，搵出真相
+我愿意不顾一切，揾出真相
 And I'm willing to do whatever it takes
 
 194
 00:14:21,359 --> 00:14:23,528
-我愿意不顾一切，搵出真相
+我愿意不顾一切，揾出真相
 to get the honest scoop, and that's the hard truth.
 
 195
@@ -1060,7 +1060,7 @@ Something's rotten, and I'm gonna get to the bottom of it.
 
 214
 00:15:08,241 --> 00:15:09,951
-我对佢没乜认识　已经多年没见
+我对佢冇乜认识　已经多年冇见
 Hey, look, I barely know the guy.
 
 215
@@ -1070,7 +1070,7 @@ Hey, look, I barely know the guy.
 
 216
 00:15:11,536 --> 00:15:13,830
-我没Pokémon　点解大家都咁问？
+我冇Pokémon　点解大家都咁问？
 I don't have one. Why does everyone keep asking me that?
 
 217
@@ -1100,12 +1100,12 @@ but I can smell a story.
 
 222
 00:15:21,963 --> 00:15:23,631
-我会搵出真相
+我会揾出真相
 And I'm going to find it.
 
 223
 00:15:23,798 --> 00:15:25,050
-妳慢慢搵
+妳慢慢揾
 Okay. You do that.
 
 224
@@ -1254,7 +1254,7 @@ Someone there?
 
 254
 00:18:50,588 --> 00:18:51,589
-有没人？
+有冇人？
 Hello?
 
 255
@@ -1332,7 +1332,7 @@ That is heavy eye contact right there. You heard me.
 
 270
 00:19:53,651 --> 00:19:54,694
-﹣没呀　　﹣肯定有
+﹣冇呀　　﹣肯定有
 - No, no, no.    - Yes, you did.
 
 271
@@ -1442,7 +1442,7 @@ We're playing charades. We're not playing charades.
 
 292
 00:20:34,275 --> 00:20:36,903
-得，唔要刀，搵过第样
+得，唔要刀，揾过第样
 Okay, bad idea with the knife. I'll find something else.
 
 293
@@ -1462,7 +1462,7 @@ Oh, my God!
 
 296
 00:20:44,703 --> 00:20:46,871
-唔对路，走为上着
+唔对路，走为上著
 Come on, kid. Let's move.
 
 297
@@ -1507,17 +1507,17 @@ A man is dying!
 
 305
 00:21:35,712 --> 00:21:37,756
-完全没人理，个个见死不救
+完全冇人理，个个见死不救
 No one's coming. People are so insensitive.
 
 306
 00:21:37,730 --> 00:21:39,481
-快啲着返条裤，走啦
+快啲著返条裤，走啦
 Uh-oh. Put your pants back on
 
 307
 00:21:39,481 --> 00:21:41,232
-快啲着返条裤，走啦
+快啲著返条裤，走啦
 and run like the wind.
 
 308
@@ -1591,7 +1591,7 @@ Go! Go! Go! Go! Go! They're… Go! They…
 
 322
 00:22:27,681 --> 00:22:30,934
-你最好就着返条裤先
+你最好就著返条裤先
 I think pants are gonna do you a lot of good right now.
 
 323
@@ -1601,17 +1601,17 @@ Shoo! Go.
 
 324
 00:22:35,254 --> 00:22:36,904
-以为你会着三角裤　但系呢条都唔错
+以为你会著三角裤　但系呢条都唔错
 You know, I pictured you
 
 325
 00:22:36,904 --> 00:22:38,555
-以为你会着三角裤　但系呢条都唔错
+以为你会著三角裤　但系呢条都唔错
 as a bit of a briefs guy, but those are nice.
 
 326
 00:22:38,650 --> 00:22:42,070
-我就唔着底裤，豪迈啲嘛
+我就唔著底裤，豪迈啲嘛
 Me? I don't wear underwear, you know? I'm not modest.
 
 327
@@ -1641,22 +1641,22 @@ You're adorable. They can't understand me, kid.
 
 332
 00:22:52,872 --> 00:22:55,375
-系我，系我头先索咗嗰啲嘢
+系我，系我头先索咗𠮶啲嘢
 It's me. It's that stuff that I put up my nose.
 
 333
 00:22:56,375 --> 00:22:57,876
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
+唔系妳谂𠮶啲，系气体　我索咗啲气体，只系意外⋯
 Not like that. No, it was a gas.
 
 334
 00:22:57,876 --> 00:22:59,377
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
+唔系妳谂𠮶啲，系气体　我索咗啲气体，只系意外⋯
 - I was breathing gas.    - Hey, hey, hey.
 
 335
 00:22:59,377 --> 00:23:00,878
-唔系妳谂嗰啲，系气体　我索咗啲气体，只系意外⋯
+唔系妳谂𠮶啲，系气体　我索咗啲气体，只系意外⋯
 Accidentally. I was accidentally…
 
 336
@@ -1676,17 +1676,17 @@ a one-way ticket to the hoosegow, let's move.
 
 339
 00:23:05,651 --> 00:23:06,840
-﹣没人听到？佢讲紧人话　　﹣我都系第一次
+﹣冇人听到？佢讲紧人话　　﹣我都系第一次
 No one else can hear him?
 
 340
 00:23:06,840 --> 00:23:08,029
-﹣没人听到？佢讲紧人话　　﹣我都系第一次
+﹣冇人听到？佢讲紧人话　　﹣我都系第一次
 This is a first for me, too, kid.
 
 341
 00:23:08,029 --> 00:23:09,219
-﹣没人听到？佢讲紧人话　　﹣我都系第一次
+﹣冇人听到？佢讲紧人话　　﹣我都系第一次
 He's saying words.
 
 342
@@ -1701,22 +1701,22 @@ All they hear is "Pika-Pika".
 
 344
 00:23:11,290 --> 00:23:12,774
-然后就摸我，钖我　搵手指笃我，好鬼核突
+然后就摸我，锡我　揾手指笃我，好鬼核突
 They pat me or kiss me,
 
 345
 00:23:12,774 --> 00:23:14,258
-然后就摸我，钖我　搵手指笃我，好鬼核突
+然后就摸我，锡我　揾手指笃我，好鬼核突
 stick a finger in me. It's really gross.
 
 346
 00:23:14,293 --> 00:23:16,110
-没人听得明佢？你听唔明？　听唔明佢讲嘢？
+冇人听得明佢？你听唔明？　听唔明佢讲嘢？
 Can no one else hear him?
 
 347
 00:23:16,110 --> 00:23:17,928
-没人听得明佢？你听唔明？　听唔明佢讲嘢？
+冇人听得明佢？你听唔明？　听唔明佢讲嘢？
 Can you hear him talking? Do you hear him saying words?
 
 348
@@ -1731,22 +1731,22 @@ You're the only one who can hear me.
 
 350
 00:23:21,359 --> 00:23:23,236
-﹣系命中註定　　﹣唔系命中註定
+﹣系命中注定　　﹣唔系命中注定
 - It's like destiny.    - It's not destiny.
 
 351
 00:23:23,335 --> 00:23:25,353
-﹣你点解会去嗰间屋？　　﹣间屋系我阿爸屋企
+﹣你点解会去𠮶间屋？　　﹣间屋系我阿爸屋企
 Then why were you in that apartment?
 
 352
 00:23:25,353 --> 00:23:27,371
-﹣你点解会去嗰间屋？　　﹣间屋系我阿爸屋企
+﹣你点解会去𠮶间屋？　　﹣间屋系我阿爸屋企
 It's my father's place. That's why I was there.
 
 353
 00:23:27,449 --> 00:23:29,743
-﹣你又点解喺嗰度？　　﹣你系哈利个仔？
+﹣你又点解喺𠮶度？　　﹣你系哈利个仔？
 - Why were you there?    - You're Harry's son?
 
 354
@@ -1809,12 +1809,12 @@ and address inside this hat.
 
 366
 00:24:17,356 --> 00:24:19,073
-于是我跟住地址搵，就撞着你
+于是我跟住地址揾，就撞著你
 So I made my way to the apartment
 
 367
 00:24:19,073 --> 00:24:20,791
-于是我跟住地址搵，就撞着你
+于是我跟住地址揾，就撞著你
 and that's when I found you.
 
 368
@@ -1834,12 +1834,12 @@ Deep in what?
 
 371
 00:24:26,331 --> 00:24:28,382
-遇着班坏人，诸如此类　当差好常见
+遇著班坏人，诸如此类　当差好常见
 You know, mixed up with the wrong crowd,
 
 372
 00:24:28,382 --> 00:24:30,434
-遇着班坏人，诸如此类　当差好常见
+遇著班坏人，诸如此类　当差好常见
 that kinda thing. Happens to the best of us.
 
 373
@@ -1854,7 +1854,7 @@ Right becomes wrong. Wrong becomes wrong.
 
 375
 00:24:35,642 --> 00:24:37,102
-﹣你打畀边个？　　﹣没人
+﹣你打畀边个？　　﹣冇人
 - Wait, who you calling?    - No one.
 
 376
@@ -1919,12 +1919,12 @@ Ludicolo!
 
 388
 00:25:00,732 --> 00:25:02,316
-我系一流神探，不过没咗记忆　就解唔开自己嘅谜团
+我系一流神探，不过冇咗记忆　就解唔开自己嘅谜团
 Look, I'm a great detective.
 
 389
 00:25:02,316 --> 00:25:03,901
-我系一流神探，不过没咗记忆　就解唔开自己嘅谜团
+我系一流神探，不过冇咗记忆　就解唔开自己嘅谜团
 But I can't solve my own mystery if I have no memory.
 
 390
@@ -1959,12 +1959,12 @@ despite everyone telling you you're wrong.
 
 396
 00:25:16,148 --> 00:25:17,798
-所以我要搵番哈利　佢系我过去嘅关键
+所以我要揾番哈利　佢系我过去嘅关键
 Which is why I need to find Harry.
 
 397
 00:25:17,798 --> 00:25:19,449
-所以我要搵番哈利　佢系我过去嘅关键
+所以我要揾番哈利　佢系我过去嘅关键
 He's the key to my past.
 
 398
@@ -1979,7 +1979,7 @@ I got some bad news for you 'cause, uh, Harry's dead.
 
 400
 00:25:27,110 --> 00:25:31,239
-咩话？没可能　哈利肯定未死
+咩话？冇可能　哈利肯定未死
 What? No. No, no, no. No, Harry ain't dead.
 
 401
@@ -2004,32 +2004,32 @@ It means that he's legally dead.
 
 405
 00:25:38,079 --> 00:25:40,707
-系咩？有没搵到尸体？
+系咩？有冇揾到尸体？
 Really? Did they find a body?
 
 406
 00:25:42,042 --> 00:25:43,460
-梗系没
+梗系冇
 Oh, I didn't think so.
 
 407
 00:25:43,626 --> 00:25:46,546
-份报告有没话我都死咗？
+份报告有冇话我都死咗？
 And, by the way, did that report also say that I'm dead?
 
 408
 00:25:46,645 --> 00:25:47,957
-因为我生勐到爆　所以哈利都未死，讲完
+因为我生猛到爆　所以哈利都未死，讲完
 'Cause if I'm still alive and kicking,
 
 409
 00:25:47,957 --> 00:25:49,269
-因为我生勐到爆　所以哈利都未死，讲完
+因为我生猛到爆　所以哈利都未死，讲完
 that means Harry's out there, too.
 
 410
 00:25:49,269 --> 00:25:50,581
-因为我生勐到爆　所以哈利都未死，讲完
+因为我生猛到爆　所以哈利都未死，讲完
 Case closed.
 
 411
@@ -2109,7 +2109,7 @@ Then what about a world-class detective?
 
 426
 00:26:23,958 --> 00:26:26,920
-如果你想搵番老窦，我系最佳选择
+如果你想揾番老窦，我系最佳选择
 Because if you wanna find your pops, I'm your best bet.
 
 427
@@ -2124,7 +2124,7 @@ oughta have figured out by now
 
 429
 00:26:29,589 --> 00:26:31,508
-我唔系嚟搵我老窦
+我唔系嚟揾我老窦
 that I'm not here to find my father.
 
 430
@@ -2174,7 +2174,7 @@ Oh, you feel it. You feel it in your jellies, don't you?
 
 439
 00:27:02,205 --> 00:27:03,707
-我骨子里乜都没
+我骨子里乜都冇
 There's nothing in my jellies.
 
 440
@@ -2254,12 +2254,12 @@ I never do this. I'm not that kind of Pokemon.
 
 455
 00:27:37,489 --> 00:27:38,973
-周围铺满尘，但没指纹
+周围铺满尘，但冇指纹
 Dust everywhere.
 
 456
 00:27:38,973 --> 00:27:40,457
-周围铺满尘，但没指纹
+周围铺满尘，但冇指纹
 No fingerprints.
 
 457
@@ -2269,12 +2269,12 @@ Ugh. Doesn't add up.
 
 458
 00:27:43,361 --> 00:27:45,012
-﹣你搞紧咩？　　﹣我搵紧过去嘅线索
+﹣你搞紧咩？　　﹣我揾紧过去嘅线索
 What is going on in here?
 
 459
 00:27:45,012 --> 00:27:46,663
-﹣你搞紧咩？　　﹣我搵紧过去嘅线索
+﹣你搞紧咩？　　﹣我揾紧过去嘅线索
 I'm searching the joint, looking for clues.
 
 460
@@ -2284,22 +2284,22 @@ I'm searching the joint, looking for clues.
 
 461
 00:27:48,333 --> 00:27:50,000
-﹣哈利有没其他仔女？　　﹣没
+﹣哈利有冇其他仔女？　　﹣冇
 Does Harry have other children?
 
 462
 00:27:50,000 --> 00:27:51,668
-﹣哈利有没其他仔女？　　﹣没
+﹣哈利有冇其他仔女？　　﹣冇
 No.
 
 463
 00:27:51,703 --> 00:27:53,704
-我细个时，佢想我喺度住　所以佈置到好似我细个间房咁
+我细个时，佢想我喺度住　所以布置到好似我细个间房咁
 He wanted me to live here when I was a kid,
 
 464
 00:27:53,704 --> 00:27:55,706
-我细个时，佢想我喺度住　所以佈置到好似我细个间房咁
+我细个时，佢想我喺度住　所以布置到好似我细个间房咁
 so he made it look like my childhood room.
 
 465
@@ -2429,7 +2429,7 @@ That's my mom.
 
 490
 00:28:38,385 --> 00:28:40,303
-我11岁嗰年佢已经过咗身
+我11岁𠮶年佢已经过咗身
 She passed away when I was 11.
 
 491
@@ -2444,12 +2444,12 @@ I didn't realize.
 
 493
 00:28:48,760 --> 00:28:50,678
-听朝我带你去搵吉田　睇吓搵唔搵到答案
+听朝我带你去揾吉田　睇吓揾唔揾到答案
 Tomorrow morning I'm gonna take you to Yoshida
 
 494
 00:28:50,678 --> 00:28:52,596
-听朝我带你去搵吉田　睇吓搵唔搵到答案
+听朝我带你去揾吉田　睇吓揾唔揾到答案
 so we can get some answers.
 
 495
@@ -2469,12 +2469,12 @@ Hard work. That's what this is.
 
 498
 00:29:26,064 --> 00:29:27,915
-仲有，唔好搵警察　要先搞清楚边个信得过
+仲有，唔好揾警察　要先搞清楚边个信得过
 And, by the way, we can't go to the cops.
 
 499
 00:29:27,915 --> 00:29:29,766
-仲有，唔好搵警察　要先搞清楚边个信得过
+仲有，唔好揾警察　要先搞清楚边个信得过
 Not till we know who we can trust.
 
 500
@@ -2509,12 +2509,12 @@ It helps me to see it all laid out.
 
 506
 00:29:39,511 --> 00:29:41,846
-于是搵到佢　法国人会话系火热线索
+于是揾到佢　法国人会话系火热线索
 That's how I found this.
 
 507
 00:29:41,846 --> 00:29:44,181
-于是搵到佢　法国人会话系火热线索
+于是揾到佢　法国人会话系火热线索
 This is what a Frenchman would call<i>caliente fiesta.</i>
 
 508
@@ -2534,7 +2534,7 @@ I will never smell your finger.
 
 511
 00:29:48,413 --> 00:29:49,414
-没胆鬼
+冇胆鬼
 Coward.
 
 512
@@ -2549,7 +2549,7 @@ on those Aipom when they attacked us yesterday.
 
 514
 00:29:53,376 --> 00:29:54,627
-﹣R？　　﹣没错！
+﹣R？　　﹣冇错！
 - R?    - Bingo!
 
 515
@@ -2683,12 +2683,12 @@ Uh, I was drinking that.
 
 541
 00:30:47,712 --> 00:30:49,096
-嗰杯都未饮⋯随便踩啦　只不过系我毕生成就
+𠮶杯都未饮⋯随便踩啦　只不过系我毕生成就
 I was also drink… Just step anywhere.
 
 542
 00:30:49,096 --> 00:30:50,480
-嗰杯都未饮⋯随便踩啦　只不过系我毕生成就
+𠮶杯都未饮⋯随便踩啦　只不过系我毕生成就
 It's only my life's work.
 
 543
@@ -2748,7 +2748,7 @@ You won't wanna miss it.
 
 554
 00:31:14,582 --> 00:31:16,918
-今个週末，我哋邀请所有人
+今个周末，我哋邀请所有人
 So, at the weekend, we invite the people…
 
 555
@@ -2833,27 +2833,27 @@ Turn your back on me like you always did.
 
 571
 00:31:47,672 --> 00:31:49,156
-﹣百变怪！　　﹣根本没人钟意你只Pokémon！
+﹣百变怪！　　﹣根本冇人钟意你只Pokémon！
 Ditto!
 
 572
 00:31:49,156 --> 00:31:50,640
-﹣百变怪！　　﹣根本没人钟意你只Pokémon！
+﹣百变怪！　　﹣根本冇人钟意你只Pokémon！
 By the way, no one likes your Pokemon!
 
 573
 00:31:50,618 --> 00:31:51,619
-佢喺嗰边
+佢喺𠮶边
 There she is.
 
 574
 00:31:53,345 --> 00:31:55,513
-﹣我明白你点解咁兴奋　　﹣我没兴奋
+﹣我明白你点解咁兴奋　　﹣我冇兴奋
 I can see why you were so excited.
 
 575
 00:31:55,513 --> 00:31:57,681
-﹣我明白你点解咁兴奋　　﹣我没兴奋
+﹣我明白你点解咁兴奋　　﹣我冇兴奋
 I was… Okay, I was not that excited.
 
 576
@@ -2868,12 +2868,12 @@ Mr. Clifford, I may have a story for you.
 
 578
 00:32:01,920 --> 00:32:03,921
-我听讲有Pokémon攻击人类　但系主流媒体没报导
+我听讲有Pokémon攻击人类　但系主流媒体冇报导
 I've heard rumors of Pokemon attacking people.
 
 579
 00:32:03,921 --> 00:32:05,922
-我听讲有Pokémon攻击人类　但系主流媒体没报导
+我听讲有Pokémon攻击人类　但系主流媒体冇报导
 But there's been no mainstream coverage.
 
 580
@@ -2883,12 +2883,12 @@ I'm sorry, we're not a tabloid.
 
 581
 00:32:07,859 --> 00:32:10,344
-唔会报导呢啲　没根据嘅流言蜚语
+唔会报导呢啲　冇根据嘅流言蜚语
 Which means that we don't report
 
 582
 00:32:10,344 --> 00:32:12,829
-唔会报导呢啲　没根据嘅流言蜚语
+唔会报导呢啲　冇根据嘅流言蜚语
 on rumors, gossip or hearsay.
 
 583
@@ -2898,7 +2898,7 @@ It's not news if it can't be verified.
 
 584
 00:32:15,727 --> 00:32:19,397
-你要报导新闻　就要搵可靠嘅料
+你要报导新闻　就要揾可靠嘅料
 You want a story, find a source.
 
 585
@@ -2908,7 +2908,7 @@ Oh, and pro tip:
 
 586
 00:32:22,692 --> 00:32:25,070
-着衫要着得好好睇睇
+著衫要著得好好睇睇
 A reasonable sense of fashion.
 
 587
@@ -2958,7 +2958,7 @@ Sorry. It's piping hot.
 
 596
 00:32:58,561 --> 00:33:01,189
-你搵到Pokémon做你拍档
+你揾到Pokémon做你拍档
 You found yourself a Pokemon partner.
 
 597
@@ -2993,12 +2993,12 @@ What happened?
 
 603
 00:33:12,957 --> 00:33:14,858
-我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我⋯
+我喺哈利书台揾到呢支嘢　差啲搞到我窒息，我⋯
 I found something in Harry's desk,
 
 604
 00:33:14,858 --> 00:33:16,760
-我喺哈利书台搵到呢支嘢　差啲搞到我窒息，我⋯
+我喺哈利书台揾到呢支嘢　差啲搞到我窒息，我⋯
 nearly choked me to death, and I was--
 
 605
@@ -3033,22 +3033,22 @@ Psyduck?
 
 611
 00:33:33,711 --> 00:33:34,978
-没错，佢听得明我　我听得明佢，我哋天赋异禀
+冇错，佢听得明我　我听得明佢，我哋天赋异禀
 Yeah, that's right. I can talk to the kid,
 
 612
 00:33:34,978 --> 00:33:36,246
-没错，佢听得明我　我听得明佢，我哋天赋异禀
+冇错，佢听得明我　我听得明佢，我哋天赋异禀
 he can talk to me. We're gifted.
 
 613
 00:33:36,281 --> 00:33:38,515
-你没话我知佢有可达鸭　佢哋压力太大就爆炸
+你冇话我知佢有可达鸭　佢哋压力太大就爆炸
 You didn't tell me that she has a Psyduck.
 
 614
 00:33:38,515 --> 00:33:40,750
-你没话我知佢有可达鸭　佢哋压力太大就爆炸
+你冇话我知佢有可达鸭　佢哋压力太大就爆炸
 These things explode when they're stressed.
 
 615
@@ -3058,7 +3058,7 @@ Hey. Hey, keep calm, pal.
 
 616
 00:33:42,397 --> 00:33:44,649
-没事嘅，没事嘅
+冇事嘅，冇事嘅
 Serenity now. Serenity now.
 
 617
@@ -3072,12 +3072,12 @@ Okay.
 
 619
 00:33:49,070 --> 00:33:50,822
-﹣搵到？　　﹣喺度
+﹣揾到？　　﹣喺度
 - You got it?    - Here it is.
 
 620
 00:33:54,784 --> 00:33:55,910
-妳点搵到㗎？
+妳点揾到㗎？
 Where did you find these?
 
 621
@@ -3092,12 +3092,12 @@ Harry had an informant near the docks.
 
 623
 00:33:59,137 --> 00:34:01,038
-我去咗调查　之后就搵到啲樽仔
+我去咗调查　之后就揾到啲樽仔
 I went there to snoop around,
 
 624
 00:34:01,038 --> 00:34:02,939
-我去咗调查　之后就搵到啲樽仔
+我去咗调查　之后就揾到啲樽仔
 and that's where I found the vial.
 
 625
@@ -3142,7 +3142,7 @@ We should go.
 
 633
 00:34:23,980 --> 00:34:26,149
-﹣早走早着　　﹣我会侧侧身出去
+﹣早走早著　　﹣我会侧侧身出去
 - Yeah, we should go.    - I'm just gonna scoot by ya.
 
 634
@@ -3152,7 +3152,7 @@ Good God, have you ever talked to a woman before?
 
 635
 00:34:28,818 --> 00:34:30,862
-﹣你背嵴⋯　　﹣可达
+﹣你背脊⋯　　﹣可达
 - You've got some…    - Psyduck.
 
 636
@@ -3162,7 +3162,7 @@ Yes, I've talked women before. No, I don't need your help.
 
 637
 00:34:33,031 --> 00:34:35,116
-出世嗰阵沟护士？
+出世𠮶阵沟护士？
 Was it during the birth canal, or…
 
 638
@@ -3326,7 +3326,7 @@ Get him!
 
 670
 00:35:45,395 --> 00:35:47,480
-﹣佢根本都没跑　　﹣唔好话佢听
+﹣佢根本都冇跑　　﹣唔好话佢听
 - He's barely moving.    - Don't tell him that.
 
 671
@@ -3411,12 +3411,12 @@ We got ways to make you talk. Or mime.
 
 687
 00:36:14,305 --> 00:36:15,555
-﹣没错　　﹣快啲爆料
+﹣冇错　　﹣快啲爆料
 Yeah.
 
 688
 00:36:15,555 --> 00:36:16,806
-﹣没错　　﹣快啲爆料
+﹣冇错　　﹣快啲爆料
 So tell us what we wanna know.
 
 689
@@ -3516,17 +3516,17 @@ Oh, what's this?
 
 708
 00:36:57,148 --> 00:36:58,582
-原来有度门，隐咗形我没见到
+原来有度门，隐咗形我冇见到
 Oh, there's a door there. I didn't…
 
 709
 00:36:58,582 --> 00:37:00,016
-原来有度门，隐咗形我没见到
+原来有度门，隐咗形我冇见到
 Probably because it's invisible.
 
 710
 00:37:00,261 --> 00:37:02,639
-没错，而家我入咗你空间
+冇错，而家我入咗你空间
 Huh? Yeah! I'm in your space now, am I right?
 
 711
@@ -3551,7 +3551,7 @@ No.
 
 715
 00:37:10,188 --> 00:37:11,856
-系盐，你拎住罐盐煮餸
+系盐，你拎住罐盐煮𩠌
 Salt. It's a salt shaker. You're cooking.
 
 716
@@ -3626,7 +3626,7 @@ Oh. Oh, I smell what you're stepping in.
 
 730
 00:37:46,182 --> 00:37:47,517
-没错，魔墙人偶
+冇错，魔墙人偶
 That's right, Mr. Mime.
 
 731
@@ -3720,7 +3720,7 @@ Critical hit! Additional damage!
 
 749
 00:38:51,164 --> 00:38:53,500
-我以为莱姆市没Pokémon对战
+我以为莱姆市冇Pokémon对战
 I didn't know they had Pokemon battles in Ryme City.
 
 750
@@ -3764,17 +3764,17 @@ here knows something about something.
 
 758
 00:39:24,989 --> 00:39:27,992
-我哋只要搵出嗰个人，同嗰啲嘢
+我哋只要揾出𠮶个人，同𠮶啲嘢
 We just need to find the someone and the something.
 
 759
 00:39:28,159 --> 00:39:32,205
-嗰只Pikachu个拍档呢？唔好走
+𠮶只Pikachu个拍档呢？唔好走
 Hey, hey! Where's that Pikachu's partner? Don't go.
 
 760
 00:39:32,539 --> 00:39:34,249
-照我睇　系我哋畀人搵到
+照我睇　系我哋畀人揾到
 I think the "someone" just found us.
 
 761
@@ -3809,7 +3809,7 @@ I'm his new partner.
 
 767
 00:39:43,133 --> 00:39:44,968
-嗰只Pikachu招十万伏特
+𠮶只Pikachu招十万伏特
 Well, that Pikachu's Thunderbolt
 
 768
@@ -3829,7 +3829,7 @@ Scar is still fresh.
 
 771
 00:39:52,142 --> 00:39:55,562
-我只系睇到两块大胸肌　一个字都没听到
+我只系睇到两块大胸肌　一个字都冇听到
 All I hear are consonants, and all I see are nipples.
 
 772
@@ -3844,12 +3844,12 @@ He ruined my coat, man. Look at this.
 
 774
 00:40:00,164 --> 00:40:01,631
-﹣唔好意思　　﹣毋理外套，佢点解唔着衫？
+﹣唔好意思　　﹣毋理外套，佢点解唔著衫？
 I'm so sorry.
 
 775
 00:40:01,631 --> 00:40:03,099
-﹣唔好意思　　﹣毋理外套，佢点解唔着衫？
+﹣唔好意思　　﹣毋理外套，佢点解唔著衫？
 Forget the coat. Where's his shirt?
 
 776
@@ -3859,7 +3859,7 @@ This! This is my place!
 
 777
 00:40:06,031 --> 00:40:08,033
-没人可以踩入我地头
+冇人可以踩入我地头
 And nobody comes into my place
 
 778
@@ -3934,7 +3934,7 @@ I'll tell you everything you want to know. What I know.
 
 792
 00:40:39,397 --> 00:40:41,232
-同佢讲没问题，老友
+同佢讲冇问题，老友
 - Er…    - Tell him he's on,<i>amigo.</i>
 
 793
@@ -3994,12 +3994,12 @@ What are you doing? What is your plan of attack?
 
 804
 00:41:07,198 --> 00:41:09,199
-我没乜打算，一切随机应变
+我冇乜打算，一切随机应变
 I don't operate according to plans, kid.
 
 805
 00:41:09,199 --> 00:41:11,200
-我没乜打算，一切随机应变
+我冇乜打算，一切随机应变
 I deal with things in the moment.
 
 806
@@ -4024,12 +4024,12 @@ Give me my hat back!
 
 810
 00:41:27,418 --> 00:41:28,935
-嗰只嘢队咗劲大支R物质！
+𠮶只嘢队咗劲大支R物质！
 That thing just chugged
 
 811
 00:41:28,935 --> 00:41:30,453
-嗰只嘢队咗劲大支R物质！
+𠮶只嘢队咗劲大支R物质！
 a year's worth of that R stuff!
 
 812
@@ -4054,12 +4054,12 @@ You can use Quick Attack, Discharge, or Electro Ball,
 
 816
 00:41:38,362 --> 00:41:39,829
-但系伏特攻击最适合　用嗰招先啦
+但系伏特攻击最适合　用𠮶招先啦
 but I think Volt Tackle
 
 817
 00:41:39,829 --> 00:41:41,297
-但系伏特攻击最适合　用嗰招先啦
+但系伏特攻击最适合　用𠮶招先啦
 is your best move, so start with that.
 
 818
@@ -4209,12 +4209,12 @@ Tell me what you know!
 
 847
 00:44:12,516 --> 00:44:14,801
-你哋搵嗰个人　想查出R嘅来源
+你哋揾𠮶个人　想查出R嘅来源
 The guy you are looking for
 
 848
 00:44:14,801 --> 00:44:17,086
-你哋搵嗰个人　想查出R嘅来源
+你哋揾𠮶个人　想查出R嘅来源
 wanted to know the source of R.
 
 849
@@ -4244,7 +4244,7 @@ I got a plan.
 
 854
 00:44:43,641 --> 00:44:45,769
-搞咩？咪玩啦，鲤鱼王没鬼用
+搞咩？咪玩啦，鲤鱼王冇鬼用
 What? That's not gonna work. Magikarp is the worst.
 
 855
@@ -4278,7 +4278,7 @@ Hey, Tim? I don't float.
 
 861
 00:45:21,971 --> 00:45:24,057
-话咗鲤鱼王唔系没用
+话咗鲤鱼王唔系冇用
 Ha! I told you Magikarp weren't useless.
 
 862
@@ -4293,7 +4293,7 @@ I thought you couldn't wait to get home.
 
 864
 00:45:32,190 --> 00:45:35,068
-系呀，但系计划有变　因为我搵到佢
+系呀，但系计划有变　因为我揾到佢
 Yeah. Well, my plans changed because I found him.
 
 865
@@ -4338,7 +4338,7 @@ had to do with those underground battles.
 
 873
 00:45:47,455 --> 00:45:48,832
-我哋去嗰度　搵到种化合物
+我哋去𠮶度　揾到种化合物
 That's why I was there. There's a chemical.
 
 874
@@ -4348,12 +4348,12 @@ We ran an investigation.
 
 875
 00:45:50,481 --> 00:45:51,731
-﹣哈利有发现，于是惹祸　　﹣嗰单案已经完咗！
+﹣哈利有发现，于是惹祸　　﹣𠮶单案已经完咗！
 Harry figured it out and he's in trouble.
 
 876
 00:45:51,731 --> 00:45:52,982
-﹣哈利有发现，于是惹祸　　﹣嗰单案已经完咗！
+﹣哈利有发现，于是惹祸　　﹣𠮶单案已经完咗！
 That case is closed. Over!
 
 877
@@ -4413,7 +4413,7 @@ Denial can be a powerful thing.
 
 888
 00:46:14,107 --> 00:46:17,277
-我没逃避，我知道我系啱！
+我冇逃避，我知道我系啱！
 No, I'm not in denial! I'm right, I know it!
 
 889
@@ -4433,7 +4433,7 @@ but I think it's important you see it.
 
 892
 00:46:37,714 --> 00:46:40,216
-咁严重嘅车祸，没人可以生还
+咁严重嘅车祸，冇人可以生还
 No one could survive a crash like that.
 
 893
@@ -4448,7 +4448,7 @@ He's gone, Tim.
 
 895
 00:46:59,194 --> 00:47:01,237
-我应该坐嗰班火车
+我应该坐𠮶班火车
 I should've gotten on that train.
 
 896
@@ -4502,12 +4502,12 @@ I didn't think he cared.
 
 906
 00:47:38,608 --> 00:47:43,571
-我谂我习惯咗没佢喺身边
+我谂我习惯咗冇佢喺身边
 I guess I just got used to him not being around
 
 907
 00:47:44,698 --> 00:47:47,617
-而且一直都没原谅佢
+而且一直都冇原谅佢
 and I couldn't forgive him for it.
 
 908
@@ -4527,7 +4527,7 @@ But I didn't know…
 
 911
 00:48:03,633 --> 00:48:06,386
-因为我从来没畀机会佢
+因为我从来冇畀机会佢
 because I never gave him the chance.
 
 912
@@ -4542,7 +4542,7 @@ I really…
 
 914
 00:48:19,232 --> 00:48:21,776
-我真系希望我有上嗰班火车
+我真系希望我有上𠮶班火车
 I really wish I'd gotten on that train.
 
 915
@@ -4615,7 +4615,7 @@ I haven't been really nice to you.
 
 929
 00:49:12,535 --> 00:49:14,245
-真系没好过
+真系冇好过
 No, you really haven't.
 
 930
@@ -4740,12 +4740,12 @@ You knew Harry?
 
 954
 00:50:52,177 --> 00:50:54,387
-哈利查嗰单案⋯
+哈利查𠮶单案⋯
 The case Harry was working on,
 
 955
 00:50:55,096 --> 00:50:56,306
-系由我委託
+系由我委托
 it was for me.
 
 956
@@ -4765,7 +4765,7 @@ He knows about the R. How does he know about the R?
 
 959
 00:51:05,482 --> 00:51:07,901
-我拜託哈利帮我查出来源
+我拜托哈利帮我查出来源
 I hired Harry to trace it to its source.
 
 960
@@ -4775,7 +4775,7 @@ Imagine my shock when the answer
 
 961
 00:51:11,237 --> 00:51:13,490
-元兇竟然系我个仔
+元凶竟然系我个仔
 turned out to be my own son.
 
 962
@@ -4820,12 +4820,12 @@ he actually wants to destroy my legacy.
 
 970
 00:51:39,963 --> 00:51:41,297
-所谓「父亲」，没父点有亲
+所谓「父亲」，冇父点有亲
 Well, there's no such thing
 
 971
 00:51:41,297 --> 00:51:42,631
-所谓「父亲」，没父点有亲
+所谓「父亲」，冇父点有亲
 as "daddy issues" without "daddy".
 
 972
@@ -4865,12 +4865,12 @@ Harry is the only one I can trust.
 
 979
 00:52:00,787 --> 00:52:03,331
-所以你要去搵佢
+所以你要去揾佢
 That's why you need to find him.
 
 980
 00:52:04,207 --> 00:52:05,709
-你没听到消息
+你冇听到消息
 You haven't heard.
 
 981
@@ -4950,7 +4950,7 @@ He needs my help.
 
 996
 00:52:51,338 --> 00:52:53,131
-如果哈利未死　点解没人搵到佢？
+如果哈利未死　点解冇人揾到佢？
 If Harry's alive, why didn't they find him?
 
 997
@@ -5030,7 +5030,7 @@ That's for you to solve now.
 
 1012
 00:53:49,979 --> 00:53:53,983
-搵到超梦，就会搵到你爸爸
+揾到超梦，就会揾到你爸爸
 Find Mewtwo and you will find your father.
 
 1013
@@ -5070,7 +5070,7 @@ Okay. If Roger Clifford is the key to all of this…
 
 1020
 00:54:11,084 --> 00:54:13,753
-就要搵个　可以接触到佢嘅人
+就要揾个　可以接触到佢嘅人
 Then we need someone who has access to him.
 
 1021
@@ -5200,12 +5200,12 @@ I targeted the property rights in the region
 
 1046
 00:55:07,237 --> 00:55:09,421
-然后比对市政局记录　佢家族资助嘅公司，终于搵到⋯
+然后比对市政局记录　佢家族资助嘅公司，终于揾到⋯
 and I cross-checked that with city records
 
 1047
 00:55:09,421 --> 00:55:11,606
-然后比对市政局记录　佢家族资助嘅公司，终于搵到⋯
+然后比对市政局记录　佢家族资助嘅公司，终于揾到⋯
 for any Clifford-financed businesses until I found it.
 
 1048
@@ -5240,17 +5240,17 @@ and had to shut down their entire facility.
 
 1054
 00:55:22,655 --> 00:55:24,616
-正正系哈利古德曼失踪嗰晚
+正正系哈利古德曼失踪𠮶晚
 That's the same night Harry Goodman went missing.
 
 1055
 00:55:25,492 --> 00:55:27,118
-没人知道发生咩事
+冇人知道发生咩事
 No one knows what happened.
 
 1056
 00:55:27,285 --> 00:55:29,454
-传媒完全没报导
+传媒完全冇报导
 Total media blackout.
 
 1057
@@ -5374,7 +5374,7 @@ What?
 
 1081
 00:56:34,686 --> 00:56:37,022
-没嘢，我只系好奇⋯佢系边个
+冇嘢，我只系好奇⋯佢系边个
 Nothing.
 
 1082
@@ -5389,7 +5389,7 @@ It's PCL's chief scientist, Dr. Anne Laurent.
 
 1084
 00:56:43,653 --> 00:56:45,488
-个唔着衫友讲嘅实系佢
+个唔著衫友讲嘅实系佢
 I bet this is the doctor Shirtless was talking about.
 
 1085
@@ -5497,7 +5497,7 @@ First of all, women don't like to be called "dame".
 
 1106
 00:57:29,783 --> 00:57:33,703
-第二，女人钟意嘅系沉着冷静
+第二，女人钟意嘅系沉著冷静
 Second, women appreciate calm, er, level-headed
 
 1107
@@ -5527,12 +5527,12 @@ I'm, er, I'm cutting the fence so that we can slip through.
 
 1112
 00:57:46,563 --> 00:57:47,930
-﹣妳去边度搵架生？　　﹣你咪理
+﹣妳去边度揾架生？　　﹣你咪理
 Where did you get those?
 
 1113
 00:57:47,930 --> 00:57:49,297
-﹣妳去边度搵架生？　　﹣你咪理
+﹣妳去边度揾架生？　　﹣你咪理
 Oh, don't worry about it.
 
 1114
@@ -5635,12 +5635,12 @@ But why?
 
 1134
 00:59:05,742 --> 00:59:07,943
-如果幕后黑手系罗杰克里佛　佢点解要搵Pokémon做实验？
+如果幕后黑手系罗杰克里佛　佢点解要揾Pokémon做实验？
 If Roger Clifford's behind this,
 
 1135
 00:59:07,943 --> 00:59:10,145
-如果幕后黑手系罗杰克里佛　佢点解要搵Pokémon做实验？
+如果幕后黑手系罗杰克里佛　佢点解要揾Pokémon做实验？
 what's he doing experimenting on Pokemon?
 
 1136
@@ -5660,7 +5660,7 @@ A Torterra garden.
 
 1139
 00:59:29,527 --> 00:59:31,279
-睇落大细没乜唔妥
+睇落大细冇乜唔妥
 They look normal-sized to me.
 
 1140
@@ -5709,7 +5709,7 @@ What happened here?
 
 1149
 01:00:15,990 --> 01:00:17,492
-肯定没好嘢
+肯定冇好嘢
 Bad stuff.
 
 1150
@@ -5764,12 +5764,12 @@ Day 42.
 
 1160
 01:01:23,413 --> 01:01:25,330
-经过多次尝试　我哋终于搵到一个稳定嘅方法
+经过多次尝试　我哋终于揾到一个稳定嘅方法
 After much trial and error
 
 1161
 01:01:25,330 --> 01:01:27,248
-经过多次尝试　我哋终于搵到一个稳定嘅方法
+经过多次尝试　我哋终于揾到一个稳定嘅方法
 we perfected a stable method
 
 1162
@@ -5904,12 +5904,12 @@ It escaped nearly 20 years ago from the Kanto region.
 
 1188
 01:03:03,546 --> 01:03:05,380
-好在我哋嘅金主　请咗一位专家搵佢
+好在我哋嘅金主　请咗一位专家揾佢
 Fortunately, our benefactor's
 
 1189
 01:03:05,380 --> 01:03:07,215
-好在我哋嘅金主　请咗一位专家搵佢
+好在我哋嘅金主　请咗一位专家揾佢
 hired a specialist to track it down.
 
 1190
@@ -5929,12 +5929,12 @@ It was revenge for being captured.
 
 1193
 01:03:20,163 --> 01:03:21,630
-完全唔合理　哈利没可能参与呢件事
+完全唔合理　哈利冇可能参与呢件事
 This doesn't make any sense.
 
 1194
 01:03:21,630 --> 01:03:23,097
-完全唔合理　哈利没可能参与呢件事
+完全唔合理　哈利冇可能参与呢件事
 Harry would've never been a part of this.
 
 1195
@@ -5944,7 +5944,7 @@ I wanna believe that, kid. But we gotta be honest here.
 
 1196
 01:03:25,013 --> 01:03:26,806
-你多年没见佢，我又失忆
+你多年冇见佢，我又失忆
 You haven't seen him in years, and I got amnesia.
 
 1197
@@ -5979,7 +5979,7 @@ Lucy?
 
 1203
 01:03:50,705 --> 01:03:52,874
-之前没呢挞嘢
+之前冇呢挞嘢
 That was not there before, kid.
 
 1204
@@ -6068,12 +6068,12 @@ Psyduck! Psyduck! Psyduck! Psyduck!
 
 1221
 01:04:56,893 --> 01:04:58,443
-﹣可达！　　﹣唔使惊，可达鸭，没事嘅
+﹣可达！　　﹣唔使惊，可达鸭，冇事嘅
 - Psyduck!    - It's okay, Psyduck.
 
 1222
 01:04:58,443 --> 01:04:59,994
-﹣可达！　　﹣唔使惊，可达鸭，没事嘅
+﹣可达！　　﹣唔使惊，可达鸭，冇事嘅
 Everything's fine.
 
 1223
@@ -6093,12 +6093,12 @@ Psyduck!
 
 1226
 01:05:09,172 --> 01:05:10,556
-没时间陪你头痛
+冇时间陪你头痛
 This is no time
 
 1227
 01:05:10,556 --> 01:05:11,940
-没时间陪你头痛
+冇时间陪你头痛
 for your stupid headaches.
 
 1228
@@ -6232,7 +6232,7 @@ Okay.
 
 1254
 01:07:17,162 --> 01:07:18,246
-我哋没死
+我哋冇死
 We made it.
 
 1255
@@ -6262,7 +6262,7 @@ Psyduck!
 
 1260
 01:07:45,648 --> 01:07:47,567
-就嚟没路走
+就嚟冇路走
 Kid, the walls are closing in.
 
 1261
@@ -6282,7 +6282,7 @@ That's a great fifth option. Let's work on the first four.
 
 1264
 01:07:54,532 --> 01:07:56,659
-﹣你跳唔到咁远！　　﹣没得拣
+﹣你跳唔到咁远！　　﹣冇得拣
 - You're not gonna make it!    - There's no other choice.
 
 1265
@@ -6382,7 +6382,7 @@ Yeah, of course. You're my partner.
 
 1284
 01:09:41,264 --> 01:09:43,475
-没错，你⋯
+冇错，你⋯
 Yeah, that's right. You've, er…
 
 1285
@@ -6447,7 +6447,7 @@ But he knows what I'm feeling.
 
 1297
 01:10:29,729 --> 01:10:32,732
-我要带Pikachu去搵治疗Pokémon
+我要带Pikachu去揾治疗Pokémon
 I need to get Pikachu to a healer Pokemon.
 
 1298
@@ -6462,7 +6462,7 @@ I'm begging you.
 
 1300
 01:10:38,780 --> 01:10:40,657
-我唔想连佢都没埋
+我唔想连佢都冇埋
 I don't wanna lose him, too.
 
 1301
@@ -6491,7 +6491,7 @@ I'll meet you at the car.
 
 1306
 01:12:18,171 --> 01:12:19,798
-拍档，你会没事㗎
+拍档，你会冇事㗎
 You're gonna be okay, partner.
 
 1307
@@ -6536,7 +6536,7 @@ Where am I?
 
 1315
 01:14:02,233 --> 01:14:03,568
-你没事！
+你冇事！
 You're okay!
 
 1316
@@ -6546,7 +6546,7 @@ Yeah.
 
 1317
 01:14:05,111 --> 01:14:06,780
-我唔知点解没晒事
+我唔知点解冇晒事
 Somehow, I'm fine.
 
 1318
@@ -6691,12 +6691,12 @@ I can feel it in my jellies.
 
 1346
 01:16:05,027 --> 01:16:06,711
-我之前乱讲，骨子里没嘢　我都系个假象
+我之前乱讲，骨子里冇嘢　我都系个假象
 I… I made that up.
 
 1347
 01:16:06,711 --> 01:16:08,395
-我之前乱讲，骨子里没嘢　我都系个假象
+我之前乱讲，骨子里冇嘢　我都系个假象
 There's no jellies. There's no me.
 
 1348
@@ -6776,7 +6776,7 @@ Hey, what happened?
 
 1363
 01:16:43,311 --> 01:16:45,146
-Pikachu没事嘛？
+Pikachu冇事嘛？
 Is Pikachu okay?
 
 1364
@@ -6800,12 +6800,12 @@ Come on.
 
 1368
 01:16:57,613 --> 01:17:00,114
-莱姆市十週年Pokémon大巡游　即将于今日下午开始
+莱姆市十周年Pokémon大巡游　即将于今日下午开始
 <i>The 10th anniversary</i>
 
 1369
 01:17:00,114 --> 01:17:02,616
-莱姆市十週年Pokémon大巡游　即将于今日下午开始
+莱姆市十周年Pokémon大巡游　即将于今日下午开始
 <i>Ryme City Pokemon parade is set to begin this afternoon.</i>
 
 1370
@@ -6845,17 +6845,17 @@ This is breaking news.
 
 1377
 01:17:21,558 --> 01:17:23,643
-系妳要去发佈消息
+系妳要去发布消息
 No. No, you should break the news. You.
 
 1378
 01:17:23,810 --> 01:17:25,228
-我要去搵霍华德
+我要去揾霍华德
 I'm gonna go talk to Howard.
 
 1379
 01:17:25,395 --> 01:17:26,479
-点搵？
+点揾？
 How…
 
 1380
@@ -6904,7 +6904,7 @@ Mrs. McMaster. Hi, it's Lucy Stevens,
 
 1389
 01:17:58,261 --> 01:17:59,554
-﹣CNM嗰个　　﹣可唔可以⋯
+﹣CNM𠮶个　　﹣可唔可以⋯
 - At CNM?    - Could you…
 
 1390
@@ -6939,7 +6939,7 @@ Flat white, extra shot.
 
 1396
 01:18:13,234 --> 01:18:16,112
-没问题，仙妮亚
+冇问题，仙妮亚
 You got it, Cynthia.
 
 1397
@@ -6999,7 +6999,7 @@ This is the scene of the crash.
 
 1408
 01:18:55,151 --> 01:18:56,569
-嗰啲系⋯？
+𠮶啲系⋯？
 What is that?
 
 1409
@@ -7114,7 +7114,7 @@ Well done, Tim.
 
 1431
 01:20:23,114 --> 01:20:26,910
-你同哈利嘅Pikachu　带我搵返超梦
+你同哈利嘅Pikachu　带我揾返超梦
 You and Harry's Pikachu led me straight to Mewtwo.
 
 1432
@@ -7154,12 +7154,12 @@ I had no choice.
 
 1439
 01:20:38,667 --> 01:20:40,718
-佢追踪R去到对战场　最后搵到路伦博士
+佢追踪R去到对战场　最后揾到路伦博士
 He tracked the R to the battles,
 
 1440
 01:20:40,718 --> 01:20:42,769
-佢追踪R去到对战场　最后搵到路伦博士
+佢追踪R去到对战场　最后揾到路伦博士
 traced it back to Dr. Laurent.
 
 1441
@@ -7244,7 +7244,7 @@ This was never about curing me.
 
 1457
 01:21:18,503 --> 01:21:21,756
-我搵到人类未来道路
+我揾到人类未来道路
 I have found a path forward for all of us.
 
 1458
@@ -7284,7 +7284,7 @@ People of Ryme City!
 
 1465
 01:21:50,243 --> 01:21:52,954
-我终于搵到解药
+我终于揾到解药
 I've finally discovered a cure.
 
 1466
@@ -7424,12 +7424,12 @@ Okay, Pikachu, your powers are in there somewhere.
 
 1493
 01:23:56,331 --> 01:23:57,948
-只系要啲火花挞着佢，嚟啦
+只系要啲火花挞著佢，嚟啦
 Just need a little spark
 
 1494
 01:23:57,948 --> 01:23:59,566
-只系要啲火花挞着佢，嚟啦
+只系要啲火花挞著佢，嚟啦
 to get this party started. Let's do this.
 
 1495
@@ -7589,7 +7589,7 @@ Give me your hand! Give me your hand!
 
 1526
 01:28:08,329 --> 01:28:09,956
-嗰只百变怪有没咁劲呀？
+𠮶只百变怪有冇咁劲呀？
 What kind of a Ditto was that?
 
 1527
@@ -7618,7 +7618,7 @@ A feeble effort.
 
 1532
 01:29:00,256 --> 01:29:04,260
-Pikachu没可能打赢超梦
+Pikachu冇可能打赢超梦
 A Pikachu cannot defeat Mewtwo in battle.
 
 1533
@@ -7667,7 +7667,7 @@ No!
 
 1542
 01:29:47,303 --> 01:29:48,471
-你没嘢嘛？
+你冇嘢嘛？
 - Oh!    - Are you okay?
 
 1543
@@ -7717,27 +7717,27 @@ deep down,
 
 1552
 01:31:01,836 --> 01:31:04,589
-我都系怪责自己　没好好陪佢
+我都系怪责自己　冇好好陪佢
 I blame myself for not being there for him.
 
 1553
 01:31:05,293 --> 01:31:07,995
-妳之前就调查呢单消息　没人知道前已经有线索
+妳之前就调查呢单消息　冇人知道前已经有线索
 You. You were working on this story.
 
 1554
 01:31:07,995 --> 01:31:10,697
-妳之前就调查呢单消息　没人知道前已经有线索
+妳之前就调查呢单消息　冇人知道前已经有线索
 Had a lead on it before anyone else even knew.
 
 1555
 01:31:10,732 --> 01:31:12,032
-﹣没错　　﹣好，我要妳上镜
+﹣冇错　　﹣好，我要妳上镜
 That's correct.
 
 1556
 01:31:12,032 --> 01:31:13,333
-﹣没错　　﹣好，我要妳上镜
+﹣冇错　　﹣好，我要妳上镜
 Good. Right, you're going on camera.
 
 1557
@@ -8006,7 +8006,7 @@ is having a coffee right now.
 
 1610
 01:35:25,684 --> 01:35:27,727
-我应该要搵份新工
+我应该要揾份新工
 I think I'll have to find a new job.
 
 1611
