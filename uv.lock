@@ -295,12 +295,6 @@ wheels = [
 ]
 
 [[package]]
-name = "hanziconv"
-version = "0.3.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/63/71/b89cb63077fd807fe31cf7c016a06e7e579a289d8a37aa24a30282d02dd2/hanziconv-0.3.2.tar.gz", hash = "sha256:208866da6ae305bca19eb98702b65c93bb3a803b496e4287ca740d68892fc4c4", size = 276775, upload-time = "2016-09-01T05:41:15.254Z" }
-
-[[package]]
 name = "hf-xet"
 version = "1.1.5"
 source = { registry = "https://pypi.org/simple" }
@@ -1195,7 +1189,6 @@ dependencies = [
     { name = "audioop-lts" },
     { name = "ffmpeg-python" },
     { name = "grandalf" },
-    { name = "hanziconv" },
     { name = "langchain" },
     { name = "numba" },
     { name = "numpy" },
@@ -1229,7 +1222,6 @@ requires-dist = [
     { name = "audioop-lts", specifier = ">=0.2.1" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "grandalf", specifier = ">=0.8" },
-    { name = "hanziconv", specifier = ">=0.3.2" },
     { name = "langchain", specifier = ">=0.3.26" },
     { name = "numba", specifier = ">=0.61.0" },
     { name = "numpy", specifier = ">=2.0.2" },
