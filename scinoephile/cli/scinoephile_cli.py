@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.core import Series
+from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
     get_hanzi_cleaned,
@@ -151,10 +151,18 @@ class ScinoephileCli(CommandLineInterface):
 
         # Output operations
         if "save_bilingual" in operations:
+            if bilingual is None:
+                raise ScinoephileError(
+                    "Bilingual series not loaded and cannot be saved"
+                )
             bilingual.save(operations["save_bilingual"])
         if "save_english" in operations:
+            if english is None:
+                raise ScinoephileError("English series not loaded and cannot be saved")
             english.save(operations["save_english"])
         if "save_hanzi" in operations:
+            if hanzi is None:
+                raise ScinoephileError("Hanzi series not loaded and cannot be saved")
             hanzi.save(operations["save_hanzi"])
 
     @classmethod

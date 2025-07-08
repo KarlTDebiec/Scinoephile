@@ -374,7 +374,7 @@ def _get_sync_groups(
 
     # Add remaining subtitles from series two
     for j in available_js:
-        sync_groups.append(([], [j]))
+        sync_groups.extend([([], [j])])
 
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)

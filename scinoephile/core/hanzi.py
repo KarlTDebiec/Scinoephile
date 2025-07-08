@@ -127,7 +127,7 @@ def _get_hanzi_text_flattened(text: str) -> str:
     flattened = re.sub(r"\\N", r"\n", text)
 
     # Merge lines
-    flattened = re.sub(r"^(.+)\n(.+)$", r"\1　\2", flattened, re.M)
+    flattened = re.sub(r"^(.+)\n(.+)$", r"\1　\2", flattened, flags=re.M)
 
     # Merge conversations
     conversation = re.match(
