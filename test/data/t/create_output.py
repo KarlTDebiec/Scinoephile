@@ -9,8 +9,8 @@ from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
     get_hanzi_cleaned,
+    get_hanzi_converted,
     get_hanzi_flattened,
-    get_hanzi_simplified,
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.testing import test_data_root
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     # Traditional Standard Chinese
     zho_hant = Series.load(input_dir / "zho-Hant.srt")
-    zho_hant_simplify = get_hanzi_simplified(zho_hant)
+    zho_hant_simplify = get_hanzi_converted(zho_hant)
     zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
 
     # English
