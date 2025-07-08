@@ -112,8 +112,9 @@ class AudioSeries(Series):
         # Prepare empty directory, deleting existing files if needed
         if fp.exists() and fp.is_dir():
             for file in fp.iterdir():
-                file.unlink()
-                info(f"Deleted {file}")
+                if file.is_file() or file.is_symlink():
+                    file.unlink()
+                    info(f"Deleted {file}")
         else:
             fp.mkdir(parents=True)
             info(f"Created directory {fp}")
