@@ -23,7 +23,7 @@ from scinoephile.common.validation import (
     validate_output_directory,
     validate_output_file,
 )
-from scinoephile.core import ScinoephileException, Series
+from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.block import Block
 from scinoephile.core.blocks import get_block_indexes_by_pause
 
@@ -208,7 +208,7 @@ class AudioSeries(Series):
             channels = int(stream["channels"])
             info(f"Audio track has {channels} channels")
         except (IndexError, KeyError, ValueError) as exc:
-            raise ScinoephileException(
+            raise ScinoephileError(
                 f"Could not determine number of channels for audio track {audio_track} "
                 f"in {video_fp}"
             ) from exc
@@ -327,7 +327,7 @@ class AudioSeries(Series):
             if path.suffix == ".wav" and cls.subtitle_audio_pattern.match(path.name)
         )
         if len(text_series) != len(infiles):
-            raise ScinoephileException(
+            raise ScinoephileError(
                 f"Number of audio files in {fp} ({len(series)}) "
                 f"does not match number of subtitles in {srt_path} "
                 f"({len(text_series)})"

@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 import unicodedata
 
-from scinoephile.core.exceptions import ScinoephileException
+from scinoephile.core.exceptions import ScinoephileError
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
@@ -180,7 +180,7 @@ def get_char_type(char: str) -> str:
         return "half"
 
     # Raise exception if character type is not recognized
-    raise ScinoephileException(
+    raise ScinoephileError(
         f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
     )
 

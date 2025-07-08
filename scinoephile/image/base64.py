@@ -10,7 +10,7 @@ from io import BytesIO
 from PIL import Image
 
 
-def get_base64_image(image: Image) -> str:
+def get_base64_image(image: Image.Image) -> str:
     """Get base64 encoding of image.
 
     Arguments:
