@@ -11,12 +11,14 @@ from copy import deepcopy
 from warnings import catch_warnings, filterwarnings
 
 import pycantonese
-from hanziconv import HanziConv
+from opencc import OpenCC
 
 from scinoephile.common import package_root
 from scinoephile.core.exceptions import ScinoephileException
 from scinoephile.core.series import Series
 from scinoephile.core.text import full_to_half_punc, get_char_type, re_western
+
+_s2t = OpenCC("s2t")
 
 data_root = package_root / "data/cantonese/"
 
@@ -91,7 +93,7 @@ def _get_cantonese_character_romanization(hanzi: str) -> str:
 
     # If not found, try traditional alternative
     if len(matches) == 0:
-        trad_hanzi = HanziConv.toTraditional(hanzi)
+        trad_hanzi = _s2t.convert(hanzi)
         if trad_hanzi != hanzi:
             yale = _get_cantonese_character_romanization(trad_hanzi)
             hanzi_to_romanization[hanzi] = yale

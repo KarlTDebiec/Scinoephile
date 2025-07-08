@@ -7,14 +7,17 @@ from __future__ import annotations
 import re
 from copy import deepcopy
 
-from hanziconv import HanziConv
+from opencc import OpenCC
 
 from scinoephile.core.series import Series
-from scinoephile.core.text import get_char_type, half_to_full_punc
+from scinoephile.core.text import half_to_full_punc
 
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
+
+_t2s = OpenCC("t2s")
+_s2t = OpenCC("s2t")
 
 
 def get_hanzi_cleaned(series: Series) -> Series:
@@ -146,15 +149,7 @@ def _get_hanzi_text_simplified(text: str) -> str:
     Returns:
         Simplified text
     """
-    simplified = ""
-
-    for char in text:
-        if get_char_type(char) == "full":
-            simplified += HanziConv.toSimplified(char)
-        else:
-            simplified += char
-
-    return simplified
+    return _t2s.convert(text)
 
 
 def _get_hanzi_text_tradionalized(text: str) -> str:
@@ -165,20 +160,7 @@ def _get_hanzi_text_tradionalized(text: str) -> str:
     Returns:
         Traditionalized text
     """
-    traditionalized = ""
-
-    exclusions = {"出", "了", "札", "面", "向", "只", "志", "疴"}
-    # TODO: 疴 to 痾?
-
-    for char in text:
-        if get_char_type(char) == "full":
-            if char in exclusions:
-                traditionalized += char
-            traditionalized += HanziConv.toTraditional(char)
-        else:
-            traditionalized += char
-
-    return traditionalized
+    return _s2t.convert(text)
 
 
 __all__ = [
