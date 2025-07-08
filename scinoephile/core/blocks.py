@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from logging import warn
 from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileException
@@ -22,6 +23,12 @@ def get_blocks_by_pause(series: Series, pause_length: int = 3000) -> list[Series
     Returns:
         Series split into blocks
     """
+    warn(
+        "get_blocks_by_pause() is deprecated and will be removed in a future version. "
+        "Use get_block_indexes_by_pause() instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     blocks = []
 
     source = deepcopy(series.events)
@@ -106,6 +113,5 @@ def get_concatenated_blocks(blocks: list[Series]) -> Series:
 
 __all__ = [
     "get_blocks_by_pause",
-    "get_block_indexes_by_pause",
     "get_concatenated_blocks",
 ]
