@@ -9,7 +9,7 @@ from langchain_core.runnables import Runnable, RunnableConfig
 from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.models import MergePayload, TranscriptionPayload
 from scinoephile.audio.runnables.cantonese_merger import CantoneseMerger
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 
 
 class CantoneseDistributor(Runnable):
@@ -34,9 +34,9 @@ class CantoneseDistributor(Runnable):
             zhongwen_indexes = [i - 1 for i in sync_group[0]]
             yuewen_indexes = [i - 1 for i in sync_group[1]]
             if len(zhongwen_indexes) != 1:
-                raise ScinoephileException("Expected exactly one 中文 subtitle.")
+                raise ScinoephileError("Expected exactly one 中文 subtitle.")
             if len(yuewen_indexes) == 0:
-                raise ScinoephileException("Expected at least one 粤文 subtitle.")
+                raise ScinoephileError("Expected at least one 粤文 subtitle.")
             zhongwen_sub = zhongwen_subs.events[zhongwen_indexes[0]]
             yat = "　".join(yuewen_subs.events[i].text.strip() for i in yuewen_indexes)
             # print(f"Group {i:02d} | 中文: {zhongwen_sub.text} | 粤文: {yat}")

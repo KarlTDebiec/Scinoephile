@@ -23,7 +23,7 @@ from scinoephile.audio.runnables import (
     map_field,
     map_iterable_field,
 )
-from scinoephile.core import ScinoephileException
+from scinoephile.core import ScinoephileError
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         payload = TranscriptionPayload(zhongwen_subs=zhongwen_subs)
         try:
             timestamped_transcription = chain.invoke(payload)
-        except ScinoephileException as e:
+        except ScinoephileError as e:
             error(f"Error processing block {i}:\n{e}")
             continue
         elapsed = time.perf_counter() - start_time
