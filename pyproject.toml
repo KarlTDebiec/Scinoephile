@@ -12,7 +12,6 @@ dependencies = [
     "audioop-lts>=0.2.1",
     "ffmpeg-python>=0.2.0",
     "grandalf>=0.8",
-    "hanziconv>=0.3.2",
     "langchain>=0.3.26",
     "numba>=0.61.0",
     "numpy>=2.0.2",
