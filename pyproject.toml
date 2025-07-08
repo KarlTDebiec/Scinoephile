@@ -11,6 +11,7 @@ requires-python = ">=3.13"
 dependencies = [
     "audioop-lts>=0.2.1",
     "ffmpeg-python>=0.2.0",
+    "jieba>=0.42.1",
     "numba>=0.61.0",
     "numpy>=2.0.2",
     "openai>=1.60.1",
@@ -21,7 +22,6 @@ dependencies = [
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
-    "snownlp>=0.12.3",
 ]
 
 [dependency-groups]
