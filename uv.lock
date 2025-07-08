@@ -126,12 +126,6 @@ wheels = [
 ]
 
 [[package]]
-name = "hanziconv"
-version = "0.3.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/63/71/b89cb63077fd807fe31cf7c016a06e7e579a289d8a37aa24a30282d02dd2/hanziconv-0.3.2.tar.gz", hash = "sha256:208866da6ae305bca19eb98702b65c93bb3a803b496e4287ca740d68892fc4c4", size = 276775, upload-time = "2016-09-01T05:41:15.254Z" }
-
-[[package]]
 name = "httpcore"
 version = "1.0.7"
 source = { registry = "https://pypi.org/simple" }
@@ -285,6 +279,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/d8/e1/b3e1fda1aa32d4f40
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2c/6f/3315b3583ffe3e31c55b446cb22d2a7c235e65ca191674fffae62deb3c11/openai-1.66.2-py3-none-any.whl", hash = "sha256:75194057ee6bb8b732526387b6041327a05656d976fc21c064e21c8ac6b07999", size = 567268, upload-time = "2025-03-11T21:52:36.062Z" },
 ]
+
+[[package]]
+name = "opencc"
+version = "1.1.9"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/a2/0e86df1284143c389a3a6e33b159394da34b500a62b2b9c918949a2e6438/opencc-1.1.9.tar.gz", hash = "sha256:8ad72283732951303390fae33a1ceda98ac9b03368a8f2912edc934d74077e4a", size = 3409025, upload-time = "2024-08-08T04:55:32.483Z" }
 
 [[package]]
 name = "packaging"
@@ -526,10 +526,10 @@ name = "scinoephile"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "hanziconv" },
     { name = "numba" },
     { name = "numpy" },
     { name = "openai" },
+    { name = "opencc" },
     { name = "pillow" },
     { name = "pycantonese" },
     { name = "pypinyin" },
@@ -549,10 +549,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hanziconv", specifier = ">=0.3.2" },
     { name = "numba", specifier = ">=0.61.0" },
     { name = "numpy", specifier = ">=2.0.2" },
     { name = "openai", specifier = ">=1.60.1" },
+    { name = "opencc", specifier = ">=1.1.9" },
     { name = "pillow", specifier = ">=11.1.0" },
     { name = "pycantonese", specifier = ">=3.4.0" },
     { name = "pypinyin", specifier = ">=0.53.0" },
