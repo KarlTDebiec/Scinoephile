@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+import jieba
 from pypinyin import pinyin
-from snownlp import SnowNLP
 
 from scinoephile.core.series import Series
 from scinoephile.core.text import full_to_half_punc
@@ -40,7 +40,7 @@ def _get_mandarin_text_romanization(text: str) -> str:
         line_romanization = ""
         for section in line.split():
             section_romanization = ""
-            for word in SnowNLP(section).words:
+            for word in jieba.cut(section):
                 if word in full_to_half_punc:
                     section_romanization += full_to_half_punc[word]
                 else:

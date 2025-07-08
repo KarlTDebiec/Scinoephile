@@ -11,9 +11,10 @@ from scinoephile.core.mandarin import (
     _get_mandarin_text_romanization,
     get_mandarin_romanization,
 )
-from ..data.mnt import mnt_zho_hant
-from ..data.pdp import pdp_zho_hant
-from ..data.t import t_zho_hans
+
+from ..data.mnt import mnt_zho_hant  # noqa: F401
+from ..data.pdp import pdp_zho_hant  # noqa: F401
+from ..data.t import t_zho_hans  # noqa: F401
 
 
 def _test_get_mandarin_romanization(series: Series):
@@ -37,7 +38,7 @@ def test_get_mandarin_romanization_t(t_zho_hans: Series):
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
-        ("你好世界", "nǐ hǎo shìjiè"),
+        ("你好世界", "nǐhǎo shìjiè"),
     ],
 )
 def test_get_mandarin_text_romanization(text: str, expected: str):
