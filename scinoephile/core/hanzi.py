@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
+from functools import lru_cache
 
 from opencc import OpenCC
 
@@ -15,9 +16,6 @@ from scinoephile.core.text import half_to_full_punc
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
-
-_t2s = OpenCC("t2s")
-_s2t = OpenCC("s2t")
 
 
 def get_hanzi_cleaned(series: Series) -> Series:
@@ -39,6 +37,11 @@ def get_hanzi_cleaned(series: Series) -> Series:
     return series
 
 
+@lru_cache
+def get_hanzi_converter(config: str) -> OpenCC:
+    return OpenCC(config)
+
+
 def get_hanzi_flattened(series: Series) -> Series:
     """Get multi-line hanzi series flattened to single lines.
 
@@ -53,31 +56,18 @@ def get_hanzi_flattened(series: Series) -> Series:
     return series
 
 
-def get_hanzi_simplified(series: Series) -> Series:
-    """Get traditional hanzi series simplified.
+def get_hanzi_converted(series: Series, config: str = "t2s") -> Series:
+    """Get hanzi converted between character sets.
 
     Arguments:
-        series: Series to simplify
+        series: Series to convert
+        config: Conversion name
     Returns:
-        Simplified series
+        Converted series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_hanzi_text_simplified(event.text)
-    return series
-
-
-def get_hanzi_traditionalized(series: Series) -> Series:
-    """Get simplified hanzi series traditionalized.
-
-    Arguments:
-        series: Series to traditionalize
-    Returns:
-        Traditionalized series
-    """
-    series = deepcopy(series)
-    for event in series:
-        event.text = _get_hanzi_text_tradionalized(event.text)
+        event.text = get_hanzi_converter(config).convert(event.text)
     return series
 
 
@@ -141,32 +131,10 @@ def _get_hanzi_text_flattened(text: str) -> str:
     return flattened
 
 
-def _get_hanzi_text_simplified(text: str) -> str:
-    """Get traditional hanzi text simplified.
-
-    Arguments:
-        text: Text to simplify
-    Returns:
-        Simplified text
-    """
-    return _t2s.convert(text)
-
-
-def _get_hanzi_text_tradionalized(text: str) -> str:
-    """Get simplified hanzi text traditionalized.
-
-    Arguments:
-        text: Text to traditionalize
-    Returns:
-        Traditionalized text
-    """
-    return _s2t.convert(text)
-
-
 __all__ = [
     "get_hanzi_cleaned",
+    "get_hanzi_converted",
+    "get_hanzi_converter",
     "get_hanzi_flattened",
-    "get_hanzi_simplified",
-    "get_hanzi_traditionalized",
     "half_to_full_punc_for_cleaning",
 ]

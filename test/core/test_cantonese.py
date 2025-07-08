@@ -11,8 +11,9 @@ from scinoephile.core.cantonese import (
     _get_cantonese_text_romanization,  # noqa
     get_cantonese_romanization,
 )
-from ..data.kob import kob_yue_hant
-from ..data.pdp import pdp_yue_hant
+
+from ..data.kob import kob_yue_hant  # noqa: F401
+from ..data.pdp import pdp_yue_hant  # noqa: F401
 
 
 def _test_get_cantonese_romanization(series: Series):

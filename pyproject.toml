@@ -12,7 +12,6 @@ dependencies = [
     "audioop-lts>=0.2.1",
     "ffmpeg-python>=0.2.0",
     "jieba>=0.42.1",
-    "langchain>=0.3.26",
     "numba>=0.61.0",
     "numpy>=2.0.2",
     "openai>=1.60.1",
@@ -24,6 +23,7 @@ dependencies = [
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
+    "transformers>=4.53.1",
     "whisper-timestamped>=1.15.8",
 ]
 

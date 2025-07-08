@@ -9,36 +9,37 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.hanzi import (
     _get_hanzi_text_flattened,  # noqa
-    _get_hanzi_text_simplified,  # noqa
     get_hanzi_cleaned,
+    get_hanzi_converted,
+    get_hanzi_converter,
     get_hanzi_flattened,
-    get_hanzi_simplified,
 )
+
 from ..data.kob import (
-    kob_yue_hans,
-    kob_yue_hans_clean,
-    kob_yue_hans_flatten,
-    kob_yue_hant,
-    kob_yue_hant_simplify,
+    kob_yue_hans,  # noqa: F401
+    kob_yue_hans_clean,  # noqa: F401
+    kob_yue_hans_flatten,  # noqa: F401
+    kob_yue_hant,  # noqa: F401
+    kob_yue_hant_simplify,  # noqa: F401
 )
 from ..data.mnt import (
-    mnt_zho_hant,
-    mnt_zho_hant_clean,
-    mnt_zho_hant_flatten,
-    mnt_zho_hant_simplify,
+    mnt_zho_hant,  # noqa: F401
+    mnt_zho_hant_clean,  # noqa: F401
+    mnt_zho_hant_flatten,  # noqa: F401
+    mnt_zho_hant_simplify,  # noqa: F401
 )
 from ..data.pdp import (
-    pdp_yue_hant,
-    pdp_yue_hant_clean,
-    pdp_yue_hant_flatten,
-    pdp_yue_hant_simplify,
+    pdp_yue_hant,  # noqa: F401
+    pdp_yue_hant_clean,  # noqa: F401
+    pdp_yue_hant_flatten,  # noqa: F401
+    pdp_yue_hant_simplify,  # noqa: F401
 )
 from ..data.t import (
-    t_zho_hans,
-    t_zho_hans_clean,
-    t_zho_hans_flatten,
-    t_zho_hant,
-    t_zho_hant_simplify,
+    t_zho_hans,  # noqa: F401
+    t_zho_hans_clean,  # noqa: F401
+    t_zho_hans_flatten,  # noqa: F401
+    t_zho_hant,  # noqa: F401
+    t_zho_hant_simplify,  # noqa: F401
 )
 
 
@@ -75,7 +76,7 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
 
 
 def _test_get_hanzi_simplified(series: Series, expected: Series = None):
-    output = get_hanzi_simplified(series)
+    output = get_hanzi_converted(series)
     assert len(series.events) == len(output.events)
 
     errors = []
@@ -153,13 +154,14 @@ def test_get_hanzi_simplified_t(t_zho_hant: Series, t_zho_hant_simplify: Series)
 
 
 @pytest.mark.parametrize(
-    ("text", "expected"),
+    ("text", "config", "expected"),
     [
-        ("你好世界", "你好世界"),
+        ("你好世界", "t2s", "你好世界"),
+        ("你好世界", "s2t", "你好世界"),
     ],
 )
-def test_get_hanzi_text_simplified(text: str, expected: str):
-    assert _get_hanzi_text_simplified(text) == expected
+def test_get_hanzi_converter(text: str, config: str, expected: str):
+    assert get_hanzi_converter(config).convert(text) == expected
 
 
 @pytest.mark.parametrize(
