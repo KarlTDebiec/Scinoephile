@@ -7,6 +7,7 @@ from __future__ import annotations
 from copy import deepcopy
 
 from scinoephile.audio.models import TranscribedSegment
+from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.core import Series, Subtitle
 from scinoephile.core.hanzi import get_hanzi_converter
@@ -62,7 +63,7 @@ def get_series_from_segments(segments: list[TranscribedSegment], offset=0) -> Se
 
 
 def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
-    """Split transcribed segment into multiple segments based on leading spaces in words.
+    """Split transcribed segment into multiple segments on whitespace.
 
     Arguments:
         segment: Transcribed segment to split
@@ -107,6 +108,7 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
 
 
 __all__ = [
+    "CantoneseMerger",
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
     "get_series_from_segments",
