@@ -17,6 +17,7 @@ output_dir = test_data_root / "mlamd" / "output"
 # region Simplified Standard Chinese
 @pytest.fixture
 def mlamd_zho_hans() -> ImageSeries:
+    """MLAMD Simplified Chinese image series."""
     try:
         return ImageSeries.load(output_dir / "zho-Hans")
     except FileNotFoundError:
@@ -25,11 +26,13 @@ def mlamd_zho_hans() -> ImageSeries:
 
 @pytest.fixture()
 def mlamd_zho_hans_image() -> Image:
+    """MLAMD Simplified Chinese image."""
     return Image.open(output_dir / "zho-Hans" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_zho_hans_validation_directory() -> str:
+    """MLAMD Simplified Chinese validation directory."""
     return output_dir / "zho-Hans_validation"
 
 
@@ -39,6 +42,7 @@ def mlamd_zho_hans_validation_directory() -> str:
 # region Traditional Standard Chinese
 @pytest.fixture
 def mlamd_zho_hant() -> ImageSeries:
+    """MLAMD Traditional Chinese image series."""
     try:
         return ImageSeries.load(output_dir / "zho-Hant")
     except FileNotFoundError:
@@ -47,11 +51,13 @@ def mlamd_zho_hant() -> ImageSeries:
 
 @pytest.fixture()
 def mlamd_zho_hant_image() -> Image:
+    """MLAMD Traditional Chinese image."""
     return Image.open(output_dir / "zho-Hant" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_zho_hant_validation_directory() -> str:
+    """MLAMD Traditional Chinese validation directory."""
     return output_dir / "zho-Hant_validation"
 
 
@@ -61,6 +67,7 @@ def mlamd_zho_hant_validation_directory() -> str:
 # region English
 @pytest.fixture
 def mlamd_eng() -> ImageSeries:
+    """MLAMD English image series."""
     try:
         return ImageSeries.load(output_dir / "eng")
     except FileNotFoundError:
@@ -69,11 +76,13 @@ def mlamd_eng() -> ImageSeries:
 
 @pytest.fixture()
 def mlamd_eng_image() -> Image:
+    """MLAMD English image."""
     return Image.open(output_dir / "eng" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_eng_validation_directory() -> str:
+    """MLAMD English validation directory."""
     return output_dir / "eng_validation"
 
 
@@ -188,6 +197,7 @@ mlamd_merge_test_cases = [
         include_in_prompt=True,
     ),
 ]
+"""MLAMD 粤文 merging test cases."""
 
 
 # endregion

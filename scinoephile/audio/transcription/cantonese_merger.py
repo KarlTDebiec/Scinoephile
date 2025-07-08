@@ -32,6 +32,13 @@ class CantoneseMerger:
         examples: list[MergeTestCase] = None,
         print_test_case: bool = False,
     ):
+        """Initialize.
+
+        Arguments:
+            model: OpenAI model to use.
+            examples: Examples of inputs and expected outputs for few-shot learning
+            print_test_case: Print test case after merging
+        """
         self.client = OpenAI()
         self.model = model
         self.print_test_case = print_test_case
@@ -41,7 +48,7 @@ class CantoneseMerger:
                 spoken Cantonese to match the spacing and punctuation of a single-line
                 中文 subtitle. Include all 粤文 characters and merge them into one line.
                 All 汉字 in the output must come from the 粤文 input. No 汉字 in the
-                output may come from the 中文 input. Adjust punctuation and spacing to 
+                output may come from the 中文 input. Adjust punctuation and spacing to
                 match the 中文 input.
             """).strip()
         if examples:
@@ -56,6 +63,12 @@ class CantoneseMerger:
                 )
 
     def merge(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
+        """Merge 粤文 subtitles to match 中文 punctuation and spacing.
+
+        Arguments:
+            zhongwen_input: Single 中文 subtitle to compare against
+            yuewen_input: 粤文 subtitles to merge
+        """
         user_prompt = self.merge_prompt_template.format(
             zhongwen=zhongwen_input,
             yuewen="\n".join(yuewen_input),

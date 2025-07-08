@@ -15,6 +15,7 @@ from ..data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 @pytest.fixture
 def cantonese_merger_few_shot() -> CantoneseMerger:
+    """CantoneseMerger with few-shot examples."""
     return CantoneseMerger(
         examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt]
     )
@@ -22,10 +23,12 @@ def cantonese_merger_few_shot() -> CantoneseMerger:
 
 @pytest.fixture
 def cantonese_merger_zero_shot() -> CantoneseMerger:
+    """CantoneseMerger with no examples."""
     return CantoneseMerger()
 
 
 def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):
+    """Test merging of Cantonese and Yuewen text."""
     output = cantonese_merger.merge(test_case.zhongwen_input, test_case.yuewen_input)
     assert output == test_case.yuewen_output, pformat(test_case)
 
@@ -41,5 +44,6 @@ def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):
 def test_merge_mlamd(
     request: pytest.FixtureRequest, merger_fixture_name: str, test_case: MergeTestCase
 ):
+    """Test merging of Cantonese and Yuewen text using MLAMD test cases."""
     merger: CantoneseMerger = request.getfixturevalue(merger_fixture_name)
     _test_merge(merger, test_case)
