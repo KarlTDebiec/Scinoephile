@@ -144,7 +144,7 @@ def get_char_type(char: str) -> str:
     Returns:
         Character type
     Raises:
-        ScinoephileException: If character type is not recognized
+        ScinoephileError: If character type is not recognized
     """
     punctuation = set(half_punc.values()) | set(full_punc.values())
 
