@@ -13,38 +13,44 @@ input_dir = test_data_root / "t" / "input"
 output_dir = test_data_root / "t" / "output"
 
 
-# region Simplified Standard Chinese
+# region 简体中文
 @pytest.fixture
 def t_zho_hans() -> Series:
+    """T 简体中文 series."""
     return Series.load(input_dir / "zho-Hans.srt")
 
 
 @pytest.fixture
 def t_zho_hans_clean() -> Series:
+    """T 简体中文 cleaned series."""
     return Series.load(output_dir / "zho-Hans_clean.srt")
 
 
 @pytest.fixture
 def t_zho_hans_flatten() -> Series:
+    """T 简体中文 flattened series."""
     return Series.load(output_dir / "zho-Hans_flatten.srt")
 
 
 @pytest.fixture
 def t_zho_hans_clean_flatten() -> Series:
+    """T 简体中文 cleaned and flattened series."""
     return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Traditional Standard Chinese
+# region 繁体中文
 @pytest.fixture
 def t_zho_hant() -> Series:
+    """T 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
 def t_zho_hant_simplify() -> Series:
+    """T 繁体中文 simplified series."""
     return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
@@ -54,30 +60,35 @@ def t_zho_hant_simplify() -> Series:
 # region English
 @pytest.fixture
 def t_eng() -> Series:
+    """T English series."""
     return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def t_eng_clean() -> Series:
+    """T English cleaned series."""
     return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def t_eng_flatten() -> Series:
+    """T English flattened series."""
     return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def t_eng_clean_flatten() -> Series:
+    """T English cleaned and flattened series."""
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Bilingual Simplified Chinese and English
+# region Bilingual 简体中文 and English
 @pytest.fixture
 def t_zho_hans_eng() -> Series:
+    """T Bilingual 简体粤文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 

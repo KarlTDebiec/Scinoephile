@@ -13,29 +13,34 @@ input_dir = test_data_root / "mnt" / "input"
 output_dir = test_data_root / "mnt" / "output"
 
 
-# region Traditional Standard Chinese
+# region 繁体中文
 @pytest.fixture
 def mnt_zho_hant() -> Series:
+    """MNT 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_clean() -> Series:
+    """MNT 繁体中文 cleaned series."""
     return Series.load(output_dir / "zho-Hant_clean.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_flatten() -> Series:
+    """MNT 繁体中文 flattened series."""
     return Series.load(output_dir / "zho-Hant_flatten.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_simplify() -> Series:
+    """MNT 繁体中文 simplified series."""
     return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_clean_flatten_simplify() -> Series:
+    """MNT 繁体中文 cleaned, flattened, and simplified series."""
     return Series.load(output_dir / "zho-Hant_clean_flatten_simplify.srt")
 
 
@@ -45,37 +50,42 @@ def mnt_zho_hant_clean_flatten_simplify() -> Series:
 # region English
 @pytest.fixture
 def mnt_eng() -> Series:
+    """MNT English series."""
     return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def mnt_eng_clean() -> Series:
+    """MNT English cleaned series."""
     return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def mnt_eng_flatten() -> Series:
+    """MNT English flattened series."""
     return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def mnt_eng_clean_flatten() -> Series:
+    """MNT English cleaned and flattened series."""
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Bilingual Simplified Standard Chinese and English
+# region Bilingual 简体中文 and English
 @pytest.fixture
 def mnt_zho_hans_eng() -> Series:
+    """MNT Bilingual 简体中文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 # endregion
 
 
-# region Synchronization Test Cases
+# region 简体中文 and English synchronization test cases
 mnt_sync_test_cases = [
     SyncTestCase(
         hanzi_start=0,
@@ -1210,6 +1220,7 @@ mnt_sync_test_cases = [
         ],
     ),
 ]
+"""MNT 简体中文 and English synchronization test cases."""
 # endregion
 
 ___all__ = [

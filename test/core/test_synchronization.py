@@ -18,22 +18,18 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-
-from ..data.mnt import (
-    mnt_eng_clean_flatten,  # noqa: F401
-    mnt_sync_test_cases,
-    mnt_zho_hans_eng,  # noqa: F401
-    mnt_zho_hant_clean_flatten_simplify,  # noqa: F401
-)
-from ..data.pdp import (
-    pdp_eng_clean_flatten,  # noqa: F401
-    pdp_sync_test_cases,
-    pdp_yue_hans_eng,  # noqa: F401
-    pdp_yue_hant_clean_flatten_simplify,  # noqa: F401
-)
+from test.data.mnt import mnt_sync_test_cases  # noqa: F401
+from test.data.pdp import pdp_sync_test_cases  # noqa: F401
 
 
 def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
+    """Test synchronization blocks.
+
+    Arguments:
+        hanzi: Hanzi series with which to test
+        english: English series with which to test
+        test_case: Indexes for slicing input block and expected output for validation
+    """
     # print start and end indices, plus one to match SRT
     print(f"\nCHINESE: {test_case.hanzi_start + 1} - {test_case.hanzi_end}")
     print(f"ENGLISH: {test_case.english_start + 1} - {test_case.english_end}")
@@ -58,6 +54,13 @@ def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
 
 
 def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
+    """Test get_synced_series.
+
+    Arguments:
+        hanzi: Hanzi series with which to test
+        english: English series with which to test
+        expected: Expected output series
+    """
     bilingual = get_synced_series(hanzi, english)
     assert len(bilingual.events) == len(expected.events)
 
@@ -81,6 +84,13 @@ def test_blocks_mnt(
     mnt_eng_clean_flatten: Series,
     test_case: SyncTestCase,
 ):
+    """Test synchronization blocks for MNT.
+
+    Arguments:
+        mnt_zho_hant_clean_flatten_simplify: MNT 繁体中文 series fixture
+        mnt_eng_clean_flatten: MNT English series fixture
+        test_case: Indexes for slicing input block and expected output for validation
+    """
     _test_blocks(mnt_zho_hant_clean_flatten_simplify, mnt_eng_clean_flatten, test_case)
 
 
@@ -90,6 +100,13 @@ def test_blocks_pdp(
     pdp_eng_clean_flatten: Series,
     test_case: SyncTestCase,
 ):
+    """Test synchronization blocks for PDP.
+
+    Arguments:
+        pdp_yue_hant_clean_flatten_simplify: PDP 繁体粤文 series fixture
+        pdp_eng_clean_flatten: PDP English series fixture
+        test_case: Indexes for slicing input block and expected output for validation
+    """
     _test_blocks(pdp_yue_hant_clean_flatten_simplify, pdp_eng_clean_flatten, test_case)
 
 
@@ -99,6 +116,13 @@ def test_get_synced_series_mnt(
     mnt_eng_clean_flatten: Series,
     mnt_zho_hans_eng: Series,
 ):
+    """Test get_synced_series with MNT.
+
+    Arguments:
+        mnt_zho_hant_clean_flatten_simplify: MNT 繁体中文 series fixture
+        mnt_eng_clean_flatten: MNT English series fixture
+        mnt_zho_hans_eng: Expected output bilingual series fixture
+    """
     _test_get_synced_series(
         mnt_zho_hant_clean_flatten_simplify,
         mnt_eng_clean_flatten,
@@ -111,6 +135,13 @@ def test_get_synced_series_pdp(
     pdp_eng_clean_flatten: Series,
     pdp_yue_hans_eng: Series,
 ):
+    """Test get_synced_series with PDP.
+
+    Arguments:
+        pdp_yue_hant_clean_flatten_simplify: PDP 繁体粤文 series fixture
+        pdp_eng_clean_flatten: PDP English series fixture
+        pdp_yue_hans_eng: Expected output bilingual series fixture
+    """
     _test_get_synced_series(
         pdp_yue_hant_clean_flatten_simplify,
         pdp_eng_clean_flatten,

@@ -7,9 +7,13 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from warnings import catch_warnings, filterwarnings
 
 import whisper_timestamped as whisper
-from pydub import AudioSegment
+
+with catch_warnings():
+    filterwarnings("ignore", category=SyntaxWarning)
+    from pydub import AudioSegment
 
 from scinoephile.audio.models import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path

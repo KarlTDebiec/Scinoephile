@@ -40,6 +40,14 @@ def test_english(
     args: str,
     expected_path: str,
 ):
+    """Test CLI processing of English subtitles.
+
+    Arguments:
+        cli: CLI class to test
+        input_path: Path to the input subtitle file
+        args: Additional arguments for processing
+        expected_path: Path to the expected output subtitle file
+    """
     input_path = test_data_root / input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
@@ -81,6 +89,14 @@ def test_chinese(
     args: str,
     expected_path: str,
 ):
+    """Test CLI processing of Chinese subtitles.
+
+    Arguments:
+        cli: CLI class to test
+        input_path: Path to the input subtitle file
+        args: Additional arguments for processing
+        expected_path: Path to the expected output subtitle file
+    """
     input_path = test_data_root / input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
@@ -118,6 +134,15 @@ def test_bilingual(
     args: str,
     expected_path: str,
 ):
+    """Test CLI processing of bilingual subtitles.
+
+    Arguments:
+        cli: CLI class to test
+        chinese_input_path: Path to the Chinese input subtitle file
+        english_input_path: Path to the English input subtitle file
+        args: Additional arguments for processing
+        expected_path: Path to the expected output subtitle file
+    """
     chinese_input_path = test_data_root / chinese_input_path
     english_input_path = test_data_root / english_input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
@@ -130,7 +155,8 @@ def test_bilingual(
             with get_temp_file_path(".srt") as output_path:
                 run_cli_with_args(
                     cli[0],
-                    f"{subcommands} -cif {chinese_input_path} -eif {english_input_path} {args} -bof {output_path}",
+                    f"{subcommands} -cif {chinese_input_path} "
+                    f"-eif {english_input_path} {args} -bof {output_path}",
                 )
                 output = Series.load(output_path)
                 expected = Series.load(test_data_root / expected_path)
