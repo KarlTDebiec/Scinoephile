@@ -102,6 +102,21 @@ class AudioSeries(Series):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
+    def slice(self, start_idx: int, end_idx: int) -> AudioSeries:
+        """Slice series.
+
+        Arguments:
+            start_idx: Start index of slice
+            end_idx: End index of slice
+        Returns:
+            New sliced series
+        """
+        sliced = super().slice(start_idx, end_idx)
+        sliced.audio = self.audio[
+            self.events[start_idx].start : self.events[end_idx - 1].end
+        ]
+        return sliced
+
     def _save_wav(self, fp: Path, **kwargs: Any) -> None:
         """Save series to directory of wav files.
 

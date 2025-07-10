@@ -1,30 +1,21 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Merges transcribed 粤文 subs to match 中文 sub punctuation and spacing."""
+"""Merges transcribed 粤文 text to match 中文 punctuation and spacing."""
 
 from __future__ import annotations
 
-import textwrap
 from pprint import pprint
+from textwrap import dedent
 
 from openai import OpenAI
 
-from scinoephile.testing import MergeTestCase
+from scinoephile.audio.testing import MergeTestCase
 
 
 class CantoneseMerger:
-    """Merges transcribed 粤文 subs to match 中文 sub punctuation and spacing."""
+    """Merges transcribed 粤文 text to match 中文 punctuation and spacing."""
 
-    merge_prompt_template = (
-        "中文 subtitle:\n"
-        "{zhongwen}\n"
-        "粤文 subtitles:\n"
-        "{yuewen}\n"
-        "Merge the 粤文 subtitles into a single line. Do not change the wording "
-        "of the 粤文 subtitles. Ensure all characters present in the 粤文 subtitle "
-        "input remain present in the output. Adjust spacing and punctuation to match "
-        "the 中文 subtitle."
-    )
+    prompt_template = "中文:\n{zhongwen}\n粤文:\n{yuewen}\n结果:\n"
 
     def __init__(
         self,
@@ -37,20 +28,26 @@ class CantoneseMerger:
         Arguments:
             model: OpenAI model to use.
             examples: Examples of inputs and expected outputs for few-shot learning
-            print_test_case: Print test case after merging
+            print_test_case: Print test case afterward
         """
         self.client = OpenAI()
         self.model = model
         self.print_test_case = print_test_case
 
-        self.system_prompt = textwrap.dedent("""
-                You are a helpful assistant that merges multi-line 粤文 subtitles of
-                spoken Cantonese to match the spacing and punctuation of a single-line
-                中文 subtitle. Include all 粤文 characters and merge them into one line.
-                All 汉字 in the output must come from the 粤文 input. No 汉字 in the
-                output may come from the 中文 input. Adjust punctuation and spacing to
-                match the 中文 input.
-            """).strip()
+        self.system_prompt = (
+            dedent("""
+            You are a helpful assistant that merges multi-line 粤文 subtitles of spoken
+            Cantonese to match the spacing and punctuation of a single-line 中文
+            subtitle.
+            Include all 粤文 characters and merge them into one line.
+            All 汉字 in the output must come from the 粤文 input.
+            No 汉字 in the output may come from the 中文 input.
+            Adjust punctuation and spacing to match the 中文 input.
+            """)
+            .strip()
+            .replace("\n", " ")
+        )
+
         if examples:
             self.system_prompt += (
                 "\n\nHere are some examples of inputs and expected outputs:\n"
@@ -59,17 +56,26 @@ class CantoneseMerger:
                 self.system_prompt += (
                     f"中文:\n{example.zhongwen_input}\n"
                     f"粤文:\n" + "\n".join(example.yuewen_input) + "\n"
-                    f"结果:\n{example.yuewen_output}\n"
+                    f"结果:\n{example.yuewen_output}\n\n"
                 )
 
-    def merge(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
-        """Merge 粤文 subtitles to match 中文 punctuation and spacing.
+    def __call__(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
+        """Merge 粤文 text to match 中文 punctuation and spacing.
 
         Arguments:
-            zhongwen_input: Single 中文 subtitle to compare against
-            yuewen_input: 粤文 subtitles to merge
+            zhongwen_input: Single 中文 text against which to match
+            yuewen_input: 粤文 text
         """
-        user_prompt = self.merge_prompt_template.format(
+        return self.punctuate(zhongwen_input, yuewen_input)
+
+    def punctuate(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
+        """Merge 粤文 text to match 中文 punctuation and spacing.
+
+        Arguments:
+            zhongwen_input: Single 中文 text against which to match
+            yuewen_input: 粤文 text
+        """
+        user_prompt = self.prompt_template.format(
             zhongwen=zhongwen_input,
             yuewen="\n".join(yuewen_input),
         )

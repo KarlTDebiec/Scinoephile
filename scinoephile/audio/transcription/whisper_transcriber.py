@@ -37,6 +37,16 @@ class WhisperTranscriber:
         self.language = language
         self.cache_dir_path = validate_output_directory(cache_dir_path)
 
+    def __call__(self, audio: AudioSegment) -> list[TranscribedSegment]:
+        """Transcribe audio.
+
+        Arguments:
+            audio: Audio to transcribe
+        Returns:
+            Transcription, split into segments
+        """
+        return self.transcribe(audio)
+
     def transcribe(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe audio.
 

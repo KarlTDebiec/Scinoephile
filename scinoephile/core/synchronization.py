@@ -42,12 +42,11 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     return True
 
 
-def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
+def get_overlap_string(overlap: np.ndarray) -> str:
     """Get a string representation of the overlap matrix between two series.
 
     Arguments:
         overlap: Overlap matrix
-        max_line_width: Maximum width of the returned string
     Returns:
         String representation of the overlap matrix
     """
@@ -55,9 +54,9 @@ def get_overlap_string(overlap: np.ndarray, max_line_width: int = 160) -> str:
         overlap,
         precision=2,
         suppress_small=True,
-        max_line_width=max_line_width,
-        threshold=None,
-        edgeitems=None,
+        max_line_width=np.inf,
+        threshold=np.inf,
+        edgeitems=np.inf,
     )
     matrix = matrix.replace("0.  ", "____").replace("[", " ").replace("]", " ")
     columns = [f"{j:>5}" for j in range(1, overlap.shape[1] + 1)]
@@ -101,7 +100,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         return [([i], []) for i in range(len(one.events))]
 
     overlap = get_sync_overlap_matrix(one, two)
-    debug(f"OVERLAP:\n{get_overlap_string(overlap, 1000)}")
+    debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
 
     sync_groups = None
     while True:
@@ -310,7 +309,7 @@ def _get_sync_groups(
                 if overlap[i, j] / scale < cutoff:
                     overlap[i, j] = 0
 
-    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap, 1000)}")
+    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     available_is = set(range(len(one.events)))
     available_js = set(range(len(two.events)))

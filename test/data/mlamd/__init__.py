@@ -7,8 +7,9 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
+from scinoephile.audio.testing import MergeTestCase, SplitTestCase
 from scinoephile.image import ImageSeries
-from scinoephile.testing import MergeTestCase, test_data_root
+from scinoephile.testing import test_data_root
 
 input_dir = test_data_root / "mlamd" / "input"
 output_dir = test_data_root / "mlamd" / "output"
@@ -85,6 +86,23 @@ def mlamd_eng_validation_directory() -> str:
     """MLAMD English validation directory."""
     return output_dir / "eng_validation"
 
+
+# endregion
+
+
+# region 粤文 Assignment Test Cases
+mlamd_split_test_cases = [
+    SplitTestCase(
+        zhongwen_one_input="再右拐窝打老道向女人街方向飞⋯",
+        yuewen_one_input="再右转抹返出去窝打炉道",
+        zhongwen_two_input="飞呀，飞⋯",
+        yuewen_two_input="飞下",
+        yuewen_input="向女人街方向飞下下",
+        yuewen_one_output="向女人街方向飞下下",
+        yuewen_two_output="",
+    ),
+]
+"""MLAMD 粤文 assignment test cases."""
 
 # endregion
 
@@ -212,4 +230,6 @@ ___all__ = [
     "mlamd_eng",
     "mlamd_eng_image",
     "mlamd_eng_validation_directory",
+    "mlamd_assign_test_cases",
+    "mlamd_merge_test_cases",
 ]
