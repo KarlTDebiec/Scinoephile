@@ -29,7 +29,7 @@ if __name__ == "__main__":
     all_series = []
     for i, block in enumerate(yue_hans.blocks, start=1):
         print(f"\nBlock {i}: {block}")
-        segments = transcriber.transcribe(block.audio)
+        segments = transcriber(block.audio)
         split_segments = []
         for segment in segments:
             split_segments.extend(get_split_segment(segment))
