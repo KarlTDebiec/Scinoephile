@@ -6,8 +6,11 @@ from __future__ import annotations
 
 from dataclasses import fields
 from typing import Any
+from warnings import catch_warnings, filterwarnings
 
-from pydub import AudioSegment
+with catch_warnings():
+    filterwarnings("ignore", category=SyntaxWarning)
+    from pydub import AudioSegment
 
 from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.core import Subtitle
