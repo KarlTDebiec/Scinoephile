@@ -13,53 +13,62 @@ input_dir = test_data_root / "pdp" / "input"
 output_dir = test_data_root / "pdp" / "output"
 
 
-# region Traditional Standard Chinese
+# region 繁体中文
 @pytest.fixture
 def pdp_zho_hant() -> Series:
+    """PDP 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
 @pytest.fixture
 def pdp_zho_hant_clean() -> Series:
+    """PDP 繁体中文 cleaned series."""
     return Series.load(output_dir / "zho-Hant_clean.srt")
 
 
 @pytest.fixture
 def pdp_zho_hant_flatten() -> Series:
+    """PDP 繁体中文 flattened series."""
     return Series.load(output_dir / "zho-Hant_flatten.srt")
 
 
 @pytest.fixture
 def pdp_zho_hant_simplify() -> Series:
+    """PDP 繁体中文 simplified series."""
     return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 # endregion
 
 
-# region Traditional Cantonese Chinese
+# region 繁体粤文
 @pytest.fixture
 def pdp_yue_hant() -> Series:
+    """PDP 繁体粤文 series."""
     return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_clean() -> Series:
+    """PDP 繁体粤文 cleaned series."""
     return Series.load(output_dir / "yue-Hant_clean.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_flatten() -> Series:
+    """PDP 繁体粤文 flattened series."""
     return Series.load(output_dir / "yue-Hant_flatten.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_simplify() -> Series:
+    """PDP 繁体粤文 simplified series."""
     return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
 @pytest.fixture
 def pdp_yue_hant_clean_flatten_simplify() -> Series:
+    """PDP 繁体粤文 cleaned, flattened, and simplified series."""
     return Series.load(output_dir / "yue-Hant_clean_flatten_simplify.srt")
 
 
@@ -69,38 +78,42 @@ def pdp_yue_hant_clean_flatten_simplify() -> Series:
 # region English
 @pytest.fixture
 def pdp_eng() -> Series:
+    """PDP English series."""
     return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def pdp_eng_clean() -> Series:
+    """PDP English cleaned series."""
     return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def pdp_eng_flatten() -> Series:
+    """PDP English flattened series."""
     return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def pdp_eng_clean_flatten() -> Series:
+    """PDP English cleaned and flattened series."""
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Bilingual Simplified Cantonese Chinese and English
+# region Bilingual 简体粤文 and English
 @pytest.fixture
 def pdp_yue_hans_eng() -> Series:
+    """PDP Bilingual 简体粤文 and English series."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 # endregion
 
 
-# region Synchronization Test Cases
-
+# region 简体中文 and English synchronization test cases
 pdp_sync_test_cases = [
     SyncTestCase(
         hanzi_start=0,
@@ -2721,6 +2734,7 @@ pdp_sync_test_cases = [
         ],
     ),
 ]
+"""PDP 简体中文 and English synchronization test cases."""
 # endregion
 
 __all__ = [

@@ -12,21 +12,33 @@ from scinoephile.core.cantonese import (
     get_cantonese_romanization,
 )
 
-from ..data.kob import kob_yue_hant  # noqa: F401
-from ..data.pdp import pdp_yue_hant  # noqa: F401
-
 
 def _test_get_cantonese_romanization(series: Series):
+    """Test get_cantonese_romanization.
+
+    Arguments:
+        series: Series with which to test
+    """
     output = get_cantonese_romanization(series)
     assert len(series.events) == len(output.events)
 
 
 # get_cantonese_romanization
 def test_get_cantonese_romanization_kob(kob_yue_hant: Series):
+    """Test get_cantonese_romanization with KOB 繁体粤文 subtitles.
+
+    Arguments:
+        kob_yue_hant: KOB 繁体粤文 series fixture
+    """
     _test_get_cantonese_romanization(kob_yue_hant)
 
 
 def test_get_cantonese_romanization_pdp(pdp_yue_hant: Series):
+    """Test get_cantonese_romanization with PDP 繁体粤文 subtitles.
+
+    Arguments:
+        pdp_yue_hant: PDP 繁体粤文 series fixture
+    """
     _test_get_cantonese_romanization(pdp_yue_hant)
 
 
@@ -37,4 +49,10 @@ def test_get_cantonese_romanization_pdp(pdp_yue_hant: Series):
     ],
 )
 def test_get_cantonese_text_romanization(text: str, expected: str):
+    """Test _get_cantonese_text_romanization.
+
+    Arguments:
+        text: Text to romanize
+        expected: Expected romanization
+    """
     assert _get_cantonese_text_romanization(text) == expected
