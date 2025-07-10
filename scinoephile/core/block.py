@@ -79,3 +79,11 @@ class Block:
     def start(self) -> int:
         """Start time of block."""
         return self._series.events[self.start_idx - 1].start
+
+    def to_series(self):
+        """Convert block to a Series.
+
+        Returns:
+            Series containing the subtitles in the block
+        """
+        return self._series.slice(self.start_idx - 1, self.end_idx)
