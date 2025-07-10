@@ -7,8 +7,9 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
+from scinoephile.audio.testing import MergeTestCase
 from scinoephile.image import ImageSeries
-from scinoephile.testing import MergeTestCase, test_data_root
+from scinoephile.testing import test_data_root
 
 input_dir = test_data_root / "mlamd" / "input"
 output_dir = test_data_root / "mlamd" / "output"
@@ -212,4 +213,5 @@ ___all__ = [
     "mlamd_eng",
     "mlamd_eng_image",
     "mlamd_eng_validation_directory",
+    "mlamd_merge_test_cases",
 ]

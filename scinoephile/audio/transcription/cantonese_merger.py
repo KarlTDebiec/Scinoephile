@@ -9,7 +9,7 @@ from pprint import pprint
 
 from openai import OpenAI
 
-from scinoephile.testing import MergeTestCase
+from scinoephile.audio.testing import MergeTestCase
 
 
 class CantoneseMerger:
