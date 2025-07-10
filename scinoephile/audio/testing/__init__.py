@@ -5,9 +5,6 @@
 from __future__ import annotations
 
 from scinoephile.audio.testing.merge_test_case import MergeTestCase
-from scinoephile.common import package_root
-
-test_data_root = package_root.parent / "test" / "data"
 
 __all__ = [
     "MergeTestCase",
