@@ -26,7 +26,7 @@ def mlamd_zho_hans() -> ImageSeries:
 
 
 @pytest.fixture()
-def mlamd_zho_hans_image() -> Image:
+def mlamd_zho_hans_image() -> Image.Image:
     """MLAMD 简体中文 image."""
     return Image.open(output_dir / "zho-Hans" / "0001.png")
 
@@ -51,7 +51,7 @@ def mlamd_zho_hant() -> ImageSeries:
 
 
 @pytest.fixture()
-def mlamd_zho_hant_image() -> Image:
+def mlamd_zho_hant_image() -> Image.Image:
     """MLAMD 繁体中文 image."""
     return Image.open(output_dir / "zho-Hant" / "0001.png")
 
@@ -76,7 +76,7 @@ def mlamd_eng() -> ImageSeries:
 
 
 @pytest.fixture()
-def mlamd_eng_image() -> Image:
+def mlamd_eng_image() -> Image.Image:
     """MLAMD English image."""
     return Image.open(output_dir / "eng" / "0001.png")
 
