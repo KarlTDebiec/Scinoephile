@@ -62,6 +62,15 @@ class CantoneseMerger:
                     f"结果:\n{example.yuewen_output}\n"
                 )
 
+    def __call__(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
+        """Merge 粤文 text to match 中文 punctuation and spacing.
+
+        Arguments:
+            zhongwen_input: Single 中文 text against which to match
+            yuewen_input: 粤文 text
+        """
+        return self.merge(zhongwen_input, yuewen_input)
+
     def merge(self, zhongwen_input: str, yuewen_input: list[str]) -> str:
         """Merge 粤文 subtitles to match 中文 punctuation and spacing.
 
