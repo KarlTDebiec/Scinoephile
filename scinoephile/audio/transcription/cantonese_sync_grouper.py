@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from logging import warning
 from pprint import pformat, pprint
 
 import numpy as np
@@ -91,5 +92,11 @@ class CantoneseSyncGrouper:
                     yuewen_two_output="",
                 )
                 pprint(test_case)
+            else:
+                warning(
+                    f"Unexpected number of indexes over threshold for yw_i={yw_i}: "
+                    f"{len(indexes_over_threshold)}"
+                )
+                print()
 
         return nascent_sync_groups, [i + 1 for i in ambiguous]

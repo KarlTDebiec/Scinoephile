@@ -2,15 +2,12 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Tests of scinoephile.audio.transcription.CantoneseSplitter."""
 
-from pprint import pformat
-
 import pytest
 
 from scinoephile.audio.testing import SplitTestCase
 from scinoephile.audio.transcription import CantoneseSplitter
 from scinoephile.testing.mark import flaky, skip_if_ci
-
-from ..data.mlamd import mlamd_split_test_cases  # noqa: F401
+from test.data.mlamd import mlamd_split_test_cases  # noqa: F401
 
 
 @pytest.fixture
@@ -39,8 +36,8 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
         test_case.yuewen_two_overlap,
         test_case.yuewen_ambiguous_input,
     )
-    assert yuewen_one_output == test_case.yuewen_one_output, pformat(test_case)
-    assert yuewen_two_output == test_case.yuewen_two_output, pformat(test_case)
+    assert yuewen_one_output == test_case.yuewen_one_output
+    assert yuewen_two_output == test_case.yuewen_two_output
 
 
 @pytest.mark.parametrize(

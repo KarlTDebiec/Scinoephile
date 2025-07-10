@@ -68,7 +68,10 @@ class WhisperTranscriber:
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
-                self.model, str(temp_audio_path), language=self.language
+                self.model,
+                str(temp_audio_path),
+                language=self.language,
+                vad=True,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
 

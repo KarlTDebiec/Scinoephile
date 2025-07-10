@@ -8,10 +8,15 @@ import re
 from logging import info
 from pathlib import Path
 from typing import Any
+from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
-from pydub import AudioSegment
 from pysubs2 import SSAFile
+
+with catch_warnings():
+    filterwarnings("ignore", category=SyntaxWarning)
+    from pydub import AudioSegment
+
 
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_subtitle import AudioSubtitle

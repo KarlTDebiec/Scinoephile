@@ -27,8 +27,8 @@ class CantoneseSplitter:
         "{zhongwen_two_input}\n"
         "Nascent 粤文 two:\n"
         "{yuewen_two_input}\n"
-        "粤文:\n"
-        "{yuewen_input}\n"
+        "ambiguous 粤文:\n"
+        "{yuewen_ambiguous_input}\n"
     )
 
     def __init__(
@@ -55,12 +55,12 @@ class CantoneseSplitter:
             to 中文 subtitles of the same spoken content. You will be given a 中文
             subtitle and its nascent 粤文 subtitle, and a second 中文 subtitle with its
             nascent 粤文 subtitle. You will be given and additional 粤文 text whose
-            assignment between the two subtitles is ambiguous, and you will determine
+            distribution between the two subtitles is ambiguous, and you will determine
             how the 粤文 text should be distributed between the two nascent 粤文
             subtitles.
-            Include all 粤文 characters from the input.
-            All 汉字 in the output must come from the 粤文 input.
-            No 汉字 in the output may come from the 中文 input. 
+            Include all characters "ambiguous 粤文" in either "one" or "two".
+            Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
+            Your output "one" and "two" concatenated should equal "ambiguous 粤文".
             Your response must be a JSON object with the following structure:
             """)
                 .strip()
@@ -99,7 +99,7 @@ class CantoneseSplitter:
         zhongwen_two_input: str,
         yuewen_two_input: str,
         yuewen_two_overlap: float,
-        yuewen_input: str,
+        yuewen_ambiguous_input: str,
     ) -> tuple[str, str]:
         return self.split(
             zhongwen_one_input,
@@ -108,7 +108,7 @@ class CantoneseSplitter:
             zhongwen_two_input,
             yuewen_two_input,
             yuewen_two_overlap,
-            yuewen_input,
+            yuewen_ambiguous_input,
         )
 
     def split(
@@ -119,14 +119,14 @@ class CantoneseSplitter:
         zhongwen_two_input: str,
         yuewen_two_input: str,
         yuewen_two_overlap: float,
-        yuewen_input: str,
+        yuewen_ambiguous_input: str,
     ) -> tuple[str, str]:
         user_prompt = self.prompt_template.format(
             zhongwen_one_input=zhongwen_one_input,
             yuewen_one_input=yuewen_one_input,
             zhongwen_two_input=zhongwen_two_input,
             yuewen_two_input=yuewen_two_input,
-            yuewen_input=yuewen_input,
+            yuewen_ambiguous_input=yuewen_ambiguous_input,
         )
         completion = self.client.chat.completions.create(
             model=self.model,
@@ -149,10 +149,8 @@ class CantoneseSplitter:
             # TODO: Try again if response is not valid
         yuewen_one_output = response.one.strip()
         yuewen_two_output = response.two.strip()
-        assert yuewen_input == (yuewen_one_output + yuewen_two_output), (
-            f"Input 粤文 text does not match output: {yuewen_input} != "
-            f"{yuewen_one_output + yuewen_two_output}"
-        )
+        concatenated_output = yuewen_one_output + yuewen_two_output
+        assert yuewen_ambiguous_input == concatenated_output
         # TODO: Try again if response is not valid
 
         if self.print_test_case:
@@ -163,7 +161,7 @@ class CantoneseSplitter:
                 zhongwen_two_input=zhongwen_two_input,
                 yuewen_two_input=yuewen_two_input,
                 yuewen_two_overlap=yuewen_two_overlap,
-                yuewen_ambiguous_input=yuewen_input,
+                yuewen_ambiguous_input=yuewen_ambiguous_input,
                 yuewen_one_output=yuewen_one_output,
                 yuewen_two_output=yuewen_two_output,
             )

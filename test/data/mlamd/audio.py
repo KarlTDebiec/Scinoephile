@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.transcription import (
+    CantoneseSplitter,
     CantoneseSyncGrouper,
     WhisperTranscriber,
     get_hanzi_converted_segment,
@@ -15,6 +16,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import test_data_root
+from test.data.mlamd import mlamd_split_test_cases
 
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
@@ -33,6 +35,10 @@ if __name__ == "__main__":
         cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
     )
     sync_grouper = CantoneseSyncGrouper()
+    splitter = CantoneseSplitter(
+        examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
+        print_test_case=True,
+    )
 
     all_series = []
     for i, block in enumerate(yue_hans.blocks, start=1):
