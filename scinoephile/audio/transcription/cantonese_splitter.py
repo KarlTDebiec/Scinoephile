@@ -10,6 +10,7 @@ from textwrap import dedent
 
 from openai import OpenAI
 from pydantic import BaseModel, Field
+from pydantic_core import ValidationError
 
 from scinoephile.audio.testing import SplitTestCase
 
@@ -60,13 +61,17 @@ class CantoneseSplitter:
             Include all 粤文 characters from the input.
             All 汉字 in the output must come from the 粤文 input.
             No 汉字 in the output may come from the 中文 input. 
-            Your response must be JSON; fill in the following template:
+            Your response must be a JSON object with the following structure:
             """)
                 .strip()
                 .replace("\n", " ")
             )
             + "\n"
-            + json.dumps(self.Response.model_json_schema(), indent=4)
+            + json.dumps(
+                self.Response(one="...", two="...").model_dump(),
+                indent=4,
+                ensure_ascii=False,
+            )
         )
         if examples:
             self.system_prompt += (
@@ -82,23 +87,27 @@ class CantoneseSplitter:
                     f"Nascent 粤文 one:\n{example.yuewen_one_input}\n"
                     f"中文 two:\n{example.zhongwen_two_input}\n"
                     f"Nascent 粤文 two:\n{example.yuewen_two_input}\n"
-                    f"粤文:\n{example.yuewen_input}\n"
-                    f"结果:\n{json.dumps(expected_response, indent=4)}\n\n"
+                    f"粤文:\n{example.yuewen_ambiguous_input}\n"
+                    f"结果:\n{expected_response.model_dump_json(indent=4)}\n\n"
                 )
 
     def __call__(
         self,
         zhongwen_one_input: str,
         yuewen_one_input: str,
+        yuewen_one_overlap: float,
         zhongwen_two_input: str,
         yuewen_two_input: str,
+        yuewen_two_overlap: float,
         yuewen_input: str,
     ) -> tuple[str, str]:
         return self.split(
             zhongwen_one_input,
             yuewen_one_input,
+            yuewen_one_overlap,
             zhongwen_two_input,
             yuewen_two_input,
+            yuewen_two_overlap,
             yuewen_input,
         )
 
@@ -106,8 +115,10 @@ class CantoneseSplitter:
         self,
         zhongwen_one_input: str,
         yuewen_one_input: str,
+        yuewen_one_overlap: float,
         zhongwen_two_input: str,
         yuewen_two_input: str,
+        yuewen_two_overlap: float,
         yuewen_input: str,
     ) -> tuple[str, str]:
         user_prompt = self.prompt_template.format(
@@ -128,19 +139,31 @@ class CantoneseSplitter:
         )
         message = completion.choices[0].message
         content = message.content
-        response = self.Response.model_validate_json(content)
+
+        # Validate the response
+        try:
+            response = self.Response.model_validate_json(content)
+        except ValidationError as exc:
+            print(f"Invalid response: {content}")
+            raise exc
+            # TODO: Try again if response is not valid
         yuewen_one_output = response.one.strip()
         yuewen_two_output = response.two.strip()
-
-        # TODO: Validate that output makes sense
+        assert yuewen_input == (yuewen_one_output + yuewen_two_output), (
+            f"Input 粤文 text does not match output: {yuewen_input} != "
+            f"{yuewen_one_output + yuewen_two_output}"
+        )
+        # TODO: Try again if response is not valid
 
         if self.print_test_case:
             test_case = SplitTestCase(
                 zhongwen_one_input=zhongwen_one_input,
                 yuewen_one_input=yuewen_one_input,
+                yuewen_one_overlap=yuewen_one_overlap,
                 zhongwen_two_input=zhongwen_two_input,
                 yuewen_two_input=yuewen_two_input,
-                yuewen_input=yuewen_input,
+                yuewen_two_overlap=yuewen_two_overlap,
+                yuewen_ambiguous_input=yuewen_input,
                 yuewen_one_output=yuewen_one_output,
                 yuewen_two_output=yuewen_two_output,
             )

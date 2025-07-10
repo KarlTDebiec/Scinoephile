@@ -64,7 +64,8 @@ if __name__ == "__main__":
         print(f"Series:\n{series.to_simple_string()}")
         all_series.append(series)
 
-        break
+        if i > 4:
+            break
 
     series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{series.to_simple_string()}")

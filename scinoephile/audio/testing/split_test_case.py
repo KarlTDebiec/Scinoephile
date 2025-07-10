@@ -15,12 +15,17 @@ class SplitTestCase:
     """Input 中文 candidate one text."""
     yuewen_one_input: str
     """Input 粤文 text already assigned to 中文 candidate one."""
+    yuewen_one_overlap: float
+    """Overlap between 中文 candidate one and ambiguous 粤文 text."""
     zhongwen_two_input: str
     """Input 中文 candidate two text."""
     yuewen_two_input: str
     """Input 粤文 text already assigned to 中文 candidate two."""
-    yuewen_input: str
-    """Input 粤文 text."""
+    yuewen_two_overlap: float
+    """Overlap between 中文 candidate two andambiguous 粤文 text."""
+
+    yuewen_ambiguous_input: str
+    """Input 粤文 text of ambiguous distribution betwen 中文 candidates one and two."""
 
     yuewen_one_output: str
     """Output 粤文 text assigned to 中文 candidate one."""

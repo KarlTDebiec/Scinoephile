@@ -9,11 +9,11 @@ from pprint import pformat, pprint
 import numpy as np
 
 from scinoephile.audio import AudioSeries
-from scinoephile.core import ScinoephileError
+from scinoephile.audio.testing import SplitTestCase
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
+    SyncGroup,
     get_overlap_string,
-    get_sync_groups,
     get_sync_overlap_matrix,
 )
 
@@ -21,11 +21,14 @@ from scinoephile.core.synchronization import (
 class CantoneseSyncGrouper:
     """Runnable for getting sync groups between source and transcribed series."""
 
-    def group(
-        self,
-        zhongwen_subs: AudioSeries,
-        yuewen_subs: AudioSeries,
-    ) -> None:
+    def group(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> None:
+        sync_groups, ambiguous = self._group(zhongwen_subs, yuewen_subs)
+        print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+        print(f"\nAMBIGUOUS:\n{ambiguous}")
+
+    def _group(
+        self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
+    ) -> tuple[list[SyncGroup], list[int]]:
         zhongwen_str, yuewen_str = get_pair_strings(zhongwen_subs, yuewen_subs)
         print(f"\nMANDARIN:\n{zhongwen_str}")
         print(f"\nCANTONESE:\n{yuewen_str}")
@@ -34,81 +37,59 @@ class CantoneseSyncGrouper:
         print("\nOVERLAP:")
         print(get_overlap_string(overlap))
 
-        from collections import defaultdict, deque
-
         nascent_sync_groups = [([zw_i + 1], []) for zw_i in range(overlap.shape[0])]
         overlap_threshold = 0.33
 
-        queue = deque(range(overlap.shape[1]))
-        retry_counts = defaultdict(int)
-        max_retries = 2  # Avoid infinite loops
+        ambiguous = []
 
-        while queue:
-            yw_i = queue.popleft()
-            retry_counts[yw_i] += 1
-
+        for yw_i in range(overlap.shape[1]):
             column = overlap[:, yw_i]
             rank = np.argsort(column)[::-1]
 
-            if column[rank[0]] == 0:
-                # Avoid divide-by-zero
-                normalized_column = column
-            else:
-                normalized_column = column / column[rank[0]]
-
-            indexes_over_threshold = np.where(normalized_column > overlap_threshold)[0]
-
-            if len(indexes_over_threshold) == 0:
-                if retry_counts[yw_i] >= max_retries:
-                    raise ScinoephileError(
-                        "Unsupported scenario:\n"
-                        "No Mandarin subtitles\n"
-                        "overlap with Cantonese subtitle\n"
-                        f"{yw_i + 1:2d}: {yuewen_subs.events[yw_i].text}."
-                    )
-                queue.append(yw_i)
-                continue
+            if column[rank[0]] != 0:
+                column = column / column[rank[0]]
+            indexes_over_threshold = np.where(column > overlap_threshold)[0]
 
             if len(indexes_over_threshold) == 1:
                 zw_i = indexes_over_threshold[0]
                 nascent_sync_groups[zw_i][1].append(yw_i + 1)
                 continue
+            ambiguous.append(yw_i)
 
-            # More than one — ambiguous, try again later
-            if retry_counts[yw_i] >= max_retries:
-                pprint(nascent_sync_groups)
-                raise ScinoephileError(
-                    "Unsupported scenario:\n"
-                    "Multiple Mandarin subtitles\n"
-                    + "\n".join(
-                        f"{zw_i + 1:2d}: {zhongwen_subs.events[zw_i].text}"
-                        for zw_i in indexes_over_threshold
-                    )
-                    + "\noverlap with Cantonese subtitle\n"
-                    f"{yw_i + 1:2d}: {yuewen_subs.events[yw_i].text}."
+        for yw_i in ambiguous:
+            column = overlap[:, yw_i]
+            rank = np.argsort(column)[::-1]
+
+            if column[rank[0]] != 0:
+                column = column / column[rank[0]]
+            indexes_over_threshold = np.where(column > overlap_threshold)[0]
+
+            if len(indexes_over_threshold) == 2:
+                zw_one_idx, zw_two_idx = indexes_over_threshold
+                yw_one_idxs = [i - 1 for i in nascent_sync_groups[zw_one_idx][1]]
+                yw_two_idxs = [i - 1 for i in nascent_sync_groups[zw_two_idx][1]]
+                zhongwen_one_input = zhongwen_subs.events[zw_one_idx].text
+                yuewen_one_input = "".join(
+                    [yuewen_subs.events[i].text for i in yw_one_idxs]
                 )
-            # When a Cantonese subtitle overlaps with multiple Mandarin subtitles,
-            # It may be assigned to either one of them. If this is the case, we should
-            # be able to continue processing within this call of this function.
-            # However, it is also possible that the Cantonese subtitle needs to be split
-            # into two separate subtitles. If that is the case, we must do some fairly
-            # complex operations in order to split the Cantonese subtitle into two.
-            # It should be possible to do those updates from within the loop, modifying
-            # yuewen_subs, nascent_sync_groups (add one to later indexes), and the
-            # queue (add one to later indexes).
-            # Alternatively, we may just want to have a step before that catalogs the
-            # splits that are needed, and then a separate function for actually grouping
-            # later. Or maybe one function we call multiple times.
+                yuewen_one_overlap = round(float(column[zw_one_idx]), 2)
+                zhongwen_two_input = zhongwen_subs.events[zw_two_idx].text
+                yuewen_two_input = "".join(
+                    [yuewen_subs.events[i].text for i in yw_two_idxs]
+                )
+                yuewen_two_overlap = round(float(column[zw_two_idx]), 2)
+                yuewen_ambiguous_input = yuewen_subs.events[yw_i].text
+                test_case = SplitTestCase(
+                    zhongwen_one_input=zhongwen_one_input,
+                    yuewen_one_input=yuewen_one_input,
+                    yuewen_one_overlap=yuewen_one_overlap,
+                    zhongwen_two_input=zhongwen_two_input,
+                    yuewen_two_input=yuewen_two_input,
+                    yuewen_two_overlap=yuewen_two_overlap,
+                    yuewen_ambiguous_input=yuewen_ambiguous_input,
+                    yuewen_one_output="",
+                    yuewen_two_output="",
+                )
+                pprint(test_case)
 
-            # Split out into a function that takes the two subtitle series and returns
-            # The assignments, as well as the ambiguous sets.
-            # Try to fix the ambiguous sets, and then rerun
-            # Continue until things make sense
-
-            queue.append(yw_i)
-
-        print("\nOVERLAP:")
-        print(get_overlap_string(overlap))
-
-        sync_groups = get_sync_groups(zhongwen_subs, yuewen_subs)
-        print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+        return nascent_sync_groups, [i + 1 for i in ambiguous]

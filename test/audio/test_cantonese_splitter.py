@@ -17,14 +17,15 @@ from ..data.mlamd import mlamd_split_test_cases  # noqa: F401
 def cantonese_splitter_few_shot() -> CantoneseSplitter:
     """CantoneseSplitter with few-shot examples."""
     return CantoneseSplitter(
-        examples=[m for m in mlamd_split_test_cases if m.include_in_prompt]
+        examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
+        print_test_case=True,
     )
 
 
 @pytest.fixture
 def cantonese_splitter_zero_shot() -> CantoneseSplitter:
     """CantoneseSplitter with no examples."""
-    return CantoneseSplitter()
+    return CantoneseSplitter(print_test_case=True)
 
 
 def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase):
@@ -32,9 +33,11 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
     yuewen_one_output, yuewen_two_output = cantonese_splitter(
         test_case.zhongwen_one_input,
         test_case.yuewen_one_input,
+        test_case.yuewen_one_overlap,
         test_case.zhongwen_two_input,
         test_case.yuewen_two_input,
-        test_case.yuewen_input,
+        test_case.yuewen_two_overlap,
+        test_case.yuewen_ambiguous_input,
     )
     assert yuewen_one_output == test_case.yuewen_one_output, pformat(test_case)
     assert yuewen_two_output == test_case.yuewen_two_output, pformat(test_case)
