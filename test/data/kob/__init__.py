@@ -13,38 +13,44 @@ input_dir = test_data_root / "kob" / "input"
 output_dir = test_data_root / "kob" / "output"
 
 
-# region Simplified Cantonese Chinese
+# region 简体粤文
 @pytest.fixture
 def kob_yue_hans() -> Series:
+    """KOB 简体粤文 series."""
     return Series.load(input_dir / "yue-Hans.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean() -> Series:
+    """KOB 简体粤文 cleaned series."""
     return Series.load(output_dir / "yue-Hans_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_flatten() -> Series:
+    """KOB 简体粤文 flattened series."""
     return Series.load(output_dir / "yue-Hans_flatten.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean_flatten() -> Series:
+    """KOB 简体粤文 cleaned and flattened series."""
     return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Traditional Cantonese Chinese
+# region 繁体粤文
 @pytest.fixture
 def kob_yue_hant() -> Series:
+    """KOB 繁体粤文 series."""
     return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_simplify() -> Series:
+    """KOB 繁体粤文 simplified series."""
     return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
@@ -54,30 +60,35 @@ def kob_yue_hant_simplify() -> Series:
 # region English
 @pytest.fixture
 def kob_eng() -> Series:
+    """KOB English series."""
     return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def kob_eng_clean() -> Series:
+    """KOB English cleaned series."""
     return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def kob_eng_flatten() -> Series:
+    """KOB English flattened series."""
     return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def kob_eng_clean_flatten() -> Series:
+    """KOB English cleaned and flattened series."""
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # endregion
 
 
-# region Bilingual Simplified Cantonese Chinese and English
+# region Bilingual 简体粤文 and English
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
+    """KOB Bilingual 简体粤文 and English series."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 

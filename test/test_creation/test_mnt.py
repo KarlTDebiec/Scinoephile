@@ -20,6 +20,12 @@ from scinoephile.testing import SyncTestCase
 
 # Remove underscore to test
 def _test_get_test_cases_mnt(mnt_zho_hant: Series, mnt_eng: Series):
+    """Test for creating tests for MNT.
+
+    Arguments:
+        mnt_zho_hant: MNT 繁体中文 series with which to create tests
+        mnt_eng: MNT English series with which to create tests
+    """
     pair_blocks = get_pair_blocks_by_pause(mnt_zho_hant, mnt_eng)
     bilingual_blocks = []
 

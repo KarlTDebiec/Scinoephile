@@ -14,20 +14,40 @@ from scinoephile.core.mandarin import (
 
 
 def _test_get_mandarin_romanization(series: Series):
+    """Test get_mandarin_romanization.
+
+    Arguments:
+        series: Series with which to test
+    """
     output = get_mandarin_romanization(series)
     assert len(series.events) == len(output.events)
 
 
 # get_mandarin_romanization
 def test_get_mandarin_romanization_mnt(mnt_zho_hant: Series):
+    """Test get_mandarin_romanization with MNT 繁体中文 subtitles.
+
+    Arguments:
+        mnt_zho_hant: MNT 繁体中文 series fixture
+    """
     _test_get_mandarin_romanization(mnt_zho_hant)
 
 
 def test_get_mandarin_romanization_pdp(pdp_zho_hant: Series):
+    """Test get_mandarin_romanization with PDP 繁体中文 subtitles.
+
+    Arguments:
+        pdp_zho_hant: PDP 繁体中文 series fixture
+    """
     _test_get_mandarin_romanization(pdp_zho_hant)
 
 
 def test_get_mandarin_romanization_t(t_zho_hans: Series):
+    """Test get_mandarin_romanization with T 简体中文 subtitles.
+
+    Arguments:
+        t_zho_hans: T 简体中文 series fixture
+    """
     _test_get_mandarin_romanization(t_zho_hans)
 
 
@@ -38,4 +58,10 @@ def test_get_mandarin_romanization_t(t_zho_hans: Series):
     ],
 )
 def test_get_mandarin_text_romanization(text: str, expected: str):
+    """Test _get_mandarin_text_romanization.
+
+    Arguments:
+        text: Text to romanize
+        expected: Expected romanization
+    """
     assert _get_mandarin_text_romanization(text) == expected

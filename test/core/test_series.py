@@ -20,7 +20,12 @@ from scinoephile.testing import test_data_root
         "t/input/eng.srt",
     ],
 )
-def test_series(relative_path):
+def test_series(relative_path: str):
+    """Test loading and saving a series.
+
+    Arguments:
+        relative_path: Relative path to the subtitle file
+    """
     path = test_data_root / relative_path
 
     series = Series.load(path)

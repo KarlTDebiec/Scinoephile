@@ -15,10 +15,10 @@ input_dir = test_data_root / "mlamd" / "input"
 output_dir = test_data_root / "mlamd" / "output"
 
 
-# region Simplified Standard Chinese
+# region 简体中文
 @pytest.fixture
 def mlamd_zho_hans() -> ImageSeries:
-    """MLAMD Simplified Chinese image series."""
+    """MLAMD 简体中文 image series."""
     try:
         return ImageSeries.load(output_dir / "zho-Hans")
     except FileNotFoundError:
@@ -27,23 +27,23 @@ def mlamd_zho_hans() -> ImageSeries:
 
 @pytest.fixture()
 def mlamd_zho_hans_image() -> Image:
-    """MLAMD Simplified Chinese image."""
+    """MLAMD 简体中文 image."""
     return Image.open(output_dir / "zho-Hans" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_zho_hans_validation_directory() -> str:
-    """MLAMD Simplified Chinese validation directory."""
+    """MLAMD 简体中文 validation directory."""
     return output_dir / "zho-Hans_validation"
 
 
 # endregion
 
 
-# region Traditional Standard Chinese
+# region 繁体中文
 @pytest.fixture
 def mlamd_zho_hant() -> ImageSeries:
-    """MLAMD Traditional Chinese image series."""
+    """MLAMD 繁体中文 image series."""
     try:
         return ImageSeries.load(output_dir / "zho-Hant")
     except FileNotFoundError:
@@ -52,13 +52,13 @@ def mlamd_zho_hant() -> ImageSeries:
 
 @pytest.fixture()
 def mlamd_zho_hant_image() -> Image:
-    """MLAMD Traditional Chinese image."""
+    """MLAMD 繁体中文 image."""
     return Image.open(output_dir / "zho-Hant" / "0001.png")
 
 
 @pytest.fixture
 def mlamd_zho_hant_validation_directory() -> str:
-    """MLAMD Traditional Chinese validation directory."""
+    """MLAMD 繁体中文 validation directory."""
     return output_dir / "zho-Hant_validation"
 
 
@@ -88,6 +88,7 @@ def mlamd_eng_validation_directory() -> str:
 
 
 # endregion
+
 
 # region 粤文 Merging Test Cases
 

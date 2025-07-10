@@ -23,6 +23,11 @@ from scinoephile.common.testing import run_cli_with_args
     ],
 )
 def test_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test CLI help.
+
+    Arguments:
+        cli: CLI class to test
+    """
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
@@ -46,6 +51,11 @@ def test_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test CLI usage.
+
+    Arguments:
+        cli: CLI class to test
+    """
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     stdout = StringIO()
