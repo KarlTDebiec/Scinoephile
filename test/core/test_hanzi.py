@@ -14,32 +14,6 @@ from scinoephile.core.hanzi import (
     get_hanzi_converter,
     get_hanzi_flattened,
 )
-from test.data.kob import (
-    kob_yue_hans,  # noqa: F401
-    kob_yue_hans_clean,  # noqa: F401
-    kob_yue_hans_flatten,  # noqa: F401
-    kob_yue_hant,  # noqa: F401
-    kob_yue_hant_simplify,  # noqa: F401
-)
-from test.data.mnt import (
-    mnt_zho_hant,  # noqa: F401
-    mnt_zho_hant_clean,  # noqa: F401
-    mnt_zho_hant_flatten,  # noqa: F401
-    mnt_zho_hant_simplify,  # noqa: F401
-)
-from test.data.pdp import (
-    pdp_yue_hant,  # noqa: F401
-    pdp_yue_hant_clean,  # noqa: F401
-    pdp_yue_hant_flatten,  # noqa: F401
-    pdp_yue_hant_simplify,  # noqa: F401
-)
-from test.data.t import (
-    t_zho_hans,  # noqa: F401
-    t_zho_hans_clean,  # noqa: F401
-    t_zho_hans_flatten,  # noqa: F401
-    t_zho_hant,  # noqa: F401
-    t_zho_hant_simplify,  # noqa: F401
-)
 
 
 # region Implementations

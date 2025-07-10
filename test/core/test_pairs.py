@@ -6,10 +6,6 @@ from __future__ import annotations
 
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause
-from test.data.kob import kob_eng, kob_yue_hans  # noqa: F401
-from test.data.mnt import mnt_eng, mnt_zho_hant  # noqa: F401
-from test.data.pdp import pdp_eng, pdp_yue_hant  # noqa: F401
-from test.data.t import t_eng, t_zho_hans  # noqa: F401
 
 
 def _test_get_pair_blocks_by_pause(

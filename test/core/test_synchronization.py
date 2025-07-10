@@ -18,18 +18,8 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from test.data.mnt import (
-    mnt_eng_clean_flatten,  # noqa: F401
-    mnt_sync_test_cases,
-    mnt_zho_hans_eng,  # noqa: F401
-    mnt_zho_hant_clean_flatten_simplify,  # noqa: F401
-)
-from test.data.pdp import (
-    pdp_eng_clean_flatten,  # noqa: F401
-    pdp_sync_test_cases,
-    pdp_yue_hans_eng,  # noqa: F401
-    pdp_yue_hant_clean_flatten_simplify,  # noqa: F401
-)
+from test.data.mnt import mnt_sync_test_cases  # noqa: F401
+from test.data.pdp import pdp_sync_test_cases  # noqa: F401
 
 
 def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):

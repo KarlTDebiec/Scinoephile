@@ -11,9 +11,6 @@ from scinoephile.core.mandarin import (
     _get_mandarin_text_romanization,
     get_mandarin_romanization,
 )
-from test.data.mnt import mnt_zho_hant  # noqa: F401
-from test.data.pdp import pdp_zho_hant  # noqa: F401
-from test.data.t import t_zho_hans  # noqa: F401
 
 
 def _test_get_mandarin_romanization(series: Series):
