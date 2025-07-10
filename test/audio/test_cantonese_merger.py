@@ -9,8 +9,7 @@ import pytest
 from scinoephile.audio.testing import MergeTestCase
 from scinoephile.audio.transcription import CantoneseMerger
 from scinoephile.testing.mark import flaky, skip_if_ci
-
-from ..data.mlamd import mlamd_merge_test_cases  # noqa: F401
+from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 
 @pytest.fixture

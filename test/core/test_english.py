@@ -13,11 +13,10 @@ from scinoephile.core.english import (
     get_english_cleaned,
     get_english_flattened,
 )
-
-from ..data.kob import kob_eng, kob_eng_clean, kob_eng_flatten  # noqa: F401
-from ..data.mnt import mnt_eng, mnt_eng_clean, mnt_eng_flatten  # noqa: F401
-from ..data.pdp import pdp_eng, pdp_eng_clean, pdp_eng_flatten  # noqa: F401
-from ..data.t import t_eng, t_eng_clean, t_eng_flatten  # noqa: F401
+from test.data.kob import kob_eng, kob_eng_clean, kob_eng_flatten  # noqa: F401
+from test.data.mnt import mnt_eng, mnt_eng_clean, mnt_eng_flatten  # noqa: F401
+from test.data.pdp import pdp_eng, pdp_eng_clean, pdp_eng_flatten  # noqa: F401
+from test.data.t import t_eng, t_eng_clean, t_eng_flatten  # noqa: F401
 
 
 def _test_get_english_cleaned(series: Series, expected: Series):

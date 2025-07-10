@@ -16,7 +16,6 @@ from scinoephile.core.synchronization import (
     get_synced_series_from_groups,
 )
 from scinoephile.testing import SyncTestCase
-from ..data.mnt import mnt_zho_hant, mnt_eng
 
 
 # Remove underscore to test
