@@ -109,14 +109,13 @@ class WhitespaceManager:
                     f"to max_gaps[{pair.type_1},{pair.type_2}]."
                 )
             # Expect no space, have space
-            else:
-                return (
-                    f"{pair.char_1} and {pair.char_2} "
-                    f"are separated by {pair.gap:2d} pixels "
-                    f"(<={max_gap:2d}), and appear to be adjacent, "
-                    f"but are separated by whitespace '{pair.whitespace}'."
-                )
-                # TODO: Automate correction
+            return (
+                f"{pair.char_1} and {pair.char_2} "
+                f"are separated by {pair.gap:2d} pixels "
+                f"(<={max_gap:2d}), and appear to be adjacent, "
+                f"but are separated by whitespace '{pair.whitespace}'."
+            )
+            # TODO: Automate correction
 
         # Expect space, have no space
         if whitespace_fit_for_adj_chars:
@@ -136,22 +135,20 @@ class WhitespaceManager:
                         f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
                         f"to max_gaps[{pair.type_1},{pair.type_2}]."
                     )
-                else:
-                    return (
-                        f"{pair.char_1} and {pair.char_2} "
-                        f"are separated by {pair.gap:2d} pixels "
-                        f"(>{max_gap:2d}), and appear to have whitespace between "
-                        f"them, but are not separated by whitespace; did not add "
-                        f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
-                        f"to max_gaps[{pair.type_1},{pair.type_2}]."
-                    )
-            else:
                 return (
                     f"{pair.char_1} and {pair.char_2} "
                     f"are separated by {pair.gap:2d} pixels "
                     f"(>{max_gap:2d}), and appear to have whitespace between "
-                    f"them, but are not separated by whitespace."
+                    f"them, but are not separated by whitespace; did not add "
+                    f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
+                    f"to max_gaps[{pair.type_1},{pair.type_2}]."
                 )
+            return (
+                f"{pair.char_1} and {pair.char_2} "
+                f"are separated by {pair.gap:2d} pixels "
+                f"(>{max_gap:2d}), and appear to have whitespace between "
+                f"them, but are not separated by whitespace."
+            )
         return (
             f"{pair.char_1} and {pair.char_2} "
             f"are separated by {pair.gap:2d} pixels "
