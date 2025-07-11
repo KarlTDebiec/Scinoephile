@@ -73,6 +73,9 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
     Returns:
         Transcribed segments split on whitespace
     """
+    if segment.words is None or len(segment.words) == 0:
+        return [segment]
+
     split_segments = []
     nascent_words = []
     # Groups of words
@@ -113,7 +116,6 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
 __all__ = [
     "CantoneseMerger",
     "CantoneseSplitter",
-    "CantoneseSyncGrouper",
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
     "get_series_from_segments",
