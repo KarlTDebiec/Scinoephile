@@ -23,75 +23,33 @@ class OpenCCConfig(str, Enum):
     """OpenCC configuration names for hanzi character set conversion."""
 
     s2t = "s2t"
-    """Simplified Chinese to Traditional Chinese.
-    
-    簡體到繁體
-    """
+    """Simplified Chinese to Traditional Chinese."""
     t2s = "t2s"
-    """Traditional Chinese to Simplified Chinese.
-    
-    繁體到簡體
-    """
+    """Traditional Chinese to Simplified Chinese."""
     s2tw = "s2tw"
-    """Simplified Chinese to Traditional Chinese (Taiwan).
-    
-    簡體到臺灣正體
-    """
+    """Simplified Chinese to Traditional Chinese (Taiwan)."""
     tw2s = "tw2s"
-    """Traditional Chinese (Taiwan) to Simplified Chinese.
-    
-    臺灣正體到簡體.
-    """
+    """Traditional Chinese (Taiwan) to Simplified Chinese."""
     s2hk = "s2hk"
-    """Simplified Chinese to Traditional Chinese (Hong Kong).
-    
-    簡體到香港繁體
-    """
+    """Simplified Chinese to Traditional Chinese (Hong Kong)."""
     hk2s = "hk2s"
-    """Traditional Chinese (Hong Kong) to Simplified Chinese.
-    
-    香港繁體到簡體
-    """
+    """Traditional Chinese (Hong Kong) to Simplified Chinese."""
     s2twp = "s2twp"
-    """Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom.
-    
-    簡體到繁體（臺灣正體標準）並轉換爲臺灣常用詞彙
-    """
+    """Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom."""
     tw2sp = "tw2sp"
-    """Traditional Chinese (Taiwan) to Simplified Chinese with Mainland Chinese idiom.
-    
-    繁體（臺灣正體標準）到簡體並轉換爲中國大陸常用詞彙
-    """
+    """Traditional Chinese (Taiwan) to Simplified Chinese with Mainland idiom."""
     t2tw = "t2tw"
-    """Traditional Chinese (OpenCC) to Taiwan Standard.
-    
-    繁體（OpenCC 標準）到臺灣正體
-    """
+    """Traditional Chinese (OpenCC) to Taiwan Standard."""
     hk2t = "hk2t"
-    """Traditional Chinese (Hong Kong) to Traditional Chinese.
-    
-    香港繁體到繁體（OpenCC 標準）
-    """
+    """Traditional Chinese (Hong Kong) to Traditional Chinese."""
     t2hk = "t2hk"
-    """Traditional Chinese (OpenCC) to Hong Kong variant.
-    
-    繁體（OpenCC 標準）到香港繁體
-    """
+    """Traditional Chinese (OpenCC) to Hong Kong variant."""
     t2jp = "t2jp"
-    """Traditional Chinese Characters (Kyūjitai) to New Japanese Kanji (Shinjitai).
-    
-    繁體（OpenCC 標準，舊字體）到日文新字體
-    """
+    """Traditional Chinese Characters (Kyūjitai) to New Japanese Kanji (Shinjitai)."""
     jp2t = "jp2t"
-    """New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyūjitai).
-    
-    日文新字體到繁體（OpenCC 標準，舊字體）
-    """
+    """New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyūjitai)."""
     tw2t = "tw2t"
-    """Traditional Chinese (Taiwan) to Traditional Chinese.
-    
-    臺灣正體到繁體（OpenCC 標準）
-    """
+    """Traditional Chinese (Taiwan) to Traditional Chinese."""
 
 
 def get_hanzi_cleaned(series: Series) -> Series:

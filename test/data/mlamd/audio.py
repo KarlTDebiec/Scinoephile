@@ -34,11 +34,11 @@ if __name__ == "__main__":
         "khleeloo/whisper-large-v3-cantonese",
         cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
     )
-    sync_grouper = CantoneseSyncGrouper()
     splitter = CantoneseSplitter(
         examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
         print_test_case=True,
     )
+    sync_grouper = CantoneseSyncGrouper(splitter=splitter)
 
     all_series = []
     for i, block in enumerate(yue_hans.blocks, start=1):

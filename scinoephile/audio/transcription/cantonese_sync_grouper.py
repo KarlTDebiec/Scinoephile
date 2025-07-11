@@ -11,6 +11,7 @@ import numpy as np
 
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.testing import SplitTestCase
+from scinoephile.audio.transcription import CantoneseSplitter
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
     SyncGroup,
@@ -21,6 +22,14 @@ from scinoephile.core.synchronization import (
 
 class CantoneseSyncGrouper:
     """Runnable for getting sync groups between source and transcribed series."""
+
+    def __init__(self, splitter: CantoneseSplitter) -> None:
+        """Initialize.
+
+        Arguments:
+            splitter: Cantonese splitter.
+        """
+        self.splitter = splitter
 
     def group(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> None:
         sync_groups, ambiguous = self._group(zhongwen_subs, yuewen_subs)
