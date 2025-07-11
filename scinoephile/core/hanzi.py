@@ -76,7 +76,7 @@ def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
     """Get OpenCC converter for hanzi character set conversion.
 
     Arguments:
-        config: OpenCC configuration name
+        config: OpenCC configuration
     Returns:
         OpenCC converter instance, from cache if available
     """
@@ -97,12 +97,14 @@ def get_hanzi_flattened(series: Series) -> Series:
     return series
 
 
-def get_hanzi_converted(series: Series, config: str = "t2s") -> Series:
+def get_hanzi_converted(
+    series: Series, config: OpenCCConfig = OpenCCConfig.t2s
+) -> Series:
     """Get hanzi converted between character sets.
 
     Arguments:
         series: Series to convert
-        config: Conversion name
+        config: OpenCC configuration
     Returns:
         Converted series
     """
