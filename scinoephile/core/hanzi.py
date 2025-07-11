@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
+from enum import Enum
 from functools import lru_cache
 
 from opencc import OpenCC
@@ -16,6 +17,81 @@ from scinoephile.core.text import half_to_full_punc
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
+
+
+class OpenCCConfig(str, Enum):
+    """OpenCC configuration names for hanzi character set conversion."""
+
+    s2t = "s2t"
+    """Simplified Chinese to Traditional Chinese.
+    
+    簡體到繁體
+    """
+    t2s = "t2s"
+    """Traditional Chinese to Simplified Chinese.
+    
+    繁體到簡體
+    """
+    s2tw = "s2tw"
+    """Simplified Chinese to Traditional Chinese (Taiwan).
+    
+    簡體到臺灣正體
+    """
+    tw2s = "tw2s"
+    """Traditional Chinese (Taiwan) to Simplified Chinese.
+    
+    臺灣正體到簡體.
+    """
+    s2hk = "s2hk"
+    """Simplified Chinese to Traditional Chinese (Hong Kong).
+    
+    簡體到香港繁體
+    """
+    hk2s = "hk2s"
+    """Traditional Chinese (Hong Kong) to Simplified Chinese.
+    
+    香港繁體到簡體
+    """
+    s2twp = "s2twp"
+    """Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom.
+    
+    簡體到繁體（臺灣正體標準）並轉換爲臺灣常用詞彙
+    """
+    tw2sp = "tw2sp"
+    """Traditional Chinese (Taiwan) to Simplified Chinese with Mainland Chinese idiom.
+    
+    繁體（臺灣正體標準）到簡體並轉換爲中國大陸常用詞彙
+    """
+    t2tw = "t2tw"
+    """Traditional Chinese (OpenCC) to Taiwan Standard.
+    
+    繁體（OpenCC 標準）到臺灣正體
+    """
+    hk2t = "hk2t"
+    """Traditional Chinese (Hong Kong) to Traditional Chinese.
+    
+    香港繁體到繁體（OpenCC 標準）
+    """
+    t2hk = "t2hk"
+    """Traditional Chinese (OpenCC) to Hong Kong variant.
+    
+    繁體（OpenCC 標準）到香港繁體
+    """
+    t2jp = "t2jp"
+    """Traditional Chinese Characters (Kyūjitai) to New Japanese Kanji (Shinjitai).
+    
+    繁體（OpenCC 標準，舊字體）到日文新字體
+    """
+    jp2t = "jp2t"
+    """New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyūjitai).
+    
+    日文新字體到繁體（OpenCC 標準，舊字體）
+    """
+    tw2t = "tw2t"
+    """Traditional Chinese (Taiwan) to Traditional Chinese.
+    
+    臺灣正體到繁體（OpenCC 標準）
+    """
 
 
 def get_hanzi_cleaned(series: Series) -> Series:
@@ -38,7 +114,14 @@ def get_hanzi_cleaned(series: Series) -> Series:
 
 
 @lru_cache
-def get_hanzi_converter(config: str) -> OpenCC:
+def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
+    """Get OpenCC converter for hanzi character set conversion.
+
+    Arguments:
+        config: OpenCC configuration name
+    Returns:
+        OpenCC converter instance, from cache if available
+    """
     return OpenCC(config)
 
 
@@ -132,6 +215,7 @@ def _get_hanzi_text_flattened(text: str) -> str:
 
 
 __all__ = [
+    "OpenCCConfig",
     "get_hanzi_cleaned",
     "get_hanzi_converted",
     "get_hanzi_converter",
