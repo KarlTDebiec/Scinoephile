@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Splits 粤文 text between two nascent 粤文 texts based on 中文."""
+"""Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
 
 from __future__ import annotations
 
@@ -9,26 +9,42 @@ from pprint import pprint
 from textwrap import dedent
 
 from openai import OpenAI
-from pydantic import BaseModel, Field
-from pydantic_core import ValidationError
+from pydantic import ValidationError
 
+from scinoephile.audio.models import SplitAnswer, SplitQuery
 from scinoephile.audio.testing import SplitTestCase
 
 
 class CantoneseSplitter:
-    """Splits 粤文 text between two nascent 粤文 texts based on 中文."""
+    """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
 
-    prompt_template = (
-        "中文 one:\n"
-        "{zhongwen_one_input}\n"
-        "Nascent 粤文 one:\n"
-        "{yuewen_one_input}\n"
-        "中文 two:\n"
-        "{zhongwen_two_input}\n"
-        "Nascent 粤文 two:\n"
-        "{yuewen_two_input}\n"
-        "ambiguous 粤文:\n"
-        "{yuewen_ambiguous_input}\n"
+    system_prompt_template = """
+        You are a helpful assistant that matches 粤文 subtitles of spoken Cantonese
+        to 中文 subtitles of the same spoken content. You will be given a 中文
+        subtitle and its nascent 粤文 subtitle, and a second 中文 subtitle with its
+        nascent 粤文 subtitle. You will be given and additional 粤文 text whose
+        distribution between the two subtitles is ambiguous, and you will determine
+        how the 粤文 text should be distributed between the two nascent 粤文
+        subtitles.
+        Include all characters "ambiguous 粤文" in either "one" or "two".
+        Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
+        Your output "one" and "two" concatenated should equal "ambiguous 粤文".
+        Your response must be a JSON object with the following structure:
+    """
+    query_template = (
+        "中文 one:\n{one_zhongwen}\n"
+        "粤文 one start:\n{one_yuewen_start}\n"
+        "中文 two:\n{two_zhongwen}\n"
+        "粤文 two end:\n{two_yuewen_end}\n"
+        "粤文 to split:\n{yuewen_to_split}\n"
+    )
+    answer_template = (
+        "粤文 to append to one:\n{one_yuewen_to_append}\n"
+        "粤文 to prepend to two:\n{two_yuewen_to_prepend}\n"
+    )
+    answer_example = SplitAnswer(
+        one_yuewen_to_append="粤文 one to append",
+        two_yuewen_to_prepend="粤文 text two to prepend",
     )
 
     def __init__(
@@ -49,127 +65,65 @@ class CantoneseSplitter:
         self.print_test_case = print_test_case
 
         self.system_prompt = (
-            (
-                dedent("""
-            You are a helpful assistant that matches 粤文 subtitles of spoken Cantonese
-            to 中文 subtitles of the same spoken content. You will be given a 中文
-            subtitle and its nascent 粤文 subtitle, and a second 中文 subtitle with its
-            nascent 粤文 subtitle. You will be given and additional 粤文 text whose
-            distribution between the two subtitles is ambiguous, and you will determine
-            how the 粤文 text should be distributed between the two nascent 粤文
-            subtitles.
-            Include all characters "ambiguous 粤文" in either "one" or "two".
-            Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
-            Your output "one" and "two" concatenated should equal "ambiguous 粤文".
-            Your response must be a JSON object with the following structure:
-            """)
-                .strip()
-                .replace("\n", " ")
-            )
-            + "\n"
-            + json.dumps(
-                self.Response(one="...", two="...").model_dump(),
-                indent=4,
-                ensure_ascii=False,
-            )
+            dedent(self.system_prompt_template).strip().replace("\n", " ")
         )
+        self.system_prompt += "\n"
+        self.system_prompt += json.dumps(self.answer_example.model_dump(), indent=4)
         if examples:
             self.system_prompt += (
                 "\n\nHere are some examples of inputs and expected outputs:\n"
             )
             for example in examples:
-                expected_response = self.Response(
-                    one=example.yuewen_one_output,
-                    two=example.yuewen_two_output,
+                self.system_prompt += self.query_template.format_map(
+                    example.query.model_dump()
                 )
-                self.system_prompt += (
-                    f"中文 one:\n{example.zhongwen_one_input}\n"
-                    f"Nascent 粤文 one:\n{example.yuewen_one_input}\n"
-                    f"中文 two:\n{example.zhongwen_two_input}\n"
-                    f"Nascent 粤文 two:\n{example.yuewen_two_input}\n"
-                    f"粤文:\n{example.yuewen_ambiguous_input}\n"
-                    f"结果:\n{expected_response.model_dump_json(indent=4)}\n\n"
+                self.system_prompt += self.answer_template.format_map(
+                    example.answer.model_dump()
                 )
 
-    def __call__(
-        self,
-        zhongwen_one_input: str,
-        yuewen_one_input: str,
-        yuewen_one_overlap: float,
-        zhongwen_two_input: str,
-        yuewen_two_input: str,
-        yuewen_two_overlap: float,
-        yuewen_ambiguous_input: str,
-    ) -> tuple[str, str]:
-        return self.split(
-            zhongwen_one_input,
-            yuewen_one_input,
-            yuewen_one_overlap,
-            zhongwen_two_input,
-            yuewen_two_input,
-            yuewen_two_overlap,
-            yuewen_ambiguous_input,
-        )
+    def __call__(self, query: SplitQuery) -> SplitAnswer:
+        """Split 粤文 text between two nascent 粤文 texts based on corresponding 中文.
 
-    def split(
-        self,
-        zhongwen_one_input: str,
-        yuewen_one_input: str,
-        yuewen_one_overlap: float,
-        zhongwen_two_input: str,
-        yuewen_two_input: str,
-        yuewen_two_overlap: float,
-        yuewen_ambiguous_input: str,
-    ) -> tuple[str, str]:
-        user_prompt = self.prompt_template.format(
-            zhongwen_one_input=zhongwen_one_input,
-            yuewen_one_input=yuewen_one_input,
-            zhongwen_two_input=zhongwen_two_input,
-            yuewen_two_input=yuewen_two_input,
-            yuewen_ambiguous_input=yuewen_ambiguous_input,
-        )
-        completion = self.client.chat.completions.create(
+        Arguments:
+            query: Query containing 中文 and 粤文 texts and 粤文 text to split
+        Returns:
+            Answer including 粤文 text split between two nascent 粤文 texts
+        """
+        return self.split(query)
+
+    def split(self, query: SplitQuery) -> SplitAnswer:
+        """Split 粤文 text between two nascent 粤文 texts based on corresponding 中文.
+
+        Arguments:
+            query: Query containing 中文 and 粤文 texts and 粤文 text to split
+        Returns:
+            Answer including 粤文 text split between two nascent 粤文 texts
+        """
+        query_prompt = self.query_template.format_map(query.model_dump())
+        response = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": user_prompt},
+                {"role": "user", "content": query_prompt},
             ],
             temperature=0,
             seed=0,
         )
-        message = completion.choices[0].message
+        message = response.choices[0].message
         content = message.content
 
         # Validate the response
         try:
-            response = self.Response.model_validate_json(content)
+            answer = SplitAnswer.model_validate_json(content)
+            assert query.yuewen_to_split == (
+                answer.one_yuewen_to_append + answer.two_yuewen_to_prepend
+            )
         except ValidationError as exc:
             print(f"Invalid response: {content}")
             raise exc
             # TODO: Try again if response is not valid
-        yuewen_one_output = response.one.strip()
-        yuewen_two_output = response.two.strip()
-        concatenated_output = yuewen_one_output + yuewen_two_output
-        assert yuewen_ambiguous_input == concatenated_output
-        # TODO: Try again if response is not valid
 
         if self.print_test_case:
-            test_case = SplitTestCase(
-                zhongwen_one_input=zhongwen_one_input,
-                yuewen_one_input=yuewen_one_input,
-                yuewen_one_overlap=yuewen_one_overlap,
-                zhongwen_two_input=zhongwen_two_input,
-                yuewen_two_input=yuewen_two_input,
-                yuewen_two_overlap=yuewen_two_overlap,
-                yuewen_ambiguous_input=yuewen_ambiguous_input,
-                yuewen_one_output=yuewen_one_output,
-                yuewen_two_output=yuewen_two_output,
-            )
+            test_case = SplitTestCase.from_query_and_answer(query, answer)
             pprint(test_case)
-        return yuewen_one_output, yuewen_two_output
-
-    class Response(BaseModel):
-        """Response model."""
-
-        one: str = Field(..., description="Input text to append to first subtitle.")
-        two: str = Field(..., description="Input text to prepend to second subtitle.")
+        return answer

@@ -2,8 +2,6 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Tests of scinoephile.audio.transcription.CantoneseMerger."""
 
-from pprint import pformat
-
 import pytest
 
 from scinoephile.audio.testing import MergeTestCase
@@ -27,9 +25,14 @@ def cantonese_merger_zero_shot() -> CantoneseMerger:
 
 
 def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):
-    """Test merging of 中文 and 粤文 text."""
-    output = cantonese_merger(test_case.zhongwen_input, test_case.yuewen_input)
-    assert output == test_case.yuewen_output, pformat(test_case)
+    """Test merging of 中文 and 粤文 text.
+
+    Arguments:
+        cantonese_merger: CantoneseMerger with which to test
+        test_case: Query and expected answer
+    """
+    answer = cantonese_merger(test_case.query)
+    assert answer.yuewen_merged == test_case.yuewen_merged
 
 
 @pytest.mark.parametrize(
@@ -43,6 +46,12 @@ def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):
 def test_merge_mlamd(
     request: pytest.FixtureRequest, merger_fixture_name: str, test_case: MergeTestCase
 ):
-    """Test merging of 中文 and 粤文 text using MLAMD test cases."""
+    """Test CantoneseMerger with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        merger_fixture_name: Name of CantoneseMerger fixture with which to test
+        test_case: Query and expected answer
+    """
     merger: CantoneseMerger = request.getfixturevalue(merger_fixture_name)
     _test_merge(merger, test_case)
