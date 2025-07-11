@@ -30,19 +30,11 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
 
     Arguments:
         cantonese_splitter: CantoneseSplitter with which to test
-        test_case: Inputs and expected outputs
+        test_case: Query and expected answer
     """
-    yuewen_one_output, yuewen_two_output = cantonese_splitter(
-        test_case.zhongwen_one_input,
-        test_case.yuewen_one_input,
-        test_case.yuewen_one_overlap,
-        test_case.zhongwen_two_input,
-        test_case.yuewen_two_input,
-        test_case.yuewen_two_overlap,
-        test_case.yuewen_ambiguous_input,
-    )
-    assert yuewen_one_output == test_case.yuewen_one_output
-    assert yuewen_two_output == test_case.yuewen_two_output
+    answer = cantonese_splitter(test_case.query)
+    assert answer.one_yuewen_to_append == test_case.one_yuewen_to_append
+    assert answer.two_yuewen_to_prepend == test_case.two_yuewen_to_prepend
 
 
 @pytest.mark.parametrize(
@@ -54,16 +46,14 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
 )
 @pytest.mark.parametrize("test_case", mlamd_split_test_cases)
 def test_split_mlamd(
-    request: pytest.FixtureRequest,
-    splitter_fixture_name: str,
-    test_case: SplitTestCase,
+    request: pytest.FixtureRequest, splitter_fixture_name: str, test_case: SplitTestCase
 ):
     """Test CantoneseSplitter with MLAMD test cases.
 
     Arguments:
         request: Pytest fixture request
         splitter_fixture_name: Name of CantoneseSplitter fixture with which to test
-        test_case: Inputs and expected outputs
+        test_case: Query and expected answer
     """
     splitter: CantoneseSplitter = request.getfixturevalue(splitter_fixture_name)
     _test_split(splitter, test_case)

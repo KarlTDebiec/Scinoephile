@@ -4,20 +4,39 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from pydantic import Field
+
+from scinoephile.audio.models import MergeAnswer, MergeQuery
 
 
-@dataclass
-class MergeTestCase:
+class MergeTestCase(MergeQuery, MergeAnswer):
     """Test case for 粤文 merging; may also be used for few-shot prompt."""
 
-    zhongwen_input: str
-    """Input single-line 中文 text."""
-    yuewen_input: list[str]
-    """Input multi-line 粤文 text."""
+    include_in_prompt: bool = Field(
+        False, description="Whether to include test case in prompt examples."
+    )
 
-    yuewen_output: str
-    """Output single-line 粤文 text."""
+    @property
+    def answer(self) -> MergeAnswer:
+        """Answer part of the test case."""
+        return MergeAnswer.model_validate(
+            {k: getattr(self, k) for k in MergeAnswer.model_fields}
+        )
 
-    include_in_prompt: bool = False
-    """Whether to include test case in prompt examples."""
+    @property
+    def query(self) -> MergeQuery:
+        """Query part of the test case."""
+        return MergeQuery.model_validate(
+            {k: getattr(self, k) for k in MergeQuery.model_fields}
+        )
+
+    @staticmethod
+    def from_query_and_answer(
+        query: MergeQuery, answer: MergeAnswer, include_in_prompt: bool = False
+    ) -> MergeTestCase:
+        """Create a test case from a query and an answer."""
+        return MergeTestCase(
+            **query.model_dump(),
+            **answer.model_dump(),
+            include_in_prompt=include_in_prompt,
+        )
