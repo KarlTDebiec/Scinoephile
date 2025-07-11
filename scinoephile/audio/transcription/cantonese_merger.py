@@ -83,7 +83,7 @@ class CantoneseMerger:
             Answer including merged 粤文 text
         """
         query_prompt = self.query_template.format(
-            zhongwen=query.zhongwen, yuewen="\n".join(query.yuewen_to_merge)
+            zhongwen=query.zhongwen, yuewen_to_merge="\n".join(query.yuewen_to_merge)
         )
         response = self.client.chat.completions.create(
             model=self.model,
