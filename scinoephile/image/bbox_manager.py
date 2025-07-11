@@ -379,7 +379,8 @@ class BboxManager:
         rows = []
         for key, value in merge_dict.items():
             for char in value:
-                rows.append([char, *key])
+                rows.extend([[char] + list(key)])
+
         arr = np.array(sorted(rows))
         np.savetxt(
             file_path,
