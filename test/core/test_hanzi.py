@@ -8,7 +8,8 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.hanzi import (
-    _get_hanzi_text_flattened,  # noqa
+    OpenCCConfig,  # noqa
+    _get_hanzi_text_flattened,
     get_hanzi_cleaned,
     get_hanzi_converted,
     get_hanzi_converter,
@@ -219,16 +220,16 @@ def test_get_hanzi_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
 @pytest.mark.parametrize(
     ("text", "config", "expected"),
     [
-        ("漢字轉換", "t2s", "汉字转换"),
-        ("汉字转换", "s2t", "漢字轉換"),
+        ("漢字轉換", OpenCCConfig.t2s, "汉字转换"),
+        ("汉字转换", OpenCCConfig.s2t, "漢字轉換"),
     ],
 )
-def test_get_hanzi_converter(text: str, config: str, expected: str):
+def test_get_hanzi_converter(text: str, config: OpenCCConfig, expected: str):
     """Test get_hanzi_converter.
 
     Arguments:
         text: Text to convert
-        config: Conversion configuration (t2s or s2t)
+        config: Conversion configuration
         expected: Expected converted text
     """
     assert get_hanzi_converter(config).convert(text) == expected

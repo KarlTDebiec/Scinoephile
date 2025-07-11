@@ -13,11 +13,11 @@ from scinoephile.audio.transcription.cantonese_splitter import (
 )
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.core import Series, Subtitle
-from scinoephile.core.hanzi import get_hanzi_converter
+from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
 
 
 def get_hanzi_converted_segment(
-    segment: TranscribedSegment, config: str = "t2s"
+    segment: TranscribedSegment, config: OpenCCConfig = OpenCCConfig.t2s
 ) -> TranscribedSegment:
     """Convert Hanzi between character sets.
 
@@ -113,6 +113,7 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
 __all__ = [
     "CantoneseMerger",
     "CantoneseSplitter",
+    "CantoneseSyncGrouper",
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
     "get_series_from_segments",

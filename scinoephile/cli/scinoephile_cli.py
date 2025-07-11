@@ -17,6 +17,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
+    OpenCCConfig,
     get_hanzi_cleaned,
     get_hanzi_converted,
     get_hanzi_flattened,
@@ -145,7 +146,7 @@ class ScinoephileCli(CommandLineInterface):
         if "flatten_hanzi" in operations:
             hanzi = get_hanzi_flattened(hanzi)
         if "simplify_hanzi" in operations:
-            hanzi = get_hanzi_converted(hanzi, "t2s")
+            hanzi = get_hanzi_converted(hanzi, OpenCCConfig.t2s)
         if "sync_bilingual" in operations:
             bilingual = get_synced_series(hanzi, english)
 
