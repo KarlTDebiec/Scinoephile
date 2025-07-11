@@ -4,10 +4,18 @@
 
 from __future__ import annotations
 
+from scinoephile.audio.models.merge_answer import MergeAnswer
+from scinoephile.audio.models.merge_query import MergeQuery
+from scinoephile.audio.models.split_answer import SplitAnswer
+from scinoephile.audio.models.split_query import SplitQuery
 from scinoephile.audio.models.transcribed_segment import TranscribedSegment
 from scinoephile.audio.models.transcribed_word import TranscribedWord
 
 __all__ = [
+    "MergeAnswer",
+    "MergeQuery",
+    "SplitAnswer",
+    "SplitQuery",
     "TranscribedWord",
     "TranscribedSegment",
 ]
