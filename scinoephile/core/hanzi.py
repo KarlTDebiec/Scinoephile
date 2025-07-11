@@ -76,7 +76,7 @@ def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
     """Get OpenCC converter for hanzi character set conversion.
 
     Arguments:
-        config: OpenCC configuration name
+        config: OpenCC configuration
     Returns:
         OpenCC converter instance, from cache if available
     """
@@ -104,7 +104,7 @@ def get_hanzi_converted(
 
     Arguments:
         series: Series to convert
-        config: Conversion name
+        config: OpenCC configuration
     Returns:
         Converted series
     """
