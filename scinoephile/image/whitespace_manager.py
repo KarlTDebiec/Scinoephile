@@ -117,50 +117,48 @@ class WhitespaceManager:
                     f"but are separated by whitespace '{pair.whitespace}'."
                 )
                 # TODO: Automate correction
-        else:
-            # Expect space, have no space
-            if whitespace_fit_for_adj_chars:
-                if interactive and pair.gap < 100:
-                    response = input(
+
+        # Expect space, have no space
+        if whitespace_fit_for_adj_chars:
+            if interactive and pair.gap < 100:
+                response = input(
+                    f"{pair.char_1} and {pair.char_2} "
+                    f"are separated by {pair.gap:2d} pixels "
+                    f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
+                )
+                if response.lower().startswith("y"):
+                    self._update_max_gaps(pair)
+                    return (
                         f"{pair.char_1} and {pair.char_2} "
                         f"are separated by {pair.gap:2d} pixels "
-                        f"(>{max_gap:2d}). Do you want to update the max gaps? (y/n): "
+                        f"(>{max_gap:2d}), and appear to have whitespace between "
+                        f"them, but are not separated by whitespace; added "
+                        f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
+                        f"to max_gaps[{pair.type_1},{pair.type_2}]."
                     )
-                    if response.lower().startswith("y"):
-                        self._update_max_gaps(pair)
-                        return (
-                            f"{pair.char_1} and {pair.char_2} "
-                            f"are separated by {pair.gap:2d} pixels "
-                            f"(>{max_gap:2d}), and appear to have whitespace between "
-                            f"them, but are not separated by whitespace; added "
-                            f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
-                            f"to max_gaps[{pair.type_1},{pair.type_2}]."
-                        )
-                    else:
-                        return (
-                            f"{pair.char_1} and {pair.char_2} "
-                            f"are separated by {pair.gap:2d} pixels "
-                            f"(>{max_gap:2d}), and appear to have whitespace between "
-                            f"them, but are not separated by whitespace; did not add "
-                            f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
-                            f"to max_gaps[{pair.type_1},{pair.type_2}]."
-                        )
                 else:
                     return (
                         f"{pair.char_1} and {pair.char_2} "
                         f"are separated by {pair.gap:2d} pixels "
                         f"(>{max_gap:2d}), and appear to have whitespace between "
-                        f"them, but are not separated by whitespace."
+                        f"them, but are not separated by whitespace; did not add "
+                        f"({pair.width_1:2d},{pair.width_2:2d}):{pair.gap:2d} "
+                        f"to max_gaps[{pair.type_1},{pair.type_2}]."
                     )
-            # Expect space, have space
             else:
                 return (
                     f"{pair.char_1} and {pair.char_2} "
                     f"are separated by {pair.gap:2d} pixels "
-                    f"(>{max_gap:2d}), and appear to have whitespace between them, "
-                    f"and as expected are separated by whitespace '{pair.whitespace}'."
+                    f"(>{max_gap:2d}), and appear to have whitespace between "
+                    f"them, but are not separated by whitespace."
                 )
-                # TODO: Validate that amount of whitespace is appropriate for gap
+        return (
+            f"{pair.char_1} and {pair.char_2} "
+            f"are separated by {pair.gap:2d} pixels "
+            f"(>{max_gap:2d}), and appear to have whitespace between them, "
+            f"and as expected are separated by whitespace '{pair.whitespace}'."
+        )
+        # TODO: Validate that amount of whitespace is appropriate for gap
 
     def _expand_max_gaps(self, pair: CharPair) -> None:
         """Expand max_gaps to fit new width(s) and resave.
