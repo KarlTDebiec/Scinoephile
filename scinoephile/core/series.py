@@ -144,10 +144,10 @@ class Series(SSAFile):
             Parsed series
         """
         series = super().from_string(string, format_=format_, fps=fps, **kwargs)
-        events = []
-        for ssaevent in series.events:
-            events.append(cls.event_class(series=series, **ssaevent.as_dict()))
-        series.events = events
+        series.events = [
+            cls.event_class(series=series, **ssaevent.as_dict())
+            for ssaevent in series.events
+        ]
 
         return series
 
@@ -173,10 +173,10 @@ class Series(SSAFile):
 
         with open(validated_path, encoding=encoding) as fp:
             series = cls.from_file(fp, format_=format_, **kwargs)
-            events = []
-            for ssaevent in series.events:
-                events.append(cls.event_class(series=series, **ssaevent.as_dict()))
-            series.events = events
+            series.events = [
+                cls.event_class(series=series, **ssaevent.as_dict())
+                for ssaevent in series.events
+            ]
 
         info(f"Loaded series from {validated_path}")
         return series
