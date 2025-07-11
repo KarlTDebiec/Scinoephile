@@ -9,7 +9,7 @@ from pprint import pprint
 from textwrap import dedent
 
 from openai import OpenAI
-from pydantic_core import ValidationError
+from pydantic import ValidationError
 
 from scinoephile.audio.models import SplitAnswer, SplitQuery
 from scinoephile.audio.testing import SplitTestCase
