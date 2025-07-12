@@ -119,7 +119,8 @@ class CantoneseSplitter:
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = SplitAnswer.model_validate(json.load(f))
                 if self.print_test_case:
-                    print(SplitTestCase.from_query_and_answer(query, answer))
+                    test_case = SplitTestCase.from_query_and_answer(query, answer)
+                    print(test_case.to_source())
                 return answer
 
         # Process using OpenAI API
@@ -139,17 +140,17 @@ class CantoneseSplitter:
         try:
             answer = SplitAnswer.model_validate_json(content)
         except ValidationError as exc:
-            error(f"Invalid response: {content}")
+            error(f"Query:\n{query}\nYielded invalid content:\n{content}")
             raise exc
             # TODO: Try again if response is not valid
         try:
             test_case = SplitTestCase.from_query_and_answer(query, answer)
         except ValidationError as exc:
-            error(f"Invalid test case:\nQuery:\n{query}\nAnswer:\n{answer}")
+            error(f"Query:\n{query}\nYielded invalid answer:\n{answer}")
             raise exc
             # TODO: Try again if response is not valid
         if self.print_test_case:
-            print(test_case)
+            print(test_case.to_source())
 
         # Update cache
         if self.cache_dir_path is not None:
@@ -159,7 +160,7 @@ class CantoneseSplitter:
 
         return answer
 
-    def _get_cache_path(self, query_prompt: str) -> Path:
+    def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.
 
         Arguments:

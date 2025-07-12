@@ -432,6 +432,7 @@ __all__ = [
     "are_series_one_to_one",
     "get_overlap_string",
     "get_sync_groups",
+    "get_sync_groups_string",
     "get_sync_overlap_matrix",
     "get_synced_series",
     "get_synced_series_from_groups",

@@ -48,6 +48,39 @@ class MergeTestCase(MergeQuery, MergeAnswer):
             include_in_prompt=include_in_prompt,
         )
 
+    def to_source(self) -> str:
+        """Get Python source-like string representation.
+
+        Returns:
+            Python source-like string representation
+        """
+
+        def format_field(name: str, value: object) -> str:
+            return f"    {name}={value!r},"
+
+        lines = ["MergeTestCase("]
+
+        # Fields from query
+        for field in MergeQuery.model_fields:
+            lines.append(format_field(field, getattr(self, field)))
+
+        # Fields from answer
+        for field in MergeAnswer.model_fields:
+            lines.append(format_field(field, getattr(self, field)))
+
+        # Fields from test case
+        test_case_fields = (
+            set(self.model_fields)
+            - set(MergeQuery.model_fields)
+            - set(MergeAnswer.model_fields)
+        )
+        for field in MergeTestCase.model_fields:
+            if field in test_case_fields:
+                lines.append(format_field(field, getattr(self, field)))
+
+        lines.append(")")
+        return "\n".join(lines)
+
     @model_validator(mode="after")
     def validate_merge(self) -> MergeTestCase:
         """Ensure merged text matches input text."""

@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
+from logging import info
 from pprint import pformat
 
 import numpy as np
 
 from scinoephile.audio import AudioSeries, AudioSubtitle
-from scinoephile.audio.models import SplitAnswer, SplitQuery
+from scinoephile.audio.models import MergeQuery, SplitAnswer, SplitQuery
+from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
 from scinoephile.audio.transcription.cantonese_splitter import CantoneseSplitter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.pairs import get_pair_strings
@@ -194,7 +196,7 @@ class CantoneseAlignmentOperation:
         self.yuewen = updated_series
 
     def get_split_query(self, one_zw_i: int, two_zw_i: int, yw_i: int) -> SplitQuery:
-        """Get split query for the given indices.
+        """Get split query for given indices.
 
         Arguments:
             one_zw_i: Index of 中文 sub one
@@ -217,17 +219,33 @@ class CantoneseAlignmentOperation:
             yuewen_to_split=self.yuewen.events[yw_i].text,
         )
 
+    def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
+        """Get merge query for given indices.
+
+        Arguments:
+            zw_i: Index of 中文 sub
+            yw_is: Indices of 粤文 subs to merge
+        Returns:
+            Query for merging 粤文
+        """
+        return MergeQuery(
+            zhongwen=self.zhongwen.events[zw_i].text,
+            yuewen_to_merge=[self.yuewen.events[i].text for i in yw_is],
+        )
+
 
 class CantoneseAligner:
     """Runnable for getting sync groups between source and transcribed series."""
 
-    def __init__(self, splitter: CantoneseSplitter) -> None:
+    def __init__(self, splitter: CantoneseSplitter, merger: CantoneseMerger) -> None:
         """Initialize.
 
         Arguments:
-            splitter: Cantonese splitter.
+            splitter: Cantonese splitter
+            merger: Cantonese merger
         """
         self.splitter = splitter
+        self.merger = merger
 
     def group(
         self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
@@ -235,10 +253,12 @@ class CantoneseAligner:
         op = CantoneseAlignmentOperation(zhongwen_subs, yuewen_subs)
         iteration = 0
         while len(op.yuewen_to_review) > 0:
-            print(f"\nITERATION {iteration}")
-            print(op)
+            info(f"\nITERATION {iteration}")
+            info(op)
             self._review(op)
             iteration += 1
+        self._merge(op)
+        info(f"\nFINAL RESULT:\n{op}")
         return op
 
     def _review(self, op: CantoneseAlignmentOperation) -> None:
@@ -255,3 +275,24 @@ class CantoneseAligner:
         query = op.get_split_query(one_zw_i, two_zw_i, yw_i)
         answer = self.splitter(query)
         op.apply_split_answer(one_zw_i, two_zw_i, yw_i, answer)
+
+    def _merge(self, op: CantoneseAlignmentOperation) -> None:
+        """Merge 粤文 text to match 中文 text punctuation and spacing."""
+        updated_yuewen_events = []
+        for sync_group in op.sync_groups:
+            zw_is, yw_is = sync_group
+            zw_i = zw_is[0]
+            if len(yw_is) == 0:
+                continue
+            query = op.get_merge_query(zw_i, yw_is)
+            answer = self.merger(query)
+            updated_yuewen_events.append(
+                AudioSubtitle(
+                    start=op.yuewen.events[yw_is[0]].start,
+                    end=op.yuewen.events[yw_is[-1]].end,
+                    text=answer.yuewen_merged,
+                )
+            )
+        updated_yuewen = AudioSeries()
+        updated_yuewen.events = updated_yuewen_events
+        op.yuewen = updated_yuewen
