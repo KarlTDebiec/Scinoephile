@@ -43,12 +43,14 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
 
 
 def get_overlap_string(overlap: np.ndarray) -> str:
-    """Get a string representation of the overlap matrix between two series.
+    """Get string representation of overlap matrix between two series.
+
+    1-indexed to match SRT.
 
     Arguments:
         overlap: Overlap matrix
     Returns:
-        String representation of the overlap matrix
+        String representation of overlap matrix
     """
     matrix = np.array2string(
         overlap,
@@ -64,6 +66,24 @@ def get_overlap_string(overlap: np.ndarray) -> str:
     for i, row in enumerate(matrix.split("\n")):
         lines += [f"{i + 1:>2}" + row]
     return "\n".join(lines)
+
+
+def get_sync_groups_string(sync_groups: list[SyncGroup]) -> str:
+    """Get a string representation of sync groups.
+
+    Arguments:
+        sync_groups: Sync groups to represent
+    Returns:
+        String representation of the sync groups
+    """
+    one_indexed_sync_groups = []
+    for sync_group in sync_groups:
+        one_indexed_group = (
+            [i + 1 for i in sync_group[0]],
+            [j + 1 for j in sync_group[1]],
+        )
+        one_indexed_sync_groups.append(one_indexed_group)
+    return pformat(sync_groups, width=120, indent=2)
 
 
 def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[SyncGroup]:
@@ -111,18 +131,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
             continue
         break
 
-    # Add 1 to all indexes and convert to regular integers
-    if sync_groups is None:
-        return []
-    final_sync_groups = []
-    for sync_group in sync_groups:
-        final_sync_group = (
-            sorted([int(i + 1) for i in sync_group[0]]),
-            sorted([int(j + 1) for j in sync_group[1]]),
-        )
-        final_sync_groups.append(final_sync_group)
-
-    return final_sync_groups
+    return sync_groups
 
 
 def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
@@ -195,8 +204,8 @@ def get_synced_series_from_groups(
     synced = Series()
 
     for group in groups:
-        one_events = [one.events[i - 1] for i in group[0]]
-        two_events = [two.events[i - 1] for i in group[1]]
+        one_events = [one.events[i] for i in group[0]]
+        two_events = [two.events[i] for i in group[1]]
 
         # One to zero mapping
         if len(one_events) == 1 and len(two_events) == 0:

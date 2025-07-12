@@ -4,14 +4,13 @@
 
 from __future__ import annotations
 
-from pprint import pformat
-
 from scinoephile.core import Series
 from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.synchronization import (
     are_series_one_to_one,
     get_overlap_string,
     get_sync_groups,
+    get_sync_groups_string,
     get_sync_overlap_matrix,
     get_synced_series_from_groups,
 )
@@ -63,7 +62,7 @@ def _test_get_test_cases_pdp(pdp_yue_hant_simplify: Series, pdp_eng_clean: Serie
         print(get_overlap_string(overlap))
 
         sync_groups = get_sync_groups(hanzi_block, english_block)
-        print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+        print(f"\nSYNC GROUPS:\n{get_sync_groups_string(sync_groups)}")
 
         sync_series = get_synced_series_from_groups(
             hanzi_block, english_block, sync_groups

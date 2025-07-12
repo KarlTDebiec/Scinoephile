@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.transcription import (
+    CantoneseAligner,
     CantoneseSplitter,
-    CantoneseSyncGrouper,
     WhisperTranscriber,
     get_hanzi_converted_segment,
     get_series_from_segments,
@@ -26,8 +26,8 @@ if __name__ == "__main__":
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
 
     # 粤文
-    yue_hans = AudioSeries.load(test_output_dir / "yue-Hans_audio")
-    assert len(zhongwen.blocks) == len(yue_hans.blocks)
+    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    assert len(zhongwen.blocks) == len(yuewen.blocks)
 
     # Utilities
     transcriber = WhisperTranscriber(
@@ -38,10 +38,10 @@ if __name__ == "__main__":
         examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
         print_test_case=True,
     )
-    sync_grouper = CantoneseSyncGrouper(splitter=splitter)
+    aligner = CantoneseAligner(splitter=splitter)
 
     all_series = []
-    for i, block in enumerate(yue_hans.blocks, start=1):
+    for i, block in enumerate(yuewen.blocks, start=1):
         print(f"\nBlock {i}: {block}")
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -57,21 +57,21 @@ if __name__ == "__main__":
             converted_segments.append(get_hanzi_converted_segment(segment, "hk2s"))
 
         # Merge segments into a series
-        series = get_series_from_segments(
+        yuewen_series = get_series_from_segments(
             converted_segments, offset=block.events[0].start
         )
 
         # Sync segments with the corresponding 中文 subtitles
         zhongwen_series = zhongwen.blocks[i - 1].to_series()
-        sync_group = sync_grouper.group(zhongwen_series, series)
+        sync_group = aligner.group(zhongwen_series, yuewen_series)
 
         # Block complete
         print("Transcription:", segments)
-        print(f"Series:\n{series.to_simple_string()}")
-        all_series.append(series)
+        print(f"Series:\n{yuewen_series.to_simple_string()}")
+        all_series.append(yuewen_series)
 
         if i > 4:
             break
 
-    series = get_concatenated_series(all_series)
-    print(f"\nConcatenated Series:\n{series.to_simple_string()}")
+    yuewen_series = get_concatenated_series(all_series)
+    print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")
