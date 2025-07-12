@@ -9,6 +9,7 @@ from copy import deepcopy
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.audio.models import TranscribedSegment
+from scinoephile.audio.transcription.cantonese_aligner import CantoneseAligner
 from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
 from scinoephile.audio.transcription.cantonese_splitter import (
     CantoneseSplitter,
@@ -120,6 +121,7 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
 __all__ = [
     "CantoneseMerger",
     "CantoneseSplitter",
+    "CantoneseAligner",
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
     "get_series_from_segments",
