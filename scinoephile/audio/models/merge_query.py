@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel, Field
 
 
@@ -16,3 +18,7 @@ class MergeQuery(BaseModel):
     yuewen_to_merge: list[str] = Field(
         ..., description="Known 粤文 texts to merge with punctuation and spacing."
     )
+
+    def __str__(self):
+        """String representation."""
+        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

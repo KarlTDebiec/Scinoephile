@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel, Field
 
 
@@ -16,3 +18,7 @@ class SplitAnswer(BaseModel):
     two_yuewen_to_prepend: str = Field(
         ..., description="粤文 to prepend to 粤文 text two."
     )
+
+    def __str__(self):
+        """String representation."""
+        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
