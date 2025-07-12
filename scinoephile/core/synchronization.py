@@ -83,7 +83,7 @@ def get_sync_groups_string(sync_groups: list[SyncGroup]) -> str:
             [j + 1 for j in sync_group[1]],
         )
         one_indexed_sync_groups.append(one_indexed_group)
-    return pformat(sync_groups, width=120, indent=2)
+    return pformat(one_indexed_sync_groups, width=120, indent=2)
 
 
 def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[SyncGroup]:
