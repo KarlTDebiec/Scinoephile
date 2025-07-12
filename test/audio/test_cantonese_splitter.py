@@ -6,6 +6,7 @@ import pytest
 
 from scinoephile.audio.testing import SplitTestCase
 from scinoephile.audio.transcription import CantoneseSplitter
+from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_split_test_cases  # noqa: F401
 
@@ -15,13 +16,14 @@ def cantonese_splitter_few_shot() -> CantoneseSplitter:
     """CantoneseSplitter with few-shot examples."""
     return CantoneseSplitter(
         examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
+        cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
 def cantonese_splitter_zero_shot() -> CantoneseSplitter:
     """CantoneseSplitter with no examples."""
-    return CantoneseSplitter()
+    return CantoneseSplitter(cache_dir_path=test_data_root / "cache")
 
 
 def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase):

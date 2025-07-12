@@ -16,4 +16,5 @@ test/htmlcov
 /test/data/*/output/**/*.json
 /test/data/*/output/**/*.png
 /test/data/*/output/**/*.wav
+/test/data/cache/**
 /.venv/
