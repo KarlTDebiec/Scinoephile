@@ -114,12 +114,13 @@ class CantoneseSplitter:
         cache_path = self._get_cache_path(query_prompt)
 
         # Load from cache if available
-        if self.cache_dir_path and cache_path.exists():
+        if cache_path is not None and cache_path.exists():
             info(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = SplitAnswer.model_validate(json.load(f))
                 if self.print_test_case:
-                    print(SplitTestCase.from_query_and_answer(query, answer))
+                    test_case = SplitTestCase.from_query_and_answer(query, answer)
+                    print(test_case.to_source())
                 return answer
 
         # Process using OpenAI API
@@ -139,27 +140,27 @@ class CantoneseSplitter:
         try:
             answer = SplitAnswer.model_validate_json(content)
         except ValidationError as exc:
-            error(f"Invalid response: {content}")
+            error(f"Query:\n{query}\nYielded invalid content:\n{content}")
             raise exc
             # TODO: Try again if response is not valid
         try:
             test_case = SplitTestCase.from_query_and_answer(query, answer)
         except ValidationError as exc:
-            error(f"Invalid test case:\nQuery:\n{query}\nAnswer:\n{answer}")
+            error(f"Query:\n{query}\nYielded invalid answer:\n{answer}")
             raise exc
             # TODO: Try again if response is not valid
         if self.print_test_case:
-            print(test_case)
+            print(test_case.to_source())
 
         # Update cache
-        if self.cache_dir_path is not None:
+        if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
                 info(f"Saved split to cache: {cache_path}")
 
         return answer
 
-    def _get_cache_path(self, query_prompt: str) -> Path:
+    def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.
 
         Arguments:
