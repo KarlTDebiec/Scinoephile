@@ -15,7 +15,6 @@ from scinoephile.audio.transcription.cantonese_splitter import (
     CantoneseSplitter,
 )
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
-from scinoephile.core import Series, Subtitle
 from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
 
 
