@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from scinoephile.audio.audio_series import AudioSeries
+from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.audio.models import TranscribedSegment
 from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
 from scinoephile.audio.transcription.cantonese_splitter import (
@@ -42,7 +44,9 @@ def get_hanzi_converted_segment(
     return converted_segment
 
 
-def get_series_from_segments(segments: list[TranscribedSegment], offset=0) -> Series:
+def get_series_from_segments(
+    segments: list[TranscribedSegment], offset=0
+) -> AudioSeries:
     """Compile transcribed segments to a subtitle series.
 
     Arguments:
@@ -53,14 +57,15 @@ def get_series_from_segments(segments: list[TranscribedSegment], offset=0) -> Se
     """
     events = []
     for segment in segments:
-        event = Subtitle(
+        event = AudioSubtitle(
             start=offset + int(segment.start * 1000),
             end=offset + int(segment.end * 1000),
             text=segment.text.strip(),
+            segment=segment,
         )
         events.append(event)
 
-    series = Series()
+    series = AudioSeries()
     series.events = events
     return series
 
