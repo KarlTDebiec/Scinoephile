@@ -197,3 +197,33 @@ def get_text_type(text: str) -> str:
         if get_char_type(char) == "full":
             return "full"
         return "half"
+
+
+def remove_punc_and_whitespace(text: str) -> str:
+    """Strip punctuation and whitespace from text.
+
+    Arguments:
+        text: Text to strip
+    Returns:
+        Stripped text with punctuation and whitespace removed
+    """
+    chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
+    return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
+
+
+__all__ = [
+    "half_punc",
+    "full_punc",
+    "whitespace",
+    "half_punc_chars",
+    "full_punc_chars",
+    "whitespace_chars",
+    "half_to_full_punc",
+    "full_to_half_punc",
+    "re_hanzi",
+    "re_hanzi_rare",
+    "re_western",
+    "get_char_type",
+    "get_text_type",
+    "remove_punc_and_whitespace",
+]

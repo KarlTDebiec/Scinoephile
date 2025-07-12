@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel, Field
 
 
@@ -19,3 +21,7 @@ class SplitQuery(BaseModel):
         description="粤文 to be split, with start appended to 粤文 text one and end "
         "prepended to 粤文 text two.",
     )
+
+    def __str__(self):
+        """String representation."""
+        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
