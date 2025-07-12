@@ -99,7 +99,7 @@ class CantoneseMerger:
         cache_path = self._get_cache_path(query_prompt)
 
         # Load from cache if available
-        if self.cache_dir_path and cache_path.exists():
+        if cache_path is not None and cache_path.exists():
             info(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = MergeAnswer.model_validate(json.load(f))
@@ -138,7 +138,7 @@ class CantoneseMerger:
             print(test_case.to_source())
 
         # Update cache
-        if self.cache_dir_path is not None:
+        if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
                 info(f"Saved split to cache: {cache_path}")
