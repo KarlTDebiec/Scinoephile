@@ -7,7 +7,11 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from scinoephile.audio.testing import MergeTestCase, SplitTestCase
+from scinoephile.audio.testing import (
+    MergeTestCase,
+    ShiftTestCase,
+    SplitTestCase,
+)
 from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
 
@@ -394,6 +398,10 @@ mlamd_merge_test_cases = [
 """MLAMD 粤文 merging test cases."""
 
 
+# region 粤文 Shifting Test Cases
+mlamd_shift_test_cases: list[ShiftTestCase] = []
+"""MLAMD 粤文 shifting test cases."""
+
 # endregion
 
 ___all__ = [
@@ -407,5 +415,6 @@ ___all__ = [
     "mlamd_eng_image",
     "mlamd_eng_validation_directory",
     "mlamd_merge_test_cases",
+    "mlamd_shift_test_cases",
     "mlamd_split_test_cases",
 ]
