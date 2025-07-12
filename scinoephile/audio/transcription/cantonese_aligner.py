@@ -234,7 +234,7 @@ class CantoneseAligner:
     ) -> CantoneseAlignmentOperation:
         op = CantoneseAlignmentOperation(zhongwen_subs, yuewen_subs)
         iteration = 0
-        while len(op.yuewen_to_review) >= 0:
+        while len(op.yuewen_to_review) > 0:
             print(f"\nITERATION {iteration}")
             print(op)
             self._review(op)

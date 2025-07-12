@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
         # Sync segments with the corresponding 中文 subtitles
         zhongwen_series = zhongwen.blocks[i].to_series()
-        sync_group = aligner.group(zhongwen_series, yuewen_series)
+        op = aligner.group(zhongwen_series, yuewen_series)
 
         # Block complete
         print("Transcription:", segments)
