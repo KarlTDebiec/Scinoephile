@@ -228,6 +228,17 @@ mlamd_split_test_cases = [
 # region 粤文 Merging Test Cases
 
 mlamd_merge_test_cases = [
+    # NEW TEST CASES
+    MergeTestCase(
+        zhongwen="在麦太即将临盆的时候",
+        yuewen_to_merge=["就喺麦太快要临盘嘅时候"],
+        yuewen_merged="就喺麦太快要临盘嘅时候",
+    ),
+    MergeTestCase(
+        zhongwen="一只胶兜在九龙上空飞过",
+        yuewen_to_merge=["有一个胶兜喺九龙上空飞过"],
+        yuewen_merged="有一个胶兜喺九龙上空飞过",
+    ),
     MergeTestCase(
         zhongwen="沿荔枝角道直出大角咀道",
         yuewen_to_merge=["沿住荔枝角度", "直出大角咀度"],
@@ -240,6 +251,17 @@ mlamd_merge_test_cases = [
         include_in_prompt=True,
     ),
     MergeTestCase(
+        zhongwen="更正一下：",
+        yuewen_to_merge=["都系唔好"],
+        yuewen_merged="都系唔好：",
+    ),
+    MergeTestCase(
+        zhongwen="先到街市大楼妹记鱼腩粥外边",
+        yuewen_to_merge=["先去街市大楼𠮶间妹记鱼腩粥𠮶度"],
+        yuewen_merged="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
         zhongwen="转呀，转⋯再更正一下：",
         yuewen_to_merge=["转下", "转下", "都系唔好"],
         yuewen_merged="转下，转下⋯都系唔好：",
@@ -247,8 +269,8 @@ mlamd_merge_test_cases = [
     ),
     MergeTestCase(
         zhongwen="直出亚皆老街跨过火车桥右转太平道",
-        yuewen_to_merge=["都系出返去阿佳路街飞过火车桥", "右转入太平道"],
-        yuewen_merged="都系出返去阿佳路街飞过火车桥右转入太平道",
+        yuewen_to_merge=["都系出返去阿街路街飞过火车桥", "右转入太平道"],
+        yuewen_merged="都系出返去阿街路街飞过火车桥右转入太平道",
     ),
     MergeTestCase(
         zhongwen="再右拐窝打老道向女人街方向飞⋯",
@@ -259,6 +281,16 @@ mlamd_merge_test_cases = [
         zhongwen="飞呀，飞⋯",
         yuewen_to_merge=["飞下", "飞下"],
         yuewen_merged="飞下，飞下⋯",
+    ),
+    MergeTestCase(
+        zhongwen="胶兜最后飞进广华医院候产房",
+        yuewen_to_merge=["最后胶兜飞咗入广华医院嘅后产房"],
+        yuewen_merged="最后胶兜飞咗入广华医院嘅后产房",
+    ),
+    MergeTestCase(
+        zhongwen="也就是在麦太右边额角上⋯",
+        yuewen_to_merge=["亦即系麦太右边云晶对上"],
+        yuewen_merged="亦即系麦太右边云晶对上⋯",
     ),
     MergeTestCase(
         zhongwen="更正：左边额角上⋯",
@@ -273,9 +305,35 @@ mlamd_merge_test_cases = [
         include_in_prompt=True,
     ),
     MergeTestCase(
+        zhongwen="麦太认定这是异像",
+        yuewen_to_merge=["麦太认定呢个系异象"],
+        yuewen_merged="麦太认定呢个系异象",
+    ),
+    MergeTestCase(
+        zhongwen="于是向额角上的胶兜许愿",
+        yuewen_to_merge=["于是向云晶对上嘅胶兜许愿"],
+        yuewen_merged="于是向云晶对上嘅胶兜许愿",
+    ),
+    MergeTestCase(
+        zhongwen="脑海中同时出现即将诞生的儿子容貌⋯",
+        yuewen_to_merge=["而脑入面亦即时出现咗快要出世个仔嘅样"],
+        yuewen_merged="而脑入面亦即时出现咗快要出世个仔嘅样⋯",
+    ),
+    MergeTestCase(
         zhongwen="希望他好聪明，读书好叻！",
         yuewen_to_merge=["希望佢好聪明", "读书好叻"],
         yuewen_merged="希望佢好聪明，读书好叻！",
+    ),
+    MergeTestCase(
+        zhongwen="胶兜对麦太的愿望似乎没有反应",
+        yuewen_to_merge=["胶兜对麦太嘅愿望似乎冇咩表示"],
+        yuewen_merged="胶兜对麦太嘅愿望似乎冇咩表示",
+    ),
+    MergeTestCase(
+        zhongwen="于是她向胶兜补充说：",
+        yuewen_to_merge=["于是佢对住胶兜补充噉话"],
+        yuewen_merged="于是佢对住胶兜补充噉话：",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="或者读书唔叻，工作叻呢？",
@@ -283,15 +341,36 @@ mlamd_merge_test_cases = [
         yuewen_merged="或者读书唔叻，出嚟做嘢叻啦？",
     ),
     MergeTestCase(
+        zhongwen="又或者⋯",
+        yuewen_to_merge=["又或者呢"],
+        yuewen_merged="又或者呢⋯",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="又或者好靓仔，好靓仔",
+        yuewen_to_merge=["又或者系好靓仔好靓仔"],
+        yuewen_merged="又或者系好靓仔，好靓仔",
+    ),
+    MergeTestCase(
+        zhongwen="跟周润发，梁朝伟那么靓仔！",
+        yuewen_to_merge=["好似周润发同埋梁朝伟咁靓仔"],
+        yuewen_merged="好似周润发，同埋梁朝伟咁靓仔！",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
         zhongwen="胶兜仍然在转，毫无点头迹象",
         yuewen_to_merge=["胶兜依然系噉喺度转", "好似一啲应承嘅迹象都冇"],
         yuewen_merged="胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
     ),
     MergeTestCase(
+        zhongwen="麦太一时心虚",
+        yuewen_to_merge=["麦太一时心虚"],
+        yuewen_merged="麦太一时心虚",
+    ),
+    MergeTestCase(
         zhongwen="赶忙趁胶兜落地前另许一个愿望：",
-        yuewen_to_merge=["嗱嗱嗱喺胶兜未落地之前", "起过另外一个愿望"],
+        yuewen_to_merge=["嗱嗱嗱喺胶兜未落地之前起过另外一个愿望"],
         yuewen_merged="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
-        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="唔聪明唔靓仔也算了，只要福星高照",
@@ -301,37 +380,28 @@ mlamd_merge_test_cases = [
     ),
     MergeTestCase(
         zhongwen="一世够运，逢凶化吉！",
-        yuewen_to_merge=["一世救运", "乜嘢事都逢凶化㗎啦"],
-        yuewen_merged="一世救运，乜嘢事都逢凶化㗎啦！",
+        yuewen_to_merge=["一世救运", "乜嘢事都逢凶化㗎喇"],
+        yuewen_merged="一世救运，乜嘢事都逢凶化㗎喇！",
+    ),
+    MergeTestCase(
+        zhongwen="靠自己能力解决事情当然最好",
+        yuewen_to_merge=["佢靠自己有料解决啲嘢就梗系好啦"],
+        yuewen_merged="佢靠自己有料解决啲嘢就梗系好啦",
+    ),
+    MergeTestCase(
+        zhongwen="不过运气还是很重要的",
+        yuewen_to_merge=["不过运气都好紧要㖞"],
+        yuewen_merged="不过运气都好紧要㖞",
     ),
     MergeTestCase(
         zhongwen="虽是说像梁朝伟周润发也行运定了",
-        yuewen_to_merge=["虽然似梁朝伟真运发", "都唔返去冒位嘅"],
-        yuewen_merged="虽然似梁朝伟真运发都唔返去冒位嘅",
-        include_in_prompt=True,
+        yuewen_to_merge=["虽然似梁朝伟周润发都唔返去冒运行"],
+        yuewen_merged="虽然似梁朝伟周润发都唔返去冒运行",
     ),
     MergeTestCase(
-        zhongwen="嘀督？嘀督，就是答应了",
-        yuewen_to_merge=["滴嘟", "滴嘟㖞", "即系应承啦"],
-        yuewen_merged="滴嘟？滴嘟㖞，即系应承啦",
-        include_in_prompt=True,
-    ),
-    MergeTestCase(
-        zhongwen="麦太想，这次走运了！",
-        yuewen_to_merge=["麦太心谂", "今次冇死喇"],
-        yuewen_merged="麦太心谂，今次冇死喇！",
-        include_in_prompt=True,
-    ),
-    MergeTestCase(
-        zhongwen="叻仔？好运？",
-        yuewen_to_merge=["叻仔", "好揾"],
-        yuewen_merged="叻仔？好揾？",
-    ),
-    MergeTestCase(
-        zhongwen="不行，胶胶声，多难听！",
-        yuewen_to_merge=["都系唔好", "胶胶声咁难听"],
-        yuewen_merged="都系唔好，胶胶声，咁难听！",
-        include_in_prompt=True,
+        zhongwen="但总得要叻仔呀！",
+        yuewen_to_merge=["但系都要叻仔先得㗎"],
+        yuewen_merged="但系都要叻仔先得㗎！",
     ),
 ]
 """MLAMD 粤文 merging test cases."""

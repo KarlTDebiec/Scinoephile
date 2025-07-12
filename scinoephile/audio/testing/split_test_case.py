@@ -47,6 +47,39 @@ class SplitTestCase(SplitQuery, SplitAnswer):
             include_in_prompt=include_in_prompt,
         )
 
+    def to_source(self) -> str:
+        """Get Python source-like string representation.
+
+        Returns:
+            Python source-like string representation
+        """
+
+        def format_field(name: str, value: object) -> str:
+            return f"    {name}={value!r},"
+
+        lines = ["SplitTestCase("]
+
+        # Fields from query
+        for field in SplitQuery.model_fields:
+            lines.append(format_field(field, getattr(self, field)))
+
+        # Fields from answer
+        for field in SplitAnswer.model_fields:
+            lines.append(format_field(field, getattr(self, field)))
+
+        # Fields from test case
+        test_case_fields = (
+            set(self.model_fields)
+            - set(SplitQuery.model_fields)
+            - set(SplitAnswer.model_fields)
+        )
+        for field in SplitTestCase.model_fields:
+            if field in test_case_fields:
+                lines.append(format_field(field, getattr(self, field)))
+
+        lines.append(")")
+        return "\n".join(lines)
+
     @model_validator(mode="after")
     def validate_split(self) -> SplitTestCase:
         """Ensure split text matches input text."""
