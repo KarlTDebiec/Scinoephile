@@ -8,6 +8,7 @@ from logging import info
 from typing import Any
 
 from pysubs2 import SSAFile
+from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import validate_input_file, validate_output_file
 from scinoephile.core.block import Block
@@ -55,6 +56,16 @@ class Series(SSAFile):
             Whether this series is not equal to another
         """
         return not self == other
+
+    def __repr__(self) -> str:
+        """Representation."""
+        if self.events:
+            max_time = max(ev.end for ev in self)
+            s = f"<{self.__class__.__name__} with {len(self)} events and {len(self.styles)} styles, last timestamp {ms_to_str(max_time)}>"
+        else:
+            s = f"<{self.__class__.__name__} with 0 events and {len(self.styles)} styles>"
+
+        return s
 
     @property
     def blocks(self) -> list[Block]:
