@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
-from logging import error
+from logging import error, info
+from pathlib import Path
 from textwrap import dedent
 
 from openai import OpenAI
@@ -13,6 +15,7 @@ from pydantic import ValidationError
 
 from scinoephile.audio.models import MergeAnswer, MergeQuery
 from scinoephile.audio.testing import MergeTestCase
+from scinoephile.common.validation import validate_output_directory
 
 
 class CantoneseMerger:
@@ -35,6 +38,7 @@ class CantoneseMerger:
         model: str = "gpt-4.1",
         examples: list[MergeTestCase] = None,
         print_test_case: bool = False,
+        cache_dir_path: str | None = None,
     ):
         """Initialize.
 
@@ -42,11 +46,13 @@ class CantoneseMerger:
             model: OpenAI model to use.
             examples: Examples of inputs and expected outputs for few-shot learning
             print_test_case: Print test case after merging
+            cache_dir_path: Path to cache directory for OpenAI API responses
         """
         self.client = OpenAI()
         self.model = model
         self.print_test_case = print_test_case
 
+        # Set up system prompt, with examples if provided
         self.system_prompt = (
             dedent(self.system_prompt_template).strip().replace("\n", " ")
         )
@@ -63,6 +69,11 @@ class CantoneseMerger:
                 self.system_prompt += self.answer_template.format_map(
                     example.answer.model_dump()
                 )
+
+        # Set up cache directory
+        self.cache_dir_path = None
+        if cache_dir_path is not None:
+            self.cache_dir_path = validate_output_directory(cache_dir_path)
 
     def __call__(self, query: MergeQuery) -> MergeAnswer:
         """Merge 粤文 text to match 中文 text punctuation and spacing.
@@ -85,6 +96,18 @@ class CantoneseMerger:
         query_prompt = self.query_template.format(
             zhongwen=query.zhongwen, yuewen_to_merge="\n".join(query.yuewen_to_merge)
         )
+        cache_path = self._get_cache_path(query_prompt)
+
+        # Load from cache if available
+        if self.cache_dir_path and cache_path.exists():
+            info(f"Loaded from cache: {cache_path}")
+            with cache_path.open("r", encoding="utf-8") as f:
+                answer = MergeAnswer.model_validate(json.load(f))
+                if self.print_test_case:
+                    print(MergeTestCase.from_query_and_answer(query, answer))
+                return answer
+
+        # Process using OpenAI API
         response = self.client.chat.completions.create(
             model=self.model,
             messages=[
@@ -110,7 +133,28 @@ class CantoneseMerger:
             error(f"Invalid test case:\nQuery:\n{query}\nAnswer:\n{answer}")
             raise exc
             # TODO: Try again if response is not valid
-
         if self.print_test_case:
             print(test_case)
+
+        # Update cache
+        if self.cache_dir_path is not None:
+            with cache_path.open("w", encoding="utf-8") as f:
+                json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
+                info(f"Saved split to cache: {cache_path}")
+
         return answer
+
+    def _get_cache_path(self, query_prompt: str) -> Path | None:
+        """Get cache path based on hash of prompts.
+
+        Arguments:
+            query_prompt: Query prompt used for the query
+        Returns:
+            Path to cache file
+        """
+        if self.cache_dir_path is None:
+            return None
+
+        prompt_str = self.system_prompt + query_prompt
+        sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
+        return self.cache_dir_path / f"{sha256}.json"

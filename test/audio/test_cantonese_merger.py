@@ -6,6 +6,7 @@ import pytest
 
 from scinoephile.audio.testing import MergeTestCase
 from scinoephile.audio.transcription import CantoneseMerger
+from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
@@ -14,14 +15,15 @@ from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 def cantonese_merger_few_shot() -> CantoneseMerger:
     """CantoneseMerger with few-shot examples."""
     return CantoneseMerger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt]
+        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
+        cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
 def cantonese_merger_zero_shot() -> CantoneseMerger:
     """CantoneseMerger with no examples."""
-    return CantoneseMerger()
+    return CantoneseMerger(cache_dir_path=test_data_root / "cache")
 
 
 def _test_merge(cantonese_merger: CantoneseMerger, test_case: MergeTestCase):

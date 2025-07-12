@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from logging import info
 from pathlib import Path
 from warnings import catch_warnings, filterwarnings
 
@@ -39,7 +40,9 @@ class WhisperTranscriber:
         self.model_name = model_name
         self.model = whisper.load_model(model_name)
         self.language = language
-        self.cache_dir_path = validate_output_directory(cache_dir_path)
+        self.cache_dir_path = None
+        if cache_dir_path is not None:
+            self.cache_dir_path = validate_output_directory(cache_dir_path)
 
     def __call__(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe audio.
@@ -61,9 +64,9 @@ class WhisperTranscriber:
         """
         cache_path = self._get_cache_path(audio.raw_data)
 
-        # Load transcription from cache if available
+        # Load from cache if available
         if cache_path.exists():
-            print(f"Loaded transcription from cache: {cache_path}")
+            info(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
             return segments
@@ -79,12 +82,13 @@ class WhisperTranscriber:
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
 
-        # Save transcription to cache
-        with cache_path.open("w", encoding="utf-8") as f:
-            json.dump(
-                [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
-            )
-            print(f"Saved transcription to cache: {cache_path}")
+        # Update cache
+        if self.cache_dir_path is not None:
+            with cache_path.open("w", encoding="utf-8") as f:
+                json.dump(
+                    [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
+                )
+                info(f"Saved transcription to cache: {cache_path}")
 
         return segments
 
@@ -94,7 +98,7 @@ class WhisperTranscriber:
         Arguments:
             audio_data: Audio data to hash
         Returns:
-            Path to transcription cache file
+            Path to cache file
         """
         sha256 = hashlib.sha256(audio_data).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
