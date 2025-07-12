@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from pprint import pprint
+from logging import error
 from textwrap import dedent
 
 from openai import OpenAI
@@ -100,13 +100,17 @@ class CantoneseMerger:
         # Validate the response
         try:
             answer = MergeAnswer.model_validate_json(content)
-            # TODO: Validate more thoroughly
         except ValidationError as exc:
-            print(f"Invalid response: {content}")
+            error(f"Invalid response: {content}")
+            raise exc
+            # TODO: Try again if response is not valid
+        try:
+            test_case = MergeTestCase.from_query_and_answer(query, answer)
+        except ValidationError as exc:
+            error(f"Invalid test case:\nQuery:\n{query}\nAnswer:\n{answer}")
             raise exc
             # TODO: Try again if response is not valid
 
         if self.print_test_case:
-            test_case = MergeTestCase.from_query_and_answer(query, answer)
-            pprint(test_case)
+            print(test_case)
         return answer

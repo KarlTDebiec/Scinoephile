@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel, Field
 
 
@@ -13,3 +15,7 @@ class MergeAnswer(BaseModel):
     yuewen_merged: str = Field(
         ..., description="Merged 中文 text with spacing and punctuation."
     )
+
+    def __str__(self):
+        """String representation."""
+        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

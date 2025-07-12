@@ -15,14 +15,13 @@ def cantonese_splitter_few_shot() -> CantoneseSplitter:
     """CantoneseSplitter with few-shot examples."""
     return CantoneseSplitter(
         examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
-        print_test_case=True,
     )
 
 
 @pytest.fixture
 def cantonese_splitter_zero_shot() -> CantoneseSplitter:
     """CantoneseSplitter with no examples."""
-    return CantoneseSplitter(print_test_case=True)
+    return CantoneseSplitter()
 
 
 def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase):

@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+import json
+
+from pydantic import Field, model_validator
 
 from scinoephile.audio.models import SplitAnswer, SplitQuery
 
@@ -15,6 +17,10 @@ class SplitTestCase(SplitQuery, SplitAnswer):
     include_in_prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
     )
+
+    def __str__(self):
+        """String representation."""
+        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
     @property
     def answer(self) -> SplitAnswer:
@@ -40,3 +46,17 @@ class SplitTestCase(SplitQuery, SplitAnswer):
             **answer.model_dump(),
             include_in_prompt=include_in_prompt,
         )
+
+    @model_validator(mode="after")
+    def validate_split(self) -> SplitTestCase:
+        """Ensure split text matches input text."""
+        expected = self.yuewen_to_split
+        received = self.one_yuewen_to_append + self.two_yuewen_to_prepend
+        if expected != received:
+            raise ValueError(
+                "Output text does not match input:\n"
+                f"Expected: {expected}\n"
+                f"Received: {received}\n"
+            )
+
+        return self
