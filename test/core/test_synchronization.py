@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pprint import pformat
-
 import pytest
 
 from scinoephile.core import Series
@@ -13,6 +11,7 @@ from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
     get_overlap_string,
     get_sync_groups,
+    get_sync_groups_string,
     get_sync_overlap_matrix,
     get_synced_series,
     get_synced_series_from_groups,
@@ -30,27 +29,32 @@ def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
         english: English series with which to test
         test_case: Indexes for slicing input block and expected output for validation
     """
-    # print start and end indices, plus one to match SRT
-    print(f"\nCHINESE: {test_case.hanzi_start + 1} - {test_case.hanzi_end}")
-    print(f"ENGLISH: {test_case.english_start + 1} - {test_case.english_end}")
+    print()
+
+    # Get and print subtitles
     hanzi_block = hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
     english_block = english.slice(test_case.english_start, test_case.english_end)
-
     hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
-    print(f"\nCHINESE:\n{hanzi_str}")
-    print(f"\nENGLISH:\n{english_str}")
+    print(
+        f"CHINESE ({test_case.hanzi_start + 1} - {test_case.hanzi_end}):\n{hanzi_str}"
+    )
+    print(
+        f"ENGLISH ({test_case.english_start + 1} - {test_case.english_end}):\n{english_str}"
+    )
 
+    # Get and print overlap matrix
     overlap = get_sync_overlap_matrix(hanzi_block, english_block)
-    print("\nOVERLAP:")
-    print(get_overlap_string(overlap))
+    print(f"OVERLAP: {get_overlap_string(overlap)}")
 
+    # Get and print sync groups
     sync_groups = get_sync_groups(hanzi_block, english_block)
-    print(f"\nSYNC GROUPS:\n{pformat(sync_groups, width=120)}")
+    print(f"SYNC GROUPS:\n{get_sync_groups_string(sync_groups)}")
 
     assert sync_groups == test_case.sync_groups
 
+    # Get and print synced series
     series = get_synced_series_from_groups(hanzi_block, english_block, sync_groups)
-    print(f"\nSYNCED SUBTITLES:\n{series.to_simple_string()}")
+    print(f"SYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
 def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
