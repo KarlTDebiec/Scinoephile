@@ -109,7 +109,7 @@ class CantoneseMerger:
                 return answer
 
         # Process using OpenAI API
-        response = self.client.chat.completions.create(
+        response = self.client.beta.chat.completions.parse(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
@@ -117,6 +117,7 @@ class CantoneseMerger:
             ],
             temperature=0,
             seed=0,
+            response_format=MergeAnswer,
         )
         message = response.choices[0].message
         content = message.content

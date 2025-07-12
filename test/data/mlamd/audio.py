@@ -23,7 +23,7 @@ from test.data.mlamd import mlamd_merge_test_cases, mlamd_split_test_cases
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(1)
+    set_logging_verbosity(2)
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     )
     merger = CantoneseMerger(
         examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
-        print_test_case=False,
+        print_test_case=True,
         cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
     )
     aligner = CantoneseAligner(splitter=splitter, merger=merger)
@@ -76,11 +76,11 @@ if __name__ == "__main__":
         yuewen_series = op.yuewen
 
         # Block complete
-        print("Transcription:", segments)
         print(f"Series:\n{yuewen_series.to_simple_string()}")
         all_series.append(yuewen_series)
 
-        break
+        if i == 2:
+            break
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

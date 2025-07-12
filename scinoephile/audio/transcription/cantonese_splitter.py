@@ -124,7 +124,7 @@ class CantoneseSplitter:
                 return answer
 
         # Process using OpenAI API
-        response = self.client.chat.completions.create(
+        response = self.client.beta.chat.completions.parse(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
@@ -132,6 +132,7 @@ class CantoneseSplitter:
             ],
             temperature=0,
             seed=0,
+            response_format=SplitAnswer,
         )
         message = response.choices[0].message
         content = message.content

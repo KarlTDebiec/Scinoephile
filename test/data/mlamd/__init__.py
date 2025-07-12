@@ -92,7 +92,8 @@ def mlamd_eng_validation_directory() -> str:
 
 # region 粤文 Splitting Test Cases
 mlamd_split_test_cases = [
-    SplitTestCase(  # Block 1
+    # region Block 0
+    SplitTestCase(
         one_zhongwen="再右拐窝打老道向女人街方向飞⋯",
         one_yuewen_start="再右转抹返出去窝打炉道",
         two_zhongwen="飞呀，飞⋯",
@@ -130,96 +131,7 @@ mlamd_split_test_cases = [
         one_yuewen_to_append="只要复星高照",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(  # Block 3
-        one_zhongwen="麦太，没见面一阵",
-        one_yuewen_start="咦麦太",
-        two_zhongwen="怎么小腿粗起来了？",
-        two_yuewen_end="个脚刮囊粗咗咁多呀",
-        yuewen_to_split="咩唔见你一排",
-        one_yuewen_to_append="咩唔见你一排",
-        two_yuewen_to_prepend="",
-    ),
-    SplitTestCase(
-        one_zhongwen="怎么不试一试好彩酒楼对面",
-        one_yuewen_start="",
-        two_zhongwen="旧中侨国货楼上的⋯",
-        two_yuewen_end="",
-        yuewen_to_split="点解唔试下好彩走楼斜对面",
-        one_yuewen_to_append="点解唔试下好彩走楼斜对面",
-        two_yuewen_to_prepend="",
-    ),
-    SplitTestCase(
-        one_zhongwen="春田花花幼稚园，师资优良⋯",
-        one_yuewen_start="春田花花幼稚园",
-        two_zhongwen="而且还有西人教英文！",
-        two_yuewen_end="仲系西人教英文添㗎",
-        yuewen_to_split="诗诗优良",
-        one_yuewen_to_append="诗诗优良",
-        two_yuewen_to_prepend="",
-    ),
-    SplitTestCase(
-        one_zhongwen="西人教英文？",
-        one_yuewen_start="咦",
-        two_zhongwen="是呀！",
-        two_yuewen_end="",
-        yuewen_to_split="西人教英文",
-        one_yuewen_to_append="西人教英文",
-        two_yuewen_to_prepend="",
-    ),
-    SplitTestCase(  # Block 4
-        one_zhongwen="横看竖看也不像发哥伟仔的一个⋯",
-        one_yuewen_start="即系横睇掂睇都唔似发哥或者",
-        two_zhongwen="就是我，麦兜",
-        two_yuewen_end="就系我麦兜",
-        yuewen_to_split="位仔𠮶个呢",
-        one_yuewen_to_append="位仔𠮶个呢",
-        two_yuewen_to_prepend="",
-    ),
-    SplitTestCase(
-        one_zhongwen="这么多年来⋯",
-        one_yuewen_start="",
-        two_zhongwen="我其实不大明白他的说话",
-        two_yuewen_end="我其实唔系好知佢噏文",
-        yuewen_to_split="所以咁多年嚟",
-        one_yuewen_to_append="所以咁多年嚟",
-        two_yuewen_to_prepend="",
-    ),
-    # SplitTestCase(
-    #     one_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
-    #     one_yuewen_start="",
-    #     two_zhongwen="忘记校训九十七⋯　　忘记校训九十七⋯",
-    #     two_yuewen_end="",
-    #     yuewen_to_split="湾吉校坟交涉设",
-    #     one_yuewen_to_append="",
-    #     two_yuewen_to_prepend="",
-    # ),
-    # SplitTestCase(
-    #     one_zhongwen="也不能忘记校训九十八！",
-    #     one_yuewen_start="",
-    #     two_zhongwen="也不能忘记校训九十八！",
-    #     two_yuewen_end="",
-    #     yuewen_to_split="都唔好湾吉校坟交涉白",
-    #     one_yuewen_to_append="",
-    #     two_yuewen_to_prepend="",
-    # ),
-    # SplitTestCase(
-    #     one_zhongwen="好！各位同学⋯",
-    #     one_yuewen_start="",
-    #     two_zhongwen="今天的早会主要是跟大家分享",
-    #     two_yuewen_end="",
-    #     yuewen_to_split="𠮶个位同学",
-    #     one_yuewen_to_append="",
-    #     two_yuewen_to_prepend="",
-    # ),
-    SplitTestCase(
-        one_zhongwen="今天的早会主要是跟大家分享",
-        one_yuewen_start="",
-        two_zhongwen="一个重要主题：",
-        two_yuewen_end="",
-        yuewen_to_split="今次座会系要同大家分享一个可重要嘅主题",
-        one_yuewen_to_append="今次座会系要同大家分享",
-        two_yuewen_to_prepend="一个可重要嘅主题",
-    ),
+    # endregion
 ]
 """MLAMD 粤文 splitting test cases."""
 
@@ -228,11 +140,12 @@ mlamd_split_test_cases = [
 # region 粤文 Merging Test Cases
 
 mlamd_merge_test_cases = [
-    # NEW TEST CASES
+    # region Block 0
     MergeTestCase(
         zhongwen="在麦太即将临盆的时候",
         yuewen_to_merge=["就喺麦太快要临盘嘅时候"],
         yuewen_merged="就喺麦太快要临盘嘅时候",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="一只胶兜在九龙上空飞过",
@@ -281,11 +194,13 @@ mlamd_merge_test_cases = [
         zhongwen="飞呀，飞⋯",
         yuewen_to_merge=["飞下", "飞下"],
         yuewen_merged="飞下，飞下⋯",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="胶兜最后飞进广华医院候产房",
         yuewen_to_merge=["最后胶兜飞咗入广华医院嘅后产房"],
         yuewen_merged="最后胶兜飞咗入广华医院嘅后产房",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="也就是在麦太右边额角上⋯",
@@ -333,7 +248,6 @@ mlamd_merge_test_cases = [
         zhongwen="于是她向胶兜补充说：",
         yuewen_to_merge=["于是佢对住胶兜补充噉话"],
         yuewen_merged="于是佢对住胶兜补充噉话：",
-        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="或者读书唔叻，工作叻呢？",
@@ -361,6 +275,7 @@ mlamd_merge_test_cases = [
         zhongwen="胶兜仍然在转，毫无点头迹象",
         yuewen_to_merge=["胶兜依然系噉喺度转", "好似一啲应承嘅迹象都冇"],
         yuewen_merged="胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="麦太一时心虚",
@@ -397,12 +312,84 @@ mlamd_merge_test_cases = [
         zhongwen="虽是说像梁朝伟周润发也行运定了",
         yuewen_to_merge=["虽然似梁朝伟周润发都唔返去冒运行"],
         yuewen_merged="虽然似梁朝伟周润发都唔返去冒运行",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="但总得要叻仔呀！",
         yuewen_to_merge=["但系都要叻仔先得㗎"],
         yuewen_merged="但系都要叻仔先得㗎！",
     ),
+    # endregion
+    # region Block 1
+    MergeTestCase(
+        zhongwen="最后，胶兜「嘀督」一声落地",
+        yuewen_to_merge=["最后胶兜滴嘟一声咁落地"],
+        yuewen_merged="最后，胶兜「滴嘟」一声咁落地",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="嘀督？嘀督，就是答应了",
+        yuewen_to_merge=["滴嘟", "滴嘟㖞", "即系应承啦"],
+        yuewen_merged="滴嘟？滴嘟㖞，即系应承啦",
+    ),
+    MergeTestCase(
+        zhongwen="麦太想，这次走运了！",
+        yuewen_to_merge=["麦太心谂", "今次冇死喇"],
+        yuewen_merged="麦太心谂，今次冇死喇！",
+    ),
+    MergeTestCase(
+        zhongwen="可是答应了些什么呢？",
+        yuewen_to_merge=["但你应承咗啲咩呢"],
+        yuewen_merged="但你应承咗啲咩呢？",
+    ),
+    MergeTestCase(
+        zhongwen="叻仔？好运？",
+        yuewen_to_merge=["叻仔", "好运"],
+        yuewen_merged="叻仔？好运？",
+    ),
+    MergeTestCase(
+        zhongwen="还是似周润发？",
+        yuewen_to_merge=["定系话自周人烦啊"],
+        yuewen_merged="定系话自周人烦啊？",
+    ),
+    MergeTestCase(
+        zhongwen="为了纪念这赐福的胶兜",
+        yuewen_to_merge=["为咗纪念呢个赤幅嘅胶兜"],
+        yuewen_merged="为咗纪念呢个赤幅嘅胶兜",
+    ),
+    MergeTestCase(
+        zhongwen="麦太决定把儿子命名麦胶",
+        yuewen_to_merge=["麦太决定将个仔嘅名叫做麦胶"],
+        yuewen_merged="麦太决定将个仔嘅名叫做麦胶",
+    ),
+    MergeTestCase(
+        zhongwen="不行，胶胶声，多难听！",
+        yuewen_to_merge=["都系唔好", "胶胶声咁难听"],
+        yuewen_merged="都系唔好，胶胶声，咁难听！",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="还是唤他麦兜！",
+        yuewen_to_merge=["不如叫麦兜啦"],
+        yuewen_merged="不如叫麦兜啦！",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="各位⋯",
+        yuewen_to_merge=["各位"],
+        yuewen_merged="各位⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我就是险些给定名麦胶的小朋友⋯",
+        yuewen_to_merge=["我就系呢个差少少就叫做麦胶嘅小朋友"],
+        yuewen_merged="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
+    ),
+    MergeTestCase(
+        zhongwen="麦兜！",
+        yuewen_to_merge=["麦兜"],
+        yuewen_merged="麦兜！",
+    ),
+    # endregion
 ]
 """MLAMD 粤文 merging test cases."""
 
