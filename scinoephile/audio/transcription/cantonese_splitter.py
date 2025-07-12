@@ -54,16 +54,16 @@ class CantoneseSplitter:
         self,
         model: str = "gpt-4.1",
         examples: list[SplitTestCase] = None,
-        cache_dir_path: str | None = None,
         print_test_case: bool = False,
+        cache_dir_path: str | None = None,
     ):
         """Initialize.
 
         Arguments:
             model: OpenAI model to use.
             examples: Examples of inputs and expected outputs for few-shot learning
-            cache_dir_path: Directory in which to cache
             print_test_case: Print test case afterward
+            cache_dir_path: Directory in which to cache
         """
         self.client = OpenAI()
         self.model = model
@@ -148,7 +148,6 @@ class CantoneseSplitter:
             error(f"Invalid test case:\nQuery:\n{query}\nAnswer:\n{answer}")
             raise exc
             # TODO: Try again if response is not valid
-
         if self.print_test_case:
             print(test_case)
 
@@ -168,6 +167,9 @@ class CantoneseSplitter:
         Returns:
             Path to cache file
         """
+        if self.cache_dir_path is None:
+            return None
+
         prompt_str = self.system_prompt + query_prompt
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
