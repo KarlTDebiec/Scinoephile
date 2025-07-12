@@ -101,7 +101,8 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
                 segment_id += 1
                 nascent_words = []
             word.text = word.text[1:]
-        nascent_words.append(word)
+        if word.text != "":
+            nascent_words.append(word)
 
     # Final group of words
     if nascent_words:
@@ -111,10 +112,9 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
             start=nascent_words[0].start,
             end=nascent_words[-1].end,
             text="".join([word.text for word in nascent_words]),
+            words=nascent_words,
         )
         split_segments.append(nascent_segment)
-        segment_id += 1
-        nascent_words = []
 
     return split_segments
 

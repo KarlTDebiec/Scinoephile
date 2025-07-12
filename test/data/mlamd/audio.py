@@ -41,7 +41,7 @@ if __name__ == "__main__":
     aligner = CantoneseAligner(splitter=splitter)
 
     all_series = []
-    for i, block in enumerate(yuewen.blocks, start=1):
+    for i, block in enumerate(yuewen.blocks):
         print(f"\nBlock {i}: {block}")
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         )
 
         # Sync segments with the corresponding 中文 subtitles
-        zhongwen_series = zhongwen.blocks[i - 1].to_series()
+        zhongwen_series = zhongwen.blocks[i].to_series()
         sync_group = aligner.group(zhongwen_series, yuewen_series)
 
         # Block complete

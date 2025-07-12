@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from logging import warning
 from pprint import pformat
 
 import numpy as np
@@ -17,6 +16,7 @@ from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
     SyncGroup,
     get_overlap_string,
+    get_sync_groups_string,
     get_sync_overlap_matrix,
 )
 
@@ -26,18 +26,18 @@ class CantoneseAlignmentOperation:
         self,
         zhongwen: AudioSeries,
         yuewen: AudioSeries,
-        overlap_threshold: float = 0.33,
+        cutoff: float = 0.33,
     ) -> None:
         """Initialize.
 
         Arguments:
             zhongwen: 中文 subs
             yuewen: 粤文 subs
-            overlap_threshold: Threshold for overlap of sync groups
+            cutoff: Cutoff for overlap between 中文 and 粤文 for inclusion in sync group
         """
         self._zhongwen = zhongwen
         self._yuewen = yuewen
-        self.overlap_threshold = overlap_threshold
+        self.cutoff = cutoff
 
         self._overlap = None
         self._scaled_overlap = None
@@ -50,18 +50,20 @@ class CantoneseAlignmentOperation:
         string = f"\nMANDARIN:\n{zhongwen_str}"
         string += f"\nCANTONESE:\n{yuewen_str}"
         string += f"\nOVERLAP:\n{get_overlap_string(self.overlap)}"
-        string += f"\nSYNC GROUPS:\n{pformat(self.sync_groups, width=120)}"
-        string += f"\nTO REVIEW:\n{self.yuewen_to_review}"
+        string += f"\nSYNC GROUPS:\n{get_sync_groups_string(self.sync_groups)}"
+        string += f"\nTO REVIEW:\n{pformat([i + 1 for i in self.yuewen_to_review])}"
         return string
 
     @property
     def overlap(self) -> np.ndarray:
+        """Overlap matrix between 中文 and 粤文."""
         if self._overlap is None:
             self._overlap = get_sync_overlap_matrix(self.zhongwen, self.yuewen)
         return self._overlap
 
     @property
     def scaled_overlap(self) -> np.ndarray:
+        """Scaled overlap matrix between 中文 and 粤文."""
         if self._scaled_overlap is None:
             scaled_overlap = self.overlap.copy()
             column_maxes = scaled_overlap.max(axis=0)
@@ -72,33 +74,45 @@ class CantoneseAlignmentOperation:
 
     @property
     def sync_groups(self) -> list[SyncGroup]:
-        """List of sync groups between 中文 and 粤文; 1-indexed to match SRT."""
+        """Sync groups between 中文 and 粤文."""
         if self._sync_groups is None:
             self._init_sync_groups()
         return self._sync_groups
 
     @property
     def yuewen(self) -> AudioSeries:
+        """粤文 series."""
         return self._yuewen
 
     @yuewen.setter
     def yuewen(self, value: AudioSeries) -> None:
+        """Set 粤文 series and clear cached values.
+
+        Arguments:
+            value: 粤文 series
+        """
         self._yuewen = value
         self._clear_cache()
 
     @property
     def yuewen_to_review(self) -> list[int]:
-        """List of 粤文 indices to review; 1-indexed to match SRT."""
+        """粤文 indices in need of review."""
         if self._yuewen_to_review is None:
             self._init_sync_groups()
         return self._yuewen_to_review
 
     @property
     def zhongwen(self) -> AudioSeries:
+        """中文 series."""
         return self._zhongwen
 
     @zhongwen.setter
     def zhongwen(self, value: AudioSeries) -> None:
+        """Set 中文 series and clear cached values.
+
+        Arguments:
+            value: 中文 series
+        """
         self._zhongwen = value
         self._clear_cache()
 
@@ -113,23 +127,19 @@ class CantoneseAlignmentOperation:
         """Initialize nascent sync groups and list of 粤文 to review."""
         # Each sync group must be one 中文 and zero or more 粤文.
         nascent_sync_groups = []
-        for zw_i1 in range(1, len(self.zhongwen) + 1):  # 1-indexed to match SRT
-            nascent_sync_groups.append(([zw_i1], []))
+        for zw_i in range(len(self.zhongwen)):
+            nascent_sync_groups.append(([zw_i], []))
 
         # For each 粤文, find the corresponding 中文 and add it to the sync group.
         yuewen_to_review = []
         for yw_i in range(len(self.yuewen)):
             rank = np.argsort(self.scaled_overlap[:, yw_i])[::-1]
-            yw_overlapping_is = np.where(
-                self.scaled_overlap[:, yw_i] > self.overlap_threshold
-            )[0]
+            zw_is = np.where(self.scaled_overlap[:, yw_i] > self.cutoff)[0]
 
-            yw_i1 = yw_i + 1  # 1-indexed to match SRT
-            if len(yw_overlapping_is) == 1:
-                yuewen_to_review.append(yw_i1)
+            if len(zw_is) == 1:
+                nascent_sync_groups[zw_is[0]][1].append(yw_i)
             else:
-                zw_i = yw_overlapping_is[0]
-                nascent_sync_groups[zw_i][1].append(yw_i1)
+                yuewen_to_review.append(yw_i)
 
         self._sync_groups = nascent_sync_groups
         self._yuewen_to_review = yuewen_to_review
@@ -140,9 +150,13 @@ class CantoneseAlignmentOperation:
         if not answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
             raise ScinoephileError()
         if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
-            self.sync_groups[one_zw_i][1].append(answer.one_yuewen_to_append)
+            self.sync_groups[one_zw_i][1].append(yw_i)
+            self.yuewen_to_review.remove(yw_i)
+            return
         if not answer.one_yuewen_to_append and answer.two_yuewen_to_prepend:
-            self.sync_groups[two_zw_i][1].insert(0, answer.two_yuewen_to_prepend)
+            self.sync_groups[two_zw_i][1].insert(0, yw_i)
+            self.yuewen_to_review.remove(yw_i)
+            return
         # Split yuewen event into two parts
         # Need to make sure timings make it here.
         print()
@@ -150,7 +164,7 @@ class CantoneseAlignmentOperation:
         # Figure out where subtitle 1 should start
         one_start = sub_to_split.start
         # Figure out where subtitle 1 should end
-        split_i = len(answer.one_yuewen_to_append)
+        split_i = len(answer.one_yuewen_to_append) - 1
         one_end = sub_to_split.segment.words[split_i].end
 
         # Figure out where subtitle 2 should start
@@ -180,12 +194,21 @@ class CantoneseAlignmentOperation:
         self.yuewen = updated_series
 
     def get_split_query(self, one_zw_i: int, two_zw_i: int, yw_i: int) -> SplitQuery:
+        """Get split query for the given indices.
+
+        Arguments:
+            one_zw_i: Index of 中文 sub one
+            two_zw_i: Index of 中文 sub two
+            yw_i: Index of 粤文 sub to split
+        Returns:
+            Query for splitting 粤文
+        """
         if yw_i not in self.yuewen_to_review:
             raise ScinoephileError(
                 f"yw_i={yw_i} not in yuewen_to_review: {self.yuewen_to_review}"
             )
-        one_yw_is = [i - 1 for i in self.sync_groups[one_zw_i][1]]
-        two_yw_is = [i - 1 for i in self.sync_groups[two_zw_i][1]]
+        one_yw_is = [i for i in self.sync_groups[one_zw_i][1]]
+        two_yw_is = [i for i in self.sync_groups[two_zw_i][1]]
         return SplitQuery(
             one_zhongwen=self.zhongwen.events[one_zw_i].text,
             one_yuewen_start="".join([self.yuewen.events[i].text for i in one_yw_is]),
@@ -210,28 +233,25 @@ class CantoneseAligner:
         self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
     ) -> CantoneseAlignmentOperation:
         op = CantoneseAlignmentOperation(zhongwen_subs, yuewen_subs)
-        print(op)
-        if len(op.yuewen_to_review) == 0:
-            print("No 粤文 to review.")
-            return op
-        self._review(op)
+        iteration = 0
+        while len(op.yuewen_to_review) >= 0:
+            print(f"\nITERATION {iteration}")
+            print(op)
+            self._review(op)
+            iteration += 1
         return op
 
-    def _review(self, op: CantoneseAlignmentOperation):
-        for yw_i1 in op.yuewen_to_review:  # 1-indexed to match SRT
-            yw_i = yw_i1 - 1
-            indexes_over_threshold = np.where(
-                op.scaled_overlap[:, yw_i] > op.overlap_threshold
-            )[0]
+    def _review(self, op: CantoneseAlignmentOperation) -> None:
+        yw_i = op.yuewen_to_review[0]
+        zw_is = np.where(op.scaled_overlap[:, yw_i] > op.cutoff)[0]
 
-            if len(indexes_over_threshold) == 2:
-                zw_one_i, zw_two_i = indexes_over_threshold
-                query = op.get_split_query(zw_one_i, zw_two_i, yw_i1)
-                print(query)
-                answer = self.splitter(query)
-            else:
-                warning(
-                    f"Unexpected number of indexes over threshold for yw_i={yw_i1}: "
-                    f"{len(indexes_over_threshold)}"
-                )
-                print()
+        if len(zw_is) != 2:
+            ScinoephileError(
+                f"Situation not yet supported: {len(zw_is)} zhongwen subs "
+                f"for yw_i={yw_i}:\n{op}"
+            )
+
+        one_zw_i, two_zw_i = zw_is
+        query = op.get_split_query(one_zw_i, two_zw_i, yw_i)
+        answer = self.splitter(query)
+        op.apply_split_answer(one_zw_i, two_zw_i, yw_i, answer)
