@@ -246,7 +246,7 @@ class CantoneseAligner:
         zw_is = np.where(op.scaled_overlap[:, yw_i] > op.cutoff)[0]
 
         if len(zw_is) != 2:
-            ScinoephileError(
+            raise ScinoephileError(
                 f"Situation not yet supported: {len(zw_is)} zhongwen subs "
                 f"for yw_i={yw_i}:\n{op}"
             )
