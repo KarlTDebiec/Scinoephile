@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from abc import ABC
 from functools import cached_property
+from typing import Self
 
 from pydantic import BaseModel, Field
 
@@ -27,6 +28,7 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
 
     @cached_property
     def answer_cls(self) -> type[TAnswer]:
+        """Answer parent class."""
         for base in type(self).__mro__:
             if base is not self.__class__ and issubclass(base, Answer):
                 return base
@@ -48,6 +50,7 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
 
     @cached_property
     def query_cls(self) -> type[TQuery]:
+        """Query parent class."""
         for base in type(self).__mro__:
             if base is not self.__class__ and issubclass(base, Query):
                 return base
@@ -55,26 +58,30 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
 
     def to_source(self) -> str:
         """Get Python source-like string representation."""
-        cls = self.__class__
 
         def format_field(name: str, value: object) -> str:
             return f"    {name}={value!r},"
 
-        lines = [f"{cls.__name__}("]
+        lines = [f"{self.__class__.__name__}("]
 
-        for field in self.query_cls.model_fields:
-            lines.append(format_field(field, getattr(self, field)))
+        lines.extend(
+            format_field(field, getattr(self, field))
+            for field in self.query_cls.model_fields
+        )
 
-        for field in self.answer_cls.model_fields:
-            lines.append(format_field(field, getattr(self, field)))
+        lines.extend(
+            format_field(field, getattr(self, field))
+            for field in self.answer_cls.model_fields
+        )
 
         test_case_fields = (
             set(self.model_fields)
             - set(self.query_cls.model_fields)
             - set(self.answer_cls.model_fields)
         )
-        for field in test_case_fields:
-            lines.append(format_field(field, getattr(self, field)))
+        lines.extend(
+            format_field(field, getattr(self, field)) for field in test_case_fields
+        )
 
         lines.append(")")
         return "\n".join(lines)
@@ -82,8 +89,14 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     @classmethod
     def from_query_and_answer(
         cls, query: TQuery, answer: TAnswer, include_in_prompt: bool = False
-    ) -> TestCase:
-        """Create test case from query and answer."""
+    ) -> Self:
+        """Create test case from query and answer.
+
+        Arguments:
+            query: Query part of the test case
+            answer: Answer part of the test case
+            include_in_prompt: Whether to include this test case in prompt examples
+        """
         return cls(
             **query.model_dump(),
             **answer.model_dump(),
