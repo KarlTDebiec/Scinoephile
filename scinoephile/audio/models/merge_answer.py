@@ -4,18 +4,14 @@
 
 from __future__ import annotations
 
-import json
+from pydantic import Field
 
-from pydantic import BaseModel, Field
+from scinoephile.core.abcs import Answer
 
 
-class MergeAnswer(BaseModel):
+class MergeAnswer(Answer):
     """Answer for 粤文 merging."""
 
     yuewen_merged: str = Field(
         ..., description="Merged 中文 text with spacing and punctuation."
     )
-
-    def __str__(self) -> str:
-        """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

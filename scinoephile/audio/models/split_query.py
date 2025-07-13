@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import json
+from pydantic import Field
 
-from pydantic import BaseModel, Field
+from scinoephile.core.abcs import Query
 
 
-class SplitQuery(BaseModel):
+class SplitQuery(Query):
     """Query for 粤文 splitting."""
 
     one_zhongwen: str = Field(..., description="Known 中文 of text one.")
@@ -21,7 +21,3 @@ class SplitQuery(BaseModel):
         description="粤文 to be split, with start appended to 粤文 text one and end "
         "prepended to 粤文 text two.",
     )
-
-    def __str__(self) -> str:
-        """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

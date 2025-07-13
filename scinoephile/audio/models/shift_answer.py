@@ -4,17 +4,13 @@
 
 from __future__ import annotations
 
-import json
+from pydantic import Field
 
-from pydantic import BaseModel, Field
+from scinoephile.core.abcs import Answer
 
 
-class ShiftAnswer(BaseModel):
+class ShiftAnswer(Answer):
     """Answer for 粤文 shifting."""
 
     one_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text one.")
     two_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text two.")
-
-    def __str__(self) -> str:  # noqa: D401
-        """Return string representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
