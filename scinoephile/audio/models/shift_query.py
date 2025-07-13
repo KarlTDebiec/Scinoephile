@@ -4,19 +4,15 @@
 
 from __future__ import annotations
 
-import json
+from pydantic import Field
 
-from pydantic import BaseModel, Field
+from scinoephile.core.abcs import Query
 
 
-class ShiftQuery(BaseModel):
+class ShiftQuery(Query):
     """Query for 粤文 shifting."""
 
     one_zhongwen: str = Field(..., description="Known 中文 of text one.")
     one_yuewen: str = Field(..., description="Original 粤文 of text one.")
     two_zhongwen: str = Field(..., description="Known 中文 of text two.")
     two_yuewen: str = Field(..., description="Original 粤文 of text two.")
-
-    def __str__(self) -> str:
-        """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

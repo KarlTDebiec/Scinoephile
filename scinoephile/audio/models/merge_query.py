@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import json
+from pydantic import Field
 
-from pydantic import BaseModel, Field
+from scinoephile.core.abcs import Query
 
 
-class MergeQuery(BaseModel):
+class MergeQuery(Query):
     """Query for 粤文 merging."""
 
     zhongwen: str = Field(
@@ -18,7 +18,3 @@ class MergeQuery(BaseModel):
     yuewen_to_merge: list[str] = Field(
         ..., description="Known 粤文 texts to merge with punctuation and spacing."
     )
-
-    def __str__(self) -> str:
-        """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
