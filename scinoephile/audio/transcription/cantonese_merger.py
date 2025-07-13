@@ -51,6 +51,11 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         """Query template."""
         return "中文:\n{zhongwen}\n粤文 to merge:\n{yuewen_to_merge}\n"
 
+    @property
+    def test_case_cls(self) -> type[MergeTestCase]:
+        """Test case class."""
+        return MergeTestCase
+
     def _format_query_prompt(self, query: MergeQuery) -> str:
         """Format query prompt based on query.
 
@@ -62,8 +67,3 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         return self.query_template.format(
             zhongwen=query.zhongwen, yuewen_to_merge="\n".join(query.yuewen_to_merge)
         )
-
-    @property
-    def test_case_cls(self) -> type[MergeTestCase]:
-        """Test case class."""
-        return MergeTestCase

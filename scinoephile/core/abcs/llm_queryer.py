@@ -26,7 +26,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     def __init__(
         self,
         model: str = "gpt-4.1",
-        examples: list[TTestCase] = None,
+        examples: list[TTestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
     ):
