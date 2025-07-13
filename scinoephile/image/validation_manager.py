@@ -56,7 +56,7 @@ class ValidationManager:
     def validate(self) -> None:
         """Validate OCR of image series."""
         series_changed = False
-        for i, subtitle in enumerate(self.series.events, 1):
+        for i, subtitle in enumerate(self.series, 1):
             subtitle_changed = self._validate_subtitle(subtitle, i)
             if subtitle_changed:
                 series_changed = True
