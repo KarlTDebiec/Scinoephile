@@ -13,5 +13,5 @@ class MergeAnswer(Answer):
     """Answer for 粤文 merging."""
 
     yuewen_merged: str = Field(
-        ..., description="Merged 中文 text with spacing and punctuation."
+        ..., description="Merged 粤文 text with spacing and punctuation."
     )
