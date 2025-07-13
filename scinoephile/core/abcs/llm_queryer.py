@@ -11,11 +11,11 @@ from logging import error, info
 from pathlib import Path
 from textwrap import dedent
 
-from openai import OpenAI
 from pydantic import ValidationError
 
 from scinoephile.common.validation import validate_output_directory
 from scinoephile.core.abcs.answer import Answer
+from scinoephile.core.abcs.llm_provider import LLMProvider
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.abcs.test_case import TestCase
 
@@ -29,16 +29,18 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         examples: list[TTestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
+        provider: LLMProvider | None = None,
     ):
         """Initialize.
 
         Arguments:
-            model: OpenAI model to use
+            model: Model to use
             examples: Examples of inputs and expected outputs for few-shot learning
             print_test_case: Whether to print test case after merging
             cache_dir_path: Directory in which to cache
+            provider: Provider to use for queries
         """
-        self.client = OpenAI()
+        self.provider = provider
         self.model = model
         self.print_test_case = print_test_case
 
@@ -85,19 +87,15 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     print(test_case.to_source())
                 return answer
 
-        # Process using OpenAI API
-        response = self.client.beta.chat.completions.parse(
+        # Query provider
+        content = self.provider.chat_completion(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
                 {"role": "user", "content": query_prompt},
             ],
             temperature=0,
-            seed=0,
-            response_format=self.answer_cls,
         )
-        message = response.choices[0].message
-        content = message.content
 
         # Validate answer
         try:
