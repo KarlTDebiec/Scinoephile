@@ -119,7 +119,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
-                info(f"Saved split to cache: {cache_path}")
+                info(f"Saved to cache: {cache_path}")
 
         return answer
 

@@ -10,7 +10,7 @@ from pprint import pformat
 import numpy as np
 
 from scinoephile.audio import AudioSeries, AudioSubtitle
-from scinoephile.audio.models import MergeQuery, SplitAnswer, SplitQuery
+from scinoephile.audio.models import MergeQuery, ShiftQuery, SplitAnswer, SplitQuery
 from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
 from scinoephile.audio.transcription.cantonese_splitter import CantoneseSplitter
 from scinoephile.core import ScinoephileError
@@ -118,34 +118,6 @@ class CantoneseAlignmentOperation:
         self._zhongwen = value
         self._clear_cache()
 
-    def _clear_cache(self) -> None:
-        """Clear cached values."""
-        self._overlap = None
-        self._scaled_overlap = None
-        self._sync_groups = None
-        self._yuewen_to_review = None
-
-    def _init_sync_groups(self):
-        """Initialize nascent sync groups and list of 粤文 to review."""
-        # Each sync group must be one 中文 and zero or more 粤文.
-        nascent_sync_groups = []
-        for zw_i in range(len(self.zhongwen)):
-            nascent_sync_groups.append(([zw_i], []))
-
-        # For each 粤文, find the corresponding 中文 and add it to the sync group.
-        yuewen_to_review = []
-        for yw_i in range(len(self.yuewen)):
-            rank = np.argsort(self.scaled_overlap[:, yw_i])[::-1]
-            zw_is = np.where(self.scaled_overlap[:, yw_i] > self.cutoff)[0]
-
-            if len(zw_is) == 1:
-                nascent_sync_groups[zw_is[0]][1].append(yw_i)
-            else:
-                yuewen_to_review.append(yw_i)
-
-        self._sync_groups = nascent_sync_groups
-        self._yuewen_to_review = yuewen_to_review
-
     def apply_split_answer(
         self, one_zw_i: int, two_zw_i: int, yw_i: int, answer: SplitAnswer
     ):
@@ -195,6 +167,40 @@ class CantoneseAlignmentOperation:
         updated_series.events = updated_events
         self.yuewen = updated_series
 
+    def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
+        """Get merge query for given indices.
+
+        Arguments:
+            zw_i: Index of 中文 sub
+            yw_is: Indices of 粤文 subs to merge
+        Returns:
+            Query for merging 粤文
+        """
+        return MergeQuery(
+            zhongwen=self.zhongwen.events[zw_i].text,
+            yuewen_to_merge=[self.yuewen.events[i].text for i in yw_is],
+        )
+
+    def get_shift_query(
+        self, one_zw_i: int, one_yw_i: int, two_zw_i: int, two_yw_i: int
+    ) -> ShiftQuery:
+        """Get shift query for given indices.
+
+        Arguments:
+            one_zw_i: Index of 中文 sub one
+            one_yw_i: Index of 粤文 sub one
+            two_zw_i: Index of 中文 sub two
+            two_yw_i: Index of 粤文 sub two
+        Returns:
+            Query for shifting 粤文
+        """
+        return ShiftQuery(
+            one_zhongwen=self.zhongwen.events[one_zw_i].text,
+            one_yuewen=self.yuewen.events[one_yw_i].text,
+            two_zhongwen=self.zhongwen.events[two_zw_i].text,
+            two_yuewen=self.yuewen.events[two_yw_i].text,
+        )
+
     def get_split_query(self, one_zw_i: int, two_zw_i: int, yw_i: int) -> SplitQuery:
         """Get split query for given indices.
 
@@ -219,19 +225,33 @@ class CantoneseAlignmentOperation:
             yuewen_to_split=self.yuewen.events[yw_i].text,
         )
 
-    def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
-        """Get merge query for given indices.
+    def _clear_cache(self) -> None:
+        """Clear cached values."""
+        self._overlap = None
+        self._scaled_overlap = None
+        self._sync_groups = None
+        self._yuewen_to_review = None
 
-        Arguments:
-            zw_i: Index of 中文 sub
-            yw_is: Indices of 粤文 subs to merge
-        Returns:
-            Query for merging 粤文
-        """
-        return MergeQuery(
-            zhongwen=self.zhongwen.events[zw_i].text,
-            yuewen_to_merge=[self.yuewen.events[i].text for i in yw_is],
-        )
+    def _init_sync_groups(self):
+        """Initialize nascent sync groups and list of 粤文 to review."""
+        # Each sync group must be one 中文 and zero or more 粤文.
+        nascent_sync_groups = []
+        for zw_i in range(len(self.zhongwen)):
+            nascent_sync_groups.append(([zw_i], []))
+
+        # For each 粤文, find the corresponding 中文 and add it to the sync group.
+        yuewen_to_review = []
+        for yw_i in range(len(self.yuewen)):
+            rank = np.argsort(self.scaled_overlap[:, yw_i])[::-1]
+            zw_is = np.where(self.scaled_overlap[:, yw_i] > self.cutoff)[0]
+
+            if len(zw_is) == 1:
+                nascent_sync_groups[zw_is[0]][1].append(yw_i)
+            else:
+                yuewen_to_review.append(yw_i)
+
+        self._sync_groups = nascent_sync_groups
+        self._yuewen_to_review = yuewen_to_review
 
 
 class CantoneseAligner:
