@@ -89,7 +89,7 @@ def get_block_indexes_by_pause(
             block_indexes.append((start, i - 1))
             start = i
         prev_end = event.end
-    block_indexes.append((start, len(series.events)))
+    block_indexes.append((start, len(series)))
 
     return block_indexes
 

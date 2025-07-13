@@ -32,7 +32,7 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     Returns:
         Whether all subtitles are one-to-one matches between the two series
     """
-    if len(one.events) != len(two.events):
+    if len(one) != len(two):
         return False
 
     overlap = get_sync_overlap_matrix(one, two)
@@ -114,9 +114,9 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         the first list corresponding to subtitles in series one and the second list
         corresponding to subtitles in series two.
     """
-    if len(one.events) == 0:
+    if len(one) == 0:
         return []
-    if len(two.events) == 0:
+    if len(two) == 0:
         return [([i], []) for i in range(len(one))]
 
     overlap = get_sync_overlap_matrix(one, two)

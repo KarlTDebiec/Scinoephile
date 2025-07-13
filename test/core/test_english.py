@@ -44,7 +44,7 @@ def _test_get_english_flattened(series: Series, expected: Series):
     """
     output = get_english_flattened(series)
 
-    assert len(series.events) == len(output.events)
+    assert len(series) == len(output)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):

@@ -38,7 +38,7 @@ class Series(SSAFile):
         Returns:
             Whether this series is equal to another
         """
-        if len(self.events) != len(other.events):
+        if len(self) != len(other):
             return False
 
         for self_event, other_event in zip(self, other):

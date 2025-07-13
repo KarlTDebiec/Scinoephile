@@ -35,14 +35,14 @@ def get_transcriptions(
     for i, block in enumerate(blocks):
         if i <= -1:
             info(f"Skipping block {i + 1} of {len(blocks)}")
-            j_offset += len(block.events)
+            j_offset += len(block)
             continue
         # if i > 19:
         #     break
 
         info(f"Processing block {i + 1} of {len(blocks)}")
-        for j, event in enumerate(block.events):
-            info(f"Processing event {j + j_offset}, ({j + 1} / {len(block.events)})")
+        for j, event in enumerate(block):
+            info(f"Processing event {j + j_offset}, ({j + 1} / {len(block)})")
             image = event.img
             base64_image = get_base64_image(image)
 
@@ -89,7 +89,7 @@ def get_transcriptions(
 
         # Update blocks
         blocks[i] = block
-        j_offset += len(block.events)
+        j_offset += len(block)
 
     # Prepare output and return
     output = get_concatenated_series(blocks)
@@ -122,18 +122,14 @@ def get_revised_chinese_transcriptions(
     for i, (simp_block, trad_block) in enumerate(zip(simp_blocks, trad_blocks)):
         if i <= -1:
             info(f"Skipping block {i + 1} of {len(block_pairs)}")
-            j_offset += len(simp_block.events)
+            j_offset += len(simp_block)
             continue
         # if i > 0:
         #     break
 
         info(f"Processing block {i + 1} of {len(block_pairs)}")
-        for j, (simp_event, trad_event) in enumerate(
-            zip(simp_block.events, trad_block.events)
-        ):
-            info(
-                f"Processing event {j + j_offset}, ({j + 1} / {len(simp_block.events)})"
-            )
+        for j, (simp_event, trad_event) in enumerate(zip(simp_block, trad_block)):
+            info(f"Processing event {j + j_offset}, ({j + 1} / {len(simp_block)})")
             simp_image = simp_event.img
             trad_image = trad_event.img
             simp_base64_image = get_base64_image(simp_image)
@@ -204,7 +200,7 @@ def get_revised_chinese_transcriptions(
         # Update blocks
         simp_blocks[i] = simp_block
         trad_blocks[i] = trad_block
-        j_offset += len(simp_block.events)
+        j_offset += len(simp_block)
 
     # Prepare output and return
     simp_output = get_concatenated_series(simp_blocks)

@@ -46,7 +46,7 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
         expected: Expected output series
     """
     output = get_hanzi_flattened(series)
-    assert len(series.events) == len(output.events)
+    assert len(series) == len(output)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):
@@ -69,7 +69,7 @@ def _test_get_hanzi_converted(series: Series, expected: Series = None):
         expected: Expected output series
     """
     output = get_hanzi_converted(series)
-    assert len(series.events) == len(output.events)
+    assert len(series) == len(output)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):
