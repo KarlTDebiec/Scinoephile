@@ -43,10 +43,10 @@ class CantoneseMerger:
         """Initialize.
 
         Arguments:
-            model: OpenAI model to use.
+            model: OpenAI model to use
             examples: Examples of inputs and expected outputs for few-shot learning
-            print_test_case: Print test case after merging
-            cache_dir_path: Path to cache directory for OpenAI API responses
+            print_test_case: Whether to print test case after merging
+            cache_dir_path: Directory in which to cache
         """
         self.client = OpenAI()
         self.model = model
@@ -122,7 +122,7 @@ class CantoneseMerger:
         message = response.choices[0].message
         content = message.content
 
-        # Validate the response
+        # Validate answer
         try:
             answer = MergeAnswer.model_validate_json(content)
         except ValidationError as exc:

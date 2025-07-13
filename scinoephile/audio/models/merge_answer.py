@@ -16,6 +16,6 @@ class MergeAnswer(BaseModel):
         ..., description="Merged 中文 text with spacing and punctuation."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
