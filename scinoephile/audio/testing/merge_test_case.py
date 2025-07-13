@@ -19,7 +19,7 @@ class MergeTestCase(MergeQuery, MergeAnswer):
         False, description="Whether to include test case in prompt examples."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
@@ -41,7 +41,7 @@ class MergeTestCase(MergeQuery, MergeAnswer):
     def from_query_and_answer(
         query: MergeQuery, answer: MergeAnswer, include_in_prompt: bool = False
     ) -> MergeTestCase:
-        """Create a test case from a query and an answer."""
+        """Create test case from query and answer."""
         return MergeTestCase(
             **query.model_dump(),
             **answer.model_dump(),
