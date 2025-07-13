@@ -162,7 +162,7 @@ class CantoneseAlignmentOperation:
         # Split yuewen event into two parts
         # Need to make sure timings make it here.
         print()
-        sub_to_split = self.yuewen.events[yw_i]
+        sub_to_split = self.yuewen[yw_i]
         # Figure out where subtitle 1 should start
         one_start = sub_to_split.start
         # Figure out where subtitle 1 should end
@@ -188,10 +188,10 @@ class CantoneseAlignmentOperation:
             # segment
         )
         updated_series = AudioSeries()
-        updated_events = self.yuewen.events[:yw_i]
+        updated_events = self.yuewen[:yw_i]
         updated_events.append(one)
         updated_events.append(two)
-        updated_events.extend(self.yuewen.events[yw_i + 1 :])
+        updated_events.extend(self.yuewen[yw_i + 1 :])
         updated_series.events = updated_events
         self.yuewen = updated_series
 
@@ -212,11 +212,11 @@ class CantoneseAlignmentOperation:
         one_yw_is = [i for i in self.sync_groups[one_zw_i][1]]
         two_yw_is = [i for i in self.sync_groups[two_zw_i][1]]
         return SplitQuery(
-            one_zhongwen=self.zhongwen.events[one_zw_i].text,
-            one_yuewen_start="".join([self.yuewen.events[i].text for i in one_yw_is]),
-            two_zhongwen=self.zhongwen.events[two_zw_i].text,
-            two_yuewen_end="".join([self.yuewen.events[i].text for i in two_yw_is]),
-            yuewen_to_split=self.yuewen.events[yw_i].text,
+            one_zhongwen=self.zhongwen[one_zw_i].text,
+            one_yuewen_start="".join([self.yuewen[i].text for i in one_yw_is]),
+            two_zhongwen=self.zhongwen[two_zw_i].text,
+            two_yuewen_end="".join([self.yuewen[i].text for i in two_yw_is]),
+            yuewen_to_split=self.yuewen[yw_i].text,
         )
 
     def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
@@ -229,8 +229,8 @@ class CantoneseAlignmentOperation:
             Query for merging 粤文
         """
         return MergeQuery(
-            zhongwen=self.zhongwen.events[zw_i].text,
-            yuewen_to_merge=[self.yuewen.events[i].text for i in yw_is],
+            zhongwen=self.zhongwen[zw_i].text,
+            yuewen_to_merge=[self.yuewen[i].text for i in yw_is],
         )
 
 
@@ -288,8 +288,8 @@ class CantoneseAligner:
             answer = self.merger(query)
             updated_yuewen_events.append(
                 AudioSubtitle(
-                    start=op.yuewen.events[yw_is[0]].start,
-                    end=op.yuewen.events[yw_is[-1]].end,
+                    start=op.yuewen[yw_is[0]].start,
+                    end=op.yuewen[yw_is[-1]].end,
                     text=answer.yuewen_merged,
                 )
             )

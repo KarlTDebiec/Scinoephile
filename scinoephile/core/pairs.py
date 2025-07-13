@@ -78,14 +78,14 @@ def get_pair_blocks_by_pause(
     # for i, (block_one, block_two) in enumerate(blocks):
     #     start = 10000000
     #     if block_one.events:
-    #         start = min(start, block_one.events[0].start)
+    #         start = min(start, block_one[0].start)
     #     if block_two.events:
-    #         start = min(start, block_two.events[0].start)
+    #         start = min(start, block_two[0].start)
     #     diff = start - end
     #     if block_one.events:
-    #         end = max(end, block_one.events[-1].end)
+    #         end = max(end, block_one[-1].end)
     #     if block_two.events:
-    #         end = max(end, block_two.events[-1].end)
+    #         end = max(end, block_two[-1].end)
     #     print(
     #         f"{i:3d} "
     #         f"{len(block_one.events):3} "
@@ -112,11 +112,11 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
         Pair with their start times shifted to zero
     """
     if one.events and two.events:
-        start_time = min(one.events[0].start, two.events[0].start)
+        start_time = min(one[0].start, two[0].start)
     elif one.events:
-        start_time = one.events[0].start
+        start_time = one[0].start
     elif two.events:
-        start_time = two.events[0].start
+        start_time = two[0].start
     else:
         raise ScinoephileError("Both subtitle series are empty")
 
@@ -139,14 +139,14 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """
     one, two = get_pair_with_zero_start(one, two)
     if one.events and two.events:
-        start = min(one.events[0].start, two.events[0].start)
-        duration = max(one.events[-1].end, two.events[-1].end) - start
+        start = min(one[0].start, two[0].start)
+        duration = max(one[-1].end, two[-1].end) - start
     elif one.events:
-        start = one.events[0].start
-        duration = one.events[-1].end - start
+        start = one[0].start
+        duration = one[-1].end - start
     elif two.events:
-        start = two.events[0].start
-        duration = two.events[-1].end - start
+        start = two[0].start
+        duration = two[-1].end - start
     else:
         raise ScinoephileError("Both subtitle series are empty")
 

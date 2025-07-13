@@ -37,7 +37,7 @@ class Block:
             raise IndexError(
                 f"Index {idx} out of range for block {self.start_idx}-{self.end_idx}"
             )
-        return self._series.events[idx - 1]
+        return self._series[idx - 1]
 
     def __iter__(self) -> Iterator[Subtitle]:
         """Iterate over subtitles in the block.
@@ -68,7 +68,7 @@ class Block:
     @cached_property
     def end(self) -> int:
         """End time of block."""
-        return self._series.events[self.end_idx - 1].end
+        return self._series[self.end_idx - 1].end
 
     @cached_property
     def events(self) -> list[Subtitle]:
@@ -78,7 +78,7 @@ class Block:
     @cached_property
     def start(self) -> int:
         """Start time of block."""
-        return self._series.events[self.start_idx - 1].start
+        return self._series[self.start_idx - 1].start
 
     def to_series(self):
         """Convert block to a Series.
