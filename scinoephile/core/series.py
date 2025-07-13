@@ -61,11 +61,13 @@ class Series(SSAFile):
         """Representation."""
         if self.events:
             max_time = max(ev.end for ev in self)
-            s = f"<{self.__class__.__name__} with {len(self)} events and {len(self.styles)} styles, last timestamp {ms_to_str(max_time)}>"
-        else:
-            s = f"<{self.__class__.__name__} with 0 events and {len(self.styles)} styles>"
-
-        return s
+            return (
+                f"<{self.__class__.__name__} with {len(self)} events and "
+                f"{len(self.styles)} styles, last timestamp {ms_to_str(max_time)}>"
+            )
+        return (
+            f"<{self.__class__.__name__} with 0 events and {len(self.styles)} styles>"
+        )
 
     @property
     def blocks(self) -> list[Block]:
