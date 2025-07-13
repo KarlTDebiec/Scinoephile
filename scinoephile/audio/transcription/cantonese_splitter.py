@@ -4,24 +4,39 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
-from logging import error, info
-from pathlib import Path
-from textwrap import dedent
-
-from openai import OpenAI
-from pydantic import ValidationError
-
 from scinoephile.audio.models import SplitAnswer, SplitQuery
 from scinoephile.audio.testing import SplitTestCase
-from scinoephile.common.validation import validate_output_directory
+from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseSplitter:
+class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
     """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
 
-    system_prompt_template = """
+    @property
+    def answer_cls(self) -> type[SplitAnswer]:
+        """Answer class."""
+        return SplitAnswer
+
+    @property
+    def answer_example(self) -> SplitAnswer:
+        """Example answer."""
+        return SplitAnswer(
+            one_yuewen_to_append="粤文 one to append",
+            two_yuewen_to_prepend="粤文 text two to prepend",
+        )
+
+    @property
+    def answer_template(self) -> str:
+        """Answer template."""
+        return (
+            "粤文 to append to one:\n{one_yuewen_to_append}\n"
+            "粤文 to prepend to two:\n{two_yuewen_to_prepend}\n"
+        )
+
+    @property
+    def base_system_prompt(self) -> str:
+        """Base system prompt."""
+        return """
         You are a helpful assistant that matches 粤文 subtitles of spoken Cantonese
         to 中文 subtitles of the same spoken content. You will be given a 中文
         subtitle and its nascent 粤文 subtitle, and a second 中文 subtitle with its
@@ -33,145 +48,25 @@ class CantoneseSplitter:
         Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
         Your output "one" and "two" concatenated should equal "ambiguous 粤文".
         Your response must be a JSON object with the following structure:
-    """
-    query_template = (
-        "中文 one:\n{one_zhongwen}\n"
-        "粤文 one start:\n{one_yuewen_start}\n"
-        "中文 two:\n{two_zhongwen}\n"
-        "粤文 two end:\n{two_yuewen_end}\n"
-        "粤文 to split:\n{yuewen_to_split}\n"
-    )
-    answer_template = (
-        "粤文 to append to one:\n{one_yuewen_to_append}\n"
-        "粤文 to prepend to two:\n{two_yuewen_to_prepend}\n"
-    )
-    answer_example = SplitAnswer(
-        one_yuewen_to_append="粤文 one to append",
-        two_yuewen_to_prepend="粤文 text two to prepend",
-    )
-
-    def __init__(
-        self,
-        model: str = "gpt-4.1",
-        examples: list[SplitTestCase] = None,
-        print_test_case: bool = False,
-        cache_dir_path: str | None = None,
-    ):
-        """Initialize.
-
-        Arguments:
-            model: OpenAI model to use
-            examples: Examples of inputs and expected outputs for few-shot learning
-            print_test_case: Whether to print test case after merging
-            cache_dir_path: Directory in which to cache
         """
-        self.client = OpenAI()
-        self.model = model
-        self.print_test_case = print_test_case
 
-        # Set up system prompt, with examples if provided
-        self.system_prompt = (
-            dedent(self.system_prompt_template).strip().replace("\n", " ")
+    @property
+    def query_cls(self) -> type[SplitQuery]:
+        """Query class."""
+        return SplitQuery
+
+    @property
+    def query_template(self) -> str:
+        """Query template."""
+        return (
+            "中文 one:\n{one_zhongwen}\n"
+            "粤文 one start:\n{one_yuewen_start}\n"
+            "中文 two:\n{two_zhongwen}\n"
+            "粤文 two end:\n{two_yuewen_end}\n"
+            "粤文 to split:\n{yuewen_to_split}\n"
         )
-        self.system_prompt += "\n"
-        self.system_prompt += json.dumps(self.answer_example.model_dump(), indent=4)
-        if examples:
-            self.system_prompt += (
-                "\n\nHere are some examples of inputs and expected outputs:\n"
-            )
-            for example in examples:
-                self.system_prompt += self.query_template.format_map(
-                    example.query.model_dump()
-                )
-                self.system_prompt += self.answer_template.format_map(
-                    example.answer.model_dump()
-                )
 
-        # Set up cache directory
-        self.cache_dir_path = None
-        if cache_dir_path is not None:
-            self.cache_dir_path = validate_output_directory(cache_dir_path)
-
-    def __call__(self, query: SplitQuery) -> SplitAnswer:
-        """Split 粤文 text between two nascent 粤文 texts based on corresponding 中文.
-
-        Arguments:
-            query: Query containing 中文 and 粤文 texts and 粤文 text to split
-        Returns:
-            Answer including 粤文 text split between two nascent 粤文 texts
-        """
-        return self.split(query)
-
-    def split(self, query: SplitQuery) -> SplitAnswer:
-        """Split 粤文 text between two nascent 粤文 texts based on corresponding 中文.
-
-        Arguments:
-            query: Query containing 中文 and 粤文 texts and 粤文 text to split
-        Returns:
-            Answer including 粤文 text split between two nascent 粤文 texts
-        """
-        query_prompt = self.query_template.format_map(query.model_dump())
-        cache_path = self._get_cache_path(query_prompt)
-
-        # Load from cache if available
-        if cache_path is not None and cache_path.exists():
-            info(f"Loaded from cache: {cache_path}")
-            with cache_path.open("r", encoding="utf-8") as f:
-                answer = SplitAnswer.model_validate(json.load(f))
-                if self.print_test_case:
-                    test_case = SplitTestCase.from_query_and_answer(query, answer)
-                    print(test_case.to_source())
-                return answer
-
-        # Process using OpenAI API
-        response = self.client.beta.chat.completions.parse(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": query_prompt},
-            ],
-            temperature=0,
-            seed=0,
-            response_format=SplitAnswer,
-        )
-        message = response.choices[0].message
-        content = message.content
-
-        # Validate answer
-        try:
-            answer = SplitAnswer.model_validate_json(content)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid content:\n{content}")
-            raise exc
-            # TODO: Try again if response is not valid
-        try:
-            test_case = SplitTestCase.from_query_and_answer(query, answer)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid answer:\n{answer}")
-            raise exc
-            # TODO: Try again if response is not valid
-        if self.print_test_case:
-            print(test_case.to_source())
-
-        # Update cache
-        if cache_path is not None:
-            with cache_path.open("w", encoding="utf-8") as f:
-                json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
-                info(f"Saved split to cache: {cache_path}")
-
-        return answer
-
-    def _get_cache_path(self, query_prompt: str) -> Path | None:
-        """Get cache path based on hash of prompts.
-
-        Arguments:
-            query_prompt: Query prompt used for the query
-        Returns:
-            Path to cache file
-        """
-        if self.cache_dir_path is None:
-            return None
-
-        prompt_str = self.system_prompt + query_prompt
-        sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
-        return self.cache_dir_path / f"{sha256}.json"
+    @property
+    def test_case_cls(self) -> type[SplitTestCase]:
+        """Test case class."""
+        return SplitTestCase

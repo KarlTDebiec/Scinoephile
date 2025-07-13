@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Query."""
+"""Abstract base class for LLM queries."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 
 class Query(BaseModel, ABC):
-    """Query."""
+    """Abstract base class for LLM queries."""
 
     def __str__(self) -> str:
         """String representation."""

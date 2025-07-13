@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Test case; may also be used for few-shot prompt."""
+"""Abstract base class for LLM test cases; may also be used for few-shot prompt."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from scinoephile.core.abcs.query import Query
 
 
 class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
-    """Test case; may also be used for few-shot prompt."""
+    """Abstract base class for LLM test cases; may also be used for few-shot prompt."""
 
     include_in_prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."

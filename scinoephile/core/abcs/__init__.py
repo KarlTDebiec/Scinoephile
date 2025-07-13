@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.core.abcs.answer import Answer
+from scinoephile.core.abcs.llm_queryer import LLMQueryer
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.abcs.test_case import TestCase
 
 __all__ = [
     "Answer",
+    "LLMQueryer",
     "Query",
     "TestCase",
 ]
