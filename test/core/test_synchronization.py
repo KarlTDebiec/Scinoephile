@@ -39,7 +39,8 @@ def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
         f"CHINESE ({test_case.hanzi_start + 1} - {test_case.hanzi_end}):\n{hanzi_str}"
     )
     print(
-        f"ENGLISH ({test_case.english_start + 1} - {test_case.english_end}):\n{english_str}"
+        f"ENGLISH ({test_case.english_start + 1} - {test_case.english_end}):\n"
+        f"{english_str}"
     )
 
     # Get and print overlap matrix
