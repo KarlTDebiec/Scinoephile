@@ -60,9 +60,9 @@ class CantoneseSplitter:
         """Initialize.
 
         Arguments:
-            model: OpenAI model to use.
+            model: OpenAI model to use
             examples: Examples of inputs and expected outputs for few-shot learning
-            print_test_case: Print test case afterward
+            print_test_case: Whether to print test case after merging
             cache_dir_path: Directory in which to cache
         """
         self.client = OpenAI()
@@ -137,7 +137,7 @@ class CantoneseSplitter:
         message = response.choices[0].message
         content = message.content
 
-        # Validate the response
+        # Validate answer
         try:
             answer = SplitAnswer.model_validate_json(content)
         except ValidationError as exc:

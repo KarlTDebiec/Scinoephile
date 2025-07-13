@@ -1,5 +1,5 @@
-# Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
-# and distributed under the terms of the BSD license. See the LICENSE file for details.
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Shifts 粤文 text between adjacent subtitles based on 中文."""
 
 from __future__ import annotations
@@ -23,10 +23,11 @@ class CantoneseShifter:
 
     system_prompt_template = """
         You are a helpful assistant that shifts the start of the second 粤文
-        subtitle so that two 粤文 subtitles align with their corresponding 中文
-        subtitles. Include all 粤文 characters from the inputs. Do not add or
-        remove characters. Your output must be a JSON object with the following
-        structure:
+        subtitle so that two 粤文 subtitles match the contents of their corresponding
+        中文 subtitles.
+        Include all 粤文 characters from the inputs.
+        Do not add or remove characters.
+        Your output must be a JSON object with the following structure:
     """
     query_template = (
         "中文 one:\n{one_zhongwen}\n"
@@ -50,7 +51,14 @@ class CantoneseShifter:
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
     ) -> None:
-        """Initialize."""
+        """Initialize.
+
+        Arguments:
+            model: OpenAI model to use
+            examples: Examples of inputs and expected outputs for few-shot learning
+            print_test_case: Whether to print test case after merging
+            cache_dir_path: Directory in which to cache
+        """
         self.client = OpenAI()
         self.model = model
         self.print_test_case = print_test_case
@@ -72,16 +80,29 @@ class CantoneseShifter:
                     example.answer.model_dump()
                 )
 
+        # Set up cache directory
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = validate_output_directory(cache_dir_path)
 
     def __call__(self, query: ShiftQuery) -> ShiftAnswer:
-        """Shift 粤文 text between adjacent subtitles based on 中文."""
+        """Shift 粤文 text between adjacent subtitles based on 中文.
+
+        Arguments:
+            query: query containing 中文 text and 粤文 texts to shift
+        Returns:
+            Answer including shifted 粤文 text
+        """
         return self.shift(query)
 
     def shift(self, query: ShiftQuery) -> ShiftAnswer:
-        """Shift 粤文 text between adjacent subtitles based on 中文."""
+        """Shift 粤文 text between adjacent subtitles based on 中文.
+
+        Arguments:
+            query: query containing 中文 text and 粤文 texts to shift
+        Returns:
+            Answer including shifted 粤文 text
+        """
         query_prompt = self.query_template.format_map(query.model_dump())
         cache_path = self._get_cache_path(query_prompt)
 
@@ -94,6 +115,7 @@ class CantoneseShifter:
                     print(test_case.to_source())
                 return answer
 
+        # Process using OpenAI API
         response = self.client.beta.chat.completions.parse(
             model=self.model,
             messages=[
@@ -107,6 +129,7 @@ class CantoneseShifter:
         message = response.choices[0].message
         content = message.content
 
+        # Validate answer
         try:
             answer = ShiftAnswer.model_validate_json(content)
         except ValidationError as exc:
@@ -120,6 +143,7 @@ class CantoneseShifter:
         if self.print_test_case:
             print(test_case.to_source())
 
+        # Update cache
         if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
@@ -128,7 +152,13 @@ class CantoneseShifter:
         return answer
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
-        """Get cache path based on hash of prompts."""
+        """Get cache path based on hash of prompts.
+
+        Arguments:
+            query_prompt: Query prompt used for the query
+        Returns:
+            Path to cache file
+        """
         if self.cache_dir_path is None:
             return None
         prompt_str = self.system_prompt + query_prompt

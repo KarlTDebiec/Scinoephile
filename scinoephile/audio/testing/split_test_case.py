@@ -18,7 +18,7 @@ class SplitTestCase(SplitQuery, SplitAnswer):
         False, description="Whether to include test case in prompt examples."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
@@ -40,7 +40,7 @@ class SplitTestCase(SplitQuery, SplitAnswer):
     def from_query_and_answer(
         query: SplitQuery, answer: SplitAnswer, include_in_prompt: bool = False
     ) -> SplitTestCase:
-        """Create a test case from a query and an answer."""
+        """Create test case from query and answer."""
         return SplitTestCase(
             **query.model_dump(),
             **answer.model_dump(),
@@ -89,7 +89,6 @@ class SplitTestCase(SplitQuery, SplitAnswer):
             raise ValueError(
                 "Output text does not match input:\n"
                 f"Expected: {expected}\n"
-                f"Received: {received}\n"
+                f"Received: {received}"
             )
-
         return self

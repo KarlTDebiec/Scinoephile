@@ -19,6 +19,6 @@ class MergeQuery(BaseModel):
         ..., description="Known 粤文 texts to merge with punctuation and spacing."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)

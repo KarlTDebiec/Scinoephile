@@ -1,5 +1,8 @@
 """Tests of scinoephile.audio.transcription.CantoneseShifter."""
 
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+
 from __future__ import annotations
 
 import pytest
@@ -27,7 +30,12 @@ def cantonese_shifter_zero_shot() -> CantoneseShifter:
 
 
 def _test_shift(cantonese_shifter: CantoneseShifter, test_case: ShiftTestCase):
-    """Test CantoneseShifter."""
+    """Test CantoneseShifter.
+
+    Arguments:
+        cantonese_shifter: CantoneseShifter with which to test
+        test_case: Query and expected answer
+    """
     answer = cantonese_shifter(test_case.query)
     assert answer.one_yuewen_shifted == test_case.one_yuewen_shifted
     assert answer.two_yuewen_shifted == test_case.two_yuewen_shifted
@@ -44,6 +52,12 @@ def _test_shift(cantonese_shifter: CantoneseShifter, test_case: ShiftTestCase):
 def test_shift_mlamd(
     request: pytest.FixtureRequest, shifter_fixture_name: str, test_case: ShiftTestCase
 ):
-    """Test CantoneseShifter with MLAMD test cases."""
+    """Test CantoneseShifter with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        shifter_fixture_name: Name of CantoneseShifter fixture with which to test
+        test_case: Query and expected answer
+    """
     shifter: CantoneseShifter = request.getfixturevalue(shifter_fixture_name)
     _test_shift(shifter, test_case)
