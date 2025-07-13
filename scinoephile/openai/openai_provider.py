@@ -11,11 +11,15 @@ from openai import OpenAI
 from scinoephile.core.abcs.llm_provider import LLMProvider
 
 
-class OpenAiProvider(LLMProvider):
+class OpenAIProvider(LLMProvider):
     """Provider using OpenAI chat completions."""
 
     def __init__(self, client: OpenAI | None = None):
-        """Initialize provider."""
+        """Initialize.
+
+        Arguments:
+            client: Optional OpenAI client
+        """
         self.client = client or OpenAI()
 
     def chat_completion(
@@ -23,12 +27,15 @@ class OpenAiProvider(LLMProvider):
         model: str,
         messages: list[dict[str, Any]],
         temperature: float = 0.0,
+        seed: int | None = None,
+        response_format: Any | None = None,
     ) -> str:
         """Return chat completion text."""
         completion = self.client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature,
-            response_format={"type": "json_object"},
+            seed=seed,
+            response_format=response_format or {"type": "json_object"},
         )
         return completion.choices[0].message.content

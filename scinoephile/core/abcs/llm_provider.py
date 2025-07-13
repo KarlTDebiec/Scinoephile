@@ -17,6 +17,8 @@ class LLMProvider(ABC):
         model: str,
         messages: list[dict[str, Any]],
         temperature: float = 0.0,
+        seed: int | None = None,
+        response_format: Any | None = None,
     ) -> str:
         """Return chat completion text."""
         raise NotImplementedError()

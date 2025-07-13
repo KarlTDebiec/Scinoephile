@@ -95,6 +95,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 {"role": "user", "content": query_prompt},
             ],
             temperature=0,
+            seed=0,
+            response_format={"type": "json_object"},
         )
 
         # Validate answer

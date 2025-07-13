@@ -4,10 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.openai.openai_provider import OpenAiProvider
+from scinoephile.openai.openai_provider import OpenAIProvider
 from scinoephile.openai.openai_service import OpenAiService
 
 __all__ = [
-    "OpenAiProvider",
+    "OpenAIProvider",
     "OpenAiService",
 ]
