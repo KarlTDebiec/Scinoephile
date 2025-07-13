@@ -1,6 +1,6 @@
-# Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
-# and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM provider that uses the OpenAI API."""
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""OpenAI LLM Provider."""
 
 from __future__ import annotations
 
@@ -13,13 +13,13 @@ from scinoephile.core.abcs.llm_provider import LLMProvider
 
 
 class OpenAIProvider(LLMProvider):
-    """Provider using OpenAI chat completions."""
+    """OpenAI LLM Provider."""
 
     def __init__(self, client: OpenAI | None = None):
         """Initialize.
 
         Arguments:
-            client: Optional OpenAI client
+            client: OpenAI client
         """
         self.client = client or OpenAI()
 
@@ -28,10 +28,20 @@ class OpenAIProvider(LLMProvider):
         model: str,
         messages: list[dict[str, Any]],
         temperature: float = 0.0,
-        seed: int | None = None,
+        seed: int = 0,
         response_format: type[Answer] | None = None,
     ) -> str:
-        """Return chat completion text."""
+        """Complete chat message.
+
+        Arguments:
+            model: Model to use for completion
+            messages: Messages to send
+            temperature: Sampling temperature
+            seed: Seed for reproducibility
+            response_format: Response format
+        Returns:
+            Completion text from the model
+        """
         if response_format:
             completion = self.client.beta.chat.completions.parse(
                 model=model,
