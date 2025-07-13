@@ -32,15 +32,15 @@ def _test_get_test_cases_pdp(pdp_yue_hant_simplify: Series, pdp_eng_clean: Serie
     english_start = 0
 
     for hanzi_block, english_block in pair_blocks:
-        hanzi_end = hanzi_start + len(hanzi_block.events)
-        english_end = english_start + len(english_block.events)
+        hanzi_end = hanzi_start + len(hanzi_block)
+        english_end = english_start + len(english_block)
 
         if are_series_one_to_one(hanzi_block, english_block):
             hanzi_start = hanzi_end
             english_start = english_end
             continue
 
-        # if max(len(hanzi_block.events), len(english_block.events)) <= 10:
+        # if max(len(hanzi_block), len(english_block)) <= 10:
         #     hanzi_start = hanzi_end
         #     english_start = english_end
         #     continue

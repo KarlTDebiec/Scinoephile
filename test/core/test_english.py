@@ -25,7 +25,7 @@ def _test_get_english_cleaned(series: Series, expected: Series):
     output = get_english_cleaned(series)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
         if event != expected_event:
             errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
@@ -44,10 +44,10 @@ def _test_get_english_flattened(series: Series, expected: Series):
     """
     output = get_english_flattened(series)
 
-    assert len(series.events) == len(output.events)
+    assert len(series) == len(output)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
         if event.text.count("\n") != 0:
             errors.append(f"Subtitle {i} contains newline")
         if event != expected_event:
