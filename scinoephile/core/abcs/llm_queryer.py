@@ -16,6 +16,7 @@ from pydantic import ValidationError
 from scinoephile.common.validation import validate_output_directory
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
+from scinoephile.openai.openai_provider import OpenAIProvider
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.abcs.test_case import TestCase
 
@@ -38,9 +39,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             examples: Examples of inputs and expected outputs for few-shot learning
             print_test_case: Whether to print test case after merging
             cache_dir_path: Directory in which to cache
-            provider: Provider to use for queries
+            provider: Provider to use for queries, defaults to ``OpenAIProvider``
         """
-        self.provider = provider
+        self.provider = provider or OpenAIProvider()
         self.model = model
         self.print_test_case = print_test_case
 
@@ -96,7 +97,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             ],
             temperature=0,
             seed=0,
-            response_format={"type": "json_object"},
+            response_format=self.answer_cls,
         )
 
         # Validate answer

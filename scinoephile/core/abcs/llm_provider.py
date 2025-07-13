@@ -7,6 +7,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
+from scinoephile.core.abcs.answer import Answer
+
 
 class LLMProvider(ABC):
     """Abstract base class for LLM providers."""
@@ -18,7 +20,7 @@ class LLMProvider(ABC):
         messages: list[dict[str, Any]],
         temperature: float = 0.0,
         seed: int | None = None,
-        response_format: Any | None = None,
+        response_format: type[Answer] | None = None,
     ) -> str:
         """Return chat completion text."""
         raise NotImplementedError()
