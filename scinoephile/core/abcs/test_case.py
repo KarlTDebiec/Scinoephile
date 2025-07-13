@@ -73,9 +73,8 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             - set(self.query_cls.model_fields)
             - set(self.answer_cls.model_fields)
         )
-        for field in cls.model_fields:
-            if field in test_case_fields:
-                lines.append(format_field(field, getattr(self, field)))
+        for field in test_case_fields:
+            lines.append(format_field(field, getattr(self, field)))
 
         lines.append(")")
         return "\n".join(lines)
