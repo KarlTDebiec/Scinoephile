@@ -21,7 +21,7 @@ def get_english_cleaned(series: Series) -> Series:
     """
     series = deepcopy(series)
     new_events = []
-    for event in series.events:
+    for event in series:
         text = _get_english_text_cleaned(event.text.strip())
         if text:
             event.text = text

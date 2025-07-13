@@ -20,7 +20,7 @@ def _test_get_mandarin_romanization(series: Series):
         series: Series with which to test
     """
     output = get_mandarin_romanization(series)
-    assert len(series.events) == len(output.events)
+    assert len(series) == len(output)
 
 
 # get_mandarin_romanization

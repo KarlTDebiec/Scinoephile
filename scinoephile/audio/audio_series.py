@@ -143,7 +143,7 @@ class AudioSeries(Series):
         outfile_path = fp / f"{fp.stem}.wav"
         self.audio.export(outfile_path, format="wav")
         info(f"Saved full audio to {outfile_path}")
-        for i, event in enumerate(self.events, 1):
+        for i, event in enumerate(self, 1):
             outfile_path = fp / f"{i:04d}_{event.start:08d}-{event.end:08d}.wav"
             event.audio.export(outfile_path, format="wav")
             info(f"Saved audio to {outfile_path}")
