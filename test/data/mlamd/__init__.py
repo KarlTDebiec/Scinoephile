@@ -7,7 +7,11 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from scinoephile.audio.testing import MergeTestCase, SplitTestCase
+from scinoephile.audio.testing import (
+    MergeTestCase,
+    ShiftTestCase,
+    SplitTestCase,
+)
 from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
 
@@ -393,6 +397,30 @@ mlamd_merge_test_cases = [
 ]
 """MLAMD 粤文 merging test cases."""
 
+# endregion
+
+# region 粤文 Shifting Test Cases
+mlamd_shift_test_cases: list[ShiftTestCase] = [
+    ShiftTestCase(
+        one_zhongwen="麦太，没见面一阵",
+        one_yuewen="咦，麦太",
+        two_zhongwen="怎么小腿粗起来了？",
+        two_yuewen="咩唔见你一排，个脚刮囊粗咗咁多呀？",
+        one_yuewen_shifted="咦，麦太，咩唔见你一排",
+        two_yuewen_shifted="个脚刮囊粗咗咁多呀？",
+        include_in_prompt=True,
+    ),
+    ShiftTestCase(
+        one_zhongwen="可怜呀，每天扑来扑去⋯",
+        one_yuewen="鬼咩⋯",
+        two_zhongwen="替儿子找幼稚园",
+        two_yuewen="日日扑嚟扑去同我仔揾幼稚园吖嘛！",
+        one_yuewen_shifted="鬼咩，日日扑嚟扑去⋯",
+        two_yuewen_shifted="同我仔揾幼稚园吖嘛！",
+        include_in_prompt=True,
+    ),
+]
+"""MLAMD 粤文 shifting test cases."""
 
 # endregion
 
@@ -407,5 +435,6 @@ ___all__ = [
     "mlamd_eng_image",
     "mlamd_eng_validation_directory",
     "mlamd_merge_test_cases",
+    "mlamd_shift_test_cases",
     "mlamd_split_test_cases",
 ]
