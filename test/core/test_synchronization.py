@@ -70,9 +70,7 @@ def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
     assert len(bilingual.events) == len(expected.events)
 
     errors = []
-    for i, (event, expected_event) in enumerate(
-        zip(bilingual.events, expected.events), 1
-    ):
+    for i, (event, expected_event) in enumerate(zip(bilingual, expected), 1):
         if event != expected_event:
             errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 

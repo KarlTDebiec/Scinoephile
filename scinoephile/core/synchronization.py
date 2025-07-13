@@ -117,7 +117,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     if len(one.events) == 0:
         return []
     if len(two.events) == 0:
-        return [([i], []) for i in range(len(one.events))]
+        return [([i], []) for i in range(len(one))]
 
     overlap = get_sync_overlap_matrix(one, two)
     debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
@@ -146,10 +146,10 @@ def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
         values are the proportion of each subtitle in series two which overlaps with
         each subtitle in series one.
     """
-    one_mu = np.array([e.start + (e.end - e.start) / 2 for e in one.events])
-    one_sigma = np.array([(e.end - e.start) / 4 for e in one.events])
-    two_mu = np.array([e.start + (e.end - e.start) / 2 for e in two.events])
-    two_sigma = np.array([(e.end - e.start) / 4 for e in two.events])
+    one_mu = np.array([e.start + (e.end - e.start) / 2 for e in one])
+    one_sigma = np.array([(e.end - e.start) / 4 for e in one])
+    two_mu = np.array([e.start + (e.end - e.start) / 2 for e in two])
+    two_sigma = np.array([(e.end - e.start) / 4 for e in two])
 
     mu_diff_sq = (one_mu[:, np.newaxis] - two_mu[np.newaxis, :]) ** 2
     sigma_sq_sum = one_sigma[:, np.newaxis] ** 2 + two_sigma[np.newaxis, :] ** 2
@@ -306,31 +306,31 @@ def _get_sync_groups(
 ) -> list[SyncGroup]:
     sync_groups = []
 
-    for i in range(len(one.events)):
+    for i in range(len(one)):
         scale = np.max(overlap[i])
-        for j in range(len(two.events)):
+        for j in range(len(two)):
             if overlap[i, j] / scale < cutoff:
                 overlap[i, j] = 0
-    for j in range(len(two.events)):
+    for j in range(len(two)):
         scale = np.max(overlap[:, j])
         if scale > 0:
-            for i in range(len(one.events)):
+            for i in range(len(one)):
                 if overlap[i, j] / scale < cutoff:
                     overlap[i, j] = 0
 
     debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
-    available_is = set(range(len(one.events)))
-    available_js = set(range(len(two.events)))
+    available_is = set(range(len(one)))
+    available_js = set(range(len(two)))
 
     nonzero = np.argwhere(overlap)
 
     js_that_match_each_i = {}
-    for i in range(len(one.events)):
+    for i in range(len(one)):
         js_that_match_each_i[i] = sorted(nonzero[nonzero[:, 0] == i, 1])
 
     is_that_match_each_j = {}
-    for j in range(len(two.events)):
+    for j in range(len(two)):
         is_that_match_each_j[j] = sorted(nonzero[nonzero[:, 1] == j, 0])
 
     for i, js_that_match_this_i in js_that_match_each_i.items():

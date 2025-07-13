@@ -90,7 +90,7 @@ class ImageSeries(Series):
             info(f"Created directory {fp}")
 
         # Save images
-        for i, event in enumerate(self.events, 1):
+        for i, event in enumerate(self, 1):
             outfile_path = fp / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
             event.img.save(outfile_path)
             info(f"Saved image to {outfile_path}")
@@ -180,7 +180,7 @@ class ImageSeries(Series):
         * Tested images used a 16-color palette.
         """
         hist = np.zeros(256, dtype=np.uint64)
-        for subtitle in self.events:
+        for subtitle in self:
             grayscale = subtitle.arr[:, :, 0]
             alpha = subtitle.arr[:, :, 1]
             mask = alpha != 0

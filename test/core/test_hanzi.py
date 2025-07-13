@@ -28,7 +28,7 @@ def _test_get_hanzi_cleaned(series: Series, expected: Series):
     output = get_hanzi_cleaned(series)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
         if event != expected_event:
             errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
@@ -49,7 +49,7 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
     assert len(series.events) == len(output.events)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
         if event.text.count("\n") != 0:
             errors.append(f"Subtitle {i} contains newline")
         if event != expected_event:
@@ -72,7 +72,7 @@ def _test_get_hanzi_converted(series: Series, expected: Series = None):
     assert len(series.events) == len(output.events)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output.events, expected.events), 1):
+    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
         if event != expected_event:
             errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 

@@ -41,7 +41,7 @@ class Series(SSAFile):
         if len(self.events) != len(other.events):
             return False
 
-        for self_event, other_event in zip(self.events, other.events):
+        for self_event, other_event in zip(self, other):
             if self_event != other_event:
                 return False
 
@@ -128,7 +128,7 @@ class Series(SSAFile):
             duration = self.events[-1].end - self.events[0].start
 
         string = ""
-        for i, event in enumerate(self.events, 1):
+        for i, event in enumerate(self, 1):
             text = event.text.replace("\n", " ")
             string += (
                 f"{i:2d} | "
@@ -158,8 +158,7 @@ class Series(SSAFile):
         """
         series = super().from_string(string, format_=format_, fps=fps, **kwargs)
         series.events = [
-            cls.event_class(series=series, **ssaevent.as_dict())
-            for ssaevent in series.events
+            cls.event_class(series=series, **ssaevent.as_dict()) for ssaevent in series
         ]
 
         return series
@@ -188,7 +187,7 @@ class Series(SSAFile):
             series = cls.from_file(fp, format_=format_, **kwargs)
             series.events = [
                 cls.event_class(series=series, **ssaevent.as_dict())
-                for ssaevent in series.events
+                for ssaevent in series
             ]
 
         info(f"Loaded series from {validated_path}")
