@@ -117,9 +117,7 @@ class AudioSeries(Series):
             New sliced series
         """
         sliced = super().slice(start_idx, end_idx)
-        sliced.audio = self.audio[
-            self.events[start_idx].start : self.events[end_idx - 1].end
-        ]
+        sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
         return sliced
 
     def _save_wav(self, fp: Path, **kwargs: Any) -> None:

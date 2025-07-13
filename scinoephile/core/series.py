@@ -107,7 +107,7 @@ class Series(SSAFile):
             Sliced series
         """
         sliced = type(self)()
-        sliced.events = self.events[start:end]
+        sliced.events = self[start:end]
         return sliced
 
     def to_simple_string(self, start: int | None = None, duration: int | None = None):
@@ -123,9 +123,9 @@ class Series(SSAFile):
             return ""
 
         if start is None:
-            start = self.events[0].start
+            start = self[0].start
         if duration is None:
-            duration = self.events[-1].end - self.events[0].start
+            duration = self[-1].end - self[0].start
 
         string = ""
         for i, event in enumerate(self, 1):

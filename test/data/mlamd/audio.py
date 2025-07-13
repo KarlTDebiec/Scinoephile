@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
         # Merge segments into a series
         yuewen_series = get_series_from_segments(
-            converted_segments, offset=block.events[0].start
+            converted_segments, offset=block[0].start
         )
 
         # Sync segments with the corresponding 中文 subtitles

@@ -204,8 +204,8 @@ def get_synced_series_from_groups(
     synced = Series()
 
     for group in groups:
-        one_events = [one.events[i] for i in group[0]]
-        two_events = [two.events[i] for i in group[1]]
+        one_events = [one[i] for i in group[0]]
+        two_events = [two[i] for i in group[1]]
 
         # One to zero mapping
         if len(one_events) == 1 and len(two_events) == 0:
