@@ -1,6 +1,6 @@
-# Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
-# and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Answer for translating README files."""
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Answer for README translation."""
 
 from __future__ import annotations
 
@@ -10,6 +10,6 @@ from scinoephile.core.abcs import Answer
 
 
 class ReadmeTranslationAnswer(Answer):
-    """Answer for translating README files."""
+    """Answer for README translation."""
 
-    readme: str = Field(..., description="Translated README in Markdown.")
+    updated_chinese: str = Field(..., description="Updated Chinese README.")
