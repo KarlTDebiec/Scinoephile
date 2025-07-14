@@ -3,9 +3,11 @@
 ## Tools
 
 * This repository uses `uv`. Use `uv run` when executing tools.
-* Formatting: `uv run ruff format`
-* Linting: `uv run ruff check`
-* Type checking: `uv run pyright`
+* Run the following checks on **only the Python files you changed**:
+  1. `uv run ruff check --extend-select I --fix`
+  2. `uv run ruff format`
+  3. `uv run ruff check --fix`
+  4. `uv run pyright`
 * Testing: `uv run pytest`
 
 ## Code Style
