@@ -33,9 +33,3 @@
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank link between the "Arguments:" and "Returns:" sections.
 
-## Dependencies
-
-* When adding a new dependency:
-    * Update `pyproject.toml`
-    * Update `scripts/conda_scinoephile.sh` and `scripts/conda_scinoephile.ps1`
-    * Keep dependencies in both places alphabetized
