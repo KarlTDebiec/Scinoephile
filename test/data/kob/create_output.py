@@ -21,7 +21,7 @@ if __name__ == "__main__":
     output_dir = test_data_root / "kob" / "output"
     set_logging_verbosity(2)
 
-    # Simplified Cantonese Chinese
+    # 简体粵文
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_clean = get_hanzi_cleaned(yue_hans)
     yue_hans_clean.save(output_dir / "yue-Hans_clean.srt")
@@ -30,9 +30,9 @@ if __name__ == "__main__":
     yue_hans_clean_flatten = get_hanzi_flattened(yue_hans_clean)
     yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
 
-    # Traditional Cantonese Chinese
+    # 繁體粵文
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
-    yue_hant_simplify = get_hanzi_converted(yue_hant, OpenCCConfig.t2s)
+    yue_hant_simplify = get_hanzi_converted(yue_hant, OpenCCConfig.hk2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
     # English
@@ -44,6 +44,6 @@ if __name__ == "__main__":
     eng_clean_flatten = get_english_flattened(eng_clean)
     eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
-    # Bilingual Simplified Cantonese Chinese and English
+    # Bilingual 简体粵文 and English
     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
