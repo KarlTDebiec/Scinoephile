@@ -3,9 +3,10 @@
 ## Tools
 
 * This repository uses `uv`. Use `uv run` when executing tools.
-* Formatting: `uv run ruff format`
-* Linting: `uv run ruff check`
-* Type checking: `uv run pyright`
+* Run the following checks on **only the Python files you have changed or been asked to**:
+  1. `uv run ruff format`
+  2. `uv run ruff check --fix`
+  3. `uv run pyright`
 * Testing: `uv run pytest`
 
 ## Code Style
@@ -26,10 +27,9 @@
 ## Documentation
 
 * Use Markdown for formatting.
-* Do **not** include any reStructuredText markup.
+* Do **not** include any reStructuredText markup such as double backticks.
 * Provide docstrings for all classes and functions, including internal helpers prefixed
   with an underscore.
 * Format docstrings using Google style, with the following tweaks.
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank link between the "Arguments:" and "Returns:" sections.
-
