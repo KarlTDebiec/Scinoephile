@@ -18,17 +18,22 @@ from scinoephile.translation.models import ReadmeTranslationQuery
 def split_readme(readme_text: str) -> tuple[str, str]:
     """Split README into header and body.
 
-    The header includes badges and language links, ending at the first empty line
-    before real content begins.
+    The header includes badges and language links, ending at the line that starts with
+    '[English](README.md)'.
     """
+    header_lines = []
     lines = readme_text.splitlines()
-    for i, line in enumerate(lines):
-        if line.strip() == "":
-            for j in range(i + 1, len(lines)):
-                if lines[j].strip() != "":
-                    return "\n".join(lines[:j]) + "\n\n", "\n".join(lines[j:])
+
+    for line in lines:
+        header_lines.append(line)
+        if line.startswith("[English](README.md)"):
             break
-    return "", readme_text
+
+    body_start = len(header_lines)
+    header = "\n".join(header_lines) + "\n\n"
+    body = "\n".join(lines[body_start:])
+
+    return header, body
 
 
 def main() -> None:
@@ -41,49 +46,36 @@ def main() -> None:
 
     # English
     english_path = repo_root / "README.md"
-    english_updated = english_path.read_text(encoding="utf-8")
+    complete_english = english_path.read_text(encoding="utf-8")
+    header, updated_english = split_readme(complete_english)
 
-    # 繁體中文
-    zw_trad_path = repo_root / "README.zh-hant.md"
-    info(f"Updating {zw_trad_path.name}")
-    zw_trad_outdated = zw_trad_path.read_text(encoding="utf-8")
-    zh_trad_updated = translator(
-        ReadmeTranslationQuery(
-            updated_english=english_updated,
-            outdated_chinese=zw_trad_outdated,
-            language="zhongwen",
+    # Chinese
+    for language, iso_code in [("zhongwen", "zh"), ("yuewen", "yue")]:
+        trad_path = repo_root / f"README.{iso_code}-hant.md"
+        info(f"Updating {trad_path.name}")
+        complete_trad_chinese = trad_path.read_text(encoding="utf-8")
+        _, outdated_trad_chinese = split_readme(complete_trad_chinese)
+        updated_trad_chinese = translator(
+            ReadmeTranslationQuery(
+                updated_english=updated_english,
+                outdated_chinese=outdated_trad_chinese,
+                language=language,
+            )
+        ).updated_chinese
+        trad_path.write_text(
+            (header + updated_trad_chinese).rstrip() + "\n", encoding="utf-8"
         )
-    ).updated_chinese
-    zw_trad_path.write_text(zh_trad_updated.rstrip() + "\n", encoding="utf-8")
-    info(f"Updated {zw_trad_path.name}")
+        info(f"Updated {trad_path.name}")
 
-    # 繁體粵文
-    yw_trad_path = repo_root / "README.yue-hant.md"
-    info(f"Updating {yw_trad_path.name}")
-    yue_trad_outdated = yw_trad_path.read_text(encoding="utf-8")
-    yue_trad_updated = translator(
-        ReadmeTranslationQuery(
-            updated_english=english_updated,
-            outdated_chinese=yue_trad_outdated,
-            language="yuewen",
+        simp_path = repo_root / f"README.{iso_code}-hans.md"
+        info(f"Updating {simp_path.name}")
+        updated_simp_chinese = get_hanzi_converter(OpenCCConfig.t2s).convert(
+            updated_trad_chinese
         )
-    ).updated_chinese
-    yw_trad_path.write_text(yue_trad_updated.rstrip() + "\n", encoding="utf-8")
-    info(f"Updated {yw_trad_path.name}")
-
-    # 简体中文
-    zw_simp_path = repo_root / "README.zh-hans.md"
-    info(f"Updating {zw_simp_path.name}")
-    zw_simp_updated = get_hanzi_converter(OpenCCConfig.t2s).convert(zh_trad_updated)
-    zw_simp_path.write_text(zw_simp_updated.rstrip() + "\n", encoding="utf-8")
-    info(f"Updated {zw_simp_path.name}")
-
-    # 简体粵文
-    yw_simp_path = repo_root / "README.yue-hans.md"
-    info(f"Updating {yw_simp_path.name}")
-    yw_simp_updated = get_hanzi_converter(OpenCCConfig.hk2s).convert(yue_trad_updated)
-    yw_simp_path.write_text(yw_simp_updated.rstrip() + "\n", encoding="utf-8")
-    info(f"Updated {yw_simp_path.name}")
+        simp_path.write_text(
+            (header + updated_simp_chinese).rstrip() + "\n", encoding="utf-8"
+        )
+        info(f"Updated {simp_path.name}")
 
 
 if __name__ == "__main__":
