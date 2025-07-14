@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from scinoephile.audio.models.merge_answer import MergeAnswer
 from scinoephile.audio.models.merge_query import MergeQuery
+from scinoephile.audio.models.proofread_answer import ProofreadAnswer
+from scinoephile.audio.models.proofread_query import ProofreadQuery
 from scinoephile.audio.models.shift_answer import ShiftAnswer
 from scinoephile.audio.models.shift_query import ShiftQuery
 from scinoephile.audio.models.split_answer import SplitAnswer
@@ -16,6 +18,8 @@ from scinoephile.audio.models.transcribed_word import TranscribedWord
 __all__ = [
     "MergeAnswer",
     "MergeQuery",
+    "ProofreadAnswer",
+    "ProofreadQuery",
     "ShiftAnswer",
     "ShiftQuery",
     "SplitAnswer",
