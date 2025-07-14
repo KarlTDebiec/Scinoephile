@@ -25,7 +25,7 @@ def _test_get_cantonese_romanization(series: Series):
 
 # get_cantonese_romanization
 def test_get_cantonese_romanization_kob(kob_yue_hant: Series):
-    """Test get_cantonese_romanization with KOB 繁体粤文 subtitles.
+    """Test get_cantonese_romanization with KOB 繁体粵文 subtitles.
 
     Arguments:
         kob_yue_hant: KOB 繁体粤文 series fixture
