@@ -424,6 +424,13 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
 
 # endregion
 
+
+# region 粤文 Proofreading Test Cases
+
+mlamd_proofread_test_cases = []
+
+# endregion
+
 ___all__ = [
     "mlamd_zho_hans",
     "mlamd_zho_hans_image",
@@ -437,4 +444,5 @@ ___all__ = [
     "mlamd_merge_test_cases",
     "mlamd_shift_test_cases",
     "mlamd_split_test_cases",
+    "mlamd_proofread_test_cases",
 ]

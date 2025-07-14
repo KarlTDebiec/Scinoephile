@@ -2,6 +2,8 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Tests of scinoephile.audio.transcription.CantoneseSplitter."""
 
+from __future__ import annotations
+
 import pytest
 
 from scinoephile.audio.testing import SplitTestCase
@@ -39,7 +41,7 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
 
 
 @pytest.mark.parametrize(
-    "splitter_fixture_name",
+    "fixture_name",
     [
         skip_if_ci()("cantonese_splitter_few_shot"),
         skip_if_ci(flaky())("cantonese_splitter_zero_shot"),
@@ -47,14 +49,14 @@ def _test_split(cantonese_splitter: CantoneseSplitter, test_case: SplitTestCase)
 )
 @pytest.mark.parametrize("test_case", mlamd_split_test_cases)
 def test_split_mlamd(
-    request: pytest.FixtureRequest, splitter_fixture_name: str, test_case: SplitTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: SplitTestCase
 ):
     """Test CantoneseSplitter with MLAMD test cases.
 
     Arguments:
         request: Pytest fixture request
-        splitter_fixture_name: Name of CantoneseSplitter fixture with which to test
+        fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    splitter: CantoneseSplitter = request.getfixturevalue(splitter_fixture_name)
+    splitter: CantoneseSplitter = request.getfixturevalue(fixture_name)
     _test_split(splitter, test_case)
