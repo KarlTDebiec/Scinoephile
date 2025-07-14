@@ -44,7 +44,10 @@ class ReadmeTranslator(
         Use the updated English README as the source of truth.
         When appropriate, reference the out-of-date Chinese README to guide style and
         terminology.
-        Use traditional Chinese characters.
+        You must respect the Chinese language variant specified in the 'language' field.
+        This value may be:
+        - "zhongwen": Mandarin Chinese using traditional characters (繁體中文)
+        - "yuewen": Cantonese using traditional characters (繁體粵文)
         Your response must be a JSON object with the following structure:
         """
 

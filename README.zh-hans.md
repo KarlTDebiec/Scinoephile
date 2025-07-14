@@ -5,4 +5,4 @@
 
 [English](README.md) | [繁體中文](README.zh-hant.md) | [简体中文](README.zh-hans.md) | [繁體粵文](README.yue-hant.md) | [简体粵文](README.yue-hans.md)
 
-Scinoephile 是一个用于处理中英文双语字幕的软件包，重点在于将分开的中文和英文字幕合成为同步的双语字幕。
+Scinoephile 是一个用于处理中英文双语字幕的套件，重点在于将分开的中文和英文字幕合并为同步的双语字幕。
