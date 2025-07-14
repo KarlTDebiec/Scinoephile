@@ -24,14 +24,15 @@ from scinoephile.openai.openai_provider import OpenAIProvider
 class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """Abstract base class for LLM queryers."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         model: str = "gpt-4.1",
         examples: list[TTestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
-    ):
+        max_attempts: int = 3,
+    ) -> None:
         """Initialize.
 
         Arguments:
@@ -40,10 +41,12 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             print_test_case: Whether to print test case after merging
             cache_dir_path: Directory in which to cache
             provider: Provider to use for queries
+            max_attempts: Maximum number of query attempts
         """
         self.provider = provider or OpenAIProvider()
         self.model = model
         self.print_test_case = print_test_case
+        self.max_attempts = max_attempts
 
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
@@ -88,40 +91,66 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     print(test_case.to_source())
                 return answer
 
-        # Query provider
-        content = self.provider.chat_completion(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": query_prompt},
-            ],
-            temperature=0,
-            seed=0,
-            response_format=self.answer_cls,
-        )
+        # Query provider with retries
+        answer: TAnswer | None = None
+        test_case: TTestCase | None = None
 
-        # Validate answer
-        try:
-            answer = self.answer_cls.model_validate_json(content)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid content:\n{content}")
-            raise exc
-            # TODO: Try again if response is not valid
-        try:
-            test_case = self.test_case_cls.from_query_and_answer(query, answer)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid answer:\n{answer}")
-            raise exc
-            # TODO: Try again if response is not valid
+        for attempt in range(1, self.max_attempts + 1):
+            try:
+                content = self.provider.chat_completion(
+                    model=self.model,
+                    messages=[
+                        {"role": "system", "content": self.system_prompt},
+                        {"role": "user", "content": query_prompt},
+                    ],
+                    temperature=0,
+                    seed=0,
+                    response_format=self.answer_cls,
+                )
+            except Exception as exc:  # noqa: BLE001
+                error(f"Attempt {attempt} failed: {exc}")
+                if attempt >= self.max_attempts:
+                    raise
+                continue
+
+            try:
+                answer = self.answer_cls.model_validate_json(content)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid content (attempt {attempt}):\n{content}"
+                )
+                if attempt >= self.max_attempts:
+                    raise exc
+                continue
+
+            try:
+                test_case = self.test_case_cls.from_query_and_answer(query, answer)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid answer (attempt {attempt}):\n{answer}"
+                )
+                if attempt >= self.max_attempts:
+                    raise exc
+                continue
+
+            break
+
+        if answer is None or test_case is None:
+            raise RuntimeError("Unable to obtain valid answer")
+
         if self.print_test_case:
             print(test_case.to_source())
-
-        # Update cache
         if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
-                json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
+                json.dump(
+                    answer.model_dump(),
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                )
                 info(f"Saved to cache: {cache_path}")
-
         return answer
 
     @property
