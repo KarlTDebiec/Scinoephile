@@ -4,6 +4,4 @@
 [![License: BSD 3-Clause](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [English](README.md) | [简体中文](README.zh-hans.md) | [繁體中文](README.zh-hant.md) | [繁體粵文](README.yue-hant.md) | [简体粵文](README.yue-hans.md)
 
-Scinoephile 係一個用嚟處理中英文雙語字幕嘅套件，
-重點係將分開嘅中文同英文字幕結合成
-同步嘅雙語字幕。
+Scinoephile 係一個用嚟處理中英文雙語字幕嘅套件，重點係將分開嘅中文同英文字幕結合成同步嘅雙語字幕。
