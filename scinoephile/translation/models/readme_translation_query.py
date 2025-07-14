@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import Field
 
 from scinoephile.core.abcs import Query
@@ -14,4 +16,6 @@ class ReadmeTranslationQuery(Query):
 
     updated_english: str = Field(..., description="Updated English README.")
     outdated_chinese: str = Field(..., description="Out-of-date Chinese README.")
-    language: str = Field(..., description="Target language: 'zhongwen' or 'yuewen'.")
+    language: Literal["zhongwen", "yuewen"] = Field(
+        ..., description="Target language: 'zhongwen' or 'yuewen'."
+    )
