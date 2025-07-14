@@ -82,10 +82,16 @@ class ScinoephileCli(CommandLineInterface):
             help="flatten multi-line subtitles into single lines",
         )
         arg_groups["operation arguments"].add_argument(
-            "-s",
-            "--simplify",
-            action="store_true",
-            help="convert traditional Hanzi characters to simplified",
+            "--convert",
+            metavar="CONFIG",
+            nargs="?",
+            const=OpenCCConfig.t2s,
+            default=None,
+            type=OpenCCConfig,
+            help=(
+                "convert Hanzi characters using specified OpenCC configuration"
+                " (default: t2s)"
+            ),
         )
 
         # Output arguments
@@ -145,8 +151,8 @@ class ScinoephileCli(CommandLineInterface):
             english = get_english_flattened(english)
         if "flatten_hanzi" in operations:
             hanzi = get_hanzi_flattened(hanzi)
-        if "simplify_hanzi" in operations:
-            hanzi = get_hanzi_converted(hanzi, OpenCCConfig.t2s)
+        if "convert_hanzi" in operations:
+            hanzi = get_hanzi_converted(hanzi, operations["convert_hanzi"])
         if "sync_bilingual" in operations:
             bilingual = get_synced_series(hanzi, english)
 
@@ -179,19 +185,19 @@ class ScinoephileCli(CommandLineInterface):
         clean: bool = False,
         flatten: bool = False,
         overwrite: bool = False,
-        simplify: bool = False,
+        convert: OpenCCConfig | None = None,
     ) -> dict[str, Any]:
         """Determine operations to be performed based on provided arguments.
 
         Examples of valid argument combinations and their corresponding actions:
 
-        bif bof eif eof cif cof f   s   Actions
+        bif bof eif eof cif cof f   c   Actions
         --- --- --- --- --- --- --- --- ------------------------------------------------
         0   1   1   0   1   0   1   1   load_english, load_hanzi, flatten_english,
-                                        flatten_hanzi, simplify_hanzi, sync_bilingual,
+                                        flatten_hanzi, convert_hanzi, sync_bilingual,
                                         save_bilingual
         0   0   1   1   0   0   1   0   load_english, flatten_english, save_english
-        0   0   0   0   1   1   1   1   load_hanzi, flatten_hanzi, simplify_hanzi,
+        0   0   0   0   1   1   1   1   load_hanzi, flatten_hanzi, convert_hanzi,
                                         save_hanzi
 
         Arguments:
@@ -204,7 +210,7 @@ class ScinoephileCli(CommandLineInterface):
             clean: Clean subtitles of closed-caption annotations and other anomalies
             flatten: Flatten multi-line subtitles into single lines
             overwrite: Overwrite outfiles if they exist
-            simplify: Convert traditional Hanzi characters to simplified
+            convert: OpenCC configuration for Hanzi conversion
         Returns:
             dictionary whose keys are operations to be performed and whose values are
             the arguments to be passed to the corresponding functions, if applicable
@@ -255,10 +261,10 @@ class ScinoephileCli(CommandLineInterface):
                 operations["flatten_english"] = True
             if hanzi_infile and (bilingual_outfile or hanzi_outfile):
                 operations["flatten_hanzi"] = True
-        if simplify:
+        if convert is not None:
             if not hanzi_infile or bilingual_infile:
-                cls.argparser().error("Hanzi infile required for simplify")
-            operations["simplify_hanzi"] = True
+                cls.argparser().error("Hanzi infile required for convert")
+            operations["convert_hanzi"] = convert
         if "save_bilingual" in operations and "load_bilingual" not in operations:
             if "load_english" not in operations and "load_hanzi" not in operations:
                 cls.argparser().error(

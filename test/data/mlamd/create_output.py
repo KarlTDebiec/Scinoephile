@@ -17,7 +17,7 @@ if __name__ == "__main__":
     output_dir = test_data_root / "mlamd" / "output"
     set_logging_verbosity(2)
 
-    # Simplified Standard Chinese
+    # 简体中文
     zho_hans = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
     zho_hans = get_hanzi_cleaned(zho_hans)
     zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         False,
     ).validate()
 
-    # Traditional Standard Chinese
+    # 繁體中文
     zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")
     zho_hant = get_hanzi_cleaned(zho_hant)
     zho_hant = get_hanzi_flattened(zho_hant)
@@ -46,6 +46,6 @@ if __name__ == "__main__":
     eng = get_english_flattened(eng)
     eng.save(output_dir / "eng" / "eng.srt")
 
-    # Bilingual Simplified Standard Chinese and English
+    # Bilingual 简体中文 and English
     zho_hans_eng = get_synced_series(zho_hans, eng)
     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")

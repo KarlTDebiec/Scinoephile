@@ -61,14 +61,15 @@ def _test_get_hanzi_flattened(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_hanzi_converted(series: Series, expected: Series = None):
+def _test_get_hanzi_converted(series: Series, config: OpenCCConfig, expected):
     """Test get_hanzi_converted.
 
     Arguments:
         series: Series with which to test
+        config: OpenCCConfig for conversion
         expected: Expected output series
     """
-    output = get_hanzi_converted(series)
+    output = get_hanzi_converted(series, config)
     assert len(series) == len(output)
 
     errors = []
@@ -181,7 +182,7 @@ def test_get_hanzi_converted_kob(kob_yue_hant: Series, kob_yue_hant_simplify: Se
         kob_yue_hant: KOB 繁体粤文 series fixture
         kob_yue_hant_simplify: Expected simplified KOB 繁体粤文 series fixture
     """
-    _test_get_hanzi_converted(kob_yue_hant, kob_yue_hant_simplify)
+    _test_get_hanzi_converted(kob_yue_hant, OpenCCConfig.hk2s, kob_yue_hant_simplify)
 
 
 def test_get_hanzi_converted_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Series):
@@ -191,7 +192,7 @@ def test_get_hanzi_converted_mnt(mnt_zho_hant: Series, mnt_zho_hant_simplify: Se
         mnt_zho_hant: MNT 繁体中文 series fixture
         mnt_zho_hant_simplify: Expected simplified MNT 繁体中文 series fixture
     """
-    _test_get_hanzi_converted(mnt_zho_hant, mnt_zho_hant_simplify)
+    _test_get_hanzi_converted(mnt_zho_hant, OpenCCConfig.t2s, mnt_zho_hant_simplify)
 
 
 def test_get_hanzi_converted_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Series):
@@ -201,7 +202,7 @@ def test_get_hanzi_converted_pdp(pdp_yue_hant: Series, pdp_yue_hant_simplify: Se
         pdp_yue_hant: PDP 繁体粤文 series fixture
         pdp_yue_hant_simplify: Expected simplified PDP 繁体粤文 series fixture
     """
-    _test_get_hanzi_converted(pdp_yue_hant, pdp_yue_hant_simplify)
+    _test_get_hanzi_converted(pdp_yue_hant, OpenCCConfig.hk2s, pdp_yue_hant_simplify)
 
 
 def test_get_hanzi_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
@@ -211,7 +212,7 @@ def test_get_hanzi_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
         t_zho_hant: T 繁体中文 series fixture
         t_zho_hant_simplify: Expected simplified T 繁体中文 series fixture
     """
-    _test_get_hanzi_converted(t_zho_hant, t_zho_hant_simplify)
+    _test_get_hanzi_converted(t_zho_hant, OpenCCConfig.t2s, t_zho_hant_simplify)
 
 
 # endregion

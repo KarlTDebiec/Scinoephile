@@ -20,7 +20,7 @@ if __name__ == "__main__":
     output_dir = test_data_root / "mnt" / "output"
     set_logging_verbosity(2)
 
-    # Traditional Cantonese Chinese
+    # 繁體中文
     zho_hant = Series.load(input_dir / "zho-Hant.srt")
     zho_hant_clean = get_hanzi_cleaned(zho_hant)
     zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
@@ -44,6 +44,6 @@ if __name__ == "__main__":
     eng_clean_flatten = get_english_flattened(eng_clean)
     eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
-    # Bilingual Simplified Cantonese Chinese and English
+    # Bilingual 简体中文 and English
     zho_hans_eng = get_synced_series(zho_hant_clean_flatten_simplify, eng_clean_flatten)
     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")

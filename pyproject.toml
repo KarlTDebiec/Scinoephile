@@ -30,6 +30,9 @@ dependencies = [
     "whisper-timestamped>=1.15.8",
 ]
 
+[project.scripts]
+scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
+
 [dependency-groups]
 dev = [
     "pyright>=1.1.396",
