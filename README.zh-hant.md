@@ -5,6 +5,4 @@
 
 [English](README.md) | [简体中文](README.zh-hans.md) | [繁體中文](README.zh-hant.md) | [繁體粵文](README.yue-hant.md) | [简体粵文](README.yue-hans.md)
 
-Scinoephile is a package for working with Chinese/English bilingual subtitles, with a 
-focus on combining separate Chinese and English subtitles into synchronized bilingual
-subtitles.
+Scinoephile 是一個用於處理中英文雙語字幕的軟件包，重點在於將分開的中文和英文字幕合成為同步的雙語字幕。
