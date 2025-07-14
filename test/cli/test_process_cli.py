@@ -78,7 +78,7 @@ def test_english(
         (
             (ScinoephileCli,),
             "pdp/input/zho-Hant.srt",
-            "--simplify",
+            "--convert",
             "pdp/output/zho-Hant_simplify.srt",
         ),
     ],
@@ -122,7 +122,7 @@ def test_chinese(
             (ScinoephileCli,),
             "pdp/input/yue-Hant.srt",
             "pdp/input/eng.srt",
-            "--clean --simplify",
+            "--clean --convert",
             "pdp/output/yue-Hans_eng.srt",
         ),
     ],

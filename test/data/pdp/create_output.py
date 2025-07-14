@@ -8,6 +8,7 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
+    OpenCCConfig,
     get_hanzi_cleaned,
     get_hanzi_converted,
     get_hanzi_flattened,
@@ -26,7 +27,7 @@ if __name__ == "__main__":
     zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
     zho_hant_flatten = get_hanzi_flattened(zho_hant)
     zho_hant_flatten.save(output_dir / "zho-Hant_flatten.srt")
-    zho_hant_simplify = get_hanzi_converted(zho_hant)
+    zho_hant_simplify = get_hanzi_converted(zho_hant, OpenCCConfig.t2s)
     zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
 
     # Traditional Cantonese Chinese
@@ -35,10 +36,11 @@ if __name__ == "__main__":
     yue_hant_clean.save(output_dir / "yue-Hant_clean.srt")
     yue_hant_flatten = get_hanzi_flattened(yue_hant)
     yue_hant_flatten.save(output_dir / "yue-Hant_flatten.srt")
-    yue_hant_simplify = get_hanzi_converted(yue_hant)
+    yue_hant_simplify = get_hanzi_converted(yue_hant, OpenCCConfig.t2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
     yue_hant_clean_flatten_simplify = get_hanzi_converted(
-        get_hanzi_flattened(yue_hant_clean)
+        get_hanzi_flattened(yue_hant_clean),
+        OpenCCConfig.t2s,
     )
     yue_hant_clean_flatten_simplify.save(
         output_dir / "yue-Hant_clean_flatten_simplify.srt"

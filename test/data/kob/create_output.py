@@ -8,6 +8,7 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
+    OpenCCConfig,
     get_hanzi_cleaned,
     get_hanzi_converted,
     get_hanzi_flattened,
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     # Traditional Cantonese Chinese
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
-    yue_hant_simplify = get_hanzi_converted(yue_hant)
+    yue_hant_simplify = get_hanzi_converted(yue_hant, OpenCCConfig.t2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
     # English

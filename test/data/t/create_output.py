@@ -8,6 +8,7 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.hanzi import (
+    OpenCCConfig,
     get_hanzi_cleaned,
     get_hanzi_converted,
     get_hanzi_flattened,
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     # Traditional Standard Chinese
     zho_hant = Series.load(input_dir / "zho-Hant.srt")
-    zho_hant_simplify = get_hanzi_converted(zho_hant)
+    zho_hant_simplify = get_hanzi_converted(zho_hant, OpenCCConfig.t2s)
     zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
 
     # English
