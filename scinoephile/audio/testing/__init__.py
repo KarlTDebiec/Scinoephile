@@ -10,8 +10,8 @@ from scinoephile.audio.testing.shift_test_case import ShiftTestCase
 from scinoephile.audio.testing.split_test_case import SplitTestCase
 
 __all__ = [
-    "ShiftTestCase",
-    "SplitTestCase",
     "MergeTestCase",
     "ProofreadTestCase",
+    "ShiftTestCase",
+    "SplitTestCase",
 ]

@@ -1,5 +1,5 @@
-# Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
-# and distributed under the terms of the BSD license. See the LICENSE file for details.
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Proofreads 粤文 subtitles based on 中文."""
 
 from __future__ import annotations
@@ -22,7 +22,10 @@ class CantoneseProofreader(
     @property
     def answer_example(self) -> ProofreadAnswer:
         """Example answer."""
-        return ProofreadAnswer(yuewen_proofread="粤文校对", note="")
+        return ProofreadAnswer(
+            yuewen_proofread="我哋要盡快走",
+            note="Replaced '我地' with '我哋' to follow standard written Cantonese.",
+        )
 
     @property
     def answer_template(self) -> str:
@@ -33,8 +36,8 @@ class CantoneseProofreader(
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are a helpful assistant that proofreads a single-line 粤文 subtitle of
-        spoken Cantonese based on the corresponding single-line 中文 subtitle.
+        You are a helpful assistant that proofreads 粤文 text of spoken Cantonese based
+        on the corresponding 中文 text.
         Correct any mistakes in the 粤文 transcription while keeping the meaning
         consistent with the spoken Cantonese.
         If you do not make any changes, return an empty string for the note.
@@ -49,7 +52,7 @@ class CantoneseProofreader(
     @property
     def query_template(self) -> str:
         """Query template."""
-        return "中文:\n{zhongwen}\n粤文 original:\n{yuewen}\n"
+        return "中文:\n{zhongwen}\n粤文 to proofread:\n{yuewen}\n"
 
     @property
     def test_case_cls(self) -> type[ProofreadTestCase]:
