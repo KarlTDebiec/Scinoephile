@@ -44,6 +44,7 @@ class ReadmeTranslator(
         Use the updated English README as the source of truth.
         When appropriate, reference the out-of-date Chinese README to guide style and
         terminology.
+        Use traditional Chinese characters.
         Your response must be a JSON object with the following structure:
         """
 
