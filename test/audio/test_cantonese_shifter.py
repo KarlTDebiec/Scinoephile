@@ -41,7 +41,7 @@ def _test_shift(cantonese_shifter: CantoneseShifter, test_case: ShiftTestCase):
 
 
 @pytest.mark.parametrize(
-    "shifter_fixture_name",
+    "fixture_name",
     [
         skip_if_ci()("cantonese_shifter_few_shot"),
         skip_if_ci(flaky())("cantonese_shifter_zero_shot"),
@@ -49,14 +49,14 @@ def _test_shift(cantonese_shifter: CantoneseShifter, test_case: ShiftTestCase):
 )
 @pytest.mark.parametrize("test_case", mlamd_shift_test_cases)
 def test_shift_mlamd(
-    request: pytest.FixtureRequest, shifter_fixture_name: str, test_case: ShiftTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
 ):
     """Test CantoneseShifter with MLAMD test cases.
 
     Arguments:
         request: Pytest fixture request
-        shifter_fixture_name: Name of CantoneseShifter fixture with which to test
+        fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    shifter: CantoneseShifter = request.getfixturevalue(shifter_fixture_name)
+    shifter: CantoneseShifter = request.getfixturevalue(fixture_name)
     _test_shift(shifter, test_case)
