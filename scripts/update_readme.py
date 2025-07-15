@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from logging import info
+from typing import Literal, cast
 
 from scinoephile.common import package_root
 from scinoephile.common.logs import set_logging_verbosity
@@ -19,14 +20,14 @@ def split_readme(readme_text: str) -> tuple[str, str]:
     """Split README into header and body.
 
     The header includes badges and language links, ending at the line that starts with
-    '[English](README.md)'.
+    '[English]('.
     """
     header_lines = []
     lines = readme_text.splitlines()
 
     for line in lines:
         header_lines.append(line)
-        if line.startswith("[English](README.md)"):
+        if line.startswith("[English]("):
             break
 
     body_start = len(header_lines)
@@ -41,7 +42,7 @@ def main() -> None:
     set_logging_verbosity(2)
     repo_root = package_root.parent
     translator = ReadmeTranslator(
-        cache_dir_path=test_data_root / "cache",
+        cache_dir_path=str(test_data_root / "cache"),
     )
 
     # English
@@ -50,8 +51,11 @@ def main() -> None:
     header, updated_english = split_readme(complete_english)
 
     # Chinese
-    for language, iso_code in [("zhongwen", "zh"), ("yuewen", "yue")]:
-        trad_path = repo_root / f"README.{iso_code}-hant.md"
+    for language, iso_code, convert in [
+        ("zhongwen", "zh", OpenCCConfig.t2s),
+        ("yuewen", "yue", OpenCCConfig.hk2s),
+    ]:
+        trad_path = repo_root / "docs" / f"README.{iso_code}-hant.md"
         info(f"Updating {trad_path.name}")
         complete_trad_chinese = trad_path.read_text(encoding="utf-8")
         _, outdated_trad_chinese = split_readme(complete_trad_chinese)
@@ -59,7 +63,7 @@ def main() -> None:
             ReadmeTranslationQuery(
                 updated_english=updated_english,
                 outdated_chinese=outdated_trad_chinese,
-                language=language,
+                language=cast(Literal["zhongwen", "yuewen"], language),
             )
         ).updated_chinese
         trad_path.write_text(
@@ -67,9 +71,9 @@ def main() -> None:
         )
         info(f"Updated {trad_path.name}")
 
-        simp_path = repo_root / f"README.{iso_code}-hans.md"
+        simp_path = repo_root / "docs" / f"README.{iso_code}-hans.md"
         info(f"Updating {simp_path.name}")
-        updated_simp_chinese = get_hanzi_converter(OpenCCConfig.t2s).convert(
+        updated_simp_chinese = get_hanzi_converter(convert).convert(
             updated_trad_chinese
         )
         simp_path.write_text(
