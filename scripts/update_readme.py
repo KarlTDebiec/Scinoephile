@@ -46,6 +46,7 @@ def main() -> None:
     english_path = repo_root / "README.md"
     complete_english = english_path.read_text(encoding="utf-8")
     header, updated_english = split_readme(complete_english)
+    header = header.replace("[English](README.md)", "[English](../README.md)")
 
     # Chinese
     for language, iso_code, config in [
