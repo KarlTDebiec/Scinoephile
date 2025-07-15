@@ -7,7 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 from abc import ABC, abstractmethod
-from logging import error, info
+from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
 
@@ -24,7 +24,7 @@ from scinoephile.openai.openai_provider import OpenAIProvider
 class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """Abstract base class for LLM queryers."""
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         model: str = "gpt-4.1",
         examples: list[TTestCase] | None = None,
@@ -83,7 +83,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
-            info(f"Loaded from cache: {cache_path}")
+            debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
@@ -142,15 +142,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         if self.print_test_case:
             print(test_case.to_source())
+
+        # Update cache
         if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
-                json.dump(
-                    answer.model_dump(),
-                    f,
-                    ensure_ascii=False,
-                    indent=2,
-                )
-                info(f"Saved to cache: {cache_path}")
+                json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
+                debug(f"Saved to cache: {cache_path}")
+
         return answer
 
     @property

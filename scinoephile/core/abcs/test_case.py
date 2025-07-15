@@ -18,6 +18,9 @@ from scinoephile.core.abcs.query import Query
 class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     """Abstract base class for LLM test cases; may also be used for few-shot prompt."""
 
+    __test__ = False
+    """Inform pytest not to collect this class as a test case."""
+
     include_in_prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
     )

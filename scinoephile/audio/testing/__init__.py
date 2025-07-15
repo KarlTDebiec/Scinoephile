@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.audio.testing.merge_test_case import MergeTestCase
+from scinoephile.audio.testing.proofread_test_case import ProofreadTestCase
 from scinoephile.audio.testing.shift_test_case import ShiftTestCase
 from scinoephile.audio.testing.split_test_case import SplitTestCase
 
 __all__ = [
+    "MergeTestCase",
+    "ProofreadTestCase",
     "ShiftTestCase",
     "SplitTestCase",
-    "MergeTestCase",
 ]

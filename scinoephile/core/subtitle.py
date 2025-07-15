@@ -10,6 +10,8 @@ from typing import Any
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
+from scinoephile.core.text import remove_punc_and_whitespace
+
 
 class Subtitle(SSAEvent):
     """Individual subtitle.
@@ -69,3 +71,8 @@ class Subtitle(SSAEvent):
             f"text={self.text!r}"
             f">"
         )
+
+    @property
+    def text_without_punctuation(self) -> str:
+        """Text without punctuation."""
+        return remove_punc_and_whitespace(self.text)
