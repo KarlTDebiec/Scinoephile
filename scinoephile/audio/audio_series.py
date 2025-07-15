@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from logging import info
+from logging import debug, info
 from pathlib import Path
 from typing import Any
 from warnings import catch_warnings, filterwarnings
@@ -141,13 +141,9 @@ class AudioSeries(Series):
         outfile_path = fp / f"{fp.stem}.wav"
         self.audio.export(outfile_path, format="wav")
         info(f"Saved full audio to {outfile_path}")
-        for i, event in enumerate(self, 1):
-            outfile_path = fp / f"{i:04d}_{event.start:08d}-{event.end:08d}.wav"
-            event.audio.export(outfile_path, format="wav")
-            info(f"Saved audio to {outfile_path}")
         for block in self.blocks:
             outfile_path = (
-                fp / f"{block.start_idx:04d}-{block.end_idx:04d}_"
+                fp / f"{block.start_idx + 1:04d}-{block.end_idx:04d}_"
                 f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
             )
             block.audio.export(outfile_path, format="wav")
@@ -301,7 +297,7 @@ class AudioSeries(Series):
             else:
                 end_time = min(len(full_audio), original_end + buffer)
 
-            info(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
+            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
             clip = full_audio[start_time:end_time]
             series.events.append(
                 cls.event_class(
@@ -316,11 +312,12 @@ class AudioSeries(Series):
         return series
 
     @classmethod
-    def _load_wav(cls, fp: Path, **kwargs: Any) -> AudioSeries:
+    def _load_wav(cls, fp: Path, buffer=1000, **kwargs: Any) -> AudioSeries:
         """Load series from a directory of wav files.
 
         Arguments:
             fp: Path to input directory
+            buffer: Additional buffer to include before and after subtitles (ms)
             **kwargs: Additional keyword arguments
         Returns:
             Loaded series
@@ -334,58 +331,46 @@ class AudioSeries(Series):
 
         # Load full audio file
         audio_path = fp / f"{fp.stem}.wav"
-        if audio_path.exists():
-            series.audio = AudioSegment.from_wav(audio_path)
-            info(f"Loaded full audio from {audio_path}")
+        full_audio = AudioSegment.from_wav(audio_path)
+        series.audio = full_audio
+        info(f"Loaded full audio from {audio_path}")
 
-        # Load subtitle audio files
-        infiles = sorted(
-            path
-            for path in fp.iterdir()
-            if path.suffix == ".wav" and cls.subtitle_audio_pattern.match(path.name)
-        )
-        if len(text_series) != len(infiles):
-            raise ScinoephileError(
-                f"Number of audio files in {fp} ({len(series)}) "
-                f"does not match number of subtitles in {srt_path} "
-                f"({len(text_series)})"
-            )
-        for text_event, infile in zip(text_series, infiles):
-            audio = AudioSegment.from_wav(infile)
+        # Slice and build series
+        for i, event in enumerate(text_series, 1):
+            original_start = event.start
+            original_end = event.end
+
+            # Previous and next events
+            prev_event = text_series[i - 2] if i > 1 else None
+            next_event = text_series[i] if i < len(text_series) else None
+
+            # Determine buffered start
+            if prev_event:
+                max_start = original_start - buffer
+                midpoint = (original_start + prev_event.end) // 2
+                start_time = max(midpoint, max_start)
+            else:
+                start_time = max(0, original_start - buffer)
+
+            # Determine buffered end
+            if next_event:
+                min_end = original_end + buffer
+                midpoint = (original_end + next_event.start) // 2
+                end_time = min(midpoint, min_end)
+            else:
+                end_time = min(len(full_audio), original_end + buffer)
+
+            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
+            clip = full_audio[start_time:end_time]
             series.events.append(
                 cls.event_class(
-                    start=text_event.start,
-                    end=text_event.end,
-                    audio=audio,
-                    text=text_event.text,
+                    start=original_start,
+                    end=original_end,
+                    audio=clip,
+                    text=event.text,
+                    series=series,
                 )
             )
-
-        # Load block audio files
-        infiles_with_match = [
-            (infile, match)
-            for infile in fp.iterdir()
-            if infile.suffix == ".wav"
-            and (match := cls.block_audio_pattern.match(infile.name))
-        ]
-        blocks = []
-        for infile, match in sorted(infiles_with_match):
-            start_idx = int(match.group("start_idx"))
-            end_idx = int(match.group("end_idx"))
-            buffered_start = int(match.group("buffered_start"))
-            buffered_end = int(match.group("buffered_end"))
-            audio = AudioSegment.from_wav(infile)
-
-            block = AudioBlock(
-                series=series,
-                start_idx=start_idx,
-                end_idx=end_idx,
-                buffered_start=buffered_start,
-                buffered_end=buffered_end,
-                audio=audio,
-            )
-            blocks.append(block)
-        series._blocks = blocks
 
         return series
 
@@ -412,7 +397,7 @@ class AudioSeries(Series):
                 buffered_end = min(len(self.audio), block.end + 1000)
 
             # Slice audio
-            info(
+            debug(
                 f"Slicing audio for block {block.start}-{block.end} "
                 f"({buffered_start} - {buffered_end})"
             )

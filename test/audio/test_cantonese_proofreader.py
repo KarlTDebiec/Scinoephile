@@ -39,7 +39,8 @@ def _test_proofread(
     """
     answer = cantonese_proofreader(test_case.query)
     assert answer.yuewen_proofread == test_case.yuewen_proofread
-    assert len(answer.note) > 0  # Ensure that a note was generated
+    if test_case.yuewen != test_case.yuewen_proofread:
+        assert len(answer.note) > 0  # Ensure that a note was generated
 
 
 @pytest.mark.parametrize(

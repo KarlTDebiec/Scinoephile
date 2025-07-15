@@ -23,7 +23,7 @@ class Block:
         self.start_idx = start_idx
         self.end_idx = end_idx
 
-    def __getitem__(self, idx: int) -> Series:
+    def __getitem__(self, idx: int) -> Subtitle:
         """Get block at index.
 
         Arguments:
@@ -33,11 +33,20 @@ class Block:
         """
         if not isinstance(idx, int):
             raise TypeError(f"Index must be an int, not {type(idx).__name__}")
-        if not self.start_idx <= idx <= self.end_idx:
+        if idx == 0:
+            return self._series[self.start_idx]
+        if idx < 0:
+            idx += len(self)
+            if idx < 0 or idx >= len(self):
+                raise IndexError(
+                    f"Index {idx} out of range for block of length {len(self)}"
+                )
+            return self._series[self.start_idx + idx]
+        if idx >= len(self):
             raise IndexError(
-                f"Index {idx} out of range for block {self.start_idx}-{self.end_idx}"
+                f"Index {idx} out of range for block of length {len(self)}"
             )
-        return self._series[idx - 1]
+        return self._series[self.start_idx + idx]
 
     def __iter__(self) -> Iterator[Subtitle]:
         """Iterate over subtitles in the block.
@@ -45,7 +54,7 @@ class Block:
         Returns:
             Iterator over subtitles in the block
         """
-        return iter(self._series.slice(self.start_idx - 1, self.end_idx).events)
+        return iter(self._series.slice(self.start_idx, self.end_idx).events)
 
     def __len__(self) -> int:
         """Get number of subtitles in block.
@@ -53,7 +62,7 @@ class Block:
         Returns:
             Number of subtitles in block
         """
-        return self.end_idx - self.start_idx + 1
+        return self.end_idx - self.start_idx
 
     def __repr__(self) -> str:
         """Get string representation."""
@@ -73,12 +82,12 @@ class Block:
     @cached_property
     def events(self) -> list[Subtitle]:
         """List of subtitles in the block."""
-        return self._series.slice(self.start_idx - 1, self.end_idx).events
+        return self._series.slice(self.start_idx, self.end_idx).events
 
     @cached_property
     def start(self) -> int:
         """Start time of block."""
-        return self._series[self.start_idx - 1].start
+        return self._series[self.start_idx].start
 
     def to_series(self):
         """Convert block to a Series.
@@ -86,4 +95,4 @@ class Block:
         Returns:
             Series containing the subtitles in the block
         """
-        return self._series.slice(self.start_idx - 1, self.end_idx)
+        return self._series.slice(self.start_idx, self.end_idx)

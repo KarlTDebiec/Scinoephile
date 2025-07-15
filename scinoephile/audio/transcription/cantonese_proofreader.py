@@ -36,11 +36,25 @@ class CantoneseProofreader(
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are a helpful assistant that proofreads 粤文 text of spoken Cantonese based
-        on the corresponding 中文 text.
-        Correct any mistakes in the 粤文 transcription while keeping the meaning
-        consistent with the spoken Cantonese.
-        If you do not make any changes, return an empty string for the note.
+        You are a helpful assistant that proofreads 粤文 transcription of spoken
+        Cantonese based on the corresponding 中文 text.
+        Your goal is to correct only clear transcription errors in the 粤文 —
+        specifically, cases where the transcriber likely misheard a word and wrote a
+        similar-sounding but incorrect one.
+        Do not rewrite correct phrases to match the 中文 wording.
+        Do not adjust phrasing, grammar, or classifiers unless there's a clear
+        transcription mistake.
+        Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs. 临盆).
+
+        Remember:
+        - The 粤文 transcription does not need to match the 中文 word-for-word.
+        - The speaker may naturally use different wording in Cantonese.
+        - Many differences in meaning, tone, or grammar are acceptable if they are not
+          transcription errors.
+
+        Include a one-sentence explanation in English for any correction you make.
+        If you make no changes, return an empty string for the note.
+
         Your response must be a JSON object with the following structure:
         """
 
