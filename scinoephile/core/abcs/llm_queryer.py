@@ -7,7 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 from abc import ABC, abstractmethod
-from logging import error, info
+from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
 
@@ -80,7 +80,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
-            info(f"Loaded from cache: {cache_path}")
+            debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
@@ -120,7 +120,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(answer.model_dump(), f, ensure_ascii=False, indent=2)
-                info(f"Saved to cache: {cache_path}")
+                debug(f"Saved to cache: {cache_path}")
 
         return answer
 
