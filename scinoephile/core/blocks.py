@@ -81,12 +81,12 @@ def get_block_indexes_by_pause(
     if not series.events:
         return []
     block_indexes = []
-    start = 1
+    start = 0
     prev_end = None
 
-    for i, event in enumerate(series, start=1):
+    for i, event in enumerate(series):
         if prev_end is not None and event.start - prev_end >= pause_length:
-            block_indexes.append((start, i - 1))
+            block_indexes.append((start, i))
             start = i
         prev_end = event.end
     block_indexes.append((start, len(series)))
