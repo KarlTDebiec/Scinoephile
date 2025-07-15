@@ -40,9 +40,7 @@ def main() -> None:
     """Update all README translations."""
     set_logging_verbosity(2)
     repo_root = package_root.parent
-    translator = ReadmeTranslator(
-        cache_dir_path=str(test_data_root / "cache"),
-    )
+    translator = ReadmeTranslator(cache_dir_path=test_data_root / "cache")
 
     # English
     english_path = repo_root / "README.md"
