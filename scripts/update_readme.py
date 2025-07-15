@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 from logging import info
-from typing import Literal, cast
 
 from scinoephile.common import package_root
 from scinoephile.common.logs import set_logging_verbosity
@@ -51,7 +50,7 @@ def main() -> None:
     header, updated_english = split_readme(complete_english)
 
     # Chinese
-    for language, iso_code, convert in [
+    for language, iso_code, config in [
         ("zhongwen", "zh", OpenCCConfig.t2s),
         ("yuewen", "yue", OpenCCConfig.hk2s),
     ]:
@@ -63,7 +62,7 @@ def main() -> None:
             ReadmeTranslationQuery(
                 updated_english=updated_english,
                 outdated_chinese=outdated_trad_chinese,
-                language=cast(Literal["zhongwen", "yuewen"], language),
+                language=language,
             )
         ).updated_chinese
         trad_path.write_text(
@@ -73,9 +72,7 @@ def main() -> None:
 
         simp_path = repo_root / "docs" / f"README.{iso_code}-hans.md"
         info(f"Updating {simp_path.name}")
-        updated_simp_chinese = get_hanzi_converter(convert).convert(
-            updated_trad_chinese
-        )
+        updated_simp_chinese = get_hanzi_converter(config).convert(updated_trad_chinese)
         simp_path.write_text(
             (header + updated_simp_chinese).rstrip() + "\n", encoding="utf-8"
         )
