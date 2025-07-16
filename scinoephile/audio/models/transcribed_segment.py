@@ -2,6 +2,8 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Transcribed segment."""
 
+from __future__ import annotations
+
 from pydantic import BaseModel, Field
 
 from scinoephile.audio.models.transcribed_word import TranscribedWord
