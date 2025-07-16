@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from openai import OpenAI
+from openai import OpenAI, OpenAIError
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
 
@@ -41,20 +42,25 @@ class OpenAIProvider(LLMProvider):
             response_format: Response format
         Returns:
             Completion text from the model
+        Raises:
+            ScinoephileError: Error during chat completion
         """
-        if response_format:
-            completion = self.client.beta.chat.completions.parse(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-                seed=seed,
-                response_format=response_format,
-            )
-        else:
-            completion = self.client.chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-                seed=seed,
-            )
-        return completion.choices[0].message.content
+        try:
+            if response_format:
+                completion = self.client.beta.chat.completions.parse(
+                    model=model,
+                    messages=messages,
+                    temperature=temperature,
+                    seed=seed,
+                    response_format=response_format,
+                )
+            else:
+                completion = self.client.chat.completions.create(
+                    model=model,
+                    messages=messages,
+                    temperature=temperature,
+                    seed=seed,
+                )
+            return completion.choices[0].message.content
+        except OpenAIError as exc:
+            raise ScinoephileError(f"OpenAI API error: {exc}") from exc
