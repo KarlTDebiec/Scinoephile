@@ -14,6 +14,7 @@ from textwrap import dedent
 from pydantic import ValidationError
 
 from scinoephile.common.validation import validate_output_directory
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
 from scinoephile.core.abcs.query import Query
@@ -31,7 +32,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
-    ):
+        max_attempts: int = 2,
+    ) -> None:
         """Initialize.
 
         Arguments:
@@ -40,15 +42,23 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             print_test_case: Whether to print test case after merging
             cache_dir_path: Directory in which to cache
             provider: Provider to use for queries
+            max_attempts: Maximum number of attempts
         """
         self.provider = provider or OpenAIProvider()
+        """LLM Provider to use for queries."""
         self.model = model
+        """Model name to use for queries."""
         self.print_test_case = print_test_case
+        """Whether to print test case after merging query and answer."""
+        self.max_attempts = max_attempts
+        """Maximum number of query attempts."""
 
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
         system_prompt += "\n"
-        system_prompt += json.dumps(self.answer_example.model_dump(), indent=4)
+        system_prompt += json.dumps(
+            self.answer_example.model_dump(), indent=4, ensure_ascii=False
+        )
         if examples:
             system_prompt += (
                 "\n\nHere are some examples of inputs and expected outputs:\n"
@@ -64,6 +74,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Set up cache directory
         self.cache_dir_path = None
+        """Directory in which to cache query results."""
         if cache_dir_path is not None:
             self.cache_dir_path = validate_output_directory(cache_dir_path)
 
@@ -88,31 +99,81 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     print(test_case.to_source())
                 return answer
 
-        # Query provider
-        content = self.provider.chat_completion(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": query_prompt},
-            ],
-            temperature=0,
-            seed=0,
-            response_format=self.answer_cls,
-        )
+        # Query provider with retries
+        answer: TAnswer | None = None
+        test_case: TTestCase | None = None
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": query_prompt},
+        ]
 
-        # Validate answer
-        try:
-            answer = self.answer_cls.model_validate_json(content)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid content:\n{content}")
-            raise exc
-            # TODO: Try again if response is not valid
-        try:
-            test_case = self.test_case_cls.from_query_and_answer(query, answer)
-        except ValidationError as exc:
-            error(f"Query:\n{query}\nYielded invalid answer:\n{answer}")
-            raise exc
-            # TODO: Try again if response is not valid
+        for attempt in range(1, self.max_attempts + 1):
+            # Get answer from provider
+            try:
+                content = self.provider.chat_completion(
+                    model=self.model,
+                    messages=messages,
+                    temperature=0,
+                    seed=0,
+                    response_format=self.answer_cls,
+                )
+            except ScinoephileError as exc:
+                error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
+                if attempt == self.max_attempts:
+                    raise
+                continue
+
+            # Validate answer
+            try:
+                answer = self.answer_cls.model_validate_json(content)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid content (attempt {attempt}):\n{content}"
+                )
+                if attempt == self.max_attempts:
+                    raise exc
+                messages.append({"role": "assistant", "content": content})
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous response was not valid JSON or did not match the expected schema. "
+                            f"Error details:\n{'\n'.join([e['msg'] for e in exc.errors()])}. "
+                            "Please try again and respond only with a valid JSON object."
+                        ),
+                    }
+                )
+                continue
+
+            # Validate test case
+            try:
+                test_case = self.test_case_cls.from_query_and_answer(query, answer)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid answer (attempt {attempt}):\n{answer}"
+                )
+                if attempt == self.max_attempts:
+                    raise exc
+                messages.append({"role": "assistant", "content": content})
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous response was valid JSON, but failed validation when combined with the query.\n"
+                            f"Error details:\n{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            "Please revise your response accordingly."
+                        ),
+                    }
+                )
+                continue
+
+            break
+
+        if answer is None or test_case is None:
+            raise ScinoephileError("Unable to obtain valid answer")
+
         if self.print_test_case:
             print(test_case.to_source())
 

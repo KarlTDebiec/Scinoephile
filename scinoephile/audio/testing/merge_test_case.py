@@ -21,7 +21,8 @@ class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
         received = remove_punc_and_whitespace(self.yuewen_merged)
         if expected != received:
             raise ValueError(
-                "Output text does not match input:\n"
+                "Output text stripped of punctuation and whitespace does not match "
+                "input text:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )
