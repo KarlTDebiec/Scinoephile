@@ -9,15 +9,6 @@ from copy import deepcopy
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.audio.models import TranscribedSegment
-from scinoephile.audio.transcription.cantonese_aligner import CantoneseAligner
-from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
-from scinoephile.audio.transcription.cantonese_proofreader import (
-    CantoneseProofreader,
-)
-from scinoephile.audio.transcription.cantonese_shifter import CantoneseShifter
-from scinoephile.audio.transcription.cantonese_splitter import (
-    CantoneseSplitter,
-)
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
 
@@ -49,7 +40,7 @@ def get_hanzi_converted_segment(
 
 
 def get_series_from_segments(
-    segments: list[TranscribedSegment], offset=0
+    segments: list[TranscribedSegment], offset: int = 0
 ) -> AudioSeries:
     """Compile transcribed segments to a subtitle series.
 
@@ -123,11 +114,6 @@ def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
 
 
 __all__ = [
-    "CantoneseAligner",
-    "CantoneseMerger",
-    "CantoneseProofreader",
-    "CantoneseShifter",
-    "CantoneseSplitter",
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
     "get_series_from_segments",
