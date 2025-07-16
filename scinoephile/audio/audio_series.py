@@ -120,6 +120,47 @@ class AudioSeries(Series):
         sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
         return sliced
 
+    def _init_blocks(self) -> None:
+        """Initialize blocks."""
+        blocks = [
+            Block(self, start_idx, end_idx)
+            for start_idx, end_idx in get_block_indexes_by_pause(self)
+        ]
+        audio_blocks = []
+        for i, block in enumerate(blocks):
+            # Buffer start
+            if i == 0:
+                buffered_start = max(0, block.start - 1000)
+            else:
+                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
+                buffered_start = max(max_unbuffered_end, block.start - 1000)
+
+            # Buffer end
+            if i < len(blocks) - 1:
+                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
+                buffered_end = min(block.end + 1000, min_unbuffered_start)
+            else:
+                buffered_end = min(len(self.audio), block.end + 1000)
+
+            # Slice audio
+            debug(
+                f"Slicing audio for block {block.start}-{block.end} "
+                f"({buffered_start} - {buffered_end})"
+            )
+            audio = self.audio[buffered_start:buffered_end]
+
+            # Create Audio Block
+            audio_block = AudioBlock(
+                series=self,
+                start_idx=block.start_idx,
+                end_idx=block.end_idx,
+                buffered_start=buffered_start,
+                buffered_end=buffered_end,
+                audio=audio,
+            )
+            audio_blocks.append(audio_block)
+        self._blocks = audio_blocks
+
     def _save_wav(self, fp: Path, **kwargs: Any) -> None:
         """Save series to directory of wav files.
 
@@ -193,86 +234,25 @@ class AudioSeries(Series):
                 ) from exc
 
     @classmethod
-    def _load_video(
-        cls, fp: Path, video_fp: Path, audio_track: int = 0, buffer=1000, **kwargs: Any
+    def _build_series(
+        cls,
+        text_series: Series,
+        full_audio: AudioSegment,
+        buffer: int,
     ) -> AudioSeries:
-        """Load series from a subtitle file and associated video file.
+        """Construct a series from text and full audio.
 
         Arguments:
-            fp: Path to subtitle file
-            video_fp: Path to video file
-            audio_track: Audio track (zero-indexed)
-            buffer: Additional buffer to include before and after subtitles (ms)
-            **kwargs: Additional keyword arguments
+            text_series: Series of subtitle events
+            full_audio: Full audio segment for the series
+            buffer: Additional buffer before and after each subtitle (ms)
         Returns:
-            Loaded series
+            Loaded series with audio clips
         """
         series = cls()
         series.format = "wav"
+        series.audio = full_audio
 
-        # Load text
-        text_series = Series.load(fp)
-
-        # Probe audio track to determine number of channels
-        info(f"Probing audio track {audio_track} in {video_fp}")
-        probe = ffmpeg.probe(str(video_fp))
-        audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
-        try:
-            stream = audio_streams[audio_track]
-            channels = int(stream["channels"])
-            info(f"Audio track has {channels} channels")
-        except (IndexError, KeyError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Could not determine number of channels for audio track {audio_track} "
-                f"in {video_fp}"
-            ) from exc
-
-        # Load full audio from video
-        with get_temp_directory_path() as temp_dir:
-            full_audio_path = temp_dir / "full_audio.wav"
-            if channels >= 6:
-                info(
-                    f"Extracting center channel of audio stream {audio_track} "
-                    f"from {video_fp} to {full_audio_path}"
-                )
-                ffmpeg.input(
-                    str(video_fp),
-                ).output(
-                    str(full_audio_path),
-                    format="wav",
-                    ar=16000,
-                    **{
-                        "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
-                        "map": "[out]",
-                    },
-                ).run(
-                    quiet=False,
-                    overwrite_output=True,
-                )
-            else:
-                info(
-                    f"Downmixing audio stream {audio_track} "
-                    f"from {video_fp} to {full_audio_path}"
-                )
-                ffmpeg.input(
-                    str(video_fp),
-                ).output(
-                    str(full_audio_path),
-                    format="wav",
-                    ar=16000,
-                    map=f"0:a:{audio_track}",
-                    ac=1,
-                ).run(
-                    quiet=False,
-                    overwrite_output=True,
-                )
-
-            # Load full audio as AudioSegment
-            info(f"Loading full audio from {full_audio_path}")
-            full_audio = AudioSegment.from_wav(full_audio_path)
-            series.audio = full_audio
-
-        # Slice and build series
         for i, event in enumerate(text_series, 1):
             original_start = event.start
             original_end = event.end
@@ -312,6 +292,47 @@ class AudioSeries(Series):
         return series
 
     @classmethod
+    def _load_video(
+        cls, fp: Path, video_fp: Path, audio_track: int = 0, buffer=1000, **kwargs: Any
+    ) -> AudioSeries:
+        """Load series from a subtitle file and associated video file.
+
+        Arguments:
+            fp: Path to subtitle file
+            video_fp: Path to video file
+            audio_track: Audio track (zero-indexed)
+            buffer: Additional buffer to include before and after subtitles (ms)
+            **kwargs: Additional keyword arguments
+        Returns:
+            Loaded series
+        """
+        # Load text
+        text_series = Series.load(fp)
+
+        # Probe audio track to determine number of channels
+        info(f"Probing audio track {audio_track} in {video_fp}")
+        probe = ffmpeg.probe(str(video_fp))
+        audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
+        try:
+            stream = audio_streams[audio_track]
+            channels = int(stream["channels"])
+            info(f"Audio track has {channels} channels")
+        except (IndexError, KeyError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Could not determine number of channels for audio track {audio_track} "
+                f"in {video_fp}"
+            ) from exc
+
+        # Load full audio from video
+        with get_temp_directory_path() as temp_dir:
+            full_audio_path = temp_dir / "full_audio.wav"
+            cls._extract_audio_track(video_fp, full_audio_path, audio_track, channels)
+            info(f"Loading full audio from {full_audio_path}")
+            full_audio = AudioSegment.from_wav(full_audio_path)
+
+        return cls._build_series(text_series, full_audio, buffer)
+
+    @classmethod
     def _load_wav(cls, fp: Path, buffer=1000, **kwargs: Any) -> AudioSeries:
         """Load series from a directory of wav files.
 
@@ -322,9 +343,6 @@ class AudioSeries(Series):
         Returns:
             Loaded series
         """
-        series = cls()
-        series.format = "wav"
-
         # Load text
         srt_path = fp / f"{fp.stem}.srt"
         text_series = Series.load(srt_path)
@@ -332,85 +350,45 @@ class AudioSeries(Series):
         # Load full audio file
         audio_path = fp / f"{fp.stem}.wav"
         full_audio = AudioSegment.from_wav(audio_path)
-        series.audio = full_audio
         info(f"Loaded full audio from {audio_path}")
 
-        # Slice and build series
-        for i, event in enumerate(text_series, 1):
-            original_start = event.start
-            original_end = event.end
+        return cls._build_series(text_series, full_audio, buffer)
 
-            # Previous and next events
-            prev_event = text_series[i - 2] if i > 1 else None
-            next_event = text_series[i] if i < len(text_series) else None
+    @staticmethod
+    def _extract_audio_track(
+        video_fp: Path,
+        out_fp: Path,
+        audio_track: int,
+        channels: int,
+    ) -> None:
+        """Extract a mono audio track from a video file.
 
-            # Determine buffered start
-            if prev_event:
-                max_start = original_start - buffer
-                midpoint = (original_start + prev_event.end) // 2
-                start_time = max(midpoint, max_start)
-            else:
-                start_time = max(0, original_start - buffer)
-
-            # Determine buffered end
-            if next_event:
-                min_end = original_end + buffer
-                midpoint = (original_end + next_event.start) // 2
-                end_time = min(midpoint, min_end)
-            else:
-                end_time = min(len(full_audio), original_end + buffer)
-
-            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
-            clip = full_audio[start_time:end_time]
-            series.events.append(
-                cls.event_class(
-                    start=original_start,
-                    end=original_end,
-                    audio=clip,
-                    text=event.text,
-                    series=series,
-                )
+        Arguments:
+            video_fp: Path to input video file
+            out_fp: Path to output audio file
+            audio_track: Audio track (zero-indexed)
+            channels: Number of channels in audio track
+        """
+        if channels >= 6:
+            info(
+                "Extracting center channel of audio stream "
+                f"{audio_track} from {video_fp} to {out_fp}"
             )
-
-        return series
-
-    def _init_blocks(self) -> None:
-        """Initialize blocks."""
-        blocks = [
-            Block(self, start_idx, end_idx)
-            for start_idx, end_idx in get_block_indexes_by_pause(self)
-        ]
-        audio_blocks = []
-        for i, block in enumerate(blocks):
-            # Buffer start
-            if i == 0:
-                buffered_start = max(0, block.start - 1000)
-            else:
-                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
-                buffered_start = max(max_unbuffered_end, block.start - 1000)
-
-            # Buffer end
-            if i < len(blocks) - 1:
-                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
-                buffered_end = min(block.end + 1000, min_unbuffered_start)
-            else:
-                buffered_end = min(len(self.audio), block.end + 1000)
-
-            # Slice audio
-            debug(
-                f"Slicing audio for block {block.start}-{block.end} "
-                f"({buffered_start} - {buffered_end})"
-            )
-            audio = self.audio[buffered_start:buffered_end]
-
-            # Create Audio Block
-            audio_block = AudioBlock(
-                series=self,
-                start_idx=block.start_idx,
-                end_idx=block.end_idx,
-                buffered_start=buffered_start,
-                buffered_end=buffered_end,
-                audio=audio,
-            )
-            audio_blocks.append(audio_block)
-        self._blocks = audio_blocks
+            ffmpeg.input(str(video_fp)).output(
+                str(out_fp),
+                format="wav",
+                ar=16000,
+                **{
+                    "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
+                    "map": "[out]",
+                },
+            ).run(quiet=False, overwrite_output=True)
+        else:
+            info(f"Downmixing audio stream {audio_track} from {video_fp} to {out_fp}")
+            ffmpeg.input(str(video_fp)).output(
+                str(out_fp),
+                format="wav",
+                ar=16000,
+                map=f"0:a:{audio_track}",
+                ac=1,
+            ).run(quiet=False, overwrite_output=True)
