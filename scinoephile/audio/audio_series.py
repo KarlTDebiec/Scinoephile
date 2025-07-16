@@ -120,6 +120,47 @@ class AudioSeries(Series):
         sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
         return sliced
 
+    def _init_blocks(self) -> None:
+        """Initialize blocks."""
+        blocks = [
+            Block(self, start_idx, end_idx)
+            for start_idx, end_idx in get_block_indexes_by_pause(self)
+        ]
+        audio_blocks = []
+        for i, block in enumerate(blocks):
+            # Buffer start
+            if i == 0:
+                buffered_start = max(0, block.start - 1000)
+            else:
+                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
+                buffered_start = max(max_unbuffered_end, block.start - 1000)
+
+            # Buffer end
+            if i < len(blocks) - 1:
+                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
+                buffered_end = min(block.end + 1000, min_unbuffered_start)
+            else:
+                buffered_end = min(len(self.audio), block.end + 1000)
+
+            # Slice audio
+            debug(
+                f"Slicing audio for block {block.start}-{block.end} "
+                f"({buffered_start} - {buffered_end})"
+            )
+            audio = self.audio[buffered_start:buffered_end]
+
+            # Create Audio Block
+            audio_block = AudioBlock(
+                series=self,
+                start_idx=block.start_idx,
+                end_idx=block.end_idx,
+                buffered_start=buffered_start,
+                buffered_end=buffered_end,
+                audio=audio,
+            )
+            audio_blocks.append(audio_block)
+        self._blocks = audio_blocks
+
     def _save_wav(self, fp: Path, **kwargs: Any) -> None:
         """Save series to directory of wav files.
 
@@ -193,6 +234,64 @@ class AudioSeries(Series):
                 ) from exc
 
     @classmethod
+    def _build_series(
+        cls,
+        text_series: Series,
+        full_audio: AudioSegment,
+        buffer: int,
+    ) -> AudioSeries:
+        """Construct a series from text and full audio.
+
+        Arguments:
+            text_series: Series of subtitle events
+            full_audio: Full audio segment for the series
+            buffer: Additional buffer before and after each subtitle (ms)
+        Returns:
+            Loaded series with audio clips
+        """
+        series = cls()
+        series.format = "wav"
+        series.audio = full_audio
+
+        for i, event in enumerate(text_series, 1):
+            original_start = event.start
+            original_end = event.end
+
+            # Previous and next events
+            prev_event = text_series[i - 2] if i > 1 else None
+            next_event = text_series[i] if i < len(text_series) else None
+
+            # Determine buffered start
+            if prev_event:
+                max_start = original_start - buffer
+                midpoint = (original_start + prev_event.end) // 2
+                start_time = max(midpoint, max_start)
+            else:
+                start_time = max(0, original_start - buffer)
+
+            # Determine buffered end
+            if next_event:
+                min_end = original_end + buffer
+                midpoint = (original_end + next_event.start) // 2
+                end_time = min(midpoint, min_end)
+            else:
+                end_time = min(len(full_audio), original_end + buffer)
+
+            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
+            clip = full_audio[start_time:end_time]
+            series.events.append(
+                cls.event_class(
+                    start=original_start,
+                    end=original_end,
+                    audio=clip,
+                    text=event.text,
+                    series=series,
+                )
+            )
+
+        return series
+
+    @classmethod
     def _load_video(
         cls, fp: Path, video_fp: Path, audio_track: int = 0, buffer=1000, **kwargs: Any
     ) -> AudioSeries:
@@ -262,7 +361,14 @@ class AudioSeries(Series):
         audio_track: int,
         channels: int,
     ) -> None:
-        """Extract a mono audio track from a video file."""
+        """Extract a mono audio track from a video file.
+
+        Arguments:
+            video_fp: Path to input video file
+            out_fp: Path to output audio file
+            audio_track: Audio track (zero-indexed)
+            channels: Number of channels in audio track
+        """
         if channels >= 6:
             info(
                 "Extracting center channel of audio stream "
@@ -286,102 +392,3 @@ class AudioSeries(Series):
                 map=f"0:a:{audio_track}",
                 ac=1,
             ).run(quiet=False, overwrite_output=True)
-
-    @classmethod
-    def _build_series(
-        cls,
-        text_series: Series,
-        full_audio: AudioSegment,
-        buffer: int,
-    ) -> AudioSeries:
-        """Construct a series from text and full audio.
-
-        Arguments:
-            text_series: Series of subtitle events
-            full_audio: Full audio segment for the series
-            buffer: Additional buffer before and after each subtitle (ms)
-        Returns:
-            Loaded series with audio clips
-        """
-        series = cls()
-        series.format = "wav"
-        series.audio = full_audio
-
-        for i, event in enumerate(text_series, 1):
-            original_start = event.start
-            original_end = event.end
-
-            # Previous and next events
-            prev_event = text_series[i - 2] if i > 1 else None
-            next_event = text_series[i] if i < len(text_series) else None
-
-            # Determine buffered start
-            if prev_event:
-                max_start = original_start - buffer
-                midpoint = (original_start + prev_event.end) // 2
-                start_time = max(midpoint, max_start)
-            else:
-                start_time = max(0, original_start - buffer)
-
-            # Determine buffered end
-            if next_event:
-                min_end = original_end + buffer
-                midpoint = (original_end + next_event.start) // 2
-                end_time = min(midpoint, min_end)
-            else:
-                end_time = min(len(full_audio), original_end + buffer)
-
-            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
-            clip = full_audio[start_time:end_time]
-            series.events.append(
-                cls.event_class(
-                    start=original_start,
-                    end=original_end,
-                    audio=clip,
-                    text=event.text,
-                    series=series,
-                )
-            )
-
-        return series
-
-    def _init_blocks(self) -> None:
-        """Initialize blocks."""
-        blocks = [
-            Block(self, start_idx, end_idx)
-            for start_idx, end_idx in get_block_indexes_by_pause(self)
-        ]
-        audio_blocks = []
-        for i, block in enumerate(blocks):
-            # Buffer start
-            if i == 0:
-                buffered_start = max(0, block.start - 1000)
-            else:
-                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
-                buffered_start = max(max_unbuffered_end, block.start - 1000)
-
-            # Buffer end
-            if i < len(blocks) - 1:
-                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
-                buffered_end = min(block.end + 1000, min_unbuffered_start)
-            else:
-                buffered_end = min(len(self.audio), block.end + 1000)
-
-            # Slice audio
-            debug(
-                f"Slicing audio for block {block.start}-{block.end} "
-                f"({buffered_start} - {buffered_end})"
-            )
-            audio = self.audio[buffered_start:buffered_end]
-
-            # Create Audio Block
-            audio_block = AudioBlock(
-                series=self,
-                start_idx=block.start_idx,
-                end_idx=block.end_idx,
-                buffered_start=buffered_start,
-                buffered_end=buffered_end,
-                audio=audio,
-            )
-            audio_blocks.append(audio_block)
-        self._blocks = audio_blocks
