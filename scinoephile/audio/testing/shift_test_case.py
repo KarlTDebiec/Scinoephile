@@ -23,7 +23,7 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
         )
         if expected != received:
             raise ValueError(
-                "Output text does not match input:\n"
+                "Concatenated output text does not match concatenated input text:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )

@@ -32,5 +32,7 @@ class LLMProvider(ABC):
             response_format: Response format
         Returns:
             Completion text from the model
+        Raises:
+            ScinoephileError: Error during chat completion
         """
         raise NotImplementedError()

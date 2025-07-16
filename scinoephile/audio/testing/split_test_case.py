@@ -20,7 +20,7 @@ class SplitTestCase(SplitQuery, SplitAnswer, TestCase[SplitQuery, SplitAnswer]):
         received = self.one_yuewen_to_append + self.two_yuewen_to_prepend
         if expected != received:
             raise ValueError(
-                "Output text does not match input:\n"
+                "Concatenated output text does not match input text:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )
