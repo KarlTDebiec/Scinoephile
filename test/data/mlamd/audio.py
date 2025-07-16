@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.audio import AudioSeries
-from scinoephile.audio.transcription import (
+from scinoephile.audio.cantonese import (
     CantoneseAligner,
     CantoneseMerger,
     CantoneseProofreader,
     CantoneseSplitter,
+)
+from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_hanzi_converted_segment,
     get_series_from_segments,
@@ -49,22 +51,22 @@ if __name__ == "__main__":
     # Utilities
     transcriber = WhisperTranscriber(
         "khleeloo/whisper-large-v3-cantonese",
-        cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
+        cache_dir_path=test_data_root / "cache",
     )
     splitter = CantoneseSplitter(
         examples=[m for m in mlamd_split_test_cases if m.include_in_prompt],
         print_test_case=True,
-        cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
+        cache_dir_path=test_data_root / "cache",
     )
     merger = CantoneseMerger(
         examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
         print_test_case=True,
-        cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
+        cache_dir_path=test_data_root / "cache",
     )
     proofreader = CantoneseProofreader(
         examples=[m for m in mlamd_proofread_test_cases if m.include_in_prompt],
         print_test_case=True,
-        cache_dir_path=test_output_dir / "yue-Hans_audio" / "cache",
+        cache_dir_path=test_data_root / "cache",
     )
     aligner = CantoneseAligner(
         splitter=splitter, merger=merger, proofreader=proofreader
@@ -73,8 +75,8 @@ if __name__ == "__main__":
     all_series = []
     for i, block in enumerate(yuewen.blocks):
         print(f"\nBlock {i} ({block.start} - {block.end})")
-        if i != 2:
-            continue
+        if i >= 2:
+            break
 
         # Transcribe audio
         segments = transcriber(block.audio)

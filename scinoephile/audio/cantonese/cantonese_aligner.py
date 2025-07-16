@@ -10,6 +10,9 @@ from pprint import pformat
 import numpy as np
 
 from scinoephile.audio import AudioSeries, AudioSubtitle
+from scinoephile.audio.cantonese.cantonese_merger import CantoneseMerger
+from scinoephile.audio.cantonese.cantonese_proofreader import CantoneseProofreader
+from scinoephile.audio.cantonese.cantonese_splitter import CantoneseSplitter
 from scinoephile.audio.models import (
     MergeQuery,
     ProofreadQuery,
@@ -17,9 +20,6 @@ from scinoephile.audio.models import (
     SplitQuery,
     TranscribedSegment,
 )
-from scinoephile.audio.transcription.cantonese_merger import CantoneseMerger
-from scinoephile.audio.transcription.cantonese_proofreader import CantoneseProofreader
-from scinoephile.audio.transcription.cantonese_splitter import CantoneseSplitter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.synchronization import (
