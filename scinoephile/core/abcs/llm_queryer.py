@@ -119,7 +119,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 )
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
-                if attempt > self.max_attempts:
+                if attempt == self.max_attempts:
                     raise
                 continue
 
