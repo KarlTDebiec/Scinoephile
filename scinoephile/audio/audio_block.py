@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import base64
+import io
 from typing import Any
 from warnings import catch_warnings, filterwarnings
 
@@ -38,13 +40,22 @@ class AudioBlock(Block):
         self.audio = audio
 
     def __repr__(self) -> str:
-        """Get string representation."""
+        """Return representation that can recreate the instance."""
+        buffer = io.BytesIO()
+        self.audio.export(buffer, format="wav")
+        audio_str = base64.b64encode(buffer.getvalue()).decode()
         return (
-            f"{self.__class__.__name__}("
-            f"start_idx={self.start_idx}, "
-            f"end_idx={self.end_idx}, "
-            f"start={self.start}, "
-            f"end={self.end}, "
+            f"{self.__class__.__module__}.{self.__class__.__qualname__}("
             f"buffered_start={self.buffered_start}, "
-            f"buffered_end={self.buffered_end})"
+            f"buffered_end={self.buffered_end}, "
+            f"audio=_audio_from_repr({audio_str!r}), "
+            f"series={repr(self._series)}, "
+            f"start_idx={self.start_idx}, "
+            f"end_idx={self.end_idx})"
         )
+
+
+def _audio_from_repr(data: str) -> AudioSegment:
+    """Convert base64 WAV data to an AudioSegment."""
+    wav_bytes = base64.b64decode(data)
+    return AudioSegment.from_file(io.BytesIO(wav_bytes), format="wav")

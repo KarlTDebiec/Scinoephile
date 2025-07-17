@@ -8,7 +8,6 @@ from dataclasses import fields
 from typing import Any
 
 from pysubs2 import SSAEvent
-from pysubs2.time import ms_to_str
 
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -63,13 +62,13 @@ class Subtitle(SSAEvent):
         return not self == other
 
     def __repr__(self) -> str:
-        """String representation."""
+        """Return representation that can recreate the instance."""
+        params = self.as_dict()
+        if self.comment:
+            params["comment"] = self.comment
+        params_str = ", ".join(f"{k}={v!r}" for k, v in params.items())
         return (
-            f"<{self.__class__.__name__} "
-            f"start={ms_to_str(self.start, True)} "
-            f"end={ms_to_str(self.end, True)} "
-            f"text={self.text!r}"
-            f">"
+            f"{self.__class__.__module__}.{self.__class__.__qualname__}({params_str})"
         )
 
     @property

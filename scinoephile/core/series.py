@@ -8,7 +8,6 @@ from logging import info
 from typing import Any
 
 from pysubs2 import SSAFile
-from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import validate_input_file, validate_output_file
 from scinoephile.core.block import Block
@@ -58,15 +57,11 @@ class Series(SSAFile):
         return not self == other
 
     def __repr__(self) -> str:
-        """Representation."""
-        if self.events:
-            max_time = max(ev.end for ev in self)
-            return (
-                f"<{self.__class__.__name__} with {len(self)} events and "
-                f"{len(self.styles)} styles, last timestamp {ms_to_str(max_time)}>"
-            )
+        """Return representation that can recreate the instance."""
+        events_str = SSAFile.to_string(self, "ass")
         return (
-            f"<{self.__class__.__name__} with 0 events and {len(self.styles)} styles>"
+            f"{self.__class__.__module__}.{self.__class__.__qualname__}"
+            f".from_string({events_str!r}, format_='ass')"
         )
 
     @property

@@ -65,13 +65,12 @@ class Block:
         return self.end_idx - self.start_idx
 
     def __repr__(self) -> str:
-        """Get string representation."""
+        """Return representation that can recreate the instance."""
         return (
-            f"{self.__class__.__name__}("
+            f"{self.__class__.__module__}.{self.__class__.__qualname__}("
+            f"series={repr(self._series)}, "
             f"start_idx={self.start_idx}, "
-            f"end_idx={self.end_idx}, "
-            f"start={self.start}, "
-            f"end={self.end})"
+            f"end_idx={self.end_idx})"
         )
 
     @cached_property
