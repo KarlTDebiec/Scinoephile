@@ -1041,7 +1041,7 @@ wheels = [
 [[package]]
 name = "scinoephile"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "audioop-lts" },
     { name = "ffmpeg-python" },
