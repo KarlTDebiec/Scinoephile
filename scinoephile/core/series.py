@@ -183,8 +183,8 @@ class Series(SSAFile):
         """
         validated_path = validate_input_file(path)
 
-        with open(validated_path, encoding=encoding) as fp:
-            series = cls.from_file(fp, format_=format_, **kwargs)
+        with open(validated_path, encoding=encoding) as infile:
+            series = cls.from_file(infile, format_=format_, **kwargs)
             series.events = [
                 cls.event_class(series=series, **ssaevent.as_dict())
                 for ssaevent in series
