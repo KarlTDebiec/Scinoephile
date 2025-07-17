@@ -125,7 +125,7 @@ class ScinoephileCli(CommandLineInterface):
         )
 
     @classmethod
-    def run(cls, operations: dict[str, Any]) -> None:
+    def run(cls, operations: dict[str, Any]) -> None:  # noqa: PLR0912
         """Run operations.
 
         Arguments:
@@ -144,16 +144,22 @@ class ScinoephileCli(CommandLineInterface):
 
         # Operation operations
         if "clean_hanzi" in operations:
+            assert hanzi is not None
             hanzi = get_hanzi_cleaned(hanzi)
         if "clean_english" in operations:
+            assert english is not None
             english = get_english_cleaned(english)
         if "flatten_english" in operations:
+            assert english is not None
             english = get_english_flattened(english)
         if "flatten_hanzi" in operations:
+            assert hanzi is not None
             hanzi = get_hanzi_flattened(hanzi)
         if "convert_hanzi" in operations:
+            assert hanzi is not None
             hanzi = get_hanzi_converted(hanzi, operations["convert_hanzi"])
         if "sync_bilingual" in operations:
+            assert hanzi is not None and english is not None
             bilingual = get_synced_series(hanzi, english)
 
         # Output operations
@@ -173,7 +179,103 @@ class ScinoephileCli(CommandLineInterface):
             hanzi.save(operations["save_hanzi"])
 
     @classmethod
-    def determine_operations(
+    def _parse_input_ops(
+        cls,
+        operations: dict[str, Any],
+        *,
+        bilingual_infile: Path | None = None,
+        english_infile: Path | None = None,
+        hanzi_infile: Path | None = None,
+    ) -> None:
+        """Populate load operations based on provided infiles."""
+        if not (bilingual_infile or english_infile or hanzi_infile):
+            cls.argparser().error("At least one infile required")
+        if bilingual_infile:
+            operations["load_bilingual"] = bilingual_infile
+        if english_infile:
+            operations["load_english"] = english_infile
+        if hanzi_infile:
+            operations["load_hanzi"] = hanzi_infile
+
+    @classmethod
+    def _parse_output_ops(
+        cls,
+        operations: dict[str, Any],
+        *,
+        bilingual_outfile: Path | None = None,
+        english_outfile: Path | None = None,
+        hanzi_outfile: Path | None = None,
+        overwrite: bool = False,
+    ) -> None:
+        """Populate save operations based on provided outfiles."""
+        if not (bilingual_outfile or english_outfile or hanzi_outfile):
+            cls.argparser().error("At least one outfile required")
+        if bilingual_outfile:
+            if bilingual_outfile.exists() and not overwrite:
+                cls.argparser().error(f"{bilingual_outfile} already exists")
+            operations["save_bilingual"] = bilingual_outfile
+        if english_outfile:
+            if english_outfile.exists() and not overwrite:
+                cls.argparser().error(f"{english_outfile} already exists")
+            operations["save_english"] = english_outfile
+        if hanzi_outfile:
+            if hanzi_outfile.exists() and not overwrite:
+                cls.argparser().error(f"{hanzi_outfile} already exists")
+            operations["save_hanzi"] = hanzi_outfile
+
+    @classmethod
+    def _compile_processing_ops(  # noqa: PLR0913
+        cls,
+        operations: dict[str, Any],
+        *,
+        bilingual_infile: Path | None,
+        english_infile: Path | None,
+        hanzi_infile: Path | None,
+        clean: bool = False,
+        flatten: bool = False,
+        convert: OpenCCConfig | None = None,
+    ) -> None:
+        """Compile processing operations based on user options."""
+        if clean:
+            if hanzi_infile:
+                operations["clean_hanzi"] = True
+            if english_infile:
+                operations["clean_english"] = True
+        if flatten:
+            if not (
+                english_infile
+                and ("save_bilingual" in operations or "save_english" in operations)
+            ) and not (
+                hanzi_infile
+                and ("save_bilingual" in operations or "save_hanzi" in operations)
+            ):
+                cls.argparser().error(
+                    "At least one infile and one outfile including the same language "
+                    "required for flatten"
+                )
+            if english_infile and (
+                "save_bilingual" in operations or "save_english" in operations
+            ):
+                operations["flatten_english"] = True
+            if hanzi_infile and (
+                "save_bilingual" in operations or "save_hanzi" in operations
+            ):
+                operations["flatten_hanzi"] = True
+        if convert is not None:
+            if not hanzi_infile or bilingual_infile:
+                cls.argparser().error("Hanzi infile required for convert")
+            operations["convert_hanzi"] = convert
+        if "save_bilingual" in operations and "load_bilingual" not in operations:
+            if "load_english" not in operations and "load_hanzi" not in operations:
+                cls.argparser().error(
+                    "Bilingual outfile requires English and Hanzi infiles"
+                )
+            operations["sync_bilingual"] = True
+            operations["flatten_english"] = True
+            operations["flatten_hanzi"] = True
+
+    @classmethod
+    def determine_operations(  # noqa: PLR0913
         cls,
         *,
         bilingual_infile: Path | None = None,
@@ -217,62 +319,28 @@ class ScinoephileCli(CommandLineInterface):
         """
         operations = {}
 
-        # Compile input operations
-        if not (bilingual_infile or english_infile or hanzi_infile):
-            cls.argparser().error("At least one infile required")
-        if bilingual_infile:
-            operations["load_bilingual"] = bilingual_infile
-        if english_infile:
-            operations["load_english"] = english_infile
-        if hanzi_infile:
-            operations["load_hanzi"] = hanzi_infile
-
-        # Compile output operations
-        if not (bilingual_outfile or english_outfile or hanzi_outfile):
-            cls.argparser().error("At least one outfile required")
-        if bilingual_outfile:
-            if bilingual_outfile.exists() and not overwrite:
-                cls.argparser().error(f"{bilingual_outfile} already exists")
-            operations["save_bilingual"] = bilingual_outfile
-        if english_outfile:
-            if english_outfile.exists() and not overwrite:
-                cls.argparser().error(f"{english_outfile} already exists")
-            operations["save_english"] = english_outfile
-        if hanzi_outfile:
-            if hanzi_outfile.exists() and not overwrite:
-                cls.argparser().error(f"{hanzi_outfile} already exists")
-            operations["save_hanzi"] = hanzi_outfile
-
-        # Compile operations
-        if clean:
-            if hanzi_infile:
-                operations["clean_hanzi"] = True
-            if english_infile:
-                operations["clean_english"] = True
-        if flatten:
-            if not (english_infile and (bilingual_outfile or english_outfile)) and not (
-                hanzi_infile and (bilingual_outfile or hanzi_outfile)
-            ):
-                cls.argparser().error(
-                    "At least one infile and one outfile including the same language "
-                    "required for flatten"
-                )
-            if english_infile and (bilingual_outfile or english_outfile):
-                operations["flatten_english"] = True
-            if hanzi_infile and (bilingual_outfile or hanzi_outfile):
-                operations["flatten_hanzi"] = True
-        if convert is not None:
-            if not hanzi_infile or bilingual_infile:
-                cls.argparser().error("Hanzi infile required for convert")
-            operations["convert_hanzi"] = convert
-        if "save_bilingual" in operations and "load_bilingual" not in operations:
-            if "load_english" not in operations and "load_hanzi" not in operations:
-                cls.argparser().error(
-                    "Bilingual outfile requires English and Hanzi infiles"
-                )
-            operations["sync_bilingual"] = True
-            operations["flatten_english"] = True
-            operations["flatten_hanzi"] = True
+        cls._parse_input_ops(
+            operations,
+            bilingual_infile=bilingual_infile,
+            english_infile=english_infile,
+            hanzi_infile=hanzi_infile,
+        )
+        cls._parse_output_ops(
+            operations,
+            bilingual_outfile=bilingual_outfile,
+            english_outfile=english_outfile,
+            hanzi_outfile=hanzi_outfile,
+            overwrite=overwrite,
+        )
+        cls._compile_processing_ops(
+            operations,
+            bilingual_infile=bilingual_infile,
+            english_infile=english_infile,
+            hanzi_infile=hanzi_infile,
+            clean=clean,
+            flatten=flatten,
+            convert=convert,
+        )
 
         return operations
 
