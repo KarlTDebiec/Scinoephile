@@ -12,12 +12,14 @@ from __future__ import annotations
 
 from scinoephile.core.block import Block
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.language import Language
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
 __all__ = [
     "Block",
     "ScinoephileError",
+    "Language",
     "Series",
     "Subtitle",
 ]

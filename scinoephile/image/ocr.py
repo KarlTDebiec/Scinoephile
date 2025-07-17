@@ -9,6 +9,7 @@ from logging import error, info, warning
 from openai import OpenAIError
 
 from scinoephile.core.blocks import get_blocks_by_pause, get_concatenated_series
+from scinoephile.core.language import Language
 from scinoephile.core.pairs import get_pair_blocks_by_pause
 from scinoephile.image import ImageSeries
 from scinoephile.image.base64 import get_base64_image
@@ -18,7 +19,7 @@ from scinoephile.openai import OpenAiService
 def get_transcriptions(
     openai_service: OpenAiService,
     series: ImageSeries,
-    language: str = "English",
+    language: Language = "English",
 ) -> ImageSeries:
     """Get transcriptions of text from images.
 

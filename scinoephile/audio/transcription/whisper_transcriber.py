@@ -19,6 +19,7 @@ with catch_warnings():
 from scinoephile.audio.models import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import validate_output_directory
+from scinoephile.core.language import Language
 
 
 class WhisperTranscriber:
@@ -27,7 +28,7 @@ class WhisperTranscriber:
     def __init__(
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
-        language: str = "yue",
+        language: Language = "yue",
         cache_dir_path: str | None = None,
     ):
         """Initialize.

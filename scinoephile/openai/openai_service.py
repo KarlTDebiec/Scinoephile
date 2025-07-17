@@ -9,6 +9,8 @@ import json
 from openai import OpenAI
 from pydantic import BaseModel
 
+from scinoephile.core.language import Language
+
 
 class OpenAiService:
     """Service for interacting with OpenAI API."""
@@ -24,7 +26,9 @@ class OpenAiService:
         self.temperature = temperature
         self.client = OpenAI()
 
-    def get_transcription(self, base64_image: str, language: str = "English") -> str:
+    def get_transcription(
+        self, base64_image: str, language: Language = "English"
+    ) -> str:
         """Get transcription of text from an image.
 
         Arguments:
@@ -83,7 +87,7 @@ class OpenAiService:
         return transcription
 
     def get_revision(
-        self, base64_image: str, current_text: str, language: str = "English"
+        self, base64_image: str, current_text: str, language: Language = "English"
     ) -> str:
         """Get revised transcription of text from an image.
 
