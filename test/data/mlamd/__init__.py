@@ -478,13 +478,15 @@ mlamd_proofread_test_cases = [
         zhongwen="沿荔枝角道直出大角咀道",
         yuewen="沿住荔枝角度直出大角咀度",
         yuewen_proofread="沿住荔枝角道直出大角咀道",
-        note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is the correct word for 'road' in both cases.",
+        note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' "
+        "is the correct word for 'road' in both cases.",
     ),
     ProofreadTestCase(
         zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
         yuewen="经过好彩走家再左转返出花园街乐园牛园望对上⋯",
         yuewen_proofread="经过好彩酒家再左转返出花园街乐园牛丸王对上⋯",
-        note="Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely mishearings of the intended place names.",
+        note="Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely "
+        "mishearings of the intended place names.",
     ),
     ProofreadTestCase(
         zhongwen="更正一下：",
@@ -510,14 +512,16 @@ mlamd_proofread_test_cases = [
         zhongwen="直出亚皆老街跨过火车桥右转太平道",
         yuewen="都系出返去阿街路街飞过火车桥右转入太平道",
         yuewen_proofread="都系出返去亚皆老街飞过火车桥右转入太平道",
-        note="Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the street name '亚皆老街'.",
+        note="Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the street "
+        "name '亚皆老街'.",
         include_in_prompt=True,
     ),
     ProofreadTestCase(
         zhongwen="再右拐窝打老道向女人街方向飞⋯",
         yuewen="再右转抹返出去窝打炉道向女人街方向飞下下⋯",
         yuewen_proofread="再右转抹返出去窝打老道向女人街方向飞下下⋯",
-        note="Corrected '炉' to '老' in '窝打炉道' as it was likely a mishearing of the correct street name '窝打老道'.",
+        note="Corrected '炉' to '老' in '窝打炉道' as it was likely a mishearing of "
+        "the correct street name '窝打老道'.",
     ),
     ProofreadTestCase(
         zhongwen="飞呀，飞⋯",
@@ -530,20 +534,23 @@ mlamd_proofread_test_cases = [
         zhongwen="胶兜最后飞进广华医院候产房",
         yuewen="最后胶兜飞咗入广华医院嘅后产房",
         yuewen_proofread="最后胶兜飞咗入广华医院嘅候产房",
-        note="Corrected '后产房' to '候产房' as '候产房' (waiting room for childbirth) matches the intended meaning and is a plausible mishearing.",
+        note="Corrected '后产房' to '候产房' as '候产房' (waiting room for childbirth) "
+        "matches the intended meaning and is a plausible mishearing.",
     ),
     ProofreadTestCase(
         zhongwen="也就是在麦太右边额角上⋯",
         yuewen="亦即系麦太右边云晶对上⋯",
         yuewen_proofread="亦即系麦太右边魂精对上⋯",
-        note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文.",
+        note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
+        "'temple' and matches the meaning of '额角' in the 中文.",
         include_in_prompt=True,
     ),
     ProofreadTestCase(
         zhongwen="更正：左边额角上⋯",
         yuewen="都系唔好：左边云晶对上⋯",
         yuewen_proofread="都系唔好：左边魂精对上⋯",
-        note="Corrected '云晶' to '魂精' as '魂精' accurately refers to the side of the head and matches the meaning of '额角' in the 中文.",
+        note="Corrected '云晶' to '魂精' as '魂精' accurately refers to the side of "
+        "the head and matches the meaning of '额角' in the 中文.",
     ),
     ProofreadTestCase(
         zhongwen="转呀，转⋯",
@@ -561,7 +568,8 @@ mlamd_proofread_test_cases = [
         zhongwen="于是向额角上的胶兜许愿",
         yuewen="于是向云晶对上嘅胶兜许愿",
         yuewen_proofread="于是向魂精对上嘅胶兜许愿",
-        note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese anatomical term for the temple area and fits the context.",
+        note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese anatomical "
+        "term for the temple area and fits the context.",
     ),
     ProofreadTestCase(
         zhongwen="脑海中同时出现即将诞生的儿子容貌⋯",
@@ -634,13 +642,15 @@ mlamd_proofread_test_cases = [
         zhongwen="唔聪明唔靓仔也算了，只要福星高照",
         yuewen="就算唔系咁聪明同咁靓仔，只要复星高照",
         yuewen_proofread="就算唔系咁聪明同咁靓仔，只要福星高照",
-        note="Corrected '复星' to '福星' as '福星' is the correct term for good fortune, matching the intended meaning.",
+        note="Corrected '复星' to '福星' as '福星' is the correct term for good "
+        "fortune, matching the intended meaning.",
     ),
     ProofreadTestCase(
         zhongwen="一世够运，逢凶化吉！",
         yuewen="一世救运，乜嘢事都逢凶化㗎喇！",
         yuewen_proofread="一世够运，乜嘢事都逢凶化㗎喇！",
-        note="Corrected '救运' to '够运' as '够运' is the correct term for being lucky, matching the original meaning.",
+        note="Corrected '救运' to '够运' as '够运' is the correct term for "
+        "being lucky, matching the original meaning.",
         include_in_prompt=True,
     ),
     ProofreadTestCase(
@@ -659,7 +669,8 @@ mlamd_proofread_test_cases = [
         zhongwen="虽是说像梁朝伟周润发也行运定了",
         yuewen="虽然似梁朝伟周润发都唔返去冒运行",
         yuewen_proofread="虽然似梁朝伟周润发都行运定咗",
-        note="Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a mishearing; '行运定咗' matches the meaning of '行运定了'.",
+        note="Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a "
+        "mishearing; '行运定咗' matches the meaning of '行运定了'.",
     ),
     ProofreadTestCase(
         zhongwen="但总得要叻仔呀！",
@@ -673,13 +684,15 @@ mlamd_proofread_test_cases = [
         zhongwen="最后，胶兜「嘀督」一声落地",
         yuewen="最后，胶兜「滴嘟」一声咁落地",
         yuewen_proofread="最后，胶兜「嘀督」一声咁落地",
-        note="Corrected '滴嘟' to '嘀督' to match the intended onomatopoeic sound described in the original text.",
+        note="Corrected '滴嘟' to '嘀督' to match the intended onomatopoeic sound "
+        "described in the original text.",
     ),
     ProofreadTestCase(
         zhongwen="嘀督？嘀督，就是答应了",
         yuewen="滴嘟？滴嘟㖞，即系应承啦",
         yuewen_proofread="嘀督？嘀督㖞，即系应承啦",
-        note="Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了).",
+        note="Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of "
+        "'嘀督' as a phonetic rendering of '嘀督' (答应了).",
         include_in_prompt=True,
     ),
     ProofreadTestCase(
@@ -704,13 +717,15 @@ mlamd_proofread_test_cases = [
         zhongwen="还是似周润发？",
         yuewen="定系话自周人烦啊？",
         yuewen_proofread="定系话似周润发啊？",
-        note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the actor's name '周润发'.",
+        note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the actor's "
+        "name '周润发'.",
     ),
     ProofreadTestCase(
         zhongwen="为了纪念这赐福的胶兜",
         yuewen="为咗纪念呢个赤幅嘅胶兜",
         yuewen_proofread="为咗纪念呢个赐福嘅胶兜",
-        note="Corrected '赤幅' to '赐福' as '赐福' is the correct term and '赤幅' is a likely mishearing.",
+        note="Corrected '赤幅' to '赐福' as '赐福' is the correct term and '赤幅' is a "
+        "likely mishearing.",
     ),
     ProofreadTestCase(
         zhongwen="麦太决定把儿子命名麦胶",

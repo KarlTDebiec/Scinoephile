@@ -138,9 +138,12 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     {
                         "role": "user",
                         "content": (
-                            "Your previous response was not valid JSON or did not match the expected schema. "
-                            f"Error details:\n{'\n'.join([e['msg'] for e in exc.errors()])}. "
-                            "Please try again and respond only with a valid JSON object."
+                            "Your previous response was not valid JSON or did not "
+                            "match the expected schema. "
+                            "Error details:\n"
+                            f"{'\n'.join([e['msg'] for e in exc.errors()])}. "
+                            "Please try again and respond only with a valid JSON "
+                            "object."
                         ),
                     }
                 )
@@ -161,8 +164,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     {
                         "role": "user",
                         "content": (
-                            "Your previous response was valid JSON, but failed validation when combined with the query.\n"
-                            f"Error details:\n{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            "Your previous response was valid JSON, but failed "
+                            "validation when combined with the query.\n"
+                            "Error details:\n"
+                            f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
                             "Please revise your response accordingly."
                         ),
                     }

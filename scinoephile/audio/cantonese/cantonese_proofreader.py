@@ -44,7 +44,8 @@ class CantoneseProofreader(
         Do not rewrite correct phrases to match the 中文 wording.
         Do not adjust phrasing, grammar, or classifiers unless there's a clear
         transcription mistake.
-        Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs. 临盆).
+        Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
+        临盆).
 
         Remember:
         - The 粤文 transcription does not need to match the 中文 word-for-word.
