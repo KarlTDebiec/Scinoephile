@@ -31,6 +31,7 @@ from scinoephile.core.synchronization import (
 
 
 class CantoneseAlignmentOperation:
+    """Operations for aligning Cantonese subtitles."""
     def __init__(
         self,
         zhongwen: AudioSeries,
@@ -56,12 +57,16 @@ class CantoneseAlignmentOperation:
     def __str__(self):
         """String representation."""
         zhongwen_str, yuewen_str = get_pair_strings(self.zhongwen, self.yuewen)
-        string = f"MANDARIN:\n{zhongwen_str}"
-        string += f"\nCANTONESE:\n{yuewen_str}"
-        string += f"\nOVERLAP:\n{get_overlap_string(self.overlap)}"
-        string += f"\nSYNC GROUPS:\n{get_sync_groups_string(self.sync_groups)}"
-        string += f"\nTO REVIEW:\n{pformat([i + 1 for i in self.yuewen_to_review])}"
-        return string
+        return f"""MANDARIN:
+{zhongwen_str}
+CANTONESE:
+{yuewen_str}
+OVERLAP:
+{get_overlap_string(self.overlap)}
+SYNC GROUPS:
+{get_sync_groups_string(self.sync_groups)}
+TO REVIEW:
+{pformat([i + 1 for i in self.yuewen_to_review])}"""
 
     @property
     def overlap(self) -> np.ndarray:
@@ -135,14 +140,11 @@ class CantoneseAlignmentOperation:
     def _init_sync_groups(self):
         """Initialize nascent sync groups and list of 粤文 to review."""
         # Each sync group must be one 中文 and zero or more 粤文.
-        nascent_sync_groups = []
-        for zw_i in range(len(self.zhongwen)):
-            nascent_sync_groups.append(([zw_i], []))
+        nascent_sync_groups = [([zw_i], []) for zw_i in range(len(self.zhongwen))]
 
         # For each 粤文, find the corresponding 中文 and add it to the sync group.
         yuewen_to_review = []
         for yw_i in range(len(self.yuewen)):
-            rank = np.argsort(self.scaled_overlap[:, yw_i])[::-1]
             zw_is = np.where(self.scaled_overlap[:, yw_i] > self.cutoff)[0]
 
             if len(zw_is) == 1:
@@ -156,6 +158,7 @@ class CantoneseAlignmentOperation:
     def apply_split_answer(
         self, one_zw_i: int, two_zw_i: int, yw_i: int, answer: SplitAnswer
     ):
+        """Apply split answer to sync groups."""
         if not answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
             raise ScinoephileError()
         if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:

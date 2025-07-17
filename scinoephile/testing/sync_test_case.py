@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from scinoephile.core.synchronization import SyncGroup
 
 
-@dataclass
+@dataclass(slots=True)
 class SyncTestCase:
     """Test case for synchronization."""
 

@@ -10,7 +10,7 @@ from functools import cached_property
 from scinoephile.core.text import get_char_type
 
 
-@dataclass
+@dataclass(slots=True)
 class CharPair:
     """Data class for a pair of characters."""
 

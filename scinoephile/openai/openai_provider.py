@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, override
 
 from openai import OpenAI, OpenAIError
 
@@ -24,6 +24,7 @@ class OpenAIProvider(LLMProvider):
         """
         self.client = client or OpenAI()
 
+    @override
     def chat_completion(
         self,
         model: str,

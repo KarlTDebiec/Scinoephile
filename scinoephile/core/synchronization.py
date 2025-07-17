@@ -16,7 +16,7 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
-SyncGroup = tuple[list[int], list[int]]
+type SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
 
 
@@ -254,7 +254,7 @@ def get_synced_series_from_groups(
     return synced
 
 
-def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
+def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:  # noqa: PLR0912
     """Compare two sync groups.
 
     Arguments:
@@ -301,7 +301,7 @@ def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
             raise ScinoephileError("Unexpected comparison result between sync groups")
 
 
-def _get_sync_groups(
+def _get_sync_groups(  # noqa: PLR0912
     one: Series, two: Series, overlap: np.ndarray, cutoff: float
 ) -> list[SyncGroup]:
     sync_groups = []
