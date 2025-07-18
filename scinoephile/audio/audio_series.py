@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any, override
+from typing import Any, Self, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -112,7 +112,7 @@ class AudioSeries(Series):
         info(f"Saved series to {path}")
 
     @override
-    def slice(self, start_idx: int, end_idx: int) -> AudioSeries:
+    def slice(self, start_idx: int, end_idx: int) -> Self:
         """Slice series.
 
         Arguments:
@@ -208,7 +208,7 @@ class AudioSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> AudioSeries:
+    ) -> Self:
         """Load series from an input file.
 
         Arguments:
@@ -246,7 +246,7 @@ class AudioSeries(Series):
         text_series: Series,
         full_audio: AudioSegment,
         buffer: int,
-    ) -> AudioSeries:
+    ) -> Self:
         """Construct a series from text and full audio.
 
         Arguments:
@@ -306,7 +306,7 @@ class AudioSeries(Series):
         audio_track: int = 0,
         buffer=1000,
         **kwargs: Any,
-    ) -> AudioSeries:
+    ) -> Self:
         """Load series from a subtitle file and associated video file.
 
         Arguments:
@@ -345,7 +345,7 @@ class AudioSeries(Series):
         return cls._build_series(text_series, full_audio, buffer)
 
     @classmethod
-    def _load_wav(cls, dir_path: Path, buffer=1000, **kwargs: Any) -> AudioSeries:
+    def _load_wav(cls, dir_path: Path, buffer=1000, **kwargs: Any) -> Self:
         """Load series from a directory of wav files.
 
         Arguments:

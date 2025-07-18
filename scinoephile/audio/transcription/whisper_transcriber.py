@@ -92,7 +92,7 @@ class WhisperTranscriber:
 
         return segments
 
-    def _get_cache_path(self, audio_data: bytes) -> Path:
+    def _get_cache_path(self, audio_data: bytes) -> Path | None:
         """Get cache path based on hash of audio data.
 
         Arguments:

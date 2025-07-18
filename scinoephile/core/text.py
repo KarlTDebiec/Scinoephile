@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from functools import cache
 
 from scinoephile.core.exceptions import ScinoephileError
 
@@ -185,6 +186,7 @@ def get_char_type(char: str) -> str:
     )
 
 
+@cache
 def get_text_type(text: str) -> str:
     """Determine whether a string contains Chinese characters.
 
@@ -196,7 +198,7 @@ def get_text_type(text: str) -> str:
     for char in text:
         if get_char_type(char) == "full":
             return "full"
-        return "half"
+    return "half"
 
 
 def remove_punc_and_whitespace(text: str) -> str:

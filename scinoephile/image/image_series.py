@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import info
 from pathlib import Path
-from typing import Any, override
+from typing import Any, Self, override
 
 import numpy as np
 from PIL import Image
@@ -109,7 +109,7 @@ class ImageSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> ImageSeries:
+    ) -> Self:
         """Load series from an input file.
 
         Arguments:
@@ -130,7 +130,7 @@ class ImageSeries(Series):
             ) from exc
 
     @classmethod
-    def _load_png(cls, dir_path: Path, **kwargs: Any) -> ImageSeries:
+    def _load_png(cls, dir_path: Path, **kwargs: Any) -> Self:
         """Load series from a directory of png files.
 
         Arguments:
