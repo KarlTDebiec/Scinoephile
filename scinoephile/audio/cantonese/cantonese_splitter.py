@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import override
+
 from scinoephile.audio.models import SplitAnswer, SplitQuery
 from scinoephile.audio.testing import SplitTestCase
 from scinoephile.core.abcs import LLMQueryer
@@ -13,11 +15,13 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
     """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
 
     @property
+    @override
     def answer_cls(self) -> type[SplitAnswer]:
         """Answer class."""
         return SplitAnswer
 
     @property
+    @override
     def answer_example(self) -> SplitAnswer:
         """Example answer."""
         return SplitAnswer(
@@ -26,6 +30,7 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
         )
 
     @property
+    @override
     def answer_template(self) -> str:
         """Answer template."""
         return (
@@ -34,6 +39,7 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
         )
 
     @property
+    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -51,11 +57,13 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
         """
 
     @property
+    @override
     def query_cls(self) -> type[SplitQuery]:
         """Query class."""
         return SplitQuery
 
     @property
+    @override
     def query_template(self) -> str:
         """Query template."""
         return (
@@ -67,6 +75,7 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
         )
 
     @property
+    @override
     def test_case_cls(self) -> type[SplitTestCase]:
         """Test case class."""
         return SplitTestCase

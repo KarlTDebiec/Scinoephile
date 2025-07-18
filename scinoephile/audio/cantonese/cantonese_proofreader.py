@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import override
+
 from scinoephile.audio.models import ProofreadAnswer, ProofreadQuery
 from scinoephile.audio.testing import ProofreadTestCase
 from scinoephile.core.abcs import LLMQueryer
@@ -15,11 +17,13 @@ class CantoneseProofreader(
     """Proofreads a 粤文 subtitle based on the corresponding 中文."""
 
     @property
+    @override
     def answer_cls(self) -> type[ProofreadAnswer]:
         """Answer class."""
         return ProofreadAnswer
 
     @property
+    @override
     def answer_example(self) -> ProofreadAnswer:
         """Example answer."""
         return ProofreadAnswer(
@@ -28,11 +32,13 @@ class CantoneseProofreader(
         )
 
     @property
+    @override
     def answer_template(self) -> str:
         """Answer template."""
         return "粤文 proofread:\n{yuewen_proofread}\nNote:\n{note}\n"
 
     @property
+    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -60,16 +66,19 @@ class CantoneseProofreader(
         """
 
     @property
+    @override
     def query_cls(self) -> type[ProofreadQuery]:
         """Query class."""
         return ProofreadQuery
 
     @property
+    @override
     def query_template(self) -> str:
         """Query template."""
         return "中文:\n{zhongwen}\n粤文 to proofread:\n{yuewen}\n"
 
     @property
+    @override
     def test_case_cls(self) -> type[ProofreadTestCase]:
         """Test case class."""
         return ProofreadTestCase
