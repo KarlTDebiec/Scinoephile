@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from logging import info
-from typing import Any
+from typing import Any, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -24,12 +24,14 @@ class Series(SSAFile):
     events: list[Subtitle]
     """Individual subtitle events."""
 
+    @override
     def __init__(self):
         """Initialize."""
         super().__init__()
 
         self._blocks = None
 
+    @override
     def __eq__(self, other: SSAFile) -> bool:
         """Whether this series is equal to another.
 
@@ -47,6 +49,7 @@ class Series(SSAFile):
 
         return True
 
+    @override
     def __ne__(self, other: SSAFile) -> bool:
         """Whether this series is not equal to another.
 
@@ -57,6 +60,7 @@ class Series(SSAFile):
         """
         return not self == other
 
+    @override
     def __repr__(self) -> str:
         """Representation."""
         if self.events:
@@ -85,6 +89,7 @@ class Series(SSAFile):
         """
         self._blocks = blocks
 
+    @override
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 
@@ -139,6 +144,7 @@ class Series(SSAFile):
         return string.rstrip()
 
     @classmethod
+    @override
     def from_string(
         cls,
         string: str,
@@ -164,6 +170,7 @@ class Series(SSAFile):
         return series
 
     @classmethod
+    @override
     def load(
         cls,
         path: str,
@@ -183,8 +190,8 @@ class Series(SSAFile):
         """
         validated_path = validate_input_file(path)
 
-        with open(validated_path, encoding=encoding) as fp:
-            series = cls.from_file(fp, format_=format_, **kwargs)
+        with open(validated_path, encoding=encoding) as input_file:
+            series = cls.from_file(input_file, format_=format_, **kwargs)
             series.events = [
                 cls.event_class(series=series, **ssaevent.as_dict())
                 for ssaevent in series

@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -49,6 +49,7 @@ class AudioSeries(Series):
     subtitle_audio_pattern = re.compile(r"^\d{4}_\d{8}-\d{8}\.wav$")
     """Pattern for subtitle audio files."""
 
+    @override
     def __init__(self):
         """Initialize."""
         super().__init__()
@@ -70,6 +71,7 @@ class AudioSeries(Series):
         self._audio = audio
 
     @property
+    @override
     def blocks(self) -> list[AudioBlock]:
         """List of blocks in the series."""
         if self._blocks is None:
@@ -77,6 +79,7 @@ class AudioSeries(Series):
         return self._blocks
 
     @blocks.setter
+    @override
     def blocks(self, blocks: list[AudioBlock]) -> None:
         """Set blocks of the series.
 
@@ -85,6 +88,7 @@ class AudioSeries(Series):
         """
         self._blocks = blocks
 
+    @override
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 
@@ -107,6 +111,7 @@ class AudioSeries(Series):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
+    @override
     def slice(self, start_idx: int, end_idx: int) -> AudioSeries:
         """Slice series.
 
@@ -120,6 +125,7 @@ class AudioSeries(Series):
         sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
         return sliced
 
+    @override
     def _init_blocks(self) -> None:
         """Initialize blocks."""
         blocks = [
@@ -195,6 +201,7 @@ class AudioSeries(Series):
         super().save(outfile_path, format_="srt")
 
     @classmethod
+    @override
     def load(
         cls,
         path: str,
@@ -221,8 +228,8 @@ class AudioSeries(Series):
                 video_path = kwargs.pop("video_path", None)
                 validated_video_path = validate_input_file(video_path)
                 return cls._load_video(
-                    fp=validated_path,
-                    video_fp=validated_video_path,
+                    subtitle_path=validated_path,
+                    video_path=validated_video_path,
                     **kwargs,
                 )
             except (FileNotFoundError, KeyError, NotAFileError) as exc:
@@ -293,13 +300,18 @@ class AudioSeries(Series):
 
     @classmethod
     def _load_video(
-        cls, fp: Path, video_fp: Path, audio_track: int = 0, buffer=1000, **kwargs: Any
+        cls,
+        subtitle_path: Path,
+        video_path: Path,
+        audio_track: int = 0,
+        buffer=1000,
+        **kwargs: Any,
     ) -> AudioSeries:
         """Load series from a subtitle file and associated video file.
 
         Arguments:
-            fp: Path to subtitle file
-            video_fp: Path to video file
+            subtitle_path: Path to subtitle file
+            video_path: Path to video file
             audio_track: Audio track (zero-indexed)
             buffer: Additional buffer to include before and after subtitles (ms)
             **kwargs: Additional keyword arguments
@@ -307,11 +319,11 @@ class AudioSeries(Series):
             Loaded series
         """
         # Load text
-        text_series = Series.load(fp)
+        text_series = Series.load(subtitle_path)
 
         # Probe audio track to determine number of channels
-        info(f"Probing audio track {audio_track} in {video_fp}")
-        probe = ffmpeg.probe(str(video_fp))
+        info(f"Probing audio track {audio_track} in {video_path}")
+        probe = ffmpeg.probe(str(video_path))
         audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
         try:
             stream = audio_streams[audio_track]
@@ -320,35 +332,35 @@ class AudioSeries(Series):
         except (IndexError, KeyError, ValueError) as exc:
             raise ScinoephileError(
                 f"Could not determine number of channels for audio track {audio_track} "
-                f"in {video_fp}"
+                f"in {video_path}"
             ) from exc
 
         # Load full audio from video
-        with get_temp_directory_path() as temp_dir:
-            full_audio_path = temp_dir / "full_audio.wav"
-            cls._extract_audio_track(video_fp, full_audio_path, audio_track, channels)
+        with get_temp_directory_path() as temp_dir_path:
+            full_audio_path = temp_dir_path / "full_audio.wav"
+            cls._extract_audio_track(video_path, full_audio_path, audio_track, channels)
             info(f"Loading full audio from {full_audio_path}")
             full_audio = AudioSegment.from_wav(full_audio_path)
 
         return cls._build_series(text_series, full_audio, buffer)
 
     @classmethod
-    def _load_wav(cls, fp: Path, buffer=1000, **kwargs: Any) -> AudioSeries:
+    def _load_wav(cls, dir_path: Path, buffer=1000, **kwargs: Any) -> AudioSeries:
         """Load series from a directory of wav files.
 
         Arguments:
-            fp: Path to input directory
+            dir_path: Path to input directory
             buffer: Additional buffer to include before and after subtitles (ms)
             **kwargs: Additional keyword arguments
         Returns:
             Loaded series
         """
         # Load text
-        srt_path = fp / f"{fp.stem}.srt"
+        srt_path = dir_path / f"{dir_path.stem}.srt"
         text_series = Series.load(srt_path)
 
         # Load full audio file
-        audio_path = fp / f"{fp.stem}.wav"
+        audio_path = dir_path / f"{dir_path.stem}.wav"
         full_audio = AudioSegment.from_wav(audio_path)
         info(f"Loaded full audio from {audio_path}")
 
@@ -356,26 +368,26 @@ class AudioSeries(Series):
 
     @staticmethod
     def _extract_audio_track(
-        video_fp: Path,
-        out_fp: Path,
+        video_input_path: Path,
+        audio_output_path: Path,
         audio_track: int,
         channels: int,
     ) -> None:
         """Extract a mono audio track from a video file.
 
         Arguments:
-            video_fp: Path to input video file
-            out_fp: Path to output audio file
+            video_input_path: Path to input video file
+            audio_output_path: Path to output audio file
             audio_track: Audio track (zero-indexed)
             channels: Number of channels in audio track
         """
         if channels >= 6:
             info(
                 "Extracting center channel of audio stream "
-                f"{audio_track} from {video_fp} to {out_fp}"
+                f"{audio_track} from {video_input_path} to {audio_output_path}"
             )
-            ffmpeg.input(str(video_fp)).output(
-                str(out_fp),
+            ffmpeg.input(str(video_input_path)).output(
+                str(audio_output_path),
                 format="wav",
                 ar=16000,
                 **{
@@ -384,9 +396,12 @@ class AudioSeries(Series):
                 },
             ).run(quiet=False, overwrite_output=True)
         else:
-            info(f"Downmixing audio stream {audio_track} from {video_fp} to {out_fp}")
-            ffmpeg.input(str(video_fp)).output(
-                str(out_fp),
+            info(
+                f"Downmixing audio stream {audio_track} from {video_input_path} to "
+                f"{audio_output_path}"
+            )
+            ffmpeg.input(str(video_input_path)).output(
+                str(audio_output_path),
                 format="wav",
                 ar=16000,
                 map=f"0:a:{audio_track}",

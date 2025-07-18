@@ -8,7 +8,6 @@ import shutil
 from logging import info, warning
 from pathlib import Path
 
-from scinoephile.common.typing import PathLike
 from scinoephile.common.validation import validate_input_directory, validate_input_file
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox_manager import BboxManager
@@ -29,7 +28,7 @@ class ValidationManager:
 
     def __init__(
         self,
-        input_dir_path: PathLike,
+        input_dir_path: Path | str,
         validation_dir_path: Path | None = None,
         interactive: bool = True,
     ):
@@ -84,10 +83,10 @@ class ValidationManager:
             subtitle.bboxes = self.bbox_mgr.get_bboxes(subtitle, self.interactive)
 
         try:
-            if len(subtitle.text_excluding_whitespace) != len(subtitle.bboxes):
+            if len(subtitle.text_without_whitspace) != len(subtitle.bboxes):
                 raise ScinoephileError(
                     f"Number of characters in text "
-                    f"({len(subtitle.text_excluding_whitespace)}) "
+                    f"({len(subtitle.text_without_whitspace)}) "
                     f"does not match number of boxes "
                     f"({len(subtitle.bboxes)});\n"
                     f"Text: {subtitle.text}\n"

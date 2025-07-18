@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import info
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 import numpy as np
 from PIL import Image
@@ -30,6 +30,7 @@ class ImageSeries(Series):
     events: list[ImageSubtitle]
     """Individual subtitle events."""
 
+    @override
     def __init__(self) -> None:
         """Initialize."""
         super().__init__()
@@ -51,6 +52,7 @@ class ImageSeries(Series):
             self._init_fill_and_outline_colors()
         return self._outline_color
 
+    @override
     def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
         """Save series to an output file.
 
@@ -73,33 +75,34 @@ class ImageSeries(Series):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
-    def _save_png(self, fp: Path, **kwargs: Any) -> None:
+    def _save_png(self, dir_path: Path, **kwargs: Any) -> None:
         """Save series to directory of png files.
 
         Arguments:
-            fp: Path to outpt directory
+            dir_path: Path to outpt directory
             **kwargs: Additional keyword arguments
         """
         # Prepare empty directory, deleting existing files if needed
-        if fp.exists() and fp.is_dir():
-            for file in fp.iterdir():
+        if dir_path.exists() and dir_path.is_dir():
+            for file in dir_path.iterdir():
                 file.unlink()
                 info(f"Deleted {file}")
         else:
-            fp.mkdir(parents=True)
-            info(f"Created directory {fp}")
+            dir_path.mkdir(parents=True)
+            info(f"Created directory {dir_path}")
 
         # Save images
         for i, event in enumerate(self, 1):
-            outfile_path = fp / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
+            outfile_path = dir_path / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
             event.img.save(outfile_path)
             info(f"Saved image to {outfile_path}")
 
         # Save text
-        outfile_path = fp / f"{fp.stem}.srt"
+        outfile_path = dir_path / f"{dir_path.stem}.srt"
         super().save(outfile_path, format_="srt")
 
     @classmethod
+    @override
     def load(
         cls,
         path: str,
@@ -127,11 +130,11 @@ class ImageSeries(Series):
             ) from exc
 
     @classmethod
-    def _load_png(cls, fp: Path, **kwargs: Any) -> ImageSeries:
+    def _load_png(cls, dir_path: Path, **kwargs: Any) -> ImageSeries:
         """Load series from a directory of png files.
 
         Arguments:
-            fp: Path to input directory
+            dir_path: Path to input directory
             **kwargs: Additional keyword arguments
         Returns:
             Loaded series
@@ -140,14 +143,14 @@ class ImageSeries(Series):
         series.format = "png"
 
         # Load text
-        srt_path = fp / f"{fp.stem}.srt"
+        srt_path = dir_path / f"{dir_path.stem}.srt"
         text_series = Series.load(srt_path)
 
         # Load images
-        infiles = sorted([path for path in fp.iterdir() if path.suffix == ".png"])
+        infiles = sorted([path for path in dir_path.iterdir() if path.suffix == ".png"])
         if len(text_series) != len(infiles):
             raise ScinoephileError(
-                f"Number of images in {fp} ({len(series)}) "
+                f"Number of images in {dir_path} ({len(series)}) "
                 f"does not match number of subtitles in {srt_path} "
                 f"({len(text_series)})"
             )
