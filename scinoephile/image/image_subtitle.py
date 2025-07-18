@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any
+from typing import Any, override
 
 import numpy as np
 from PIL import Image
@@ -20,6 +20,7 @@ from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
 class ImageSubtitle(Subtitle):
     """Individual subtitle with image."""
 
+    @override
     def __init__(self, img: Image.Image, **kwargs: Any) -> None:
         """Initialize.
 
@@ -152,11 +153,6 @@ class ImageSubtitle(Subtitle):
         if self._img_with_white_bg is None:
             self._img_with_white_bg = get_img_with_white_bg(self.img)
         return self._img_with_white_bg
-
-    @property
-    def text_excluding_whitespace(self) -> str:
-        """Text excluding whitespace."""
-        return "".join([c for c in self.text if c not in whitespace_chars])
 
     def _init_char_pairs(self) -> None:
         """Initialize character pairs."""

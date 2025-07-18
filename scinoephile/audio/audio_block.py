@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, override
 from warnings import catch_warnings, filterwarnings
 
 with catch_warnings():
@@ -17,6 +17,7 @@ from scinoephile.core.block import Block
 class AudioBlock(Block):
     """Block of subtitles within an AudioSeries."""
 
+    @override
     def __init__(
         self,
         buffered_start: int,
@@ -37,14 +38,13 @@ class AudioBlock(Block):
         self.buffered_end = buffered_end
         self.audio = audio
 
+    @override
     def __repr__(self) -> str:
         """Get string representation."""
         return (
             f"{self.__class__.__name__}("
             f"start_idx={self.start_idx}, "
             f"end_idx={self.end_idx}, "
-            f"start={self.start}, "
-            f"end={self.end}, "
             f"buffered_start={self.buffered_start}, "
             f"buffered_end={self.buffered_end})"
         )

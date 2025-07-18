@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -29,6 +29,7 @@ class ScinoephileCli(CommandLineInterface):
     """Command-line interface for Scinoephile."""
 
     @classmethod
+    @override
     def add_arguments_to_argparser(cls, parser: ArgumentParser) -> None:
         """Add arguments to a nascent argument parser.
 
@@ -277,6 +278,7 @@ class ScinoephileCli(CommandLineInterface):
         return operations
 
     @classmethod
+    @override
     def _main(cls, **kwargs: Any) -> None:
         """Execute with provided keyword arguments.
 

@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any
+from typing import Any, override
 
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.core.text import full_punc_chars, half_punc_chars, whitespace_chars
 
 
 class Subtitle(SSAEvent):
@@ -19,6 +19,7 @@ class Subtitle(SSAEvent):
     Extension of pysubs2's SSAEvent with additional features.
     """
 
+    @override
     def __init__(self, **kwargs: Any) -> None:
         """Initialize.
 
@@ -32,6 +33,7 @@ class Subtitle(SSAEvent):
     comment: str = ""
     """Comment associated with subtitle."""
 
+    @override
     def __eq__(self, other: SSAEvent) -> bool:
         """Whether this subtitle is equal to another.
 
@@ -52,6 +54,7 @@ class Subtitle(SSAEvent):
             return True
         return False
 
+    @override
     def __ne__(self, other: SSAEvent) -> bool:
         """Whether this subtitle is not equal to another.
 
@@ -62,6 +65,7 @@ class Subtitle(SSAEvent):
         """
         return not self == other
 
+    @override
     def __repr__(self) -> str:
         """String representation."""
         return (
@@ -73,6 +77,12 @@ class Subtitle(SSAEvent):
         )
 
     @property
-    def text_without_punctuation(self) -> str:
+    def text_without_punc_and_whitespace(self) -> str:
         """Text without punctuation."""
-        return remove_punc_and_whitespace(self.text)
+        chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
+        return "".join([c for c in self.text if c not in chars_to_remove])
+
+    @property
+    def text_without_whitspace(self) -> str:
+        """Text excluding whitespace."""
+        return "".join([c for c in self.text if c not in whitespace_chars])

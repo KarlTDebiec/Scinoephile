@@ -68,10 +68,9 @@ class Block:
         """Get string representation."""
         return (
             f"{self.__class__.__name__}("
+            f"series={self._series!r}, "
             f"start_idx={self.start_idx}, "
-            f"end_idx={self.end_idx}, "
-            f"start={self.start}, "
-            f"end={self.end})"
+            f"end_idx={self.end_idx})"
         )
 
     @cached_property

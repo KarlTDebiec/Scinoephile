@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from enum import Enum
+from enum import StrEnum
 from functools import lru_cache
 
 from opencc import OpenCC
@@ -19,7 +19,7 @@ half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
 
 
-class OpenCCConfig(str, Enum):
+class OpenCCConfig(StrEnum):
     """OpenCC configuration names for hanzi character set conversion."""
 
     s2t = "s2t"

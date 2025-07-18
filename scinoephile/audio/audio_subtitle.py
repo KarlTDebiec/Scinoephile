@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any
+from typing import Any, override
 from warnings import catch_warnings, filterwarnings
 
 with catch_warnings():
@@ -19,6 +19,7 @@ from scinoephile.core import Subtitle
 class AudioSubtitle(Subtitle):
     """Individual subtitle with audio."""
 
+    @override
     def __init__(
         self,
         audio: AudioSegment | None = None,
