@@ -83,7 +83,7 @@ class WhisperTranscriber:
         segments = [TranscribedSegment(**s) for s in result["segments"]]
 
         # Update cache
-        if self.cache_dir_path is not None:
+        if cache_path is not None:
             with cache_path.open("w", encoding="utf-8") as f:
                 json.dump(
                     [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
@@ -92,7 +92,7 @@ class WhisperTranscriber:
 
         return segments
 
-    def _get_cache_path(self, audio_data: bytes) -> Path:
+    def _get_cache_path(self, audio_data: bytes) -> Path | None:
         """Get cache path based on hash of audio data.
 
         Arguments:

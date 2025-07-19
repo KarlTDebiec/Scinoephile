@@ -6,50 +6,17 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from enum import StrEnum
-from functools import lru_cache
+from functools import cache
 
 from opencc import OpenCC
 
+from scinoephile.core.hanzi.opencc_config import OpenCCConfig
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
-
-
-class OpenCCConfig(StrEnum):
-    """OpenCC configuration names for hanzi character set conversion."""
-
-    s2t = "s2t"
-    """Simplified Chinese to Traditional Chinese."""
-    t2s = "t2s"
-    """Traditional Chinese to Simplified Chinese."""
-    s2tw = "s2tw"
-    """Simplified Chinese to Traditional Chinese (Taiwan)."""
-    tw2s = "tw2s"
-    """Traditional Chinese (Taiwan) to Simplified Chinese."""
-    s2hk = "s2hk"
-    """Simplified Chinese to Traditional Chinese (Hong Kong)."""
-    hk2s = "hk2s"
-    """Traditional Chinese (Hong Kong) to Simplified Chinese."""
-    s2twp = "s2twp"
-    """Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom."""
-    tw2sp = "tw2sp"
-    """Traditional Chinese (Taiwan) to Simplified Chinese with Mainland idiom."""
-    t2tw = "t2tw"
-    """Traditional Chinese (OpenCC) to Taiwan Standard."""
-    hk2t = "hk2t"
-    """Traditional Chinese (Hong Kong) to Traditional Chinese."""
-    t2hk = "t2hk"
-    """Traditional Chinese (OpenCC) to Hong Kong variant."""
-    t2jp = "t2jp"
-    """Traditional Chinese Characters (Kyūjitai) to New Japanese Kanji (Shinjitai)."""
-    jp2t = "jp2t"
-    """New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyūjitai)."""
-    tw2t = "tw2t"
-    """Traditional Chinese (Taiwan) to Traditional Chinese."""
 
 
 def get_hanzi_cleaned(series: Series) -> Series:
@@ -71,7 +38,7 @@ def get_hanzi_cleaned(series: Series) -> Series:
     return series
 
 
-@lru_cache
+@cache
 def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
     """Get OpenCC converter for hanzi character set conversion.
 
@@ -81,20 +48,6 @@ def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
         OpenCC converter instance, from cache if available
     """
     return OpenCC(config)
-
-
-def get_hanzi_flattened(series: Series) -> Series:
-    """Get multi-line hanzi series flattened to single lines.
-
-    Arguments:
-        series: Series to flatten
-    Returns:
-        Flattened series
-    """
-    series = deepcopy(series)
-    for event in series:
-        event.text = _get_hanzi_text_flattened(event.text)
-    return series
 
 
 def get_hanzi_converted(
@@ -111,6 +64,20 @@ def get_hanzi_converted(
     series = deepcopy(series)
     for event in series:
         event.text = get_hanzi_converter(config).convert(event.text)
+    return series
+
+
+def get_hanzi_flattened(series: Series) -> Series:
+    """Get multi-line hanzi series flattened to single lines.
+
+    Arguments:
+        series: Series to flatten
+    Returns:
+        Flattened series
+    """
+    series = deepcopy(series)
+    for event in series:
+        event.text = _get_hanzi_text_flattened(event.text)
     return series
 
 

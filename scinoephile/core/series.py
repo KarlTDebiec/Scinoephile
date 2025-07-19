@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from logging import info
-from typing import Any, override
+from typing import Any, Self, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -102,7 +102,7 @@ class Series(SSAFile):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
-    def slice(self, start: int, end: int) -> Series:
+    def slice(self, start: int, end: int) -> Self:
         """Slice series.
 
         Arguments:
@@ -151,7 +151,7 @@ class Series(SSAFile):
         format_: str | None = None,
         fps: float | None = None,
         **kwargs: Any,
-    ) -> Series:
+    ) -> Self:
         """Parse series from string.
 
         Arguments:
@@ -177,7 +177,7 @@ class Series(SSAFile):
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
-    ) -> Series:
+    ) -> Self:
         """Load series from an input file.
 
         Arguments:

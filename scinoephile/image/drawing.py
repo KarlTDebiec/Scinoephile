@@ -5,12 +5,13 @@
 from __future__ import annotations
 
 import colorsys
+from functools import cache
+from pathlib import Path
 from platform import system
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-from scinoephile.common.typing import PathLike
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import get_text_type
 from scinoephile.image.bbox import get_bbox
@@ -100,7 +101,7 @@ def get_img_of_text(
     text: str,
     size: tuple[int, int],
     *,
-    font_path: PathLike | None = None,
+    font_path: Path | str | None = None,
     fill_color: int = 31,
     outline_color: int = 235,
 ) -> Image.Image:
@@ -197,7 +198,7 @@ def get_img_of_text_with_bboxes(
     size: tuple[int, int],
     bboxes: list[tuple[int, int, int, int]],
     *,
-    font_path: PathLike | None = None,
+    font_path: Path | str | None = None,
     fill_color: int = 31,
     outline_color: int = 235,
 ) -> Image.Image:
@@ -349,14 +350,15 @@ def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
     return stack
 
 
-def _get_default_font_path() -> PathLike:
+@cache
+def _get_default_font_path() -> Path:
     """Get path to font file.
 
     Returns:
         Path to font file
     """
     if system() == "Windows":
-        return r"C:\WINDOWS\FONTS\MSYH.TTC"
+        return Path(r"C:\WINDOWS\FONTS\MSYH.TTC")
     if system() == "Darwin":
-        return r"/System/Library/Fonts/STHeiti Medium.ttc"
+        return Path(r"/System/Library/Fonts/STHeiti Medium.ttc")
     raise ScinoephileError("Font path must be provided for non-Windows systems")
