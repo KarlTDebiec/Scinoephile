@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from functools import lru_cache
+from functools import cache
 
 from opencc import OpenCC
 
@@ -38,6 +38,18 @@ def get_hanzi_cleaned(series: Series) -> Series:
     return series
 
 
+@cache
+def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
+    """Get OpenCC converter for hanzi character set conversion.
+
+    Arguments:
+        config: OpenCC configuration
+    Returns:
+        OpenCC converter instance, from cache if available
+    """
+    return OpenCC(config)
+
+
 def get_hanzi_converted(
     series: Series, config: OpenCCConfig = OpenCCConfig.t2s
 ) -> Series:
@@ -53,18 +65,6 @@ def get_hanzi_converted(
     for event in series:
         event.text = get_hanzi_converter(config).convert(event.text)
     return series
-
-
-@lru_cache
-def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
-    """Get OpenCC converter for hanzi character set conversion.
-
-    Arguments:
-        config: OpenCC configuration
-    Returns:
-        OpenCC converter instance, from cache if available
-    """
-    return OpenCC(config)
 
 
 def get_hanzi_flattened(series: Series) -> Series:
