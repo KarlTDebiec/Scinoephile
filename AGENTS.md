@@ -7,6 +7,8 @@
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
   3. `uv run pyright`
+* Do not add `noqa` comments to ignore linting errors. If fixing a linting error is not
+  possible or is outside the scope of your change, that is fine.
 * Testing: `uv run pytest`
 
 ## Code Style
