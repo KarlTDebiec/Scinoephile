@@ -251,7 +251,7 @@ class WhitespaceManager:
         max_gaps = self.max_gaps[pair.type_1, pair.type_2]
         try:
             max_gaps[pair.width_1, pair.width_2] = pair.gap
-        except IndexError as error:
+        except IndexError as exc:
             # If needed size is under 5% larger than current size, expand max_gaps
             shape = max_gaps.shape
             if pair.width_1 <= shape[0] * 1.05 and pair.width_2 <= shape[1] * 1.05:
@@ -259,5 +259,5 @@ class WhitespaceManager:
                 max_gaps = self.max_gaps[pair.type_1, pair.type_2]
                 max_gaps[pair.width_1, pair.width_2] = pair.gap
             else:
-                raise error
+                raise exc
         self._save_max_gaps(pair.type_1, pair.type_2)
