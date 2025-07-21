@@ -13,7 +13,7 @@ from textwrap import dedent
 
 from pydantic import ValidationError
 
-from scinoephile.common.validation import validate_output_directory
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
@@ -76,7 +76,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.cache_dir_path = None
         """Directory in which to cache query results."""
         if cache_dir_path is not None:
-            self.cache_dir_path = validate_output_directory(cache_dir_path)
+            self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(self, query: TQuery) -> TAnswer:
         """Query LLM.

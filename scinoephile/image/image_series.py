@@ -14,9 +14,9 @@ from pysubs2 import SSAFile
 
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
-    validate_input_directory,
-    validate_output_directory,
-    validate_output_file,
+    val_input_dir_path,
+    val_output_dir_path,
+    val_output_path,
 )
 from scinoephile.core import ScinoephileError, Series
 from scinoephile.image.image_subtitle import ImageSubtitle
@@ -65,13 +65,13 @@ class ImageSeries(Series):
 
         # Check if directory
         if format_ == "png" or (not format_ and path.suffix == ""):
-            path = validate_output_directory(path)
+            path = val_output_dir_path(path)
             self._save_png(path, **kwargs)
             info(f"Saved series to {path}")
             return
 
         # Otherwise, continue as superclass SSAFile
-        path = validate_output_file(path)
+        path = val_output_path(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
@@ -121,7 +121,7 @@ class ImageSeries(Series):
             Loaded series
         """
         try:
-            validated_path = validate_input_directory(path)
+            validated_path = val_input_dir_path(path)
             return cls._load_png(validated_path, **kwargs)
         except (DirectoryNotFoundError, NotADirectoryError) as exc:
             raise ValueError(

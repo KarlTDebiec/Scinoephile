@@ -10,7 +10,7 @@ from typing import Any, Self, override
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
 
-from scinoephile.common.validation import validate_input_file, validate_output_file
+from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.block import Block
 from scinoephile.core.blocks import get_block_indexes_by_pause
 from scinoephile.core.subtitle import Subtitle
@@ -98,7 +98,7 @@ class Series(SSAFile):
             format_: Output file format
             **kwargs: Additional keyword arguments
         """
-        path = validate_output_file(path)
+        path = val_output_path(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
@@ -188,7 +188,7 @@ class Series(SSAFile):
         Returns:
             Loaded series
         """
-        validated_path = validate_input_file(path)
+        validated_path = val_input_path(path)
 
         with open(validated_path, encoding=encoding) as input_file:
             series = cls.from_file(input_file, format_=format_, **kwargs)

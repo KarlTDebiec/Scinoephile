@@ -8,7 +8,7 @@ import shutil
 from logging import info, warning
 from pathlib import Path
 
-from scinoephile.common.validation import validate_input_directory, validate_input_file
+from scinoephile.common.validation import val_input_dir_path, val_input_path
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox_manager import BboxManager
 from scinoephile.image.drawing import (
@@ -39,13 +39,13 @@ class ValidationManager:
             validation_dir_path: Directory in which to save validation results
             interactive: Whether to prompt user for input on proposed updates
         """
-        self.series_dir_path = validate_input_directory(input_dir_path)
-        self.series_path = validate_input_file(
+        self.series_dir_path = val_input_dir_path(input_dir_path)
+        self.series_path = val_input_path(
             self.series_dir_path / f"{self.series_dir_path.name}.srt"
         )
         self.validation_dir_path = None
         if validation_dir_path:
-            self.validation_dir_path = validate_input_directory(validation_dir_path)
+            self.validation_dir_path = val_input_dir_path(validation_dir_path)
         self.interactive = interactive
 
         self.series = ImageSeries.load(input_dir_path)

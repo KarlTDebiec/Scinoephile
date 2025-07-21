@@ -18,7 +18,7 @@ with catch_warnings():
 
 from scinoephile.audio.models import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.common.validation import validate_output_directory
+from scinoephile.common.validation import val_output_dir_path
 
 
 class WhisperTranscriber:
@@ -42,7 +42,7 @@ class WhisperTranscriber:
         self.language = language
         self.cache_dir_path = None
         if cache_dir_path is not None:
-            self.cache_dir_path = validate_output_directory(cache_dir_path)
+            self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe audio.

@@ -23,10 +23,10 @@ from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.common import NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
-    validate_input_directory,
-    validate_input_file,
-    validate_output_directory,
-    validate_output_file,
+    val_input_dir_path,
+    val_input_path,
+    val_output_dir_path,
+    val_output_path,
 )
 from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.block import Block
@@ -101,13 +101,13 @@ class AudioSeries(Series):
 
         # Check if directory
         if format_ == "wav" or (not format_ and path.suffix == ""):
-            path = validate_output_directory(path)
+            path = val_output_dir_path(path)
             self._save_wav(path, **kwargs)
             info(f"Saved series to {path}")
             return
 
         # Otherwise, continue as superclass SSAFile
-        path = validate_output_file(path)
+        path = val_output_path(path)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
@@ -220,13 +220,13 @@ class AudioSeries(Series):
             Loaded series
         """
         try:
-            validated_path = validate_input_directory(path)
+            validated_path = val_input_dir_path(path)
             return cls._load_wav(validated_path, **kwargs)
         except NotADirectoryError:
             try:
-                validated_path = validate_input_file(path)
+                validated_path = val_input_path(path)
                 video_path = kwargs.pop("video_path", None)
-                validated_video_path = validate_input_file(video_path)
+                validated_video_path = val_input_path(video_path)
                 return cls._load_video(
                     subtitle_path=validated_path,
                     video_path=validated_video_path,
