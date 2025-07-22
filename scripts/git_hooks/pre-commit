@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Pre-commit hook to enforce branch naming rules
+
+branch=$(git symbolic-ref --quiet --short HEAD)
+
+if [[ "$branch" == "master" || "$branch" == "main" ]]; then
+    echo "Direct commits to master are not allowed. Create a feature branch." >&2
+    exit 1
+fi
+
+if [[ ! "$branch" =~ ^feature/.* ]]; then
+    echo "Branch names must start with 'feature/'. Current branch: '$branch'." >&2
+    exit 1
+fi
+
+exit 0
