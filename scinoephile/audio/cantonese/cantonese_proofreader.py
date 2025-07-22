@@ -6,8 +6,11 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.models import ProofreadAnswer, ProofreadQuery
-from scinoephile.audio.testing import ProofreadTestCase
+from scinoephile.audio.cantonese.models import (
+    ProofreadAnswer,
+    ProofreadQuery,
+    ProofreadTestCase,
+)
 from scinoephile.core.abcs import LLMQueryer
 
 

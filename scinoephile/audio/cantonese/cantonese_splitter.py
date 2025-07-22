@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.models import SplitAnswer, SplitQuery
-from scinoephile.audio.testing import SplitTestCase
+from scinoephile.audio.cantonese.models import SplitAnswer, SplitQuery, SplitTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 

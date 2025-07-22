@@ -13,11 +13,13 @@ from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.cantonese.cantonese_merger import CantoneseMerger
 from scinoephile.audio.cantonese.cantonese_proofreader import CantoneseProofreader
 from scinoephile.audio.cantonese.cantonese_splitter import CantoneseSplitter
-from scinoephile.audio.models import (
+from scinoephile.audio.cantonese.models import (
     MergeQuery,
     ProofreadQuery,
     SplitAnswer,
     SplitQuery,
+)
+from scinoephile.audio.transcription.models import (
     TranscribedSegment,
 )
 from scinoephile.core import ScinoephileError

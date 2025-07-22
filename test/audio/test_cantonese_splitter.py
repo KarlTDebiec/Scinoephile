@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.audio.cantonese import CantoneseSplitter
-from scinoephile.audio.testing import SplitTestCase
+from scinoephile.audio.cantonese.models import SplitTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_split_test_cases  # noqa: F401

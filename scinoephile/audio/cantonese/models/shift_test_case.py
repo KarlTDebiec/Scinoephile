@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from pydantic import model_validator
 
-from scinoephile.audio.models import ShiftAnswer, ShiftQuery
+from scinoephile.audio.cantonese.models.shift_answer import ShiftAnswer
+from scinoephile.audio.cantonese.models.shift_query import ShiftQuery
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import remove_punc_and_whitespace
 

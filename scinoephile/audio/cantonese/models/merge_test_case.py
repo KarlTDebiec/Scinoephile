@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from pydantic import model_validator
 
-from scinoephile.audio.models import MergeAnswer, MergeQuery
+from scinoephile.audio.cantonese.models.merge_answer import MergeAnswer
+from scinoephile.audio.cantonese.models.merge_query import MergeQuery
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import remove_punc_and_whitespace
 

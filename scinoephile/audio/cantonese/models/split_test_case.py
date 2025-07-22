@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from pydantic import model_validator
 
-from scinoephile.audio.models import SplitAnswer, SplitQuery
+from scinoephile.audio.cantonese.models.split_answer import SplitAnswer
+from scinoephile.audio.cantonese.models.split_query import SplitQuery
 from scinoephile.core.abcs import TestCase
 
 

@@ -7,9 +7,87 @@ from __future__ import annotations
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
+from scinoephile.audio.transcription.models import TranscribedSegment
+
+
+def get_series_from_segments(
+    segments: list[TranscribedSegment], offset: int = 0
+) -> AudioSeries:
+    """Compile transcribed segments to a subtitle series.
+
+    Arguments:
+        segments: Transcribed segments to compile
+        offset: Time offset to apply
+    Returns:
+        Compiled subtitle series
+    """
+    events = []
+    for segment in segments:
+        event = AudioSubtitle(
+            start=offset + int(segment.start * 1000),
+            end=offset + int(segment.end * 1000),
+            text=segment.text.strip(),
+            segment=segment,
+        )
+        events.append(event)
+
+    series = AudioSeries()
+    series.events = events
+    return series
+
+
+def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
+    """Split transcribed segment into multiple segments on whitespace.
+
+    Arguments:
+        segment: Transcribed segment to split
+    Returns:
+        Transcribed segments split on whitespace
+    """
+    if segment.words is None or len(segment.words) == 0:
+        return [segment]
+
+    split_segments = []
+    nascent_words = []
+    # Groups of words
+    segment_id = 0
+    for word in segment.words:
+        if word.text.startswith(" "):
+            if nascent_words:
+                nascent_segment = TranscribedSegment(
+                    id=segment_id,
+                    seek=0,
+                    start=nascent_words[0].start,
+                    end=nascent_words[-1].end,
+                    text="".join([word.text for word in nascent_words]),
+                    words=nascent_words,
+                )
+                split_segments.append(nascent_segment)
+                segment_id += 1
+                nascent_words = []
+            word.text = word.text[1:]
+        if word.text != "":
+            nascent_words.append(word)
+
+    # Final group of words
+    if nascent_words:
+        nascent_segment = TranscribedSegment(
+            id=segment_id,
+            seek=0,
+            start=nascent_words[0].start,
+            end=nascent_words[-1].end,
+            text="".join([word.text for word in nascent_words]),
+            words=nascent_words,
+        )
+        split_segments.append(nascent_segment)
+
+    return split_segments
+
 
 __all__ = [
     "AudioBlock",
     "AudioSeries",
     "AudioSubtitle",
+    "get_series_from_segments",
+    "get_split_segment",
 ]

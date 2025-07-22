@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.models import ProofreadAnswer, ProofreadQuery
+from scinoephile.audio.cantonese.models.proofread_answer import ProofreadAnswer
+from scinoephile.audio.cantonese.models.proofread_query import ProofreadQuery
 from scinoephile.core.abcs import TestCase
 
 
