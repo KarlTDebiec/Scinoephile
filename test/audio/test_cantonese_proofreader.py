@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.audio.cantonese import CantoneseProofreader
-from scinoephile.audio.testing import ProofreadTestCase
+from scinoephile.audio.cantonese.models import ProofreadTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_proofread_test_cases  # noqa: F401

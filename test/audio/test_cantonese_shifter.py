@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.audio.cantonese import CantoneseShifter
-from scinoephile.audio.testing import ShiftTestCase
+from scinoephile.audio.cantonese.models import ShiftTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_shift_test_cases  # noqa: F401

@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from scinoephile.audio.testing import (
+from scinoephile.audio.cantonese.models import (
     MergeTestCase,
     ProofreadTestCase,
     ShiftTestCase,

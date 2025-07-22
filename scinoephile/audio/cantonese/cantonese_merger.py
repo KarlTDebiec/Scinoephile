@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.models import MergeAnswer, MergeQuery
-from scinoephile.audio.testing import MergeTestCase
+from scinoephile.audio.cantonese.models import MergeAnswer, MergeQuery, MergeTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 

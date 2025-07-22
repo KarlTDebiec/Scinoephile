@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.models import ShiftAnswer, ShiftQuery
-from scinoephile.audio.testing import ShiftTestCase
+from scinoephile.audio.cantonese.models import ShiftAnswer, ShiftQuery, ShiftTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 
