@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.models.transcribed_segment import TranscribedSegment
-from scinoephile.audio.models.transcribed_word import TranscribedWord
+from scinoephile.audio.transcription.models.transcribed_segment import (
+    TranscribedSegment,
+)
+from scinoephile.audio.transcription.models.transcribed_word import TranscribedWord
 
 __all__ = [
     "TranscribedWord",

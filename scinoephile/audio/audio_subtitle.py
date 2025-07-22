@@ -12,7 +12,7 @@ with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     from pydub import AudioSegment
 
-from scinoephile.audio.models.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.models import TranscribedSegment
 from scinoephile.core import Subtitle
 
 

@@ -19,7 +19,7 @@ from scinoephile.audio.cantonese.models import (
     SplitAnswer,
     SplitQuery,
 )
-from scinoephile.audio.models import (
+from scinoephile.audio.transcription.models import (
     TranscribedSegment,
 )
 from scinoephile.core import ScinoephileError
