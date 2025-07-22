@@ -17,7 +17,7 @@ from scinoephile.core.abcs import LLMQueryer
 class CantoneseProofreader(
     LLMQueryer[ProofreadQuery, ProofreadAnswer, ProofreadTestCase]
 ):
-    """Proofreads a 粤文 subtitle based on the corresponding 中文."""
+    """Proofreads 粤文 text based on the corresponding 中文."""
 
     @property
     @override

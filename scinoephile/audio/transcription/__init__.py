@@ -37,7 +37,28 @@ def get_hanzi_converted_segment(
     return converted_segment
 
 
+def get_merged_segment(segments: list[TranscribedSegment]) -> TranscribedSegment:
+    """Merge transcribed segments into a single segment.
+
+    Arguments:
+        segments: Segments to merge
+    Returns:
+        Merged segment
+    """
+    if len(segments) == 1:
+        return segments[0]
+    return TranscribedSegment(
+        id=segments[0].id,
+        seek=segments[0].seek,
+        start=segments[0].start,
+        end=segments[-1].end,
+        text="".join([s.text for s in segments]),
+        words=[word for segment in segments for word in segment.words],
+    )
+
+
 __all__ = [
     "WhisperTranscriber",
     "get_hanzi_converted_segment",
+    "get_merged_segment",
 ]

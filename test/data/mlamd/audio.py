@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.audio import AudioSeries
+from scinoephile.audio import AudioSeries, get_series_from_segments, get_split_segment
 from scinoephile.audio.cantonese import (
     CantoneseAligner,
     CantoneseMerger,
@@ -14,8 +14,6 @@ from scinoephile.audio.cantonese import (
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_hanzi_converted_segment,
-    get_series_from_segments,
-    get_split_segment,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
@@ -74,9 +72,9 @@ if __name__ == "__main__":
 
     all_series = []
     for i, block in enumerate(yuewen.blocks):
-        print(f"\nBlock {i} ({block.start} - {block.end})")
-        if i >= 2:
-            break
+        print(f"Block {i} ({block.start_idx} - {block.end_idx})")
+        if i != 2:
+            continue
 
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -98,7 +96,7 @@ if __name__ == "__main__":
 
         # Sync segments with the corresponding 中文 subtitles
         zhongwen_series = zhongwen.blocks[i].to_series()
-        op = aligner.group(zhongwen_series, yuewen_series)
+        op = aligner.align(zhongwen_series, yuewen_series)
         yuewen_series = op.yuewen
 
         # Block complete

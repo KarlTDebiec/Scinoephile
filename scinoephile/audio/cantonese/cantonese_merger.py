@@ -11,7 +11,7 @@ from scinoephile.core.abcs import LLMQueryer
 
 
 class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
-    """Merges transcribed 粤文 texts to match 中文 text punctuation and spacing."""
+    """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
 
     @property
     @override
