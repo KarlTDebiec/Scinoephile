@@ -75,6 +75,9 @@ class CantoneseAligner:
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
         self._merge(alignment)
 
+        # Shift 粤文 subtitles to match 中文 subtitles
+        self._shift(alignment)
+
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         self._proofread(alignment)
 
@@ -114,7 +117,7 @@ class CantoneseAligner:
             zw_i = zw_is[0]
             if len(yw_is) == 0:
                 continue
-            query = alignment._get_merge_query(zw_i, yw_is)
+            query = alignment.get_merge_query(zw_i, yw_is)
             answer = self.merger(query)
 
             updated_yuewen_events.append(
@@ -130,6 +133,14 @@ class CantoneseAligner:
         updated_yuewen = AudioSeries()
         updated_yuewen.events = updated_yuewen_events
         alignment.yuewen = updated_yuewen
+
+    def _shift(self, alignment) -> None:
+        """Shift 粤文 text.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        pass
 
     def _proofread(self, alignment: CantoneseAlignment) -> None:
         """Proofread 粤文 text.
@@ -148,7 +159,7 @@ class CantoneseAligner:
                     f"Sync group not as expected:\n{sync_group}\n{alignment}"
                 )
             i = sync_group[0][0]
-            query = alignment._get_proofread_query(i)
+            query = alignment.get_proofread_query(i)
             answer = self.proofreader(query)
             updated_yuewen_events.append(
                 AudioSubtitle(

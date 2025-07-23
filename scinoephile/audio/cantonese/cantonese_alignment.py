@@ -176,7 +176,7 @@ class CantoneseAlignment:
         self._sync_groups = None
         self._yuewen_to_review = None
 
-    def _get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
+    def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
         """Get merge query for given indices.
 
         Arguments:
@@ -214,7 +214,7 @@ class CantoneseAlignment:
             yuewen_to_split=self.yuewen[yw_i].text,
         )
 
-    def _get_proofread_query(self, i: int) -> ProofreadQuery:
+    def get_proofread_query(self, i: int) -> ProofreadQuery:
         """Get proofread query for given 中文/粤文 index.
 
         Arguments:

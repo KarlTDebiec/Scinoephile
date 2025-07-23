@@ -671,6 +671,7 @@ mlamd_proofread_test_cases = [
         yuewen_proofread="虽然似梁朝伟周润发都行运定咗",
         note="Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a "
         "mishearing; '行运定咗' matches the meaning of '行运定了'.",
+        include_in_prompt=True,
     ),
     ProofreadTestCase(
         zhongwen="但总得要叻仔呀！",

@@ -32,11 +32,6 @@ class ReadmeTranslator(
         )
 
     @property
-    def answer_template(self) -> str:
-        """Answer template."""
-        return "Updated Chinese README:\n{updated_chinese}\n"
-
-    @property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -48,22 +43,12 @@ class ReadmeTranslator(
         This value may be:
         - "zhongwen": Mandarin Chinese using traditional characters (繁體中文)
         - "yuewen": Cantonese using traditional characters (繁體粵文)
-        Your response must be a JSON object with the following structure:
         """
 
     @property
     def query_cls(self) -> type[ReadmeTranslationQuery]:
         """Query class."""
         return ReadmeTranslationQuery
-
-    @property
-    def query_template(self) -> str:
-        """Query template."""
-        return (
-            "Updated English README:\n{updated_english}\n"
-            "Out-of-date Chinese README:\n{outdated_chinese}\n"
-            "Chinese language: {language}\n"
-        )
 
     @property
     def test_case_cls(self) -> type[ReadmeTranslationTestCase]:

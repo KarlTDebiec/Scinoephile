@@ -27,12 +27,6 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
 
     @property
     @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return "粤文 merged:\n{yuewen_merged}\n"
-
-    @property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -43,7 +37,6 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         All 汉字 in the output must come from the 粤文 input.
         No 汉字 in the output may come from the 中文 input.
         Adjust punctuation and spacing to match the 中文 input.
-        Your response must be a JSON object with the following structure:
         """
 
     @property
@@ -54,25 +47,6 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
 
     @property
     @override
-    def query_template(self) -> str:
-        """Query template."""
-        return "中文:\n{zhongwen}\n粤文 to merge:\n{yuewen_to_merge}\n"
-
-    @property
-    @override
     def test_case_cls(self) -> type[MergeTestCase]:
         """Test case class."""
         return MergeTestCase
-
-    @override
-    def _format_query_prompt(self, query: MergeQuery) -> str:
-        """Format query prompt based on query.
-
-        Arguments:
-            query: Query to format
-        Returns:
-            Formatted query prompt
-        """
-        return self.query_template.format(
-            zhongwen=query.zhongwen, yuewen_to_merge="\n".join(query.yuewen_to_merge)
-        )

@@ -36,12 +36,6 @@ class CantoneseProofreader(
 
     @property
     @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return "粤文 proofread:\n{yuewen_proofread}\nNote:\n{note}\n"
-
-    @property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -64,8 +58,6 @@ class CantoneseProofreader(
 
         Include a one-sentence explanation in English for any correction you make.
         If you make no changes, return an empty string for the note.
-
-        Your response must be a JSON object with the following structure:
         """
 
     @property
@@ -73,12 +65,6 @@ class CantoneseProofreader(
     def query_cls(self) -> type[ProofreadQuery]:
         """Query class."""
         return ProofreadQuery
-
-    @property
-    @override
-    def query_template(self) -> str:
-        """Query template."""
-        return "中文:\n{zhongwen}\n粤文 to proofread:\n{yuewen}\n"
 
     @property
     @override

@@ -30,15 +30,6 @@ class CantoneseShifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
 
     @property
     @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return (
-            "粤文 one shifted:\n{one_yuewen_shifted}\n"
-            "粤文 two shifted:\n{two_yuewen_shifted}\n"
-        )
-
-    @property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -47,7 +38,6 @@ class CantoneseShifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
         中文 subtitles.
         Include all 粤文 characters from the inputs.
         Do not add or remove characters.
-        Your response must be a JSON object with the following structure:
         """
 
     @property
@@ -55,17 +45,6 @@ class CantoneseShifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
     def query_cls(self) -> type[ShiftQuery]:
         """Query class."""
         return ShiftQuery
-
-    @property
-    @override
-    def query_template(self) -> str:
-        """Query template."""
-        return (
-            "中文 one:\n{one_zhongwen}\n"
-            "粤文 one original:\n{one_yuewen}\n"
-            "中文 two:\n{two_zhongwen}\n"
-            "粤文 two original:\n{two_yuewen}\n"
-        )
 
     @property
     @override

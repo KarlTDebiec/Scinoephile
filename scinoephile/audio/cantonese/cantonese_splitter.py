@@ -30,15 +30,6 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
 
     @property
     @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return (
-            "粤文 to append to one:\n{one_yuewen_to_append}\n"
-            "粤文 to prepend to two:\n{two_yuewen_to_prepend}\n"
-        )
-
-    @property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -52,7 +43,6 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
         Include all characters "ambiguous 粤文" in either "one" or "two".
         Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
         Your output "one" and "two" concatenated should equal "ambiguous 粤文".
-        Your response must be a JSON object with the following structure:
         """
 
     @property
@@ -60,18 +50,6 @@ class CantoneseSplitter(LLMQueryer[SplitQuery, SplitAnswer, SplitTestCase]):
     def query_cls(self) -> type[SplitQuery]:
         """Query class."""
         return SplitQuery
-
-    @property
-    @override
-    def query_template(self) -> str:
-        """Query template."""
-        return (
-            "中文 one:\n{one_zhongwen}\n"
-            "粤文 one start:\n{one_yuewen_start}\n"
-            "中文 two:\n{two_zhongwen}\n"
-            "粤文 two end:\n{two_yuewen_end}\n"
-            "粤文 to split:\n{yuewen_to_split}\n"
-        )
 
     @property
     @override
