@@ -9,7 +9,7 @@ from PIL import Image
 
 from scinoephile.audio.cantonese.models import (
     MergeTestCase,
-    ProofreadTestCase,
+    ProofTestCase,
     ShiftTestCase,
     SplitTestCase,
 )
@@ -95,7 +95,7 @@ def mlamd_eng_validation_directory() -> str:
 # endregion
 
 
-# region 粤文 Splitting Test Cases
+# region 粤文 Split Test Cases
 mlamd_split_test_cases = [
     # region Block 0
     SplitTestCase(
@@ -171,7 +171,7 @@ mlamd_split_test_cases = [
 
 # endregion
 
-# region 粤文 Merging Test Cases
+# region 粤文 Merge Test Cases
 
 mlamd_merge_test_cases = [
     # region Block 0
@@ -429,26 +429,368 @@ mlamd_merge_test_cases = [
 
 # endregion
 
-# region 粤文 Shifting Test Cases
+# region 粤文 Shift Test Cases
 mlamd_shift_test_cases: list[ShiftTestCase] = [
-    # region Block 2 (WIP)
+    # region Block 0
     ShiftTestCase(
-        one_zhongwen="麦太，没见面一阵",
-        one_yuewen="咦，麦太",
-        two_zhongwen="怎么小腿粗起来了？",
-        two_yuewen="咩唔见你一排，个脚刮囊粗咗咁多呀？",
-        one_yuewen_shifted="咦，麦太，咩唔见你一排",
-        two_yuewen_shifted="个脚刮囊粗咗咁多呀？",
+        one_zhongwen="在麦太即将临盆的时候",
+        one_yuewen="就喺麦太快要临盘嘅时候",
+        two_zhongwen="一只胶兜在九龙上空飞过",
+        two_yuewen="有一个胶兜喺九龙上空飞过",
+        one_yuewen_shifted="就喺麦太快要临盘嘅时候",
+        two_yuewen_shifted="有一个胶兜喺九龙上空飞过",
+    ),
+    ShiftTestCase(
+        one_zhongwen="一只胶兜在九龙上空飞过",
+        one_yuewen="有一个胶兜喺九龙上空飞过",
+        two_zhongwen="沿荔枝角道直出大角咀道",
+        two_yuewen="沿住荔枝角度直出大角咀度",
+        one_yuewen_shifted="有一个胶兜喺九龙上空飞过",
+        two_yuewen_shifted="沿住荔枝角度直出大角咀度",
+    ),
+    ShiftTestCase(
+        one_zhongwen="沿荔枝角道直出大角咀道",
+        one_yuewen="沿住荔枝角度直出大角咀度",
+        two_zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
+        two_yuewen="经过好彩走家再左转返出花园街乐园牛园望对上",
+        one_yuewen_shifted="沿住荔枝角度直出大角咀度",
+        two_yuewen_shifted="经过好彩走家再左转返出花园街乐园牛园望对上",
+    ),
+    ShiftTestCase(
+        one_zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
+        one_yuewen="经过好彩走家再左转返出花园街乐园牛园望对上",
+        two_zhongwen="更正一下：",
+        two_yuewen="都系唔好",
+        one_yuewen_shifted="经过好彩走家再左转返出花园街乐园牛园望对上",
+        two_yuewen_shifted="都系唔好",
+    ),
+    ShiftTestCase(
+        one_zhongwen="更正一下：",
+        one_yuewen="都系唔好",
+        two_zhongwen="先到街市大楼妹记鱼腩粥外边",
+        two_yuewen="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+        one_yuewen_shifted="都系唔好",
+        two_yuewen_shifted="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+    ),
+    ShiftTestCase(
+        one_zhongwen="先到街市大楼妹记鱼腩粥外边",
+        one_yuewen="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+        two_zhongwen="转呀，转⋯再更正一下：",
+        two_yuewen="转下转下都系唔好",
+        one_yuewen_shifted="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+        two_yuewen_shifted="转下转下都系唔好",
+    ),
+    ShiftTestCase(
+        one_zhongwen="转呀，转⋯再更正一下：",
+        one_yuewen="转下转下都系唔好",
+        two_zhongwen="直出亚皆老街跨过火车桥右转太平道",
+        two_yuewen="都系出返去阿街路街飞过火车桥右转入太平道",
+        one_yuewen_shifted="转下转下都系唔好",
+        two_yuewen_shifted="都系出返去阿街路街飞过火车桥右转入太平道",
         include_in_prompt=True,
     ),
     ShiftTestCase(
-        one_zhongwen="可怜呀，每天扑来扑去⋯",
-        one_yuewen="鬼咩⋯",
-        two_zhongwen="替儿子找幼稚园",
-        two_yuewen="日日扑嚟扑去同我仔揾幼稚园吖嘛！",
-        one_yuewen_shifted="鬼咩，日日扑嚟扑去⋯",
-        two_yuewen_shifted="同我仔揾幼稚园吖嘛！",
+        one_zhongwen="直出亚皆老街跨过火车桥右转太平道",
+        one_yuewen="都系出返去阿街路街飞过火车桥右转入太平道",
+        two_zhongwen="再右拐窝打老道向女人街方向飞⋯",
+        two_yuewen="再右转抹返出去窝打炉道向女人街方向飞下下",
+        one_yuewen_shifted="都系出返去阿街路街飞过火车桥右转入太平道",
+        two_yuewen_shifted="再右转抹返出去窝打炉道向女人街方向飞下下",
+    ),
+    ShiftTestCase(
+        one_zhongwen="再右拐窝打老道向女人街方向飞⋯",
+        one_yuewen="再右转抹返出去窝打炉道向女人街方向飞下下",
+        two_zhongwen="飞呀，飞⋯",
+        two_yuewen="飞下飞下",
+        one_yuewen_shifted="再右转抹返出去窝打炉道向女人街方向飞下下",
+        two_yuewen_shifted="飞下飞下",
         include_in_prompt=True,
+    ),
+    ShiftTestCase(
+        one_zhongwen="飞呀，飞⋯",
+        one_yuewen="飞下飞下",
+        two_zhongwen="胶兜最后飞进广华医院候产房",
+        two_yuewen="最后胶兜飞咗入广华医院嘅后产房",
+        one_yuewen_shifted="飞下飞下",
+        two_yuewen_shifted="最后胶兜飞咗入广华医院嘅后产房",
+    ),
+    ShiftTestCase(
+        one_zhongwen="胶兜最后飞进广华医院候产房",
+        one_yuewen="最后胶兜飞咗入广华医院嘅后产房",
+        two_zhongwen="也就是在麦太右边额角上⋯",
+        two_yuewen="亦即系麦太右边云晶对上",
+        one_yuewen_shifted="最后胶兜飞咗入广华医院嘅后产房",
+        two_yuewen_shifted="亦即系麦太右边云晶对上",
+    ),
+    ShiftTestCase(
+        one_zhongwen="也就是在麦太右边额角上⋯",
+        one_yuewen="亦即系麦太右边云晶对上",
+        two_zhongwen="更正：左边额角上⋯",
+        two_yuewen="都系唔好左边云晶对上",
+        one_yuewen_shifted="亦即系麦太右边云晶对上",
+        two_yuewen_shifted="都系唔好左边云晶对上",
+    ),
+    ShiftTestCase(
+        one_zhongwen="更正：左边额角上⋯",
+        one_yuewen="都系唔好左边云晶对上",
+        two_zhongwen="转呀，转⋯",
+        two_yuewen="转下转下转下噉",
+        one_yuewen_shifted="都系唔好左边云晶对上",
+        two_yuewen_shifted="转下转下转下噉",
+    ),
+    ShiftTestCase(
+        one_zhongwen="转呀，转⋯",
+        one_yuewen="转下转下转下噉",
+        two_zhongwen="麦太认定这是异像",
+        two_yuewen="麦太认定呢个系异象",
+        one_yuewen_shifted="转下转下转下噉",
+        two_yuewen_shifted="麦太认定呢个系异象",
+    ),
+    ShiftTestCase(
+        one_zhongwen="麦太认定这是异像",
+        one_yuewen="麦太认定呢个系异象",
+        two_zhongwen="于是向额角上的胶兜许愿",
+        two_yuewen="于是向云晶对上嘅胶兜许愿",
+        one_yuewen_shifted="麦太认定呢个系异象",
+        two_yuewen_shifted="于是向云晶对上嘅胶兜许愿",
+    ),
+    ShiftTestCase(
+        one_zhongwen="于是向额角上的胶兜许愿",
+        one_yuewen="于是向云晶对上嘅胶兜许愿",
+        two_zhongwen="脑海中同时出现即将诞生的儿子容貌⋯",
+        two_yuewen="而脑入面亦即时出现咗快要出世个仔嘅样",
+        one_yuewen_shifted="于是向云晶对上嘅胶兜许愿",
+        two_yuewen_shifted="而脑入面亦即时出现咗快要出世个仔嘅样",
+    ),
+    ShiftTestCase(
+        one_zhongwen="脑海中同时出现即将诞生的儿子容貌⋯",
+        one_yuewen="而脑入面亦即时出现咗快要出世个仔嘅样",
+        two_zhongwen="希望他好聪明，读书好叻！",
+        two_yuewen="希望佢好聪明读书好叻",
+        one_yuewen_shifted="而脑入面亦即时出现咗快要出世个仔嘅样",
+        two_yuewen_shifted="希望佢好聪明读书好叻",
+    ),
+    ShiftTestCase(
+        one_zhongwen="希望他好聪明，读书好叻！",
+        one_yuewen="希望佢好聪明读书好叻",
+        two_zhongwen="胶兜对麦太的愿望似乎没有反应",
+        two_yuewen="胶兜对麦太嘅愿望似乎冇咩表示",
+        one_yuewen_shifted="希望佢好聪明读书好叻",
+        two_yuewen_shifted="胶兜对麦太嘅愿望似乎冇咩表示",
+    ),
+    ShiftTestCase(
+        one_zhongwen="胶兜对麦太的愿望似乎没有反应",
+        one_yuewen="胶兜对麦太嘅愿望似乎冇咩表示",
+        two_zhongwen="于是她向胶兜补充说：",
+        two_yuewen="于是佢对住胶兜补充噉话",
+        one_yuewen_shifted="胶兜对麦太嘅愿望似乎冇咩表示",
+        two_yuewen_shifted="于是佢对住胶兜补充噉话",
+    ),
+    ShiftTestCase(
+        one_zhongwen="于是她向胶兜补充说：",
+        one_yuewen="于是佢对住胶兜补充噉话",
+        two_zhongwen="或者读书唔叻，工作叻呢？",
+        two_yuewen="或者读书唔叻出嚟做嘢叻啦",
+        one_yuewen_shifted="于是佢对住胶兜补充噉话",
+        two_yuewen_shifted="或者读书唔叻出嚟做嘢叻啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="或者读书唔叻，工作叻呢？",
+        one_yuewen="或者读书唔叻出嚟做嘢叻啦",
+        two_zhongwen="又或者⋯",
+        two_yuewen="又或者呢",
+        one_yuewen_shifted="或者读书唔叻出嚟做嘢叻啦",
+        two_yuewen_shifted="又或者呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="又或者⋯",
+        one_yuewen="又或者呢",
+        two_zhongwen="又或者好靓仔，好靓仔",
+        two_yuewen="又或者系好靓仔好靓仔",
+        one_yuewen_shifted="又或者呢",
+        two_yuewen_shifted="又或者系好靓仔好靓仔",
+        include_in_prompt=True,
+    ),
+    ShiftTestCase(
+        one_zhongwen="跟周润发，梁朝伟那么靓仔！",
+        one_yuewen="好似周润发同埋梁朝伟咁靓仔",
+        two_zhongwen="胶兜仍然在转，毫无点头迹象",
+        two_yuewen="胶兜依然系噉喺度转好似一啲应承嘅迹象都冇",
+        one_yuewen_shifted="好似周润发同埋梁朝伟咁靓仔",
+        two_yuewen_shifted="胶兜依然系噉喺度转好似一啲应承嘅迹象都冇",
+    ),
+    ShiftTestCase(
+        one_zhongwen="胶兜仍然在转，毫无点头迹象",
+        one_yuewen="胶兜依然系噉喺度转好似一啲应承嘅迹象都冇",
+        two_zhongwen="麦太一时心虚",
+        two_yuewen="麦太一时心虚",
+        one_yuewen_shifted="胶兜依然系噉喺度转好似一啲应承嘅迹象都冇",
+        two_yuewen_shifted="麦太一时心虚",
+    ),
+    ShiftTestCase(
+        one_zhongwen="麦太一时心虚",
+        one_yuewen="麦太一时心虚",
+        two_zhongwen="赶忙趁胶兜落地前另许一个愿望：",
+        two_yuewen="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望",
+        one_yuewen_shifted="麦太一时心虚",
+        two_yuewen_shifted="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望",
+    ),
+    ShiftTestCase(
+        one_zhongwen="赶忙趁胶兜落地前另许一个愿望：",
+        one_yuewen="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望",
+        two_zhongwen="唔聪明唔靓仔也算了，只要福星高照",
+        two_yuewen="就算唔系咁聪明同咁靓仔只要复星高照",
+        one_yuewen_shifted="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望",
+        two_yuewen_shifted="就算唔系咁聪明同咁靓仔只要复星高照",
+    ),
+    ShiftTestCase(
+        one_zhongwen="唔聪明唔靓仔也算了，只要福星高照",
+        one_yuewen="就算唔系咁聪明同咁靓仔只要复星高照",
+        two_zhongwen="一世够运，逢凶化吉！",
+        two_yuewen="一世救运乜嘢事都逢凶化㗎喇",
+        one_yuewen_shifted="就算唔系咁聪明同咁靓仔只要复星高照",
+        two_yuewen_shifted="一世救运乜嘢事都逢凶化㗎喇",
+    ),
+    ShiftTestCase(
+        one_zhongwen="一世够运，逢凶化吉！",
+        one_yuewen="一世救运乜嘢事都逢凶化㗎喇",
+        two_zhongwen="靠自己能力解决事情当然最好",
+        two_yuewen="佢靠自己有料解决啲嘢就梗系好啦",
+        one_yuewen_shifted="一世救运乜嘢事都逢凶化㗎喇",
+        two_yuewen_shifted="佢靠自己有料解决啲嘢就梗系好啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="靠自己能力解决事情当然最好",
+        one_yuewen="佢靠自己有料解决啲嘢就梗系好啦",
+        two_zhongwen="不过运气还是很重要的",
+        two_yuewen="不过运气都好紧要㖞",
+        one_yuewen_shifted="佢靠自己有料解决啲嘢就梗系好啦",
+        two_yuewen_shifted="不过运气都好紧要㖞",
+    ),
+    ShiftTestCase(
+        one_zhongwen="不过运气还是很重要的",
+        one_yuewen="不过运气都好紧要㖞",
+        two_zhongwen="虽是说像梁朝伟周润发也行运定了",
+        two_yuewen="虽然似梁朝伟周润发都唔返去冒运行",
+        one_yuewen_shifted="不过运气都好紧要㖞",
+        two_yuewen_shifted="虽然似梁朝伟周润发都唔返去冒运行",
+    ),
+    ShiftTestCase(
+        one_zhongwen="虽是说像梁朝伟周润发也行运定了",
+        one_yuewen="虽然似梁朝伟周润发都唔返去冒运行",
+        two_zhongwen="但总得要叻仔呀！",
+        two_yuewen="但系都要叻仔先得㗎",
+        one_yuewen_shifted="虽然似梁朝伟周润发都唔返去冒运行",
+        two_yuewen_shifted="但系都要叻仔先得㗎",
+    ),
+    # endregion
+    # region Block 1
+    ShiftTestCase(
+        one_zhongwen="最后，胶兜「嘀督」一声落地",
+        one_yuewen="最后胶兜滴嘟一声咁落地",
+        two_zhongwen="嘀督？嘀督，就是答应了",
+        two_yuewen="滴嘟滴嘟㖞即系应承啦",
+        one_yuewen_shifted="最后胶兜滴嘟一声咁落地",
+        two_yuewen_shifted="滴嘟滴嘟㖞即系应承啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="嘀督？嘀督，就是答应了",
+        one_yuewen="滴嘟滴嘟㖞即系应承啦",
+        two_zhongwen="麦太想，这次走运了！",
+        two_yuewen="麦太心谂今次冇死喇",
+        one_yuewen_shifted="滴嘟滴嘟㖞即系应承啦",
+        two_yuewen_shifted="麦太心谂今次冇死喇",
+    ),
+    ShiftTestCase(
+        one_zhongwen="麦太想，这次走运了！",
+        one_yuewen="麦太心谂今次冇死喇",
+        two_zhongwen="可是答应了些什么呢？",
+        two_yuewen="但你应承咗啲咩呢",
+        one_yuewen_shifted="麦太心谂今次冇死喇",
+        two_yuewen_shifted="但你应承咗啲咩呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="可是答应了些什么呢？",
+        one_yuewen="但你应承咗啲咩呢",
+        two_zhongwen="叻仔？好运？",
+        two_yuewen="叻仔好运",
+        one_yuewen_shifted="但你应承咗啲咩呢",
+        two_yuewen_shifted="叻仔好运",
+    ),
+    ShiftTestCase(
+        one_zhongwen="叻仔？好运？",
+        one_yuewen="叻仔好运",
+        two_zhongwen="还是似周润发？",
+        two_yuewen="定系话自周人烦啊",
+        one_yuewen_shifted="叻仔好运",
+        two_yuewen_shifted="定系话自周人烦啊",
+    ),
+    ShiftTestCase(
+        one_zhongwen="还是似周润发？",
+        one_yuewen="定系话自周人烦啊",
+        two_zhongwen="为了纪念这赐福的胶兜",
+        two_yuewen="为咗纪念呢个赤幅嘅胶兜",
+        one_yuewen_shifted="定系话自周人烦啊",
+        two_yuewen_shifted="为咗纪念呢个赤幅嘅胶兜",
+    ),
+    ShiftTestCase(
+        one_zhongwen="为了纪念这赐福的胶兜",
+        one_yuewen="为咗纪念呢个赤幅嘅胶兜",
+        two_zhongwen="麦太决定把儿子命名麦胶",
+        two_yuewen="麦太决定将个仔嘅名叫做麦胶",
+        one_yuewen_shifted="为咗纪念呢个赤幅嘅胶兜",
+        two_yuewen_shifted="麦太决定将个仔嘅名叫做麦胶",
+    ),
+    ShiftTestCase(
+        one_zhongwen="麦太决定把儿子命名麦胶",
+        one_yuewen="麦太决定将个仔嘅名叫做麦胶",
+        two_zhongwen="不行，胶胶声，多难听！",
+        two_yuewen="都系唔好胶胶声咁难听",
+        one_yuewen_shifted="麦太决定将个仔嘅名叫做麦胶",
+        two_yuewen_shifted="都系唔好胶胶声咁难听",
+    ),
+    ShiftTestCase(
+        one_zhongwen="不行，胶胶声，多难听！",
+        one_yuewen="都系唔好胶胶声咁难听",
+        two_zhongwen="还是唤他麦兜！",
+        two_yuewen="不如叫麦兜啦",
+        one_yuewen_shifted="都系唔好胶胶声咁难听",
+        two_yuewen_shifted="不如叫麦兜啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="还是唤他麦兜！",
+        one_yuewen="不如叫麦兜啦",
+        two_zhongwen="各位⋯",
+        two_yuewen="各位",
+        one_yuewen_shifted="不如叫麦兜啦",
+        two_yuewen_shifted="各位",
+    ),
+    ShiftTestCase(
+        one_zhongwen="各位⋯",
+        one_yuewen="各位",
+        two_zhongwen="我就是险些给定名麦胶的小朋友⋯",
+        two_yuewen="我就系呢个差少少就叫做麦胶嘅小朋友",
+        one_yuewen_shifted="各位",
+        two_yuewen_shifted="我就系呢个差少少就叫做麦胶嘅小朋友",
+    ),
+    ShiftTestCase(
+        one_zhongwen="我就是险些给定名麦胶的小朋友⋯",
+        one_yuewen="我就系呢个差少少就叫做麦胶嘅小朋友",
+        two_zhongwen="麦兜！",
+        two_yuewen="麦兜",
+        one_yuewen_shifted="我就系呢个差少少就叫做麦胶嘅小朋友",
+        two_yuewen_shifted="麦兜",
+    ),
+    # endregion
+    # region Block 2 (WIP)
+    ShiftTestCase(
+        one_zhongwen="麦太，没见面一阵",
+        one_yuewen="咦麦太",
+        two_zhongwen="怎么小腿粗起来了？",
+        two_yuewen="咩唔见你一排个脚刮囊粗咗咁多呀",
+        one_yuewen_shifted="咦麦太咩唔见你一排",
+        two_yuewen_shifted="个脚刮囊粗咗咁多呀",
+        include_in_prompt=False,
     ),
     # endregion
 ]
@@ -456,59 +798,58 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
 
 # endregion
 
+# region 粤文 Proof Test Cases
 
-# region 粤文 Proofreading Test Cases
-
-mlamd_proofread_test_cases = [
+mlamd_proof_test_cases = [
     # region Block 0
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="在麦太即将临盆的时候",
         yuewen="就喺麦太快要临盘嘅时候",
         yuewen_proofread="就喺麦太快要临盆嘅时候",
         note="Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth.",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="一只胶兜在九龙上空飞过",
         yuewen="有一个胶兜喺九龙上空飞过",
         yuewen_proofread="有一个胶兜喺九龙上空飞过",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="沿荔枝角道直出大角咀道",
         yuewen="沿住荔枝角度直出大角咀度",
         yuewen_proofread="沿住荔枝角道直出大角咀道",
         note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' "
         "is the correct word for 'road' in both cases.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
         yuewen="经过好彩走家再左转返出花园街乐园牛园望对上⋯",
         yuewen_proofread="经过好彩酒家再左转返出花园街乐园牛丸王对上⋯",
         note="Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely "
         "mishearings of the intended place names.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="更正一下：",
         yuewen="都系唔好：",
         yuewen_proofread="都系唔好：",
         note="",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="先到街市大楼妹记鱼腩粥外边",
         yuewen="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
         yuewen_proofread="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="转呀，转⋯再更正一下：",
         yuewen="转下，转下⋯都系唔好：",
         yuewen_proofread="转下，转下⋯都系唔好：",
         note="",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="直出亚皆老街跨过火车桥右转太平道",
         yuewen="都系出返去阿街路街飞过火车桥右转入太平道",
         yuewen_proofread="都系出返去亚皆老街飞过火车桥右转入太平道",
@@ -516,28 +857,28 @@ mlamd_proofread_test_cases = [
         "name '亚皆老街'.",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="再右拐窝打老道向女人街方向飞⋯",
         yuewen="再右转抹返出去窝打炉道向女人街方向飞下下⋯",
         yuewen_proofread="再右转抹返出去窝打老道向女人街方向飞下下⋯",
         note="Corrected '炉' to '老' in '窝打炉道' as it was likely a mishearing of "
         "the correct street name '窝打老道'.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="飞呀，飞⋯",
         yuewen="飞下，飞下⋯",
         yuewen_proofread="飞下，飞下⋯",
         note="",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="胶兜最后飞进广华医院候产房",
         yuewen="最后胶兜飞咗入广华医院嘅后产房",
         yuewen_proofread="最后胶兜飞咗入广华医院嘅候产房",
         note="Corrected '后产房' to '候产房' as '候产房' (waiting room for childbirth) "
         "matches the intended meaning and is a plausible mishearing.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="也就是在麦太右边额角上⋯",
         yuewen="亦即系麦太右边云晶对上⋯",
         yuewen_proofread="亦即系麦太右边魂精对上⋯",
@@ -545,107 +886,107 @@ mlamd_proofread_test_cases = [
         "'temple' and matches the meaning of '额角' in the 中文.",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="更正：左边额角上⋯",
         yuewen="都系唔好：左边云晶对上⋯",
         yuewen_proofread="都系唔好：左边魂精对上⋯",
         note="Corrected '云晶' to '魂精' as '魂精' accurately refers to the side of "
         "the head and matches the meaning of '额角' in the 中文.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="转呀，转⋯",
         yuewen="转下，转下，转下噉⋯",
         yuewen_proofread="转下，转下，转下噉⋯",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="麦太认定这是异像",
         yuewen="麦太认定呢个系异象",
         yuewen_proofread="麦太认定呢个系异象",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="于是向额角上的胶兜许愿",
         yuewen="于是向云晶对上嘅胶兜许愿",
         yuewen_proofread="于是向魂精对上嘅胶兜许愿",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese anatomical "
         "term for the temple area and fits the context.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="脑海中同时出现即将诞生的儿子容貌⋯",
         yuewen="而脑入面亦即时出现咗快要出世个仔嘅样⋯",
         yuewen_proofread="而脑入面亦即时出现咗快要出世个仔嘅样⋯",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="希望他好聪明，读书好叻！",
         yuewen="希望佢好聪明，读书好叻！",
         yuewen_proofread="希望佢好聪明，读书好叻！",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="胶兜对麦太的愿望似乎没有反应",
         yuewen="胶兜对麦太嘅愿望似乎冇咩表示",
         yuewen_proofread="胶兜对麦太嘅愿望似乎冇咩表示",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="于是她向胶兜补充说：",
         yuewen="于是佢对住胶兜补充噉话：",
         yuewen_proofread="于是佢对住胶兜补充噉话：",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="或者读书唔叻，工作叻呢？",
         yuewen="或者读书唔叻，出嚟做嘢叻啦？",
         yuewen_proofread="或者读书唔叻，出嚟做嘢叻啦？",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="又或者⋯",
         yuewen="又或者呢⋯",
         yuewen_proofread="又或者呢⋯",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="又或者好靓仔，好靓仔",
         yuewen="又或者系好靓仔，好靓仔",
         yuewen_proofread="又或者系好靓仔，好靓仔",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="跟周润发，梁朝伟那么靓仔！",
         yuewen="好似周润发，同埋梁朝伟咁靓仔！",
         yuewen_proofread="好似周润发，同埋梁朝伟咁靓仔！",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="胶兜仍然在转，毫无点头迹象",
         yuewen="胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
         yuewen_proofread="胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="麦太一时心虚",
         yuewen="麦太一时心虚",
         yuewen_proofread="麦太一时心虚",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="赶忙趁胶兜落地前另许一个愿望：",
         yuewen="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
         yuewen_proofread="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
         note="",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="唔聪明唔靓仔也算了，只要福星高照",
         yuewen="就算唔系咁聪明同咁靓仔，只要复星高照",
         yuewen_proofread="就算唔系咁聪明同咁靓仔，只要福星高照",
         note="Corrected '复星' to '福星' as '福星' is the correct term for good "
         "fortune, matching the intended meaning.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="一世够运，逢凶化吉！",
         yuewen="一世救运，乜嘢事都逢凶化㗎喇！",
         yuewen_proofread="一世够运，乜嘢事都逢凶化㗎喇！",
@@ -653,19 +994,19 @@ mlamd_proofread_test_cases = [
         "being lucky, matching the original meaning.",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="靠自己能力解决事情当然最好",
         yuewen="佢靠自己有料解决啲嘢就梗系好啦",
         yuewen_proofread="佢靠自己有料解决啲嘢就梗系好啦",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="不过运气还是很重要的",
         yuewen="不过运气都好紧要㖞",
         yuewen_proofread="不过运气都好紧要㖞",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="虽是说像梁朝伟周润发也行运定了",
         yuewen="虽然似梁朝伟周润发都唔返去冒运行",
         yuewen_proofread="虽然似梁朝伟周润发都行运定咗",
@@ -673,7 +1014,7 @@ mlamd_proofread_test_cases = [
         "mishearing; '行运定咗' matches the meaning of '行运定了'.",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="但总得要叻仔呀！",
         yuewen="但系都要叻仔先得㗎！",
         yuewen_proofread="但系都要叻仔先得㗎！",
@@ -681,14 +1022,14 @@ mlamd_proofread_test_cases = [
     ),
     # endregion
     # region Block 1
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="最后，胶兜「嘀督」一声落地",
         yuewen="最后，胶兜「滴嘟」一声咁落地",
         yuewen_proofread="最后，胶兜「嘀督」一声咁落地",
         note="Corrected '滴嘟' to '嘀督' to match the intended onomatopoeic sound "
         "described in the original text.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="嘀督？嘀督，就是答应了",
         yuewen="滴嘟？滴嘟㖞，即系应承啦",
         yuewen_proofread="嘀督？嘀督㖞，即系应承啦",
@@ -696,69 +1037,69 @@ mlamd_proofread_test_cases = [
         "'嘀督' as a phonetic rendering of '嘀督' (答应了).",
         include_in_prompt=True,
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="麦太想，这次走运了！",
         yuewen="麦太心谂，今次冇死喇！",
         yuewen_proofread="麦太心谂，今次冇死喇！",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="可是答应了些什么呢？",
         yuewen="但你应承咗啲咩呢？",
         yuewen_proofread="但你应承咗啲咩呢？",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="叻仔？好运？",
         yuewen="叻仔？好运？",
         yuewen_proofread="叻仔？好运？",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="还是似周润发？",
         yuewen="定系话自周人烦啊？",
         yuewen_proofread="定系话似周润发啊？",
         note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the actor's "
         "name '周润发'.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="为了纪念这赐福的胶兜",
         yuewen="为咗纪念呢个赤幅嘅胶兜",
         yuewen_proofread="为咗纪念呢个赐福嘅胶兜",
         note="Corrected '赤幅' to '赐福' as '赐福' is the correct term and '赤幅' is a "
         "likely mishearing.",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="麦太决定把儿子命名麦胶",
         yuewen="麦太决定将个仔嘅名叫做麦胶",
         yuewen_proofread="麦太决定将个仔嘅名叫做麦胶",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="不行，胶胶声，多难听！",
         yuewen="都系唔好，胶胶声，咁难听！",
         yuewen_proofread="都系唔好，胶胶声，咁难听！",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="还是唤他麦兜！",
         yuewen="不如叫麦兜啦！",
         yuewen_proofread="不如叫麦兜啦！",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="各位⋯",
         yuewen="各位⋯",
         yuewen_proofread="各位⋯",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="我就是险些给定名麦胶的小朋友⋯",
         yuewen="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
         yuewen_proofread="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
         note="",
     ),
-    ProofreadTestCase(
+    ProofTestCase(
         zhongwen="麦兜！",
         yuewen="麦兜！",
         yuewen_proofread="麦兜！",

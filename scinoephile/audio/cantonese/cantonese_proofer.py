@@ -7,29 +7,27 @@ from __future__ import annotations
 from typing import override
 
 from scinoephile.audio.cantonese.models import (
-    ProofreadAnswer,
-    ProofreadQuery,
-    ProofreadTestCase,
+    ProofAnswer,
+    ProofQuery,
+    ProofTestCase,
 )
 from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseProofreader(
-    LLMQueryer[ProofreadQuery, ProofreadAnswer, ProofreadTestCase]
-):
+class CantoneseProofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
     @property
     @override
-    def answer_cls(self) -> type[ProofreadAnswer]:
+    def answer_cls(self) -> type[ProofAnswer]:
         """Answer class."""
-        return ProofreadAnswer
+        return ProofAnswer
 
     @property
     @override
-    def answer_example(self) -> ProofreadAnswer:
+    def answer_example(self) -> ProofAnswer:
         """Example answer."""
-        return ProofreadAnswer(
+        return ProofAnswer(
             yuewen_proofread="我哋要盡快走",
             note="Replaced '我地' with '我哋' to follow standard written Cantonese.",
         )
@@ -62,12 +60,12 @@ class CantoneseProofreader(
 
     @property
     @override
-    def query_cls(self) -> type[ProofreadQuery]:
+    def query_cls(self) -> type[ProofQuery]:
         """Query class."""
-        return ProofreadQuery
+        return ProofQuery
 
     @property
     @override
-    def test_case_cls(self) -> type[ProofreadTestCase]:
+    def test_case_cls(self) -> type[ProofTestCase]:
         """Test case class."""
-        return ProofreadTestCase
+        return ProofTestCase

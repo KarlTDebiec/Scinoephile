@@ -50,11 +50,15 @@ class AudioSeries(Series):
     """Pattern for subtitle audio files."""
 
     @override
-    def __init__(self):
-        """Initialize."""
+    def __init__(self, audio: AudioSegment | None = None) -> None:
+        """Initialize.
+
+        Arguments:
+            audio: Series audio
+        """
         super().__init__()
 
-        self._audio = None
+        self._audio = audio
 
     @property
     def audio(self) -> AudioSegment:

@@ -7,6 +7,7 @@ from __future__ import annotations
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
+from scinoephile.audio.transcription import get_segment_split_on_whitespace
 from scinoephile.audio.transcription.models import TranscribedSegment
 
 
@@ -36,52 +37,32 @@ def get_series_from_segments(
     return series
 
 
-def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
-    """Split transcribed segment into multiple segments on whitespace.
+def get_sub_split_at_idx(
+    sub: AudioSubtitle, idx: int
+) -> tuple[AudioSubtitle, AudioSubtitle]:
+    """Get two subtitles split from this one at provided index.
 
     Arguments:
-        segment: Transcribed segment to split
+        idx: Index at which to split
     Returns:
-        Transcribed segments split on whitespace
+        Two subtitles split from this one at the provided index
     """
-    if segment.words is None or len(segment.words) == 0:
-        return [segment]
-
-    split_segments = []
-    nascent_words = []
-    # Groups of words
-    segment_id = 0
-    for word in segment.words:
-        if word.text.startswith(" "):
-            if nascent_words:
-                nascent_segment = TranscribedSegment(
-                    id=segment_id,
-                    seek=0,
-                    start=nascent_words[0].start,
-                    end=nascent_words[-1].end,
-                    text="".join([word.text for word in nascent_words]),
-                    words=nascent_words,
-                )
-                split_segments.append(nascent_segment)
-                segment_id += 1
-                nascent_words = []
-            word.text = word.text[1:]
-        if word.text != "":
-            nascent_words.append(word)
-
-    # Final group of words
-    if nascent_words:
-        nascent_segment = TranscribedSegment(
-            id=segment_id,
-            seek=0,
-            start=nascent_words[0].start,
-            end=nascent_words[-1].end,
-            text="".join([word.text for word in nascent_words]),
-            words=nascent_words,
-        )
-        split_segments.append(nascent_segment)
-
-    return split_segments
+    one_segment, two_segment = get_segment_split_on_whitespace(sub.segment)
+    one = AudioSubtitle(
+        start=sub.start,
+        end=sub.segment.words[idx].end,
+        text=sub.text[:idx],
+        segment=one_segment,
+        # TODO: Audio
+    )
+    two = AudioSubtitle(
+        start=sub.segment.words[idx].start,
+        end=sub.end,
+        text=sub.text[idx:],
+        segment=two_segment,
+        # TODO: Audio
+    )
+    return one, two
 
 
 __all__ = [
@@ -89,5 +70,5 @@ __all__ = [
     "AudioSeries",
     "AudioSubtitle",
     "get_series_from_segments",
-    "get_split_segment",
+    "get_sub_split_at_idx",
 ]

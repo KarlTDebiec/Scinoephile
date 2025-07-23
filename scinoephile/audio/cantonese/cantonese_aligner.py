@@ -11,9 +11,10 @@ import numpy as np
 from scinoephile.audio import AudioSeries, AudioSubtitle
 from scinoephile.audio.cantonese.cantonese_alignment import CantoneseAlignment
 from scinoephile.audio.cantonese.cantonese_merger import CantoneseMerger
-from scinoephile.audio.cantonese.cantonese_proofreader import CantoneseProofreader
+from scinoephile.audio.cantonese.cantonese_proofer import CantoneseProofer
+from scinoephile.audio.cantonese.cantonese_shifter import CantoneseShifter
 from scinoephile.audio.cantonese.cantonese_splitter import CantoneseSplitter
-from scinoephile.audio.transcription import get_merged_segment
+from scinoephile.audio.transcription import get_segment_merged
 from scinoephile.core import ScinoephileError
 
 
@@ -22,23 +23,26 @@ class CantoneseAligner:
 
     def __init__(
         self,
-        splitter: CantoneseSplitter,
         merger: CantoneseMerger,
-        proofreader: CantoneseProofreader,
+        proofer: CantoneseProofer,
+        shifter: CantoneseShifter,
+        splitter: CantoneseSplitter,
     ) -> None:
         """Initialize.
 
         Arguments:
             splitter: Cantonese splitter
             merger: Cantonese merger
-            proofreader: Cantonese proofreader
+            proofer: Cantonese proofer
         """
-        self.splitter = splitter
-        """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
         self.merger = merger
         """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
-        self.proofreader = proofreader
+        self.proofer = proofer
         """Proofreads 粤文 text based on the corresponding 中文."""
+        self.shifter = shifter
+        """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
+        self.splitter = splitter
+        """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
 
     def align(
         self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
@@ -69,14 +73,13 @@ class CantoneseAligner:
             self._split(alignment)
             iteration += 1
 
-        # TODO: Identify large differences in length between 中文 and 粤文 and prompt LLM
+        # Shift 粤文 subtitles to match 中文 subtitles
+        self._shift(alignment)
+
         # TODO: Identify partnerless 中文 subtitles and prompt LLM
 
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
         self._merge(alignment)
-
-        # Shift 粤文 subtitles to match 中文 subtitles
-        self._shift(alignment)
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         self._proofread(alignment)
@@ -101,9 +104,9 @@ class CantoneseAligner:
             )
 
         one_zw_i, two_zw_i = zw_is
-        query = alignment._get_split_query(one_zw_i, two_zw_i, yw_i)
+        query = alignment.get_split_query(one_zw_i, two_zw_i, yw_i)
         answer = self.splitter(query)
-        alignment._apply_split(one_zw_i, two_zw_i, yw_i, answer)
+        alignment.apply_split(one_zw_i, two_zw_i, yw_i, answer)
 
     def _merge(self, alignment: CantoneseAlignment) -> None:
         """Merge 粤文 subs.
@@ -125,7 +128,7 @@ class CantoneseAligner:
                     start=alignment.yuewen[yw_is[0]].start,
                     end=alignment.yuewen[yw_is[-1]].end,
                     text=answer.yuewen_merged,
-                    segment=get_merged_segment(
+                    segment=get_segment_merged(
                         [alignment.yuewen[i].segment for i in yw_is]
                     ),
                 )
@@ -134,13 +137,36 @@ class CantoneseAligner:
         updated_yuewen.events = updated_yuewen_events
         alignment.yuewen = updated_yuewen
 
-    def _shift(self, alignment) -> None:
+    def _shift(self, alignment) -> bool:
         """Shift 粤文 text.
 
         Arguments:
             alignment: Nascent alignment
         """
-        pass
+        updated_yuewen_events = []
+        for i in range(len(alignment.sync_groups) - 1):
+            one_sync_group = alignment.sync_groups[i]
+            two_sync_group = alignment.sync_groups[i + 1]
+            if len(one_sync_group[0]) != 1:
+                raise ScinoephileError(
+                    f"Sync group not as expected:\n{one_sync_group}\n{alignment}"
+                )
+            if len(two_sync_group[0]) != 1:
+                raise ScinoephileError(
+                    f"Sync group not as expected:\n{two_sync_group}\n{alignment}"
+                )
+            one_zw_i = one_sync_group[0][0]
+            one_yw_is = one_sync_group[1]
+            two_zw_i = two_sync_group[0][0]
+            two_yw_is = two_sync_group[1]
+            query = alignment.get_shift_query(one_zw_i, two_zw_i, one_yw_is, two_yw_is)
+            answer = self.shifter(query)
+            if (
+                query.one_yuewen == answer.one_yuewen_shifted
+                and query.two_yuewen == answer.two_yuewen_shifted
+            ):
+                continue
+            alignment.apply_shift(one_zw_i, two_zw_i, one_yw_is, two_yw_is, answer)
 
     def _proofread(self, alignment: CantoneseAlignment) -> None:
         """Proofread 粤文 text.
@@ -160,7 +186,7 @@ class CantoneseAligner:
                 )
             i = sync_group[0][0]
             query = alignment.get_proofread_query(i)
-            answer = self.proofreader(query)
+            answer = self.proofer(query)
             updated_yuewen_events.append(
                 AudioSubtitle(
                     start=alignment.yuewen[i].start,

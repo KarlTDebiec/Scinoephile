@@ -7,9 +7,9 @@ from __future__ import annotations
 from scinoephile.audio.cantonese.models.merge_answer import MergeAnswer
 from scinoephile.audio.cantonese.models.merge_query import MergeQuery
 from scinoephile.audio.cantonese.models.merge_test_case import MergeTestCase
-from scinoephile.audio.cantonese.models.proofread_answer import ProofreadAnswer
-from scinoephile.audio.cantonese.models.proofread_query import ProofreadQuery
-from scinoephile.audio.cantonese.models.proofread_test_case import ProofreadTestCase
+from scinoephile.audio.cantonese.models.proofread_answer import ProofAnswer
+from scinoephile.audio.cantonese.models.proofread_query import ProofQuery
+from scinoephile.audio.cantonese.models.proofread_test_case import ProofTestCase
 from scinoephile.audio.cantonese.models.shift_answer import ShiftAnswer
 from scinoephile.audio.cantonese.models.shift_query import ShiftQuery
 from scinoephile.audio.cantonese.models.shift_test_case import ShiftTestCase
@@ -21,9 +21,9 @@ __all__ = [
     "MergeAnswer",
     "MergeQuery",
     "MergeTestCase",
-    "ProofreadAnswer",
-    "ProofreadQuery",
-    "ProofreadTestCase",
+    "ProofAnswer",
+    "ProofQuery",
+    "ProofTestCase",
     "ShiftAnswer",
     "ShiftQuery",
     "ShiftTestCase",

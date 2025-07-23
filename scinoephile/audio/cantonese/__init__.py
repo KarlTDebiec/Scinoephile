@@ -6,14 +6,14 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.cantonese_aligner import CantoneseAligner
 from scinoephile.audio.cantonese.cantonese_merger import CantoneseMerger
-from scinoephile.audio.cantonese.cantonese_proofreader import CantoneseProofreader
+from scinoephile.audio.cantonese.cantonese_proofer import CantoneseProofer
 from scinoephile.audio.cantonese.cantonese_shifter import CantoneseShifter
 from scinoephile.audio.cantonese.cantonese_splitter import CantoneseSplitter
 
 __all__ = [
     "CantoneseAligner",
     "CantoneseMerger",
-    "CantoneseProofreader",
+    "CantoneseProofer",
     "CantoneseShifter",
     "CantoneseSplitter",
 ]

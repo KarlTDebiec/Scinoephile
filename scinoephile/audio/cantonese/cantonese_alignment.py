@@ -8,10 +8,12 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.audio import AudioSeries, AudioSubtitle
+from scinoephile.audio import AudioSeries, get_sub_split_at_idx
 from scinoephile.audio.cantonese.models import (
     MergeQuery,
-    ProofreadQuery,
+    ProofQuery,
+    ShiftAnswer,
+    ShiftQuery,
     SplitAnswer,
     SplitQuery,
 )
@@ -120,9 +122,49 @@ class CantoneseAlignment:
         self._zhongwen = value
         self._clear_cache()
 
-    def _apply_split(
-        self, one_zw_i: int, two_zw_i: int, yw_i: int, answer: SplitAnswer
+    def apply_shift(
+        self,
+        one_zw_i: int,
+        two_zw_i: int,
+        one_yw_is: list[int],
+        two_yw_is: list[int],
+        answer: ShiftAnswer,
     ):
+        """Apply shift to 粤文 subs.
+
+        Arguments:
+            one_zw_i: Index of 中文 sub one
+            two_zw_i: Index of 中文 sub two
+            one_yw_is: Indices of 粤文 subs to shift for 中文 sub one
+            two_yw_is: Indices of 粤文 subs to shift for 中文 sub two
+        """
+        if not one_yw_is and not two_yw_is:
+            raise ScinoephileError()
+        if not one_yw_is and two_yw_is:
+            self.sync_groups[two_zw_i][1].extend(two_yw_is)
+            return
+        if one_yw_is and not two_yw_is:
+            self.sync_groups[one_zw_i][1].extend(one_yw_is)
+            return
+
+        # Shift 粤文 text
+        one_text = "".join([self.yuewen[i].text for i in one_yw_is])
+        two_text = "".join([self.yuewen[i].text for i in two_yw_is])
+        self.yuewen[one_yw_is[0]].text = one_text + two_text
+        self.yuewen[one_yw_is[-1]].end = self.yuewen[two_yw_is[-1]].end
+        # Remove shifted 粤文 subs
+        for yw_i in sorted(two_yw_is, reverse=True):
+            del self.yuewen[yw_i]
+
+    def apply_split(self, one_zw_i: int, two_zw_i: int, yw_i: int, answer: SplitAnswer):
+        """Apply split to 粤文 subs.
+
+        Arguments:
+            one_zw_i: Index of 中文 sub one
+            two_zw_i: Index of 中文 sub two
+            yw_i: Index of 粤文 sub to split
+            answer: Answer from split query
+        """
         if not answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
             raise ScinoephileError()
         if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
@@ -134,47 +176,15 @@ class CantoneseAlignment:
             self.yuewen_to_review.remove(yw_i)
             return
         # Split yuewen event into two parts
-        # Need to make sure timings make it here.
-        print()
-        sub_to_split = self.yuewen[yw_i]
-        # Figure out where subtitle 1 should start
-        one_start = sub_to_split.start
-        # Figure out where subtitle 1 should end
-        split_i = len(answer.one_yuewen_to_append) - 1
-        one_end = sub_to_split.segment.words[split_i].end
-
-        # Figure out where subtitle 2 should start
-        two_start = sub_to_split.segment.words[split_i].start
-        # Figure out where subtitle 2 should end
-        two_end = sub_to_split.end
-
-        # Need to split segment as well
-        one = AudioSubtitle(
-            start=one_start,
-            end=one_end,
-            text=answer.one_yuewen_to_append,
-            # TODO: segment
+        split_idx = len(answer.one_yuewen_to_append) - 1
+        one, two = get_sub_split_at_idx(self.yuewen[yw_i], split_idx)
+        updated_series = AudioSeries(
+            audio=self.yuewen.audio,
         )
-        two = AudioSubtitle(
-            start=two_start,
-            end=two_end,
-            text=answer.two_yuewen_to_prepend,
-            # TODO: segment
+        updated_series.events = (
+            self.yuewen[:yw_i] + [one, two] + self.yuewen[yw_i + 1 :]
         )
-        updated_series = AudioSeries()
-        updated_events = self.yuewen[:yw_i]
-        updated_events.append(one)
-        updated_events.append(two)
-        updated_events.extend(self.yuewen[yw_i + 1 :])
-        updated_series.events = updated_events
         self.yuewen = updated_series
-
-    def _clear_cache(self) -> None:
-        """Clear cached values."""
-        self._overlap = None
-        self._scaled_overlap = None
-        self._sync_groups = None
-        self._yuewen_to_review = None
 
     def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
         """Get merge query for given indices.
@@ -190,7 +200,40 @@ class CantoneseAlignment:
             yuewen_to_merge=[self.yuewen[i].text for i in yw_is],
         )
 
-    def _get_split_query(self, one_zw_i: int, two_zw_i: int, yw_i: int) -> SplitQuery:
+    def get_proofread_query(self, i: int) -> ProofQuery:
+        """Get proofread query for given 中文/粤文 index.
+
+        Arguments:
+            i: Index of 中文/粤文 sub to proofread
+        Returns:
+            Query for proofing 粤文
+        """
+        return ProofQuery(
+            zhongwen=self.zhongwen[i].text,
+            yuewen=self.yuewen[i].text,
+        )
+
+    def get_shift_query(
+        self, one_zw_i: int, two_zw_i: int, one_yw_is: list[int], two_yw_is: list[int]
+    ) -> ShiftQuery:
+        """Get shift query for given indices.
+
+        Arguments:
+            one_zw_i: Index of 中文 sub one
+            two_zw_i: Index of 中文 sub two
+            one_yw_is: Indices of 粤文 subs to shift for 中文 sub one
+            two_yw_is: Indices of 粤文 subs to shift for 中文 sub two
+        Returns:
+            Query for shifting 粤文
+        """
+        return ShiftQuery(
+            one_zhongwen=self.zhongwen[one_zw_i].text,
+            one_yuewen="".join([self.yuewen[i].text for i in one_yw_is]),
+            two_zhongwen=self.zhongwen[two_zw_i].text,
+            two_yuewen="".join([self.yuewen[i].text for i in two_yw_is]),
+        )
+
+    def get_split_query(self, one_zw_i: int, two_zw_i: int, yw_i: int) -> SplitQuery:
         """Get split query for given indices.
 
         Arguments:
@@ -214,18 +257,12 @@ class CantoneseAlignment:
             yuewen_to_split=self.yuewen[yw_i].text,
         )
 
-    def get_proofread_query(self, i: int) -> ProofreadQuery:
-        """Get proofread query for given 中文/粤文 index.
-
-        Arguments:
-            i: Index of 中文/粤文 sub to proofread
-        Returns:
-            Query for proofreading 粤文
-        """
-        return ProofreadQuery(
-            zhongwen=self.zhongwen[i].text,
-            yuewen=self.yuewen[i].text,
-        )
+    def _clear_cache(self) -> None:
+        """Clear cached values."""
+        self._overlap = None
+        self._scaled_overlap = None
+        self._sync_groups = None
+        self._yuewen_to_review = None
 
     def _init_sync_groups(self):
         """Initialize nascent sync groups and list of 粤文 to review."""
