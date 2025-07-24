@@ -191,7 +191,7 @@ mlamd_distribute_test_cases = [
         two_yuewen_to_prepend="",
     ),
     # endregion
-    # region Block 3 (WIP)
+    # region Block 3
     DistributeTestCase(
         one_zhongwen="横看竖看也不像发哥伟仔的一个⋯",
         one_yuewen_start="即系横睇掂睇都唔似发哥或者",
@@ -246,6 +246,8 @@ mlamd_distribute_test_cases = [
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
     ),
+    # endregion
+    # region Block 4
     # endregion
 ]
 """MLAMD 粤文 splitting test cases."""
@@ -682,6 +684,8 @@ mlamd_merge_test_cases = [
         yuewen_merged="哎，好在！噉大家可以返去上堂喇",
         include_in_prompt=True,
     ),
+    # endregion
+    # region Block 4
     # endregion
 ]
 """MLAMD 粤文 merging test cases."""
@@ -1198,7 +1202,7 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
         two_yuewen_shifted="春田花花真系好多西人㗎",
     ),
     # endregion
-    # region Block 3 (WIP)
+    # region Block 3
     ShiftTestCase(
         one_zhongwen="〝鹅闷是春天滴化！〞",
         one_yuewen="",
@@ -1353,6 +1357,8 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
         one_yuewen_shifted="交",
         two_yuewen_shifted="哎好在噉大家可以返去上堂喇",
     ),
+    # endregion
+    # region Block 4
     # endregion
 ]
 """MLAMD 粤文 shifting test cases."""
@@ -1771,7 +1777,7 @@ mlamd_proof_test_cases = [
         note="",
     ),
     # endregion
-    # region Block 3 (WIP)
+    # region Block 3
     ProofTestCase(
         zhongwen="这个猪样白兔小朋友⋯",
         yuewen="呢个扮紧白兔猪样嘅小朋友⋯",
@@ -1883,6 +1889,8 @@ mlamd_proof_test_cases = [
         yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
         note="",
     ),
+    # endregion
+    # region Block 4
     # endregion
 ]
 
