@@ -137,7 +137,7 @@ mlamd_split_test_cases = [
         two_yuewen_to_prepend="",
     ),
     # endregion#
-    # region Block 2 (WIP)
+    # region Block 2
     SplitTestCase(
         one_zhongwen="怎么不试一试好彩酒楼对面",
         one_yuewen_start="",
@@ -157,6 +157,36 @@ mlamd_split_test_cases = [
         two_yuewen_to_prepend="",
     ),
     SplitTestCase(
+        one_zhongwen="旧中侨国货楼上的⋯",
+        one_yuewen_start="",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen_end="春田花花幼稚园呢",
+        yuewen_to_split="旧中桥百货公司楼上𠮶间",
+        one_yuewen_to_append="旧中桥百货公司楼上𠮶间",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="银城美食广场附近的⋯",
+        one_yuewen_start="",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen_end="春田花花幼稚园呀",
+        yuewen_to_split="银城美食广场附近𠮶间",
+        one_yuewen_to_append="银城美食广场附近𠮶间",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="春田花花幼稚园，师资优良⋯",
+        one_yuewen_start="春田花花幼稚园",
+        two_zhongwen="而且还有西人教英文！",
+        two_yuewen_end="仲系西人教英文添㗎",
+        yuewen_to_split="诗诗优良",
+        one_yuewen_to_append="诗诗优良",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
         one_zhongwen="西人教英文？",
         one_yuewen_start="咦",
         two_zhongwen="是呀！",
@@ -164,6 +194,68 @@ mlamd_split_test_cases = [
         yuewen_to_split="西人教英文",
         one_yuewen_to_append="西人教英文",
         two_yuewen_to_prepend="",
+    ),
+    # endregion
+    # region Block 3 (WIP)
+    SplitTestCase(
+        one_zhongwen="横看竖看也不像发哥伟仔的一个⋯",
+        one_yuewen_start="即系横睇掂睇都唔似发哥或者",
+        two_zhongwen="就是我，麦兜",
+        two_yuewen_end="就系我麦兜",
+        yuewen_to_split="位仔𠮶个呢",
+        one_yuewen_to_append="位仔𠮶个呢",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="这么多年来⋯",
+        one_yuewen_start="",
+        two_zhongwen="我其实不大明白他的说话",
+        two_yuewen_end="我其实唔系好知佢噏文",
+        yuewen_to_split="所以咁多年嚟",
+        one_yuewen_to_append="所以咁多年嚟",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
+        one_yuewen_start="",
+        two_zhongwen="忘记校训九十七⋯　　忘记校训九十七⋯",
+        two_yuewen_end="",
+        yuewen_to_split="湾吉校坟交涉设",
+        one_yuewen_to_append="湾吉校坟交涉设",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="也不能忘记校训九十八！",
+        one_yuewen_start="",
+        two_zhongwen="也不能忘记校训九十八！",
+        two_yuewen_end="",
+        yuewen_to_split="都唔好湾吉校坟交涉白",
+        one_yuewen_to_append="都唔好湾吉校坟交涉白",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="好！各位同学⋯",
+        one_yuewen_start="",
+        two_zhongwen="今天的早会主要是跟大家分享",
+        two_yuewen_end="",
+        yuewen_to_split="𠮶个位同学",
+        one_yuewen_to_append="𠮶个位同学",
+        two_yuewen_to_prepend="",
+        include_in_prompt=False,
+    ),
+    SplitTestCase(
+        one_zhongwen="今天的早会主要是跟大家分享",
+        one_yuewen_start="",
+        two_zhongwen="一个重要主题：",
+        two_yuewen_end="",
+        yuewen_to_split="今次座会系要同大家分享一个可重要嘅主题",
+        one_yuewen_to_append="今次座会系要同大家分享",
+        two_yuewen_to_prepend="一个可重要嘅主题",
+        include_in_prompt=False,
     ),
     # endregion
 ]
@@ -423,6 +515,90 @@ mlamd_merge_test_cases = [
         yuewen_to_merge=["麦兜"],
         yuewen_merged="麦兜！",
     ),
+    # endregion
+    # region Block 2
+    MergeTestCase(
+        zhongwen="麦太，没见面一阵",
+        yuewen_to_merge=["咦", "麦太", "咩唔见你一排"],
+        yuewen_merged="咦，麦太，咩唔见你一排",
+    ),
+    MergeTestCase(
+        zhongwen="怎么小腿粗起来了？",
+        yuewen_to_merge=["个脚刮囊粗咗咁多呀"],
+        yuewen_merged="个脚刮囊粗咗咁多呀？",
+    ),
+    MergeTestCase(
+        zhongwen="可怜呀，每天扑来扑去⋯",
+        yuewen_to_merge=["鬼咩", "日日扑嚟扑去"],
+        yuewen_merged="鬼咩，日日扑嚟扑去⋯",
+    ),
+    MergeTestCase(
+        zhongwen="替儿子找幼稚园！",
+        yuewen_to_merge=["同我仔揾幼稚园吖嘛"],
+        yuewen_merged="同我仔揾幼稚园吖嘛！",
+    ),
+    MergeTestCase(
+        zhongwen="怎么不试一试好彩酒楼对面",
+        yuewen_to_merge=["点解唔试下好彩走楼斜对面"],
+        yuewen_merged="点解唔试下好彩走楼斜对面",
+    ),
+    MergeTestCase(
+        zhongwen="旧中侨国货楼上的⋯",
+        yuewen_to_merge=["旧中桥百货公司楼上𠮶间"],
+        yuewen_merged="旧中桥百货公司楼上𠮶间⋯",
+    ),
+    MergeTestCase(
+        zhongwen="春田花花幼稚园？",
+        yuewen_to_merge=["春田花花幼稚园呢"],
+        yuewen_merged="春田花花幼稚园呢？",
+    ),
+    MergeTestCase(
+        zhongwen="就是座落界限街南昌街交界⋯",
+        yuewen_to_merge=["就系坐落喺界限街同南昌街交界"],
+        yuewen_merged="就系坐落喺界限街同南昌街交界⋯",
+    ),
+    MergeTestCase(
+        zhongwen="银城美食广场附近的⋯",
+        yuewen_to_merge=["银城美食广场附近𠮶间"],
+        yuewen_merged="银城美食广场附近𠮶间⋯",
+    ),
+    MergeTestCase(
+        zhongwen="春田花花幼稚园？",
+        yuewen_to_merge=["春田花花幼稚园呀"],
+        yuewen_merged="春田花花幼稚园呀？",
+    ),
+    MergeTestCase(
+        zhongwen="对！深水埗地铁站步行不用10分钟！",
+        yuewen_to_merge=["系呀", "深水埗地铁站口行过去唔使十分钟呀"],
+        yuewen_merged="系呀！深水埗地铁站口行过去唔使十分钟呀！",
+    ),
+    MergeTestCase(
+        zhongwen="春田花花幼稚园，师资优良⋯",
+        yuewen_to_merge=["春田花花幼稚园", "诗诗优良"],
+        yuewen_merged="春田花花幼稚园，诗诗优良⋯",
+    ),
+    MergeTestCase(
+        zhongwen="而且还有西人教英文！",
+        yuewen_to_merge=["仲系西人教英文添㗎"],
+        yuewen_merged="仲系西人教英文添㗎！",
+    ),
+    MergeTestCase(
+        zhongwen="西人教英文？",
+        yuewen_to_merge=["咦", "西人教英文"],
+        yuewen_merged="咦，西人教英文？",
+    ),
+    MergeTestCase(
+        zhongwen="是呀！",
+        yuewen_to_merge=["系呀"],
+        yuewen_merged="系呀！",
+    ),
+    MergeTestCase(
+        zhongwen="春田花花，确有好多西人呀！",
+        yuewen_to_merge=["春田花花", "真系好多西人㗎"],
+        yuewen_merged="春田花花，真系好多西人㗎！",
+    ),
+    # endregion
+    # region Block 3 (WIP)
     # endregion
 ]
 """MLAMD 粤文 merging test cases."""
@@ -782,7 +958,7 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
         two_yuewen_shifted="麦兜",
     ),
     # endregion
-    # region Block 2 (WIP)
+    # region Block 2
     ShiftTestCase(
         one_zhongwen="麦太，没见面一阵",
         one_yuewen="咦麦太",
@@ -790,8 +966,156 @@ mlamd_shift_test_cases: list[ShiftTestCase] = [
         two_yuewen="咩唔见你一排个脚刮囊粗咗咁多呀",
         one_yuewen_shifted="咦麦太咩唔见你一排",
         two_yuewen_shifted="个脚刮囊粗咗咁多呀",
-        include_in_prompt=False,
     ),
+    ShiftTestCase(
+        one_zhongwen="怎么小腿粗起来了？",
+        one_yuewen="个脚刮囊粗咗咁多呀",
+        two_zhongwen="可怜呀，每天扑来扑去⋯",
+        two_yuewen="鬼咩",
+        one_yuewen_shifted="个脚刮囊粗咗咁多呀",
+        two_yuewen_shifted="鬼咩",
+        include_in_prompt=True,
+    ),
+    ShiftTestCase(
+        one_zhongwen="可怜呀，每天扑来扑去⋯",
+        one_yuewen="鬼咩",
+        two_zhongwen="替儿子找幼稚园！",
+        two_yuewen="日日扑嚟扑去同我仔揾幼稚园吖嘛",
+        one_yuewen_shifted="鬼咩日日扑嚟扑去",
+        two_yuewen_shifted="同我仔揾幼稚园吖嘛",
+        include_in_prompt=True,
+    ),
+    ShiftTestCase(
+        one_zhongwen="替儿子找幼稚园！",
+        one_yuewen="同我仔揾幼稚园吖嘛",
+        two_zhongwen="怎么不试一试好彩酒楼对面",
+        two_yuewen="点解唔试下好彩走楼斜对面",
+        one_yuewen_shifted="同我仔揾幼稚园吖嘛",
+        two_yuewen_shifted="点解唔试下好彩走楼斜对面",
+    ),
+    ShiftTestCase(
+        one_zhongwen="怎么不试一试好彩酒楼对面",
+        one_yuewen="点解唔试下好彩走楼斜对面",
+        two_zhongwen="旧中侨国货楼上的⋯",
+        two_yuewen="",
+        one_yuewen_shifted="点解唔试下好彩走楼斜对面",
+        two_yuewen_shifted="",
+    ),
+    ShiftTestCase(  # NEXT ROUND
+        one_zhongwen="怎么不试一试好彩酒楼对面",
+        one_yuewen="点解唔试下好彩走楼斜对面",
+        two_zhongwen="旧中侨国货楼上的⋯",
+        two_yuewen="旧中桥百货公司楼上𠮶间",
+        one_yuewen_shifted="点解唔试下好彩走楼斜对面",
+        two_yuewen_shifted="旧中桥百货公司楼上𠮶间",
+    ),
+    ShiftTestCase(
+        one_zhongwen="旧中侨国货楼上的⋯",
+        one_yuewen="",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen="旧中桥百货公司楼上𠮶间春田花花幼稚园呢",
+        one_yuewen_shifted="旧中桥百货公司楼上𠮶间",
+        two_yuewen_shifted="春田花花幼稚园呢",
+        include_in_prompt=True,
+    ),
+    ShiftTestCase(  # NEXT ROUND
+        one_zhongwen="旧中侨国货楼上的⋯",
+        one_yuewen="旧中桥百货公司楼上𠮶间",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen="春田花花幼稚园呢",
+        one_yuewen_shifted="旧中桥百货公司楼上𠮶间",
+        two_yuewen_shifted="春田花花幼稚园呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="春田花花幼稚园？",
+        one_yuewen="春田花花幼稚园呢",
+        two_zhongwen="就是座落界限街南昌街交界⋯",
+        two_yuewen="就系坐落喺界限街同南昌街交界",
+        one_yuewen_shifted="春田花花幼稚园呢",
+        two_yuewen_shifted="就系坐落喺界限街同南昌街交界",
+    ),
+    ShiftTestCase(
+        one_zhongwen="就是座落界限街南昌街交界⋯",
+        one_yuewen="就系坐落喺界限街同南昌街交界",
+        two_zhongwen="银城美食广场附近的⋯",
+        two_yuewen="",
+        one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
+        two_yuewen_shifted="",
+    ),
+    ShiftTestCase(  # NEXT ROUND
+        one_zhongwen="就是座落界限街南昌街交界⋯",
+        one_yuewen="就系坐落喺界限街同南昌街交界",
+        two_zhongwen="银城美食广场附近的⋯",
+        two_yuewen="银城美食广场附近𠮶间",
+        one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
+        two_yuewen_shifted="银城美食广场附近𠮶间",
+    ),
+    ShiftTestCase(
+        one_zhongwen="银城美食广场附近的⋯",
+        one_yuewen="",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen="银城美食广场附近𠮶间春田花花幼稚园呀",
+        one_yuewen_shifted="银城美食广场附近𠮶间",
+        two_yuewen_shifted="春田花花幼稚园呀",
+    ),
+    ShiftTestCase(  # NEXT ROUND
+        one_zhongwen="银城美食广场附近的⋯",
+        one_yuewen="银城美食广场附近𠮶间",
+        two_zhongwen="春田花花幼稚园？",
+        two_yuewen="春田花花幼稚园呀",
+        one_yuewen_shifted="银城美食广场附近𠮶间",
+        two_yuewen_shifted="春田花花幼稚园呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="春田花花幼稚园？",
+        one_yuewen="春田花花幼稚园呀",
+        two_zhongwen="对！深水埗地铁站步行不用10分钟！",
+        two_yuewen="系呀深水埗地铁站口行过去唔使十分钟呀",
+        one_yuewen_shifted="春田花花幼稚园呀",
+        two_yuewen_shifted="系呀深水埗地铁站口行过去唔使十分钟呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="对！深水埗地铁站步行不用10分钟！",
+        one_yuewen="系呀深水埗地铁站口行过去唔使十分钟呀",
+        two_zhongwen="春田花花幼稚园，师资优良⋯",
+        two_yuewen="春田花花幼稚园诗诗优良",
+        one_yuewen_shifted="系呀深水埗地铁站口行过去唔使十分钟呀",
+        two_yuewen_shifted="春田花花幼稚园诗诗优良",
+    ),
+    ShiftTestCase(
+        one_zhongwen="春田花花幼稚园，师资优良⋯",
+        one_yuewen="春田花花幼稚园诗诗优良",
+        two_zhongwen="而且还有西人教英文！",
+        two_yuewen="仲系西人教英文添㗎",
+        one_yuewen_shifted="春田花花幼稚园诗诗优良",
+        two_yuewen_shifted="仲系西人教英文添㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="而且还有西人教英文！",
+        one_yuewen="仲系西人教英文添㗎",
+        two_zhongwen="西人教英文？",
+        two_yuewen="咦西人教英文",
+        one_yuewen_shifted="仲系西人教英文添㗎",
+        two_yuewen_shifted="咦西人教英文",
+    ),
+    ShiftTestCase(
+        one_zhongwen="西人教英文？",
+        one_yuewen="咦西人教英文",
+        two_zhongwen="是呀！",
+        two_yuewen="",
+        one_yuewen_shifted="咦西人教英文",
+        two_yuewen_shifted="",
+    ),
+    ShiftTestCase(
+        one_zhongwen="是呀！",
+        one_yuewen="",
+        two_zhongwen="春田花花，确有好多西人呀！",
+        two_yuewen="系呀春田花花真系好多西人㗎",
+        one_yuewen_shifted="系呀",
+        two_yuewen_shifted="春田花花真系好多西人㗎",
+    ),
+    # endregion
+    # region Block 3 (WIP)
     # endregion
 ]
 """MLAMD 粤文 shifting test cases."""
@@ -1105,6 +1429,110 @@ mlamd_proof_test_cases = [
         yuewen_proofread="麦兜！",
         note="",
     ),
+    # endregion
+    # region Block 2
+    ProofTestCase(
+        zhongwen="麦太，没见面一阵",
+        yuewen="咦，麦太，咩唔见你一排",
+        yuewen_proofread="咦，麦太，咩唔见你一排",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="怎么小腿粗起来了？",
+        yuewen="个脚刮囊粗咗咁多呀？",
+        yuewen_proofread="个脚瓜囊粗咗咁多呀？",
+        note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for "
+        "'calf', matching the meaning of '小腿'.",
+    ),
+    ProofTestCase(
+        zhongwen="可怜呀，每天扑来扑去⋯",
+        yuewen="鬼咩，日日扑嚟扑去⋯",
+        yuewen_proofread="鬼咩，日日扑嚟扑去⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="替儿子找幼稚园！",
+        yuewen="同我仔揾幼稚园吖嘛！",
+        yuewen_proofread="同我仔揾幼稚园吖嘛！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="怎么不试一试好彩酒楼对面",
+        yuewen="点解唔试下好彩走楼斜对面",
+        yuewen_proofread="点解唔试下好彩酒楼斜对面",
+        note="Corrected '走楼' to '酒楼' as '酒楼' is the correct term for restaurant, "
+        "matching the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="旧中侨国货楼上的⋯",
+        yuewen="旧中桥百货公司楼上𠮶间⋯",
+        yuewen_proofread="旧中侨百货公司楼上𠮶间⋯",
+        note="Corrected '中桥' to '中侨' as '中侨' is the correct name, matching the "
+        "original 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="春田花花幼稚园？",
+        yuewen="春田花花幼稚园呢？",
+        yuewen_proofread="春田花花幼稚园呢？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就是座落界限街南昌街交界⋯",
+        yuewen="就系坐落喺界限街同南昌街交界⋯",
+        yuewen_proofread="就系坐落喺界限街同南昌街交界⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="银城美食广场附近的⋯",
+        yuewen="银城美食广场附近𠮶间⋯",
+        yuewen_proofread="银城美食广场附近𠮶间⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="春田花花幼稚园？",
+        yuewen="春田花花幼稚园呀？",
+        yuewen_proofread="春田花花幼稚园呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="对！深水埗地铁站步行不用10分钟！",
+        yuewen="系呀！深水埗地铁站口行过去唔使十分钟呀！",
+        yuewen_proofread="系呀！深水埗地铁站口行过去唔使十分钟呀！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="春田花花幼稚园，师资优良⋯",
+        yuewen="春田花花幼稚园，诗诗优良⋯",
+        yuewen_proofread="春田花花幼稚园，师资优良⋯",
+        note="Corrected '诗诗' to '师资' as '师资' is the correct term for teaching "
+        "staff, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="而且还有西人教英文！",
+        yuewen="仲系西人教英文添㗎！",
+        yuewen_proofread="仲系西人教英文添㗎！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="西人教英文？",
+        yuewen="咦，西人教英文？",
+        yuewen_proofread="咦，西人教英文？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="是呀！",
+        yuewen="系呀！",
+        yuewen_proofread="系呀！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="春田花花，确有好多西人呀！",
+        yuewen="春田花花，真系好多西人㗎！",
+        yuewen_proofread="春田花花，真系好多西人㗎！",
+        note="",
+    ),
+    # endregion
+    # region Block 3 (WIP)
     # endregion
 ]
 

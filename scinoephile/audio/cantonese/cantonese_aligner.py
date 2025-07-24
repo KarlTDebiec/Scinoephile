@@ -65,16 +65,18 @@ class CantoneseAligner:
         """
         alignment = CantoneseAlignment(zhongwen_subs, yuewen_subs)
 
-        # Split 粤文 subtitles that overlap with two 中文 subtitles
-        iteration = 0
-        while len(alignment.yuewen_to_review) > 0:
-            info(f"\nITERATION {iteration}")
-            info(alignment)
-            self._split(alignment)
-            iteration += 1
-
         # Shift 粤文 subtitles to match 中文 subtitles
-        self._shift(alignment)
+        need_to_run_shift = True
+        while need_to_run_shift:
+            # Split 粤文 subtitles that overlap with two 中文 subtitles
+            iteration = 0
+            while len(alignment.yuewen_to_review) > 0:
+                info(f"\nITERATION {iteration}")
+                info(alignment)
+                self._split(alignment)
+                iteration += 1
+
+            need_to_run_shift = self._shift(alignment)
 
         # TODO: Identify partnerless 中文 subtitles and prompt LLM
 
@@ -135,6 +137,7 @@ class CantoneseAligner:
             )
         updated_yuewen = AudioSeries()
         updated_yuewen.events = updated_yuewen_events
+        alignment.merged = True
         alignment.yuewen = updated_yuewen
 
     def _shift(self, alignment) -> bool:
@@ -166,7 +169,13 @@ class CantoneseAligner:
                 and query.two_yuewen == answer.two_yuewen_shifted
             ):
                 continue
-            alignment.apply_shift(one_zw_i, two_zw_i, one_yw_is, two_yw_is, answer)
+            need_to_restart = alignment.apply_shift(
+                one_zw_i, two_zw_i, one_yw_is, two_yw_is, query, answer
+            )
+            if need_to_restart:
+                info("Need to restart shifting")
+                return True
+        return False
 
     def _proofread(self, alignment: CantoneseAlignment) -> None:
         """Proofread 粤文 text.

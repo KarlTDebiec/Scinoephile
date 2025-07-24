@@ -63,6 +63,9 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         """Get Python source-like string representation."""
 
         def format_field(name: str, value: object) -> str:
+            if isinstance(value, str):
+                escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+                return f'    {name}="{escaped}",'
             return f"    {name}={value!r},"
 
         lines = [f"{self.__class__.__name__}("]

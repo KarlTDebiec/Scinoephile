@@ -8,7 +8,10 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.audio import AudioSeries, get_sub_split_at_idx
+from scinoephile.audio import (
+    AudioSeries,
+    get_series_with_sub_split_at_idx,
+)
 from scinoephile.audio.cantonese.models import (
     MergeQuery,
     ProofQuery,
@@ -44,6 +47,7 @@ class CantoneseAlignment:
         self._zhongwen = zhongwen
         self._yuewen = yuewen
         self.cutoff = cutoff
+        self.merged = False
 
         self._overlap = None
         self._scaled_overlap = None
@@ -128,9 +132,17 @@ class CantoneseAlignment:
         two_zw_i: int,
         one_yw_is: list[int],
         two_yw_is: list[int],
+        query: ShiftQuery,
         answer: ShiftAnswer,
-    ):
+    ) -> bool:
         """Apply shift to 粤文 subs.
+
+        Takes in the indexes of yuewen_one, and the indexes of yuewen_two.
+        Can calculate the
+        Takes in the text of yuewen_one and yuewen_two.
+
+        Can calculate the length of yuewen_one and yuewen_two
+        Can calculate the length of
 
         Arguments:
             one_zw_i: Index of 中文 sub one
@@ -138,23 +150,38 @@ class CantoneseAlignment:
             one_yw_is: Indices of 粤文 subs to shift for 中文 sub one
             two_yw_is: Indices of 粤文 subs to shift for 中文 sub two
         """
-        if not one_yw_is and not two_yw_is:
-            raise ScinoephileError()
-        if not one_yw_is and two_yw_is:
-            self.sync_groups[two_zw_i][1].extend(two_yw_is)
-            return
-        if one_yw_is and not two_yw_is:
-            self.sync_groups[one_zw_i][1].extend(one_yw_is)
-            return
-
         # Shift 粤文 text
-        one_text = "".join([self.yuewen[i].text for i in one_yw_is])
-        two_text = "".join([self.yuewen[i].text for i in two_yw_is])
-        self.yuewen[one_yw_is[0]].text = one_text + two_text
-        self.yuewen[one_yw_is[-1]].end = self.yuewen[two_yw_is[-1]].end
-        # Remove shifted 粤文 subs
-        for yw_i in sorted(two_yw_is, reverse=True):
-            del self.yuewen[yw_i]
+        one_yuewen = query.one_yuewen
+        two_yuewen = query.two_yuewen
+        one_yuewen_shifted = answer.one_yuewen_shifted
+        two_yuewen_shifted = answer.two_yuewen_shifted
+
+        if len(one_yuewen) < len(one_yuewen_shifted):
+            # Calculate the number of characters we need to shift from one to two
+            text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
+            n_chars_left_to_shift = len(text_to_shift_from_two_to_one)
+
+            # Loop over subtitles current in two
+            for two_yw_i in two_yw_is:
+                sub = self.yuewen[two_yw_i]
+
+                if len(sub.text) <= n_chars_left_to_shift:
+                    # Entire sub needs to be shifted from two to one
+                    self.sync_groups[one_zw_i][1].append(two_yw_i)
+                    self.sync_groups[two_zw_i][1].remove(two_yw_i)
+                    n_chars_left_to_shift -= len(sub.text)
+                else:
+                    self.yuewen = get_series_with_sub_split_at_idx(
+                        self.yuewen, two_yw_i, n_chars_left_to_shift
+                    )
+                    return True
+                if n_chars_left_to_shift == 0:
+                    return False
+        elif len(one_yuewen) > len(one_yuewen_shifted):
+            text_to_shift_from_one_to_two = one_yuewen[: len(one_yuewen_shifted)]
+            n_chars_left_to_shift = len(text_to_shift_from_one_to_two)
+        else:
+            raise ScinoephileError()
 
     def apply_split(self, one_zw_i: int, two_zw_i: int, yw_i: int, answer: SplitAnswer):
         """Apply split to 粤文 subs.
@@ -175,16 +202,9 @@ class CantoneseAlignment:
             self.sync_groups[two_zw_i][1].insert(0, yw_i)
             self.yuewen_to_review.remove(yw_i)
             return
-        # Split yuewen event into two parts
-        split_idx = len(answer.one_yuewen_to_append) - 1
-        one, two = get_sub_split_at_idx(self.yuewen[yw_i], split_idx)
-        updated_series = AudioSeries(
-            audio=self.yuewen.audio,
+        self.yuewen = get_series_with_sub_split_at_idx(
+            self.yuewen, yw_i, len(answer.one_yuewen_to_append)
         )
-        updated_series.events = (
-            self.yuewen[:yw_i] + [one, two] + self.yuewen[yw_i + 1 :]
-        )
-        self.yuewen = updated_series
 
     def get_merge_query(self, zw_i: int, yw_is: list[int]) -> MergeQuery:
         """Get merge query for given indices.
@@ -266,6 +286,17 @@ class CantoneseAlignment:
 
     def _init_sync_groups(self):
         """Initialize nascent sync groups and list of 粤文 to review."""
+        if self.merged:
+            if len(self.zhongwen) != len(self.yuewen):
+                raise ScinoephileError(
+                    "Cannot initialize sync groups after merging if lengths"
+                    "are not equal: "
+                    f"{len(self.zhongwen)} zhongwen vs {len(self.yuewen)} yuewen"
+                )
+            self._sync_groups = [([i], [i]) for i in range(len(self.zhongwen))]
+            self._yuewen_to_review = []
+            return
+
         # Each sync group must be one 中文 and zero or more 粤文.
         nascent_sync_groups = []
         for zw_i in range(len(self.zhongwen)):

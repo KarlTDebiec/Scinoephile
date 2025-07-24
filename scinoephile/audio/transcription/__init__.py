@@ -72,7 +72,7 @@ def get_segment_split_at_idx(
         id=segment.id,
         seek=segment.seek,
         start=segment.start,
-        end=segment.start + (segment.end - segment.start) * idx / len(segment.text),
+        end=segment.words[idx - 1].end,
         text=segment.text[:idx],
         words=segment.words[:idx],
     )
@@ -80,7 +80,7 @@ def get_segment_split_at_idx(
     second_segment = TranscribedSegment(
         id=segment.id + 1,
         seek=segment.seek,
-        start=first_segment.end,
+        start=segment.words[idx].start,
         end=segment.end,
         text=segment.text[idx:],
         words=segment.words[idx:],

@@ -7,7 +7,10 @@ from __future__ import annotations
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
-from scinoephile.audio.transcription import get_segment_split_on_whitespace
+from scinoephile.audio.transcription import (
+    get_segment_split_at_idx,
+    get_segment_split_on_whitespace,
+)
 from scinoephile.audio.transcription.models import TranscribedSegment
 
 
@@ -37,6 +40,27 @@ def get_series_from_segments(
     return series
 
 
+def get_series_with_sub_split_at_idx(
+    series: AudioSeries, sub_idx: int, char_idx: int
+) -> AudioSeries:
+    """Get a series with a subtitle split at the provided index.
+
+    Arguments:
+        series: Audio series to split
+        sub_idx: Index of subtitle to split
+        char_idx: Character index at which to split the subtitle
+    Returns:
+        Audio series with the subtitle split at the provided index
+    """
+    sub = series.events[sub_idx]
+    one, two = get_sub_split_at_idx(sub, char_idx)
+    new_series = AudioSeries(audio=series.audio)
+    new_series.events = (
+        series.events[:sub_idx] + [one, two] + series.events[sub_idx + 1 :]
+    )
+    return new_series
+
+
 def get_sub_split_at_idx(
     sub: AudioSubtitle, idx: int
 ) -> tuple[AudioSubtitle, AudioSubtitle]:
@@ -47,16 +71,16 @@ def get_sub_split_at_idx(
     Returns:
         Two subtitles split from this one at the provided index
     """
-    one_segment, two_segment = get_segment_split_on_whitespace(sub.segment)
+    one_segment, two_segment = get_segment_split_at_idx(sub.segment, idx)
     one = AudioSubtitle(
         start=sub.start,
-        end=sub.segment.words[idx].end,
+        end=int(sub.start + ((one_segment.end - one_segment.start) * 1000)),
         text=sub.text[:idx],
         segment=one_segment,
         # TODO: Audio
     )
     two = AudioSubtitle(
-        start=sub.segment.words[idx].start,
+        start=int(sub.end - ((two_segment.end - two_segment.start) * 1000)),
         end=sub.end,
         text=sub.text[idx:],
         segment=two_segment,
@@ -70,5 +94,6 @@ __all__ = [
     "AudioSeries",
     "AudioSubtitle",
     "get_series_from_segments",
+    "get_series_with_sub_split_at_idx",
     "get_sub_split_at_idx",
 ]
