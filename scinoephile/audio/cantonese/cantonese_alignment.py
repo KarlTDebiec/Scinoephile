@@ -171,6 +171,7 @@ class CantoneseAlignment:
                     self.sync_groups[two_zw_i][1].remove(two_yw_i)
                     n_chars_left_to_shift -= len(sub.text)
                 else:
+                    # Sub needs to be split, which means we need to restart after
                     self.yuewen = get_series_with_sub_split_at_idx(
                         self.yuewen, two_yw_i, n_chars_left_to_shift
                     )

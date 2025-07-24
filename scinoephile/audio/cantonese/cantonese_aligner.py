@@ -162,6 +162,8 @@ class CantoneseAligner:
             one_yw_is = one_sync_group[1]
             two_zw_i = two_sync_group[0][0]
             two_yw_is = two_sync_group[1]
+            if len(one_yw_is) == 0 and len(two_yw_is) == 0:
+                continue
             query = alignment.get_shift_query(one_zw_i, two_zw_i, one_yw_is, two_yw_is)
             answer = self.shifter(query)
             if (
