@@ -33,7 +33,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
         max_attempts: int = 2,
-    ) -> None:
+    ):
         """Initialize.
 
         Arguments:
@@ -55,20 +55,24 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
-        system_prompt += "\n"
+        system_prompt += (
+            "\nYour response must be a JSON object with the following structure:\n"
+        )
         system_prompt += json.dumps(
             self.answer_example.model_dump(), indent=4, ensure_ascii=False
         )
         if examples:
             system_prompt += (
-                "\n\nHere are some examples of inputs and expected outputs:\n"
+                "\n\nHere are some examples of queries and expected answers:"
             )
             for example in examples:
-                system_prompt += self.query_template.format_map(
-                    example.query.model_dump()
+                system_prompt += "\n\nExample query:\n"
+                system_prompt += json.dumps(
+                    example.query.model_dump(), indent=4, ensure_ascii=False
                 )
-                system_prompt += self.answer_template.format_map(
-                    example.answer.model_dump()
+                system_prompt += "\nExpected answer:\n"
+                system_prompt += json.dumps(
+                    example.answer.model_dump(), indent=4, ensure_ascii=False
                 )
         self._system_prompt = system_prompt
 
@@ -86,7 +90,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         Returns:
             LLM's answer
         """
-        query_prompt = self._format_query_prompt(query)
+        query_prompt = json.dumps(query.model_dump(), indent=4, ensure_ascii=False)
         cache_path = self._get_cache_path(query_prompt)
 
         # Load from cache if available
@@ -204,12 +208,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
     @property
     @abstractmethod
-    def answer_template(self) -> str:
-        """Answer template."""
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         raise NotImplementedError()
@@ -218,12 +216,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     @abstractmethod
     def query_cls(self) -> type[TQuery]:
         """Query class."""
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
-    def query_template(self) -> str:
-        """Query template."""
         raise NotImplementedError()
 
     @property
@@ -236,16 +228,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     def test_case_cls(self) -> type[TTestCase]:
         """Test case class."""
         raise NotImplementedError()
-
-    def _format_query_prompt(self, query: TQuery) -> str:
-        """Format query prompt based on query.
-
-        Arguments:
-            query: Query to format
-        Returns:
-            Formatted query prompt
-        """
-        return self.query_template.format_map(query.model_dump())
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.

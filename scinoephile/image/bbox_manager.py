@@ -210,9 +210,7 @@ class BboxManager:
 
         return known_values
 
-    def _propose_merges(
-        self, bboxes: list[tuple[int, int, int, int]], text: str
-    ) -> None:
+    def _propose_merges(self, bboxes: list[tuple[int, int, int, int]], text: str):
         """Propose merges of adjacent bboxes.
 
         Arguments:
@@ -256,7 +254,7 @@ class BboxManager:
         self,
         key: tuple[int, int, int, int, int, int, int, int],
         value: str,
-    ) -> None:
+    ):
         """Update merge_threes dictionary.
 
         Arguments:
@@ -274,7 +272,7 @@ class BboxManager:
         self,
         key: tuple[int, int, int, int, int],
         value: str,
-    ) -> None:
+    ):
         """Update merge_twos dictionary.
 
         Arguments:
@@ -368,7 +366,7 @@ class BboxManager:
     def _save_merge_dict(
         merge_dict: dict[tuple[int, int, int, int], str],
         file_path: Path,
-    ) -> None:
+    ):
         """Save merge dict to file.
 
         Arguments:

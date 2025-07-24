@@ -50,11 +50,15 @@ class AudioSeries(Series):
     """Pattern for subtitle audio files."""
 
     @override
-    def __init__(self):
-        """Initialize."""
+    def __init__(self, audio: AudioSegment | None = None):
+        """Initialize.
+
+        Arguments:
+            audio: Series audio
+        """
         super().__init__()
 
-        self._audio = None
+        self._audio = audio
 
     @property
     def audio(self) -> AudioSegment:
@@ -62,7 +66,7 @@ class AudioSeries(Series):
         return self._audio
 
     @audio.setter
-    def audio(self, audio: AudioSegment) -> None:
+    def audio(self, audio: AudioSegment):
         """Set audio of series.
 
         Arguments:
@@ -80,7 +84,7 @@ class AudioSeries(Series):
 
     @blocks.setter
     @override
-    def blocks(self, blocks: list[AudioBlock]) -> None:
+    def blocks(self, blocks: list[AudioBlock]):
         """Set blocks of the series.
 
         Arguments:
@@ -89,7 +93,7 @@ class AudioSeries(Series):
         self._blocks = blocks
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
+    def save(self, path: str, format_: str | None = None, **kwargs: Any):
         """Save series to an output file.
 
         Arguments:
@@ -126,7 +130,7 @@ class AudioSeries(Series):
         return sliced
 
     @override
-    def _init_blocks(self) -> None:
+    def _init_blocks(self):
         """Initialize blocks."""
         blocks = [
             Block(self, start_idx, end_idx)
@@ -167,7 +171,7 @@ class AudioSeries(Series):
             audio_blocks.append(audio_block)
         self._blocks = audio_blocks
 
-    def _save_wav(self, fp: Path, **kwargs: Any) -> None:
+    def _save_wav(self, fp: Path, **kwargs: Any):
         """Save series to directory of wav files.
 
         Arguments:
@@ -372,7 +376,7 @@ class AudioSeries(Series):
         audio_output_path: Path,
         audio_track: int,
         channels: int,
-    ) -> None:
+    ):
         """Extract a mono audio track from a video file.
 
         Arguments:

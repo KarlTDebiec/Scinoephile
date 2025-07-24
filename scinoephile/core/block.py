@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class Block:
     """Block of subtitles within a Series."""
 
-    def __init__(self, series: Series, start_idx: int, end_idx: int) -> None:
+    def __init__(self, series: Series, start_idx: int, end_idx: int):
         """Initialize."""
         self._series = series
         self.start_idx = start_idx

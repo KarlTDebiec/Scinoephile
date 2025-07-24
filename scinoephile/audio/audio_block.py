@@ -24,7 +24,7 @@ class AudioBlock(Block):
         buffered_end: int,
         audio: AudioSegment,
         **kwargs: Any,
-    ) -> None:
+    ):
         """Initialize.
 
         Arguments:

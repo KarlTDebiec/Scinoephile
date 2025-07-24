@@ -20,7 +20,7 @@ class Subtitle(SSAEvent):
     """
 
     @override
-    def __init__(self, **kwargs: Any) -> None:
+    def __init__(self, **kwargs: Any):
         """Initialize.
 
         Arguments:

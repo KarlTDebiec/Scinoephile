@@ -6,12 +6,14 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.models import MergeAnswer, MergeQuery, MergeTestCase
+from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
+from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
+from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
-    """Merges transcribed 粤文 texts to match 中文 text punctuation and spacing."""
+class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
+    """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
 
     @property
     @override
@@ -27,12 +29,6 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
 
     @property
     @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return "粤文 merged:\n{yuewen_merged}\n"
-
-    @property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
@@ -40,10 +36,10 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         spoken Cantonese to match the spacing and punctuation of a single-line
         中文 subtitle.
         Include all 粤文 characters and merge them into one line.
-        All 汉字 in the output must come from the 粤文 input.
-        No 汉字 in the output may come from the 中文 input.
-        Adjust punctuation and spacing to match the 中文 input.
-        Your response must be a JSON object with the following structure:
+        Do not copy any 汉字 characters from the 中文 input to the 粤文 output.
+        Only adjust punctuation and spacing of the 粤文 to match the 中文 input.
+        Do not make any corrections to the 粤文 text, other than adjusting punctuation
+        and spacing.
         """
 
     @property
@@ -54,25 +50,6 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
 
     @property
     @override
-    def query_template(self) -> str:
-        """Query template."""
-        return "中文:\n{zhongwen}\n粤文 to merge:\n{yuewen_to_merge}\n"
-
-    @property
-    @override
     def test_case_cls(self) -> type[MergeTestCase]:
         """Test case class."""
         return MergeTestCase
-
-    @override
-    def _format_query_prompt(self, query: MergeQuery) -> str:
-        """Format query prompt based on query.
-
-        Arguments:
-            query: Query to format
-        Returns:
-            Formatted query prompt
-        """
-        return self.query_template.format(
-            zhongwen=query.zhongwen, yuewen_to_merge="\n".join(query.yuewen_to_merge)
-        )

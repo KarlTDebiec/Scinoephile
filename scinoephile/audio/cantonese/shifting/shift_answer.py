@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
@@ -14,3 +15,12 @@ class ShiftAnswer(Answer):
 
     one_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text one.")
     two_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text two.")
+
+    @model_validator(mode="after")
+    def validate_answer(self) -> ShiftAnswer:
+        """Ensure answer is internally valid."""
+        if not self.one_yuewen_shifted and not self.two_yuewen_shifted:
+            raise ScinoephileError(
+                "Answer must have either shifted 粤文 text one or two."
+            )
+        return self

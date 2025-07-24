@@ -16,7 +16,7 @@ with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     from pydub import AudioSegment
 
-from scinoephile.audio.transcription.models import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 

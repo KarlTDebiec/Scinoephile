@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from pydantic import model_validator
 
-from scinoephile.audio.cantonese.models.shift_answer import ShiftAnswer
-from scinoephile.audio.cantonese.models.shift_query import ShiftQuery
+from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
+from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -16,15 +17,16 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     """Test case for 粤文 shifting; may also be used for few-shot prompt."""
 
     @model_validator(mode="after")
-    def validate_shift(self) -> ShiftTestCase:
-        """Ensure shifted text matches input text."""
+    def validate_test_case(self) -> ShiftTestCase:
+        """Ensure query and answer are consistent with one another."""
         expected = remove_punc_and_whitespace(self.one_yuewen + self.two_yuewen)
         received = remove_punc_and_whitespace(
             self.one_yuewen_shifted + self.two_yuewen_shifted
         )
         if expected != received:
-            raise ValueError(
-                "Concatenated output text does not match concatenated input text:\n"
+            raise ScinoephileError(
+                "Answer's concatenated shifted 粤文 text one and two does not match "
+                "query's concatenated 粤文 text one and two:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )

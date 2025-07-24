@@ -7,7 +7,11 @@ from __future__ import annotations
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
-from scinoephile.audio.transcription.models import TranscribedSegment
+from scinoephile.audio.transcription import (
+    TranscribedSegment,
+    get_segment_merged,
+    get_segment_split_at_idx,
+)
 
 
 def get_series_from_segments(
@@ -36,52 +40,77 @@ def get_series_from_segments(
     return series
 
 
-def get_split_segment(segment: TranscribedSegment) -> list[TranscribedSegment]:
-    """Split transcribed segment into multiple segments on whitespace.
+def get_series_with_sub_split_at_idx(
+    series: AudioSeries, sub_idx: int, char_idx: int
+) -> AudioSeries:
+    """Get a series with a subtitle split at the provided index.
 
     Arguments:
-        segment: Transcribed segment to split
+        series: Audio series to split
+        sub_idx: Index of subtitle to split
+        char_idx: Character index at which to split the subtitle
     Returns:
-        Transcribed segments split on whitespace
+        Audio series with the subtitle split at the provided index
     """
-    if segment.words is None or len(segment.words) == 0:
-        return [segment]
+    sub = series.events[sub_idx]
+    one, two = get_sub_split_at_idx(sub, char_idx)
+    new_series = AudioSeries(audio=series.audio)
+    new_series.events = (
+        series.events[:sub_idx] + [one, two] + series.events[sub_idx + 1 :]
+    )
+    return new_series
 
-    split_segments = []
-    nascent_words = []
-    # Groups of words
-    segment_id = 0
-    for word in segment.words:
-        if word.text.startswith(" "):
-            if nascent_words:
-                nascent_segment = TranscribedSegment(
-                    id=segment_id,
-                    seek=0,
-                    start=nascent_words[0].start,
-                    end=nascent_words[-1].end,
-                    text="".join([word.text for word in nascent_words]),
-                    words=nascent_words,
-                )
-                split_segments.append(nascent_segment)
-                segment_id += 1
-                nascent_words = []
-            word.text = word.text[1:]
-        if word.text != "":
-            nascent_words.append(word)
 
-    # Final group of words
-    if nascent_words:
-        nascent_segment = TranscribedSegment(
-            id=segment_id,
-            seek=0,
-            start=nascent_words[0].start,
-            end=nascent_words[-1].end,
-            text="".join([word.text for word in nascent_words]),
-            words=nascent_words,
-        )
-        split_segments.append(nascent_segment)
+def get_sub_merged(
+    subs: list[AudioSubtitle], *, text: str | None = None
+) -> AudioSubtitle:
+    """Merge audio subtitles into a single subtitle.
 
-    return split_segments
+    Arguments:
+        subs: Subtitles to merge
+        text: Text to use for the merged subtitle, defaults to simple concatenation
+    Returns:
+        Merged subtitle
+    """
+    if text is None:
+        text = "".join(sub.text for sub in subs)
+
+    return AudioSubtitle(
+        start=subs[0].start,
+        end=subs[-1].end,
+        text=text,
+        segment=get_segment_merged([sub.segment for sub in subs]),
+        # TODO: Audio
+    )
+
+
+def get_sub_split_at_idx(
+    sub: AudioSubtitle, idx: int
+) -> tuple[AudioSubtitle, AudioSubtitle]:
+    """Get two subtitles split from this one at provided index.
+
+    Arguments:
+        sub: Subtitle to split
+        idx: Index at which to split subtitle text
+    Returns:
+        Two subtitles split from this one at the provided index
+    """
+    one_segment, two_segment = get_segment_split_at_idx(sub.segment, idx)
+    one = AudioSubtitle(
+        start=sub.start,
+        end=int(sub.start + ((one_segment.end - one_segment.start) * 1000)),
+        text=sub.text[:idx],
+        segment=one_segment,
+        # TODO: Audio
+    )
+    two = AudioSubtitle(
+        start=int(sub.end - ((two_segment.end - two_segment.start) * 1000)),
+        end=sub.end,
+        text=sub.text[idx:],
+        segment=two_segment,
+        # TODO: Audio
+    )
+    return one, two
 
 
 __all__ = [
@@ -89,5 +118,7 @@ __all__ = [
     "AudioSeries",
     "AudioSubtitle",
     "get_series_from_segments",
-    "get_split_segment",
+    "get_series_with_sub_split_at_idx",
+    "get_sub_merged",
+    "get_sub_split_at_idx",
 ]

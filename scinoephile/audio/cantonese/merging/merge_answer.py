@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
@@ -15,3 +16,10 @@ class MergeAnswer(Answer):
     yuewen_merged: str = Field(
         ..., description="Merged 粤文 text with spacing and punctuation."
     )
+
+    @model_validator(mode="after")
+    def validate_answer(self) -> MergeAnswer:
+        """Ensure answer is internally valid."""
+        if not self.yuewen_merged:
+            raise ScinoephileError("Answer must have merged 粤文 text.")
+        return self

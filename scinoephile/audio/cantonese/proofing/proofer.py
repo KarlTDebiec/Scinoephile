@@ -6,39 +6,29 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.models import (
-    ProofreadAnswer,
-    ProofreadQuery,
-    ProofreadTestCase,
-)
+from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
+from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
+from scinoephile.audio.cantonese.proofing.proof_test_case import ProofTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseProofreader(
-    LLMQueryer[ProofreadQuery, ProofreadAnswer, ProofreadTestCase]
-):
-    """Proofreads a 粤文 subtitle based on the corresponding 中文."""
+class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
+    """Proofreads 粤文 text based on the corresponding 中文."""
 
     @property
     @override
-    def answer_cls(self) -> type[ProofreadAnswer]:
+    def answer_cls(self) -> type[ProofAnswer]:
         """Answer class."""
-        return ProofreadAnswer
+        return ProofAnswer
 
     @property
     @override
-    def answer_example(self) -> ProofreadAnswer:
+    def answer_example(self) -> ProofAnswer:
         """Example answer."""
-        return ProofreadAnswer(
+        return ProofAnswer(
             yuewen_proofread="我哋要盡快走",
             note="Replaced '我地' with '我哋' to follow standard written Cantonese.",
         )
-
-    @property
-    @override
-    def answer_template(self) -> str:
-        """Answer template."""
-        return "粤文 proofread:\n{yuewen_proofread}\nNote:\n{note}\n"
 
     @property
     @override
@@ -55,6 +45,9 @@ class CantoneseProofreader(
         transcription mistake.
         Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
         临盆).
+        If there is truly zero correspondence between the 粤文 and 中文, indicating a
+        complete transcription failure, return empty string for the 粤文 and a note 
+        explaining the lack of correspondence.
 
         Remember:
         - The 粤文 transcription does not need to match the 中文 word-for-word.
@@ -64,24 +57,16 @@ class CantoneseProofreader(
 
         Include a one-sentence explanation in English for any correction you make.
         If you make no changes, return an empty string for the note.
-
-        Your response must be a JSON object with the following structure:
         """
 
     @property
     @override
-    def query_cls(self) -> type[ProofreadQuery]:
+    def query_cls(self) -> type[ProofQuery]:
         """Query class."""
-        return ProofreadQuery
+        return ProofQuery
 
     @property
     @override
-    def query_template(self) -> str:
-        """Query template."""
-        return "中文:\n{zhongwen}\n粤文 to proofread:\n{yuewen}\n"
-
-    @property
-    @override
-    def test_case_cls(self) -> type[ProofreadTestCase]:
+    def test_case_cls(self) -> type[ProofTestCase]:
         """Test case class."""
-        return ProofreadTestCase
+        return ProofTestCase

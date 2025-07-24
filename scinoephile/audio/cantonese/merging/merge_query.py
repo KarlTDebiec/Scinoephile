@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
@@ -18,3 +19,12 @@ class MergeQuery(Query):
     yuewen_to_merge: list[str] = Field(
         ..., description="Known 粤文 texts to merge with punctuation and spacing."
     )
+
+    @model_validator(mode="after")
+    def validate_query(self) -> MergeQuery:
+        """Ensure query has minimum necessary information."""
+        if not self.zhongwen:
+            raise ScinoephileError("Query must have corresponding 中文 text.")
+        if not self.yuewen_to_merge:
+            raise ScinoephileError("Query must have 粤文 text to merge.")
+        return self
