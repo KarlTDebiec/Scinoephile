@@ -6,15 +6,13 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.models import (
-    ProofAnswer,
-    ProofQuery,
-    ProofTestCase,
-)
+from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
+from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
+from scinoephile.audio.cantonese.proofing.proof_test_case import ProofTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseProofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
+class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
     @property
@@ -47,6 +45,9 @@ class CantoneseProofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         transcription mistake.
         Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
         临盆).
+        If there is truly zero correspondence between the 粤文 and 中文, indicating a
+        complete transcription failure, return empty string for the 粤文 and a note 
+        explaining the lack of correspondence.
 
         Remember:
         - The 粤文 transcription does not need to match the 中文 word-for-word.

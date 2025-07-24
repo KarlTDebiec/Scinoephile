@@ -31,7 +31,7 @@ class ImageSeries(Series):
     """Individual subtitle events."""
 
     @override
-    def __init__(self) -> None:
+    def __init__(self):
         """Initialize."""
         super().__init__()
 
@@ -53,7 +53,7 @@ class ImageSeries(Series):
         return self._outline_color
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
+    def save(self, path: str, format_: str | None = None, **kwargs: Any):
         """Save series to an output file.
 
         Arguments:
@@ -75,7 +75,7 @@ class ImageSeries(Series):
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 
-    def _save_png(self, dir_path: Path, **kwargs: Any) -> None:
+    def _save_png(self, dir_path: Path, **kwargs: Any):
         """Save series to directory of png files.
 
         Arguments:
@@ -176,7 +176,7 @@ class ImageSeries(Series):
 
         return series
 
-    def _init_fill_and_outline_colors(self) -> None:
+    def _init_fill_and_outline_colors(self):
         """Initialzie the fill and outline colors used in this series.
 
         * Uses the most common two colors, which works correctly for tested images.

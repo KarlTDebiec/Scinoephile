@@ -21,7 +21,7 @@ class ImageSubtitle(Subtitle):
     """Individual subtitle with image."""
 
     @override
-    def __init__(self, img: Image.Image, **kwargs: Any) -> None:
+    def __init__(self, img: Image.Image, **kwargs: Any):
         """Initialize.
 
         Arguments:
@@ -81,7 +81,7 @@ class ImageSubtitle(Subtitle):
         return self._bboxes
 
     @bboxes.setter
-    def bboxes(self, bboxes: list[tuple[int, int]]) -> None:
+    def bboxes(self, bboxes: list[tuple[int, int]]):
         """Set bounding boxes of characters in image.
 
         Arguments:
@@ -97,7 +97,7 @@ class ImageSubtitle(Subtitle):
         return self._char_pairs
 
     @char_pairs.setter
-    def char_pairs(self, char_pairs: list[CharPair]) -> None:
+    def char_pairs(self, char_pairs: list[CharPair]):
         """Set pairs of characters in image.
 
         Arguments:
@@ -123,7 +123,7 @@ class ImageSubtitle(Subtitle):
         return self._img
 
     @img.setter
-    def img(self, img: Image.Image) -> None:
+    def img(self, img: Image.Image):
         """Set image of subtitle.
 
         Arguments:
@@ -154,7 +154,7 @@ class ImageSubtitle(Subtitle):
             self._img_with_white_bg = get_img_with_white_bg(self.img)
         return self._img_with_white_bg
 
-    def _init_char_pairs(self) -> None:
+    def _init_char_pairs(self):
         """Initialize character pairs."""
         char_1_i = 0
         width_1_i = 0

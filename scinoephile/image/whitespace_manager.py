@@ -157,7 +157,7 @@ class WhitespaceManager:
         )
         # TODO: Validate that amount of whitespace is appropriate for gap
 
-    def _expand_max_gaps(self, pair: CharPair) -> None:
+    def _expand_max_gaps(self, pair: CharPair):
         """Expand max_gaps to fit new width(s) and resave.
 
         Arguments:
@@ -230,7 +230,7 @@ class WhitespaceManager:
         except ValueError:
             return 0
 
-    def _save_max_gaps(self, type_1: str, type_2: str) -> None:
+    def _save_max_gaps(self, type_1: str, type_2: str):
         """Save max gaps file for a given pair of char types.
 
         Arguments:
@@ -242,7 +242,7 @@ class WhitespaceManager:
         np.savetxt(outfile, array, delimiter=",", fmt="%d")
         info(f"Saved {outfile}.")
 
-    def _update_max_gaps(self, pair: CharPair) -> None:
+    def _update_max_gaps(self, pair: CharPair):
         """Update max gaps between characters of provided type and widths.
 
         Arguments:

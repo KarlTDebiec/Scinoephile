@@ -12,7 +12,7 @@ with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     from pydub import AudioSegment
 
-from scinoephile.audio.transcription.models import TranscribedSegment
+from scinoephile.audio.transcription import TranscribedSegment
 from scinoephile.core import Subtitle
 
 
@@ -25,7 +25,7 @@ class AudioSubtitle(Subtitle):
         audio: AudioSegment | None = None,
         segment: TranscribedSegment | None = None,
         **kwargs: Any,
-    ) -> None:
+    ):
         """Initialize.
 
         Arguments:
@@ -46,7 +46,7 @@ class AudioSubtitle(Subtitle):
         return self._audio
 
     @audio.setter
-    def audio(self, audio: AudioSegment) -> None:
+    def audio(self, audio: AudioSegment):
         """Set audio of subtitle.
 
         Arguments:
@@ -60,7 +60,7 @@ class AudioSubtitle(Subtitle):
         return self._segment
 
     @segment.setter
-    def segment(self, segment: TranscribedSegment) -> None:
+    def segment(self, segment: TranscribedSegment):
         """Set transcribed segment of subtitle.
 
         Arguments:

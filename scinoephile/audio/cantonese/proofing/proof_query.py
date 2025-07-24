@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
@@ -14,3 +15,12 @@ class ProofQuery(Query):
 
     zhongwen: str = Field(..., description="Known 中文 text")
     yuewen: str = Field(..., description="Transcribed 粤文 text to proofread.")
+
+    @model_validator(mode="after")
+    def validate_query(self) -> ProofQuery:
+        """Ensure query has minimum necessary information."""
+        if not self.zhongwen:
+            raise ScinoephileError("Query must have corresponding 中文 text.")
+        if not self.yuewen:
+            raise ScinoephileError("Query must have 粤文 text.")
+        return self

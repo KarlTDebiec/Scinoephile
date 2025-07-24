@@ -30,7 +30,7 @@ class ScinoephileCli(CommandLineInterface):
 
     @classmethod
     @override
-    def add_arguments_to_argparser(cls, parser: ArgumentParser) -> None:
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.
 
         Arguments:
@@ -126,7 +126,7 @@ class ScinoephileCli(CommandLineInterface):
         )
 
     @classmethod
-    def run(cls, operations: dict[str, Any]) -> None:
+    def run(cls, operations: dict[str, Any]):
         """Run operations.
 
         Arguments:
@@ -279,7 +279,7 @@ class ScinoephileCli(CommandLineInterface):
 
     @classmethod
     @override
-    def _main(cls, **kwargs: Any) -> None:
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:

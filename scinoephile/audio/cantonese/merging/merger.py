@@ -6,11 +6,13 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.models import MergeAnswer, MergeQuery, MergeTestCase
+from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
+from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
+from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
 from scinoephile.core.abcs import LLMQueryer
 
 
-class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
+class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
     """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
 
     @property
@@ -34,9 +36,10 @@ class CantoneseMerger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         spoken Cantonese to match the spacing and punctuation of a single-line
         中文 subtitle.
         Include all 粤文 characters and merge them into one line.
-        All 汉字 in the output must come from the 粤文 input.
-        No 汉字 in the output may come from the 中文 input.
-        Adjust punctuation and spacing to match the 中文 input.
+        Do not copy any 汉字 characters from the 中文 input to the 粤文 output.
+        Only adjust punctuation and spacing of the 粤文 to match the 中文 input.
+        Do not make any corrections to the 粤文 text, other than adjusting punctuation
+        and spacing.
         """
 
     @property

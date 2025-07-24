@@ -36,7 +36,7 @@ def split_readme(readme_text: str) -> tuple[str, str]:
     return header, body
 
 
-def main() -> None:
+def main():
     """Update all README translations."""
     set_logging_verbosity(2)
     repo_root = package_root.parent

@@ -8,10 +8,10 @@ from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_series import AudioSeries
 from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.audio.transcription import (
+    TranscribedSegment,
+    get_segment_merged,
     get_segment_split_at_idx,
-    get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.models import TranscribedSegment
 
 
 def get_series_from_segments(
@@ -61,13 +61,37 @@ def get_series_with_sub_split_at_idx(
     return new_series
 
 
+def get_sub_merged(
+    subs: list[AudioSubtitle], *, text: str | None = None
+) -> AudioSubtitle:
+    """Merge audio subtitles into a single subtitle.
+
+    Arguments:
+        subs: Subtitles to merge
+        text: Text to use for the merged subtitle, defaults to simple concatenation
+    Returns:
+        Merged subtitle
+    """
+    if text is None:
+        text = "".join(sub.text for sub in subs)
+
+    return AudioSubtitle(
+        start=subs[0].start,
+        end=subs[-1].end,
+        text=text,
+        segment=get_segment_merged([sub.segment for sub in subs]),
+        # TODO: Audio
+    )
+
+
 def get_sub_split_at_idx(
     sub: AudioSubtitle, idx: int
 ) -> tuple[AudioSubtitle, AudioSubtitle]:
     """Get two subtitles split from this one at provided index.
 
     Arguments:
-        idx: Index at which to split
+        sub: Subtitle to split
+        idx: Index at which to split subtitle text
     Returns:
         Two subtitles split from this one at the provided index
     """
@@ -95,5 +119,6 @@ __all__ = [
     "AudioSubtitle",
     "get_series_from_segments",
     "get_series_with_sub_split_at_idx",
+    "get_sub_merged",
     "get_sub_split_at_idx",
 ]

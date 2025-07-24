@@ -81,7 +81,7 @@ class Series(SSAFile):
         return self._blocks
 
     @blocks.setter
-    def blocks(self, blocks: list[Block]) -> None:
+    def blocks(self, blocks: list[Block]):
         """Set blocks of the series.
 
         Arguments:
@@ -90,7 +90,7 @@ class Series(SSAFile):
         self._blocks = blocks
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any) -> None:
+    def save(self, path: str, format_: str | None = None, **kwargs: Any):
         """Save series to an output file.
 
         Arguments:
@@ -200,7 +200,7 @@ class Series(SSAFile):
         info(f"Loaded series from {validated_path}")
         return series
 
-    def _init_blocks(self) -> None:
+    def _init_blocks(self):
         """Initialize blocks."""
         self._blocks = [
             Block(self, start_idx, end_idx)

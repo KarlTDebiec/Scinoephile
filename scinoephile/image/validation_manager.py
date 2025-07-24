@@ -52,7 +52,7 @@ class ValidationManager:
         self.bbox_mgr = BboxManager()
         self.whitespace_mgr = WhitespaceManager()
 
-    def validate(self) -> None:
+    def validate(self):
         """Validate OCR of image series."""
         series_changed = False
         for i, subtitle in enumerate(self.series, 1):
@@ -98,7 +98,7 @@ class ValidationManager:
         if self.validation_dir_path is not None:
             self._save_validation_img(subtitle, i)
 
-    def _save_validation_img(self, subtitle: ImageSubtitle, i: int) -> None:
+    def _save_validation_img(self, subtitle: ImageSubtitle, i: int):
         if self.validation_dir_path is None:
             raise ScinoephileError(
                 "Validation directory path is not set; cannot save validation image."

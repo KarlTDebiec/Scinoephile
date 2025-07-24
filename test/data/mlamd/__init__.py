@@ -7,12 +7,10 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from scinoephile.audio.cantonese.models import (
-    MergeTestCase,
-    ProofTestCase,
-    ShiftTestCase,
-    SplitTestCase,
-)
+from scinoephile.audio.cantonese.distribution import DistributeTestCase
+from scinoephile.audio.cantonese.merging import MergeTestCase
+from scinoephile.audio.cantonese.proofing import ProofTestCase
+from scinoephile.audio.cantonese.shifting import ShiftTestCase
 from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
 
@@ -95,156 +93,156 @@ def mlamd_eng_validation_directory() -> str:
 # endregion
 
 
-# region 粤文 Split Test Cases
-mlamd_split_test_cases = [
+# region 粤文 Distribution Test Cases
+mlamd_distribute_test_cases = [
     # region Block 0
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="再右拐窝打老道向女人街方向飞⋯",
         one_yuewen_start="再右转抹返出去窝打炉道",
         two_zhongwen="飞呀，飞⋯",
         two_yuewen_end="飞下",
-        yuewen_to_split="向女人街方向飞下下",
+        yuewen_to_distribute="向女人街方向飞下下",
         one_yuewen_to_append="向女人街方向飞下下",
         two_yuewen_to_prepend="",
         include_in_prompt=True,
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="飞呀，飞⋯",
         one_yuewen_start="飞下",
         two_zhongwen="胶兜最后飞进广华医院候产房",
         two_yuewen_end="最后胶兜飞咗入广华医院嘅后产房",
-        yuewen_to_split="飞下",
+        yuewen_to_distribute="飞下",
         one_yuewen_to_append="飞下",
         two_yuewen_to_prepend="",
         include_in_prompt=True,
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="或者读书唔叻，工作叻呢？",
         one_yuewen_start="或者读书唔叻",
         two_zhongwen="又或者⋯",
         two_yuewen_end="又或者呢",
-        yuewen_to_split="出嚟做嘢叻啦",
+        yuewen_to_distribute="出嚟做嘢叻啦",
         one_yuewen_to_append="出嚟做嘢叻啦",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="唔聪明唔靓仔也算了，只要福星高照",
         one_yuewen_start="就算唔系咁聪明同咁靓仔",
         two_zhongwen="一世够运，逢凶化吉！",
         two_yuewen_end="一世救运乜嘢事都逢凶化㗎喇",
-        yuewen_to_split="只要复星高照",
+        yuewen_to_distribute="只要复星高照",
         one_yuewen_to_append="只要复星高照",
         two_yuewen_to_prepend="",
     ),
     # endregion#
     # region Block 2
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="怎么不试一试好彩酒楼对面",
         one_yuewen_start="",
         two_zhongwen="旧中侨国货楼上的⋯",
         two_yuewen_end="",
-        yuewen_to_split="点解唔试下好彩走楼斜对面",
+        yuewen_to_distribute="点解唔试下好彩走楼斜对面",
         one_yuewen_to_append="点解唔试下好彩走楼斜对面",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="春田花花幼稚园，师资优良⋯",
         one_yuewen_start="春田花花幼稚园",
         two_zhongwen="而且还有西人教英文！",
         two_yuewen_end="仲系西人教英文添㗎",
-        yuewen_to_split="诗诗优良",
+        yuewen_to_distribute="诗诗优良",
         one_yuewen_to_append="诗诗优良",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
         one_yuewen_start="",
         two_zhongwen="春田花花幼稚园？",
         two_yuewen_end="春田花花幼稚园呢",
-        yuewen_to_split="旧中桥百货公司楼上𠮶间",
+        yuewen_to_distribute="旧中桥百货公司楼上𠮶间",
         one_yuewen_to_append="旧中桥百货公司楼上𠮶间",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="银城美食广场附近的⋯",
         one_yuewen_start="",
         two_zhongwen="春田花花幼稚园？",
         two_yuewen_end="春田花花幼稚园呀",
-        yuewen_to_split="银城美食广场附近𠮶间",
+        yuewen_to_distribute="银城美食广场附近𠮶间",
         one_yuewen_to_append="银城美食广场附近𠮶间",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="春田花花幼稚园，师资优良⋯",
         one_yuewen_start="春田花花幼稚园",
         two_zhongwen="而且还有西人教英文！",
         two_yuewen_end="仲系西人教英文添㗎",
-        yuewen_to_split="诗诗优良",
+        yuewen_to_distribute="诗诗优良",
         one_yuewen_to_append="诗诗优良",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="西人教英文？",
         one_yuewen_start="咦",
         two_zhongwen="是呀！",
         two_yuewen_end="",
-        yuewen_to_split="西人教英文",
+        yuewen_to_distribute="西人教英文",
         one_yuewen_to_append="西人教英文",
         two_yuewen_to_prepend="",
     ),
     # endregion
     # region Block 3 (WIP)
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="横看竖看也不像发哥伟仔的一个⋯",
         one_yuewen_start="即系横睇掂睇都唔似发哥或者",
         two_zhongwen="就是我，麦兜",
         two_yuewen_end="就系我麦兜",
-        yuewen_to_split="位仔𠮶个呢",
+        yuewen_to_distribute="位仔𠮶个呢",
         one_yuewen_to_append="位仔𠮶个呢",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="这么多年来⋯",
         one_yuewen_start="",
         two_zhongwen="我其实不大明白他的说话",
         two_yuewen_end="我其实唔系好知佢噏文",
-        yuewen_to_split="所以咁多年嚟",
+        yuewen_to_distribute="所以咁多年嚟",
         one_yuewen_to_append="所以咁多年嚟",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
         one_yuewen_start="",
         two_zhongwen="忘记校训九十七⋯　　忘记校训九十七⋯",
         two_yuewen_end="",
-        yuewen_to_split="湾吉校坟交涉设",
+        yuewen_to_distribute="湾吉校坟交涉设",
         one_yuewen_to_append="湾吉校坟交涉设",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="也不能忘记校训九十八！",
         one_yuewen_start="",
         two_zhongwen="也不能忘记校训九十八！",
         two_yuewen_end="",
-        yuewen_to_split="都唔好湾吉校坟交涉白",
+        yuewen_to_distribute="都唔好湾吉校坟交涉白",
         one_yuewen_to_append="都唔好湾吉校坟交涉白",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="好！各位同学⋯",
         one_yuewen_start="",
         two_zhongwen="今天的早会主要是跟大家分享",
         two_yuewen_end="",
-        yuewen_to_split="𠮶个位同学",
+        yuewen_to_distribute="𠮶个位同学",
         one_yuewen_to_append="𠮶个位同学",
         two_yuewen_to_prepend="",
     ),
-    SplitTestCase(
+    DistributeTestCase(
         one_zhongwen="今天的早会主要是跟大家分享",
         one_yuewen_start="",
         two_zhongwen="一个重要主题：",
         two_yuewen_end="",
-        yuewen_to_split="今次座会系要同大家分享一个可重要嘅主题",
+        yuewen_to_distribute="今次座会系要同大家分享一个可重要嘅主题",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
     ),
@@ -449,10 +447,11 @@ mlamd_merge_test_cases = [
         yuewen_to_merge=["滴嘟", "滴嘟㖞", "即系应承啦"],
         yuewen_merged="滴嘟？滴嘟㖞，即系应承啦",
     ),
-    MergeTestCase(
+    MergeTestCase(  # DIFFICULT; FAILS EVEN THOUGH INCLUDED IN PROMPT
         zhongwen="麦太想，这次走运了！",
         yuewen_to_merge=["麦太心谂", "今次冇死喇"],
         yuewen_merged="麦太心谂，今次冇死喇！",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="可是答应了些什么呢？",
@@ -557,11 +556,13 @@ mlamd_merge_test_cases = [
         zhongwen="春田花花幼稚园？",
         yuewen_to_merge=["春田花花幼稚园呀"],
         yuewen_merged="春田花花幼稚园呀？",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="对！深水埗地铁站步行不用10分钟！",
         yuewen_to_merge=["系呀", "深水埗地铁站口行过去唔使十分钟呀"],
         yuewen_merged="系呀！深水埗地铁站口行过去唔使十分钟呀！",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="春田花花幼稚园，师资优良⋯",
@@ -589,7 +590,98 @@ mlamd_merge_test_cases = [
         yuewen_merged="春田花花，真系好多西人㗎！",
     ),
     # endregion
-    # region Block 3 (WIP)
+    # region Block 3
+    MergeTestCase(
+        zhongwen="这个猪样白兔小朋友⋯",
+        yuewen_to_merge=["呢个扮紧白兔猪样嘅小朋友"],
+        yuewen_merged="呢个扮紧白兔猪样嘅小朋友⋯",
+    ),
+    MergeTestCase(
+        zhongwen="横看竖看也不像发哥伟仔的一个⋯",
+        yuewen_to_merge=["即系横睇掂睇都唔似发哥或者", "位仔𠮶个呢"],
+        yuewen_merged="即系横睇掂睇都唔似发哥或者位仔𠮶个呢⋯",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="就是我，麦兜",
+        yuewen_to_merge=["就系我", "麦兜"],
+        yuewen_merged="就系我，麦兜",
+    ),
+    MergeTestCase(
+        zhongwen="这是我就读的幼稚园",
+        yuewen_to_merge=["呢间就系我读嘅幼稚园"],
+        yuewen_merged="呢间就系我读嘅幼稚园",
+    ),
+    MergeTestCase(
+        zhongwen="校长是潮州人",
+        yuewen_to_merge=["校长系潮州人"],
+        yuewen_merged="校长系潮州人",
+    ),
+    MergeTestCase(
+        zhongwen="可能是潮州口音的关系",
+        yuewen_to_merge=["可能仲系讲紧潮州话嘅"],
+        yuewen_merged="可能仲系讲紧潮州话嘅",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="这么多年来⋯",
+        yuewen_to_merge=["所以咁多年嚟"],
+        yuewen_merged="所以咁多年嚟⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我其实不大明白他的说话",
+        yuewen_to_merge=["我其实唔系好知佢噏文"],
+        yuewen_merged="我其实唔系好知佢噏文",
+    ),
+    MergeTestCase(
+        zhongwen="蛋挞！　　蛋挞！",
+        yuewen_to_merge=["大湖荒岩宅"],
+        yuewen_merged="大湖荒岩宅",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
+        yuewen_to_merge=["湾吉校坟交涉设"],
+        yuewen_merged="湾吉校坟交涉设",
+    ),
+    MergeTestCase(
+        zhongwen="也不能忘记校训九十八！",
+        yuewen_to_merge=["都唔好湾吉校坟交涉白"],
+        yuewen_merged="都唔好湾吉校坟交涉白！",
+    ),
+    MergeTestCase(
+        zhongwen="好！各位同学⋯",
+        yuewen_to_merge=["𠮶个位同学"],
+        yuewen_merged="𠮶个位同学⋯",
+    ),
+    MergeTestCase(
+        zhongwen="今天的早会主要是跟大家分享",
+        yuewen_to_merge=["今次座会系要同大家分享"],
+        yuewen_merged="今次座会系要同大家分享",
+    ),
+    MergeTestCase(
+        zhongwen="一个重要主题：",
+        yuewen_to_merge=["一个可重要嘅主题"],
+        yuewen_merged="一个可重要嘅主题：",
+    ),
+    MergeTestCase(  # DIFFICULT; FAILS EVEN THOUGH INCLUDED IN PROMPT
+        zhongwen="小朋友，这个月你们交过学费没有？",
+        yuewen_to_merge=["小朋友", "你哋今个月交咗学费咩呀"],
+        yuewen_merged="小朋友，你哋今个月交咗学费咩呀",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="交过了！",
+        yuewen_to_merge=["交"],
+        yuewen_merged="交！",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="太好了！大家去上堂吧",
+        yuewen_to_merge=["哎", "好在", "噉大家可以返去上堂喇"],
+        yuewen_merged="哎，好在！噉大家可以返去上堂喇",
+        include_in_prompt=True,
+    ),
     # endregion
 ]
 """MLAMD 粤文 merging test cases."""
@@ -1581,6 +1673,7 @@ mlamd_proof_test_cases = [
         yuewen="咦，麦太，咩唔见你一排",
         yuewen_proofread="咦，麦太，咩唔见你一排",
         note="",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="怎么小腿粗起来了？",
@@ -1588,6 +1681,7 @@ mlamd_proof_test_cases = [
         yuewen_proofread="个脚瓜囊粗咗咁多呀？",
         note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for "
         "'calf', matching the meaning of '小腿'.",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="可怜呀，每天扑来扑去⋯",
@@ -1678,6 +1772,117 @@ mlamd_proof_test_cases = [
     ),
     # endregion
     # region Block 3 (WIP)
+    ProofTestCase(
+        zhongwen="这个猪样白兔小朋友⋯",
+        yuewen="呢个扮紧白兔猪样嘅小朋友⋯",
+        yuewen_proofread="呢个扮紧白兔猪样嘅小朋友⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="横看竖看也不像发哥伟仔的一个⋯",
+        yuewen="即系横睇掂睇都唔似发哥或者位仔𠮶个呢⋯",
+        yuewen_proofread="即系横睇掂睇都唔似发哥或者伟仔𠮶个呢⋯",
+        note="Corrected '位仔' to '伟仔' as it is a mishearing of the name '伟仔', referring to 梁朝伟.",
+    ),
+    ProofTestCase(
+        zhongwen="就是我，麦兜",
+        yuewen="就系我，麦兜",
+        yuewen_proofread="就系我，麦兜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="这是我就读的幼稚园",
+        yuewen="呢间就系我读嘅幼稚园",
+        yuewen_proofread="呢间就系我读嘅幼稚园",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="校长是潮州人",
+        yuewen="校长系潮州人",
+        yuewen_proofread="校长系潮州人",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可能是潮州口音的关系",
+        yuewen="可能仲系讲紧潮州话嘅",
+        yuewen_proofread="可能仲系讲紧潮州话嘅",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="这么多年来⋯",
+        yuewen="所以咁多年嚟⋯",
+        yuewen_proofread="所以咁多年嚟⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我其实不大明白他的说话",
+        yuewen="我其实唔系好知佢噏文",
+        yuewen_proofread="我其实唔系好知佢噏乜",
+        note="Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches the "
+        "meaning of '他的说话', while '噏文' is likely a mishearing.",
+        include_in_prompt=True,
+    ),
+    ProofTestCase(
+        zhongwen="蛋挞！　　蛋挞！",
+        yuewen="大湖荒岩宅",
+        yuewen_proofread="",
+        note="Cleared as '大湖荒岩宅' bears no resemblance to the original phrase "
+        "'蛋挞！　　蛋挞！' and is clearly a pure artifact. ",
+    ),
+    ProofTestCase(
+        zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
+        yuewen="湾吉校坟交涉设",
+        yuewen_proofread="",
+        note="Cleared as '湾吉校坟交涉设' bears no resemblance to the original phrase "
+        "'荔芋火鸭礼！　　荔芋火鸭礼！' and is clearly a pure artifact.",
+    ),
+    ProofTestCase(
+        zhongwen="也不能忘记校训九十八！",
+        yuewen="都唔好湾吉校坟交涉白！",
+        yuewen_proofread="",
+        note="Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the original "
+        "phrase '也不能忘记校训九十八！' and is clearly a pure artifact.",
+        include_in_prompt=True,
+    ),
+    ProofTestCase(
+        zhongwen="好！各位同学⋯",
+        yuewen="𠮶个位同学⋯",
+        yuewen_proofread="𠮶个位同学⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="今天的早会主要是跟大家分享",
+        yuewen="今次座会系要同大家分享",
+        yuewen_proofread="今次早会系要同大家分享",
+        note="Corrected '座会' to '早会' as it is a mishearing of '早会', which matches "
+        "the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="一个重要主题：",
+        yuewen="一个可重要嘅主题：",
+        yuewen_proofread="一个可重要嘅主题：",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="小朋友，这个月你们交过学费没有？",
+        yuewen="小朋友，你哋今个月交咗学费咩呀？",
+        yuewen_proofread="小朋友，你哋今个月交咗学费咩呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="交过了！",
+        yuewen="交",
+        yuewen_proofread="交过咗！",
+        note="Added '过咗' to match the completed action indicated by '交过了' in the "
+        "中文; the original '交' is likely a transcription omission.",
+        include_in_prompt=True,
+    ),
+    ProofTestCase(
+        zhongwen="太好了！大家去上堂吧",
+        yuewen="哎，好在！噉大家可以返去上堂喇",
+        yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
+        note="",
+    ),
     # endregion
 ]
 

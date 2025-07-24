@@ -1,0 +1,373 @@
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Aligns transcribed 粤文 subs with official 中文 subs."""
+
+from __future__ import annotations
+
+from copy import deepcopy
+from logging import error, info
+
+import numpy as np
+
+from scinoephile.audio import (
+    AudioSeries,
+    get_series_with_sub_split_at_idx,
+    get_sub_merged,
+)
+from scinoephile.audio.cantonese.alignment.alignment import Alignment
+from scinoephile.audio.cantonese.alignment.queries import (
+    get_distribute_query,
+    get_merge_query,
+    get_proof_query,
+    get_shift_query,
+)
+from scinoephile.audio.cantonese.distribution.distributor import Distributor
+from scinoephile.audio.cantonese.merging import MergeAnswer, MergeTestCase
+from scinoephile.audio.cantonese.merging.merger import Merger
+from scinoephile.audio.cantonese.proofing.proofer import Proofer
+from scinoephile.audio.cantonese.shifting import ShiftAnswer, ShiftQuery
+from scinoephile.audio.cantonese.shifting.shifter import Shifter
+from scinoephile.core import ScinoephileError
+from scinoephile.core.synchronization import get_sync_groups_string
+
+
+class Aligner:
+    """Aligns transcribed 粤文 subs with official 中文 subs."""
+
+    def __init__(
+        self,
+        merger: Merger,
+        proofer: Proofer,
+        shifter: Shifter,
+        splitter: Distributor,
+    ):
+        """Initialize.
+
+        Arguments:
+            splitter: Cantonese splitter
+            merger: Cantonese merger
+            proofer: Cantonese proofer
+        """
+        self.merger = merger
+        """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+        self.proofer = proofer
+        """Proofreads 粤文 text based on the corresponding 中文."""
+        self.shifter = shifter
+        """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
+        self.splitter = splitter
+        """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
+
+    def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
+        """Align 粤文 subtitles with 中文 subtitles.
+
+        Presently, this does the following:
+          * Assigns 粤文 subtitles to sync groups with 中文 subtitles based on overlap
+          * If a 粤文 subtitle overlaps with two 中文 subtitles, asks LLM to distribute
+          * At the end of this each sync group should have one 中文 subtitle and
+          * zero or more 粤文 subtitles
+          * Merges 粤文 subtitles using LLM to match 中文 punctuation and spacing
+          * Proofreads 粤文 subtitles using LLM
+        It needs to also do the following:
+        * If there is a discrepancy in the length of the 中文 and concatenated 粤文
+          subtitles, prompt LLM with known one 中文 and two 中文 subtitles and ask
+          if 粤文 should be shifted.
+        * If a 中文 subtitle has no partner 粤文 subtitle, prompt LLM with preceding
+          and following 粤文 subtitles and ask if they should be shifted.
+        """
+        alignment = Alignment(zhongwen_subs, yuewen_subs)
+
+        # Distribute and shift 粤文 subtitles to match 中文 subtitles
+        # Each round of this loop first distributes 粤文 subtitles that overlap with
+        # multiple 中文 subtitles, and then shifts 粤文 subtitle text that remains
+        # misaligned after distribution.
+        # Distribution may involve simply assigning a 粤文 subtitle to one of the two
+        # 中文 subtitles with which it partially overlaps, or it may involve splitting
+        # the 粤文 subtitle into two 粤文 subtitles, to be paired with the two 中文
+        # subtitles. Each time a 粤文 subtitle is split, distribution is implicitly
+        # restarted by clearing the sync group override; via the on-the-fly calculation
+        # of the overlap matrix, sync_groups, and 粤文 to review.
+        # Distribution stops automatically when all 粤文 subtitles have been assigned
+        # to sync groups, i.e., when there are no more 粤文 subtitles to distribute.
+        # Similarly, shifting may involve simply shifting a whole 粤文 subtitle from one
+        # sync group to another, or it may involve splitting a 粤文 subtitle into two
+        # 粤文 subtitles. As with distribution, each time a 粤文 subtitle is split,
+        # shifting is implicitly restarted by clearing the sync group override.
+        distribution_and_shifting_in_progress = True
+        while distribution_and_shifting_in_progress:
+            # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
+            self._distribute(alignment)
+
+            # Then shift 粤文 subtitles that remain misaligned after distribution
+            distribution_and_shifting_in_progress = self._shift(alignment)
+
+        # TODO: Identify partnerless 中文 subtitles and prompt LLM for translation
+
+        # Merge 粤文 subtitles to match 中文 punctuation and spacing
+        self._merge(alignment)
+
+        # Proofread 粤文 subtitles based on corresponding 中文 subtitles
+        self._proof(alignment)
+
+        # Return final alignment
+        info(f"\nFINAL RESULT:\n{alignment}")
+        return alignment
+
+    def _distribute(self, alignment: Alignment):
+        """Distribute 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        iteration = 0
+        while alignment.yuewen_to_distribute:
+            info(f"\nITERATION {iteration}")
+            info(alignment)
+            self._distribute_one(alignment)
+            iteration += 1
+
+    def _distribute_one(self, alignment: Alignment):
+        """Split 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        # Get sync group and yuewen indexes
+        yw_idx = alignment.yuewen_to_distribute[0]
+        zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
+        if len(zw_idxs) != 2:
+            raise ScinoephileError(
+                f"Situation not supported: {len(zw_idxs)} zhongwen subs "
+                f"for yw_i={yw_idx}:\n{alignment}"
+            )
+        # TODO: Validate that zw_idxs map cleanly to sg_idxs
+        one_sg_idx, two_sg_idx = zw_idxs
+
+        # Run query
+        query = get_distribute_query(alignment, one_sg_idx, two_sg_idx, yw_idx)
+        answer = self.splitter(query)
+
+        # If we only need to assign the 粤文 to one sync group, set override
+        if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
+            nascent_sync_groups = deepcopy(alignment.sync_groups)
+            nascent_sync_groups[one_sg_idx][1].append(yw_idx)
+            alignment._sync_groups_override = nascent_sync_groups
+            return
+        if not answer.one_yuewen_to_append and answer.two_yuewen_to_prepend:
+            nascent_sync_groups = deepcopy(alignment.sync_groups)
+            alignment.sync_groups[two_sg_idx][1].insert(0, yw_idx)
+            alignment._sync_groups_override = nascent_sync_groups
+            return
+
+        # If we need to split the 粤文 text, we must then clear the override
+        alignment.yuewen = get_series_with_sub_split_at_idx(
+            alignment.yuewen, yw_idx, len(answer.one_yuewen_to_append)
+        )
+        alignment._sync_groups_override = None
+
+    def _shift(self, alignment) -> bool:
+        """Shift 粤文 text.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        for one_sg_idx in range(len(alignment.sync_groups) - 1):
+            two_sg_idx = one_sg_idx + 1
+
+            # Run query
+            query = get_shift_query(alignment, one_sg_idx, two_sg_idx)
+            if query is None:
+                info(f"Skipping sync groups {one_sg_idx} and {two_sg_idx} with no 粤文")
+                continue
+            # TODO: try / except
+            answer = self.shifter(query)
+
+            # If there is no change, continue
+            if (
+                query.one_yuewen == answer.one_yuewen_shifted
+                and query.two_yuewen == answer.two_yuewen_shifted
+            ):
+                continue
+            if self._shift_one(alignment, one_sg_idx, two_sg_idx, query, answer):
+                return True
+        return False
+
+    def _shift_one(
+        self,
+        alignment: Alignment,
+        one_sg_idx: int,
+        two_sg_idx: int,
+        query: ShiftQuery,
+        answer: ShiftAnswer,
+    ) -> bool:
+        # Get sync groups
+        if one_sg_idx < 0 or one_sg_idx >= len(alignment.sync_groups):
+            raise ScinoephileError(
+                f"Invalid sync group index {one_sg_idx} "
+                f"for alignment with {len(alignment.sync_groups)} sync groups."
+            )
+        if two_sg_idx < 0 or two_sg_idx >= len(alignment.sync_groups):
+            raise ScinoephileError(
+                f"Invalid sync group index {two_sg_idx} "
+                f"for alignment with {len(alignment.sync_groups)} sync groups."
+            )
+        if one_sg_idx + 1 != two_sg_idx:
+            raise ScinoephileError(
+                f"Sync groups {one_sg_idx} and {two_sg_idx} are not consecutive."
+            )
+        one_sg = alignment.sync_groups[one_sg_idx]
+        two_sg = alignment.sync_groups[two_sg_idx]
+
+        # Get 粤文
+        one_yw_idxs = one_sg[1]
+        two_yw_idxs = two_sg[1]
+
+        # Shift 粤文 text
+        one_yuewen = query.one_yuewen
+        two_yuewen = query.two_yuewen
+        one_yuewen_shifted = answer.one_yuewen_shifted
+        two_yuewen_shifted = answer.two_yuewen_shifted
+
+        nascent_sync_groups = deepcopy(alignment.sync_groups)
+        if len(one_yuewen) < len(one_yuewen_shifted):
+            # Calculate the number of characters we need to shift from one to two
+            text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
+            n_chars_left_to_shift = len(text_to_shift_from_two_to_one)
+
+            # Loop over subtitles currently in two
+            for two_yw_idx in two_yw_idxs:
+                sub = alignment.yuewen[two_yw_idx]
+
+                if len(sub.text) <= n_chars_left_to_shift:
+                    # Entire sub needs to be shifted from two to one
+                    nascent_sync_groups[one_sg_idx][1].append(two_yw_idx)
+                    nascent_sync_groups[two_sg_idx][1].remove(two_yw_idx)
+                    n_chars_left_to_shift -= len(sub.text)
+                else:
+                    # Sub needs to be split, which means we need to restart after
+                    alignment.yuewen = get_series_with_sub_split_at_idx(
+                        alignment.yuewen, two_yw_idx, n_chars_left_to_shift
+                    )
+                    n_chars_left_to_shift -= len(sub.text[:n_chars_left_to_shift])
+                    alignment._sync_groups_override = None
+                    return True
+                if n_chars_left_to_shift == 0:
+                    break
+        elif len(one_yuewen) > len(one_yuewen_shifted):
+            # TODO: Implement this case
+            text_to_shift_from_one_to_two = one_yuewen[: len(one_yuewen_shifted)]
+            n_chars_left_to_shift = len(text_to_shift_from_one_to_two)
+        else:
+            raise ScinoephileError("Unexpected case.")
+        alignment._sync_groups_override = nascent_sync_groups
+        return False
+
+    def _merge(self, alignment: Alignment):
+        """Merge 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        if not alignment.zhongwen_all_assigned_to_sync_groups:
+            raise ScinoephileError(
+                f"Not all 中文 subtitles are in a sync group:\n"
+                f"SYNC GROUPS:\n{get_sync_groups_string(alignment.sync_groups)}"
+            )
+        if not alignment.yuewen_all_assigned_to_sync_groups:
+            raise ScinoephileError(
+                f"Not all 粤文 subtitles are in a sync group:\n"
+                f"SYNC GROUPS:\n{get_sync_groups_string(alignment.sync_groups)}"
+            )
+
+        nascent_yuewen = AudioSeries(audio=alignment.yuewen.audio)
+        nascent_sync_groups = []
+        for sg_idx in range(len(alignment.sync_groups)):
+            # Get sync group
+            sg = alignment.sync_groups[sg_idx]
+
+            # Get 中文
+            zw_idxs = sg[0]
+            zw_idx = zw_idxs[0]
+
+            # Query for 粤文 merge
+            query = get_merge_query(alignment, sg_idx)
+            if query is None:
+                info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
+                nascent_sync_groups.append(([zw_idx], []))
+                continue
+            try:
+                answer = self.merger(query)
+            except ScinoephileError as exc:
+                # TODO: Figure out how to cache these
+                answer = MergeAnswer(yuewen_merged="".join(query.yuewen_to_merge))
+                test_case = MergeTestCase.from_query_and_answer(query, answer)
+                error(
+                    f"Error merging sync group {sg_idx}; concatenating.\n"
+                    f"Test case:\n"
+                    f"{test_case.to_source()}\n"
+                    f"Exception:\n{exc}"
+                )
+
+            # Get 粤文
+            yw_idxs = sg[1]
+            yw_subs = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
+            yw_sub = get_sub_merged(yw_subs, text=answer.yuewen_merged)
+
+            # Update sync group
+            nascent_yuewen.append(yw_sub)
+            yw_idx = len(nascent_yuewen) - 1
+            nascent_sync_groups.append(([zw_idx], [yw_idx]))
+
+        alignment.yuewen = nascent_yuewen
+        alignment._sync_groups_override = nascent_sync_groups
+
+    def _proof(self, alignment: Alignment):
+        """Proofread 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        for sg_idx in range(len(alignment.sync_groups)):
+            query = get_proof_query(alignment, sg_idx)
+            if query is None:
+                info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
+                continue
+            answer = self.proofer(query)
+
+            # Get sync group
+            sg = alignment.sync_groups[sg_idx]
+
+            # Get 粤文
+            yw_idxs = sg[1]
+            if len(yw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Expected one 粤文 subtitle in sync group {sg_idx}, "
+                    f"but found {len(yw_idxs)}: {yw_idxs}"
+                )
+            yw_idx = yw_idxs[0]
+            if query.yuewen == answer.yuewen_proofread:
+                continue
+            alignment.yuewen[yw_idx].text = answer.yuewen_proofread
+
+        nascent_yuewen_subs = AudioSeries(audio=alignment.yuewen.audio)
+        nascent_sync_groups = []
+        offset = 0
+        for sg_idx in range(len(alignment.sync_groups)):
+            sg = alignment.sync_groups[sg_idx]
+            zw_idxs = sg[0]
+            zw_idx = zw_idxs[0]
+            yw_idxs = sg[1]
+            if not yw_idxs:
+                nascent_sync_groups.append(sg)
+                continue
+            yw_idx = yw_idxs[0]
+            yw = alignment.yuewen[yw_idx]
+            if not yw.text:
+                nascent_sync_groups.append(([zw_idx], []))
+                offset -= 1
+                continue
+            nascent_yuewen_subs.append(yw)
+            nascent_sync_groups.append(
+                ([zw_idx], [yw_idx + offset for yw_idx in yw_idxs])
+            )
+        alignment.yuewen = nascent_yuewen_subs
+        alignment._sync_groups_override = nascent_sync_groups

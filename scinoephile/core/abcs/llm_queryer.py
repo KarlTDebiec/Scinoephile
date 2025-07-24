@@ -33,7 +33,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
         max_attempts: int = 2,
-    ) -> None:
+    ):
         """Initialize.
 
         Arguments:

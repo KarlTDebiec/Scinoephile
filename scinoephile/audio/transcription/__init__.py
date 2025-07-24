@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from scinoephile.audio.transcription.models import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
 
@@ -140,6 +141,8 @@ def get_segment_split_on_whitespace(
 
 
 __all__ = [
+    "TranscribedSegment",
+    "TranscribedWord",
     "WhisperTranscriber",
     "get_segment_hanzi_converted",
     "get_segment_merged",
