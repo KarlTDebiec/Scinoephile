@@ -100,7 +100,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 answer = self.answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
                     test_case = self.test_case_cls.from_query_and_answer(query, answer)
-                    print(test_case.source_str)
+                    print(f"{test_case.source_str},")
                 return answer
 
         # Query provider with retries
