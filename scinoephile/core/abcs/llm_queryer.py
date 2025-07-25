@@ -7,9 +7,11 @@ from __future__ import annotations
 import hashlib
 import json
 from abc import ABC, abstractmethod
+from functools import cached_property
 from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
+from typing import get_args, get_origin
 
 from pydantic import ValidationError
 
@@ -200,11 +202,15 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Example answer."""
         raise NotImplementedError()
 
-    @property
-    @abstractmethod
+    @cached_property
     def answer_cls(self) -> type[TAnswer]:
         """Answer class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[1]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     @property
     @abstractmethod
@@ -212,22 +218,30 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Base system prompt."""
         raise NotImplementedError()
 
-    @property
-    @abstractmethod
+    @cached_property
     def query_cls(self) -> type[TQuery]:
         """Query class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[0]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     @property
     def system_prompt(self) -> str:
         """System prompt template."""
         return self._system_prompt
 
-    @property
-    @abstractmethod
+    @cached_property
     def test_case_cls(self) -> type[TTestCase]:
         """Test case class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[2]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.

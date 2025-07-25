@@ -5,15 +5,11 @@
 from __future__ import annotations
 
 from scinoephile.core.abcs import TestCase
-from scinoephile.translation.models import (
-    ReadmeTranslationAnswer,
-    ReadmeTranslationQuery,
-)
+from scinoephile.documentation.translation.translate_answer import TranslateAnswer
+from scinoephile.documentation.translation.translate_query import TranslateQuery
 
 
-class ReadmeTranslationTestCase(
-    ReadmeTranslationQuery,
-    ReadmeTranslationAnswer,
-    TestCase[ReadmeTranslationQuery, ReadmeTranslationAnswer],
+class TranslateTestCase(
+    TranslateQuery, TranslateAnswer, TestCase[TranslateQuery, TranslateAnswer]
 ):
     """Test case for README translation; may also be used for few-shot prompt."""

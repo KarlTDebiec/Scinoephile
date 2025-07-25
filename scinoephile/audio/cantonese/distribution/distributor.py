@@ -19,12 +19,6 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
 
     @property
     @override
-    def answer_cls(self) -> type[DistributeAnswer]:
-        """Answer class."""
-        return DistributeAnswer
-
-    @property
-    @override
     def answer_example(self) -> DistributeAnswer:
         """Example answer."""
         return DistributeAnswer(
@@ -49,15 +43,3 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
         Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
         Your output "one" and "two" concatenated should equal "ambiguous 粤文".
         """
-
-    @property
-    @override
-    def query_cls(self) -> type[DistributeQuery]:
-        """Query class."""
-        return DistributeQuery
-
-    @property
-    @override
-    def test_case_cls(self) -> type[DistributeTestCase]:
-        """Test case class."""
-        return DistributeTestCase

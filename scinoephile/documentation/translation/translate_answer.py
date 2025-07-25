@@ -9,7 +9,7 @@ from pydantic import Field
 from scinoephile.core.abcs import Answer
 
 
-class ReadmeTranslationAnswer(Answer):
+class TranslateAnswer(Answer):
     """Answer for README translation."""
 
     updated_chinese: str = Field(..., description="Updated Chinese README.")

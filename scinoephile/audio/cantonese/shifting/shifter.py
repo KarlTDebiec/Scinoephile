@@ -17,12 +17,6 @@ class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
 
     @property
     @override
-    def answer_cls(self) -> type[ShiftAnswer]:
-        """Answer class."""
-        return ShiftAnswer
-
-    @property
-    @override
     def answer_example(self) -> ShiftAnswer:
         """Example answer."""
         return ShiftAnswer(
@@ -45,15 +39,3 @@ class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
         Include all 粤文 characters from the inputs in the same order in the outputs.
         Do not copy punctuation or whitespace from the 中文 texts.
         """
-
-    @property
-    @override
-    def query_cls(self) -> type[ShiftQuery]:
-        """Query class."""
-        return ShiftQuery
-
-    @property
-    @override
-    def test_case_cls(self) -> type[ShiftTestCase]:
-        """Test case class."""
-        return ShiftTestCase

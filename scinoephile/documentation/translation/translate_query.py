@@ -11,7 +11,7 @@ from pydantic import Field
 from scinoephile.core.abcs import Query
 
 
-class ReadmeTranslationQuery(Query):
+class TranslateQuery(Query):
     """Query for README translation."""
 
     updated_english: str = Field(..., description="Updated English README.")

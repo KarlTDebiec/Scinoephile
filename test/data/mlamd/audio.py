@@ -73,7 +73,7 @@ if __name__ == "__main__":
     all_series = []
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        if i != 52:
+        if i != 0:
             continue
 
         # Transcribe audio
