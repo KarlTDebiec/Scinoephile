@@ -55,6 +55,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
+        self._examples_log: dict[tuple, TTestCase] = {}
+        """Log of examples, keyed by query key."""
         self._test_case_log: dict[tuple, TTestCase] = {}
         """Log of test cases, keyed by query key."""
 
@@ -79,6 +81,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 system_prompt += json.dumps(
                     example.answer.model_dump(), indent=4, ensure_ascii=False
                 )
+                self._examples_log[example.query.query_key] = example
         self._system_prompt = system_prompt
 
         # Set up cache directory
@@ -208,11 +211,14 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     @property
     def test_case_log_str(self) -> str:
         """String representation of all test cases in the log."""
-        return (
-            "[\n"
-            + "\n".join(f"{tc.source_str}," for tc in self._test_case_log.values())
-            + "\n]"
-        )
+        test_case_log_str = "[\n"
+        for key, value in self._test_case_log.items():
+            source_str: str = value.source_str
+            if key in self._examples_log:
+                source_str = f"{source_str[:-1]}, include_in_prompt=True\n)"
+            test_case_log_str += f"{source_str},\n"
+        test_case_log_str += "\n]"
+        return test_case_log_str
 
     def clear_test_case_log(self):
         """Clear the test case log."""
