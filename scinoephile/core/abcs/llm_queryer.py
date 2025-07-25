@@ -55,6 +55,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
+        self._test_case_log: dict[tuple, TTestCase] = {}
+        """Log of test cases, keyed by query key."""
+
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
         system_prompt += (
@@ -185,6 +188,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if answer is None or test_case is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
+        self._test_case_log[test_case.query.query_key] = test_case
         if self.print_test_case:
             print(f"{test_case.source_str},")
 
@@ -195,6 +199,24 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 debug(f"Saved to cache: {cache_path}")
 
         return answer
+
+    @property
+    def test_case_log(self) -> dict[tuple, TTestCase]:
+        """Log of test cases, keyed by query key."""
+        return self._test_case_log
+
+    @property
+    def test_case_log_str(self) -> str:
+        """String representation of all test cases in the log."""
+        return (
+            "[\n"
+            + "\n".join(f"{tc.source_str}," for tc in self._test_case_log.values())
+            + "\n]"
+        )
+
+    def clear_test_case_log(self):
+        """Clear the test case log."""
+        self._test_case_log.clear()
 
     @property
     @abstractmethod
