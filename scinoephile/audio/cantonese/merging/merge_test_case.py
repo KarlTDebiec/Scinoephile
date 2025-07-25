@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from functools import cached_property
+
 from pydantic import model_validator
 
 from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
@@ -15,6 +17,14 @@ from scinoephile.core.text import remove_punc_and_whitespace
 
 class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
     """Test case for 粤文 merging; may also be used for few-shot prompt."""
+
+    @cached_property
+    def noop(self) -> bool:
+        """Return whether this test case is a no-op."""
+        return (
+            len(self.yuewen_to_merge) == 1
+            and self.yuewen_to_merge[0] == self.yuewen_merged
+        )
 
     @model_validator(mode="after")
     def validate_test_case(self) -> MergeTestCase:

@@ -6,8 +6,11 @@ from __future__ import annotations
 
 import json
 from abc import ABC
+from functools import cached_property
 
 from pydantic import BaseModel
+
+from scinoephile.core.models import format_field, make_hashable
 
 
 class Answer(BaseModel, ABC):
@@ -16,3 +19,19 @@ class Answer(BaseModel, ABC):
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+
+    @cached_property
+    def source_str(self) -> str:
+        """Get Python source-like string representation."""
+        lines = (
+            [f"{self.__class__.__name__}("]
+            + [format_field(field, getattr(self, field)) for field in self.model_fields]
+            + [")"]
+        )
+
+        return "\n".join(lines)
+
+    @cached_property
+    def key(self) -> tuple:
+        """Unique key for the test case, with hashable values."""
+        return tuple(make_hashable(getattr(self, field)) for field in self.model_fields)

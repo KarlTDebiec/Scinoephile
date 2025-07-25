@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from functools import cached_property
+
 from pydantic import model_validator
 
 from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
@@ -14,6 +16,11 @@ from scinoephile.core.abcs import TestCase
 
 class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
     """Test case for 粤文 proofing; may also be used for few-shot prompt."""
+
+    @cached_property
+    def noop(self) -> bool:
+        """Return whether this test case is a no-op."""
+        return self.yuewen == self.yuewen_proofread
 
     @model_validator(mode="after")
     def validate_test_case(self) -> ProofTestCase:

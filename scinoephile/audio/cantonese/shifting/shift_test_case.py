@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from functools import cached_property
+
 from pydantic import model_validator
 
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
@@ -15,6 +17,14 @@ from scinoephile.core.text import remove_punc_and_whitespace
 
 class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     """Test case for 粤文 shifting; may also be used for few-shot prompt."""
+
+    @cached_property
+    def noop(self) -> bool:
+        """Return whether this test case is a no-op."""
+        return (
+            self.one_yuewen == self.one_yuewen_shifted
+            and self.two_yuewen == self.two_yuewen_shifted
+        )
 
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftTestCase:

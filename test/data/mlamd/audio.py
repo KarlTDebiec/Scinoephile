@@ -32,7 +32,7 @@ from test.data.mlamd import (
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(2)
+    set_logging_verbosity(1)
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -46,14 +46,9 @@ if __name__ == "__main__":
         "khleeloo/whisper-large-v3-cantonese",
         cache_dir_path=test_data_root / "cache",
     )
-    merger = Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
-        print_test_case=True,
-        cache_dir_path=test_data_root / "cache",
-    )
-    proofer = Proofer(
-        examples=[m for m in mlamd_proof_test_cases if m.include_in_prompt],
-        print_test_case=True,
+    distributor = Distributor(
+        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
+        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     shifter = Shifter(
@@ -61,13 +56,18 @@ if __name__ == "__main__":
         print_test_case=True,
         cache_dir_path=test_data_root / "cache",
     )
-    splitter = Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
-        print_test_case=True,
+    merger = Merger(
+        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
+        print_test_case=False,
+        cache_dir_path=test_data_root / "cache",
+    )
+    proofer = Proofer(
+        examples=[m for m in mlamd_proof_test_cases if m.include_in_prompt],
+        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     aligner = Aligner(
-        merger=merger, proofer=proofer, shifter=shifter, splitter=splitter
+        merger=merger, proofer=proofer, shifter=shifter, distributor=distributor
     )
 
     all_series = []

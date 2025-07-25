@@ -39,12 +39,12 @@ class Aligner:
         merger: Merger,
         proofer: Proofer,
         shifter: Shifter,
-        splitter: Distributor,
+        distributor: Distributor,
     ):
         """Initialize.
 
         Arguments:
-            splitter: Cantonese splitter
+            distributor: Cantonese splitter
             merger: Cantonese merger
             proofer: Cantonese proofer
         """
@@ -54,8 +54,8 @@ class Aligner:
         """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifter = shifter
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
-        self.splitter = splitter
-        """Splits 粤文 text between two nascent 粤文 texts based on corresponding 中文."""
+        self.distributor = distributor
+        """Distributes 粤文 text based on corresponding 中文."""
 
     def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
@@ -93,12 +93,15 @@ class Aligner:
         # 粤文 subtitles. As with distribution, each time a 粤文 subtitle is split,
         # shifting is implicitly restarted by clearing the sync group override.
         distribution_and_shifting_in_progress = True
+        iteration = 0
         while distribution_and_shifting_in_progress:
             # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
             self._distribute(alignment)
 
             # Then shift 粤文 subtitles that remain misaligned after distribution
+            print(f"SHIFTING ITERATION {iteration}")
             distribution_and_shifting_in_progress = self._shift(alignment)
+            iteration += 1
 
         # TODO: Identify partnerless 中文 subtitles and prompt LLM for translation
 
@@ -109,7 +112,7 @@ class Aligner:
         self._proof(alignment)
 
         # Return final alignment
-        info(f"\nFINAL RESULT:\n{alignment}")
+        print(f"\nFINAL RESULT:\n{alignment}")
         return alignment
 
     def _distribute(self, alignment: Alignment):
@@ -144,7 +147,7 @@ class Aligner:
 
         # Run query
         query = get_distribute_query(alignment, one_sg_idx, two_sg_idx, yw_idx)
-        answer = self.splitter(query)
+        answer = self.distributor(query)
 
         # If we only need to assign the 粤文 to one sync group, set override
         if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
@@ -154,7 +157,7 @@ class Aligner:
             return
         if not answer.one_yuewen_to_append and answer.two_yuewen_to_prepend:
             nascent_sync_groups = deepcopy(alignment.sync_groups)
-            alignment.sync_groups[two_sg_idx][1].insert(0, yw_idx)
+            nascent_sync_groups[two_sg_idx][1].insert(0, yw_idx)
             alignment._sync_groups_override = nascent_sync_groups
             return
 
@@ -303,7 +306,7 @@ class Aligner:
                 error(
                     f"Error merging sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
-                    f"{test_case.to_source()}\n"
+                    f"{test_case.source_str}\n"
                     f"Exception:\n{exc}"
                 )
 

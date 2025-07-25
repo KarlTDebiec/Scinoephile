@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.query import Query
+from scinoephile.core.models import format_field
 
 
 class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
@@ -44,6 +45,16 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             {k: getattr(self, k) for k in self.answer_cls.model_fields}
         )
 
+    @cached_property
+    def key(self) -> tuple[str, ...]:
+        """Unique key for the test case."""
+        return tuple(list(self.query.key) + list(self.answer.key))
+
+    @cached_property
+    def noop(self) -> bool:
+        """Whether this test case is a no-op."""
+        return False
+
     @property
     def query(self) -> TQuery:
         """Query part of the test case."""
@@ -59,37 +70,25 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
                 return base
         raise TypeError("No Query subclass found in MRO.")
 
-    def to_source(self) -> str:
+    @cached_property
+    def source_str(self) -> str:
         """Get Python source-like string representation."""
-
-        def format_field(name: str, value: object) -> str:
-            if isinstance(value, str):
-                escaped = value.replace("\\", "\\\\").replace('"', '\\"')
-                return f'    {name}="{escaped}",'
-            return f"    {name}={value!r},"
-
-        lines = [f"{self.__class__.__name__}("]
-
-        lines.extend(
-            format_field(field, getattr(self, field))
-            for field in self.query_cls.model_fields
-        )
-
-        lines.extend(
-            format_field(field, getattr(self, field))
-            for field in self.answer_cls.model_fields
-        )
-
+        query_fields = self.query_cls.model_fields
+        answer_fields = self.answer_cls.model_fields
         test_case_fields = (
             set(self.model_fields)
-            - set(self.query_cls.model_fields)
-            - set(self.answer_cls.model_fields)
-        )
-        lines.extend(
-            format_field(field, getattr(self, field)) for field in test_case_fields
+            - set(query_fields)
+            - set(answer_fields)
+            - {"include_in_prompt"}
         )
 
-        lines.append(")")
+        lines = (
+            [f"{self.__class__.__name__}("]
+            + [format_field(field, getattr(self, field)) for field in query_fields]
+            + [format_field(field, getattr(self, field)) for field in answer_fields]
+            + [format_field(field, getattr(self, field)) for field in test_case_fields]
+            + [")"]
+        )
         return "\n".join(lines)
 
     @classmethod
