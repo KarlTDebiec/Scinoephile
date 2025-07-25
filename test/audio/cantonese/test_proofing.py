@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.audio.cantonese.proofing import Proofer, ProofTestCase
 from scinoephile.testing import test_data_root
-from scinoephile.testing.mark import flaky, skip_if_ci
+from scinoephile.testing.mark import skip_if_ci
 from test.data.mlamd import mlamd_proof_test_cases  # noqa: F401
 
 
@@ -44,7 +44,7 @@ def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
     "fixture_name",
     [
         skip_if_ci()("proofer_few_shot"),
-        skip_if_ci(flaky())("proofer_zero_shot"),
+        # skip_if_ci(flaky())("proofer_zero_shot"),
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_proof_test_cases)

@@ -346,10 +346,39 @@ distribute_test_cases_block_13 = []
 distribute_test_cases_block_14 = []
 distribute_test_cases_block_15 = []
 distribute_test_cases_block_16 = []
-distribute_test_cases_block_17 = []
+distribute_test_cases_block_17 = [
+    DistributeTestCase(
+        one_zhongwen="咦？",
+        one_yuewen_start="",
+        two_zhongwen="妈妈！",
+        two_yuewen_end="妈妈",
+        yuewen_to_distribute="咦",
+        one_yuewen_to_append="咦",
+        two_yuewen_to_prepend="",
+    ),
+]
 distribute_test_cases_block_18 = []
 distribute_test_cases_block_19 = []
-distribute_test_cases_block_20 = []
+distribute_test_cases_block_20 = [
+    DistributeTestCase(
+        one_zhongwen="马尔代夫！",
+        one_yuewen_start="买二代夫",
+        two_zhongwen="马尔代夫！",
+        two_yuewen_end="",
+        yuewen_to_distribute="买二代夫",
+        one_yuewen_to_append="买二代夫",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="马尔代夫！",
+        one_yuewen_start="",
+        two_zhongwen="马尔代夫！",
+        two_yuewen_end="买二代夫",
+        yuewen_to_distribute="买二代夫",
+        one_yuewen_to_append="",
+        two_yuewen_to_prepend="买二代夫",
+    ),
+]
 distribute_test_cases_block_21 = []
 distribute_test_cases_block_22 = []
 distribute_test_cases_block_23 = []
@@ -373,13 +402,33 @@ distribute_test_cases_block_40 = []
 distribute_test_cases_block_41 = []
 distribute_test_cases_block_42 = []
 distribute_test_cases_block_43 = []
-distribute_test_cases_block_44 = []
+distribute_test_cases_block_44 = [
+    DistributeTestCase(
+        one_zhongwen="第二项绝技，就是⋯",
+        one_yuewen_start="",
+        two_zhongwen="抢包山！",
+        two_yuewen_end="",
+        yuewen_to_distribute="第二样绝技就系抢爆山",
+        one_yuewen_to_append="第二样绝技就系",
+        two_yuewen_to_prepend="抢爆山",
+    ),
+]
 distribute_test_cases_block_45 = []
 distribute_test_cases_block_46 = []
 distribute_test_cases_block_47 = []
 distribute_test_cases_block_48 = []
 distribute_test_cases_block_49 = []
-distribute_test_cases_block_50 = []
+distribute_test_cases_block_50 = [
+    DistributeTestCase(
+        one_zhongwen="吃过几多苦头",
+        one_yuewen_start="",
+        two_zhongwen="才可以练成这举世无双的脚瓜？",
+        two_yuewen_end="先至可以练成呢一只举细无伤嘅脚瓜",
+        yuewen_to_distribute="挨过几多斧头",
+        one_yuewen_to_append="挨过几多斧头",
+        two_yuewen_to_prepend="",
+    ),
+]
 distribute_test_cases_block_51 = []
 distribute_test_cases_block_52 = []
 distribute_test_cases_block_53 = []
@@ -1738,17 +1787,124 @@ shift_test_cases_block_6 = []
 shift_test_cases_block_7 = []
 shift_test_cases_block_8 = []
 shift_test_cases_block_9 = []
-shift_test_cases_block_10 = []
+shift_test_cases_block_10 = [
+    ShiftTestCase(
+        one_zhongwen="好高兴这么快又跟大家见面",
+        one_yuewen="好高兴咁快又同大家见面",
+        two_zhongwen="接下来我会教大家整一味纸鸡包",
+        two_yuewen="跟住落嚟我会教大家整一味纸鸡包",
+        one_yuewen_shifted="好高兴咁快又同大家见面",
+        two_yuewen_shifted="跟住落嚟我会教大家整一味纸鸡包",
+    ),
+    ShiftTestCase(
+        one_zhongwen="接下来我会教大家整一味纸鸡包",
+        one_yuewen="跟住落嚟我会教大家整一味纸鸡包",
+        two_zhongwen="材料也很简单，只需要白纸一张",
+        two_yuewen="材料都好简单只需要白纸一张",
+        one_yuewen_shifted="跟住落嚟我会教大家整一味纸鸡包",
+        two_yuewen_shifted="材料都好简单只需要白纸一张",
+    ),
+    ShiftTestCase(
+        one_zhongwen="材料也很简单，只需要白纸一张",
+        one_yuewen="材料都好简单只需要白纸一张",
+        two_zhongwen="只要把这纸这样子⋯",
+        two_yuewen="我哋只需要张张纸咁样",
+        one_yuewen_shifted="材料都好简单只需要白纸一张",
+        two_yuewen_shifted="我哋只需要张张纸咁样",
+    ),
+    ShiftTestCase(
+        one_zhongwen="只要把这纸这样子⋯",
+        one_yuewen="我哋只需要张张纸咁样",
+        two_zhongwen="一个纸鸡包就这样完成了",
+        two_yuewen="一个纸鸡包就咁完成咗喇",
+        one_yuewen_shifted="我哋只需要张张纸咁样",
+        two_yuewen_shifted="一个纸鸡包就咁完成咗喇",
+    ),
+    ShiftTestCase(
+        one_zhongwen="一个纸鸡包就这样完成了",
+        one_yuewen="一个纸鸡包就咁完成咗喇",
+        two_zhongwen="各位小朋友，像鸡包不像呀？",
+        two_yuewen="各位小朋友你哋话似唔似鸡包啊",
+        one_yuewen_shifted="一个纸鸡包就咁完成咗喇",
+        two_yuewen_shifted="各位小朋友你哋话似唔似鸡包啊",
+    ),
+]
 shift_test_cases_block_11 = []
 shift_test_cases_block_12 = []
 shift_test_cases_block_13 = []
 shift_test_cases_block_14 = []
 shift_test_cases_block_15 = []
 shift_test_cases_block_16 = []
-shift_test_cases_block_17 = []
+shift_test_cases_block_17 = [
+    ShiftTestCase(
+        one_zhongwen="衰仔，快点起床上学",
+        one_yuewen="喂衰仔啊快啲起身返学喇",
+        two_zhongwen="咦？",
+        two_yuewen="咦",
+        one_yuewen_shifted="喂衰仔啊快啲起身返学喇",
+        two_yuewen_shifted="咦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="咦？",
+        one_yuewen="咦",
+        two_zhongwen="妈妈！",
+        two_yuewen="妈妈",
+        one_yuewen_shifted="咦",
+        two_yuewen_shifted="妈妈",
+    ),
+]
 shift_test_cases_block_18 = []
 shift_test_cases_block_19 = []
-shift_test_cases_block_20 = []
+shift_test_cases_block_20 = [
+    ShiftTestCase(
+        one_zhongwen="好呀，马尔代夫！",
+        one_yuewen="嘻嘻好嘢",
+        two_zhongwen="马尔代夫！",
+        two_yuewen="买二代夫买二代夫",
+        one_yuewen_shifted="嘻嘻好嘢",
+        two_yuewen_shifted="买二代夫买二代夫",
+    ),
+    ShiftTestCase(
+        one_zhongwen="马尔代夫！",
+        one_yuewen="买二代夫买二代夫",
+        two_zhongwen="马尔代夫！",
+        two_yuewen="",
+        one_yuewen_shifted="买二代夫买二代夫",
+        two_yuewen_shifted="",
+    ),
+    ShiftTestCase(
+        one_zhongwen="马尔代夫！",
+        one_yuewen="",
+        two_zhongwen="马尔代夫！",
+        two_yuewen="买二代夫买二代夫",
+        one_yuewen_shifted="买二代夫",
+        two_yuewen_shifted="买二代夫",
+    ),
+    ShiftTestCase(
+        one_zhongwen="马尔代夫！",
+        one_yuewen="买二代夫",
+        two_zhongwen="妈妈，那么我们什么时候去？",
+        two_yuewen="妈妈咁我哋几时去呀",
+        one_yuewen_shifted="买二代夫",
+        two_yuewen_shifted="妈妈咁我哋几时去呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="妈妈，那么我们什么时候去？",
+        one_yuewen="妈妈咁我哋几时去呀",
+        two_zhongwen="你先把药水喝掉，病好了我就去订机票",
+        two_yuewen="嗯你乖乖哋食埋啲药好返晒啦我即刻订机票",
+        one_yuewen_shifted="妈妈咁我哋几时去呀",
+        two_yuewen_shifted="嗯你乖乖哋食埋啲药好返晒啦我即刻订机票",
+    ),
+    ShiftTestCase(
+        one_zhongwen="你先把药水喝掉，病好了我就去订机票",
+        one_yuewen="嗯你乖乖哋食埋啲药好返晒啦我即刻订机票",
+        two_zhongwen="来，多喝一点！",
+        two_yuewen="嚟啦食多更",
+        one_yuewen_shifted="嗯你乖乖哋食埋啲药好返晒啦我即刻订机票",
+        two_yuewen_shifted="嚟啦食多更",
+    ),
+]
 shift_test_cases_block_21 = []
 shift_test_cases_block_22 = []
 shift_test_cases_block_23 = []
@@ -1758,11 +1914,37 @@ shift_test_cases_block_26 = []
 shift_test_cases_block_27 = []
 shift_test_cases_block_28 = []
 shift_test_cases_block_29 = []
-shift_test_cases_block_30 = []
+shift_test_cases_block_30 = [
+    ShiftTestCase(
+        one_zhongwen="但无论多不容易，我都要试一试",
+        one_yuewen="但无论几唔容易我都要试一试",
+        two_zhongwen="我要黎根收我做徒弟！",
+        two_yuewen="我要来紧收我度徒弟",
+        one_yuewen_shifted="但无论几唔容易我都要试一试",
+        two_yuewen_shifted="我要来紧收我度徒弟",
+    ),
+    ShiftTestCase(
+        one_zhongwen="我要黎根收我做徒弟！",
+        one_yuewen="我要来紧收我度徒弟",
+        two_zhongwen="无论几辛苦，我一定要得到奥运金牌！",
+        two_yuewen="无论几辛苦我一定要捞到奥运金牌",
+        one_yuewen_shifted="我要来紧收我度徒弟",
+        two_yuewen_shifted="无论几辛苦我一定要捞到奥运金牌",
+    ),
+]
 shift_test_cases_block_31 = []
 shift_test_cases_block_32 = []
 shift_test_cases_block_33 = []
-shift_test_cases_block_34 = []
+shift_test_cases_block_34 = [
+    ShiftTestCase(
+        one_zhongwen="小朋友，这儿是南丫岛呀！",
+        one_yuewen="小朋友呀呢度系南丫岛噃",
+        two_zhongwen="南丫岛？它也孕育了周润发！",
+        two_yuewen="南丫岛都引用咗周润发噃",
+        one_yuewen_shifted="小朋友呀呢度系南丫岛噃",
+        two_yuewen_shifted="南丫岛都引用咗周润发噃",
+    ),
+]
 shift_test_cases_block_35 = []
 shift_test_cases_block_36 = []
 shift_test_cases_block_37 = []
@@ -1772,15 +1954,202 @@ shift_test_cases_block_40 = []
 shift_test_cases_block_41 = []
 shift_test_cases_block_42 = []
 shift_test_cases_block_43 = []
-shift_test_cases_block_44 = []
+shift_test_cases_block_44 = [
+    ShiftTestCase(
+        one_zhongwen="第二项绝技，就是⋯",
+        one_yuewen="第二样绝技就系",
+        two_zhongwen="抢包山！",
+        two_yuewen="抢爆山",
+        one_yuewen_shifted="第二样绝技就系",
+        two_yuewen_shifted="抢爆山",
+    ),
+]
 shift_test_cases_block_45 = []
 shift_test_cases_block_46 = []
 shift_test_cases_block_47 = []
 shift_test_cases_block_48 = []
 shift_test_cases_block_49 = []
-shift_test_cases_block_50 = []
+shift_test_cases_block_50 = [
+    ShiftTestCase(
+        one_zhongwen="麦兜他学东西⋯还可以",
+        one_yuewen="麦兜嘅学嘢呢都仲可以",
+        two_zhongwen="黎根接着说了一大堆话⋯",
+        two_yuewen="跟住黎根讲咗一大堆说话",
+        one_yuewen_shifted="麦兜嘅学嘢呢都仲可以",
+        two_yuewen_shifted="跟住黎根讲咗一大堆说话",
+    ),
+    ShiftTestCase(
+        one_zhongwen="黎根接着说了一大堆话⋯",
+        one_yuewen="跟住黎根讲咗一大堆说话",
+        two_zhongwen="他的抱负，他对麦兜的期望",
+        two_yuewen="讲下佢嘅抱负佢对麦兜嘅期望",
+        one_yuewen_shifted="跟住黎根讲咗一大堆说话",
+        two_yuewen_shifted="讲下佢嘅抱负佢对麦兜嘅期望",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他的抱负，他对麦兜的期望",
+        one_yuewen="讲下佢嘅抱负佢对麦兜嘅期望",
+        two_zhongwen="他说他会把他所识的毫不保留教给麦兜",
+        two_yuewen="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        one_yuewen_shifted="讲下佢嘅抱负佢对麦兜嘅期望",
+        two_yuewen_shifted="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他说他会把他所识的毫不保留教给麦兜",
+        one_yuewen="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        two_zhongwen="黎根越说越兴奋，直到双眼发光",
+        two_yuewen="黎根越讲越兴奋",
+        one_yuewen_shifted="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        two_yuewen_shifted="黎根越讲越兴奋",
+    ),
+    ShiftTestCase(
+        one_zhongwen="黎根越说越兴奋，直到双眼发光",
+        one_yuewen="黎根越讲越兴奋",
+        two_zhongwen="他又说滑浪风帆并不是他最犀利的项目",
+        two_yuewen="佢话滑浪风帆都唔系佢最犀利𠮶样",
+        one_yuewen_shifted="黎根越讲越兴奋",
+        two_yuewen_shifted="佢话滑浪风帆都唔系佢最犀利𠮶样",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他又说滑浪风帆并不是他最犀利的项目",
+        one_yuewen="佢话滑浪风帆都唔系佢最犀利𠮶样",
+        two_zhongwen="他最大强项是抢包山",
+        two_yuewen="佢最劲嘅就系抢包山",
+        one_yuewen_shifted="佢话滑浪风帆都唔系佢最犀利𠮶样",
+        two_yuewen_shifted="佢最劲嘅就系抢包山",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他最大强项是抢包山",
+        one_yuewen="佢最劲嘅就系抢包山",
+        two_zhongwen="他说抢包山结合了南拳",
+        two_yuewen="佢话抢包山结合咗南拳",
+        one_yuewen_shifted="佢最劲嘅就系抢包山",
+        two_yuewen_shifted="佢话抢包山结合咗南拳",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他说抢包山结合了南拳",
+        one_yuewen="佢话抢包山结合咗南拳",
+        two_zhongwen="神功戏和现代器械操",
+        two_yuewen="神功气现代气蟹粗",
+        one_yuewen_shifted="佢话抢包山结合咗南拳",
+        two_yuewen_shifted="神功气现代气蟹粗",
+    ),
+    ShiftTestCase(
+        one_zhongwen="神功戏和现代器械操",
+        one_yuewen="神功气现代气蟹粗",
+        two_zhongwen="他说抢包山才是他一生最大成就",
+        two_yuewen="佢话抢包山先至系佢呢世人最大嘅成就",
+        one_yuewen_shifted="神功气现代气蟹粗",
+        two_yuewen_shifted="佢话抢包山先至系佢呢世人最大嘅成就",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他说抢包山才是他一生最大成就",
+        one_yuewen="佢话抢包山先至系佢呢世人最大嘅成就",
+        two_zhongwen="缩脚，唔该！",
+        two_yuewen="缩𠮶只脚唔该",
+        one_yuewen_shifted="佢话抢包山先至系佢呢世人最大嘅成就",
+        two_yuewen_shifted="缩𠮶只脚唔该",
+    ),
+    ShiftTestCase(
+        one_zhongwen="缩脚，唔该！",
+        one_yuewen="缩𠮶只脚唔该",
+        two_zhongwen="你看！",
+        two_yuewen="你睇下",
+        one_yuewen_shifted="缩𠮶只脚唔该",
+        two_yuewen_shifted="你睇下",
+    ),
+    ShiftTestCase(
+        one_zhongwen="你看！",
+        one_yuewen="你睇下",
+        two_zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
+        two_yuewen="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
+        one_yuewen_shifted="你睇下",
+        two_yuewen_shifted="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
+    ),
+    ShiftTestCase(
+        one_zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
+        one_yuewen="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
+        two_zhongwen="脚瓜的肌肉非常结实⋯",
+        two_yuewen="脚瓜嘅肌肉非常结实",
+        one_yuewen_shifted="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
+        two_yuewen_shifted="脚瓜嘅肌肉非常结实",
+    ),
+    ShiftTestCase(
+        one_zhongwen="脚瓜的肌肉非常结实⋯",
+        one_yuewen="脚瓜嘅肌肉非常结实",
+        two_zhongwen="青筋凸现，钢线似的",
+        two_yuewen="啲青筋凸晒出嚟好似钢线噉",
+        one_yuewen_shifted="脚瓜嘅肌肉非常结实",
+        two_yuewen_shifted="啲青筋凸晒出嚟好似钢线噉",
+    ),
+    ShiftTestCase(
+        one_zhongwen="青筋凸现，钢线似的",
+        one_yuewen="啲青筋凸晒出嚟好似钢线噉",
+        two_zhongwen="每一条脚毛都硬似铁钉",
+        two_yuewen="啲脚毛每一条都好似铁钉咁硬",
+        one_yuewen_shifted="啲青筋凸晒出嚟好似钢线噉",
+        two_yuewen_shifted="啲脚毛每一条都好似铁钉咁硬",
+    ),
+    ShiftTestCase(
+        one_zhongwen="每一条脚毛都硬似铁钉",
+        one_yuewen="啲脚毛每一条都好似铁钉咁硬",
+        two_zhongwen="脚趾甲有一寸厚，究竟⋯",
+        two_yuewen="脚趾弓啲脚夹成串咁厚",
+        one_yuewen_shifted="啲脚毛每一条都好似铁钉咁硬",
+        two_yuewen_shifted="脚趾弓啲脚夹成串咁厚",
+    ),
+    ShiftTestCase(
+        one_zhongwen="脚趾甲有一寸厚，究竟⋯",
+        one_yuewen="脚趾弓啲脚夹成串咁厚",
+        two_zhongwen="要走过几多座山",
+        two_yuewen="究竟要行个几度呢?",
+        one_yuewen_shifted="脚趾弓啲脚夹成串咁厚究竟",
+        two_yuewen_shifted="要行个几度呢?",
+    ),
+    ShiftTestCase(
+        one_zhongwen="要走过几多座山",
+        one_yuewen="要行个几度呢?",
+        two_zhongwen="跨过几多个海",
+        two_yuewen="几多座山挂过几多个海",
+        one_yuewen_shifted="要行个几度呢?几多座山",
+        two_yuewen_shifted="挂过几多个海",
+    ),
+    ShiftTestCase(
+        one_zhongwen="跨过几多个海",
+        one_yuewen="挂过几多个海",
+        two_zhongwen="吃过几多苦头",
+        two_yuewen="挨过几多斧头",
+        one_yuewen_shifted="挂过几多个海",
+        two_yuewen_shifted="挨过几多斧头",
+    ),
+    ShiftTestCase(
+        one_zhongwen="吃过几多苦头",
+        one_yuewen="挨过几多斧头",
+        two_zhongwen="才可以练成这举世无双的脚瓜？",
+        two_yuewen="先至可以练成呢一只举细无伤嘅脚瓜",
+        one_yuewen_shifted="挨过几多斧头",
+        two_yuewen_shifted="先至可以练成呢一只举细无伤嘅脚瓜",
+    ),
+]
 shift_test_cases_block_51 = []
-shift_test_cases_block_52 = []
+shift_test_cases_block_52 = [
+    ShiftTestCase(
+        one_zhongwen="我找来找去也找不到那部电子英文辞典",
+        one_yuewen="我揾完成间屋都揾唔到部电子英文词典",
+        two_zhongwen="跑哪去了？",
+        two_yuewen="去咗边呢",
+        one_yuewen_shifted="我揾完成间屋都揾唔到部电子英文词典",
+        two_yuewen_shifted="去咗边呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="跑哪去了？",
+        one_yuewen="去咗边呢",
+        two_zhongwen="难道⋯不会吧？",
+        two_yuewen="唔通冇理由㗎",
+        one_yuewen_shifted="去咗边呢",
+        two_yuewen_shifted="唔通冇理由㗎",
+    ),
+]
 shift_test_cases_block_53 = []
 shift_test_cases_block_54 = []
 shift_test_cases_block_55 = []
@@ -2367,6 +2736,7 @@ merge_test_cases_block_0 = [
         zhongwen="赶忙趁胶兜落地前另许一个愿望：",
         yuewen_to_merge=["嗱嗱嗱喺胶兜未落地之前起过另外一个愿望"],
         yuewen_merged="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="唔聪明唔靓仔也算了，只要福星高照",
@@ -2655,17 +3025,100 @@ merge_test_cases_block_6 = []
 merge_test_cases_block_7 = []
 merge_test_cases_block_8 = []
 merge_test_cases_block_9 = []
-merge_test_cases_block_10 = []
+merge_test_cases_block_10 = [
+    MergeTestCase(
+        zhongwen="好高兴这么快又跟大家见面",
+        yuewen_to_merge=["好高兴咁快又同大家见面"],
+        yuewen_merged="好高兴咁快又同大家见面",
+    ),
+    MergeTestCase(
+        zhongwen="接下来我会教大家整一味纸鸡包",
+        yuewen_to_merge=["跟住落嚟我会教大家整一味纸鸡包"],
+        yuewen_merged="跟住落嚟我会教大家整一味纸鸡包",
+    ),
+    MergeTestCase(
+        zhongwen="材料也很简单，只需要白纸一张",
+        yuewen_to_merge=["材料都好简单", "只需要白纸一张"],
+        yuewen_merged="材料都好简单，只需要白纸一张",
+    ),
+    MergeTestCase(
+        zhongwen="只要把这纸这样子⋯",
+        yuewen_to_merge=["我哋只需要张张纸", "咁样"],
+        yuewen_merged="我哋只需要张张纸咁样⋯",
+    ),
+    MergeTestCase(
+        zhongwen="一个纸鸡包就这样完成了",
+        yuewen_to_merge=["一个纸鸡包就咁完成咗喇"],
+        yuewen_merged="一个纸鸡包就咁完成咗喇",
+    ),
+    MergeTestCase(
+        zhongwen="各位小朋友，像鸡包不像呀？",
+        yuewen_to_merge=["各位小朋友", "你哋话似唔似鸡包啊"],
+        yuewen_merged="各位小朋友，你哋话似唔似鸡包啊？",
+    ),
+]
 merge_test_cases_block_11 = []
 merge_test_cases_block_12 = []
 merge_test_cases_block_13 = []
 merge_test_cases_block_14 = []
 merge_test_cases_block_15 = []
 merge_test_cases_block_16 = []
-merge_test_cases_block_17 = []
+merge_test_cases_block_17 = [
+    MergeTestCase(
+        zhongwen="衰仔，快点起床上学",
+        yuewen_to_merge=["喂", "衰仔啊", "快啲起身返学喇"],
+        yuewen_merged="喂，衰仔啊，快啲起身返学喇",
+    ),
+    MergeTestCase(
+        zhongwen="咦？",
+        yuewen_to_merge=["咦"],
+        yuewen_merged="咦？",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈！",
+        yuewen_to_merge=["妈妈"],
+        yuewen_merged="妈妈！",
+    ),
+]
 merge_test_cases_block_18 = []
 merge_test_cases_block_19 = []
-merge_test_cases_block_20 = []
+merge_test_cases_block_20 = [
+    MergeTestCase(
+        zhongwen="好呀，马尔代夫！",
+        yuewen_to_merge=["嘻嘻", "好嘢"],
+        yuewen_merged="嘻嘻，好嘢！",
+    ),
+    MergeTestCase(
+        zhongwen="马尔代夫！",
+        yuewen_to_merge=["买二代夫", "买二代夫"],
+        yuewen_merged="买二代夫，买二代夫！",
+    ),
+    MergeTestCase(
+        zhongwen="马尔代夫！",
+        yuewen_to_merge=["买二代夫"],
+        yuewen_merged="买二代夫！",
+    ),
+    MergeTestCase(
+        zhongwen="马尔代夫！",
+        yuewen_to_merge=["买二代夫"],
+        yuewen_merged="买二代夫！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈，那么我们什么时候去？",
+        yuewen_to_merge=["妈妈", "咁我哋几时去呀"],
+        yuewen_merged="妈妈，咁我哋几时去呀？",
+    ),
+    MergeTestCase(
+        zhongwen="你先把药水喝掉，病好了我就去订机票",
+        yuewen_to_merge=["嗯", "你乖乖哋食埋啲药", "好返晒啦", "我即刻订机票"],
+        yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+    ),
+    MergeTestCase(
+        zhongwen="来，多喝一点！",
+        yuewen_to_merge=["嚟啦", "食多更"],
+        yuewen_merged="嚟啦，食多更！",
+    ),
+]
 merge_test_cases_block_21 = []
 merge_test_cases_block_22 = []
 merge_test_cases_block_23 = []
@@ -2675,11 +3128,50 @@ merge_test_cases_block_26 = []
 merge_test_cases_block_27 = []
 merge_test_cases_block_28 = []
 merge_test_cases_block_29 = []
-merge_test_cases_block_30 = []
+merge_test_cases_block_30 = [
+    MergeTestCase(
+        zhongwen="但无论多不容易，我都要试一试",
+        yuewen_to_merge=["但无论几唔容易", "我都要试一试"],
+        yuewen_merged="但无论几唔容易，我都要试一试",
+    ),
+    MergeTestCase(
+        zhongwen="我要黎根收我做徒弟！",
+        yuewen_to_merge=["我要来紧收我度徒弟"],
+        yuewen_merged="我要来紧收我度徒弟！",
+    ),
+    MergeTestCase(
+        zhongwen="无论几辛苦，我一定要得到奥运金牌！",
+        yuewen_to_merge=["无论几辛苦", "我一定要捞到奥运金牌"],
+        yuewen_merged="无论几辛苦，我一定要捞到奥运金牌！",
+    ),
+]
 merge_test_cases_block_31 = []
-merge_test_cases_block_32 = []
-merge_test_cases_block_33 = []
-merge_test_cases_block_34 = []
+merge_test_cases_block_32 = [
+    MergeTestCase(
+        zhongwen="长洲，我终于来到长洲了！",
+        yuewen_to_merge=["长洲", "我终于嚟到长洲嘞"],
+        yuewen_merged="长洲，我终于嚟到长洲嘞！",
+    ),
+]
+merge_test_cases_block_33 = [
+    MergeTestCase(
+        zhongwen="长洲，我得亲吻这片圣洁的土地！",
+        yuewen_to_merge=["长洲", "我要亲吻呢片盛洁嘅土地"],
+        yuewen_merged="长洲，我要亲吻呢片盛洁嘅土地！",
+    ),
+]
+merge_test_cases_block_34 = [
+    MergeTestCase(
+        zhongwen="小朋友，这儿是南丫岛呀！",
+        yuewen_to_merge=["小朋友呀", "呢度系南丫岛噃"],
+        yuewen_merged="小朋友呀，呢度系南丫岛噃！",
+    ),
+    MergeTestCase(
+        zhongwen="南丫岛？它也孕育了周润发！",
+        yuewen_to_merge=["南丫岛", "都引用咗周润发噃"],
+        yuewen_merged="南丫岛？都引用咗周润发噃！",
+    ),
+]
 merge_test_cases_block_35 = []
 merge_test_cases_block_36 = []
 merge_test_cases_block_37 = []
@@ -2689,15 +3181,64 @@ merge_test_cases_block_40 = []
 merge_test_cases_block_41 = []
 merge_test_cases_block_42 = []
 merge_test_cases_block_43 = []
-merge_test_cases_block_44 = []
+merge_test_cases_block_44 = [
+    MergeTestCase(
+        zhongwen="第二项绝技，就是⋯",
+        yuewen_to_merge=["第二样绝技就系"],
+        yuewen_merged="第二样绝技，就系⋯",
+    ),
+    MergeTestCase(
+        zhongwen="抢包山！",
+        yuewen_to_merge=["抢爆山"],
+        yuewen_merged="抢爆山！",
+    ),
+]
 merge_test_cases_block_45 = []
 merge_test_cases_block_46 = []
 merge_test_cases_block_47 = []
 merge_test_cases_block_48 = []
 merge_test_cases_block_49 = []
-merge_test_cases_block_50 = []
+merge_test_cases_block_50 = [
+    MergeTestCase(
+        zhongwen="麦兜他学东西⋯还可以",
+        yuewen_to_merge=["麦兜嘅学嘢呢都仲可以"],
+        yuewen_merged="麦兜嘅学嘢呢⋯都仲可以",
+    ),
+    MergeTestCase(
+        zhongwen="黎根接着说了一大堆话⋯",
+        yuewen_to_merge=["跟住黎根讲咗一大堆说话"],
+        yuewen_merged="跟住黎根讲咗一大堆说话⋯",
+    ),
+    MergeTestCase(
+        zhongwen="他的抱负，他对麦兜的期望",
+        yuewen_to_merge=["讲下佢嘅抱负", "佢对麦兜嘅期望"],
+        yuewen_merged="讲下佢嘅抱负，佢对麦兜嘅期望",
+    ),
+    MergeTestCase(
+        zhongwen="他说他会把他所识的毫不保留教给麦兜",
+        yuewen_to_merge=["佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜"],
+        yuewen_merged="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+    ),
+]  # WIP
 merge_test_cases_block_51 = []
-merge_test_cases_block_52 = []
+merge_test_cases_block_52 = [
+    MergeTestCase(
+        zhongwen="我找来找去也找不到那部电子英文辞典",
+        yuewen_to_merge=["我揾完成间屋", "都揾唔到部电子英文词典"],
+        yuewen_merged="我揾完成间屋都揾唔到部电子英文词典",
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
+        zhongwen="跑哪去了？",
+        yuewen_to_merge=["去咗边呢"],
+        yuewen_merged="去咗边呢？",
+    ),
+    MergeTestCase(
+        zhongwen="难道⋯不会吧？",
+        yuewen_to_merge=["唔通", "冇理由㗎"],
+        yuewen_merged="唔通⋯冇理由㗎？",
+    ),
+]
 merge_test_cases_block_53 = []
 merge_test_cases_block_54 = []
 merge_test_cases_block_55 = []
@@ -2729,7 +3270,7 @@ merge_test_cases_block_60 = [
     MergeTestCase(
         zhongwen="亦顺理成章叫成「香港一蛋挞」",
         yuewen_to_merge=["亦都顺理成章噉叫做香港一蛋挞"],
-        yuewen_merged="亦都顺理成章噉叫做香港一蛋挞",
+        yuewen_merged="亦都顺理成章噉叫做「香港一蛋挞」",
     ),
     MergeTestCase(
         zhongwen="之后李丽珊蝉联失败⋯",
@@ -2822,12 +3363,12 @@ merge_test_cases_block_70 = [
         yuewen_to_merge=["系", "快餐就即系上餐啰"],
         yuewen_merged="系，快餐就即系上餐啰",
     ),
-    MergeTestCase(
+    MergeTestCase(  # REVIEW: SEEMS TO BE MISALIGNED
         zhongwen="常餐不是卖光了吗？",
         yuewen_to_merge=["咁你头先又话冇上餐", "系呀", "上餐就系卖晒呀"],
         yuewen_merged="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
     ),
-    MergeTestCase(
+    MergeTestCase(  # REVIEW: SEEMS TO BE MISALIGNED
         zhongwen="对，常餐卖光了，要吃特餐吗？",
         yuewen_to_merge=["咁你试唔试下特餐啦"],
         yuewen_merged="咁你试唔试下特餐啦？",
@@ -2970,6 +3511,7 @@ merge_test_cases_block_72 = [
         zhongwen="光天白日，吃什么鬼晚餐？",
         yuewen_to_merge=["日光日白食乜鬼嘢晚餐啊"],
         yuewen_merged="日光日白，食乜鬼嘢晚餐啊？",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="唉，说是说晚餐，还不就是午餐？",
@@ -3099,6 +3641,7 @@ proof_test_cases_block_0 = [
         yuewen="麦太认定呢个系异象",
         yuewen_proofread="麦太认定呢个系异像",
         note="Corrected '异象' to '异像' as '异像' is the correct term in this context",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="于是向额角上的胶兜许愿",
@@ -3515,8 +4058,8 @@ proof_test_cases_block_3 = [
     ProofTestCase(
         zhongwen="太好了！大家去上堂吧",
         yuewen="哎，好在！噉大家可以返去上堂喇",
-        yuewen_proofread="哎，好啦！噉大家可以返去上堂喇",
-        note="Corrected '好在' to '好啦' as '好啦' is a more appropriate expression.",
+        yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
+        note="",
     ),
 ]
 proof_test_cases_block_4 = []
@@ -3525,17 +4068,117 @@ proof_test_cases_block_6 = []
 proof_test_cases_block_7 = []
 proof_test_cases_block_8 = []
 proof_test_cases_block_9 = []
-proof_test_cases_block_10 = []
+proof_test_cases_block_10 = [
+    ProofTestCase(
+        zhongwen="好高兴这么快又跟大家见面",
+        yuewen="好高兴咁快又同大家见面",
+        yuewen_proofread="好高兴咁快又同大家见面",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="接下来我会教大家整一味纸鸡包",
+        yuewen="跟住落嚟我会教大家整一味纸鸡包",
+        yuewen_proofread="跟住落嚟我会教大家整一味纸鸡包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="材料也很简单，只需要白纸一张",
+        yuewen="材料都好简单，只需要白纸一张",
+        yuewen_proofread="材料都好简单，只需要白纸一张",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="只要把这纸这样子⋯",
+        yuewen="我哋只需要张张纸咁样⋯",
+        yuewen_proofread="我哋只需要张张纸咁样⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一个纸鸡包就这样完成了",
+        yuewen="一个纸鸡包就咁完成咗喇",
+        yuewen_proofread="一个纸鸡包就咁完成咗喇",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="各位小朋友，像鸡包不像呀？",
+        yuewen="各位小朋友，你哋话似唔似鸡包啊？",
+        yuewen_proofread="各位小朋友，你哋话似唔似鸡包啊？",
+        note="",
+    ),
+]
 proof_test_cases_block_11 = []
 proof_test_cases_block_12 = []
 proof_test_cases_block_13 = []
 proof_test_cases_block_14 = []
 proof_test_cases_block_15 = []
 proof_test_cases_block_16 = []
-proof_test_cases_block_17 = []
+proof_test_cases_block_17 = [
+    ProofTestCase(
+        zhongwen="衰仔，快点起床上学",
+        yuewen="喂，衰仔啊，快啲起身返学喇",
+        yuewen_proofread="喂，衰仔啊，快啲起身返学喇",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="咦？",
+        yuewen="咦？",
+        yuewen_proofread="咦？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈！",
+        yuewen="妈妈！",
+        yuewen_proofread="妈妈！",
+        note="",
+    ),
+]
 proof_test_cases_block_18 = []
 proof_test_cases_block_19 = []
-proof_test_cases_block_20 = []
+proof_test_cases_block_20 = [
+    ProofTestCase(
+        zhongwen="好呀，马尔代夫！",
+        yuewen="嘻嘻，好嘢！",
+        yuewen_proofread="嘻嘻，好嘢！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="马尔代夫！",
+        yuewen="买二代夫，买二代夫！",
+        yuewen_proofread="马尔代夫，马尔代夫！",
+        note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the country name '马尔代夫' (Maldives).",
+    ),
+    ProofTestCase(
+        zhongwen="马尔代夫！",
+        yuewen="买二代夫！",
+        yuewen_proofread="马尔代夫！",
+        note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the country name '马尔代夫' (Maldives).",
+    ),
+    ProofTestCase(
+        zhongwen="马尔代夫！",
+        yuewen="买二代夫！",
+        yuewen_proofread="马尔代夫！",
+        note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the country name '马尔代夫' (Maldives).",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈，那么我们什么时候去？",
+        yuewen="妈妈，咁我哋几时去呀？",
+        yuewen_proofread="妈妈，咁我哋几时去呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="你先把药水喝掉，病好了我就去订机票",
+        yuewen="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+        yuewen_proofread="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="来，多喝一点！",
+        yuewen="嚟啦，食多更！",
+        yuewen_proofread="嚟啦，食多更！",
+        note="",
+        include_in_prompt=True,
+    ),
+]
 proof_test_cases_block_21 = []
 proof_test_cases_block_22 = []
 proof_test_cases_block_23 = []
@@ -3545,11 +4188,57 @@ proof_test_cases_block_26 = []
 proof_test_cases_block_27 = []
 proof_test_cases_block_28 = []
 proof_test_cases_block_29 = []
-proof_test_cases_block_30 = []
+proof_test_cases_block_30 = [
+    ProofTestCase(
+        zhongwen="但无论多不容易，我都要试一试",
+        yuewen="但无论几唔容易，我都要试一试",
+        yuewen_proofread="但无论几唔容易，我都要试一试",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我要黎根收我做徒弟！",
+        yuewen="我要来紧收我度徒弟！",
+        yuewen_proofread="我要黎根收我做徒弟！",
+        note="Corrected '来紧' to '黎根' and '度徒弟' to '做徒弟' as both are likely mishearings; '黎根' is a name and '做徒弟' matches the meaning of '做徒弟' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="无论几辛苦，我一定要得到奥运金牌！",
+        yuewen="无论几辛苦，我一定要捞到奥运金牌！",
+        yuewen_proofread="无论几辛苦，我一定要攞到奥运金牌！",
+        note="Corrected '捞到' to '攞到' as '攞到' is the correct Cantonese verb for 'to get/obtain', matching the meaning of the 中文.",
+    ),
+]
 proof_test_cases_block_31 = []
-proof_test_cases_block_32 = []
-proof_test_cases_block_33 = []
-proof_test_cases_block_34 = []
+proof_test_cases_block_32 = [
+    ProofTestCase(
+        zhongwen="长洲，我终于来到长洲了！",
+        yuewen="长洲，我终于嚟到长洲嘞！",
+        yuewen_proofread="长洲，我终于嚟到长洲嘞！",
+        note="",
+    ),
+]
+proof_test_cases_block_33 = [
+    ProofTestCase(
+        zhongwen="长洲，我得亲吻这片圣洁的土地！",
+        yuewen="长洲，我要亲吻呢片盛洁嘅土地！",
+        yuewen_proofread="长洲，我要亲吻呢片圣洁嘅土地！",
+        note="Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'sacred' or 'holy', matching the meaning in the 中文.",
+    ),
+]
+proof_test_cases_block_34 = [
+    ProofTestCase(
+        zhongwen="小朋友，这儿是南丫岛呀！",
+        yuewen="小朋友呀，呢度系南丫岛噃！",
+        yuewen_proofread="小朋友呀，呢度系南丫岛噃！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="南丫岛？它也孕育了周润发！",
+        yuewen="南丫岛？都引用咗周润发噃！",
+        yuewen_proofread="南丫岛？都孕育咗周润发噃！",
+        note="Corrected '引用' to '孕育' as '孕育' is the correct term for 'nurtured' or 'gave rise to', matching the meaning in the 中文.",
+    ),
+]
 proof_test_cases_block_35 = []
 proof_test_cases_block_36 = []
 proof_test_cases_block_37 = []
@@ -3559,7 +4248,20 @@ proof_test_cases_block_40 = []
 proof_test_cases_block_41 = []
 proof_test_cases_block_42 = []
 proof_test_cases_block_43 = []
-proof_test_cases_block_44 = []
+proof_test_cases_block_44 = [
+    ProofTestCase(
+        zhongwen="第二项绝技，就是⋯",
+        yuewen="第二样绝技，就系⋯",
+        yuewen_proofread="第二样绝技，就系⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="抢包山！",
+        yuewen="抢爆山！",
+        yuewen_proofread="抢包山！",
+        note="Corrected '抢爆山' to '抢包山' as '抢包山' is the correct term for the traditional event, and '爆' is a likely mishearing of '包'.",
+    ),
+]
 proof_test_cases_block_45 = []
 proof_test_cases_block_46 = []
 proof_test_cases_block_47 = []
@@ -3567,7 +4269,26 @@ proof_test_cases_block_48 = []
 proof_test_cases_block_49 = []
 proof_test_cases_block_50 = []
 proof_test_cases_block_51 = []
-proof_test_cases_block_52 = []
+proof_test_cases_block_52 = [
+    ProofTestCase(
+        zhongwen="我找来找去也找不到那部电子英文辞典",
+        yuewen="我揾完成间屋都揾唔到部电子英文词典",
+        yuewen_proofread="我揾完成间屋都揾唔到部电子英文词典",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跑哪去了？",
+        yuewen="去咗边呢？",
+        yuewen_proofread="去咗边呢？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="难道⋯不会吧？",
+        yuewen="唔通⋯冇理由㗎？",
+        yuewen_proofread="唔通⋯冇理由㗎？",
+        note="",
+    ),
+]
 proof_test_cases_block_53 = []
 proof_test_cases_block_54 = []
 proof_test_cases_block_55 = []
@@ -3602,8 +4323,8 @@ proof_test_cases_block_60 = [
     ),
     ProofTestCase(
         zhongwen="亦顺理成章叫成「香港一蛋挞」",
-        yuewen="亦都顺理成章噉叫做香港一蛋挞",
-        yuewen_proofread="亦都顺理成章噉叫做香港一蛋挞",
+        yuewen="亦都顺理成章噉叫做「香港一蛋挞」",
+        yuewen_proofread="亦都顺理成章噉叫做「香港一蛋挞」",
         note="",
     ),
     ProofTestCase(
@@ -3736,6 +4457,7 @@ proof_test_cases_block_70 = [
         yuewen="唔好意思，特餐卖晒嘅",
         yuewen_proofread="唔好意思，特餐卖晒喇",
         note="Replaced '卖晒嘅' with '卖晒喇' as '卖晒喇' is the natural way to indicate 'sold out' in Cantonese, while '卖晒嘅' is likely a mishearing or unnatural ending.",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="妈妈，改快餐吧",
@@ -3880,6 +4602,7 @@ proof_test_cases_block_72 = [
         yuewen="唔好意思，午餐卖晒",
         yuewen_proofread="唔好意思，午餐卖晒",
         note="",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="要试试我们的晚餐吗？都一样的",
@@ -3936,7 +4659,7 @@ ___all__ = [
 ]
 
 if __name__ == "__main__":
-    set_logging_verbosity(2)
+    set_logging_verbosity(1)
 
     test_case_lists = {
         "Distribute": mlamd_distribute_test_cases,

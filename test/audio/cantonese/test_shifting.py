@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.audio.cantonese.shifting import Shifter, ShiftTestCase
 from scinoephile.testing import test_data_root
-from scinoephile.testing.mark import flaky, skip_if_ci
+from scinoephile.testing.mark import skip_if_ci
 from test.data.mlamd import mlamd_shift_test_cases  # noqa: F401
 
 
@@ -43,7 +43,7 @@ def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
     "fixture_name",
     [
         skip_if_ci()("shifter_few_shot"),
-        skip_if_ci(flaky())("shifter_zero_shot"),
+        # skip_if_ci(flaky())("shifter_zero_shot"),
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_shift_test_cases)
