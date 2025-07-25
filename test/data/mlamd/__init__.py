@@ -389,7 +389,17 @@ distribute_test_cases_block_56 = []
 distribute_test_cases_block_57 = []
 distribute_test_cases_block_58 = []
 distribute_test_cases_block_59 = []
-distribute_test_cases_block_60 = []
+distribute_test_cases_block_60 = [
+    DistributeTestCase(
+        one_zhongwen="亚运主办权⋯",
+        one_yuewen_start="",
+        two_zhongwen="亦由一个香港人从未听过的地方夺得",
+        two_yuewen_end="亦都由一个香港人从未听过嘅地方夺得",
+        yuewen_to_distribute="亚运主办权",
+        one_yuewen_to_append="亚运主办权",
+        two_yuewen_to_prepend="",
+    ),
+]
 distribute_test_cases_block_61 = []
 distribute_test_cases_block_62 = []
 distribute_test_cases_block_63 = []
@@ -1778,7 +1788,104 @@ shift_test_cases_block_56 = []
 shift_test_cases_block_57 = []
 shift_test_cases_block_58 = []
 shift_test_cases_block_59 = []
-shift_test_cases_block_60 = []
+shift_test_cases_block_60 = [
+    ShiftTestCase(
+        one_zhongwen="最后⋯",
+        one_yuewen="最后",
+        two_zhongwen="最后，一切成烟",
+        two_yuewen="最后全部都系banana",
+        one_yuewen_shifted="最后",
+        two_yuewen_shifted="最后全部都系banana",
+    ),
+    ShiftTestCase(
+        one_zhongwen="最后，一切成烟",
+        one_yuewen="最后全部都系banana",
+        two_zhongwen="最后，他们选了「掷蛋挞」做推介项目",
+        two_yuewen="最后佢哋选咗定蛋挞做推介项目",
+        one_yuewen_shifted="最后全部都系banana",
+        two_yuewen_shifted="最后佢哋选咗定蛋挞做推介项目",
+    ),
+    ShiftTestCase(
+        one_zhongwen="最后，他们选了「掷蛋挞」做推介项目",
+        one_yuewen="最后佢哋选咗定蛋挞做推介项目",
+        two_zhongwen="至于香港争取申办亚运的口号⋯",
+        two_yuewen="至于香港争取申办亚运嘅口号",
+        one_yuewen_shifted="最后佢哋选咗定蛋挞做推介项目",
+        two_yuewen_shifted="至于香港争取申办亚运嘅口号",
+    ),
+    ShiftTestCase(
+        one_zhongwen="至于香港争取申办亚运的口号⋯",
+        one_yuewen="至于香港争取申办亚运嘅口号",
+        two_zhongwen="亦顺理成章叫成「香港一蛋挞」",
+        two_yuewen="亦都顺理成章噉叫做香港一蛋挞",
+        one_yuewen_shifted="至于香港争取申办亚运嘅口号",
+        two_yuewen_shifted="亦都顺理成章噉叫做香港一蛋挞",
+    ),
+    ShiftTestCase(
+        one_zhongwen="亦顺理成章叫成「香港一蛋挞」",
+        one_yuewen="亦都顺理成章噉叫做香港一蛋挞",
+        two_zhongwen="之后李丽珊蝉联失败⋯",
+        two_yuewen="之后李利山丧乱失败",
+        one_yuewen_shifted="亦都顺理成章噉叫做香港一蛋挞",
+        two_yuewen_shifted="之后李利山丧乱失败",
+    ),
+    ShiftTestCase(
+        one_zhongwen="之后李丽珊蝉联失败⋯",
+        one_yuewen="之后李利山丧乱失败",
+        two_zhongwen="亚运主办权⋯",
+        two_yuewen="",
+        one_yuewen_shifted="之后李利山丧乱失败",
+        two_yuewen_shifted="",
+    ),
+    ShiftTestCase(
+        one_zhongwen="亚运主办权⋯",
+        one_yuewen="",
+        two_zhongwen="亦由一个香港人从未听过的地方夺得",
+        two_yuewen="亚运主办权亦都由一个香港人从未听过嘅地方夺得",
+        one_yuewen_shifted="亚运主办权",
+        two_yuewen_shifted="亦都由一个香港人从未听过嘅地方夺得",
+    ),
+    ShiftTestCase(
+        one_zhongwen="之后李丽珊蝉联失败⋯",
+        one_yuewen="之后李利山丧乱失败",
+        two_zhongwen="亚运主办权⋯",
+        two_yuewen="亚运主办权",
+        one_yuewen_shifted="之后李利山丧乱失败",
+        two_yuewen_shifted="亚运主办权",
+    ),
+    ShiftTestCase(
+        one_zhongwen="亚运主办权⋯",
+        one_yuewen="亚运主办权",
+        two_zhongwen="亦由一个香港人从未听过的地方夺得",
+        two_yuewen="亦都由一个香港人从未听过嘅地方夺得",
+        one_yuewen_shifted="亚运主办权",
+        two_yuewen_shifted="亦都由一个香港人从未听过嘅地方夺得",
+    ),
+    ShiftTestCase(
+        one_zhongwen="亦由一个香港人从未听过的地方夺得",
+        one_yuewen="亦都由一个香港人从未听过嘅地方夺得",
+        two_zhongwen="想着转行当运动员的茶餐厅伙记⋯",
+        two_yuewen="谂住可以转行做运动员嘅茶餐厅伙计",
+        one_yuewen_shifted="亦都由一个香港人从未听过嘅地方夺得",
+        two_yuewen_shifted="谂住可以转行做运动员嘅茶餐厅伙计",
+    ),
+    ShiftTestCase(
+        one_zhongwen="想着转行当运动员的茶餐厅伙记⋯",
+        one_yuewen="谂住可以转行做运动员嘅茶餐厅伙计",
+        two_zhongwen="都回到茶餐厅继续掷他们的蛋挞",
+        two_yuewen="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+        one_yuewen_shifted="谂住可以转行做运动员嘅茶餐厅伙计",
+        two_yuewen_shifted="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+    ),
+    ShiftTestCase(
+        one_zhongwen="都回到茶餐厅继续掷他们的蛋挞",
+        one_yuewen="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+        two_zhongwen="一切回复正常",
+        two_yuewen="一切回复正常",
+        one_yuewen_shifted="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+        two_yuewen_shifted="一切回复正常",
+    ),
+]
 shift_test_cases_block_61 = []
 shift_test_cases_block_62 = []
 shift_test_cases_block_63 = []
@@ -2526,7 +2633,7 @@ merge_test_cases_block_3 = [
     MergeTestCase(  # DIFFICULT; FAILS EVEN THOUGH INCLUDED IN PROMPT
         zhongwen="小朋友，这个月你们交过学费没有？",
         yuewen_to_merge=["小朋友", "你哋今个月交咗学费咩呀"],
-        yuewen_merged="小朋友，你哋今个月交咗学费咩呀",
+        yuewen_merged="小朋友，你哋今个月交咗学费咩呀？",
         include_in_prompt=True,
     ),
     MergeTestCase(
@@ -2598,7 +2705,63 @@ merge_test_cases_block_56 = []
 merge_test_cases_block_57 = []
 merge_test_cases_block_58 = []
 merge_test_cases_block_59 = []
-merge_test_cases_block_60 = []
+merge_test_cases_block_60 = [
+    MergeTestCase(
+        zhongwen="最后⋯",
+        yuewen_to_merge=["最后"],
+        yuewen_merged="最后⋯",
+    ),
+    MergeTestCase(
+        zhongwen="最后，一切成烟",
+        yuewen_to_merge=["最后全部都系banana"],
+        yuewen_merged="最后，全部都系banana",
+    ),
+    MergeTestCase(
+        zhongwen="最后，他们选了「掷蛋挞」做推介项目",
+        yuewen_to_merge=["最后佢哋选咗定蛋挞做推介项目"],
+        yuewen_merged="最后佢哋选咗定蛋挞做推介项目",
+    ),
+    MergeTestCase(
+        zhongwen="至于香港争取申办亚运的口号⋯",
+        yuewen_to_merge=["至于香港争取申办亚运嘅口号"],
+        yuewen_merged="至于香港争取申办亚运嘅口号⋯",
+    ),
+    MergeTestCase(
+        zhongwen="亦顺理成章叫成「香港一蛋挞」",
+        yuewen_to_merge=["亦都顺理成章噉叫做香港一蛋挞"],
+        yuewen_merged="亦都顺理成章噉叫做香港一蛋挞",
+    ),
+    MergeTestCase(
+        zhongwen="之后李丽珊蝉联失败⋯",
+        yuewen_to_merge=["之后李利山丧乱失败"],
+        yuewen_merged="之后李利山丧乱失败⋯",
+    ),
+    MergeTestCase(
+        zhongwen="亚运主办权⋯",
+        yuewen_to_merge=["亚运主办权"],
+        yuewen_merged="亚运主办权⋯",
+    ),
+    MergeTestCase(
+        zhongwen="亦由一个香港人从未听过的地方夺得",
+        yuewen_to_merge=["亦都由一个香港人从未听过嘅地方夺得"],
+        yuewen_merged="亦都由一个香港人从未听过嘅地方夺得",
+    ),
+    MergeTestCase(
+        zhongwen="想着转行当运动员的茶餐厅伙记⋯",
+        yuewen_to_merge=["谂住可以转行做运动员嘅茶餐厅伙计"],
+        yuewen_merged="谂住可以转行做运动员嘅茶餐厅伙计⋯",
+    ),
+    MergeTestCase(
+        zhongwen="都回到茶餐厅继续掷他们的蛋挞",
+        yuewen_to_merge=["都返返去茶餐厅继续钉佢哋嘅蛋挞"],
+        yuewen_merged="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+    ),
+    MergeTestCase(
+        zhongwen="一切回复正常",
+        yuewen_to_merge=["一切回复正常"],
+        yuewen_merged="一切回复正常",
+    ),
+]
 merge_test_cases_block_61 = []
 merge_test_cases_block_62 = []
 merge_test_cases_block_63 = []
@@ -2806,7 +2969,7 @@ merge_test_cases_block_72 = [
     MergeTestCase(
         zhongwen="光天白日，吃什么鬼晚餐？",
         yuewen_to_merge=["日光日白食乜鬼嘢晚餐啊"],
-        yuewen_merged="日光日白食乜鬼嘢晚餐啊？",
+        yuewen_merged="日光日白，食乜鬼嘢晚餐啊？",
     ),
     MergeTestCase(
         zhongwen="唉，说是说晚餐，还不就是午餐？",
@@ -3412,7 +3575,74 @@ proof_test_cases_block_56 = []
 proof_test_cases_block_57 = []
 proof_test_cases_block_58 = []
 proof_test_cases_block_59 = []
-proof_test_cases_block_60 = []
+proof_test_cases_block_60 = [
+    ProofTestCase(
+        zhongwen="最后⋯",
+        yuewen="最后⋯",
+        yuewen_proofread="最后⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="最后，一切成烟",
+        yuewen="最后，全部都系banana",
+        yuewen_proofread="",
+        note="Cleared as '全部都系banana' bears no resemblance to the original phrase '最后，一切成烟' and is clearly a complete transcription failure.",
+    ),
+    ProofTestCase(
+        zhongwen="最后，他们选了「掷蛋挞」做推介项目",
+        yuewen="最后佢哋选咗定蛋挞做推介项目",
+        yuewen_proofread="最后佢哋选咗掷蛋挞做推介项目",
+        note="Corrected '定蛋挞' to '掷蛋挞' as '掷蛋挞' matches the activity described in the 中文, and '定' is likely a mishearing of '掷'.",
+    ),
+    ProofTestCase(
+        zhongwen="至于香港争取申办亚运的口号⋯",
+        yuewen="至于香港争取申办亚运嘅口号⋯",
+        yuewen_proofread="至于香港争取申办亚运嘅口号⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="亦顺理成章叫成「香港一蛋挞」",
+        yuewen="亦都顺理成章噉叫做香港一蛋挞",
+        yuewen_proofread="亦都顺理成章噉叫做香港一蛋挞",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="之后李丽珊蝉联失败⋯",
+        yuewen="之后李利山丧乱失败⋯",
+        yuewen_proofread="之后李丽珊蝉联失败⋯",
+        note="Corrected '李利山' to '李丽珊' as it is a mishearing of the name, and '丧乱' to '蝉联' as '蝉联' is the correct term for defending a title, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="亚运主办权⋯",
+        yuewen="亚运主办权⋯",
+        yuewen_proofread="亚运主办权⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="亦由一个香港人从未听过的地方夺得",
+        yuewen="亦都由一个香港人从未听过嘅地方夺得",
+        yuewen_proofread="亦都由一个香港人从未听过嘅地方夺得",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="想着转行当运动员的茶餐厅伙记⋯",
+        yuewen="谂住可以转行做运动员嘅茶餐厅伙计⋯",
+        yuewen_proofread="谂住可以转行做运动员嘅茶餐厅伙计⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="都回到茶餐厅继续掷他们的蛋挞",
+        yuewen="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+        yuewen_proofread="都返返去茶餐厅继续掷佢哋嘅蛋挞",
+        note="Corrected '钉' to '掷' as '掷' (to throw) matches the meaning in the 中文, while '钉' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="一切回复正常",
+        yuewen="一切回复正常",
+        yuewen_proofread="一切回复正常",
+        note="",
+    ),
+]
 proof_test_cases_block_61 = []
 proof_test_cases_block_62 = []
 proof_test_cases_block_63 = []
@@ -3727,7 +3957,7 @@ if __name__ == "__main__":
             else:
                 info(test_case.source_str)
             if test_case.key in test_case_dict:
-                raise ScinoephileError(f"Duplicate key found:\n{test_case.key}")
+                raise ScinoephileError(f"Duplicate found:\n{test_case.source_str}")
             test_case_dict[test_case.key] = test_case
         info(
             f"{test_case_type} test cases validated: {len(test_case_dict)} "
@@ -3737,10 +3967,10 @@ if __name__ == "__main__":
         # Validate queries
         query_dict = {}
         for test_case in test_cases:
-            debug(test_case.query.source_str)
-            if test_case.query.key in query_dict:
+            debug(test_case.source_str)
+            if test_case.query.query_key in query_dict:
                 raise ScinoephileError(
-                    f"Duplicate query key found:\n{test_case.query.key}"
+                    f"Duplicate query found:\n{test_case.source_str}"
                 )
-            query_dict[test_case.query.key] = test_case.query
+            query_dict[test_case.query.query_key] = test_case.query
         info(f"{test_case_type} queries validated: {len(query_dict)} unique keys.")

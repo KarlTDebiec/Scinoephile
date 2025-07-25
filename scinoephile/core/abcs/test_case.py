@@ -48,7 +48,7 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     @cached_property
     def key(self) -> tuple[str, ...]:
         """Unique key for the test case."""
-        return tuple(list(self.query.key) + list(self.answer.key))
+        return tuple(list(self.query.query_key) + list(self.answer.answer_key))
 
     @cached_property
     def noop(self) -> bool:
