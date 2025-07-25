@@ -184,7 +184,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             raise ScinoephileError("Unable to obtain valid answer")
 
         if self.print_test_case:
-            print(test_case.source_str)
+            print(f"{test_case.source_str},")
 
         # Update cache
         if cache_path is not None:

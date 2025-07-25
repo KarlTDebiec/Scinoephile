@@ -399,8 +399,181 @@ distribute_test_cases_block_66 = []
 distribute_test_cases_block_67 = []
 distribute_test_cases_block_68 = []
 distribute_test_cases_block_69 = []
-distribute_test_cases_block_70 = []
-distribute_test_cases_block_71 = []
+distribute_test_cases_block_70 = [
+    DistributeTestCase(
+        one_zhongwen="特餐？特餐有什么吃？",
+        one_yuewen_start="特餐",
+        two_zhongwen="特餐即是午餐呀",
+        two_yuewen_end="特餐就即系午餐啰",
+        yuewen_to_distribute="特餐有咩食㗎",
+        one_yuewen_to_append="特餐有咩食㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="午餐又吃什么呢？",
+        one_yuewen_start="",
+        two_zhongwen="都是晚餐那些吧",
+        two_yuewen_end="",
+        yuewen_to_distribute="午餐食乜嘢㗎",
+        one_yuewen_to_append="午餐食乜嘢㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="都是晚餐那些吧",
+        one_yuewen_start="",
+        two_zhongwen="什么是晚餐？",
+        two_yuewen_end="",
+        yuewen_to_distribute="都系晚餐𠮶啲嘢啰",
+        one_yuewen_to_append="都系晚餐𠮶啲嘢啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="什么是晚餐？",
+        one_yuewen_start="",
+        two_zhongwen="跟快餐一样",
+        two_yuewen_end="",
+        yuewen_to_distribute="咁乜嘢系晚餐呀",
+        one_yuewen_to_append="咁乜嘢系晚餐呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跟快餐一样",
+        one_yuewen_start="",
+        two_zhongwen="快餐吃什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="同快餐一样啰",
+        one_yuewen_to_append="同快餐一样啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="快餐吃什么？",
+        one_yuewen_start="",
+        two_zhongwen="唉，快餐不就是常餐",
+        two_yuewen_end="系快餐就即系上餐啰",
+        yuewen_to_distribute="咁快餐食咩㗎",
+        one_yuewen_to_append="咁快餐食咩㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="妈妈，改快餐吧",
+        one_yuewen_start="妈妈",
+        two_zhongwen="快餐有什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="不如改快餐啦",
+        one_yuewen_to_append="不如改快餐啦",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="快餐有什么？",
+        one_yuewen_start="",
+        two_zhongwen="快餐即是常餐",
+        two_yuewen_end="快餐即系上餐",
+        yuewen_to_distribute="快餐有咩㗎",
+        one_yuewen_to_append="快餐有咩㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="常餐又有什么呢？",
+        one_yuewen_start="",
+        two_zhongwen="常餐即是午餐",
+        two_yuewen_end="上餐就即系午餐啰",
+        yuewen_to_distribute="咁上餐有咩㗎",
+        one_yuewen_to_append="咁上餐有咩㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那么午餐又有什么吃？",
+        one_yuewen_start="哎呀",
+        two_zhongwen="午餐跟晚餐一样",
+        two_yuewen_end="",
+        yuewen_to_distribute="咁午餐有咩食呀",
+        one_yuewen_to_append="咁午餐有咩食呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="午餐跟晚餐一样",
+        one_yuewen_start="",
+        two_zhongwen="晚餐呢？",
+        two_yuewen_end="",
+        yuewen_to_distribute="午餐同晚餐一样㗎",
+        one_yuewen_to_append="午餐同晚餐一样㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="晚餐呢？",
+        one_yuewen_start="",
+        two_zhongwen="晚餐不就是特餐",
+        two_yuewen_end="",
+        yuewen_to_distribute="咁晚餐呢",
+        one_yuewen_to_append="咁晚餐呢",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="晚餐不就是特餐",
+        one_yuewen_start="",
+        two_zhongwen="不是说特餐卖光了吗？",
+        two_yuewen_end="咁你头先又话冇特餐",
+        yuewen_to_distribute="晚餐就即系特餐啰",
+        one_yuewen_to_append="晚餐就即系特餐啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="特餐卖光了，要试试快餐吗？都一样的",
+        one_yuewen_start="系呀特餐系卖晒呀咁你试唔试下个快餐啦",
+        two_zhongwen="来两份快餐吧",
+        two_yuewen_end="咁两份快餐啦",
+        yuewen_to_distribute="一样嘅啫",
+        one_yuewen_to_append="一样嘅啫",
+        two_yuewen_to_prepend="",
+    ),
+]
+distribute_test_cases_block_71 = [
+    DistributeTestCase(
+        one_zhongwen="太过分了吧？你们究竟有吃的没？",
+        one_yuewen_start="嚟唔嚟普啲呀",
+        two_zhongwen="午餐吧，午餐精采呀",
+        two_yuewen_end="午餐啦",
+        yuewen_to_distribute="噉你哋究竟有啲咩餐呀",
+        one_yuewen_to_append="噉你哋究竟有啲咩餐呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跟晚餐一样精采",
+        one_yuewen_start="点好嘢法呀",
+        two_zhongwen="晚餐又怎样呢？",
+        two_yuewen_end="",
+        yuewen_to_distribute="同晚餐一样咁好嘢",
+        one_yuewen_to_append="同晚餐一样咁好嘢",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="晚餐又怎样呢？",
+        one_yuewen_start="",
+        two_zhongwen="跟常餐一样精采",
+        two_yuewen_end="",
+        yuewen_to_distribute="噉晚餐又点好嘢法呀",
+        one_yuewen_to_append="噉晚餐又点好嘢法呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跟常餐一样精采",
+        one_yuewen_start="",
+        two_zhongwen="常餐又怎样呢？",
+        two_yuewen_end="",
+        yuewen_to_distribute="同上餐一样咁好嘢啰",
+        one_yuewen_to_append="同上餐一样咁好嘢啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="常餐又怎样呢？",
+        one_yuewen_start="",
+        two_zhongwen="常餐早卖光了，你说精采不？",
+        two_yuewen_end="上餐上餐一早卖晒啦你话好唔好嘢",
+        yuewen_to_distribute="噉上餐又点好嘢法呀",
+        one_yuewen_to_append="噉上餐又点好嘢法呀",
+        two_yuewen_to_prepend="",
+    ),
+]
 distribute_test_cases_block_72 = [
     DistributeTestCase(
         one_zhongwen="对不起，午餐卖光了",
@@ -430,13 +603,12 @@ distribute_test_cases_block_72 = [
         two_yuewen_to_prepend="",
     ),
 ]
-
 mlamd_distribute_test_cases: list[DistributeTestCase] = sum(
     (globals()[f"distribute_test_cases_block_{i}"] for i in range(73)), []
 )
 """MLAMD 粤文 distribution test cases."""
-
 # endregion
+
 
 # region 粤文 Shift Test Cases
 shift_test_cases_block_0 = [
@@ -1616,8 +1788,282 @@ shift_test_cases_block_66 = []
 shift_test_cases_block_67 = []
 shift_test_cases_block_68 = []
 shift_test_cases_block_69 = []
-shift_test_cases_block_70 = []
-shift_test_cases_block_71 = []
+shift_test_cases_block_70 = [
+    ShiftTestCase(
+        one_zhongwen="对不起，常餐卖光了",
+        one_yuewen="唔好意思上餐卖晒",
+        two_zhongwen="那改要特餐吧",
+        two_yuewen="咁改要特餐啦",
+        one_yuewen_shifted="唔好意思上餐卖晒",
+        two_yuewen_shifted="咁改要特餐啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="那改要特餐吧",
+        one_yuewen="咁改要特餐啦",
+        two_zhongwen="特餐？特餐有什么吃？",
+        two_yuewen="特餐特餐有咩食㗎",
+        one_yuewen_shifted="咁改要特餐啦",
+        two_yuewen_shifted="特餐特餐有咩食㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="特餐？特餐有什么吃？",
+        one_yuewen="特餐特餐有咩食㗎",
+        two_zhongwen="特餐即是午餐呀",
+        two_yuewen="特餐就即系午餐啰",
+        one_yuewen_shifted="特餐特餐有咩食㗎",
+        two_yuewen_shifted="特餐就即系午餐啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="特餐即是午餐呀",
+        one_yuewen="特餐就即系午餐啰",
+        two_zhongwen="午餐又吃什么呢？",
+        two_yuewen="午餐食乜嘢㗎",
+        one_yuewen_shifted="特餐就即系午餐啰",
+        two_yuewen_shifted="午餐食乜嘢㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="午餐又吃什么呢？",
+        one_yuewen="午餐食乜嘢㗎",
+        two_zhongwen="都是晚餐那些吧",
+        two_yuewen="都系晚餐𠮶啲嘢啰",
+        one_yuewen_shifted="午餐食乜嘢㗎",
+        two_yuewen_shifted="都系晚餐𠮶啲嘢啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="都是晚餐那些吧",
+        one_yuewen="都系晚餐𠮶啲嘢啰",
+        two_zhongwen="什么是晚餐？",
+        two_yuewen="咁乜嘢系晚餐呀",
+        one_yuewen_shifted="都系晚餐𠮶啲嘢啰",
+        two_yuewen_shifted="咁乜嘢系晚餐呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="什么是晚餐？",
+        one_yuewen="咁乜嘢系晚餐呀",
+        two_zhongwen="跟快餐一样",
+        two_yuewen="同快餐一样啰",
+        one_yuewen_shifted="咁乜嘢系晚餐呀",
+        two_yuewen_shifted="同快餐一样啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="跟快餐一样",
+        one_yuewen="同快餐一样啰",
+        two_zhongwen="快餐吃什么？",
+        two_yuewen="咁快餐食咩㗎",
+        one_yuewen_shifted="同快餐一样啰",
+        two_yuewen_shifted="咁快餐食咩㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="快餐吃什么？",
+        one_yuewen="咁快餐食咩㗎",
+        two_zhongwen="唉，快餐不就是常餐",
+        two_yuewen="系快餐就即系上餐啰",
+        one_yuewen_shifted="咁快餐食咩㗎",
+        two_yuewen_shifted="系快餐就即系上餐啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="唉，快餐不就是常餐",
+        one_yuewen="系快餐就即系上餐啰",
+        two_zhongwen="常餐不是卖光了吗？",
+        two_yuewen="咁你头先又话冇上餐",
+        one_yuewen_shifted="系快餐就即系上餐啰",
+        two_yuewen_shifted="咁你头先又话冇上餐",
+    ),
+    ShiftTestCase(
+        one_zhongwen="常餐不是卖光了吗？",
+        one_yuewen="咁你头先又话冇上餐",
+        two_zhongwen="对，常餐卖光了，要吃特餐吗？",
+        two_yuewen="系呀上餐就系卖晒呀咁你试唔试下特餐啦",
+        one_yuewen_shifted="咁你头先又话冇上餐系呀上餐就系卖晒呀",
+        two_yuewen_shifted="咁你试唔试下特餐啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="对，常餐卖光了，要吃特餐吗？",
+        one_yuewen="咁你试唔试下特餐啦",
+        two_zhongwen="来两份特餐吧",
+        two_yuewen="两份特餐啦",
+        one_yuewen_shifted="咁你试唔试下特餐啦",
+        two_yuewen_shifted="两份特餐啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="来两份特餐吧",
+        one_yuewen="两份特餐啦",
+        two_zhongwen="对不起，特餐卖光了",
+        two_yuewen="唔好意思特餐卖晒嘅",
+        one_yuewen_shifted="两份特餐啦",
+        two_yuewen_shifted="唔好意思特餐卖晒嘅",
+    ),
+    ShiftTestCase(
+        one_zhongwen="对不起，特餐卖光了",
+        one_yuewen="唔好意思特餐卖晒嘅",
+        two_zhongwen="妈妈，改快餐吧",
+        two_yuewen="妈妈不如改快餐啦",
+        one_yuewen_shifted="唔好意思特餐卖晒嘅",
+        two_yuewen_shifted="妈妈不如改快餐啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="妈妈，改快餐吧",
+        one_yuewen="妈妈不如改快餐啦",
+        two_zhongwen="快餐有什么？",
+        two_yuewen="快餐有咩㗎",
+        one_yuewen_shifted="妈妈不如改快餐啦",
+        two_yuewen_shifted="快餐有咩㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="快餐有什么？",
+        one_yuewen="快餐有咩㗎",
+        two_zhongwen="快餐即是常餐",
+        two_yuewen="快餐即系上餐",
+        one_yuewen_shifted="快餐有咩㗎",
+        two_yuewen_shifted="快餐即系上餐",
+    ),
+    ShiftTestCase(
+        one_zhongwen="快餐即是常餐",
+        one_yuewen="快餐即系上餐",
+        two_zhongwen="常餐又有什么呢？",
+        two_yuewen="咁上餐有咩㗎",
+        one_yuewen_shifted="快餐即系上餐",
+        two_yuewen_shifted="咁上餐有咩㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="常餐又有什么呢？",
+        one_yuewen="咁上餐有咩㗎",
+        two_zhongwen="常餐即是午餐",
+        two_yuewen="上餐就即系午餐啰",
+        one_yuewen_shifted="咁上餐有咩㗎",
+        two_yuewen_shifted="上餐就即系午餐啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="常餐即是午餐",
+        one_yuewen="上餐就即系午餐啰",
+        two_zhongwen="那么午餐又有什么吃？",
+        two_yuewen="哎呀咁午餐有咩食呀",
+        one_yuewen_shifted="上餐就即系午餐啰",
+        two_yuewen_shifted="哎呀咁午餐有咩食呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="那么午餐又有什么吃？",
+        one_yuewen="哎呀咁午餐有咩食呀",
+        two_zhongwen="午餐跟晚餐一样",
+        two_yuewen="午餐同晚餐一样㗎",
+        one_yuewen_shifted="哎呀咁午餐有咩食呀",
+        two_yuewen_shifted="午餐同晚餐一样㗎",
+    ),
+    ShiftTestCase(
+        one_zhongwen="午餐跟晚餐一样",
+        one_yuewen="午餐同晚餐一样㗎",
+        two_zhongwen="晚餐呢？",
+        two_yuewen="咁晚餐呢",
+        one_yuewen_shifted="午餐同晚餐一样㗎",
+        two_yuewen_shifted="咁晚餐呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="晚餐呢？",
+        one_yuewen="咁晚餐呢",
+        two_zhongwen="晚餐不就是特餐",
+        two_yuewen="晚餐就即系特餐啰",
+        one_yuewen_shifted="咁晚餐呢",
+        two_yuewen_shifted="晚餐就即系特餐啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="晚餐不就是特餐",
+        one_yuewen="晚餐就即系特餐啰",
+        two_zhongwen="不是说特餐卖光了吗？",
+        two_yuewen="咁你头先又话冇特餐",
+        one_yuewen_shifted="晚餐就即系特餐啰",
+        two_yuewen_shifted="咁你头先又话冇特餐",
+    ),
+    ShiftTestCase(
+        one_zhongwen="不是说特餐卖光了吗？",
+        one_yuewen="咁你头先又话冇特餐",
+        two_zhongwen="特餐卖光了，要试试快餐吗？都一样的",
+        two_yuewen="系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
+        one_yuewen_shifted="咁你头先又话冇特餐",
+        two_yuewen_shifted="系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
+    ),
+    ShiftTestCase(
+        one_zhongwen="特餐卖光了，要试试快餐吗？都一样的",
+        one_yuewen="系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
+        two_zhongwen="来两份快餐吧",
+        two_yuewen="咁两份快餐啦",
+        one_yuewen_shifted="系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
+        two_yuewen_shifted="咁两份快餐啦",
+    ),
+]
+shift_test_cases_block_71 = [
+    ShiftTestCase(
+        one_zhongwen="对不起，没快餐了",
+        one_yuewen="唔好意思冇快餐呀",
+        two_zhongwen="太过分了吧？你们究竟有吃的没？",
+        two_yuewen="嚟唔嚟普啲呀噉你哋究竟有啲咩餐呀",
+        one_yuewen_shifted="唔好意思冇快餐呀",
+        two_yuewen_shifted="嚟唔嚟普啲呀噉你哋究竟有啲咩餐呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="太过分了吧？你们究竟有吃的没？",
+        one_yuewen="嚟唔嚟普啲呀噉你哋究竟有啲咩餐呀",
+        two_zhongwen="午餐吧，午餐精采呀",
+        two_yuewen="午餐啦",
+        one_yuewen_shifted="嚟唔嚟普啲呀噉你哋究竟有啲咩餐呀",
+        two_yuewen_shifted="午餐啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="午餐吧，午餐精采呀",
+        one_yuewen="午餐啦",
+        two_zhongwen="怎么个精采法？",
+        two_yuewen="午餐好嘢呀",
+        one_yuewen_shifted="午餐啦",
+        two_yuewen_shifted="午餐好嘢呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="怎么个精采法？",
+        one_yuewen="午餐好嘢呀",
+        two_zhongwen="跟晚餐一样精采",
+        two_yuewen="点好嘢法呀同晚餐一样咁好嘢",
+        one_yuewen_shifted="午餐好嘢呀点好嘢法呀",
+        two_yuewen_shifted="同晚餐一样咁好嘢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="跟晚餐一样精采",
+        one_yuewen="同晚餐一样咁好嘢",
+        two_zhongwen="晚餐又怎样呢？",
+        two_yuewen="噉晚餐又点好嘢法呀",
+        one_yuewen_shifted="同晚餐一样咁好嘢",
+        two_yuewen_shifted="噉晚餐又点好嘢法呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="晚餐又怎样呢？",
+        one_yuewen="噉晚餐又点好嘢法呀",
+        two_zhongwen="跟常餐一样精采",
+        two_yuewen="同上餐一样咁好嘢啰",
+        one_yuewen_shifted="噉晚餐又点好嘢法呀",
+        two_yuewen_shifted="同上餐一样咁好嘢啰",
+    ),
+    ShiftTestCase(
+        one_zhongwen="跟常餐一样精采",
+        one_yuewen="同上餐一样咁好嘢啰",
+        two_zhongwen="常餐又怎样呢？",
+        two_yuewen="噉上餐又点好嘢法呀",
+        one_yuewen_shifted="同上餐一样咁好嘢啰",
+        two_yuewen_shifted="噉上餐又点好嘢法呀",
+    ),
+    ShiftTestCase(
+        one_zhongwen="常餐又怎样呢？",
+        one_yuewen="噉上餐又点好嘢法呀",
+        two_zhongwen="常餐早卖光了，你说精采不？",
+        two_yuewen="上餐上餐一早卖晒啦你话好唔好嘢",
+        one_yuewen_shifted="噉上餐又点好嘢法呀",
+        two_yuewen_shifted="上餐上餐一早卖晒啦你话好唔好嘢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="常餐早卖光了，你说精采不？",
+        one_yuewen="上餐上餐一早卖晒啦你话好唔好嘢",
+        two_zhongwen="好吧好吧！两份午餐好了",
+        two_yuewen="好啦好啦要两份午餐啦",
+        one_yuewen_shifted="上餐上餐一早卖晒啦你话好唔好嘢",
+        two_yuewen_shifted="好啦好啦要两份午餐啦",
+    ),
+]
 shift_test_cases_block_72 = [
     ShiftTestCase(
         one_zhongwen="对不起，午餐卖光了",
@@ -1660,16 +2106,14 @@ shift_test_cases_block_72 = [
         two_yuewen_shifted="想快想快就要快餐啊",
     ),
 ]
-
 mlamd_shift_test_cases: list[ShiftTestCase] = sum(
     (globals()[f"shift_test_cases_block_{i}"] for i in range(73)), []
 )
-"""MLAMD 粤文 shift test cases."""
-
+"""MLAMD 粤文 shiting test cases."""
 # endregion
 
-# region 粤文 Merge Test Cases
 
+# region 粤文 Merge Test Cases
 merge_test_cases_block_0 = [
     MergeTestCase(
         zhongwen="在麦太即将临盆的时候",
@@ -2164,8 +2608,190 @@ merge_test_cases_block_66 = []
 merge_test_cases_block_67 = []
 merge_test_cases_block_68 = []
 merge_test_cases_block_69 = []
-merge_test_cases_block_70 = []
-merge_test_cases_block_71 = []
+merge_test_cases_block_70 = [
+    MergeTestCase(
+        zhongwen="对不起，常餐卖光了",
+        yuewen_to_merge=["唔好意思", "上餐卖晒"],
+        yuewen_merged="唔好意思，上餐卖晒",
+    ),
+    MergeTestCase(
+        zhongwen="那改要特餐吧",
+        yuewen_to_merge=["咁改要特餐啦"],
+        yuewen_merged="咁改要特餐啦",
+    ),
+    MergeTestCase(
+        zhongwen="特餐？特餐有什么吃？",
+        yuewen_to_merge=["特餐", "特餐有咩食㗎"],
+        yuewen_merged="特餐？特餐有咩食㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="特餐即是午餐呀",
+        yuewen_to_merge=["特餐就即系午餐啰"],
+        yuewen_merged="特餐就即系午餐啰",
+    ),
+    MergeTestCase(
+        zhongwen="午餐又吃什么呢？",
+        yuewen_to_merge=["午餐食乜嘢㗎"],
+        yuewen_merged="午餐食乜嘢㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="都是晚餐那些吧",
+        yuewen_to_merge=["都系晚餐𠮶啲嘢啰"],
+        yuewen_merged="都系晚餐𠮶啲嘢啰",
+    ),
+    MergeTestCase(
+        zhongwen="什么是晚餐？",
+        yuewen_to_merge=["咁乜嘢系晚餐呀"],
+        yuewen_merged="咁乜嘢系晚餐呀？",
+    ),
+    MergeTestCase(
+        zhongwen="跟快餐一样",
+        yuewen_to_merge=["同快餐一样啰"],
+        yuewen_merged="同快餐一样啰",
+    ),
+    MergeTestCase(
+        zhongwen="快餐吃什么？",
+        yuewen_to_merge=["咁快餐食咩㗎"],
+        yuewen_merged="咁快餐食咩㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="唉，快餐不就是常餐",
+        yuewen_to_merge=["系", "快餐就即系上餐啰"],
+        yuewen_merged="系，快餐就即系上餐啰",
+    ),
+    MergeTestCase(
+        zhongwen="常餐不是卖光了吗？",
+        yuewen_to_merge=["咁你头先又话冇上餐", "系呀", "上餐就系卖晒呀"],
+        yuewen_merged="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
+    ),
+    MergeTestCase(
+        zhongwen="对，常餐卖光了，要吃特餐吗？",
+        yuewen_to_merge=["咁你试唔试下特餐啦"],
+        yuewen_merged="咁你试唔试下特餐啦？",
+    ),
+    MergeTestCase(
+        zhongwen="来两份特餐吧",
+        yuewen_to_merge=["两份特餐啦"],
+        yuewen_merged="两份特餐啦",
+    ),
+    MergeTestCase(
+        zhongwen="对不起，特餐卖光了",
+        yuewen_to_merge=["唔好意思", "特餐卖晒嘅"],
+        yuewen_merged="唔好意思，特餐卖晒嘅",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈，改快餐吧",
+        yuewen_to_merge=["妈妈", "不如改快餐啦"],
+        yuewen_merged="妈妈，不如改快餐啦",
+    ),
+    MergeTestCase(
+        zhongwen="快餐有什么？",
+        yuewen_to_merge=["快餐有咩㗎"],
+        yuewen_merged="快餐有咩㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="快餐即是常餐",
+        yuewen_to_merge=["快餐即系上餐"],
+        yuewen_merged="快餐即系上餐",
+    ),
+    MergeTestCase(
+        zhongwen="常餐又有什么呢？",
+        yuewen_to_merge=["咁上餐有咩㗎"],
+        yuewen_merged="咁上餐有咩㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="常餐即是午餐",
+        yuewen_to_merge=["上餐就即系午餐啰"],
+        yuewen_merged="上餐就即系午餐啰",
+    ),
+    MergeTestCase(
+        zhongwen="那么午餐又有什么吃？",
+        yuewen_to_merge=["哎呀", "咁午餐有咩食呀"],
+        yuewen_merged="哎呀，咁午餐有咩食呀？",
+    ),
+    MergeTestCase(
+        zhongwen="午餐跟晚餐一样",
+        yuewen_to_merge=["午餐同晚餐一样㗎"],
+        yuewen_merged="午餐同晚餐一样㗎",
+    ),
+    MergeTestCase(
+        zhongwen="晚餐呢？",
+        yuewen_to_merge=["咁晚餐呢"],
+        yuewen_merged="咁晚餐呢？",
+    ),
+    MergeTestCase(
+        zhongwen="晚餐不就是特餐",
+        yuewen_to_merge=["晚餐就即系特餐啰"],
+        yuewen_merged="晚餐就即系特餐啰",
+    ),
+    MergeTestCase(
+        zhongwen="不是说特餐卖光了吗？",
+        yuewen_to_merge=["咁你头先又话冇特餐"],
+        yuewen_merged="咁你头先又话冇特餐？",
+    ),
+    MergeTestCase(
+        zhongwen="特餐卖光了，要试试快餐吗？都一样的",
+        yuewen_to_merge=["系呀", "特餐系卖晒呀", "咁你试唔试下个快餐啦", "一样嘅啫"],
+        yuewen_merged="系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫",
+    ),
+    MergeTestCase(
+        zhongwen="来两份快餐吧",
+        yuewen_to_merge=["咁两份快餐啦"],
+        yuewen_merged="咁两份快餐啦",
+    ),
+]
+merge_test_cases_block_71 = [
+    MergeTestCase(
+        zhongwen="对不起，没快餐了",
+        yuewen_to_merge=["唔好意思冇快餐呀"],
+        yuewen_merged="唔好意思，冇快餐呀",
+    ),
+    MergeTestCase(
+        zhongwen="太过分了吧？你们究竟有吃的没？",
+        yuewen_to_merge=["嚟唔嚟普啲呀", "噉你哋究竟有啲咩餐呀"],
+        yuewen_merged="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
+    ),
+    MergeTestCase(
+        zhongwen="午餐吧，午餐精采呀",
+        yuewen_to_merge=["午餐啦"],
+        yuewen_merged="午餐啦",
+    ),
+    MergeTestCase(
+        zhongwen="怎么个精采法？",
+        yuewen_to_merge=["午餐好嘢呀", "点好嘢法呀"],
+        yuewen_merged="午餐好嘢呀，点好嘢法呀？",
+    ),
+    MergeTestCase(
+        zhongwen="跟晚餐一样精采",
+        yuewen_to_merge=["同晚餐一样咁好嘢"],
+        yuewen_merged="同晚餐一样咁好嘢",
+    ),
+    MergeTestCase(
+        zhongwen="晚餐又怎样呢？",
+        yuewen_to_merge=["噉晚餐又点好嘢法呀"],
+        yuewen_merged="噉晚餐又点好嘢法呀？",
+    ),
+    MergeTestCase(
+        zhongwen="跟常餐一样精采",
+        yuewen_to_merge=["同上餐一样咁好嘢啰"],
+        yuewen_merged="同上餐一样咁好嘢啰",
+    ),
+    MergeTestCase(
+        zhongwen="常餐又怎样呢？",
+        yuewen_to_merge=["噉上餐又点好嘢法呀"],
+        yuewen_merged="噉上餐又点好嘢法呀？",
+    ),
+    MergeTestCase(
+        zhongwen="常餐早卖光了，你说精采不？",
+        yuewen_to_merge=["上餐", "上餐一早卖晒啦", "你话好唔好嘢"],
+        yuewen_merged="上餐，上餐一早卖晒啦，你话好唔好嘢？",
+    ),
+    MergeTestCase(
+        zhongwen="好吧好吧！两份午餐好了",
+        yuewen_to_merge=["好啦好啦", "要两份午餐啦"],
+        yuewen_merged="好啦好啦！要两份午餐啦",
+    ),
+]
 merge_test_cases_block_72 = [
     MergeTestCase(
         zhongwen="对不起，午餐卖光了",
@@ -2198,13 +2824,12 @@ merge_test_cases_block_72 = [
         yuewen_merged="想快，想快就要快餐啊！",
     ),
 ]
-
 mlamd_merge_test_cases: list[MergeTestCase] = sum(
     (globals()[f"merge_test_cases_block_{i}"] for i in range(73)), []
 )
-"""MLAMD 粤文 merge test cases."""
-
+"""MLAMD 粤文 merging test cases."""
 # endregion
+
 
 # region 粤文 Proof Test Cases
 proof_test_cases_block_0 = [
@@ -2227,6 +2852,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="沿住荔枝角道直出大角咀道",
         note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' "
         "is the correct word for 'road' in both cases.",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
@@ -2308,8 +2934,8 @@ proof_test_cases_block_0 = [
     ProofTestCase(
         zhongwen="麦太认定这是异像",
         yuewen="麦太认定呢个系异象",
-        yuewen_proofread="麦太认定呢个系异象",
-        note="",
+        yuewen_proofread="麦太认定呢个系异像",
+        note="Corrected '异象' to '异像' as '异像' is the correct term in this context",
     ),
     ProofTestCase(
         zhongwen="于是向额角上的胶兜许愿",
@@ -2694,6 +3320,7 @@ proof_test_cases_block_3 = [
         yuewen="𠮶个位同学⋯",
         yuewen_proofread="𠮶个位同学⋯",
         note="",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="今天的早会主要是跟大家分享",
@@ -2725,8 +3352,8 @@ proof_test_cases_block_3 = [
     ProofTestCase(
         zhongwen="太好了！大家去上堂吧",
         yuewen="哎，好在！噉大家可以返去上堂喇",
-        yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
-        note="",
+        yuewen_proofread="哎，好啦！噉大家可以返去上堂喇",
+        note="Corrected '好在' to '好啦' as '好啦' is a more appropriate expression.",
     ),
 ]
 proof_test_cases_block_4 = []
@@ -2795,8 +3422,228 @@ proof_test_cases_block_66 = []
 proof_test_cases_block_67 = []
 proof_test_cases_block_68 = []
 proof_test_cases_block_69 = []
-proof_test_cases_block_70 = []
-proof_test_cases_block_71 = []
+proof_test_cases_block_70 = [
+    ProofTestCase(
+        zhongwen="对不起，常餐卖光了",
+        yuewen="唔好意思，上餐卖晒",
+        yuewen_proofread="唔好意思，常餐卖晒",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="那改要特餐吧",
+        yuewen="咁改要特餐啦",
+        yuewen_proofread="咁改要特餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="特餐？特餐有什么吃？",
+        yuewen="特餐？特餐有咩食㗎？",
+        yuewen_proofread="特餐？特餐有咩食㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="特餐即是午餐呀",
+        yuewen="特餐就即系午餐啰",
+        yuewen_proofread="特餐就即系午餐啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="午餐又吃什么呢？",
+        yuewen="午餐食乜嘢㗎？",
+        yuewen_proofread="午餐食乜嘢㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="都是晚餐那些吧",
+        yuewen="都系晚餐𠮶啲嘢啰",
+        yuewen_proofread="都系晚餐𠮶啲嘢啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="什么是晚餐？",
+        yuewen="咁乜嘢系晚餐呀？",
+        yuewen_proofread="咁乜嘢系晚餐呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跟快餐一样",
+        yuewen="同快餐一样啰",
+        yuewen_proofread="同快餐一样啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="快餐吃什么？",
+        yuewen="咁快餐食咩㗎？",
+        yuewen_proofread="咁快餐食咩㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="唉，快餐不就是常餐",
+        yuewen="系，快餐就即系上餐啰",
+        yuewen_proofread="系，快餐就即系常餐啰",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'regular set meal', matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="常餐不是卖光了吗？",
+        yuewen="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
+        yuewen_proofread="咁你头先又话冇常餐，系呀，常餐就系卖晒呀？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning of '常餐' in the 中文; '上餐' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="对，常餐卖光了，要吃特餐吗？",
+        yuewen="咁你试唔试下特餐啦？",
+        yuewen_proofread="咁你试唔试下特餐啦？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="来两份特餐吧",
+        yuewen="两份特餐啦",
+        yuewen_proofread="两份特餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="对不起，特餐卖光了",
+        yuewen="唔好意思，特餐卖晒嘅",
+        yuewen_proofread="唔好意思，特餐卖晒喇",
+        note="Replaced '卖晒嘅' with '卖晒喇' as '卖晒喇' is the natural way to indicate 'sold out' in Cantonese, while '卖晒嘅' is likely a mishearing or unnatural ending.",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈，改快餐吧",
+        yuewen="妈妈，不如改快餐啦",
+        yuewen_proofread="妈妈，不如改快餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="快餐有什么？",
+        yuewen="快餐有咩㗎？",
+        yuewen_proofread="快餐有咩㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="快餐即是常餐",
+        yuewen="快餐即系上餐",
+        yuewen_proofread="快餐即系常餐",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'regular set meal', matching the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="常餐又有什么呢？",
+        yuewen="咁上餐有咩㗎？",
+        yuewen_proofread="常餐有咩㗎？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="常餐即是午餐",
+        yuewen="上餐就即系午餐啰",
+        yuewen_proofread="常餐就即系午餐啰",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'set meal' or 'regular meal', matching the meaning of '常餐' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="那么午餐又有什么吃？",
+        yuewen="哎呀，咁午餐有咩食呀？",
+        yuewen_proofread="哎呀，咁午餐有咩食呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="午餐跟晚餐一样",
+        yuewen="午餐同晚餐一样㗎",
+        yuewen_proofread="午餐同晚餐一样㗎",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="晚餐呢？",
+        yuewen="咁晚餐呢？",
+        yuewen_proofread="咁晚餐呢？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="晚餐不就是特餐",
+        yuewen="晚餐就即系特餐啰",
+        yuewen_proofread="晚餐就即系特餐啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="不是说特餐卖光了吗？",
+        yuewen="咁你头先又话冇特餐？",
+        yuewen_proofread="咁你头先又话冇特餐？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="特餐卖光了，要试试快餐吗？都一样的",
+        yuewen="系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫",
+        yuewen_proofread="系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="来两份快餐吧",
+        yuewen="咁两份快餐啦",
+        yuewen_proofread="咁两份快餐啦",
+        note="",
+    ),
+]
+proof_test_cases_block_71 = [
+    ProofTestCase(
+        zhongwen="对不起，没快餐了",
+        yuewen="唔好意思，冇快餐呀",
+        yuewen_proofread="唔好意思，冇快餐呀",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="太过分了吧？你们究竟有吃的没？",
+        yuewen="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
+        yuewen_proofread="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="午餐吧，午餐精采呀",
+        yuewen="午餐啦",
+        yuewen_proofread="午餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="怎么个精采法？",
+        yuewen="午餐好嘢呀，点好嘢法呀？",
+        yuewen_proofread="午餐好嘢呀，点好嘢法呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跟晚餐一样精采",
+        yuewen="同晚餐一样咁好嘢",
+        yuewen_proofread="同晚餐一样咁好嘢",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="晚餐又怎样呢？",
+        yuewen="噉晚餐又点好嘢法呀？",
+        yuewen_proofread="噉晚餐又点好嘢法呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跟常餐一样精采",
+        yuewen="同上餐一样咁好嘢啰",
+        yuewen_proofread="同上餐一样咁好嘢啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="常餐又怎样呢？",
+        yuewen="噉上餐又点好嘢法呀？",
+        yuewen_proofread="噉常餐又点好嘢法呀？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, "
+        "matching the meaning of '常餐' in the 中文; '上餐' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="常餐早卖光了，你说精采不？",
+        yuewen="上餐，上餐一早卖晒啦，你话好唔好嘢？",
+        yuewen_proofread="常餐，常餐一早卖晒啦，你话好唔好嘢？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal "
+        "referenced in the 中文, and '上餐' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="好吧好吧！两份午餐好了",
+        yuewen="好啦好啦！要两份午餐啦",
+        yuewen_proofread="好啦好啦！要两份午餐啦",
+        note="",
+    ),
+]
 proof_test_cases_block_72 = [
     ProofTestCase(
         zhongwen="对不起，午餐卖光了",
@@ -2836,12 +3683,10 @@ proof_test_cases_block_72 = [
         note="",
     ),
 ]
-
-
 mlamd_proof_test_cases: list[ProofTestCase] = sum(
     (globals()[f"proof_test_cases_block_{i}"] for i in range(73)), []
 )
-
+"""MLAMD 粤文 proofing test cases."""
 # endregion
 
 ___all__ = [

@@ -32,7 +32,7 @@ from test.data.mlamd import (
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(2)
+    set_logging_verbosity(1)
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     all_series = []
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        if i != 72:
+        if i != 70:
             continue
 
         # Transcribe audio

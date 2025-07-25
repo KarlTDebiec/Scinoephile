@@ -35,7 +35,7 @@ def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
         test_case: Query and expected answer
     """
     answer = queryer(test_case.query)
-    assert answer.yuewen_proofread == test_case.yuewen_proofread
+    assert answer.yuewen_proofread == test_case.yuewen_proofread, answer.note
     if test_case.yuewen != test_case.yuewen_proofread:
         assert len(answer.note) > 0  # Ensure that a note was generated
 
