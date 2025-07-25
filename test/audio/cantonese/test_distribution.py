@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.audio.cantonese.distribution import DistributeTestCase, Distributor
 from scinoephile.testing import test_data_root
-from scinoephile.testing.mark import flaky, skip_if_ci
+from scinoephile.testing.mark import skip_if_ci
 from test.data.mlamd import mlamd_distribute_test_cases  # noqa: F401
 
 
@@ -43,7 +43,7 @@ def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
     "fixture_name",
     [
         skip_if_ci()("distributor_few_shot"),
-        skip_if_ci(flaky())("distributor_zero_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_distribute_test_cases)

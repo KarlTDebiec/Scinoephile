@@ -32,7 +32,7 @@ from test.data.mlamd import (
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(2)
+    set_logging_verbosity(1)
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -46,6 +46,16 @@ if __name__ == "__main__":
         "khleeloo/whisper-large-v3-cantonese",
         cache_dir_path=test_data_root / "cache",
     )
+    distributor = Distributor(
+        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
+        print_test_case=True,
+        cache_dir_path=test_data_root / "cache",
+    )
+    shifter = Shifter(
+        examples=[m for m in mlamd_shift_test_cases if m.include_in_prompt],
+        print_test_case=True,
+        cache_dir_path=test_data_root / "cache",
+    )
     merger = Merger(
         examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
         print_test_case=True,
@@ -56,24 +66,14 @@ if __name__ == "__main__":
         print_test_case=True,
         cache_dir_path=test_data_root / "cache",
     )
-    shifter = Shifter(
-        examples=[m for m in mlamd_shift_test_cases if m.include_in_prompt],
-        print_test_case=True,
-        cache_dir_path=test_data_root / "cache",
-    )
-    splitter = Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
-        print_test_case=True,
-        cache_dir_path=test_data_root / "cache",
-    )
     aligner = Aligner(
-        merger=merger, proofer=proofer, shifter=shifter, splitter=splitter
+        merger=merger, proofer=proofer, shifter=shifter, distributor=distributor
     )
 
     all_series = []
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        if i != 4:
+        if i != 52:
             continue
 
         # Transcribe audio

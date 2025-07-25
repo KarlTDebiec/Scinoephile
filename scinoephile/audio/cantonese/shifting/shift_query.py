@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
@@ -22,5 +21,5 @@ class ShiftQuery(Query):
     def validate_query(self) -> ShiftQuery:
         """Ensure query has minimum necessary information."""
         if not self.one_yuewen and not self.two_yuewen:
-            raise ScinoephileError("Query must have 粤文 text one, two, or both.")
+            raise ValueError("Query must have 粤文 text one, two, or both.")
         return self

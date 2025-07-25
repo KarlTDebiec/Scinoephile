@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
@@ -27,9 +26,9 @@ class DistributeQuery(Query):
     def validate_query(self) -> DistributeQuery:
         """Ensure query has minimum necessary information."""
         if not self.one_zhongwen:
-            raise ScinoephileError("Query must have corresponding 中文 text one.")
+            raise ValueError("Query must have corresponding 中文 text one.")
         if not self.two_zhongwen:
-            raise ScinoephileError("Query must have corresponding 中文 text two.")
+            raise ValueError("Query must have corresponding 中文 text two.")
         if not self.yuewen_to_distribute:
-            raise ScinoephileError("Query must have 粤文 text.")
+            raise ValueError("Query must have 粤文 text.")
         return self

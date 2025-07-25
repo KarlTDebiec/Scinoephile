@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
@@ -21,5 +20,5 @@ class MergeAnswer(Answer):
     def validate_answer(self) -> MergeAnswer:
         """Ensure answer is internally valid."""
         if not self.yuewen_merged:
-            raise ScinoephileError("Answer must have merged 粤文 text.")
+            raise ValueError("Answer must have merged 粤文 text.")
         return self
