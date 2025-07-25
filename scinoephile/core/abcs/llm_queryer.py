@@ -108,6 +108,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 answer = self.answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
                     test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                    self._test_case_log[test_case.query.query_key] = test_case
                     print(f"{test_case.source_str},")
                 return answer
 
@@ -215,7 +216,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         for key, value in self._test_case_log.items():
             source_str: str = value.source_str
             if key in self._examples_log:
-                source_str = f"{source_str[:-1]}, include_in_prompt=True\n)"
+                source_str = f"{source_str[:-1]}    include_in_prompt=True\n)"
             test_case_log_str += f"{source_str},\n"
         test_case_log_str += "\n]"
         return test_case_log_str
