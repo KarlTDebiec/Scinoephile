@@ -10,7 +10,6 @@ from pydantic import model_validator
 
 from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
 from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -32,7 +31,7 @@ class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
         expected = "".join(remove_punc_and_whitespace(s) for s in self.yuewen_to_merge)
         received = remove_punc_and_whitespace(self.yuewen_merged)
         if expected != received:
-            raise ScinoephileError(
+            raise ValueError(
                 "Answer's 粤文 text stripped of punctuation and whitespace does not "
                 "match query's 粤文 text concatendated and stripped of punctuation of "
                 "whitespace:\n"

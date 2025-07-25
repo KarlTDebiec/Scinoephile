@@ -10,7 +10,6 @@ from pydantic import model_validator
 
 from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
 from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import TestCase
 
 
@@ -26,7 +25,7 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
     def validate_test_case(self) -> ProofTestCase:
         """Ensure query and answer are consistent with one another."""
         if self.yuewen != self.yuewen_proofread and not self.note:
-            raise ScinoephileError(
+            raise ValueError(
                 "Answer's proofed 粤文 text is modified relative to query's 粤文 "
                 "text, not no note is provided"
             )

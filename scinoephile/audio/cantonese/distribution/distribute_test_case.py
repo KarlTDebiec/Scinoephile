@@ -8,7 +8,6 @@ from pydantic import model_validator
 
 from scinoephile.audio.cantonese.distribution.distribute_answer import DistributeAnswer
 from scinoephile.audio.cantonese.distribution.distribute_query import DistributeQuery
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import TestCase
 
 
@@ -23,7 +22,7 @@ class DistributeTestCase(
         expected = self.yuewen_to_distribute
         received = self.one_yuewen_to_append + self.two_yuewen_to_prepend
         if expected != received:
-            raise ScinoephileError(
+            raise ValueError(
                 "Answer's concatenated 粤文 text to append and prepend does not match "
                 "query's 粤文 text to split:\n"
                 f"Expected: {self.yuewen_to_distribute}\n"

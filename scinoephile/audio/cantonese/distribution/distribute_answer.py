@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
@@ -24,5 +23,5 @@ class DistributeAnswer(Answer):
     def validate_answer(self) -> DistributeAnswer:
         """Ensure answer is internally valid."""
         if not self.one_yuewen_to_append and not self.two_yuewen_to_prepend:
-            raise ScinoephileError("Answer must have 粤文 text to append or prepend.")
+            raise ValueError("Answer must have 粤文 text to append or prepend.")
         return self

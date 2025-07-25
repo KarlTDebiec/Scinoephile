@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
@@ -24,7 +23,7 @@ class MergeQuery(Query):
     def validate_query(self) -> MergeQuery:
         """Ensure query has minimum necessary information."""
         if not self.zhongwen:
-            raise ScinoephileError("Query must have corresponding 中文 text.")
+            raise ValueError("Query must have corresponding 中文 text.")
         if not self.yuewen_to_merge:
-            raise ScinoephileError("Query must have 粤文 text to merge.")
+            raise ValueError("Query must have 粤文 text to merge.")
         return self

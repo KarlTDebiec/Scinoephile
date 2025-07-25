@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
@@ -20,7 +19,7 @@ class ProofAnswer(Answer):
     def validate_answer(self) -> ProofAnswer:
         """Ensure answer is internally valid."""
         if not self.yuewen_proofread and not self.note:
-            raise ScinoephileError(
+            raise ValueError(
                 "If Answer omits proofread 粤文 text to indicate pure transcription "
                 "artifacts, it must also include a note describing the issue."
             )

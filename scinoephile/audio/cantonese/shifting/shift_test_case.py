@@ -10,7 +10,6 @@ from pydantic import model_validator
 
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -34,7 +33,7 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
             self.one_yuewen_shifted + self.two_yuewen_shifted
         )
         if expected != received:
-            raise ScinoephileError(
+            raise ValueError(
                 "Answer's concatenated shifted 粤文 text one and two does not match "
                 "query's concatenated 粤文 text one and two:\n"
                 f"Expected: {expected}\n"
