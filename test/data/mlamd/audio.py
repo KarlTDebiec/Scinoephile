@@ -4,15 +4,12 @@
 
 from __future__ import annotations
 
-import re
-from logging import info
-from pathlib import Path
-
 from scinoephile.audio import (
     AudioSeries,
     get_series_from_segments,
 )
 from scinoephile.audio.cantonese.alignment import Aligner
+from scinoephile.audio.cantonese.alignment.testing import update_test_cases
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
@@ -32,19 +29,6 @@ from test.data.mlamd import (
     mlamd_proof_test_cases,
     mlamd_shift_test_cases,
 )
-
-
-def replace_test_cases_in_file(file_path: Path, list_name: str, new_cases_str: str):
-    pattern = re.compile(
-        rf"{list_name}\s*=\s*\[(.*?)\]  # {list_name}",
-        re.DOTALL,
-    )
-    contents = file_path.read_text(encoding="utf-8")
-    replacement = f"{list_name} = {new_cases_str}  # {list_name}"
-    new_contents = pattern.sub(replacement, contents)
-    file_path.write_text(new_contents, encoding="utf-8")
-    info(f"Replaced test cases {list_name} in {file_path.name}.")
-
 
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
@@ -121,36 +105,27 @@ if __name__ == "__main__":
         print(f"CANTONESE:\n{yuewen_series.to_simple_string()}")
         all_series.append(yuewen_series)
 
-        # Test files
-        distribution_file = test_data_root / "mlamd" / "distribution.py"
-        shifting_file = test_data_root / "mlamd" / "shifting.py"
-        merging_file = test_data_root / "mlamd" / "merging.py"
-        proofing_file = test_data_root / "mlamd" / "proofing.py"
-
-        # Names of test case lists
-        distribution_test_cases = f"distribute_test_cases_block_{i}"
-        shifting_test_cases = f"shift_test_cases_block_{i}"
-        merging_test_cases = f"merge_test_cases_block_{i}"
-        proofing_test_cases = f"proof_test_cases_block_{i}"
-
-        # TODO: Replace test case lists in the test files
-        replace_test_cases_in_file(
-            distribution_file, distribution_test_cases, distributor.test_case_log_str
+        # TODO: Replace test case lists in files
+        update_test_cases(
+            test_data_root / "mlamd" / "distribution.py",
+            f"distribute_test_cases_block_{i}",
+            distributor,
         )
-        replace_test_cases_in_file(
-            shifting_file, shifting_test_cases, shifter.test_case_log_str
+        update_test_cases(
+            test_data_root / "mlamd" / "shifting.py",
+            f"shift_test_cases_block_{i}",
+            shifter,
         )
-        replace_test_cases_in_file(
-            merging_file, merging_test_cases, merger.test_case_log_str
+        update_test_cases(
+            test_data_root / "mlamd" / "merging.py",
+            f"merge_test_cases_block_{i}",
+            merger,
         )
-        replace_test_cases_in_file(
-            proofing_file, proofing_test_cases, proofer.test_case_log_str
+        update_test_cases(
+            test_data_root / "mlamd" / "proofing.py",
+            f"proof_test_cases_block_{i}",
+            proofer,
         )
-        # Reset logs
-        distributor.clear_test_case_log()
-        shifter.clear_test_case_log()
-        merger.clear_test_case_log()
-        proofer.clear_test_case_log()
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")
