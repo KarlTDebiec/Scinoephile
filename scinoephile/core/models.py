@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import textwrap
 from typing import Any
 
 
@@ -18,7 +19,23 @@ def format_field(name: str, value: object) -> str:
     """
     if isinstance(value, str):
         escaped = value.replace("\\", "\\\\").replace('"', '\\"')
-        return f'    {name}="{escaped}",'
+        if len(escaped) > 60 or "\n" in escaped:
+            wrapped = textwrap.wrap(
+                escaped,
+                width=60,
+                break_long_words=False,
+                break_on_hyphens=False,
+            )
+            # Add a trailing space to all but the last line
+            for i in range(len(wrapped) - 1):
+                wrapped[i] += " "
+            joined_lines = "\n".join(
+                [f'    {name}="{wrapped[0]}"']
+                + [f'    {" " * (len(name) + 1)}"{line}"' for line in wrapped[1:]]
+            )
+            return f"{joined_lines},"
+        else:
+            return f'    {name}="{escaped}",'
     return f"    {name}={value!r},"
 
 

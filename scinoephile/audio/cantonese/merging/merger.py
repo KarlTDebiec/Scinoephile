@@ -17,12 +17,6 @@ class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
 
     @property
     @override
-    def answer_cls(self) -> type[MergeAnswer]:
-        """Answer class."""
-        return MergeAnswer
-
-    @property
-    @override
     def answer_example(self) -> MergeAnswer:
         """Example answer."""
         return MergeAnswer(yuewen_merged="粤文 merged")
@@ -41,15 +35,3 @@ class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         Do not make any corrections to the 粤文 text, other than adjusting punctuation
         and spacing.
         """
-
-    @property
-    @override
-    def query_cls(self) -> type[MergeQuery]:
-        """Query class."""
-        return MergeQuery
-
-    @property
-    @override
-    def test_case_cls(self) -> type[MergeTestCase]:
-        """Test case class."""
-        return MergeTestCase

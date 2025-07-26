@@ -9,6 +9,7 @@ from scinoephile.audio import (
     get_series_from_segments,
 )
 from scinoephile.audio.cantonese.alignment import Aligner
+from scinoephile.audio.cantonese.alignment.testing import update_test_cases
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
@@ -73,8 +74,8 @@ if __name__ == "__main__":
     all_series = []
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        if i != 52:
-            continue
+        # if i != 45:
+        #     continue
 
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -103,6 +104,28 @@ if __name__ == "__main__":
         print(f"MANDARIN:\n{zhongwen_series.to_simple_string()}")
         print(f"CANTONESE:\n{yuewen_series.to_simple_string()}")
         all_series.append(yuewen_series)
+
+        # TODO: Replace test case lists in files
+        update_test_cases(
+            test_data_root / "mlamd" / "distribution.py",
+            f"distribute_test_cases_block_{i}",
+            distributor,
+        )
+        update_test_cases(
+            test_data_root / "mlamd" / "shifting.py",
+            f"shift_test_cases_block_{i}",
+            shifter,
+        )
+        update_test_cases(
+            test_data_root / "mlamd" / "merging.py",
+            f"merge_test_cases_block_{i}",
+            merger,
+        )
+        update_test_cases(
+            test_data_root / "mlamd" / "proofing.py",
+            f"proof_test_cases_block_{i}",
+            proofer,
+        )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

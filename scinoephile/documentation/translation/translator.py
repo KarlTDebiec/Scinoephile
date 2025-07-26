@@ -5,31 +5,18 @@
 from __future__ import annotations
 
 from scinoephile.core.abcs import LLMQueryer
-from scinoephile.translation.models import (
-    ReadmeTranslationAnswer,
-    ReadmeTranslationQuery,
-)
-from scinoephile.translation.testing import ReadmeTranslationTestCase
+from scinoephile.documentation.translation.translate_answer import TranslateAnswer
+from scinoephile.documentation.translation.translate_query import TranslateQuery
+from scinoephile.documentation.translation.translate_test_case import TranslateTestCase
 
 
-class ReadmeTranslator(
-    LLMQueryer[
-        ReadmeTranslationQuery, ReadmeTranslationAnswer, ReadmeTranslationTestCase
-    ]
-):
+class Translator(LLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
     """Translates README from English to Chinese."""
 
     @property
-    def answer_cls(self) -> type[ReadmeTranslationAnswer]:
-        """Answer class."""
-        return ReadmeTranslationAnswer
-
-    @property
-    def answer_example(self) -> ReadmeTranslationAnswer:
+    def answer_example(self) -> TranslateAnswer:
         """Example answer."""
-        return ReadmeTranslationAnswer(
-            updated_chinese="Updated Chinese README",
-        )
+        return TranslateAnswer(updated_chinese="Updated Chinese README")
 
     @property
     def base_system_prompt(self) -> str:
@@ -44,13 +31,3 @@ class ReadmeTranslator(
         - "zhongwen": Mandarin Chinese using traditional characters (繁體中文)
         - "yuewen": Cantonese using traditional characters (繁體粵文)
         """
-
-    @property
-    def query_cls(self) -> type[ReadmeTranslationQuery]:
-        """Query class."""
-        return ReadmeTranslationQuery
-
-    @property
-    def test_case_cls(self) -> type[ReadmeTranslationTestCase]:
-        """Test case class."""
-        return ReadmeTranslationTestCase

@@ -64,4 +64,6 @@ class OpenAIProvider(LLMProvider):
                 )
             return completion.choices[0].message.content
         except OpenAIError as exc:
-            raise ScinoephileError(f"OpenAI API error: {exc}") from exc
+            raise ScinoephileError(
+                f"OpenAI API error ({exc.code}, {exc.type} {exc.param}) : {exc}"
+            ) from exc

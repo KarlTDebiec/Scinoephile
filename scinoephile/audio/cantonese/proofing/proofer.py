@@ -17,12 +17,6 @@ class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
 
     @property
     @override
-    def answer_cls(self) -> type[ProofAnswer]:
-        """Answer class."""
-        return ProofAnswer
-
-    @property
-    @override
     def answer_example(self) -> ProofAnswer:
         """Example answer."""
         return ProofAnswer(
@@ -58,15 +52,3 @@ class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         Include a one-sentence explanation in English for any correction you make.
         If you make no changes, return an empty string for the note.
         """
-
-    @property
-    @override
-    def query_cls(self) -> type[ProofQuery]:
-        """Query class."""
-        return ProofQuery
-
-    @property
-    @override
-    def test_case_cls(self) -> type[ProofTestCase]:
-        """Test case class."""
-        return ProofTestCase

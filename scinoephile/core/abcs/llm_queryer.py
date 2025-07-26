@@ -7,9 +7,11 @@ from __future__ import annotations
 import hashlib
 import json
 from abc import ABC, abstractmethod
+from functools import cached_property
 from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
+from typing import get_args, get_origin
 
 from pydantic import ValidationError
 
@@ -53,6 +55,11 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
+        self._examples_log: dict[tuple, TTestCase] = {}
+        """Log of examples, keyed by query key."""
+        self._test_case_log: dict[tuple, TTestCase] = {}
+        """Log of test cases, keyed by query key."""
+
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
         system_prompt += (
@@ -74,6 +81,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 system_prompt += json.dumps(
                     example.answer.model_dump(), indent=4, ensure_ascii=False
                 )
+                self._examples_log[example.query.query_key] = example
         self._system_prompt = system_prompt
 
         # Set up cache directory
@@ -100,6 +108,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 answer = self.answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
                     test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                    self._test_case_log[test_case.query.query_key] = test_case
                     print(f"{test_case.source_str},")
                 return answer
 
@@ -183,6 +192,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if answer is None or test_case is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
+        self._test_case_log[test_case.query.query_key] = test_case
         if self.print_test_case:
             print(f"{test_case.source_str},")
 
@@ -195,16 +205,41 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return answer
 
     @property
+    def test_case_log(self) -> dict[tuple, TTestCase]:
+        """Log of test cases, keyed by query key."""
+        return self._test_case_log
+
+    @property
+    def test_case_log_str(self) -> str:
+        """String representation of all test cases in the log."""
+        test_case_log_str = "[\n"
+        for key, value in self._test_case_log.items():
+            source_str: str = value.source_str
+            if key in self._examples_log:
+                source_str = f"{source_str[:-1]}    include_in_prompt=True,\n)"
+            test_case_log_str += f"{source_str},\n"
+        test_case_log_str += "\n]"
+        return test_case_log_str
+
+    def clear_test_case_log(self):
+        """Clear the test case log."""
+        self._test_case_log.clear()
+
+    @property
     @abstractmethod
     def answer_example(self) -> TAnswer:
         """Example answer."""
         raise NotImplementedError()
 
-    @property
-    @abstractmethod
+    @cached_property
     def answer_cls(self) -> type[TAnswer]:
         """Answer class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[1]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     @property
     @abstractmethod
@@ -212,22 +247,30 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Base system prompt."""
         raise NotImplementedError()
 
-    @property
-    @abstractmethod
+    @cached_property
     def query_cls(self) -> type[TQuery]:
         """Query class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[0]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     @property
     def system_prompt(self) -> str:
         """System prompt template."""
         return self._system_prompt
 
-    @property
-    @abstractmethod
+    @cached_property
     def test_case_cls(self) -> type[TTestCase]:
         """Test case class."""
-        raise NotImplementedError()
+        for base in getattr(self.__class__, "__orig_bases__", []):
+            if get_origin(base) is LLMQueryer:
+                return get_args(base)[2]
+        raise TypeError(
+            f"Could not determine answer class for {self.__class__.__name__}"
+        )
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.

@@ -10,9 +10,8 @@ from logging import info
 from scinoephile.common import package_root
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
+from scinoephile.documentation.translation import TranslateQuery, Translator
 from scinoephile.testing import test_data_root
-from scinoephile.translation import ReadmeTranslator
-from scinoephile.translation.models import ReadmeTranslationQuery
 
 
 def split_readme(readme_text: str) -> tuple[str, str]:
@@ -40,7 +39,7 @@ def main():
     """Update all README translations."""
     set_logging_verbosity(2)
     repo_root = package_root.parent
-    translator = ReadmeTranslator(cache_dir_path=test_data_root / "cache")
+    translator = Translator(cache_dir_path=test_data_root / "cache")
 
     # English
     english_path = repo_root / "README.md"
@@ -57,7 +56,7 @@ def main():
         complete_trad_chinese = trad_path.read_text(encoding="utf-8")
         _, outdated_trad_chinese = split_readme(complete_trad_chinese)
         updated_trad_chinese = translator(
-            ReadmeTranslationQuery(
+            TranslateQuery(
                 updated_english=updated_english,
                 outdated_chinese=outdated_trad_chinese,
                 language=language,
