@@ -67,6 +67,15 @@ distribute_test_cases_block_2 = [
         two_yuewen_to_prepend="",
     ),
     DistributeTestCase(
+        one_zhongwen="西人教英文？",
+        one_yuewen_start="咦",
+        two_zhongwen="是呀！",
+        two_yuewen_end="",
+        yuewen_to_distribute="西人教英文",
+        one_yuewen_to_append="西人教英文",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
         one_yuewen_start="",
         two_zhongwen="春田花花幼稚园？",
@@ -82,15 +91,6 @@ distribute_test_cases_block_2 = [
         two_yuewen_end="春田花花幼稚园呀",
         yuewen_to_distribute="银城美食广场附近𠮶间",
         one_yuewen_to_append="银城美食广场附近𠮶间",
-        two_yuewen_to_prepend="",
-    ),
-    DistributeTestCase(
-        one_zhongwen="西人教英文？",
-        one_yuewen_start="咦",
-        two_zhongwen="是呀！",
-        two_yuewen_end="",
-        yuewen_to_distribute="西人教英文",
-        one_yuewen_to_append="西人教英文",
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_2
@@ -148,6 +148,15 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="今次座会系要同大家分享一个可重要嘅主题",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
+    ),
+    DistributeTestCase(
+        one_zhongwen="今天的早会主要是跟大家分享",
+        one_yuewen_start="",
+        two_zhongwen="一个重要主题：",
+        two_yuewen_end="一个可重要嘅主题",
+        yuewen_to_distribute="今次座会系要同大家分享",
+        one_yuewen_to_append="今次座会系要同大家分享",
+        two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_3
 distribute_test_cases_block_4 = [

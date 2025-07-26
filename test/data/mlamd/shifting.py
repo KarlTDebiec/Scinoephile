@@ -409,14 +409,6 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="点解唔试下好彩走楼斜对面",
         two_yuewen_shifted="",
     ),
-    ShiftTestCase(  # NEXT ROUND
-        one_zhongwen="怎么不试一试好彩酒楼对面",
-        one_yuewen="点解唔试下好彩走楼斜对面",
-        two_zhongwen="旧中侨国货楼上的⋯",
-        two_yuewen="旧中桥百货公司楼上𠮶间",
-        one_yuewen_shifted="点解唔试下好彩走楼斜对面",
-        two_yuewen_shifted="旧中桥百货公司楼上𠮶间",
-    ),
     ShiftTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
         one_yuewen="",
@@ -426,7 +418,15 @@ shift_test_cases_block_2 = [
         two_yuewen_shifted="春田花花幼稚园呢",
         include_in_prompt=True,
     ),
-    ShiftTestCase(  # NEXT ROUND
+    ShiftTestCase(
+        one_zhongwen="怎么不试一试好彩酒楼对面",
+        one_yuewen="点解唔试下好彩走楼斜对面",
+        two_zhongwen="旧中侨国货楼上的⋯",
+        two_yuewen="旧中桥百货公司楼上𠮶间",
+        one_yuewen_shifted="点解唔试下好彩走楼斜对面",
+        two_yuewen_shifted="旧中桥百货公司楼上𠮶间",
+    ),
+    ShiftTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
         one_yuewen="旧中桥百货公司楼上𠮶间",
         two_zhongwen="春田花花幼稚园？",
@@ -450,14 +450,6 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
         two_yuewen_shifted="",
     ),
-    ShiftTestCase(  # NEXT ROUND
-        one_zhongwen="就是座落界限街南昌街交界⋯",
-        one_yuewen="就系坐落喺界限街同南昌街交界",
-        two_zhongwen="银城美食广场附近的⋯",
-        two_yuewen="银城美食广场附近𠮶间",
-        one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
-        two_yuewen_shifted="银城美食广场附近𠮶间",
-    ),
     ShiftTestCase(
         one_zhongwen="银城美食广场附近的⋯",
         one_yuewen="",
@@ -466,7 +458,15 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="银城美食广场附近𠮶间",
         two_yuewen_shifted="春田花花幼稚园呀",
     ),
-    ShiftTestCase(  # NEXT ROUND
+    ShiftTestCase(
+        one_zhongwen="就是座落界限街南昌街交界⋯",
+        one_yuewen="就系坐落喺界限街同南昌街交界",
+        two_zhongwen="银城美食广场附近的⋯",
+        two_yuewen="银城美食广场附近𠮶间",
+        one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
+        two_yuewen_shifted="银城美食广场附近𠮶间",
+    ),
+    ShiftTestCase(
         one_zhongwen="银城美食广场附近的⋯",
         one_yuewen="银城美食广场附近𠮶间",
         two_zhongwen="春田花花幼稚园？",
@@ -600,7 +600,7 @@ shift_test_cases_block_3 = [
         one_yuewen_shifted="我其实唔系好知佢噏文",
         two_yuewen_shifted="大湖荒岩宅",
     ),
-    ShiftTestCase(  # REVIEW
+    ShiftTestCase(
         one_zhongwen="蛋挞！　　蛋挞！",
         one_yuewen="大湖荒岩宅",
         two_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
@@ -608,7 +608,7 @@ shift_test_cases_block_3 = [
         one_yuewen_shifted="大湖荒岩宅",
         two_yuewen_shifted="湾吉校坟交涉设",
     ),
-    ShiftTestCase(  # REVIEW
+    ShiftTestCase(
         one_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
         one_yuewen="湾吉校坟交涉设",
         two_zhongwen="忘记校训九十七⋯　　忘记校训九十七⋯",

@@ -236,15 +236,16 @@ proof_test_cases_block_1 = [
         zhongwen="最后，胶兜「嘀督」一声落地",
         yuewen="最后，胶兜「滴嘟」一声咁落地",
         yuewen_proofread="最后，胶兜「嘀督」一声咁落地",
-        note="Corrected '滴嘟' to '嘀督' to match the intended onomatopoeic sound "
-        "described in the original text.",
+        note="Corrected '滴嘟' to '嘀督' to match the intended sound and "
+        "meaning of '嘀督' as a phonetic rendering of the sound effect "
+        "in the 中文.",
     ),
     ProofTestCase(
         zhongwen="嘀督？嘀督，就是答应了",
         yuewen="滴嘟？滴嘟㖞，即系应承啦",
         yuewen_proofread="嘀督？嘀督㖞，即系应承啦",
-        note="Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of "
-        "'嘀督' as a phonetic rendering of '嘀督' (答应了).",
+        note="Corrected '滴嘟' to '嘀督' to match the intended sound and "
+        "meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了).",
         include_in_prompt=True,
     ),
     ProofTestCase(
@@ -269,15 +270,15 @@ proof_test_cases_block_1 = [
         zhongwen="还是似周润发？",
         yuewen="定系话自周人烦啊？",
         yuewen_proofread="定系话似周润发啊？",
-        note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the actor's "
-        "name '周润发'.",
+        note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the "
+        "actor's name, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="为了纪念这赐福的胶兜",
         yuewen="为咗纪念呢个赤幅嘅胶兜",
         yuewen_proofread="为咗纪念呢个赐福嘅胶兜",
-        note="Corrected '赤幅' to '赐福' as '赐福' is the correct term and '赤幅' is a "
-        "likely mishearing.",
+        note="Corrected '赤幅' to '赐福' as '赐福' matches the meaning of '赐福' "
+        "in the 中文 and '赤幅' is a likely mishearing.",
     ),
     ProofTestCase(
         zhongwen="麦太决定把儿子命名麦胶",
@@ -328,8 +329,8 @@ proof_test_cases_block_2 = [
         zhongwen="怎么小腿粗起来了？",
         yuewen="个脚刮囊粗咗咁多呀？",
         yuewen_proofread="个脚瓜囊粗咗咁多呀？",
-        note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for "
-        "'calf', matching the meaning of '小腿'.",
+        note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese "
+        "term for 'calf', matching the meaning of '小腿'.",
         include_in_prompt=True,
     ),
     ProofTestCase(
@@ -348,15 +349,15 @@ proof_test_cases_block_2 = [
         zhongwen="怎么不试一试好彩酒楼对面",
         yuewen="点解唔试下好彩走楼斜对面",
         yuewen_proofread="点解唔试下好彩酒楼斜对面",
-        note="Corrected '走楼' to '酒楼' as '酒楼' is the correct term for restaurant, "
-        "matching the original meaning.",
+        note="Corrected '走楼' to '酒楼' as '酒楼' is the correct term for "
+        "'restaurant' and matches the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="旧中侨国货楼上的⋯",
         yuewen="旧中桥百货公司楼上𠮶间⋯",
         yuewen_proofread="旧中侨百货公司楼上𠮶间⋯",
-        note="Corrected '中桥' to '中侨' as '中侨' is the correct name, matching the "
-        "original 中文.",
+        note="Corrected '中桥' to '中侨' as '中侨' matches the original name in "
+        "the 中文, and '中桥' is likely a mishearing.",
     ),
     ProofTestCase(
         zhongwen="春田花花幼稚园？",
@@ -392,8 +393,8 @@ proof_test_cases_block_2 = [
         zhongwen="春田花花幼稚园，师资优良⋯",
         yuewen="春田花花幼稚园，诗诗优良⋯",
         yuewen_proofread="春田花花幼稚园，师资优良⋯",
-        note="Corrected '诗诗' to '师资' as '师资' is the correct term for teaching "
-        "staff, matching the meaning in the 中文.",
+        note="Corrected '诗诗优良' to '师资优良' as '师资' is the correct term for "
+        "teaching staff, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="而且还有西人教英文！",
@@ -431,7 +432,8 @@ proof_test_cases_block_3 = [
         zhongwen="横看竖看也不像发哥伟仔的一个⋯",
         yuewen="即系横睇掂睇都唔似发哥或者位仔𠮶个呢⋯",
         yuewen_proofread="即系横睇掂睇都唔似发哥或者伟仔𠮶个呢⋯",
-        note="Corrected '位仔' to '伟仔' as it is a mishearing of the name '伟仔', referring to 梁朝伟.",
+        note="Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname for "
+        "梁朝伟, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="就是我，麦兜",
@@ -467,30 +469,33 @@ proof_test_cases_block_3 = [
         zhongwen="我其实不大明白他的说话",
         yuewen="我其实唔系好知佢噏文",
         yuewen_proofread="我其实唔系好知佢噏乜",
-        note="Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches the "
-        "meaning of '他的说话', while '噏文' is likely a mishearing.",
+        note="Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches "
+        "the meaning of '他的说话', while '噏文' is likely a mishearing.",
         include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="蛋挞！　　蛋挞！",
         yuewen="大湖荒岩宅",
         yuewen_proofread="",
-        note="Cleared as '大湖荒岩宅' bears no resemblance to the original phrase "
-        "'蛋挞！　　蛋挞！' and is clearly a pure artifact. ",
+        note="Cleared as '大湖荒岩宅' bears no resemblance to the original "
+        "phrase '蛋挞！　　蛋挞！' and is clearly a complete transcription "
+        "failure.",
     ),
     ProofTestCase(
         zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
         yuewen="湾吉校坟交涉设",
         yuewen_proofread="",
-        note="Cleared as '湾吉校坟交涉设' bears no resemblance to the original phrase "
-        "'荔芋火鸭礼！　　荔芋火鸭礼！' and is clearly a pure artifact.",
+        note="Cleared as '湾吉校坟交涉设' bears no resemblance to the original "
+        "phrase '荔芋火鸭礼！　　荔芋火鸭礼！' and is clearly a complete "
+        "transcription failure.",
     ),
     ProofTestCase(
         zhongwen="也不能忘记校训九十八！",
         yuewen="都唔好湾吉校坟交涉白！",
         yuewen_proofread="",
-        note="Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the original "
-        "phrase '也不能忘记校训九十八！' and is clearly a pure artifact.",
+        note="Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the "
+        "original phrase '也不能忘记校训九十八！' and is clearly a pure "
+        "artifact.",
         include_in_prompt=True,
     ),
     ProofTestCase(
@@ -504,8 +509,8 @@ proof_test_cases_block_3 = [
         zhongwen="今天的早会主要是跟大家分享",
         yuewen="今次座会系要同大家分享",
         yuewen_proofread="今次早会系要同大家分享",
-        note="Corrected '座会' to '早会' as it is a mishearing of '早会', which matches "
-        "the meaning of the 中文.",
+        note="Corrected '座会' to '早会' as '早会' is the correct term for "
+        "'morning assembly', matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="一个重要主题：",
@@ -521,11 +526,11 @@ proof_test_cases_block_3 = [
     ),
     ProofTestCase(
         zhongwen="交过了！",
-        yuewen="交",
+        yuewen="交！",
         yuewen_proofread="交过咗！",
-        note="Added '过咗' to match the completed action indicated by '交过了' in the "
-        "中文; the original '交' is likely a transcription omission.",
-        include_in_prompt=True,
+        note="Added '过咗' to match the completed action indicated by '交过了' "
+        "in the 中文; the original '交' is likely a transcription "
+        "omission.",
     ),
     ProofTestCase(
         zhongwen="太好了！大家去上堂吧",

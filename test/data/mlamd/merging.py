@@ -199,7 +199,7 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["滴嘟", "滴嘟㖞", "即系应承啦"],
         yuewen_merged="滴嘟？滴嘟㖞，即系应承啦",
     ),
-    MergeTestCase(  # DIFFICULT; FAILS EVEN THOUGH INCLUDED IN PROMPT
+    MergeTestCase(
         zhongwen="麦太想，这次走运了！",
         yuewen_to_merge=["麦太心谂", "今次冇死喇"],
         yuewen_merged="麦太心谂，今次冇死喇！",
@@ -416,7 +416,7 @@ merge_test_cases_block_3 = [
         yuewen_to_merge=["一个可重要嘅主题"],
         yuewen_merged="一个可重要嘅主题：",
     ),
-    MergeTestCase(  # DIFFICULT; FAILS EVEN THOUGH INCLUDED IN PROMPT
+    MergeTestCase(
         zhongwen="小朋友，这个月你们交过学费没有？",
         yuewen_to_merge=["小朋友", "你哋今个月交咗学费咩呀"],
         yuewen_merged="小朋友，你哋今个月交咗学费咩呀？",
