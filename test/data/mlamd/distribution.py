@@ -473,9 +473,48 @@ distribute_test_cases_block_13 = [
         two_yuewen_to_prepend="唔得都要得",
     ),
 ]  # distribute_test_cases_block_13
-distribute_test_cases_block_14 = []  # distribute_test_cases_block_14
-distribute_test_cases_block_15 = []  # distribute_test_cases_block_15
-distribute_test_cases_block_16 = []  # distribute_test_cases_block_16
+distribute_test_cases_block_14 = [
+    DistributeTestCase(
+        one_zhongwen="至于好运⋯",
+        one_yuewen_start="",
+        two_zhongwen="我用一双童子手替妈妈抽的六合彩号码",
+        two_yuewen_end="我用我嘅同事手帮妈妈抽嘅六合彩number",
+        yuewen_to_distribute="至于好运",
+        one_yuewen_to_append="至于好运",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_14
+distribute_test_cases_block_15 = [
+    DistributeTestCase(
+        one_zhongwen="充满赤道活力的原始海洋，脱离繁嚣",
+        one_yuewen_start="充满住赤道热力嘅原始海洋",
+        two_zhongwen="体验热情如火的风土人情",
+        two_yuewen_end="体验热情如火嘅风土人情",
+        yuewen_to_distribute="远离凡嚣",
+        one_yuewen_to_append="远离凡嚣",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="很远的",
+        one_yuewen_start="",
+        two_zhongwen="有多远？",
+        two_yuewen_end="点远发呀",
+        yuewen_to_distribute="啊好远㗎",
+        one_yuewen_to_append="啊好远㗎",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_15
+distribute_test_cases_block_16 = [
+    DistributeTestCase(
+        one_zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
+        one_yuewen_start="𠮶度南天白云夜临树影",
+        two_zhongwen="座落于印度洋的世外桃源",
+        two_yuewen_end="独来鱼印度洋嘅世外桃源",
+        yuewen_to_distribute="水清沙幽",
+        one_yuewen_to_append="水清沙幽",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_16
 distribute_test_cases_block_17 = [
     DistributeTestCase(
         one_zhongwen="咦？",
@@ -487,8 +526,46 @@ distribute_test_cases_block_17 = [
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_17
-distribute_test_cases_block_18 = []  # distribute_test_cases_block_18
-distribute_test_cases_block_19 = []  # distribute_test_cases_block_19
+distribute_test_cases_block_18 = [
+    DistributeTestCase(
+        one_zhongwen="医生，吃了药会不会有那个什么的？",
+        one_yuewen_start="医生啊",
+        two_zhongwen="不会！",
+        two_yuewen_end="唔会",
+        yuewen_to_distribute="啲药食咗会唔会有𠮶啲咩㗎",
+        one_yuewen_to_append="啲药食咗会唔会有𠮶啲咩㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那么吃药用不用那个什么的？",
+        one_yuewen_start="",
+        two_zhongwen="不用！给他打口针吧！",
+        two_yuewen_end="唔使同佢打多支针添呢",
+        yuewen_to_distribute="噉佢食药使唔使咩啊",
+        one_yuewen_to_append="噉佢食药使唔使咩啊",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_18
+distribute_test_cases_block_19 = [
+    DistributeTestCase(
+        one_zhongwen="不要呀妈妈，我不喝呀",
+        one_yuewen_start="唔好捞妈妈",
+        two_zhongwen="我不喝士多啤梨药水呀！",
+        two_yuewen_end="我唔食士多啤梨药水呀",
+        yuewen_to_distribute="我唔食呀",
+        one_yuewen_to_append="我唔食呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="真的吗？",
+        one_yuewen_start="",
+        two_zhongwen="妈妈什么时候骗过你？",
+        two_yuewen_end="妈妈几时呃过你呀",
+        yuewen_to_distribute="真嘅",
+        one_yuewen_to_append="真嘅",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_19
 distribute_test_cases_block_20 = [
     DistributeTestCase(
         one_zhongwen="马尔代夫！",
@@ -520,16 +597,176 @@ distribute_test_cases_block_21 = [
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_21
-distribute_test_cases_block_22 = []  # distribute_test_cases_block_22
-distribute_test_cases_block_23 = []  # distribute_test_cases_block_23
-distribute_test_cases_block_24 = []  # distribute_test_cases_block_24
-distribute_test_cases_block_25 = []  # distribute_test_cases_block_25
+distribute_test_cases_block_22 = [
+    DistributeTestCase(
+        one_zhongwen="妈妈呀⋯",
+        one_yuewen_start="",
+        two_zhongwen="什么事？",
+        two_yuewen_end="乜嘢啊",
+        yuewen_to_distribute="妈妈",
+        one_yuewen_to_append="妈妈",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="马尔代夫，椰林树影，水清沙幼⋯",
+        one_yuewen_start="马尔代夫呢耶南树影",
+        two_zhongwen="座落于印度洋的世外桃源呀！",
+        two_yuewen_end="助流于印度园嘅世外导演啦",
+        yuewen_to_distribute="水清沙游",
+        one_yuewen_to_append="水清沙游",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="我病好了带我去马尔代夫的！",
+        one_yuewen_start="你话我病好咗之日就同我去马尔代夫㗎",
+        two_zhongwen="我是说发了财就带你去",
+        two_yuewen_end="我话发咗先至同你去㗎",
+        yuewen_to_distribute="你讲过㗎",
+        one_yuewen_to_append="你讲过㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="好了，别哭了",
+        one_yuewen_start="得啦得啦",
+        two_zhongwen="带你去马尔代夫好了",
+        two_yuewen_end="同你去马尔代夫啦",
+        yuewen_to_distribute="唔好喊啦",
+        one_yuewen_to_append="唔好喊啦",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="真的吗？　　对",
+        one_yuewen_start="真嘅",
+        two_zhongwen="什么时候去？",
+        two_yuewen_end="",
+        yuewen_to_distribute="系啊",
+        one_yuewen_to_append="系啊",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="什么时候去？",
+        one_yuewen_start="",
+        two_zhongwen="发财再说",
+        two_yuewen_end="等我发咗先啰",
+        yuewen_to_distribute="咁几时去啊",
+        one_yuewen_to_append="咁几时去啊",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_22
+distribute_test_cases_block_23 = [
+    DistributeTestCase(
+        one_zhongwen="快点帮手执行李",
+        one_yuewen_start="哦快啲嚟执埋啲行李先啦",
+        two_zhongwen="跟我向他们说，我明天去马尔代夫了",
+        two_yuewen_end="你帮我话畀佢哋知我明日去买热带裤薄",
+        yuewen_to_distribute="哦",
+        one_yuewen_to_append="哦",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="要执行李了，回来再跟你说吧",
+        one_yuewen_start="我要执行你喇",
+        two_zhongwen="再见！",
+        two_yuewen_end="拜拜",
+        yuewen_to_distribute="返嚟先再同你倾过啦",
+        one_yuewen_to_append="返嚟先再同你倾过啦",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_23
+distribute_test_cases_block_24 = [
+    DistributeTestCase(
+        one_zhongwen="那么成绩表呢？",
+        one_yuewen_start="都要㗎",
+        two_zhongwen="成绩表就不用了",
+        two_yuewen_end="成绩表又唔使",
+        yuewen_to_distribute="咁成绩表呢",
+        one_yuewen_to_append="咁成绩表呢",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_24
+distribute_test_cases_block_25 = [
+    DistributeTestCase(
+        one_zhongwen="妈妈你替我收好它别抛掉",
+        one_yuewen_start="",
+        two_zhongwen="抛掉就去不成了",
+        two_yuewen_end="",
+        yuewen_to_distribute="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
+        one_yuewen_to_append="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_25
 distribute_test_cases_block_26 = []  # distribute_test_cases_block_26
 distribute_test_cases_block_27 = []  # distribute_test_cases_block_27
-distribute_test_cases_block_28 = []  # distribute_test_cases_block_28
-distribute_test_cases_block_29 = []  # distribute_test_cases_block_29
+distribute_test_cases_block_28 = [
+    DistributeTestCase(
+        one_zhongwen="奥运滑浪风帆选手李丽珊五场四胜",
+        one_yuewen_start="",
+        two_zhongwen="夺得香港历史上第一面奥运金牌！",
+        two_yuewen_end="",
+        yuewen_to_distribute="奥运滑浪风帆选手李丽珊以五场四胜嘅结果夺取香港历史上第一面奥运金牌",
+        one_yuewen_to_append="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
+        two_yuewen_to_prepend="夺取香港历史上第一面奥运金牌",
+    ),
+    DistributeTestCase(
+        one_zhongwen="消息说当李丽珊获悉自己稳夺金牌后",
+        one_yuewen_start="",
+        two_zhongwen="激动地对在场记者表示她今次的成绩⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="消息话李丽珊喺知道自己稳夺奥运金牌之后好激动噉同在场嘅记者讲",
+        one_yuewen_to_append="消息话李丽珊喺知道自己稳夺奥运金牌之后",
+        two_yuewen_to_prepend="好激动噉同在场嘅记者讲",
+    ),
+    DistributeTestCase(
+        one_zhongwen="对不起，应该　　是垃圾，不是腊鸭！",
+        one_yuewen_start="各位对唔住应该系垃圾",
+        two_zhongwen="对不起，应该　　不是垃圾，也不是腊鸭！",
+        two_yuewen_end="对唔住应该系唔系垃圾亦都唔系𫚭鸭",
+        yuewen_to_distribute="唔系𫚭鸭",
+        one_yuewen_to_append="唔系𫚭鸭",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="激动地对在场记者表示她今次的成绩⋯",
+        one_yuewen_start="好激动噉同在场嘅记者讲",
+        two_zhongwen="足以证明香港运动员不是腊鸭！",
+        two_yuewen_end="可以证明到香港嘅运动员唔系𫚭鸭",
+        yuewen_to_distribute="今次佢嘅成绩",
+        one_yuewen_to_append="今次佢嘅成绩",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_28
+distribute_test_cases_block_29 = [
+    DistributeTestCase(
+        one_zhongwen="靓仔，好运，叻仔⋯",
+        one_yuewen_start="靓仔好运",
+        two_zhongwen="好像都没希望了",
+        two_yuewen_end="睇嚟都唔多靠得住",
+        yuewen_to_distribute="叻仔呀",
+        one_yuewen_to_append="叻仔呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="于是，一个梦还没醒⋯",
+        one_yuewen_start="于是",
+        two_zhongwen="我又得到另一个梦",
+        two_yuewen_end="我又得到另外一个梦",
+        yuewen_to_distribute="一个梦都未醒",
+        one_yuewen_to_append="一个梦都未醒",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_29
 distribute_test_cases_block_30 = []  # distribute_test_cases_block_30
-distribute_test_cases_block_31 = []  # distribute_test_cases_block_31
+distribute_test_cases_block_31 = [
+    DistributeTestCase(
+        one_zhongwen="当我站在奥运会颁奖台上",
+        one_yuewen_start="",
+        two_zhongwen="我会举起金牌跟全世界说：",
+        two_yuewen_end="系今排同全世界讲",
+        yuewen_to_distribute="三张堂上面",
+        one_yuewen_to_append="三张堂上面",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_31
 distribute_test_cases_block_32 = []  # distribute_test_cases_block_32
 distribute_test_cases_block_33 = []  # distribute_test_cases_block_33
 distribute_test_cases_block_34 = []  # distribute_test_cases_block_34

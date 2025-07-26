@@ -22,6 +22,7 @@ from scinoephile.audio.cantonese.alignment.queries import (
     get_proof_query,
     get_shift_query,
 )
+from scinoephile.audio.cantonese.distribution import DistributeAnswer
 from scinoephile.audio.cantonese.distribution.distributor import Distributor
 from scinoephile.audio.cantonese.merging import MergeAnswer, MergeTestCase
 from scinoephile.audio.cantonese.merging.merger import Merger
@@ -139,6 +140,7 @@ class Aligner:
         yw_idx = alignment.yuewen_to_distribute[0]
         zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
         if len(zw_idxs) == 0:
+            # TODO: Consider just deleting undistributable 粤文
             yw = alignment.yuewen[yw_idx]
             zhongwen_starts = [zw.start for zw in alignment.zhongwen]
 
@@ -162,7 +164,23 @@ class Aligner:
 
         # Run query
         query = get_distribute_query(alignment, one_sg_idx, two_sg_idx, yw_idx)
-        answer = self.distributor(query)
+        try:
+            answer = self.distributor(query)
+        except ValidationError as exc:
+            # TODO: Consider how this could be improved
+            # TODO: Consider just deleting undistributable 粤文
+            answer = DistributeAnswer(
+                one_yuewen_to_append=query.yuewen_to_distribute,
+                two_yuewen_to_prepend="",
+            )
+            test_case = query.to_test_case(answer)
+            error(
+                f"Error distributing 粤文 subtitle {yw_idx} between sync groups "
+                f"{one_sg_idx} and {two_sg_idx}; distributing to first group.\n"
+                f"Test case:\n"
+                f"{test_case.source_str}\n"
+                f"Exception:\n{exc}\n"
+            )
 
         # If we only need to assign the 粤文 to one sync group, set override
         if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
@@ -247,33 +265,54 @@ class Aligner:
 
         nascent_sync_groups = deepcopy(alignment.sync_groups)
         if len(one_yuewen) < len(one_yuewen_shifted):
-            # Calculate the number of characters we need to shift from one to two
+            # Calculate the number of characters we need to shift from two to one
             text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
             n_chars_left_to_shift = len(text_to_shift_from_two_to_one)
 
             # Loop over subtitles currently in two
             for two_yw_idx in two_yw_idxs:
-                sub = alignment.yuewen[two_yw_idx]
+                yw = alignment.yuewen[two_yw_idx]
 
-                if len(sub.text) <= n_chars_left_to_shift:
+                if len(yw.text) <= n_chars_left_to_shift:
                     # Entire sub needs to be shifted from two to one
                     nascent_sync_groups[one_sg_idx][1].append(two_yw_idx)
                     nascent_sync_groups[two_sg_idx][1].remove(two_yw_idx)
-                    n_chars_left_to_shift -= len(sub.text)
+                    n_chars_left_to_shift -= len(yw.text)
                 else:
                     # Sub needs to be split, which means we need to restart after
                     alignment.yuewen = get_series_with_sub_split_at_idx(
                         alignment.yuewen, two_yw_idx, n_chars_left_to_shift
                     )
-                    n_chars_left_to_shift -= len(sub.text[:n_chars_left_to_shift])
+                    n_chars_left_to_shift -= len(yw.text[:n_chars_left_to_shift])
                     alignment._sync_groups_override = None
                     return True
                 if n_chars_left_to_shift == 0:
                     break
         elif len(one_yuewen) > len(one_yuewen_shifted):
-            # TODO: Implement this case
-            text_to_shift_from_one_to_two = one_yuewen[: len(one_yuewen_shifted)]
+            # Calculate the number of characters we need to shift from one to two
+            text_to_shift_from_one_to_two = two_yuewen_shifted[len(two_yuewen) :]
             n_chars_left_to_shift = len(text_to_shift_from_one_to_two)
+
+            # Loop over subtitles currently in one
+            for one_yw_idx in one_yw_idxs:
+                yw = alignment.yuewen[one_yw_idx]
+
+                if len(yw.text) <= n_chars_left_to_shift:
+                    # Entire sub needs to be shifted from one to two
+                    nascent_sync_groups[two_sg_idx][1].insert(0, one_yw_idx)
+                    nascent_sync_groups[one_sg_idx][1].remove(one_yw_idx)
+                    n_chars_left_to_shift -= len(yw.text)
+                else:
+                    # Sub needs to be split, which means we need to restart after
+                    alignment.yuewen = get_series_with_sub_split_at_idx(
+                        alignment.yuewen, one_yw_idx, n_chars_left_to_shift
+                    )
+                    n_chars_left_to_shift -= len(yw.text[:n_chars_left_to_shift])
+                    alignment._sync_groups_override = None
+                    return True
+                if n_chars_left_to_shift == 0:
+                    break
+
         else:
             raise ScinoephileError("Unexpected case.")
         alignment._sync_groups_override = nascent_sync_groups
@@ -315,7 +354,7 @@ class Aligner:
             try:
                 answer = self.merger(query)
             except ValidationError as exc:
-                # TODO: Figure out how to cache these
+                # TODO: Consider how this could be improved
                 answer = MergeAnswer(yuewen_merged="".join(query.yuewen_to_merge))
                 test_case = MergeTestCase.from_query_and_answer(query, answer)
                 error(

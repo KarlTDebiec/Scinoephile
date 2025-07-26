@@ -1082,6 +1082,11 @@ merge_test_cases_block_12 = [
         yuewen_merged="佢长大发咗！",
     ),
     MergeTestCase(
+        zhongwen="从前，有个小朋友不孝，有天⋯",
+        yuewen_to_merge=["从前有个小朋友唔孝顺"],
+        yuewen_merged="从前有个小朋友唔孝顺⋯",
+    ),
+    MergeTestCase(
         zhongwen="他扭了脚骹！",
         yuewen_to_merge=["有一日佢屈亲个脚脚"],
         yuewen_merged="有一日佢屈亲个脚脚！",
@@ -1129,9 +1134,232 @@ merge_test_cases_block_13 = [
         yuewen_merged="唔得都要得字幕由Amara.org社群提供",
     ),
 ]  # merge_test_cases_block_13
-merge_test_cases_block_14 = []  # merge_test_cases_block_14
-merge_test_cases_block_15 = []  # merge_test_cases_block_15
-merge_test_cases_block_16 = []  # merge_test_cases_block_16
+merge_test_cases_block_14 = [
+    MergeTestCase(
+        zhongwen="可有些事情，要是真的不成呢？",
+        yuewen_to_merge=["但系如果有啲嘢真系真系唔得呢"],
+        yuewen_merged="但系如果有啲嘢，真系真系唔得呢？",
+    ),
+    MergeTestCase(
+        zhongwen="日子一天一天的过",
+        yuewen_to_merge=["日子一日一日咁过"],
+        yuewen_merged="日子一日一日咁过",
+    ),
+    MergeTestCase(
+        zhongwen="首先是周润发事件⋯",
+        yuewen_to_merge=["首先周润发𠮶单嘢"],
+        yuewen_merged="首先周润发𠮶单嘢⋯",
+    ),
+    MergeTestCase(
+        zhongwen="拜托不要再提了！",
+        yuewen_to_merge=["大家都唔好再提"],
+        yuewen_merged="大家都唔好再提！",
+    ),
+    MergeTestCase(
+        zhongwen="至于好运⋯",
+        yuewen_to_merge=["至于好运"],
+        yuewen_merged="至于好运⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我用一双童子手替妈妈抽的六合彩号码",
+        yuewen_to_merge=["我用我嘅同事手帮妈妈抽嘅六合彩number"],
+        yuewen_merged="我用我嘅同事手帮妈妈抽嘅六合彩number",
+    ),
+    MergeTestCase(
+        zhongwen="奇迹般似的一个号码也没中过！",
+        yuewen_to_merge=["竟然奇迹一样", "一个都未中过"],
+        yuewen_merged="竟然奇迹一样，一个都未中过！",
+    ),
+    MergeTestCase(
+        zhongwen="叻仔？",
+        yuewen_to_merge=["叻仔"],
+        yuewen_merged="叻仔？",
+    ),
+    MergeTestCase(
+        zhongwen="我也试过努力念书，可是⋯",
+        yuewen_to_merge=["过好努力咁读书", "但系"],
+        yuewen_merged="过好努力咁读书，但系⋯",
+    ),
+    MergeTestCase(
+        zhongwen="可是⋯我仍然有梦",
+        yuewen_to_merge=["我试", "但系我仲可以发梦"],
+        yuewen_merged="我试，但系⋯我仲可以发梦",
+    ),
+]  # merge_test_cases_block_14
+merge_test_cases_block_15 = [
+    MergeTestCase(
+        zhongwen="马尔代夫，座落于印度洋的世外桃源",
+        yuewen_to_merge=["马尔代夫", "坐落于印度洋嘅世外桃源"],
+        yuewen_merged="马尔代夫，坐落于印度洋嘅世外桃源",
+    ),
+    MergeTestCase(
+        zhongwen="蓝天白云，椰林树影，水清沙幼",
+        yuewen_to_merge=["蓝天白云", "椰林树影", "水清沙游"],
+        yuewen_merged="蓝天白云，椰林树影，水清沙游",
+    ),
+    MergeTestCase(
+        zhongwen="七彩缤纷的珊瑚，目不暇给的热带鱼",
+        yuewen_to_merge=["七彩缤纷嘅珊瑚", "目不下级嘅热带鱼群"],
+        yuewen_merged="七彩缤纷嘅珊瑚，目不下级嘅热带鱼群",
+    ),
+    MergeTestCase(
+        zhongwen="充满赤道活力的原始海洋，脱离繁嚣",
+        yuewen_to_merge=["充满住赤道热力嘅原始海洋", "远离凡嚣"],
+        yuewen_merged="充满住赤道热力嘅原始海洋，远离凡嚣",
+    ),
+    MergeTestCase(
+        zhongwen="体验热情如火的风土人情",
+        yuewen_to_merge=["体验热情如火嘅风土人情"],
+        yuewen_merged="体验热情如火嘅风土人情",
+    ),
+    MergeTestCase(
+        zhongwen="享受一个脱俗出尘的梦幻之旅",
+        yuewen_to_merge=["享受一个脱轴出尘嘅梦幻之旅"],
+        yuewen_merged="享受一个脱轴出尘嘅梦幻之旅",
+    ),
+    MergeTestCase(
+        zhongwen="犀利旅行社，旅行社牌照号码350999",
+        yuewen_to_merge=["犀利旅行社", "旅行社牌照号码350999"],
+        yuewen_merged="犀利旅行社，旅行社牌照号码350999",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈你知道马尔代夫在哪儿吗？",
+        yuewen_to_merge=["妈妈你知唔知到马尔代夫系边㗎"],
+        yuewen_merged="妈妈你知唔知到马尔代夫系边㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="很远的",
+        yuewen_to_merge=["啊好远㗎"],
+        yuewen_merged="啊好远㗎",
+    ),
+    MergeTestCase(
+        zhongwen="有多远？",
+        yuewen_to_merge=["点远发呀"],
+        yuewen_merged="点远发呀？",
+    ),
+    MergeTestCase(
+        zhongwen="得搭飞机",
+        yuewen_to_merge=["搭飞机至到啰"],
+        yuewen_merged="搭飞机至到啰",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈你会带我去吗？",
+        yuewen_to_merge=["咁妈妈你会唔会走落去㗎"],
+        yuewen_merged="咁妈妈你会唔会走落去㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="会！发财了再说吧",
+        yuewen_to_merge=["会", "得学发咗先啦"],
+        yuewen_merged="会！得学发咗先啦",
+    ),
+    MergeTestCase(
+        zhongwen="那么妈妈你什么时候发？",
+        yuewen_to_merge=["咁妈妈你几时发得呀"],
+        yuewen_merged="咁妈妈你几时发得呀？",
+    ),
+    MergeTestCase(
+        zhongwen="快了⋯",
+        yuewen_to_merge=["呃", "就快啦"],
+        yuewen_merged="呃，就快啦⋯",
+    ),
+    MergeTestCase(
+        zhongwen="发梦呀！",
+        yuewen_to_merge=["发梦吖嘛"],
+        yuewen_merged="发梦吖嘛！",
+    ),
+]  # merge_test_cases_block_15
+merge_test_cases_block_16 = [
+    MergeTestCase(
+        zhongwen="校长早晨！",
+        yuewen_to_merge=["嗨"],
+        yuewen_merged="嗨！",
+    ),
+    MergeTestCase(
+        zhongwen="你最喜爱的地方是哪儿？",
+        yuewen_to_merge=["你最喜爱嘅地方喺边度呀"],
+        yuewen_merged="你最喜爱嘅地方喺边度呀？",
+    ),
+    MergeTestCase(
+        zhongwen="我最喜爱的地方是日本",
+        yuewen_to_merge=["我最喜爱嘅地方呢", "就系日本喇"],
+        yuewen_merged="我最喜爱嘅地方呢，就系日本喇",
+    ),
+    MergeTestCase(
+        zhongwen="那儿有Disneyland和Hello Kitty Land",
+        yuewen_to_merge=["𠮶度好迪士尼呢", "同埋HelloTT呢"],
+        yuewen_merged="𠮶度好迪士尼呢，同埋HelloTT呢",
+    ),
+    MergeTestCase(
+        zhongwen="我这个发夹也是在那儿买的",
+        yuewen_to_merge=["我而家打紧个发卷都系𠮶边买嘅"],
+        yuewen_merged="我而家打紧个发卷都系𠮶边买嘅",
+    ),
+    MergeTestCase(
+        zhongwen="我最喜爱的地方是加拿大",
+        yuewen_to_merge=["我最钟意嘅地方就系加拿大"],
+        yuewen_merged="我最钟意嘅地方就系加拿大",
+    ),
+    MergeTestCase(
+        zhongwen="婆婆跟舅父他们都在加拿大",
+        yuewen_to_merge=["婆婆同埋舅父呀", "佢哋都系加拿大㗎"],
+        yuewen_merged="婆婆同埋舅父呀，佢哋都系加拿大㗎",
+    ),
+    MergeTestCase(
+        zhongwen="我最喜爱的地方是泰国",
+        yuewen_to_merge=["我最钟意去嘅地方就系泰国喇"],
+        yuewen_merged="我最钟意去嘅地方就系泰国喇",
+    ),
+    MergeTestCase(
+        zhongwen="那儿有很好多水上活动，还有鱼翅吃",
+        yuewen_to_merge=["𠮶度有好多水晶活动㗎", "仲有一次食添㖞"],
+        yuewen_merged="𠮶度有好多水晶活动㗎，仲有一次食添㖞",
+    ),
+    MergeTestCase(
+        zhongwen="我最喜爱的地方⋯",
+        yuewen_to_merge=["呃", "我最喜爱嘅地方呢"],
+        yuewen_merged="呃，我最喜爱嘅地方呢⋯",
+    ),
+    MergeTestCase(
+        zhongwen="就是那间什么！",
+        yuewen_to_merge=["就系𠮶间咩嚟啰"],
+        yuewen_merged="就系𠮶间咩嚟啰！",
+    ),
+    MergeTestCase(
+        zhongwen="那儿有欢乐天地，还有美食广场",
+        yuewen_to_merge=["𠮶度有欢乐天地啦", "仲有米食广场啦"],
+        yuewen_merged="𠮶度有欢乐天地啦，仲有米食广场啦",
+    ),
+    MergeTestCase(
+        zhongwen="那儿的海南鸡饭很大碟的",
+        yuewen_to_merge=["𠮶度啲可能几份好大碟㗎"],
+        yuewen_merged="𠮶度啲可能几份好大碟㗎",
+    ),
+    MergeTestCase(
+        zhongwen="对了，那地方叫银城中心",
+        yuewen_to_merge=["系喇系喇", "𠮶间叫做银城中心"],
+        yuewen_merged="系喇系喇，𠮶间叫做银城中心",
+    ),
+    MergeTestCase(
+        zhongwen="那店子的饭很多，很大碟的！",
+        yuewen_to_merge=["𠮶间嘢啲饭好多人", "好大碟㗎"],
+        yuewen_merged="𠮶间嘢啲饭好多人，好大碟㗎！",
+    ),
+    MergeTestCase(
+        zhongwen="不过说到我最想去的地方，那可厉害了",
+        yuewen_to_merge=["不过讲到我最想去嘅地方呢", "𠮶度细嚟啰"],
+        yuewen_merged="不过讲到我最想去嘅地方呢，𠮶度细嚟啰",
+    ),
+    MergeTestCase(
+        zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
+        yuewen_to_merge=["𠮶度南天白云", "夜临树影", "水清沙幽"],
+        yuewen_merged="𠮶度南天白云，夜临树影，水清沙幽",
+    ),
+    MergeTestCase(
+        zhongwen="座落于印度洋的世外桃源",
+        yuewen_to_merge=["独来鱼", "印度洋嘅世外桃源"],
+        yuewen_merged="独来鱼，印度洋嘅世外桃源",
+    ),
+]  # merge_test_cases_block_16
 merge_test_cases_block_17 = [
     MergeTestCase(
         zhongwen="衰仔，快点起床上学",
@@ -1149,15 +1377,102 @@ merge_test_cases_block_17 = [
         yuewen_merged="妈妈！",
     ),
 ]  # merge_test_cases_block_17
-merge_test_cases_block_18 = []  # merge_test_cases_block_18
-merge_test_cases_block_19 = []  # merge_test_cases_block_19
+merge_test_cases_block_18 = [
+    MergeTestCase(
+        zhongwen="开点药给他吃就没事了",
+        yuewen_to_merge=["开啲药过佢食就冇事㗎喇"],
+        yuewen_merged="开啲药过佢食就冇事㗎喇",
+    ),
+    MergeTestCase(
+        zhongwen="医生，吃了药会不会有那个什么的？",
+        yuewen_to_merge=["医生啊", "啲药食咗会唔会有𠮶啲咩㗎"],
+        yuewen_merged="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="不会！",
+        yuewen_to_merge=["唔会"],
+        yuewen_merged="唔会！",
+    ),
+    MergeTestCase(
+        zhongwen="那么吃药用不用那个什么的？",
+        yuewen_to_merge=["噉佢食药使唔使咩啊"],
+        yuewen_merged="噉佢食药使唔使咩啊？",
+    ),
+    MergeTestCase(
+        zhongwen="不用！给他打口针吧！",
+        yuewen_to_merge=["唔使", "同佢打多支针添呢"],
+        yuewen_merged="唔使！同佢打多支针添呢！",
+    ),
+    MergeTestCase(
+        zhongwen="怎么？得打针？",
+        yuewen_to_merge=["吓", "要打针啊"],
+        yuewen_merged="吓？要打针啊？",
+    ),
+    MergeTestCase(
+        zhongwen="他最怕打针的了",
+        yuewen_to_merge=["佢好怕打针㗎㖞"],
+        yuewen_merged="佢好怕打针㗎㖞",
+    ),
+    MergeTestCase(
+        zhongwen="那么他怕不怕死？",
+        yuewen_to_merge=["噉佢怕唔怕死呀"],
+        yuewen_merged="噉佢怕唔怕死呀？",
+    ),
+]  # merge_test_cases_block_18
+merge_test_cases_block_19 = [
+    MergeTestCase(
+        zhongwen="没事吧？快点先把药水喝掉！",
+        yuewen_to_merge=["冇嘢吖嘛", "快啲食埋啲药水佢先啦"],
+        yuewen_merged="冇嘢吖嘛？快啲食埋啲药水佢先啦！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈我不想喝药水",
+        yuewen_to_merge=["妈妈", "我唔想食药水呀"],
+        yuewen_merged="妈妈，我唔想食药水呀",
+    ),
+    MergeTestCase(
+        zhongwen="不要呀妈妈，我不喝呀",
+        yuewen_to_merge=["唔好捞妈妈", "我唔食呀"],
+        yuewen_merged="唔好捞妈妈，我唔食呀",
+    ),
+    MergeTestCase(
+        zhongwen="我不喝士多啤梨药水呀！",
+        yuewen_to_merge=["我唔食士多啤梨药水呀"],
+        yuewen_merged="我唔食士多啤梨药水呀！",
+    ),
+    MergeTestCase(
+        zhongwen="别哭了，不喝药水病不会好的",
+        yuewen_to_merge=["唔好喊啦", "唔食药唔会好㗎"],
+        yuewen_merged="唔好喊啦，唔食药唔会好㗎",
+    ),
+    MergeTestCase(
+        zhongwen="乖乖，病好了妈妈带你去马尔代夫",
+        yuewen_to_merge=["乖乖啲", "病好咗", "妈妈大理马尔代夫"],
+        yuewen_merged="乖乖啲，病好咗妈妈大理马尔代夫",
+    ),
+    MergeTestCase(
+        zhongwen="真的吗？",
+        yuewen_to_merge=["真嘅"],
+        yuewen_merged="真嘅？",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈什么时候骗过你？",
+        yuewen_to_merge=["妈妈几时呃过你呀"],
+        yuewen_merged="妈妈几时呃过你呀？",
+    ),
+    MergeTestCase(
+        zhongwen="乖，先把药水喝掉",
+        yuewen_to_merge=["乖", "食埋啲药水先啦"],
+        yuewen_merged="乖，食埋啲药水先啦",
+    ),
+]  # merge_test_cases_block_19
 merge_test_cases_block_20 = [
     MergeTestCase(
         zhongwen="好呀，马尔代夫！",
         yuewen_to_merge=["嘻嘻", "好嘢"],
         yuewen_merged="嘻嘻，好嘢！",
     ),
-    MergeTestCase(  # REVIEW
+    MergeTestCase(
         zhongwen="马尔代夫！",
         yuewen_to_merge=["买二代夫", "买二代夫"],
         yuewen_merged="买二代夫，买二代夫！",
@@ -1220,14 +1535,399 @@ merge_test_cases_block_21 = [
         yuewen_merged="吓，咪我饮晒㖞！",
     ),
 ]  # merge_test_cases_block_21
-merge_test_cases_block_22 = []  # merge_test_cases_block_22
-merge_test_cases_block_23 = []  # merge_test_cases_block_23
-merge_test_cases_block_24 = []  # merge_test_cases_block_24
-merge_test_cases_block_25 = []  # merge_test_cases_block_25
-merge_test_cases_block_26 = []  # merge_test_cases_block_26
-merge_test_cases_block_27 = []  # merge_test_cases_block_27
-merge_test_cases_block_28 = []  # merge_test_cases_block_28
-merge_test_cases_block_29 = []  # merge_test_cases_block_29
+merge_test_cases_block_22 = [
+    MergeTestCase(
+        zhongwen="喝光了就叻仔了！",
+        yuewen_to_merge=["饮实就叻仔啦"],
+        yuewen_merged="饮实就叻仔啦！",
+    ),
+    MergeTestCase(
+        zhongwen="喝光了就病好了！",
+        yuewen_to_merge=["饮实就好返实啦"],
+        yuewen_merged="饮实就好返实啦！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈呀⋯",
+        yuewen_to_merge=["妈妈"],
+        yuewen_merged="妈妈⋯",
+    ),
+    MergeTestCase(
+        zhongwen="什么事？",
+        yuewen_to_merge=["乜嘢啊"],
+        yuewen_merged="乜嘢啊？",
+    ),
+    MergeTestCase(
+        zhongwen="我们什么时候去马尔代夫？",
+        yuewen_to_merge=["阿哋几时去马尔代夫啊"],
+        yuewen_merged="阿哋几时去马尔代夫啊？",
+    ),
+    MergeTestCase(
+        zhongwen="什么马尔代夫？",
+        yuewen_to_merge=["乜嘢马尔代夫啊"],
+        yuewen_merged="乜嘢马尔代夫啊？",
+    ),
+    MergeTestCase(
+        zhongwen="你说我病好带我去马尔代夫的呀！",
+        yuewen_to_merge=["呢", "你话我返就同我去马尔代夫㗎嘛"],
+        yuewen_merged="呢，你话我返就同我去马尔代夫㗎嘛！",
+    ),
+    MergeTestCase(
+        zhongwen="马尔代夫，椰林树影，水清沙幼⋯",
+        yuewen_to_merge=["马尔代夫呢", "耶南树影", "水清沙游"],
+        yuewen_merged="马尔代夫呢，耶南树影，水清沙游⋯",
+    ),
+    MergeTestCase(
+        zhongwen="座落于印度洋的世外桃源呀！",
+        yuewen_to_merge=["助流于印度园嘅世外导演啦"],
+        yuewen_merged="助流于印度园嘅世外导演啦！",
+    ),
+    MergeTestCase(
+        zhongwen="想不到你还有点文采",
+        yuewen_to_merge=["啊", "估唔到你几好文采㗎噃"],
+        yuewen_merged="啊，估唔到你几好文采㗎噃",
+    ),
+    MergeTestCase(
+        zhongwen="说得不错呀！",
+        yuewen_to_merge=["讲得几好听啊", "妈妈"],
+        yuewen_merged="讲得几好听啊！妈妈",
+    ),
+    MergeTestCase(
+        zhongwen="我不是光说的呀，妈妈你说过⋯",
+        yuewen_to_merge=["我唔系讲喇㗎", "又系你话嘅", "你话"],
+        yuewen_merged="我唔系讲喇㗎，又系你话嘅，你话⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我病好了带我去马尔代夫的！",
+        yuewen_to_merge=["我病好咗之日就同我去马尔代夫㗎", "你讲过㗎"],
+        yuewen_merged="我病好咗之日就同我去马尔代夫㗎，你讲过㗎！",
+    ),
+    MergeTestCase(
+        zhongwen="我是说发了财就带你去",
+        yuewen_to_merge=["我话发咗先至同你去㗎"],
+        yuewen_merged="我话发咗先至同你去㗎",
+    ),
+    MergeTestCase(
+        zhongwen="不是的，妈妈你说我病好了就去的",
+        yuewen_to_merge=["唔系㖞", "妈妈", "你话好咗就同我去㗎㖞"],
+        yuewen_merged="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
+    ),
+    MergeTestCase(
+        zhongwen="你分明讲过病好了就去马尔代夫的",
+        yuewen_to_merge=["你明明讲过好返就同你去马尔代夫㗎㖞"],
+        yuewen_merged="你明明讲过好返就同你去马尔代夫㗎㖞",
+    ),
+    MergeTestCase(
+        zhongwen="你讲过的！",
+        yuewen_to_merge=["你讲过㗎"],
+        yuewen_merged="你讲过㗎！",
+    ),
+    MergeTestCase(
+        zhongwen="好了，别哭了",
+        yuewen_to_merge=["得啦得啦", "唔好喊啦"],
+        yuewen_merged="得啦，得啦，唔好喊啦",
+    ),
+    MergeTestCase(
+        zhongwen="带你去马尔代夫好了",
+        yuewen_to_merge=["同你去马尔代夫啦"],
+        yuewen_merged="同你去马尔代夫啦",
+    ),
+    MergeTestCase(
+        zhongwen="真的吗？　　对",
+        yuewen_to_merge=["真嘅", "系啊"],
+        yuewen_merged="真嘅？　　系啊",
+    ),
+    MergeTestCase(
+        zhongwen="什么时候去？",
+        yuewen_to_merge=["咁几时去啊"],
+        yuewen_merged="咁几时去啊？",
+    ),
+    MergeTestCase(
+        zhongwen="发财再说",
+        yuewen_to_merge=["等我发咗先啰"],
+        yuewen_merged="等我发咗先啰",
+    ),
+    MergeTestCase(
+        zhongwen="你早发财了⋯",
+        yuewen_to_merge=["你发咗㗎喇", "你发咗㗎喇"],
+        yuewen_merged="你发咗㗎喇，你发咗㗎喇⋯",
+    ),
+    MergeTestCase(
+        zhongwen="好了好了，发财了",
+        yuewen_to_merge=["系喇系喇系喇发咗喇"],
+        yuewen_merged="系喇系喇系喇，发咗喇",
+    ),
+    MergeTestCase(
+        zhongwen="我们下个星期去，好了吧？",
+        yuewen_to_merge=["下个礼拜同你去啦", "得未啊"],
+        yuewen_merged="下个礼拜同你去啦，得未啊？",
+    ),
+    MergeTestCase(
+        zhongwen="太好了！",
+        yuewen_to_merge=["好嘢"],
+        yuewen_merged="好嘢！",
+    ),
+]  # merge_test_cases_block_22
+merge_test_cases_block_23 = [
+    MergeTestCase(
+        zhongwen="麦唛，我是麦兜呀",
+        yuewen_to_merge=["喂", "麦麦啊", "麦豆啊我系", "即系呢"],
+        yuewen_merged="喂，麦麦啊，麦豆啊我系，即系呢",
+    ),
+    MergeTestCase(
+        zhongwen="是这样子的，我明天就飞了",
+        yuewen_to_merge=["我明日就要飞喇"],
+        yuewen_merged="我明日就要飞喇",
+    ),
+    MergeTestCase(
+        zhongwen="对　　⋯是吗？",
+        yuewen_to_merge=["系啊", "系咩"],
+        yuewen_merged="系啊　　⋯系咩？",
+    ),
+    MergeTestCase(
+        zhongwen="飞机餐很难吃的吗？",
+        yuewen_to_merge=["飞机真好难食㗎"],
+        yuewen_merged="飞机真好难食㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="也得吃呀！",
+        yuewen_to_merge=["但点都要食㗎啦"],
+        yuewen_merged="但点都要食㗎啦！",
+    ),
+    MergeTestCase(
+        zhongwen="难道自己带东西上去吃吗？",
+        yuewen_to_merge=["唔通自己带嘢上去食咩"],
+        yuewen_merged="唔通自己带嘢上去食咩？",
+    ),
+    MergeTestCase(
+        zhongwen="还在讲？",
+        yuewen_to_merge=["仲讲"],
+        yuewen_merged="仲讲？",
+    ),
+    MergeTestCase(
+        zhongwen="快点帮手执行李",
+        yuewen_to_merge=["哦", "快啲嚟执埋啲行李先啦", "哦"],
+        yuewen_merged="哦，快啲嚟执埋啲行李先啦，哦",
+    ),
+    MergeTestCase(
+        zhongwen="跟我向他们说，我明天去马尔代夫了",
+        yuewen_to_merge=["你帮我话畀佢哋知", "我明日去买热带裤薄"],
+        yuewen_merged="你帮我话畀佢哋知，我明日去买热带裤薄",
+    ),
+    MergeTestCase(
+        zhongwen="那边蓝天白云，椰林树影⋯",
+        yuewen_to_merge=["𠮶度蓝天五百云", "夜临雪"],
+        yuewen_merged="𠮶度蓝天五百云，夜临雪⋯",
+    ),
+    MergeTestCase(
+        zhongwen="还在讲！",
+        yuewen_to_merge=["水清净沙有"],
+        yuewen_merged="水清净沙有！",
+    ),
+    MergeTestCase(
+        zhongwen="来了！",
+        yuewen_to_merge=["我嚟紧㗎喇"],
+        yuewen_merged="我嚟紧㗎喇！",
+    ),
+    MergeTestCase(
+        zhongwen="要执行李了，回来再跟你说吧",
+        yuewen_to_merge=["我要执行你喇", "返嚟先再同你倾过啦"],
+        yuewen_merged="我要执行你喇，返嚟先再同你倾过啦",
+    ),
+    MergeTestCase(
+        zhongwen="再见！",
+        yuewen_to_merge=["拜拜"],
+        yuewen_merged="拜拜！",
+    ),
+]  # merge_test_cases_block_23
+merge_test_cases_block_24 = [
+    MergeTestCase(
+        zhongwen="妈妈，我得把出世纸带着吗？",
+        yuewen_to_merge=["哎哟", "妈妈", "我系咪要带埋出世纸去㗎"],
+        yuewen_merged="哎哟，妈妈，我系咪要带埋出世纸去㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="也要的",
+        yuewen_to_merge=["都要㗎"],
+        yuewen_merged="都要㗎",
+    ),
+    MergeTestCase(
+        zhongwen="那么成绩表呢？",
+        yuewen_to_merge=["咁成绩表呢"],
+        yuewen_merged="咁成绩表呢？",
+    ),
+    MergeTestCase(
+        zhongwen="成绩表就不用了",
+        yuewen_to_merge=["成绩表又唔使"],
+        yuewen_merged="成绩表又唔使",
+    ),
+    MergeTestCase(
+        zhongwen="太好了！吓得我！",
+        yuewen_to_merge=["好嘢", "吓得我啊", "咁都好啲"],
+        yuewen_merged="好嘢！吓得我啊！咁都好啲",
+    ),
+]  # merge_test_cases_block_24
+merge_test_cases_block_25 = [
+    MergeTestCase(
+        zhongwen="找到了！",
+        yuewen_to_merge=["揾到喇"],
+        yuewen_merged="揾到喇！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈你替我收好它别抛掉",
+        yuewen_to_merge=[
+            "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
+        ],
+        yuewen_merged="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
+    ),
+]  # merge_test_cases_block_25
+merge_test_cases_block_26 = [
+    MergeTestCase(
+        zhongwen="早机去，晚机返",
+        yuewen_to_merge=["早机去", "晚机返"],
+        yuewen_merged="早机去，晚机返",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈说这样才够精明",
+        yuewen_to_merge=["妈妈话噉先最著数"],
+        yuewen_merged="妈妈话噉先最著数",
+    ),
+    MergeTestCase(
+        zhongwen="就这样⋯",
+        yuewen_to_merge=["就系噉样"],
+        yuewen_merged="就系噉样⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我过了我小时候最精明⋯",
+        yuewen_to_merge=["我过咗我小时候最著数"],
+        yuewen_merged="我过咗我小时候最著数⋯",
+    ),
+    MergeTestCase(
+        zhongwen="最美丽的一天",
+        yuewen_to_merge=["最完美嘅一日"],
+        yuewen_merged="最完美嘅一日",
+    ),
+    MergeTestCase(
+        zhongwen="依你说，纸是否可以包着鸡呢？",
+        yuewen_to_merge=["噉你话纸包唔包得绝鸡呢"],
+        yuewen_merged="噉你话，纸包唔包得绝鸡呢？",
+    ),
+    MergeTestCase(
+        zhongwen="也可以的⋯",
+        yuewen_to_merge=["都得嘅"],
+        yuewen_merged="都得嘅⋯",
+    ),
+    MergeTestCase(
+        zhongwen="特别是小小一块的",
+        yuewen_to_merge=["尤其系细细旧𠮶啲"],
+        yuewen_merged="尤其系细细旧𠮶啲",
+    ),
+]  # merge_test_cases_block_26
+merge_test_cases_block_27 = [
+    MergeTestCase(
+        zhongwen="妈妈晚安！",
+        yuewen_to_merge=["妈妈", "做头"],
+        yuewen_merged="妈妈，做头！",
+    ),
+]  # merge_test_cases_block_27
+merge_test_cases_block_28 = [
+    MergeTestCase(
+        zhongwen="最新消息",
+        yuewen_to_merge=["啱啱收到消息"],
+        yuewen_merged="啱啱收到消息",
+    ),
+    MergeTestCase(
+        zhongwen="奥运滑浪风帆选手李丽珊五场四胜",
+        yuewen_to_merge=["奥运滑浪风帆选手李丽珊以五场四胜嘅结果"],
+        yuewen_merged="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
+    ),
+    MergeTestCase(
+        zhongwen="夺得香港历史上第一面奥运金牌！",
+        yuewen_to_merge=["夺取香港历史上第一面奥运金牌"],
+        yuewen_merged="夺取香港历史上第一面奥运金牌！",
+    ),
+    MergeTestCase(
+        zhongwen="消息说当李丽珊获悉自己稳夺金牌后",
+        yuewen_to_merge=["消息话李丽珊喺知道自己稳夺奥运金牌之后"],
+        yuewen_merged="消息话李丽珊喺知道自己稳夺奥运金牌之后",
+    ),
+    MergeTestCase(
+        zhongwen="激动地对在场记者表示她今次的成绩⋯",
+        yuewen_to_merge=["好激动噉同在场嘅记者讲", "今次佢嘅成绩"],
+        yuewen_merged="好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
+    ),
+    MergeTestCase(
+        zhongwen="足以证明香港运动员不是腊鸭！",
+        yuewen_to_merge=["可以证明到香港嘅运动员唔系𫚭鸭"],
+        yuewen_merged="可以证明到香港嘅运动员唔系𫚭鸭！",
+    ),
+    MergeTestCase(
+        zhongwen="对不起，应该　　是垃圾，不是腊鸭！",
+        yuewen_to_merge=["各位对唔住", "应该系垃圾", "唔系𫚭鸭"],
+        yuewen_merged="各位对唔住，应该系垃圾，唔系𫚭鸭！",
+    ),
+    MergeTestCase(
+        zhongwen="对不起，应该　　不是垃圾，也不是腊鸭！",
+        yuewen_to_merge=["对唔住", "应该系唔系垃圾", "亦都唔系𫚭鸭"],
+        yuewen_merged="对唔住，应该系唔系垃圾，亦都唔系𫚭鸭！",
+    ),
+    MergeTestCase(
+        zhongwen="特别报告完毕",
+        yuewen_to_merge=["特别报个原不"],
+        yuewen_merged="特别报个原不",
+    ),
+]  # merge_test_cases_block_28
+merge_test_cases_block_29 = [
+    MergeTestCase(
+        zhongwen="妈妈好像又有计了",
+        yuewen_to_merge=["咦", "妈妈好似又有计噉噃"],
+        yuewen_merged="咦，妈妈好似又有计噉噃",
+    ),
+    MergeTestCase(
+        zhongwen="靓仔，好运，叻仔⋯",
+        yuewen_to_merge=["靓仔", "好运", "叻仔呀"],
+        yuewen_merged="靓仔，好运，叻仔呀⋯",
+    ),
+    MergeTestCase(
+        zhongwen="好像都没希望了",
+        yuewen_to_merge=["睇嚟都唔多靠得住"],
+        yuewen_merged="睇嚟都唔多靠得住",
+    ),
+    MergeTestCase(
+        zhongwen="是不是可以靠手瓜呢？",
+        yuewen_to_merge=["哗", "好唔好靠下个手瓜噉呢"],
+        yuewen_merged="哗，好唔好靠下个手瓜噉呢？",
+    ),
+    MergeTestCase(
+        zhongwen="于是，一个梦还没醒⋯",
+        yuewen_to_merge=["于是", "一个梦都未醒"],
+        yuewen_merged="于是，一个梦都未醒⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我又得到另一个梦",
+        yuewen_to_merge=["我又得到另外一个梦"],
+        yuewen_merged="我又得到另外一个梦",
+    ),
+    MergeTestCase(
+        zhongwen="应该是脚瓜",
+        yuewen_to_merge=["系咪应该系脚瓜之争"],
+        yuewen_merged="系咪应该系脚瓜之争",
+    ),
+    MergeTestCase(
+        zhongwen="我知道一点也不容易",
+        yuewen_to_merge=["我知道一啲都唔容易"],
+        yuewen_merged="我知道一啲都唔容易",
+    ),
+    MergeTestCase(
+        zhongwen="我知道要找到黎根绝对不容易",
+        yuewen_to_merge=["我知道要揾到励根绝对唔容易"],
+        yuewen_merged="我知道要揾到励根绝对唔容易",
+    ),
+    MergeTestCase(
+        zhongwen="我知道要他收我做徒弟更加不容易",
+        yuewen_to_merge=["我知道要佢收我做徒弟更加唔容易"],
+        yuewen_merged="我知道要佢收我做徒弟更加唔容易",
+    ),
+]  # merge_test_cases_block_29
 merge_test_cases_block_30 = [
     MergeTestCase(
         zhongwen="但无论多不容易，我都要试一试",
@@ -1245,7 +1945,18 @@ merge_test_cases_block_30 = [
         yuewen_merged="无论几辛苦，我一定要捞到奥运金牌！",
     ),
 ]  # merge_test_cases_block_30
-merge_test_cases_block_31 = []  # merge_test_cases_block_31
+merge_test_cases_block_31 = [
+    MergeTestCase(
+        zhongwen="当我站在奥运会颁奖台上",
+        yuewen_to_merge=["三张堂上面"],
+        yuewen_merged="三张堂上面",
+    ),
+    MergeTestCase(
+        zhongwen="我会举起金牌跟全世界说：",
+        yuewen_to_merge=["系今排同全世界讲"],
+        yuewen_merged="系今排同全世界讲：",
+    ),
+]  # merge_test_cases_block_31
 merge_test_cases_block_32 = [
     MergeTestCase(
         zhongwen="长洲，我终于来到长洲了！",
