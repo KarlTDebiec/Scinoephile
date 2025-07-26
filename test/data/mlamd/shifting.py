@@ -259,7 +259,7 @@ shift_test_cases_block_0 = [
         one_yuewen_shifted="虽然似梁朝伟周润发都唔返去冒运行",
         two_yuewen_shifted="但系都要叻仔先得㗎",
     ),
-]
+]  # shift_test_cases_block_0
 shift_test_cases_block_1 = [
     ShiftTestCase(
         one_zhongwen="最后，胶兜「嘀督」一声落地",

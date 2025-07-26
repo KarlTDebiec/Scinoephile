@@ -186,7 +186,7 @@ merge_test_cases_block_0 = [
         yuewen_to_merge=["但系都要叻仔先得㗎"],
         yuewen_merged="但系都要叻仔先得㗎！",
     ),
-]
+]  # merge_test_cases_block_0
 merge_test_cases_block_1 = [
     MergeTestCase(
         zhongwen="最后，胶兜「嘀督」一声落地",
