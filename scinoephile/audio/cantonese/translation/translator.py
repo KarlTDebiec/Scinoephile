@@ -17,7 +17,7 @@ from pydantic import ValidationError
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import LLMProvider
+from scinoephile.core.abcs import Answer, LLMProvider, Query
 from scinoephile.openai import OpenAIProvider
 
 
@@ -87,7 +87,7 @@ class Translator:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-    def __call__(self, query: BaseModel) -> BaseModel:
+    def __call__(self, query: Query) -> Answer:
         """Query LLM.
 
         Arguments:
