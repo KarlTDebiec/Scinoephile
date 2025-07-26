@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import error, info
-from pprint import pprint
+from pprint import pformat
 
 import numpy as np
 from pydantic import ValidationError
@@ -447,9 +447,9 @@ class Aligner:
             yw_idxs = sg[1]
             if not yw_idxs:
                 query_cls, answer_cls, test_case_cls = get_translate_models(alignment)
-                pprint(f"Query class: {query_cls.model_fields}")
-                pprint(f"Answer class: {answer_cls.model_fields}")
-                pprint(f"Test case class: {test_case_cls.model_fields}")
+                print(f"Query class: {pformat(query_cls.model_fields)}")
+                print(f"Answer class: {pformat(answer_cls.model_fields)}")
+                print(f"Test case class: {pformat(test_case_cls.model_fields)}")
                 query = None
                 self.translator
                 return
