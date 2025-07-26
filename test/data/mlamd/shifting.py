@@ -1830,9 +1830,9 @@ shift_test_cases_block_13 = [
         one_zhongwen="对她，一、二、三、四、五、六、七",
         one_yuewen="佢一二三四五六七",
         two_zhongwen="没有不成的事",
-        two_yuewen="唔得都要得字幕由Amara.org社群提供",
+        two_yuewen="唔得都要得字幕由Amara.org",
         one_yuewen_shifted="佢一二三四五六七",
-        two_yuewen_shifted="唔得都要得字幕由Amara.org社群提供",
+        two_yuewen_shifted="唔得都要得字幕由Amara.org",
     ),
 ]  # shift_test_cases_block_13
 shift_test_cases_block_14 = [

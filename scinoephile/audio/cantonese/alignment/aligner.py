@@ -146,6 +146,7 @@ class Aligner:
             yuewen.events = (
                 alignment.yuewen.events[:yw_idx] + alignment.yuewen.events[yw_idx + 1 :]
             )
+            alignment.yuewen = yuewen
             alignment._sync_groups_override = None
             return
 
