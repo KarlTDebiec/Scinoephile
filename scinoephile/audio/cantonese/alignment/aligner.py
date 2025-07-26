@@ -8,6 +8,7 @@ from copy import deepcopy
 from logging import error, info
 
 import numpy as np
+from pydantic import ValidationError
 
 from scinoephile.audio import (
     AudioSeries,
@@ -299,7 +300,7 @@ class Aligner:
                 continue
             try:
                 answer = self.merger(query)
-            except ScinoephileError as exc:
+            except ValidationError as exc:
                 # TODO: Figure out how to cache these
                 answer = MergeAnswer(yuewen_merged="".join(query.yuewen_to_merge))
                 test_case = MergeTestCase.from_query_and_answer(query, answer)

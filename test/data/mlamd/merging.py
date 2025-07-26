@@ -1010,7 +1010,88 @@ merge_test_cases_block_11 = [
         yuewen_merged="仲真系有嚿鸡食添！",
     ),
 ]  # merge_test_cases_block_11
-merge_test_cases_block_12 = []  # merge_test_cases_block_12
+merge_test_cases_block_12 = [
+    MergeTestCase(
+        zhongwen="今日为大家介绍一味⋯",
+        yuewen_to_merge=["今日要同大家介绍一味"],
+        yuewen_merged="今日要同大家介绍一味⋯",
+    ),
+    MergeTestCase(
+        zhongwen="小朋友一定喜欢的⋯",
+        yuewen_to_merge=["小朋友一定喜欢嘅"],
+        yuewen_merged="小朋友一定喜欢嘅⋯",
+    ),
+    MergeTestCase(
+        zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
+        yuewen_to_merge=["鸡包包", "鸡包包", "鸡包纸包", "纸包鸡"],
+        yuewen_merged="鸡包包鸡包包鸡包纸包纸包鸡⋯",
+    ),
+    MergeTestCase(
+        zhongwen="包鸡包鸡包纸包鸡",
+        yuewen_to_merge=["包包鸡", "纸包鸡", "包纸包鸡"],
+        yuewen_merged="包包鸡纸包鸡包纸包鸡",
+    ),
+    MergeTestCase(
+        zhongwen="做法亦很简单",
+        yuewen_to_merge=["做法都好简单"],
+        yuewen_merged="做法都好简单",
+    ),
+    MergeTestCase(
+        zhongwen="只要将鸡包包住个鸡包",
+        yuewen_to_merge=["我哋先将鸡包", "包住个鸡包"],
+        yuewen_merged="我哋先将鸡包包住个鸡包",
+    ),
+    MergeTestCase(
+        zhongwen="再包住个鸡包⋯",
+        yuewen_to_merge=["再包住个鸡包"],
+        yuewen_merged="再包住个鸡包⋯",
+    ),
+    MergeTestCase(
+        zhongwen="包住张鸡包纸",
+        yuewen_to_merge=["包住张鸡包纸"],
+        yuewen_merged="包住张鸡包纸",
+    ),
+    MergeTestCase(
+        zhongwen="再包包包包包住个纸鸡包",
+        yuewen_to_merge=["再包包包包", "包住个纸包鸡"],
+        yuewen_merged="再包包包包包住个纸包鸡",
+    ),
+    MergeTestCase(
+        zhongwen="可我妈妈也有她温柔的一面",
+        yuewen_to_merge=["不过我妈妈都有佢温柔嘅一面"],
+        yuewen_merged="不过我妈妈都有佢温柔嘅一面",
+    ),
+    MergeTestCase(
+        zhongwen="例如每晚睡觉前，她都会说故事给我听",
+        yuewen_to_merge=["例如每晚临睡前", "佢都会讲故事畀我听"],
+        yuewen_merged="例如每晚临睡前，佢都会讲故事畀我听",
+    ),
+    MergeTestCase(
+        zhongwen="他死了！",
+        yuewen_to_merge=["有一日", "佢死咗"],
+        yuewen_merged="有一日，佢死咗！",
+    ),
+    MergeTestCase(
+        zhongwen="从前，有个小朋友很勤力念书⋯",
+        yuewen_to_merge=["从前有个小朋友好勤力读书"],
+        yuewen_merged="从前，有个小朋友好勤力读书⋯",
+    ),
+    MergeTestCase(
+        zhongwen="他长大后，发财了！",
+        yuewen_to_merge=["佢长大发咗"],
+        yuewen_merged="佢长大发咗！",
+    ),
+    MergeTestCase(
+        zhongwen="他扭了脚骹！",
+        yuewen_to_merge=["有一日佢屈亲个脚脚"],
+        yuewen_merged="有一日佢屈亲个脚脚！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈，我想睡觉",
+        yuewen_to_merge=["妈我想瞓啦"],
+        yuewen_merged="妈，我想瞓啦",
+    ),
+]  # merge_test_cases_block_12
 merge_test_cases_block_13 = []  # merge_test_cases_block_13
 merge_test_cases_block_14 = []  # merge_test_cases_block_14
 merge_test_cases_block_15 = []  # merge_test_cases_block_15

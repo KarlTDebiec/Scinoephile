@@ -1270,7 +1270,128 @@ proof_test_cases_block_11 = [
         note="",
     ),
 ]  # proof_test_cases_block_11
-proof_test_cases_block_12 = []  # proof_test_cases_block_12
+proof_test_cases_block_12 = [
+    ProofTestCase(
+        zhongwen="今日为大家介绍一味⋯",
+        yuewen="今日要同大家介绍一味⋯",
+        yuewen_proofread="今日要同大家介绍一味⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="小朋友一定喜欢的⋯",
+        yuewen="小朋友一定喜欢嘅⋯",
+        yuewen_proofread="小朋友一定喜欢嘅⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
+        yuewen="鸡包包鸡包包鸡包纸包纸包鸡⋯",
+        yuewen_proofread="鸡包包鸡包包鸡包纸包纸⋯",
+        note="Removed the extra '包鸡' at the end to match the repetition "
+        "pattern in the 中文 and avoid a likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="包鸡包鸡包纸包鸡",
+        yuewen="包包鸡纸包鸡包纸包鸡",
+        yuewen_proofread="包鸡包鸡包纸包鸡",
+        note="Corrected '包包鸡纸包鸡包纸包鸡' to '包鸡包鸡包纸包鸡' to match the repetition "
+        "and order of '包鸡' as in the original phrase; the extra '包' "
+        "and misplaced '纸' were likely mishearings.",
+    ),
+    ProofTestCase(
+        zhongwen="做法亦很简单",
+        yuewen="做法都好简单",
+        yuewen_proofread="做法都好简单",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="只要将鸡包包住个鸡包",
+        yuewen="我哋先将鸡包包住个鸡包",
+        yuewen_proofread="我哋先将鸡包包住个鸡包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="再包住个鸡包⋯",
+        yuewen="再包住个鸡包⋯",
+        yuewen_proofread="再包住个鸡包⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="包住张鸡包纸",
+        yuewen="包住张鸡包纸",
+        yuewen_proofread="包住张鸡包纸",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="再包包包包包住个纸鸡包",
+        yuewen="再包包包包包住个纸包鸡",
+        yuewen_proofread="再包包包包包住个纸包鸡",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="再包包包，纸纸纸",
+        yuewen="再包包包包包鸡包纸包纸纸纸纸纸纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡",
+        yuewen_proofread="",
+        note="Cleared as the provided 粤文 is a string of repeated words "
+        "with no meaningful correspondence to the original 中文 phrase, "
+        "indicating a complete transcription failure.",
+    ),
+    ProofTestCase(
+        zhongwen="可我妈妈也有她温柔的一面",
+        yuewen="不过我妈妈都有佢温柔嘅一面",
+        yuewen_proofread="不过我妈妈都有佢温柔嘅一面",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="例如每晚睡觉前，她都会说故事给我听",
+        yuewen="例如每晚临睡前，佢都会讲故事畀我听",
+        yuewen_proofread="例如每晚临睡前，佢都会讲故事畀我听",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="从前，有个小朋友撒谎；有一天⋯",
+        yuewen="从前有个小朋友讲大话",
+        yuewen_proofread="从前有个小朋友讲大话",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他死了！",
+        yuewen="有一日，佢死咗！",
+        yuewen_proofread="有一日，佢死咗！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="从前，有个小朋友很勤力念书⋯",
+        yuewen="从前，有个小朋友好勤力读书⋯",
+        yuewen_proofread="从前，有个小朋友好勤力读书⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他长大后，发财了！",
+        yuewen="佢长大发咗！",
+        yuewen_proofread="佢长大发咗！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="从前，有个小朋友不孝，有天⋯",
+        yuewen="从前有个小朋友唔孝顺",
+        yuewen_proofread="从前有个小朋友唔孝顺",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他扭了脚骹！",
+        yuewen="有一日佢屈亲个脚脚！",
+        yuewen_proofread="有一日佢屈亲个脚骹！",
+        note="Corrected '脚脚' to '脚骹' as '脚骹' is the correct Cantonese term "
+        "for 'ankle', matching the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈，我想睡觉",
+        yuewen="妈，我想瞓啦",
+        yuewen_proofread="妈，我想瞓啦",
+        note="",
+    ),
+]  # proof_test_cases_block_12
 proof_test_cases_block_13 = []  # proof_test_cases_block_13
 proof_test_cases_block_14 = []  # proof_test_cases_block_14
 proof_test_cases_block_15 = []  # proof_test_cases_block_15

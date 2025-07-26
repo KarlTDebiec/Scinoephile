@@ -406,7 +406,62 @@ distribute_test_cases_block_9 = [
 ]  # distribute_test_cases_block_9
 distribute_test_cases_block_10 = []  # distribute_test_cases_block_10
 distribute_test_cases_block_11 = []  # distribute_test_cases_block_11
-distribute_test_cases_block_12 = []  # distribute_test_cases_block_12
+distribute_test_cases_block_12 = [
+    DistributeTestCase(
+        one_zhongwen="今日为大家介绍一味⋯",
+        one_yuewen_start="",
+        two_zhongwen="小朋友一定喜欢的⋯",
+        two_yuewen_end="小朋友一定喜欢嘅",
+        yuewen_to_distribute="今日要同大家介绍一味",
+        one_yuewen_to_append="今日要同大家介绍一味",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
+        one_yuewen_start="鸡包包鸡包包鸡包纸包",
+        two_zhongwen="包鸡包鸡包纸包鸡",
+        two_yuewen_end="包包鸡纸包鸡包纸包鸡",
+        yuewen_to_distribute="纸包鸡",
+        one_yuewen_to_append="纸包鸡",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="只要将鸡包包住个鸡包",
+        one_yuewen_start="我哋先将鸡包",
+        two_zhongwen="再包住个鸡包⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="包住个鸡包",
+        one_yuewen_to_append="包住个鸡包",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="再包住个鸡包⋯",
+        one_yuewen_start="",
+        two_zhongwen="包住张鸡包纸",
+        two_yuewen_end="包住张鸡包纸",
+        yuewen_to_distribute="再包住个鸡包",
+        one_yuewen_to_append="再包住个鸡包",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="再包包包包包住个纸鸡包",
+        one_yuewen_start="再包包包包",
+        two_zhongwen="再包包包，纸纸纸",
+        two_yuewen_end="再包包包包包鸡包纸包纸",
+        yuewen_to_distribute="包住个纸包鸡",
+        one_yuewen_to_append="包住个纸包鸡",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="再包包包，纸纸纸",
+        one_yuewen_start="再包包包包包鸡包纸包纸",
+        two_zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
+        two_yuewen_end="纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡",
+        yuewen_to_distribute="纸纸纸纸",
+        one_yuewen_to_append="纸纸纸纸",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_12
 distribute_test_cases_block_13 = []  # distribute_test_cases_block_13
 distribute_test_cases_block_14 = []  # distribute_test_cases_block_14
 distribute_test_cases_block_15 = []  # distribute_test_cases_block_15
