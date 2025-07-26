@@ -36,11 +36,12 @@ from test.data.mlamd import (
 
 def replace_test_cases_in_file(file_path: Path, list_name: str, new_cases_str: str):
     pattern = re.compile(
-        rf"({list_name}\s*=\s*\[\n)(.*?)(\]  # {list_name})",
+        rf"{list_name}\s*=\s*\[(.*?)\]  # {list_name}",
         re.DOTALL,
     )
     contents = file_path.read_text(encoding="utf-8")
-    new_contents = pattern.sub(rf"\1{new_cases_str}\n\3", contents)
+    replacement = f"{list_name} = {new_cases_str}  # {list_name}"
+    new_contents = pattern.sub(replacement, contents)
     file_path.write_text(new_contents, encoding="utf-8")
     info(f"Replaced test cases {list_name} in {file_path.name}.")
 

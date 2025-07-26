@@ -187,6 +187,14 @@ shift_test_cases_block_0 = [
         include_in_prompt=True,
     ),
     ShiftTestCase(
+        one_zhongwen="又或者好靓仔，好靓仔",
+        one_yuewen="又或者系好靓仔好靓仔",
+        two_zhongwen="跟周润发，梁朝伟那么靓仔！",
+        two_yuewen="好似周润发同埋梁朝伟咁靓仔",
+        one_yuewen_shifted="又或者系好靓仔好靓仔",
+        two_yuewen_shifted="好似周润发同埋梁朝伟咁靓仔",
+    ),
+    ShiftTestCase(
         one_zhongwen="跟周润发，梁朝伟那么靓仔！",
         one_yuewen="好似周润发同埋梁朝伟咁靓仔",
         two_zhongwen="胶兜仍然在转，毫无点头迹象",
