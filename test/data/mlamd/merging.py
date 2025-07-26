@@ -600,7 +600,8 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="我「暗」的「暗」掉一条蕉",
         yuewen_to_merge=["嗱", "我暗啦", "噉我暗𠮶条香蕉"],
-        yuewen_merged="嗱，我暗啦，噉我暗𠮶条香蕉",
+        yuewen_merged="嗱，我「暗」啦，噉我「暗」𠮶条香蕉",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="至多是疴烂煮，怎么会下起雨来呢？",
@@ -3851,6 +3852,7 @@ merge_test_cases_block_60 = [
         zhongwen="亦顺理成章叫成「香港一蛋挞」",
         yuewen_to_merge=["亦都顺理成章噉叫做香港一蛋挞"],
         yuewen_merged="亦都顺理成章噉叫做「香港一蛋挞」",
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="之后李丽珊蝉联失败⋯",
@@ -4265,7 +4267,7 @@ merge_test_cases_block_68 = [
     MergeTestCase(
         zhongwen="就这样，一味「烧鸡」大功告成",
         yuewen_to_merge=["就噉", "一味烧鸡", "就大功告成喇"],
-        yuewen_merged="就噉，一味烧鸡，就大功告成喇",
+        yuewen_merged="就噉，一味「烧鸡」就大功告成喇",
     ),
     MergeTestCase(
         zhongwen="食谱里面补充说：",
