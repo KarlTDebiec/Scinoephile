@@ -689,16 +689,17 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="我好像觉得呢⋯",
-        yuewen="我个心总系仁住仁住⋯",
-        yuewen_proofread="我个心总系印住印住⋯",
-        note="Corrected '仁住仁住' to '印住印住' as '印住' (a pounding or pressing "
-        "feeling) is a common Cantonese expression for a feeling in "
-        "the heart, while '仁住' is likely a mishearing.",
+        yuewen="我个心总系仁住仁住，好似⋯",
+        yuewen_proofread="我个心总系印住印住，好似⋯",
+        note="Corrected '仁住仁住' to '印住印住' as '印住' is a common Cantonese "
+        "expression for a feeling of pressure or unease, matching the "
+        "context of '觉得' in the 中文, while '仁住' is likely a "
+        "mishearing.",
     ),
     ProofTestCase(
         zhongwen="有什么人在喊我似的",
-        yuewen="好似有人嗌紧我个名噉嘅",
-        yuewen_proofread="好似有人嗌紧我个名噉嘅",
+        yuewen="有人嗌紧我个名噉嘅",
+        yuewen_proofread="有人嗌紧我个名噉嘅",
         note="",
     ),
     ProofTestCase(
@@ -1330,11 +1331,19 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="再包包包，纸纸纸",
-        yuewen="再包包包包包鸡包纸包纸纸纸纸纸纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡",
-        yuewen_proofread="",
-        note="Cleared as the provided 粤文 is a string of repeated words "
-        "with no meaningful correspondence to the original 中文 phrase, "
-        "indicating a complete transcription failure.",
+        yuewen="再包包包包，包鸡包纸包纸，纸纸纸纸",
+        yuewen_proofread="再包包包，纸纸纸",
+        note="Removed extra repetitions and incorrect phrases like "
+        "'包鸡包纸包纸' to match the intended repetition of '包包包，纸纸纸' and "
+        "avoid misheard words.",
+    ),
+    ProofTestCase(
+        zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
+        yuewen="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
+        yuewen_proofread="纸包纸，纸包鸡，鸡包纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
+        note="Corrected '包鸡纸' to '鸡包纸' to match the pattern and likely "
+        "intended word order, as '鸡包纸' is a plausible mishearing of "
+        "'包鸡纸'.",
     ),
     ProofTestCase(
         zhongwen="可我妈妈也有她温柔的一面",
@@ -1489,14 +1498,14 @@ proof_test_cases_block_14 = [
     ),
     ProofTestCase(
         zhongwen="我也试过努力念书，可是⋯",
-        yuewen="过好努力咁读书，但系⋯",
-        yuewen_proofread="过好努力咁读书，但系⋯",
+        yuewen="我试过好努力咁读书，但系⋯",
+        yuewen_proofread="我试过好努力咁读书，但系⋯",
         note="",
     ),
     ProofTestCase(
         zhongwen="可是⋯我仍然有梦",
-        yuewen="我试，但系⋯我仲可以发梦",
-        yuewen_proofread="我试，但系⋯我仲可以发梦",
+        yuewen="但系⋯我仲可以发梦",
+        yuewen_proofread="但系⋯我仲可以发梦",
         note="",
     ),
 ]  # proof_test_cases_block_14
@@ -1772,14 +1781,14 @@ proof_test_cases_block_18 = [
     ),
     ProofTestCase(
         zhongwen="那么吃药用不用那个什么的？",
-        yuewen="噉佢食药使唔使咩啊？",
-        yuewen_proofread="噉佢食药使唔使咩啊？",
+        yuewen="噉佢食药使唔使咩啊？唔使？",
+        yuewen_proofread="噉佢食药使唔使咩啊？唔使？",
         note="",
     ),
     ProofTestCase(
         zhongwen="不用！给他打口针吧！",
-        yuewen="唔使！同佢打多支针添呢！",
-        yuewen_proofread="唔使！同佢打多支针添呢！",
+        yuewen="同佢打多支针添呢！",
+        yuewen_proofread="同佢打多支针添呢！",
         note="",
     ),
     ProofTestCase(
@@ -1865,15 +1874,9 @@ proof_test_cases_block_19 = [
 proof_test_cases_block_20 = [
     ProofTestCase(
         zhongwen="好呀，马尔代夫！",
-        yuewen="嘻嘻，好嘢！",
-        yuewen_proofread="嘻嘻，好嘢！",
-        note="",
-    ),
-    ProofTestCase(
-        zhongwen="马尔代夫！",
-        yuewen="买二代夫，买二代夫！",
-        yuewen_proofread="马尔代夫，马尔代夫！",
-        note="Corrected '买二代夫' to '马尔代夫' as '买二代夫' is a mishearing of the "
+        yuewen="嘻嘻，好嘢，买二代夫！",
+        yuewen_proofread="嘻嘻，好嘢，马尔代夫！",
+        note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the "
         "place name '马尔代夫' (Maldives).",
     ),
     ProofTestCase(
@@ -1912,16 +1915,17 @@ proof_test_cases_block_21 = [
     ),
     ProofTestCase(
         zhongwen="妈妈你看，我病好了！",
-        yuewen="我好返喇！",
-        yuewen_proofread="我好返喇！",
-        note="",
+        yuewen="我好返喇，啲嘢所以！",
+        yuewen_proofread="",
+        note="Cleared as '我好返喇，啲嘢所以！' bears no resemblance to the original "
+        "phrase '妈妈你看，我病好了！' and is clearly a complete transcription "
+        "failure.",
     ),
     ProofTestCase(
         zhongwen="我把药都吃光了",
-        yuewen="啲嘢所以我全部食晒喇",
-        yuewen_proofread="啲药所以我全部食晒喇",
-        note="Corrected '啲嘢' to '啲药' as the context is about taking "
-        "medicine, and '药' is likely misheard as '嘢'.",
+        yuewen="我全部食晒喇",
+        yuewen_proofread="我全部食晒喇",
+        note="",
     ),
     ProofTestCase(
         zhongwen="家中的东西有什么没给你吃光的？",
@@ -2156,14 +2160,14 @@ proof_test_cases_block_23 = [
     ),
     ProofTestCase(
         zhongwen="还在讲？",
-        yuewen="仲讲？",
-        yuewen_proofread="仲讲？",
+        yuewen="仲讲，哦？",
+        yuewen_proofread="仲讲，哦？",
         note="",
     ),
     ProofTestCase(
         zhongwen="快点帮手执行李",
-        yuewen="哦，快啲嚟执埋啲行李先啦，哦",
-        yuewen_proofread="哦，快啲嚟执埋啲行李先啦，哦",
+        yuewen="快啲嚟执埋啲行李先啦，哦",
+        yuewen_proofread="快啲嚟执埋啲行李先啦，哦",
         note="",
     ),
     ProofTestCase(
