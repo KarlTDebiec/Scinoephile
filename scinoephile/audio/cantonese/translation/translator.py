@@ -24,7 +24,7 @@ class Translator:
 
     def __init__(
         self,
-        model: str,
+        model: str = "gpt-4.1",
         examples: list[TestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
