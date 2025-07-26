@@ -251,11 +251,159 @@ distribute_test_cases_block_4 = [
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_4
-distribute_test_cases_block_5 = []  # distribute_test_cases_block_5
+distribute_test_cases_block_5 = [
+    DistributeTestCase(
+        one_zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
+        one_yuewen_start="唔该鱼蛋粗啊",
+        two_zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
+        two_yuewen_end="噉啊要碗鱼蛋好啊",
+        yuewen_to_distribute="冇粗面噃",
+        one_yuewen_to_append="冇粗面噃",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
+        one_yuewen_start="噉啊要碗鱼蛋好啊",
+        two_zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
+        two_yuewen_end="噉啊要金钱透粗啊冇粗面噃",
+        yuewen_to_distribute="冇鱼蛋噃",
+        one_yuewen_to_append="冇鱼蛋噃",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
+        one_yuewen_start="噉啊要金钱透粗啊冇粗面噃",
+        two_zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
+        two_yuewen_end="咁要鱼蛋油面啊",
+        yuewen_to_distribute="噉啊",
+        one_yuewen_to_append="",
+        two_yuewen_to_prepend="噉啊",
+    ),
+    DistributeTestCase(
+        one_zhongwen="又买光了？",
+        one_yuewen_start="冇粗面噃",
+        two_zhongwen="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
+        two_yuewen_end="噉唔该畀碗鱼蛋奶啊",
+        yuewen_to_distribute="又冇啊",
+        one_yuewen_to_append="又冇啊",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
+        one_yuewen_start="噉唔该畀碗鱼蛋奶啊",
+        two_zhongwen="麦兜呀，鱼蛋跟粗面都买光了",
+        two_yuewen_end="麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦",
+        yuewen_to_distribute="冇鱼蛋噃",
+        one_yuewen_to_append="冇鱼蛋噃",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="看到这里⋯",
+        one_yuewen_start="",
+        two_zhongwen="大家大概都知道我是个怎么样的叻仔",
+        two_yuewen_end="大家大概都知道我有几叻仔嘞",
+        yuewen_to_distribute="睇到呢度",
+        one_yuewen_to_append="睇到呢度",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那时候我无忧无虑，万事无所谓﹣﹣",
+        one_yuewen_start="果只我无忧无虑",
+        two_zhongwen="鱼蛋买光了？那么粗面吧",
+        two_yuewen_end="冇鱼蛋咩粗面都好啊",
+        yuewen_to_distribute="冇乜所谓",
+        one_yuewen_to_append="冇乜所谓",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_5
 distribute_test_cases_block_6 = []  # distribute_test_cases_block_6
-distribute_test_cases_block_7 = []  # distribute_test_cases_block_7
-distribute_test_cases_block_8 = []  # distribute_test_cases_block_8
-distribute_test_cases_block_9 = []  # distribute_test_cases_block_9
+distribute_test_cases_block_7 = [
+    DistributeTestCase(
+        one_zhongwen="可每次我总唱成「疴」什么什么的⋯",
+        one_yuewen_start="但系唱嚟唱去都系阿伦厨",
+        two_zhongwen="是All Things Bright and Beautiful吧？",
+        two_yuewen_end="系唔系AllThingsBrightand",
+        yuewen_to_distribute="咁Ballana噉",
+        one_yuewen_to_append="咁Ballana噉",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="是All Things Bright and Beautiful吧？",
+        one_yuewen_start="系唔系AllThingsBrightand",
+        two_zhongwen="是的，一切都好！",
+        two_yuewen_end="系呀",
+        yuewen_to_distribute="Beautiful呀",
+        one_yuewen_to_append="Beautiful呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="是的，一切都好！",
+        one_yuewen_start="系呀",
+        two_zhongwen="世上一切，一切一切⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="所有嘢都几好喇",
+        one_yuewen_to_append="所有嘢都几好喇",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="世上一切，一切一切⋯",
+        one_yuewen_start="",
+        two_zhongwen="所有那些，都好！",
+        two_yuewen_end="所有𠮶啲嘢都几好AllThingsBrightandBeautiful",
+        yuewen_to_distribute="世上一切",
+        one_yuewen_to_append="世上一切",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_7
+distribute_test_cases_block_8 = [
+    DistributeTestCase(
+        one_zhongwen="这位喊得特劲的中年母猪",
+        one_yuewen_start="",
+        two_zhongwen="就是我妈妈麦太",
+        two_yuewen_end="麦太",
+        yuewen_to_distribute="呢个嗌得特别劲嘅中年母猪就系我妈妈",
+        one_yuewen_to_append="呢个嗌得特别劲嘅中年母猪",
+        two_yuewen_to_prepend="就系我妈妈",
+    ),
+    DistributeTestCase(
+        one_zhongwen="这位喊得特劲的中年母猪",
+        one_yuewen_start="",
+        two_zhongwen="就是我妈妈麦太",
+        two_yuewen_end="就系我妈妈麦太",
+        yuewen_to_distribute="呢个嗌得特别劲嘅中年母猪",
+        one_yuewen_to_append="呢个嗌得特别劲嘅中年母猪",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="我妈妈真的很劲",
+        one_yuewen_start="",
+        two_zhongwen="一个女人背起整个世界！",
+        two_yuewen_end="一个女人揹起成个世界",
+        yuewen_to_distribute="我妈妈真系好劲呀",
+        one_yuewen_to_append="我妈妈真系好劲呀",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_8
+distribute_test_cases_block_9 = [
+    DistributeTestCase(
+        one_zhongwen="将鸡包底部的纸撕下来⋯慢慢地撕",
+        one_yuewen_start="我哋将黐喺鸡包底嘅纸撕出嚟",
+        two_zhongwen="就会得到一张鸡包纸",
+        two_yuewen_end="咁就会得到一张鸡包纸喇",
+        yuewen_to_distribute="慢慢撕",
+        one_yuewen_to_append="慢慢撕",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="今日为大家介绍一个⋯",
+        one_yuewen_start="",
+        two_zhongwen="简单别致的小菜纸包鸡",
+        two_yuewen_end="简单又别致嘅小菜自包鸡",
+        yuewen_to_distribute="今日我为大家介绍个",
+        one_yuewen_to_append="今日我为大家介绍个",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_9
 distribute_test_cases_block_10 = []  # distribute_test_cases_block_10
 distribute_test_cases_block_11 = []  # distribute_test_cases_block_11
 distribute_test_cases_block_12 = []  # distribute_test_cases_block_12
