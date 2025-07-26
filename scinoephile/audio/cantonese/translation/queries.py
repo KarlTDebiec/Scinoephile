@@ -4,15 +4,15 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, create_model
 
 from scinoephile.audio.cantonese.alignment import Alignment
 from scinoephile.core import ScinoephileError
 
 
-def get_translate_query_and_answer(
+def get_translate_models(
     alignment: Alignment,
-) -> tuple(type[BaseModel], type[BaseModel]):
+) -> tuple[type[BaseModel], type[BaseModel]]:
     """Get translation query for an alignment.
 
     Arguments:
@@ -25,31 +25,37 @@ def get_translate_query_and_answer(
     sgs = alignment.sync_groups
     query_fields = {}
     answer_fields = {}
+
     for sg_idx, sg in enumerate(sgs):
         # Get 中文
         zw_idxs = sg[0]
         if len(zw_idxs) != 1:
-            raise ValueError(
+            raise ScinoephileError(
                 f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
             )
         zw_idx = zw_idxs[0]
-        zhongwen = alignment.zhongwen[zw_idx].text
         query_fields[f"zhongwen_{zw_idx}"] = (
-            Field(..., description="Known 中文 of text one"),
-            zhongwen[zw_idx],
+            str,
+            Field(..., description=f"Known 中文 of text {zw_idx + 1}"),
         )
 
         # Get 粤文
         yw_idxs = sg[1]
         if len(yw_idxs) == 0:
             answer_fields[f"yuewen_{zw_idx}"] = Field(
-                ..., description="Translated 粤文 of text one"
+                ..., description=f"Translated 粤文 of text {zw_idx + 1}"
             )
         if len(yw_idxs) > 1:
             raise ScinoephileError(
                 f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
             )
-        query_fields[f"yuewen_{yw_idxs[0]}"] = (
-            Field(..., description="Known 粤文 of text one"),
-            alignment.yuewen[yw_idxs[0]].text,
+        yw_idx = yw_idxs[0]
+        query_fields[f"yuewen_{yw_idx}"] = (
+            str,
+            Field(..., description=f"Known 粤文 of text {yw_idx + 1}"),
         )
+
+    query_model = create_model("TranslateQuery", **query_fields)
+    answer_model = create_model("TranslateAnswer", **answer_fields)
+
+    return query_model, answer_model
