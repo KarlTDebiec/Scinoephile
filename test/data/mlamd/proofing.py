@@ -1094,9 +1094,9 @@ proof_test_cases_block_9 = [
     ProofTestCase(
         zhongwen="www．麦太世界．com",
         yuewen="www.mcticege.com",
-        yuewen_proofread="www.mctaisegai.com",
-        note="Corrected 'mcticege' to 'mctaisegai' as it is a closer "
-        "phonetic representation of '麦太世界' in Cantonese.",
+        yuewen_proofread="www.麦太世界.com",
+        note="Corrected 'mcticege' to '麦太世界' to match the style of the 中文.",
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="她做的菜，同样厉害",
@@ -3060,7 +3060,127 @@ proof_test_cases_block_44 = [
         "'包'.",
     ),
 ]  # proof_test_cases_block_44
-proof_test_cases_block_45 = []  # proof_test_cases_block_45
+proof_test_cases_block_45 = [
+    ProofTestCase(
+        zhongwen="抢包山？",
+        yuewen="抢包山？",
+        yuewen_proofread="抢包山？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="年轻观众可能不知「抢包山」何物",
+        yuewen="年轻嘅观众可能唔知乜嘢系抢包山呀",
+        yuewen_proofread="年轻嘅观众可能唔知乜嘢系抢包山呀",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="抢包山乃长洲独有传统节日",
+        yuewen="抢包山系长洲独有嘅传统节日",
+        yuewen_proofread="抢包山系长洲独有嘅传统节日",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="每年农历四月",
+        yuewen="每年农历四月",
+        yuewen_proofread="每年农历四月",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="长洲居民均举办太平清醮",
+        yuewen="长洲嘅居民都会举办太平清朝",
+        yuewen_proofread="长洲嘅居民都会举办太平清醮",
+        note="Corrected '太平清朝' to '太平清醮' as '太平清醮' is the correct term for "
+        "the festival, while '清朝' is a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="于北帝庙前搭起三座包山",
+        yuewen="喺北帝庙前搭起三座包山",
+        yuewen_proofread="喺北帝庙前搭起三座包山",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="什么是包山呢？",
+        yuewen="噉乜嘢系包山呢？",
+        yuewen_proofread="噉乜嘢系包山呢？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="顾名思义⋯",
+        yuewen="顾名思义⋯",
+        yuewen_proofread="顾名思义⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="包山就是一座由好多好多包砌起的山！",
+        yuewen="包山就系一座由好多，好多，好多包砌起嘅山！",
+        yuewen_proofread="包山就系一座由好多，好多，好多包砌起嘅山！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一座包山，起码六、七层楼高⋯",
+        yuewen="一座包山，起码六七层楼高⋯",
+        yuewen_proofread="一座包山，起码六七层楼高⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="你可以想像一下包山有多高了吧？",
+        yuewen="噉你可以想像一下𠮶度有几多包喇？",
+        yuewen_proofread="噉你可以想像一下𠮶度有几多包喇？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="抢包山，就是要把包山上的包抢到手！",
+        yuewen="噉抢包山，自然就系要将包山嘅包抢到手！",
+        yuewen_proofread="噉抢包山，自然就系要将包山嘅包抢到手！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="锣鼓响起",
+        yuewen="罗古响起",
+        yuewen_proofread="锣鼓响起",
+        note="Corrected '罗古' to '锣鼓' as '锣鼓' is the correct term for 'gong "
+        "and drum', matching the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="数以百计的青年一涌而上抢包",
+        yuewen="数以百计嘅青年就会一涌而上去抢包",
+        yuewen_proofread="数以百计嘅青年就会一涌而上去抢包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="抢得位置愈高的包，就是愈大的祝福",
+        yuewen="抢到位置越高嘅包，就代表越大嘅祝福",
+        yuewen_proofread="抢到位置越高嘅包，就代表越大嘅祝福",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="更可以表现自己的不凡身手",
+        yuewen="更加可以表现自己不凡嘅身手",
+        yuewen_proofread="更加可以表现自己不凡嘅身手",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="在1978年两座包山忽然倒下，多人重伤",
+        yuewen="但喺1978年，两座包山突然塌咗",
+        yuewen_proofread="但喺1978年，两座包山突然塌咗",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「抢包山」从此被禁！",
+        yuewen="都去抢包山，而长洲特有嘅传统亦占备为榜！",
+        yuewen_proofread="",
+        note="Cleared as '都去抢包山，而长洲特有嘅传统亦占备为榜！' does not correspond to the "
+        "original phrase '「抢包山」从此被禁！' and appears to be a complete "
+        "transcription failure.",
+    ),
+    ProofTestCase(
+        zhongwen="而长洲独有的传统，亦渐被遗忘",
+        yuewen="长洲特有嘅传统，亦占备为榜",
+        yuewen_proofread="长洲特有嘅传统，亦渐被遗忘",
+        note="Corrected '占备为榜' to '渐被遗忘' as it is a mishearing of the "
+        "original phrase meaning 'gradually being forgotten'.",
+    ),
+]  # proof_test_cases_block_45
 proof_test_cases_block_46 = [
     ProofTestCase(
         zhongwen="奥运金牌⋯这一世是没有机会的了",

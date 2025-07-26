@@ -856,7 +856,17 @@ distribute_test_cases_block_44 = [
         two_yuewen_to_prepend="抢爆山",
     ),
 ]  # distribute_test_cases_block_44
-distribute_test_cases_block_45 = []  # distribute_test_cases_block_45
+distribute_test_cases_block_45 = [
+    DistributeTestCase(
+        one_zhongwen="顾名思义⋯",
+        one_yuewen_start="",
+        two_zhongwen="包山就是一座由好多好多包砌起的山！",
+        two_yuewen_end="包山就系一座由好多好多好多包砌起嘅山",
+        yuewen_to_distribute="顾名思义",
+        one_yuewen_to_append="顾名思义",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_45
 distribute_test_cases_block_46 = []  # distribute_test_cases_block_46
 distribute_test_cases_block_47 = []  # distribute_test_cases_block_47
 distribute_test_cases_block_48 = []  # distribute_test_cases_block_48

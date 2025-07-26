@@ -139,26 +139,23 @@ class Aligner:
         # Get sync group and yuewen indexes
         yw_idx = alignment.yuewen_to_distribute[0]
         zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
-        if len(zw_idxs) == 0:
-            # TODO: Consider just deleting undistributable 粤文
-            yw = alignment.yuewen[yw_idx]
-            zhongwen_starts = [zw.start for zw in alignment.zhongwen]
 
-            zw_idx = min(
-                range(len(alignment.zhongwen)),
-                key=lambda zw_idx: abs(alignment.zhongwen[zw_idx].start - yw.start),
+        # If 粤文 overlaps with nothing, just remove it
+        if len(zw_idxs) == 0:
+            yuewen = AudioSeries(audio=alignment.yuewen.audio)
+            yuewen.events = (
+                alignment.yuewen.events[:yw_idx] + alignment.yuewen.events[yw_idx + 1 :]
             )
-            # TODO: Validate that zw_idxs map cleanly to sg_idxs
-            sg_idx = zw_idx
-            nascent_sync_groups = deepcopy(alignment.sync_groups)
-            nascent_sync_groups[sg_idx][1].append(yw_idx)
-            alignment._sync_groups_override = nascent_sync_groups
+            alignment._sync_groups_override = None
             return
+
+        # Other situations have not yet been encountered
         if len(zw_idxs) != 2:
             raise ScinoephileError(
-                f"Situation not supported: {len(zw_idxs)} zhongwen subs "
-                f"for yw_i={yw_idx}:\n{alignment}"
+                f"Situation not supported: 粤文 subtitle {yw_idx} overlaps with "
+                f"{len(zw_idxs)} sync groups: {zw_idxs.tolist()}.\n{alignment}"
             )
+
         # TODO: Validate that zw_idxs map cleanly to sg_idxs
         one_sg_idx, two_sg_idx = zw_idxs
 
@@ -290,11 +287,11 @@ class Aligner:
                     break
         elif len(one_yuewen) > len(one_yuewen_shifted):
             # Calculate the number of characters we need to shift from one to two
-            text_to_shift_from_one_to_two = two_yuewen_shifted[len(two_yuewen) :]
+            text_to_shift_from_one_to_two = one_yuewen[len(one_yuewen_shifted) :]
             n_chars_left_to_shift = len(text_to_shift_from_one_to_two)
 
             # Loop over subtitles currently in one
-            for one_yw_idx in one_yw_idxs:
+            for one_yw_idx in reversed(one_yw_idxs):
                 yw = alignment.yuewen[one_yw_idx]
 
                 if len(yw.text) <= n_chars_left_to_shift:

@@ -2411,7 +2411,103 @@ merge_test_cases_block_44 = [
         yuewen_merged="抢爆山！",
     ),
 ]  # merge_test_cases_block_44
-merge_test_cases_block_45 = []  # merge_test_cases_block_45
+merge_test_cases_block_45 = [
+    MergeTestCase(
+        zhongwen="抢包山？",
+        yuewen_to_merge=["抢包山?"],
+        yuewen_merged="抢包山？",
+    ),
+    MergeTestCase(
+        zhongwen="年轻观众可能不知「抢包山」何物",
+        yuewen_to_merge=["年轻嘅观众可能唔知乜嘢系抢包山呀"],
+        yuewen_merged="年轻嘅观众可能唔知乜嘢系抢包山呀",
+    ),
+    MergeTestCase(
+        zhongwen="抢包山乃长洲独有传统节日",
+        yuewen_to_merge=["抢包山系长洲独有嘅传统节日"],
+        yuewen_merged="抢包山系长洲独有嘅传统节日",
+    ),
+    MergeTestCase(
+        zhongwen="每年农历四月",
+        yuewen_to_merge=["每年农历四月"],
+        yuewen_merged="每年农历四月",
+    ),
+    MergeTestCase(
+        zhongwen="长洲居民均举办太平清醮",
+        yuewen_to_merge=["长洲嘅居民都会举办太平清朝"],
+        yuewen_merged="长洲嘅居民都会举办太平清朝",
+    ),
+    MergeTestCase(
+        zhongwen="于北帝庙前搭起三座包山",
+        yuewen_to_merge=["喺北帝庙前搭起三座包山"],
+        yuewen_merged="喺北帝庙前搭起三座包山",
+    ),
+    MergeTestCase(
+        zhongwen="什么是包山呢？",
+        yuewen_to_merge=["噉乜嘢系包山呢?"],
+        yuewen_merged="噉乜嘢系包山呢？",
+    ),
+    MergeTestCase(
+        zhongwen="顾名思义⋯",
+        yuewen_to_merge=["顾名思义"],
+        yuewen_merged="顾名思义⋯",
+    ),
+    MergeTestCase(
+        zhongwen="包山就是一座由好多好多包砌起的山！",
+        yuewen_to_merge=["包山就系一座由好多", "好多", "好多包砌起嘅山"],
+        yuewen_merged="包山就系一座由好多，好多，好多包砌起嘅山！",
+    ),
+    MergeTestCase(
+        zhongwen="一座包山，起码六、七层楼高⋯",
+        yuewen_to_merge=["一座包山起码六七层楼高"],
+        yuewen_merged="一座包山，起码六七层楼高⋯",
+    ),
+    MergeTestCase(
+        zhongwen="你可以想像一下包山有多高了吧？",
+        yuewen_to_merge=["噉你可以想像一下𠮶度有几多包喇"],
+        yuewen_merged="噉你可以想像一下𠮶度有几多包喇？",
+    ),
+    MergeTestCase(
+        zhongwen="抢包山，就是要把包山上的包抢到手！",
+        yuewen_to_merge=["噉抢包山", "自然就系要将包山嘅包抢到手"],
+        yuewen_merged="噉抢包山，自然就系要将包山嘅包抢到手！",
+    ),
+    MergeTestCase(
+        zhongwen="锣鼓响起",
+        yuewen_to_merge=["罗古响起"],
+        yuewen_merged="罗古响起",
+    ),
+    MergeTestCase(
+        zhongwen="数以百计的青年一涌而上抢包",
+        yuewen_to_merge=["数以百计嘅青年就会一涌而上去抢包"],
+        yuewen_merged="数以百计嘅青年就会一涌而上去抢包",
+    ),
+    MergeTestCase(
+        zhongwen="抢得位置愈高的包，就是愈大的祝福",
+        yuewen_to_merge=["抢到位置越高嘅包", "就代表越大嘅祝福"],
+        yuewen_merged="抢到位置越高嘅包，就代表越大嘅祝福",
+    ),
+    MergeTestCase(
+        zhongwen="更可以表现自己的不凡身手",
+        yuewen_to_merge=["更加可以表现自己不凡嘅身手"],
+        yuewen_merged="更加可以表现自己不凡嘅身手",
+    ),
+    MergeTestCase(
+        zhongwen="在1978年两座包山忽然倒下，多人重伤",
+        yuewen_to_merge=["但喺1978年", "两座包山突然塌咗"],
+        yuewen_merged="但喺1978年，两座包山突然塌咗",
+    ),
+    MergeTestCase(
+        zhongwen="「抢包山」从此被禁！",
+        yuewen_to_merge=["都去抢包山", "而长洲特有嘅传统亦占备为榜"],
+        yuewen_merged="都去抢包山，而长洲特有嘅传统亦占备为榜！",
+    ),
+    MergeTestCase(
+        zhongwen="而长洲独有的传统，亦渐被遗忘",
+        yuewen_to_merge=["长洲特有嘅传统亦占备为榜"],
+        yuewen_merged="长洲特有嘅传统，亦占备为榜",
+    ),
+]  # merge_test_cases_block_45
 merge_test_cases_block_46 = [
     MergeTestCase(
         zhongwen="奥运金牌⋯这一世是没有机会的了",
