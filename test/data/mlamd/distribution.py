@@ -770,15 +770,72 @@ distribute_test_cases_block_31 = [
 distribute_test_cases_block_32 = []  # distribute_test_cases_block_32
 distribute_test_cases_block_33 = []  # distribute_test_cases_block_33
 distribute_test_cases_block_34 = []  # distribute_test_cases_block_34
-distribute_test_cases_block_35 = []  # distribute_test_cases_block_35
+distribute_test_cases_block_35 = [
+    DistributeTestCase(
+        one_zhongwen="你们这些住香港岛的小朋友骄生惯养",
+        one_yuewen_start="",
+        two_zhongwen="怎么吃得苦？",
+        two_yuewen_end="",
+        yuewen_to_distribute="你哋呢班住喺香港岛嘅小朋友娇生惯养边挨得苦㗎",
+        one_yuewen_to_append="你哋呢班住喺香港岛嘅小朋友娇生惯养",
+        two_yuewen_to_prepend="边挨得苦㗎",
+    ),
+    DistributeTestCase(
+        one_zhongwen="想跟珊珊般得奥运金牌？",
+        one_yuewen_start="",
+        two_zhongwen="别作梦了！",
+        two_yuewen_end="",
+        yuewen_to_distribute="想学山伞攞奥运金牌食母你嘢",
+        one_yuewen_to_append="想学山伞攞奥运金牌",
+        two_yuewen_to_prepend="食母你嘢",
+    ),
+]  # distribute_test_cases_block_35
 distribute_test_cases_block_36 = []  # distribute_test_cases_block_36
-distribute_test_cases_block_37 = []  # distribute_test_cases_block_37
+distribute_test_cases_block_37 = [
+    DistributeTestCase(
+        one_zhongwen="脚趾甲有一寸厚，究竟⋯",
+        one_yuewen_start="脚趾弓啲脚甲成吋噉厚",
+        two_zhongwen="要行过几多座山⋯",
+        two_yuewen_end="要行我几多座山",
+        yuewen_to_distribute="究竟",
+        one_yuewen_to_append="究竟",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跨过几多个海⋯",
+        one_yuewen_start="",
+        two_zhongwen="吃过几多苦头⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="跨我几多个海",
+        one_yuewen_to_append="跨我几多个海",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="吃过几多苦头⋯",
+        one_yuewen_start="",
+        two_zhongwen="才可以练成这举世无双的脚瓜？",
+        two_yuewen_end="先至可以练成呢只举世无双嘅脚瓜",
+        yuewen_to_distribute="挨过几多苦头",
+        one_yuewen_to_append="挨过几多苦头",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_37
 distribute_test_cases_block_38 = []  # distribute_test_cases_block_38
 distribute_test_cases_block_39 = []  # distribute_test_cases_block_39
 distribute_test_cases_block_40 = []  # distribute_test_cases_block_40
 distribute_test_cases_block_41 = []  # distribute_test_cases_block_41
 distribute_test_cases_block_42 = []  # distribute_test_cases_block_42
-distribute_test_cases_block_43 = []  # distribute_test_cases_block_43
+distribute_test_cases_block_43 = [
+    DistributeTestCase(
+        one_zhongwen="希望他把长洲人世世代代的绝技",
+        one_yuewen_start="",
+        two_zhongwen="发扬光大！",
+        two_yuewen_end="",
+        yuewen_to_distribute="希望我可以将我哋长洲人世世代代嘅传统发扬光大",
+        one_yuewen_to_append="希望我可以将我哋长洲人世世代代嘅传统",
+        two_yuewen_to_prepend="发扬光大",
+    ),
+]  # distribute_test_cases_block_43
 distribute_test_cases_block_44 = [
     DistributeTestCase(
         one_zhongwen="第二项绝技，就是⋯",
