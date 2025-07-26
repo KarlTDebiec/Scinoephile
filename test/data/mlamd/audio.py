@@ -14,6 +14,7 @@ from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.shifting import Shifter
+from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_hanzi_converted,
@@ -67,8 +68,16 @@ if __name__ == "__main__":
         print_test_case=True,
         cache_dir_path=test_data_root / "cache",
     )
+    translator = Translator(
+        print_test_case=True,
+        cache_dir_path=test_data_root / "cache",
+    )
     aligner = Aligner(
-        merger=merger, proofer=proofer, shifter=shifter, distributor=distributor
+        distributor=distributor,
+        shifter=shifter,
+        merger=merger,
+        proofer=proofer,
+        translator=translator,
     )
 
     all_series = []

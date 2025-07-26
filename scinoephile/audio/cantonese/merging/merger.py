@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+"""Merges transcribed 粤文 text based on corresponding 中文."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from scinoephile.core.abcs import LLMQueryer
 
 
 class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
-    """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+    """Merges transcribed 粤文 text based on corresponding 中文."""
 
     @cached_property
     @override
