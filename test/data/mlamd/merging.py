@@ -2412,9 +2412,147 @@ merge_test_cases_block_44 = [
     ),
 ]  # merge_test_cases_block_44
 merge_test_cases_block_45 = []  # merge_test_cases_block_45
-merge_test_cases_block_46 = []  # merge_test_cases_block_46
-merge_test_cases_block_47 = []  # merge_test_cases_block_47
-merge_test_cases_block_48 = []  # merge_test_cases_block_48
+merge_test_cases_block_46 = [
+    MergeTestCase(
+        zhongwen="奥运金牌⋯这一世是没有机会的了",
+        yuewen_to_merge=["奥运金牌", "我谂呢一世都唔会攞到"],
+        yuewen_merged="奥运金牌⋯我谂呢一世都唔会攞到",
+    ),
+    MergeTestCase(
+        zhongwen="每个星期六我都搭船过长洲",
+        yuewen_to_merge=["每个礼拜六", "我都会搭船过长洲"],
+        yuewen_merged="每个礼拜六我都会搭船过长洲",
+    ),
+    MergeTestCase(
+        zhongwen="去学抢包山⋯",
+        yuewen_to_merge=["去学抢包山"],
+        yuewen_merged="去学抢包山⋯",
+    ),
+    MergeTestCase(
+        zhongwen="一项没有奖牌，没有对手，没有比赛⋯",
+        yuewen_to_merge=["一日冇奖牌", "冇对手", "冇比赛"],
+        yuewen_merged="一日冇奖牌，冇对手，冇比赛⋯",
+    ),
+    MergeTestCase(
+        zhongwen="甚至没有人知道是运动的运动",
+        yuewen_to_merge=["甚至乎冇人知对佢系运动嘅运动"],
+        yuewen_merged="甚至乎冇人知对佢系运动嘅运动",
+    ),
+    MergeTestCase(
+        zhongwen="更坏的是，连包山也没有！",
+        yuewen_to_merge=["更衰嘅系", "连包山都冇"],
+        yuewen_merged="更衰嘅系，连包山都冇！",
+    ),
+    MergeTestCase(
+        zhongwen="师傅只是叫我去他的家⋯",
+        yuewen_to_merge=["师傅净系叫我去佢屋企"],
+        yuewen_merged="师傅净系叫我去佢屋企⋯",
+    ),
+    MergeTestCase(
+        zhongwen="在组合柜爬来爬去",
+        yuewen_to_merge=["喺个组合柜度爬嚟爬去"],
+        yuewen_merged="喺个组合柜度爬嚟爬去",
+    ),
+    MergeTestCase(
+        zhongwen="碰！三番！",
+        yuewen_to_merge=["通", "三番"],
+        yuewen_merged="通！三番！",
+    ),
+    MergeTestCase(
+        zhongwen="别躲懒！继续练！",
+        yuewen_to_merge=["冇偷懒", "继续练"],
+        yuewen_merged="冇偷懒！继续练！",
+    ),
+    MergeTestCase(
+        zhongwen="一天，珊珊到了师传家！",
+        yuewen_to_merge=["有一日", "山伞嚟咗师傅屋企"],
+        yuewen_merged="有一日，山伞嚟咗师傅屋企！",
+    ),
+    MergeTestCase(
+        zhongwen="珊珊！我的师姐珊珊！",
+        yuewen_to_merge=["山伞", "我个师仔山伞啊"],
+        yuewen_merged="山伞！我个师仔山伞啊！",
+    ),
+    MergeTestCase(
+        zhongwen="可以看见珊珊⋯",
+        yuewen_to_merge=["可以见到山伞"],
+        yuewen_merged="可以见到山伞⋯",
+    ),
+    MergeTestCase(
+        zhongwen="这几个星期爬得再辛苦也是值得的！",
+        yuewen_to_merge=["爬得咁辛苦", "都系值得㗎"],
+        yuewen_merged="爬得咁辛苦，都系值得㗎！",
+    ),
+    MergeTestCase(
+        zhongwen="珊珊！",
+        yuewen_to_merge=["山伞", "伞你个头啊"],
+        yuewen_merged="山伞！伞你个头啊！",
+    ),
+    MergeTestCase(
+        zhongwen="珊你个头！继续练习！",
+        yuewen_to_merge=["继续练习"],
+        yuewen_merged="继续练习！",
+    ),
+]  # merge_test_cases_block_46
+merge_test_cases_block_47 = [
+    MergeTestCase(
+        zhongwen="还不去？",
+        yuewen_to_merge=["仲唔系"],
+        yuewen_merged="仲唔系？",
+    ),
+    MergeTestCase(
+        zhongwen="珊珊没看见我这个师弟",
+        yuewen_to_merge=["山神佢见唔到我呢个师弟"],
+        yuewen_merged="山神佢见唔到我呢个师弟",
+    ),
+    MergeTestCase(
+        zhongwen="我只有死死气再爬上组合柜",
+        yuewen_to_merge=["我唯有死死气爬返上个组合柜"],
+        yuewen_merged="我唯有死死气爬返上个组合柜",
+    ),
+    MergeTestCase(
+        zhongwen="我咁大个仔，什么「头」也给骂过⋯",
+        yuewen_to_merge=["我咁大个仔", "乜嘢头都畀人闹过"],
+        yuewen_merged="我咁大个仔，乜嘢头都畀人闹过⋯",
+    ),
+    MergeTestCase(
+        zhongwen="「珊你个头」却特别刺耳",
+        yuewen_to_merge=["但系山呢个头唔知点解特别瘾"],
+        yuewen_merged="但系「山呢个头」唔知点解特别瘾",
+    ),
+    MergeTestCase(
+        zhongwen="我⋯我⋯",
+        yuewen_to_merge=["我", "我"],
+        yuewen_merged="我⋯我⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我唔学抢包山了！",
+        yuewen_to_merge=["我唔好抢包纱嘞", "字幕由纱友提供"],
+        yuewen_merged="我唔好抢包纱嘞！字幕由纱友提供",
+    ),
+]  # merge_test_cases_block_47
+merge_test_cases_block_48 = [
+    MergeTestCase(
+        zhongwen="其实今天是我第一次近距离见黎根",
+        yuewen_to_merge=["其实今日系我第一次咁近距离同丽根见面"],
+        yuewen_merged="其实今日系我第一次咁近距离同丽根见面",
+    ),
+    MergeTestCase(
+        zhongwen="他恐怕都有五十岁了",
+        yuewen_to_merge=["睇怕佢都有五十岁啦"],
+        yuewen_merged="睇怕佢都有五十岁啦",
+    ),
+    MergeTestCase(
+        zhongwen="却还是一副孩子脸",
+        yuewen_to_merge=["但系仲有一副孩子脸"],
+        yuewen_merged="但系仲有一副孩子脸",
+    ),
+    MergeTestCase(
+        zhongwen="鸡尾包！新鲜出炉！",
+        yuewen_to_merge=["鸡尾包", "啱啱出炉嘅"],
+        yuewen_merged="鸡尾包！啱啱出炉嘅！",
+    ),
+]  # merge_test_cases_block_48
 merge_test_cases_block_49 = [
     MergeTestCase(
         zhongwen="其实鸡尾包呢⋯",
@@ -2448,8 +2586,124 @@ merge_test_cases_block_50 = [
         yuewen_to_merge=["佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜"],
         yuewen_merged="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
     ),
+    MergeTestCase(
+        zhongwen="黎根越说越兴奋，直到双眼发光",
+        yuewen_to_merge=["黎根越讲越兴奋"],
+        yuewen_merged="黎根越讲越兴奋",
+    ),
+    MergeTestCase(
+        zhongwen="他又说滑浪风帆并不是他最犀利的项目",
+        yuewen_to_merge=["佢话滑浪风帆都唔系佢最犀利𠮶样"],
+        yuewen_merged="佢话滑浪风帆都唔系佢最犀利𠮶样",
+    ),
+    MergeTestCase(
+        zhongwen="他最大强项是抢包山",
+        yuewen_to_merge=["佢最劲嘅就系抢包山"],
+        yuewen_merged="佢最劲嘅就系抢包山",
+    ),
+    MergeTestCase(
+        zhongwen="他说抢包山结合了南拳",
+        yuewen_to_merge=["佢话抢包山结合咗南拳"],
+        yuewen_merged="佢话抢包山结合咗南拳",
+    ),
+    MergeTestCase(
+        zhongwen="神功戏和现代器械操",
+        yuewen_to_merge=["神功气", "现代气蟹粗"],
+        yuewen_merged="神功气现代气蟹粗",
+    ),
+    MergeTestCase(
+        zhongwen="他说抢包山才是他一生最大成就",
+        yuewen_to_merge=["佢话抢包山先至系佢呢世人最大嘅成就"],
+        yuewen_merged="佢话抢包山先至系佢呢世人最大嘅成就",
+    ),
+    MergeTestCase(
+        zhongwen="缩脚，唔该！",
+        yuewen_to_merge=["缩𠮶只脚唔该"],
+        yuewen_merged="缩𠮶只脚，唔该！",
+    ),
+    MergeTestCase(
+        zhongwen="你看！",
+        yuewen_to_merge=["你睇下"],
+        yuewen_merged="你睇下！",
+    ),
+    MergeTestCase(
+        zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
+        yuewen_to_merge=["哗", "呢节", "呢节脚瓜好粗好大呀", "仲大过节瓜"],
+        yuewen_merged="哗，呢节，呢节脚瓜好粗好大呀！仲大过节瓜！",
+    ),
+    MergeTestCase(
+        zhongwen="脚瓜的肌肉非常结实⋯",
+        yuewen_to_merge=["脚瓜嘅肌肉非常结实"],
+        yuewen_merged="脚瓜嘅肌肉非常结实⋯",
+    ),
+    MergeTestCase(
+        zhongwen="青筋凸现，钢线似的",
+        yuewen_to_merge=["啲青筋凸晒出嚟", "好似钢线噉"],
+        yuewen_merged="啲青筋凸晒出嚟，好似钢线噉",
+    ),
+    MergeTestCase(
+        zhongwen="每一条脚毛都硬似铁钉",
+        yuewen_to_merge=["啲脚毛每一条都好似铁钉咁硬"],
+        yuewen_merged="啲脚毛每一条都好似铁钉咁硬",
+    ),
+    MergeTestCase(
+        zhongwen="脚趾甲有一寸厚，究竟⋯",
+        yuewen_to_merge=["脚趾弓啲脚夹成串咁厚", "究竟"],
+        yuewen_merged="脚趾弓啲脚夹成串咁厚，究竟⋯",
+    ),
+    MergeTestCase(
+        zhongwen="要走过几多座山",
+        yuewen_to_merge=["要行个几度呢?", "几多座山"],
+        yuewen_merged="要行个几度呢?几多座山",
+    ),
+    MergeTestCase(
+        zhongwen="跨过几多个海",
+        yuewen_to_merge=["挂过几多个海"],
+        yuewen_merged="挂过几多个海",
+    ),
+    MergeTestCase(
+        zhongwen="吃过几多苦头",
+        yuewen_to_merge=["挨过几多斧头"],
+        yuewen_merged="挨过几多斧头",
+    ),
+    MergeTestCase(
+        zhongwen="才可以练成这举世无双的脚瓜？",
+        yuewen_to_merge=["先至可以练成呢一只举细无伤嘅脚瓜"],
+        yuewen_merged="先至可以练成呢一只举细无伤嘅脚瓜？",
+    ),
 ]  # merge_test_cases_block_50
-merge_test_cases_block_51 = []  # merge_test_cases_block_51
+merge_test_cases_block_51 = [
+    MergeTestCase(
+        zhongwen="我个仔⋯",
+        yuewen_to_merge=["我个仔"],
+        yuewen_merged="我个仔⋯",
+    ),
+    MergeTestCase(
+        zhongwen="你个仔，他日都会有这只大脚瓜",
+        yuewen_to_merge=["你个仔", "第时都会有我咁大只脚瓜"],
+        yuewen_merged="你个仔，第时都会有我咁大只脚瓜",
+    ),
+    MergeTestCase(
+        zhongwen="其实我也不知道个仔要这么粗的脚瓜⋯",
+        yuewen_to_merge=["其实", "我都唔知我仔要咁粗嘅脚瓜"],
+        yuewen_merged="其实，我都唔知我仔要咁粗嘅脚瓜⋯",
+    ),
+    MergeTestCase(
+        zhongwen="有什么用",
+        yuewen_to_merge=["有咩用"],
+        yuewen_merged="有咩用",
+    ),
+    MergeTestCase(
+        zhongwen="可是看见那些凸现的青筋，不知怎样⋯",
+        yuewen_to_merge=["但系见到佢一条条凸起嘅青筋", "唔知点解"],
+        yuewen_merged="但系见到佢一条条凸起嘅青筋，唔知点解⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我想起麦兜的爸爸，阿炳",
+        yuewen_to_merge=["我", "我谂起麦兜嘅爸爸", "阿炳"],
+        yuewen_merged="我，我谂起麦兜嘅爸爸，阿炳",
+    ),
+]  # merge_test_cases_block_51
 merge_test_cases_block_52 = [
     MergeTestCase(
         zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -2468,13 +2722,1014 @@ merge_test_cases_block_52 = [
         yuewen_merged="唔通⋯冇理由㗎？",
     ),
 ]  # merge_test_cases_block_52
-merge_test_cases_block_53 = []  # merge_test_cases_block_53
-merge_test_cases_block_54 = []  # merge_test_cases_block_54
-merge_test_cases_block_55 = []  # merge_test_cases_block_55
-merge_test_cases_block_56 = []  # merge_test_cases_block_56
-merge_test_cases_block_57 = []  # merge_test_cases_block_57
-merge_test_cases_block_58 = []  # merge_test_cases_block_58
-merge_test_cases_block_59 = []  # merge_test_cases_block_59
+merge_test_cases_block_53 = [
+    MergeTestCase(
+        zhongwen="想不到真的让妈妈拿去了。吓得我！",
+        yuewen_to_merge=["咦", "估唔到真系妈妈攞咗㖞", "吓得我啊"],
+        yuewen_merged="咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈怎么会写起英文信？",
+        yuewen_to_merge=["点解妈妈会用英文写信嘅"],
+        yuewen_merged="点解妈妈会用英文写信嘅？",
+    ),
+    MergeTestCase(
+        zhongwen="信很短",
+        yuewen_to_merge=["封信好短"],
+        yuewen_merged="封信好短",
+    ),
+    MergeTestCase(
+        zhongwen="我猜是妈妈用电子辞典逐个字译成英文",
+        yuewen_to_merge=["我谂妈妈佢系好辛苦用电子词典", "逐个逐个字译做英文"],
+        yuewen_merged="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
+    ),
+    MergeTestCase(
+        zhongwen="于是我又用电子辞典把信译回中文",
+        yuewen_to_merge=["于是我让返电子词典", "将封信译返做中文"],
+        yuewen_merged="于是我让返电子词典，将封信译返做中文",
+    ),
+    MergeTestCase(
+        zhongwen="信，是妈妈写给奥委会主席的",
+        yuewen_to_merge=["封信原来系妈妈写畀奥委会主席㗎"],
+        yuewen_merged="封信原来系妈妈写畀奥委会主席㗎",
+    ),
+    MergeTestCase(
+        zhongwen="「亲爱的主席：」",
+        yuewen_to_merge=["亲爱的主席"],
+        yuewen_merged="「亲爱的主席：」",
+    ),
+    MergeTestCase(
+        zhongwen="「你好吗？我很好！」",
+        yuewen_to_merge=["你好吗", "我很好"],
+        yuewen_merged="「你好吗？我很好！」",
+    ),
+    MergeTestCase(
+        zhongwen="「你吃包吗？我吃包！」",
+        yuewen_to_merge=["你吃包吗", "我吃包"],
+        yuewen_merged="「你吃包吗？我吃包！」",
+    ),
+    MergeTestCase(
+        zhongwen="「我们居住在香港这里的人，很爱吃包」",
+        yuewen_to_merge=["我门居住在香港这类的人", "肯爱吃包"],
+        yuewen_merged="我门居住在香港这类的人，肯爱吃包",
+    ),
+    MergeTestCase(
+        zhongwen="「小笼包，上海包，广东包，莲蓉包」",
+        yuewen_to_merge=["小笼包", "上海包", "广东包", "联融包"],
+        yuewen_merged="「小笼包，上海包，广东包，联融包」",
+    ),
+    MergeTestCase(
+        zhongwen="「好朋友，我认为",
+        yuewen_to_merge=["好朋友", "我认为"],
+        yuewen_merged="「好朋友，我认为",
+    ),
+    MergeTestCase(
+        zhongwen="抢劫那些包，十分重要」",
+        yuewen_to_merge=["抢劫𠮶些包十分重要"],
+        yuewen_merged="抢劫𠮶些包，十分重要」",
+    ),
+    MergeTestCase(
+        zhongwen="「也算是运动，就真！」",
+        yuewen_to_merge=["也算是运动就真"],
+        yuewen_merged="也算是运动，就真！",
+    ),
+    MergeTestCase(
+        zhongwen="「要大力！大吃晚上的粥，和大节瓜！」",
+        yuewen_to_merge=["要大力", "大吃", "吻上的粥", "和大字瓜"],
+        yuewen_merged="「要大力！大吃吻上的粥，和大字瓜！」",
+    ),
+    MergeTestCase(
+        zhongwen="「按照我愚蠢的见解⋯」",
+        yuewen_to_merge=["按照我愚蠢的见解"],
+        yuewen_merged="「按照我愚蠢的见解⋯」",
+    ),
+    MergeTestCase(
+        zhongwen="「抢劫那些包，是奥运会比赛」",
+        yuewen_to_merge=["抢劫𠮶些包", "系奥运会比赛"],
+        yuewen_merged="抢劫𠮶些包，系奥运会比赛",
+    ),
+    MergeTestCase(
+        zhongwen="「让全世界的体育家，抢过！」",
+        yuewen_to_merge=["让全世界嘅体育家抢过"],
+        yuewen_merged="让全世界嘅体育家，抢过！",
+    ),
+    MergeTestCase(
+        zhongwen="「世界便和平！」",
+        yuewen_to_merge=["世界变和平"],
+        yuewen_merged="「世界变和平！」",
+    ),
+    MergeTestCase(
+        zhongwen="「你有孩子吗？」",
+        yuewen_to_merge=["你有孩子吗"],
+        yuewen_merged="「你有孩子吗？」",
+    ),
+    MergeTestCase(
+        zhongwen="「我有一个孩子，麦兜」",
+        yuewen_to_merge=["我有一个孩子", "麦兜"],
+        yuewen_merged="「我有一个孩子，麦兜」",
+    ),
+    MergeTestCase(
+        zhongwen="终于讲到我了！",
+        yuewen_to_merge=["终于讲到我啦"],
+        yuewen_merged="终于讲到我啦！",
+    ),
+    MergeTestCase(
+        zhongwen="「他是一个好男孩」",
+        yuewen_to_merge=["她系一个好男孩"],
+        yuewen_merged="「她系一个好男孩」",
+    ),
+    MergeTestCase(
+        zhongwen="「他非常懂得抢劫那些包」",
+        yuewen_to_merge=["她非常懂得抢劫𠮶些包"],
+        yuewen_merged="她非常懂得抢劫𠮶些包",
+    ),
+    MergeTestCase(
+        zhongwen="「有一天，我看见他，抢劫包⋯」",
+        yuewen_to_merge=["有一天我看见她抢劫包"],
+        yuewen_merged="有一天，我看见她，抢劫包⋯",
+    ),
+    MergeTestCase(
+        zhongwen="「抢了一个奥运金牌」",
+        yuewen_to_merge=["抢了一个奥运金牌"],
+        yuewen_merged="「抢了一个奥运金牌」",
+    ),
+    MergeTestCase(
+        zhongwen="「那便是一个母亲能够有的最大的安慰」",
+        yuewen_to_merge=["哪便是一个母亲能够有的最好的", "最大的安慰"],
+        yuewen_merged="哪便是一个母亲能够有的最好的，最大的安慰」",
+    ),
+    MergeTestCase(
+        zhongwen="「孩子的才干，得到了世界人类的知道」",
+        yuewen_to_merge=["孩子的才干得到了世界人类的知道"],
+        yuewen_merged="「孩子的才干得到了世界人类的知道」",
+    ),
+    MergeTestCase(
+        zhongwen="「父母愿意做什么的东西都得」",
+        yuewen_to_merge=["父母愿意做什么的东西都得"],
+        yuewen_merged="「父母愿意做什么的东西都得」",
+    ),
+    MergeTestCase(
+        zhongwen="「于是我写了这忽然间的信给你」",
+        yuewen_to_merge=["于是我写了这忽然间的信给你"],
+        yuewen_merged="于是我写了这忽然间的信给你",
+    ),
+    MergeTestCase(
+        zhongwen="「虽然你不知道我是什么微细的东西」",
+        yuewen_to_merge=["虽然你不知道我是什么微细的东西"],
+        yuewen_merged="虽然你不知道我是什么微细的东西",
+    ),
+    MergeTestCase(
+        zhongwen="「但我的孩子很大，很大！」",
+        yuewen_to_merge=["但我的孩子很大很大"],
+        yuewen_merged="但我的孩子很大，很大！",
+    ),
+    MergeTestCase(
+        zhongwen="「有一天，你都会知道」",
+        yuewen_to_merge=["有一天你都会知道"],
+        yuewen_merged="「有一天你都会知道」",
+    ),
+    MergeTestCase(
+        zhongwen="「多谢合作！」",
+        yuewen_to_merge=["多谢合作"],
+        yuewen_merged="「多谢合作！」",
+    ),
+    MergeTestCase(
+        zhongwen="「你忠实的，麦太」",
+        yuewen_to_merge=["你忠实的", "麦太"],
+        yuewen_merged="「你忠实的，麦太」",
+    ),
+]  # merge_test_cases_block_53
+merge_test_cases_block_54 = [
+    MergeTestCase(
+        zhongwen="看完妈妈的信",
+        yuewen_to_merge=["睇完妈妈封信后"],
+        yuewen_merged="睇完妈妈封信后",
+    ),
+    MergeTestCase(
+        zhongwen="我决定回长洲继续学捡包山",
+        yuewen_to_merge=["我决定返长洲继续抢包生"],
+        yuewen_merged="我决定返长洲继续抢包生",
+    ),
+    MergeTestCase(
+        zhongwen="我不是为了见珊珊",
+        yuewen_to_merge=["我唔系为咗见到山神"],
+        yuewen_merged="我唔系为咗见到山神",
+    ),
+    MergeTestCase(
+        zhongwen="我并不知道为什么要抢那些包",
+        yuewen_to_merge=["我唔知点解要抢𠮶啲包"],
+        yuewen_merged="我唔知点解要抢𠮶啲包",
+    ),
+    MergeTestCase(
+        zhongwen="我也不相信抢包山会成为奥运项目",
+        yuewen_to_merge=["我亦唔信抢包生会成为奥运项目"],
+        yuewen_merged="我亦唔信抢包生会成为奥运项目",
+    ),
+    MergeTestCase(
+        zhongwen="可是，我依然努力练习抢包山",
+        yuewen_to_merge=["但系", "我依然努力练习抢包生"],
+        yuewen_merged="但系，我依然努力练习抢包生",
+    ),
+    MergeTestCase(
+        zhongwen="因为，我爱我妈妈",
+        yuewen_to_merge=["因为我爱我妈妈"],
+        yuewen_merged="因为，我爱我妈妈",
+    ),
+    MergeTestCase(
+        zhongwen="师傅说我攀爬功夫已经不错",
+        yuewen_to_merge=["师傅话", "我嘅攀爬功夫已经唔错"],
+        yuewen_merged="师傅话，我嘅攀爬功夫已经唔错",
+    ),
+    MergeTestCase(
+        zhongwen="可以开始教我「十二路抢包手」",
+        yuewen_to_merge=["可以开始教我十二路抢包手"],
+        yuewen_merged="可以开始教我十二路抢包手",
+    ),
+    MergeTestCase(
+        zhongwen="师傅说当年师祖要出这套",
+        yuewen_to_merge=["师傅话", "当年师祖使出呢套"],
+        yuewen_merged="师傅话，当年师祖使出呢套",
+    ),
+    MergeTestCase(
+        zhongwen="「十二路抢包手」⋯",
+        yuewen_to_merge=["十二路抢包手"],
+        yuewen_merged="十二路抢包手⋯",
+    ),
+    MergeTestCase(
+        zhongwen="连林世荣也大大赞好",
+        yuewen_to_merge=["连林世荣睇见都大赞老爷"],
+        yuewen_merged="连林世荣睇见都大赞老爷",
+    ),
+    MergeTestCase(
+        zhongwen="后来麦嘎告诉我⋯",
+        yuewen_to_merge=["后来", "默默话我知"],
+        yuewen_merged="后来，默默话我知⋯",
+    ),
+    MergeTestCase(
+        zhongwen="林世荣即是猪肉荣，是黄飞鸿的徒弟",
+        yuewen_to_merge=["林世荣即系猪肉荣", "系黄飞鸿嘅徒弟"],
+        yuewen_merged="林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
+    ),
+    MergeTestCase(
+        zhongwen="我不知道师傅像不像黄飞鸿",
+        yuewen_to_merge=["我唔知到师傅似唔似黄飞鸿"],
+        yuewen_merged="我唔知到师傅似唔似黄飞鸿",
+    ),
+    MergeTestCase(
+        zhongwen="我却肯定像一块猪肉",
+        yuewen_to_merge=["但系我就肯定似旧猪肉"],
+        yuewen_merged="但系我就肯定似旧猪肉",
+    ),
+    MergeTestCase(
+        zhongwen="我是一块堵住两个包",
+        yuewen_to_merge=["我就系一个揸住两个包"],
+        yuewen_merged="我就系一个揸住两个包",
+    ),
+    MergeTestCase(
+        zhongwen="在长洲转来转去的猪肉",
+        yuewen_to_merge=["喺长洲转嚟转去嘅猪肉"],
+        yuewen_merged="喺长洲转嚟转去嘅猪肉",
+    ),
+    MergeTestCase(
+        zhongwen="我一边练习，一边胡思乱想；始终⋯",
+        yuewen_to_merge=["我一边练习", "一边乱练", "一边谂嘢", "始终"],
+        yuewen_merged="我一边练习，一边乱练，一边谂嘢；始终⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我还是不大喜欢抢包",
+        yuewen_to_merge=["我都唔系咁钟意抢包"],
+        yuewen_merged="我都唔系咁钟意抢包",
+    ),
+    MergeTestCase(
+        zhongwen="我只是爱我妈妈",
+        yuewen_to_merge=["我净系爱我妈妈"],
+        yuewen_merged="我净系爱我妈妈",
+    ),
+    MergeTestCase(
+        zhongwen="于是我咬实牙根⋯",
+        yuewen_to_merge=["于是我咬细牙根"],
+        yuewen_merged="于是我咬细牙根⋯",
+    ),
+    MergeTestCase(
+        zhongwen="一步一步，一爪一爪⋯",
+        yuewen_to_merge=["一步一步", "一爪一爪"],
+        yuewen_merged="一步一步，一爪一爪⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我最后终于练成「十二路抢包手」",
+        yuewen_to_merge=["最后", "我终于练成十二路抢包手啦"],
+        yuewen_merged="最后，我终于练成十二路抢包手啦",
+    ),
+]  # merge_test_cases_block_54
+merge_test_cases_block_55 = [
+    MergeTestCase(
+        zhongwen="喂，我是麦兜",
+        yuewen_to_merge=["喂", "我系麦兜啊"],
+        yuewen_merged="喂，我系麦兜啊",
+    ),
+    MergeTestCase(
+        zhongwen="刚才的是小朋友麦兜，我是大个佬麦兜",
+        yuewen_to_merge=["正话𠮶个系细路仔麦兜", "我系大个佬麦兜"],
+        yuewen_merged="正话𠮶个系细路仔麦兜，我系大个佬麦兜",
+    ),
+    MergeTestCase(
+        zhongwen="小朋友麦兜和大个佬麦兜除了声音不同⋯",
+        yuewen_to_merge=["细路仔麦兜同大个佬麦兜除咗把声唔同之外"],
+        yuewen_merged="细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯",
+    ),
+    MergeTestCase(
+        zhongwen="小朋友麦兜的世界仍然有好多幻想",
+        yuewen_to_merge=["细路仔麦兜嘅世界仲有好多幻想"],
+        yuewen_merged="细路仔麦兜嘅世界仲有好多幻想",
+    ),
+    MergeTestCase(
+        zhongwen="仍然有好多希望",
+        yuewen_to_merge=["仲有好多希望"],
+        yuewen_merged="仲有好多希望",
+    ),
+    MergeTestCase(
+        zhongwen="希望⋯失望⋯",
+        yuewen_to_merge=["希望", "失望"],
+        yuewen_merged="希望⋯失望⋯",
+    ),
+    MergeTestCase(
+        zhongwen="希望⋯",
+        yuewen_to_merge=["希望"],
+        yuewen_merged="希望⋯",
+    ),
+    MergeTestCase(
+        zhongwen="失望",
+        yuewen_to_merge=["失望"],
+        yuewen_merged="失望",
+    ),
+    MergeTestCase(
+        zhongwen="久而久之，就变成大个佬麦兜",
+        yuewen_to_merge=["搞咗一轮", "就变咗大个佬麦兜"],
+        yuewen_merged="搞咗一轮，就变咗大个佬麦兜",
+    ),
+    MergeTestCase(
+        zhongwen="我现在还是多说点小朋友麦兜",
+        yuewen_to_merge=["不过", "而家我都系想讲返细路仔麦兜"],
+        yuewen_merged="不过，而家我都系想讲返细路仔麦兜",
+    ),
+    MergeTestCase(
+        zhongwen="小朋友麦兜仍然希望希望⋯",
+        yuewen_to_merge=["细路仔麦兜仲系希望希望"],
+        yuewen_merged="细路仔麦兜仲系希望希望⋯",
+    ),
+    MergeTestCase(
+        zhongwen="希望真的有圣诞老人",
+        yuewen_to_merge=["希望真系有圣诞老人"],
+        yuewen_merged="希望真系有圣诞老人",
+    ),
+    MergeTestCase(
+        zhongwen="而且好想试试圣诞火鸡的滋味",
+        yuewen_to_merge=["仲系好想好想试下圣诞火鸡嘅滋味"],
+        yuewen_merged="仲系好想好想试下圣诞火鸡嘅滋味",
+    ),
+    MergeTestCase(
+        zhongwen="对，那时我还没吃过火鸡",
+        yuewen_to_merge=["系啊", "我𠮶阵", "我真系仲未食过火鸡"],
+        yuewen_merged="系啊，我𠮶阵我真系仲未食过火鸡",
+    ),
+    MergeTestCase(
+        zhongwen="关于火鸡的一切⋯",
+        yuewen_to_merge=["所有关于火鸡嘅嘢"],
+        yuewen_merged="所有关于火鸡嘅嘢⋯",
+    ),
+    MergeTestCase(
+        zhongwen="圣诞树上一闪一闪的饰物",
+        yuewen_to_merge=["圣诞树一闪一闪嘅灯饰"],
+        yuewen_merged="圣诞树一闪一闪嘅灯饰",
+    ),
+    MergeTestCase(
+        zhongwen="就像天上掉落的星星",
+        yuewen_to_merge=["就好似喺天上面落嚟嘅星星噉"],
+        yuewen_merged="就好似喺天上面落嚟嘅星星噉",
+    ),
+    MergeTestCase(
+        zhongwen="落到火炉旁边",
+        yuewen_to_merge=["落喺火炉旁边"],
+        yuewen_merged="落喺火炉旁边",
+    ),
+    MergeTestCase(
+        zhongwen="一片片比外边的雪还要白的鸡胸肉⋯",
+        yuewen_to_merge=["一片一片", "比窗外面嘅雪仲要白嘅鸡胸肉"],
+        yuewen_merged="一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯",
+    ),
+    MergeTestCase(
+        zhongwen="就在我们跟前",
+        yuewen_to_merge=["就喺我哋面前啦"],
+        yuewen_merged="就喺我哋面前啦",
+    ),
+    MergeTestCase(
+        zhongwen="香气直入灵魂⋯",
+        yuewen_to_merge=["香气直入灵魂"],
+        yuewen_merged="香气直入灵魂⋯",
+    ),
+    MergeTestCase(
+        zhongwen="连守在灵魂旁边的天使都醒过来",
+        yuewen_to_merge=["就连守喺灵魂旁边嘅天使都醒咗起嚟"],
+        yuewen_merged="就连守喺灵魂旁边嘅天使都醒咗起嚟",
+    ),
+    MergeTestCase(
+        zhongwen="围住这香而圣洁的肉⋯",
+        yuewen_to_merge=["围住呢一嚿好香好香又好盛洁嘅肉"],
+        yuewen_merged="围住呢一嚿好香好香又好盛洁嘅肉⋯",
+    ),
+    MergeTestCase(
+        zhongwen="在圣诞夜中飞呀，飞⋯",
+        yuewen_to_merge=["喺圣诞夜里面", "飞呀", "飞呀"],
+        yuewen_merged="喺圣诞夜里面飞呀，飞呀⋯",
+    ),
+    MergeTestCase(
+        zhongwen="这关于火鸡的一切，不过是我的想像",
+        yuewen_to_merge=["但系呢一切一切关于火鸡嘅嘢", "都不过系我嘅想像"],
+        yuewen_merged="但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像",
+    ),
+    MergeTestCase(
+        zhongwen="我从来没吃过火鸡⋯",
+        yuewen_to_merge=["因为我从来都未食过火鸡"],
+        yuewen_merged="因为我从来都未食过火鸡⋯",
+    ),
+    MergeTestCase(
+        zhongwen="连它的气味也没嗅过",
+        yuewen_to_merge=["就连𠮶阵味都未闻过"],
+        yuewen_merged="就连𠮶阵味都未闻过",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈说火鸡太大",
+        yuewen_to_merge=["妈妈话火鸡太大"],
+        yuewen_merged="妈妈话火鸡太大",
+    ),
+    MergeTestCase(
+        zhongwen="我们一家两口，吃不下",
+        yuewen_to_merge=["我哋一家两口点食都食唔晒"],
+        yuewen_merged="我哋一家两口，点食都食唔晒",
+    ),
+    MergeTestCase(
+        zhongwen="有年圣诞节妈妈买了半只烤鸭庆祝",
+        yuewen_to_merge=["有一年圣诞节", "妈妈买咗半边烧鸭庆祝"],
+        yuewen_merged="有一年圣诞节妈妈买咗半边烧鸭庆祝",
+    ),
+    MergeTestCase(
+        zhongwen="当时的我，十分十分失望",
+        yuewen_to_merge=["当时我真系十分十分之失望"],
+        yuewen_merged="当时我，真系十分十分之失望",
+    ),
+    MergeTestCase(
+        zhongwen="又有一年，一间百货公司结业",
+        yuewen_to_merge=["又有一年", "有间大薄货公司倒闭"],
+        yuewen_merged="又有一年，有间大薄货公司倒闭",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈以四折买了个小小焗炉",
+        yuewen_to_merge=["妈妈用四折买咗个焗炉仔返屋企"],
+        yuewen_merged="妈妈用四折买咗个焗炉仔返屋企",
+    ),
+    MergeTestCase(
+        zhongwen="可能因为买了焗炉而技痒",
+        yuewen_to_merge=["可能系因为买咗焗炉嘅样"],
+        yuewen_merged="可能系因为买咗焗炉嘅样",
+    ),
+    MergeTestCase(
+        zhongwen="那日妈妈竟然跟我说⋯",
+        yuewen_to_merge=["𠮶日妈妈竟然同我讲", "佢话"],
+        yuewen_merged="𠮶日妈妈竟然同我讲⋯佢话",
+    ),
+    MergeTestCase(
+        zhongwen="让我们明天去超级市场揪火鸡",
+        yuewen_to_merge=["明日我哋要超级市场抽火鸡"],
+        yuewen_merged="明日我哋要超级市场抽火鸡",
+    ),
+    MergeTestCase(
+        zhongwen="我跟妈妈把火鸡揪回家的路上⋯",
+        yuewen_to_merge=["我同妈妈抽住只火鸡行返屋企𠮶阵"],
+        yuewen_merged="我同妈妈抽住只火鸡行返屋企𠮶阵⋯",
+    ),
+    MergeTestCase(
+        zhongwen="是我生命中最开心的时刻",
+        yuewen_to_merge=["喺𠮶阵时我谂系我生命里面最开心嘅一刻"],
+        yuewen_merged="喺𠮶阵时我谂系我生命里面最开心嘅一刻",
+    ),
+    MergeTestCase(
+        zhongwen="火鸡终于解冻了",
+        yuewen_to_merge=["火鸡终于解冻啦"],
+        yuewen_merged="火鸡终于解冻啦",
+    ),
+    MergeTestCase(
+        zhongwen="我学着妈妈，把双手涂满盐⋯",
+        yuewen_to_merge=["我同妈妈噉双手查满盐"],
+        yuewen_merged="我同妈妈噉，双手查满盐⋯",
+    ),
+    MergeTestCase(
+        zhongwen="在火鸡丰厚的鸡胸上擦呀，擦",
+        yuewen_to_merge=["喺火鸡封口嘅鸡胸度", "起细噉啫啫"],
+        yuewen_merged="喺火鸡封口嘅鸡胸度，起细噉啫啫",
+    ),
+    MergeTestCase(
+        zhongwen="联火鸡时⋯",
+        yuewen_to_merge=["联火鸡时"],
+        yuewen_merged="联火鸡时⋯",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
+        yuewen_to_merge=[
+            "妈妈一个唔觉意",
+            "畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+            "红萝虾粒",
+        ],
+        yuewen_merged="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
+    ),
+    MergeTestCase(
+        zhongwen="红萝卜粒",
+        yuewen_to_merge=["流嘅出嚟"],
+        yuewen_merged="流嘅出嚟",
+    ),
+    MergeTestCase(
+        zhongwen="我说：火鸡「疴烂煮」！",
+        yuewen_to_merge=["我话", "火鸡我能住呀"],
+        yuewen_merged="我话：火鸡我能住呀！",
+    ),
+    MergeTestCase(
+        zhongwen="好勉强把火鸡塞进焗炉内",
+        yuewen_to_merge=["火鸡好勉强噏咗入焗炉度"],
+        yuewen_merged="火鸡好勉强噏咗入焗炉度",
+    ),
+    MergeTestCase(
+        zhongwen="12月24日",
+        yuewen_to_merge=["10月24日"],
+        yuewen_merged="10月24日",
+    ),
+    MergeTestCase(
+        zhongwen="上升的白烟跟奇异的焦味拨动星星",
+        yuewen_to_merge=["上升嘅白烟同奇异嘅㶶味拨动声声"],
+        yuewen_merged="上升嘅白烟同奇异嘅㶶味拨动声声",
+    ),
+    MergeTestCase(
+        zhongwen="焗炉戚戚恻恻，戚戚恻恻⋯",
+        yuewen_to_merge=["个焗炉叱叱叱叱", "叱叱叱咁"],
+        yuewen_merged="个焗炉叱叱叱叱，叱叱叱咁⋯",
+    ),
+    MergeTestCase(
+        zhongwen="有如天使预早送来的福音",
+        yuewen_to_merge=["就好似天赐预祖畀我哋嘅福音"],
+        yuewen_merged="就好似天赐预祖畀我哋嘅福音",
+    ),
+]  # merge_test_cases_block_55
+merge_test_cases_block_56 = [
+    MergeTestCase(
+        zhongwen="好靓的晚上啊！",
+        yuewen_to_merge=["好靓嘅夜晚呀"],
+        yuewen_merged="好靓嘅夜晚呀！",
+    ),
+    MergeTestCase(
+        zhongwen="我和妈妈坐在尖东海傍",
+        yuewen_to_merge=["我同妈妈坐喺尖东海旁"],
+        yuewen_merged="我同妈妈坐喺尖东海旁",
+    ),
+    MergeTestCase(
+        zhongwen="点点灯光在海面走来走去⋯",
+        yuewen_to_merge=["点点点点嘅灯光喺海上面走来走去"],
+        yuewen_merged="点点点点嘅灯光喺海上面走来走去⋯",
+    ),
+    MergeTestCase(
+        zhongwen="美丽又温柔",
+        yuewen_to_merge=["又靓", "又温柔"],
+        yuewen_merged="又靓又温柔",
+    ),
+    MergeTestCase(
+        zhongwen="真的好靓！",
+        yuewen_to_merge=["真系好靓"],
+        yuewen_merged="真系好靓！",
+    ),
+]  # merge_test_cases_block_56
+merge_test_cases_block_57 = [
+    MergeTestCase(
+        zhongwen="我从没吃过这么浓味的东西",
+        yuewen_to_merge=["我从未食过咁浓味嘅嘢"],
+        yuewen_merged="我从未食过咁浓味嘅嘢",
+    ),
+    MergeTestCase(
+        zhongwen="甚至杯面，烧鸭的味道也没有这么浓",
+        yuewen_to_merge=["连烧鸭连杯面都冇咁浓嘅味道"],
+        yuewen_merged="连烧鸭连杯面都冇咁浓嘅味道",
+    ),
+    MergeTestCase(
+        zhongwen="火鸡的味道把我每一个味蕾缠住⋯",
+        yuewen_to_merge=["火鸡嘅味道喺我嘅每一个味蕾度缠住"],
+        yuewen_merged="火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
+    ),
+    MergeTestCase(
+        zhongwen="爆发⋯缠住⋯爆发⋯",
+        yuewen_to_merge=["爆发", "缠住", "爆发"],
+        yuewen_merged="爆发⋯缠住⋯爆发⋯",
+    ),
+    MergeTestCase(
+        zhongwen="就像今晚的一切",
+        yuewen_to_merge=["就好似今晚嘅嘢噉"],
+        yuewen_merged="就好似今晚嘅嘢噉",
+    ),
+    MergeTestCase(
+        zhongwen="最靓最靓，最犀利，而且最温柔",
+        yuewen_to_merge=["最靓", "最靓", "最犀利", "亦都系最温柔"],
+        yuewen_merged="最靓最靓，最犀利，亦都系最温柔",
+    ),
+]  # merge_test_cases_block_57
+merge_test_cases_block_58 = [
+    MergeTestCase(
+        zhongwen="第二天我睡得很晏⋯",
+        yuewen_to_merge=["第二日我瞓到好硬"],
+        yuewen_merged="第二日我瞓到好硬⋯",
+    ),
+    MergeTestCase(
+        zhongwen="刷过牙我还感觉到火鸡的美味",
+        yuewen_to_merge=["测完牙", "我仲感觉到火鸡嘅美味"],
+        yuewen_merged="测完牙，我仲感觉到火鸡嘅美味",
+    ),
+    MergeTestCase(
+        zhongwen="因为早餐吃得晚⋯",
+        yuewen_to_merge=["因为早餐食得硬"],
+        yuewen_merged="因为早餐食得硬⋯",
+    ),
+    MergeTestCase(
+        zhongwen="午餐时妈妈只煮了罐栗米汤",
+        yuewen_to_merge=["唔餐妈妈净系整咗罐粟米汤畀我"],
+        yuewen_merged="唔餐妈妈净系整咗罐粟米汤畀我",
+    ),
+    MergeTestCase(
+        zhongwen="我用汤匙撩了两下",
+        yuewen_to_merge=["我系噉用匙羹撩下撩下"],
+        yuewen_merged="我系噉用匙羹撩下撩下",
+    ),
+    MergeTestCase(
+        zhongwen="竟然发现美味的火鸡粒",
+        yuewen_to_merge=["我竟然撩到一粒美味嘅火鸡肉"],
+        yuewen_merged="我竟然撩到一粒美味嘅火鸡肉",
+    ),
+    MergeTestCase(
+        zhongwen="不用说，那夜就是我渴望了⋯",
+        yuewen_to_merge=["𠮶晚唔使讲"],
+        yuewen_merged="𠮶晚唔使讲⋯",
+    ),
+    MergeTestCase(
+        zhongwen="很久很久很久的⋯圣诞火鸡大餐！",
+        yuewen_to_merge=["当然系食我限咗好耐好耐好耐好耐嘅圣诞火鸡大餐"],
+        yuewen_merged="当然系食我限咗好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！",
+    ),
+    MergeTestCase(
+        zhongwen="一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
+        yuewen_to_merge=["一片一片嘅火鸡肉", "半碟嘅有薯仔同节瓜"],
+        yuewen_merged="一片一片嘅火鸡肉半碟嘅有薯仔同节瓜⋯",
+    ),
+    MergeTestCase(
+        zhongwen="上面淋了老抽生粉献",
+        yuewen_to_merge=["上面淋咗一层老抽生粉馅"],
+        yuewen_merged="上面淋咗一层老抽生粉馅",
+    ),
+    MergeTestCase(
+        zhongwen="我们真的好兴奋，好满足",
+        yuewen_to_merge=["我哋真系好兴奋", "好满足"],
+        yuewen_merged="我哋真系好兴奋，好满足",
+    ),
+    MergeTestCase(
+        zhongwen="之后，我们吃了一个星期的⋯",
+        yuewen_to_merge=["之后我哋仲食咗一个礼拜嘅", "火鸡三文治"],
+        yuewen_merged="之后我哋仲食咗一个礼拜嘅⋯火鸡三文治",
+    ),
+    MergeTestCase(
+        zhongwen="火鸡三文治早餐",
+        yuewen_to_merge=["做早餐"],
+        yuewen_merged="做早餐",
+    ),
+    MergeTestCase(
+        zhongwen="星期天",
+        yuewen_to_merge=["星期日"],
+        yuewen_merged="星期日",
+    ),
+    MergeTestCase(
+        zhongwen="我大着胆跟妈妈说：不如去饮茶吖",
+        yuewen_to_merge=["我嘅记心肝同妈妈讲", "不如饮茶"],
+        yuewen_merged="我嘅记心肝同妈妈讲：不如饮茶",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈骂我「冇衣食」⋯",
+        yuewen_to_merge=["妈妈闹我冇意食"],
+        yuewen_merged="妈妈闹我冇意食⋯",
+    ),
+    MergeTestCase(
+        zhongwen="不过还是带了我去饮茶",
+        yuewen_to_merge=["但系都带咗我去饮茶"],
+        yuewen_merged="但系都带咗我去饮茶",
+    ),
+    MergeTestCase(
+        zhongwen="之后，妈妈又有计⋯",
+        yuewen_to_merge=["之后妈妈又有计"],
+        yuewen_merged="之后妈妈又有计⋯",
+    ),
+    MergeTestCase(
+        zhongwen="她把冰箱内剩下来的火鸡肉撕呀撕",
+        yuewen_to_merge=["佢将雪柜净返嘅火鸡肉", "系噉撕系噉撕"],
+        yuewen_merged="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
+    ),
+    MergeTestCase(
+        zhongwen="有时候也叫我帮手撕",
+        yuewen_to_merge=["有时都叫我帮手撕"],
+        yuewen_merged="有时都叫我帮手撕",
+    ),
+    MergeTestCase(
+        zhongwen="火鸡留在指甲的味道",
+        yuewen_to_merge=["火鸡留喺指甲𠮶阵味"],
+        yuewen_merged="火鸡留喺指甲𠮶阵味",
+    ),
+    MergeTestCase(
+        zhongwen="原来得洗好多次",
+        yuewen_to_merge=["原来洗好多次都仲喺度㗎"],
+        yuewen_merged="原来洗好多次都仲喺度㗎",
+    ),
+    MergeTestCase(
+        zhongwen="银芽火鸡丝炒米，好味道",
+        yuewen_to_merge=["银牙火鸡丝炒米好味道噉"],
+        yuewen_merged="银牙火鸡丝炒米，好味道噉",
+    ),
+    MergeTestCase(
+        zhongwen="栗子炆火鸡丝㷛",
+        yuewen_to_merge=["焯焯栗子焖火鸡丝煲"],
+        yuewen_merged="焯焯栗子焖火鸡丝煲",
+    ),
+    MergeTestCase(
+        zhongwen="花生火鸡骨煲粥",
+        yuewen_to_merge=["花生火鸡骨煲粥"],
+        yuewen_merged="花生火鸡骨煲粥",
+    ),
+    MergeTestCase(
+        zhongwen="纸包火鸡包包纸",
+        yuewen_to_merge=["纸包火鸡包包纸"],
+        yuewen_merged="纸包火鸡包包纸",
+    ),
+    MergeTestCase(
+        zhongwen="包火鸡包包包火鸡包",
+        yuewen_to_merge=["包火鸡包包包火鸡包"],
+        yuewen_merged="包火鸡包包包火鸡包",
+    ),
+    MergeTestCase(
+        zhongwen="酿火鸡馅搽面包",
+        yuewen_to_merge=["让火鸡馅茶面包"],
+        yuewen_merged="让火鸡馅茶面包",
+    ),
+    MergeTestCase(
+        zhongwen="唉，我好后悔讲过一句「火鸡疴烂煮」",
+        yuewen_to_merge=["唉", "我后悔讲过火鸡阿宁处呢句嘢"],
+        yuewen_merged="唉，我后悔讲过火鸡阿宁处呢句嘢",
+    ),
+    MergeTestCase(
+        zhongwen="端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
+        yuewen_to_merge=["到端午节", "当我督开我最钟意食嘅果精粽嘅时候"],
+        yuewen_merged="到端午节，当我督开我最钟意食嘅果精粽嘅时候⋯",
+    ),
+    MergeTestCase(
+        zhongwen="发现咸蛋旁边是一件火鸡背的时候⋯",
+        yuewen_to_merge=["发现宿喺咸蛋旁边嘅系一件火鸡背脊"],
+        yuewen_merged="发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我脑部一时想唔通，哭起来",
+        yuewen_to_merge=["我脑部一时想唔通", "喊咗起上嚟"],
+        yuewen_merged="我脑部一时想唔通，喊咗起上嚟",
+    ),
+    MergeTestCase(
+        zhongwen="救命呀！",
+        yuewen_to_merge=["救命啊"],
+        yuewen_merged="救命啊！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈悄悄把剩下的火鸡扔掉",
+        yuewen_to_merge=["妈妈净计计将净低嘅火鸡劈咗"],
+        yuewen_merged="妈妈净计计将净低嘅火鸡劈咗",
+    ),
+    MergeTestCase(
+        zhongwen="那已经是火鸡解冻后差不多半年的事",
+        yuewen_to_merge=["原来𠮶阵已经系只火鸡解冻咗差唔多半年后嘅事"],
+        yuewen_merged="原来𠮶阵已经系只火鸡解冻咗差唔多半年后嘅事",
+    ),
+    MergeTestCase(
+        zhongwen="我的美梦跟恶梦亦同时完结",
+        yuewen_to_merge=["我嘅美梦同噩梦", "都同时完结"],
+        yuewen_merged="我嘅美梦同噩梦都同时完结",
+    ),
+    MergeTestCase(
+        zhongwen="后来我才知道⋯",
+        yuewen_to_merge=["后来我先知道"],
+        yuewen_merged="后来我先知道⋯",
+    ),
+    MergeTestCase(
+        zhongwen="一只火鸡由出世到给人宰掉",
+        yuewen_to_merge=["一只火鸡由出世到畀人㓥"],
+        yuewen_merged="一只火鸡由出世到畀人㓥",
+    ),
+    MergeTestCase(
+        zhongwen="也不过是几个月间的事",
+        yuewen_to_merge=["都不过系几个月之间嘅事"],
+        yuewen_merged="都不过系几个月之间嘅事",
+    ),
+    MergeTestCase(
+        zhongwen="即是说，火鸡死掉后跟我们一起的日子",
+        yuewen_to_merge=["即系话", "只火鸡死咗之后", "同我哋一齐嘅日子"],
+        yuewen_merged="即系话，只火鸡死咗之后，同我哋一齐嘅日子",
+    ),
+    MergeTestCase(
+        zhongwen="还要长过它的一生",
+        yuewen_to_merge=["仲长过佢自己本身条命"],
+        yuewen_merged="仲长过佢自己本身条命",
+    ),
+    MergeTestCase(
+        zhongwen="我还发觉，火鸡的味道⋯",
+        yuewen_to_merge=["我仲发觉到", "火鸡嘅味道"],
+        yuewen_merged="我仲发觉到，火鸡嘅味道⋯",
+    ),
+    MergeTestCase(
+        zhongwen="将吃未吃和第一口之间已经是最高峰",
+        yuewen_to_merge=["味食同食第一啖之间", "已经系佢嘅最高峰"],
+        yuewen_merged="味食同食第一啖之间，已经系佢嘅最高峰",
+    ),
+    MergeTestCase(
+        zhongwen="之后的，不过是开始了也就吃下去",
+        yuewen_to_merge=["之后", "不过都系食开就食埋落去噉解"],
+        yuewen_merged="之后，不过都系食开就食埋落去噉解",
+    ),
+    MergeTestCase(
+        zhongwen="我没有哲学家的头脑⋯",
+        yuewen_to_merge=["我冇知学家嘅头脑"],
+        yuewen_merged="我冇知学家嘅头脑⋯",
+    ),
+    MergeTestCase(
+        zhongwen="不知道两件事情应该得出什么道理",
+        yuewen_to_merge=["唔知呢两样嘢要得起嘅呢个", "得出啲咩道理"],
+        yuewen_merged="唔知呢两样嘢要得起嘅呢个，得出啲咩道理",
+    ),
+    MergeTestCase(
+        zhongwen="可是这些想法⋯",
+        yuewen_to_merge=["但系呢啲谂法"],
+        yuewen_merged="但系呢啲谂法⋯",
+    ),
+    MergeTestCase(
+        zhongwen="在我长大后⋯",
+        yuewen_to_merge=["喺我长大之后"],
+        yuewen_merged="喺我长大之后⋯",
+    ),
+    MergeTestCase(
+        zhongwen="在一些跟圣诞节无关的日子⋯",
+        yuewen_to_merge=["系一啲同圣诞节无关嘅日子"],
+        yuewen_merged="系一啲同圣诞节无关嘅日子⋯",
+    ),
+    MergeTestCase(
+        zhongwen="毫无因由的在我脑中出现过三两次",
+        yuewen_to_merge=["无端端噉喺我脑部", "出现过两三次"],
+        yuewen_merged="无端端噉喺我脑部出现过两三次",
+    ),
+    MergeTestCase(
+        zhongwen="一次，是在我自己的婚宴上",
+        yuewen_to_merge=["一次", "喺我自己嘅婚宴上"],
+        yuewen_merged="一次，喺我自己嘅婚宴上",
+    ),
+    MergeTestCase(
+        zhongwen="一次⋯",
+        yuewen_to_merge=["一次"],
+        yuewen_merged="一次⋯",
+    ),
+    MergeTestCase(
+        zhongwen="是在我妈妈火化那天",
+        yuewen_to_merge=["喺我妈妈火化𠮶日"],
+        yuewen_merged="喺我妈妈火化𠮶日",
+    ),
+    MergeTestCase(
+        zhongwen="那天，我看着天空几缕灰色的烟",
+        yuewen_to_merge=["𠮶日", "我望住天东几条灰色嘅烟"],
+        yuewen_merged="𠮶日，我望住天东几条灰色嘅烟",
+    ),
+    MergeTestCase(
+        zhongwen="忽然间嗅到火鸡又浓又淡的气味",
+        yuewen_to_merge=["忽然闻到火鸡又浓又淡嘅气味"],
+        yuewen_merged="忽然闻到火鸡又浓又淡嘅气味",
+    ),
+    MergeTestCase(
+        zhongwen="我好后悔要妈妈扔掉最后几件火鸡",
+        yuewen_to_merge=["我后悔", "要妈妈劈咗个忌廉", "火鸡"],
+        yuewen_merged="我后悔，要妈妈劈咗个忌廉，火鸡",
+    ),
+]  # merge_test_cases_block_58
+merge_test_cases_block_59 = [
+    MergeTestCase(
+        zhongwen="特别报告",
+        yuewen_to_merge=["特别报道"],
+        yuewen_merged="特别报道",
+    ),
+    MergeTestCase(
+        zhongwen="奥运金牌得主李丽珊决定参加今届奥运",
+        yuewen_to_merge=["奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运"],
+        yuewen_merged="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
+    ),
+    MergeTestCase(
+        zhongwen="香港运动员不是腊鸭",
+        yuewen_to_merge=["向全世界人再次证明香港嘅运动员唔系腊鸭"],
+        yuewen_merged="向全世界人再次证明香港嘅运动员唔系腊鸭",
+    ),
+    MergeTestCase(
+        zhongwen="另方面⋯",
+        yuewen_to_merge=["另一方面"],
+        yuewen_merged="另一方面⋯",
+    ),
+    MergeTestCase(
+        zhongwen="香港体运总会霍震霆⋯",
+        yuewen_to_merge=["中国香港体育协会企奥委会会长霍振庭"],
+        yuewen_merged="中国香港体育协会企奥委会会长霍振庭⋯",
+    ),
+    MergeTestCase(
+        zhongwen="正式向亚运协会提出申请",
+        yuewen_to_merge=["正式向亚运协会提出申请"],
+        yuewen_merged="正式向亚运协会提出申请",
+    ),
+    MergeTestCase(
+        zhongwen="香港将争夺下届亚运会主办权",
+        yuewen_to_merge=["香港将要争夺下届亚运会嘅主办权"],
+        yuewen_merged="香港将要争夺下届亚运会嘅主办权",
+    ),
+    MergeTestCase(
+        zhongwen="多个运动团体立即表示热烈支持",
+        yuewen_to_merge=["多个运动团体立即表示热烈支持"],
+        yuewen_merged="多个运动团体立即表示热烈支持",
+    ),
+    MergeTestCase(
+        zhongwen="其中港九新界竹战联谊会⋯",
+        yuewen_to_merge=["其中港狗新界足战联谊会"],
+        yuewen_merged="其中港狗新界足战联谊会⋯",
+    ),
+    MergeTestCase(
+        zhongwen="更希望打麻将可以成为亚运项目",
+        yuewen_to_merge=["更希望打麻雀可以成为亚运项目"],
+        yuewen_merged="更希望打麻雀可以成为亚运项目",
+    ),
+    MergeTestCase(
+        zhongwen="另外，全港茶餐厅员工协会⋯",
+        yuewen_to_merge=["另外"],
+        yuewen_merged="另外⋯",
+    ),
+    MergeTestCase(
+        zhongwen="经已发动所有会员⋯",
+        yuewen_to_merge=["全港茶餐厅联工协会经热发动所有会员"],
+        yuewen_merged="全港茶餐厅联工协会经热发动所有会员⋯",
+    ),
+    MergeTestCase(
+        zhongwen="争取「掷蛋挞」成为亚运比赛项目",
+        yuewen_to_merge=["争取掟蛋挞成为亚运会比赛项目"],
+        yuewen_merged="争取掟蛋挞成为亚运会比赛项目",
+    ),
+    MergeTestCase(
+        zhongwen="港九烧味卤味腊味同业会",
+        yuewen_to_merge=["港狗烧尾", "掳尾", "立尾同业会"],
+        yuewen_merged="港狗烧尾掳尾立尾同业会",
+    ),
+    MergeTestCase(
+        zhongwen="亦向霍主席当面提出⋯",
+        yuewen_to_merge=["亦都向霍主席当面提出"],
+        yuewen_merged="亦都向霍主席当面提出⋯",
+    ),
+    MergeTestCase(
+        zhongwen="「挂腊鸭」可以成为亚运比赛项目",
+        yuewen_to_merge=["挂立鸭可以成为亚运比赛项目"],
+        yuewen_merged="挂立鸭可以成为亚运比赛项目",
+    ),
+    MergeTestCase(
+        zhongwen="较为特别的是，CIC保险营业员联同⋯",
+        yuewen_to_merge=["较为特别嘅系", "CIC保险营业员联同"],
+        yuewen_merged="较为特别嘅系，CIC保险营业员联同⋯",
+    ),
+    MergeTestCase(
+        zhongwen="大角咀春田花花幼稚园⋯",
+        yuewen_to_merge=["大角嘴春田花花", "幼稚园"],
+        yuewen_merged="大角嘴春田花花幼稚园⋯",
+    ),
+    MergeTestCase(
+        zhongwen="附属小学一班小朋友⋯",
+        yuewen_to_merge=["附属小学嘅一班小朋友"],
+        yuewen_merged="附属小学嘅一班小朋友⋯",
+    ),
+    MergeTestCase(
+        zhongwen="争取「抢包山」",
+        yuewen_to_merge=["争取抢包山"],
+        yuewen_merged="争取「抢包山」",
+    ),
+    MergeTestCase(
+        zhongwen="一项几乎绝迹的运动⋯",
+        yuewen_to_merge=["一项几乎绝迹嘅运动"],
+        yuewen_merged="一项几乎绝迹嘅运动⋯",
+    ),
+    MergeTestCase(
+        zhongwen="成为本港举办亚运的重点推介比赛项目",
+        yuewen_to_merge=["成为本港举办亚运重点推介嘅比赛项目"],
+        yuewen_merged="成为本港举办亚运重点推介嘅比赛项目",
+    ),
+]  # merge_test_cases_block_59
 merge_test_cases_block_60 = [
     MergeTestCase(
         zhongwen="最后⋯",
@@ -2507,14 +3762,9 @@ merge_test_cases_block_60 = [
         yuewen_merged="之后李利山丧乱失败⋯",
     ),
     MergeTestCase(
-        zhongwen="亚运主办权⋯",
-        yuewen_to_merge=["亚运主办权"],
-        yuewen_merged="亚运主办权⋯",
-    ),
-    MergeTestCase(
         zhongwen="亦由一个香港人从未听过的地方夺得",
-        yuewen_to_merge=["亦都由一个香港人从未听过嘅地方夺得"],
-        yuewen_merged="亦都由一个香港人从未听过嘅地方夺得",
+        yuewen_to_merge=["亚运主办权亦都由一个香港人从未听过嘅地方夺得"],
+        yuewen_merged="亚运主办权亦都由一个香港人从未听过嘅地方夺得",
     ),
     MergeTestCase(
         zhongwen="想着转行当运动员的茶餐厅伙记⋯",
@@ -2532,8 +3782,55 @@ merge_test_cases_block_60 = [
         yuewen_merged="一切回复正常",
     ),
 ]  # merge_test_cases_block_60
-merge_test_cases_block_61 = []  # merge_test_cases_block_61
-merge_test_cases_block_62 = []  # merge_test_cases_block_62
+merge_test_cases_block_61 = [
+    MergeTestCase(
+        zhongwen="上中学后，我再没有练习抢包手",
+        yuewen_to_merge=["上个中学", "我已经再冇练习抢包手"],
+        yuewen_merged="上个中学，我已经再冇练习抢包手",
+    ),
+    MergeTestCase(
+        zhongwen="有时候跟妈妈饮茶⋯",
+        yuewen_to_merge=["间中同妈妈饮茶"],
+        yuewen_merged="间中同妈妈饮茶⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我都会手快快替她抢一笼大包",
+        yuewen_to_merge=["我都会手快快噉帮佢抢龙大包"],
+        yuewen_merged="我都会手快快噉帮佢抢龙大包",
+    ),
+    MergeTestCase(
+        zhongwen="之后，茶楼再不卖大包了",
+        yuewen_to_merge=["之后茶楼都冇埋大包"],
+        yuewen_merged="之后茶楼都冇埋大包",
+    ),
+    MergeTestCase(
+        zhongwen="点心车亦转成点心纸",
+        yuewen_to_merge=["退车仔都转咗用点心纸"],
+        yuewen_merged="退车仔都转咗用点心纸",
+    ),
+    MergeTestCase(
+        zhongwen="一切落空",
+        yuewen_to_merge=["一切都落空"],
+        yuewen_merged="一切都落空",
+    ),
+]  # merge_test_cases_block_61
+merge_test_cases_block_62 = [
+    MergeTestCase(
+        zhongwen="有时候我也会跟同学回到长洲烧烤",
+        yuewen_to_merge=["有时我都会同班同学仔返长洲宵夜食"],
+        yuewen_merged="有时我都会同班同学仔返长洲宵夜食",
+    ),
+    MergeTestCase(
+        zhongwen="每次看见师傅⋯",
+        yuewen_to_merge=["每次见到师傅"],
+        yuewen_merged="每次见到师傅⋯",
+    ),
+    MergeTestCase(
+        zhongwen="他都好像老了一点",
+        yuewen_to_merge=["佢都好似老咗啲噉"],
+        yuewen_merged="佢都好似老咗啲噉",
+    ),
+]  # merge_test_cases_block_62
 merge_test_cases_block_63 = [
     MergeTestCase(
         zhongwen="因为环保⋯",
@@ -2548,10 +3845,146 @@ merge_test_cases_block_63 = [
     MergeTestCase(
         zhongwen="师傅说，那阵胶气，相当臭",
         yuewen_to_merge=["师傅话𠮶阵胶气都几丑下"],
-        yuewen_merged="师傅话，𠮶阵胶气，都几丑下",
+        yuewen_merged="师傅话𠮶阵胶气，都几丑下",
     ),
 ]  # merge_test_cases_block_63
-merge_test_cases_block_64 = []  # merge_test_cases_block_64
+merge_test_cases_block_64 = [
+    MergeTestCase(
+        zhongwen="长洲有个张保仔洞",
+        yuewen_to_merge=["墙后个张宝仔洞"],
+        yuewen_merged="墙后个张宝仔洞",
+    ),
+    MergeTestCase(
+        zhongwen="听说张保仔在洞内藏了很多宝藏",
+        yuewen_to_merge=["听讲海盗张宝仔喺里面收埋咗好多宝藏"],
+        yuewen_merged="听讲海盗张宝仔喺里面收埋咗好多宝藏",
+    ),
+    MergeTestCase(
+        zhongwen="因为我练过抢包手，身手比较灵活⋯",
+        yuewen_to_merge=["因为我练过抢包手", "身手比较灵活"],
+        yuewen_merged="因为我练过抢包手，身手比较灵活⋯",
+    ),
+    MergeTestCase(
+        zhongwen="同学们叫我爬进去看看，说不定会发达",
+        yuewen_to_merge=["班同我叫我爬佢睇下", "话唔定会发达"],
+        yuewen_merged="班同我叫我爬佢睇下，话唔定会发达",
+    ),
+    MergeTestCase(
+        zhongwen="于是我就向着这个又黑又窄的洞⋯",
+        yuewen_to_merge=["于是我就向住呢一个又黑又窄嘅洞"],
+        yuewen_merged="于是我就向住呢一个又黑又窄嘅洞⋯",
+    ),
+    MergeTestCase(
+        zhongwen="一直爬",
+        yuewen_to_merge=["系噉爬", "爬"],
+        yuewen_merged="系噉爬爬",
+    ),
+    MergeTestCase(
+        zhongwen="洞里面什么也没有，只有一个盒",
+        yuewen_to_merge=["洞里面乜都冇", "净系有一个盒"],
+        yuewen_merged="洞里面乜都冇，净系有一个盒",
+    ),
+    MergeTestCase(
+        zhongwen="我小心揭开盒⋯",
+        yuewen_to_merge=["我好小心揭开呢个盒"],
+        yuewen_merged="我好小心揭开呢个盒⋯",
+    ),
+    MergeTestCase(
+        zhongwen="发现里面一个没吃完的大包",
+        yuewen_to_merge=["发现入面系一个食净咗嘅大包"],
+        yuewen_merged="发现入面系一个食净咗嘅大包",
+    ),
+    MergeTestCase(
+        zhongwen="是不是张保仔吃过的呢？",
+        yuewen_to_merge=["唔知系咪张宝仔食净㗎啦"],
+        yuewen_merged="唔知系咪张宝仔食净㗎啦？",
+    ),
+    MergeTestCase(
+        zhongwen="揸住个包，我忽然明白⋯",
+        yuewen_to_merge=["揸住个包", "我忽然明白"],
+        yuewen_merged="揸住个包，我忽然明白⋯",
+    ),
+    MergeTestCase(
+        zhongwen="原来有些事情， 没有就是没有",
+        yuewen_to_merge=["原来有啲嘢冇", "就真系冇"],
+        yuewen_merged="原来有啲嘢，冇就真系冇",
+    ),
+    MergeTestCase(
+        zhongwen="唔得，就是唔得",
+        yuewen_to_merge=["唔得", "就真系唔得"],
+        yuewen_merged="唔得，就真系唔得",
+    ),
+    MergeTestCase(
+        zhongwen="没有鱼蛋没有粗面没去成马尔代夫⋯",
+        yuewen_to_merge=["冇鱼蛋", "冇粗面", "冇去买义大夫"],
+        yuewen_merged="冇鱼蛋，冇粗面，冇去买义大夫⋯",
+    ),
+    MergeTestCase(
+        zhongwen="没有奖牌没有张保仔宝藏",
+        yuewen_to_merge=["冇奖牌冇张宝仔宝藏"],
+        yuewen_merged="冇奖牌冇张宝仔宝藏",
+    ),
+    MergeTestCase(
+        zhongwen="而张保仔，也没有咬过那个包",
+        yuewen_to_merge=["而张宝仔亦都冇咬过个包"],
+        yuewen_merged="而张宝仔，亦都冇咬过个包",
+    ),
+    MergeTestCase(
+        zhongwen="原来蠢，并不那么好笑",
+        yuewen_to_merge=["原来", "唔系咁好笑"],
+        yuewen_merged="原来，唔系咁好笑",
+    ),
+    MergeTestCase(
+        zhongwen="蠢会失败⋯",
+        yuewen_to_merge=["会失败"],
+        yuewen_merged="会失败⋯",
+    ),
+    MergeTestCase(
+        zhongwen="会失望",
+        yuewen_to_merge=["会失望"],
+        yuewen_merged="会失望",
+    ),
+    MergeTestCase(
+        zhongwen="失望，并不那么好笑",
+        yuewen_to_merge=["失望", "唔系咁好笑"],
+        yuewen_merged="失望，唔系咁好笑",
+    ),
+    MergeTestCase(
+        zhongwen="肥，都不一定好笑",
+        yuewen_to_merge=["肥", "都未必好笑"],
+        yuewen_merged="肥，都未必好笑",
+    ),
+    MergeTestCase(
+        zhongwen="肥，不一定大力",
+        yuewen_to_merge=["肥", "唔一定大力"],
+        yuewen_merged="肥，唔一定大力",
+    ),
+    MergeTestCase(
+        zhongwen="大力，亦不一定得",
+        yuewen_to_merge=["大力", "亦都唔一定得"],
+        yuewen_merged="大力，亦都唔一定得",
+    ),
+    MergeTestCase(
+        zhongwen="揸住个包，我忽然想⋯",
+        yuewen_to_merge=["揸住个包", "我忽然喺度谂"],
+        yuewen_merged="揸住个包，我忽然喺度谂⋯",
+    ),
+    MergeTestCase(
+        zhongwen="长大了，到我要面对这个实掘掘⋯",
+        yuewen_to_merge=["大个咗到我要面对呢一个实角局"],
+        yuewen_merged="大个咗，到我要面对呢一个实角局⋯",
+    ),
+    MergeTestCase(
+        zhongwen="未必可以发梦，未必那么好笑的⋯",
+        yuewen_to_merge=["未必到你发梦", "又未必咁好笑嘅"],
+        yuewen_merged="未必到你发梦，又未必咁好笑嘅⋯",
+    ),
+    MergeTestCase(
+        zhongwen="世界的时候，我会怎么样？",
+        yuewen_to_merge=["世界嘅时候", "我会系点㗎呢"],
+        yuewen_merged="世界嘅时候，我会系点㗎呢？",
+    ),
+]  # merge_test_cases_block_64
 merge_test_cases_block_65 = [
     MergeTestCase(
         zhongwen="「⋯无力挽！」",
@@ -2560,9 +3993,272 @@ merge_test_cases_block_65 = [
     ),
 ]  # merge_test_cases_block_65
 merge_test_cases_block_66 = []  # merge_test_cases_block_66
-merge_test_cases_block_67 = []  # merge_test_cases_block_67
-merge_test_cases_block_68 = []  # merge_test_cases_block_68
-merge_test_cases_block_69 = []  # merge_test_cases_block_69
+merge_test_cases_block_67 = [
+    MergeTestCase(
+        zhongwen="是的，我就是大个佬麦兜",
+        yuewen_to_merge=["系呀", "我就系大个佬麦豆喇"],
+        yuewen_merged="系呀，我就系大个佬麦豆喇",
+    ),
+    MergeTestCase(
+        zhongwen="肥，算大力",
+        yuewen_to_merge=["肥啰", "算大力啦"],
+        yuewen_merged="肥啰，算大力啦",
+    ),
+    MergeTestCase(
+        zhongwen="麻麻地可以",
+        yuewen_to_merge=["麻麻地得咁啦"],
+        yuewen_merged="麻麻地得咁啦",
+    ),
+    MergeTestCase(
+        zhongwen="负家产",
+        yuewen_to_merge=["富家产啰"],
+        yuewen_merged="富家产啰",
+    ),
+    MergeTestCase(
+        zhongwen="脚爪是真的大，比一节瓜还要大",
+        yuewen_to_merge=["脚瓜真系几大", "仲大过个折瓜"],
+        yuewen_merged="脚瓜真系几大，仲大过个折瓜",
+    ),
+    MergeTestCase(
+        zhongwen="脚瓜上的肌肉非常结实⋯",
+        yuewen_to_merge=["脚瓜上面个肌肉非常结实"],
+        yuewen_merged="脚瓜上面个肌肉非常结实⋯",
+    ),
+    MergeTestCase(
+        zhongwen="青筋一条条凸出来，似钢筋",
+        yuewen_to_merge=["啲青筋一条一条凸下凸下", "好似钢筋"],
+        yuewen_merged="啲青筋一条一条凸下凸下，好似钢筋",
+    ),
+    MergeTestCase(
+        zhongwen="至于脚趾甲⋯",
+        yuewen_to_merge=["至于脚趾弓啲脚甲"],
+        yuewen_merged="至于脚趾弓啲脚甲⋯",
+    ),
+    MergeTestCase(
+        zhongwen="有次我无无聊聊真的量了一下⋯",
+        yuewen_to_merge=["有次我无无聊聊真系走去卡下佢"],
+        yuewen_merged="有次我无无聊聊真系走去卡下佢⋯",
+    ),
+    MergeTestCase(
+        zhongwen="足有一寸厚",
+        yuewen_to_merge=["哗", "粥粥成串咁厚"],
+        yuewen_merged="哗，粥粥成串咁厚",
+    ),
+    MergeTestCase(
+        zhongwen="是的，故事讲完了",
+        yuewen_to_merge=["系呀", "故事讲完喇"],
+        yuewen_merged="系呀，故事讲完喇",
+    ),
+    MergeTestCase(
+        zhongwen="这是一个尝试",
+        yuewen_to_merge=["呢个系一个尝试"],
+        yuewen_merged="呢个系一个尝试",
+    ),
+    MergeTestCase(
+        zhongwen="失败⋯尝试⋯",
+        yuewen_to_merge=["失败", "尝试"],
+        yuewen_merged="失败⋯尝试⋯",
+    ),
+    MergeTestCase(
+        zhongwen="好多包⋯可是没有包保成功的故事",
+        yuewen_to_merge=["好多包", "但系冇包补成功嘅故事"],
+        yuewen_merged="好多包⋯但系冇包补成功嘅故事",
+    ),
+    MergeTestCase(
+        zhongwen="故事说了一轮⋯",
+        yuewen_to_merge=["故事讲咗一轮"],
+        yuewen_merged="故事讲咗一轮⋯",
+    ),
+    MergeTestCase(
+        zhongwen="什么也没有？也不是",
+        yuewen_to_merge=["乜都冇", "又唔系噃"],
+        yuewen_merged="乜都冇？又唔系噃",
+    ),
+    MergeTestCase(
+        zhongwen="就是大了双脚瓜",
+        yuewen_to_merge=["就系大咗两个脚瓜"],
+        yuewen_merged="就系大咗两个脚瓜",
+    ),
+    MergeTestCase(
+        zhongwen="可是楝一双脚瓜站这儿⋯",
+        yuewen_to_merge=["但系冻住两个脚瓜企喺度"],
+        yuewen_merged="但系冻住两个脚瓜企喺度⋯",
+    ),
+    MergeTestCase(
+        zhongwen="当浪打过来⋯",
+        yuewen_to_merge=["当啲浪打埋嚟"],
+        yuewen_merged="当啲浪打埋嚟⋯",
+    ),
+    MergeTestCase(
+        zhongwen="那感觉还真不错",
+        yuewen_to_merge=["𠮶张感觉真系好好"],
+        yuewen_merged="𠮶张感觉真系好好",
+    ),
+    MergeTestCase(
+        zhongwen="你知道我麻麻地叻佬，不懂得⋯",
+        yuewen_to_merge=["你知我麻麻地叻佬", "唔识得"],
+        yuewen_merged="你知我麻麻地叻佬，唔识得⋯",
+    ),
+    MergeTestCase(
+        zhongwen="替自己的故事加点教训呀锦囊呀那些",
+        yuewen_to_merge=["帮自己嘅故事加啲教训呀", "锦囊呀𠮶啲嘢"],
+        yuewen_merged="帮自己嘅故事加啲教训呀锦囊呀𠮶啲嘢",
+    ),
+    MergeTestCase(
+        zhongwen="可是，浸一双脚瓜站水中⋯",
+        yuewen_to_merge=["但系冻住两个脚瓜企喺水𠮶度"],
+        yuewen_merged="但系冻住两个脚瓜企喺水𠮶度⋯",
+    ),
+    MergeTestCase(
+        zhongwen="当风吹向我的脑，我会想⋯",
+        yuewen_to_merge=["当风", "吹喺我个脑部", "我会谂"],
+        yuewen_merged="当风吹喺我个脑部，我会谂⋯",
+    ),
+    MergeTestCase(
+        zhongwen="如果妈妈看见我这个大脚瓜⋯",
+        yuewen_to_merge=["如果妈妈见到我呢个大脚瓜"],
+        yuewen_merged="如果妈妈见到我呢个大脚瓜⋯",
+    ),
+    MergeTestCase(
+        zhongwen="我猜，她会好开心",
+        yuewen_to_merge=["我谂佢会好开心"],
+        yuewen_merged="我谂，佢会好开心",
+    ),
+]  # merge_test_cases_block_67
+merge_test_cases_block_68 = [
+    MergeTestCase(
+        zhongwen="不成，还是出个锦囊！",
+        yuewen_to_merge=["都系唔好呀", "都系出返个锦囊先得"],
+        yuewen_merged="都系唔好呀，都系出返个锦囊先得！",
+    ),
+    MergeTestCase(
+        zhongwen="妈妈的dot com散掉后，她又有计",
+        yuewen_to_merge=["妈妈个Doccom散咗之后", "佢又有计喇"],
+        yuewen_merged="妈妈个Doccom散咗之后，佢又有计喇",
+    ),
+    MergeTestCase(
+        zhongwen="她出版了一本教烹饪的食谱",
+        yuewen_to_merge=["佢出咗半教主送嘅食谱", "谂住捞返扎沙"],
+        yuewen_merged="佢出咗半教主送嘅食谱，谂住捞返扎沙",
+    ),
+    MergeTestCase(
+        zhongwen="食谱最后一页教人整烧鸡",
+        yuewen_to_merge=["食谱最后一页系教人整烧鸡嘅"],
+        yuewen_merged="食谱最后一页系教人整烧鸡嘅",
+    ),
+    MergeTestCase(
+        zhongwen="方法简单，人人可学",
+        yuewen_to_merge=["方法简单", "人人都学得识"],
+        yuewen_merged="方法简单，人人都学得识",
+    ),
+    MergeTestCase(
+        zhongwen="「烧鸡」",
+        yuewen_to_merge=["烧鸡"],
+        yuewen_merged="「烧鸡」",
+    ),
+    MergeTestCase(
+        zhongwen="材料是⋯鸡",
+        yuewen_to_merge=["材料系", "鸡"],
+        yuewen_merged="材料系⋯鸡",
+    ),
+    MergeTestCase(
+        zhongwen="方法：把鸡烧几烧",
+        yuewen_to_merge=["方法", "攞只鸡", "去烧佢几烧"],
+        yuewen_merged="方法：攞只鸡去烧佢几烧",
+    ),
+    MergeTestCase(
+        zhongwen="就这样，一味「烧鸡」大功告成",
+        yuewen_to_merge=["就噉", "一味烧鸡", "就大功告成喇"],
+        yuewen_merged="就噉，一味烧鸡，就大功告成喇",
+    ),
+    MergeTestCase(
+        zhongwen="食谱里面补充说：",
+        yuewen_to_merge=["食谱度又补充噉话"],
+        yuewen_merged="食谱度又补充噉话：",
+    ),
+    MergeTestCase(
+        zhongwen="如果你想把鸡烧得美味可口⋯",
+        yuewen_to_merge=["如果想你个鸡烧得美味可口"],
+        yuewen_merged="如果想你个鸡烧得美味可口⋯",
+    ),
+    MergeTestCase(
+        zhongwen="吃完后不会心肺实胃气涨",
+        yuewen_to_merge=["冇话食完腰心腰肺顶住个胃"],
+        yuewen_merged="冇话食完腰心腰肺顶住个胃",
+    ),
+    MergeTestCase(
+        zhongwen="秘诀是：拜托，把鸡烧好一点⋯",
+        yuewen_to_merge=["个秘诀系唔该", "烧得佢好啲啰"],
+        yuewen_merged="个秘诀系：唔该，烧得佢好啲啰⋯",
+    ),
+    MergeTestCase(
+        zhongwen="多谢合作！",
+        yuewen_to_merge=["多谢合作"],
+        yuewen_merged="多谢合作！",
+    ),
+]  # merge_test_cases_block_68
+merge_test_cases_block_69 = [
+    MergeTestCase(
+        zhongwen="麻烦你，一客常餐",
+        yuewen_to_merge=["唔该", "我要一个常餐啦"],
+        yuewen_merged="唔该，我要一个常餐啦",
+    ),
+    MergeTestCase(
+        zhongwen="常餐？常餐有什么吃？",
+        yuewen_to_merge=["常餐", "常餐有咩食㗎"],
+        yuewen_merged="常餐？常餐有咩食㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="跟特餐一样吧",
+        yuewen_to_merge=["同特餐一样啰"],
+        yuewen_merged="同特餐一样啰",
+    ),
+    MergeTestCase(
+        zhongwen="特餐是什么？",
+        yuewen_to_merge=["噉特餐系咩嚟㗎"],
+        yuewen_merged="噉特餐系咩嚟㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="跟快餐差不多",
+        yuewen_to_merge=["同快餐咁上下啰"],
+        yuewen_merged="同快餐咁上下啰",
+    ),
+    MergeTestCase(
+        zhongwen="快餐又是什么？",
+        yuewen_to_merge=["噉快餐又系咩嚟㗎"],
+        yuewen_merged="噉快餐又系咩嚟㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="快餐即是午餐",
+        yuewen_to_merge=["即系快餐咪真系午餐"],
+        yuewen_merged="即系快餐咪真系午餐",
+    ),
+    MergeTestCase(
+        zhongwen="午餐吃什么？",
+        yuewen_to_merge=["午餐食咩㗎"],
+        yuewen_merged="午餐食咩㗎？",
+    ),
+    MergeTestCase(
+        zhongwen="午餐跟晚餐一样",
+        yuewen_to_merge=["午餐同晚餐一样㗎"],
+        yuewen_merged="午餐同晚餐一样㗎",
+    ),
+    MergeTestCase(
+        zhongwen="晚餐又吃什么？",
+        yuewen_to_merge=["噉晚餐又食啲咩呀"],
+        yuewen_merged="噉晚餐又食啲咩呀？",
+    ),
+    MergeTestCase(
+        zhongwen="晚餐即是常餐",
+        yuewen_to_merge=["晚餐咪真系常餐啰"],
+        yuewen_merged="晚餐咪真系常餐啰",
+    ),
+    MergeTestCase(
+        zhongwen="那么，两客常餐吧",
+        yuewen_to_merge=["噉呀", "我要两个常餐啦"],
+        yuewen_merged="噉呀，我要两个常餐啦",
+    ),
+]  # merge_test_cases_block_69
 merge_test_cases_block_70 = [
     MergeTestCase(
         zhongwen="对不起，常餐卖光了",
@@ -2614,12 +4310,12 @@ merge_test_cases_block_70 = [
         yuewen_to_merge=["系", "快餐就即系上餐啰"],
         yuewen_merged="系，快餐就即系上餐啰",
     ),
-    MergeTestCase(  # REVIEW: SEEMS TO BE MISALIGNED
+    MergeTestCase(
         zhongwen="常餐不是卖光了吗？",
         yuewen_to_merge=["咁你头先又话冇上餐", "系呀", "上餐就系卖晒呀"],
         yuewen_merged="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
     ),
-    MergeTestCase(  # REVIEW: SEEMS TO BE MISALIGNED
+    MergeTestCase(
         zhongwen="对，常餐卖光了，要吃特餐吗？",
         yuewen_to_merge=["咁你试唔试下特餐啦"],
         yuewen_merged="咁你试唔试下特餐啦？",
@@ -2708,13 +4404,13 @@ merge_test_cases_block_71 = [
     ),
     MergeTestCase(
         zhongwen="午餐吧，午餐精采呀",
-        yuewen_to_merge=["午餐啦"],
-        yuewen_merged="午餐啦",
+        yuewen_to_merge=["午餐啦", "午餐好嘢呀"],
+        yuewen_merged="午餐啦，午餐好嘢呀",
     ),
     MergeTestCase(
         zhongwen="怎么个精采法？",
-        yuewen_to_merge=["午餐好嘢呀", "点好嘢法呀"],
-        yuewen_merged="午餐好嘢呀，点好嘢法呀？",
+        yuewen_to_merge=["点好嘢法呀"],
+        yuewen_merged="点好嘢法呀？",
     ),
     MergeTestCase(
         zhongwen="跟晚餐一样精采",

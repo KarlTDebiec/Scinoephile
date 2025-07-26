@@ -872,35 +872,421 @@ distribute_test_cases_block_50 = [
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_50
-distribute_test_cases_block_51 = []  # distribute_test_cases_block_51
-distribute_test_cases_block_52 = []  # distribute_test_cases_block_52
-distribute_test_cases_block_53 = []  # distribute_test_cases_block_53
-distribute_test_cases_block_54 = []  # distribute_test_cases_block_54
-distribute_test_cases_block_55 = []  # distribute_test_cases_block_55
-distribute_test_cases_block_56 = []  # distribute_test_cases_block_56
-distribute_test_cases_block_57 = []  # distribute_test_cases_block_57
-distribute_test_cases_block_58 = []  # distribute_test_cases_block_58
-distribute_test_cases_block_59 = []  # distribute_test_cases_block_59
-distribute_test_cases_block_60 = [
+distribute_test_cases_block_51 = [
     DistributeTestCase(
-        one_zhongwen="亚运主办权⋯",
-        one_yuewen_start="",
-        two_zhongwen="亦由一个香港人从未听过的地方夺得",
-        two_yuewen_end="亦都由一个香港人从未听过嘅地方夺得",
-        yuewen_to_distribute="亚运主办权",
-        one_yuewen_to_append="亚运主办权",
+        one_zhongwen="其实我也不知道个仔要这么粗的脚瓜⋯",
+        one_yuewen_start="其实",
+        two_zhongwen="有什么用",
+        two_yuewen_end="",
+        yuewen_to_distribute="我都唔知我仔要咁粗嘅脚瓜有咩用",
+        one_yuewen_to_append="我都唔知我仔要咁粗嘅脚瓜",
+        two_yuewen_to_prepend="有咩用",
+    ),
+]  # distribute_test_cases_block_51
+distribute_test_cases_block_52 = []  # distribute_test_cases_block_52
+distribute_test_cases_block_53 = [
+    DistributeTestCase(
+        one_zhongwen="想不到真的让妈妈拿去了。吓得我！",
+        one_yuewen_start="咦估唔到真系妈妈攞咗㖞",
+        two_zhongwen="妈妈怎么会写起英文信？",
+        two_yuewen_end="点解妈妈会用英文写信嘅",
+        yuewen_to_distribute="吓得我啊",
+        one_yuewen_to_append="吓得我啊",
         two_yuewen_to_prepend="",
     ),
-]  # distribute_test_cases_block_60
+    DistributeTestCase(
+        one_zhongwen="信很短",
+        one_yuewen_start="",
+        two_zhongwen="我猜是妈妈用电子辞典逐个字译成英文",
+        two_yuewen_end="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
+        yuewen_to_distribute="封信好短",
+        one_yuewen_to_append="封信好短",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="「亲爱的主席：」",
+        one_yuewen_start="",
+        two_zhongwen="「你好吗？我很好！」",
+        two_yuewen_end="你好吗我很好",
+        yuewen_to_distribute="亲爱的主席",
+        one_yuewen_to_append="亲爱的主席",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="「你吃包吗？我吃包！」",
+        one_yuewen_start="你吃包吗",
+        two_zhongwen="「我们居住在香港这里的人，很爱吃包」",
+        two_yuewen_end="我门居住在香港这类的人",
+        yuewen_to_distribute="我吃包",
+        one_yuewen_to_append="我吃包",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="「我们居住在香港这里的人，很爱吃包」",
+        one_yuewen_start="我门居住在香港这类的人",
+        two_zhongwen="「小笼包，上海包，广东包，莲蓉包」",
+        two_yuewen_end="小笼包上海包广东包",
+        yuewen_to_distribute="肯爱吃包",
+        one_yuewen_to_append="肯爱吃包",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="「小笼包，上海包，广东包，莲蓉包」",
+        one_yuewen_start="小笼包上海包广东包",
+        two_zhongwen="「好朋友，我认为",
+        two_yuewen_end="好朋友",
+        yuewen_to_distribute="联融包",
+        one_yuewen_to_append="联融包",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_53
+distribute_test_cases_block_54 = [
+    DistributeTestCase(
+        one_zhongwen="后来麦嘎告诉我⋯",
+        one_yuewen_start="后来",
+        two_zhongwen="林世荣即是猪肉荣，是黄飞鸿的徒弟",
+        two_yuewen_end="林世荣即系猪肉荣系黄飞鸿嘅徒弟",
+        yuewen_to_distribute="默默话我知",
+        one_yuewen_to_append="默默话我知",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="一步一步，一爪一爪⋯",
+        one_yuewen_start="一步一步",
+        two_zhongwen="我最后终于练成「十二路抢包手」",
+        two_yuewen_end="最后我终于练成十二路抢包手啦",
+        yuewen_to_distribute="一爪一爪",
+        one_yuewen_to_append="一爪一爪",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="师傅说当年师祖要出这套",
+        one_yuewen_start="师傅话",
+        two_zhongwen="「十二路抢包手」⋯",
+        two_yuewen_end="十二路抢包手",
+        yuewen_to_distribute="当年师祖使出呢套",
+        one_yuewen_to_append="当年师祖使出呢套",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_54
+distribute_test_cases_block_55 = [
+    DistributeTestCase(
+        one_zhongwen="希望⋯失望⋯",
+        one_yuewen_start="希望",
+        two_zhongwen="希望⋯",
+        two_yuewen_end="希望",
+        yuewen_to_distribute="失望",
+        one_yuewen_to_append="失望",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="那日妈妈竟然跟我说⋯",
+        one_yuewen_start="",
+        two_zhongwen="让我们明天去超级市场揪火鸡",
+        two_yuewen_end="佢话明日我哋要超级市场抽火鸡",
+        yuewen_to_distribute="𠮶日妈妈竟然同我讲",
+        one_yuewen_to_append="𠮶日妈妈竟然同我讲",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
+        one_yuewen_start="联火鸡时妈妈一个唔觉意",
+        two_zhongwen="红萝卜粒",
+        two_yuewen_end="红萝虾粒流嘅出嚟",
+        yuewen_to_distribute="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        one_yuewen_to_append="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
+        one_yuewen_start="联火鸡时妈妈一个唔觉意",
+        two_zhongwen="红萝卜粒",
+        two_yuewen_end="红萝虾粒",
+        yuewen_to_distribute="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        one_yuewen_to_append="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="红萝卜粒",
+        one_yuewen_start="红萝虾粒",
+        two_zhongwen="我说：火鸡「疴烂煮」！",
+        two_yuewen_end="我话火鸡我能住呀",
+        yuewen_to_distribute="流嘅出嚟",
+        one_yuewen_to_append="流嘅出嚟",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_55
+distribute_test_cases_block_56 = []  # distribute_test_cases_block_56
+distribute_test_cases_block_57 = []  # distribute_test_cases_block_57
+distribute_test_cases_block_58 = [
+    DistributeTestCase(
+        one_zhongwen="之后，我们吃了一个星期的⋯",
+        one_yuewen_start="",
+        two_zhongwen="火鸡三文治早餐",
+        two_yuewen_end="",
+        yuewen_to_distribute="之后我哋仲食咗一个礼拜嘅火鸡三文治做早餐",
+        one_yuewen_to_append="之后我哋仲食咗一个礼拜嘅",
+        two_yuewen_to_prepend="火鸡三文治做早餐",
+    ),
+    DistributeTestCase(
+        one_zhongwen="之后，我们吃了一个星期的⋯",
+        one_yuewen_start="",
+        two_zhongwen="火鸡三文治早餐",
+        two_yuewen_end="火鸡三文治做早餐",
+        yuewen_to_distribute="之后我哋仲食咗一个礼拜嘅",
+        one_yuewen_to_append="之后我哋仲食咗一个礼拜嘅",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="星期天",
+        one_yuewen_start="",
+        two_zhongwen="我大着胆跟妈妈说：不如去饮茶吖",
+        two_yuewen_end="我嘅记心肝同妈妈讲不如饮茶",
+        yuewen_to_distribute="星期日",
+        one_yuewen_to_append="星期日",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="她把冰箱内剩下来的火鸡肉撕呀撕",
+        one_yuewen_start="佢将雪柜净返嘅火鸡肉",
+        two_zhongwen="有时候也叫我帮手撕",
+        two_yuewen_end="有时都叫我帮手撕",
+        yuewen_to_distribute="系噉撕系噉撕",
+        one_yuewen_to_append="系噉撕系噉撕",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="即是说，火鸡死掉后跟我们一起的日子",
+        one_yuewen_start="即系话只火鸡死咗之后",
+        two_zhongwen="还要长过它的一生",
+        two_yuewen_end="仲长过佢自己本身条命",
+        yuewen_to_distribute="同我哋一齐嘅日子",
+        one_yuewen_to_append="同我哋一齐嘅日子",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="我还发觉，火鸡的味道⋯",
+        one_yuewen_start="我仲发觉到",
+        two_zhongwen="将吃未吃和第一口之间已经是最高峰",
+        two_yuewen_end="味食同食第一啖之间已经系佢嘅最高峰",
+        yuewen_to_distribute="火鸡嘅味道",
+        one_yuewen_to_append="火鸡嘅味道",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="一次⋯",
+        one_yuewen_start="",
+        two_zhongwen="是在我妈妈火化那天",
+        two_yuewen_end="喺我妈妈火化𠮶日",
+        yuewen_to_distribute="一次",
+        one_yuewen_to_append="一次",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_58
+distribute_test_cases_block_59 = [
+    DistributeTestCase(
+        one_zhongwen="另方面⋯",
+        one_yuewen_start="",
+        two_zhongwen="香港体运总会霍震霆⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="另一方面",
+        one_yuewen_to_append="另一方面",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="香港体运总会霍震霆⋯",
+        one_yuewen_start="",
+        two_zhongwen="正式向亚运协会提出申请",
+        two_yuewen_end="",
+        yuewen_to_distribute="中国香港体育协会企奥委会会长霍振庭正式向亚运协会提出申请",
+        one_yuewen_to_append="中国香港体育协会企奥委会会长霍振庭",
+        two_yuewen_to_prepend="正式向亚运协会提出申请",
+    ),
+    DistributeTestCase(
+        one_zhongwen="另方面⋯",
+        one_yuewen_start="",
+        two_zhongwen="香港体运总会霍震霆⋯",
+        two_yuewen_end="中国香港体育协会企奥委会会长霍振庭",
+        yuewen_to_distribute="另一方面",
+        one_yuewen_to_append="另一方面",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="其中港九新界竹战联谊会⋯",
+        one_yuewen_start="",
+        two_zhongwen="更希望打麻将可以成为亚运项目",
+        two_yuewen_end="",
+        yuewen_to_distribute="其中港狗新界足战联谊会更希望打麻雀可以成为亚运项目",
+        one_yuewen_to_append="其中港狗新界足战联谊会",
+        two_yuewen_to_prepend="更希望打麻雀可以成为亚运项目",
+    ),
+    DistributeTestCase(
+        one_zhongwen="经已发动所有会员⋯",
+        one_yuewen_start="",
+        two_zhongwen="争取「掷蛋挞」成为亚运比赛项目",
+        two_yuewen_end="",
+        yuewen_to_distribute="全港茶餐厅联工协会经热发动所有会员争取掟蛋挞成为亚运会比赛项目",
+        one_yuewen_to_append="全港茶餐厅联工协会经热发动所有会员",
+        two_yuewen_to_prepend="争取掟蛋挞成为亚运会比赛项目",
+    ),
+    DistributeTestCase(
+        one_zhongwen="亦向霍主席当面提出⋯",
+        one_yuewen_start="",
+        two_zhongwen="「挂腊鸭」可以成为亚运比赛项目",
+        two_yuewen_end="",
+        yuewen_to_distribute="立尾同业会亦都向霍主席当面提出挂立鸭可以成为亚运比赛项目",
+        one_yuewen_to_append="立尾同业会亦都向霍主席当面提出",
+        two_yuewen_to_prepend="挂立鸭可以成为亚运比赛项目",
+    ),
+    DistributeTestCase(
+        one_zhongwen="较为特别的是，CIC保险营业员联同⋯",
+        one_yuewen_start="较为特别嘅系",
+        two_zhongwen="大角咀春田花花幼稚园⋯",
+        two_yuewen_end="",
+        yuewen_to_distribute="CIC保险营业员联同大角嘴春田花花",
+        one_yuewen_to_append="CIC保险营业员联同",
+        two_yuewen_to_prepend="大角嘴春田花花",
+    ),
+    DistributeTestCase(
+        one_zhongwen="较为特别的是，CIC保险营业员联同⋯",
+        one_yuewen_start="较为特别嘅系",
+        two_zhongwen="大角咀春田花花幼稚园⋯",
+        two_yuewen_end="大角嘴春田花花",
+        yuewen_to_distribute="CIC保险营业员联同",
+        one_yuewen_to_append="CIC保险营业员联同",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="附属小学一班小朋友⋯",
+        one_yuewen_start="",
+        two_zhongwen="争取「抢包山」",
+        two_yuewen_end="",
+        yuewen_to_distribute="幼稚园附属小学嘅一班小朋友争取抢包山",
+        one_yuewen_to_append="幼稚园附属小学嘅一班小朋友",
+        two_yuewen_to_prepend="争取抢包山",
+    ),
+    DistributeTestCase(
+        one_zhongwen="附属小学一班小朋友⋯",
+        one_yuewen_start="",
+        two_zhongwen="争取「抢包山」",
+        two_yuewen_end="争取抢包山",
+        yuewen_to_distribute="幼稚园附属小学嘅一班小朋友",
+        one_yuewen_to_append="幼稚园附属小学嘅一班小朋友",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="附属小学一班小朋友⋯",
+        one_yuewen_start="幼稚园",
+        two_zhongwen="争取「抢包山」",
+        two_yuewen_end="争取抢包山",
+        yuewen_to_distribute="附属小学嘅一班小朋友",
+        one_yuewen_to_append="附属小学嘅一班小朋友",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="一项几乎绝迹的运动⋯",
+        one_yuewen_start="",
+        two_zhongwen="成为本港举办亚运的重点推介比赛项目",
+        two_yuewen_end="成为本港举办亚运重点推介嘅比赛项目",
+        yuewen_to_distribute="一项几乎绝迹嘅运动",
+        one_yuewen_to_append="一项几乎绝迹嘅运动",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_59
+distribute_test_cases_block_60 = []  # distribute_test_cases_block_60
 distribute_test_cases_block_61 = []  # distribute_test_cases_block_61
 distribute_test_cases_block_62 = []  # distribute_test_cases_block_62
 distribute_test_cases_block_63 = []  # distribute_test_cases_block_63
-distribute_test_cases_block_64 = []  # distribute_test_cases_block_64
+distribute_test_cases_block_64 = [
+    DistributeTestCase(
+        one_zhongwen="没有鱼蛋没有粗面没去成马尔代夫⋯",
+        one_yuewen_start="冇鱼蛋冇粗面",
+        two_zhongwen="没有奖牌没有张保仔宝藏",
+        two_yuewen_end="冇奖牌冇张宝仔宝藏",
+        yuewen_to_distribute="冇去买义大夫",
+        one_yuewen_to_append="冇去买义大夫",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_64
 distribute_test_cases_block_65 = []  # distribute_test_cases_block_65
 distribute_test_cases_block_66 = []  # distribute_test_cases_block_66
 distribute_test_cases_block_67 = []  # distribute_test_cases_block_67
-distribute_test_cases_block_68 = []  # distribute_test_cases_block_68
-distribute_test_cases_block_69 = []  # distribute_test_cases_block_69
+distribute_test_cases_block_68 = [
+    DistributeTestCase(
+        one_zhongwen="方法：把鸡烧几烧",
+        one_yuewen_start="鸡方法攞只鸡",
+        two_zhongwen="就这样，一味「烧鸡」大功告成",
+        two_yuewen_end="就噉一味烧鸡就大功告成喇",
+        yuewen_to_distribute="去烧佢几烧",
+        one_yuewen_to_append="去烧佢几烧",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_68
+distribute_test_cases_block_69 = [
+    DistributeTestCase(
+        one_zhongwen="常餐？常餐有什么吃？",
+        one_yuewen_start="常餐",
+        two_zhongwen="跟特餐一样吧",
+        two_yuewen_end="",
+        yuewen_to_distribute="常餐有咩食㗎",
+        one_yuewen_to_append="常餐有咩食㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跟特餐一样吧",
+        one_yuewen_start="",
+        two_zhongwen="特餐是什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="同特餐一样啰",
+        one_yuewen_to_append="同特餐一样啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="跟快餐差不多",
+        one_yuewen_start="噉特餐系咩嚟㗎",
+        two_zhongwen="快餐又是什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="同快餐咁上下啰",
+        one_yuewen_to_append="同快餐咁上下啰",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="快餐又是什么？",
+        one_yuewen_start="",
+        two_zhongwen="快餐即是午餐",
+        two_yuewen_end="",
+        yuewen_to_distribute="噉快餐又系咩嚟㗎",
+        one_yuewen_to_append="噉快餐又系咩嚟㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="快餐即是午餐",
+        one_yuewen_start="",
+        two_zhongwen="午餐吃什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="即系快餐咪真系午餐",
+        one_yuewen_to_append="即系快餐咪真系午餐",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="午餐跟晚餐一样",
+        one_yuewen_start="午餐食咩㗎",
+        two_zhongwen="晚餐又吃什么？",
+        two_yuewen_end="",
+        yuewen_to_distribute="午餐同晚餐一样㗎",
+        one_yuewen_to_append="午餐同晚餐一样㗎",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="晚餐又吃什么？",
+        one_yuewen_start="",
+        two_zhongwen="晚餐即是常餐",
+        two_yuewen_end="晚餐咪真系常餐啰",
+        yuewen_to_distribute="噉晚餐又食啲咩呀",
+        one_yuewen_to_append="噉晚餐又食啲咩呀",
+        two_yuewen_to_prepend="",
+    ),
+]  # distribute_test_cases_block_69
 distribute_test_cases_block_70 = [
     DistributeTestCase(
         one_zhongwen="特餐？特餐有什么吃？",

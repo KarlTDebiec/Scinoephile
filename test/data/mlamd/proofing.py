@@ -3061,15 +3061,191 @@ proof_test_cases_block_44 = [
     ),
 ]  # proof_test_cases_block_44
 proof_test_cases_block_45 = []  # proof_test_cases_block_45
-proof_test_cases_block_46 = []  # proof_test_cases_block_46
-proof_test_cases_block_47 = []  # proof_test_cases_block_47
-proof_test_cases_block_48 = []  # proof_test_cases_block_48
+proof_test_cases_block_46 = [
+    ProofTestCase(
+        zhongwen="奥运金牌⋯这一世是没有机会的了",
+        yuewen="奥运金牌⋯我谂呢一世都唔会攞到",
+        yuewen_proofread="奥运金牌⋯我谂呢一世都唔会攞到",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="每个星期六我都搭船过长洲",
+        yuewen="每个礼拜六我都会搭船过长洲",
+        yuewen_proofread="每个礼拜六我都会搭船过长洲",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="去学抢包山⋯",
+        yuewen="去学抢包山⋯",
+        yuewen_proofread="去学抢包山⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一项没有奖牌，没有对手，没有比赛⋯",
+        yuewen="一日冇奖牌，冇对手，冇比赛⋯",
+        yuewen_proofread="一项冇奖牌，冇对手，冇比赛⋯",
+        note="Corrected '一日' to '一项' as '一项' matches the meaning of '一项' "
+        "(an event/item) in the 中文, while '一日' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="甚至没有人知道是运动的运动",
+        yuewen="甚至乎冇人知对佢系运动嘅运动",
+        yuewen_proofread="甚至乎冇人知对佢系运动嘅运动",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="更坏的是，连包山也没有！",
+        yuewen="更衰嘅系，连包山都冇！",
+        yuewen_proofread="更衰嘅系，连包山都冇！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="师傅只是叫我去他的家⋯",
+        yuewen="师傅净系叫我去佢屋企⋯",
+        yuewen_proofread="师傅净系叫我去佢屋企⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="在组合柜爬来爬去",
+        yuewen="喺个组合柜度爬嚟爬去",
+        yuewen_proofread="喺个组合柜度爬嚟爬去",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="碰！三番！",
+        yuewen="通！三番！",
+        yuewen_proofread="碰！三番！",
+        note="Corrected '通' to '碰' as '碰' is the correct term used in "
+        "mahjong, matching the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="别躲懒！继续练！",
+        yuewen="冇偷懒！继续练！",
+        yuewen_proofread="冇偷懒！继续练！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一天，珊珊到了师传家！",
+        yuewen="有一日，山伞嚟咗师傅屋企！",
+        yuewen_proofread="有一日，珊珊嚟咗师傅屋企！",
+        note="Corrected '山伞' to '珊珊' as it is a mishearing of the "
+        "character's name.",
+    ),
+    ProofTestCase(
+        zhongwen="珊珊！我的师姐珊珊！",
+        yuewen="山伞！我个师仔山伞啊！",
+        yuewen_proofread="珊珊！我个师姐珊珊啊！",
+        note="Corrected '山伞' to '珊珊' as it is a mishearing of the name, "
+        "and '师仔' to '师姐' to match the intended meaning of '师姐' "
+        "(senior female apprentice).",
+    ),
+    ProofTestCase(
+        zhongwen="可以看见珊珊⋯",
+        yuewen="可以见到山伞⋯",
+        yuewen_proofread="可以见到珊珊⋯",
+        note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'.",
+    ),
+    ProofTestCase(
+        zhongwen="这几个星期爬得再辛苦也是值得的！",
+        yuewen="爬得咁辛苦，都系值得㗎！",
+        yuewen_proofread="爬得咁辛苦，都系值得㗎！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="珊珊！",
+        yuewen="山伞！伞你个头啊！",
+        yuewen_proofread="珊珊！珊你个头啊！",
+        note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'.",
+    ),
+    ProofTestCase(
+        zhongwen="珊你个头！继续练习！",
+        yuewen="继续练习！",
+        yuewen_proofread="继续练习！",
+        note="",
+    ),
+]  # proof_test_cases_block_46
+proof_test_cases_block_47 = [
+    ProofTestCase(
+        zhongwen="还不去？",
+        yuewen="仲唔系？",
+        yuewen_proofread="仲唔去？",
+        note="Corrected '仲唔系？' to '仲唔去？' as '仲唔去' matches the meaning of "
+        "'还不去' and '系' is likely a mishearing of '去'.",
+    ),
+    ProofTestCase(
+        zhongwen="珊珊没看见我这个师弟",
+        yuewen="山神佢见唔到我呢个师弟",
+        yuewen_proofread="珊珊佢见唔到我呢个师弟",
+        note="Corrected '山神' to '珊珊' as '珊珊' is the correct name matching "
+        "the 中文, while '山神' is a likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="我只有死死气再爬上组合柜",
+        yuewen="我唯有死死气爬返上个组合柜",
+        yuewen_proofread="我唯有死死气爬返上个组合柜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我咁大个仔，什么「头」也给骂过⋯",
+        yuewen="我咁大个仔，乜嘢头都畀人闹过⋯",
+        yuewen_proofread="我咁大个仔，乜嘢头都畀人闹过⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「珊你个头」却特别刺耳",
+        yuewen="但系「山呢个头」唔知点解特别瘾",
+        yuewen_proofread="但系「珊你个头」唔知点解特别瘾",
+        note="Corrected '山呢个头' to '珊你个头' as '珊你个头' is the correct phrase "
+        "matching the original meaning, while '山呢个头' is a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="我⋯我⋯",
+        yuewen="我⋯我⋯",
+        yuewen_proofread="我⋯我⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我唔学抢包山了！",
+        yuewen="我唔好抢包纱嘞！字幕由纱友提供",
+        yuewen_proofread="我唔好抢包山嘞！字幕由纱友提供",
+        note="Corrected '包纱' to '包山' as '包山' is the correct term for the "
+        "bun-snatching event, matching the meaning in the 中文.",
+    ),
+]  # proof_test_cases_block_47
+proof_test_cases_block_48 = [
+    ProofTestCase(
+        zhongwen="其实今天是我第一次近距离见黎根",
+        yuewen="其实今日系我第一次咁近距离同丽根见面",
+        yuewen_proofread="其实今日系我第一次咁近距离同丽根见面",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他恐怕都有五十岁了",
+        yuewen="睇怕佢都有五十岁啦",
+        yuewen_proofread="睇怕佢都有五十岁啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="却还是一副孩子脸",
+        yuewen="但系仲有一副孩子脸",
+        yuewen_proofread="但系仲有一副孩子脸",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="鸡尾包！新鲜出炉！",
+        yuewen="鸡尾包！啱啱出炉嘅！",
+        yuewen_proofread="鸡尾包！啱啱出炉嘅！",
+        note="",
+    ),
+]  # proof_test_cases_block_48
 proof_test_cases_block_49 = [
     ProofTestCase(
         zhongwen="其实鸡尾包呢⋯",
         yuewen="其实鸡尾爆呢⋯",
         yuewen_proofread="其实鸡尾包呢⋯",
-        note="Corrected '鸡尾爆' to '鸡尾包' as '鸡尾包' is the correct term for the pastry, matching the meaning in the 中文.",
+        note="Corrected '鸡尾爆' to '鸡尾包' as '鸡尾包' is the correct term for "
+        "the pastry, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="你说这似不似鸡尾？",
@@ -3078,8 +3254,182 @@ proof_test_cases_block_49 = [
         note="",
     ),
 ]  # proof_test_cases_block_49
-proof_test_cases_block_50 = []  # proof_test_cases_block_50
-proof_test_cases_block_51 = []  # proof_test_cases_block_51
+proof_test_cases_block_50 = [
+    ProofTestCase(
+        zhongwen="麦兜他学东西⋯还可以",
+        yuewen="麦兜嘅学嘢呢⋯都仲可以",
+        yuewen_proofread="麦兜嘅学嘢呢⋯都仲可以",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="黎根接着说了一大堆话⋯",
+        yuewen="跟住黎根讲咗一大堆说话⋯",
+        yuewen_proofread="跟住黎根讲咗一大堆说话⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他的抱负，他对麦兜的期望",
+        yuewen="讲下佢嘅抱负，佢对麦兜嘅期望",
+        yuewen_proofread="讲下佢嘅抱负，佢对麦兜嘅期望",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他说他会把他所识的毫不保留教给麦兜",
+        yuewen="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        yuewen_proofread="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="黎根越说越兴奋，直到双眼发光",
+        yuewen="黎根越讲越兴奋",
+        yuewen_proofread="黎根越讲越兴奋",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他又说滑浪风帆并不是他最犀利的项目",
+        yuewen="佢话滑浪风帆都唔系佢最犀利𠮶样",
+        yuewen_proofread="佢话滑浪风帆都唔系佢最犀利嗰样",
+        note="Replaced '𠮶样' with '嗰样' as '嗰样' is the standard Cantonese "
+        "term for 'that thing', and '𠮶样' is a nonstandard variant "
+        "likely due to mishearing or input error.",
+    ),
+    ProofTestCase(
+        zhongwen="他最大强项是抢包山",
+        yuewen="佢最劲嘅就系抢包山",
+        yuewen_proofread="佢最劲嘅就系抢包山",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他说抢包山结合了南拳",
+        yuewen="佢话抢包山结合咗南拳",
+        yuewen_proofread="佢话抢包山结合咗南拳",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="神功戏和现代器械操",
+        yuewen="神功气现代气蟹粗",
+        yuewen_proofread="神功戏现代器械操",
+        note="Corrected '神功气' to '神功戏' and '气蟹粗' to '器械操' as these are "
+        "clear mishearings of the original terms.",
+    ),
+    ProofTestCase(
+        zhongwen="他说抢包山才是他一生最大成就",
+        yuewen="佢话抢包山先至系佢呢世人最大嘅成就",
+        yuewen_proofread="佢话抢包山先至系佢呢世人最大嘅成就",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="缩脚，唔该！",
+        yuewen="缩𠮶只脚，唔该！",
+        yuewen_proofread="缩𠮶只脚，唔该！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="你看！",
+        yuewen="你睇下！",
+        yuewen_proofread="你睇下！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
+        yuewen="哗，呢节，呢节脚瓜好粗好大呀！仲大过节瓜！",
+        yuewen_proofread="哗，呢节，呢节脚瓜好粗好大呀！仲大过节瓜！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="脚瓜的肌肉非常结实⋯",
+        yuewen="脚瓜嘅肌肉非常结实⋯",
+        yuewen_proofread="脚瓜嘅肌肉非常结实⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="青筋凸现，钢线似的",
+        yuewen="啲青筋凸晒出嚟，好似钢线噉",
+        yuewen_proofread="啲青筋凸晒出嚟，好似钢线噉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="每一条脚毛都硬似铁钉",
+        yuewen="啲脚毛每一条都好似铁钉咁硬",
+        yuewen_proofread="啲脚毛每一条都好似铁钉咁硬",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="脚趾甲有一寸厚，究竟⋯",
+        yuewen="脚趾弓啲脚夹成串咁厚，究竟⋯",
+        yuewen_proofread="脚趾甲啲脚甲成寸咁厚，究竟⋯",
+        note="Corrected '脚趾弓' to '脚趾甲' and '脚夹成串' to '脚甲成寸' as these are "
+        "likely mishearings; '脚趾甲' (toenail) and '成寸' (an inch thick) "
+        "match the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="要走过几多座山",
+        yuewen="要行个几度呢?几多座山",
+        yuewen_proofread="要行过几多座山",
+        note="Corrected '要行个几度呢?几多座山' to '要行过几多座山' as '行个几度呢' is a "
+        "mishearing of '行过', which matches the meaning of '走过' in the "
+        "中文.",
+    ),
+    ProofTestCase(
+        zhongwen="跨过几多个海",
+        yuewen="挂过几多个海",
+        yuewen_proofread="跨过几多个海",
+        note="Corrected '挂过' to '跨过' as '跨过' (to cross over) matches the "
+        "meaning of the 中文, while '挂过' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="吃过几多苦头",
+        yuewen="挨过几多斧头",
+        yuewen_proofread="挨过几多苦头",
+        note="Corrected '斧头' to '苦头' as '苦头' matches the meaning of '苦头' "
+        "(hardships) in the 中文, while '斧头' is a likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="才可以练成这举世无双的脚瓜？",
+        yuewen="先至可以练成呢一只举细无伤嘅脚瓜？",
+        yuewen_proofread="先至可以练成呢一只举世无双嘅脚瓜？",
+        note="Corrected '举细无伤' to '举世无双' as it is a mishearing of the "
+        "phrase meaning 'unparalleled in the world'.",
+    ),
+]  # proof_test_cases_block_50
+proof_test_cases_block_51 = [
+    ProofTestCase(
+        zhongwen="我个仔⋯",
+        yuewen="我个仔⋯",
+        yuewen_proofread="我个仔⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="你个仔，他日都会有这只大脚瓜",
+        yuewen="你个仔，第时都会有我咁大只脚瓜",
+        yuewen_proofread="你个仔，第时都会有我咁大只脚瓜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="其实我也不知道个仔要这么粗的脚瓜⋯",
+        yuewen="其实，我都唔知我仔要咁粗嘅脚瓜⋯",
+        yuewen_proofread="其实，我都唔知我仔要咁粗嘅脚瓜⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="有什么用",
+        yuewen="有咩用",
+        yuewen_proofread="有咩用",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可是看见那些凸现的青筋，不知怎样⋯",
+        yuewen="但系见到佢一条条凸起嘅青筋，唔知点解⋯",
+        yuewen_proofread="但系见到佢一条条凸起嘅青筋，唔知点解⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我想起麦兜的爸爸，阿炳",
+        yuewen="我，我谂起麦兜嘅爸爸，阿炳",
+        yuewen_proofread="我，我谂起麦兜嘅爸爸，阿炳",
+        note="",
+    ),
+]  # proof_test_cases_block_51
 proof_test_cases_block_52 = [
     ProofTestCase(
         zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -3100,13 +3450,1289 @@ proof_test_cases_block_52 = [
         note="",
     ),
 ]  # proof_test_cases_block_52
-proof_test_cases_block_53 = []  # proof_test_cases_block_53
-proof_test_cases_block_54 = []  # proof_test_cases_block_54
-proof_test_cases_block_55 = []  # proof_test_cases_block_55
-proof_test_cases_block_56 = []  # proof_test_cases_block_56
-proof_test_cases_block_57 = []  # proof_test_cases_block_57
-proof_test_cases_block_58 = []  # proof_test_cases_block_58
-proof_test_cases_block_59 = []  # proof_test_cases_block_59
+proof_test_cases_block_53 = [
+    ProofTestCase(
+        zhongwen="想不到真的让妈妈拿去了。吓得我！",
+        yuewen="咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
+        yuewen_proofread="咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈怎么会写起英文信？",
+        yuewen="点解妈妈会用英文写信嘅？",
+        yuewen_proofread="点解妈妈会用英文写信嘅？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="信很短",
+        yuewen="封信好短",
+        yuewen_proofread="封信好短",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我猜是妈妈用电子辞典逐个字译成英文",
+        yuewen="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
+        yuewen_proofread="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="于是我又用电子辞典把信译回中文",
+        yuewen="于是我让返电子词典，将封信译返做中文",
+        yuewen_proofread="于是我用返电子词典，将封信译返做中文",
+        note="Corrected '我让返电子词典' to '我用返电子词典' as '用返' (use again) matches "
+        "the meaning, while '让返' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="信，是妈妈写给奥委会主席的",
+        yuewen="封信原来系妈妈写畀奥委会主席㗎",
+        yuewen_proofread="封信原来系妈妈写畀奥委会主席㗎",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「亲爱的主席：」",
+        yuewen="「亲爱的主席：」",
+        yuewen_proofread="「亲爱的主席：」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「你好吗？我很好！」",
+        yuewen="「你好吗？我很好！」",
+        yuewen_proofread="「你好吗？我很好！」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「你吃包吗？我吃包！」",
+        yuewen="「你吃包吗？我吃包！」",
+        yuewen_proofread="「你吃包吗？我吃包！」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「我们居住在香港这里的人，很爱吃包」",
+        yuewen="我门居住在香港这类的人，肯爱吃包",
+        yuewen_proofread="我哋居住在香港呢度嘅人，好爱食包",
+        note="Corrected '我门' to '我哋' (standard Cantonese for 'we'), '这类' "
+        "to '呢度' (matching '这里'), '肯爱' to '好爱' (likely misheard), and "
+        "'吃' to '食' (Cantonese verb for 'eat').",
+    ),
+    ProofTestCase(
+        zhongwen="「小笼包，上海包，广东包，莲蓉包」",
+        yuewen="「小笼包，上海包，广东包，联融包」",
+        yuewen_proofread="「小笼包，上海包，广东包，莲蓉包」",
+        note="Corrected '联融包' to '莲蓉包' as '莲蓉包' is the correct term for "
+        "lotus seed paste bun, matching the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="「好朋友，我认为",
+        yuewen="「好朋友，我认为",
+        yuewen_proofread="「好朋友，我认为",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="抢劫那些包，十分重要」",
+        yuewen="抢劫𠮶些包，十分重要」",
+        yuewen_proofread="抢劫𠮶些包，十分重要」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「也算是运动，就真！」",
+        yuewen="也算是运动，就真！",
+        yuewen_proofread="也算是运动，就真！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「要大力！大吃晚上的粥，和大节瓜！」",
+        yuewen="「要大力！大吃吻上的粥，和大字瓜！」",
+        yuewen_proofread="「要大力！大吃晚上的粥，和大节瓜！」",
+        note="Corrected '吻上的粥' to '晚上的粥' and '大字瓜' to '大节瓜' as both are "
+        "likely mishearings of the intended words.",
+    ),
+    ProofTestCase(
+        zhongwen="「按照我愚蠢的见解⋯」",
+        yuewen="「按照我愚蠢的见解⋯」",
+        yuewen_proofread="「按照我愚蠢的见解⋯」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「抢劫那些包，是奥运会比赛」",
+        yuewen="抢劫𠮶些包，系奥运会比赛",
+        yuewen_proofread="抢劫𠮶些包，系奥运会比赛",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「让全世界的体育家，抢过！」",
+        yuewen="让全世界嘅体育家，抢过！",
+        yuewen_proofread="让全世界嘅体育家，抢过！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「世界便和平！」",
+        yuewen="「世界变和平！」",
+        yuewen_proofread="「世界便和平！」",
+        note="Corrected '变' to '便' as '便' matches the original phrase and "
+        "is likely a mishearing of the intended word.",
+    ),
+    ProofTestCase(
+        zhongwen="「你有孩子吗？」",
+        yuewen="「你有孩子吗？」",
+        yuewen_proofread="「你有孩子吗？」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「我有一个孩子，麦兜」",
+        yuewen="「我有一个孩子，麦兜」",
+        yuewen_proofread="「我有一个孩子，麦兜」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="终于讲到我了！",
+        yuewen="终于讲到我啦！",
+        yuewen_proofread="终于讲到我啦！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「他是一个好男孩」",
+        yuewen="「她系一个好男孩」",
+        yuewen_proofread="「佢系一个好男孩」",
+        note="Corrected '她' to '佢' as '佢' is the correct gender-neutral "
+        "pronoun in Cantonese for 'he' or 'she', matching the meaning "
+        "of '他' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="「他非常懂得抢劫那些包」",
+        yuewen="她非常懂得抢劫𠮶些包",
+        yuewen_proofread="佢非常懂得抢劫𠮶些包",
+        note="Corrected '她' to '佢' as '佢' is the standard Cantonese "
+        "pronoun for 'he/she', and '她' is likely a mishearing or a "
+        "Mandarin-influenced error.",
+    ),
+    ProofTestCase(
+        zhongwen="「有一天，我看见他，抢劫包⋯」",
+        yuewen="有一天，我看见她，抢劫包⋯",
+        yuewen_proofread="有一天，我看见佢，抢劫包⋯",
+        note="Corrected '她' to '佢' as '佢' is the standard Cantonese "
+        "pronoun for 'he/she', matching the gender-neutral '他' in the "
+        "中文.",
+    ),
+    ProofTestCase(
+        zhongwen="「抢了一个奥运金牌」",
+        yuewen="「抢了一个奥运金牌」",
+        yuewen_proofread="「抢了一个奥运金牌」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「那便是一个母亲能够有的最大的安慰」",
+        yuewen="哪便是一个母亲能够有的最好的，最大的安慰」",
+        yuewen_proofread="哪便是一个母亲能够有的最好的，最大的安慰」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「孩子的才干，得到了世界人类的知道」",
+        yuewen="「孩子的才干得到了世界人类的知道」",
+        yuewen_proofread="「孩子的才干得到了世界人类的知道」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「父母愿意做什么的东西都得」",
+        yuewen="「父母愿意做什么的东西都得」",
+        yuewen_proofread="「父母愿意做什么的东西都得」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「于是我写了这忽然间的信给你」",
+        yuewen="于是我写了这忽然间的信给你",
+        yuewen_proofread="于是我写了这忽然间的信给你",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「虽然你不知道我是什么微细的东西」",
+        yuewen="虽然你不知道我是什么微细的东西",
+        yuewen_proofread="虽然你不知道我是什么微细的东西",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「但我的孩子很大，很大！」",
+        yuewen="但我的孩子很大，很大！",
+        yuewen_proofread="但我的孩子很大，很大！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「有一天，你都会知道」",
+        yuewen="「有一天你都会知道」",
+        yuewen_proofread="「有一天你都会知道」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「多谢合作！」",
+        yuewen="「多谢合作！」",
+        yuewen_proofread="「多谢合作！」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「你忠实的，麦太」",
+        yuewen="「你忠实的，麦太」",
+        yuewen_proofread="「你忠实的，麦太」",
+        note="",
+    ),
+]  # proof_test_cases_block_53
+proof_test_cases_block_54 = [
+    ProofTestCase(
+        zhongwen="看完妈妈的信",
+        yuewen="睇完妈妈封信后",
+        yuewen_proofread="睇完妈妈封信后",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我决定回长洲继续学捡包山",
+        yuewen="我决定返长洲继续抢包生",
+        yuewen_proofread="我决定返长洲继续捡包山",
+        note="Corrected '抢包生' to '捡包山' as '捡包山' is the correct term for "
+        "the traditional Cheung Chau bun-snatching event, matching "
+        "the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="我不是为了见珊珊",
+        yuewen="我唔系为咗见到山神",
+        yuewen_proofread="我唔系为咗见到珊珊",
+        note="Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊'.",
+    ),
+    ProofTestCase(
+        zhongwen="我并不知道为什么要抢那些包",
+        yuewen="我唔知点解要抢𠮶啲包",
+        yuewen_proofread="我唔知点解要抢𠮶啲包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我也不相信抢包山会成为奥运项目",
+        yuewen="我亦唔信抢包生会成为奥运项目",
+        yuewen_proofread="我亦唔信抢包山会成为奥运项目",
+        note="Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for "
+        "the traditional event, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="可是，我依然努力练习抢包山",
+        yuewen="但系，我依然努力练习抢包生",
+        yuewen_proofread="但系，我依然努力练习抢包山",
+        note="Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for "
+        "the traditional activity, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="因为，我爱我妈妈",
+        yuewen="因为，我爱我妈妈",
+        yuewen_proofread="因为，我爱我妈妈",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="师傅说我攀爬功夫已经不错",
+        yuewen="师傅话，我嘅攀爬功夫已经唔错",
+        yuewen_proofread="师傅话，我嘅攀爬功夫已经唔错",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可以开始教我「十二路抢包手」",
+        yuewen="可以开始教我十二路抢包手",
+        yuewen_proofread="可以开始教我十二路抢包手",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="师傅说当年师祖要出这套",
+        yuewen="师傅话，当年师祖使出呢套",
+        yuewen_proofread="师傅话，当年师祖使出呢套",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「十二路抢包手」⋯",
+        yuewen="十二路抢包手⋯",
+        yuewen_proofread="十二路抢包手⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="连林世荣也大大赞好",
+        yuewen="连林世荣睇见都大赞老爷",
+        yuewen_proofread="连林世荣睇见都大大赞好",
+        note="Replaced '大赞老爷' with '大大赞好' as '大大赞好' matches the meaning of "
+        "'大大赞好' in the 中文, while '老爷' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="后来麦嘎告诉我⋯",
+        yuewen="后来，默默话我知⋯",
+        yuewen_proofread="后来，麦嘎话我知⋯",
+        note="Corrected '默默' to '麦嘎' as '麦嘎' is the correct name matching "
+        "the 中文, while '默默' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="林世荣即是猪肉荣，是黄飞鸿的徒弟",
+        yuewen="林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
+        yuewen_proofread="林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我不知道师傅像不像黄飞鸿",
+        yuewen="我唔知到师傅似唔似黄飞鸿",
+        yuewen_proofread="我唔知到师傅似唔似黄飞鸿",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我却肯定像一块猪肉",
+        yuewen="但系我就肯定似旧猪肉",
+        yuewen_proofread="但系我就肯定似旧猪肉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我是一块堵住两个包",
+        yuewen="我就系一个揸住两个包",
+        yuewen_proofread="我就系一块堵住两个包",
+        note="Corrected '一个揸住' to '一块堵住' as '堵住' matches the meaning of "
+        "'堵住' in the 中文, and '揸住' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="在长洲转来转去的猪肉",
+        yuewen="喺长洲转嚟转去嘅猪肉",
+        yuewen_proofread="喺长洲转嚟转去嘅猪肉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我一边练习，一边胡思乱想；始终⋯",
+        yuewen="我一边练习，一边乱练，一边谂嘢；始终⋯",
+        yuewen_proofread="我一边练习，一边乱谂，一边谂嘢；始终⋯",
+        note="Corrected '乱练' to '乱谂' as '乱谂' (randomly thinking) matches "
+        "the meaning of '胡思乱想', while '乱练' (randomly practicing) is "
+        "likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="我还是不大喜欢抢包",
+        yuewen="我都唔系咁钟意抢包",
+        yuewen_proofread="我都唔系咁钟意抢包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我只是爱我妈妈",
+        yuewen="我净系爱我妈妈",
+        yuewen_proofread="我净系爱我妈妈",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="于是我咬实牙根⋯",
+        yuewen="于是我咬细牙根⋯",
+        yuewen_proofread="于是我咬实牙根⋯",
+        note="Corrected '咬细牙根' to '咬实牙根' as '咬实' is the correct phrase "
+        "meaning 'to clench (one's teeth)', while '咬细' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="一步一步，一爪一爪⋯",
+        yuewen="一步一步，一爪一爪⋯",
+        yuewen_proofread="一步一步，一爪一爪⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我最后终于练成「十二路抢包手」",
+        yuewen="最后，我终于练成十二路抢包手啦",
+        yuewen_proofread="最后，我终于练成十二路抢包手啦",
+        note="",
+    ),
+]  # proof_test_cases_block_54
+proof_test_cases_block_55 = [
+    ProofTestCase(
+        zhongwen="喂，我是麦兜",
+        yuewen="喂，我系麦兜啊",
+        yuewen_proofread="喂，我系麦兜啊",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="刚才的是小朋友麦兜，我是大个佬麦兜",
+        yuewen="正话𠮶个系细路仔麦兜，我系大个佬麦兜",
+        yuewen_proofread="正话𠮶个系细路仔麦兜，我系大个佬麦兜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="小朋友麦兜和大个佬麦兜除了声音不同⋯",
+        yuewen="细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯",
+        yuewen_proofread="细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="小朋友麦兜的世界仍然有好多幻想",
+        yuewen="细路仔麦兜嘅世界仲有好多幻想",
+        yuewen_proofread="细路仔麦兜嘅世界仲有好多幻想",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="仍然有好多希望",
+        yuewen="仲有好多希望",
+        yuewen_proofread="仲有好多希望",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="希望⋯失望⋯",
+        yuewen="希望⋯失望⋯",
+        yuewen_proofread="希望⋯失望⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="希望⋯",
+        yuewen="希望⋯",
+        yuewen_proofread="希望⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="失望",
+        yuewen="失望",
+        yuewen_proofread="失望",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="久而久之，就变成大个佬麦兜",
+        yuewen="搞咗一轮，就变咗大个佬麦兜",
+        yuewen_proofread="搞咗一轮，就变咗大个佬麦兜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我现在还是多说点小朋友麦兜",
+        yuewen="不过，而家我都系想讲返细路仔麦兜",
+        yuewen_proofread="不过，而家我都系想讲返细路仔麦兜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="小朋友麦兜仍然希望希望⋯",
+        yuewen="细路仔麦兜仲系希望希望⋯",
+        yuewen_proofread="细路仔麦兜仲系希望希望⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="希望真的有圣诞老人",
+        yuewen="希望真系有圣诞老人",
+        yuewen_proofread="希望真系有圣诞老人",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="而且好想试试圣诞火鸡的滋味",
+        yuewen="仲系好想好想试下圣诞火鸡嘅滋味",
+        yuewen_proofread="仲系好想好想试下圣诞火鸡嘅滋味",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="对，那时我还没吃过火鸡",
+        yuewen="系啊，我𠮶阵我真系仲未食过火鸡",
+        yuewen_proofread="系啊，我𠮶阵我真系仲未食过火鸡",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="关于火鸡的一切⋯",
+        yuewen="所有关于火鸡嘅嘢⋯",
+        yuewen_proofread="所有关于火鸡嘅嘢⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="圣诞树上一闪一闪的饰物",
+        yuewen="圣诞树一闪一闪嘅灯饰",
+        yuewen_proofread="圣诞树一闪一闪嘅灯饰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就像天上掉落的星星",
+        yuewen="就好似喺天上面落嚟嘅星星噉",
+        yuewen_proofread="就好似喺天上面落嚟嘅星星噉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="落到火炉旁边",
+        yuewen="落喺火炉旁边",
+        yuewen_proofread="落喺火炉旁边",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一片片比外边的雪还要白的鸡胸肉⋯",
+        yuewen="一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯",
+        yuewen_proofread="一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就在我们跟前",
+        yuewen="就喺我哋面前啦",
+        yuewen_proofread="就喺我哋面前啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="香气直入灵魂⋯",
+        yuewen="香气直入灵魂⋯",
+        yuewen_proofread="香气直入灵魂⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="连守在灵魂旁边的天使都醒过来",
+        yuewen="就连守喺灵魂旁边嘅天使都醒咗起嚟",
+        yuewen_proofread="就连守喺灵魂旁边嘅天使都醒咗起嚟",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="围住这香而圣洁的肉⋯",
+        yuewen="围住呢一嚿好香好香又好盛洁嘅肉⋯",
+        yuewen_proofread="围住呢一嚿好香好香又好圣洁嘅肉⋯",
+        note="Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for "
+        "'holy/pure', matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="在圣诞夜中飞呀，飞⋯",
+        yuewen="喺圣诞夜里面飞呀，飞呀⋯",
+        yuewen_proofread="喺圣诞夜里面飞呀，飞呀⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="这关于火鸡的一切，不过是我的想像",
+        yuewen="但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像",
+        yuewen_proofread="但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我从来没吃过火鸡⋯",
+        yuewen="因为我从来都未食过火鸡⋯",
+        yuewen_proofread="因为我从来都未食过火鸡⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="连它的气味也没嗅过",
+        yuewen="就连𠮶阵味都未闻过",
+        yuewen_proofread="就连𠮶阵味都未闻过",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈说火鸡太大",
+        yuewen="妈妈话火鸡太大",
+        yuewen_proofread="妈妈话火鸡太大",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我们一家两口，吃不下",
+        yuewen="我哋一家两口，点食都食唔晒",
+        yuewen_proofread="我哋一家两口，点食都食唔晒",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="有年圣诞节妈妈买了半只烤鸭庆祝",
+        yuewen="有一年圣诞节妈妈买咗半边烧鸭庆祝",
+        yuewen_proofread="有一年圣诞节妈妈买咗半边烧鸭庆祝",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="当时的我，十分十分失望",
+        yuewen="当时我，真系十分十分之失望",
+        yuewen_proofread="当时我，真系十分十分之失望",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="又有一年，一间百货公司结业",
+        yuewen="又有一年，有间大薄货公司倒闭",
+        yuewen_proofread="又有一年，有间百货公司倒闭",
+        note="Corrected '大薄货公司' to '百货公司' as '大薄货公司' is a mishearing of "
+        "'百货公司', which matches the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈以四折买了个小小焗炉",
+        yuewen="妈妈用四折买咗个焗炉仔返屋企",
+        yuewen_proofread="妈妈用四折买咗个焗炉仔返屋企",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可能因为买了焗炉而技痒",
+        yuewen="可能系因为买咗焗炉嘅样",
+        yuewen_proofread="可能系因为买咗焗炉而技痒",
+        note="Corrected '嘅样' to '而技痒' as '技痒' matches the meaning of '技痒' "
+        "in the 中文, while '嘅样' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="那日妈妈竟然跟我说⋯",
+        yuewen="𠮶日妈妈竟然同我讲⋯佢话",
+        yuewen_proofread="𠮶日妈妈竟然同我讲⋯佢话",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="让我们明天去超级市场揪火鸡",
+        yuewen="明日我哋要超级市场抽火鸡",
+        yuewen_proofread="明日我哋要超级市场揪火鸡",
+        note="Corrected '抽火鸡' to '揪火鸡' as '揪' matches the meaning of 'to "
+        "grab/catch' in the context, while '抽' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="我跟妈妈把火鸡揪回家的路上⋯",
+        yuewen="我同妈妈抽住只火鸡行返屋企𠮶阵⋯",
+        yuewen_proofread="我同妈妈揪住只火鸡行返屋企𠮶阵⋯",
+        note="Corrected '抽住' to '揪住' as '揪住' (to pull/drag) matches the "
+        "meaning of '揪回家' in the 中文, while '抽住' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="是我生命中最开心的时刻",
+        yuewen="喺𠮶阵时我谂系我生命里面最开心嘅一刻",
+        yuewen_proofread="喺𠮶阵时我谂系我生命里面最开心嘅一刻",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="火鸡终于解冻了",
+        yuewen="火鸡终于解冻啦",
+        yuewen_proofread="火鸡终于解冻啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我学着妈妈，把双手涂满盐⋯",
+        yuewen="我同妈妈噉，双手查满盐⋯",
+        yuewen_proofread="我同妈妈噉，双手查满盐⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="在火鸡丰厚的鸡胸上擦呀，擦",
+        yuewen="喺火鸡封口嘅鸡胸度，起细噉啫啫",
+        yuewen_proofread="喺火鸡丰厚嘅鸡胸度，起细噉啫啫",
+        note="Corrected '封口' to '丰厚' as '丰厚' matches the meaning of '丰厚' "
+        "in the 中文, while '封口' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="联火鸡时⋯",
+        yuewen="联火鸡时⋯",
+        yuewen_proofread="联火鸡时⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
+        yuewen="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
+        yuewen_proofread="妈妈一个唔觉意畀酿喺火鸡里面嘅洋葱粒红萝卜粒漏咗出嚟",
+        note="Corrected '火鸡内脏洋葱粒红萝虾粒' to '洋葱粒红萝卜粒' as '红萝虾粒' is a "
+        "mishearing of '红萝卜粒', and removed the redundant '火鸡内脏' to "
+        "match the meaning of '洋葱粒' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="红萝卜粒",
+        yuewen="流嘅出嚟",
+        yuewen_proofread="",
+        note="Cleared as '流嘅出嚟' bears no resemblance to the original "
+        "phrase '红萝卜粒' and is clearly a complete transcription "
+        "failure.",
+    ),
+    ProofTestCase(
+        zhongwen="我说：火鸡「疴烂煮」！",
+        yuewen="我话：火鸡我能住呀！",
+        yuewen_proofread="我话：火鸡疴烂煮呀！",
+        note="Corrected '我能住' to '疴烂煮' as it is a mishearing; '疴烂煮' "
+        "matches the pun in the original phrase.",
+    ),
+    ProofTestCase(
+        zhongwen="好勉强把火鸡塞进焗炉内",
+        yuewen="火鸡好勉强噏咗入焗炉度",
+        yuewen_proofread="火鸡好勉强塞咗入焗炉度",
+        note="Corrected '噏咗' to '塞咗' as '塞' (to stuff) matches the meaning "
+        "of '塞进' in the 中文, while '噏' is a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="12月24日",
+        yuewen="10月24日",
+        yuewen_proofread="12月24日",
+        note="Corrected '10月24日' to '12月24日' as '12' and '10' are easily "
+        "confused in speech, but the correct date is '12月24日'.",
+    ),
+    ProofTestCase(
+        zhongwen="上升的白烟跟奇异的焦味拨动星星",
+        yuewen="上升嘅白烟同奇异嘅㶶味拨动声声",
+        yuewen_proofread="上升嘅白烟同奇异嘅焦味拨动声声",
+        note="Corrected '㶶味' to '焦味' as '焦味' is the correct term for "
+        "'burnt smell', matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="焗炉戚戚恻恻，戚戚恻恻⋯",
+        yuewen="个焗炉叱叱叱叱，叱叱叱咁⋯",
+        yuewen_proofread="个焗炉戚戚恻恻，戚戚恻恻咁⋯",
+        note="Corrected '叱叱叱叱' to '戚戚恻恻' as it is a mishearing of the "
+        "intended phrase, matching the repetition and sound of '戚戚恻恻' "
+        "in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="有如天使预早送来的福音",
+        yuewen="就好似天赐预祖畀我哋嘅福音",
+        yuewen_proofread="就好似天使预早畀我哋嘅福音",
+        note="Corrected '天赐预祖' to '天使预早' as '天使预早' matches the meaning of "
+        "'天使预早送来的福音', while '天赐预祖' is likely a mishearing.",
+    ),
+]  # proof_test_cases_block_55
+proof_test_cases_block_56 = [
+    ProofTestCase(
+        zhongwen="好靓的晚上啊！",
+        yuewen="好靓嘅夜晚呀！",
+        yuewen_proofread="好靓嘅夜晚呀！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我和妈妈坐在尖东海傍",
+        yuewen="我同妈妈坐喺尖东海旁",
+        yuewen_proofread="我同妈妈坐喺尖东海旁",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="点点灯光在海面走来走去⋯",
+        yuewen="点点点点嘅灯光喺海上面走来走去⋯",
+        yuewen_proofread="点点点点嘅灯光喺海上面走来走去⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="美丽又温柔",
+        yuewen="又靓又温柔",
+        yuewen_proofread="又靓又温柔",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="真的好靓！",
+        yuewen="真系好靓！",
+        yuewen_proofread="真系好靓！",
+        note="",
+    ),
+]  # proof_test_cases_block_56
+proof_test_cases_block_57 = [
+    ProofTestCase(
+        zhongwen="我从没吃过这么浓味的东西",
+        yuewen="我从未食过咁浓味嘅嘢",
+        yuewen_proofread="我从未食过咁浓味嘅嘢",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="甚至杯面，烧鸭的味道也没有这么浓",
+        yuewen="连烧鸭连杯面都冇咁浓嘅味道",
+        yuewen_proofread="连烧鸭连杯面都冇咁浓嘅味道",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="火鸡的味道把我每一个味蕾缠住⋯",
+        yuewen="火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
+        yuewen_proofread="火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="爆发⋯缠住⋯爆发⋯",
+        yuewen="爆发⋯缠住⋯爆发⋯",
+        yuewen_proofread="爆发⋯缠住⋯爆发⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就像今晚的一切",
+        yuewen="就好似今晚嘅嘢噉",
+        yuewen_proofread="就好似今晚嘅嘢噉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="最靓最靓，最犀利，而且最温柔",
+        yuewen="最靓最靓，最犀利，亦都系最温柔",
+        yuewen_proofread="最靓最靓，最犀利，亦都系最温柔",
+        note="",
+    ),
+]  # proof_test_cases_block_57
+proof_test_cases_block_58 = [
+    ProofTestCase(
+        zhongwen="第二天我睡得很晏⋯",
+        yuewen="第二日我瞓到好硬⋯",
+        yuewen_proofread="第二日我瞓到好晏⋯",
+        note="Corrected '好硬' to '好晏' as '好晏' (very late) matches the "
+        "meaning of '很晏', while '好硬' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="刷过牙我还感觉到火鸡的美味",
+        yuewen="测完牙，我仲感觉到火鸡嘅美味",
+        yuewen_proofread="刷完牙，我仲感觉到火鸡嘅美味",
+        note="Corrected '测完牙' to '刷完牙' as '刷完牙' is the correct phrase for "
+        "'after brushing teeth', matching the meaning of '刷过牙'.",
+    ),
+    ProofTestCase(
+        zhongwen="因为早餐吃得晚⋯",
+        yuewen="因为早餐食得硬⋯",
+        yuewen_proofread="因为早餐食得晏⋯",
+        note="Corrected '硬' to '晏' as '晏' (late) matches the meaning of "
+        "'晚' in the 中文, while '硬' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="午餐时妈妈只煮了罐栗米汤",
+        yuewen="唔餐妈妈净系整咗罐粟米汤畀我",
+        yuewen_proofread="午餐妈妈净系整咗罐粟米汤畀我",
+        note="Corrected '唔餐' to '午餐' as '唔餐' is a mishearing of '午餐' (lunch).",
+    ),
+    ProofTestCase(
+        zhongwen="我用汤匙撩了两下",
+        yuewen="我系噉用匙羹撩下撩下",
+        yuewen_proofread="我系噉用匙羹撩下撩下",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="竟然发现美味的火鸡粒",
+        yuewen="我竟然撩到一粒美味嘅火鸡肉",
+        yuewen_proofread="我竟然撩到一粒美味嘅火鸡肉",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="不用说，那夜就是我渴望了⋯",
+        yuewen="𠮶晚唔使讲⋯",
+        yuewen_proofread="𠮶晚唔使讲⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="很久很久很久的⋯圣诞火鸡大餐！",
+        yuewen="当然系食我限咗好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！",
+        yuewen_proofread="当然系食我焗咗好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！",
+        note="Corrected '限咗' to '焗咗' as '焗咗' (baked/roasted for a long "
+        "time) matches the context of a Christmas turkey dinner, "
+        "while '限咗' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
+        yuewen="一片一片嘅火鸡肉半碟嘅有薯仔同节瓜⋯",
+        yuewen_proofread="一片一片嘅火鸡肉伴碟嘅有薯仔同节瓜⋯",
+        note="Corrected '半碟' to '伴碟' as '伴碟' (accompanying the dish) "
+        "matches the meaning of '伴碟' in the 中文, while '半碟' (half a "
+        "plate) is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="上面淋了老抽生粉献",
+        yuewen="上面淋咗一层老抽生粉馅",
+        yuewen_proofread="上面淋咗一层老抽生粉献",
+        note="Corrected '馅' to '献' as '献' (sauce) matches the meaning in "
+        "the 中文, while '馅' (filling) is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="我们真的好兴奋，好满足",
+        yuewen="我哋真系好兴奋，好满足",
+        yuewen_proofread="我哋真系好兴奋，好满足",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="之后，我们吃了一个星期的⋯",
+        yuewen="之后我哋仲食咗一个礼拜嘅⋯火鸡三文治",
+        yuewen_proofread="之后我哋仲食咗一个礼拜嘅⋯火鸡三文治",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="火鸡三文治早餐",
+        yuewen="做早餐",
+        yuewen_proofread="做早餐",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="星期天",
+        yuewen="星期日",
+        yuewen_proofread="星期日",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我大着胆跟妈妈说：不如去饮茶吖",
+        yuewen="我嘅记心肝同妈妈讲：不如饮茶",
+        yuewen_proofread="我大着胆同妈妈讲：不如饮茶",
+        note="Corrected '我嘅记心肝' to '我大着胆' as '记心肝' is a mishearing of "
+        "'大着胆', which matches the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈骂我「冇衣食」⋯",
+        yuewen="妈妈闹我冇意食⋯",
+        yuewen_proofread="妈妈闹我冇衣食⋯",
+        note="Corrected '冇意食' to '冇衣食' as '冇衣食' (no food or clothing) "
+        "matches the meaning of the 中文, while '冇意食' (no appetite) is "
+        "a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="不过还是带了我去饮茶",
+        yuewen="但系都带咗我去饮茶",
+        yuewen_proofread="但系都带咗我去饮茶",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="之后，妈妈又有计⋯",
+        yuewen="之后妈妈又有计⋯",
+        yuewen_proofread="之后妈妈又有计⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="她把冰箱内剩下来的火鸡肉撕呀撕",
+        yuewen="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
+        yuewen_proofread="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="有时候也叫我帮手撕",
+        yuewen="有时都叫我帮手撕",
+        yuewen_proofread="有时都叫我帮手撕",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="火鸡留在指甲的味道",
+        yuewen="火鸡留喺指甲𠮶阵味",
+        yuewen_proofread="火鸡留喺指甲𠮶阵味",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="原来得洗好多次",
+        yuewen="原来洗好多次都仲喺度㗎",
+        yuewen_proofread="原来洗好多次都仲喺度㗎",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="银芽火鸡丝炒米，好味道",
+        yuewen="银牙火鸡丝炒米，好味道噉",
+        yuewen_proofread="银芽火鸡丝炒米，好味道噉",
+        note="Corrected '银牙' to '银芽' as '银芽' (bean sprouts) is the correct "
+        "ingredient, while '银牙' is a common mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="栗子炆火鸡丝㷛",
+        yuewen="焯焯栗子焖火鸡丝煲",
+        yuewen_proofread="栗子焖火鸡丝煲",
+        note="Removed the duplicated '焯焯' at the beginning, which is "
+        "likely a mishearing or extraneous, and kept '栗子焖火鸡丝煲' as it "
+        "matches the intended meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="花生火鸡骨煲粥",
+        yuewen="花生火鸡骨煲粥",
+        yuewen_proofread="花生火鸡骨煲粥",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="纸包火鸡包包纸",
+        yuewen="纸包火鸡包包纸",
+        yuewen_proofread="纸包火鸡包包纸",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="包火鸡包包包火鸡包",
+        yuewen="包火鸡包包包火鸡包",
+        yuewen_proofread="包火鸡包包包火鸡包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="酿火鸡馅搽面包",
+        yuewen="让火鸡馅茶面包",
+        yuewen_proofread="酿火鸡馅搽面包",
+        note="Corrected '让' to '酿' and '茶' to '搽' as both are likely "
+        "mishearings; '酿火鸡馅搽面包' matches the meaning of the original "
+        "phrase.",
+    ),
+    ProofTestCase(
+        zhongwen="唉，我好后悔讲过一句「火鸡疴烂煮」",
+        yuewen="唉，我后悔讲过火鸡阿宁处呢句嘢",
+        yuewen_proofread="唉，我后悔讲过火鸡疴烂煮呢句嘢",
+        note="Corrected '阿宁处' to '疴烂煮' as '疴烂煮' is the correct phrase "
+        "matching the original '火鸡疴烂煮', while '阿宁处' is a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
+        yuewen="到端午节，当我督开我最钟意食嘅果精粽嘅时候⋯",
+        yuewen_proofread="到端午节，当我督开我最钟意食嘅裹蒸粽嘅时候⋯",
+        note="Corrected '果精粽' to '裹蒸粽' as '裹蒸粽' is the correct term for "
+        "the type of rice dumpling, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="发现咸蛋旁边是一件火鸡背的时候⋯",
+        yuewen="发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯",
+        yuewen_proofread="发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我脑部一时想唔通，哭起来",
+        yuewen="我脑部一时想唔通，喊咗起上嚟",
+        yuewen_proofread="我脑部一时想唔通，喊咗起上嚟",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="救命呀！",
+        yuewen="救命啊！",
+        yuewen_proofread="救命啊！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈悄悄把剩下的火鸡扔掉",
+        yuewen="妈妈净计计将净低嘅火鸡劈咗",
+        yuewen_proofread="妈妈静鸡鸡将净低嘅火鸡劈咗",
+        note="Corrected '净计计' to '静鸡鸡' as '静鸡鸡' is the correct Cantonese "
+        "phrase for 'quietly' or 'secretly', matching the meaning of "
+        "'悄悄' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="那已经是火鸡解冻后差不多半年的事",
+        yuewen="原来𠮶阵已经系只火鸡解冻咗差唔多半年后嘅事",
+        yuewen_proofread="原来𠮶阵已经系只火鸡解冻咗差唔多半年后嘅事",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我的美梦跟恶梦亦同时完结",
+        yuewen="我嘅美梦同噩梦都同时完结",
+        yuewen_proofread="我嘅美梦同噩梦都同时完结",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="后来我才知道⋯",
+        yuewen="后来我先知道⋯",
+        yuewen_proofread="后来我先知道⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一只火鸡由出世到给人宰掉",
+        yuewen="一只火鸡由出世到畀人㓥",
+        yuewen_proofread="一只火鸡由出世到畀人宰",
+        note="Corrected '㓥' to '宰' as '宰' is the correct term for 'to "
+        "slaughter' in this context, matching the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="也不过是几个月间的事",
+        yuewen="都不过系几个月之间嘅事",
+        yuewen_proofread="都不过系几个月之间嘅事",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="即是说，火鸡死掉后跟我们一起的日子",
+        yuewen="即系话，只火鸡死咗之后，同我哋一齐嘅日子",
+        yuewen_proofread="即系话，火鸡死咗之后，同我哋一齐嘅日子",
+        note="Removed '只' before '火鸡' as it is likely a mishearing; the "
+        "correct phrase should be '火鸡死咗之后' to match the meaning of "
+        "'火鸡死掉后'.",
+    ),
+    ProofTestCase(
+        zhongwen="还要长过它的一生",
+        yuewen="仲长过佢自己本身条命",
+        yuewen_proofread="仲长过佢自己本身条命",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我还发觉，火鸡的味道⋯",
+        yuewen="我仲发觉到，火鸡嘅味道⋯",
+        yuewen_proofread="我仲发觉到，火鸡嘅味道⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="将吃未吃和第一口之间已经是最高峰",
+        yuewen="味食同食第一啖之间，已经系佢嘅最高峰",
+        yuewen_proofread="未食同食第一啖之间，已经系佢嘅最高峰",
+        note="Corrected '味食' to '未食' as '未食' (not yet eaten) matches the "
+        "meaning of '将吃未吃' in the 中文, while '味食' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="之后的，不过是开始了也就吃下去",
+        yuewen="之后，不过都系食开就食埋落去噉解",
+        yuewen_proofread="之后，不过都系食开就食埋落去噉解",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我没有哲学家的头脑⋯",
+        yuewen="我冇知学家嘅头脑⋯",
+        yuewen_proofread="我冇哲学家嘅头脑⋯",
+        note="Corrected '知学家' to '哲学家' as '哲学家' is the correct term for "
+        "'philosopher', matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="不知道两件事情应该得出什么道理",
+        yuewen="唔知呢两样嘢要得起嘅呢个，得出啲咩道理",
+        yuewen_proofread="唔知呢两样嘢要得出啲咩道理",
+        note="Removed '得起嘅呢个' as it is likely a mishearing and does not "
+        "fit the context of '得出什么道理'.",
+    ),
+    ProofTestCase(
+        zhongwen="可是这些想法⋯",
+        yuewen="但系呢啲谂法⋯",
+        yuewen_proofread="但系呢啲谂法⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="在我长大后⋯",
+        yuewen="喺我长大之后⋯",
+        yuewen_proofread="喺我长大之后⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="在一些跟圣诞节无关的日子⋯",
+        yuewen="系一啲同圣诞节无关嘅日子⋯",
+        yuewen_proofread="系一啲同圣诞节无关嘅日子⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="毫无因由的在我脑中出现过三两次",
+        yuewen="无端端噉喺我脑部出现过两三次",
+        yuewen_proofread="无端端噉喺我脑部出现过两三次",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一次，是在我自己的婚宴上",
+        yuewen="一次，喺我自己嘅婚宴上",
+        yuewen_proofread="一次，喺我自己嘅婚宴上",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一次⋯",
+        yuewen="一次⋯",
+        yuewen_proofread="一次⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="是在我妈妈火化那天",
+        yuewen="喺我妈妈火化𠮶日",
+        yuewen_proofread="喺我妈妈火化𠮶日",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="那天，我看着天空几缕灰色的烟",
+        yuewen="𠮶日，我望住天东几条灰色嘅烟",
+        yuewen_proofread="𠮶日，我望住天空几条灰色嘅烟",
+        note="Corrected '天东' to '天空' as '天东' is a likely mishearing of "
+        "'天空', which matches the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="忽然间嗅到火鸡又浓又淡的气味",
+        yuewen="忽然闻到火鸡又浓又淡嘅气味",
+        yuewen_proofread="忽然闻到火鸡又浓又淡嘅气味",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我好后悔要妈妈扔掉最后几件火鸡",
+        yuewen="我后悔，要妈妈劈咗个忌廉，火鸡",
+        yuewen_proofread="我后悔，要妈妈劈咗个火鸡，火鸡",
+        note="Corrected '忌廉' to '火鸡' as '忌廉' (cream) is a mishearing of "
+        "'火鸡' (turkey), which matches the context of the original "
+        "sentence.",
+    ),
+]  # proof_test_cases_block_58
+proof_test_cases_block_59 = [
+    ProofTestCase(
+        zhongwen="特别报告",
+        yuewen="特别报道",
+        yuewen_proofread="特别报告",
+        note="Corrected '报道' to '报告' as '报告' matches the intended meaning "
+        "of 'report' in the original 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="奥运金牌得主李丽珊决定参加今届奥运",
+        yuewen="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
+        yuewen_proofread="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="香港运动员不是腊鸭",
+        yuewen="向全世界人再次证明香港嘅运动员唔系腊鸭",
+        yuewen_proofread="向全世界人再次证明香港嘅运动员唔系腊鸭",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="另方面⋯",
+        yuewen="另一方面⋯",
+        yuewen_proofread="另一方面⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="香港体运总会霍震霆⋯",
+        yuewen="中国香港体育协会企奥委会会长霍振庭⋯",
+        yuewen_proofread="中国香港体育协会暨奥委会会长霍震霆⋯",
+        note="Corrected '企奥委会' to '暨奥委会' and '霍振庭' to '霍震霆' as these are "
+        "likely mishearings; '暨奥委会' is the correct name and '霍震霆' is "
+        "the correct person's name.",
+    ),
+    ProofTestCase(
+        zhongwen="正式向亚运协会提出申请",
+        yuewen="正式向亚运协会提出申请",
+        yuewen_proofread="正式向亚运协会提出申请",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="香港将争夺下届亚运会主办权",
+        yuewen="香港将要争夺下届亚运会嘅主办权",
+        yuewen_proofread="香港将要争夺下届亚运会嘅主办权",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="多个运动团体立即表示热烈支持",
+        yuewen="多个运动团体立即表示热烈支持",
+        yuewen_proofread="多个运动团体立即表示热烈支持",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="其中港九新界竹战联谊会⋯",
+        yuewen="其中港狗新界足战联谊会⋯",
+        yuewen_proofread="其中港九新界竹战联谊会⋯",
+        note="Corrected '港狗' to '港九' and '足战' to '竹战' as these are likely "
+        "mishearings of the correct terms in the context of the "
+        "association's name.",
+    ),
+    ProofTestCase(
+        zhongwen="更希望打麻将可以成为亚运项目",
+        yuewen="更希望打麻雀可以成为亚运项目",
+        yuewen_proofread="更希望打麻雀可以成为亚运项目",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="另外，全港茶餐厅员工协会⋯",
+        yuewen="另外⋯",
+        yuewen_proofread="另外⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="经已发动所有会员⋯",
+        yuewen="全港茶餐厅联工协会经热发动所有会员⋯",
+        yuewen_proofread="全港茶餐厅联工协会经已发动所有会员⋯",
+        note="Corrected '经热' to '经已' as '经已' is the correct term for "
+        "'already' and matches the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="争取「掷蛋挞」成为亚运比赛项目",
+        yuewen="争取掟蛋挞成为亚运会比赛项目",
+        yuewen_proofread="争取掟蛋挞成为亚运会比赛项目",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="港九烧味卤味腊味同业会",
+        yuewen="港狗烧尾掳尾立尾同业会",
+        yuewen_proofread="港九烧味卤味腊味同业会",
+        note="Corrected '港狗烧尾掳尾立尾' to '港九烧味卤味腊味' as the original was a "
+        "mishearing of the association's name.",
+    ),
+    ProofTestCase(
+        zhongwen="亦向霍主席当面提出⋯",
+        yuewen="亦都向霍主席当面提出⋯",
+        yuewen_proofread="亦都向霍主席当面提出⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「挂腊鸭」可以成为亚运比赛项目",
+        yuewen="挂立鸭可以成为亚运比赛项目",
+        yuewen_proofread="挂腊鸭可以成为亚运比赛项目",
+        note="Corrected '挂立鸭' to '挂腊鸭' as '腊鸭' is the correct term for the "
+        "preserved duck, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="较为特别的是，CIC保险营业员联同⋯",
+        yuewen="较为特别嘅系，CIC保险营业员联同⋯",
+        yuewen_proofread="较为特别嘅系，CIC保险营业员联同⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="大角咀春田花花幼稚园⋯",
+        yuewen="大角嘴春田花花幼稚园⋯",
+        yuewen_proofread="大角咀春田花花幼稚园⋯",
+        note="Corrected '大角嘴' to '大角咀' as '大角咀' is the correct place name, "
+        "and '嘴' is a common mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="附属小学一班小朋友⋯",
+        yuewen="附属小学嘅一班小朋友⋯",
+        yuewen_proofread="附属小学嘅一班小朋友⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="争取「抢包山」",
+        yuewen="争取「抢包山」",
+        yuewen_proofread="争取「抢包山」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一项几乎绝迹的运动⋯",
+        yuewen="一项几乎绝迹嘅运动⋯",
+        yuewen_proofread="一项几乎绝迹嘅运动⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="成为本港举办亚运的重点推介比赛项目",
+        yuewen="成为本港举办亚运重点推介嘅比赛项目",
+        yuewen_proofread="成为本港举办亚运重点推介嘅比赛项目",
+        note="",
+    ),
+]  # proof_test_cases_block_59
 proof_test_cases_block_60 = [
     ProofTestCase(
         zhongwen="最后⋯",
@@ -3118,13 +4744,17 @@ proof_test_cases_block_60 = [
         zhongwen="最后，一切成烟",
         yuewen="最后，全部都系banana",
         yuewen_proofread="",
-        note="Cleared as '全部都系banana' bears no resemblance to the original phrase '最后，一切成烟' and is clearly a complete transcription failure.",
+        note="Cleared as '全部都系banana' bears no resemblance to the original "
+        "phrase '最后，一切成烟' and is clearly a complete transcription "
+        "failure.",
     ),
     ProofTestCase(
         zhongwen="最后，他们选了「掷蛋挞」做推介项目",
         yuewen="最后佢哋选咗定蛋挞做推介项目",
         yuewen_proofread="最后佢哋选咗掷蛋挞做推介项目",
-        note="Corrected '定蛋挞' to '掷蛋挞' as '掷蛋挞' matches the activity described in the 中文, and '定' is likely a mishearing of '掷'.",
+        note="Corrected '定蛋挞' to '掷蛋挞' as '掷蛋挞' matches the meaning of the "
+        "original '掷蛋挞' (throwing egg tarts), while '定蛋挞' is likely a "
+        "mishearing.",
     ),
     ProofTestCase(
         zhongwen="至于香港争取申办亚运的口号⋯",
@@ -3142,18 +4772,14 @@ proof_test_cases_block_60 = [
         zhongwen="之后李丽珊蝉联失败⋯",
         yuewen="之后李利山丧乱失败⋯",
         yuewen_proofread="之后李丽珊蝉联失败⋯",
-        note="Corrected '李利山' to '李丽珊' as it is a mishearing of the name, and '丧乱' to '蝉联' as '蝉联' is the correct term for defending a title, matching the meaning in the 中文.",
-    ),
-    ProofTestCase(
-        zhongwen="亚运主办权⋯",
-        yuewen="亚运主办权⋯",
-        yuewen_proofread="亚运主办权⋯",
-        note="",
+        note="Corrected '李利山' to '李丽珊' as it is a mishearing of the name, "
+        "and '丧乱' to '蝉联' as '蝉联' is the correct term for 'to defend "
+        "a title' or 'to win consecutively'.",
     ),
     ProofTestCase(
         zhongwen="亦由一个香港人从未听过的地方夺得",
-        yuewen="亦都由一个香港人从未听过嘅地方夺得",
-        yuewen_proofread="亦都由一个香港人从未听过嘅地方夺得",
+        yuewen="亚运主办权亦都由一个香港人从未听过嘅地方夺得",
+        yuewen_proofread="亚运主办权亦都由一个香港人从未听过嘅地方夺得",
         note="",
     ),
     ProofTestCase(
@@ -3166,7 +4792,8 @@ proof_test_cases_block_60 = [
         zhongwen="都回到茶餐厅继续掷他们的蛋挞",
         yuewen="都返返去茶餐厅继续钉佢哋嘅蛋挞",
         yuewen_proofread="都返返去茶餐厅继续掷佢哋嘅蛋挞",
-        note="Corrected '钉' to '掷' as '掷' (to throw) matches the meaning in the 中文, while '钉' is likely a mishearing.",
+        note="Corrected '钉' to '掷' as '掷' (to throw) matches the meaning "
+        "in the 中文, while '钉' is likely a mishearing.",
     ),
     ProofTestCase(
         zhongwen="一切回复正常",
@@ -3175,8 +4802,69 @@ proof_test_cases_block_60 = [
         note="",
     ),
 ]  # proof_test_cases_block_60
-proof_test_cases_block_61 = []  # proof_test_cases_block_61
-proof_test_cases_block_62 = []  # proof_test_cases_block_62
+proof_test_cases_block_61 = [
+    ProofTestCase(
+        zhongwen="上中学后，我再没有练习抢包手",
+        yuewen="上个中学，我已经再冇练习抢包手",
+        yuewen_proofread="上个中学，我已经再冇练习抢包手",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="有时候跟妈妈饮茶⋯",
+        yuewen="间中同妈妈饮茶⋯",
+        yuewen_proofread="间中同妈妈饮茶⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我都会手快快替她抢一笼大包",
+        yuewen="我都会手快快噉帮佢抢龙大包",
+        yuewen_proofread="我都会手快快噉帮佢抢一笼大包",
+        note="Inserted '一笼' before '大包' as the original transcription "
+        "missed '一笼', which is present in the 中文 and likely omitted "
+        "due to a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="之后，茶楼再不卖大包了",
+        yuewen="之后茶楼都冇埋大包",
+        yuewen_proofread="之后茶楼都冇卖大包",
+        note="Corrected '冇埋大包' to '冇卖大包' as '冇卖' (not selling) matches the "
+        "meaning of '不卖' in the 中文, while '埋' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="点心车亦转成点心纸",
+        yuewen="退车仔都转咗用点心纸",
+        yuewen_proofread="点心车仔都转咗用点心纸",
+        note="Corrected '退车仔' to '点心车仔' as '退车仔' is a mishearing of "
+        "'点心车仔', which matches the meaning of '点心车' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="一切落空",
+        yuewen="一切都落空",
+        yuewen_proofread="一切都落空",
+        note="",
+    ),
+]  # proof_test_cases_block_61
+proof_test_cases_block_62 = [
+    ProofTestCase(
+        zhongwen="有时候我也会跟同学回到长洲烧烤",
+        yuewen="有时我都会同班同学仔返长洲宵夜食",
+        yuewen_proofread="有时我都会同班同学仔返长洲烧烤食",
+        note="Corrected '宵夜' to '烧烤' as '烧烤' matches the activity "
+        "described in the 中文, while '宵夜' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="每次看见师傅⋯",
+        yuewen="每次见到师傅⋯",
+        yuewen_proofread="每次见到师傅⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他都好像老了一点",
+        yuewen="佢都好似老咗啲噉",
+        yuewen_proofread="佢都好似老咗啲噉",
+        note="",
+    ),
+]  # proof_test_cases_block_62
 proof_test_cases_block_63 = [
     ProofTestCase(
         zhongwen="因为环保⋯",
@@ -3188,34 +4876,545 @@ proof_test_cases_block_63 = [
         zhongwen="长洲的抢包都转为塑胶",
         yuewen="长洲嘅厂包经已转咗用塑胶",
         yuewen_proofread="长洲嘅抢包经已转咗用塑胶",
-        note="Corrected '厂包' to '抢包' as '抢包' is the correct term for the bun-snatching event, matching the meaning in the 中文.",
+        note="Corrected '厂包' to '抢包' as '抢包' is the correct term for the "
+        "bun-snatching event, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="师傅说，那阵胶气，相当臭",
-        yuewen="师傅话，𠮶阵胶气，都几丑下",
-        yuewen_proofread="师傅话，𠮶阵胶气，都几臭下",
-        note="Corrected '丑' to '臭' as '臭' (smelly) matches the meaning of '相当臭' in the 中文, while '丑' (ugly) is likely a mishearing.",
+        yuewen="师傅话𠮶阵胶气，都几丑下",
+        yuewen_proofread="师傅话𠮶阵胶气，都几臭下",
+        note="Corrected '丑' to '臭' as '臭' (smelly) matches the meaning of "
+        "'臭' in the 中文, while '丑' (ugly) is likely a mishearing.",
     ),
 ]  # proof_test_cases_block_63
-proof_test_cases_block_64 = []  # proof_test_cases_block_64
+proof_test_cases_block_64 = [
+    ProofTestCase(
+        zhongwen="长洲有个张保仔洞",
+        yuewen="墙后个张宝仔洞",
+        yuewen_proofread="长洲有个张保仔洞",
+        note="Corrected '墙后' to '长洲' as '墙后' is a mishearing of '长洲', and "
+        "'张宝仔' to '张保仔' to match the correct name of the cave.",
+    ),
+    ProofTestCase(
+        zhongwen="听说张保仔在洞内藏了很多宝藏",
+        yuewen="听讲海盗张宝仔喺里面收埋咗好多宝藏",
+        yuewen_proofread="听讲海盗张保仔喺里面收埋咗好多宝藏",
+        note="Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical "
+        "figure referenced in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="因为我练过抢包手，身手比较灵活⋯",
+        yuewen="因为我练过抢包手，身手比较灵活⋯",
+        yuewen_proofread="因为我练过抢包手，身手比较灵活⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="同学们叫我爬进去看看，说不定会发达",
+        yuewen="班同我叫我爬佢睇下，话唔定会发达",
+        yuewen_proofread="班同学叫我爬入去睇下，话唔定会发达",
+        note="Corrected '班同我' to '班同学' as '班同我' is likely a mishearing of "
+        "'班同学', and '爬佢' to '爬入去' as '爬入去' matches the meaning of "
+        "'爬进去' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="于是我就向着这个又黑又窄的洞⋯",
+        yuewen="于是我就向住呢一个又黑又窄嘅洞⋯",
+        yuewen_proofread="于是我就向住呢一个又黑又窄嘅洞⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="一直爬",
+        yuewen="系噉爬爬",
+        yuewen_proofread="系噉爬爬",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="洞里面什么也没有，只有一个盒",
+        yuewen="洞里面乜都冇，净系有一个盒",
+        yuewen_proofread="洞里面乜都冇，净系有一个盒",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我小心揭开盒⋯",
+        yuewen="我好小心揭开呢个盒⋯",
+        yuewen_proofread="我好小心揭开呢个盒⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="发现里面一个没吃完的大包",
+        yuewen="发现入面系一个食净咗嘅大包",
+        yuewen_proofread="发现入面系一个食剩咗嘅大包",
+        note="Corrected '食净咗' to '食剩咗' as '食剩' is the correct term for "
+        "'leftover' or 'not finished eating' in Cantonese, matching "
+        "the meaning of '没吃完'.",
+    ),
+    ProofTestCase(
+        zhongwen="是不是张保仔吃过的呢？",
+        yuewen="唔知系咪张宝仔食净㗎啦？",
+        yuewen_proofread="唔知系咪张保仔食净㗎啦？",
+        note="Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical "
+        "figure referenced in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="揸住个包，我忽然明白⋯",
+        yuewen="揸住个包，我忽然明白⋯",
+        yuewen_proofread="揸住个包，我忽然明白⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="原来有些事情， 没有就是没有",
+        yuewen="原来有啲嘢，冇就真系冇",
+        yuewen_proofread="原来有啲嘢，冇就真系冇",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="唔得，就是唔得",
+        yuewen="唔得，就真系唔得",
+        yuewen_proofread="唔得，就真系唔得",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="没有鱼蛋没有粗面没去成马尔代夫⋯",
+        yuewen="冇鱼蛋，冇粗面，冇去买义大夫⋯",
+        yuewen_proofread="冇鱼蛋，冇粗面，冇去马尔代夫⋯",
+        note="Corrected '买义大夫' to '马尔代夫' as it is a mishearing of the "
+        "place name '马尔代夫' (Maldives).",
+    ),
+    ProofTestCase(
+        zhongwen="没有奖牌没有张保仔宝藏",
+        yuewen="冇奖牌冇张宝仔宝藏",
+        yuewen_proofread="冇奖牌冇张保仔宝藏",
+        note="Corrected '宝仔' to '保仔' as '保仔' is the correct name for "
+        "'张保仔', matching the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="而张保仔，也没有咬过那个包",
+        yuewen="而张宝仔，亦都冇咬过个包",
+        yuewen_proofread="而张宝仔，亦都冇咬过个包",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="原来蠢，并不那么好笑",
+        yuewen="原来，唔系咁好笑",
+        yuewen_proofread="原来，唔系咁好笑",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="蠢会失败⋯",
+        yuewen="会失败⋯",
+        yuewen_proofread="会失败⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="会失望",
+        yuewen="会失望",
+        yuewen_proofread="会失望",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="失望，并不那么好笑",
+        yuewen="失望，唔系咁好笑",
+        yuewen_proofread="失望，唔系咁好笑",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="肥，都不一定好笑",
+        yuewen="肥，都未必好笑",
+        yuewen_proofread="肥，都未必好笑",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="肥，不一定大力",
+        yuewen="肥，唔一定大力",
+        yuewen_proofread="肥，唔一定大力",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="大力，亦不一定得",
+        yuewen="大力，亦都唔一定得",
+        yuewen_proofread="大力，亦都唔一定得",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="揸住个包，我忽然想⋯",
+        yuewen="揸住个包，我忽然喺度谂⋯",
+        yuewen_proofread="揸住个包，我忽然喺度谂⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="长大了，到我要面对这个实掘掘⋯",
+        yuewen="大个咗，到我要面对呢一个实角局⋯",
+        yuewen_proofread="大个咗，到我要面对呢一个实掘掘⋯",
+        note="Corrected '实角局' to '实掘掘' as '实掘掘' matches the meaning and "
+        "sound of the original '实掘掘' in 中文, while '实角局' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="未必可以发梦，未必那么好笑的⋯",
+        yuewen="未必到你发梦，又未必咁好笑嘅⋯",
+        yuewen_proofread="未必到你发梦，又未必咁好笑嘅⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="世界的时候，我会怎么样？",
+        yuewen="世界嘅时候，我会系点㗎呢？",
+        yuewen_proofread="世界嘅时候，我会系点㗎呢？",
+        note="",
+    ),
+]  # proof_test_cases_block_64
 proof_test_cases_block_65 = [
     ProofTestCase(
         zhongwen="「⋯无力挽！」",
         yuewen="「⋯无泪弯！」",
         yuewen_proofread="「⋯无力挽！」",
-        note="Corrected '无泪弯' to '无力挽' as it is a clear mishearing; '无力挽' matches the intended meaning of '无力挽' in the 中文.",
+        note="Corrected '无泪弯' to '无力挽' as it is a mishearing; '无力挽' "
+        "matches the intended meaning of '无力挽' (unable to save/stop).",
     ),
 ]  # proof_test_cases_block_65
 proof_test_cases_block_66 = []  # proof_test_cases_block_66
-proof_test_cases_block_67 = []  # proof_test_cases_block_67
-proof_test_cases_block_68 = []  # proof_test_cases_block_68
-proof_test_cases_block_69 = []  # proof_test_cases_block_69
+proof_test_cases_block_67 = [
+    ProofTestCase(
+        zhongwen="是的，我就是大个佬麦兜",
+        yuewen="系呀，我就系大个佬麦豆喇",
+        yuewen_proofread="系呀，我就系大个佬麦兜喇",
+        note="Corrected '麦豆' to '麦兜' as '麦兜' is the correct name, matching "
+        "the original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="肥，算大力",
+        yuewen="肥啰，算大力啦",
+        yuewen_proofread="肥啰，算大力啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="麻麻地可以",
+        yuewen="麻麻地得咁啦",
+        yuewen_proofread="麻麻地得咁啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="负家产",
+        yuewen="富家产啰",
+        yuewen_proofread="负家产啰",
+        note="Corrected '富家产啰' to '负家产啰' as '负家产' (negative assets) "
+        "matches the meaning of the 中文, while '富家产' (rich assets) is "
+        "a likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="脚爪是真的大，比一节瓜还要大",
+        yuewen="脚瓜真系几大，仲大过个折瓜",
+        yuewen_proofread="脚瓜真系几大，仲大过个节瓜",
+        note="Corrected '折瓜' to '节瓜' as '节瓜' is the correct term for the "
+        "vegetable, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="脚瓜上的肌肉非常结实⋯",
+        yuewen="脚瓜上面个肌肉非常结实⋯",
+        yuewen_proofread="脚瓜上面个肌肉非常结实⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="青筋一条条凸出来，似钢筋",
+        yuewen="啲青筋一条一条凸下凸下，好似钢筋",
+        yuewen_proofread="啲青筋一条一条凸下凸下，好似钢筋",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="至于脚趾甲⋯",
+        yuewen="至于脚趾弓啲脚甲⋯",
+        yuewen_proofread="至于脚趾甲⋯",
+        note="Removed '弓啲' as it is likely a mishearing; '脚趾甲' directly "
+        "matches the meaning of '脚趾甲' in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="有次我无无聊聊真的量了一下⋯",
+        yuewen="有次我无无聊聊真系走去卡下佢⋯",
+        yuewen_proofread="有次我无无聊聊真系走去卡下佢⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="足有一寸厚",
+        yuewen="哗，粥粥成串咁厚",
+        yuewen_proofread="哗，足足成寸咁厚",
+        note="Corrected '粥粥成串' to '足足成寸' as '足足成寸' (a full inch) matches "
+        "the meaning of '足有一寸厚', while '粥粥成串' is a likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="是的，故事讲完了",
+        yuewen="系呀，故事讲完喇",
+        yuewen_proofread="系呀，故事讲完喇",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="这是一个尝试",
+        yuewen="呢个系一个尝试",
+        yuewen_proofread="呢个系一个尝试",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="失败⋯尝试⋯",
+        yuewen="失败⋯尝试⋯",
+        yuewen_proofread="失败⋯尝试⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="好多包⋯可是没有包保成功的故事",
+        yuewen="好多包⋯但系冇包补成功嘅故事",
+        yuewen_proofread="好多包⋯但系冇包保成功嘅故事",
+        note="Corrected '包补' to '包保' as '包保' is the correct term for "
+        "'guarantee' in this context, matching the meaning of the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="故事说了一轮⋯",
+        yuewen="故事讲咗一轮⋯",
+        yuewen_proofread="故事讲咗一轮⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="什么也没有？也不是",
+        yuewen="乜都冇？又唔系噃",
+        yuewen_proofread="乜都冇？又唔系噃",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就是大了双脚瓜",
+        yuewen="就系大咗两个脚瓜",
+        yuewen_proofread="就系大咗两个脚瓜",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可是楝一双脚瓜站这儿⋯",
+        yuewen="但系冻住两个脚瓜企喺度⋯",
+        yuewen_proofread="但系冻住两个脚瓜企喺度⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="当浪打过来⋯",
+        yuewen="当啲浪打埋嚟⋯",
+        yuewen_proofread="当啲浪打埋嚟⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="那感觉还真不错",
+        yuewen="𠮶张感觉真系好好",
+        yuewen_proofread="𠮶张感觉真系好好",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="你知道我麻麻地叻佬，不懂得⋯",
+        yuewen="你知我麻麻地叻佬，唔识得⋯",
+        yuewen_proofread="你知我麻麻地叻佬，唔识得⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="替自己的故事加点教训呀锦囊呀那些",
+        yuewen="帮自己嘅故事加啲教训呀锦囊呀𠮶啲嘢",
+        yuewen_proofread="帮自己嘅故事加啲教训呀锦囊呀𠮶啲嘢",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="可是，浸一双脚瓜站水中⋯",
+        yuewen="但系冻住两个脚瓜企喺水𠮶度⋯",
+        yuewen_proofread="但系冻住两个脚瓜企喺水𠮶度⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="当风吹向我的脑，我会想⋯",
+        yuewen="当风吹喺我个脑部，我会谂⋯",
+        yuewen_proofread="当风吹喺我个脑部，我会谂⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="如果妈妈看见我这个大脚瓜⋯",
+        yuewen="如果妈妈见到我呢个大脚瓜⋯",
+        yuewen_proofread="如果妈妈见到我呢个大脚瓜⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我猜，她会好开心",
+        yuewen="我谂，佢会好开心",
+        yuewen_proofread="我谂，佢会好开心",
+        note="",
+    ),
+]  # proof_test_cases_block_67
+proof_test_cases_block_68 = [
+    ProofTestCase(
+        zhongwen="不成，还是出个锦囊！",
+        yuewen="都系唔好呀，都系出返个锦囊先得！",
+        yuewen_proofread="都系唔好呀，都系出返个锦囊先得！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="妈妈的dot com散掉后，她又有计",
+        yuewen="妈妈个Doccom散咗之后，佢又有计喇",
+        yuewen_proofread="妈妈个dot com散咗之后，佢又有计喇",
+        note="Corrected 'Doccom' to 'dot com' as 'dot com' is the correct "
+        "term, matching the original meaning and pronunciation.",
+    ),
+    ProofTestCase(
+        zhongwen="她出版了一本教烹饪的食谱",
+        yuewen="佢出咗半教主送嘅食谱，谂住捞返扎沙",
+        yuewen_proofread="佢出咗本教煮餸嘅食谱，谂住捞返扎沙",
+        note="Corrected '半教主送' to '本教煮餸' as '本教煮餸' (a book teaching "
+        "cooking) matches the meaning of '教烹饪的食谱', while '半教主送' is a "
+        "likely mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="食谱最后一页教人整烧鸡",
+        yuewen="食谱最后一页系教人整烧鸡嘅",
+        yuewen_proofread="食谱最后一页系教人整烧鸡嘅",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="方法简单，人人可学",
+        yuewen="方法简单，人人都学得识",
+        yuewen_proofread="方法简单，人人都学得识",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="「烧鸡」",
+        yuewen="「烧鸡」",
+        yuewen_proofread="「烧鸡」",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="材料是⋯鸡",
+        yuewen="材料系⋯鸡",
+        yuewen_proofread="材料系⋯鸡",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="方法：把鸡烧几烧",
+        yuewen="方法：攞只鸡去烧佢几烧",
+        yuewen_proofread="方法：攞只鸡去烧佢几烧",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="就这样，一味「烧鸡」大功告成",
+        yuewen="就噉，一味烧鸡，就大功告成喇",
+        yuewen_proofread="就噉，一味烧鸡，就大功告成喇",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="食谱里面补充说：",
+        yuewen="食谱度又补充噉话：",
+        yuewen_proofread="食谱度又补充噉话：",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="如果你想把鸡烧得美味可口⋯",
+        yuewen="如果想你个鸡烧得美味可口⋯",
+        yuewen_proofread="如果你想把鸡烧得美味可口⋯",
+        note="Corrected '如果想你个鸡烧得美味可口' to '如果你想把鸡烧得美味可口' as the original "
+        "was a mishearing; '想你个鸡' is not a natural or correct "
+        "phrasing, and the intended meaning is '如果你想把鸡...'.",
+    ),
+    ProofTestCase(
+        zhongwen="吃完后不会心肺实胃气涨",
+        yuewen="冇话食完腰心腰肺顶住个胃",
+        yuewen_proofread="冇话食完腰心腰肺顶住个胃",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="秘诀是：拜托，把鸡烧好一点⋯",
+        yuewen="个秘诀系：唔该，烧得佢好啲啰⋯",
+        yuewen_proofread="个秘诀系：唔该，烧得佢好啲啰⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="多谢合作！",
+        yuewen="多谢合作！",
+        yuewen_proofread="多谢合作！",
+        note="",
+    ),
+]  # proof_test_cases_block_68
+proof_test_cases_block_69 = [
+    ProofTestCase(
+        zhongwen="麻烦你，一客常餐",
+        yuewen="唔该，我要一个常餐啦",
+        yuewen_proofread="唔该，我要一个常餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="常餐？常餐有什么吃？",
+        yuewen="常餐？常餐有咩食㗎？",
+        yuewen_proofread="常餐？常餐有咩食㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跟特餐一样吧",
+        yuewen="同特餐一样啰",
+        yuewen_proofread="同特餐一样啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="特餐是什么？",
+        yuewen="噉特餐系咩嚟㗎？",
+        yuewen_proofread="噉特餐系咩嚟㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="跟快餐差不多",
+        yuewen="同快餐咁上下啰",
+        yuewen_proofread="同快餐咁上下啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="快餐又是什么？",
+        yuewen="噉快餐又系咩嚟㗎？",
+        yuewen_proofread="噉快餐又系咩嚟㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="快餐即是午餐",
+        yuewen="即系快餐咪真系午餐",
+        yuewen_proofread="即系快餐咪真系午餐",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="午餐吃什么？",
+        yuewen="午餐食咩㗎？",
+        yuewen_proofread="午餐食咩㗎？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="午餐跟晚餐一样",
+        yuewen="午餐同晚餐一样㗎",
+        yuewen_proofread="午餐同晚餐一样㗎",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="晚餐又吃什么？",
+        yuewen="噉晚餐又食啲咩呀？",
+        yuewen_proofread="噉晚餐又食啲咩呀？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="晚餐即是常餐",
+        yuewen="晚餐咪真系常餐啰",
+        yuewen_proofread="晚餐咪真系常餐啰",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="那么，两客常餐吧",
+        yuewen="噉呀，我要两个常餐啦",
+        yuewen_proofread="噉呀，我要两个常餐啦",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="今天常餐精采呀！",
+        yuewen="好嘢呀我哋今日啲常餐",
+        yuewen_proofread="好嘢呀我哋今日啲常餐",
+        note="",
+    ),
+]  # proof_test_cases_block_69
 proof_test_cases_block_70 = [
     ProofTestCase(
         zhongwen="对不起，常餐卖光了",
         yuewen="唔好意思，上餐卖晒",
         yuewen_proofread="唔好意思，常餐卖晒",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning of the 中文.",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
+        "set meal, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="那改要特餐吧",
@@ -3269,13 +5468,16 @@ proof_test_cases_block_70 = [
         zhongwen="唉，快餐不就是常餐",
         yuewen="系，快餐就即系上餐啰",
         yuewen_proofread="系，快餐就即系常餐啰",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'regular set meal', matching the meaning in the 中文.",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for "
+        "'regular set meal', matching the meaning of the 中文.",
     ),
     ProofTestCase(
         zhongwen="常餐不是卖光了吗？",
         yuewen="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
         yuewen_proofread="咁你头先又话冇常餐，系呀，常餐就系卖晒呀？",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning of '常餐' in the 中文; '上餐' is likely a mishearing.",
+        note="Corrected '冇上餐' to '冇常餐' and '上餐' to '常餐' as '常餐' is the "
+        "correct term for the set meal in question, matching the "
+        "meaning of the 中文.",
     ),
     ProofTestCase(
         zhongwen="对，常餐卖光了，要吃特餐吗？",
@@ -3293,7 +5495,9 @@ proof_test_cases_block_70 = [
         zhongwen="对不起，特餐卖光了",
         yuewen="唔好意思，特餐卖晒嘅",
         yuewen_proofread="唔好意思，特餐卖晒喇",
-        note="Replaced '卖晒嘅' with '卖晒喇' as '卖晒喇' is the natural way to indicate 'sold out' in Cantonese, while '卖晒嘅' is likely a mishearing or unnatural ending.",
+        note="Replaced '卖晒嘅' with '卖晒喇' as '卖晒喇' is the natural way to "
+        "indicate 'sold out' in Cantonese, while '卖晒嘅' is likely a "
+        "mishearing or unnatural ending.",
         include_in_prompt=True,
     ),
     ProofTestCase(
@@ -3312,19 +5516,22 @@ proof_test_cases_block_70 = [
         zhongwen="快餐即是常餐",
         yuewen="快餐即系上餐",
         yuewen_proofread="快餐即系常餐",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'regular set meal', matching the meaning of the 中文.",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for "
+        "'regular set meal', matching the meaning of the 中文.",
     ),
     ProofTestCase(
         zhongwen="常餐又有什么呢？",
         yuewen="咁上餐有咩㗎？",
-        yuewen_proofread="常餐有咩㗎？",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文.",
+        yuewen_proofread="咁常餐有咩㗎？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
+        "set meal, matching the meaning in the 中文.",
     ),
     ProofTestCase(
         zhongwen="常餐即是午餐",
         yuewen="上餐就即系午餐啰",
         yuewen_proofread="常餐就即系午餐啰",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'set meal' or 'regular meal', matching the meaning of '常餐' in the 中文.",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for 'set "
+        "meal' or 'regular meal', matching the meaning of the 中文.",
     ),
     ProofTestCase(
         zhongwen="那么午餐又有什么吃？",
@@ -3384,14 +5591,14 @@ proof_test_cases_block_71 = [
     ),
     ProofTestCase(
         zhongwen="午餐吧，午餐精采呀",
-        yuewen="午餐啦",
-        yuewen_proofread="午餐啦",
+        yuewen="午餐啦，午餐好嘢呀",
+        yuewen_proofread="午餐啦，午餐好嘢呀",
         note="",
     ),
     ProofTestCase(
         zhongwen="怎么个精采法？",
-        yuewen="午餐好嘢呀，点好嘢法呀？",
-        yuewen_proofread="午餐好嘢呀，点好嘢法呀？",
+        yuewen="点好嘢法呀？",
+        yuewen_proofread="点好嘢法呀？",
         note="",
     ),
     ProofTestCase(
@@ -3415,16 +5622,16 @@ proof_test_cases_block_71 = [
     ProofTestCase(
         zhongwen="常餐又怎样呢？",
         yuewen="噉上餐又点好嘢法呀？",
-        yuewen_proofread="噉常餐又点好嘢法呀？",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, "
-        "matching the meaning of '常餐' in the 中文; '上餐' is likely a mishearing.",
+        yuewen_proofread="噉上餐又点好嘢法呀？",
+        note="",
     ),
     ProofTestCase(
         zhongwen="常餐早卖光了，你说精采不？",
         yuewen="上餐，上餐一早卖晒啦，你话好唔好嘢？",
         yuewen_proofread="常餐，常餐一早卖晒啦，你话好唔好嘢？",
-        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal "
-        "referenced in the 中文, and '上餐' is likely a mishearing.",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
+        "set meal, matching the meaning in the 中文, while '上餐' is "
+        "likely a mishearing.",
     ),
     ProofTestCase(
         zhongwen="好吧好吧！两份午餐好了",
@@ -3449,8 +5656,8 @@ proof_test_cases_block_72 = [
     ),
     ProofTestCase(
         zhongwen="光天白日，吃什么鬼晚餐？",
-        yuewen="日光日白食乜鬼嘢晚餐啊？",
-        yuewen_proofread="日光日白食乜鬼嘢晚餐啊？",
+        yuewen="日光日白，食乜鬼嘢晚餐啊？",
+        yuewen_proofread="日光日白，食乜鬼嘢晚餐啊？",
         note="",
     ),
     ProofTestCase(
