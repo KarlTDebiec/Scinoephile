@@ -112,14 +112,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     print(f"{test_case.source_str},")
                 return answer
 
-        # Query provider with retries
+        # Query provider
         answer: TAnswer | None = None
         test_case: TTestCase | None = None
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_prompt},
         ]
-
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
             try:
@@ -188,10 +187,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 continue
 
             break
-
         if answer is None or test_case is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
+        # Log test case
         self._test_case_log[test_case.query.query_key] = test_case
         if self.print_test_case:
             print(f"{test_case.source_str},")
@@ -220,10 +219,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             test_case_log_str += f"{source_str},\n"
         test_case_log_str += "\n]"
         return test_case_log_str
-
-    def clear_test_case_log(self):
-        """Clear the test case log."""
-        self._test_case_log.clear()
 
     @property
     @abstractmethod
@@ -271,6 +266,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         raise TypeError(
             f"Could not determine answer class for {self.__class__.__name__}"
         )
+
+    def clear_test_case_log(self):
+        """Clear the test case log."""
+        self._test_case_log.clear()
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.
