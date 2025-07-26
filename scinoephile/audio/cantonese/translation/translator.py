@@ -11,13 +11,12 @@ from logging import error
 from pathlib import Path
 from textwrap import dedent
 
-from openai import BaseModel
 from pydantic import ValidationError
 
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, LLMProvider, Query
+from scinoephile.core.abcs import Answer, LLMProvider, Query, TestCase
 from scinoephile.openai import OpenAIProvider
 
 
@@ -27,7 +26,7 @@ class Translator:
     def __init__(
         self,
         model: str,
-        examples: list[BaseModel] | None = None,
+        examples: list[TestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
@@ -52,9 +51,9 @@ class Translator:
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
-        self._examples_log: dict[tuple, BaseModel] = {}
+        self._examples_log: dict[tuple, TestCase] = {}
         """Log of examples, keyed by query key."""
-        self._test_case_log: dict[tuple, BaseModel] = {}
+        self._test_case_log: dict[tuple, TestCase] = {}
         """Log of test cases, keyed by query key."""
 
         # Set up system prompt, with examples if provided
@@ -110,8 +109,8 @@ class Translator:
                 return answer
 
         # Query provider
-        answer: BaseModel | None = None
-        test_case: BaseModel | None = None
+        answer: Answer | None = None
+        test_case: TestCase | None = None
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_prompt},
@@ -206,7 +205,7 @@ class Translator:
         return self._system_prompt
 
     @property
-    def test_case_log(self) -> dict[tuple, BaseModel]:
+    def test_case_log(self) -> dict[tuple, TestCase]:
         """Log of test cases, keyed by query key."""
         return self._test_case_log
 
