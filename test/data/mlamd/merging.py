@@ -257,7 +257,7 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["麦兜"],
         yuewen_merged="麦兜！",
     ),
-]
+]  # merge_test_cases_block_1
 merge_test_cases_block_2 = [
     MergeTestCase(
         zhongwen="麦太，没见面一阵",
@@ -341,7 +341,7 @@ merge_test_cases_block_2 = [
         yuewen_to_merge=["春田花花", "真系好多西人㗎"],
         yuewen_merged="春田花花，真系好多西人㗎！",
     ),
-]
+]  # merge_test_cases_block_2
 merge_test_cases_block_3 = [
     MergeTestCase(
         zhongwen="这个猪样白兔小朋友⋯",
@@ -434,13 +434,13 @@ merge_test_cases_block_3 = [
         yuewen_merged="哎，好在！噉大家可以返去上堂喇",
         include_in_prompt=True,
     ),
-]
-merge_test_cases_block_4 = []
-merge_test_cases_block_5 = []
-merge_test_cases_block_6 = []
-merge_test_cases_block_7 = []
-merge_test_cases_block_8 = []
-merge_test_cases_block_9 = []
+]  # merge_test_cases_block_3
+merge_test_cases_block_4 = []  # merge_test_cases_block_4
+merge_test_cases_block_5 = []  # merge_test_cases_block_5
+merge_test_cases_block_6 = []  # merge_test_cases_block_6
+merge_test_cases_block_7 = []  # merge_test_cases_block_7
+merge_test_cases_block_8 = []  # merge_test_cases_block_8
+merge_test_cases_block_9 = []  # merge_test_cases_block_9
 merge_test_cases_block_10 = [
     MergeTestCase(
         zhongwen="好高兴这么快又跟大家见面",
@@ -472,13 +472,13 @@ merge_test_cases_block_10 = [
         yuewen_to_merge=["各位小朋友", "你哋话似唔似鸡包啊"],
         yuewen_merged="各位小朋友，你哋话似唔似鸡包啊？",
     ),
-]
-merge_test_cases_block_11 = []
-merge_test_cases_block_12 = []
-merge_test_cases_block_13 = []
-merge_test_cases_block_14 = []
-merge_test_cases_block_15 = []
-merge_test_cases_block_16 = []
+]  # merge_test_cases_block_10
+merge_test_cases_block_11 = []  # merge_test_cases_block_11
+merge_test_cases_block_12 = []  # merge_test_cases_block_12
+merge_test_cases_block_13 = []  # merge_test_cases_block_13
+merge_test_cases_block_14 = []  # merge_test_cases_block_14
+merge_test_cases_block_15 = []  # merge_test_cases_block_15
+merge_test_cases_block_16 = []  # merge_test_cases_block_16
 merge_test_cases_block_17 = [
     MergeTestCase(
         zhongwen="衰仔，快点起床上学",
@@ -495,9 +495,9 @@ merge_test_cases_block_17 = [
         yuewen_to_merge=["妈妈"],
         yuewen_merged="妈妈！",
     ),
-]
-merge_test_cases_block_18 = []
-merge_test_cases_block_19 = []
+]  # merge_test_cases_block_17
+merge_test_cases_block_18 = []  # merge_test_cases_block_18
+merge_test_cases_block_19 = []  # merge_test_cases_block_19
 merge_test_cases_block_20 = [
     MergeTestCase(
         zhongwen="好呀，马尔代夫！",
@@ -529,7 +529,7 @@ merge_test_cases_block_20 = [
         yuewen_to_merge=["嚟啦", "食多更"],
         yuewen_merged="嚟啦，食多更！",
     ),
-]
+]  # merge_test_cases_block_20
 merge_test_cases_block_21 = [
     MergeTestCase(
         zhongwen="妈妈，你看！",
@@ -566,15 +566,15 @@ merge_test_cases_block_21 = [
         yuewen_to_merge=["吓", "咪我饮晒㖞"],
         yuewen_merged="吓，咪我饮晒㖞！",
     ),
-]
-merge_test_cases_block_22 = []
-merge_test_cases_block_23 = []
-merge_test_cases_block_24 = []
-merge_test_cases_block_25 = []
-merge_test_cases_block_26 = []
-merge_test_cases_block_27 = []
-merge_test_cases_block_28 = []
-merge_test_cases_block_29 = []
+]  # merge_test_cases_block_21
+merge_test_cases_block_22 = []  # merge_test_cases_block_22
+merge_test_cases_block_23 = []  # merge_test_cases_block_23
+merge_test_cases_block_24 = []  # merge_test_cases_block_24
+merge_test_cases_block_25 = []  # merge_test_cases_block_25
+merge_test_cases_block_26 = []  # merge_test_cases_block_26
+merge_test_cases_block_27 = []  # merge_test_cases_block_27
+merge_test_cases_block_28 = []  # merge_test_cases_block_28
+merge_test_cases_block_29 = []  # merge_test_cases_block_29
 merge_test_cases_block_30 = [
     MergeTestCase(
         zhongwen="但无论多不容易，我都要试一试",
@@ -591,22 +591,22 @@ merge_test_cases_block_30 = [
         yuewen_to_merge=["无论几辛苦", "我一定要捞到奥运金牌"],
         yuewen_merged="无论几辛苦，我一定要捞到奥运金牌！",
     ),
-]
-merge_test_cases_block_31 = []
+]  # merge_test_cases_block_30
+merge_test_cases_block_31 = []  # merge_test_cases_block_31
 merge_test_cases_block_32 = [
     MergeTestCase(
         zhongwen="长洲，我终于来到长洲了！",
         yuewen_to_merge=["长洲", "我终于嚟到长洲嘞"],
         yuewen_merged="长洲，我终于嚟到长洲嘞！",
     ),
-]
+]  # merge_test_cases_block_32
 merge_test_cases_block_33 = [
     MergeTestCase(
         zhongwen="长洲，我得亲吻这片圣洁的土地！",
         yuewen_to_merge=["长洲", "我要亲吻呢片盛洁嘅土地"],
         yuewen_merged="长洲，我要亲吻呢片盛洁嘅土地！",
     ),
-]
+]  # merge_test_cases_block_33
 merge_test_cases_block_34 = [
     MergeTestCase(
         zhongwen="小朋友，这儿是南丫岛呀！",
@@ -618,16 +618,16 @@ merge_test_cases_block_34 = [
         yuewen_to_merge=["南丫岛", "都引用咗周润发噃"],
         yuewen_merged="南丫岛？都引用咗周润发噃！",
     ),
-]
-merge_test_cases_block_35 = []
-merge_test_cases_block_36 = []
-merge_test_cases_block_37 = []
-merge_test_cases_block_38 = []
-merge_test_cases_block_39 = []
-merge_test_cases_block_40 = []
-merge_test_cases_block_41 = []
-merge_test_cases_block_42 = []
-merge_test_cases_block_43 = []
+]  # merge_test_cases_block_34
+merge_test_cases_block_35 = []  # merge_test_cases_block_35
+merge_test_cases_block_36 = []  # merge_test_cases_block_36
+merge_test_cases_block_37 = []  # merge_test_cases_block_37
+merge_test_cases_block_38 = []  # merge_test_cases_block_38
+merge_test_cases_block_39 = []  # merge_test_cases_block_39
+merge_test_cases_block_40 = []  # merge_test_cases_block_40
+merge_test_cases_block_41 = []  # merge_test_cases_block_41
+merge_test_cases_block_42 = []  # merge_test_cases_block_42
+merge_test_cases_block_43 = []  # merge_test_cases_block_43
 merge_test_cases_block_44 = [
     MergeTestCase(
         zhongwen="第二项绝技，就是⋯",
@@ -639,11 +639,11 @@ merge_test_cases_block_44 = [
         yuewen_to_merge=["抢爆山"],
         yuewen_merged="抢爆山！",
     ),
-]
-merge_test_cases_block_45 = []
-merge_test_cases_block_46 = []
-merge_test_cases_block_47 = []
-merge_test_cases_block_48 = []
+]  # merge_test_cases_block_44
+merge_test_cases_block_45 = []  # merge_test_cases_block_45
+merge_test_cases_block_46 = []  # merge_test_cases_block_46
+merge_test_cases_block_47 = []  # merge_test_cases_block_47
+merge_test_cases_block_48 = []  # merge_test_cases_block_48
 merge_test_cases_block_49 = [
     MergeTestCase(
         zhongwen="其实鸡尾包呢⋯",
@@ -655,7 +655,7 @@ merge_test_cases_block_49 = [
         yuewen_to_merge=["吓", "你话噉样似唔似鸡尾呀", "哈哈哈哈"],
         yuewen_merged="吓，你话噉样似唔似鸡尾呀？哈哈哈哈",
     ),
-]
+]  # merge_test_cases_block_49
 merge_test_cases_block_50 = [
     MergeTestCase(
         zhongwen="麦兜他学东西⋯还可以",
@@ -677,8 +677,8 @@ merge_test_cases_block_50 = [
         yuewen_to_merge=["佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜"],
         yuewen_merged="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
     ),
-]  # WIP
-merge_test_cases_block_51 = []
+]  # merge_test_cases_block_50
+merge_test_cases_block_51 = []  # merge_test_cases_block_51
 merge_test_cases_block_52 = [
     MergeTestCase(
         zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -696,14 +696,14 @@ merge_test_cases_block_52 = [
         yuewen_to_merge=["唔通", "冇理由㗎"],
         yuewen_merged="唔通⋯冇理由㗎？",
     ),
-]
-merge_test_cases_block_53 = []
-merge_test_cases_block_54 = []
-merge_test_cases_block_55 = []
-merge_test_cases_block_56 = []
-merge_test_cases_block_57 = []
-merge_test_cases_block_58 = []
-merge_test_cases_block_59 = []
+]  # merge_test_cases_block_52
+merge_test_cases_block_53 = []  # merge_test_cases_block_53
+merge_test_cases_block_54 = []  # merge_test_cases_block_54
+merge_test_cases_block_55 = []  # merge_test_cases_block_55
+merge_test_cases_block_56 = []  # merge_test_cases_block_56
+merge_test_cases_block_57 = []  # merge_test_cases_block_57
+merge_test_cases_block_58 = []  # merge_test_cases_block_58
+merge_test_cases_block_59 = []  # merge_test_cases_block_59
 merge_test_cases_block_60 = [
     MergeTestCase(
         zhongwen="最后⋯",
@@ -760,9 +760,9 @@ merge_test_cases_block_60 = [
         yuewen_to_merge=["一切回复正常"],
         yuewen_merged="一切回复正常",
     ),
-]
-merge_test_cases_block_61 = []
-merge_test_cases_block_62 = []
+]  # merge_test_cases_block_60
+merge_test_cases_block_61 = []  # merge_test_cases_block_61
+merge_test_cases_block_62 = []  # merge_test_cases_block_62
 merge_test_cases_block_63 = [
     MergeTestCase(
         zhongwen="因为环保⋯",
@@ -779,19 +779,19 @@ merge_test_cases_block_63 = [
         yuewen_to_merge=["师傅话𠮶阵胶气都几丑下"],
         yuewen_merged="师傅话，𠮶阵胶气，都几丑下",
     ),
-]
-merge_test_cases_block_64 = []
+]  # merge_test_cases_block_63
+merge_test_cases_block_64 = []  # merge_test_cases_block_64
 merge_test_cases_block_65 = [
     MergeTestCase(
         zhongwen="「⋯无力挽！」",
         yuewen_to_merge=["无泪弯"],
         yuewen_merged="「⋯无泪弯！」",
     ),
-]
-merge_test_cases_block_66 = []
-merge_test_cases_block_67 = []
-merge_test_cases_block_68 = []
-merge_test_cases_block_69 = []
+]  # merge_test_cases_block_65
+merge_test_cases_block_66 = []  # merge_test_cases_block_66
+merge_test_cases_block_67 = []  # merge_test_cases_block_67
+merge_test_cases_block_68 = []  # merge_test_cases_block_68
+merge_test_cases_block_69 = []  # merge_test_cases_block_69
 merge_test_cases_block_70 = [
     MergeTestCase(
         zhongwen="对不起，常餐卖光了",
@@ -923,7 +923,7 @@ merge_test_cases_block_70 = [
         yuewen_to_merge=["咁两份快餐啦"],
         yuewen_merged="咁两份快餐啦",
     ),
-]
+]  # merge_test_cases_block_70
 merge_test_cases_block_71 = [
     MergeTestCase(
         zhongwen="对不起，没快餐了",
@@ -975,7 +975,7 @@ merge_test_cases_block_71 = [
         yuewen_to_merge=["好啦好啦", "要两份午餐啦"],
         yuewen_merged="好啦好啦！要两份午餐啦",
     ),
-]
+]  # merge_test_cases_block_71
 merge_test_cases_block_72 = [
     MergeTestCase(
         zhongwen="对不起，午餐卖光了",
@@ -1008,7 +1008,7 @@ merge_test_cases_block_72 = [
         yuewen_to_merge=["想快", "想快就要快餐啊"],
         yuewen_merged="想快，想快就要快餐啊！",
     ),
-]
+]  # merge_test_cases_block_72
 mlamd_merge_test_cases: list[MergeTestCase] = sum(
     (globals()[f"merge_test_cases_block_{i}"] for i in range(73)), []
 )

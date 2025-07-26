@@ -365,7 +365,7 @@ shift_test_cases_block_1 = [
         one_yuewen_shifted="我就系呢个差少少就叫做麦胶嘅小朋友",
         two_yuewen_shifted="麦兜",
     ),
-]
+]  # shift_test_cases_block_1
 shift_test_cases_block_2 = [
     ShiftTestCase(
         one_zhongwen="麦太，没见面一阵",
@@ -525,7 +525,7 @@ shift_test_cases_block_2 = [
         two_yuewen_shifted="春田花花真系好多西人㗎",
         include_in_prompt=True,
     ),
-]
+]  # shift_test_cases_block_2
 shift_test_cases_block_3 = [
     ShiftTestCase(
         one_zhongwen="〝鹅闷是春天滴化！〞",
@@ -682,7 +682,7 @@ shift_test_cases_block_3 = [
         one_yuewen_shifted="交",
         two_yuewen_shifted="哎好在噉大家可以返去上堂喇",
     ),
-]
+]  # shift_test_cases_block_3
 shift_test_cases_block_4 = [
     ShiftTestCase(
         one_zhongwen="你们可能觉得这间幼稚园很烂",
@@ -1125,12 +1125,12 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="到𠮶阵",
         two_yuewen_shifted="我买层楼畀我妈妈",
     ),
-]
-shift_test_cases_block_5 = []
-shift_test_cases_block_6 = []
-shift_test_cases_block_7 = []
-shift_test_cases_block_8 = []
-shift_test_cases_block_9 = []
+]  # shift_test_cases_block_4
+shift_test_cases_block_5 = []  # shift_test_cases_block_5
+shift_test_cases_block_6 = []  # shift_test_cases_block_6
+shift_test_cases_block_7 = []  # shift_test_cases_block_7
+shift_test_cases_block_8 = []  # shift_test_cases_block_8
+shift_test_cases_block_9 = []  # shift_test_cases_block_9
 shift_test_cases_block_10 = [
     ShiftTestCase(
         one_zhongwen="好高兴这么快又跟大家见面",
@@ -1172,13 +1172,13 @@ shift_test_cases_block_10 = [
         one_yuewen_shifted="一个纸鸡包就咁完成咗喇",
         two_yuewen_shifted="各位小朋友你哋话似唔似鸡包啊",
     ),
-]
-shift_test_cases_block_11 = []
-shift_test_cases_block_12 = []
-shift_test_cases_block_13 = []
-shift_test_cases_block_14 = []
-shift_test_cases_block_15 = []
-shift_test_cases_block_16 = []
+]  # shift_test_cases_block_10
+shift_test_cases_block_11 = []  # shift_test_cases_block_11
+shift_test_cases_block_12 = []  # shift_test_cases_block_12
+shift_test_cases_block_13 = []  # shift_test_cases_block_13
+shift_test_cases_block_14 = []  # shift_test_cases_block_14
+shift_test_cases_block_15 = []  # shift_test_cases_block_15
+shift_test_cases_block_16 = []  # shift_test_cases_block_16
 shift_test_cases_block_17 = [
     ShiftTestCase(
         one_zhongwen="衰仔，快点起床上学",
@@ -1196,9 +1196,9 @@ shift_test_cases_block_17 = [
         one_yuewen_shifted="咦",
         two_yuewen_shifted="妈妈",
     ),
-]
-shift_test_cases_block_18 = []
-shift_test_cases_block_19 = []
+]  # shift_test_cases_block_17
+shift_test_cases_block_18 = []  # shift_test_cases_block_18
+shift_test_cases_block_19 = []  # shift_test_cases_block_19
 shift_test_cases_block_20 = [
     ShiftTestCase(
         one_zhongwen="好呀，马尔代夫！",
@@ -1248,7 +1248,7 @@ shift_test_cases_block_20 = [
         one_yuewen_shifted="嗯你乖乖哋食埋啲药好返晒啦我即刻订机票",
         two_yuewen_shifted="嚟啦食多更",
     ),
-]
+]  # shift_test_cases_block_20
 shift_test_cases_block_21 = [
     ShiftTestCase(
         one_zhongwen="妈妈，你看！",
@@ -1298,15 +1298,15 @@ shift_test_cases_block_21 = [
         one_yuewen_shifted="我饮下一格又一格又一格",
         two_yuewen_shifted="吓咪我饮晒㖞",
     ),
-]
-shift_test_cases_block_22 = []
-shift_test_cases_block_23 = []
-shift_test_cases_block_24 = []
-shift_test_cases_block_25 = []
-shift_test_cases_block_26 = []
-shift_test_cases_block_27 = []
-shift_test_cases_block_28 = []
-shift_test_cases_block_29 = []
+]  # shift_test_cases_block_21
+shift_test_cases_block_22 = []  # shift_test_cases_block_22
+shift_test_cases_block_23 = []  # shift_test_cases_block_23
+shift_test_cases_block_24 = []  # shift_test_cases_block_24
+shift_test_cases_block_25 = []  # shift_test_cases_block_25
+shift_test_cases_block_26 = []  # shift_test_cases_block_26
+shift_test_cases_block_27 = []  # shift_test_cases_block_27
+shift_test_cases_block_28 = []  # shift_test_cases_block_28
+shift_test_cases_block_29 = []  # shift_test_cases_block_29
 shift_test_cases_block_30 = [
     ShiftTestCase(
         one_zhongwen="但无论多不容易，我都要试一试",
@@ -1324,10 +1324,10 @@ shift_test_cases_block_30 = [
         one_yuewen_shifted="我要来紧收我度徒弟",
         two_yuewen_shifted="无论几辛苦我一定要捞到奥运金牌",
     ),
-]
-shift_test_cases_block_31 = []
-shift_test_cases_block_32 = []
-shift_test_cases_block_33 = []
+]  # shift_test_cases_block_30
+shift_test_cases_block_31 = []  # shift_test_cases_block_31
+shift_test_cases_block_32 = []  # shift_test_cases_block_32
+shift_test_cases_block_33 = []  # shift_test_cases_block_33
 shift_test_cases_block_34 = [
     ShiftTestCase(
         one_zhongwen="小朋友，这儿是南丫岛呀！",
@@ -1337,16 +1337,16 @@ shift_test_cases_block_34 = [
         one_yuewen_shifted="小朋友呀呢度系南丫岛噃",
         two_yuewen_shifted="南丫岛都引用咗周润发噃",
     ),
-]
-shift_test_cases_block_35 = []
-shift_test_cases_block_36 = []
-shift_test_cases_block_37 = []
-shift_test_cases_block_38 = []
-shift_test_cases_block_39 = []
-shift_test_cases_block_40 = []
-shift_test_cases_block_41 = []
-shift_test_cases_block_42 = []
-shift_test_cases_block_43 = []
+]  # shift_test_cases_block_34
+shift_test_cases_block_35 = []  # shift_test_cases_block_35
+shift_test_cases_block_36 = []  # shift_test_cases_block_36
+shift_test_cases_block_37 = []  # shift_test_cases_block_37
+shift_test_cases_block_38 = []  # shift_test_cases_block_38
+shift_test_cases_block_39 = []  # shift_test_cases_block_39
+shift_test_cases_block_40 = []  # shift_test_cases_block_40
+shift_test_cases_block_41 = []  # shift_test_cases_block_41
+shift_test_cases_block_42 = []  # shift_test_cases_block_42
+shift_test_cases_block_43 = []  # shift_test_cases_block_43
 shift_test_cases_block_44 = [
     ShiftTestCase(
         one_zhongwen="第二项绝技，就是⋯",
@@ -1356,11 +1356,11 @@ shift_test_cases_block_44 = [
         one_yuewen_shifted="第二样绝技就系",
         two_yuewen_shifted="抢爆山",
     ),
-]
-shift_test_cases_block_45 = []
-shift_test_cases_block_46 = []
-shift_test_cases_block_47 = []
-shift_test_cases_block_48 = []
+]  # shift_test_cases_block_44
+shift_test_cases_block_45 = []  # shift_test_cases_block_45
+shift_test_cases_block_46 = []  # shift_test_cases_block_46
+shift_test_cases_block_47 = []  # shift_test_cases_block_47
+shift_test_cases_block_48 = []  # shift_test_cases_block_48
 shift_test_cases_block_49 = [
     ShiftTestCase(
         one_zhongwen="其实鸡尾包呢⋯",
@@ -1370,7 +1370,7 @@ shift_test_cases_block_49 = [
         one_yuewen_shifted="其实鸡尾爆呢",
         two_yuewen_shifted="吓你话噉样似唔似鸡尾呀哈哈哈哈",
     ),
-]
+]  # shift_test_cases_block_49
 shift_test_cases_block_50 = [
     ShiftTestCase(
         one_zhongwen="麦兜他学东西⋯还可以",
@@ -1532,8 +1532,8 @@ shift_test_cases_block_50 = [
         one_yuewen_shifted="挨过几多斧头",
         two_yuewen_shifted="先至可以练成呢一只举细无伤嘅脚瓜",
     ),
-]
-shift_test_cases_block_51 = []
+]  # shift_test_cases_block_50
+shift_test_cases_block_51 = []  # shift_test_cases_block_51
 shift_test_cases_block_52 = [
     ShiftTestCase(
         one_zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -1551,14 +1551,14 @@ shift_test_cases_block_52 = [
         one_yuewen_shifted="去咗边呢",
         two_yuewen_shifted="唔通冇理由㗎",
     ),
-]
-shift_test_cases_block_53 = []
-shift_test_cases_block_54 = []
-shift_test_cases_block_55 = []
-shift_test_cases_block_56 = []
-shift_test_cases_block_57 = []
-shift_test_cases_block_58 = []
-shift_test_cases_block_59 = []
+]  # shift_test_cases_block_52
+shift_test_cases_block_53 = []  # shift_test_cases_block_53
+shift_test_cases_block_54 = []  # shift_test_cases_block_54
+shift_test_cases_block_55 = []  # shift_test_cases_block_55
+shift_test_cases_block_56 = []  # shift_test_cases_block_56
+shift_test_cases_block_57 = []  # shift_test_cases_block_57
+shift_test_cases_block_58 = []  # shift_test_cases_block_58
+shift_test_cases_block_59 = []  # shift_test_cases_block_59
 shift_test_cases_block_60 = [
     ShiftTestCase(
         one_zhongwen="最后⋯",
@@ -1656,9 +1656,9 @@ shift_test_cases_block_60 = [
         one_yuewen_shifted="都返返去茶餐厅继续钉佢哋嘅蛋挞",
         two_yuewen_shifted="一切回复正常",
     ),
-]
-shift_test_cases_block_61 = []
-shift_test_cases_block_62 = []
+]  # shift_test_cases_block_60
+shift_test_cases_block_61 = []  # shift_test_cases_block_61
+shift_test_cases_block_62 = []  # shift_test_cases_block_62
 shift_test_cases_block_63 = [
     ShiftTestCase(
         one_zhongwen="因为环保⋯",
@@ -1676,13 +1676,13 @@ shift_test_cases_block_63 = [
         one_yuewen_shifted="长洲嘅厂包经已转咗用塑胶",
         two_yuewen_shifted="师傅话𠮶阵胶气都几丑下",
     ),
-]
-shift_test_cases_block_64 = []
-shift_test_cases_block_65 = []
-shift_test_cases_block_66 = []
-shift_test_cases_block_67 = []
-shift_test_cases_block_68 = []
-shift_test_cases_block_69 = []
+]  # shift_test_cases_block_63
+shift_test_cases_block_64 = []  # shift_test_cases_block_64
+shift_test_cases_block_65 = []  # shift_test_cases_block_65
+shift_test_cases_block_66 = []  # shift_test_cases_block_66
+shift_test_cases_block_67 = []  # shift_test_cases_block_67
+shift_test_cases_block_68 = []  # shift_test_cases_block_68
+shift_test_cases_block_69 = []  # shift_test_cases_block_69
 shift_test_cases_block_70 = [
     ShiftTestCase(
         one_zhongwen="对不起，常餐卖光了",
@@ -1884,7 +1884,7 @@ shift_test_cases_block_70 = [
         one_yuewen_shifted="系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
         two_yuewen_shifted="咁两份快餐啦",
     ),
-]
+]  # shift_test_cases_block_70
 shift_test_cases_block_71 = [
     ShiftTestCase(
         one_zhongwen="对不起，没快餐了",
@@ -1958,7 +1958,7 @@ shift_test_cases_block_71 = [
         one_yuewen_shifted="上餐上餐一早卖晒啦你话好唔好嘢",
         two_yuewen_shifted="好啦好啦要两份午餐啦",
     ),
-]
+]  # shift_test_cases_block_71
 shift_test_cases_block_72 = [
     ShiftTestCase(
         one_zhongwen="对不起，午餐卖光了",
@@ -2000,7 +2000,7 @@ shift_test_cases_block_72 = [
         one_yuewen_shifted="好啦好啦怕咗你啦要两份晚餐啦快啲手啊",
         two_yuewen_shifted="想快想快就要快餐啊",
     ),
-]
+]  # shift_test_cases_block_72
 mlamd_shift_test_cases: list[ShiftTestCase] = sum(
     (globals()[f"shift_test_cases_block_{i}"] for i in range(73)), []
 )

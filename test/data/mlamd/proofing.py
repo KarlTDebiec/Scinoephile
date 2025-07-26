@@ -315,7 +315,7 @@ proof_test_cases_block_1 = [
         yuewen_proofread="麦兜！",
         note="",
     ),
-]
+]  # proof_test_cases_block_1
 proof_test_cases_block_2 = [
     ProofTestCase(
         zhongwen="麦太，没见面一阵",
@@ -419,7 +419,7 @@ proof_test_cases_block_2 = [
         yuewen_proofread="春田花花，真系好多西人㗎！",
         note="",
     ),
-]
+]  # proof_test_cases_block_2
 proof_test_cases_block_3 = [
     ProofTestCase(
         zhongwen="这个猪样白兔小朋友⋯",
@@ -533,13 +533,13 @@ proof_test_cases_block_3 = [
         yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
         note="",
     ),
-]
-proof_test_cases_block_4 = []
-proof_test_cases_block_5 = []
-proof_test_cases_block_6 = []
-proof_test_cases_block_7 = []
-proof_test_cases_block_8 = []
-proof_test_cases_block_9 = []
+]  # proof_test_cases_block_3
+proof_test_cases_block_4 = []  # proof_test_cases_block_4
+proof_test_cases_block_5 = []  # proof_test_cases_block_5
+proof_test_cases_block_6 = []  # proof_test_cases_block_6
+proof_test_cases_block_7 = []  # proof_test_cases_block_7
+proof_test_cases_block_8 = []  # proof_test_cases_block_8
+proof_test_cases_block_9 = []  # proof_test_cases_block_9
 proof_test_cases_block_10 = [
     ProofTestCase(
         zhongwen="好高兴这么快又跟大家见面",
@@ -577,13 +577,13 @@ proof_test_cases_block_10 = [
         yuewen_proofread="各位小朋友，你哋话似唔似鸡包啊？",
         note="",
     ),
-]
-proof_test_cases_block_11 = []
-proof_test_cases_block_12 = []
-proof_test_cases_block_13 = []
-proof_test_cases_block_14 = []
-proof_test_cases_block_15 = []
-proof_test_cases_block_16 = []
+]  # proof_test_cases_block_10
+proof_test_cases_block_11 = []  # proof_test_cases_block_11
+proof_test_cases_block_12 = []  # proof_test_cases_block_12
+proof_test_cases_block_13 = []  # proof_test_cases_block_13
+proof_test_cases_block_14 = []  # proof_test_cases_block_14
+proof_test_cases_block_15 = []  # proof_test_cases_block_15
+proof_test_cases_block_16 = []  # proof_test_cases_block_16
 proof_test_cases_block_17 = [
     ProofTestCase(
         zhongwen="衰仔，快点起床上学",
@@ -603,9 +603,9 @@ proof_test_cases_block_17 = [
         yuewen_proofread="妈妈！",
         note="",
     ),
-]
-proof_test_cases_block_18 = []
-proof_test_cases_block_19 = []
+]  # proof_test_cases_block_17
+proof_test_cases_block_18 = []  # proof_test_cases_block_18
+proof_test_cases_block_19 = []  # proof_test_cases_block_19
 proof_test_cases_block_20 = [
     ProofTestCase(  # REVIEW
         zhongwen="好呀，马尔代夫！",
@@ -644,7 +644,7 @@ proof_test_cases_block_20 = [
         note="",
         include_in_prompt=True,
     ),
-]
+]  # proof_test_cases_block_20
 proof_test_cases_block_21 = [
     ProofTestCase(
         zhongwen="妈妈，你看！",
@@ -688,15 +688,15 @@ proof_test_cases_block_21 = [
         yuewen_proofread="吓，咪我饮晒㖞！",
         note="",
     ),
-]
-proof_test_cases_block_22 = []
-proof_test_cases_block_23 = []
-proof_test_cases_block_24 = []
-proof_test_cases_block_25 = []
-proof_test_cases_block_26 = []
-proof_test_cases_block_27 = []
-proof_test_cases_block_28 = []
-proof_test_cases_block_29 = []
+]  # proof_test_cases_block_21
+proof_test_cases_block_22 = []  # proof_test_cases_block_22
+proof_test_cases_block_23 = []  # proof_test_cases_block_23
+proof_test_cases_block_24 = []  # proof_test_cases_block_24
+proof_test_cases_block_25 = []  # proof_test_cases_block_25
+proof_test_cases_block_26 = []  # proof_test_cases_block_26
+proof_test_cases_block_27 = []  # proof_test_cases_block_27
+proof_test_cases_block_28 = []  # proof_test_cases_block_28
+proof_test_cases_block_29 = []  # proof_test_cases_block_29
 proof_test_cases_block_30 = [
     ProofTestCase(
         zhongwen="但无论多不容易，我都要试一试",
@@ -716,8 +716,8 @@ proof_test_cases_block_30 = [
         yuewen_proofread="无论几辛苦，我一定要攞到奥运金牌！",
         note="Corrected '捞到' to '攞到' as '攞到' is the correct Cantonese verb for 'to get/obtain', matching the meaning of the 中文.",
     ),
-]
-proof_test_cases_block_31 = []
+]  # proof_test_cases_block_30
+proof_test_cases_block_31 = []  # proof_test_cases_block_31
 proof_test_cases_block_32 = [
     ProofTestCase(
         zhongwen="长洲，我终于来到长洲了！",
@@ -725,7 +725,7 @@ proof_test_cases_block_32 = [
         yuewen_proofread="长洲，我终于嚟到长洲嘞！",
         note="",
     ),
-]
+]  # proof_test_cases_block_32
 proof_test_cases_block_33 = [
     ProofTestCase(
         zhongwen="长洲，我得亲吻这片圣洁的土地！",
@@ -733,7 +733,7 @@ proof_test_cases_block_33 = [
         yuewen_proofread="长洲，我要亲吻呢片圣洁嘅土地！",
         note="Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'sacred' or 'holy', matching the meaning in the 中文.",
     ),
-]
+]  # proof_test_cases_block_33
 proof_test_cases_block_34 = [
     ProofTestCase(
         zhongwen="小朋友，这儿是南丫岛呀！",
@@ -747,16 +747,16 @@ proof_test_cases_block_34 = [
         yuewen_proofread="南丫岛？都孕育咗周润发噃！",
         note="Corrected '引用' to '孕育' as '孕育' is the correct term for 'nurtured' or 'gave rise to', matching the meaning in the 中文.",
     ),
-]
-proof_test_cases_block_35 = []
-proof_test_cases_block_36 = []
-proof_test_cases_block_37 = []
-proof_test_cases_block_38 = []
-proof_test_cases_block_39 = []
-proof_test_cases_block_40 = []
-proof_test_cases_block_41 = []
-proof_test_cases_block_42 = []
-proof_test_cases_block_43 = []
+]  # proof_test_cases_block_34
+proof_test_cases_block_35 = []  # proof_test_cases_block_35
+proof_test_cases_block_36 = []  # proof_test_cases_block_36
+proof_test_cases_block_37 = []  # proof_test_cases_block_37
+proof_test_cases_block_38 = []  # proof_test_cases_block_38
+proof_test_cases_block_39 = []  # proof_test_cases_block_39
+proof_test_cases_block_40 = []  # proof_test_cases_block_40
+proof_test_cases_block_41 = []  # proof_test_cases_block_41
+proof_test_cases_block_42 = []  # proof_test_cases_block_42
+proof_test_cases_block_43 = []  # proof_test_cases_block_43
 proof_test_cases_block_44 = [
     ProofTestCase(
         zhongwen="第二项绝技，就是⋯",
@@ -770,11 +770,11 @@ proof_test_cases_block_44 = [
         yuewen_proofread="抢包山！",
         note="Corrected '抢爆山' to '抢包山' as '抢包山' is the correct term for the traditional event, and '爆' is a likely mishearing of '包'.",
     ),
-]
-proof_test_cases_block_45 = []
-proof_test_cases_block_46 = []
-proof_test_cases_block_47 = []
-proof_test_cases_block_48 = []
+]  # proof_test_cases_block_44
+proof_test_cases_block_45 = []  # proof_test_cases_block_45
+proof_test_cases_block_46 = []  # proof_test_cases_block_46
+proof_test_cases_block_47 = []  # proof_test_cases_block_47
+proof_test_cases_block_48 = []  # proof_test_cases_block_48
 proof_test_cases_block_49 = [
     ProofTestCase(
         zhongwen="其实鸡尾包呢⋯",
@@ -788,9 +788,9 @@ proof_test_cases_block_49 = [
         yuewen_proofread="吓，你话噉样似唔似鸡尾呀？哈哈哈哈",
         note="",
     ),
-]
-proof_test_cases_block_50 = []
-proof_test_cases_block_51 = []
+]  # proof_test_cases_block_49
+proof_test_cases_block_50 = []  # proof_test_cases_block_50
+proof_test_cases_block_51 = []  # proof_test_cases_block_51
 proof_test_cases_block_52 = [
     ProofTestCase(
         zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -810,14 +810,14 @@ proof_test_cases_block_52 = [
         yuewen_proofread="唔通⋯冇理由㗎？",
         note="",
     ),
-]
-proof_test_cases_block_53 = []
-proof_test_cases_block_54 = []
-proof_test_cases_block_55 = []
-proof_test_cases_block_56 = []
-proof_test_cases_block_57 = []
-proof_test_cases_block_58 = []
-proof_test_cases_block_59 = []
+]  # proof_test_cases_block_52
+proof_test_cases_block_53 = []  # proof_test_cases_block_53
+proof_test_cases_block_54 = []  # proof_test_cases_block_54
+proof_test_cases_block_55 = []  # proof_test_cases_block_55
+proof_test_cases_block_56 = []  # proof_test_cases_block_56
+proof_test_cases_block_57 = []  # proof_test_cases_block_57
+proof_test_cases_block_58 = []  # proof_test_cases_block_58
+proof_test_cases_block_59 = []  # proof_test_cases_block_59
 proof_test_cases_block_60 = [
     ProofTestCase(
         zhongwen="最后⋯",
@@ -885,9 +885,9 @@ proof_test_cases_block_60 = [
         yuewen_proofread="一切回复正常",
         note="",
     ),
-]
-proof_test_cases_block_61 = []
-proof_test_cases_block_62 = []
+]  # proof_test_cases_block_60
+proof_test_cases_block_61 = []  # proof_test_cases_block_61
+proof_test_cases_block_62 = []  # proof_test_cases_block_62
 proof_test_cases_block_63 = [
     ProofTestCase(
         zhongwen="因为环保⋯",
@@ -907,8 +907,8 @@ proof_test_cases_block_63 = [
         yuewen_proofread="师傅话，𠮶阵胶气，都几臭下",
         note="Corrected '丑' to '臭' as '臭' (smelly) matches the meaning of '相当臭' in the 中文, while '丑' (ugly) is likely a mishearing.",
     ),
-]
-proof_test_cases_block_64 = []
+]  # proof_test_cases_block_63
+proof_test_cases_block_64 = []  # proof_test_cases_block_64
 proof_test_cases_block_65 = [
     ProofTestCase(
         zhongwen="「⋯无力挽！」",
@@ -916,11 +916,11 @@ proof_test_cases_block_65 = [
         yuewen_proofread="「⋯无力挽！」",
         note="Corrected '无泪弯' to '无力挽' as it is a clear mishearing; '无力挽' matches the intended meaning of '无力挽' in the 中文.",
     ),
-]
-proof_test_cases_block_66 = []
-proof_test_cases_block_67 = []
-proof_test_cases_block_68 = []
-proof_test_cases_block_69 = []
+]  # proof_test_cases_block_65
+proof_test_cases_block_66 = []  # proof_test_cases_block_66
+proof_test_cases_block_67 = []  # proof_test_cases_block_67
+proof_test_cases_block_68 = []  # proof_test_cases_block_68
+proof_test_cases_block_69 = []  # proof_test_cases_block_69
 proof_test_cases_block_70 = [
     ProofTestCase(
         zhongwen="对不起，常餐卖光了",
@@ -1079,7 +1079,7 @@ proof_test_cases_block_70 = [
         yuewen_proofread="咁两份快餐啦",
         note="",
     ),
-]
+]  # proof_test_cases_block_70
 proof_test_cases_block_71 = [
     ProofTestCase(
         zhongwen="对不起，没快餐了",
@@ -1143,7 +1143,7 @@ proof_test_cases_block_71 = [
         yuewen_proofread="好啦好啦！要两份午餐啦",
         note="",
     ),
-]
+]  # proof_test_cases_block_71
 proof_test_cases_block_72 = [
     ProofTestCase(
         zhongwen="对不起，午餐卖光了",
@@ -1183,7 +1183,7 @@ proof_test_cases_block_72 = [
         yuewen_proofread="想快，想快就要快餐啊！",
         note="",
     ),
-]
+]  # proof_test_cases_block_72
 mlamd_proof_test_cases: list[ProofTestCase] = sum(
     (globals()[f"proof_test_cases_block_{i}"] for i in range(73)), []
 )
