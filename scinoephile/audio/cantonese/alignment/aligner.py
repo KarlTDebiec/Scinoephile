@@ -23,6 +23,7 @@ from scinoephile.audio.cantonese.alignment.queries import (
     get_merge_query,
     get_proof_query,
     get_shift_query,
+    get_translate_query,
 )
 from scinoephile.audio.cantonese.distribution import DistributeAnswer
 from scinoephile.audio.cantonese.distribution.distributor import Distributor
@@ -450,6 +451,7 @@ class Aligner:
                 print(f"Query class: {pformat(query_cls.model_fields)}")
                 print(f"Answer class: {pformat(answer_cls.model_fields)}")
                 print(f"Test case class: {pformat(test_case_cls.model_fields)}")
-                query = None
-                self.translator
+                query = get_translate_query(alignment, query_cls=query_cls)
+                self.translator(query, answer_cls, test_case_cls)
+                # TODO: Fill in answer results
                 return

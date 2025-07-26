@@ -12,7 +12,7 @@ from scinoephile.core.abcs import Answer, Query, TestCase
 
 
 def get_translate_query_model(size: int, missing: tuple[int, ...]) -> type[Query]:
-    if any(m <= 0 or m > size for m in missing):
+    if any(m < 0 or m > size for m in missing):
         raise ScinoephileError(
             f"Missing indices must be in range 1 to {size}, got {missing}."
         )
@@ -31,7 +31,7 @@ def get_translate_query_model(size: int, missing: tuple[int, ...]) -> type[Query
 
 
 def get_translate_answer_model(size: int, missing: tuple[int, ...]) -> type[Answer]:
-    if any(m <= 0 or m > size for m in missing):
+    if any(m < 0 or m > size for m in missing):
         raise ScinoephileError(
             f"Missing indices must be in range 1 to {size}, got {missing}."
         )
