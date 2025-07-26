@@ -1392,7 +1392,51 @@ proof_test_cases_block_12 = [
         note="",
     ),
 ]  # proof_test_cases_block_12
-proof_test_cases_block_13 = []  # proof_test_cases_block_13
+proof_test_cases_block_13 = [
+    ProofTestCase(
+        zhongwen="从前，有个小朋友早睡晚起；第二天⋯",
+        yuewen="从前有个小朋友早睡晚起；第二朝⋯",
+        yuewen_proofread="从前有个小朋友早睡晚起；第二朝⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="他死了！",
+        yuewen="佢死咗！",
+        yuewen_proofread="佢死咗！",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="我妈妈就是这样子，一切都那么直接",
+        yuewen="我妈妈就系噉，一切都咁直接",
+        yuewen_proofread="我妈妈就系噉，一切都咁直接",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="她爱得我直接⋯",
+        yuewen="佢爱得我直接⋯",
+        yuewen_proofread="佢爱得我直接⋯",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="对我的期望直接",
+        yuewen="对我嘅期望直接",
+        yuewen_proofread="对我嘅期望直接",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="对她，一、二、三、四、五、六、七",
+        yuewen="佢，一、二、三、四、五、六、七",
+        yuewen_proofread="佢，一、二、三、四、五、六、七",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="没有不成的事",
+        yuewen="唔得都要得字幕由Amara.org社群提供",
+        yuewen_proofread="唔得都要得",
+        note="Removed '字幕由Amara.org社群提供' as it is not part of the spoken "
+        "content and is unrelated to the original sentence.",
+    ),
+]  # proof_test_cases_block_13
 proof_test_cases_block_14 = []  # proof_test_cases_block_14
 proof_test_cases_block_15 = []  # proof_test_cases_block_15
 proof_test_cases_block_16 = []  # proof_test_cases_block_16

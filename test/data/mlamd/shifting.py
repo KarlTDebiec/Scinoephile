@@ -1785,7 +1785,56 @@ shift_test_cases_block_12 = [
         two_yuewen_shifted="妈我想瞓啦",
     ),
 ]  # shift_test_cases_block_12
-shift_test_cases_block_13 = []  # shift_test_cases_block_13
+shift_test_cases_block_13 = [
+    ShiftTestCase(
+        one_zhongwen="从前，有个小朋友早睡晚起；第二天⋯",
+        one_yuewen="从前有个小朋友早睡晚起第二朝",
+        two_zhongwen="他死了！",
+        two_yuewen="佢死咗",
+        one_yuewen_shifted="从前有个小朋友早睡晚起第二朝",
+        two_yuewen_shifted="佢死咗",
+    ),
+    ShiftTestCase(
+        one_zhongwen="他死了！",
+        one_yuewen="佢死咗",
+        two_zhongwen="我妈妈就是这样子，一切都那么直接",
+        two_yuewen="我妈妈就系噉一切都咁直接",
+        one_yuewen_shifted="佢死咗",
+        two_yuewen_shifted="我妈妈就系噉一切都咁直接",
+    ),
+    ShiftTestCase(
+        one_zhongwen="我妈妈就是这样子，一切都那么直接",
+        one_yuewen="我妈妈就系噉一切都咁直接",
+        two_zhongwen="她爱得我直接⋯",
+        two_yuewen="佢爱得我直接",
+        one_yuewen_shifted="我妈妈就系噉一切都咁直接",
+        two_yuewen_shifted="佢爱得我直接",
+    ),
+    ShiftTestCase(
+        one_zhongwen="她爱得我直接⋯",
+        one_yuewen="佢爱得我直接",
+        two_zhongwen="对我的期望直接",
+        two_yuewen="对我嘅期望直接",
+        one_yuewen_shifted="佢爱得我直接",
+        two_yuewen_shifted="对我嘅期望直接",
+    ),
+    ShiftTestCase(
+        one_zhongwen="对我的期望直接",
+        one_yuewen="对我嘅期望直接",
+        two_zhongwen="对她，一、二、三、四、五、六、七",
+        two_yuewen="佢一二三四五六七",
+        one_yuewen_shifted="对我嘅期望直接",
+        two_yuewen_shifted="佢一二三四五六七",
+    ),
+    ShiftTestCase(
+        one_zhongwen="对她，一、二、三、四、五、六、七",
+        one_yuewen="佢一二三四五六七",
+        two_zhongwen="没有不成的事",
+        two_yuewen="唔得都要得字幕由Amara.org社群提供",
+        one_yuewen_shifted="佢一二三四五六七",
+        two_yuewen_shifted="唔得都要得字幕由Amara.org社群提供",
+    ),
+]  # shift_test_cases_block_13
 shift_test_cases_block_14 = []  # shift_test_cases_block_14
 shift_test_cases_block_15 = []  # shift_test_cases_block_15
 shift_test_cases_block_16 = []  # shift_test_cases_block_16

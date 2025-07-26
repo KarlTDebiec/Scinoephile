@@ -1092,7 +1092,43 @@ merge_test_cases_block_12 = [
         yuewen_merged="妈，我想瞓啦",
     ),
 ]  # merge_test_cases_block_12
-merge_test_cases_block_13 = []  # merge_test_cases_block_13
+merge_test_cases_block_13 = [
+    MergeTestCase(
+        zhongwen="从前，有个小朋友早睡晚起；第二天⋯",
+        yuewen_to_merge=["从前有个小朋友早睡晚起", "第二朝"],
+        yuewen_merged="从前有个小朋友早睡晚起；第二朝⋯",
+    ),
+    MergeTestCase(
+        zhongwen="他死了！",
+        yuewen_to_merge=["佢死咗"],
+        yuewen_merged="佢死咗！",
+    ),
+    MergeTestCase(
+        zhongwen="我妈妈就是这样子，一切都那么直接",
+        yuewen_to_merge=["我妈妈就系噉", "一切都咁直接"],
+        yuewen_merged="我妈妈就系噉，一切都咁直接",
+    ),
+    MergeTestCase(
+        zhongwen="她爱得我直接⋯",
+        yuewen_to_merge=["佢爱得我直接"],
+        yuewen_merged="佢爱得我直接⋯",
+    ),
+    MergeTestCase(
+        zhongwen="对我的期望直接",
+        yuewen_to_merge=["对我嘅期望直接"],
+        yuewen_merged="对我嘅期望直接",
+    ),
+    MergeTestCase(
+        zhongwen="对她，一、二、三、四、五、六、七",
+        yuewen_to_merge=["佢一二三四五六七"],
+        yuewen_merged="佢，一、二、三、四、五、六、七",
+    ),
+    MergeTestCase(
+        zhongwen="没有不成的事",
+        yuewen_to_merge=["唔得都要得", "字幕由", "Amara.org", "社群提供"],
+        yuewen_merged="唔得都要得字幕由Amara.org社群提供",
+    ),
+]  # merge_test_cases_block_13
 merge_test_cases_block_14 = []  # merge_test_cases_block_14
 merge_test_cases_block_15 = []  # merge_test_cases_block_15
 merge_test_cases_block_16 = []  # merge_test_cases_block_16

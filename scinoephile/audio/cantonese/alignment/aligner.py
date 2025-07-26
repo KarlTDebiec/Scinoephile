@@ -138,6 +138,20 @@ class Aligner:
         # Get sync group and yuewen indexes
         yw_idx = alignment.yuewen_to_distribute[0]
         zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
+        if len(zw_idxs) == 0:
+            yw = alignment.yuewen[yw_idx]
+            zhongwen_starts = [zw.start for zw in alignment.zhongwen]
+
+            zw_idx = min(
+                range(len(alignment.zhongwen)),
+                key=lambda zw_idx: abs(alignment.zhongwen[zw_idx].start - yw.start),
+            )
+            # TODO: Validate that zw_idxs map cleanly to sg_idxs
+            sg_idx = zw_idx
+            nascent_sync_groups = deepcopy(alignment.sync_groups)
+            nascent_sync_groups[sg_idx][1].append(yw_idx)
+            alignment._sync_groups_override = nascent_sync_groups
+            return
         if len(zw_idxs) != 2:
             raise ScinoephileError(
                 f"Situation not supported: {len(zw_idxs)} zhongwen subs "
