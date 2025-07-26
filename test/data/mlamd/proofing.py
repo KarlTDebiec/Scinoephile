@@ -1204,7 +1204,72 @@ proof_test_cases_block_10 = [
         note="",
     ),
 ]  # proof_test_cases_block_10
-proof_test_cases_block_11 = []  # proof_test_cases_block_11
+proof_test_cases_block_11 = [
+    ProofTestCase(
+        zhongwen="现在要教大家一味别致小菜﹣",
+        yuewen="间阵要教大家一味几别节嘅小菜﹣",
+        yuewen_proofread="间阵要教大家一味几别致嘅小菜﹣",
+        note="Corrected '别节' to '别致' as '别致' is the correct term for "
+        "'unique' or 'special', matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="包鸡纸包鸡包纸包鸡",
+        yuewen="包鸡子包鸡包子包鸡",
+        yuewen_proofread="包鸡纸包鸡包纸包鸡",
+        note="Corrected '鸡子' and '子' to '鸡纸' and '纸' as '纸' is the correct "
+        "word for '纸包鸡' (paper-wrapped chicken), matching the "
+        "original phrase.",
+    ),
+    ProofTestCase(
+        zhongwen="首先将纸包鸡小心撕开",
+        yuewen="首先将子包鸡小心噉撕开",
+        yuewen_proofread="首先将纸包鸡小心噉撕开",
+        note="Corrected '子包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name "
+        "and matches the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="大家就会有一张纸包鸡及一块鸡",
+        yuewen="大家就会有一张包鸡子同埋一嚿鸡啦",
+        yuewen_proofread="大家就会有一张纸包鸡同埋一嚿鸡啦",
+        note="Corrected '包鸡子' to '纸包鸡' as '纸包鸡' is the correct term for "
+        "the dish, matching the meaning in the 中文.",
+    ),
+    ProofTestCase(
+        zhongwen="接着把鸡包纸这样子包起那块鸡",
+        yuewen="跟住将鸡包子好似我噉包住牛鸡",
+        yuewen_proofread="跟住将鸡包纸好似我噉包住嗰块鸡",
+        note="Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of "
+        "'把鸡包纸这样子包起' and '鸡包子' is likely a mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="再依照这样子用包鸡纸把它包起",
+        yuewen="然后再好似噉样将包鸡子包包包包包包住佢",
+        yuewen_proofread="然后再好似噉样将包鸡纸包包包包包包住佢",
+        note="Corrected '包鸡子' to '包鸡纸' as '包鸡纸' (greaseproof paper) "
+        "matches the meaning in the 中文 and '包鸡子' is likely a "
+        "mishearing.",
+    ),
+    ProofTestCase(
+        zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
+        yuewen="咁一味包鸡子包鸡包子包鸡就完成喇！",
+        yuewen_proofread="咁一味包鸡纸包鸡包纸包鸡就完成喇！",
+        note="Corrected '包鸡子' and '包子' to '包鸡纸' and '包纸' respectively, as "
+        "'纸' is the correct word in the phrase '纸包鸡', matching the "
+        "original meaning.",
+    ),
+    ProofTestCase(
+        zhongwen="真的很简单吧？",
+        yuewen="系咪好简单呢？",
+        yuewen_proofread="系咪好简单呢？",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="还真有一块鸡吃呢！",
+        yuewen="仲真系有嚿鸡食添！",
+        yuewen_proofread="仲真系有嚿鸡食添！",
+        note="",
+    ),
+]  # proof_test_cases_block_11
 proof_test_cases_block_12 = []  # proof_test_cases_block_12
 proof_test_cases_block_13 = []  # proof_test_cases_block_13
 proof_test_cases_block_14 = []  # proof_test_cases_block_14

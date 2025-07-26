@@ -963,7 +963,53 @@ merge_test_cases_block_10 = [
         yuewen_merged="各位小朋友，你哋话似唔似鸡包啊？",
     ),
 ]  # merge_test_cases_block_10
-merge_test_cases_block_11 = []  # merge_test_cases_block_11
+merge_test_cases_block_11 = [
+    MergeTestCase(
+        zhongwen="现在要教大家一味别致小菜﹣",
+        yuewen_to_merge=["间阵要教大家一味几别节嘅小菜"],
+        yuewen_merged="间阵要教大家一味几别节嘅小菜﹣",
+    ),
+    MergeTestCase(
+        zhongwen="包鸡纸包鸡包纸包鸡",
+        yuewen_to_merge=["包鸡子包", "鸡包子包鸡"],
+        yuewen_merged="包鸡子包鸡包子包鸡",
+    ),
+    MergeTestCase(
+        zhongwen="首先将纸包鸡小心撕开",
+        yuewen_to_merge=["首先将子包鸡小心噉撕开"],
+        yuewen_merged="首先将子包鸡小心噉撕开",
+    ),
+    MergeTestCase(
+        zhongwen="大家就会有一张纸包鸡及一块鸡",
+        yuewen_to_merge=["大家就会有一张包鸡子同埋一嚿鸡啦"],
+        yuewen_merged="大家就会有一张包鸡子同埋一嚿鸡啦",
+    ),
+    MergeTestCase(
+        zhongwen="接着把鸡包纸这样子包起那块鸡",
+        yuewen_to_merge=["跟住将鸡包子好似我噉包住牛鸡"],
+        yuewen_merged="跟住将鸡包子好似我噉包住牛鸡",
+    ),
+    MergeTestCase(
+        zhongwen="再依照这样子用包鸡纸把它包起",
+        yuewen_to_merge=["然后再好似噉样将包鸡子包包包包包包住佢"],
+        yuewen_merged="然后再好似噉样将包鸡子包包包包包包住佢",
+    ),
+    MergeTestCase(
+        zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
+        yuewen_to_merge=["咁一味包鸡子包鸡包子包鸡就完成喇"],
+        yuewen_merged="咁一味包鸡子包鸡包子包鸡就完成喇！",
+    ),
+    MergeTestCase(
+        zhongwen="真的很简单吧？",
+        yuewen_to_merge=["系咪好简单呢"],
+        yuewen_merged="系咪好简单呢？",
+    ),
+    MergeTestCase(
+        zhongwen="还真有一块鸡吃呢！",
+        yuewen_to_merge=["仲真系有嚿鸡食添"],
+        yuewen_merged="仲真系有嚿鸡食添！",
+    ),
+]  # merge_test_cases_block_11
 merge_test_cases_block_12 = []  # merge_test_cases_block_12
 merge_test_cases_block_13 = []  # merge_test_cases_block_13
 merge_test_cases_block_14 = []  # merge_test_cases_block_14

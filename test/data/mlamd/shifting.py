@@ -1565,7 +1565,72 @@ shift_test_cases_block_10 = [
         two_yuewen_shifted="各位小朋友你哋话似唔似鸡包啊",
     ),
 ]  # shift_test_cases_block_10
-shift_test_cases_block_11 = []  # shift_test_cases_block_11
+shift_test_cases_block_11 = [
+    ShiftTestCase(
+        one_zhongwen="现在要教大家一味别致小菜﹣",
+        one_yuewen="间阵要教大家一味几别节嘅小菜",
+        two_zhongwen="包鸡纸包鸡包纸包鸡",
+        two_yuewen="包鸡子包鸡包子包鸡",
+        one_yuewen_shifted="间阵要教大家一味几别节嘅小菜",
+        two_yuewen_shifted="包鸡子包鸡包子包鸡",
+    ),
+    ShiftTestCase(
+        one_zhongwen="包鸡纸包鸡包纸包鸡",
+        one_yuewen="包鸡子包鸡包子包鸡",
+        two_zhongwen="首先将纸包鸡小心撕开",
+        two_yuewen="首先将子包鸡小心噉撕开",
+        one_yuewen_shifted="包鸡子包鸡包子包鸡",
+        two_yuewen_shifted="首先将子包鸡小心噉撕开",
+    ),
+    ShiftTestCase(
+        one_zhongwen="首先将纸包鸡小心撕开",
+        one_yuewen="首先将子包鸡小心噉撕开",
+        two_zhongwen="大家就会有一张纸包鸡及一块鸡",
+        two_yuewen="大家就会有一张包鸡子同埋一嚿鸡啦",
+        one_yuewen_shifted="首先将子包鸡小心噉撕开",
+        two_yuewen_shifted="大家就会有一张包鸡子同埋一嚿鸡啦",
+    ),
+    ShiftTestCase(
+        one_zhongwen="大家就会有一张纸包鸡及一块鸡",
+        one_yuewen="大家就会有一张包鸡子同埋一嚿鸡啦",
+        two_zhongwen="接着把鸡包纸这样子包起那块鸡",
+        two_yuewen="跟住将鸡包子好似我噉包住牛鸡",
+        one_yuewen_shifted="大家就会有一张包鸡子同埋一嚿鸡啦",
+        two_yuewen_shifted="跟住将鸡包子好似我噉包住牛鸡",
+    ),
+    ShiftTestCase(
+        one_zhongwen="接着把鸡包纸这样子包起那块鸡",
+        one_yuewen="跟住将鸡包子好似我噉包住牛鸡",
+        two_zhongwen="再依照这样子用包鸡纸把它包起",
+        two_yuewen="然后再好似噉样将包鸡子包包包包包包住佢",
+        one_yuewen_shifted="跟住将鸡包子好似我噉包住牛鸡",
+        two_yuewen_shifted="然后再好似噉样将包鸡子包包包包包包住佢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="再依照这样子用包鸡纸把它包起",
+        one_yuewen="然后再好似噉样将包鸡子包包包包包包住佢",
+        two_zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
+        two_yuewen="咁一味包鸡子包鸡包子包鸡就完成喇",
+        one_yuewen_shifted="然后再好似噉样将包鸡子包包包包包包住佢",
+        two_yuewen_shifted="咁一味包鸡子包鸡包子包鸡就完成喇",
+    ),
+    ShiftTestCase(
+        one_zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
+        one_yuewen="咁一味包鸡子包鸡包子包鸡就完成喇",
+        two_zhongwen="真的很简单吧？",
+        two_yuewen="系咪好简单呢",
+        one_yuewen_shifted="咁一味包鸡子包鸡包子包鸡就完成喇",
+        two_yuewen_shifted="系咪好简单呢",
+    ),
+    ShiftTestCase(
+        one_zhongwen="真的很简单吧？",
+        one_yuewen="系咪好简单呢",
+        two_zhongwen="还真有一块鸡吃呢！",
+        two_yuewen="仲真系有嚿鸡食添",
+        one_yuewen_shifted="系咪好简单呢",
+        two_yuewen_shifted="仲真系有嚿鸡食添",
+    ),
+]  # shift_test_cases_block_11
 shift_test_cases_block_12 = []  # shift_test_cases_block_12
 shift_test_cases_block_13 = []  # shift_test_cases_block_13
 shift_test_cases_block_14 = []  # shift_test_cases_block_14
