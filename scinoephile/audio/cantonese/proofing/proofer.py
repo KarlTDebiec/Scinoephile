@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
@@ -15,7 +16,7 @@ from scinoephile.core.abcs import LLMQueryer
 class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
-    @property
+    @cached_property
     @override
     def answer_example(self) -> ProofAnswer:
         """Example answer."""
@@ -24,7 +25,7 @@ class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
             note="Replaced '我地' with '我哋' to follow standard written Cantonese.",
         )
 
-    @property
+    @cached_property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

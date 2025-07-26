@@ -1,36 +1,31 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM queryers."""
+"""Translates 粤文 text based on corresponding 中文."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-from abc import ABC, abstractmethod
 from functools import cached_property
 from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
-from typing import get_args, get_origin
 
-from pydantic import ValidationError
+from pydantic import Field, ValidationError, create_model
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs.answer import Answer
-from scinoephile.core.abcs.llm_provider import LLMProvider
-from scinoephile.core.abcs.query import Query
-from scinoephile.core.abcs.test_case import TestCase
-from scinoephile.openai.openai_provider import OpenAIProvider
+from scinoephile.core.abcs import Answer, LLMProvider, Query, TestCase
+from scinoephile.openai import OpenAIProvider
 
 
-class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
-    """Abstract base class for LLM queryers."""
+class Translator:
+    """Translates 粤文 text based on corresponding 中文."""
 
     def __init__(
         self,
         model: str = "gpt-4.1",
-        examples: list[TTestCase] | None = None,
+        examples: list[TestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
@@ -55,9 +50,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
-        self._examples_log: dict[tuple, TTestCase] = {}
+        self._examples_log: dict[tuple, TestCase] = {}
         """Log of examples, keyed by query key."""
-        self._test_case_log: dict[tuple, TTestCase] = {}
+        self._test_case_log: dict[tuple, TestCase] = {}
         """Log of test cases, keyed by query key."""
 
         # Set up system prompt, with examples if provided
@@ -90,11 +85,15 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-    def __call__(self, query: TQuery) -> TAnswer:
+    def __call__(
+        self, query: Query, answer_cls: type[Answer], test_case_cls: type[TestCase]
+    ) -> Answer:
         """Query LLM.
 
         Arguments:
-            query: query for LLM
+            query: Query for LLM
+            answer_cls: Class of answer to return
+            test_case_cls: Class of test case to return
         Returns:
             LLM's answer
         """
@@ -105,16 +104,16 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_path is not None and cache_path.exists():
             debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
-                answer = self.answer_cls.model_validate(json.load(f))
+                answer = answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
-                    test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                    test_case = test_case_cls.from_query_and_answer(query, answer)
                     self._test_case_log[test_case.query.query_key] = test_case
                     print(f"{test_case.source_str},")
                 return answer
 
         # Query provider
-        answer: TAnswer | None = None
-        test_case: TTestCase | None = None
+        answer: Answer | None = None
+        test_case: TestCase | None = None
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_prompt},
@@ -127,7 +126,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     messages=messages,
                     temperature=0,
                     seed=0,
-                    response_format=self.answer_cls,
+                    response_format=answer_cls,
                 )
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
@@ -137,7 +136,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
             # Validate answer
             try:
-                answer = self.answer_cls.model_validate_json(content)
+                answer = answer_cls.model_validate_json(content)
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
@@ -163,7 +162,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
             # Validate test case
             try:
-                test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                test_case = test_case_cls.from_query_and_answer(query, answer)
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
@@ -204,7 +203,12 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return answer
 
     @property
-    def test_case_log(self) -> dict[tuple, TTestCase]:
+    def system_prompt(self) -> str:
+        """System prompt template."""
+        return self._system_prompt
+
+    @property
+    def test_case_log(self) -> dict[tuple, TestCase]:
         """Log of test cases, keyed by query key."""
         return self._test_case_log
 
@@ -221,51 +225,24 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return test_case_log_str
 
     @cached_property
-    @abstractmethod
-    def answer_example(self) -> TAnswer:
+    def answer_example(self) -> Answer:
         """Example answer."""
-        raise NotImplementedError()
-
-    @cached_property
-    def answer_cls(self) -> type[TAnswer]:
-        """Answer class."""
-        for base in getattr(self.__class__, "__orig_bases__", []):
-            if get_origin(base) is LLMQueryer:
-                return get_args(base)[1]
-        raise TypeError(
-            f"Could not determine answer class for {self.__class__.__name__}"
+        answer_fields = {
+            "yuewen_2": Field(..., description="Translated 粤文 of text 2"),
+            "yuewen_5": Field(..., description="Translated 粤文 of text 5"),
+            "yuewen_10": Field(..., description="Translated 粤文 of text 10"),
+        }
+        answer_cls = create_model("TranslateAnswer", __base__=Answer, **answer_fields)
+        return answer_cls(
+            yuewen_2="粤文 text 2 translated from query's 中文 text 2",
+            yuewen_5="粤文 text 5 translated from query's 中文 text 5",
+            yuewen_10="粤文 text 10 translated from query's 中文 text 10",
         )
 
     @cached_property
-    @abstractmethod
     def base_system_prompt(self) -> str:
         """Base system prompt."""
-        raise NotImplementedError()
-
-    @cached_property
-    def query_cls(self) -> type[TQuery]:
-        """Query class."""
-        for base in getattr(self.__class__, "__orig_bases__", []):
-            if get_origin(base) is LLMQueryer:
-                return get_args(base)[0]
-        raise TypeError(
-            f"Could not determine answer class for {self.__class__.__name__}"
-        )
-
-    @property
-    def system_prompt(self) -> str:
-        """System prompt template."""
-        return self._system_prompt
-
-    @cached_property
-    def test_case_cls(self) -> type[TTestCase]:
-        """Test case class."""
-        for base in getattr(self.__class__, "__orig_bases__", []):
-            if get_origin(base) is LLMQueryer:
-                return get_args(base)[2]
-        raise TypeError(
-            f"Could not determine answer class for {self.__class__.__name__}"
-        )
+        return "Translate the missing 粤文 texts based on the corresponding 中文."
 
     def clear_test_case_log(self):
         """Clear the test case log."""

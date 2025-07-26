@@ -596,15 +596,6 @@ distribute_test_cases_block_21 = [
         one_yuewen_to_append="又一格",
         two_yuewen_to_prepend="",
     ),
-    DistributeTestCase(
-        one_zhongwen="我把药都吃光了",
-        one_yuewen_start="啲嘢所以",
-        two_zhongwen="家中的东西有什么没给你吃光的？",
-        two_yuewen_end="即系间屋有乜嘢唔系畀你食晒㗎",
-        yuewen_to_distribute="我全部食晒喇",
-        one_yuewen_to_append="我全部食晒喇",
-        two_yuewen_to_prepend="",
-    ),
 ]  # distribute_test_cases_block_21
 distribute_test_cases_block_22 = [
     DistributeTestCase(
@@ -732,15 +723,6 @@ distribute_test_cases_block_28 = [
         two_yuewen_end="对唔住应该系唔系垃圾亦都唔系𫚭鸭",
         yuewen_to_distribute="唔系𫚭鸭",
         one_yuewen_to_append="唔系𫚭鸭",
-        two_yuewen_to_prepend="",
-    ),
-    DistributeTestCase(
-        one_zhongwen="激动地对在场记者表示她今次的成绩⋯",
-        one_yuewen_start="好激动噉同在场嘅记者讲",
-        two_zhongwen="足以证明香港运动员不是腊鸭！",
-        two_yuewen_end="可以证明到香港嘅运动员唔系𫚭鸭",
-        yuewen_to_distribute="今次佢嘅成绩",
-        one_yuewen_to_append="今次佢嘅成绩",
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_28
@@ -1185,6 +1167,15 @@ distribute_test_cases_block_59 = [
         two_yuewen_to_prepend="",
     ),
     DistributeTestCase(
+        one_zhongwen="向全世界人再次证明⋯",
+        one_yuewen_start="",
+        two_zhongwen="香港运动员不是腊鸭",
+        two_yuewen_end="香港嘅运动员唔系腊鸭",
+        yuewen_to_distribute="向全世界人再次证明",
+        one_yuewen_to_append="向全世界人再次证明",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
         one_zhongwen="附属小学一班小朋友⋯",
         one_yuewen_start="幼稚园",
         two_zhongwen="争取「抢包山」",
@@ -1469,6 +1460,15 @@ distribute_test_cases_block_71 = [
         two_yuewen_end="上餐上餐一早卖晒啦你话好唔好嘢",
         yuewen_to_distribute="噉上餐又点好嘢法呀",
         one_yuewen_to_append="噉上餐又点好嘢法呀",
+        two_yuewen_to_prepend="",
+    ),
+    DistributeTestCase(
+        one_zhongwen="午餐吧，午餐精采呀",
+        one_yuewen_start="午餐啦",
+        two_zhongwen="怎么个精采法？",
+        two_yuewen_end="好嘢呀",
+        yuewen_to_distribute="午餐",
+        one_yuewen_to_append="午餐",
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_71

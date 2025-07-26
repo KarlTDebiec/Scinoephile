@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import error, info
+from pprint import pprint
 
 import numpy as np
 from pydantic import ValidationError
@@ -16,6 +17,7 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
+from scinoephile.audio.cantonese.alignment.models import get_translate_models
 from scinoephile.audio.cantonese.alignment.queries import (
     get_distribute_query,
     get_merge_query,
@@ -29,6 +31,7 @@ from scinoephile.audio.cantonese.merging.merger import Merger
 from scinoephile.audio.cantonese.proofing.proofer import Proofer
 from scinoephile.audio.cantonese.shifting import ShiftAnswer, ShiftQuery
 from scinoephile.audio.cantonese.shifting.shifter import Shifter
+from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
 
@@ -38,26 +41,31 @@ class Aligner:
 
     def __init__(
         self,
+        distributor: Distributor,
+        shifter: Shifter,
         merger: Merger,
         proofer: Proofer,
-        shifter: Shifter,
-        distributor: Distributor,
+        translator: Translator,
     ):
         """Initialize.
 
         Arguments:
             distributor: Cantonese splitter
+            shifter: Cantonese shifter
             merger: Cantonese merger
             proofer: Cantonese proofer
+            translator: Cantonese translator
         """
         self.merger = merger
-        """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+        """Merges transcribed 粤文 text based on corresponding 中文."""
         self.proofer = proofer
         """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifter = shifter
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
         self.distributor = distributor
         """Distributes 粤文 text based on corresponding 中文."""
+        self.translator = translator
+        """Translates 粤文 text based on corresponding 中文."""
 
     def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
@@ -112,6 +120,8 @@ class Aligner:
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         self._proof(alignment)
+
+        self._translate(alignment)
 
         # Return final alignment
         print(f"\nFINAL RESULT:\n{alignment}")
@@ -426,3 +436,14 @@ class Aligner:
             )
         alignment.yuewen = nascent_yuewen_subs
         alignment._sync_groups_override = nascent_sync_groups
+
+    def _translate(self, alignment: Alignment):
+        """Translate 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        query_cls, answer_cls, test_case_cls = get_translate_models(alignment)
+        pprint(f"Query class: {query_cls}")
+        pprint(f"Answer class: {answer_cls}")
+        pprint(f"Test case class: {test_case_cls}")

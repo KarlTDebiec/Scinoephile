@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.distribution.distribute_answer import DistributeAnswer
@@ -17,7 +18,7 @@ from scinoephile.core.abcs import LLMQueryer
 class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCase]):
     """Distributes 粤文 text based on corresponding 中文."""
 
-    @property
+    @cached_property
     @override
     def answer_example(self) -> DistributeAnswer:
         """Example answer."""
@@ -26,7 +27,7 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
             two_yuewen_to_prepend="粤文 text two to prepend",
         )
 
-    @property
+    @cached_property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

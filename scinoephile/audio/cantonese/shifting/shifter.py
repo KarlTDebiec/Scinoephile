@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
@@ -15,7 +16,7 @@ from scinoephile.core.abcs import LLMQueryer
 class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
     """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
-    @property
+    @cached_property
     @override
     def answer_example(self) -> ShiftAnswer:
         """Example answer."""
@@ -24,7 +25,7 @@ class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
             two_yuewen_shifted="粤文 two shifted",
         )
 
-    @property
+    @cached_property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

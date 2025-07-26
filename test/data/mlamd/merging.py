@@ -553,13 +553,13 @@ merge_test_cases_block_4 = [
     ),
     MergeTestCase(
         zhongwen="我好像觉得呢⋯",
-        yuewen_to_merge=["我个心总系仁住仁住", "好似"],
-        yuewen_merged="我个心总系仁住仁住，好似⋯",
+        yuewen_to_merge=["我个心总系仁住仁住"],
+        yuewen_merged="我个心总系仁住仁住⋯",
     ),
     MergeTestCase(
         zhongwen="有什么人在喊我似的",
-        yuewen_to_merge=["有人嗌紧我个名噉嘅"],
-        yuewen_merged="有人嗌紧我个名噉嘅",
+        yuewen_to_merge=["好似有人嗌紧我个名噉嘅"],
+        yuewen_merged="好似有人嗌紧我个名噉嘅",
     ),
     MergeTestCase(
         zhongwen="你们不要以为我心散",
@@ -620,13 +620,13 @@ merge_test_cases_block_4 = [
     ),
     MergeTestCase(
         zhongwen="我想，有天我念完幼稚园",
-        yuewen_to_merge=["我谂", "到我读完幼稚园"],
-        yuewen_merged="我谂，到我读完幼稚园",
+        yuewen_to_merge=["我谂", "到我读完幼稚园", "识埋小学"],
+        yuewen_merged="我谂，到我读完幼稚园识埋小学",
     ),
     MergeTestCase(
         zhongwen="升小学，上中学",
-        yuewen_to_merge=["识埋小学", "上到中学"],
-        yuewen_merged="识埋小学，上到中学",
+        yuewen_to_merge=["上到中学"],
+        yuewen_merged="上到中学",
     ),
     MergeTestCase(
         zhongwen="再念大学⋯",
@@ -1413,13 +1413,13 @@ merge_test_cases_block_18 = [
     ),
     MergeTestCase(
         zhongwen="那么吃药用不用那个什么的？",
-        yuewen_to_merge=["噉佢食药使唔使咩啊", "唔使"],
-        yuewen_merged="噉佢食药使唔使咩啊？唔使",
+        yuewen_to_merge=["噉佢食药使唔使咩啊"],
+        yuewen_merged="噉佢食药使唔使咩啊？",
     ),
     MergeTestCase(
         zhongwen="不用！给他打口针吧！",
-        yuewen_to_merge=["同佢打多支针添呢"],
-        yuewen_merged="同佢打多支针添呢！",
+        yuewen_to_merge=["唔使", "同佢打多支针添呢"],
+        yuewen_merged="唔使！同佢打多支针添呢！",
     ),
     MergeTestCase(
         zhongwen="怎么？得打针？",
@@ -1519,13 +1519,13 @@ merge_test_cases_block_21 = [
     ),
     MergeTestCase(
         zhongwen="妈妈你看，我病好了！",
-        yuewen_to_merge=["我好返喇", "啲嘢所以"],
-        yuewen_merged="我好返喇，啲嘢所以！",
+        yuewen_to_merge=["我好返喇"],
+        yuewen_merged="我好返喇！",
     ),
     MergeTestCase(
         zhongwen="我把药都吃光了",
-        yuewen_to_merge=["我全部食晒喇"],
-        yuewen_merged="我全部食晒喇",
+        yuewen_to_merge=["啲嘢所以我全部食晒喇"],
+        yuewen_merged="啲嘢所以我全部食晒喇",
     ),
     MergeTestCase(
         zhongwen="家中的东西有什么没给你吃光的？",
@@ -1601,13 +1601,13 @@ merge_test_cases_block_22 = [
     ),
     MergeTestCase(
         zhongwen="说得不错呀！",
-        yuewen_to_merge=["讲得几好听啊", "妈妈"],
-        yuewen_merged="讲得几好听啊！妈妈",
+        yuewen_to_merge=["讲得几好听啊"],
+        yuewen_merged="讲得几好听啊！",
     ),
     MergeTestCase(
         zhongwen="我不是光说的呀，妈妈你说过⋯",
-        yuewen_to_merge=["我唔系讲喇㗎", "又系你话嘅", "你话"],
-        yuewen_merged="我唔系讲喇㗎，又系你话嘅，你话⋯",
+        yuewen_to_merge=["妈妈我唔系讲喇㗎", "又系你话嘅", "你话"],
+        yuewen_merged="妈妈，我唔系讲喇㗎， 又系你话嘅，你话⋯",
     ),
     MergeTestCase(
         zhongwen="我病好了带我去马尔代夫的！",
@@ -1671,13 +1671,13 @@ merge_test_cases_block_22 = [
     ),
     MergeTestCase(
         zhongwen="我们下个星期去，好了吧？",
-        yuewen_to_merge=["下个礼拜同你去啦", "得未啊"],
-        yuewen_merged="下个礼拜同你去啦，得未啊？",
+        yuewen_to_merge=["下个礼拜同你去啦"],
+        yuewen_merged="下个礼拜同你去啦？",
     ),
     MergeTestCase(
         zhongwen="太好了！",
-        yuewen_to_merge=["好嘢"],
-        yuewen_merged="好嘢！",
+        yuewen_to_merge=["得未啊", "好嘢"],
+        yuewen_merged="得未啊！好嘢！",
     ),
 ]  # merge_test_cases_block_22
 merge_test_cases_block_23 = [
@@ -1713,13 +1713,13 @@ merge_test_cases_block_23 = [
     ),
     MergeTestCase(
         zhongwen="还在讲？",
-        yuewen_to_merge=["仲讲", "哦"],
-        yuewen_merged="仲讲，哦？",
+        yuewen_to_merge=["仲讲"],
+        yuewen_merged="仲讲？",
     ),
     MergeTestCase(
         zhongwen="快点帮手执行李",
-        yuewen_to_merge=["快啲嚟执埋啲行李先啦", "哦"],
-        yuewen_merged="快啲嚟执埋啲行李先啦，哦",
+        yuewen_to_merge=["哦", "快啲嚟执埋啲行李先啦", "哦"],
+        yuewen_merged="哦，快啲嚟执埋啲行李先啦，哦",
     ),
     MergeTestCase(
         zhongwen="跟我向他们说，我明天去马尔代夫了",
@@ -1865,13 +1865,13 @@ merge_test_cases_block_28 = [
     ),
     MergeTestCase(
         zhongwen="激动地对在场记者表示她今次的成绩⋯",
-        yuewen_to_merge=["好激动噉同在场嘅记者讲", "今次佢嘅成绩"],
-        yuewen_merged="好激动噉同在场嘅记者讲，今次佢嘅成绩⋯",
+        yuewen_to_merge=["好激动噉同在场嘅记者讲"],
+        yuewen_merged="好激动噉同在场嘅记者讲⋯",
     ),
     MergeTestCase(
         zhongwen="足以证明香港运动员不是腊鸭！",
-        yuewen_to_merge=["可以证明到香港嘅运动员唔系𫚭鸭"],
-        yuewen_merged="可以证明到香港嘅运动员唔系𫚭鸭！",
+        yuewen_to_merge=["今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭"],
+        yuewen_merged="今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭！",
     ),
     MergeTestCase(
         zhongwen="对不起，应该　　是垃圾，不是腊鸭！",
@@ -2341,13 +2341,13 @@ merge_test_cases_block_43 = [
     ),
     MergeTestCase(
         zhongwen="我将茶递给黎根，黎根他⋯",
-        yuewen_to_merge=["我将杯茶递咗畀嚟跟嚟跟佢", "亦唔系"],
-        yuewen_merged="我将杯茶递咗畀嚟跟，嚟跟佢⋯亦唔系",
+        yuewen_to_merge=["我将杯茶递咗畀嚟跟嚟跟佢"],
+        yuewen_merged="我将杯茶递咗畀嚟跟，嚟跟佢⋯",
     ),
     MergeTestCase(
         zhongwen="师傅他把茶喝了，正式收我做徒弟",
-        yuewen_to_merge=["师父佢饮咗杯茶", "正式收咗我做徒弟嘞"],
-        yuewen_merged="师父佢饮咗杯茶，正式收咗我做徒弟嘞",
+        yuewen_to_merge=["亦唔系", "师父佢饮咗杯茶", "正式收咗我做徒弟嘞"],
+        yuewen_merged="亦唔系，师父佢饮咗杯茶，正式收咗我做徒弟嘞",
     ),
     MergeTestCase(
         zhongwen="宾客们好像都很高兴",
@@ -2582,13 +2582,13 @@ merge_test_cases_block_46 = [
     ),
     MergeTestCase(
         zhongwen="珊珊！",
-        yuewen_to_merge=["山伞", "伞你个头啊"],
-        yuewen_merged="山伞！伞你个头啊！",
+        yuewen_to_merge=["山伞"],
+        yuewen_merged="山伞！",
     ),
     MergeTestCase(
         zhongwen="珊你个头！继续练习！",
-        yuewen_to_merge=["继续练习"],
-        yuewen_merged="继续练习！",
+        yuewen_to_merge=["伞你个头啊", "继续练习"],
+        yuewen_merged="伞你个头啊！继续练习！",
     ),
 ]  # merge_test_cases_block_46
 merge_test_cases_block_47 = [
@@ -3325,18 +3325,14 @@ merge_test_cases_block_55 = [
         yuewen_merged="喺火鸡封口嘅鸡胸度，起细噉啫啫",
     ),
     MergeTestCase(
-        zhongwen="联火鸡时⋯",
-        yuewen_to_merge=["联火鸡时"],
-        yuewen_merged="联火鸡时⋯",
-    ),
-    MergeTestCase(
         zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
         yuewen_to_merge=[
+            "联火鸡时",
             "妈妈一个唔觉意",
             "畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
             "红萝虾粒",
         ],
-        yuewen_merged="妈妈一个唔觉意，畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
+        yuewen_merged="联火鸡时，妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
     ),
     MergeTestCase(
         zhongwen="红萝卜粒",
@@ -3345,13 +3341,13 @@ merge_test_cases_block_55 = [
     ),
     MergeTestCase(
         zhongwen="我说：火鸡「疴烂煮」！",
-        yuewen_to_merge=["我话", "火鸡我能住呀"],
-        yuewen_merged="我话：火鸡我能住呀！",
+        yuewen_to_merge=["我话", "火鸡我能住呀", "火鸡"],
+        yuewen_merged="我话：火鸡我能住呀！火鸡",
     ),
     MergeTestCase(
         zhongwen="好勉强把火鸡塞进焗炉内",
-        yuewen_to_merge=["火鸡好勉强噏咗入焗炉度"],
-        yuewen_merged="火鸡好勉强噏咗入焗炉度",
+        yuewen_to_merge=["好勉强噏咗入焗炉度"],
+        yuewen_merged="好勉强噏咗入焗炉度",
     ),
     MergeTestCase(
         zhongwen="12月24日",
@@ -3727,9 +3723,14 @@ merge_test_cases_block_59 = [
         yuewen_merged="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
     ),
     MergeTestCase(
+        zhongwen="向全世界人再次证明⋯",
+        yuewen_to_merge=["向全世界人再次证明"],
+        yuewen_merged="向全世界人再次证明⋯",
+    ),
+    MergeTestCase(
         zhongwen="香港运动员不是腊鸭",
-        yuewen_to_merge=["向全世界人再次证明香港嘅运动员唔系腊鸭"],
-        yuewen_merged="向全世界人再次证明香港嘅运动员唔系腊鸭",
+        yuewen_to_merge=["香港嘅运动员唔系腊鸭"],
+        yuewen_merged="香港嘅运动员唔系腊鸭",
     ),
     MergeTestCase(
         zhongwen="另方面⋯",
@@ -3830,13 +3831,13 @@ merge_test_cases_block_59 = [
 merge_test_cases_block_60 = [
     MergeTestCase(
         zhongwen="最后⋯",
-        yuewen_to_merge=["最后"],
-        yuewen_merged="最后⋯",
+        yuewen_to_merge=["最后", "最后"],
+        yuewen_merged="最后，最后⋯",
     ),
     MergeTestCase(
         zhongwen="最后，一切成烟",
-        yuewen_to_merge=["最后全部都系banana"],
-        yuewen_merged="最后，全部都系banana",
+        yuewen_to_merge=["全部都系banana"],
+        yuewen_merged="全部都系banana",
     ),
     MergeTestCase(
         zhongwen="最后，他们选了「掷蛋挞」做推介项目",
@@ -4410,13 +4411,13 @@ merge_test_cases_block_70 = [
     ),
     MergeTestCase(
         zhongwen="常餐不是卖光了吗？",
-        yuewen_to_merge=["咁你头先又话冇上餐", "系呀", "上餐就系卖晒呀"],
-        yuewen_merged="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
+        yuewen_to_merge=["咁你头先又话冇上餐"],
+        yuewen_merged="咁你头先又话冇上餐？",
     ),
     MergeTestCase(
         zhongwen="对，常餐卖光了，要吃特餐吗？",
-        yuewen_to_merge=["咁你试唔试下特餐啦"],
-        yuewen_merged="咁你试唔试下特餐啦？",
+        yuewen_to_merge=["系呀", "上餐就系卖晒呀", "咁你试唔试下特餐啦"],
+        yuewen_merged="系呀，上餐就系卖晒呀，咁你试唔试下特餐啦？",
     ),
     MergeTestCase(
         zhongwen="来两份特餐吧",
@@ -4502,8 +4503,8 @@ merge_test_cases_block_71 = [
     ),
     MergeTestCase(
         zhongwen="午餐吧，午餐精采呀",
-        yuewen_to_merge=["午餐啦", "午餐好嘢呀"],
-        yuewen_merged="午餐啦，午餐好嘢呀",
+        yuewen_to_merge=["午餐啦", "午餐", "好嘢呀"],
+        yuewen_merged="午餐啦，午餐，好嘢呀",
     ),
     MergeTestCase(
         zhongwen="怎么个精采法？",
