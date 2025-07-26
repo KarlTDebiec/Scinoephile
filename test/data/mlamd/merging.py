@@ -435,7 +435,19 @@ merge_test_cases_block_3 = [
         include_in_prompt=True,
     ),
 ]  # merge_test_cases_block_3
-merge_test_cases_block_4 = []  # merge_test_cases_block_4
+merge_test_cases_block_4 = [
+    MergeTestCase(
+        zhongwen="妈妈说吃橙可通大便",
+        yuewen_to_merge=["妈妈话食橙会通大", "变"],
+        yuewen_merged="妈妈话食橙会通大变",
+    ),
+    MergeTestCase(
+        zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
+        yuewen_to_merge=["噢", "呢个我明白", "但系橙呢"],
+        yuewen_merged="「噢」呢个我明白，但系「橙」呢？",
+        include_in_prompt=True,
+    ),
+]  # merge_test_cases_block_4
 merge_test_cases_block_5 = []  # merge_test_cases_block_5
 merge_test_cases_block_6 = []  # merge_test_cases_block_6
 merge_test_cases_block_7 = []  # merge_test_cases_block_7
