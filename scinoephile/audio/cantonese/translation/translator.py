@@ -228,9 +228,9 @@ class Translator:
     def answer_example(self) -> Answer:
         """Example answer."""
         answer_fields = {
-            "yuewen_2": Field(..., description="Translated 粤文 of text 2"),
-            "yuewen_5": Field(..., description="Translated 粤文 of text 5"),
-            "yuewen_10": Field(..., description="Translated 粤文 of text 10"),
+            "yuewen_2": (str, Field(..., description="Translated 粤文 of text 2")),
+            "yuewen_5": (str, Field(..., description="Translated 粤文 of text 5")),
+            "yuewen_10": (str, Field(..., description="Translated 粤文 of text 10")),
         }
         answer_cls = create_model("TranslateAnswer", __base__=Answer, **answer_fields)
         return answer_cls(

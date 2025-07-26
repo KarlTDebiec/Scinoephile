@@ -443,7 +443,13 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        query_cls, answer_cls, test_case_cls = get_translate_models(alignment)
-        pprint(f"Query class: {query_cls}")
-        pprint(f"Answer class: {answer_cls}")
-        pprint(f"Test case class: {test_case_cls}")
+        for sg in alignment.sync_groups:
+            yw_idxs = sg[1]
+            if not yw_idxs:
+                query_cls, answer_cls, test_case_cls = get_translate_models(alignment)
+                pprint(f"Query class: {query_cls.model_fields}")
+                pprint(f"Answer class: {answer_cls.model_fields}")
+                pprint(f"Test case class: {test_case_cls.model_fields}")
+                query = None
+                self.translator
+                return

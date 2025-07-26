@@ -35,7 +35,7 @@ def get_translate_models(
                 f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
             )
         zw_idx = zw_idxs[0]
-        query_fields[f"zhongwen_{zw_idx}"] = (
+        query_fields[f"zhongwen_{zw_idx + 1}"] = (
             str,
             Field(..., description=f"Known 中文 of text {zw_idx + 1}"),
         )
@@ -43,18 +43,19 @@ def get_translate_models(
         # Get 粤文
         yw_idxs = sg[1]
         if len(yw_idxs) == 0:
-            answer_fields[f"yuewen_{zw_idx}"] = Field(
-                ..., description=f"Translated 粤文 of text {zw_idx + 1}"
+            answer_fields[f"yuewen_{zw_idx + 1}"] = (
+                str,
+                Field(..., description=f"Translated 粤文 of text {zw_idx + 1}"),
             )
-        if len(yw_idxs) > 1:
+        elif len(yw_idxs) == 1:
+            query_fields[f"yuewen_{zw_idx + 1}"] = (
+                str,
+                Field(..., description=f"Known 粤文 of text {zw_idx + 1}"),
+            )
+        else:
             raise ScinoephileError(
                 f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
             )
-        yw_idx = yw_idxs[0]
-        query_fields[f"yuewen_{yw_idx}"] = (
-            str,
-            Field(..., description=f"Known 粤文 of text {yw_idx + 1}"),
-        )
 
     query_model = create_model("TranslateQuery", __base__=Query, **query_fields)
     answer_model = create_model("TranslateAnswer", __base__=Answer, **answer_fields)
