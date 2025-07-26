@@ -46,7 +46,7 @@ distribute_test_cases_block_0 = [
         two_yuewen_to_prepend="",
     ),
 ]  # distribute_test_cases_block_0
-distribute_test_cases_block_1 = []
+distribute_test_cases_block_1 = []  # distribute_test_cases_block_1
 distribute_test_cases_block_2 = [
     DistributeTestCase(
         one_zhongwen="怎么不试一试好彩酒楼对面",
@@ -93,7 +93,7 @@ distribute_test_cases_block_2 = [
         one_yuewen_to_append="西人教英文",
         two_yuewen_to_prepend="",
     ),
-]  # distribute_test_cases_block_0
+]  # distribute_test_cases_block_2
 distribute_test_cases_block_3 = [
     DistributeTestCase(
         one_zhongwen="横看竖看也不像发哥伟仔的一个⋯",
@@ -149,7 +149,7 @@ distribute_test_cases_block_3 = [
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
     ),
-]
+]  # distribute_test_cases_block_3
 distribute_test_cases_block_4 = [
     DistributeTestCase(
         one_zhongwen="⋯还有一个很疼我们",
@@ -241,19 +241,19 @@ distribute_test_cases_block_4 = [
         one_yuewen_to_append="再入埋大学",
         two_yuewen_to_prepend="",
     ),
-]
-distribute_test_cases_block_5 = []
-distribute_test_cases_block_6 = []
-distribute_test_cases_block_7 = []
-distribute_test_cases_block_8 = []
-distribute_test_cases_block_9 = []
-distribute_test_cases_block_10 = []
-distribute_test_cases_block_11 = []
-distribute_test_cases_block_12 = []
-distribute_test_cases_block_13 = []
-distribute_test_cases_block_14 = []
-distribute_test_cases_block_15 = []
-distribute_test_cases_block_16 = []
+]  # distribute_test_cases_block_4
+distribute_test_cases_block_5 = []  # distribute_test_cases_block_5
+distribute_test_cases_block_6 = []  # distribute_test_cases_block_6
+distribute_test_cases_block_7 = []  # distribute_test_cases_block_7
+distribute_test_cases_block_8 = []  # distribute_test_cases_block_8
+distribute_test_cases_block_9 = []  # distribute_test_cases_block_9
+distribute_test_cases_block_10 = []  # distribute_test_cases_block_10
+distribute_test_cases_block_11 = []  # distribute_test_cases_block_11
+distribute_test_cases_block_12 = []  # distribute_test_cases_block_12
+distribute_test_cases_block_13 = []  # distribute_test_cases_block_13
+distribute_test_cases_block_14 = []  # distribute_test_cases_block_14
+distribute_test_cases_block_15 = []  # distribute_test_cases_block_15
+distribute_test_cases_block_16 = []  # distribute_test_cases_block_16
 distribute_test_cases_block_17 = [
     DistributeTestCase(
         one_zhongwen="咦？",
@@ -264,9 +264,9 @@ distribute_test_cases_block_17 = [
         one_yuewen_to_append="咦",
         two_yuewen_to_prepend="",
     ),
-]
-distribute_test_cases_block_18 = []
-distribute_test_cases_block_19 = []
+]  # distribute_test_cases_block_17
+distribute_test_cases_block_18 = []  # distribute_test_cases_block_18
+distribute_test_cases_block_19 = []  # distribute_test_cases_block_19
 distribute_test_cases_block_20 = [
     DistributeTestCase(
         one_zhongwen="马尔代夫！",
@@ -286,7 +286,7 @@ distribute_test_cases_block_20 = [
         one_yuewen_to_append="",
         two_yuewen_to_prepend="买二代夫",
     ),
-]
+]  # distribute_test_cases_block_20
 distribute_test_cases_block_21 = [
     DistributeTestCase(
         one_zhongwen="我喝一格，又喝一格，又喝一格⋯",
@@ -297,29 +297,29 @@ distribute_test_cases_block_21 = [
         one_yuewen_to_append="又一格",
         two_yuewen_to_prepend="",
     ),
-]
-distribute_test_cases_block_22 = []
-distribute_test_cases_block_23 = []
-distribute_test_cases_block_24 = []
-distribute_test_cases_block_25 = []
-distribute_test_cases_block_26 = []
-distribute_test_cases_block_27 = []
-distribute_test_cases_block_28 = []
-distribute_test_cases_block_29 = []
-distribute_test_cases_block_30 = []
-distribute_test_cases_block_31 = []
-distribute_test_cases_block_32 = []
-distribute_test_cases_block_33 = []
-distribute_test_cases_block_34 = []
-distribute_test_cases_block_35 = []
-distribute_test_cases_block_36 = []
-distribute_test_cases_block_37 = []
-distribute_test_cases_block_38 = []
-distribute_test_cases_block_39 = []
-distribute_test_cases_block_40 = []
-distribute_test_cases_block_41 = []
-distribute_test_cases_block_42 = []
-distribute_test_cases_block_43 = []
+]  # distribute_test_cases_block_21
+distribute_test_cases_block_22 = []  # distribute_test_cases_block_22
+distribute_test_cases_block_23 = []  # distribute_test_cases_block_23
+distribute_test_cases_block_24 = []  # distribute_test_cases_block_24
+distribute_test_cases_block_25 = []  # distribute_test_cases_block_25
+distribute_test_cases_block_26 = []  # distribute_test_cases_block_26
+distribute_test_cases_block_27 = []  # distribute_test_cases_block_27
+distribute_test_cases_block_28 = []  # distribute_test_cases_block_28
+distribute_test_cases_block_29 = []  # distribute_test_cases_block_29
+distribute_test_cases_block_30 = []  # distribute_test_cases_block_30
+distribute_test_cases_block_31 = []  # distribute_test_cases_block_31
+distribute_test_cases_block_32 = []  # distribute_test_cases_block_32
+distribute_test_cases_block_33 = []  # distribute_test_cases_block_33
+distribute_test_cases_block_34 = []  # distribute_test_cases_block_34
+distribute_test_cases_block_35 = []  # distribute_test_cases_block_35
+distribute_test_cases_block_36 = []  # distribute_test_cases_block_36
+distribute_test_cases_block_37 = []  # distribute_test_cases_block_37
+distribute_test_cases_block_38 = []  # distribute_test_cases_block_38
+distribute_test_cases_block_39 = []  # distribute_test_cases_block_39
+distribute_test_cases_block_40 = []  # distribute_test_cases_block_40
+distribute_test_cases_block_41 = []  # distribute_test_cases_block_41
+distribute_test_cases_block_42 = []  # distribute_test_cases_block_42
+distribute_test_cases_block_43 = []  # distribute_test_cases_block_43
 distribute_test_cases_block_44 = [
     DistributeTestCase(
         one_zhongwen="第二项绝技，就是⋯",
@@ -330,12 +330,12 @@ distribute_test_cases_block_44 = [
         one_yuewen_to_append="第二样绝技就系",
         two_yuewen_to_prepend="抢爆山",
     ),
-]
-distribute_test_cases_block_45 = []
-distribute_test_cases_block_46 = []
-distribute_test_cases_block_47 = []
-distribute_test_cases_block_48 = []
-distribute_test_cases_block_49 = []
+]  # distribute_test_cases_block_44
+distribute_test_cases_block_45 = []  # distribute_test_cases_block_45
+distribute_test_cases_block_46 = []  # distribute_test_cases_block_46
+distribute_test_cases_block_47 = []  # distribute_test_cases_block_47
+distribute_test_cases_block_48 = []  # distribute_test_cases_block_48
+distribute_test_cases_block_49 = []  # distribute_test_cases_block_49
 distribute_test_cases_block_50 = [
     DistributeTestCase(
         one_zhongwen="吃过几多苦头",
@@ -346,16 +346,16 @@ distribute_test_cases_block_50 = [
         one_yuewen_to_append="挨过几多斧头",
         two_yuewen_to_prepend="",
     ),
-]
-distribute_test_cases_block_51 = []
-distribute_test_cases_block_52 = []
-distribute_test_cases_block_53 = []
-distribute_test_cases_block_54 = []
-distribute_test_cases_block_55 = []
-distribute_test_cases_block_56 = []
-distribute_test_cases_block_57 = []
-distribute_test_cases_block_58 = []
-distribute_test_cases_block_59 = []
+]  # distribute_test_cases_block_50
+distribute_test_cases_block_51 = []  # distribute_test_cases_block_51
+distribute_test_cases_block_52 = []  # distribute_test_cases_block_52
+distribute_test_cases_block_53 = []  # distribute_test_cases_block_53
+distribute_test_cases_block_54 = []  # distribute_test_cases_block_54
+distribute_test_cases_block_55 = []  # distribute_test_cases_block_55
+distribute_test_cases_block_56 = []  # distribute_test_cases_block_56
+distribute_test_cases_block_57 = []  # distribute_test_cases_block_57
+distribute_test_cases_block_58 = []  # distribute_test_cases_block_58
+distribute_test_cases_block_59 = []  # distribute_test_cases_block_59
 distribute_test_cases_block_60 = [
     DistributeTestCase(
         one_zhongwen="亚运主办权⋯",
@@ -366,16 +366,16 @@ distribute_test_cases_block_60 = [
         one_yuewen_to_append="亚运主办权",
         two_yuewen_to_prepend="",
     ),
-]
-distribute_test_cases_block_61 = []
-distribute_test_cases_block_62 = []
-distribute_test_cases_block_63 = []
-distribute_test_cases_block_64 = []
-distribute_test_cases_block_65 = []
-distribute_test_cases_block_66 = []
-distribute_test_cases_block_67 = []
-distribute_test_cases_block_68 = []
-distribute_test_cases_block_69 = []
+]  # distribute_test_cases_block_60
+distribute_test_cases_block_61 = []  # distribute_test_cases_block_61
+distribute_test_cases_block_62 = []  # distribute_test_cases_block_62
+distribute_test_cases_block_63 = []  # distribute_test_cases_block_63
+distribute_test_cases_block_64 = []  # distribute_test_cases_block_64
+distribute_test_cases_block_65 = []  # distribute_test_cases_block_65
+distribute_test_cases_block_66 = []  # distribute_test_cases_block_66
+distribute_test_cases_block_67 = []  # distribute_test_cases_block_67
+distribute_test_cases_block_68 = []  # distribute_test_cases_block_68
+distribute_test_cases_block_69 = []  # distribute_test_cases_block_69
 distribute_test_cases_block_70 = [
     DistributeTestCase(
         one_zhongwen="特餐？特餐有什么吃？",
@@ -503,7 +503,7 @@ distribute_test_cases_block_70 = [
         one_yuewen_to_append="一样嘅啫",
         two_yuewen_to_prepend="",
     ),
-]
+]  # distribute_test_cases_block_70
 distribute_test_cases_block_71 = [
     DistributeTestCase(
         one_zhongwen="太过分了吧？你们究竟有吃的没？",
@@ -550,7 +550,7 @@ distribute_test_cases_block_71 = [
         one_yuewen_to_append="噉上餐又点好嘢法呀",
         two_yuewen_to_prepend="",
     ),
-]
+]  # distribute_test_cases_block_71
 distribute_test_cases_block_72 = [
     DistributeTestCase(
         one_zhongwen="对不起，午餐卖光了",
@@ -579,7 +579,7 @@ distribute_test_cases_block_72 = [
         one_yuewen_to_append="快啲手啊",
         two_yuewen_to_prepend="",
     ),
-]
+]  # distribute_test_cases_block_72
 
 mlamd_distribute_test_cases: list[DistributeTestCase] = sum(
     (globals()[f"distribute_test_cases_block_{i}"] for i in range(73)), []
