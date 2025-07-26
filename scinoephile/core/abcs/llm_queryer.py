@@ -220,7 +220,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         test_case_log_str += "\n]"
         return test_case_log_str
 
-    @property
+    @cached_property
     @abstractmethod
     def answer_example(self) -> TAnswer:
         """Example answer."""
@@ -236,7 +236,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             f"Could not determine answer class for {self.__class__.__name__}"
         )
 
-    @property
+    @cached_property
     @abstractmethod
     def base_system_prompt(self) -> str:
         """Base system prompt."""

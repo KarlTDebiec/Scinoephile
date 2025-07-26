@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
@@ -15,13 +16,13 @@ from scinoephile.core.abcs import LLMQueryer
 class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
     """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
 
-    @property
+    @cached_property
     @override
     def answer_example(self) -> MergeAnswer:
         """Example answer."""
         return MergeAnswer(yuewen_merged="粤文 merged")
 
-    @property
+    @cached_property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

@@ -6,14 +6,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from doctest import debug
-from logging import error
+from functools import cached_property
+from logging import debug, error
 from pathlib import Path
 from textwrap import dedent
 
-from pydantic import ValidationError
+from pydantic import Field, ValidationError, create_model
 
-from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer, LLMProvider, Query, TestCase
@@ -86,11 +85,15 @@ class Translator:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-    def __call__(self, query: Query) -> Answer:
+    def __call__(
+        self, query: Query, answer_cls: type[Answer], test_case_cls: type[TestCase]
+    ) -> Answer:
         """Query LLM.
 
         Arguments:
             query: Query for LLM
+            answer_cls: Class of answer to return
+            test_case_cls: Class of test case to return
         Returns:
             LLM's answer
         """
@@ -101,9 +104,9 @@ class Translator:
         if cache_path is not None and cache_path.exists():
             debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
-                answer = self.answer_cls.model_validate(json.load(f))
+                answer = answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
-                    test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                    test_case = test_case_cls.from_query_and_answer(query, answer)
                     self._test_case_log[test_case.query.query_key] = test_case
                     print(f"{test_case.source_str},")
                 return answer
@@ -123,7 +126,7 @@ class Translator:
                     messages=messages,
                     temperature=0,
                     seed=0,
-                    response_format=self.answer_cls,
+                    response_format=answer_cls,
                 )
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
@@ -133,7 +136,7 @@ class Translator:
 
             # Validate answer
             try:
-                answer = self.answer_cls.model_validate_json(content)
+                answer = answer_cls.model_validate_json(content)
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
@@ -159,7 +162,7 @@ class Translator:
 
             # Validate test case
             try:
-                test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                test_case = test_case_cls.from_query_and_answer(query, answer)
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
@@ -221,26 +224,25 @@ class Translator:
         test_case_log_str += "\n]"
         return test_case_log_str
 
-    def answer_example(self) -> ShiftAnswer:
+    @cached_property
+    def answer_example(self) -> Answer:
         """Example answer."""
-        return ShiftAnswer(
-            one_yuewen_shifted="粤文 one shifted",
-            two_yuewen_shifted="粤文 two shifted",
+        answer_fields = {
+            "yuewen_2": Field(..., description="Translated 粤文 of text 2"),
+            "yuewen_5": Field(..., description="Translated 粤文 of text 5"),
+            "yuewen_10": Field(..., description="Translated 粤文 of text 10"),
+        }
+        answer_cls = create_model("TranslateAnswer", __base__=Answer, **answer_fields)
+        return answer_cls(
+            yuewen_2="粤文 text 2 translated from query's 中文 text 2",
+            yuewen_5="粤文 text 5 translated from query's 中文 text 5",
+            yuewen_10="粤文 text 10 translated from query's 中文 text 10",
         )
 
+    @cached_property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
-        return (
-            "Read the two consecutive 中文 texts and two consecutive 粤文 texts, and adjust "
-            "the breakpoint between the first and second 粤文 texts so that they align with "
-            "the two corresponding 中文 texts. "
-            "This is, either shift characters from the end of the first 粤文 text to the "
-            "beginning of the second 粤文 text, or shift characters from the beginning of "
-            "the second 粤文 text to the end of the first 粤文 text. "
-            "If no changes are needed, return the original 粤文 texts. "
-            "Include all 粤文 characters from the inputs in the same order in the outputs. "
-            "Do not copy punctuation or whitespace from the 中文 texts."
-        )
+        return "Translate the missing 粤文 texts based on the corresponding 中文."
 
     def clear_test_case_log(self):
         """Clear the test case log."""
