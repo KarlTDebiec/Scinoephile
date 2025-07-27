@@ -58,7 +58,7 @@ def get_translate_test_case_model(
         answer_model = get_translate_answer_model(size, missing)
     return create_model(
         "TranslateTestCase",
-        __base__=TestCase[query_model, answer_model],
+        __base__=(query_model, answer_model, TestCase[query_model, answer_model]),
         include_in_prompt=(
             bool,
             Field(

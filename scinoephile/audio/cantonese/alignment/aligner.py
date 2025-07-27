@@ -417,10 +417,13 @@ class Aligner:
         nascent_yuewen_subs = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sync_groups = []
         offset = 0
-        for sg_idx in range(len(alignment.sync_groups)):
-            sg = alignment.sync_groups[sg_idx]
+        for sg_idx, sg in enumerate(alignment.sync_groups):
             zw_idxs = sg[0]
             zw_idx = zw_idxs[0]
+            if len(zw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
+                )
             yw_idxs = sg[1]
             if not yw_idxs:
                 nascent_sync_groups.append(sg)
@@ -451,7 +454,43 @@ class Aligner:
                 print(f"Query class: {pformat(query_cls.model_fields)}")
                 print(f"Answer class: {pformat(answer_cls.model_fields)}")
                 print(f"Test case class: {pformat(test_case_cls.model_fields)}")
+
                 query = get_translate_query(alignment, query_cls=query_cls)
-                self.translator(query, answer_cls, test_case_cls)
-                # TODO: Fill in answer results
+                answer = self.translator(query, answer_cls, test_case_cls)
+
+                nascent_yuewen_subs = AudioSeries(audio=alignment.yuewen.audio)
+                nascent_sync_groups = []
+                for sg_idx, sg in enumerate(alignment.sync_groups):
+                    # Get 中文
+                    zw_idxs = sg[0]
+                    zw_idx = zw_idxs[0]
+                    if len(zw_idxs) != 1:
+                        raise ScinoephileError(
+                            f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, "
+                            f"expected 1."
+                        )
+                    zw = alignment.zhongwen[zw_idx]
+
+                    # Get 粤文
+                    yw_idxs = sg[1]
+                    if yw_idxs:
+                        yw_idx = yw_idxs[0]
+                        if len(yw_idxs) != 1:
+                            raise ScinoephileError(
+                                f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, "
+                                f"expected 1."
+                            )
+                        yw = alignment.yuewen[yw_idx]
+                    if not yw_idxs:
+                        # TODO
+                        yw_key = f"yuewen_{zw_idx + 1}"
+                        yw_text = getattr(answer, yw_key)
+                        yw = deepcopy(zw)
+                        yw.text = yw_text
+                    nascent_yuewen_subs.append(yw)
+                    yw_idx = len(nascent_yuewen_subs) - 1
+                    nascent_sync_groups.append(([zw_idx], [yw_idx]))
+                alignment.yuewen = nascent_yuewen_subs
+                alignment._sync_groups_override = nascent_sync_groups
+
                 return
