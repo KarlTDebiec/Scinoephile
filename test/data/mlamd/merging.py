@@ -1615,16 +1615,19 @@ merge_test_cases_block_17 = [
         zhongwen="衰仔，快点起床上学",
         yuewen_to_merge=["喂", "衰仔啊", "快啲起身返学喇"],
         yuewen_merged="喂，衰仔啊，快啲起身返学喇",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="咦？",
         yuewen_to_merge=["咦"],
         yuewen_merged="咦？",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="妈妈！",
         yuewen_to_merge=["妈妈"],
         yuewen_merged="妈妈！",
+        difficulty=1,
     ),
 ]  # merge_test_cases_block_17
 merge_test_cases_block_18 = [
