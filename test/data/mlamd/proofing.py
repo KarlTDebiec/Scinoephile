@@ -1368,19 +1368,18 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
-        yuewen="鸡包包鸡包包鸡包纸包纸包鸡⋯",
+        yuewen="鸡包包鸡包包鸡包纸包纸包鸡包包鸡⋯",
         yuewen_proofread="鸡包包鸡包包鸡包纸包纸⋯",
-        note="Removed the extra '包鸡' at the end as it is likely a "
-        "mishearing and does not correspond to the original "
-        "repetition pattern in the 中文.",
+        note="Trimmed the repeated '包鸡包包鸡' at the end to match the "
+        "original phrase structure and avoid unnecessary repetition, "
+        "which is likely a transcription error.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="包鸡包鸡包纸包鸡",
-        yuewen="包包鸡纸包鸡包纸包鸡",
-        yuewen_proofread="包鸡包鸡包纸包鸡",
-        note="Corrected '包包鸡纸包鸡包纸包鸡' to '包鸡包鸡包纸包鸡' to match the repetition "
-        "and order of '包鸡' and '包纸包鸡' in the 中文; the extra '包' and "
-        "word order were likely transcription errors.",
+        yuewen="纸包鸡包纸包鸡",
+        yuewen_proofread="纸包鸡包纸包鸡",
+        note="",
     ),
     ProofTestCase(
         zhongwen="做法亦很简单",
@@ -1414,18 +1413,22 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="再包包包，纸纸纸",
-        yuewen="再包包包包，包鸡包纸包纸，纸纸纸纸",
+        yuewen="再包包包包包鸡包纸包纸，纸纸纸纸",
         yuewen_proofread="再包包包，纸纸纸",
-        note="Removed extra repetitions and corrected '包鸡包纸包纸' to match "
-        "the intended repetition of '包' and '纸' as in the 中文; the "
-        "original had likely misheard or over-transcribed the words.",
+        note="Removed the extra and irrelevant words '包包鸡包纸包纸' and '纸纸纸纸' "
+        "as they are likely transcription errors and do not "
+        "correspond to the original phrase, which simply repeats '包' "
+        "and '纸' three times each.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
         yuewen="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
         yuewen_proofread="纸包纸，纸包鸡，鸡包纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
         note="Corrected '包鸡纸' to '鸡包纸' to match the pattern and likely "
-        "intended word order.",
+        "intended word order, as '鸡包纸' is a plausible phonetic "
+        "confusion.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="可我妈妈也有她温柔的一面",
@@ -1441,14 +1444,14 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="从前，有个小朋友撒谎；有一天⋯",
-        yuewen="从前有个小朋友讲大话",
-        yuewen_proofread="从前有个小朋友讲大话",
+        yuewen="从前，有个小朋友讲大话；有一日⋯",
+        yuewen_proofread="从前，有个小朋友讲大话；有一日⋯",
         note="",
     ),
     ProofTestCase(
         zhongwen="他死了！",
-        yuewen="有一日，佢死咗！",
-        yuewen_proofread="有一日，佢死咗！",
+        yuewen="佢死咗！",
+        yuewen_proofread="佢死咗！",
         note="",
     ),
     ProofTestCase(
@@ -1461,21 +1464,24 @@ proof_test_cases_block_12 = [
         zhongwen="他长大后，发财了！",
         yuewen="佢长大发咗！",
         yuewen_proofread="佢长大后发咗！",
-        note="Added '后' after '长大' to match the meaning of '长大后' in the "
+        note="Inserted '后' after '长大' to match the meaning of '长大后' in the "
         "中文, as its omission is likely a transcription error.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="从前，有个小朋友不孝，有天⋯",
-        yuewen="从前有个小朋友唔孝顺⋯",
-        yuewen_proofread="从前有个小朋友唔孝顺⋯",
+        yuewen="从前，有个小朋友唔孝顺，有一日⋯",
+        yuewen_proofread="从前，有个小朋友唔孝顺，有一日⋯",
         note="",
     ),
     ProofTestCase(
         zhongwen="他扭了脚骹！",
-        yuewen="有一日佢屈亲个脚脚！",
-        yuewen_proofread="有一日佢屈亲个脚骹！",
-        note="Corrected '脚脚' to '脚骹' as '脚骹' is the correct Cantonese term "
-        "for 'ankle', matching the meaning of the 中文.",
+        yuewen="佢屈亲个脚脚！",
+        yuewen_proofread="佢扭亲个脚骹！",
+        note="Corrected '屈亲个脚脚' to '扭亲个脚骹' as '扭亲' means 'sprained' and "
+        "'脚骹' is the correct term for 'ankle', matching the meaning "
+        "of the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="妈妈，我想睡觉",
