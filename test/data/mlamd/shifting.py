@@ -1301,6 +1301,8 @@ shift_test_cases_block_6 = [
         two_yuewen="日日掌肉",
         one_yuewen_shifted="睇住自己日日柯能处",
         two_yuewen_shifted="日日掌肉",
+        include_in_prompt=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="每天长肉⋯",

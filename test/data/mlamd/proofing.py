@@ -1021,8 +1021,7 @@ proof_test_cases_block_6 = [
         yuewen="睇住自己日日柯能处⋯",
         yuewen_proofread="睇住自己日日疴烂煮⋯",
         note="Corrected '柯能处' to '疴烂煮' as '疴烂煮' is a phonetic match and "
-        "the correct phrase for the context of '疴烂煮' (having "
-        "diarrhea) in the 中文.",
+        "the correct phrase for the context of the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
