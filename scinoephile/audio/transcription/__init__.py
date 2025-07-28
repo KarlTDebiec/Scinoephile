@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from logging import error
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -78,14 +79,18 @@ def get_segment_split_at_idx(
         words=segment.words[:idx],
     )
 
-    second_segment = TranscribedSegment(
-        id=segment.id + 1,
-        seek=segment.seek,
-        start=segment.words[idx].start,
-        end=segment.end,
-        text=segment.text[idx:],
-        words=segment.words[idx:],
-    )
+    try:
+        second_segment = TranscribedSegment(
+            id=segment.id + 1,
+            seek=segment.seek,
+            start=segment.words[idx].start,
+            end=segment.end,
+            text=segment.text[idx:],
+            words=segment.words[idx:],
+        )
+    except IndexError as exc:
+        error(exc)
+        print()
 
     return first_segment, second_segment
 

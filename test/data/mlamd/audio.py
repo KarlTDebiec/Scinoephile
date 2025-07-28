@@ -34,7 +34,7 @@ from test.data.mlamd import (
 if __name__ == "__main__":
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(1)
+    set_logging_verbosity(2)
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -81,10 +81,13 @@ if __name__ == "__main__":
     )
 
     all_series = []
+    update = True
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        # if i != 40:
-        #     continue
+
+        if i > 10:
+            continue
+        update = False
 
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -114,27 +117,28 @@ if __name__ == "__main__":
         print(f"CANTONESE:\n{yuewen_series.to_simple_string()}")
         all_series.append(yuewen_series)
 
-        # TODO: Replace test case lists in files
-        update_test_cases(
-            test_data_root / "mlamd" / "distribution.py",
-            f"distribute_test_cases_block_{i}",
-            distributor,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "shifting.py",
-            f"shift_test_cases_block_{i}",
-            shifter,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "merging.py",
-            f"merge_test_cases_block_{i}",
-            merger,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "proofing.py",
-            f"proof_test_cases_block_{i}",
-            proofer,
-        )
+        # Replace test case lists in files
+        if update:
+            update_test_cases(
+                test_data_root / "mlamd" / "distribution.py",
+                f"distribute_test_cases_block_{i}",
+                distributor,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "shifting.py",
+                f"shift_test_cases_block_{i}",
+                shifter,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "merging.py",
+                f"merge_test_cases_block_{i}",
+                merger,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "proofing.py",
+                f"proof_test_cases_block_{i}",
+                proofer,
+            )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

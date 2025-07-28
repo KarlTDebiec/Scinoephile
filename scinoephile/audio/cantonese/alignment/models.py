@@ -70,7 +70,7 @@ def get_translate_test_case_model(
 
 def get_translate_models(
     alignment: Alignment,
-) -> tuple[type[Query], type[Answer], type[TestCase[Query, Answer]]]:
+) -> tuple[type[Query], type[Answer], type[TestCase[Query, Answer]]] | None:
     """Get translation query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
@@ -107,12 +107,14 @@ def get_translate_models(
                 f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
             )
 
-    query_model = get_translate_query_model(size, tuple(missing))
-    answer_model = get_translate_answer_model(size, tuple(missing))
-    test_case_model = get_translate_test_case_model(
-        size, tuple(missing), query_model, answer_model
-    )
-    return query_model, answer_model, test_case_model
+    if missing:
+        query_model = get_translate_query_model(size, tuple(missing))
+        answer_model = get_translate_answer_model(size, tuple(missing))
+        test_case_model = get_translate_test_case_model(
+            size, tuple(missing), query_model, answer_model
+        )
+        return query_model, answer_model, test_case_model
+    return None
 
 
 __all__ = [
