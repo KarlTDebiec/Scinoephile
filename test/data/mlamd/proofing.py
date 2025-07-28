@@ -575,8 +575,8 @@ proof_test_cases_block_4 = [
         zhongwen="你们可能觉得这间幼稚园很烂",
         yuewen="你哋可能觉得呢间幼稚园好逗利",
         yuewen_proofread="你哋可能觉得呢间幼稚园好烂",
-        note="Corrected '好逗利' to '好烂' as '逗利' is a mishearing of '烂', "
-        "which matches the meaning of '很烂' in the 中文.",
+        note="Corrected '好逗利' to '好烂' as '烂' matches the meaning of '很烂' "
+        "in the 中文, while '逗利' is likely a mishearing.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -617,8 +617,8 @@ proof_test_cases_block_4 = [
         zhongwen="做第二个陈慧琳也可以",
         yuewen="或者系做下一个陈维林都得",
         yuewen_proofread="或者系做下一个陈慧琳都得",
-        note="Corrected '陈维林' to '陈慧琳' as '陈慧琳' is the correct name "
-        "matching the original meaning.",
+        note="Corrected '陈维林' to '陈慧琳' as '陈慧琳' is the correct name, "
+        "matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -629,8 +629,8 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="麦唛同学！　　到！",
-        yuewen="麦麦同学！到！",
-        yuewen_proofread="麦唛同学！到！",
+        yuewen="麦麦同学！　　到！",
+        yuewen_proofread="麦唛同学！　　到！",
         note="Corrected '麦麦' to '麦唛' as '麦唛' is the correct name, matching "
         "the 中文.",
         difficulty=1,
@@ -652,8 +652,10 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="得巴同学！　　到！",
         yuewen="德巴同学！　　到！",
-        yuewen_proofread="德巴同学！　　到！",
-        note="",
+        yuewen_proofread="得巴同学！　　到！",
+        note="Corrected '德巴' to '得巴' as it matches the original name in "
+        "the 中文 and is likely a mishearing.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="阿May同学！　　到！",
@@ -675,8 +677,8 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="Miss Chan，我点过两次了！",
-        yuewen="Miss Chan你点咗我两次喇！",
-        yuewen_proofread="Miss Chan你点咗我两次喇！",
+        yuewen="Miss Chan，你点咗我两次喇！",
+        yuewen_proofread="Miss Chan，你点咗我两次喇！",
         note="",
     ),
     ProofTestCase(
@@ -701,18 +703,20 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="还有谁没点过吗？",
-        yuewen="好，仲有边个未点？",
+        yuewen="好，仲有边个未点？猫",
         yuewen_proofread="好，仲有边个未点？",
-        note="",
+        note="Removed '猫' at the end as it is likely a mishearing or "
+        "extraneous word not present in the original meaning.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="麦兜！",
-        yuewen="猫！噢！",
+        yuewen="噢！",
         yuewen_proofread="",
-        note="Cleared as '猫！噢！' bears no resemblance to the original "
-        "phrase '麦兜！' and is clearly a complete transcription "
-        "failure.",
-        difficulty=1,
+        note="Cleared as '噢！' bears no resemblance to the original phrase "
+        "'麦兜！' and is clearly a complete transcription failure.",
+        include_in_prompt=True,
+        difficulty=2,
     ),
     ProofTestCase(
         zhongwen="麦兜同学！",
@@ -728,18 +732,18 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="我好像觉得呢⋯",
-        yuewen="我个心总系仁住仁住，好似⋯",
-        yuewen_proofread="我个心总系印住印住，好似⋯",
-        note="Corrected '仁住仁住' to '印住印住' as '印住' (a pounding or pressing "
-        "feeling) is a common Cantonese expression for a nervous or "
-        "uneasy feeling, matching the context of '觉得' in the 中文, "
-        "while '仁住' is likely a mishearing.",
+        yuewen="我个心总系仁住仁住⋯",
+        yuewen_proofread="我个心总系印住印住⋯",
+        note="Corrected '仁住仁住' to '印住印住' as '印住' (feeling pressed or "
+        "uneasy) is a common Cantonese expression for a feeling in "
+        "the heart, matching the sense of '觉得' in the 中文, while '仁住' "
+        "is likely a mishearing.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="有什么人在喊我似的",
-        yuewen="有人嗌紧我个名噉嘅",
-        yuewen_proofread="有人嗌紧我个名噉嘅",
+        yuewen="好似有人嗌紧我个名噉嘅",
+        yuewen_proofread="好似有人嗌紧我个名噉嘅",
         note="",
     ),
     ProofTestCase(
@@ -757,17 +761,15 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="橙，为什么会是「疴﹣烂﹣煮」呢？",
         yuewen="点解橙叫「Orange」呢？",
-        yuewen_proofread="点解橙叫「疴﹣烂﹣煮」呢？",
-        note="Changed correctly-transcribed English 'Orange', to desired "
-        "transliteration of 'Orange', '疴﹣烂﹣煮'",
-        difficulty=1,
+        yuewen_proofread="点解橙叫「Orange」呢？",
+        note="",
     ),
     ProofTestCase(
         zhongwen="妈妈说吃橙可通大便",
         yuewen="妈妈话食橙会通大变",
         yuewen_proofread="妈妈话食橙会通大便",
-        note="Corrected '大变' to '大便' as '大便' is the correct term for bowel "
-        "movement, matching the meaning in the 中文.",
+        note="Corrected '大变' to '大便' as '大便' is the correct term for "
+        "'bowel movement', matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -775,15 +777,15 @@ proof_test_cases_block_4 = [
         yuewen="噢呢个我明白但系橙呢",
         yuewen_proofread="噢呢个我明白但系烂煮呢",
         note="Corrected '橙' to '烂煮' as '橙' is a mishearing of '烂煮', which "
-        "matches the question in the 中文.",
+        "matches the term in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
-        yuewen="仲有呢个啊「芭﹣拉﹣娜」啊香蕉啊",
-        yuewen_proofread="仲有呢个啊「芭﹣娜﹣娜」啊香蕉啊",
-        note="Corrected '芭﹣拉﹣娜' to '芭﹣娜﹣娜' as it matches the intended "
-        "pronunciation of 'banana' in the 中文.",
+        yuewen="仲有呢个啊「芭拉娜」啊香蕉啊",
+        yuewen_proofread="仲有呢个「芭﹣娜﹣娜」香蕉啊",
+        note="Corrected '芭拉娜' to '芭﹣娜﹣娜' as '芭娜娜' is the correct "
+        "transliteration for 'banana', matching the styling of the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -791,7 +793,7 @@ proof_test_cases_block_4 = [
         yuewen="点解雨姐会叫做「暗芭拉娜」呢？",
         yuewen_proofread="点解雨姐会叫做「暗芭娜娜」呢？",
         note="Corrected '暗芭拉娜' to '暗芭娜娜' as '芭娜娜' is the correct "
-        "transliteration of 'banana', matching the intended pun in "
+        "transliteration for 'banana', matching the intended pun in "
         "the 中文.",
         difficulty=1,
     ),
@@ -800,16 +802,17 @@ proof_test_cases_block_4 = [
         yuewen="嗱，我「暗」啦，噉我「暗」𠮶条香蕉",
         yuewen_proofread="嗱，我「暗」啦，噉我「暗」𠮶条蕉",
         note="Corrected '香蕉' to '蕉' as '蕉' is the colloquial Cantonese "
-        "term for 'banana', matching the wordplay in the 中文.",
+        "term for 'banana' and matches the meaning of '一条蕉' in the "
+        "中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="至多是疴烂煮，怎么会下起雨来呢？",
         yuewen="至多会Orange啫，点解会搞到落雨呢？",
         yuewen_proofread="至多会屙烂煮啫，点解会搞到落雨呢？",
-        note="Corrected 'Orange' to '屙烂煮' as '屙烂煮' (diarrhea) is a "
-        "plausible mishearing and matches the meaning of the 中文, "
-        "while 'Orange' is a clear transcription error.",
+        note="Corrected 'Orange' to '屙烂煮' as '屙烂煮' (diarrhea) is the "
+        "correct term matching the meaning of the 中文, while 'Orange' "
+        "is a mishearing.",
         difficulty=1,
     ),
     ProofTestCase(
