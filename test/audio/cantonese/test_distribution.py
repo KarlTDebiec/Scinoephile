@@ -59,3 +59,27 @@ def test_distribution_mlamd(
     """
     distributor: Distributor = request.getfixturevalue(fixture_name)
     _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mlamd_distribute_test_cases if tc.difficulty >= 1]
+)
+def test_distribution_mlamd_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)

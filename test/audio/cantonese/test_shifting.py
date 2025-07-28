@@ -59,3 +59,27 @@ def test_shifting_mlamd(
     """
     shifter: Shifter = request.getfixturevalue(fixture_name)
     _test_shifting(shifter, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("shifter_few_shot"),
+        # skip_if_ci(flaky())("shifter_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mlamd_shift_test_cases if tc.difficulty >= 1]
+)
+def test_shifting_mlamd_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
+):
+    """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    shifter: Shifter = request.getfixturevalue(fixture_name)
+    _test_shifting(shifter, test_case)

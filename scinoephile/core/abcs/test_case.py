@@ -25,6 +25,9 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     include_in_prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
     )
+    difficulty: int = Field(
+        0, description="Difficulty level of the test case, used for filtering."
+    )
 
     def __str__(self) -> str:
         """String representation."""
