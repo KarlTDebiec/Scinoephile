@@ -150,6 +150,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="今次座会系要同大家分享一个可重要嘅主题",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
+        difficulty=1,
     ),
     DistributeTestCase(
         one_zhongwen="今天的早会主要是跟大家分享",

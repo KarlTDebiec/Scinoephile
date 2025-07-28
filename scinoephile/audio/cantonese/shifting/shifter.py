@@ -40,3 +40,30 @@ class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
         Include all 粤文 characters from the inputs in the same order in the outputs.
         Do not copy punctuation or whitespace from the 中文 texts.
         """
+
+    @property
+    def test_case_log_str(self) -> str:
+        """String representation of all test cases in the log.
+
+        If the test case asks for the 粤文 text to be shifted, difficulty is 1.
+        If the test case is set to be included in the prompt, difficulty is 2.
+        """
+        test_case_log_str = "[\n"
+
+        for key, value in self._test_case_log.items():
+            source_str: str = value.source_str[:-1]
+
+            difficulty = value.difficulty
+            if value.one_yuewen != value.one_yuewen_shifted:
+                difficulty = 1
+            if value.two_yuewen != value.two_yuewen_shifted:
+                difficulty = 1
+            if key in self._examples_log:
+                difficulty = 2
+                source_str += "    include_in_prompt=True,\n"
+            if difficulty:
+                source_str += f"    difficulty={difficulty},\n"
+            source_str += ")"
+            test_case_log_str += f"{source_str},\n"
+        test_case_log_str += "\n]"
+        return test_case_log_str

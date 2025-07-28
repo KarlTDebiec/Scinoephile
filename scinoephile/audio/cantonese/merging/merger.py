@@ -11,6 +11,7 @@ from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
 from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
 from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
 from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.text import remove_non_punc_and_whitespace
 
 
 class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
@@ -36,3 +37,33 @@ class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
         Do not make any corrections to the 粤文 text, other than adjusting punctuation
         and spacing.
         """
+
+    @property
+    def test_case_log_str(self) -> str:
+        """String representation of all test cases in the log.
+
+        If the test case asks for punctuation to be added, difficulty is 1.
+        If the test case asks for extra punctuation to be added, difficulty is 2.
+        If the test case is included in the prompt, difficulty is 2.
+        """
+        test_case_log_str = "[\n"
+
+        for key, value in self._test_case_log.items():
+            source_str: str = value.source_str[:-1]
+
+            difficulty = value.difficulty
+            if remove_non_punc_and_whitespace(value.yuewen_merged):
+                difficulty = 1
+            if remove_non_punc_and_whitespace(
+                value.zhongwen
+            ) != remove_non_punc_and_whitespace(value.yuewen_merged):
+                difficulty = 2
+            if key in self._examples_log:
+                difficulty = 2
+                source_str += "    include_in_prompt=True,\n"
+            if difficulty:
+                source_str += f"    difficulty={difficulty},\n"
+            source_str += ")"
+            test_case_log_str += f"{source_str},\n"
+        test_case_log_str += "\n]"
+        return test_case_log_str

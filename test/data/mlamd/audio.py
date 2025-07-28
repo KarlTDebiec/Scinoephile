@@ -85,9 +85,9 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 0:
+        if i > 5:
             continue
-        update = False
+        update = True
 
         # Transcribe audio
         segments = transcriber(block.audio)

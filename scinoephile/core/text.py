@@ -201,6 +201,18 @@ def get_text_type(text: str) -> str:
     return "half"
 
 
+def remove_non_punc_and_whitespace(text: str) -> str:
+    """Strip non-punctuation and non-whitespace characters from text.
+
+    Arguments:
+        text: Text to strip
+    Returns:
+        Stripped text with only punctuation and whitespace remaining
+    """
+    chars_to_remove = set(text) - (half_punc_chars | full_punc_chars | whitespace_chars)
+    return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
+
+
 def remove_punc_and_whitespace(text: str) -> str:
     """Strip punctuation and whitespace from text.
 
@@ -227,5 +239,6 @@ __all__ = [
     "re_western",
     "get_char_type",
     "get_text_type",
+    "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]

@@ -82,7 +82,7 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             set(self.model_fields)
             - set(query_fields)
             - set(answer_fields)
-            - {"include_in_prompt"}
+            - {"include_in_prompt", "difficulty"}
         )
 
         lines = (

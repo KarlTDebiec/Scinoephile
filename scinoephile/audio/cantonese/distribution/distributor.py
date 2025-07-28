@@ -47,7 +47,11 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
 
     @property
     def test_case_log_str(self) -> str:
-        """String representation of all test cases in the log."""
+        """String representation of all test cases in the log.
+
+        If the test case asks for the 粤文 text to be split, difficulty is 1.
+        If the test case is set to be included in the prompt, difficulty is 2.
+        """
         test_case_log_str = "[\n"
 
         for key, value in self._test_case_log.items():
@@ -58,9 +62,10 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
                 difficulty = 1
             if key in self._examples_log:
                 difficulty = 2
-                source_str += "    include_in_prompt=True,"
-            source_str += f"    difficulty={difficulty},\n)"
-            source_str += "\n)"
+                source_str += "    include_in_prompt=True,\n"
+            if difficulty:
+                source_str += f"    difficulty={difficulty},\n"
+            source_str += ")"
             test_case_log_str += f"{source_str},\n"
         test_case_log_str += "\n]"
         return test_case_log_str

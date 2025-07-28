@@ -106,9 +106,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
+                test_case = self.test_case_cls.from_query_and_answer(query, answer)
+                self._test_case_log[test_case.query.query_key] = test_case
                 if self.print_test_case:
-                    test_case = self.test_case_cls.from_query_and_answer(query, answer)
-                    self._test_case_log[test_case.query.query_key] = test_case
                     print(f"{test_case.source_str},")
                 return answer
 
