@@ -774,19 +774,21 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
-        yuewen="噢呢个我明白但系橙呢",
-        yuewen_proofread="噢呢个我明白但系烂煮呢",
-        note="Corrected '橙' to '烂煮' as '橙' is a mishearing of '烂煮', which "
-        "matches the term in the 中文.",
+        yuewen="「噢」呢个我明白，但系「橙」呢？",
+        yuewen_proofread="",
+        note="Cleared as '「噢」呢个我明白，但系「橙」呢？' bears no resemblance to the "
+        "original phrase '「疴」这个我明白，可是「烂﹣煮」呢？' and is clearly a "
+        "complete transcription failure.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
-        yuewen="仲有呢个啊「芭拉娜」啊香蕉啊",
-        yuewen_proofread="仲有呢个「芭娜娜」香蕉啊",
+        yuewen="仲有呢个啊「芭拉娜」啊，香蕉啊",
+        yuewen_proofread="仲有呢个「芭﹣娜﹣娜」啊，香蕉啊",
         note="Corrected '芭拉娜' to '芭娜娜' as '芭娜娜' is the correct "
-        "transliteration for 'banana', matching the 中文.",
+        "transliteration for 'banana', matching styling of the 中文.",
         difficulty=1,
+        include_in_prompt=True,
     ),
     ProofTestCase(
         zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
@@ -890,33 +892,30 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
-        yuewen="唔该鱼蛋粗啊　　冇粗面噃",
-        yuewen_proofread="唔该鱼蛋粗面啊　　冇粗面噃",
-        note="Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '粗面' is the correct term for "
-        "the noodle type, matching the meaning in the 中文.",
-        difficulty=1,
+        yuewen="唔该，鱼蛋粗啊　　冇粗面噃",
+        yuewen_proofread="唔该，鱼蛋粗啊　　冇粗面噃",
+        note="",
     ),
     ProofTestCase(
         zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
-        yuewen="噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃",
-        yuewen_proofread="噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃",
+        yuewen="噉啊⋯要碗鱼蛋好啊⋯　　冇鱼蛋噃",
+        yuewen_proofread="噉啊⋯要碗鱼蛋河粉啊⋯　　冇鱼蛋噃",
         note="Added '河粉' after '鱼蛋' to match the intended meaning of "
-        "'鱼蛋河粉' in the 中文, as '鱼蛋好' is likely a mishearing of '鱼蛋河'. "
-        "The rest is acceptable.",
+        "'鱼蛋河粉' in the 中文; '好' was likely a mishearing of '河'.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        yuewen="噉啊⋯要金钱透粗啊　　冇粗面噃",
-        yuewen_proofread="噉啊⋯要金钱肚粗啊　　冇粗面噃",
-        note="Corrected '金钱透' to '金钱肚' as '金钱肚' is the correct term for "
-        "the dish, matching the meaning in the 中文.",
+        yuewen="噉啊⋯要金钱透粗啊⋯　　冇粗面噃",
+        yuewen_proofread="噉啊⋯要金钱肚粗面啊⋯　　冇粗面噃",
+        note="Corrected '金钱透粗' to '金钱肚粗面' as '金钱肚粗面' is the correct dish "
+        "name, matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
-        yuewen="噉啊，咁要鱼蛋油面啊　　冇鱼蛋噃",
-        yuewen_proofread="噉啊，咁要鱼蛋油面啊　　冇鱼蛋噃",
+        yuewen="噉啊咁要鱼蛋油面啊　　冇鱼蛋噃",
+        yuewen_proofread="噉啊咁要鱼蛋油面啊　　冇鱼蛋噃",
         note="",
     ),
     ProofTestCase(
@@ -928,10 +927,9 @@ proof_test_cases_block_5 = [
     ProofTestCase(
         zhongwen="来个墨鱼丸粗面吧　　粗面买光了",
         yuewen="噉要蜜丸粗啊　　冇粗面噃",
-        yuewen_proofread="噉要墨丸粗啊　　冇粗面噃",
-        note="Corrected '蜜丸' to '墨丸' as '墨丸' (墨鱼丸) matches the intended "
-        "meaning of '墨鱼丸' in the 中文, while '蜜丸' is likely a "
-        "mishearing.",
+        yuewen_proofread="噉要墨鱼丸粗啊　　冇粗面噃",
+        note="Corrected '蜜丸' to '墨鱼丸' as '墨鱼丸' is the correct term for "
+        "'墨鱼丸' (cuttlefish ball), matching the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -953,9 +951,9 @@ proof_test_cases_block_5 = [
         zhongwen="麦兜呀，鱼蛋跟粗面都买光了",
         yuewen="麦兜啊，佢哋啲鱼蛋同粗面卖晒㗎啦",
         yuewen_proofread="麦兜啊，鱼蛋同粗面卖晒㗎啦",
-        note="Removed '佢哋啲' as it is a mishearing; the original sentence "
-        "is addressing 麦兜 and stating that '鱼蛋同粗面' are sold out, "
-        "matching the 中文.",
+        note="Removed '佢哋啲' as it is a mishearing and not present in the "
+        "original meaning; the sentence should directly address 麦兜 "
+        "and state that the items are sold out.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -972,8 +970,8 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="麻烦你，净要鱼蛋吧　　鱼蛋买光了",
-        yuewen="噉唔该净鱼蛋啊　　冇鱼蛋噃",
-        yuewen_proofread="噉唔该净鱼蛋啊　　冇鱼蛋噃",
+        yuewen="噉唔该，净鱼蛋啊　　冇鱼蛋噃",
+        yuewen_proofread="噉唔该，净鱼蛋啊　　冇鱼蛋噃",
         note="",
     ),
     ProofTestCase(
@@ -1013,7 +1011,7 @@ proof_test_cases_block_5 = [
         yuewen="麦兜，转身食啊！",
         yuewen_proofread="麦兜，射呀！",
         note="Corrected '转身食啊' to '射呀' as '射呀' matches the meaning of "
-        "'shoot!' in the 中文, while '转身食啊' is a mishearing.",
+        "'shoot!' in the 中文, while '转身食啊' is likely a mishearing.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_5
