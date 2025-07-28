@@ -452,6 +452,7 @@ merge_test_cases_block_3 = [
         yuewen_to_merge=["湾吉校坟交涉设"],
         yuewen_merged="湾吉校坟交涉设",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="也不能忘记校训九十八！",
@@ -547,7 +548,7 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="麦唛同学！　　到！",
         yuewen_to_merge=["麦麦同学", "到"],
-        yuewen_merged="麦麦同学！到！",
+        yuewen_merged="麦麦同学！　　到！",
         difficulty=2,
     ),
     MergeTestCase(
@@ -560,7 +561,8 @@ merge_test_cases_block_4 = [
         zhongwen="菇时同学！　　到！",
         yuewen_to_merge=["Boosie同学", "到"],
         yuewen_merged="Boosie同学！　　到！",
-        difficulty=1,
+        difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="得巴同学！　　到！",
@@ -589,8 +591,9 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="Miss Chan，我点过两次了！",
         yuewen_to_merge=["Miss", "Chan你点咗我两次喇"],
-        yuewen_merged="Miss Chan你点咗我两次喇！",
+        yuewen_merged="Miss Chan，你点咗我两次喇！",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="呀，真的吗？",
@@ -661,17 +664,12 @@ merge_test_cases_block_4 = [
         yuewen_to_merge=["点解橙叫Orange呢"],
         yuewen_merged="点解橙叫「Orange」呢？",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="妈妈说吃橙可通大便",
-        yuewen_to_merge=["妈妈话食橙会通大", "变", "噢"],
-        yuewen_merged="妈妈话食橙会通大变噢",
-    ),
-    MergeTestCase(
-        zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
-        yuewen_to_merge=["呢个我明白", "但系橙呢"],
-        yuewen_merged="呢个我明白，但系橙呢？",
-        difficulty=2,
+        yuewen_to_merge=["妈妈话食橙会通大", "变"],
+        yuewen_merged="妈妈话食橙会通大变",
     ),
     MergeTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
@@ -682,8 +680,9 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
         yuewen_to_merge=["点解雨姐会叫做暗芭拉娜呢"],
-        yuewen_merged="点解雨姐会叫做「暗﹣芭﹣拉﹣娜」呢？",
-        difficulty=1,
+        yuewen_merged="点解雨姐会叫做「暗芭拉娜」呢？",
+        difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="我「暗」的「暗」掉一条蕉",
@@ -766,7 +765,7 @@ merge_test_cases_block_5 = [
     MergeTestCase(
         zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
         yuewen_to_merge=["唔该鱼蛋粗啊", "冇粗面噃"],
-        yuewen_merged="唔该鱼蛋粗啊　　冇粗面噃",
+        yuewen_merged="唔该，鱼蛋粗啊　　冇粗面噃",
         difficulty=2,
     ),
     MergeTestCase(
@@ -776,10 +775,16 @@ merge_test_cases_block_5 = [
         difficulty=1,
     ),
     MergeTestCase(
-        zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
-        yuewen_to_merge=["咁要鱼蛋油面啊", "冇鱼蛋噃"],
-        yuewen_merged="咁要鱼蛋油面啊　　冇鱼蛋噃",
+        zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
+        yuewen_to_merge=["噉啊", "要金钱透粗啊", "冇粗面噃"],
+        yuewen_merged="噉啊⋯要金钱透粗啊　　冇粗面噃",
         difficulty=1,
+    ),
+    MergeTestCase(
+        zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
+        yuewen_to_merge=["噉啊", "咁要鱼蛋油面啊", "冇鱼蛋噃"],
+        yuewen_merged="噉啊，咁要鱼蛋油面啊　　冇鱼蛋噃",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="怎么都买光了？",
@@ -825,8 +830,9 @@ merge_test_cases_block_5 = [
     MergeTestCase(
         zhongwen="麻烦你，净要鱼蛋吧　　鱼蛋买光了",
         yuewen_to_merge=["噉唔该净鱼蛋啊", "冇鱼蛋噃"],
-        yuewen_merged="噉唔该净鱼蛋啊　　冇鱼蛋噃",
+        yuewen_merged="噉唔该，净鱼蛋啊　　冇鱼蛋噃",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="那么净要粗面呢？　　粗面买光了",
@@ -970,6 +976,7 @@ merge_test_cases_block_8 = [
         yuewen_to_merge=["就系我妈妈", "麦太"],
         yuewen_merged="就系我妈妈麦太",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="我妈妈真的很劲",
@@ -1029,7 +1036,7 @@ merge_test_cases_block_9 = [
     MergeTestCase(
         zhongwen="简单别致的小菜纸包鸡",
         yuewen_to_merge=["简单又别致嘅小菜", "自包鸡"],
-        yuewen_merged="简单又别致嘅小菜，自包鸡",
+        yuewen_merged="简单又别致嘅小菜自包鸡",
         difficulty=2,
     ),
     MergeTestCase(

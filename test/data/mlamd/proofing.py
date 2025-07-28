@@ -756,25 +756,26 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="橙，为什么会是「疴﹣烂﹣煮」呢？",
-        yuewen="点解橙叫Orange呢？",
-        yuewen_proofread="点解橙叫Orange呢？",
-        note="",
+        yuewen="点解橙叫「Orange」呢？",
+        yuewen_proofread="点解橙叫「疴﹣烂﹣煮」呢？",
+        note="Changed correctly-transcribed English 'Orange', to desired "
+        "transliteration of 'Orange', '疴﹣烂﹣煮'",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="妈妈说吃橙可通大便",
-        yuewen="妈妈话食橙会通大变噢",
-        yuewen_proofread="妈妈话食橙会通大便噢",
+        yuewen="妈妈话食橙会通大变",
+        yuewen_proofread="妈妈话食橙会通大便",
         note="Corrected '大变' to '大便' as '大便' is the correct term for bowel "
         "movement, matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
-        yuewen="呢个我明白，但系橙呢？",
-        yuewen_proofread="",
-        note="Cleared as '但系橙呢？' bears no resemblance to the original "
-        "phrase '可是「烂﹣煮」呢？' and is clearly a complete transcription "
-        "failure.",
+        yuewen="噢呢个我明白但系橙呢",
+        yuewen_proofread="噢呢个我明白但系烂煮呢",
+        note="Corrected '橙' to '烂煮' as '橙' is a mishearing of '烂煮', which "
+        "matches the question in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -787,10 +788,11 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
-        yuewen="点解雨姐会叫做「暗﹣芭﹣拉﹣娜」呢？",
-        yuewen_proofread="点解雨伞会叫做「暗﹣芭﹣娜﹣娜」呢？",
-        note="Corrected '雨姐' to '雨伞' as '雨姐' is a mishearing of '雨伞', and "
-        "'芭﹣拉﹣娜' to '芭﹣娜﹣娜' to match the intended phrase.",
+        yuewen="点解雨姐会叫做「暗芭拉娜」呢？",
+        yuewen_proofread="点解雨姐会叫做「暗芭娜娜」呢？",
+        note="Corrected '暗芭拉娜' to '暗芭娜娜' as '芭娜娜' is the correct "
+        "transliteration of 'banana', matching the intended pun in "
+        "the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -871,8 +873,8 @@ proof_test_cases_block_4 = [
 proof_test_cases_block_5 = [
     ProofTestCase(
         zhongwen="幼稚园楼下，由校长兼营的茶餐厅",
-        yuewen="喺幼稚园楼下校长兼营嘅间茶餐厅",
-        yuewen_proofread="喺幼稚园楼下校长兼营嘅间茶餐厅",
+        yuewen="喺幼稚园楼下，校长兼营嘅间茶餐厅",
+        yuewen_proofread="喺幼稚园楼下，校长兼营嘅间茶餐厅",
         note="",
     ),
     ProofTestCase(
@@ -902,16 +904,16 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        yuewen="噉啊要金钱透粗啊冇粗面噃噉啊",
-        yuewen_proofread="噉啊要金钱肚粗啊冇粗面噃噉啊",
+        yuewen="噉啊⋯要金钱透粗啊　　冇粗面噃",
+        yuewen_proofread="噉啊⋯要金钱肚粗啊　　冇粗面噃",
         note="Corrected '金钱透' to '金钱肚' as '金钱肚' is the correct term for "
         "the dish, matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
-        yuewen="咁要鱼蛋油面啊　　冇鱼蛋噃",
-        yuewen_proofread="咁要鱼蛋油面啊　　冇鱼蛋噃",
+        yuewen="噉啊，咁要鱼蛋油面啊　　冇鱼蛋噃",
+        yuewen_proofread="噉啊，咁要鱼蛋油面啊　　冇鱼蛋噃",
         note="",
     ),
     ProofTestCase(
