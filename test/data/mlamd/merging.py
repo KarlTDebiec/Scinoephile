@@ -1248,6 +1248,7 @@ merge_test_cases_block_12 = [
         ],
         yuewen_merged="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="可我妈妈也有她温柔的一面",
@@ -1264,8 +1265,8 @@ merge_test_cases_block_12 = [
         zhongwen="从前，有个小朋友撒谎；有一天⋯",
         yuewen_to_merge=["从前有个小朋友讲大话", "有一日"],
         yuewen_merged="从前，有个小朋友讲大话；有一日⋯",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="他死了！",
@@ -1289,8 +1290,8 @@ merge_test_cases_block_12 = [
         zhongwen="从前，有个小朋友不孝，有天⋯",
         yuewen_to_merge=["从前有个小朋友唔孝顺", "有一日"],
         yuewen_merged="从前，有个小朋友唔孝顺，有一日⋯",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="他扭了脚骹！",
