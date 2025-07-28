@@ -2276,6 +2276,8 @@ shift_test_cases_block_18 = [
         two_yuewen="唔使同佢打多支针添呢",
         one_yuewen_shifted="噉佢食药使唔使咩啊",
         two_yuewen_shifted="唔使同佢打多支针添呢",
+        include_in_prompt=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="不用！给他打口针吧！",
