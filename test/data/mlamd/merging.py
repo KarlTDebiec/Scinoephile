@@ -1050,8 +1050,8 @@ merge_test_cases_block_9 = [
         zhongwen="简单别致的小菜纸包鸡",
         yuewen_to_merge=["简单又别致嘅小菜", "自包鸡"],
         yuewen_merged="简单又别致嘅小菜自包鸡",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="家中小朋友一定好喜欢",
@@ -1079,6 +1079,7 @@ merge_test_cases_block_9 = [
         zhongwen="把鸡包纸一反反转",
         yuewen_to_merge=["然后将鸡包纸一反", "反转"],
         yuewen_merged="然后将鸡包纸一反反转",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="这一味纸包鸡就完成了，很容易是吧？",

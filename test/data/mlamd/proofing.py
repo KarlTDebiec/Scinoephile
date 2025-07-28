@@ -1190,11 +1190,10 @@ proof_test_cases_block_9 = [
     ),
     ProofTestCase(
         zhongwen="简单别致的小菜纸包鸡",
-        yuewen="简单又别致嘅小菜，自包鸡",
-        yuewen_proofread="简单又别致嘅小菜，纸包鸡",
-        note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' (paper-wrapped chicken) "
-        "matches the meaning in the 中文, while '自包鸡' is likely a "
-        "mishearing.",
+        yuewen="简单又别致嘅小菜自包鸡",
+        yuewen_proofread="简单又别致嘅小菜纸包鸡",
+        note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, "
+        "matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
