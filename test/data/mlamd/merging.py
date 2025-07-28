@@ -617,8 +617,8 @@ merge_test_cases_block_4 = [
         zhongwen="还有谁没点过吗？",
         yuewen_to_merge=["好", "仲有边个未点", "猫"],
         yuewen_merged="好，仲有边个未点？猫",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="麦兜！",
@@ -676,14 +676,14 @@ merge_test_cases_block_4 = [
         zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
         yuewen_to_merge=["噢", "呢个我明白", "但系橙呢"],
         yuewen_merged="「噢」呢个我明白，但系「橙」呢？",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
         yuewen_to_merge=["仲有呢个啊", "芭拉娜啊", "香蕉啊"],
-        yuewen_merged="仲有呢个啊「芭拉娜」啊香蕉啊",
-        difficulty=1,
+        yuewen_merged="仲有呢个啊「芭拉娜」啊，香蕉啊",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
