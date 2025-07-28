@@ -1613,8 +1613,10 @@ proof_test_cases_block_15 = [
         zhongwen="蓝天白云，椰林树影，水清沙幼",
         yuewen="蓝天白云，椰林树影，水清沙游",
         yuewen_proofread="蓝天白云，椰林树影，水清沙幼",
-        note="Corrected '沙游' to '沙幼' as '沙幼' (fine sand) matches the "
-        "meaning in the 中文, while '沙游' is likely a mishearing.",
+        note="Corrected '沙游' to '沙幼' as '沙幼' (fine sand) is the correct "
+        "phrase matching the meaning in the 中文, while '沙游' is likely "
+        "a mishearing.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="七彩缤纷的珊瑚，目不暇给的热带鱼",
@@ -1622,13 +1624,15 @@ proof_test_cases_block_15 = [
         yuewen_proofread="七彩缤纷嘅珊瑚，目不暇给嘅热带鱼群",
         note="Corrected '目不下级' to '目不暇给' as '目不暇给' is the correct idiom "
         "meaning 'too many to take in', matching the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="充满赤道活力的原始海洋，脱离繁嚣",
         yuewen="充满住赤道热力嘅原始海洋，远离凡嚣",
         yuewen_proofread="充满住赤道热力嘅原始海洋，远离繁嚣",
-        note="Corrected '凡嚣' to '繁嚣' as '繁嚣' is the correct term for '繁嚣' "
-        "(bustle), matching the 中文.",
+        note="Corrected '凡嚣' to '繁嚣' as '繁嚣' is the correct term for "
+        "'hustle and bustle', matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="体验热情如火的风土人情",
@@ -1640,8 +1644,10 @@ proof_test_cases_block_15 = [
         zhongwen="享受一个脱俗出尘的梦幻之旅",
         yuewen="享受一个脱轴出尘嘅梦幻之旅",
         yuewen_proofread="享受一个脱俗出尘嘅梦幻之旅",
-        note="Corrected '脱轴' to '脱俗' as '脱俗' is the correct term for 'out "
-        "of the ordinary', matching the meaning in the 中文.",
+        note="Corrected '脱轴' to '脱俗' as '脱俗' is the correct term for "
+        "'transcendent' or 'out of the ordinary', matching the "
+        "meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="犀利旅行社，旅行社牌照号码350999",
@@ -1652,8 +1658,11 @@ proof_test_cases_block_15 = [
     ProofTestCase(
         zhongwen="妈妈你知道马尔代夫在哪儿吗？",
         yuewen="妈妈你知唔知到马尔代夫系边㗎？",
-        yuewen_proofread="妈妈你知唔知到马尔代夫系边㗎？",
-        note="",
+        yuewen_proofread="妈妈你知唔知道马尔代夫系边㗎？",
+        note="Corrected '知唔知到' to '知唔知道' as '知唔知道' is the correct form for "
+        "'do you know' in Cantonese, while '知唔知到' is likely a "
+        "mishearing.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="很远的",
@@ -1667,6 +1676,7 @@ proof_test_cases_block_15 = [
         yuewen_proofread="有几远呀？",
         note="Corrected '点远发呀' to '有几远呀' as '点远发' is a mishearing; '有几远' "
         "is the correct way to ask 'how far' in Cantonese.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="得搭飞机",
@@ -1683,9 +1693,10 @@ proof_test_cases_block_15 = [
     ProofTestCase(
         zhongwen="会！发财了再说吧",
         yuewen="会！得学发咗先啦",
-        yuewen_proofread="会！发财咗再讲啦",
-        note="Corrected '得学发咗先啦' to '发财咗再讲啦' as '得学发' is a mishearing of "
-        "'发财', and '再讲' matches '再说' in the 中文.",
+        yuewen_proofread="会！得发咗先啦",
+        note="Removed '学' from '得学发咗先啦' as it is likely a mishearing; "
+        "'得发咗先啦' matches the meaning of '发财了再说吧'.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么妈妈你什么时候发？",
