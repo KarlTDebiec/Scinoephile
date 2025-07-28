@@ -924,8 +924,8 @@ merge_test_cases_block_7 = [
         zhongwen="可每次我总唱成「疴」什么什么的⋯",
         yuewen_to_merge=["但系唱嚟唱去都系阿伦厨", "咁Ballana噉"],
         yuewen_merged="但系唱嚟唱去都系「阿伦厨」，咁「Ballana」噉⋯",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="是All Things Bright and Beautiful吧？",
@@ -988,8 +988,8 @@ merge_test_cases_block_8 = [
         zhongwen="就是我妈妈麦太",
         yuewen_to_merge=["就系我妈妈", "麦太"],
         yuewen_merged="就系我妈妈麦太",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="我妈妈真的很劲",

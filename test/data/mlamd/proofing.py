@@ -1062,11 +1062,10 @@ proof_test_cases_block_7 = [
     ),
     ProofTestCase(
         zhongwen="可每次我总唱成「疴」什么什么的⋯",
-        yuewen="但系唱嚟唱去都系阿伦厨，咁Ballana噉⋯",
-        yuewen_proofread="",
-        note="Cleared as '阿伦厨，咁Ballana噉' bears no resemblance to the "
-        "original phrase about singing '疴'什么什么, indicating a complete "
-        "transcription failure.",
+        yuewen="但系唱嚟唱去都系「阿伦厨」，咁「Ballana」噉⋯",
+        yuewen_proofread="但系唱嚟唱去都系「疴乜乜」噉⋯",
+        note="Corrected '阿伦厨' to '疴乜乜' as '疴乜乜' is a plausible mishearing "
+        "and matches the meaning of '疴什么什么的' in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -1106,7 +1105,8 @@ proof_test_cases_block_8 = [
         yuewen="多喽多得！",
         yuewen_proofread="多劳多得！",
         note="Corrected '多喽' to '多劳' as '多劳多得' is the correct phrase "
-        "meaning 'more work, more gain'; '多喽' is a mishearing.",
+        "meaning 'more work, more gain', and '喽' is a mishearing of "
+        "'劳'.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -1126,8 +1126,8 @@ proof_test_cases_block_8 = [
     ),
     ProofTestCase(
         zhongwen="就是我妈妈麦太",
-        yuewen="就系我妈妈，麦太",
-        yuewen_proofread="就系我妈妈，麦太",
+        yuewen="就系我妈妈麦太",
+        yuewen_proofread="就系我妈妈麦太",
         note="",
     ),
     ProofTestCase(

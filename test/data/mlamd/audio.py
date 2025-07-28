@@ -85,8 +85,8 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        # TODO: Review 4, 5 more carefully
-        if i != 6:
+        # TODO: Review 4, 5, 7 more carefully
+        if i != 9:
             continue
         update = True
 
