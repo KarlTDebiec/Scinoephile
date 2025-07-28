@@ -8,7 +8,7 @@ import hashlib
 import json
 from abc import ABC, abstractmethod
 from functools import cached_property
-from logging import debug, error
+from logging import debug, error, info
 from pathlib import Path
 from textwrap import dedent
 from typing import get_args, get_origin
@@ -103,7 +103,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
-            debug(f"Loaded from cache: {cache_path}")
+            info(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
                 test_case = self.test_case_cls.from_query_and_answer(query, answer)
