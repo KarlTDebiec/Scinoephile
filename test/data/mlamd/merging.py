@@ -1133,6 +1133,7 @@ merge_test_cases_block_11 = [
         zhongwen="现在要教大家一味别致小菜﹣",
         yuewen_to_merge=["间阵要教大家一味几别节嘅小菜"],
         yuewen_merged="间阵要教大家一味几别节嘅小菜﹣",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="包鸡纸包鸡包纸包鸡",
@@ -1163,16 +1164,20 @@ merge_test_cases_block_11 = [
         zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
         yuewen_to_merge=["咁一味包鸡子包鸡包子包鸡就完成喇"],
         yuewen_merged="咁一味「包鸡子包鸡包子包鸡」就完成喇！",
+        include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="真的很简单吧？",
         yuewen_to_merge=["系咪好简单呢"],
         yuewen_merged="系咪好简单呢？",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="还真有一块鸡吃呢！",
         yuewen_to_merge=["仲真系有嚿鸡食添"],
         yuewen_merged="仲真系有嚿鸡食添！",
+        difficulty=1,
     ),
 ]  # merge_test_cases_block_11
 merge_test_cases_block_12 = [

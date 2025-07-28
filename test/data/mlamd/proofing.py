@@ -1284,24 +1284,27 @@ proof_test_cases_block_11 = [
         zhongwen="现在要教大家一味别致小菜﹣",
         yuewen="间阵要教大家一味几别节嘅小菜﹣",
         yuewen_proofread="而家要教大家一味几别致嘅小菜﹣",
-        note="Corrected '间阵' to '而家' as '而家' means 'now', matching '现在', "
-        "and '别节' to '别致' as '别致' is the correct term for 'unique' or "
-        "'special'.",
+        note="Corrected '间阵' to '而家' as '而家' is the correct term for '现在', "
+        "and '别节' to '别致' as '别致' is the correct word for 'unique' or "
+        "'special' in this context.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="包鸡纸包鸡包纸包鸡",
         yuewen="包鸡子包鸡包子包鸡",
         yuewen_proofread="包鸡纸包鸡包纸包鸡",
         note="Corrected '鸡子' and '包子' to '鸡纸' and '包纸' respectively, as "
-        "'纸' is the correct word in the repeated phrase '纸包鸡' "
-        "(paper-wrapped chicken), matching the 中文.",
+        "'鸡纸' and '包纸' are the correct terms matching the repetition "
+        "and meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="首先将纸包鸡小心撕开",
         yuewen="首先将子包鸡小心噉撕开",
         yuewen_proofread="首先将纸包鸡小心噉撕开",
-        note="Corrected '子包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name "
-        "and matches the 中文.",
+        note="Corrected '子包鸡' to '纸包鸡' as '纸包鸡' is the correct term for "
+        "the dish, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="大家就会有一张纸包鸡及一块鸡",
@@ -1309,6 +1312,7 @@ proof_test_cases_block_11 = [
         yuewen_proofread="大家就会有一张纸包鸡同埋一嚿鸡啦",
         note="Corrected '包鸡子' to '纸包鸡' as '纸包鸡' is the correct term for "
         "the dish, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="接着把鸡包纸这样子包起那块鸡",
@@ -1316,16 +1320,17 @@ proof_test_cases_block_11 = [
         yuewen_proofread="跟住将鸡包纸好似我噉包住嗰块鸡",
         note="Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of "
         "'鸡包纸' (the paper used to wrap the chicken), and changed '牛鸡' "
-        "to '嗰块鸡' as '牛鸡' is likely a mishearing of '嗰块鸡' (that piece "
+        "to '嗰块鸡' as '牛鸡' is a likely mishearing of '嗰块鸡' (that piece "
         "of chicken).",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="再依照这样子用包鸡纸把它包起",
         yuewen="然后再好似噉样将包鸡子包包包包包包住佢",
         yuewen_proofread="然后再好似噉样将包鸡纸包包包包包包住佢",
-        note="Corrected '包鸡子' to '包鸡纸' as '包鸡纸' (greaseproof paper) "
-        "matches the meaning in the 中文, while '包鸡子' is likely a "
-        "mishearing.",
+        note="Corrected '包鸡子' to '包鸡纸' as '包鸡纸' is the correct term for "
+        "the wrapping paper, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
@@ -1333,6 +1338,7 @@ proof_test_cases_block_11 = [
         yuewen_proofread="咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
         note="Corrected '包鸡子包鸡包子包鸡' to '包鸡纸包鸡包纸包鸡' as '纸' is the correct "
         "word in the dish name, matching the original phrase.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="真的很简单吧？",
