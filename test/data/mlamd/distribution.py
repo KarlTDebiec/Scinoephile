@@ -475,6 +475,7 @@ distribute_test_cases_block_13 = [
         yuewen_to_distribute="佢一二三四五六七唔得都要得",
         one_yuewen_to_append="佢一二三四五六七",
         two_yuewen_to_prepend="唔得都要得",
+        difficulty=1,
     ),
 ]  # distribute_test_cases_block_13
 distribute_test_cases_block_14 = [

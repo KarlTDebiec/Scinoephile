@@ -1493,8 +1493,8 @@ proof_test_cases_block_12 = [
 proof_test_cases_block_13 = [
     ProofTestCase(
         zhongwen="从前，有个小朋友早睡晚起；第二天⋯",
-        yuewen="从前有个小朋友早睡晚起；第二朝⋯",
-        yuewen_proofread="从前有个小朋友早睡晚起；第二朝⋯",
+        yuewen="从前，有个小朋友早睡晚起；第二朝⋯",
+        yuewen_proofread="从前，有个小朋友早睡晚起；第二朝⋯",
         note="",
     ),
     ProofTestCase(
@@ -1533,7 +1533,9 @@ proof_test_cases_block_13 = [
         yuewen_proofread="",
         note="Cleared as '唔得都要得字幕由Amara.org' contains unrelated content "
         "('字幕由Amara.org') and does not correspond to the original "
-        "phrase '没有不成的事'.",
+        "phrase '没有不成的事', indicating a complete transcription "
+        "failure.",
+        difficulty=1,
     ),
 ]  # proof_test_cases_block_13
 proof_test_cases_block_14 = [
