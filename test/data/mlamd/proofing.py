@@ -783,9 +783,9 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
         yuewen="仲有呢个啊「芭拉娜」啊香蕉啊",
-        yuewen_proofread="仲有呢个「芭﹣娜﹣娜」香蕉啊",
-        note="Corrected '芭拉娜' to '芭﹣娜﹣娜' as '芭娜娜' is the correct "
-        "transliteration for 'banana', matching the styling of the 中文.",
+        yuewen_proofread="仲有呢个「芭娜娜」香蕉啊",
+        note="Corrected '芭拉娜' to '芭娜娜' as '芭娜娜' is the correct "
+        "transliteration for 'banana', matching the 中文.",
         difficulty=1,
     ),
     ProofTestCase(

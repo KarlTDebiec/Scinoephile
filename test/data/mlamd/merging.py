@@ -618,6 +618,7 @@ merge_test_cases_block_4 = [
         yuewen_to_merge=["好", "仲有边个未点", "猫"],
         yuewen_merged="好，仲有边个未点？猫",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="麦兜！",
@@ -672,10 +673,17 @@ merge_test_cases_block_4 = [
         yuewen_merged="妈妈话食橙会通大变",
     ),
     MergeTestCase(
+        zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
+        yuewen_to_merge=["噢", "呢个我明白", "但系橙呢"],
+        yuewen_merged="「噢」呢个我明白，但系「橙」呢？",
+        difficulty=2,
+        include_in_prompt=True,
+    ),
+    MergeTestCase(
         zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
         yuewen_to_merge=["仲有呢个啊", "芭拉娜啊", "香蕉啊"],
         yuewen_merged="仲有呢个啊「芭拉娜」啊香蕉啊",
-        difficulty=2,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
@@ -767,6 +775,7 @@ merge_test_cases_block_5 = [
         yuewen_to_merge=["唔该鱼蛋粗啊", "冇粗面噃"],
         yuewen_merged="唔该，鱼蛋粗啊　　冇粗面噃",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
@@ -911,8 +920,9 @@ merge_test_cases_block_7 = [
     MergeTestCase(
         zhongwen="可每次我总唱成「疴」什么什么的⋯",
         yuewen_to_merge=["但系唱嚟唱去都系阿伦厨", "咁Ballana噉"],
-        yuewen_merged="但系唱嚟唱去都系阿伦厨，咁Ballana噉⋯",
+        yuewen_merged="但系唱嚟唱去都系「阿伦厨」，咁「Ballana」噉⋯",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="是All Things Bright and Beautiful吧？",
