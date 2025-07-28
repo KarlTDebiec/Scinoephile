@@ -1574,7 +1574,8 @@ proof_test_cases_block_14 = [
         yuewen="我用我嘅同事手帮妈妈抽嘅六合彩number",
         yuewen_proofread="我用我嘅童子手帮妈妈抽嘅六合彩number",
         note="Corrected '同事手' to '童子手' as '童子手' (child's hand) matches the "
-        "meaning in the 中文, while '同事手' is a likely mishearing.",
+        "meaning in the 中文, while '同事手' is likely a mishearing.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="奇迹般似的一个号码也没中过！",

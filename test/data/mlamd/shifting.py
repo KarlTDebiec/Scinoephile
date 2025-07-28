@@ -1955,7 +1955,7 @@ shift_test_cases_block_14 = [
         one_yuewen_shifted="我试过好努力咁读书但系",
         two_yuewen_shifted="但系我仲可以发梦",
         include_in_prompt=True,
-        difficulty=1,
+        difficulty=2,
     ),
 ]  # shift_test_cases_block_14
 shift_test_cases_block_15 = [
