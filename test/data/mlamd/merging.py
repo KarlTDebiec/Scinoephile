@@ -1246,9 +1246,9 @@ merge_test_cases_block_12 = [
             "鸡鸡鸡",
             "纸纸纸再包鸡鸡",
         ],
-        yuewen_merged="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡",
-        difficulty=2,
+        yuewen_merged="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="可我妈妈也有她温柔的一面",
