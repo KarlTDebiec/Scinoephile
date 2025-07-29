@@ -114,6 +114,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="位仔𠮶个呢",
         one_yuewen_to_append="位仔𠮶个呢",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="这么多年来⋯",
@@ -123,6 +124,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="所以咁多年嚟",
         one_yuewen_to_append="所以咁多年嚟",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
@@ -132,6 +134,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="湾吉校坟交涉设",
         one_yuewen_to_append="湾吉校坟交涉设",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="也不能忘记校训九十八！",
@@ -141,6 +144,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="都唔好湾吉校坟交涉白",
         one_yuewen_to_append="都唔好湾吉校坟交涉白",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="好！各位同学⋯",
@@ -150,6 +154,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="𠮶个位同学",
         one_yuewen_to_append="𠮶个位同学",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="今天的早会主要是跟大家分享",
@@ -159,6 +164,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="今次座会系要同大家分享一个可重要嘅主题",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
+        include_in_verified=True,
         difficulty=1,
     ),
     DistributeTestCase(
@@ -169,6 +175,7 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="今次座会系要同大家分享",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_3
 distribute_test_cases_block_4 = [

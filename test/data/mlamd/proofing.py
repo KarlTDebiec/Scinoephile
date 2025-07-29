@@ -516,6 +516,7 @@ proof_test_cases_block_3 = [
         yuewen="呢个扮紧白兔猪样嘅小朋友⋯",
         yuewen_proofread="呢个扮紧白兔猪样嘅小朋友⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="横看竖看也不像发哥伟仔的一个⋯",
@@ -523,6 +524,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="即系横睇掂睇都唔似发哥或者伟仔𠮶个呢⋯",
         note="Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname for "
         "梁朝伟, matching the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -530,30 +532,35 @@ proof_test_cases_block_3 = [
         yuewen="就系我，麦兜",
         yuewen_proofread="就系我，麦兜",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="这是我就读的幼稚园",
         yuewen="呢间就系我读嘅幼稚园",
         yuewen_proofread="呢间就系我读嘅幼稚园",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="校长是潮州人",
         yuewen="校长系潮州人",
         yuewen_proofread="校长系潮州人",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="可能是潮州口音的关系",
         yuewen="可能仲系讲紧潮州话嘅",
         yuewen_proofread="可能仲系讲紧潮州话嘅",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="这么多年来⋯",
         yuewen="所以咁多年嚟⋯",
         yuewen_proofread="所以咁多年嚟⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="我其实不大明白他的说话",
@@ -562,6 +569,7 @@ proof_test_cases_block_3 = [
         note="Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches "
         "the meaning of '他的说话', while '噏文' is likely a mishearing.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -571,6 +579,7 @@ proof_test_cases_block_3 = [
         note="Cleared as '大湖荒岩宅' bears no resemblance to the original "
         "phrase '蛋挞！　　蛋挞！' and is clearly a complete transcription "
         "failure.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -580,6 +589,7 @@ proof_test_cases_block_3 = [
         note="Cleared as '湾吉校坟交涉设' bears no resemblance to the original "
         "phrase '荔芋火鸭礼！　　荔芋火鸭礼！' and is clearly a complete "
         "transcription failure.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -590,6 +600,7 @@ proof_test_cases_block_3 = [
         "original phrase '也不能忘记校训九十八！' and is clearly a pure "
         "artifact.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -598,6 +609,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="𠮶个位同学⋯",
         note="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -606,6 +618,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="今次早会系要同大家分享",
         note="Corrected '座会' to '早会' as '早会' is the correct term for "
         "'morning assembly', matching the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -613,24 +626,28 @@ proof_test_cases_block_3 = [
         yuewen="一个可重要嘅主题：",
         yuewen_proofread="一个可重要嘅主题：",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="小朋友，这个月你们交过学费没有？",
         yuewen="小朋友，你哋今个月交咗学费咩呀？",
         yuewen_proofread="小朋友，你哋今个月交咗学费咩呀？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="交过了！",
         yuewen="交！",
         yuewen_proofread="交！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="太好了！大家去上堂吧",
         yuewen="哎，好在！噉大家可以返去上堂喇",
         yuewen_proofread="哎，好在！噉大家可以返去上堂喇",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_3
 proof_test_cases_block_4 = [
