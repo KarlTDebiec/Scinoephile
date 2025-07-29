@@ -521,7 +521,8 @@ merge_test_cases_block_4 = [
         zhongwen="⋯还有一个很疼我们",
         yuewen_to_merge=["仲有一个好疼我哋"],
         yuewen_merged="⋯仲有一个好疼我哋",
-        difficulty=1,
+        include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="就是有点游魂的Miss Chan",
@@ -622,8 +623,8 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="麦兜！",
         yuewen_to_merge=["猫", "噢"],
-        yuewen_merged="猫！噢",
-        difficulty=1,
+        yuewen_merged="猫！噢！",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="麦兜同学！",
@@ -669,8 +670,7 @@ merge_test_cases_block_4 = [
     MergeTestCase(
         zhongwen="妈妈说吃橙可通大便",
         yuewen_to_merge=["妈妈话食橙会通大", "变"],
-        yuewen_merged="妈妈话食橙会通大，变",
-        difficulty=2,
+        yuewen_merged="妈妈话食橙会通大变",
     ),
     MergeTestCase(
         zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
@@ -718,15 +718,15 @@ merge_test_cases_block_4 = [
     ),
     MergeTestCase(
         zhongwen="我想，有天我念完幼稚园",
-        yuewen_to_merge=["我谂", "到我读完幼稚园", "识埋小学"],
-        yuewen_merged="我谂，到我读完幼稚园识埋小学",
+        yuewen_to_merge=["我谂", "到我读完幼稚园"],
+        yuewen_merged="我谂，到我读完幼稚园",
         difficulty=1,
     ),
     MergeTestCase(
         zhongwen="升小学，上中学",
-        yuewen_to_merge=["上到中学"],
-        yuewen_merged="上到中学",
-        difficulty=2,
+        yuewen_to_merge=["识埋小学", "上到中学"],
+        yuewen_merged="识埋小学，上到中学",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="再念大学⋯",
