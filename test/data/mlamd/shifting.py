@@ -1701,9 +1701,8 @@ shift_test_cases_block_12 = [
         one_yuewen="鸡包包鸡包包鸡包纸包纸包鸡",
         two_zhongwen="包鸡包鸡包纸包鸡",
         two_yuewen="包包鸡纸包鸡包纸包鸡",
-        one_yuewen_shifted="鸡包包鸡包包鸡包纸包纸包鸡包包鸡",
-        two_yuewen_shifted="纸包鸡包纸包鸡",
-        difficulty=1,
+        one_yuewen_shifted="鸡包包鸡包包鸡包纸包纸包鸡",
+        two_yuewen_shifted="包包鸡纸包鸡包纸包鸡",
     ),
     ShiftTestCase(
         one_zhongwen="包鸡包鸡包纸包鸡",

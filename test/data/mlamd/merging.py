@@ -619,6 +619,7 @@ merge_test_cases_block_4 = [
         yuewen_to_merge=["好", "仲有边个未点"],
         yuewen_merged="好，仲有边个未点？",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="麦兜！",
@@ -637,6 +638,7 @@ merge_test_cases_block_4 = [
         yuewen_to_merge=["妈妈啊", "麦兜同学", "即系呢"],
         yuewen_merged="妈妈啊，麦兜同学，即系呢⋯",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="我好像觉得呢⋯",
@@ -782,7 +784,7 @@ merge_test_cases_block_5 = [
         zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
         yuewen_to_merge=["噉啊", "要碗鱼蛋好啊", "冇鱼蛋噃"],
         yuewen_merged="噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃",
-        difficulty=2,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
@@ -1026,7 +1028,7 @@ merge_test_cases_block_9 = [
         zhongwen="www．麦太世界．com",
         yuewen_to_merge=["www.mcticege.com"],
         yuewen_merged="www．mcticege．com",
-        difficulty=2,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="她做的菜，同样厉害",
@@ -1079,7 +1081,6 @@ merge_test_cases_block_9 = [
         zhongwen="把鸡包纸一反反转",
         yuewen_to_merge=["然后将鸡包纸一反", "反转"],
         yuewen_merged="然后将鸡包纸一反反转",
-        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="这一味纸包鸡就完成了，很容易是吧？",
@@ -1152,13 +1153,14 @@ merge_test_cases_block_11 = [
     ),
     MergeTestCase(
         zhongwen="接着把鸡包纸这样子包起那块鸡",
-        yuewen_to_merge=["跟住将鸡包子好似我噉包住牛鸡"],
-        yuewen_merged="跟住将鸡包子好似我噉包住牛鸡",
+        yuewen_to_merge=["跟住将鸡包子好似我噉包住牛鸡", "然后再好似噉样将包鸡子"],
+        yuewen_merged="跟住将鸡包子好似我噉包住牛鸡，然后再好似噉样将包鸡子",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="再依照这样子用包鸡纸把它包起",
-        yuewen_to_merge=["然后再好似噉样将包鸡子包包包包包包住佢"],
-        yuewen_merged="然后再好似噉样将包鸡子包包包包包包住佢",
+        yuewen_to_merge=["包包包包包包住佢"],
+        yuewen_merged="包包包包包包住佢",
     ),
     MergeTestCase(
         zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
@@ -1232,22 +1234,25 @@ merge_test_cases_block_12 = [
     ),
     MergeTestCase(
         zhongwen="再包包包，纸纸纸",
-        yuewen_to_merge=["再包包包包", "包鸡包纸", "包纸", "纸纸纸纸"],
-        yuewen_merged="再包包包包包鸡包纸包纸，纸纸纸纸",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
         yuewen_to_merge=[
+            "再包包包包",
+            "包鸡包纸",
+            "包纸",
+            "纸纸纸纸",
             "纸包纸",
             "纸包鸡",
             "包鸡纸",
             "纸包鸡",
             "鸡鸡鸡",
-            "纸纸纸再包鸡鸡",
+            "纸纸纸",
         ],
-        yuewen_merged="纸包纸，纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
-        include_in_prompt=True,
+        yuewen_merged="再包包包包包鸡包纸包纸纸纸纸纸纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
+        yuewen_to_merge=["再包鸡鸡"],
+        yuewen_merged="再包鸡鸡⋯",
         difficulty=2,
     ),
     MergeTestCase(
@@ -1520,14 +1525,13 @@ merge_test_cases_block_16 = [
         zhongwen="我最喜爱的地方是日本",
         yuewen_to_merge=["我最喜爱嘅地方呢", "就系日本喇"],
         yuewen_merged="我最喜爱嘅地方呢就系日本喇",
-        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="那儿有Disneyland和Hello Kitty Land",
         yuewen_to_merge=["𠮶度好迪士尼呢", "同埋HelloTT呢"],
         yuewen_merged="𠮶度好迪士尼呢同埋HelloTT呢",
-        difficulty=2,
         include_in_prompt=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="我这个发夹也是在那儿买的",
@@ -1554,7 +1558,7 @@ merge_test_cases_block_16 = [
         zhongwen="那儿有很好多水上活动，还有鱼翅吃",
         yuewen_to_merge=["𠮶度有好多水晶活动㗎", "仲有一次食添㖞"],
         yuewen_merged="𠮶度有好多水晶活动㗎，仲有一次食添㖞",
-        difficulty=1,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="我最喜爱的地方⋯",
@@ -1593,14 +1597,14 @@ merge_test_cases_block_16 = [
     ),
     MergeTestCase(
         zhongwen="不过说到我最想去的地方，那可厉害了",
-        yuewen_to_merge=["不过讲到我最想去嘅地方呢", "𠮶度细嚟啰"],
-        yuewen_merged="不过讲到我最想去嘅地方呢，𠮶度细嚟啰",
-        difficulty=1,
+        yuewen_to_merge=["不过讲到我最想去嘅地方呢", "𠮶度细嚟啰", "𠮶度"],
+        yuewen_merged="不过讲到我最想去嘅地方呢，𠮶度细嚟啰，𠮶度",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
-        yuewen_to_merge=["𠮶度南天白云", "夜临树影", "水清沙幽"],
-        yuewen_merged="𠮶度南天白云，夜临树影，水清沙幽",
+        yuewen_to_merge=["南天白云", "夜临树影", "水清沙幽"],
+        yuewen_merged="南天白云，夜临树影，水清沙幽",
         difficulty=1,
     ),
     MergeTestCase(
@@ -1759,6 +1763,7 @@ merge_test_cases_block_20 = [
         yuewen_to_merge=["嗯", "你乖乖哋食埋啲药", "好返晒啦", "我即刻订机票"],
         yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="来，多喝一点！",
