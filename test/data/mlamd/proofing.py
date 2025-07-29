@@ -290,6 +290,7 @@ proof_test_cases_block_1 = [
         note="Corrected '滴嘟' to '嘀督' to match the intended sound and "
         "meaning of '嘀督' as a phonetic rendering of the sound effect "
         "in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -299,6 +300,7 @@ proof_test_cases_block_1 = [
         note="Corrected '滴嘟' to '嘀督' to match the intended sound and "
         "meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了).",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -306,18 +308,21 @@ proof_test_cases_block_1 = [
         yuewen="麦太心谂，今次冇死喇！",
         yuewen_proofread="麦太心谂，今次冇死喇！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="可是答应了些什么呢？",
         yuewen="但你应承咗啲咩呢？",
         yuewen_proofread="但你应承咗啲咩呢？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="叻仔？好运？",
         yuewen="叻仔？好运？",
         yuewen_proofread="叻仔？好运？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="还是似周润发？",
@@ -325,6 +330,7 @@ proof_test_cases_block_1 = [
         yuewen_proofread="定系话似周润发啊？",
         note="Corrected '自周人烦' to '似周润发' as it is a mishearing of the "
         "actor's name, matching the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -333,6 +339,7 @@ proof_test_cases_block_1 = [
         yuewen_proofread="为咗纪念呢个赐福嘅胶兜",
         note="Corrected '赤幅' to '赐福' as '赐福' (bestowing blessing) matches "
         "the meaning in the 中文, while '赤幅' is a likely mishearing.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -340,36 +347,42 @@ proof_test_cases_block_1 = [
         yuewen="麦太决定将个仔嘅名叫做麦胶",
         yuewen_proofread="麦太决定将个仔嘅名叫做麦胶",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="不行，胶胶声，多难听！",
         yuewen="都系唔好，胶胶声，咁难听！",
         yuewen_proofread="都系唔好，胶胶声，咁难听！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="还是唤他麦兜！",
         yuewen="不如叫麦兜啦！",
         yuewen_proofread="不如叫麦兜啦！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="各位⋯",
         yuewen="各位⋯",
         yuewen_proofread="各位⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="我就是险些给定名麦胶的小朋友⋯",
         yuewen="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
         yuewen_proofread="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="麦兜！",
         yuewen="麦兜！",
         yuewen_proofread="麦兜！",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_1
 proof_test_cases_block_2 = [

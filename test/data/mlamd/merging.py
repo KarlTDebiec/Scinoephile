@@ -250,12 +250,14 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["最后胶兜滴嘟一声咁落地"],
         yuewen_merged="最后，胶兜「滴嘟」一声咁落地",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     MergeTestCase(
         zhongwen="嘀督？嘀督，就是答应了",
         yuewen_to_merge=["滴嘟", "滴嘟㖞", "即系应承啦"],
         yuewen_merged="滴嘟？滴嘟㖞，即系应承啦",
+        include_in_verified=True,
         difficulty=1,
     ),
     MergeTestCase(
@@ -263,24 +265,28 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["麦太心谂", "今次冇死喇"],
         yuewen_merged="麦太心谂，今次冇死喇！",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     MergeTestCase(
         zhongwen="可是答应了些什么呢？",
         yuewen_to_merge=["但你应承咗啲咩呢"],
         yuewen_merged="但你应承咗啲咩呢？",
+        include_in_verified=True,
         difficulty=1,
     ),
     MergeTestCase(
         zhongwen="叻仔？好运？",
         yuewen_to_merge=["叻仔", "好运"],
         yuewen_merged="叻仔？好运？",
+        include_in_verified=True,
         difficulty=1,
     ),
     MergeTestCase(
         zhongwen="还是似周润发？",
         yuewen_to_merge=["定系话自周人烦啊"],
         yuewen_merged="定系话自周人烦啊？",
+        include_in_verified=True,
         difficulty=1,
     ),
     MergeTestCase(
@@ -292,12 +298,14 @@ merge_test_cases_block_1 = [
         zhongwen="麦太决定把儿子命名麦胶",
         yuewen_to_merge=["麦太决定将个仔嘅名叫做麦胶"],
         yuewen_merged="麦太决定将个仔嘅名叫做麦胶",
+        include_in_verified=True,
     ),
     MergeTestCase(
         zhongwen="不行，胶胶声，多难听！",
         yuewen_to_merge=["都系唔好", "胶胶声咁难听"],
         yuewen_merged="都系唔好，胶胶声，咁难听！",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     MergeTestCase(
@@ -305,6 +313,7 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["不如叫麦兜啦"],
         yuewen_merged="不如叫麦兜啦！",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     MergeTestCase(
@@ -317,12 +326,14 @@ merge_test_cases_block_1 = [
         zhongwen="我就是险些给定名麦胶的小朋友⋯",
         yuewen_to_merge=["我就系呢个差少少就叫做麦胶嘅小朋友"],
         yuewen_merged="我就系呢个差少少就叫做麦胶嘅小朋友⋯",
+        include_in_verified=True,
         difficulty=1,
     ),
     MergeTestCase(
         zhongwen="麦兜！",
         yuewen_to_merge=["麦兜"],
         yuewen_merged="麦兜！",
+        include_in_verified=True,
         difficulty=1,
     ),
 ]  # merge_test_cases_block_1

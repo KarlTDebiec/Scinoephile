@@ -312,6 +312,7 @@ shift_test_cases_block_1 = [
         two_yuewen="滴嘟滴嘟㖞即系应承啦",
         one_yuewen_shifted="最后胶兜滴嘟一声咁落地",
         two_yuewen_shifted="滴嘟滴嘟㖞即系应承啦",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="嘀督？嘀督，就是答应了",
@@ -320,6 +321,7 @@ shift_test_cases_block_1 = [
         two_yuewen="麦太心谂今次冇死喇",
         one_yuewen_shifted="滴嘟滴嘟㖞即系应承啦",
         two_yuewen_shifted="麦太心谂今次冇死喇",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="麦太想，这次走运了！",
@@ -328,6 +330,7 @@ shift_test_cases_block_1 = [
         two_yuewen="但你应承咗啲咩呢",
         one_yuewen_shifted="麦太心谂今次冇死喇",
         two_yuewen_shifted="但你应承咗啲咩呢",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="可是答应了些什么呢？",
@@ -336,6 +339,7 @@ shift_test_cases_block_1 = [
         two_yuewen="叻仔好运",
         one_yuewen_shifted="但你应承咗啲咩呢",
         two_yuewen_shifted="叻仔好运",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="叻仔？好运？",
@@ -344,6 +348,7 @@ shift_test_cases_block_1 = [
         two_yuewen="定系话自周人烦啊",
         one_yuewen_shifted="叻仔好运",
         two_yuewen_shifted="定系话自周人烦啊",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="还是似周润发？",
@@ -352,6 +357,7 @@ shift_test_cases_block_1 = [
         two_yuewen="为咗纪念呢个赤幅嘅胶兜",
         one_yuewen_shifted="定系话自周人烦啊",
         two_yuewen_shifted="为咗纪念呢个赤幅嘅胶兜",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="为了纪念这赐福的胶兜",
@@ -360,6 +366,7 @@ shift_test_cases_block_1 = [
         two_yuewen="麦太决定将个仔嘅名叫做麦胶",
         one_yuewen_shifted="为咗纪念呢个赤幅嘅胶兜",
         two_yuewen_shifted="麦太决定将个仔嘅名叫做麦胶",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="麦太决定把儿子命名麦胶",
@@ -368,6 +375,7 @@ shift_test_cases_block_1 = [
         two_yuewen="都系唔好胶胶声咁难听",
         one_yuewen_shifted="麦太决定将个仔嘅名叫做麦胶",
         two_yuewen_shifted="都系唔好胶胶声咁难听",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="不行，胶胶声，多难听！",
@@ -376,6 +384,7 @@ shift_test_cases_block_1 = [
         two_yuewen="不如叫麦兜啦",
         one_yuewen_shifted="都系唔好胶胶声咁难听",
         two_yuewen_shifted="不如叫麦兜啦",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="还是唤他麦兜！",
@@ -384,6 +393,7 @@ shift_test_cases_block_1 = [
         two_yuewen="各位",
         one_yuewen_shifted="不如叫麦兜啦",
         two_yuewen_shifted="各位",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="各位⋯",
@@ -392,6 +402,7 @@ shift_test_cases_block_1 = [
         two_yuewen="我就系呢个差少少就叫做麦胶嘅小朋友",
         one_yuewen_shifted="各位",
         two_yuewen_shifted="我就系呢个差少少就叫做麦胶嘅小朋友",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我就是险些给定名麦胶的小朋友⋯",
@@ -400,6 +411,7 @@ shift_test_cases_block_1 = [
         two_yuewen="麦兜",
         one_yuewen_shifted="我就系呢个差少少就叫做麦胶嘅小朋友",
         two_yuewen_shifted="麦兜",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_1
 shift_test_cases_block_2 = [
