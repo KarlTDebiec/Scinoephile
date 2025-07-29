@@ -1903,7 +1903,10 @@ proof_test_cases_block_18 = [
         zhongwen="不用！给他打口针吧！",
         yuewen="唔使！同佢打多支针添呢！",
         yuewen_proofread="唔使！同佢打口针啦！",
-        note="Corrected '打多支针添呢' to '打口针啦' to match the original meaning. '打口针' is a common Cantonese phrase referring to a fever-reducing or antibiotic injection (not literally in the mouth), aligning with the usage in the 中文.",
+        note="Corrected '打多支针添呢' to '打口针啦' to match the original "
+        "meaning. '打口针' is a common Cantonese phrase referring to a "
+        "fever-reducing or antibiotic injection (not literally in the "
+        "mouth), aligning with the usage in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
