@@ -1025,7 +1025,7 @@ merge_test_cases_block_9 = [
     MergeTestCase(
         zhongwen="www．麦太世界．com",
         yuewen_to_merge=["www.mcticege.com"],
-        yuewen_merged="www.mcticege.com",
+        yuewen_merged="www．mcticege．com",
         difficulty=2,
     ),
     MergeTestCase(
@@ -1519,7 +1519,7 @@ merge_test_cases_block_16 = [
     MergeTestCase(
         zhongwen="我最喜爱的地方是日本",
         yuewen_to_merge=["我最喜爱嘅地方呢", "就系日本喇"],
-        yuewen_merged="我最喜爱嘅地方呢，就系日本喇",
+        yuewen_merged="我最喜爱嘅地方呢就系日本喇",
         difficulty=2,
     ),
     MergeTestCase(
@@ -1527,6 +1527,7 @@ merge_test_cases_block_16 = [
         yuewen_to_merge=["𠮶度好迪士尼呢", "同埋HelloTT呢"],
         yuewen_merged="𠮶度好迪士尼呢同埋HelloTT呢",
         difficulty=2,
+        include_in_prompt=True,
     ),
     MergeTestCase(
         zhongwen="我这个发夹也是在那儿买的",
@@ -1756,7 +1757,7 @@ merge_test_cases_block_20 = [
     MergeTestCase(
         zhongwen="你先把药水喝掉，病好了我就去订机票",
         yuewen_to_merge=["嗯", "你乖乖哋食埋啲药", "好返晒啦", "我即刻订机票"],
-        yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
+        yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
         difficulty=2,
     ),
     MergeTestCase(
