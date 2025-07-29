@@ -22,11 +22,14 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
+    difficulty: int = Field(
+        0, description="Difficulty level of the test case, used for filtering."
+    )
     include_in_prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
     )
-    difficulty: int = Field(
-        0, description="Difficulty level of the test case, used for filtering."
+    include_in_verified: bool = Field(
+        False, description="Whether to include test case in the verified answers cache."
     )
 
     def __str__(self) -> str:
@@ -82,7 +85,11 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             set(self.model_fields)
             - set(query_fields)
             - set(answer_fields)
-            - {"include_in_prompt", "difficulty"}
+            - {
+                "difficulty",
+                "include_in_prompt",
+                "include_in_verified",
+            }
         )
 
         lines = (

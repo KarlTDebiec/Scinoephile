@@ -16,6 +16,7 @@ distribute_test_cases_block_0 = [
         one_yuewen_to_append="向女人街方向飞下下",
         two_yuewen_to_prepend="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     DistributeTestCase(
@@ -27,6 +28,7 @@ distribute_test_cases_block_0 = [
         one_yuewen_to_append="飞下",
         two_yuewen_to_prepend="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     DistributeTestCase(
@@ -37,6 +39,7 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="出嚟做嘢叻啦",
         one_yuewen_to_append="出嚟做嘢叻啦",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="唔聪明唔靓仔也算了，只要福星高照",
@@ -46,6 +49,7 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="只要复星高照",
         one_yuewen_to_append="只要复星高照",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_0
 distribute_test_cases_block_1 = []  # distribute_test_cases_block_1

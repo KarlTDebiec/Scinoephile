@@ -13,6 +13,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="就喺麦太快要临盆嘅时候",
         note="Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -20,6 +21,7 @@ proof_test_cases_block_0 = [
         yuewen="有一个胶兜喺九龙上空飞过",
         yuewen_proofread="有一个胶兜喺九龙上空飞过",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="沿荔枝角道直出大角咀道",
@@ -28,6 +30,7 @@ proof_test_cases_block_0 = [
         note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is "
         "the correct word for 'road' in both cases.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -37,6 +40,7 @@ proof_test_cases_block_0 = [
         note="Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are "
         "likely mishearings of the restaurant name '好彩酒家' and "
         "'乐园牛丸王'.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -45,6 +49,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="都系唔好：",
         note="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -52,6 +57,7 @@ proof_test_cases_block_0 = [
         yuewen="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
         yuewen_proofread="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="转呀，转⋯再更正一下：",
@@ -59,6 +65,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="转下，转下⋯都系唔好：",
         note="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -68,6 +75,7 @@ proof_test_cases_block_0 = [
         note="Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the "
         "street name '亚皆老街'.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -76,6 +84,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="再右转抹返出去窝打老道向女人街方向飞下下⋯",
         note="Corrected '窝打炉道' to '窝打老道' as '窝打老道' is the correct street "
         "name, matching the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -93,6 +102,7 @@ proof_test_cases_block_0 = [
         note="Corrected '后产房' to '候产房' as '候产房' (waiting room for "
         "delivery) matches the meaning in the 中文, while '后产房' is "
         "likely a mishearing.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -102,6 +112,7 @@ proof_test_cases_block_0 = [
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' and matches the meaning of '额角' in the 中文.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -110,6 +121,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="都系唔好：左边魂精对上⋯",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' and matches the meaning of '额角' in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -117,6 +129,7 @@ proof_test_cases_block_0 = [
         yuewen="转下，转下，转下噉⋯",
         yuewen_proofread="转下，转下，转下噉⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="麦太认定这是异像",
@@ -125,6 +138,7 @@ proof_test_cases_block_0 = [
         note="Corrected '异象' to '异像' as '异像' is the correct term in this "
         "context.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -133,6 +147,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="于是向魂精对上嘅胶兜许愿",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' (额角), matching the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -140,48 +155,56 @@ proof_test_cases_block_0 = [
         yuewen="而脑入面亦即时出现咗快要出世个仔嘅样⋯",
         yuewen_proofread="而脑入面亦即时出现咗快要出世个仔嘅样⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="希望他好聪明，读书好叻！",
         yuewen="希望佢好聪明，读书好叻！",
         yuewen_proofread="希望佢好聪明，读书好叻！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="胶兜对麦太的愿望似乎没有反应",
         yuewen="胶兜对麦太嘅愿望似乎冇咩表示",
         yuewen_proofread="胶兜对麦太嘅愿望似乎冇咩表示",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="于是她向胶兜补充说：",
         yuewen="于是佢对住胶兜补充噉话：",
         yuewen_proofread="于是佢对住胶兜补充噉话：",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="或者读书唔叻，工作叻呢？",
         yuewen="或者读书唔叻，出嚟做嘢叻啦？",
         yuewen_proofread="或者读书唔叻，出嚟做嘢叻啦？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="又或者⋯",
         yuewen="又或者呢⋯",
         yuewen_proofread="又或者呢⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="又或者好靓仔，好靓仔",
         yuewen="又或者系好靓仔，好靓仔",
         yuewen_proofread="又或者系好靓仔，好靓仔",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="跟周润发，梁朝伟那么靓仔！",
         yuewen="好似周润发，同埋梁朝伟咁靓仔！",
         yuewen_proofread="好似周润发，同埋梁朝伟咁靓仔！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="胶兜仍然在转，毫无点头迹象",
@@ -189,6 +212,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="胶兜依然系噉喺度转，好似一啲点头嘅迹象都冇",
         note="Corrected '应承嘅迹象' to '点头嘅迹象' as '点头' matches the meaning of "
         "'点头迹象' in the 中文, while '应承' is likely a mishearing.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -196,6 +220,7 @@ proof_test_cases_block_0 = [
         yuewen="麦太一时心虚",
         yuewen_proofread="麦太一时心虚",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="赶忙趁胶兜落地前另许一个愿望：",
@@ -203,6 +228,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
         note="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -211,6 +237,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="就算唔系咁聪明同咁靓仔，只要福星高照",
         note="Corrected '复星高照' to '福星高照' as '福星高照' is the correct idiom "
         "meaning 'blessed with good fortune', matching the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -220,6 +247,7 @@ proof_test_cases_block_0 = [
         note="Corrected '救运' to '够运' as '够运' is the correct term for being "
         "lucky, matching the original meaning.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -227,12 +255,14 @@ proof_test_cases_block_0 = [
         yuewen="佢靠自己有料解决啲嘢就梗系好啦",
         yuewen_proofread="佢靠自己有料解决啲嘢就梗系好啦",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="不过运气还是很重要的",
         yuewen="不过运气都好紧要㖞",
         yuewen_proofread="不过运气都好紧要㖞",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="虽是说像梁朝伟周润发也行运定了",
@@ -241,6 +271,7 @@ proof_test_cases_block_0 = [
         note="Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a "
         "mishearing; '行运定咗' matches the meaning of '行运定了'.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -248,6 +279,7 @@ proof_test_cases_block_0 = [
         yuewen="但系都要叻仔先得㗎！",
         yuewen_proofread="但系都要叻仔先得㗎！",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_0
 proof_test_cases_block_1 = [

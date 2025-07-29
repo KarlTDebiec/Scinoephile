@@ -31,6 +31,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self,
         model: str = "gpt-4.1",
         examples: list[TTestCase] | None = None,
+        verified: list[TTestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
@@ -57,6 +58,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         self._examples_log: dict[tuple, TTestCase] = {}
         """Log of examples, keyed by query key."""
+        self._verified_log: dict[tuple, TTestCase] = {}
+        """Log of verified test cases, keyed by query key."""
         self._test_case_log: dict[tuple, TTestCase] = {}
         """Log of test cases, keyed by query key."""
 
@@ -84,6 +87,11 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 self._examples_log[example.query.query_key] = example
         self._system_prompt = system_prompt
 
+        # Set up verified log
+        if verified is not None:
+            for test_case in verified:
+                self._verified_log[test_case.query.query_key] = test_case
+
         # Set up cache directory
         self.cache_dir_path = None
         """Directory in which to cache query results."""
@@ -99,11 +107,21 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             LLM's answer
         """
         query_prompt = json.dumps(query.model_dump(), indent=4, ensure_ascii=False)
-        cache_path = self._get_cache_path(query_prompt)
+
+        # Load from verified log if available
+        if query.query_key in self._verified_log:
+            info(f"Loaded from verified log: {query.query_key}")
+            test_case = self._verified_log[query.query_key]
+            answer = test_case.answer
+            self._test_case_log[test_case.query.query_key] = test_case
+            if self.print_test_case:
+                print(f"{test_case.source_str},")
+            return answer
 
         # Load from cache if available
+        cache_path = self._get_cache_path(query_prompt)
         if cache_path is not None and cache_path.exists():
-            info(f"Loaded from cache: {cache_path}")
+            info(f"Loaded from cache: {query.query_key}")
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
                 test_case = self.test_case_cls.from_query_and_answer(query, answer)

@@ -63,6 +63,8 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
             if key in self._examples_log:
                 difficulty = 2
                 source_str += "    include_in_prompt=True,\n"
+            if key in self._verified_log:
+                source_str += "    include_in_verified=True,\n"
             if difficulty:
                 source_str += f"    difficulty={difficulty},\n"
             source_str += ")"
