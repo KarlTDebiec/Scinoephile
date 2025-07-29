@@ -2378,6 +2378,8 @@ shift_test_cases_block_20 = [
         two_yuewen="买二代夫买二代夫",
         one_yuewen_shifted="嘻嘻好嘢买二代夫",
         two_yuewen_shifted="买二代夫",
+        include_in_prompt=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="马尔代夫！",
@@ -2394,6 +2396,7 @@ shift_test_cases_block_20 = [
         two_yuewen="买二代夫买二代夫",
         one_yuewen_shifted="买二代夫",
         two_yuewen_shifted="买二代夫",
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="马尔代夫！",

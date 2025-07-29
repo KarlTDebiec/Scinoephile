@@ -1739,26 +1739,31 @@ merge_test_cases_block_20 = [
         zhongwen="好呀，马尔代夫！",
         yuewen_to_merge=["嘻嘻", "好嘢", "买二代夫"],
         yuewen_merged="嘻嘻，好嘢，买二代夫！",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="马尔代夫！",
         yuewen_to_merge=["买二代夫"],
         yuewen_merged="买二代夫！",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="妈妈，那么我们什么时候去？",
         yuewen_to_merge=["妈妈", "咁我哋几时去呀"],
         yuewen_merged="妈妈，咁我哋几时去呀？",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="你先把药水喝掉，病好了我就去订机票",
         yuewen_to_merge=["嗯", "你乖乖哋食埋啲药", "好返晒啦", "我即刻订机票"],
-        yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+        yuewen_merged="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="来，多喝一点！",
         yuewen_to_merge=["嚟啦", "食多更"],
         yuewen_merged="嚟啦，食多更！",
+        difficulty=1,
     ),
 ]  # merge_test_cases_block_20
 merge_test_cases_block_21 = [

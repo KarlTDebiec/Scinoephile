@@ -2007,6 +2007,7 @@ proof_test_cases_block_20 = [
         yuewen_proofread="嘻嘻，好嘢，马尔代夫！",
         note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the "
         "place name '马尔代夫' (Maldives).",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="马尔代夫！",
@@ -2014,6 +2015,7 @@ proof_test_cases_block_20 = [
         yuewen_proofread="马尔代夫！",
         note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the "
         "place name '马尔代夫' (Maldives).",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="妈妈，那么我们什么时候去？",
@@ -2023,8 +2025,8 @@ proof_test_cases_block_20 = [
     ),
     ProofTestCase(
         zhongwen="你先把药水喝掉，病好了我就去订机票",
-        yuewen="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
-        yuewen_proofread="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+        yuewen="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
+        yuewen_proofread="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
         note="",
     ),
     ProofTestCase(
@@ -2035,6 +2037,7 @@ proof_test_cases_block_20 = [
         "drinking more, not eating more; '饮多啲' matches the meaning of "
         "'多喝一点'.",
         include_in_prompt=True,
+        difficulty=2,
     ),
 ]  # proof_test_cases_block_20
 proof_test_cases_block_21 = [
