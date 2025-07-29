@@ -953,7 +953,16 @@ shift_test_cases_block_4 = [
         two_yuewen="噢麦兜同学",
         one_yuewen_shifted="猫噢",
         two_yuewen_shifted="麦兜同学",
+        include_in_prompt=True,
         difficulty=1,
+    ),
+    ShiftTestCase(
+        one_zhongwen="麦兜同学！",
+        one_yuewen="噢麦兜同学",
+        two_zhongwen="麦兜同学！",
+        two_yuewen="麦兜同学",
+        one_yuewen_shifted="噢麦兜同学",
+        two_yuewen_shifted="麦兜同学",
     ),
     ShiftTestCase(
         one_zhongwen="麦兜同学！",
@@ -1096,13 +1105,14 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="我谂到我读完幼稚园",
         two_yuewen_shifted="识埋小学上到中学",
         include_in_prompt=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="升小学，上中学",
-        one_yuewen="上到中学",
+        one_yuewen="识埋小学上到中学",
         two_zhongwen="再念大学⋯",
         two_yuewen="再入埋大学",
-        one_yuewen_shifted="上到中学",
+        one_yuewen_shifted="识埋小学上到中学",
         two_yuewen_shifted="再入埋大学",
     ),
     ShiftTestCase(
