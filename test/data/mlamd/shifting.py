@@ -422,6 +422,7 @@ shift_test_cases_block_2 = [
         two_yuewen="咩唔见你一排个脚刮囊粗咗咁多呀",
         one_yuewen_shifted="咦麦太咩唔见你一排",
         two_yuewen_shifted="个脚刮囊粗咗咁多呀",
+        include_in_verified=True,
         difficulty=1,
     ),
     ShiftTestCase(
@@ -432,6 +433,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="个脚刮囊粗咗咁多呀",
         two_yuewen_shifted="鬼咩",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -442,6 +444,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="鬼咩日日扑嚟扑去",
         two_yuewen_shifted="同我仔揾幼稚园吖嘛",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -451,6 +454,7 @@ shift_test_cases_block_2 = [
         two_yuewen="点解唔试下好彩走楼斜对面",
         one_yuewen_shifted="同我仔揾幼稚园吖嘛",
         two_yuewen_shifted="点解唔试下好彩走楼斜对面",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="怎么不试一试好彩酒楼对面",
@@ -459,6 +463,7 @@ shift_test_cases_block_2 = [
         two_yuewen="",
         one_yuewen_shifted="点解唔试下好彩走楼斜对面",
         two_yuewen_shifted="",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
@@ -468,6 +473,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="旧中桥百货公司楼上𠮶间",
         two_yuewen_shifted="春田花花幼稚园呢",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -477,6 +483,7 @@ shift_test_cases_block_2 = [
         two_yuewen="旧中桥百货公司楼上𠮶间",
         one_yuewen_shifted="点解唔试下好彩走楼斜对面",
         two_yuewen_shifted="旧中桥百货公司楼上𠮶间",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
@@ -485,6 +492,7 @@ shift_test_cases_block_2 = [
         two_yuewen="春田花花幼稚园呢",
         one_yuewen_shifted="旧中桥百货公司楼上𠮶间",
         two_yuewen_shifted="春田花花幼稚园呢",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="春田花花幼稚园？",
@@ -493,6 +501,7 @@ shift_test_cases_block_2 = [
         two_yuewen="就系坐落喺界限街同南昌街交界",
         one_yuewen_shifted="春田花花幼稚园呢",
         two_yuewen_shifted="就系坐落喺界限街同南昌街交界",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="就是座落界限街南昌街交界⋯",
@@ -501,6 +510,7 @@ shift_test_cases_block_2 = [
         two_yuewen="",
         one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
         two_yuewen_shifted="",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="银城美食广场附近的⋯",
@@ -509,6 +519,7 @@ shift_test_cases_block_2 = [
         two_yuewen="银城美食广场附近𠮶间春田花花幼稚园呀",
         one_yuewen_shifted="银城美食广场附近𠮶间",
         two_yuewen_shifted="春田花花幼稚园呀",
+        include_in_verified=True,
         difficulty=1,
     ),
     ShiftTestCase(
@@ -518,6 +529,7 @@ shift_test_cases_block_2 = [
         two_yuewen="银城美食广场附近𠮶间",
         one_yuewen_shifted="就系坐落喺界限街同南昌街交界",
         two_yuewen_shifted="银城美食广场附近𠮶间",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="银城美食广场附近的⋯",
@@ -526,6 +538,7 @@ shift_test_cases_block_2 = [
         two_yuewen="春田花花幼稚园呀",
         one_yuewen_shifted="银城美食广场附近𠮶间",
         two_yuewen_shifted="春田花花幼稚园呀",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="春田花花幼稚园？",
@@ -534,6 +547,7 @@ shift_test_cases_block_2 = [
         two_yuewen="系呀深水埗地铁站口行过去唔使十分钟呀",
         one_yuewen_shifted="春田花花幼稚园呀",
         two_yuewen_shifted="系呀深水埗地铁站口行过去唔使十分钟呀",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="对！深水埗地铁站步行不用10分钟！",
@@ -542,6 +556,7 @@ shift_test_cases_block_2 = [
         two_yuewen="春田花花幼稚园诗诗优良",
         one_yuewen_shifted="系呀深水埗地铁站口行过去唔使十分钟呀",
         two_yuewen_shifted="春田花花幼稚园诗诗优良",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="春田花花幼稚园，师资优良⋯",
@@ -550,6 +565,7 @@ shift_test_cases_block_2 = [
         two_yuewen="仲系西人教英文添㗎",
         one_yuewen_shifted="春田花花幼稚园诗诗优良",
         two_yuewen_shifted="仲系西人教英文添㗎",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="而且还有西人教英文！",
@@ -559,6 +575,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="仲系西人教英文添㗎",
         two_yuewen_shifted="咦西人教英文",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -569,6 +586,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="咦西人教英文",
         two_yuewen_shifted="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -579,6 +597,7 @@ shift_test_cases_block_2 = [
         one_yuewen_shifted="系呀",
         two_yuewen_shifted="春田花花真系好多西人㗎",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
 ]  # shift_test_cases_block_2

@@ -392,6 +392,7 @@ proof_test_cases_block_2 = [
         yuewen_proofread="咦，麦太，咩唔见你一排",
         note="",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -401,6 +402,7 @@ proof_test_cases_block_2 = [
         note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese "
         "term for 'calf', matching the meaning of '小腿'.",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ProofTestCase(
@@ -408,12 +410,14 @@ proof_test_cases_block_2 = [
         yuewen="鬼咩，日日扑嚟扑去⋯",
         yuewen_proofread="鬼咩，日日扑嚟扑去⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="替儿子找幼稚园！",
         yuewen="同我仔揾幼稚园吖嘛！",
         yuewen_proofread="同我仔揾幼稚园吖嘛！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么不试一试好彩酒楼对面",
@@ -421,6 +425,7 @@ proof_test_cases_block_2 = [
         yuewen_proofread="点解唔试下好彩酒楼斜对面",
         note="Corrected '走楼' to '酒楼' as '酒楼' is the correct term for "
         "'restaurant' and matches the meaning in the 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -429,6 +434,7 @@ proof_test_cases_block_2 = [
         yuewen_proofread="旧中侨百货公司楼上𠮶间⋯",
         note="Corrected '中桥' to '中侨' as '中侨' is the correct name, matching "
         "the original 中文.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -436,30 +442,35 @@ proof_test_cases_block_2 = [
         yuewen="春田花花幼稚园呢？",
         yuewen_proofread="春田花花幼稚园呢？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="就是座落界限街南昌街交界⋯",
         yuewen="就系坐落喺界限街同南昌街交界⋯",
         yuewen_proofread="就系坐落喺界限街同南昌街交界⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="银城美食广场附近的⋯",
         yuewen="银城美食广场附近𠮶间⋯",
         yuewen_proofread="银城美食广场附近𠮶间⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="春田花花幼稚园？",
         yuewen="春田花花幼稚园呀？",
         yuewen_proofread="春田花花幼稚园呀？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="对！深水埗地铁站步行不用10分钟！",
         yuewen="系呀！深水埗地铁站口行过去唔使十分钟呀！",
         yuewen_proofread="系呀！深水埗地铁站口行过去唔使十分钟呀！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="春田花花幼稚园，师资优良⋯",
@@ -467,6 +478,7 @@ proof_test_cases_block_2 = [
         yuewen_proofread="春田花花幼稚园，师资优良⋯",
         note="Corrected '诗诗优良' to '师资优良' as '师资' (teaching staff) matches "
         "the meaning in the 中文, while '诗诗' is a likely mishearing.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -474,24 +486,28 @@ proof_test_cases_block_2 = [
         yuewen="仲系西人教英文添㗎！",
         yuewen_proofread="仲系西人教英文添㗎！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="西人教英文？",
         yuewen="咦，西人教英文？",
         yuewen_proofread="咦，西人教英文？",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="是呀！",
         yuewen="系呀！",
         yuewen_proofread="系呀！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="春田花花，确有好多西人呀！",
         yuewen="春田花花，真系好多西人㗎！",
         yuewen_proofread="春田花花，真系好多西人㗎！",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_2
 proof_test_cases_block_3 = [

@@ -62,6 +62,7 @@ distribute_test_cases_block_2 = [
         yuewen_to_distribute="点解唔试下好彩走楼斜对面",
         one_yuewen_to_append="点解唔试下好彩走楼斜对面",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="春田花花幼稚园，师资优良⋯",
@@ -71,6 +72,7 @@ distribute_test_cases_block_2 = [
         yuewen_to_distribute="诗诗优良",
         one_yuewen_to_append="诗诗优良",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="西人教英文？",
@@ -80,6 +82,7 @@ distribute_test_cases_block_2 = [
         yuewen_to_distribute="西人教英文",
         one_yuewen_to_append="西人教英文",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="旧中侨国货楼上的⋯",
@@ -89,6 +92,7 @@ distribute_test_cases_block_2 = [
         yuewen_to_distribute="旧中桥百货公司楼上𠮶间",
         one_yuewen_to_append="旧中桥百货公司楼上𠮶间",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="银城美食广场附近的⋯",
@@ -98,6 +102,7 @@ distribute_test_cases_block_2 = [
         yuewen_to_distribute="银城美食广场附近𠮶间",
         one_yuewen_to_append="银城美食广场附近𠮶间",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_2
 distribute_test_cases_block_3 = [
