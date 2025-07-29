@@ -1933,45 +1933,51 @@ proof_test_cases_block_19 = [
         zhongwen="没事吧？快点先把药水喝掉！",
         yuewen="冇嘢吖嘛？快啲食埋啲药水佢先啦！",
         yuewen_proofread="冇嘢吖嘛？快啲饮埋啲药水佢先啦！",
-        note="Corrected '食埋啲药水' to '饮埋啲药水' as '饮' is the correct verb for "
-        "drinking medicine, matching the meaning of '喝掉'.",
+        note="Corrected '食埋啲药水' to '饮埋啲药水' as '饮' (to drink) is the "
+        "correct verb for liquid medicine, matching the meaning of "
+        "'喝掉' in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="妈妈我不想喝药水",
         yuewen="妈妈，我唔想食药水呀",
         yuewen_proofread="妈妈，我唔想饮药水呀",
         note="Corrected '食药水' to '饮药水' as '饮' is the correct verb for "
-        "drinking medicine in liquid form, matching the meaning of "
+        "taking liquid medicine in Cantonese, matching the meaning of "
         "'喝药水'.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="不要呀妈妈，我不喝呀",
         yuewen="唔好捞妈妈，我唔食呀",
         yuewen_proofread="唔好呀妈妈，我唔饮呀",
-        note="Corrected '唔好捞' to '唔好呀' as '捞' is a mishearing of '呀', and "
-        "'我唔食呀' to '我唔饮呀' since the original is about drinking, not "
-        "eating.",
+        note="Corrected '捞' to '呀' as '呀' is the correct interjection, and "
+        "'唔食' to '唔饮' as the original is about drinking, not eating.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="我不喝士多啤梨药水呀！",
         yuewen="我唔食士多啤梨药水呀！",
         yuewen_proofread="我唔饮士多啤梨药水呀！",
-        note="Corrected '食' to '饮' as the correct verb for drinking "
-        "medicine is '饮', not '食'.",
+        note="Corrected '食' to '饮' as '饮' is the correct verb for drinking "
+        "medicine, matching the meaning of '喝' in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="别哭了，不喝药水病不会好的",
         yuewen="唔好喊啦，唔食药唔会好㗎",
         yuewen_proofread="唔好喊啦，唔饮药水唔会好㗎",
         note="Corrected '唔食药' to '唔饮药水' as the original refers to drinking "
-        "medicine (liquid), not eating medicine.",
+        "medicine, not eating it; '饮药水' matches the meaning of '喝药水'.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="乖乖，病好了妈妈带你去马尔代夫",
         yuewen="乖乖啲，病好咗妈妈大理马尔代夫",
         yuewen_proofread="乖乖啲，病好咗妈妈带你去马尔代夫",
-        note="Corrected '妈妈大理马尔代夫' to '妈妈带你去马尔代夫' as '大理' is a mishearing "
-        "of '带你', which matches the meaning of the 中文.",
+        note="Corrected '大理' to '带你去' as '大理' is a mishearing of '带你去', "
+        "which matches the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="真的吗？",
@@ -1991,6 +1997,7 @@ proof_test_cases_block_19 = [
         yuewen_proofread="乖，饮埋啲药水先啦",
         note="Corrected '食埋啲药水' to '饮埋啲药水' as '饮' is the correct verb for "
         "taking liquid medicine, matching the meaning of '喝掉'.",
+        difficulty=1,
     ),
 ]  # proof_test_cases_block_19
 proof_test_cases_block_20 = [
