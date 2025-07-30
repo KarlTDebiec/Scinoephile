@@ -788,6 +788,7 @@ shift_test_cases_block_4 = [
         two_yuewen="但系对于我同埋我班同学仔嚟讲",
         one_yuewen_shifted="你哋可能觉得呢间幼稚园好逗利",
         two_yuewen_shifted="但系对于我同埋我班同学仔嚟讲",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="可是，对我和我一班同学",
@@ -796,6 +797,7 @@ shift_test_cases_block_4 = [
         two_yuewen="呢度系我哋最快乐最美丽嘅乐园",
         one_yuewen_shifted="但系对于我同埋我班同学仔嚟讲",
         two_yuewen_shifted="呢度系我哋最快乐最美丽嘅乐园",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="这儿是我们最快乐，最美丽的乐园⋯",
@@ -804,6 +806,7 @@ shift_test_cases_block_4 = [
         two_yuewen="仲有一个好疼我哋",
         one_yuewen_shifted="呢度系我哋最快乐最美丽嘅乐园",
         two_yuewen_shifted="仲有一个好疼我哋",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="⋯还有一个很疼我们",
@@ -853,6 +856,7 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="麦麦同学到",
         two_yuewen_shifted="阿辉同学",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -862,6 +866,7 @@ shift_test_cases_block_4 = [
         two_yuewen="到Boosie同学到",
         one_yuewen_shifted="阿辉同学到",
         two_yuewen_shifted="Boosie同学到",
+        include_in_verified=True,
         difficulty=1,
     ),
     ShiftTestCase(
@@ -871,6 +876,7 @@ shift_test_cases_block_4 = [
         two_yuewen="德巴同学到",
         one_yuewen_shifted="Boosie同学到",
         two_yuewen_shifted="德巴同学到",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="得巴同学！　　到！",
@@ -879,6 +885,7 @@ shift_test_cases_block_4 = [
         two_yuewen="阿May同学到",
         one_yuewen_shifted="德巴同学到",
         two_yuewen_shifted="阿May同学到",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="阿May同学！　　到！",
@@ -1141,22 +1148,22 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="点解雨姐会叫做暗芭拉娜呢",
         two_yuewen_shifted="嗱我暗啦噉我暗𠮶条香蕉",
         include_in_prompt=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="我「暗」的「暗」掉一条蕉",
-        one_yuewen="噉我暗𠮶条香蕉",
+        one_yuewen="嗱我暗啦噉我暗𠮶条香蕉",
         two_zhongwen="至多是疴烂煮，怎么会下起雨来呢？",
         two_yuewen="至多会Orange啫点解会搞到落雨呢",
-        one_yuewen_shifted="噉我暗𠮶条香蕉至多会Orange啫",
-        two_yuewen_shifted="点解会搞到落雨呢",
-        difficulty=1,
+        one_yuewen_shifted="嗱我暗啦噉我暗𠮶条香蕉",
+        two_yuewen_shifted="至多会Orange啫点解会搞到落雨呢",
     ),
     ShiftTestCase(
         one_zhongwen="至多是疴烂煮，怎么会下起雨来呢？",
-        one_yuewen="点解会搞到落雨呢",
+        one_yuewen="至多会Orange啫点解会搞到落雨呢",
         two_zhongwen="这世界还有很多事情我弄不明白",
         two_yuewen="呢个世界仲有好多嘢我谂唔明",
-        one_yuewen_shifted="点解会搞到落雨呢",
+        one_yuewen_shifted="至多会Orange啫点解会搞到落雨呢",
         two_yuewen_shifted="呢个世界仲有好多嘢我谂唔明",
     ),
     ShiftTestCase(

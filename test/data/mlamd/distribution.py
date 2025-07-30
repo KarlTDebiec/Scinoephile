@@ -187,6 +187,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="仲有一个好疼我哋",
         one_yuewen_to_append="仲有一个好疼我哋",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="菇时同学！　　到！",
@@ -196,6 +197,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         one_yuewen_to_append="到",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="得巴同学！　　到！",
@@ -205,6 +207,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         one_yuewen_to_append="到",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="阿June同学！　　到！",
@@ -214,6 +217,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         one_yuewen_to_append="到",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="麦唛同学！　　到！",
@@ -223,6 +227,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         one_yuewen_to_append="到",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="还有谁没点过吗？",
@@ -232,6 +237,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="仲有边个未点",
         one_yuewen_to_append="仲有边个未点",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="我好像觉得呢⋯",
@@ -241,6 +247,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="我个心总系仁住仁住",
         one_yuewen_to_append="我个心总系仁住仁住",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="妈妈说吃橙可通大便",
@@ -250,6 +257,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="变",
         one_yuewen_to_append="变",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
@@ -259,6 +267,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="香蕉啊",
         one_yuewen_to_append="香蕉啊",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="再念大学⋯",
@@ -268,6 +277,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="再入埋大学",
         one_yuewen_to_append="再入埋大学",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_4
 distribute_test_cases_block_5 = [
