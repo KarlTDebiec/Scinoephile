@@ -1287,8 +1287,8 @@ shift_test_cases_block_5 = [
         two_yuewen="冇鱼蛋噃乜样样都冇嘅",
         one_yuewen_shifted="噉啊咁要鱼蛋油面啊冇鱼蛋噃",
         two_yuewen_shifted="乜样样都冇嘅",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="怎么都买光了？",
