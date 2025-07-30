@@ -289,6 +289,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="冇粗面噃",
         one_yuewen_to_append="冇粗面噃",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
@@ -298,6 +299,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="冇鱼蛋噃",
         one_yuewen_to_append="冇鱼蛋噃",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
@@ -307,6 +309,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="噉啊",
         one_yuewen_to_append="",
         two_yuewen_to_prepend="噉啊",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="又买光了？",
@@ -316,6 +319,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="又冇啊",
         one_yuewen_to_append="又冇啊",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
@@ -325,6 +329,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="冇鱼蛋噃",
         one_yuewen_to_append="冇鱼蛋噃",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="看到这里⋯",
@@ -334,6 +339,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="睇到呢度",
         one_yuewen_to_append="睇到呢度",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="那时候我无忧无虑，万事无所谓﹣﹣",
@@ -343,6 +349,7 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="冇乜所谓",
         one_yuewen_to_append="冇乜所谓",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_5
 distribute_test_cases_block_6 = []  # distribute_test_cases_block_6
