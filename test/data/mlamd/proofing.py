@@ -1011,25 +1011,27 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
-        yuewen="唔该鱼蛋粗啊　　冇粗面噃，噉啊要碗鱼蛋好啊",
-        yuewen_proofread="唔该鱼蛋粗面啊　　冇粗面噃，噉啊要碗鱼蛋好啊",
-        note="Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '粗面' is the correct term for "
-        "the noodle type, matching the meaning in the 中文.",
+        yuewen="唔该鱼蛋粗啊　　冇粗面噃",
+        yuewen_proofread="唔该鱼蛋粗面啊　　冇粗面噃",
+        note="Added '面' after '粗' to correct the incomplete term; '鱼蛋粗面' "
+        "is the correct dish name.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
-        yuewen="冇鱼蛋噃，噉啊，要金钱透粗啊⋯",
-        yuewen_proofread="冇鱼蛋噃，噉啊，要金钱肚粗啊⋯",
-        note="Corrected '金钱透粗' to '金钱肚粗' as '金钱肚' is a common Cantonese "
-        "dish, and '透' is likely a mishearing of '肚'.",
+        yuewen="噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃",
+        yuewen_proofread="噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃",
+        note="Added '河粉' after '鱼蛋' to match the intended meaning of "
+        "'鱼蛋河粉' in the 中文, as '好' is likely a mishearing of '河粉'.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        yuewen="冇粗面噃",
-        yuewen_proofread="冇粗面噃",
-        note="",
+        yuewen="噉啊要金钱透粗啊⋯　　冇粗面噃",
+        yuewen_proofread="噉啊要金钱肚粗面啊⋯　　冇粗面噃",
+        note="Corrected '金钱透粗啊' to '金钱肚粗面啊' as '金钱肚粗面' is the correct dish "
+        "name, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
