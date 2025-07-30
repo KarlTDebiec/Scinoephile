@@ -1241,6 +1241,7 @@ shift_test_cases_block_5 = [
         two_yuewen="我哋一班同学仔放咗学都经常系傍陈",
         one_yuewen_shifted="喺幼稚园楼下校长兼营嘅间茶餐厅",
         two_yuewen_shifted="我哋一班同学仔放咗学都经常系傍陈",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我们一班同学下课后经常光顾",
@@ -1249,6 +1250,7 @@ shift_test_cases_block_5 = [
         two_yuewen="唔该鱼蛋粗啊冇粗面噃",
         one_yuewen_shifted="我哋一班同学仔放咗学都经常系傍陈",
         two_yuewen_shifted="唔该鱼蛋粗啊冇粗面噃",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
@@ -1257,21 +1259,25 @@ shift_test_cases_block_5 = [
         two_yuewen="噉啊要碗鱼蛋好啊冇鱼蛋噃",
         one_yuewen_shifted="唔该鱼蛋粗啊冇粗面噃",
         two_yuewen_shifted="噉啊要碗鱼蛋好啊冇鱼蛋噃",
+        difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
-        one_yuewen="噉啊要碗鱼蛋好啊冇鱼蛋噃",
+        one_yuewen="冇鱼蛋噃",
         two_zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
         two_yuewen="噉啊要金钱透粗啊冇粗面噃",
-        one_yuewen_shifted="噉啊要碗鱼蛋好啊冇鱼蛋噃",
-        two_yuewen_shifted="噉啊要金钱透粗啊冇粗面噃",
+        one_yuewen_shifted="冇鱼蛋噃噉啊要金钱透粗啊",
+        two_yuewen_shifted="冇粗面噃",
+        difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        one_yuewen="噉啊要金钱透粗啊冇粗面噃",
+        one_yuewen="冇粗面噃",
         two_zhongwen="那么要鱼蛋油面吧　　鱼蛋买光了",
         two_yuewen="噉啊咁要鱼蛋油面啊",
-        one_yuewen_shifted="噉啊要金钱透粗啊冇粗面噃",
+        one_yuewen_shifted="冇粗面噃",
         two_yuewen_shifted="噉啊咁要鱼蛋油面啊",
     ),
     ShiftTestCase(
@@ -1290,6 +1296,7 @@ shift_test_cases_block_5 = [
         two_yuewen="噉要蜜丸粗啊",
         one_yuewen_shifted="乜样样都冇嘅",
         two_yuewen_shifted="噉要蜜丸粗啊",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="来个墨鱼丸粗面吧　　粗面买光了",
@@ -1299,6 +1306,7 @@ shift_test_cases_block_5 = [
         one_yuewen_shifted="噉要蜜丸粗啊冇粗面噃",
         two_yuewen_shifted="又冇啊",
         difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="又买光了？",
@@ -1307,6 +1315,7 @@ shift_test_cases_block_5 = [
         two_yuewen="噉唔该畀碗鱼蛋奶啊冇鱼蛋噃",
         one_yuewen_shifted="又冇啊",
         two_yuewen_shifted="噉唔该畀碗鱼蛋奶啊冇鱼蛋噃",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
@@ -1315,6 +1324,7 @@ shift_test_cases_block_5 = [
         two_yuewen="麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦",
         one_yuewen_shifted="噉唔该畀碗鱼蛋奶啊冇鱼蛋噃",
         two_yuewen_shifted="麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="麦兜呀，鱼蛋跟粗面都买光了",
@@ -1323,6 +1333,7 @@ shift_test_cases_block_5 = [
         two_yuewen="即系所有要鱼蛋或者粗面嘅配搭都冇㗎啦",
         one_yuewen_shifted="麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦",
         two_yuewen_shifted="即系所有要鱼蛋或者粗面嘅配搭都冇㗎啦",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="即是所有鱼蛋跟粗面的配搭都没了",
@@ -1331,6 +1342,7 @@ shift_test_cases_block_5 = [
         two_yuewen="噢冇𠮶啲配搭啊",
         one_yuewen_shifted="即系所有要鱼蛋或者粗面嘅配搭都冇㗎啦",
         two_yuewen_shifted="噢冇𠮶啲配搭啊",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="没有那些配搭吗？",
@@ -1339,6 +1351,7 @@ shift_test_cases_block_5 = [
         two_yuewen="噉唔该净鱼蛋啊",
         one_yuewen_shifted="噢冇𠮶啲配搭啊",
         two_yuewen_shifted="噉唔该净鱼蛋啊",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="麻烦你，净要鱼蛋吧　　鱼蛋买光了",
@@ -1348,6 +1361,7 @@ shift_test_cases_block_5 = [
         one_yuewen_shifted="噉唔该净鱼蛋啊冇鱼蛋噃",
         two_yuewen_shifted="净粗面呢冇粗面噃",
         difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那么净要粗面呢？　　粗面买光了",
@@ -1356,6 +1370,7 @@ shift_test_cases_block_5 = [
         two_yuewen="睇到呢度",
         one_yuewen_shifted="净粗面呢冇粗面噃",
         two_yuewen_shifted="睇到呢度",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="看到这里⋯",
@@ -1364,6 +1379,7 @@ shift_test_cases_block_5 = [
         two_yuewen="大家大概都知道我有几叻仔嘞",
         one_yuewen_shifted="睇到呢度",
         two_yuewen_shifted="大家大概都知道我有几叻仔嘞",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="大家大概都知道我是个怎么样的叻仔",
@@ -1372,6 +1388,7 @@ shift_test_cases_block_5 = [
         two_yuewen="果只我无忧无虑冇乜所谓",
         one_yuewen_shifted="大家大概都知道我有几叻仔嘞",
         two_yuewen_shifted="果只我无忧无虑冇乜所谓",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那时候我无忧无虑，万事无所谓﹣﹣",
@@ -1380,6 +1397,7 @@ shift_test_cases_block_5 = [
         two_yuewen="冇鱼蛋咩粗面都好啊",
         one_yuewen_shifted="果只我无忧无虑冇乜所谓",
         two_yuewen_shifted="冇鱼蛋咩粗面都好啊",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="鱼蛋买光了？那么粗面吧",
@@ -1388,6 +1406,7 @@ shift_test_cases_block_5 = [
         two_yuewen="麦兜转身食啊",
         one_yuewen_shifted="冇鱼蛋咩粗面都好啊",
         two_yuewen_shifted="麦兜转身食啊",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_5
 shift_test_cases_block_6 = [

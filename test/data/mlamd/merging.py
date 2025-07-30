@@ -892,22 +892,20 @@ merge_test_cases_block_5 = [
     ),
     MergeTestCase(
         zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
-        yuewen_to_merge=["唔该鱼蛋粗啊", "冇粗面噃"],
-        yuewen_merged="唔该，鱼蛋粗啊　　冇粗面噃",
-        include_in_prompt=True,
+        yuewen_to_merge=["唔该鱼蛋粗啊", "冇粗面噃", "噉啊", "要碗鱼蛋好啊"],
+        yuewen_merged="唔该鱼蛋粗啊　　冇粗面噃，噉啊要碗鱼蛋好啊",
         difficulty=2,
     ),
     MergeTestCase(
         zhongwen="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
-        yuewen_to_merge=["噉啊", "要碗鱼蛋好啊", "冇鱼蛋噃"],
-        yuewen_merged="噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃",
-        difficulty=1,
+        yuewen_to_merge=["冇鱼蛋噃", "噉啊", "要金钱透粗啊"],
+        yuewen_merged="冇鱼蛋噃，噉啊，要金钱透粗啊⋯",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        yuewen_to_merge=["噉啊", "要金钱透粗啊", "冇粗面噃"],
-        yuewen_merged="噉啊⋯要金钱透粗啊　　冇粗面噃",
-        include_in_prompt=True,
+        yuewen_to_merge=["冇粗面噃"],
+        yuewen_merged="冇粗面噃",
         difficulty=2,
     ),
     MergeTestCase(
@@ -968,8 +966,8 @@ merge_test_cases_block_5 = [
     MergeTestCase(
         zhongwen="那么净要粗面呢？　　粗面买光了",
         yuewen_to_merge=["净粗面呢", "冇粗面噃"],
-        yuewen_merged="净粗面呢？　　冇粗面噃",
-        difficulty=1,
+        yuewen_merged="净粗面呢　　冇粗面噃",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="看到这里⋯",
