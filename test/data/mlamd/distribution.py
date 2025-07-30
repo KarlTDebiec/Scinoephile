@@ -362,6 +362,7 @@ distribute_test_cases_block_7 = [
         yuewen_to_distribute="咁Ballana噉",
         one_yuewen_to_append="咁Ballana噉",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="是All Things Bright and Beautiful吧？",
@@ -371,6 +372,7 @@ distribute_test_cases_block_7 = [
         yuewen_to_distribute="Beautiful呀",
         one_yuewen_to_append="Beautiful呀",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="是的，一切都好！",
@@ -380,6 +382,7 @@ distribute_test_cases_block_7 = [
         yuewen_to_distribute="所有嘢都几好喇",
         one_yuewen_to_append="所有嘢都几好喇",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="世上一切，一切一切⋯",
@@ -389,6 +392,7 @@ distribute_test_cases_block_7 = [
         yuewen_to_distribute="世上一切",
         one_yuewen_to_append="世上一切",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_7
 distribute_test_cases_block_8 = [
