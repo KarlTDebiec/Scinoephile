@@ -25,6 +25,19 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
             and self.two_yuewen == self.two_yuewen_shifted
         )
 
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty.
+
+        If the test case asks for 粤文 text to be shifted, difficulty is at least 1.
+
+        Returns:
+            Minimum difficulty level based on the test case properties
+        """
+        min_difficulty = super().get_min_difficulty()
+        if not self.noop:
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftTestCase:
         """Ensure query and answer are consistent with one another."""

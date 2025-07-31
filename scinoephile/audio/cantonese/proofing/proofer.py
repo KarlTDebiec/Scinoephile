@@ -53,30 +53,3 @@ class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         Include a one-sentence explanation in English for any correction you make.
         If you make no changes, return an empty string for the note.
         """
-
-    @property
-    def test_case_log_str(self) -> str:
-        """String representation of all test cases in the log.
-
-        If the test case asks for changes, difficulty is 1.
-        If the test case is included in the prompt, difficulty is 2.
-        """
-        test_case_log_str = "[\n"
-
-        for key, value in self._test_case_log.items():
-            source_str: str = value.source_str[:-1]
-
-            difficulty = value.difficulty
-            if value.yuewen != value.yuewen_proofread:
-                difficulty = 1
-            if key in self._examples_log:
-                difficulty = 2
-                source_str += "    prompt=True,\n"
-            if key in self._verified_log:
-                source_str += "    verified=True,\n"
-            if difficulty:
-                source_str += f"    difficulty={difficulty},\n"
-            source_str += ")"
-            test_case_log_str += f"{source_str},\n"
-        test_case_log_str += "\n]"
-        return test_case_log_str

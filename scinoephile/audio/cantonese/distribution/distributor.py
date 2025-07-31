@@ -44,30 +44,3 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
         Do not copy "Nascent 粤文 one" into "one", nor "Nascent 粤文 two" into "two".
         Your output "one" and "two" concatenated should equal "ambiguous 粤文".
         """
-
-    @property
-    def test_case_log_str(self) -> str:
-        """String representation of all test cases in the log.
-
-        If the test case asks for the 粤文 text to be split, difficulty is 1.
-        If the test case is set to be included in the prompt, difficulty is 2.
-        """
-        test_case_log_str = "[\n"
-
-        for key, value in self._test_case_log.items():
-            source_str: str = value.source_str[:-1]
-
-            difficulty = value.difficulty
-            if value.one_yuewen_to_append and value.two_yuewen_to_prepend:
-                difficulty = 1
-            if key in self._examples_log:
-                difficulty = 2
-                source_str += "    prompt=True,\n"
-            if key in self._verified_log:
-                source_str += "    verified=True,\n"
-            if difficulty:
-                source_str += f"    difficulty={difficulty},\n"
-            source_str += ")"
-            test_case_log_str += f"{source_str},\n"
-        test_case_log_str += "\n]"
-        return test_case_log_str

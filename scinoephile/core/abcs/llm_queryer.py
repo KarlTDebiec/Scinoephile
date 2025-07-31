@@ -113,9 +113,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             info(f"Loaded from verified log: {query.query_key}")
             test_case = self._verified_log[query.query_key]
             answer = test_case.answer
-            self._test_case_log[test_case.query.query_key] = test_case
-            if self.print_test_case:
-                print(f"{test_case.source_str},")
+            self.log_test_case(test_case)
             return answer
 
         # Load from cache if available
@@ -125,9 +123,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             with cache_path.open("r", encoding="utf-8") as f:
                 answer = self.answer_cls.model_validate(json.load(f))
                 test_case = self.test_case_cls.from_query_and_answer(query, answer)
-                self._test_case_log[test_case.query.query_key] = test_case
-                if self.print_test_case:
-                    print(f"{test_case.source_str},")
+                self.log_test_case(test_case)
                 return answer
 
         # Query provider
@@ -209,9 +205,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             raise ScinoephileError("Unable to obtain valid answer")
 
         # Log test case
-        self._test_case_log[test_case.query.query_key] = test_case
-        if self.print_test_case:
-            print(f"{test_case.source_str},")
+        self.log_test_case(test_case)
 
         # Update cache
         if cache_path is not None:
@@ -232,10 +226,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         test_case_log_str = "[\n"
         for key, value in self._test_case_log.items():
             source_str: str = value.source_str
-            if key in self._examples_log:
-                source_str = f"{source_str[:-1]}    prompt=True,\n)"
             test_case_log_str += f"{source_str},\n"
-        test_case_log_str += "\n]"
+        test_case_log_str += "]"
         return test_case_log_str
 
     @cached_property
@@ -288,6 +280,22 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     def clear_test_case_log(self):
         """Clear the test case log."""
         self._test_case_log.clear()
+
+    def log_test_case(self, test_case: TTestCase):
+        """Log a test case.
+
+        Arguments:
+            test_case: Test case to log
+        """
+        key = test_case.query.query_key
+        if key in self._examples_log:
+            test_case.prompt = True
+        if key in self._verified_log:
+            test_case.verified = True
+        self._test_case_log[key] = test_case
+        if self.print_test_case:
+            print(f"{test_case.source_str},")
+        debug(f"Logged test case: {test_case.query.query_key}")
 
     def _get_cache_path(self, query_prompt: str) -> Path | None:
         """Get cache path based on hash of prompts.

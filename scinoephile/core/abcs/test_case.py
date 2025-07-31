@@ -9,7 +9,7 @@ from abc import ABC
 from functools import cached_property
 from typing import Self
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.query import Query
@@ -100,6 +100,26 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             + [")"]
         )
         return "\n".join(lines)
+
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty reflects prompt/split status if not already higher."""
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty.
+
+        If test case is marked for inclusion in the prompt, minimum difficulty is at
+        least 2.
+
+        Returns:
+            Minimum difficulty level based on the test case properties
+        """
+        min_difficulty = 0
+        if self.prompt:
+            min_difficulty = max(min_difficulty, 2)
+        return min_difficulty
 
     @classmethod
     def from_query_and_answer(
