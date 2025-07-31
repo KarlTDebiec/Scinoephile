@@ -935,8 +935,8 @@ shift_test_cases_block_4 = [
         two_yuewen="阿May同学MissChan你点咗我两次喇",
         one_yuewen_shifted="阿May同学",
         two_yuewen_shifted="MissChan你点咗我两次喇",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="Miss Chan，我点过两次了！",
@@ -993,8 +993,8 @@ shift_test_cases_block_4 = [
         two_yuewen="到德巴同学到",
         one_yuewen_shifted="阿辉同学到",
         two_yuewen_shifted="德巴同学到",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="得巴同学！　　到！",
@@ -1004,8 +1004,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="德巴同学到",
         two_yuewen_shifted="阿May同学",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="阿May同学！　　到！",
@@ -1015,8 +1015,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="阿May同学到",
         two_yuewen_shifted="麦麦同学到",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="麦唛同学！　　到！",
@@ -1043,8 +1043,8 @@ shift_test_cases_block_4 = [
         two_yuewen="到好仲有边个未点",
         one_yuewen_shifted="川明同学到",
         two_yuewen_shifted="好仲有边个未点",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="还有谁没点过吗？",
@@ -1054,8 +1054,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="好仲有边个未点",
         two_yuewen_shifted="猫",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="麦兜！",
@@ -1065,8 +1065,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="猫噢",
         two_yuewen_shifted="麦兜同学",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="麦兜同学！",
@@ -1085,8 +1085,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="麦兜同学",
         two_yuewen_shifted="妈妈啊麦兜同学",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="麦唛呀，即是呢⋯",
@@ -1095,8 +1095,8 @@ shift_test_cases_block_4 = [
         two_yuewen="即系呢我个心总系仁住仁住",
         one_yuewen_shifted="妈妈啊麦兜同学即系呢",
         two_yuewen_shifted="我个心总系仁住仁住",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="我好像觉得呢⋯",
@@ -1106,8 +1106,8 @@ shift_test_cases_block_4 = [
         one_yuewen_shifted="我个心总系仁住仁住",
         two_yuewen_shifted="好似有人嗌紧我个名噉嘅",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="有什么人在喊我似的",
@@ -1152,8 +1152,8 @@ shift_test_cases_block_4 = [
         two_yuewen="噢呢个我明白但系橙呢",
         one_yuewen_shifted="妈妈话食橙会通大变",
         two_yuewen_shifted="噢呢个我明白但系橙呢",
-        include_in_verified=True,
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -2069,6 +2069,7 @@ shift_test_cases_block_13 = [
         two_yuewen="佢死咗",
         one_yuewen_shifted="从前有个小朋友早睡晚起第二朝",
         two_yuewen_shifted="佢死咗",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="他死了！",
@@ -2077,6 +2078,7 @@ shift_test_cases_block_13 = [
         two_yuewen="我妈妈就系噉一切都咁直接",
         one_yuewen_shifted="佢死咗",
         two_yuewen_shifted="我妈妈就系噉一切都咁直接",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我妈妈就是这样子，一切都那么直接",
@@ -2085,6 +2087,7 @@ shift_test_cases_block_13 = [
         two_yuewen="佢爱得我直接",
         one_yuewen_shifted="我妈妈就系噉一切都咁直接",
         two_yuewen_shifted="佢爱得我直接",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="她爱得我直接⋯",
@@ -2093,6 +2096,7 @@ shift_test_cases_block_13 = [
         two_yuewen="对我嘅期望直接",
         one_yuewen_shifted="佢爱得我直接",
         two_yuewen_shifted="对我嘅期望直接",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="对我的期望直接",
@@ -2101,6 +2105,7 @@ shift_test_cases_block_13 = [
         two_yuewen="佢一二三四五六七",
         one_yuewen_shifted="对我嘅期望直接",
         two_yuewen_shifted="佢一二三四五六七",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="对她，一、二、三、四、五、六、七",
@@ -2109,6 +2114,7 @@ shift_test_cases_block_13 = [
         two_yuewen="唔得都要得字幕由Amara.org",
         one_yuewen_shifted="佢一二三四五六七",
         two_yuewen_shifted="唔得都要得字幕由Amara.org",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_13
 shift_test_cases_block_14 = [

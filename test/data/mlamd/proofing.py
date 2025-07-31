@@ -756,6 +756,7 @@ proof_test_cases_block_4 = [
         yuewen="阿May同学！　　到！",
         yuewen_proofread="阿May同学！　　到！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="阿June同学！　　到！",
@@ -1693,44 +1694,51 @@ proof_test_cases_block_13 = [
         yuewen="从前，有个小朋友早睡晚起；第二朝⋯",
         yuewen_proofread="从前，有个小朋友早睡晚起；第二朝⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="他死了！",
         yuewen="佢死咗！",
         yuewen_proofread="佢死咗！",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="我妈妈就是这样子，一切都那么直接",
         yuewen="我妈妈就系噉，一切都咁直接",
         yuewen_proofread="我妈妈就系噉，一切都咁直接",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="她爱得我直接⋯",
         yuewen="佢爱得我直接⋯",
         yuewen_proofread="佢爱得我直接⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="对我的期望直接",
         yuewen="对我嘅期望直接",
         yuewen_proofread="对我嘅期望直接",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="对她，一、二、三、四、五、六、七",
         yuewen="佢，一、二、三、四、五、六、七",
         yuewen_proofread="佢，一、二、三、四、五、六、七",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="没有不成的事",
         yuewen="唔得都要得字幕由Amara.org",
-        yuewen_proofread="",
-        note="Cleared as '唔得都要得字幕由Amara.org' contains unrelated content "
-        "('字幕由Amara.org') and does not correspond to the original "
-        "phrase '没有不成的事'.",
+        yuewen_proofread="唔得都要得",
+        note="Removed '字幕由Amara.org' as it is not part of the spoken "
+        "content and is an artifact from subtitle credits in the "
+        "training set.",
+        include_in_verified=True,
         difficulty=1,
     ),
 ]  # proof_test_cases_block_13
