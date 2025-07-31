@@ -17,6 +17,7 @@ from test.data.mlamd.distribution import mlamd_distribute_test_cases
 from test.data.mlamd.merging import mlamd_merge_test_cases
 from test.data.mlamd.proofing import mlamd_proof_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
+from test.data.mlamd.translation import mlamd_translate_test_cases
 
 input_dir = test_data_root / "mlamd" / "input"
 output_dir = test_data_root / "mlamd" / "output"
@@ -111,6 +112,7 @@ ___all__ = [
     "mlamd_shift_test_cases",
     "mlamd_merge_test_cases",
     "mlamd_proof_test_cases",
+    "mlamd_translate_test_cases",
 ]
 
 if __name__ == "__main__":

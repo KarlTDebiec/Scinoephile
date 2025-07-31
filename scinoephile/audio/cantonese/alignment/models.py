@@ -27,7 +27,11 @@ def get_translate_query_model(size: int, missing: tuple[int, ...]) -> type[Query
                 str,
                 Field(..., description=f"Known 粤文 of text {zw_idx + 1}"),
             )
-    return create_model("TranslateQuery", __base__=Query, **query_fields)
+    return create_model(
+        f"TranslateTestQuery_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
+        __base__=Query,
+        **query_fields,
+    )
 
 
 def get_translate_answer_model(size: int, missing: tuple[int, ...]) -> type[Answer]:
@@ -42,7 +46,11 @@ def get_translate_answer_model(size: int, missing: tuple[int, ...]) -> type[Answ
                 str,
                 Field(..., description=f"Translated 粤文 of text {zw_idx + 1}"),
             )
-    return create_model("TranslateAnswer", __base__=Answer, **answer_fields)
+    return create_model(
+        f"TranslateTestAnswer_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
+        __base__=Answer,
+        **answer_fields,
+    )
 
 
 def get_translate_test_case_model(
@@ -57,14 +65,14 @@ def get_translate_test_case_model(
     if answer_model is None:
         answer_model = get_translate_answer_model(size, missing)
     return create_model(
-        "TranslateTestCase",
+        f"TranslateTestCase_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
         __base__=(query_model, answer_model, TestCase[query_model, answer_model]),
-        prompt=(
-            bool,
-            Field(
-                False, description="Whether to include test case in prompt examples."
-            ),
-        ),
+        # prompt=(
+        #     bool,
+        #     Field(
+        #         False, description="Whether to include test case in prompt examples."
+        #     ),
+        # ),
     )
 
 

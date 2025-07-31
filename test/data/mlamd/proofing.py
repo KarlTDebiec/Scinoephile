@@ -12,9 +12,9 @@ proof_test_cases_block_0 = [
         yuewen="就喺麦太快要临盘嘅时候",
         yuewen_proofread="就喺麦太快要临盆嘅时候",
         note="Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="一只胶兜在九龙上空飞过",
@@ -29,9 +29,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="沿住荔枝角道直出大角咀道",
         note="Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is "
         "the correct word for 'road' in both cases.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="经好彩酒家左转花园街乐园牛丸王⋯",
@@ -48,9 +48,9 @@ proof_test_cases_block_0 = [
         yuewen="都系唔好：",
         yuewen_proofread="都系唔好：",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="先到街市大楼妹记鱼腩粥外边",
@@ -64,9 +64,9 @@ proof_test_cases_block_0 = [
         yuewen="转下，转下⋯都系唔好：",
         yuewen_proofread="转下，转下⋯都系唔好：",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="直出亚皆老街跨过火车桥右转太平道",
@@ -74,9 +74,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="都系出返去亚皆老街飞过火车桥右转入太平道",
         note="Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the "
         "street name '亚皆老街'.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="再右拐窝打老道向女人街方向飞⋯",
@@ -92,9 +92,9 @@ proof_test_cases_block_0 = [
         yuewen="飞下，飞下⋯",
         yuewen_proofread="飞下，飞下⋯",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="胶兜最后飞进广华医院候产房",
@@ -112,9 +112,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="亦即系麦太右边魂精对上⋯",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' and matches the meaning of '额角' in the 中文.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="更正：左边额角上⋯",
@@ -138,9 +138,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="麦太认定呢个系异像",
         note="Corrected '异象' to '异像' as '异像' is the correct term in this "
         "context.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="于是向额角上的胶兜许愿",
@@ -228,9 +228,9 @@ proof_test_cases_block_0 = [
         yuewen="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
         yuewen_proofread="嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="唔聪明唔靓仔也算了，只要福星高照",
@@ -247,9 +247,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="一世够运，乜嘢事都逢凶化㗎喇！",
         note="Corrected '救运' to '够运' as '够运' is the correct term for being "
         "lucky, matching the original meaning.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="靠自己能力解决事情当然最好",
@@ -271,9 +271,9 @@ proof_test_cases_block_0 = [
         yuewen_proofread="虽然似梁朝伟周润发都行运定咗",
         note="Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a "
         "mishearing; '行运定咗' matches the meaning of '行运定了'.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="但总得要叻仔呀！",
@@ -300,9 +300,9 @@ proof_test_cases_block_1 = [
         yuewen_proofread="嘀督？嘀督㖞，即系应承啦",
         note="Corrected '滴嘟' to '嘀督' to match the intended sound and "
         "meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了).",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="麦太想，这次走运了！",
@@ -392,9 +392,9 @@ proof_test_cases_block_2 = [
         yuewen="咦，麦太，咩唔见你一排",
         yuewen_proofread="咦，麦太，咩唔见你一排",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="怎么小腿粗起来了？",
@@ -402,9 +402,9 @@ proof_test_cases_block_2 = [
         yuewen_proofread="个脚瓜囊粗咗咁多呀？",
         note="Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese "
         "term for 'calf', matching the meaning of '小腿'.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="可怜呀，每天扑来扑去⋯",
@@ -569,9 +569,9 @@ proof_test_cases_block_3 = [
         yuewen_proofread="我其实唔系好知佢噏乜",
         note="Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches "
         "the meaning of '他的说话', while '噏文' is likely a mishearing.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="蛋挞！　　蛋挞！",
@@ -600,18 +600,18 @@ proof_test_cases_block_3 = [
         note="Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the "
         "original phrase '也不能忘记校训九十八！' and is clearly a pure "
         "artifact.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="好！各位同学⋯",
         yuewen="𠮶个位同学⋯",
         yuewen_proofread="𠮶个位同学⋯",
         note="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="今天的早会主要是跟大家分享",
@@ -870,9 +870,9 @@ proof_test_cases_block_4 = [
         note="Corrected 'Orange' to '疴﹣烂﹣煮' as '疴﹣烂﹣煮' appears to be an "
         "indentional transliteration of 'orange' into Chinese "
         "characters, matching the styling in the 中文.",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     ProofTestCase(
         zhongwen="妈妈说吃橙可通大便",

@@ -15,9 +15,9 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="向女人街方向飞下下",
         one_yuewen_to_append="向女人街方向飞下下",
         two_yuewen_to_prepend="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     DistributeTestCase(
         one_zhongwen="飞呀，飞⋯",
@@ -27,9 +27,9 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="飞下",
         one_yuewen_to_append="飞下",
         two_yuewen_to_prepend="",
+        prompt=True,
         difficulty=2,
         verified=True,
-        prompt=True,
     ),
     DistributeTestCase(
         one_zhongwen="或者读书唔叻，工作叻呢？",
