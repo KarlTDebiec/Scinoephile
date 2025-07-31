@@ -88,8 +88,13 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             exclusions.add("prompt")
         if not self.verified:
             exclusions.add("verified")
-        test_case_fields = (
-            set(self.model_fields) - set(query_fields) - set(answer_fields) - exclusions
+        test_case_fields = sorted(
+            list(
+                set(self.model_fields)
+                - set(query_fields)
+                - set(answer_fields)
+                - exclusions
+            )
         )
 
         lines = (
