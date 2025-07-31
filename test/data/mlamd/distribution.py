@@ -461,6 +461,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="今日要同大家介绍一味",
         one_yuewen_to_append="今日要同大家介绍一味",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
@@ -470,6 +471,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="纸包鸡",
         one_yuewen_to_append="纸包鸡",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="只要将鸡包包住个鸡包",
@@ -479,6 +481,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="包住个鸡包",
         one_yuewen_to_append="包住个鸡包",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="再包住个鸡包⋯",
@@ -488,6 +491,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="再包住个鸡包",
         one_yuewen_to_append="再包住个鸡包",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="再包包包包包住个纸鸡包",
@@ -497,6 +501,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="包住个纸包鸡",
         one_yuewen_to_append="包住个纸包鸡",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="再包包包，纸纸纸",
@@ -506,6 +511,7 @@ distribute_test_cases_block_12 = [
         yuewen_to_distribute="纸纸纸纸",
         one_yuewen_to_append="纸纸纸纸",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_12
 distribute_test_cases_block_13 = [
