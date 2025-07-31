@@ -1309,7 +1309,7 @@ proof_test_cases_block_9 = [
     ),
     ProofTestCase(
         zhongwen="除了兼任保险，地产经纪及trading⋯",
-        yuewen="除咗做保险地产经纪同埋trading之外⋯",
+        yuewen="除咗做保险，地产经纪同埋trading之外⋯",
         yuewen_proofread="除咗做保险，地产经纪同埋trading之外⋯",
         note="",
         include_in_verified=True,
@@ -1323,11 +1323,11 @@ proof_test_cases_block_9 = [
     ),
     ProofTestCase(
         zhongwen="www．麦太世界．com",
-        yuewen="www.mcticege.com",
+        yuewen="www．mcticege．com",
         yuewen_proofread="www．麦太世界．com",
-        note="Corrected 'mcticege' to '麦太世界' to match the styling in the 中文.",
-        difficulty=1,
+        note="Corrected 'mcticege' to '麦太世界' to match the style of the 中文.",
         include_in_verified=True,
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="她做的菜，同样厉害",
@@ -1356,8 +1356,8 @@ proof_test_cases_block_9 = [
         yuewen_proofread="简单又别致嘅小菜纸包鸡",
         note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, "
         "matching the meaning in the 中文.",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="家中小朋友一定好喜欢",
@@ -1400,8 +1400,8 @@ proof_test_cases_block_9 = [
         yuewen_proofread="呢味纸包鸡就完成喇，系咪好易整啦？",
         note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, "
         "matching the meaning in the 中文.",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="多谢大家收看",

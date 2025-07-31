@@ -1630,8 +1630,8 @@ shift_test_cases_block_9 = [
         two_yuewen="今日我为大家介绍个简单又别致嘅小菜自包鸡",
         one_yuewen_shifted="今日我为大家介绍个",
         two_yuewen_shifted="简单又别致嘅小菜自包鸡",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="欢迎大家收看《麦太世界》",
