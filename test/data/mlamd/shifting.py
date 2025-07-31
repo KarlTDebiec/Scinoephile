@@ -1419,6 +1419,7 @@ shift_test_cases_block_6 = [
         one_yuewen_shifted="睇住自己日日柯能处",
         two_yuewen_shifted="日日掌肉",
         include_in_prompt=True,
+        include_in_verified=True,
         difficulty=2,
     ),
     ShiftTestCase(
@@ -1428,6 +1429,7 @@ shift_test_cases_block_6 = [
         two_yuewen="感到充满力量",
         one_yuewen_shifted="日日掌肉",
         two_yuewen_shifted="感到充满力量",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我感到充满力量！",
@@ -1436,6 +1438,7 @@ shift_test_cases_block_6 = [
         two_yuewen="世界好美丽",
         one_yuewen_shifted="感到充满力量",
         two_yuewen_shifted="世界好美丽",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_6
 shift_test_cases_block_7 = [
@@ -1446,6 +1449,7 @@ shift_test_cases_block_7 = [
         two_yuewen="我成日想学习",
         one_yuewen_shifted="有一首歌麦词春唱得好好听呀",
         two_yuewen_shifted="我成日想学习",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我时常想着学习",
@@ -1454,6 +1458,7 @@ shift_test_cases_block_7 = [
         two_yuewen="但系唱嚟唱去都系阿伦厨咁Ballana噉",
         one_yuewen_shifted="我成日想学习",
         two_yuewen_shifted="但系唱嚟唱去都系阿伦厨咁Ballana噉",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="可每次我总唱成「疴」什么什么的⋯",
@@ -1462,6 +1467,7 @@ shift_test_cases_block_7 = [
         two_yuewen="系唔系AllThingsBrightandBeautiful呀",
         one_yuewen_shifted="但系唱嚟唱去都系阿伦厨咁Ballana噉",
         two_yuewen_shifted="系唔系AllThingsBrightandBeautiful呀",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="是All Things Bright and Beautiful吧？",
@@ -1470,6 +1476,7 @@ shift_test_cases_block_7 = [
         two_yuewen="系呀所有嘢都几好喇",
         one_yuewen_shifted="系唔系AllThingsBrightandBeautiful呀",
         two_yuewen_shifted="系呀所有嘢都几好喇",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="是的，一切都好！",
@@ -1478,6 +1485,7 @@ shift_test_cases_block_7 = [
         two_yuewen="世上一切",
         one_yuewen_shifted="系呀所有嘢都几好喇",
         two_yuewen_shifted="世上一切",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="世上一切，一切一切⋯",
@@ -1487,6 +1495,8 @@ shift_test_cases_block_7 = [
         one_yuewen_shifted="世上一切",
         two_yuewen_shifted="所有𠮶啲嘢都几好AllThingsBrightandBeautiful",
         include_in_prompt=True,
+        include_in_verified=True,
+        difficulty=2,
     ),
 ]  # shift_test_cases_block_7
 shift_test_cases_block_8 = [
@@ -1499,6 +1509,7 @@ shift_test_cases_block_8 = [
         two_yuewen_shifted="多喽多得",
         include_in_prompt=True,
         difficulty=2,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="一、二、三、四、五、六、七⋯",
@@ -1508,6 +1519,7 @@ shift_test_cases_block_8 = [
         one_yuewen_shifted="1234567",
         two_yuewen_shifted="",
         difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="多劳多得！",
@@ -1517,6 +1529,7 @@ shift_test_cases_block_8 = [
         one_yuewen_shifted="多喽多得",
         two_yuewen_shifted="星期一至星期七多喽多得",
         difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="星期一至星期七⋯多劳多得！",
@@ -1525,6 +1538,7 @@ shift_test_cases_block_8 = [
         two_yuewen="呢个嗌得特别劲嘅中年母猪",
         one_yuewen_shifted="星期一至星期七多喽多得",
         two_yuewen_shifted="呢个嗌得特别劲嘅中年母猪",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="这位喊得特劲的中年母猪",
@@ -1533,6 +1547,7 @@ shift_test_cases_block_8 = [
         two_yuewen="就系我妈妈麦太",
         one_yuewen_shifted="呢个嗌得特别劲嘅中年母猪",
         two_yuewen_shifted="就系我妈妈麦太",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="就是我妈妈麦太",
@@ -1541,6 +1556,7 @@ shift_test_cases_block_8 = [
         two_yuewen="我妈妈真系好劲呀",
         one_yuewen_shifted="就系我妈妈麦太",
         two_yuewen_shifted="我妈妈真系好劲呀",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我妈妈真的很劲",
@@ -1549,6 +1565,7 @@ shift_test_cases_block_8 = [
         two_yuewen="一个女人揹起成个世界",
         one_yuewen_shifted="我妈妈真系好劲呀",
         two_yuewen_shifted="一个女人揹起成个世界",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_8
 shift_test_cases_block_9 = [
