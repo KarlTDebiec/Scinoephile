@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_distribute_test_cases  # noqa: F401
 def distributor_few_shot() -> Distributor:
     """LLMQueryer with few-shot examples."""
     return Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
+        examples=[m for m in mlamd_distribute_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 

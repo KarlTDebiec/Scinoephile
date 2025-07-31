@@ -60,9 +60,9 @@ class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
                 difficulty = 2
             if key in self._examples_log:
                 difficulty = 2
-                source_str += "    include_in_prompt=True,\n"
+                source_str += "    prompt=True,\n"
             if key in self._verified_log:
-                source_str += "    include_in_verified=True,\n"
+                source_str += "    verified=True,\n"
             if difficulty:
                 source_str += f"    difficulty={difficulty},\n"
             source_str += ")"

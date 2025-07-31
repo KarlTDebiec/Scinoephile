@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 def merger_few_shot() -> Merger:
     """LLMQueryer with few-shot examples."""
     return Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
+        examples=[m for m in mlamd_merge_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 

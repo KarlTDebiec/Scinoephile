@@ -25,10 +25,10 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     difficulty: int = Field(
         0, description="Difficulty level of the test case, used for filtering."
     )
-    include_in_prompt: bool = Field(
+    prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
     )
-    include_in_verified: bool = Field(
+    verified: bool = Field(
         False, description="Whether to include test case in the verified answers cache."
     )
 
@@ -87,8 +87,8 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             - set(answer_fields)
             - {
                 "difficulty",
-                "include_in_prompt",
-                "include_in_verified",
+                "prompt",
+                "verified",
             }
         )
 
@@ -103,17 +103,13 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
 
     @classmethod
     def from_query_and_answer(
-        cls, query: TQuery, answer: TAnswer, include_in_prompt: bool = False
+        cls, query: TQuery, answer: TAnswer, prompt: bool = False
     ) -> Self:
         """Create test case from query and answer.
 
         Arguments:
             query: Query part of the test case
             answer: Answer part of the test case
-            include_in_prompt: Whether to include this test case in prompt examples
+            prompt: Whether to include this test case in prompt examples
         """
-        return cls(
-            **query.model_dump(),
-            **answer.model_dump(),
-            include_in_prompt=include_in_prompt,
-        )
+        return cls(**query.model_dump(), **answer.model_dump(), prompt=prompt)

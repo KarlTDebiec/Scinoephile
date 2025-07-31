@@ -59,7 +59,7 @@ def get_translate_test_case_model(
     return create_model(
         "TranslateTestCase",
         __base__=(query_model, answer_model, TestCase[query_model, answer_model]),
-        include_in_prompt=(
+        prompt=(
             bool,
             Field(
                 False, description="Whether to include test case in prompt examples."

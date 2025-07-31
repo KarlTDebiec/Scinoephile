@@ -49,26 +49,26 @@ if __name__ == "__main__":
         cache_dir_path=test_data_root / "cache",
     )
     distributor = Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
-        verified=[m for m in mlamd_distribute_test_cases if m.include_in_verified],
+        examples=[m for m in mlamd_distribute_test_cases if m.prompt],
+        verified=[m for m in mlamd_distribute_test_cases if m.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     shifter = Shifter(
-        examples=[m for m in mlamd_shift_test_cases if m.include_in_prompt],
-        verified=[m for m in mlamd_shift_test_cases if m.include_in_verified],
+        examples=[m for m in mlamd_shift_test_cases if m.prompt],
+        verified=[m for m in mlamd_shift_test_cases if m.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     merger = Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
-        verified=[m for m in mlamd_merge_test_cases if m.include_in_verified],
+        examples=[m for m in mlamd_merge_test_cases if m.prompt],
+        verified=[m for m in mlamd_merge_test_cases if m.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     proofer = Proofer(
-        examples=[m for m in mlamd_proof_test_cases if m.include_in_prompt],
-        verified=[m for m in mlamd_proof_test_cases if m.include_in_verified],
+        examples=[m for m in mlamd_proof_test_cases if m.prompt],
+        verified=[m for m in mlamd_proof_test_cases if m.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )

@@ -219,7 +219,7 @@ class Translator:
         for key, value in self._test_case_log.items():
             source_str: str = value.source_str
             if key in self._examples_log:
-                source_str = f"{source_str[:-1]}    include_in_prompt=True,\n)"
+                source_str = f"{source_str[:-1]}    prompt=True,\n)"
             test_case_log_str += f"{source_str},\n"
         test_case_log_str += "\n]"
         return test_case_log_str
