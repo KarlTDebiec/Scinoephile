@@ -15,9 +15,9 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="向女人街方向飞下下",
         one_yuewen_to_append="向女人街方向飞下下",
         two_yuewen_to_prepend="",
-        prompt=True,
-        verified=True,
         difficulty=2,
+        verified=True,
+        prompt=True,
     ),
     DistributeTestCase(
         one_zhongwen="飞呀，飞⋯",
@@ -27,9 +27,9 @@ distribute_test_cases_block_0 = [
         yuewen_to_distribute="飞下",
         one_yuewen_to_append="飞下",
         two_yuewen_to_prepend="",
-        prompt=True,
-        verified=True,
         difficulty=2,
+        verified=True,
+        prompt=True,
     ),
     DistributeTestCase(
         one_zhongwen="或者读书唔叻，工作叻呢？",
@@ -164,8 +164,8 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="今次座会系要同大家分享一个可重要嘅主题",
         one_yuewen_to_append="今次座会系要同大家分享",
         two_yuewen_to_prepend="一个可重要嘅主题",
-        verified=True,
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="今天的早会主要是跟大家分享",
@@ -404,8 +404,8 @@ distribute_test_cases_block_8 = [
         yuewen_to_distribute="呢个嗌得特别劲嘅中年母猪就系我妈妈",
         one_yuewen_to_append="呢个嗌得特别劲嘅中年母猪",
         two_yuewen_to_prepend="就系我妈妈",
-        verified=True,
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="这位喊得特劲的中年母猪",
