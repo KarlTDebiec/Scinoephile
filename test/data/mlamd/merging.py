@@ -319,6 +319,7 @@ merge_test_cases_block_1 = [
     ),
     MergeTestCase(
         zhongwen="各位⋯",
+        include_in_verified=True,
         yuewen_to_merge=["各位"],
         yuewen_merged="各位⋯",
         difficulty=1,
@@ -1384,8 +1385,8 @@ merge_test_cases_block_12 = [
         zhongwen="鸡包包鸡包包鸡包纸包纸⋯",
         yuewen_to_merge=["鸡包包", "鸡包包", "鸡包纸包", "纸包鸡", "包包鸡"],
         yuewen_merged="鸡包包鸡包包鸡包纸包纸包鸡包包鸡⋯",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="包鸡包鸡包纸包鸡",
@@ -1425,11 +1426,28 @@ merge_test_cases_block_12 = [
         include_in_verified=True,
     ),
     MergeTestCase(
+        zhongwen="再包包包，纸纸纸",
+        yuewen_to_merge=[
+            "包",
+            "包鸡包纸",
+            "包纸",
+            "纸纸纸纸",
+            "纸包纸",
+            "纸包鸡",
+            "包鸡纸",
+            "纸包鸡",
+            "鸡鸡鸡",
+            "纸纸纸",
+        ],
+        yuewen_merged="包包鸡包纸包纸纸纸纸纸纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸",
+        include_in_verified=True,
+    ),
+    MergeTestCase(
         zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
         yuewen_to_merge=["再包鸡鸡"],
         yuewen_merged="再包鸡鸡⋯",
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="可我妈妈也有她温柔的一面",
