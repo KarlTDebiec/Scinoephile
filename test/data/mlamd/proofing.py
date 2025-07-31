@@ -1305,44 +1305,50 @@ proof_test_cases_block_9 = [
         yuewen="系呀，我妈妈真系好犀利㗎",
         yuewen_proofread="系呀，我妈妈真系好犀利㗎",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="除了兼任保险，地产经纪及trading⋯",
         yuewen="除咗做保险地产经纪同埋trading之外⋯",
-        yuewen_proofread="除咗做保险地产经纪同埋trading之外⋯",
+        yuewen_proofread="除咗做保险，地产经纪同埋trading之外⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="她还趁高科技热潮搞了个烹饪网站⋯",
         yuewen="佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯",
         yuewen_proofread="佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="www．麦太世界．com",
         yuewen="www.mcticege.com",
-        yuewen_proofread="www.mctaisegai.com",
-        note="Corrected 'mcticege' to 'mctaisegai' as it is a closer "
-        "phonetic match to '麦太世界' in the domain name.",
+        yuewen_proofread="www．麦太世界．com",
+        note="Corrected 'mcticege' to '麦太世界' to match the styling in the 中文.",
         difficulty=1,
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="她做的菜，同样厉害",
         yuewen="佢煮嘅𩠌，一样咁犀利",
         yuewen_proofread="佢煮嘅𩠌，一样咁犀利",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="欢迎大家收看《麦太世界》",
         yuewen="欢迎大家收睇《麦太世界》",
         yuewen_proofread="欢迎大家收睇《麦太世界》",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="今日为大家介绍一个⋯",
         yuewen="今日我为大家介绍个⋯",
         yuewen_proofread="今日我为大家介绍个⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="简单别致的小菜纸包鸡",
@@ -1351,36 +1357,42 @@ proof_test_cases_block_9 = [
         note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, "
         "matching the meaning in the 中文.",
         difficulty=1,
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="家中小朋友一定好喜欢",
         yuewen="家里头嘅小朋友一定好喜欢㗎",
         yuewen_proofread="家里头嘅小朋友一定好喜欢㗎",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="材料很简单：一个鸡包",
         yuewen="材料系好简单：我哋只需要一个鸡包",
         yuewen_proofread="材料系好简单：我哋只需要一个鸡包",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="将鸡包底部的纸撕下来⋯慢慢地撕",
         yuewen="我哋将黐喺鸡包底嘅纸撕出嚟⋯慢慢撕",
         yuewen_proofread="我哋将黐喺鸡包底嘅纸撕出嚟⋯慢慢撕",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="就会得到一张鸡包纸",
         yuewen="咁就会得到一张鸡包纸喇",
         yuewen_proofread="咁就会得到一张鸡包纸喇",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="把鸡包纸一反反转",
         yuewen="然后将鸡包纸一反反转",
         yuewen_proofread="然后将鸡包纸一反反转",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="这一味纸包鸡就完成了，很容易是吧？",
@@ -1389,12 +1401,14 @@ proof_test_cases_block_9 = [
         note="Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, "
         "matching the meaning in the 中文.",
         difficulty=1,
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="多谢大家收看",
         yuewen="多谢大家收睇",
         yuewen_proofread="多谢大家收睇",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_9
 proof_test_cases_block_10 = [

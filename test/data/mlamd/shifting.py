@@ -1576,6 +1576,7 @@ shift_test_cases_block_9 = [
         two_yuewen="除咗做保险地产经纪同埋trading之外",
         one_yuewen_shifted="系呀我妈妈真系好犀利㗎",
         two_yuewen_shifted="除咗做保险地产经纪同埋trading之外",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="除了兼任保险，地产经纪及trading⋯",
@@ -1584,6 +1585,7 @@ shift_test_cases_block_9 = [
         two_yuewen="佢仲趁住高科技热潮搞咗个煮𩠌嘅网站",
         one_yuewen_shifted="除咗做保险地产经纪同埋trading之外",
         two_yuewen_shifted="佢仲趁住高科技热潮搞咗个煮𩠌嘅网站",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="她还趁高科技热潮搞了个烹饪网站⋯",
@@ -1592,6 +1594,7 @@ shift_test_cases_block_9 = [
         two_yuewen="www.mcticege.com",
         one_yuewen_shifted="佢仲趁住高科技热潮搞咗个煮𩠌嘅网站",
         two_yuewen_shifted="www.mcticege.com",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="www．麦太世界．com",
@@ -1600,6 +1603,7 @@ shift_test_cases_block_9 = [
         two_yuewen="佢煮嘅𩠌一样咁犀利",
         one_yuewen_shifted="www.mcticege.com",
         two_yuewen_shifted="佢煮嘅𩠌一样咁犀利",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="她做的菜，同样厉害",
@@ -1608,6 +1612,7 @@ shift_test_cases_block_9 = [
         two_yuewen="欢迎大家收睇麦太世界",
         one_yuewen_shifted="佢煮嘅𩠌一样咁犀利",
         two_yuewen_shifted="欢迎大家收睇麦太世界",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="欢迎大家收看《麦太世界》",
@@ -1616,6 +1621,7 @@ shift_test_cases_block_9 = [
         two_yuewen="",
         one_yuewen_shifted="欢迎大家收睇麦太世界",
         two_yuewen_shifted="",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="今日为大家介绍一个⋯",
@@ -1625,6 +1631,7 @@ shift_test_cases_block_9 = [
         one_yuewen_shifted="今日我为大家介绍个",
         two_yuewen_shifted="简单又别致嘅小菜自包鸡",
         difficulty=1,
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="欢迎大家收看《麦太世界》",
@@ -1633,6 +1640,7 @@ shift_test_cases_block_9 = [
         two_yuewen="今日我为大家介绍个",
         one_yuewen_shifted="欢迎大家收睇麦太世界",
         two_yuewen_shifted="今日我为大家介绍个",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="今日为大家介绍一个⋯",
@@ -1641,6 +1649,7 @@ shift_test_cases_block_9 = [
         two_yuewen="简单又别致嘅小菜自包鸡",
         one_yuewen_shifted="今日我为大家介绍个",
         two_yuewen_shifted="简单又别致嘅小菜自包鸡",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="简单别致的小菜纸包鸡",
@@ -1649,6 +1658,7 @@ shift_test_cases_block_9 = [
         two_yuewen="家里头嘅小朋友一定好喜欢㗎",
         one_yuewen_shifted="简单又别致嘅小菜自包鸡",
         two_yuewen_shifted="家里头嘅小朋友一定好喜欢㗎",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="家中小朋友一定好喜欢",
@@ -1657,6 +1667,7 @@ shift_test_cases_block_9 = [
         two_yuewen="材料系好简单我哋只需要一个鸡包",
         one_yuewen_shifted="家里头嘅小朋友一定好喜欢㗎",
         two_yuewen_shifted="材料系好简单我哋只需要一个鸡包",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="材料很简单：一个鸡包",
@@ -1665,6 +1676,7 @@ shift_test_cases_block_9 = [
         two_yuewen="我哋将黐喺鸡包底嘅纸撕出嚟慢慢撕",
         one_yuewen_shifted="材料系好简单我哋只需要一个鸡包",
         two_yuewen_shifted="我哋将黐喺鸡包底嘅纸撕出嚟慢慢撕",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="将鸡包底部的纸撕下来⋯慢慢地撕",
@@ -1673,6 +1685,7 @@ shift_test_cases_block_9 = [
         two_yuewen="咁就会得到一张鸡包纸喇",
         one_yuewen_shifted="我哋将黐喺鸡包底嘅纸撕出嚟慢慢撕",
         two_yuewen_shifted="咁就会得到一张鸡包纸喇",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="就会得到一张鸡包纸",
@@ -1681,6 +1694,7 @@ shift_test_cases_block_9 = [
         two_yuewen="然后将鸡包纸一反反转",
         one_yuewen_shifted="咁就会得到一张鸡包纸喇",
         two_yuewen_shifted="然后将鸡包纸一反反转",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="把鸡包纸一反反转",
@@ -1689,6 +1703,7 @@ shift_test_cases_block_9 = [
         two_yuewen="呢味自包鸡就完成喇系咪好易整啦",
         one_yuewen_shifted="然后将鸡包纸一反反转",
         two_yuewen_shifted="呢味自包鸡就完成喇系咪好易整啦",
+        include_in_verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="这一味纸包鸡就完成了，很容易是吧？",
@@ -1697,6 +1712,7 @@ shift_test_cases_block_9 = [
         two_yuewen="多谢大家收睇",
         one_yuewen_shifted="呢味自包鸡就完成喇系咪好易整啦",
         two_yuewen_shifted="多谢大家收睇",
+        include_in_verified=True,
     ),
 ]  # shift_test_cases_block_9
 shift_test_cases_block_10 = [

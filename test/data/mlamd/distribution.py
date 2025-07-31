@@ -437,6 +437,7 @@ distribute_test_cases_block_9 = [
         yuewen_to_distribute="慢慢撕",
         one_yuewen_to_append="慢慢撕",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="今日为大家介绍一个⋯",
@@ -446,6 +447,7 @@ distribute_test_cases_block_9 = [
         yuewen_to_distribute="今日我为大家介绍个",
         one_yuewen_to_append="今日我为大家介绍个",
         two_yuewen_to_prepend="",
+        include_in_verified=True,
     ),
 ]  # distribute_test_cases_block_9
 distribute_test_cases_block_10 = []  # distribute_test_cases_block_10
