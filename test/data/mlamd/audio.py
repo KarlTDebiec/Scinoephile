@@ -90,7 +90,7 @@ if __name__ == "__main__":
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
         # TODO: Review 7, 12 more carefully
-        if i > 7:
+        if i > 8:
             continue
         update = True
 

@@ -1206,9 +1206,10 @@ proof_test_cases_block_7 = [
         yuewen="但系唱嚟唱去都系「阿伦厨」，咁「Ballana」噉⋯",
         yuewen_proofread="但系唱嚟唱去都系「疴﹣兰﹣煮」，咁「芭﹣娜﹣娜」噉⋯",
         note="Corrected '阿伦厨' to '疴兰煮' as it is a likely mishearing and "
-        "matches the intended pun on 'orange' ('疴﹣兰﹣煮') in the context; Also "
-        "corrected 'Ballana' to '芭﹣娜﹣娜' as it is a mishearing of 'Banana', "
-        "and is meant to be styled in the same phonetic manner as '疴﹣兰﹣煮'.",
+        "matches the intended pun on 'orange' ('疴﹣兰﹣煮') in the "
+        "context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a "
+        "mishearing of 'Banana', and is meant to be styled in the "
+        "same phonetic manner as '疴﹣兰﹣煮'.",
         include_in_verified=True,
         difficulty=1,
     ),
@@ -1244,16 +1245,19 @@ proof_test_cases_block_7 = [
 proof_test_cases_block_8 = [
     ProofTestCase(
         zhongwen="一、二、三、四、五、六、七⋯",
-        yuewen="1234567⋯",
-        yuewen_proofread="1234567⋯",
+        yuewen="1, 2, 3, 4, 5, 6, 7⋯",
+        yuewen_proofread="1, 2, 3, 4, 5, 6, 7⋯",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="多劳多得！",
         yuewen="多喽多得！",
         yuewen_proofread="多劳多得！",
         note="Corrected '多喽' to '多劳' as '多劳多得' is the correct phrase "
-        "meaning 'more work, more gain'; '多喽' is a likely mishearing.",
+        "meaning 'more work, more gain', and '多喽' is a likely "
+        "mishearing.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -1261,8 +1265,9 @@ proof_test_cases_block_8 = [
         yuewen="星期一至星期七⋯多喽多得！",
         yuewen_proofread="星期一至星期七⋯多劳多得！",
         note="Corrected '多喽多得' to '多劳多得' as '多劳多得' is the correct phrase "
-        "meaning 'more work, more gain', and '喽' is a likely "
+        "meaning 'the more you work, the more you gain', and '喽' is a "
         "mishearing of '劳'.",
+        include_in_verified=True,
         difficulty=1,
     ),
     ProofTestCase(
@@ -1270,24 +1275,28 @@ proof_test_cases_block_8 = [
         yuewen="呢个嗌得特别劲嘅中年母猪",
         yuewen_proofread="呢个嗌得特别劲嘅中年母猪",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="就是我妈妈麦太",
         yuewen="就系我妈妈麦太",
         yuewen_proofread="就系我妈妈麦太",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="我妈妈真的很劲",
         yuewen="我妈妈真系好劲呀",
         yuewen_proofread="我妈妈真系好劲呀",
         note="",
+        include_in_verified=True,
     ),
     ProofTestCase(
         zhongwen="一个女人背起整个世界！",
         yuewen="一个女人揹起成个世界！",
         yuewen_proofread="一个女人揹起成个世界！",
         note="",
+        include_in_verified=True,
     ),
 ]  # proof_test_cases_block_8
 proof_test_cases_block_9 = [

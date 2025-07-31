@@ -404,8 +404,8 @@ distribute_test_cases_block_8 = [
         yuewen_to_distribute="呢个嗌得特别劲嘅中年母猪就系我妈妈",
         one_yuewen_to_append="呢个嗌得特别劲嘅中年母猪",
         two_yuewen_to_prepend="就系我妈妈",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     DistributeTestCase(
         one_zhongwen="这位喊得特劲的中年母猪",

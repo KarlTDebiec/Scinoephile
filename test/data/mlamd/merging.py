@@ -1114,22 +1114,22 @@ merge_test_cases_block_8 = [
         zhongwen="一、二、三、四、五、六、七⋯",
         yuewen_to_merge=["1234567"],
         yuewen_merged="1, 2, 3, 4, 5, 6, 7⋯",
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="多劳多得！",
         yuewen_to_merge=["多喽多得"],
         yuewen_merged="多喽多得！",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="星期一至星期七⋯多劳多得！",
         yuewen_to_merge=["星期一至星期七多喽多得"],
         yuewen_merged="星期一至星期七⋯多喽多得！",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="这位喊得特劲的中年母猪",
@@ -1142,8 +1142,8 @@ merge_test_cases_block_8 = [
         yuewen_to_merge=["就系我妈妈", "麦太"],
         yuewen_merged="就系我妈妈麦太",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="我妈妈真的很劲",
@@ -1155,8 +1155,8 @@ merge_test_cases_block_8 = [
         zhongwen="一个女人背起整个世界！",
         yuewen_to_merge=["一个女人揹起成个世界"],
         yuewen_merged="一个女人揹起成个世界！",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
 ]  # merge_test_cases_block_8
 merge_test_cases_block_9 = [

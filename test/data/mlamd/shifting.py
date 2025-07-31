@@ -1508,8 +1508,8 @@ shift_test_cases_block_8 = [
         one_yuewen_shifted="1234567",
         two_yuewen_shifted="多喽多得",
         include_in_prompt=True,
-        difficulty=2,
         include_in_verified=True,
+        difficulty=2,
     ),
     ShiftTestCase(
         one_zhongwen="一、二、三、四、五、六、七⋯",
@@ -1518,8 +1518,8 @@ shift_test_cases_block_8 = [
         two_yuewen="1234567",
         one_yuewen_shifted="1234567",
         two_yuewen_shifted="",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="多劳多得！",
@@ -1528,8 +1528,8 @@ shift_test_cases_block_8 = [
         two_yuewen="多喽多得星期一至星期七多喽多得",
         one_yuewen_shifted="多喽多得",
         two_yuewen_shifted="星期一至星期七多喽多得",
-        difficulty=1,
         include_in_verified=True,
+        difficulty=1,
     ),
     ShiftTestCase(
         one_zhongwen="星期一至星期七⋯多劳多得！",
