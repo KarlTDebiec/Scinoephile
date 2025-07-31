@@ -29,3 +29,9 @@ class DistributeTestCase(
                 f"Received: {received}"
             )
         return self
+
+    def yat(self):
+        if self.prompt:
+            difficulty = max(2, self.difficulty)
+        if self.one_yuewen_to_append and self.two_yuewen_to_prepend:
+            difficulty = max(1, self.difficulty)

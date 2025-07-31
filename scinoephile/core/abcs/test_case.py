@@ -81,15 +81,15 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         """Get Python source-like string representation."""
         query_fields = self.query_cls.model_fields
         answer_fields = self.answer_cls.model_fields
+        exclusions = set()
+        if not self.difficulty:
+            exclusions.add("difficulty")
+        if not self.prompt:
+            exclusions.add("prompt")
+        if not self.verified:
+            exclusions.add("verified")
         test_case_fields = (
-            set(self.model_fields)
-            - set(query_fields)
-            - set(answer_fields)
-            - {
-                "difficulty",
-                "prompt",
-                "verified",
-            }
+            set(self.model_fields) - set(query_fields) - set(answer_fields) - exclusions
         )
 
         lines = (
