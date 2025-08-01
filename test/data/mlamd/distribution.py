@@ -535,6 +535,7 @@ distribute_test_cases_block_14 = [
         yuewen_to_distribute="至于好运",
         one_yuewen_to_append="至于好运",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_14
 distribute_test_cases_block_15 = [

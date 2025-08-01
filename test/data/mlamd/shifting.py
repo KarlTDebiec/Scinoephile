@@ -2125,6 +2125,7 @@ shift_test_cases_block_14 = [
         two_yuewen="日子一日一日咁过",
         one_yuewen_shifted="但系如果有啲嘢真系真系唔得呢",
         two_yuewen_shifted="日子一日一日咁过",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="日子一天一天的过",
@@ -2133,6 +2134,7 @@ shift_test_cases_block_14 = [
         two_yuewen="首先周润发𠮶单嘢",
         one_yuewen_shifted="日子一日一日咁过",
         two_yuewen_shifted="首先周润发𠮶单嘢",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="首先是周润发事件⋯",
@@ -2141,6 +2143,7 @@ shift_test_cases_block_14 = [
         two_yuewen="大家都唔好再提",
         one_yuewen_shifted="首先周润发𠮶单嘢",
         two_yuewen_shifted="大家都唔好再提",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="拜托不要再提了！",
@@ -2149,6 +2152,7 @@ shift_test_cases_block_14 = [
         two_yuewen="至于好运",
         one_yuewen_shifted="大家都唔好再提",
         two_yuewen_shifted="至于好运",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="至于好运⋯",
@@ -2157,6 +2161,7 @@ shift_test_cases_block_14 = [
         two_yuewen="我用我嘅同事手帮妈妈抽嘅六合彩number",
         one_yuewen_shifted="至于好运",
         two_yuewen_shifted="我用我嘅同事手帮妈妈抽嘅六合彩number",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我用一双童子手替妈妈抽的六合彩号码",
@@ -2165,6 +2170,7 @@ shift_test_cases_block_14 = [
         two_yuewen="竟然奇迹一样一个都未中过",
         one_yuewen_shifted="我用我嘅同事手帮妈妈抽嘅六合彩number",
         two_yuewen_shifted="竟然奇迹一样一个都未中过",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="奇迹般似的一个号码也没中过！",
@@ -2173,6 +2179,7 @@ shift_test_cases_block_14 = [
         two_yuewen="叻仔",
         one_yuewen_shifted="竟然奇迹一样一个都未中过",
         two_yuewen_shifted="叻仔",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="叻仔？",
@@ -2181,6 +2188,7 @@ shift_test_cases_block_14 = [
         two_yuewen="我试过好努力咁读书但系",
         one_yuewen_shifted="叻仔",
         two_yuewen_shifted="我试过好努力咁读书但系",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我也试过努力念书，可是⋯",
@@ -2189,8 +2197,9 @@ shift_test_cases_block_14 = [
         two_yuewen="但系我仲可以发梦",
         one_yuewen_shifted="我试过好努力咁读书但系",
         two_yuewen_shifted="但系我仲可以发梦",
-        prompt=True,
         difficulty=2,
+        prompt=True,
+        verified=True,
     ),
 ]  # shift_test_cases_block_14
 shift_test_cases_block_15 = [
