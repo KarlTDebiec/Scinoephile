@@ -10,24 +10,27 @@ from logging import error
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
-from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_converter
+from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_text_converted
 
 
 def get_segment_hanzi_converted(
-    segment: TranscribedSegment, config: OpenCCConfig = OpenCCConfig.t2s
+    segment: TranscribedSegment,
+    config: OpenCCConfig = OpenCCConfig.t2s,
+    apply_exclusions: bool = True,
 ) -> TranscribedSegment:
     """Convert Hanzi between character sets.
 
     Arguments:
         segment: Transcribed segment to convert
         config: OpenCC configuration for conversion
+        apply_exclusions: Whether to apply character exclusions during conversion
     Returns:
         Transcribed segment with converted Hanzi text
     """
-    converter = get_hanzi_converter(config)
-
     converted_segment = deepcopy(segment)
-    converted_segment.text = converter.convert(converted_segment.text)
+    converted_segment.text = get_hanzi_text_converted(
+        converted_segment.text, config, apply_exclusions
+    )
 
     if converted_segment.words:
         i = 0
