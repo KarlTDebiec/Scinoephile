@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 def merger_few_shot() -> Merger:
     """LLMQueryer with few-shot examples."""
     return Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
+        examples=[m for m in mlamd_merge_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
@@ -47,6 +47,30 @@ def _test_merging(queryer: Merger, test_case: MergeTestCase):
 )
 @pytest.mark.parametrize("test_case", mlamd_merge_test_cases)
 def test_merging_mlamd(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+):
+    """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    merger: Merger = request.getfixturevalue(fixture_name)
+    _test_merging(merger, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("merger_few_shot"),
+        # skip_if_ci(flaky())("merger_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mlamd_merge_test_cases if tc.difficulty > 1]
+)
+def test_merging_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
 ):
     """Test with MLAMD test cases.

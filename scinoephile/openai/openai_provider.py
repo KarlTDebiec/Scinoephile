@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from time import sleep
 from typing import Any, override
 
 from openai import OpenAI, OpenAIError
@@ -64,6 +65,11 @@ class OpenAIProvider(LLMProvider):
                 )
             return completion.choices[0].message.content
         except OpenAIError as exc:
+            exc_code = getattr(exc, "code", None)
+            exc_type = getattr(exc, "type", None)
+            exc_param = getattr(exc, "param", None)
+            if exc_code == "rate_limit_exceeded":
+                sleep(1)
             raise ScinoephileError(
-                f"OpenAI API error ({exc.code}, {exc.type} {exc.param}) : {exc}"
+                f"OpenAI API error ({exc_code=}, {exc_type=} {exc_param=}): {exc}"
             ) from exc

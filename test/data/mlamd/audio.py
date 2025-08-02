@@ -9,11 +9,15 @@ from scinoephile.audio import (
     get_series_from_segments,
 )
 from scinoephile.audio.cantonese.alignment import Aligner
-from scinoephile.audio.cantonese.alignment.testing import update_test_cases
+from scinoephile.audio.cantonese.alignment.testing import (
+    update_test_cases,
+    update_translation_test_cases,
+)
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.shifting import Shifter
+from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_hanzi_converted,
@@ -48,34 +52,49 @@ if __name__ == "__main__":
         cache_dir_path=test_data_root / "cache",
     )
     distributor = Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
-        print_test_case=True,
+        examples=[m for m in mlamd_distribute_test_cases if m.prompt],
+        verified=[m for m in mlamd_distribute_test_cases if m.verified],
+        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     shifter = Shifter(
-        examples=[m for m in mlamd_shift_test_cases if m.include_in_prompt],
-        print_test_case=True,
+        examples=[m for m in mlamd_shift_test_cases if m.prompt],
+        verified=[m for m in mlamd_shift_test_cases if m.verified],
+        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     merger = Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.include_in_prompt],
-        print_test_case=True,
+        examples=[m for m in mlamd_merge_test_cases if m.prompt],
+        verified=[m for m in mlamd_merge_test_cases if m.verified],
+        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     proofer = Proofer(
-        examples=[m for m in mlamd_proof_test_cases if m.include_in_prompt],
+        examples=[m for m in mlamd_proof_test_cases if m.prompt],
+        verified=[m for m in mlamd_proof_test_cases if m.verified],
+        print_test_case=False,
+        cache_dir_path=test_data_root / "cache",
+    )
+    translator = Translator(
         print_test_case=True,
         cache_dir_path=test_data_root / "cache",
     )
     aligner = Aligner(
-        merger=merger, proofer=proofer, shifter=shifter, distributor=distributor
+        distributor=distributor,
+        shifter=shifter,
+        merger=merger,
+        proofer=proofer,
+        translator=translator,
     )
 
     all_series = []
+    update = True
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
-        # if i != 45:
-        #     continue
+
+        if i > 16:
+            continue
+        update = True
 
         # Transcribe audio
         segments = transcriber(block.audio)
@@ -105,27 +124,34 @@ if __name__ == "__main__":
         print(f"CANTONESE:\n{yuewen_series.to_simple_string()}")
         all_series.append(yuewen_series)
 
-        # TODO: Replace test case lists in files
-        update_test_cases(
-            test_data_root / "mlamd" / "distribution.py",
-            f"distribute_test_cases_block_{i}",
-            distributor,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "shifting.py",
-            f"shift_test_cases_block_{i}",
-            shifter,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "merging.py",
-            f"merge_test_cases_block_{i}",
-            merger,
-        )
-        update_test_cases(
-            test_data_root / "mlamd" / "proofing.py",
-            f"proof_test_cases_block_{i}",
-            proofer,
-        )
+        # Replace test case lists in files
+        if update:
+            update_test_cases(
+                test_data_root / "mlamd" / "distribution.py",
+                f"distribute_test_cases_block_{i}",
+                distributor,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "shifting.py",
+                f"shift_test_cases_block_{i}",
+                shifter,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "merging.py",
+                f"merge_test_cases_block_{i}",
+                merger,
+            )
+            update_test_cases(
+                test_data_root / "mlamd" / "proofing.py",
+                f"proof_test_cases_block_{i}",
+                proofer,
+            )
+            if translator.test_case_log:
+                update_translation_test_cases(
+                    test_data_root / "mlamd" / "translation.py",
+                    f"translate_test_case_block_{i}",
+                    translator,
+                )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

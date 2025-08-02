@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_distribute_test_cases  # noqa: F401
 def distributor_few_shot() -> Distributor:
     """LLMQueryer with few-shot examples."""
     return Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.include_in_prompt],
+        examples=[m for m in mlamd_distribute_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
@@ -48,6 +48,30 @@ def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
 )
 @pytest.mark.parametrize("test_case", mlamd_distribute_test_cases)
 def test_distribution_mlamd(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mlamd_distribute_test_cases if tc.difficulty >= 1]
+)
+def test_distribution_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
 ):
     """Test with MLAMD test cases.

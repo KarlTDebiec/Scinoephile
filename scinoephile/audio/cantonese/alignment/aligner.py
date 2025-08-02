@@ -16,19 +16,19 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
+from scinoephile.audio.cantonese.alignment.models import get_translate_models
 from scinoephile.audio.cantonese.alignment.queries import (
     get_distribute_query,
     get_merge_query,
     get_proof_query,
     get_shift_query,
+    get_translate_query,
 )
-from scinoephile.audio.cantonese.distribution import DistributeAnswer
-from scinoephile.audio.cantonese.distribution.distributor import Distributor
-from scinoephile.audio.cantonese.merging import MergeAnswer, MergeTestCase
-from scinoephile.audio.cantonese.merging.merger import Merger
-from scinoephile.audio.cantonese.proofing.proofer import Proofer
-from scinoephile.audio.cantonese.shifting import ShiftAnswer, ShiftQuery
-from scinoephile.audio.cantonese.shifting.shifter import Shifter
+from scinoephile.audio.cantonese.distribution import DistributeAnswer, Distributor
+from scinoephile.audio.cantonese.merging import MergeAnswer, Merger, MergeTestCase
+from scinoephile.audio.cantonese.proofing import Proofer
+from scinoephile.audio.cantonese.shifting import ShiftAnswer, Shifter, ShiftQuery
+from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
 
@@ -38,26 +38,31 @@ class Aligner:
 
     def __init__(
         self,
+        distributor: Distributor,
+        shifter: Shifter,
         merger: Merger,
         proofer: Proofer,
-        shifter: Shifter,
-        distributor: Distributor,
+        translator: Translator,
     ):
         """Initialize.
 
         Arguments:
             distributor: Cantonese splitter
+            shifter: Cantonese shifter
             merger: Cantonese merger
             proofer: Cantonese proofer
+            translator: Cantonese translator
         """
         self.merger = merger
-        """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+        """Merges transcribed 粤文 text based on corresponding 中文."""
         self.proofer = proofer
         """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifter = shifter
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
         self.distributor = distributor
         """Distributes 粤文 text based on corresponding 中文."""
+        self.translator = translator
+        """Translates 粤文 text based on corresponding 中文."""
 
     def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
@@ -112,6 +117,8 @@ class Aligner:
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         self._proof(alignment)
+
+        self._translate(alignment)
 
         # Return final alignment
         print(f"\nFINAL RESULT:\n{alignment}")
@@ -260,8 +267,8 @@ class Aligner:
         two_yuewen = query.two_yuewen
         one_yuewen_shifted = answer.one_yuewen_shifted
         two_yuewen_shifted = answer.two_yuewen_shifted
-
         nascent_sync_groups = deepcopy(alignment.sync_groups)
+        # TODO: Review this logic and consider how to clarify
         if len(one_yuewen) < len(one_yuewen_shifted):
             # Calculate the number of characters we need to shift from two to one
             text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
@@ -342,6 +349,7 @@ class Aligner:
             # Get 中文
             zw_idxs = sg[0]
             zw_idx = zw_idxs[0]
+            zw = alignment.zhongwen[zw_idx]
 
             # Query for 粤文 merge
             query = get_merge_query(alignment, sg_idx)
@@ -366,6 +374,8 @@ class Aligner:
             yw_idxs = sg[1]
             yw_subs = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
             yw_sub = get_sub_merged(yw_subs, text=answer.yuewen_merged)
+            yw_sub.start = zw.start
+            yw_sub.end = zw.end
 
             # Update sync group
             nascent_yuewen.append(yw_sub)
@@ -406,10 +416,13 @@ class Aligner:
         nascent_yuewen_subs = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sync_groups = []
         offset = 0
-        for sg_idx in range(len(alignment.sync_groups)):
-            sg = alignment.sync_groups[sg_idx]
+        for sg_idx, sg in enumerate(alignment.sync_groups):
             zw_idxs = sg[0]
             zw_idx = zw_idxs[0]
+            if len(zw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
+                )
             yw_idxs = sg[1]
             if not yw_idxs:
                 nascent_sync_groups.append(sg)
@@ -426,3 +439,48 @@ class Aligner:
             )
         alignment.yuewen = nascent_yuewen_subs
         alignment._sync_groups_override = nascent_sync_groups
+
+    def _translate(self, alignment: Alignment):
+        """Translate 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        translate_models = get_translate_models(alignment)
+        if translate_models is None:
+            return
+        query_cls, answer_cls, test_case_cls = translate_models
+        query = get_translate_query(alignment, query_cls)
+        answer = self.translator(query, answer_cls, test_case_cls)
+
+        nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
+        nascent_sg = []
+        for sg_idx, sg in enumerate(alignment.sync_groups):
+            # Get 中文
+            zw_idxs = sg[0]
+            zw_idx = zw_idxs[0]
+            if len(zw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
+                )
+            zw = alignment.zhongwen[zw_idx]
+
+            # Get 粤文
+            yw_idxs = sg[1]
+            if yw_idxs:
+                yw_idx = yw_idxs[0]
+                if len(yw_idxs) != 1:
+                    raise ScinoephileError(
+                        f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
+                    )
+                yw = alignment.yuewen[yw_idx]
+            else:
+                yw_key = f"yuewen_{zw_idx + 1}"
+                yw_text = getattr(answer, yw_key)
+                yw = deepcopy(zw)
+                yw.text = yw_text
+            nascent_yw.append(yw)
+            yw_idx = len(nascent_yw) - 1
+            nascent_sg.append(([zw_idx], [yw_idx]))
+        alignment.yuewen = nascent_yw
+        alignment._sync_groups_override = nascent_sg

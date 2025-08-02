@@ -1,9 +1,10 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+"""Merges transcribed 粤文 text based on corresponding 中文."""
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
@@ -13,15 +14,15 @@ from scinoephile.core.abcs import LLMQueryer
 
 
 class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
-    """Merges transcribed 粤文 text to match 中文 text punctuation and spacing."""
+    """Merges transcribed 粤文 text based on corresponding 中文."""
 
-    @property
+    @cached_property
     @override
     def answer_example(self) -> MergeAnswer:
         """Example answer."""
         return MergeAnswer(yuewen_merged="粤文 merged")
 
-    @property
+    @cached_property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

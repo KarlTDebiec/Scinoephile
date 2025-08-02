@@ -9,7 +9,7 @@ from abc import ABC
 from functools import cached_property
 from typing import Self
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.query import Query
@@ -22,8 +22,14 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
-    include_in_prompt: bool = Field(
+    difficulty: int = Field(
+        0, description="Difficulty level of the test case, used for filtering."
+    )
+    prompt: bool = Field(
         False, description="Whether to include test case in prompt examples."
+    )
+    verified: bool = Field(
+        False, description="Whether to include test case in the verified answers cache."
     )
 
     def __str__(self) -> str:
@@ -75,11 +81,20 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         """Get Python source-like string representation."""
         query_fields = self.query_cls.model_fields
         answer_fields = self.answer_cls.model_fields
-        test_case_fields = (
-            set(self.model_fields)
-            - set(query_fields)
-            - set(answer_fields)
-            - {"include_in_prompt"}
+        exclusions = set()
+        if not self.difficulty:
+            exclusions.add("difficulty")
+        if not self.prompt:
+            exclusions.add("prompt")
+        if not self.verified:
+            exclusions.add("verified")
+        test_case_fields = sorted(
+            list(
+                set(self.model_fields)
+                - set(query_fields)
+                - set(answer_fields)
+                - exclusions
+            )
         )
 
         lines = (
@@ -91,19 +106,35 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         )
         return "\n".join(lines)
 
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty reflects prompt/split status if not already higher."""
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty.
+
+        If test case is marked for inclusion in the prompt, minimum difficulty is at
+        least 2.
+
+        Returns:
+            Minimum difficulty level based on the test case properties
+        """
+        min_difficulty = 0
+        if self.prompt:
+            min_difficulty = max(min_difficulty, 2)
+        return min_difficulty
+
     @classmethod
     def from_query_and_answer(
-        cls, query: TQuery, answer: TAnswer, include_in_prompt: bool = False
+        cls, query: TQuery, answer: TAnswer, prompt: bool = False
     ) -> Self:
         """Create test case from query and answer.
 
         Arguments:
             query: Query part of the test case
             answer: Answer part of the test case
-            include_in_prompt: Whether to include this test case in prompt examples
+            prompt: Whether to include this test case in prompt examples
         """
-        return cls(
-            **query.model_dump(),
-            **answer.model_dump(),
-            include_in_prompt=include_in_prompt,
-        )
+        return cls(**query.model_dump(), **answer.model_dump(), prompt=prompt)

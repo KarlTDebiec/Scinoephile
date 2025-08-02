@@ -21,6 +21,20 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         """Return whether this test case is a no-op."""
         return self.yuewen == self.yuewen_proofread
 
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty.
+
+        If the test case asks for the 粤文 text to be modified, difficulty is at least
+        1.
+
+        Returns:
+            Minimum difficulty level based on the test case properties
+        """
+        min_difficulty = super().get_min_difficulty()
+        if not self.noop:
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
     @model_validator(mode="after")
     def validate_test_case(self) -> ProofTestCase:
         """Ensure query and answer are consistent with one another."""
