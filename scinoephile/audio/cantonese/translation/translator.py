@@ -13,9 +13,10 @@ from textwrap import dedent
 
 from pydantic import Field, ValidationError, create_model
 
+from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, LLMProvider, Query, TestCase
+from scinoephile.core.abcs import Answer, LLMProvider, Query
 from scinoephile.openai import OpenAIProvider
 
 
@@ -25,7 +26,7 @@ class Translator:
     def __init__(
         self,
         model: str = "gpt-4.1",
-        examples: list[TestCase] | None = None,
+        examples: list[TranslateTestCase] | None = None,
         print_test_case: bool = False,
         cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
@@ -50,9 +51,9 @@ class Translator:
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
 
-        self._examples_log: dict[tuple, TestCase] = {}
+        self._examples_log: dict[tuple, TranslateTestCase] = {}
         """Log of examples, keyed by query key."""
-        self._test_case_log: dict[tuple, TestCase] = {}
+        self._test_case_log: dict[tuple, TranslateTestCase] = {}
         """Log of test cases, keyed by query key."""
 
         # Set up system prompt, with examples if provided
@@ -86,7 +87,10 @@ class Translator:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(
-        self, query: Query, answer_cls: type[Answer], test_case_cls: type[TestCase]
+        self,
+        query: Query,
+        answer_cls: type[Answer],
+        test_case_cls: type[TranslateTestCase],
     ) -> Answer:
         """Query LLM.
 
@@ -113,7 +117,7 @@ class Translator:
 
         # Query provider
         answer: Answer | None = None
-        test_case: TestCase | None = None
+        test_case: TranslateTestCase | None = None
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_prompt},
@@ -208,7 +212,7 @@ class Translator:
         return self._system_prompt
 
     @property
-    def test_case_log(self) -> dict[tuple, TestCase]:
+    def test_case_log(self) -> dict[tuple, TranslateTestCase]:
         """Log of test cases, keyed by query key."""
         return self._test_case_log
 

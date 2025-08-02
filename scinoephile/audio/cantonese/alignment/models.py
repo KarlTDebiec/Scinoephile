@@ -7,8 +7,9 @@ from __future__ import annotations
 from pydantic import Field, create_model
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
+from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, Query, TestCase
+from scinoephile.core.abcs import Answer, Query
 
 
 def get_translate_query_model(size: int, missing: tuple[int, ...]) -> type[Query]:
@@ -58,7 +59,7 @@ def get_translate_test_case_model(
     missing: tuple[int, ...],
     query_model: type[Query] | None = None,
     answer_model: type[Answer] | None = None,
-) -> type[TestCase[Query, Answer]]:
+) -> type[TranslateTestCase[Query, Answer]]:
     if query_model is None:
         query_model = get_translate_query_model(size, missing)
     query_model = get_translate_query_model(size, missing)
@@ -66,25 +67,23 @@ def get_translate_test_case_model(
         answer_model = get_translate_answer_model(size, missing)
     return create_model(
         f"TranslateTestCase_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-        __base__=(query_model, answer_model, TestCase[query_model, answer_model]),
-        # prompt=(
-        #     bool,
-        #     Field(
-        #         False, description="Whether to include test case in prompt examples."
-        #     ),
-        # ),
+        __base__=(
+            query_model,
+            answer_model,
+            TranslateTestCase[query_model, answer_model],
+        ),
     )
 
 
 def get_translate_models(
     alignment: Alignment,
-) -> tuple[type[Query], type[Answer], type[TestCase[Query, Answer]]] | None:
+) -> tuple[type[Query], type[Answer], type[TranslateTestCase[Query, Answer]]] | None:
     """Get translation query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        Query, Answer, and TestCase types for translation
+        Query, Answer, and TranslateTestCase types for translation
     Raises:
         ScinoephileError: If sync groups are malformed
     """
