@@ -109,8 +109,8 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             exclusions.add("prompt")
         if not self.verified:
             exclusions.add("verified")
-        exclusions.add(self.query_fields)
-        exclusions.add(self.answer_fields)
+        exclusions.update(self.query_fields)
+        exclusions.update(self.answer_fields)
         return {k: v for k, v in self.model_fields.items() if k not in exclusions}
 
     @model_validator(mode="after")
