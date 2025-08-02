@@ -2347,6 +2347,7 @@ shift_test_cases_block_16 = [
         two_yuewen="",
         one_yuewen_shifted="嗨",
         two_yuewen_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="校长再见！",
@@ -2355,6 +2356,7 @@ shift_test_cases_block_16 = [
         two_yuewen="你最喜爱嘅地方喺边度呀",
         one_yuewen_shifted="",
         two_yuewen_shifted="你最喜爱嘅地方喺边度呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="你最喜爱的地方是哪儿？",
@@ -2363,6 +2365,7 @@ shift_test_cases_block_16 = [
         two_yuewen="我最喜爱嘅地方呢就系日本喇",
         one_yuewen_shifted="你最喜爱嘅地方喺边度呀",
         two_yuewen_shifted="我最喜爱嘅地方呢就系日本喇",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我最喜爱的地方是日本",
@@ -2371,6 +2374,7 @@ shift_test_cases_block_16 = [
         two_yuewen="𠮶度好迪士尼呢同埋HelloTT呢",
         one_yuewen_shifted="我最喜爱嘅地方呢就系日本喇",
         two_yuewen_shifted="𠮶度好迪士尼呢同埋HelloTT呢",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那儿有Disneyland和Hello Kitty Land",
@@ -2379,6 +2383,7 @@ shift_test_cases_block_16 = [
         two_yuewen="我而家打紧个发卷都系𠮶边买嘅",
         one_yuewen_shifted="𠮶度好迪士尼呢同埋HelloTT呢",
         two_yuewen_shifted="我而家打紧个发卷都系𠮶边买嘅",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我这个发夹也是在那儿买的",
@@ -2387,6 +2392,7 @@ shift_test_cases_block_16 = [
         two_yuewen="我最钟意嘅地方就系加拿大",
         one_yuewen_shifted="我而家打紧个发卷都系𠮶边买嘅",
         two_yuewen_shifted="我最钟意嘅地方就系加拿大",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我最喜爱的地方是加拿大",
@@ -2395,6 +2401,7 @@ shift_test_cases_block_16 = [
         two_yuewen="婆婆同埋舅父呀佢哋都系加拿大㗎",
         one_yuewen_shifted="我最钟意嘅地方就系加拿大",
         two_yuewen_shifted="婆婆同埋舅父呀佢哋都系加拿大㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="婆婆跟舅父他们都在加拿大",
@@ -2403,6 +2410,7 @@ shift_test_cases_block_16 = [
         two_yuewen="我最钟意去嘅地方就系泰国喇",
         one_yuewen_shifted="婆婆同埋舅父呀佢哋都系加拿大㗎",
         two_yuewen_shifted="我最钟意去嘅地方就系泰国喇",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我最喜爱的地方是泰国",
@@ -2411,6 +2419,7 @@ shift_test_cases_block_16 = [
         two_yuewen="𠮶度有好多水晶活动㗎仲有一次食添㖞",
         one_yuewen_shifted="我最钟意去嘅地方就系泰国喇",
         two_yuewen_shifted="𠮶度有好多水晶活动㗎仲有一次食添㖞",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那儿有很好多水上活动，还有鱼翅吃",
@@ -2419,6 +2428,7 @@ shift_test_cases_block_16 = [
         two_yuewen="呃我最喜爱嘅地方呢",
         one_yuewen_shifted="𠮶度有好多水晶活动㗎仲有一次食添㖞",
         two_yuewen_shifted="呃我最喜爱嘅地方呢",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我最喜爱的地方⋯",
@@ -2427,6 +2437,7 @@ shift_test_cases_block_16 = [
         two_yuewen="就系𠮶间咩嚟啰",
         one_yuewen_shifted="呃我最喜爱嘅地方呢",
         two_yuewen_shifted="就系𠮶间咩嚟啰",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="就是那间什么！",
@@ -2435,6 +2446,7 @@ shift_test_cases_block_16 = [
         two_yuewen="𠮶度有欢乐天地啦仲有米食广场啦",
         one_yuewen_shifted="就系𠮶间咩嚟啰",
         two_yuewen_shifted="𠮶度有欢乐天地啦仲有米食广场啦",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那儿有欢乐天地，还有美食广场",
@@ -2443,6 +2455,7 @@ shift_test_cases_block_16 = [
         two_yuewen="𠮶度啲可能几份好大碟㗎",
         one_yuewen_shifted="𠮶度有欢乐天地啦仲有米食广场啦",
         two_yuewen_shifted="𠮶度啲可能几份好大碟㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那儿的海南鸡饭很大碟的",
@@ -2451,15 +2464,18 @@ shift_test_cases_block_16 = [
         two_yuewen="系喇系喇𠮶间叫做银城中心",
         one_yuewen_shifted="𠮶度啲可能几份好大碟㗎",
         two_yuewen_shifted="系喇系喇𠮶间叫做银城中心",
+        difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="对了，那地方叫银城中心",
-        one_yuewen="𠮶间叫做银城中心",
+        one_yuewen="系喇系喇𠮶间叫做银城中心",
         two_zhongwen="那店子的饭很多，很大碟的！",
         two_yuewen="𠮶间嘢啲饭好多人好大碟㗎",
-        one_yuewen_shifted="𠮶间叫做银城中心",
+        one_yuewen_shifted="系喇系喇𠮶间叫做银城中心",
         two_yuewen_shifted="𠮶间嘢啲饭好多人好大碟㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那店子的饭很多，很大碟的！",
@@ -2468,6 +2484,7 @@ shift_test_cases_block_16 = [
         two_yuewen="不过讲到我最想去嘅地方呢𠮶度细嚟啰",
         one_yuewen_shifted="𠮶间嘢啲饭好多人好大碟㗎",
         two_yuewen_shifted="不过讲到我最想去嘅地方呢𠮶度细嚟啰",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="不过说到我最想去的地方，那可厉害了",
@@ -2476,8 +2493,9 @@ shift_test_cases_block_16 = [
         two_yuewen="𠮶度南天白云夜临树影水清沙幽",
         one_yuewen_shifted="不过讲到我最想去嘅地方呢𠮶度细嚟啰",
         two_yuewen_shifted="𠮶度南天白云夜临树影水清沙幽",
-        prompt=True,
         difficulty=2,
+        prompt=True,
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
@@ -2486,6 +2504,7 @@ shift_test_cases_block_16 = [
         two_yuewen="独来鱼印度洋嘅世外桃源",
         one_yuewen_shifted="𠮶度南天白云夜临树影水清沙幽",
         two_yuewen_shifted="独来鱼印度洋嘅世外桃源",
+        verified=True,
     ),
 ]  # shift_test_cases_block_16
 shift_test_cases_block_17 = [

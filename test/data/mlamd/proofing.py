@@ -1947,20 +1947,25 @@ proof_test_cases_block_16 = [
     ProofTestCase(
         zhongwen="校长早晨！",
         yuewen="嗨！",
-        yuewen_proofread="嗨！",
-        note="",
+        yuewen_proofread="",
+        note="Cleared as '嗨！' bears no resemblance to the original phrase "
+        "'校长早晨！' and is clearly a complete mismatch.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你最喜爱的地方是哪儿？",
         yuewen="你最喜爱嘅地方喺边度呀？",
         yuewen_proofread="你最喜爱嘅地方喺边度呀？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我最喜爱的地方是日本",
-        yuewen="我最喜爱嘅地方呢就系日本喇",
-        yuewen_proofread="我最喜爱嘅地方呢就系日本喇",
+        yuewen="我最喜爱嘅地方呢，就系日本喇",
+        yuewen_proofread="我最喜爱嘅地方呢，就系日本喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿有Disneyland和Hello Kitty Land",
@@ -1969,8 +1974,9 @@ proof_test_cases_block_16 = [
         note="Corrected '好迪士尼呢' to '有Disneyland' and 'HelloTT' to 'Hello "
         "Kitty Land' as these are likely mishearings of the place "
         "names 'Disneyland' and 'Hello Kitty Land'.",
-        prompt=True,
         difficulty=2,
+        prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我这个发夹也是在那儿买的",
@@ -1980,45 +1986,52 @@ proof_test_cases_block_16 = [
         "meaning in the 中文, while '发卷' (hair roller) is likely a "
         "mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我最喜爱的地方是加拿大",
         yuewen="我最钟意嘅地方就系加拿大",
         yuewen_proofread="我最钟意嘅地方就系加拿大",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="婆婆跟舅父他们都在加拿大",
         yuewen="婆婆同埋舅父呀，佢哋都系加拿大㗎",
         yuewen_proofread="婆婆同埋舅父呀，佢哋都系加拿大㗎",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我最喜爱的地方是泰国",
         yuewen="我最钟意去嘅地方就系泰国喇",
         yuewen_proofread="我最钟意去嘅地方就系泰国喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿有很好多水上活动，还有鱼翅吃",
         yuewen="𠮶度有好多水晶活动㗎，仲有一次食添㖞",
         yuewen_proofread="𠮶度有好多水上活动㗎，仲有鱼翅食添㖞",
-        note="Corrected '水晶活动' to '水上活动' as '水晶' is a mishearing of '水上', "
-        "and '一次食' to '鱼翅食' as '鱼翅' (shark fin) matches the meaning "
-        "of the 中文.",
+        note="Corrected '水晶活动' to '水上活动' as '水上活动' matches the meaning of "
+        "'水上活动' in the 中文, and '一次食' to '鱼翅食' as '鱼翅' (shark fin) is "
+        "the correct term for the food mentioned.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我最喜爱的地方⋯",
         yuewen="呃，我最喜爱嘅地方呢⋯",
         yuewen_proofread="呃，我最喜爱嘅地方呢⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="就是那间什么！",
         yuewen="就系𠮶间咩嚟啰！",
         yuewen_proofread="就系𠮶间咩嚟啰！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿有欢乐天地，还有美食广场",
@@ -2027,38 +2040,43 @@ proof_test_cases_block_16 = [
         note="Corrected '米食广场' to '美食广场' as '美食广场' is the correct term for "
         "'food court', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿的海南鸡饭很大碟的",
-        yuewen="𠮶度啲可能几份好大碟㗎，系喇系喇",
-        yuewen_proofread="𠮶度啲海南鸡饭好大碟㗎，系喇系喇",
-        note="Corrected '可能几份' to '海南鸡饭' as '海南鸡饭' is the correct dish "
-        "mentioned in the 中文, and '可能几份' is likely a mishearing.",
+        yuewen="𠮶度啲可能几份好大碟㗎",
+        yuewen_proofread="𠮶度啲海南鸡饭好大碟㗎",
+        note="Corrected '可能几份' to '海南鸡饭' as '可能几份' is a mishearing of "
+        "'海南鸡饭', which matches the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="对了，那地方叫银城中心",
-        yuewen="𠮶间叫做银城中心",
-        yuewen_proofread="𠮶间叫做银城中心",
+        yuewen="系喇系喇，𠮶间叫做银城中心",
+        yuewen_proofread="系喇系喇，𠮶间叫做银城中心",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那店子的饭很多，很大碟的！",
         yuewen="𠮶间嘢啲饭好多人，好大碟㗎！",
         yuewen_proofread="𠮶间嘢啲饭好多，好大碟㗎！",
         note="Corrected '好多人' to '好多' as '好多人' means 'many people', which "
-        "is a mishearing of '好多' (a lot), matching the meaning of "
+        "is a mishearing of '好多' (a lot of), matching the meaning of "
         "'饭很多'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不过说到我最想去的地方，那可厉害了",
         yuewen="不过讲到我最想去嘅地方呢，𠮶度细嚟啰",
         yuewen_proofread="不过讲到我最想去嘅地方呢，𠮶度犀利啰",
-        note="Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) means '厉害', "
-        "matching the meaning in the 中文, while '细嚟' is likely a "
+        note="Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) matches the "
+        "meaning of '厉害' in the 中文, while '细嚟' is likely a "
         "mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
@@ -2066,16 +2084,18 @@ proof_test_cases_block_16 = [
         yuewen_proofread="𠮶度蓝天白云，椰林树影，水清沙幼",
         note="Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as "
         "these are likely mishearings of the correct descriptive "
-        "terms for the scenery.",
+        "terms in the original phrase.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="座落于印度洋的世外桃源",
         yuewen="独来鱼印度洋嘅世外桃源",
         yuewen_proofread="座落于印度洋嘅世外桃源",
         note="Corrected '独来鱼' to '座落于' as '独来鱼' is a mishearing of '座落于', "
-        "which matches the meaning of the original phrase.",
+        "which means 'located at' and matches the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_16
 proof_test_cases_block_17 = [

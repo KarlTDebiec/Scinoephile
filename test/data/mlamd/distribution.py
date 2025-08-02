@@ -569,6 +569,7 @@ distribute_test_cases_block_16 = [
         yuewen_to_distribute="水清沙幽",
         one_yuewen_to_append="水清沙幽",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_16
 distribute_test_cases_block_17 = [

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.models import get_translate_test_case_model
-from scinoephile.core.abcs import TestCase
+from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
 translate_test_case_block_3 = get_translate_test_case_model(
     23, (0, 1, 2, 3, 12, 13, 14, 15, 16)
@@ -211,7 +211,7 @@ translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 8, 9, 10
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
 )  # translate_test_case_block_12
-mlamd_translate_test_cases: list[TestCase] = [
+mlamd_translate_test_cases: list[TranslateTestCase] = [
     translate_test_case_block_3,
     translate_test_case_block_4,
     translate_test_case_block_12,

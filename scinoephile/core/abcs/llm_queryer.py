@@ -43,9 +43,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         Arguments:
             model: Model to use
             examples: Examples of inputs and expected outputs for few-shot learning
-            print_test_case: Whether to print test case after merging
-            cache_dir_path: Directory in which to cache
+            verified: Verified test cases whose answers are already known
             provider: Provider to use for queries
+            cache_dir_path: Directory in which to cache
+            print_test_case: Whether to print test case after merging
             max_attempts: Maximum number of attempts
         """
         self.provider = provider or OpenAIProvider()
