@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.alignment.models import get_translate_test_case_model
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
-translate_test_case_block_3 = get_translate_test_case_model(
-    23, (0, 1, 2, 3, 12, 13, 14, 15, 16)
+translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
+    23,
+    (0, 1, 2, 3, 12, 13, 14, 15, 16),
 )(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
@@ -57,7 +57,10 @@ translate_test_case_block_3 = get_translate_test_case_model(
     yuewen_16="都唔可以唔记得校训九十八！",
     yuewen_17="都唔可以唔记得校训九十八！",
 )  # translate_test_case_block_3
-translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
+translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
+    55,
+    (19, 20, 30),
+)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
     yuewen_1="你哋可能觉得呢间幼稚园好烂",
     zhongwen_2="可是，对我和我一班同学",
@@ -169,7 +172,10 @@ translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
 )  # translate_test_case_block_4
-translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 8, 9, 10))(
+translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
+    20,
+    (2, 3, 8, 9, 10),
+)(
     zhongwen_1="今日为大家介绍一味⋯",
     yuewen_1="今日要同大家介绍一味⋯",
     zhongwen_2="小朋友一定喜欢的⋯",
