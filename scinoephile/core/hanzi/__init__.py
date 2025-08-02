@@ -14,6 +14,9 @@ from scinoephile.core.hanzi.opencc_config import OpenCCConfig
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 
+conversion_exclusions = {
+    "嗰": "𠮶",
+}
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
@@ -51,19 +54,24 @@ def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
 
 
 def get_hanzi_converted(
-    series: Series, config: OpenCCConfig = OpenCCConfig.t2s
+    series: Series,
+    config: OpenCCConfig = OpenCCConfig.t2s,
+    apply_exclusions: bool = True,
 ) -> Series:
     """Get hanzi converted between character sets.
 
     Arguments:
         series: Series to convert
         config: OpenCC configuration
+        apply_exclusions: Whether to apply conversion exclusions
     Returns:
         Converted series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = get_hanzi_converter(config).convert(event.text)
+        event.text = get_hanzi_text_converted(
+            event.text, config, apply_exclusions=apply_exclusions
+        )
     return series
 
 
@@ -79,6 +87,34 @@ def get_hanzi_flattened(series: Series) -> Series:
     for event in series:
         event.text = _get_hanzi_text_flattened(event.text)
     return series
+
+
+def get_hanzi_text_converted(
+    text: str, config: OpenCCConfig, apply_exclusions: bool = True
+) -> str:
+    """Get hanzi text converted between character sets.
+
+    Arguments:
+        text: Text to convert
+        config: OpenCC configuration for conversion
+        apply_exclusions: Whether to apply conversion exclusions
+    Returns:
+        Converted text
+    """
+    converter = get_hanzi_converter(config)
+    converted_text = converter.convert(text)
+
+    if apply_exclusions and config in (
+        OpenCCConfig.t2s,
+        OpenCCConfig.tw2s,
+        OpenCCConfig.hk2s,
+        OpenCCConfig.tw2sp,
+    ):
+        for trad_char, simp_char in conversion_exclusions.items():
+            if trad_char in text and simp_char in converted_text:
+                converted_text = converted_text.replace(simp_char, trad_char)
+
+    return converted_text
 
 
 def _get_hanzi_text_cleaned(text: str) -> str | None:
@@ -147,5 +183,6 @@ __all__ = [
     "get_hanzi_converted",
     "get_hanzi_converter",
     "get_hanzi_flattened",
+    "get_hanzi_text_converted",
     "half_to_full_punc_for_cleaning",
 ]

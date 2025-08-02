@@ -98,7 +98,7 @@ class Series(SSAFile):
             format_: Output file format
             **kwargs: Additional keyword arguments
         """
-        path = val_output_path(path)
+        path = val_output_path(path, exist_ok=True)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 

@@ -54,8 +54,8 @@ proof_test_cases_block_0 = [
     ),
     ProofTestCase(
         zhongwen="先到街市大楼妹记鱼腩粥外边",
-        yuewen="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
-        yuewen_proofread="先去街市大楼𠮶间妹记鱼腩粥𠮶度",
+        yuewen="先去街市大楼嗰间妹记鱼腩粥嗰度",
+        yuewen_proofread="先去街市大楼嗰间妹记鱼腩粥嗰度",
         note="",
         verified=True,
     ),
@@ -431,10 +431,10 @@ proof_test_cases_block_2 = [
     ),
     ProofTestCase(
         zhongwen="旧中侨国货楼上的⋯",
-        yuewen="旧中桥百货公司楼上𠮶间⋯",
-        yuewen_proofread="旧中侨百货公司楼上𠮶间⋯",
-        note="Corrected '中桥' to '中侨' as '中侨' is the correct name, matching "
-        "the original 中文.",
+        yuewen="旧中桥百货公司楼上嗰间⋯",
+        yuewen_proofread="旧中侨百货公司楼上嗰间⋯",
+        note="Corrected '中桥' to '中侨' as '中侨' matches the original name in "
+        "the 中文, and '中桥' is likely a mishearing.",
         difficulty=1,
         verified=True,
     ),
@@ -454,8 +454,8 @@ proof_test_cases_block_2 = [
     ),
     ProofTestCase(
         zhongwen="银城美食广场附近的⋯",
-        yuewen="银城美食广场附近𠮶间⋯",
-        yuewen_proofread="银城美食广场附近𠮶间⋯",
+        yuewen="银城美食广场附近嗰间⋯",
+        yuewen_proofread="银城美食广场附近嗰间⋯",
         note="",
         verified=True,
     ),
@@ -521,8 +521,8 @@ proof_test_cases_block_3 = [
     ),
     ProofTestCase(
         zhongwen="横看竖看也不像发哥伟仔的一个⋯",
-        yuewen="即系横睇掂睇都唔似发哥或者位仔𠮶个呢⋯",
-        yuewen_proofread="即系横睇掂睇都唔似发哥或者伟仔𠮶个呢⋯",
+        yuewen="即系横睇掂睇都唔似发哥或者位仔嗰个呢⋯",
+        yuewen_proofread="即系横睇掂睇都唔似发哥或者伟仔嗰个呢⋯",
         note="Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname for "
         "梁朝伟, matching the meaning in the 中文.",
         difficulty=1,
@@ -606,11 +606,11 @@ proof_test_cases_block_3 = [
     ),
     ProofTestCase(
         zhongwen="好！各位同学⋯",
-        yuewen="𠮶个位同学⋯",
-        yuewen_proofread="𠮶个位同学⋯",
-        note="",
-        difficulty=2,
-        prompt=True,
+        yuewen="嗰个位同学⋯",
+        yuewen_proofread="各位同学⋯",
+        note="Corrected '嗰个位同学' to '各位同学' as '嗰个位' is a mishearing of "
+        "'各位', which is the correct address for a group.",
+        difficulty=1,
         verified=True,
     ),
     ProofTestCase(
@@ -914,9 +914,11 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="我「暗」的「暗」掉一条蕉",
-        yuewen="嗱，我「暗」啦，噉我「暗」𠮶条香蕉",
-        yuewen_proofread="嗱，我「暗」啦，噉我「暗」𠮶条香蕉",
-        note="",
+        yuewen="嗱，我「暗」啦，噉我「暗」嗰条香蕉",
+        yuewen_proofread="嗱，我「暗」啦，噉我「暗」嗰条蕉",
+        note="Replaced '嗰条香蕉' with '嗰条蕉' as '蕉' is the more natural and "
+        "concise way to refer to 'banana' in Cantonese, matching the "
+        "original phrase '掉一条蕉'.",
         difficulty=1,
         verified=True,
     ),
@@ -969,8 +971,8 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="当我大学毕业的时候",
-        yuewen="等我大学毕业𠮶阵",
-        yuewen_proofread="等我大学毕业𠮶阵",
+        yuewen="等我大学毕业嗰阵",
+        yuewen_proofread="等我大学毕业嗰阵",
         note="",
         verified=True,
     ),
@@ -983,8 +985,8 @@ proof_test_cases_block_4 = [
     ),
     ProofTestCase(
         zhongwen="那时候⋯",
-        yuewen="到𠮶阵⋯",
-        yuewen_proofread="到𠮶阵⋯",
+        yuewen="到嗰阵⋯",
+        yuewen_proofread="到嗰阵⋯",
         note="",
         verified=True,
     ),
@@ -1094,8 +1096,8 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="没有那些配搭吗？",
-        yuewen="噢，冇𠮶啲配搭啊？",
-        yuewen_proofread="噢，冇𠮶啲配搭啊？",
+        yuewen="噢，冇嗰啲配搭啊？",
+        yuewen_proofread="噢，冇嗰啲配搭啊？",
         note="",
         verified=True,
     ),
@@ -1238,8 +1240,8 @@ proof_test_cases_block_7 = [
     ),
     ProofTestCase(
         zhongwen="所有那些，都好！",
-        yuewen="所有𠮶啲嘢，都几好！All Things Bright and Beautiful",
-        yuewen_proofread="所有𠮶啲嘢，都几好！All Things Bright and Beautiful",
+        yuewen="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
+        yuewen_proofread="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
         note="",
         verified=True,
     ),
@@ -1759,8 +1761,8 @@ proof_test_cases_block_14 = [
     ),
     ProofTestCase(
         zhongwen="首先是周润发事件⋯",
-        yuewen="首先周润发𠮶单嘢⋯",
-        yuewen_proofread="首先周润发𠮶单嘢⋯",
+        yuewen="首先周润发嗰单嘢⋯",
+        yuewen_proofread="首先周润发嗰单嘢⋯",
         note="",
         verified=True,
     ),
@@ -1969,22 +1971,22 @@ proof_test_cases_block_16 = [
     ),
     ProofTestCase(
         zhongwen="那儿有Disneyland和Hello Kitty Land",
-        yuewen="𠮶度好迪士尼呢同埋HelloTT呢",
-        yuewen_proofread="𠮶度有Disneyland同埋Hello Kitty Land",
-        note="Corrected '好迪士尼呢' to '有Disneyland' and 'HelloTT' to 'Hello "
-        "Kitty Land' as these are likely mishearings of the place "
-        "names 'Disneyland' and 'Hello Kitty Land'.",
-        difficulty=2,
-        prompt=True,
+        yuewen="嗰度好迪士尼呢同埋HelloTT呢",
+        yuewen_proofread="嗰度有Disneyland和Hello Kitty呢",
+        note="Corrected '好迪士尼呢同埋HelloTT呢' to '有Disneyland和Hello Kitty呢' as "
+        "'好迪士尼' is likely a mishearing of '有Disneyland', and "
+        "'HelloTT' is a mishearing of 'Hello Kitty'. The corrected "
+        "version preserves the meaning of the original 中文, referring "
+        "to both Disneyland and Hello Kitty Land.",
+        difficulty=1,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="我这个发夹也是在那儿买的",
-        yuewen="我而家打紧个发卷都系𠮶边买嘅",
-        yuewen_proofread="我而家戴紧个发夹都系𠮶边买嘅",
-        note="Corrected '打紧个发卷' to '戴紧个发夹' as '发夹' (hair clip) matches the "
-        "meaning in the 中文, while '发卷' (hair roller) is likely a "
-        "mishearing.",
+        yuewen="我而家打紧个发卷都系嗰边买嘅",
+        yuewen_proofread="我而家戴紧个发夹都系嗰边买嘅",
+        note="Corrected '打紧个发卷' to '戴紧个发夹' as '发夹' matches the meaning of "
+        "'发夹' in the 中文, and '打紧' is a mishearing of '戴紧' (wearing).",
         difficulty=1,
         verified=True,
     ),
@@ -2011,11 +2013,11 @@ proof_test_cases_block_16 = [
     ),
     ProofTestCase(
         zhongwen="那儿有很好多水上活动，还有鱼翅吃",
-        yuewen="𠮶度有好多水晶活动㗎，仲有一次食添㖞",
-        yuewen_proofread="𠮶度有好多水上活动㗎，仲有鱼翅食添㖞",
+        yuewen="嗰度有好多水晶活动㗎，仲有一次食添㖞",
+        yuewen_proofread="嗰度有好多水上活动㗎，仲有鱼翅食添㖞",
         note="Corrected '水晶活动' to '水上活动' as '水上活动' matches the meaning of "
-        "'水上活动' in the 中文, and '一次食' to '鱼翅食' as '鱼翅' (shark fin) is "
-        "the correct term for the food mentioned.",
+        "'水上活动' in the 中文, and '一次食' to '鱼翅食' as '鱼翅' is the correct "
+        "term for 'shark fin' mentioned in the 中文.",
         difficulty=1,
         verified=True,
     ),
@@ -2028,15 +2030,15 @@ proof_test_cases_block_16 = [
     ),
     ProofTestCase(
         zhongwen="就是那间什么！",
-        yuewen="就系𠮶间咩嚟啰！",
-        yuewen_proofread="就系𠮶间咩嚟啰！",
+        yuewen="就系嗰间咩嚟啰！",
+        yuewen_proofread="就系嗰间咩嚟啰！",
         note="",
         verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿有欢乐天地，还有美食广场",
-        yuewen="𠮶度有欢乐天地啦，仲有米食广场啦",
-        yuewen_proofread="𠮶度有欢乐天地啦，仲有美食广场啦",
+        yuewen="嗰度有欢乐天地啦，仲有米食广场啦",
+        yuewen_proofread="嗰度有欢乐天地啦，仲有美食广场啦",
         note="Corrected '米食广场' to '美食广场' as '美食广场' is the correct term for "
         "'food court', matching the meaning in the 中文.",
         difficulty=1,
@@ -2044,8 +2046,8 @@ proof_test_cases_block_16 = [
     ),
     ProofTestCase(
         zhongwen="那儿的海南鸡饭很大碟的",
-        yuewen="𠮶度啲可能几份好大碟㗎",
-        yuewen_proofread="𠮶度啲海南鸡饭好大碟㗎",
+        yuewen="嗰度啲可能几份好大碟㗎",
+        yuewen_proofread="嗰度啲海南鸡饭好大碟㗎",
         note="Corrected '可能几份' to '海南鸡饭' as '可能几份' is a mishearing of "
         "'海南鸡饭', which matches the meaning in the 中文.",
         difficulty=1,
@@ -2053,38 +2055,38 @@ proof_test_cases_block_16 = [
     ),
     ProofTestCase(
         zhongwen="对了，那地方叫银城中心",
-        yuewen="系喇系喇，𠮶间叫做银城中心",
-        yuewen_proofread="系喇系喇，𠮶间叫做银城中心",
+        yuewen="系喇系喇，嗰间叫做银城中心",
+        yuewen_proofread="系喇系喇，嗰间叫做银城中心",
         note="",
         verified=True,
     ),
     ProofTestCase(
         zhongwen="那店子的饭很多，很大碟的！",
-        yuewen="𠮶间嘢啲饭好多人，好大碟㗎！",
-        yuewen_proofread="𠮶间嘢啲饭好多，好大碟㗎！",
+        yuewen="嗰间嘢啲饭好多人，好大碟㗎！",
+        yuewen_proofread="嗰间嘢啲饭好多，好大碟㗎！",
         note="Corrected '好多人' to '好多' as '好多人' means 'many people', which "
-        "is a mishearing of '好多' (a lot of), matching the meaning of "
-        "'饭很多'.",
+        "is a mishearing of '好多' (a lot of [rice]), matching the "
+        "meaning in the 中文.",
         difficulty=1,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="不过说到我最想去的地方，那可厉害了",
-        yuewen="不过讲到我最想去嘅地方呢，𠮶度细嚟啰",
-        yuewen_proofread="不过讲到我最想去嘅地方呢，𠮶度犀利啰",
-        note="Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) matches the "
-        "meaning of '厉害' in the 中文, while '细嚟' is likely a "
+        yuewen="不过讲到我最想去嘅地方呢，嗰度细嚟啰",
+        yuewen_proofread="不过讲到我最想去嘅地方呢，嗰度犀利啰",
+        note="Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) means '厉害', "
+        "matching the meaning in the 中文, while '细嚟' is likely a "
         "mishearing.",
         difficulty=1,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="那儿蓝天白云，椰林树影，水清沙幼",
-        yuewen="𠮶度南天白云，夜临树影，水清沙幽",
-        yuewen_proofread="𠮶度蓝天白云，椰林树影，水清沙幼",
+        yuewen="嗰度南天白云，夜临树影，水清沙幽",
+        yuewen_proofread="嗰度蓝天白云，椰林树影，水清沙幼",
         note="Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as "
         "these are likely mishearings of the correct descriptive "
-        "terms in the original phrase.",
+        "terms for the scenery.",
         difficulty=1,
         verified=True,
     ),
