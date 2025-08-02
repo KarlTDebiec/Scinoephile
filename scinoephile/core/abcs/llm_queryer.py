@@ -227,8 +227,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     def test_case_log_str(self) -> str:
         """String representation of all test cases in the log."""
         test_case_log_str = "[\n"
-        for key, value in self._test_case_log.items():
-            source_str: str = value.source_str
+        for test_case in self._test_case_log.values():
+            source_str: str = test_case.source_str
             test_case_log_str += f"{source_str},\n"
         test_case_log_str += "]"
         return test_case_log_str
