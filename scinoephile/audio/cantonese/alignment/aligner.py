@@ -16,7 +16,7 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.alignment.models import get_translate_models
+from scinoephile.audio.cantonese.alignment.models import get_translate_test_case_cls
 from scinoephile.audio.cantonese.alignment.queries import (
     get_distribute_query,
     get_merge_query,
@@ -458,12 +458,11 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        translate_models = get_translate_models(alignment)
-        if translate_models is None:
+        test_case_cls = get_translate_test_case_cls(alignment)
+        if test_case_cls is None:
             return
-        query_cls, answer_cls, test_case_cls = translate_models
-        query = get_translate_query(alignment, query_cls)
-        answer = self.translator(query, answer_cls, test_case_cls)
+        query = get_translate_query(alignment, test_case_cls.query_cls)
+        answer = self.translator(query, test_case_cls.answer_cls, test_case_cls)
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []

@@ -10,6 +10,7 @@ from functools import cached_property
 from typing import Self
 
 from pydantic import BaseModel, Field, model_validator
+from pydantic.fields import FieldInfo
 
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.query import Query
@@ -36,6 +37,13 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
+    @property
+    def answer(self) -> TAnswer:
+        """Answer part of the test case."""
+        return self.answer_cls.model_validate(
+            {k: getattr(self, k) for k in self.answer_cls.model_fields}
+        )
+
     @cached_property
     def answer_cls(self) -> type[TAnswer]:
         """Answer parent class."""
@@ -44,12 +52,10 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
                 return base
         raise TypeError("No Answer subclass found in MRO.")
 
-    @property
-    def answer(self) -> TAnswer:
-        """Answer part of the test case."""
-        return self.answer_cls.model_validate(
-            {k: getattr(self, k) for k in self.answer_cls.model_fields}
-        )
+    @cached_property
+    def answer_fields(self) -> dict[str, FieldInfo]:
+        """List of answer fields."""
+        return self.answer_cls.model_fields
 
     @cached_property
     def key(self) -> tuple[str, ...]:
@@ -77,10 +83,25 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         raise TypeError("No Query subclass found in MRO.")
 
     @cached_property
+    def query_fields(self) -> dict[str, FieldInfo]:
+        """List of query fields."""
+        return self.query_cls.model_fields
+
+    @cached_property
     def source_str(self) -> str:
-        """Get Python source-like string representation."""
-        query_fields = self.query_cls.model_fields
-        answer_fields = self.answer_cls.model_fields
+        """Python source-like string representation."""
+        lines = (
+            [f"{self.__class__.__name__}("]
+            + [format_field(f, getattr(self, f)) for f in self.query_fields]
+            + [format_field(f, getattr(self, f)) for f in self.answer_fields]
+            + [format_field(f, getattr(self, f)) for f in self.test_case_fields]
+            + [")"]
+        )
+        return "\n".join(lines)
+
+    @cached_property
+    def test_case_fields(self) -> dict[str, FieldInfo]:
+        """List of test case fields."""
         exclusions = set()
         if not self.difficulty:
             exclusions.add("difficulty")
@@ -88,23 +109,9 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             exclusions.add("prompt")
         if not self.verified:
             exclusions.add("verified")
-        test_case_fields = sorted(
-            list(
-                set(self.model_fields)
-                - set(query_fields)
-                - set(answer_fields)
-                - exclusions
-            )
-        )
-
-        lines = (
-            [f"{self.__class__.__name__}("]
-            + [format_field(field, getattr(self, field)) for field in query_fields]
-            + [format_field(field, getattr(self, field)) for field in answer_fields]
-            + [format_field(field, getattr(self, field)) for field in test_case_fields]
-            + [")"]
-        )
-        return "\n".join(lines)
+        exclusions.add(self.query_fields)
+        exclusions.add(self.answer_fields)
+        return {k: v for k, v in self.model_fields.items() if k not in exclusions}
 
     @model_validator(mode="after")
     def enforce_min_difficulty(self) -> Self:

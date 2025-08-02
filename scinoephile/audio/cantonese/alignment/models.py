@@ -4,119 +4,21 @@
 
 from __future__ import annotations
 
-from pydantic import Field, create_model
-
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer, Query
 
 
-def get_translate_query_model(size: int, missing: tuple[int, ...]) -> type[Query]:
-    """Get query model for translation of Cantonese audio.
-
-    Arguments:
-        size: Number of 中文 subtitles
-        missing: Indices of 中文 subtitles that are missing 粤文
-    Returns:
-        Query type with appropriate fields
-    Raises:
-        ScinoephileError: If missing indices are out of range
-    """
-    if any(m < 0 or m > size for m in missing):
-        raise ScinoephileError(
-            f"Missing indices must be in range 1 to {size}, got {missing}."
-        )
-    query_fields = {}
-    for zw_idx in range(size):
-        query_fields[f"zhongwen_{zw_idx + 1}"] = (
-            str,
-            Field(..., description=f"Known 中文 of text {zw_idx + 1}"),
-        )
-        if zw_idx not in missing:
-            query_fields[f"yuewen_{zw_idx + 1}"] = (
-                str,
-                Field(..., description=f"Known 粤文 of text {zw_idx + 1}"),
-            )
-    return create_model(
-        f"TranslateTestQuery_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-        __base__=Query,
-        **query_fields,
-    )
-
-
-def get_translate_answer_model(size: int, missing: tuple[int, ...]) -> type[Answer]:
-    """Get answer model for translation of Cantonese audio.
-
-    Arguments:
-        size: Number of 中文 subtitles
-        missing: Indices of 中文 subtitles that are missing 粤文
-    Returns:
-        Answer type with appropriate fields
-    Raises:
-        ScinoephileError: If missing indices are out of range
-    """
-    if any(m < 0 or m > size for m in missing):
-        raise ScinoephileError(
-            f"Missing indices must be in range 1 to {size}, got {missing}."
-        )
-    answer_fields = {}
-    for zw_idx in range(size):
-        if zw_idx in missing:
-            answer_fields[f"yuewen_{zw_idx + 1}"] = (
-                str,
-                Field(..., description=f"Translated 粤文 of text {zw_idx + 1}"),
-            )
-    return create_model(
-        f"TranslateTestAnswer_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-        __base__=Answer,
-        **answer_fields,
-    )
-
-
-def get_translate_test_case_model(
-    size: int,
-    missing: tuple[int, ...],
-    query_model: type[Query] | None = None,
-    answer_model: type[Answer] | None = None,
-) -> type[TranslateTestCase[Query, Answer]]:
-    """Get test case model for translation of Cantonese audio.
-
-    Arguments:
-        size: Number of 中文 subtitles
-        missing: Indices of 中文 subtitles that are missing 粤文
-        query_model: Optional query model, if not provided it will be created
-        answer_model: Optional answer model, if not provided it will be created
-    Returns:
-        TranslateTestCase type with appropriate query and answer models
-    Raises:
-        ScinoephileError: If missing indices are out of range
-    """
-    if query_model is None:
-        query_model = get_translate_query_model(size, missing)
-    query_model = get_translate_query_model(size, missing)
-    if answer_model is None:
-        answer_model = get_translate_answer_model(size, missing)
-    return create_model(
-        f"TranslateTestCase_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-        __base__=(
-            query_model,
-            answer_model,
-            TranslateTestCase[query_model, answer_model],
-        ),
-    )
-
-
-def get_translate_models(
+def get_translate_test_case_cls(
     alignment: Alignment,
-) -> tuple[type[Query], type[Answer], type[TranslateTestCase[Query, Answer]]] | None:
-    """Get translation query, answer, and test case for a nascent Cantonese alignment.
+) -> type[TranslateTestCase[Query, Answer]] | None:
+    """Get translation test case class for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        Query, Answer, and TranslateTestCase types for translation, or None if no
-        translation is needed
+        TranslateTestCase class for translation, or None if not needed
     Raises:
         ScinoephileError: If sync groups are malformed
     """
@@ -145,20 +47,12 @@ def get_translate_models(
                 f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
             )
 
+    # Get class or None if not needed
     if missing:
-        missing = tuple(missing)
-        query_model = get_translate_query_model(size, missing)
-        answer_model = get_translate_answer_model(size, missing)
-        test_case_model = get_translate_test_case_model(
-            size, missing, query_model, answer_model
-        )
-        return query_model, answer_model, test_case_model
+        return TranslateTestCase.get_test_case_cls(size, tuple(missing))
     return None
 
 
 __all__ = [
-    "get_translate_answer_model",
-    "get_translate_models",
-    "get_translate_query_model",
-    "get_translate_test_case_model",
+    "get_translate_test_case_cls",
 ]
