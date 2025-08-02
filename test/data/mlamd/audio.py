@@ -149,7 +149,7 @@ if __name__ == "__main__":
             if translator.test_case_log:
                 update_translate_test_cases(
                     test_data_root / "mlamd" / "translation.py",
-                    f"translate_test_cases_block_{i}",
+                    f"translate_test_case_block_{i}",
                     translator,
                 )
 
