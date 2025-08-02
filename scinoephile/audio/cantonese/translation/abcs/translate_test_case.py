@@ -11,7 +11,7 @@ from scinoephile.core.abcs import Answer, Query, TestCase
 from scinoephile.core.models import format_field
 
 
-class TranslateTestCase[TQuery: Query, TAnswer: Answer](TestCase, ABC):
+class TranslateTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], ABC):
     """Abstract base class for Cantonese audio translation tests."""
 
     @cached_property
