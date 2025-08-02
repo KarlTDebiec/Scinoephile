@@ -23,9 +23,9 @@ class TranslateTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer
         size = max(
             [int(s.split("_")[1]) for s in query_fields if s.startswith("zhongwen_")]
         )
-        missing = [
-            int(s.split("_")[1]) - 1 for s in answer_fields if s.startswith("yuewen_")
-        ]
+        missing = tuple(
+            [int(s.split("_")[1]) - 1 for s in answer_fields if s.startswith("yuewen_")]
+        )
 
         exclusions = set()
         if not self.difficulty:
@@ -44,7 +44,11 @@ class TranslateTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer
         )
 
         lines = (
-            ["get_translate_test_case_model(", "    {size}, {missing}", ")("]
+            [
+                "get_translate_test_case_model(",
+                f"    {size}, {missing}",
+                ")(",
+            ]
             + [format_field(field, getattr(self, field)) for field in query_fields]
             + [format_field(field, getattr(self, field)) for field in answer_fields]
             + [format_field(field, getattr(self, field)) for field in test_case_fields]

@@ -9,7 +9,10 @@ from scinoephile.audio import (
     get_series_from_segments,
 )
 from scinoephile.audio.cantonese.alignment import Aligner
-from scinoephile.audio.cantonese.alignment.testing import update_test_cases
+from scinoephile.audio.cantonese.alignment.testing import (
+    update_test_cases,
+    update_translate_test_cases,
+)
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
@@ -143,6 +146,12 @@ if __name__ == "__main__":
                 f"proof_test_cases_block_{i}",
                 proofer,
             )
+            if translator.test_case_log:
+                update_translate_test_cases(
+                    test_data_root / "mlamd" / "translation.py",
+                    f"translate_test_cases_block_{i}",
+                    translator,
+                )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

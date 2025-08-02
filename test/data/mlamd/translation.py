@@ -56,7 +56,7 @@ translate_test_case_block_3 = get_translate_test_case_model(
     yuewen_15="唔好忘记校训九十七⋯　　唔好忘记校训九十七⋯",
     yuewen_16="都唔可以忘记校训九十八！",
     yuewen_17="都唔可以忘记校训九十八！",
-)
+)  # translate_test_case_block_3
 translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
     yuewen_1="你哋可能觉得呢间幼稚园好烂",
@@ -168,7 +168,7 @@ translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
     yuewen_20="校长早晨！",
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
-)
+)  # translate_test_case_block_4
 translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 4, 8, 9, 10))(
     zhongwen_1="今日为大家介绍一味⋯",
     yuewen_1="今日要同大家介绍一味⋯",
@@ -210,7 +210,7 @@ translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 4, 8, 9,
     yuewen_9="再包包包包包住个纸鸡包",
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
-)
+)  # translate_test_case_block_12
 mlamd_translate_test_cases: list[TestCase] = [
     translate_test_case_block_3,
     translate_test_case_block_4,

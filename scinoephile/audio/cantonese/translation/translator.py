@@ -219,14 +219,12 @@ class Translator:
     @property
     def test_case_log_str(self) -> str:
         """String representation of all test cases in the log."""
-        test_case_log_str = "[\n"
-        for key, value in self._test_case_log.items():
-            source_str: str = value.source_str
-            if key in self._examples_log:
-                source_str = f"{source_str[:-1]}    prompt=True,\n)"
-            test_case_log_str += f"{source_str},\n"
-        test_case_log_str += "\n]"
-        return test_case_log_str
+        if len(self._test_case_log) != 1:
+            raise ScinoephileError(
+                "Test case log must contain exactly one test case for string "
+                "representation."
+            )
+        return next(iter(self._test_case_log.values())).source_str
 
     @cached_property
     def answer_example(self) -> Answer:
