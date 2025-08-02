@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.audio.cantonese.translation import Translator
-from scinoephile.core.abcs import TestCase
+from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
@@ -28,7 +28,7 @@ def translator_zero_shot() -> Translator:
     return Translator(cache_dir_path=test_data_root / "cache")
 
 
-def _test_translation(queryer: Translator, test_case: TestCase):
+def _test_translation(queryer: Translator, test_case: TranslateTestCase):
     """Test.
 
     Arguments:
@@ -42,7 +42,8 @@ def _test_translation(queryer: Translator, test_case: TestCase):
         actual_value = getattr(answer, field_name)
         if actual_value != expected_value:
             failures.append(
-                f"Field '{field_name}': expected {expected_value!r}, got {actual_value!r}"
+                f"Field '{field_name}': expected {expected_value!r}, "
+                f"got {actual_value!r}"
             )
 
     if failures:
@@ -59,7 +60,7 @@ def _test_translation(queryer: Translator, test_case: TestCase):
 )
 @pytest.mark.parametrize("test_case", mlamd_translate_test_cases)
 def test_translation_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: TestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
 ):
     """Test with MLAMD test cases.
 

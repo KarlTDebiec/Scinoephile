@@ -27,9 +27,10 @@ class Translator:
         self,
         model: str = "gpt-4.1",
         examples: list[TranslateTestCase] | None = None,
-        print_test_case: bool = False,
-        cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
+        *,
+        cache_dir_path: str | None = None,
+        print_test_case: bool = False,
         max_attempts: int = 2,
     ):
         """Initialize.
@@ -46,10 +47,6 @@ class Translator:
         """LLM Provider to use for queries."""
         self.model = model
         """Model name to use for queries."""
-        self.print_test_case = print_test_case
-        """Whether to print test case after merging query and answer."""
-        self.max_attempts = max_attempts
-        """Maximum number of query attempts."""
 
         self._examples_log: dict[tuple, TranslateTestCase] = {}
         """Log of examples, keyed by query key."""
@@ -58,12 +55,6 @@ class Translator:
 
         # Set up system prompt, with examples if provided
         system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
-        # system_prompt += (
-        #     "\nYour response must be a JSON object with the following structure:\n"
-        # )
-        # system_prompt += json.dumps(
-        #     self.answer_example.model_dump(), indent=4, ensure_ascii=False
-        # )
         if examples:
             system_prompt += (
                 "\n\nHere are some examples of queries and expected answers:"
@@ -85,6 +76,11 @@ class Translator:
         """Directory in which to cache query results."""
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
+
+        self.print_test_case = print_test_case
+        """Whether to print test case after merging query and answer."""
+        self.max_attempts = max_attempts
+        """Maximum number of query attempts."""
 
     def __call__(
         self,
@@ -236,21 +232,6 @@ class Translator:
                 "representation."
             )
         return next(iter(self._test_case_log.values())).source_str
-
-    # @cached_property
-    # def answer_example(self) -> Answer:
-    #     """Example answer."""
-    #     answer_fields = {
-    #         "yuewen_2": (str, Field(..., description="Translated 粤文 of text 2")),
-    #         "yuewen_5": (str, Field(..., description="Translated 粤文 of text 5")),
-    #         "yuewen_10": (str, Field(..., description="Translated 粤文 of text 10")),
-    #     }
-    #     answer_cls = create_model("TranslateAnswer", __base__=Answer, **answer_fields)
-    #     return answer_cls(
-    #         yuewen_2="粤文 text 2 translated from query's 中文 text 2",
-    #         yuewen_5="粤文 text 5 translated from query's 中文 text 5",
-    #         yuewen_10="粤文 text 10 translated from query's 中文 text 10",
-    #     )
 
     @cached_property
     def base_system_prompt(self) -> str:

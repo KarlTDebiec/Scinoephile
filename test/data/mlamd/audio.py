@@ -11,7 +11,7 @@ from scinoephile.audio import (
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import (
     update_test_cases,
-    update_translate_test_cases,
+    update_translation_test_cases,
 )
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
@@ -147,7 +147,7 @@ if __name__ == "__main__":
                 proofer,
             )
             if translator.test_case_log:
-                update_translate_test_cases(
+                update_translation_test_cases(
                     test_data_root / "mlamd" / "translation.py",
                     f"translate_test_case_block_{i}",
                     translator,

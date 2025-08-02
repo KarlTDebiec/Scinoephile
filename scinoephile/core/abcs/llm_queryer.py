@@ -32,9 +32,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         model: str = "gpt-4.1",
         examples: list[TTestCase] | None = None,
         verified: list[TTestCase] | None = None,
-        print_test_case: bool = False,
-        cache_dir_path: str | None = None,
         provider: LLMProvider | None = None,
+        *,
+        cache_dir_path: str | None = None,
+        print_test_case: bool = False,
         max_attempts: int = 2,
     ):
         """Initialize.
@@ -51,10 +52,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """LLM Provider to use for queries."""
         self.model = model
         """Model name to use for queries."""
-        self.print_test_case = print_test_case
-        """Whether to print test case after merging query and answer."""
-        self.max_attempts = max_attempts
-        """Maximum number of query attempts."""
 
         self._examples_log: dict[tuple, TTestCase] = {}
         """Log of examples, keyed by query key."""
@@ -97,6 +94,11 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Directory in which to cache query results."""
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
+
+        self.print_test_case = print_test_case
+        """Whether to print test case after merging query and answer."""
+        self.max_attempts = max_attempts
+        """Maximum number of query attempts."""
 
     def __call__(self, query: TQuery) -> TAnswer:
         """Query LLM.

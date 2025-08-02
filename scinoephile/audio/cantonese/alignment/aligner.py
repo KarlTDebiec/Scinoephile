@@ -24,13 +24,10 @@ from scinoephile.audio.cantonese.alignment.queries import (
     get_shift_query,
     get_translate_query,
 )
-from scinoephile.audio.cantonese.distribution import DistributeAnswer
-from scinoephile.audio.cantonese.distribution.distributor import Distributor
-from scinoephile.audio.cantonese.merging import MergeAnswer, MergeTestCase
-from scinoephile.audio.cantonese.merging.merger import Merger
-from scinoephile.audio.cantonese.proofing.proofer import Proofer
-from scinoephile.audio.cantonese.shifting import ShiftAnswer, ShiftQuery
-from scinoephile.audio.cantonese.shifting.shifter import Shifter
+from scinoephile.audio.cantonese.distribution import DistributeAnswer, Distributor
+from scinoephile.audio.cantonese.merging import MergeAnswer, Merger, MergeTestCase
+from scinoephile.audio.cantonese.proofing import Proofer
+from scinoephile.audio.cantonese.shifting import ShiftAnswer, Shifter, ShiftQuery
 from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
@@ -270,8 +267,8 @@ class Aligner:
         two_yuewen = query.two_yuewen
         one_yuewen_shifted = answer.one_yuewen_shifted
         two_yuewen_shifted = answer.two_yuewen_shifted
-
         nascent_sync_groups = deepcopy(alignment.sync_groups)
+        # TODO: Review this logic and consider how to clarify
         if len(one_yuewen) < len(one_yuewen_shifted):
             # Calculate the number of characters we need to shift from two to one
             text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
