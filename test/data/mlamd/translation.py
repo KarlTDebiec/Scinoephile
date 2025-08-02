@@ -51,9 +51,9 @@ translate_test_case_block_3 = get_translate_test_case_model(
     yuewen_2="〝鹅闷日日都要玩下个窗！〞",
     yuewen_3="〝鹅哋喺壳度练习，鹅闷载升胀⋯〞",
     yuewen_4="〝鹅闷系春天嘅化身！〞",
-    yuewen_13="蛋挞！　　蛋挞！",
-    yuewen_14="荔芋火鸭礼！　　荔芋火鸭礼！",
-    yuewen_15="唔记得校训九十七⋯　　唔记得校训九十七⋯",
+    yuewen_13="蛋挞！蛋挞！",
+    yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
+    yuewen_15="唔记得校训九十七⋯唔记得校训九十七⋯",
     yuewen_16="都唔可以唔记得校训九十八！",
     yuewen_17="都唔可以唔记得校训九十八！",
 )  # translate_test_case_block_3
