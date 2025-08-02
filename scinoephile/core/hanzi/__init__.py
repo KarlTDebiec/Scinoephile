@@ -104,25 +104,15 @@ def get_hanzi_text_converted(
     converter = get_hanzi_converter(config)
     converted_text = converter.convert(text)
 
-    if apply_exclusions:
-        if config in (
-            OpenCCConfig.t2s,
-            OpenCCConfig.tw2s,
-            OpenCCConfig.hk2s,
-            OpenCCConfig.tw2sp,
-        ):
-            for trad_char, simp_char in conversion_exclusions.items():
-                if trad_char in text and simp_char in converted_text:
-                    converted_text = converted_text.replace(simp_char, trad_char)
-        elif config in (
-            OpenCCConfig.s2t,
-            OpenCCConfig.s2tw,
-            OpenCCConfig.s2hk,
-            OpenCCConfig.s2twp,
-        ):
-            for trad_char, simp_char in conversion_exclusions.items():
-                if simp_char in text and trad_char in converted_text:
-                    converted_text = converted_text.replace(trad_char, simp_char)
+    if apply_exclusions and config in (
+        OpenCCConfig.t2s,
+        OpenCCConfig.tw2s,
+        OpenCCConfig.hk2s,
+        OpenCCConfig.tw2sp,
+    ):
+        for trad_char, simp_char in conversion_exclusions.items():
+            if trad_char in text and simp_char in converted_text:
+                converted_text = converted_text.replace(simp_char, trad_char)
 
     return converted_text
 
@@ -189,7 +179,6 @@ def _get_hanzi_text_flattened(text: str) -> str:
 
 __all__ = [
     "OpenCCConfig",
-    "conversion_exclusions",
     "get_hanzi_cleaned",
     "get_hanzi_converted",
     "get_hanzi_converter",
