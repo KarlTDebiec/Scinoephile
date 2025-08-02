@@ -10,7 +10,7 @@ from scinoephile.core.abcs import TestCase
 translate_test_case_block_3 = get_translate_test_case_model(
     23, (0, 1, 2, 3, 12, 13, 14, 15, 16)
 )(
-    zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
+    zhongwen_1="〝asdfasdf⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
     zhongwen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
     zhongwen_4="〝鹅闷是春天滴化！〞",

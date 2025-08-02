@@ -46,7 +46,7 @@ def _replace_translate_test_cases_in_file(
     file_path: Path, varible_name: str, replacement_str: str
 ):
     pattern = re.compile(
-        rf"{varible_name}\s*=\s*\[(.*?)\]  # {varible_name}",
+        rf"{varible_name}\s*=(.*?)# {varible_name}",
         re.DOTALL,
     )
     contents = file_path.read_text(encoding="utf-8")
