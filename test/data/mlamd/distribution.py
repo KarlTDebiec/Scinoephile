@@ -547,6 +547,7 @@ distribute_test_cases_block_15 = [
         yuewen_to_distribute="远离凡嚣",
         one_yuewen_to_append="远离凡嚣",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="很远的",
@@ -556,6 +557,7 @@ distribute_test_cases_block_15 = [
         yuewen_to_distribute="啊好远㗎",
         one_yuewen_to_append="啊好远㗎",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_15
 distribute_test_cases_block_16 = [

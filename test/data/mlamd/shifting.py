@@ -2210,6 +2210,7 @@ shift_test_cases_block_15 = [
         two_yuewen="蓝天白云椰林树影水清沙游",
         one_yuewen_shifted="马尔代夫坐落于印度洋嘅世外桃源",
         two_yuewen_shifted="蓝天白云椰林树影水清沙游",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="蓝天白云，椰林树影，水清沙幼",
@@ -2218,6 +2219,7 @@ shift_test_cases_block_15 = [
         two_yuewen="七彩缤纷嘅珊瑚目不下级嘅热带鱼群",
         one_yuewen_shifted="蓝天白云椰林树影水清沙游",
         two_yuewen_shifted="七彩缤纷嘅珊瑚目不下级嘅热带鱼群",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="七彩缤纷的珊瑚，目不暇给的热带鱼",
@@ -2226,6 +2228,7 @@ shift_test_cases_block_15 = [
         two_yuewen="充满住赤道热力嘅原始海洋远离凡嚣",
         one_yuewen_shifted="七彩缤纷嘅珊瑚目不下级嘅热带鱼群",
         two_yuewen_shifted="充满住赤道热力嘅原始海洋远离凡嚣",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="充满赤道活力的原始海洋，脱离繁嚣",
@@ -2234,6 +2237,7 @@ shift_test_cases_block_15 = [
         two_yuewen="体验热情如火嘅风土人情",
         one_yuewen_shifted="充满住赤道热力嘅原始海洋远离凡嚣",
         two_yuewen_shifted="体验热情如火嘅风土人情",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="体验热情如火的风土人情",
@@ -2242,6 +2246,7 @@ shift_test_cases_block_15 = [
         two_yuewen="享受一个脱轴出尘嘅梦幻之旅",
         one_yuewen_shifted="体验热情如火嘅风土人情",
         two_yuewen_shifted="享受一个脱轴出尘嘅梦幻之旅",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="享受一个脱俗出尘的梦幻之旅",
@@ -2250,6 +2255,7 @@ shift_test_cases_block_15 = [
         two_yuewen="犀利旅行社旅行社牌照号码350999",
         one_yuewen_shifted="享受一个脱轴出尘嘅梦幻之旅",
         two_yuewen_shifted="犀利旅行社旅行社牌照号码350999",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="犀利旅行社，旅行社牌照号码350999",
@@ -2258,6 +2264,7 @@ shift_test_cases_block_15 = [
         two_yuewen="妈妈你知唔知到马尔代夫系边㗎",
         one_yuewen_shifted="犀利旅行社旅行社牌照号码350999",
         two_yuewen_shifted="妈妈你知唔知到马尔代夫系边㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="妈妈你知道马尔代夫在哪儿吗？",
@@ -2266,6 +2273,7 @@ shift_test_cases_block_15 = [
         two_yuewen="啊好远㗎",
         one_yuewen_shifted="妈妈你知唔知到马尔代夫系边㗎",
         two_yuewen_shifted="啊好远㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="很远的",
@@ -2274,6 +2282,7 @@ shift_test_cases_block_15 = [
         two_yuewen="点远发呀",
         one_yuewen_shifted="啊好远㗎",
         two_yuewen_shifted="点远发呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="有多远？",
@@ -2282,6 +2291,7 @@ shift_test_cases_block_15 = [
         two_yuewen="搭飞机至到啰",
         one_yuewen_shifted="点远发呀",
         two_yuewen_shifted="搭飞机至到啰",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="得搭飞机",
@@ -2290,6 +2300,7 @@ shift_test_cases_block_15 = [
         two_yuewen="咁妈妈你会唔会走落去㗎",
         one_yuewen_shifted="搭飞机至到啰",
         two_yuewen_shifted="咁妈妈你会唔会走落去㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="妈妈你会带我去吗？",
@@ -2298,6 +2309,7 @@ shift_test_cases_block_15 = [
         two_yuewen="会得学发咗先啦",
         one_yuewen_shifted="咁妈妈你会唔会走落去㗎",
         two_yuewen_shifted="会得学发咗先啦",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="会！发财了再说吧",
@@ -2306,6 +2318,7 @@ shift_test_cases_block_15 = [
         two_yuewen="咁妈妈你几时发得呀",
         one_yuewen_shifted="会得学发咗先啦",
         two_yuewen_shifted="咁妈妈你几时发得呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那么妈妈你什么时候发？",
@@ -2314,6 +2327,7 @@ shift_test_cases_block_15 = [
         two_yuewen="呃就快啦",
         one_yuewen_shifted="咁妈妈你几时发得呀",
         two_yuewen_shifted="呃就快啦",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="快了⋯",
@@ -2322,6 +2336,7 @@ shift_test_cases_block_15 = [
         two_yuewen="发梦吖嘛",
         one_yuewen_shifted="呃就快啦",
         two_yuewen_shifted="发梦吖嘛",
+        verified=True,
     ),
 ]  # shift_test_cases_block_15
 shift_test_cases_block_16 = [

@@ -122,7 +122,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="都系唔好：左边魂精对上⋯",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' and matches the meaning of '额角' in the 中文.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -148,7 +148,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="于是向魂精对上嘅胶兜许愿",
         note="Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for "
         "'temple' (额角), matching the meaning in the 中文.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -213,7 +213,7 @@ proof_test_cases_block_0 = [
         yuewen_proofread="胶兜依然系噉喺度转，好似一啲点头嘅迹象都冇",
         note="Corrected '应承嘅迹象' to '点头嘅迹象' as '点头' matches the meaning of "
         "'点头迹象' in the 中文, while '应承' is likely a mishearing.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -1822,14 +1822,16 @@ proof_test_cases_block_15 = [
         yuewen="马尔代夫，坐落于印度洋嘅世外桃源",
         yuewen_proofread="马尔代夫，坐落于印度洋嘅世外桃源",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="蓝天白云，椰林树影，水清沙幼",
         yuewen="蓝天白云，椰林树影，水清沙游",
         yuewen_proofread="蓝天白云，椰林树影，水清沙幼",
-        note="Corrected '沙游' to '沙幼' as '沙幼' (fine sand) matches the "
-        "meaning in the 中文, while '沙游' is likely a mishearing.",
+        note="Corrected '沙游' to '沙幼' as '沙幼' (fine sand) is the correct "
+        "phrase matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="七彩缤纷的珊瑚，目不暇给的热带鱼",
@@ -1838,6 +1840,7 @@ proof_test_cases_block_15 = [
         note="Corrected '目不下级' to '目不暇给' as '目不暇给' is the correct idiom "
         "meaning 'too many to take in', matching the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="充满赤道活力的原始海洋，脱离繁嚣",
@@ -1846,12 +1849,14 @@ proof_test_cases_block_15 = [
         note="Corrected '凡嚣' to '繁嚣' as '繁嚣' is the correct term for "
         "'hustle and bustle', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="体验热情如火的风土人情",
         yuewen="体验热情如火嘅风土人情",
         yuewen_proofread="体验热情如火嘅风土人情",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="享受一个脱俗出尘的梦幻之旅",
@@ -1860,45 +1865,52 @@ proof_test_cases_block_15 = [
         note="Corrected '脱轴' to '脱俗' as '脱俗' is the correct term for 'out "
         "of the ordinary', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="犀利旅行社，旅行社牌照号码350999",
         yuewen="犀利旅行社，旅行社牌照号码350999",
         yuewen_proofread="犀利旅行社，旅行社牌照号码350999",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈你知道马尔代夫在哪儿吗？",
         yuewen="妈妈你知唔知到马尔代夫系边㗎？",
         yuewen_proofread="妈妈你知唔知到马尔代夫系边㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="很远的",
         yuewen="啊好远㗎",
         yuewen_proofread="啊好远㗎",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="有多远？",
         yuewen="点远发呀？",
         yuewen_proofread="有几远呀？",
-        note="Corrected '点远发呀' to '有几远呀' as '点远发' is a likely mishearing "
+        note="Corrected '点远发呀' to '有几远呀' as '点远发' is likely a mishearing "
         "of '有几远', which matches the meaning of '有多远'. The word '发' "
-        "is not relevant here.",
-        difficulty=1,
+        "is not appropriate here.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="得搭飞机",
         yuewen="搭飞机至到啰",
         yuewen_proofread="搭飞机至到啰",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈你会带我去吗？",
         yuewen="咁妈妈你会唔会走落去㗎？",
         yuewen_proofread="咁妈妈你会唔会走落去㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="会！发财了再说吧",
@@ -1906,25 +1918,29 @@ proof_test_cases_block_15 = [
         yuewen_proofread="会！得发咗先啦",
         note="Removed '学' from '得学发咗先啦' as it is likely a mishearing; "
         "'得发咗先啦' matches the meaning of '发财了再说吧'.",
-        difficulty=1,
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么妈妈你什么时候发？",
         yuewen="咁妈妈你几时发得呀？",
         yuewen_proofread="咁妈妈你几时发得呀？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="快了⋯",
         yuewen="呃，就快啦⋯",
         yuewen_proofread="呃，就快啦⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="发梦呀！",
         yuewen="发梦吖嘛！",
         yuewen_proofread="发梦吖嘛！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_15
 proof_test_cases_block_16 = [
