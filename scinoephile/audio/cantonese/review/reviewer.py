@@ -20,15 +20,20 @@ class Reviewer[TQuery: Query, TAnswer: Answer, TTestCase: ReviewTestCase](
         """Base system prompt."""
         return """
         You are a helpful assistant that performs final review of the 粤文 transcription
-        of spoken Cantonese based on the corresponding 中文 text. The 粤文 text has
-        already been aligned with the 中文 text, proofed once, and translated where
-        omissions were found.
-        You are to provide revised 粤文 text only if you notice any additional errors in
-        the 粤文 text that were not caught in the previous steps.
-        You are not reviewer for quality of writing, grammar, or style, only for
+        of spoken Cantonese.
+        Eacg 粤文 text has already been proofed individually against its paired 中文
+        text, and any discrepancies apparent within that pairing have been resolved.
+        Your focus is on resolving issues in the 粤文 text that may not have been
+        apparent within its individual pairing, but which may be apparent when the
+        entire series of texts is considered together.
+        You are not reviewing for quality of writing, grammar, or style, only for
         correctness of the 粤文 transcription.
-        If no revisions are are needed to a particular 粤文 text, return an empty string
-        for that text.
+        Keeping in mind that the 粤文 text is a transcription of spoken Cantonese, and
+        the 中文 text is not expected to match word-for-word.
+        For each 粤文 text, you are to provide revised 粤文 text only if revisions are
+        necessary.
+        If no revisions are are necessary to a particular 粤文 text, return an empty
+        string for that text.
         If revisions are needed, return the full revised 粤文 text, and include a note
         describing in English the changes made.
         If no revisions are needed return an empty string for the note.

@@ -6,6 +6,9 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
+translate_test_case_block_0 = None  # translate_test_case_block_0
+translate_test_case_block_1 = None  # translate_test_case_block_1
+translate_test_case_block_2 = None  # translate_test_case_block_2
 translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     23,
     (0, 1, 2, 3, 12, 13, 14, 15, 16),
@@ -172,6 +175,13 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
 )  # translate_test_case_block_4
+translate_test_case_block_5 = None  # translate_test_case_block_5
+translate_test_case_block_6 = None  # translate_test_case_block_6
+translate_test_case_block_7 = None  # translate_test_case_block_7
+translate_test_case_block_8 = None  # translate_test_case_block_8
+translate_test_case_block_9 = None  # translate_test_case_block_9
+translate_test_case_block_10 = None  # translate_test_case_block_10
+translate_test_case_block_11 = None  # translate_test_case_block_11
 translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     20,
     (2, 3, 8, 9, 10),
@@ -217,6 +227,66 @@ translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
 )  # translate_test_case_block_12
+translate_test_case_block_13 = None  # translate_test_case_block_13
+translate_test_case_block_14 = None  # translate_test_case_block_14
+translate_test_case_block_15 = None  # translate_test_case_block_15
+translate_test_case_block_16 = None  # translate_test_case_block_16
+translate_test_case_block_17 = None  # translate_test_case_block_17
+translate_test_case_block_18 = None  # translate_test_case_block_18
+translate_test_case_block_19 = None  # translate_test_case_block_19
+translate_test_case_block_20 = None  # translate_test_case_block_20
+translate_test_case_block_21 = None  # translate_test_case_block_21
+translate_test_case_block_22 = None  # translate_test_case_block_22
+translate_test_case_block_23 = None  # translate_test_case_block_23
+translate_test_case_block_24 = None  # translate_test_case_block_24
+translate_test_case_block_25 = None  # translate_test_case_block_25
+translate_test_case_block_26 = None  # translate_test_case_block_26
+translate_test_case_block_27 = None  # translate_test_case_block_27
+translate_test_case_block_28 = None  # translate_test_case_block_28
+translate_test_case_block_29 = None  # translate_test_case_block_29
+translate_test_case_block_30 = None  # translate_test_case_block_30
+translate_test_case_block_31 = None  # translate_test_case_block_31
+translate_test_case_block_32 = None  # translate_test_case_block_32
+translate_test_case_block_33 = None  # translate_test_case_block_33
+translate_test_case_block_34 = None  # translate_test_case_block_34
+translate_test_case_block_35 = None  # translate_test_case_block_35
+translate_test_case_block_36 = None  # translate_test_case_block_36
+translate_test_case_block_37 = None  # translate_test_case_block_37
+translate_test_case_block_38 = None  # translate_test_case_block_38
+translate_test_case_block_39 = None  # translate_test_case_block_39
+translate_test_case_block_40 = None  # translate_test_case_block_40
+translate_test_case_block_41 = None  # translate_test_case_block_41
+translate_test_case_block_42 = None  # translate_test_case_block_42
+translate_test_case_block_43 = None  # translate_test_case_block_43
+translate_test_case_block_44 = None  # translate_test_case_block_44
+translate_test_case_block_45 = None  # translate_test_case_block_45
+translate_test_case_block_46 = None  # translate_test_case_block_46
+translate_test_case_block_47 = None  # translate_test_case_block_47
+translate_test_case_block_48 = None  # translate_test_case_block_48
+translate_test_case_block_49 = None  # translate_test_case_block_49
+translate_test_case_block_50 = None  # translate_test_case_block_50
+translate_test_case_block_51 = None  # translate_test_case_block_51
+translate_test_case_block_52 = None  # translate_test_case_block_52
+translate_test_case_block_53 = None  # translate_test_case_block_53
+translate_test_case_block_54 = None  # translate_test_case_block_54
+translate_test_case_block_55 = None  # translate_test_case_block_55
+translate_test_case_block_56 = None  # translate_test_case_block_56
+translate_test_case_block_57 = None  # translate_test_case_block_57
+translate_test_case_block_58 = None  # translate_test_case_block_58
+translate_test_case_block_59 = None  # translate_test_case_block_59
+translate_test_case_block_60 = None  # translate_test_case_block_60
+translate_test_case_block_61 = None  # translate_test_case_block_61
+translate_test_case_block_62 = None  # translate_test_case_block_62
+translate_test_case_block_63 = None  # translate_test_case_block_63
+translate_test_case_block_64 = None  # translate_test_case_block_64
+translate_test_case_block_65 = None  # translate_test_case_block_65
+translate_test_case_block_66 = None  # translate_test_case_block_66
+translate_test_case_block_67 = None  # translate_test_case_block_67
+translate_test_case_block_68 = None  # translate_test_case_block_68
+translate_test_case_block_69 = None  # translate_test_case_block_69
+translate_test_case_block_70 = None  # translate_test_case_block_70
+translate_test_case_block_71 = None  # translate_test_case_block_71
+translate_test_case_block_72 = None  # translate_test_case_block_72
 mlamd_translate_test_cases: list[TranslateTestCase] = [
     translate_test_case_block_3,
     translate_test_case_block_4,

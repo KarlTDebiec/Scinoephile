@@ -98,7 +98,7 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 16:
+        if i > 18:
             continue
         update = True
 
@@ -158,11 +158,11 @@ if __name__ == "__main__":
                     f"translate_test_case_block_{i}",
                     translator,
                 )
-            update_dynamic_test_cases(
-                test_data_root / "mlamd" / "review.py",
-                f"review_test_case_block_{i}",
-                reviewer,
-            )
+            # update_dynamic_test_cases(
+            #     test_data_root / "mlamd" / "review.py",
+            #     f"review_test_case_block_{i}",
+            #     reviewer,
+            # )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

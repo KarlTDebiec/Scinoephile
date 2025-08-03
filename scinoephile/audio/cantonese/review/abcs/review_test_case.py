@@ -130,20 +130,20 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
                     raise ValueError(
-                        f"Answer's revised 粤文 text {idx} is not modified relative to "
-                        f"query's 粤文 text {idx}, if no revision is needed an empty "
-                        "string must be provided."
+                        f"Answer's revised 粤文 text {idx} is not modified relative "
+                        f"to query's 粤文 text {idx}, if no revision is needed an "
+                        f"empty string must be provided."
                     )
                 if note == "":
                     raise ValueError(
-                        f"Answer's 粤文 text {idx} is modified relative to query's 粤文 "
-                        f"text {idx}, but no note is provided, if revision is needed "
-                        f"a note must be provided."
+                        f"Answer's 粤文 text {idx} is modified relative to query's "
+                        f"粤文 text {idx}, but no note is provided, if revision is "
+                        f"needed a note must be provided."
                     )
             elif note != "":
                 raise ValueError(
-                    f"Answer's 粤文 text {idx} is not modified relative to query's 粤文 "
-                    f"text {idx}, but a note is provided, if no revisions are needed "
-                    f"an empty string must be provided."
+                    f"Answer's 粤文 text {idx} is not modified relative to query's "
+                    f"粤文 text {idx}, but a note is provided, if no revisions are "
+                    f"needed an empty string must be provided."
                 )
         return self
