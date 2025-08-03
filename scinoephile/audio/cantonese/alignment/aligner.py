@@ -458,13 +458,17 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
+        # Get models
         models = get_translate_models(alignment)
         if models is None:
             return
         query_cls, answer_cls, test_case_cls = models
+
+        # Query for 粤文 translation
         query = get_translate_query(alignment, query_cls)
         answer = self.translator(query, answer_cls, test_case_cls)
 
+        # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
         for sg_idx, sg in enumerate(alignment.sync_groups):
