@@ -46,7 +46,14 @@ if __name__ == "__main__":
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
 
     # 粤文
-    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    # yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    # for i, block in enumerate(yuewen.blocks):
+    #     print(f"Block {i} ({block.start_idx} - {block.end_idx})")
+    #     new_audio = extract_vocals_from_segment(block.audio)
+    #     block.audio = new_audio
+    # yuewen.save(test_output_dir / "yue-Hans_audio_cleaned")
+    # exit()
+    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio_cleaned")
     assert len(zhongwen.blocks) == len(yuewen.blocks)
 
     # Utilities
