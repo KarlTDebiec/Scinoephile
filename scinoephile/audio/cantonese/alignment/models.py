@@ -10,15 +10,16 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer, Query
 
 
-def get_translate_test_case_cls(
+def get_translate_models(
     alignment: Alignment,
-) -> type[TranslateTestCase[Query, Answer]] | None:
-    """Get translation test case class for a nascent Cantonese alignment.
+) -> tuple[type[Query], type[Answer], type[TranslateTestCase[Query, Answer]]] | None:
+    """Get translation query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        TranslateTestCase class for translation, or None if not needed
+        Query, Answer, and TranslateTestCase types for translation, or None if no
+        translation is needed
     Raises:
         ScinoephileError: If sync groups are malformed
     """
@@ -49,10 +50,17 @@ def get_translate_test_case_cls(
 
     # Get class or None if not needed
     if missing:
-        return TranslateTestCase.get_test_case_cls(size, tuple(missing))
+        missing = tuple(missing)
+        query_cls = TranslateTestCase.get_query_cls(size, missing)
+        answer_cls = TranslateTestCase.get_answer_cls(size, missing)
+        test_case_cls = TranslateTestCase.get_test_case_cls(
+            size, missing, query_cls, answer_cls
+        )
+        return query_cls, answer_cls, test_case_cls
+
     return None
 
 
 __all__ = [
-    "get_translate_test_case_cls",
+    "get_translate_models",
 ]

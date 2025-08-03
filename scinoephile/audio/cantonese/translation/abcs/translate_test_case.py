@@ -42,11 +42,6 @@ class TranslateTestCase[TQuery: Query, TAnswer: Answer](
     @cached_property
     def source_str(self) -> str:
         """Python source-like string representation."""
-        if self.subclass_creation_function is None:
-            raise ScinoephileError(
-                "Preparation of source string for this class requires "
-                "subclass_creation_function to be set at the time of creation."
-            )
         lines = (
             [
                 f"{TranslateTestCase.__name__}.get_test_case_cls(",
@@ -65,25 +60,31 @@ class TranslateTestCase[TQuery: Query, TAnswer: Answer](
         cls,
         size: int,
         missing: tuple[int, ...],
+        query_cls: type[Query] | None = None,
+        answer_cls: type[Answer] | None = None,
     ) -> type[TranslateTestCase[Query, Answer]]:
         """Get test case class for translation of Cantonese audio.
 
         Arguments:
             size: Number of 中文 subtitles
             missing: Indices of 中文 subtitles that are missing 粤文
+            query_cls: Optional query class, if not provided it will be created
+            answer_cls: Optional answer class, if not provided it will be created
         Returns:
             TranslateTestCase type with appropriate query and answer models
         Raises:
             ScinoephileError: If missing indices are out of range
         """
-        query_model = cls.get_query_cls(size, missing)
-        answer_model = cls.get_answer_cls(size, missing)
+        if query_cls is None:
+            query_cls = cls.get_query_cls(size, missing)
+        if answer_cls is None:
+            answer_cls = cls.get_answer_cls(size, missing)
         return create_model(
             f"TranslateTestCase_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
             __base__=(
-                query_model,
-                answer_model,
-                TranslateTestCase[query_model, answer_model],
+                query_cls,
+                answer_cls,
+                TranslateTestCase[query_cls, answer_cls],
             ),
         )
 

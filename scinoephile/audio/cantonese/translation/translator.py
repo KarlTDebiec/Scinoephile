@@ -85,12 +85,14 @@ class Translator:
     def __call__(
         self,
         query: Query,
+        answer_cls: type[Answer],
         test_case_cls: type[TranslateTestCase],
     ) -> Answer:
         """Query LLM.
 
         Arguments:
             query: Query for LLM
+            answer_cls: Class of answer to return
             test_case_cls: Class of test case to return
         Returns:
             LLM's answer
@@ -102,7 +104,7 @@ class Translator:
         if cache_path is not None and cache_path.exists():
             debug(f"Loaded from cache: {cache_path}")
             with cache_path.open("r", encoding="utf-8") as f:
-                answer = test_case_cls.answer_cls.model_validate(json.load(f))
+                answer = answer_cls.model_validate(json.load(f))
                 if self.print_test_case:
                     test_case = test_case_cls.from_query_and_answer(query, answer)
                     self._test_case_log[test_case.query.query_key] = test_case
@@ -118,7 +120,7 @@ class Translator:
             "\nYour response must be a JSON object with the following structure:\n"
         )
         system_prompt += json.dumps(
-            self.get_answer_example(test_case_cls.answer_cls).model_dump(),
+            self.get_answer_example(answer_cls).model_dump(),
             indent=4,
             ensure_ascii=False,
         )
@@ -135,7 +137,7 @@ class Translator:
                     messages=messages,
                     temperature=0,
                     seed=0,
-                    response_format=test_case_cls.answer_cls,
+                    response_format=answer_cls,
                 )
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
@@ -145,7 +147,7 @@ class Translator:
 
             # Validate answer
             try:
-                answer = test_case_cls.answer_cls.model_validate_json(content)
+                answer = answer_cls.model_validate_json(content)
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
