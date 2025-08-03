@@ -615,6 +615,7 @@ distribute_test_cases_block_19 = [
         yuewen_to_distribute="我唔食呀",
         one_yuewen_to_append="我唔食呀",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="真的吗？",
@@ -624,6 +625,7 @@ distribute_test_cases_block_19 = [
         yuewen_to_distribute="真嘅",
         one_yuewen_to_append="真嘅",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_19
 distribute_test_cases_block_20 = [

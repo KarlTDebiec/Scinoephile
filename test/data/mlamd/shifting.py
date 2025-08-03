@@ -2594,6 +2594,7 @@ shift_test_cases_block_19 = [
         two_yuewen="妈妈我唔想食药水呀",
         one_yuewen_shifted="冇嘢吖嘛快啲食埋啲药水佢先啦",
         two_yuewen_shifted="妈妈我唔想食药水呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="妈妈我不想喝药水",
@@ -2602,6 +2603,7 @@ shift_test_cases_block_19 = [
         two_yuewen="唔好捞妈妈我唔食呀",
         one_yuewen_shifted="妈妈我唔想食药水呀",
         two_yuewen_shifted="唔好捞妈妈我唔食呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="不要呀妈妈，我不喝呀",
@@ -2610,6 +2612,7 @@ shift_test_cases_block_19 = [
         two_yuewen="我唔食士多啤梨药水呀",
         one_yuewen_shifted="唔好捞妈妈我唔食呀",
         two_yuewen_shifted="我唔食士多啤梨药水呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="我不喝士多啤梨药水呀！",
@@ -2618,6 +2621,7 @@ shift_test_cases_block_19 = [
         two_yuewen="唔好喊啦唔食药唔会好㗎",
         one_yuewen_shifted="我唔食士多啤梨药水呀",
         two_yuewen_shifted="唔好喊啦唔食药唔会好㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="别哭了，不喝药水病不会好的",
@@ -2626,6 +2630,7 @@ shift_test_cases_block_19 = [
         two_yuewen="乖乖啲病好咗妈妈大理马尔代夫",
         one_yuewen_shifted="唔好喊啦唔食药唔会好㗎",
         two_yuewen_shifted="乖乖啲病好咗妈妈大理马尔代夫",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="乖乖，病好了妈妈带你去马尔代夫",
@@ -2634,6 +2639,7 @@ shift_test_cases_block_19 = [
         two_yuewen="真嘅",
         one_yuewen_shifted="乖乖啲病好咗妈妈大理马尔代夫",
         two_yuewen_shifted="真嘅",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="真的吗？",
@@ -2642,6 +2648,7 @@ shift_test_cases_block_19 = [
         two_yuewen="妈妈几时呃过你呀",
         one_yuewen_shifted="真嘅",
         two_yuewen_shifted="妈妈几时呃过你呀",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="妈妈什么时候骗过你？",
@@ -2650,6 +2657,7 @@ shift_test_cases_block_19 = [
         two_yuewen="乖食埋啲药水先啦",
         one_yuewen_shifted="妈妈几时呃过你呀",
         two_yuewen_shifted="乖食埋啲药水先啦",
+        verified=True,
     ),
 ]  # shift_test_cases_block_19
 shift_test_cases_block_20 = [
