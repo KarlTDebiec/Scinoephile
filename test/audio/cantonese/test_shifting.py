@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_shift_test_cases  # noqa: F401
 def shifter_few_shot() -> Shifter:
     """LLMQueryer with few-shot examples."""
     return Shifter(
-        prompt_test_cases=[m for m in mlamd_shift_test_cases if m.prompt],
+        prompt_test_cases=[tc for tc in mlamd_shift_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 

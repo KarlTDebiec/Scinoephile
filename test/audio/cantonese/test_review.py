@@ -17,7 +17,7 @@ from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
 def reviewer_few_shot() -> Reviewer:
     """LLMQueryer with few-shot examples."""
     return Reviewer(
-        prompt_test_cases=[m for m in mlamd_review_test_cases if m.prompt],
+        prompt_test_cases=[tc for tc in mlamd_review_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
