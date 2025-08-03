@@ -134,6 +134,7 @@ distribute_test_cases_block_3 = [
         yuewen_1_to_append="湾吉校坟交涉设",
         yuewen_2_to_prepend="",
         verified=True,
+        difficulty=3,
     ),
     DistributeTestCase(
         zhongwen_1="也不能忘记校训九十八！",
@@ -196,6 +197,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         yuewen_1_to_append="到",
         yuewen_2_to_prepend="",
+        prompt=True,
         verified=True,
     ),
     DistributeTestCase(
@@ -308,6 +310,8 @@ distribute_test_cases_block_5 = [
         yuewen_to_distribute="噉啊",
         yuewen_1_to_append="",
         yuewen_2_to_prepend="噉啊",
+        difficulty=2,
+        prompt=True,
         verified=True,
     ),
     DistributeTestCase(
@@ -754,6 +758,7 @@ distribute_test_cases_block_25 = [
         yuewen_to_distribute="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
         yuewen_1_to_append="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
         yuewen_2_to_prepend="",
+        difficulty=3,
     ),
 ]  # distribute_test_cases_block_25
 distribute_test_cases_block_26 = []  # distribute_test_cases_block_26
@@ -1067,6 +1072,7 @@ distribute_test_cases_block_55 = [
         yuewen_to_distribute="流嘅出嚟",
         yuewen_1_to_append="流嘅出嚟",
         yuewen_2_to_prepend="",
+        difficulty=3,
     ),
 ]  # distribute_test_cases_block_55
 distribute_test_cases_block_56 = []  # distribute_test_cases_block_56

@@ -18,8 +18,8 @@ class DistributeQuery(Query):
     yuewen_2_end: str = Field(..., description="Known 粤文 end of subtitle 1.")
     yuewen_to_distribute: str = Field(
         ...,
-        description="粤文 to distribute, with start appended to 粤文 subtitle 1 and end "
-        "prepended to 粤文 subtitle 2.",
+        description="粤文 to distribute, with start appended to 粤文 subtitle 1 and "
+        "end prepended to 粤文 subtitle 2.",
     )
 
     @model_validator(mode="after")
