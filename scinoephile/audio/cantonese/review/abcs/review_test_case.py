@@ -45,14 +45,14 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
         query_cls: type[Query] | None = None,
         answer_cls: type[Answer] | None = None,
     ) -> type[ReviewTestCase[Query, Answer]]:
-        """Get test case class for translation of Cantonese audio.
+        """Get test case class for review of Cantonese audio.
 
         Arguments:
             size: Number of 中文 subtitles
             query_cls: Optional query model, if not provided it will be created
             answer_cls: Optional answer model, if not provided it will be created
         Returns:
-            TranslateTestCase type with appropriate query and answer models
+            ReviewTestCase type with appropriate query and answer models
         Raises:
             ScinoephileError: If missing indices are out of range
         """
@@ -118,11 +118,6 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
     @model_validator(mode="after")
     def validate_test_case(self) -> ReviewTestCase:
         """Ensure query and answer are consistent with one another."""
-        # For every field named yuewen_revised_#, if the value is not an empty string,
-        # 1. Ensure that yuewen_# is different from yuewen_revised_#.
-        # 2. ensure that the corresponding note_# field is not empty.
-        # For every field named note_#, if the value is not an empty string,
-        # ensure that the corresponding yuewen_revised_# field is not empty.
         for idx in range(1, self.size + 1):
             yuewen_revised = getattr(self, f"yuewen_revised_{idx}")
             yuewen = getattr(self, f"yuewen_{idx}")

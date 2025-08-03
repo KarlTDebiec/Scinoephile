@@ -21,7 +21,7 @@ class Reviewer[TQuery: Query, TAnswer: Answer, TTestCase: ReviewTestCase](
         return """
         You are a helpful assistant that performs final review of the 粤文 transcription
         of spoken Cantonese.
-        Eacg 粤文 text has already been proofed individually against its paired 中文
+        Each 粤文 text has already been proofed individually against its paired 中文
         text, and any discrepancies apparent within that pairing have been resolved.
         Your focus is on resolving issues in the 粤文 text that may not have been
         apparent within its individual pairing, but which may be apparent when the

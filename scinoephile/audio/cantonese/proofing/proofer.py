@@ -41,7 +41,7 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
         临盆).
         If there is truly zero correspondence between the 粤文 and 中文, indicating a
-        complete transcription failure, return empty string for the 粤文 and a note 
+        complete transcription failure, return empty string for the 粤文 and a note
         explaining the lack of correspondence.
 
         Remember:
