@@ -27,7 +27,7 @@ class TranslateTestCase[TQuery: Query, TAnswer: Answer](
             for s in self.answer_fields
             if s.startswith("yuewen_")
         ]
-        return tuple([i for i in range(self.size) if i not in yw_idxs])
+        return tuple(yw_idxs)
 
     @cached_property
     def size(self) -> int:
