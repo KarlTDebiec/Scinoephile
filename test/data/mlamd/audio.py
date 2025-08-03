@@ -19,6 +19,7 @@ from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import Shifter
 from scinoephile.audio.cantonese.translation import Translator
+from scinoephile.audio.cleanup import extract_vocals_from_segment
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_hanzi_converted,
@@ -46,7 +47,14 @@ if __name__ == "__main__":
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
 
     # 粤文
-    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    # yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    # for i, block in enumerate(yuewen.blocks):
+    #     print(f"Block {i} ({block.start_idx} - {block.end_idx})")
+    #     new_audio = extract_vocals_from_segment(block.audio)
+    #     block.audio = new_audio
+    # yuewen.save(test_output_dir / "yue-Hans_audio_cleaned")
+    # exit()
+    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio_cleaned")
     assert len(zhongwen.blocks) == len(yuewen.blocks)
 
     # Utilities
@@ -109,7 +117,7 @@ if __name__ == "__main__":
         update = True
 
         # Transcribe audio
-        segments = transcriber(block.audio)
+        segments = transcriber(extract_vocals_from_segment(block.audio))
 
         # Split segments into more segments
         split_segments = []

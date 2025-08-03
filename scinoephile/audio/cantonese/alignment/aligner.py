@@ -160,7 +160,7 @@ class Aligner:
         zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
 
         # Case: 粤文 overlaps with nothing
-        # Action: just remove it
+        # Action: Just remove it
         if len(zw_idxs) == 0:
             yw = AudioSeries(audio=alignment.yuewen.audio)
             yw.events = (
@@ -171,12 +171,15 @@ class Aligner:
             return
 
         # Case: 粤文 overlaps with more than 2 中文
-        # Action: Raise; this has not yet been encountered
+        # Action: Just remove it
         if len(zw_idxs) != 2:
-            raise ScinoephileError(
-                f"Situation not supported: 粤文 subtitle {yw_idx} overlaps with "
-                f"{len(zw_idxs)} sync groups: {zw_idxs.tolist()}.\n{alignment}"
+            yw = AudioSeries(audio=alignment.yuewen.audio)
+            yw.events = (
+                alignment.yuewen.events[:yw_idx] + alignment.yuewen.events[yw_idx + 1 :]
             )
+            alignment.yuewen = yw
+            alignment._sync_groups_override = None
+            return
 
         # Case: 粤文 overlaps with two sync groups
         # Action: Query to distribute 粤文 between sync groups
