@@ -174,6 +174,8 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_20="校长早晨！",
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
+    prompt=True,
+    verified=True,
 )  # translate_test_case_block_4
 translate_test_case_block_5 = None  # translate_test_case_block_5
 translate_test_case_block_6 = None  # translate_test_case_block_6
@@ -272,6 +274,7 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     yuewen_19="座落于印度洋嘅世外桃源",
     yuewen_1="校长早晨！",
     yuewen_2="校长再见！",
+    verified=True,
 )  # translate_test_case_block_16
 translate_test_case_block_17 = None  # translate_test_case_block_17
 translate_test_case_block_18 = None  # translate_test_case_block_18

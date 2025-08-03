@@ -16,6 +16,7 @@ from scinoephile.testing import test_data_root
 from test.data.mlamd.distribution import mlamd_distribute_test_cases
 from test.data.mlamd.merging import mlamd_merge_test_cases
 from test.data.mlamd.proofing import mlamd_proof_test_cases
+from test.data.mlamd.review import mlamd_review_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
 from test.data.mlamd.translation import mlamd_translate_test_cases
 
@@ -113,6 +114,7 @@ ___all__ = [
     "mlamd_merge_test_cases",
     "mlamd_proof_test_cases",
     "mlamd_translate_test_cases",
+    "mlamd_review_test_cases",
 ]
 
 if __name__ == "__main__":
