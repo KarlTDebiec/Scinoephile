@@ -10,13 +10,11 @@ from functools import cached_property
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, DynamicTestCase, Query
+from scinoephile.core.abcs import Answer, Query, TestCase
 from scinoephile.core.models import format_field
 
 
-class TranslateTestCase[TQuery: Query, TAnswer: Answer](
-    DynamicTestCase[TQuery, TAnswer], ABC
-):
+class TranslateTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], ABC):
     """Abstract base class for Cantonese audio translation test cases."""
 
     @cached_property

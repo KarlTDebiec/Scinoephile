@@ -23,8 +23,8 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
     def answer_example(self) -> DistributeAnswer:
         """Example answer."""
         return DistributeAnswer(
-            one_yuewen_to_append="粤文 one to append",
-            two_yuewen_to_prepend="粤文 text two to prepend",
+            one_yuewen_to_append="粤文 to append to 粤文 text one",
+            two_yuewen_to_prepend="粤文 to prepend to 粤文 text two",
         )
 
     @cached_property

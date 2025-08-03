@@ -10,13 +10,11 @@ from functools import cached_property
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, DynamicTestCase, Query
+from scinoephile.core.abcs import Answer, Query, TestCase
 from scinoephile.core.models import format_field
 
 
-class ReviewTestCase[TQuery: Query, TAnswer: Answer](
-    DynamicTestCase[TQuery, TAnswer], ABC
-):
+class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], ABC):
     """Abstract base class for Cantonese audio review test cases."""
 
     @cached_property
@@ -50,30 +48,30 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](
     def get_test_case_cls(
         cls,
         size: int,
-        query_model: type[Query] | None = None,
-        answer_model: type[Answer] | None = None,
+        query_cls: type[Query] | None = None,
+        answer_cls: type[Answer] | None = None,
     ) -> type[ReviewTestCase[Query, Answer]]:
         """Get test case class for translation of Cantonese audio.
 
         Arguments:
             size: Number of 中文 subtitles
-            query_model: Optional query model, if not provided it will be created
-            answer_model: Optional answer model, if not provided it will be created
+            query_cls: Optional query model, if not provided it will be created
+            answer_cls: Optional answer model, if not provided it will be created
         Returns:
             TranslateTestCase type with appropriate query and answer models
         Raises:
             ScinoephileError: If missing indices are out of range
         """
-        if query_model is None:
-            query_model = cls.get_query_cls(size)
-        if answer_model is None:
-            answer_model = cls.get_answer_cls(size)
+        if query_cls is None:
+            query_cls = cls.get_query_cls(size)
+        if answer_cls is None:
+            answer_cls = cls.get_answer_cls(size)
         return create_model(
             f"ReviewTestCase_{size}",
             __base__=(
-                query_model,
-                answer_model,
-                ReviewTestCase[query_model, answer_model],
+                query_cls,
+                answer_cls,
+                ReviewTestCase[query_cls, answer_cls],
             ),
         )
 
