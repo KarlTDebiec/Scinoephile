@@ -9,7 +9,6 @@ from functools import cached_property
 
 from pydantic import Field, create_model
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer, Query, TestCase
 from scinoephile.core.models import format_field
 
@@ -30,11 +29,6 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
     @cached_property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
-        if self.subclass_creation_function is None:
-            raise ScinoephileError(
-                "Preparation of source string for this class requires "
-                "subclass_creation_function to be set at the time of creation."
-            )
         lines = (
             [f"{ReviewTestCase.__name__}.get_test_case_cls({self.size})("]
             + [format_field(f, getattr(self, f)) for f in self.query_fields]

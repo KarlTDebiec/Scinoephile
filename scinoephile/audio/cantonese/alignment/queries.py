@@ -240,6 +240,43 @@ def get_proof_query(
     return ProofQuery(zhongwen=zhongwen, yuewen=yuewen)
 
 
+def get_review_query(alignment: Alignment, query_cls: type[Query]) -> Query:
+    """Get review query for a nascent Cantonese alignment.
+
+    Arguments:
+        alignment: Nascent Cantonese alignment
+        query_cls: Query class to instantiate
+    Returns:
+        Query instance
+    Raises:
+        ScinoephileError: If sync groups are malformed
+    """
+    if not issubclass(query_cls, Query):
+        raise ScinoephileError("query_cls must be a subclass of Query.")
+
+    kwargs = {}
+    for sg in alignment.sync_groups:
+        # Get 中文
+        zw_idxs = sg[0]
+        if len(zw_idxs) != 1:
+            raise ScinoephileError(
+                f"Sync group {sg} has {len(zw_idxs)} 中文 subs, expected 1."
+            )
+        zw_idx = zw_idxs[0]
+        kwargs[f"zhongwen_{zw_idx + 1}"] = alignment.zhongwen[zw_idx].text
+
+        # Get 粤文
+        yw_idxs = sg[1]
+        if len(yw_idxs) != 1:
+            raise ScinoephileError(
+                f"Sync group {sg} has {len(yw_idxs)} 粤文 subs, expected 1."
+            )
+        yw_idx = yw_idxs[0]
+        kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
+
+    return query_cls(**kwargs)
+
+
 def get_translate_query(alignment: Alignment, query_cls: type[Query]) -> Query:
     """Get translation query for a nascent Cantonese alignment.
 

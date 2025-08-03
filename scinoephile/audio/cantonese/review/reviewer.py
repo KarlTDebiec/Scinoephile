@@ -25,11 +25,15 @@ class Reviewer[TQuery: Query, TAnswer: Answer, TTestCase: ReviewTestCase](
         """Example answer."""
         answer_values = {}
         for key in answer_cls.model_fields.keys():
-            kind, idx = key.split("_")
+            kind, idx = key.rsplit("_", 1)
             if kind == "yuewen":
                 answer_values[key] = (
-                    f"粤文 text {idx} reviewed based on query's 中文 text {idx}"
+                    f"粤文 text {idx} revised based on query's 中文 text {idx}, "
+                    f"or an empty string if no revision is needed."
                 )
             else:
-                answer_values[key] = f"Note concerning revisions to 粤文 text {idx}"
+                answer_values[key] = (
+                    f"Note concerning revisions to 粤文 text {idx}, "
+                    f"only if any revisions were made."
+                )
         return answer_cls(**answer_values)

@@ -116,7 +116,7 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC
 
         # Query provider
         answer: Answer | None = None
-        test_case: TranslateTestCase | None = None
+        test_case: TTestCase | None = None
 
         system_prompt = self.system_prompt
         system_prompt += (

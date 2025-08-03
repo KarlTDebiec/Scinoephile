@@ -16,6 +16,7 @@ from scinoephile.audio.cantonese.alignment.testing import (
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
+from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import Shifter
 from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.audio.transcription import (
@@ -79,12 +80,17 @@ if __name__ == "__main__":
         print_test_case=True,
         cache_dir_path=test_data_root / "cache",
     )
+    reviewer = Reviewer(
+        print_test_case=True,
+        cache_dir_path=test_data_root / "cache",
+    )
     aligner = Aligner(
         distributor=distributor,
         shifter=shifter,
         merger=merger,
         proofer=proofer,
         translator=translator,
+        reviewer=reviewer,
     )
 
     all_series = []
@@ -92,7 +98,7 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 16:
+        if i > 0:
             continue
         update = True
 
