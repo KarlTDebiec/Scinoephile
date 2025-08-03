@@ -10,8 +10,8 @@ from scinoephile.audio import (
 )
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import (
+    update_dynamic_test_cases,
     update_test_cases,
-    update_translation_test_cases,
 )
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 0:
+        if i > 16:
             continue
         update = True
 
@@ -153,11 +153,16 @@ if __name__ == "__main__":
                 proofer,
             )
             if translator.test_case_log:
-                update_translation_test_cases(
+                update_dynamic_test_cases(
                     test_data_root / "mlamd" / "translation.py",
                     f"translate_test_case_block_{i}",
                     translator,
                 )
+            update_dynamic_test_cases(
+                test_data_root / "mlamd" / "review.py",
+                f"review_test_case_block_{i}",
+                reviewer,
+            )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")
