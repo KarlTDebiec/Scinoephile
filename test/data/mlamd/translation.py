@@ -50,10 +50,10 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_22="交！",
     zhongwen_23="太好了！大家去上堂吧",
     yuewen_23="哎，好在！噉大家可以返去上堂喇",
-    yuewen_1="〝鹅满都快焗到只耳仔痛晒⋯〞",
-    yuewen_2="〝鹅闷日日都对住个窗玩！〞",
-    yuewen_3="〝鹅哋喺壳度练习，鹅闷就胀晒上嚟⋯〞",
-    yuewen_4="〝鹅闷就系春天嘅化身！〞",
+    yuewen_1="〝我只耳仔好痛呀⋯〞",
+    yuewen_2="〝我日日都望住个窗！〞",
+    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
+    yuewen_4="〝我哋就系春天嘅花！〞",
     yuewen_13="蛋挞！蛋挞！",
     yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
     yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
@@ -273,6 +273,7 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     yuewen_19="座落于印度洋嘅世外桃源",
     yuewen_1="校长早晨！",
     yuewen_2="校长再见！",
+    difficulty=2,
     prompt=True,
     verified=True,
 )  # translate_test_case_block_16
@@ -336,6 +337,7 @@ mlamd_translate_test_cases: list[TranslateTestCase] = [
     translate_test_case_block_3,
     translate_test_case_block_4,
     translate_test_case_block_12,
+    translate_test_case_block_16,
 ]
 """MLAMD 粤文 translation test cases."""
 
