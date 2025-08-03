@@ -18,7 +18,21 @@ class Reviewer[TQuery: Query, TAnswer: Answer, TTestCase: ReviewTestCase](
     @cached_property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
-        return "Review the 粤文 texts based on the corresponding 中文."
+        return """
+        You are a helpful assistant that performs final review of the 粤文 transcription
+        of spoken Cantonese based on the corresponding 中文 text. The 粤文 text has
+        already been aligned with the 中文 text, proofed once, and translated where
+        omissions were found.
+        You are to provide revised 粤文 text only if you notice any additional errors in
+        the 粤文 text that were not caught in the previous steps.
+        You are not reviewer for quality of writing, grammar, or style, only for
+        correctness of the 粤文 transcription.
+        If no revisions are are needed to a particular 粤文 text, return an empty string
+        for that text.
+        If revisions are needed, return the full revised 粤文 text, and include a note
+        describing in English the changes made.
+        If no revisions are needed return an empty string for the note.
+        """
 
     @staticmethod
     def get_answer_example(answer_cls: type[TAnswer]) -> TAnswer:
@@ -29,11 +43,11 @@ class Reviewer[TQuery: Query, TAnswer: Answer, TTestCase: ReviewTestCase](
             if kind == "yuewen":
                 answer_values[key] = (
                     f"粤文 text {idx} revised based on query's 中文 text {idx}, "
-                    f"or an empty string if no revision is needed."
+                    f"or an empty string if no revision is necessary."
                 )
             else:
                 answer_values[key] = (
                     f"Note concerning revisions to 粤文 text {idx}, "
-                    f"only if any revisions were made."
+                    f"or an empty string if no revision is necessary."
                 )
         return answer_cls(**answer_values)

@@ -7,7 +7,7 @@ from __future__ import annotations
 from abc import ABC
 from functools import cached_property
 
-from pydantic import Field, create_model
+from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Answer, Query, TestCase
 from scinoephile.core.models import format_field
@@ -114,3 +114,36 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
                 Field(..., description=f"粤文 text {zw_idx + 1}"),
             )
         return create_model(f"ReviewQuery_{size}", __base__=Query, **query_fields)
+
+    @model_validator(mode="after")
+    def validate_test_case(self) -> ReviewTestCase:
+        """Ensure query and answer are consistent with one another."""
+        # For every field named yuewen_revised_#, if the value is not an empty string,
+        # 1. Ensure that yuewen_# is different from yuewen_revised_#.
+        # 2. ensure that the corresponding note_# field is not empty.
+        # For every field named note_#, if the value is not an empty string,
+        # ensure that the corresponding yuewen_revised_# field is not empty.
+        for idx in range(1, self.size + 1):
+            yuewen_revised = getattr(self, f"yuewen_revised_{idx}")
+            yuewen = getattr(self, f"yuewen_{idx}")
+            note = getattr(self, f"note_{idx}")
+            if yuewen_revised != "":
+                if yuewen_revised == yuewen:
+                    raise ValueError(
+                        f"Answer's revised 粤文 text {idx} is not modified relative to "
+                        f"query's 粤文 text {idx}, if no revision is needed an empty "
+                        "string must be provided."
+                    )
+                if note == "":
+                    raise ValueError(
+                        f"Answer's 粤文 text {idx} is modified relative to query's 粤文 "
+                        f"text {idx}, but no note is provided, if revision is needed "
+                        f"a note must be provided."
+                    )
+            elif note != "":
+                raise ValueError(
+                    f"Answer's 粤文 text {idx} is not modified relative to query's 粤文 "
+                    f"text {idx}, but a note is provided, if no revisions are needed "
+                    f"an empty string must be provided."
+                )
+        return self

@@ -41,6 +41,6 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         if self.yuewen != self.yuewen_proofread and not self.note:
             raise ValueError(
                 "Answer's proofed 粤文 text is modified relative to query's 粤文 "
-                "text, not no note is provided"
+                "text, but no note is provided."
             )
         return self
