@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "audioop-lts>=0.2.1",
+    "demucs>=4.0.1",
     "ffmpeg-python>=0.2.0",
     "jieba>=0.42.1",
     "numba>=0.61.0",
@@ -24,6 +25,7 @@ dependencies = [
     "pypinyin>=0.53.0",
     "pysubs2>=1.8.0",
     "setuptools>=76.0.0",
+    "soundfile>=0.13.1",
     "torch>=2.7.1",
     "torchaudio>=2.7.1",
     "transformers>=4.53.1",
