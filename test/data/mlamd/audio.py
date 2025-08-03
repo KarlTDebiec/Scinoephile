@@ -19,6 +19,7 @@ from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import Shifter
 from scinoephile.audio.cantonese.translation import Translator
+from scinoephile.audio.cleanup import extract_vocals_from_segment
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_hanzi_converted,
@@ -116,7 +117,7 @@ if __name__ == "__main__":
         update = True
 
         # Transcribe audio
-        segments = transcriber(block.audio)
+        segments = transcriber(extract_vocals_from_segment(block.audio))
 
         # Split segments into more segments
         split_segments = []
