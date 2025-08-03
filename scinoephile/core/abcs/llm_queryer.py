@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 from functools import cached_property
 from logging import debug, error, info
 from pathlib import Path
+from textwrap import dedent
 
 from pydantic import ValidationError
 
@@ -109,7 +110,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """String representation of all test cases in the log."""
         if not self.prompt_test_cases:
             return ""
-        few_shot = "Here are some examples of queries and expected answers:"
+        few_shot = "\n\nHere are some examples of queries and expected answers:"
         for test_case in self.prompt_test_cases.values():
             few_shot += "\n\nExample query:\n"
             few_shot += json.dumps(
@@ -288,10 +289,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         Returns:
             System prompt for the given answer class
         """
-        system_prompt = self.base_system_prompt
+        system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
         system_prompt += self.prompt_test_cases_few_shot_str
         system_prompt += (
-            "\nYour response must be a JSON object with the following structure:\n"
+            "\n\nYour response must be a JSON object with the following structure:\n"
         )
         system_prompt += json.dumps(
             answer_example.model_dump(), indent=4, ensure_ascii=False
