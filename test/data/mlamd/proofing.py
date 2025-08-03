@@ -2106,18 +2106,21 @@ proof_test_cases_block_17 = [
         yuewen="喂，衰仔啊，快啲起身返学喇",
         yuewen_proofread="喂，衰仔啊，快啲起身返学喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="咦？",
         yuewen="咦？",
         yuewen_proofread="咦？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈！",
         yuewen="妈妈！",
         yuewen_proofread="妈妈！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_17
 proof_test_cases_block_18 = [
@@ -2126,51 +2129,57 @@ proof_test_cases_block_18 = [
         yuewen="开啲药过佢食就冇事㗎喇",
         yuewen_proofread="开啲药过佢食就冇事㗎喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="医生，吃了药会不会有那个什么的？",
-        yuewen="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
-        yuewen_proofread="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
+        yuewen="医生啊，啲药食咗会唔会有嗰啲咩㗎？",
+        yuewen_proofread="医生啊，啲药食咗会唔会有嗰啲咩㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不会！",
         yuewen="唔会！",
         yuewen_proofread="唔会！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么吃药用不用那个什么的？",
         yuewen="噉佢食药使唔使咩啊？",
         yuewen_proofread="噉佢食药使唔使咩啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不用！给他打口针吧！",
         yuewen="唔使！同佢打多支针添呢！",
         yuewen_proofread="唔使！同佢打口针啦！",
-        note="Corrected '打多支针添呢' to '打口针啦' as '打口针' is the correct term "
-        "for an injection in the mouth, matching the meaning of the "
-        "中文, while '打多支针添呢' is likely a mishearing.",
+        note="",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么？得打针？",
         yuewen="吓？要打针啊？",
         yuewen_proofread="吓？要打针啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="他最怕打针的了",
         yuewen="佢好怕打针㗎㖞",
         yuewen_proofread="佢好怕打针㗎㖞",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么他怕不怕死？",
         yuewen="噉佢怕唔怕死呀？",
         yuewen_proofread="噉佢怕唔怕死呀？",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_18
 proof_test_cases_block_19 = [

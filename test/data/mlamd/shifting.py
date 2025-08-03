@@ -2509,6 +2509,7 @@ shift_test_cases_block_17 = [
         two_yuewen="咦",
         one_yuewen_shifted="喂衰仔啊快啲起身返学喇",
         two_yuewen_shifted="咦",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="咦？",
@@ -2517,6 +2518,7 @@ shift_test_cases_block_17 = [
         two_yuewen="妈妈",
         one_yuewen_shifted="咦",
         two_yuewen_shifted="妈妈",
+        verified=True,
     ),
 ]  # shift_test_cases_block_17
 shift_test_cases_block_18 = [
@@ -2524,17 +2526,19 @@ shift_test_cases_block_18 = [
         one_zhongwen="开点药给他吃就没事了",
         one_yuewen="开啲药过佢食就冇事㗎喇",
         two_zhongwen="医生，吃了药会不会有那个什么的？",
-        two_yuewen="医生啊啲药食咗会唔会有𠮶啲咩㗎",
+        two_yuewen="医生啊啲药食咗会唔会有嗰啲咩㗎",
         one_yuewen_shifted="开啲药过佢食就冇事㗎喇",
-        two_yuewen_shifted="医生啊啲药食咗会唔会有𠮶啲咩㗎",
+        two_yuewen_shifted="医生啊啲药食咗会唔会有嗰啲咩㗎",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="医生，吃了药会不会有那个什么的？",
-        one_yuewen="医生啊啲药食咗会唔会有𠮶啲咩㗎",
+        one_yuewen="医生啊啲药食咗会唔会有嗰啲咩㗎",
         two_zhongwen="不会！",
         two_yuewen="唔会",
-        one_yuewen_shifted="医生啊啲药食咗会唔会有𠮶啲咩㗎",
+        one_yuewen_shifted="医生啊啲药食咗会唔会有嗰啲咩㗎",
         two_yuewen_shifted="唔会",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="不会！",
@@ -2543,6 +2547,7 @@ shift_test_cases_block_18 = [
         two_yuewen="噉佢食药使唔使咩啊",
         one_yuewen_shifted="唔会",
         two_yuewen_shifted="噉佢食药使唔使咩啊",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="那么吃药用不用那个什么的？",
@@ -2551,8 +2556,7 @@ shift_test_cases_block_18 = [
         two_yuewen="唔使同佢打多支针添呢",
         one_yuewen_shifted="噉佢食药使唔使咩啊",
         two_yuewen_shifted="唔使同佢打多支针添呢",
-        prompt=True,
-        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="不用！给他打口针吧！",
@@ -2561,6 +2565,7 @@ shift_test_cases_block_18 = [
         two_yuewen="吓要打针啊",
         one_yuewen_shifted="唔使同佢打多支针添呢",
         two_yuewen_shifted="吓要打针啊",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="怎么？得打针？",
@@ -2569,6 +2574,7 @@ shift_test_cases_block_18 = [
         two_yuewen="佢好怕打针㗎㖞",
         one_yuewen_shifted="吓要打针啊",
         two_yuewen_shifted="佢好怕打针㗎㖞",
+        verified=True,
     ),
     ShiftTestCase(
         one_zhongwen="他最怕打针的了",
@@ -2577,6 +2583,7 @@ shift_test_cases_block_18 = [
         two_yuewen="噉佢怕唔怕死呀",
         one_yuewen_shifted="佢好怕打针㗎㖞",
         two_yuewen_shifted="噉佢怕唔怕死呀",
+        verified=True,
     ),
 ]  # shift_test_cases_block_18
 shift_test_cases_block_19 = [
