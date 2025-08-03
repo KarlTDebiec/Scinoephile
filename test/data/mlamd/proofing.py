@@ -2205,7 +2205,8 @@ proof_test_cases_block_19 = [
         zhongwen="不要呀妈妈，我不喝呀",
         yuewen="唔好捞妈妈，我唔食呀",
         yuewen_proofread="唔好呀妈妈，我唔食呀",
-        note="",
+        note="Corrected '唔好捞' to '唔好呀' as '唔好捞' is likely a mishearing; "
+        "'唔好呀' matches the meaning of '不要呀' in the 中文.",
         difficulty=1,
         verified=True,
     ),
