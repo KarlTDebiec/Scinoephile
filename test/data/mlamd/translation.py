@@ -50,15 +50,15 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_22="交！",
     zhongwen_23="太好了！大家去上堂吧",
     yuewen_23="哎，好在！噉大家可以返去上堂喇",
-    yuewen_1="〝鹅满系快烙滴好耳痛⋯〞",
-    yuewen_2="〝鹅闷日日都要玩下个窗！〞",
-    yuewen_3="〝鹅哋喺壳度练习，鹅闷载升胀⋯〞",
-    yuewen_4="〝鹅闷系春天嘅化身！〞",
+    yuewen_1="鹅满系快烙滴好耳痛⋯",
+    yuewen_2="鹅闷日日都要对住个窗！",
+    yuewen_3="鹅哋喺壳度学习，鹅闷载升胀⋯",
+    yuewen_4="鹅闷系春天嘅化身！",
     yuewen_13="蛋挞！蛋挞！",
     yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
-    yuewen_15="唔记得校训九十七⋯唔记得校训九十七⋯",
-    yuewen_16="都唔可以唔记得校训九十八！",
-    yuewen_17="都唔可以唔记得校训九十八！",
+    yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
+    yuewen_16="都唔可以忘记校训九十八！",
+    yuewen_17="都唔可以忘记校训九十八！",
 )  # translate_test_case_block_3
 translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     55,
@@ -174,7 +174,6 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_20="校长早晨！",
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
-    prompt=True,
     verified=True,
 )  # translate_test_case_block_4
 translate_test_case_block_5 = None  # translate_test_case_block_5
@@ -272,8 +271,9 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     yuewen_18="嗰度蓝天白云，椰林树影，水清沙幼",
     zhongwen_19="座落于印度洋的世外桃源",
     yuewen_19="座落于印度洋嘅世外桃源",
-    yuewen_1="校长早晨！",
-    yuewen_2="校长再见！",
+    yuewen_1="校长早晨呀！",
+    yuewen_2="校长再见啦！",
+    prompt=True,
     verified=True,
 )  # translate_test_case_block_16
 translate_test_case_block_17 = None  # translate_test_case_block_17

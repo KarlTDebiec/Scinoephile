@@ -133,8 +133,8 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="湾吉校坟交涉设",
         yuewen_1_to_append="湾吉校坟交涉设",
         yuewen_2_to_prepend="",
-        verified=True,
         difficulty=3,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="也不能忘记校训九十八！",
@@ -197,6 +197,7 @@ distribute_test_cases_block_4 = [
         yuewen_to_distribute="到",
         yuewen_1_to_append="到",
         yuewen_2_to_prepend="",
+        difficulty=2,
         prompt=True,
         verified=True,
     ),
