@@ -2155,9 +2155,9 @@ proof_test_cases_block_18 = [
     ProofTestCase(
         zhongwen="不用！给他打口针吧！",
         yuewen="唔使！同佢打多支针添呢！",
-        yuewen_proofread="唔使！同佢打口针啦！",
+        yuewen_proofread="唔使！同佢打多支针添呢！",
         note="",
-        difficulty=1,
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
