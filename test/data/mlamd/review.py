@@ -482,8 +482,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="不过就有少少游魂嘅班主任Miss Chan",
-    note_5='Corrected "班主有Miss Chan" to "班主任Miss Chan" for proper '
-    "transcription of 'class teacher'.",
+    note_5="Corrected '班主有Miss Chan' to '班主任Miss Chan' for proper transcription of 'class teacher'.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",

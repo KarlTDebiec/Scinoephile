@@ -685,10 +685,10 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="就是有点游魂的Miss Chan",
         yuewen="不过就有少少失魂嘅班主有Miss Chan",
-        yuewen_proofread="不过就有少少游魂嘅班主有Miss Chan",
+        yuewen_proofread="不过就有少少游魂嘅班主任Miss Chan",
         note="Corrected '失魂' to '游魂' as '游魂' matches the meaning of '游魂' "
-        "in the 中文, while '失魂' is a likely mishearing.",
-        difficulty=1,
+        "in the 中文, while '失魂' is a likely mishearing; Corrected '班主有Miss Chan' to '班主任Miss Chan' for proper transcription of 'class teacher'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
