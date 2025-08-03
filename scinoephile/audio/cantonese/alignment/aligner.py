@@ -187,8 +187,8 @@ class Aligner:
             # TODO: Consider how this could be improved
             # TODO: Consider just deleting undistributable 粤文
             answer = DistributeAnswer(
-                one_yuewen_to_append=query.yuewen_to_distribute,
-                two_yuewen_to_prepend="",
+                yuewen_1_to_append=query.yuewen_to_distribute,
+                yuewen_2_to_prepend="",
             )
             test_case = query.to_test_case(answer)
             error(
@@ -200,12 +200,12 @@ class Aligner:
             )
 
         # If we only need to assign the 粤文 to one sync group, set override
-        if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
+        if answer.yuewen_1_to_append and not answer.yuewen_2_to_prepend:
             nascent_sync_groups = deepcopy(alignment.sync_groups)
             nascent_sync_groups[one_sg_idx][1].append(yw_idx)
             alignment._sync_groups_override = nascent_sync_groups
             return
-        if not answer.one_yuewen_to_append and answer.two_yuewen_to_prepend:
+        if not answer.yuewen_1_to_append and answer.yuewen_2_to_prepend:
             nascent_sync_groups = deepcopy(alignment.sync_groups)
             nascent_sync_groups[two_sg_idx][1].insert(0, yw_idx)
             alignment._sync_groups_override = nascent_sync_groups
@@ -213,7 +213,7 @@ class Aligner:
 
         # If we need to split the 粤文 text, we must then clear the override
         alignment.yuewen = get_series_with_sub_split_at_idx(
-            alignment.yuewen, yw_idx, len(answer.one_yuewen_to_append)
+            alignment.yuewen, yw_idx, len(answer.yuewen_1_to_append)
         )
         alignment._sync_groups_override = None
 

@@ -35,8 +35,8 @@ def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
         test_case: Query and expected answer
     """
     answer = queryer(test_case.query)
-    assert answer.one_yuewen_to_append == test_case.one_yuewen_to_append
-    assert answer.two_yuewen_to_prepend == test_case.two_yuewen_to_prepend
+    assert answer.yuewen_1_to_append == test_case.yuewen_1_to_append
+    assert answer.yuewen_2_to_prepend == test_case.yuewen_2_to_prepend
 
 
 @pytest.mark.parametrize(

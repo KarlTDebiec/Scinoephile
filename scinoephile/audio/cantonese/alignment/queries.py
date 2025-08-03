@@ -81,10 +81,10 @@ def get_distribute_query(
 
     # Return merge query
     return DistributeQuery(
-        one_zhongwen=one_zhongwen,
-        one_yuewen_start=one_yuewen_start,
-        two_zhongwen=two_zhongwen,
-        two_yuewen_end=two_yuewen_end,
+        zhongwen_1=one_zhongwen,
+        yuewen_1_start=one_yuewen_start,
+        zhongwen_2=two_zhongwen,
+        yuewen_2_end=two_yuewen_end,
         yuewen_to_distribute=yuewen_to_split,
     )
 
