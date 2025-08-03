@@ -74,7 +74,7 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
     @cached_property
     def system_prompt(self) -> str:
         """System prompt template."""
-        return self._get_system_prompt(self.answer_cls)
+        return self._get_system_prompt(self.answer_example)
 
     @cached_property
     def test_case_cls(self) -> type[TTestCase]:
