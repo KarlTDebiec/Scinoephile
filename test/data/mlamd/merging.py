@@ -1537,50 +1537,46 @@ merge_test_cases_block_17 = [
 ]  # merge_test_cases_block_17
 merge_test_cases_block_18 = [
     MergeTestCase(
-        zhongwen="开点药给他吃就没事了",
-        yuewen_to_merge=["开啲药过佢食就冇事㗎喇"],
-        yuewen_merged="开啲药过佢食就冇事㗎喇",
-    ),
-    MergeTestCase(
         zhongwen="医生，吃了药会不会有那个什么的？",
-        yuewen_to_merge=["医生啊", "啲药食咗会唔会有𠮶啲咩㗎"],
-        yuewen_merged="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
+        yuewen_to_merge=["医生啊", "啲药食咗会唔会有嗰啲咩㗎"],
+        yuewen_merged="医生啊，啲药食咗会唔会有嗰啲咩㗎？",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="不会！",
         yuewen_to_merge=["唔会"],
         yuewen_merged="唔会！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="那么吃药用不用那个什么的？",
         yuewen_to_merge=["噉佢食药使唔使咩啊"],
         yuewen_merged="噉佢食药使唔使咩啊？",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="不用！给他打口针吧！",
         yuewen_to_merge=["唔使", "同佢打多支针添呢"],
         yuewen_merged="唔使！同佢打多支针添呢！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="怎么？得打针？",
         yuewen_to_merge=["吓", "要打针啊"],
         yuewen_merged="吓？要打针啊？",
         difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="他最怕打针的了",
-        yuewen_to_merge=["佢好怕打针㗎㖞"],
-        yuewen_merged="佢好怕打针㗎㖞",
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="那么他怕不怕死？",
         yuewen_to_merge=["噉佢怕唔怕死呀"],
         yuewen_merged="噉佢怕唔怕死呀？",
         difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_18
 merge_test_cases_block_19 = [
@@ -1589,54 +1585,62 @@ merge_test_cases_block_19 = [
         yuewen_to_merge=["冇嘢吖嘛", "快啲食埋啲药水佢先啦"],
         yuewen_merged="冇嘢吖嘛？快啲食埋啲药水佢先啦！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="妈妈我不想喝药水",
         yuewen_to_merge=["妈妈", "我唔想食药水呀"],
-        yuewen_merged="妈妈，我唔想食药水呀",
-        difficulty=2,
+        yuewen_merged="妈妈我唔想食药水呀",
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="不要呀妈妈，我不喝呀",
         yuewen_to_merge=["唔好捞妈妈", "我唔食呀"],
         yuewen_merged="唔好捞妈妈，我唔食呀",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="我不喝士多啤梨药水呀！",
         yuewen_to_merge=["我唔食士多啤梨药水呀"],
         yuewen_merged="我唔食士多啤梨药水呀！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="别哭了，不喝药水病不会好的",
         yuewen_to_merge=["唔好喊啦", "唔食药唔会好㗎"],
         yuewen_merged="唔好喊啦，唔食药唔会好㗎",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="乖乖，病好了妈妈带你去马尔代夫",
         yuewen_to_merge=["乖乖啲", "病好咗", "妈妈大理马尔代夫"],
         yuewen_merged="乖乖啲，病好咗妈妈大理马尔代夫",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="真的吗？",
         yuewen_to_merge=["真嘅"],
         yuewen_merged="真嘅？",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="妈妈什么时候骗过你？",
         yuewen_to_merge=["妈妈几时呃过你呀"],
         yuewen_merged="妈妈几时呃过你呀？",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="乖，先把药水喝掉",
         yuewen_to_merge=["乖", "食埋啲药水先啦"],
         yuewen_merged="乖，食埋啲药水先啦",
         difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_19
 merge_test_cases_block_20 = [

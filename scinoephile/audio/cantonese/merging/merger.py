@@ -10,10 +10,10 @@ from typing import override
 from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
 from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
 from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Merger(LLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
+class Merger(FixedLLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
     """Merges transcribed 粤文 text based on corresponding 中文."""
 
     @cached_property

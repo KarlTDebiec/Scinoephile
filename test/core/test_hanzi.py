@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.hanzi import (
-    OpenCCConfig,  # noqa
+    OpenCCConfig,
     _get_hanzi_text_flattened,
     get_hanzi_cleaned,
     get_hanzi_converted,

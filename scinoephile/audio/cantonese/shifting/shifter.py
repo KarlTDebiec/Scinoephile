@@ -10,10 +10,10 @@ from typing import override
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
 from scinoephile.audio.cantonese.shifting.shift_test_case import ShiftTestCase
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Shifter(LLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
+class Shifter(FixedLLMQueryer[ShiftQuery, ShiftAnswer, ShiftTestCase]):
     """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
     @cached_property

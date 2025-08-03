@@ -10,12 +10,13 @@ from scinoephile.audio import (
 )
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import (
+    update_dynamic_test_cases,
     update_test_cases,
-    update_translation_test_cases,
 )
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
 from scinoephile.audio.cantonese.proofing import Proofer
+from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import Shifter
 from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.audio.transcription import (
@@ -52,31 +53,39 @@ if __name__ == "__main__":
         cache_dir_path=test_data_root / "cache",
     )
     distributor = Distributor(
-        examples=[m for m in mlamd_distribute_test_cases if m.prompt],
-        verified=[m for m in mlamd_distribute_test_cases if m.verified],
+        prompt_test_cases=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_distribute_test_cases if tc.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     shifter = Shifter(
-        examples=[m for m in mlamd_shift_test_cases if m.prompt],
-        verified=[m for m in mlamd_shift_test_cases if m.verified],
+        prompt_test_cases=[tc for tc in mlamd_shift_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_shift_test_cases if tc.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     merger = Merger(
-        examples=[m for m in mlamd_merge_test_cases if m.prompt],
-        verified=[m for m in mlamd_merge_test_cases if m.verified],
+        prompt_test_cases=[tc for tc in mlamd_merge_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_merge_test_cases if tc.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     proofer = Proofer(
-        examples=[m for m in mlamd_proof_test_cases if m.prompt],
-        verified=[m for m in mlamd_proof_test_cases if m.verified],
+        prompt_test_cases=[tc for tc in mlamd_proof_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_proof_test_cases if tc.verified],
         print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     translator = Translator(
         print_test_case=True,
+        examples=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
+        verified=[tc for tc in mlamd_distribute_test_cases if tc.verified],
+        cache_dir_path=test_data_root / "cache",
+    )
+    reviewer = Reviewer(
+        print_test_case=True,
+        examples=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
+        verified=[tc for tc in mlamd_distribute_test_cases if tc.verified],
         cache_dir_path=test_data_root / "cache",
     )
     aligner = Aligner(
@@ -85,6 +94,7 @@ if __name__ == "__main__":
         merger=merger,
         proofer=proofer,
         translator=translator,
+        reviewer=reviewer,
     )
 
     all_series = []
@@ -92,7 +102,7 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 16:
+        if i > 19:
             continue
         update = True
 
@@ -146,12 +156,17 @@ if __name__ == "__main__":
                 f"proof_test_cases_block_{i}",
                 proofer,
             )
-            if translator.test_case_log:
-                update_translation_test_cases(
+            if translator.encountered_test_cases:
+                update_dynamic_test_cases(
                     test_data_root / "mlamd" / "translation.py",
                     f"translate_test_case_block_{i}",
                     translator,
                 )
+            update_dynamic_test_cases(
+                test_data_root / "mlamd" / "review.py",
+                f"review_test_case_block_{i}",
+                reviewer,
+            )
 
     yuewen_series = get_concatenated_series(all_series)
     print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")

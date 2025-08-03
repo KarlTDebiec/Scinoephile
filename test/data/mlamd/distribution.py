@@ -581,6 +581,7 @@ distribute_test_cases_block_17 = [
         yuewen_to_distribute="咦",
         one_yuewen_to_append="咦",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_17
 distribute_test_cases_block_18 = [
@@ -589,9 +590,10 @@ distribute_test_cases_block_18 = [
         one_yuewen_start="医生啊",
         two_zhongwen="不会！",
         two_yuewen_end="唔会",
-        yuewen_to_distribute="啲药食咗会唔会有𠮶啲咩㗎",
-        one_yuewen_to_append="啲药食咗会唔会有𠮶啲咩㗎",
+        yuewen_to_distribute="啲药食咗会唔会有嗰啲咩㗎",
+        one_yuewen_to_append="啲药食咗会唔会有嗰啲咩㗎",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="那么吃药用不用那个什么的？",
@@ -601,6 +603,7 @@ distribute_test_cases_block_18 = [
         yuewen_to_distribute="噉佢食药使唔使咩啊",
         one_yuewen_to_append="噉佢食药使唔使咩啊",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_18
 distribute_test_cases_block_19 = [
@@ -612,6 +615,7 @@ distribute_test_cases_block_19 = [
         yuewen_to_distribute="我唔食呀",
         one_yuewen_to_append="我唔食呀",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         one_zhongwen="真的吗？",
@@ -621,6 +625,7 @@ distribute_test_cases_block_19 = [
         yuewen_to_distribute="真嘅",
         one_yuewen_to_append="真嘅",
         two_yuewen_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_19
 distribute_test_cases_block_20 = [

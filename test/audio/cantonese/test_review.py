@@ -1,34 +1,34 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.audio.cantonese.translation."""
+"""Tests of scinoephile.audio.cantonese.review."""
 
 from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.translation import Translator
-from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
+from scinoephile.audio.cantonese.review import Reviewer
+from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
-from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
+from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def translator_few_shot() -> Translator:
+def reviewer_few_shot() -> Reviewer:
     """LLMQueryer with few-shot examples."""
-    return Translator(
-        prompt_test_cases=[tc for tc in mlamd_translate_test_cases if tc.prompt],
+    return Reviewer(
+        prompt_test_cases=[tc for tc in mlamd_review_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def translator_zero_shot() -> Translator:
+def reviewer_zero_shot() -> Reviewer:
     """LLMQueryer with no examples."""
-    return Translator(cache_dir_path=test_data_root / "cache")
+    return Reviewer(cache_dir_path=test_data_root / "cache")
 
 
-def _test_translation(queryer: Translator, test_case: TranslateTestCase):
+def _test_review(queryer: Reviewer, test_case: ReviewTestCase):
     """Test.
 
     Arguments:
@@ -54,13 +54,13 @@ def _test_translation(queryer: Translator, test_case: TranslateTestCase):
 @pytest.mark.parametrize(
     "fixture_name",
     [
-        skip_if_ci(flaky())("translator_few_shot"),
-        # skip_if_ci(flaky())("translator_zero_shot"),
+        # skip_if_ci()("reviewer_few_shot"),
+        skip_if_ci(flaky())("reviewer_zero_shot"),
     ],
 )
-@pytest.mark.parametrize("test_case", mlamd_translate_test_cases)
-def test_translation_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
+@pytest.mark.parametrize("test_case", mlamd_review_test_cases)
+def test_review_mlamd(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ReviewTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -69,5 +69,5 @@ def test_translation_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    translator: Translator = request.getfixturevalue(fixture_name)
-    _test_translation(translator, test_case)
+    reviewer: Reviewer = request.getfixturevalue(fixture_name)
+    _test_review(reviewer, test_case)

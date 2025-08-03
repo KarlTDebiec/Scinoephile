@@ -16,17 +16,22 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.alignment.models import get_translate_models
+from scinoephile.audio.cantonese.alignment.models import (
+    get_review_models,
+    get_translate_models,
+)
 from scinoephile.audio.cantonese.alignment.queries import (
     get_distribute_query,
     get_merge_query,
     get_proof_query,
+    get_review_query,
     get_shift_query,
     get_translate_query,
 )
 from scinoephile.audio.cantonese.distribution import DistributeAnswer, Distributor
 from scinoephile.audio.cantonese.merging import MergeAnswer, Merger, MergeTestCase
 from scinoephile.audio.cantonese.proofing import Proofer
+from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import ShiftAnswer, Shifter, ShiftQuery
 from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.core import ScinoephileError
@@ -44,6 +49,7 @@ class Aligner:
         merger: Merger,
         proofer: Proofer,
         translator: Translator,
+        reviewer: Reviewer,
     ):
         """Initialize.
 
@@ -53,6 +59,7 @@ class Aligner:
             merger: Cantonese merger
             proofer: Cantonese proofer
             translator: Cantonese translator
+            reviewer: Cantonese reviewer
         """
         self.merger = merger
         """Merges transcribed 粤文 text based on corresponding 中文."""
@@ -64,6 +71,8 @@ class Aligner:
         """Distributes 粤文 text based on corresponding 中文."""
         self.translator = translator
         """Translates 粤文 text based on corresponding 中文."""
+        self.reviewer = reviewer
+        """Reviews 粤文 text based on corresponding 中文 subtitles."""
 
     def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
@@ -111,15 +120,17 @@ class Aligner:
             distribution_and_shifting_in_progress = self._shift(alignment)
             iteration += 1
 
-        # TODO: Identify partnerless 中文 subtitles and prompt LLM for translation
-
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
         self._merge(alignment)
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         self._proof(alignment)
 
+        # Translate 中文 subtitles for which no 粤文 was transcribed
         self._translate(alignment)
+
+        # Review 粤文 subtitles
+        self._review(alignment)
 
         # Return final alignment
         print(f"\nFINAL RESULT:\n{alignment}")
@@ -458,13 +469,17 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        translate_models = get_translate_models(alignment)
-        if translate_models is None:
+        # Get models
+        models = get_translate_models(alignment)
+        if models is None:
             return
-        query_cls, answer_cls, test_case_cls = translate_models
+        query_cls, answer_cls, test_case_cls = models
+
+        # Query for 粤文 translation
         query = get_translate_query(alignment, query_cls)
         answer = self.translator(query, answer_cls, test_case_cls)
 
+        # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
         for sg_idx, sg in enumerate(alignment.sync_groups):
@@ -491,6 +506,47 @@ class Aligner:
                 yw_text = getattr(answer, yw_key)
                 yw = deepcopy(zw)
                 yw.text = yw_text
+            nascent_yw.append(yw)
+            yw_idx = len(nascent_yw) - 1
+            nascent_sg.append(([zw_idx], [yw_idx]))
+        alignment.yuewen = nascent_yw
+        alignment._sync_groups_override = nascent_sg
+
+    def _review(self, alignment: Alignment):
+        """Review 粤文 subs.
+
+        Arguments:
+            alignment: Nascent alignment
+        """
+        models = get_review_models(alignment)
+        query_cls, answer_cls, test_case_cls = models
+
+        # Query for 粤文 review
+        query = get_review_query(alignment, query_cls)
+        answer = self.reviewer(query, answer_cls, test_case_cls)
+
+        # Update 粤文
+        nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
+        nascent_sg = []
+        for sg_idx, sg in enumerate(alignment.sync_groups):
+            # Get 中文
+            zw_idxs = sg[0]
+            if len(zw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
+                )
+            zw_idx = zw_idxs[0]
+
+            # Get 粤文
+            yw_idxs = sg[1]
+            if len(yw_idxs) != 1:
+                raise ScinoephileError(
+                    f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
+                )
+            yw_idx = yw_idxs[0]
+            yw = alignment.yuewen[yw_idx]
+            yw_key = f"yuewen_{zw_idx + 1}"
+            yw.text = getattr(answer, yw_key, yw.text)
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))

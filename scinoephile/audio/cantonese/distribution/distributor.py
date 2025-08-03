@@ -12,10 +12,12 @@ from scinoephile.audio.cantonese.distribution.distribute_query import Distribute
 from scinoephile.audio.cantonese.distribution.distribute_test_case import (
     DistributeTestCase,
 )
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCase]):
+class Distributor(
+    FixedLLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCase]
+):
     """Distributes 粤文 text based on corresponding 中文."""
 
     @cached_property
@@ -23,8 +25,8 @@ class Distributor(LLMQueryer[DistributeQuery, DistributeAnswer, DistributeTestCa
     def answer_example(self) -> DistributeAnswer:
         """Example answer."""
         return DistributeAnswer(
-            one_yuewen_to_append="粤文 one to append",
-            two_yuewen_to_prepend="粤文 text two to prepend",
+            one_yuewen_to_append="粤文 to append to 粤文 text one",
+            two_yuewen_to_prepend="粤文 to prepend to 粤文 text two",
         )
 
     @cached_property

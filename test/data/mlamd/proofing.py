@@ -685,10 +685,12 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="就是有点游魂的Miss Chan",
         yuewen="不过就有少少失魂嘅班主有Miss Chan",
-        yuewen_proofread="不过就有少少游魂嘅班主有Miss Chan",
+        yuewen_proofread="不过就有少少游魂嘅班主任Miss Chan",
         note="Corrected '失魂' to '游魂' as '游魂' matches the meaning of '游魂' "
-        "in the 中文, while '失魂' is a likely mishearing.",
-        difficulty=1,
+        "in the 中文, while '失魂' is a likely mishearing; Corrected "
+        "'班主有Miss Chan' to '班主任Miss Chan' for proper transcription of "
+        "'class teacher'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -2106,18 +2108,21 @@ proof_test_cases_block_17 = [
         yuewen="喂，衰仔啊，快啲起身返学喇",
         yuewen_proofread="喂，衰仔啊，快啲起身返学喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="咦？",
         yuewen="咦？",
         yuewen_proofread="咦？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈！",
         yuewen="妈妈！",
         yuewen_proofread="妈妈！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_17
 proof_test_cases_block_18 = [
@@ -2126,123 +2131,130 @@ proof_test_cases_block_18 = [
         yuewen="开啲药过佢食就冇事㗎喇",
         yuewen_proofread="开啲药过佢食就冇事㗎喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="医生，吃了药会不会有那个什么的？",
-        yuewen="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
-        yuewen_proofread="医生啊，啲药食咗会唔会有𠮶啲咩㗎？",
+        yuewen="医生啊，啲药食咗会唔会有嗰啲咩㗎？",
+        yuewen_proofread="医生啊，啲药食咗会唔会有嗰啲咩㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不会！",
         yuewen="唔会！",
         yuewen_proofread="唔会！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么吃药用不用那个什么的？",
         yuewen="噉佢食药使唔使咩啊？",
         yuewen_proofread="噉佢食药使唔使咩啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不用！给他打口针吧！",
         yuewen="唔使！同佢打多支针添呢！",
-        yuewen_proofread="唔使！同佢打口针啦！",
-        note="Corrected '打多支针添呢' to '打口针啦' as '打口针' is the correct term "
-        "for an injection in the mouth, matching the meaning of the "
-        "中文, while '打多支针添呢' is likely a mishearing.",
-        difficulty=1,
+        yuewen_proofread="唔使！同佢打多支针添呢！",
+        note="",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么？得打针？",
         yuewen="吓？要打针啊？",
         yuewen_proofread="吓？要打针啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="他最怕打针的了",
         yuewen="佢好怕打针㗎㖞",
         yuewen_proofread="佢好怕打针㗎㖞",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么他怕不怕死？",
         yuewen="噉佢怕唔怕死呀？",
         yuewen_proofread="噉佢怕唔怕死呀？",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_18
 proof_test_cases_block_19 = [
     ProofTestCase(
         zhongwen="没事吧？快点先把药水喝掉！",
         yuewen="冇嘢吖嘛？快啲食埋啲药水佢先啦！",
-        yuewen_proofread="冇嘢吖嘛？快啲饮埋啲药水佢先啦！",
-        note="Corrected '食埋啲药水' to '饮埋啲药水' as '饮' (to drink) is the "
-        "correct verb for liquid medicine, matching the meaning of "
-        "'喝掉'.",
+        yuewen_proofread="冇嘢吖嘛？快啲食埋啲药水佢先啦！",
+        note="",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈我不想喝药水",
-        yuewen="妈妈，我唔想食药水呀",
-        yuewen_proofread="妈妈，我唔想饮药水呀",
-        note="Corrected '食药水' to '饮药水' as '饮' is the correct verb for "
-        "taking liquid medicine in Cantonese, matching the meaning of "
-        "'喝药水'.",
+        yuewen="妈妈我唔想食药水呀",
+        yuewen_proofread="妈妈我唔想食药水呀",
+        note="",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不要呀妈妈，我不喝呀",
         yuewen="唔好捞妈妈，我唔食呀",
-        yuewen_proofread="唔好呀妈妈，我唔饮呀",
-        note="Corrected '唔好捞' to '唔好呀' as '捞' is a mishearing of '呀', and "
-        "'唔食' to '唔饮' as the original is about drinking, not eating.",
+        yuewen_proofread="唔好呀妈妈，我唔食呀",
+        note="Corrected '唔好捞' to '唔好呀' as '唔好捞' is likely a mishearing; "
+        "'唔好呀' matches the meaning of '不要呀' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我不喝士多啤梨药水呀！",
         yuewen="我唔食士多啤梨药水呀！",
-        yuewen_proofread="我唔饮士多啤梨药水呀！",
-        note="Corrected '食' to '饮' as '饮' is the correct verb for drinking "
-        "medicine, matching the meaning of '喝' in the 中文.",
+        yuewen_proofread="我唔食士多啤梨药水呀！",
+        note="",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="别哭了，不喝药水病不会好的",
         yuewen="唔好喊啦，唔食药唔会好㗎",
-        yuewen_proofread="唔好喊啦，唔饮药水唔会好㗎",
-        note="Corrected '唔食药' to '唔饮药水' as the original refers to drinking "
-        "medicine (药水), not eating medicine.",
-        difficulty=1,
+        yuewen_proofread="唔好喊啦，唔食药唔会好㗎",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="乖乖，病好了妈妈带你去马尔代夫",
         yuewen="乖乖啲，病好咗妈妈大理马尔代夫",
         yuewen_proofread="乖乖啲，病好咗妈妈带你去马尔代夫",
-        note="Corrected '大理' to '带你去' as '大理' is a mishearing of '带你去', "
-        "which matches the meaning in the 中文.",
+        note="Corrected '大理' to '带你' as '带你' matches the meaning of '带你去' "
+        "in the 中文, while '大理' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="真的吗？",
         yuewen="真嘅？",
         yuewen_proofread="真嘅？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈什么时候骗过你？",
         yuewen="妈妈几时呃过你呀？",
         yuewen_proofread="妈妈几时呃过你呀？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="乖，先把药水喝掉",
         yuewen="乖，食埋啲药水先啦",
-        yuewen_proofread="乖，饮埋啲药水先啦",
-        note="Corrected '食埋啲药水' to '饮埋啲药水' as '饮' is the correct verb for "
-        "taking liquid medicine, matching the meaning of '喝掉'.",
+        yuewen_proofread="乖，食埋啲药水先啦",
+        note="",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_19
 proof_test_cases_block_20 = [

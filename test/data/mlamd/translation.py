@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.alignment.models import get_translate_test_case_model
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
-translate_test_case_block_3 = get_translate_test_case_model(
-    23, (0, 1, 2, 3, 12, 13, 14, 15, 16)
+translate_test_case_block_0 = None  # translate_test_case_block_0
+translate_test_case_block_1 = None  # translate_test_case_block_1
+translate_test_case_block_2 = None  # translate_test_case_block_2
+translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
+    23,
+    (0, 1, 2, 3, 12, 13, 14, 15, 16),
 )(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
@@ -57,7 +60,10 @@ translate_test_case_block_3 = get_translate_test_case_model(
     yuewen_16="都唔可以唔记得校训九十八！",
     yuewen_17="都唔可以唔记得校训九十八！",
 )  # translate_test_case_block_3
-translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
+translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
+    55,
+    (19, 20, 30),
+)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
     yuewen_1="你哋可能觉得呢间幼稚园好烂",
     zhongwen_2="可是，对我和我一班同学",
@@ -67,7 +73,7 @@ translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
     zhongwen_4="⋯还有一个很疼我们",
     yuewen_4="⋯仲有一个好疼我哋",
     zhongwen_5="就是有点游魂的Miss Chan",
-    yuewen_5="不过就有少少游魂嘅班主有Miss Chan",
+    yuewen_5="不过就有少少游魂嘅班主任Miss Chan",
     zhongwen_6="她的志愿是做第二个王菲",
     yuewen_6="佢嘅志愿系做第二个王菲",
     zhongwen_7="做第二个陈慧琳也可以",
@@ -168,8 +174,20 @@ translate_test_case_block_4 = get_translate_test_case_model(55, (19, 20, 30))(
     yuewen_20="校长早晨！",
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
+    prompt=True,
+    verified=True,
 )  # translate_test_case_block_4
-translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 8, 9, 10))(
+translate_test_case_block_5 = None  # translate_test_case_block_5
+translate_test_case_block_6 = None  # translate_test_case_block_6
+translate_test_case_block_7 = None  # translate_test_case_block_7
+translate_test_case_block_8 = None  # translate_test_case_block_8
+translate_test_case_block_9 = None  # translate_test_case_block_9
+translate_test_case_block_10 = None  # translate_test_case_block_10
+translate_test_case_block_11 = None  # translate_test_case_block_11
+translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
+    20,
+    (2, 3, 8, 9, 10),
+)(
     zhongwen_1="今日为大家介绍一味⋯",
     yuewen_1="今日要同大家介绍一味⋯",
     zhongwen_2="小朋友一定喜欢的⋯",
@@ -211,6 +229,109 @@ translate_test_case_block_12 = get_translate_test_case_model(20, (2, 3, 8, 9, 10
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
 )  # translate_test_case_block_12
+translate_test_case_block_13 = None  # translate_test_case_block_13
+translate_test_case_block_14 = None  # translate_test_case_block_14
+translate_test_case_block_15 = None  # translate_test_case_block_15
+translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
+    19,
+    (0, 1),
+)(
+    zhongwen_1="校长早晨！",
+    zhongwen_2="校长再见！",
+    zhongwen_3="你最喜爱的地方是哪儿？",
+    yuewen_3="你最喜爱嘅地方喺边度呀？",
+    zhongwen_4="我最喜爱的地方是日本",
+    yuewen_4="我最喜爱嘅地方呢，就系日本喇",
+    zhongwen_5="那儿有Disneyland和Hello Kitty Land",
+    yuewen_5="嗰度有Disneyland和Hello Kitty呢",
+    zhongwen_6="我这个发夹也是在那儿买的",
+    yuewen_6="我而家戴紧个发夹都系嗰边买嘅",
+    zhongwen_7="我最喜爱的地方是加拿大",
+    yuewen_7="我最钟意嘅地方就系加拿大",
+    zhongwen_8="婆婆跟舅父他们都在加拿大",
+    yuewen_8="婆婆同埋舅父呀，佢哋都系加拿大㗎",
+    zhongwen_9="我最喜爱的地方是泰国",
+    yuewen_9="我最钟意去嘅地方就系泰国喇",
+    zhongwen_10="那儿有很好多水上活动，还有鱼翅吃",
+    yuewen_10="嗰度有好多水上活动㗎，仲有鱼翅食添㖞",
+    zhongwen_11="我最喜爱的地方⋯",
+    yuewen_11="呃，我最喜爱嘅地方呢⋯",
+    zhongwen_12="就是那间什么！",
+    yuewen_12="就系嗰间咩嚟啰！",
+    zhongwen_13="那儿有欢乐天地，还有美食广场",
+    yuewen_13="嗰度有欢乐天地啦，仲有美食广场啦",
+    zhongwen_14="那儿的海南鸡饭很大碟的",
+    yuewen_14="嗰度啲海南鸡饭好大碟㗎",
+    zhongwen_15="对了，那地方叫银城中心",
+    yuewen_15="系喇系喇，嗰间叫做银城中心",
+    zhongwen_16="那店子的饭很多，很大碟的！",
+    yuewen_16="嗰间嘢啲饭好多，好大碟㗎！",
+    zhongwen_17="不过说到我最想去的地方，那可厉害了",
+    yuewen_17="不过讲到我最想去嘅地方呢，嗰度犀利啰",
+    zhongwen_18="那儿蓝天白云，椰林树影，水清沙幼",
+    yuewen_18="嗰度蓝天白云，椰林树影，水清沙幼",
+    zhongwen_19="座落于印度洋的世外桃源",
+    yuewen_19="座落于印度洋嘅世外桃源",
+    yuewen_1="校长早晨！",
+    yuewen_2="校长再见！",
+    verified=True,
+)  # translate_test_case_block_16
+translate_test_case_block_17 = None  # translate_test_case_block_17
+translate_test_case_block_18 = None  # translate_test_case_block_18
+translate_test_case_block_19 = None  # translate_test_case_block_19
+translate_test_case_block_20 = None  # translate_test_case_block_20
+translate_test_case_block_21 = None  # translate_test_case_block_21
+translate_test_case_block_22 = None  # translate_test_case_block_22
+translate_test_case_block_23 = None  # translate_test_case_block_23
+translate_test_case_block_24 = None  # translate_test_case_block_24
+translate_test_case_block_25 = None  # translate_test_case_block_25
+translate_test_case_block_26 = None  # translate_test_case_block_26
+translate_test_case_block_27 = None  # translate_test_case_block_27
+translate_test_case_block_28 = None  # translate_test_case_block_28
+translate_test_case_block_29 = None  # translate_test_case_block_29
+translate_test_case_block_30 = None  # translate_test_case_block_30
+translate_test_case_block_31 = None  # translate_test_case_block_31
+translate_test_case_block_32 = None  # translate_test_case_block_32
+translate_test_case_block_33 = None  # translate_test_case_block_33
+translate_test_case_block_34 = None  # translate_test_case_block_34
+translate_test_case_block_35 = None  # translate_test_case_block_35
+translate_test_case_block_36 = None  # translate_test_case_block_36
+translate_test_case_block_37 = None  # translate_test_case_block_37
+translate_test_case_block_38 = None  # translate_test_case_block_38
+translate_test_case_block_39 = None  # translate_test_case_block_39
+translate_test_case_block_40 = None  # translate_test_case_block_40
+translate_test_case_block_41 = None  # translate_test_case_block_41
+translate_test_case_block_42 = None  # translate_test_case_block_42
+translate_test_case_block_43 = None  # translate_test_case_block_43
+translate_test_case_block_44 = None  # translate_test_case_block_44
+translate_test_case_block_45 = None  # translate_test_case_block_45
+translate_test_case_block_46 = None  # translate_test_case_block_46
+translate_test_case_block_47 = None  # translate_test_case_block_47
+translate_test_case_block_48 = None  # translate_test_case_block_48
+translate_test_case_block_49 = None  # translate_test_case_block_49
+translate_test_case_block_50 = None  # translate_test_case_block_50
+translate_test_case_block_51 = None  # translate_test_case_block_51
+translate_test_case_block_52 = None  # translate_test_case_block_52
+translate_test_case_block_53 = None  # translate_test_case_block_53
+translate_test_case_block_54 = None  # translate_test_case_block_54
+translate_test_case_block_55 = None  # translate_test_case_block_55
+translate_test_case_block_56 = None  # translate_test_case_block_56
+translate_test_case_block_57 = None  # translate_test_case_block_57
+translate_test_case_block_58 = None  # translate_test_case_block_58
+translate_test_case_block_59 = None  # translate_test_case_block_59
+translate_test_case_block_60 = None  # translate_test_case_block_60
+translate_test_case_block_61 = None  # translate_test_case_block_61
+translate_test_case_block_62 = None  # translate_test_case_block_62
+translate_test_case_block_63 = None  # translate_test_case_block_63
+translate_test_case_block_64 = None  # translate_test_case_block_64
+translate_test_case_block_65 = None  # translate_test_case_block_65
+translate_test_case_block_66 = None  # translate_test_case_block_66
+translate_test_case_block_67 = None  # translate_test_case_block_67
+translate_test_case_block_68 = None  # translate_test_case_block_68
+translate_test_case_block_69 = None  # translate_test_case_block_69
+translate_test_case_block_70 = None  # translate_test_case_block_70
+translate_test_case_block_71 = None  # translate_test_case_block_71
+translate_test_case_block_72 = None  # translate_test_case_block_72
 mlamd_translate_test_cases: list[TranslateTestCase] = [
     translate_test_case_block_3,
     translate_test_case_block_4,
