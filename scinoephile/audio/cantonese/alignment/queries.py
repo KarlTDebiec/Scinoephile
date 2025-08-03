@@ -321,5 +321,6 @@ __all__ = [
     "get_shift_query",
     "get_merge_query",
     "get_proof_query",
+    "get_review_query",
     "get_translate_query",
 ]

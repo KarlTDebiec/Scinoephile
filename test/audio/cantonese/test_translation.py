@@ -17,7 +17,7 @@ from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
 def translator_few_shot() -> Translator:
     """LLMQueryer with few-shot examples."""
     return Translator(
-        examples=[m for m in mlamd_translate_test_cases if m.prompt],
+        prompt_test_cases=[m for m in mlamd_translate_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 

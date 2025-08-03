@@ -12,7 +12,7 @@ from scinoephile.audio.cantonese.distribution import DistributeTestCase  # noqa:
 from scinoephile.audio.cantonese.merging import MergeTestCase  # noqa: F401
 from scinoephile.audio.cantonese.proofing import ProofTestCase  # noqa: F401
 from scinoephile.audio.cantonese.shifting import ShiftTestCase  # noqa: F401
-from scinoephile.core.abcs import DynamicLLMQueryer, LLMQueryer
+from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
 
 
 def _replace(path: Path, varible: str, pattern: re.Pattern[str], replacement: str):
@@ -23,7 +23,7 @@ def _replace(path: Path, varible: str, pattern: re.Pattern[str], replacement: st
     info(f"Replaced test cases {varible} in {path.name}.")
 
 
-def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
+def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
     """Update test cases.
 
     Arguments:
@@ -32,9 +32,9 @@ def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
         queryer: LLMQueryer instance to query for test cases
     """
     pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
-    replacement = queryer.test_case_log_str
+    replacement = queryer.encountered_test_cases_source_str
     _replace(path, variable, pattern, replacement)
-    queryer.clear_test_case_log()
+    queryer.clear_encountered_test_cases()
 
 
 def update_dynamic_test_cases(path: Path, variable: str, queryer: DynamicLLMQueryer):
@@ -46,9 +46,9 @@ def update_dynamic_test_cases(path: Path, variable: str, queryer: DynamicLLMQuer
         queryer: DynamicLLMQueryer instance to query for test cases
     """
     pattern = re.compile(rf"{variable}\s*=(.*?)# {variable}", re.DOTALL)
-    replacement = queryer.test_case_log_str
+    replacement = queryer.encountered_test_cases_source_str
     _replace(path, variable, pattern, replacement)
-    queryer.clear_test_case_log()
+    queryer.clear_encountered_test_cases()
 
 
 __all__ = [

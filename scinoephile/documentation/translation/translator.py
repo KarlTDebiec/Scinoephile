@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import FixedLLMQueryer
 from scinoephile.documentation.translation.translate_answer import TranslateAnswer
 from scinoephile.documentation.translation.translate_query import TranslateQuery
 from scinoephile.documentation.translation.translate_test_case import TranslateTestCase
 
 
-class Translator(LLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
+class Translator(FixedLLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
     """Translates README from English to Chinese."""
 
     @cached_property

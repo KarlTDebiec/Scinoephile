@@ -16,7 +16,7 @@ from test.data.mlamd import mlamd_proof_test_cases  # noqa: F401
 def proofer_few_shot() -> Proofer:
     """LLMQueryer with few-shot examples."""
     return Proofer(
-        examples=[m for m in mlamd_proof_test_cases if m.prompt],
+        prompt_test_cases=[m for m in mlamd_proof_test_cases if m.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 

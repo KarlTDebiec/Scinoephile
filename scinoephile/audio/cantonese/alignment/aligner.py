@@ -536,7 +536,6 @@ class Aligner:
                     f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
                 )
             zw_idx = zw_idxs[0]
-            zw = alignment.zhongwen[zw_idx]
 
             # Get 粤文
             yw_idxs = sg[1]

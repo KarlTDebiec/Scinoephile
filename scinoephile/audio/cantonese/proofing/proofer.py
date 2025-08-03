@@ -10,10 +10,10 @@ from typing import override
 from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
 from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
 from scinoephile.audio.cantonese.proofing.proof_test_case import ProofTestCase
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Proofer(LLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
+class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
     @cached_property
