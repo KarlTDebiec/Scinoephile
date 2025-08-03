@@ -1,10 +1,10 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM queryers whose classes are fixed between requests."""
+"""Abstract base class for LLM queryers whose classes are fixed for all requests."""
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from functools import cached_property
 from typing import get_args, get_origin
 
@@ -17,7 +17,7 @@ from scinoephile.core.abcs.test_case import TestCase
 class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
     LLMQueryer[Query, Answer, TestCase], ABC
 ):
-    """Abstract base class for LLM queryers whose classes are fixed between requests."""
+    """Abstract base class for LLM queryers whose classes are fixed for all requests."""
 
     def __call__(self, query: TQuery) -> TAnswer:
         """Query LLM.
@@ -46,10 +46,14 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         )
 
     @cached_property
-    @abstractmethod
     def answer_example(self) -> TAnswer:
         """Example answer."""
-        raise NotImplementedError()
+        return self.answer_cls(
+            **{
+                field_name: f"{field.description}"
+                for field_name, field in self.answer_cls.model_fields.items()
+            }
+        )
 
     @property
     def encountered_test_cases_source_str(self) -> str:
@@ -68,7 +72,7 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             if get_origin(base) is FixedLLMQueryer:
                 return get_args(base)[0]
         raise TypeError(
-            f"Could not determine answer class for {self.__class__.__name__}"
+            f"Could not determine query class for {self.__class__.__name__}"
         )
 
     @cached_property
@@ -83,5 +87,5 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             if get_origin(base) is FixedLLMQueryer:
                 return get_args(base)[2]
         raise TypeError(
-            f"Could not determine answer class for {self.__class__.__name__}"
+            f"Could not determine test case class for {self.__class__.__name__}"
         )

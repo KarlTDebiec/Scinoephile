@@ -12,16 +12,16 @@ from scinoephile.core.abcs import Answer
 class DistributeAnswer(Answer):
     """Answer for 粤文 distribution."""
 
-    one_yuewen_to_append: str = Field(
-        ..., description="粤文 to append to 粤文 text one."
+    yuewen_1_to_append: str = Field(
+        ..., description="粤文 text to append to 粤文 subtitle 1."
     )
-    two_yuewen_to_prepend: str = Field(
-        ..., description="粤文 to prepend to 粤文 text two."
+    yuewen_2_to_prepend: str = Field(
+        ..., description="粤文 text to prepend to 粤文 subtitle 2."
     )
 
     @model_validator(mode="after")
     def validate_answer(self) -> DistributeAnswer:
         """Ensure answer is internally valid."""
-        if not self.one_yuewen_to_append and not self.two_yuewen_to_prepend:
+        if not self.yuewen_1_to_append and not self.yuewen_2_to_prepend:
             raise ValueError("Answer must have 粤文 text to append or prepend.")
         return self

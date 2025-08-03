@@ -25,7 +25,7 @@ class DistributeTestCase(
             Minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if self.one_yuewen_to_append and self.two_yuewen_to_prepend:
+        if self.yuewen_1_to_append and self.yuewen_2_to_prepend:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
@@ -33,7 +33,7 @@ class DistributeTestCase(
     def validate_test_case(self) -> DistributeTestCase:
         """Ensure query and answer are consistent with one another."""
         expected = self.yuewen_to_distribute
-        received = self.one_yuewen_to_append + self.two_yuewen_to_prepend
+        received = self.yuewen_1_to_append + self.yuewen_2_to_prepend
         if expected != received:
             raise ValueError(
                 "Answer's concatenated 粤文 text to append and prepend does not match "

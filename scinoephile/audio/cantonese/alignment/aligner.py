@@ -159,61 +159,65 @@ class Aligner:
         yw_idx = alignment.yuewen_to_distribute[0]
         zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
 
-        # If 粤文 overlaps with nothing, just remove it
+        # Case: 粤文 overlaps with nothing
+        # Action: just remove it
         if len(zw_idxs) == 0:
-            yuewen = AudioSeries(audio=alignment.yuewen.audio)
-            yuewen.events = (
+            yw = AudioSeries(audio=alignment.yuewen.audio)
+            yw.events = (
                 alignment.yuewen.events[:yw_idx] + alignment.yuewen.events[yw_idx + 1 :]
             )
-            alignment.yuewen = yuewen
+            alignment.yuewen = yw
             alignment._sync_groups_override = None
             return
 
-        # Other situations have not yet been encountered
+        # Case: 粤文 overlaps with more than 2 中文
+        # Action: Raise; this has not yet been encountered
         if len(zw_idxs) != 2:
             raise ScinoephileError(
                 f"Situation not supported: 粤文 subtitle {yw_idx} overlaps with "
                 f"{len(zw_idxs)} sync groups: {zw_idxs.tolist()}.\n{alignment}"
             )
 
-        # TODO: Validate that zw_idxs map cleanly to sg_idxs
-        one_sg_idx, two_sg_idx = zw_idxs
-
-        # Run query
-        query = get_distribute_query(alignment, one_sg_idx, two_sg_idx, yw_idx)
+        # Case: 粤文 overlaps with two sync groups
+        # Action: Query to distribute 粤文 between sync groups
+        sg_1_idx, sg_2_idx = zw_idxs
+        query = get_distribute_query(alignment, sg_1_idx, sg_2_idx, yw_idx)
         try:
             answer = self.distributor(query)
         except ValidationError as exc:
-            # TODO: Consider how this could be improved
-            # TODO: Consider just deleting undistributable 粤文
             answer = DistributeAnswer(
-                one_yuewen_to_append=query.yuewen_to_distribute,
-                two_yuewen_to_prepend="",
+                yuewen_1_to_append=query.yuewen_to_distribute,
+                yuewen_2_to_prepend="",
             )
             test_case = query.to_test_case(answer)
             error(
                 f"Error distributing 粤文 subtitle {yw_idx} between sync groups "
-                f"{one_sg_idx} and {two_sg_idx}; distributing to first group.\n"
+                f"{sg_1_idx} and {sg_2_idx}; distributing to first group.\n"
                 f"Test case:\n"
                 f"{test_case.source_str}\n"
                 f"Exception:\n{exc}\n"
             )
 
-        # If we only need to assign the 粤文 to one sync group, set override
-        if answer.one_yuewen_to_append and not answer.two_yuewen_to_prepend:
-            nascent_sync_groups = deepcopy(alignment.sync_groups)
-            nascent_sync_groups[one_sg_idx][1].append(yw_idx)
-            alignment._sync_groups_override = nascent_sync_groups
-            return
-        if not answer.one_yuewen_to_append and answer.two_yuewen_to_prepend:
-            nascent_sync_groups = deepcopy(alignment.sync_groups)
-            nascent_sync_groups[two_sg_idx][1].insert(0, yw_idx)
-            alignment._sync_groups_override = nascent_sync_groups
+        # Case: 粤文 should be assigned to sync group 1
+        # Action: Append 粤文 to sync group 1 and set override
+        if answer.yuewen_1_to_append and not answer.yuewen_2_to_prepend:
+            nascent_sg = deepcopy(alignment.sync_groups)
+            nascent_sg[sg_1_idx][1].append(yw_idx)
+            alignment._sync_groups_override = nascent_sg
             return
 
-        # If we need to split the 粤文 text, we must then clear the override
+        # Case: 粤文 should be assigned to sync group 2
+        # Action: Prepend 粤文 to sync group 2 and set override
+        if not answer.yuewen_1_to_append and answer.yuewen_2_to_prepend:
+            nascent_sg = deepcopy(alignment.sync_groups)
+            nascent_sg[sg_2_idx][1].insert(0, yw_idx)
+            alignment._sync_groups_override = nascent_sg
+            return
+
+        # Case: 粤文 should be split between two sync groups
+        # Action: Split 粤文 as specified in the answer; clear sync group override
         alignment.yuewen = get_series_with_sub_split_at_idx(
-            alignment.yuewen, yw_idx, len(answer.one_yuewen_to_append)
+            alignment.yuewen, yw_idx, len(answer.yuewen_1_to_append)
         )
         alignment._sync_groups_override = None
 

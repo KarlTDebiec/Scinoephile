@@ -18,7 +18,19 @@ from scinoephile.core.models import format_field
 
 
 class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
-    """Abstract base class for LLM test cases; may also be used for few-shot prompt."""
+    """Abstract base class for LLM test cases; may also be used for few-shot prompt.
+
+    Difficulty of 1 indicates that the test case represents nontrivial work; e.g.
+    text that needs to be split.
+    Difficulty of 2 indicates that the test case represents more difficult work; e.g.
+    copying over punctuation from source text to target text, and needing to add
+    additional punctuation due to large differences between the source and target. In
+    addition, all test cases that are included in the prompt are assigned a difficulty
+    of 2.
+    Difficulty of 3 indicates that the test case is not reasonably solvable; e.g. the
+    source text and target text are completely different, and the requested operation
+    is not possible.
+    """
 
     __test__ = False
     """Inform pytest not to collect this class as a test case."""

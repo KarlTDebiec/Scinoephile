@@ -81,16 +81,12 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="更正一下：",
-    note_5="Changed '都系唔好：' to '更正一下：' to match the correction pattern "
-    "and maintain consistency with other similar lines (see 7 and "
-    "13).",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="更正一下：转下，转下⋯",
-    note_7="Changed '都系唔好：' to '更正一下：' to match the correction pattern "
-    "and maintain consistency with other similar lines (see 5 and "
-    "13).",
+    yuewen_revised_7="",
+    note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -101,10 +97,8 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_11="",
     yuewen_revised_12="",
     note_12="",
-    yuewen_revised_13="更正一下：左边魂精对上⋯",
-    note_13="Changed '都系唔好：' to '更正一下：' to match the correction pattern "
-    "and maintain consistency with other similar lines (see 5 and "
-    "7).",
+    yuewen_revised_13="",
+    note_13="",
     yuewen_revised_14="",
     note_14="",
     yuewen_revised_15="",
@@ -145,6 +139,7 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_32="",
     yuewen_revised_33="",
     note_33="",
+    verified=True,
 )  # review_test_case_block_0
 review_test_case_block_1 = ReviewTestCase.get_test_case_cls(13)(
     zhongwen_1="最后，胶兜「嘀督」一声落地",
@@ -199,6 +194,7 @@ review_test_case_block_1 = ReviewTestCase.get_test_case_cls(13)(
     note_12="",
     yuewen_revised_13="",
     note_13="",
+    verified=True,
 )  # review_test_case_block_1
 review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_1="麦太，没见面一阵",
@@ -245,10 +241,8 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
     note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="春田花花幼稚园呀？",
-    note_7="Changed 呢 to 呀 to match the consistent use of 呀 as a "
-    "sentence-final particle for questions in this context (see "
-    "text 10).",
+    yuewen_revised_7="",
+    note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -267,16 +261,17 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
+    verified=True,
 )  # review_test_case_block_2
 review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
-    yuewen_1="〝鹅满系快烙滴好耳痛⋯〞",
+    yuewen_1="〝我只耳仔好痛呀⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
-    yuewen_2="〝鹅闷日日都要玩下个窗！〞",
+    yuewen_2="〝我日日都望住个窗！〞",
     zhongwen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
-    yuewen_3="〝鹅哋喺壳度练习，鹅闷载升胀⋯〞",
+    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
     zhongwen_4="〝鹅闷是春天滴化！〞",
-    yuewen_4="〝鹅闷系春天嘅化身！〞",
+    yuewen_4="〝我哋就系春天嘅花！〞",
     zhongwen_5="这个猪样白兔小朋友⋯",
     yuewen_5="呢个扮紧白兔猪样嘅小朋友⋯",
     zhongwen_6="横看竖看也不像发哥伟仔的一个⋯",
@@ -298,11 +293,11 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_14="荔芋火鸭礼！　　荔芋火鸭礼！",
     yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
     zhongwen_15="忘记校训九十七⋯　　忘记校训九十七⋯",
-    yuewen_15="唔记得校训九十七⋯唔记得校训九十七⋯",
+    yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
     zhongwen_16="也不能忘记校训九十八！",
-    yuewen_16="都唔可以唔记得校训九十八！",
+    yuewen_16="都唔可以忘记校训九十八！",
     zhongwen_17="也不能忘记校训九十八！",
-    yuewen_17="都唔可以唔记得校训九十八！",
+    yuewen_17="都唔可以忘记校训九十八！",
     zhongwen_18="好！各位同学⋯",
     yuewen_18="各位同学⋯",
     zhongwen_19="今天的早会主要是跟大家分享",
@@ -583,6 +578,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     note_54="",
     yuewen_revised_55="",
     note_55="",
+    verified=True,
 )  # review_test_case_block_4
 review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_1="幼稚园楼下，由校长兼营的茶餐厅",
@@ -628,10 +624,9 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="我哋一班同学仔放咗学都经常去嗰间茶餐厅",
-    note_2='Revised "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
-    "with the context of a group of students visiting the "
-    'restaurant after school. "房餐" is not a standard or clear '
-    "term in Cantonese for this context.",
+    note_2='Changed "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
+    "with the context (referring to the tea restaurant run by the "
+    "principal).",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -666,8 +661,9 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     note_18="",
     yuewen_revised_19="",
     note_19="",
-    yuewen_revised_20="",
-    note_20="",
+    yuewen_revised_20="麦兜，射啊！",
+    note_20='Changed "转身食啊！" to "射啊！" to match the context of the '
+    "original (likely a sports or action context, not eating).",
 )  # review_test_case_block_5
 review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="看着自己每天疴烂煮⋯",
@@ -681,13 +677,13 @@ review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="日日生肉⋯",
-    note_2='Changed "长肉" to "生肉" for consistency with Cantonese '
-    'usage, as "生肉" is more commonly used in spoken Cantonese '
-    "to mean gaining weight or putting on flesh.",
+    note_2='Changed "长肉" to "生肉" as "生肉" is the more natural '
+    "Cantonese expression for 'gaining weight' or 'putting on "
+    "flesh'.",
     yuewen_revised_3="我感到充满力量！",
-    note_3='Added "我" at the beginning for consistency with the other '
-    "sentences and to better reflect the spoken Cantonese "
-    "structure.",
+    note_3='Added "我" at the beginning to match the spoken Cantonese '
+    "tendency to include the subject, and for consistency with "
+    "the other sentences.",
     yuewen_revised_4="",
     note_4="",
 )  # review_test_case_block_6
@@ -751,6 +747,7 @@ review_test_case_block_8 = ReviewTestCase.get_test_case_cls(7)(
     note_6="",
     yuewen_revised_7="",
     note_7="",
+    verified=True,
 )  # review_test_case_block_8
 review_test_case_block_9 = ReviewTestCase.get_test_case_cls(15)(
     zhongwen_1="是的，我妈妈真的很厉害",
@@ -813,6 +810,7 @@ review_test_case_block_9 = ReviewTestCase.get_test_case_cls(15)(
     note_14="",
     yuewen_revised_15="",
     note_15="",
+    verified=True,
 )  # review_test_case_block_9
 review_test_case_block_10 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="好高兴这么快又跟大家见面",
@@ -833,14 +831,13 @@ review_test_case_block_10 = ReviewTestCase.get_test_case_cls(6)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
-    yuewen_revised_4="只需要将张纸咁样⋯",
-    note_4="Standardized the subject to match the rest of the series, "
-    "removing '我哋' for consistency, and using '将' for clarity in "
-    "the action, as in other steps.",
+    yuewen_revised_4="",
+    note_4="",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
     note_6="",
+    verified=True,
 )  # review_test_case_block_10
 review_test_case_block_11 = ReviewTestCase.get_test_case_cls(9)(
     zhongwen_1="现在要教大家一味别致小菜﹣",
@@ -873,8 +870,9 @@ review_test_case_block_11 = ReviewTestCase.get_test_case_cls(9)(
     note_5="",
     yuewen_revised_6="然后再好似噉样将包鸡纸包住佢",
     note_6="Removed the repeated '包' characters in '包包包包包包住佢' to correct "
-    "the transcription to natural spoken Cantonese, matching the "
-    "context and the rest of the series.",
+    "the transcription to natural spoken Cantonese. The "
+    "repetition was likely a typographical error or over-literal "
+    "representation of the action.",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -955,16 +953,15 @@ review_test_case_block_12 = ReviewTestCase.get_test_case_cls(20)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
-    yuewen_revised_17="佢大个咗，发咗达！",
-    note_17='Changed "佢长大，发咗！" to "佢大个咗，发咗达！" for more natural and '
-    "complete Cantonese phrasing, matching the typical spoken "
-    "form for 'he grew up and became rich.'",
+    yuewen_revised_17="",
+    note_17="",
     yuewen_revised_18="",
     note_18="",
     yuewen_revised_19="",
     note_19="",
     yuewen_revised_20="",
     note_20="",
+    verified=True,
 )  # review_test_case_block_12
 review_test_case_block_13 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="从前，有个小朋友早睡晚起；第二天⋯",
@@ -995,6 +992,7 @@ review_test_case_block_13 = ReviewTestCase.get_test_case_cls(7)(
     note_6="",
     yuewen_revised_7="",
     note_7="",
+    verified=True,
 )  # review_test_case_block_13
 review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="可有些事情，要是真的不成呢？",
@@ -1017,9 +1015,8 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_9="我试过好努力咁读书，但系⋯",
     zhongwen_10="可是⋯我仍然有梦",
     yuewen_10="但系⋯我仲可以发梦",
-    yuewen_revised_1="但系如果有啲嘢，真系唔得呢？",
-    note_1="Removed the repeated '真系' to match natural spoken Cantonese "
-    "and maintain consistency with the rest of the series.",
+    yuewen_revised_1="",
+    note_1="",
     yuewen_revised_2="",
     note_2="",
     yuewen_revised_3="",
@@ -1029,9 +1026,8 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="我用我嘅童子手帮妈妈抽嘅六合彩号码",
-    note_6="Changed 'number' to '号码' for consistency with the rest of "
-    "the series and to better reflect the spoken Cantonese "
-    "context.",
+    note_6="Changed '六合彩number' to '六合彩号码' for consistency in using "
+    "Cantonese/Mandarin terms throughout the series.",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -1079,11 +1075,13 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     yuewen_revised_2="",
     note_2="",
     yuewen_revised_3="七彩缤纷嘅珊瑚，目不暇给嘅热带鱼",
-    note_3='Removed "群" from "热带鱼群" to maintain consistency with the '
-    "rest of the series, as other lines do not add extra words "
-    "not present in the original.",
-    yuewen_revised_4="",
-    note_4="",
+    note_3="Removed '群' from '热带鱼群' to maintain consistency with the "
+    "rest of the series, as the original Chinese does not specify "
+    "'群', and the rest of the dialogue does not use '群' when "
+    "referring to fish.",
+    yuewen_revised_4="充满住赤道活力嘅原始海洋，远离繁嚣",
+    note_4="Changed '热力' to '活力' to match the meaning of the original "
+    "Chinese ('活力') and for consistency across the series.",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
@@ -1099,9 +1097,9 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     yuewen_revised_11="",
     note_11="",
     yuewen_revised_12="咁妈妈你会唔会带我去㗎？",
-    note_12='Changed "走落去" to "带我去" to match the meaning of the '
-    "original and maintain consistency with the rest of the "
-    "conversation.",
+    note_12="Changed '走落去' to '带我去' to accurately reflect the meaning of "
+    "the original Chinese ('带我去'), and for consistency with the "
+    "context of the conversation.",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1159,9 +1157,11 @@ review_test_case_block_16 = ReviewTestCase.get_test_case_cls(19)(
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="嗰度有Disneyland同Hello Kitty Land呀",
-    note_5='Changed "和" to "同" for consistency with Cantonese usage, '
-    'and "Hello Kitty呢" to "Hello Kitty Land呀" to match the '
-    "naming style and spoken context in the rest of the series.",
+    note_5='Changed "和" to "同" and "Hello Kitty呢" to "Hello Kitty '
+    'Land呀" for consistency with the rest of the series and to '
+    "better reflect spoken Cantonese. The original was "
+    "inconsistent with the naming and conjunction style used "
+    "elsewhere.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -1232,10 +1232,12 @@ review_test_case_block_18 = ReviewTestCase.get_test_case_cls(8)(
     note_4="",
     yuewen_revised_5="唔使！帮佢打支针啦！",
     note_5='Changed "同佢打多支针添呢！" to "帮佢打支针啦！" to better match the '
-    "context and maintain consistency with the rest of the "
-    'dialogue. "打多支针添呢" implies an extra injection, which is '
-    'not present in the original context. "帮佢打支针啦" is a more '
-    "natural and accurate transcription for the intended meaning.",
+    'context and spoken Cantonese. "打多支针添呢" implies giving an '
+    "extra injection, which is not present in the original. "
+    '"打口针" in Mandarin means \'give an injection\', so "打支针" is '
+    'the direct equivalent. "帮佢" is a common way to say \'give '
+    'him/her\' in this context, and "啦" is a more natural '
+    "sentence-final particle here.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",

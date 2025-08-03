@@ -32,7 +32,9 @@ from test.data.mlamd import (
     mlamd_distribute_test_cases,
     mlamd_merge_test_cases,
     mlamd_proof_test_cases,
+    mlamd_review_test_cases,
     mlamd_shift_test_cases,
+    mlamd_translate_test_cases,
 )
 
 if __name__ == "__main__":
@@ -78,14 +80,14 @@ if __name__ == "__main__":
     )
     translator = Translator(
         print_test_case=True,
-        examples=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
-        verified=[tc for tc in mlamd_distribute_test_cases if tc.verified],
+        prompt_test_cases=[tc for tc in mlamd_translate_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_translate_test_cases if tc.verified],
         cache_dir_path=test_data_root / "cache",
     )
     reviewer = Reviewer(
         print_test_case=True,
-        examples=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
-        verified=[tc for tc in mlamd_distribute_test_cases if tc.verified],
+        prompt_test_cases=[tc for tc in mlamd_review_test_cases if tc.prompt],
+        verified_test_cases=[tc for tc in mlamd_review_test_cases if tc.verified],
         cache_dir_path=test_data_root / "cache",
     )
     aligner = Aligner(
