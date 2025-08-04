@@ -10,6 +10,8 @@ from scinoephile.audio.cantonese.distribution import DistributeTestCase, Distrib
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import skip_if_ci
 from test.data.mlamd import mlamd_distribute_test_cases  # noqa: F401
+from test.data.mnt.distribution import mnt_distribute_test_cases  # noqa: F401
+from test.data.t.distribution import t_distribute_test_cases  # noqa: F401
 
 
 @pytest.fixture
@@ -76,6 +78,98 @@ def test_distribution_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
 ):
     """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", mnt_distribute_test_cases)
+def test_distribution_mnt(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mnt_distribute_test_cases if tc.difficulty >= 1]
+)
+def test_distribution_mnt_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", t_distribute_test_cases)
+def test_distribution_t(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with T test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    distributor: Distributor = request.getfixturevalue(fixture_name)
+    _test_distribution(distributor, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("distributor_few_shot"),
+        # skip_if_ci(flaky())("distributor_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in t_distribute_test_cases if tc.difficulty >= 1]
+)
+def test_distribution_t_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
+):
+    """Test with T test cases.
 
     Arguments:
         request: Pytest fixture request

@@ -10,6 +10,8 @@ from scinoephile.audio.cantonese.merging import Merger, MergeTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import skip_if_ci
 from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
+from test.data.mnt.merging import mnt_merge_test_cases  # noqa: F401
+from test.data.t.merging import t_merge_test_cases  # noqa: F401
 
 
 @pytest.fixture
@@ -74,6 +76,98 @@ def test_merging_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
 ):
     """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    merger: Merger = request.getfixturevalue(fixture_name)
+    _test_merging(merger, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("merger_few_shot"),
+        # skip_if_ci(flaky())("merger_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", mnt_merge_test_cases)
+def test_merging_mnt(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    merger: Merger = request.getfixturevalue(fixture_name)
+    _test_merging(merger, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("merger_few_shot"),
+        # skip_if_ci(flaky())("merger_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in mnt_merge_test_cases if tc.difficulty > 1]
+)
+def test_merging_mnt_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    merger: Merger = request.getfixturevalue(fixture_name)
+    _test_merging(merger, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("merger_few_shot"),
+        # skip_if_ci(flaky())("merger_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", t_merge_test_cases)
+def test_merging_t(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+):
+    """Test with T test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    merger: Merger = request.getfixturevalue(fixture_name)
+    _test_merging(merger, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci()("merger_few_shot"),
+        # skip_if_ci(flaky())("merger_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize(
+    "test_case", [tc for tc in t_merge_test_cases if tc.difficulty > 1]
+)
+def test_merging_t_difficult(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+):
+    """Test with T test cases.
 
     Arguments:
         request: Pytest fixture request
