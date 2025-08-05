@@ -12,18 +12,14 @@ from scinoephile.core.abcs import Query
 class MergeQuery(Query):
     """Query for 粤文 merging."""
 
-    zhongwen: str = Field(
-        ..., description="Known 中文 text including punctuation and spacing."
-    )
-    yuewen_to_merge: list[str] = Field(
-        ..., description="Known 粤文 texts to merge with punctuation and spacing."
-    )
+    zhongwen: str = Field(..., description="Known 中文 of subtitle.")
+    yuewen_to_merge: list[str] = Field(..., description="粤文 of subtitle.")
 
     @model_validator(mode="after")
     def validate_query(self) -> MergeQuery:
         """Ensure query has minimum necessary information."""
         if not self.zhongwen:
-            raise ValueError("Query must have corresponding 中文 text.")
+            raise ValueError("Query must have 中文 subtitle.")
         if not self.yuewen_to_merge:
-            raise ValueError("Query must have 粤文 text to merge.")
+            raise ValueError("Query must have 粤文 subtitle to merge.")
         return self
