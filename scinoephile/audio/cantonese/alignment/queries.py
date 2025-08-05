@@ -145,11 +145,11 @@ def get_shift_query(alignment: Alignment, sg_1_idx: int) -> ShiftQuery | None:
     yw_1 = "".join([alignment.yuewen[i].text for i in sg_1_yw_idxs])
 
     # Get 粤文 2
-    sg_1_yw_idxs = sg_2[1]
-    yw_2 = "".join([alignment.yuewen[i].text for i in sg_1_yw_idxs])
+    sg_2_yw_idxs = sg_2[1]
+    yw_2 = "".join([alignment.yuewen[i].text for i in sg_2_yw_idxs])
 
     # Return
-    if len(sg_1_yw_idxs) == 0 and len(sg_1_yw_idxs) == 0:
+    if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
     return ShiftQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
 

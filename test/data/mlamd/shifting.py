@@ -462,6 +462,15 @@ shift_test_cases_block_2 = [
         verified=True,
     ),
     ShiftTestCase(
+        zhongwen_1="怎么不试一试好彩酒楼对面",
+        yuewen_1="点解唔试下好彩走楼斜对面",
+        zhongwen_2="旧中侨国货楼上的⋯",
+        yuewen_2="",
+        yuewen_1_shifted="点解唔试下好彩走楼斜对面",
+        yuewen_2_shifted="",
+        verified=True,
+    ),
+    ShiftTestCase(
         zhongwen_1="旧中侨国货楼上的⋯",
         yuewen_1="",
         zhongwen_2="春田花花幼稚园？",
@@ -498,6 +507,15 @@ shift_test_cases_block_2 = [
         yuewen_2="就系坐落喺界限街同南昌街交界",
         yuewen_1_shifted="春田花花幼稚园呢",
         yuewen_2_shifted="就系坐落喺界限街同南昌街交界",
+        verified=True,
+    ),
+    ShiftTestCase(
+        zhongwen_1="就是座落界限街南昌街交界⋯",
+        yuewen_1="就系坐落喺界限街同南昌街交界",
+        zhongwen_2="银城美食广场附近的⋯",
+        yuewen_2="",
+        yuewen_1_shifted="就系坐落喺界限街同南昌街交界",
+        yuewen_2_shifted="",
         verified=True,
     ),
     ShiftTestCase(
@@ -566,6 +584,15 @@ shift_test_cases_block_2 = [
         yuewen_1_shifted="仲系西人教英文添㗎",
         yuewen_2_shifted="咦西人教英文",
         difficulty=2,
+        verified=True,
+    ),
+    ShiftTestCase(
+        zhongwen_1="西人教英文？",
+        yuewen_1="咦西人教英文",
+        zhongwen_2="是呀！",
+        yuewen_2="",
+        yuewen_1_shifted="咦西人教英文",
+        yuewen_2_shifted="",
         verified=True,
     ),
     ShiftTestCase(
@@ -674,12 +701,30 @@ shift_test_cases_block_3 = [
         verified=True,
     ),
     ShiftTestCase(
+        zhongwen_1="荔芋火鸭礼！　　荔芋火鸭礼！",
+        yuewen_1="湾吉校坟交涉设",
+        zhongwen_2="忘记校训九十七⋯　　忘记校训九十七⋯",
+        yuewen_2="",
+        yuewen_1_shifted="湾吉校坟交涉设",
+        yuewen_2_shifted="",
+        verified=True,
+    ),
+    ShiftTestCase(
         zhongwen_1="忘记校训九十七⋯　　忘记校训九十七⋯",
         yuewen_1="",
         zhongwen_2="也不能忘记校训九十八！",
         yuewen_2="都唔好湾吉校坟交涉白",
         yuewen_1_shifted="",
         yuewen_2_shifted="都唔好湾吉校坟交涉白",
+        verified=True,
+    ),
+    ShiftTestCase(
+        zhongwen_1="也不能忘记校训九十八！",
+        yuewen_1="都唔好湾吉校坟交涉白",
+        zhongwen_2="也不能忘记校训九十八！",
+        yuewen_2="",
+        yuewen_1_shifted="都唔好湾吉校坟交涉白",
+        yuewen_2_shifted="",
         verified=True,
     ),
     ShiftTestCase(
@@ -880,6 +925,15 @@ shift_test_cases_block_4 = [
         verified=True,
     ),
     ShiftTestCase(
+        zhongwen_1="麦唛同学！　　到！",
+        yuewen_1="麦麦同学到",
+        zhongwen_2="阿May同学！",
+        yuewen_2="",
+        yuewen_1_shifted="麦麦同学到",
+        yuewen_2_shifted="",
+        verified=True,
+    ),
+    ShiftTestCase(
         zhongwen_1="阿May同学！",
         yuewen_1="",
         zhongwen_2="Miss Chan，我点过两次了！",
@@ -896,6 +950,15 @@ shift_test_cases_block_4 = [
         yuewen_2="啊系咩",
         yuewen_1_shifted="MissChan你点咗我两次喇",
         yuewen_2_shifted="啊系咩",
+        verified=True,
+    ),
+    ShiftTestCase(
+        zhongwen_1="呀，真的吗？",
+        yuewen_1="啊系咩",
+        zhongwen_2="校长早晨！",
+        yuewen_2="",
+        yuewen_1_shifted="啊系咩",
+        yuewen_2_shifted="",
         verified=True,
     ),
     ShiftTestCase(
@@ -1594,6 +1657,15 @@ shift_test_cases_block_9 = [
         verified=True,
     ),
     ShiftTestCase(
+        zhongwen_1="欢迎大家收看《麦太世界》",
+        yuewen_1="欢迎大家收睇麦太世界",
+        zhongwen_2="今日为大家介绍一个⋯",
+        yuewen_2="",
+        yuewen_1_shifted="欢迎大家收睇麦太世界",
+        yuewen_2_shifted="",
+        verified=True,
+    ),
+    ShiftTestCase(
         zhongwen_1="今日为大家介绍一个⋯",
         yuewen_1="",
         zhongwen_2="简单别致的小菜纸包鸡",
@@ -2264,6 +2336,15 @@ shift_test_cases_block_15 = [
     ),
 ]  # shift_test_cases_block_15
 shift_test_cases_block_16 = [
+    ShiftTestCase(
+        zhongwen_1="校长早晨！",
+        yuewen_1="嗨",
+        zhongwen_2="校长再见！",
+        yuewen_2="",
+        yuewen_1_shifted="嗨",
+        yuewen_2_shifted="",
+        verified=True,
+    ),
     ShiftTestCase(
         zhongwen_1="校长再见！",
         yuewen_1="",
