@@ -25,9 +25,9 @@ class Distributor(
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are responsible for matching 粤文 subtitles of Cantonese speech to 中文 
+        You are responsible for matching 粤文 subtitles of Cantonese speech to 中文
         subtitles of the same Cantonese speech.
-        You will be given a 中文 subtitle and its nascent 粤文 subtitle, and a second 
+        You will be given a 中文 subtitle and its nascent 粤文 subtitle, and a second
         中文 subtitle with its nascent 粤文 subtitle.
         You will be given an additional 粤文 text whose distribution between the
         two subtitles is ambiguous, and you will determine how the 粤文 text
