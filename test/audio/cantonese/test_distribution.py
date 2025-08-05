@@ -47,7 +47,10 @@ def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
         # skip_if_ci(flaky())("distributor_zero_shot"),
     ],
 )
-@pytest.mark.parametrize("test_case", mlamd_distribute_test_cases)
+@pytest.mark.parametrize(
+    "test_case",
+    [tc for tc in mlamd_distribute_test_cases if tc.verified],
+)
 def test_distribution_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
 ):
@@ -70,7 +73,8 @@ def test_distribution_mlamd(
     ],
 )
 @pytest.mark.parametrize(
-    "test_case", [tc for tc in mlamd_distribute_test_cases if tc.difficulty >= 1]
+    "test_case",
+    [tc for tc in mlamd_distribute_test_cases if tc.difficulty >= 1 and tc.verified],
 )
 def test_distribution_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase

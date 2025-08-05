@@ -21,8 +21,8 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""
         return (
-            self.one_yuewen == self.one_yuewen_shifted
-            and self.two_yuewen == self.two_yuewen_shifted
+            self.yuewen_1 == self.yuewen_1_shifted
+            and self.yuewen_2 == self.yuewen_2_shifted
         )
 
     def get_min_difficulty(self) -> int:
@@ -41,14 +41,15 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftTestCase:
         """Ensure query and answer are consistent with one another."""
-        expected = remove_punc_and_whitespace(self.one_yuewen + self.two_yuewen)
+        expected = remove_punc_and_whitespace(self.yuewen_1 + self.yuewen_2)
         received = remove_punc_and_whitespace(
-            self.one_yuewen_shifted + self.two_yuewen_shifted
+            self.yuewen_1_shifted + self.yuewen_2_shifted
         )
         if expected != received:
             raise ValueError(
-                "Answer's concatenated shifted 粤文 text one and two does not match "
-                "query's concatenated 粤文 text one and two:\n"
+                "Answer's concatenated shifted 粤文 subtitle 1 and shifted 粤文 "
+                "subtitle 2 does not match query's concatenated 粤文 subtitle 1 and "
+                "粤文 subtitle 2:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )
