@@ -2265,6 +2265,7 @@ proof_test_cases_block_20 = [
         note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the "
         "place name '马尔代夫' (Maldives).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="马尔代夫！",
@@ -2273,75 +2274,81 @@ proof_test_cases_block_20 = [
         note="Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the "
         "place name '马尔代夫' (Maldives).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈，那么我们什么时候去？",
         yuewen="妈妈，咁我哋几时去呀？",
         yuewen_proofread="妈妈，咁我哋几时去呀？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你先把药水喝掉，病好了我就去订机票",
-        yuewen="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
-        yuewen_proofread="嗯，你乖乖哋食埋啲药，好返晒啦，我即刻订机票",
+        yuewen="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
+        yuewen_proofread="嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="来，多喝一点！",
         yuewen="嚟啦，食多更！",
-        yuewen_proofread="嚟啦，饮多啲！",
-        note="Corrected '食多更' to '饮多啲' as the original phrase is about "
-        "drinking more, not eating more; '饮多啲' matches the meaning of "
-        "'多喝一点'.",
-        prompt=True,
-        difficulty=2,
+        yuewen_proofread="嚟啦，食多更！",
+        note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_20
 proof_test_cases_block_21 = [
     ProofTestCase(
         zhongwen="妈妈，你看！",
-        yuewen="妈妈你睇！",
-        yuewen_proofread="妈妈你睇！",
+        yuewen="妈妈，你睇！",
+        yuewen_proofread="妈妈，你睇！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈你看，我病好了！",
         yuewen="我好返喇！",
         yuewen_proofread="我好返喇！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我把药都吃光了",
         yuewen="啲嘢所以我全部食晒喇",
         yuewen_proofread="啲药所以我全部食晒喇",
-        note="Corrected '啲嘢' to '啲药' as the sentence is about finishing "
-        "medicine, not just 'things'; '药' matches the meaning of '药' "
-        "in the 中文.",
+        note="Corrected '啲嘢' to '啲药' as '药' matches the meaning of '药' in "
+        "the 中文, while '嘢' is a likely mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="家中的东西有什么没给你吃光的？",
         yuewen="即系间屋有乜嘢唔系畀你食晒㗎？",
         yuewen_proofread="即系间屋有乜嘢唔系畀你食晒㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="这次不同呀，原来这么一大樽的",
         yuewen="妈妈，呢次唔同㗎，本来咁大樽嘅",
         yuewen_proofread="妈妈，呢次唔同㗎，本来咁大樽嘅",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我喝一格，又喝一格，又喝一格⋯",
         yuewen="我饮下一格，又一格，又一格⋯",
-        yuewen_proofread="我饮一格，又一格，又一格⋯",
-        note="Removed '下' from '饮下一格' to correct the mishearing; '饮一格' "
-        "matches the meaning of '喝一格' (drink one section/cup).",
+        yuewen_proofread="我饮下一格，又一格，又一格⋯",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="就给我喝光了！",
         yuewen="吓，咪我饮晒㖞！",
         yuewen_proofread="吓，咪我饮晒㖞！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_21
 proof_test_cases_block_22 = [
@@ -2351,6 +2358,8 @@ proof_test_cases_block_22 = [
         yuewen_proofread="饮晒就叻仔啦！",
         note="Corrected '饮实' to '饮晒' as '饮晒' means 'finished drinking', "
         "matching the meaning of '喝光了' in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="喝光了就病好了！",
@@ -2358,18 +2367,22 @@ proof_test_cases_block_22 = [
         yuewen_proofread="饮晒就好返实啦！",
         note="Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', "
         "matching the meaning of '喝光了' in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈呀⋯",
         yuewen="妈妈⋯",
         yuewen_proofread="妈妈⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="什么事？",
         yuewen="乜嘢啊？",
         yuewen_proofread="乜嘢啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我们什么时候去马尔代夫？",
@@ -2377,140 +2390,160 @@ proof_test_cases_block_22 = [
         yuewen_proofread="我哋几时去马尔代夫啊？",
         note="Corrected '阿哋' to '我哋' as '我哋' is the correct Cantonese "
         "pronoun for 'we', while '阿哋' is likely a mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="什么马尔代夫？",
         yuewen="乜嘢马尔代夫啊？",
         yuewen_proofread="乜嘢马尔代夫啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你说我病好带我去马尔代夫的呀！",
         yuewen="呢，你话我返就同我去马尔代夫㗎嘛！",
-        yuewen_proofread="呢，你话我病好就同我去马尔代夫㗎嘛！",
-        note="Inserted '病好' after '我' to match the meaning of '我病好' in the "
-        "中文, as '返' is likely a mishearing of '病好'.",
+        yuewen_proofread="呢，你话我返就同我去马尔代夫㗎嘛！",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="马尔代夫，椰林树影，水清沙幼⋯",
         yuewen="马尔代夫呢，耶南树影，水清沙游⋯",
         yuewen_proofread="马尔代夫呢，椰林树影，水清沙幼⋯",
-        note="Corrected '耶南树影' to '椰林树影' and '沙游' to '沙幼' as both are "
-        "likely mishearings; '椰林树影，水清沙幼' is a well-known phrase "
-        "describing the Maldives.",
+        note="Corrected '耶南树影' to '椰林树影' and '水清沙游' to '水清沙幼' as both are "
+        "likely mishearings of the standard descriptive phrase for "
+        "the Maldives.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="座落于印度洋的世外桃源呀！",
         yuewen="助流于印度园嘅世外导演啦！",
         yuewen_proofread="座落于印度洋嘅世外桃源啦！",
         note="Corrected '助流于印度园嘅世外导演' to '座落于印度洋嘅世外桃源' as the original was "
-        "a clear mishearing of the place and descriptive terms.",
+        "a mishearing of the place and descriptive terms.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="想不到你还有点文采",
         yuewen="啊，估唔到你几好文采㗎噃",
         yuewen_proofread="啊，估唔到你几好文采㗎噃",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="说得不错呀！",
         yuewen="讲得几好听啊！",
         yuewen_proofread="讲得几好听啊！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我不是光说的呀，妈妈你说过⋯",
-        yuewen="妈妈，我唔系讲喇㗎， 又系你话嘅，你话⋯",
-        yuewen_proofread="妈妈，我唔系讲吓㗎， 又系你话嘅，你话⋯",
-        note="Corrected '讲喇㗎' to '讲吓㗎' as '讲吓' (just saying) matches the "
-        "meaning of '光说的' in the 中文, while '讲喇㗎' is likely a "
-        "mishearing.",
+        yuewen="妈妈我唔系讲喇㗎， 又系你话嘅⋯",
+        yuewen_proofread="妈妈我唔系讲喇㗎， 又系你话嘅⋯",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我病好了带我去马尔代夫的！",
-        yuewen="我病好咗之日就同我去马尔代夫㗎，你讲过㗎！",
-        yuewen_proofread="我病好咗之日就同我去马尔代夫㗎，你讲过㗎！",
+        yuewen="你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！",
+        yuewen_proofread="你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我是说发了财就带你去",
         yuewen="我话发咗先至同你去㗎",
         yuewen_proofread="我话发咗先至同你去㗎",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不是的，妈妈你说我病好了就去的",
         yuewen="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
-        yuewen_proofread="唔系㖞，妈妈，你话我病好咗就去㗎㖞",
-        note="Added '我病' before '好咗' to match the meaning of '你说我病好了就去的', "
-        "as the original 粤文 omitted '我病', likely due to a mishearing "
-        "or omission.",
+        yuewen_proofread="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你分明讲过病好了就去马尔代夫的",
         yuewen="你明明讲过好返就同你去马尔代夫㗎㖞",
         yuewen_proofread="你明明讲过好返就同你去马尔代夫㗎㖞",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你讲过的！",
         yuewen="你讲过㗎！",
         yuewen_proofread="你讲过㗎！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="好了，别哭了",
-        yuewen="得啦，得啦，唔好喊啦",
-        yuewen_proofread="得啦，得啦，唔好喊啦",
+        yuewen="得啦得啦，唔好喊啦",
+        yuewen_proofread="得啦得啦，唔好喊啦",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="带你去马尔代夫好了",
         yuewen="同你去马尔代夫啦",
         yuewen_proofread="同你去马尔代夫啦",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="真的吗？　　对",
         yuewen="真嘅？　　系啊",
         yuewen_proofread="真嘅？　　系啊",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="什么时候去？",
         yuewen="咁几时去啊？",
         yuewen_proofread="咁几时去啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="发财再说",
         yuewen="等我发咗先啰",
         yuewen_proofread="等我发咗先啰",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你早发财了⋯",
         yuewen="你发咗㗎喇，你发咗㗎喇⋯",
         yuewen_proofread="你发咗㗎喇，你发咗㗎喇⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="好了好了，发财了",
-        yuewen="系喇，系喇，系喇，发咗喇",
-        yuewen_proofread="系喇，系喇，系喇，发咗喇",
+        yuewen="系喇系喇系喇，发咗喇",
+        yuewen_proofread="系喇系喇系喇，发咗喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我们下个星期去，好了吧？",
-        yuewen="下个礼拜同你去啦？",
-        yuewen_proofread="下个礼拜同你去啦？",
+        yuewen="下个礼拜同你去啦，得未啊？",
+        yuewen_proofread="下个礼拜同你去啦，得未啊？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="太好了！",
-        yuewen="得未啊！好嘢！",
-        yuewen_proofread="得未啊！好嘢！",
+        yuewen="好嘢！",
+        yuewen_proofread="好嘢！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_22
 proof_test_cases_block_23 = [

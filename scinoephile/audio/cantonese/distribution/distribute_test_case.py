@@ -36,8 +36,8 @@ class DistributeTestCase(
         received = self.yuewen_1_to_append + self.yuewen_2_to_prepend
         if expected != received:
             raise ValueError(
-                "Answer's concatenated 粤文 text to append and prepend does not match "
-                "query's 粤文 text to split:\n"
+                "Answer's concatenated 粤文 1 to append and 粤文 2 to prepend do not "
+                "match query's 粤文 to distribute:\n"
                 f"Expected: {self.yuewen_to_distribute}\n"
                 f"Received: {received}"
             )

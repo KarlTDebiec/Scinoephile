@@ -639,17 +639,19 @@ distribute_test_cases_block_20 = [
         zhongwen_2="马尔代夫！",
         yuewen_2_end="",
         yuewen_to_distribute="买二代夫",
-        yuewen_1_to_append="买二代夫",
-        yuewen_2_to_prepend="",
+        yuewen_1_to_append="",
+        yuewen_2_to_prepend="买二代夫",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="马尔代夫！",
-        yuewen_1_start="",
+        yuewen_1_start="买二代夫",
         zhongwen_2="马尔代夫！",
         yuewen_2_end="买二代夫",
         yuewen_to_distribute="买二代夫",
         yuewen_1_to_append="",
         yuewen_2_to_prepend="买二代夫",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_20
 distribute_test_cases_block_21 = [
@@ -661,6 +663,7 @@ distribute_test_cases_block_21 = [
         yuewen_to_distribute="又一格",
         yuewen_1_to_append="又一格",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_21
 distribute_test_cases_block_22 = [
@@ -672,6 +675,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="妈妈",
         yuewen_1_to_append="妈妈",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="马尔代夫，椰林树影，水清沙幼⋯",
@@ -681,6 +685,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="水清沙游",
         yuewen_1_to_append="水清沙游",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="我病好了带我去马尔代夫的！",
@@ -690,6 +695,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="你讲过㗎",
         yuewen_1_to_append="你讲过㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="好了，别哭了",
@@ -699,6 +705,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="唔好喊啦",
         yuewen_1_to_append="唔好喊啦",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="真的吗？　　对",
@@ -708,6 +715,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="系啊",
         yuewen_1_to_append="系啊",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="什么时候去？",
@@ -717,6 +725,7 @@ distribute_test_cases_block_22 = [
         yuewen_to_distribute="咁几时去啊",
         yuewen_1_to_append="咁几时去啊",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_22
 distribute_test_cases_block_23 = [

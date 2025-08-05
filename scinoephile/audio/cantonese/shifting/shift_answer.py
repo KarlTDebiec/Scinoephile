@@ -12,12 +12,14 @@ from scinoephile.core.abcs import Answer
 class ShiftAnswer(Answer):
     """Answer for 粤文 shifting."""
 
-    one_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text one.")
-    two_yuewen_shifted: str = Field(..., description="Shifted 粤文 of text two.")
+    yuewen_1_shifted: str = Field(..., description="Shifted 粤文 of subtitle 1.")
+    yuewen_2_shifted: str = Field(..., description="Shifted 粤文 of subtitle 2.")
 
     @model_validator(mode="after")
     def validate_answer(self) -> ShiftAnswer:
         """Ensure answer is internally valid."""
-        if not self.one_yuewen_shifted and not self.two_yuewen_shifted:
-            raise ValueError("Answer must have either shifted 粤文 text one or two.")
+        if not self.yuewen_1_shifted and not self.yuewen_2_shifted:
+            raise ValueError(
+                "Answer must have 粤文 1 shifted, 粤文 2 shifted, or both."
+            )
         return self

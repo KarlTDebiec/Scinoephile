@@ -116,7 +116,6 @@ class Aligner:
             self._distribute(alignment)
 
             # Then shift 粤文 subtitles that remain misaligned after distribution
-            print(f"SHIFTING ITERATION {iteration}")
             distribution_and_shifting_in_progress = self._shift(alignment)
             iteration += 1
 
@@ -227,117 +226,130 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        for one_sg_idx in range(len(alignment.sync_groups) - 1):
-            two_sg_idx = one_sg_idx + 1
-
+        for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            query = get_shift_query(alignment, one_sg_idx, two_sg_idx)
+            query = get_shift_query(alignment, sg_1_idx)
             if query is None:
-                info(f"Skipping sync groups {one_sg_idx} and {two_sg_idx} with no 粤文")
+                info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
-            # TODO: try / except
+            # TODO: try/expect and return original 粤文 on error; not yet encountered
             answer = self.shifter(query)
 
             # If there is no change, continue
             if (
-                query.one_yuewen == answer.one_yuewen_shifted
-                and query.two_yuewen == answer.two_yuewen_shifted
+                query.yuewen_1 == answer.yuewen_1_shifted
+                and query.yuewen_2 == answer.yuewen_2_shifted
             ):
                 continue
-            if self._shift_one(alignment, one_sg_idx, two_sg_idx, query, answer):
+            if self._shift_one(alignment, sg_1_idx, query, answer):
                 return True
         return False
 
     def _shift_one(
         self,
         alignment: Alignment,
-        one_sg_idx: int,
-        two_sg_idx: int,
+        sg_1_idx: int,
         query: ShiftQuery,
         answer: ShiftAnswer,
     ) -> bool:
-        # Get sync groups
-        if one_sg_idx < 0 or one_sg_idx >= len(alignment.sync_groups):
+        # Get sync group 1
+        if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
             raise ScinoephileError(
-                f"Invalid sync group index {one_sg_idx} "
+                f"Invalid sync group index {sg_1_idx} "
                 f"for alignment with {len(alignment.sync_groups)} sync groups."
             )
-        if two_sg_idx < 0 or two_sg_idx >= len(alignment.sync_groups):
+        sg_1 = alignment.sync_groups[sg_1_idx]
+
+        # Get sync group 2
+        sg_2_idx = sg_1_idx + 1
+        if sg_2_idx < 0 or sg_2_idx >= len(alignment.sync_groups):
             raise ScinoephileError(
-                f"Invalid sync group index {two_sg_idx} "
+                f"Invalid sync group index {sg_2_idx} "
                 f"for alignment with {len(alignment.sync_groups)} sync groups."
             )
-        if one_sg_idx + 1 != two_sg_idx:
-            raise ScinoephileError(
-                f"Sync groups {one_sg_idx} and {two_sg_idx} are not consecutive."
-            )
-        one_sg = alignment.sync_groups[one_sg_idx]
-        two_sg = alignment.sync_groups[two_sg_idx]
+        sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get 粤文
-        one_yw_idxs = one_sg[1]
-        two_yw_idxs = two_sg[1]
+        yw_1_idxs = sg_1[1]
+        yw_2_idxs = sg_2[1]
+        yw_1 = query.yuewen_1
+        yw_2 = query.yuewen_2
+        yw_1_shifted = answer.yuewen_1_shifted
+        yw_2_shifted = answer.yuewen_2_shifted
 
-        # Shift 粤文 text
-        one_yuewen = query.one_yuewen
-        two_yuewen = query.two_yuewen
-        one_yuewen_shifted = answer.one_yuewen_shifted
-        two_yuewen_shifted = answer.two_yuewen_shifted
-        nascent_sync_groups = deepcopy(alignment.sync_groups)
-        # TODO: Review this logic and consider how to clarify
-        if len(one_yuewen) < len(one_yuewen_shifted):
-            # Calculate the number of characters we need to shift from two to one
-            text_to_shift_from_two_to_one = one_yuewen_shifted[len(one_yuewen) :]
-            n_chars_left_to_shift = len(text_to_shift_from_two_to_one)
+        # Shift 粤文
+        nascent_sg = deepcopy(alignment.sync_groups)
 
-            # Loop over subtitles currently in two
-            for two_yw_idx in two_yw_idxs:
-                yw = alignment.yuewen[two_yw_idx]
+        # Case: 粤文 text needs to be shifted from 中文 2 to 中文 1
+        if len(yw_1) < len(yw_1_shifted):
+            # Calculate the number of characters we need to shift from 2 to 1
+            text_to_shift_from_2_to_1 = yw_1_shifted[len(yw_1) :]
+            n_chars_remaining_to_shift = len(text_to_shift_from_2_to_1)
 
-                if len(yw.text) <= n_chars_left_to_shift:
-                    # Entire sub needs to be shifted from two to one
-                    nascent_sync_groups[one_sg_idx][1].append(two_yw_idx)
-                    nascent_sync_groups[two_sg_idx][1].remove(two_yw_idx)
-                    n_chars_left_to_shift -= len(yw.text)
-                else:
-                    # Sub needs to be split, which means we need to restart after
+            # Loop over subtitles currently in sync group 2
+            for yw_2_idx in yw_2_idxs:
+                yw = alignment.yuewen[yw_2_idx]
+
+                # Case: A sub in 粤文 2 overlaps partialy with 中文 1 and 2
+                # Action: Split sub into two subs, and return True to indicate that
+                #   shifting must be restarted
+                if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
-                        alignment.yuewen, two_yw_idx, n_chars_left_to_shift
+                        alignment.yuewen, yw_2_idx, n_chars_remaining_to_shift
                     )
-                    n_chars_left_to_shift -= len(yw.text[:n_chars_left_to_shift])
+                    # Must restart shifting after splitting a sub
                     alignment._sync_groups_override = None
                     return True
-                if n_chars_left_to_shift == 0:
-                    break
-        elif len(one_yuewen) > len(one_yuewen_shifted):
-            # Calculate the number of characters we need to shift from one to two
-            text_to_shift_from_one_to_two = one_yuewen[len(one_yuewen_shifted) :]
-            n_chars_left_to_shift = len(text_to_shift_from_one_to_two)
 
-            # Loop over subtitles currently in one
-            for one_yw_idx in reversed(one_yw_idxs):
-                yw = alignment.yuewen[one_yw_idx]
+                # Case: A sub in 粤文 2 overlaps with 中文 1 and not 中文 2
+                # Action: Shift sub from sync group 2 to 1
+                nascent_sg[sg_1_idx][1].append(yw_2_idx)
+                nascent_sg[sg_2_idx][1].remove(yw_2_idx)
+                n_chars_remaining_to_shift -= len(yw.text)
 
-                if len(yw.text) <= n_chars_left_to_shift:
-                    # Entire sub needs to be shifted from one to two
-                    nascent_sync_groups[two_sg_idx][1].insert(0, one_yw_idx)
-                    nascent_sync_groups[one_sg_idx][1].remove(one_yw_idx)
-                    n_chars_left_to_shift -= len(yw.text)
-                else:
-                    # Sub needs to be split, which means we need to restart after
+                # Case: We are done shifting
+                # Action: Set sync groups and return False to indicate completion
+                if n_chars_remaining_to_shift == 0:
+                    alignment._sync_groups_override = nascent_sg
+                    return False
+
+        # Case: 粤文 text needs to be shifted from 中文 1 to 中文 2
+        # Action: Shift 粤文 text from sync group 1 to sync group 2
+        if len(yw_2) < len(yw_2_shifted):
+            # Calculate the number of characters we need to shift from 1 to 2
+            text_to_shift_from_1_to_2 = yw_2_shifted[: len(yw_2_shifted) - len(yw_2)]
+            n_chars_remaining_to_shift = len(text_to_shift_from_1_to_2)
+
+            # Loop over subtitles currently in sync group 1
+            for yw_1_idx in reversed(yw_1_idxs):
+                yw = alignment.yuewen[yw_1_idx]
+
+                # Case: A sub in 粤文 1 overlaps partially with 中文 1 and 2
+                # Action: Split sub into two subs, and return True to indicate that
+                #   shifting must be restarted
+                if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
-                        alignment.yuewen, one_yw_idx, n_chars_left_to_shift
+                        alignment.yuewen,
+                        yw_1_idx,
+                        len(yw.text) - n_chars_remaining_to_shift,
                     )
-                    n_chars_left_to_shift -= len(yw.text[:n_chars_left_to_shift])
+                    # Must restart shifting after splitting a subtitle
                     alignment._sync_groups_override = None
                     return True
-                if n_chars_left_to_shift == 0:
-                    break
 
-        else:
-            raise ScinoephileError("Unexpected case.")
-        alignment._sync_groups_override = nascent_sync_groups
-        return False
+                # Case: A sub in 粤文 1 overlaps with 中文 2 and not 中文 1
+                # Action: Shift sub from sync group 1 to 2
+                nascent_sg[sg_1_idx][1].remove(yw_1_idx)
+                nascent_sg[sg_2_idx][1].insert(0, yw_1_idx)
+                n_chars_remaining_to_shift -= len(yw.text)
+
+                # Case: We are done shifting
+                # Action: Set sync groups and return False to indicate completion
+                if n_chars_remaining_to_shift == 0:
+                    alignment._sync_groups_override = nascent_sg
+                    return False
+
+        raise ScinoephileError("Unexpected case.")
 
     def _merge(self, alignment: Alignment):
         """Merge 粤文 subs.

@@ -14,10 +14,7 @@ from scinoephile.core.abcs import Query
 
 
 def get_distribute_query(
-    alignment: Alignment,
-    sg_1_idx: int,
-    sg_2_idx: int,
-    yw_idx: int,
+    alignment: Alignment, sg_1_idx: int, sg_2_idx: int, yw_idx: int
 ) -> DistributeQuery:
     """Get distribute query for an alignment at provided indexes.
 
@@ -95,73 +92,66 @@ def get_distribute_query(
     )
 
 
-def get_shift_query(
-    alignment: Alignment,
-    one_sg_idx: int,
-    two_sg_idx: int,
-) -> ShiftQuery | None:
-    """Get shift query for an alignment at provided indexes.
+def get_shift_query(alignment: Alignment, sg_1_idx: int) -> ShiftQuery | None:
+    """Get shift query for an alignment at provided sync group index.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        one_sg_idx: Index of sync group one
-        two_sg_idx: Index of sync group two
+        sg_1_idx: Index of sync group 1
     Returns:
         Query, or None if there are no 粤文 to shift
     """
-    # Get sync groups
-    if one_sg_idx < 0 or one_sg_idx >= len(alignment.sync_groups):
+    # Get sync grou 1
+    if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
         raise ScinoephileError(
-            f"Invalid sync group index {one_sg_idx} "
+            f"Invalid sync group index {sg_1_idx} "
             f"for alignment with {len(alignment.sync_groups)} sync groups."
         )
-    if two_sg_idx < 0 or two_sg_idx >= len(alignment.sync_groups):
+    sg_1 = alignment.sync_groups[sg_1_idx]
+
+    # Get sync group 2
+    sg_2_idx = sg_1_idx + 1
+    if sg_2_idx < 0 or sg_2_idx >= len(alignment.sync_groups):
         raise ScinoephileError(
-            f"Invalid sync group index {two_sg_idx} "
+            f"Invalid sync group index {sg_2_idx} "
             f"for alignment with {len(alignment.sync_groups)} sync groups."
         )
-    if one_sg_idx + 1 != two_sg_idx:
-        raise ScinoephileError(
-            f"Sync groups {one_sg_idx} and {two_sg_idx} are not consecutive."
-        )
-    one_sg = alignment.sync_groups[one_sg_idx]
-    two_sg = alignment.sync_groups[two_sg_idx]
+    sg_2 = alignment.sync_groups[sg_2_idx]
 
-    # Get 中文
-    one_zw_idxs = one_sg[0]
-    if len(one_zw_idxs) != 1:
+    # Get 中文 1
+    sg_1_zw_idxs = sg_1[0]
+    if len(sg_1_zw_idxs) != 1:
         raise ScinoephileError(
-            f"Sync group {one_sg_idx} has {len(one_zw_idxs)} 中文 subs, expected 1."
+            f"Sync group {sg_1_idx} has {len(sg_1_zw_idxs)} 中文 subs, expected 1."
         )
-    one_zw_idx = one_sg[0][0]
-    two_zw_idxs = two_sg[0]
-    if len(two_sg[0]) != 1:
-        raise ScinoephileError(
-            f"Sync group {two_sg_idx} has {len(two_zw_idxs)} 中文 subs, expected 1."
-        )
-    two_zw_idx = two_sg[0][0]
-    if one_zw_idx + 1 != two_zw_idx:
-        raise ScinoephileError(
-            f"中文 indexes {one_zw_idx} and {two_zw_idx} are not consecutive."
-        )
-    one_zhongwen = alignment.zhongwen[one_zw_idx].text
-    two_zhongwen = alignment.zhongwen[two_zw_idx].text
+    sg_1_zw_idx = sg_1[0][0]
+    zw_1 = alignment.zhongwen[sg_1_zw_idx].text
 
-    # Get 粤文
-    one_yw_idxs = one_sg[1]
-    two_yw_idxs = two_sg[1]
-    if len(one_yw_idxs) == 0 and len(two_yw_idxs) == 0:
+    # Get 中文 2
+    sg_2_zw_idxs = sg_2[0]
+    if len(sg_2[0]) != 1:
+        raise ScinoephileError(
+            f"Sync group {sg_2_idx} has {len(sg_2_zw_idxs)} 中文 subs, expected 1."
+        )
+    sg_2_zw_idx = sg_2[0][0]
+    if sg_1_zw_idx + 1 != sg_2_zw_idx:
+        raise ScinoephileError(
+            f"中文 indexes {sg_1_zw_idx} and {sg_2_zw_idx} are not consecutive."
+        )
+    zw_2 = alignment.zhongwen[sg_2_zw_idx].text
+
+    # Get 粤文 1
+    sg_1_yw_idxs = sg_1[1]
+    yw_1 = "".join([alignment.yuewen[i].text for i in sg_1_yw_idxs])
+
+    # Get 粤文 2
+    sg_2_yw_idxs = sg_2[1]
+    yw_2 = "".join([alignment.yuewen[i].text for i in sg_2_yw_idxs])
+
+    # Return
+    if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    one_yuewen = "".join([alignment.yuewen[i].text for i in one_yw_idxs])
-    two_yuewen = "".join([alignment.yuewen[i].text for i in two_yw_idxs])
-
-    # Return shift query
-    return ShiftQuery(
-        one_zhongwen=one_zhongwen,
-        one_yuewen=one_yuewen,
-        two_zhongwen=two_zhongwen,
-        two_yuewen=two_yuewen,
-    )
+    return ShiftQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
 
 
 def get_merge_query(

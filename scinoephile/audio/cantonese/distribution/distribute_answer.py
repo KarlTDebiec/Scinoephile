@@ -23,5 +23,7 @@ class DistributeAnswer(Answer):
     def validate_answer(self) -> DistributeAnswer:
         """Ensure answer is internally valid."""
         if not self.yuewen_1_to_append and not self.yuewen_2_to_prepend:
-            raise ValueError("Answer must have 粤文 text to append or prepend.")
+            raise ValueError(
+                "Answer must have 粤文 1 to append, 粤文 2 to prepend, or both."
+            )
         return self

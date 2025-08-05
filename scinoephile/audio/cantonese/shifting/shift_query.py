@@ -12,14 +12,16 @@ from scinoephile.core.abcs import Query
 class ShiftQuery(Query):
     """Query for 粤文 shifting."""
 
-    one_zhongwen: str = Field(..., description="Known 中文 of text one.")
-    one_yuewen: str = Field(..., description="Original 粤文 of text one.")
-    two_zhongwen: str = Field(..., description="Known 中文 of text two.")
-    two_yuewen: str = Field(..., description="Original 粤文 of text two.")
+    zhongwen_1: str = Field(..., description="Known 中文 of subtitle 1.")
+    yuewen_1: str = Field(..., description="Original 粤文 of subtitle 1.")
+    zhongwen_2: str = Field(..., description="Known 中文 of subtitle 2.")
+    yuewen_2: str = Field(..., description="Original 粤文 of subtitle 2.")
 
     @model_validator(mode="after")
     def validate_query(self) -> ShiftQuery:
         """Ensure query has minimum necessary information."""
-        if not self.one_yuewen and not self.two_yuewen:
-            raise ValueError("Query must have 粤文 text one, two, or both.")
+        if not self.yuewen_1 and not self.yuewen_2:
+            raise ValueError(
+                "Query must have 粤文 subtitle 1, 粤文 subtitle 2, or both."
+            )
         return self
