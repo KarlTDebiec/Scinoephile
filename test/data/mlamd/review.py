@@ -1536,6 +1536,12 @@ mlamd_review_test_cases: list[ReviewTestCase] = [
     review_test_case_block_14,
     review_test_case_block_15,
     review_test_case_block_16,
+    review_test_case_block_17,
+    review_test_case_block_18,
+    review_test_case_block_19,
+    review_test_case_block_20,
+    review_test_case_block_21,
+    review_test_case_block_22,
 ]
 """MLAMD 粤文 review test cases."""
 

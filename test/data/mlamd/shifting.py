@@ -2668,7 +2668,8 @@ shift_test_cases_block_20 = [
         yuewen_2="买二代夫",
         yuewen_1_shifted="嘻嘻好嘢买二代夫",
         yuewen_2_shifted="",
-        difficulty=1,
+        difficulty=2,
+        prompt=True,
         verified=True,
     ),
     ShiftTestCase(
@@ -2982,7 +2983,7 @@ shift_test_cases_block_22 = [
         yuewen_2="你发咗㗎喇系喇系喇系喇发咗喇",
         yuewen_1_shifted="你发咗㗎喇你发咗㗎喇",
         yuewen_2_shifted="系喇系喇系喇发咗喇",
-        difficulty=1,
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
