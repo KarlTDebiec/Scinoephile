@@ -20,7 +20,7 @@ class DistributeQuery(Query):
     yuewen_2_end: str = Field(..., description="Transcribed 粤文 end of subtitle 2.")
     yuewen_to_distribute: str = Field(
         ...,
-        description="Transcribed粤文 to distribute, with start appended to 粤文 "
+        description="Transcribed 粤文 to distribute, with start appended to 粤文 "
         "subtitle 1 and end prepended to 粤文 subtitle 2.",
     )
 

@@ -330,8 +330,8 @@ proof_test_cases_block_1 = [
         note="Corrected '话自周人烦' to '话似周润发' as it is a mishearing of the "
         "actor's name, matching the meaning in the 中文.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="为了纪念这赐福的胶兜",
@@ -610,8 +610,8 @@ proof_test_cases_block_3 = [
         note="Corrected '嗰个位同学' to '各位同学' as '嗰个位' is a mishearing of "
         "'各位', which is the correct address for a group.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="今天的早会主要是跟大家分享",
@@ -641,9 +641,9 @@ proof_test_cases_block_3 = [
         yuewen="交！",
         yuewen_proofread="交！",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="太好了！大家去上堂吧",
@@ -693,8 +693,8 @@ proof_test_cases_block_4 = [
         "'班主有Miss Chan' to '班主任Miss Chan' for proper transcription of "
         "'class teacher'.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="她的志愿是做第二个王菲",
@@ -733,9 +733,10 @@ proof_test_cases_block_4 = [
         zhongwen="亚辉同学！　　到！",
         yuewen="阿辉同学！　　到！",
         yuewen_proofread="亚辉同学！　　到！",
-        note="Corrected '阿辉' to '亚辉' as '亚辉' is the correct name, matching the original 中文.",
-        verified=True,
+        note="Corrected '阿辉' to '亚辉' as '亚辉' is the correct name, matching "
+        "the original 中文.",
         difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="菇时同学！　　到！",
@@ -833,9 +834,10 @@ proof_test_cases_block_4 = [
         zhongwen="麦唛呀，即是呢⋯",
         yuewen="妈妈啊，麦兜同学，即系呢⋯",
         yuewen_proofread="麦兜同学，即系呢⋯",
-        note="Removed '妈妈啊，' as two characters are speaking and this is associated with the other speaker.",
-        verified=True,
+        note="Removed '妈妈啊，' as two characters are speaking and this is "
+        "associated with the other speaker.",
         difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我好像觉得呢⋯",
@@ -1024,8 +1026,8 @@ proof_test_cases_block_5 = [
         zhongwen="鱼蛋粗面，麻烦你　　粗面买光了",
         yuewen="唔该，鱼蛋粗啊　　冇粗面噃",
         yuewen_proofread="唔该，鱼蛋粗面啊　　冇粗面噃",
-        note="Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '鱼蛋粗面' is the "
-        "correct dish name, matching the meaning in the 中文.",
+        note="Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '鱼蛋粗面' is the correct dish "
+        "name, matching the meaning in the 中文.",
         difficulty=1,
         verified=True,
     ),
@@ -1036,8 +1038,8 @@ proof_test_cases_block_5 = [
         note="Added '河粉' after '鱼蛋' to match the intended meaning of "
         "'鱼蛋河粉' in the 中文, as '好' is likely a mishearing of '河粉'.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
@@ -1069,17 +1071,17 @@ proof_test_cases_block_5 = [
         note="Corrected '蜜丸粗啊' to '墨鱼丸粗面啊' as '蜜丸' is a mishearing of "
         "'墨鱼丸', and added '面' to match the intended dish.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="又买光了？",
         yuewen="又冇啊？",
         yuewen_proofread="又冇啊？",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
@@ -1226,8 +1228,8 @@ proof_test_cases_block_7 = [
         "mishearing of 'Banana', and is meant to be styled in the "
         "same phonetic manner as '疴﹣兰﹣煮'.",
         difficulty=3,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="是All Things Bright and Beautiful吧？",
@@ -1255,9 +1257,9 @@ proof_test_cases_block_7 = [
         yuewen="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
         yuewen_proofread="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
 ]  # proof_test_cases_block_7
 proof_test_cases_block_8 = [
@@ -1345,8 +1347,8 @@ proof_test_cases_block_9 = [
         yuewen_proofread="www．麦太世界．com",
         note="Corrected 'mcticege' to '麦太世界' to match the style of the 中文.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="她做的菜，同样厉害",
@@ -1482,8 +1484,8 @@ proof_test_cases_block_11 = [
         note="Corrected '别节' to '别致' as '别致' is the correct term for "
         "'unique' or 'special', matching the meaning in the 中文.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="包鸡纸包鸡包纸包鸡",
@@ -1518,8 +1520,8 @@ proof_test_cases_block_11 = [
         yuewen="跟住将鸡包子好似我噉包住牛鸡",
         yuewen_proofread="跟住将鸡包纸好似我噉包住块鸡",
         note="Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of "
-        "'鸡包纸' (the paper used to wrap the chicken), and '牛鸡' to "
-        "'块鸡' as '牛鸡' is likely a mishearing of '块鸡'.",
+        "'鸡包纸' (the paper used to wrap the chicken), and '牛鸡' to '块鸡' "
+        "as '牛鸡' is likely a mishearing of '块鸡'.",
         difficulty=2,
         verified=True,
     ),
@@ -1623,8 +1625,8 @@ proof_test_cases_block_12 = [
         yuewen_proofread="再包包包包包住个纸鸡包",
         note="Corrected '纸包鸡' to '纸鸡包'",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="再包包包，纸纸纸",
@@ -1696,8 +1698,8 @@ proof_test_cases_block_12 = [
         yuewen="佢屈亲个脚脚！",
         yuewen_proofread="佢屈亲个脚脚！",
         note="",
-        verified=True,
         difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈，我想睡觉",
@@ -1749,8 +1751,8 @@ proof_test_cases_block_13 = [
         yuewen_proofread="佢，一、二、三、四、五、六、七",
         note="",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="没有不成的事",
@@ -1760,8 +1762,8 @@ proof_test_cases_block_13 = [
         "content and is an artifact from subtitle credits in the "
         "training set.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
 ]  # proof_test_cases_block_13
 proof_test_cases_block_14 = [
@@ -1932,9 +1934,9 @@ proof_test_cases_block_15 = [
         yuewen="咁妈妈你会唔会走落去㗎？",
         yuewen_proofread="咁妈妈你会唔会走落去㗎？",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="会！发财了再说吧",
@@ -1975,8 +1977,8 @@ proof_test_cases_block_16 = [
         note="Cleared as '嗨！' bears no resemblance to the original phrase "
         "'校长早晨！' and is clearly a complete mismatch.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你最喜爱的地方是哪儿？",
@@ -2000,8 +2002,8 @@ proof_test_cases_block_16 = [
         "Land' as '好迪士尼呢' is a mishearing of '有Disneyland' and "
         "'HelloTT' is a mishearing of 'Hello Kitty'.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我这个发夹也是在那儿买的",
@@ -2180,8 +2182,8 @@ proof_test_cases_block_18 = [
         yuewen_proofread="唔使！同佢打多支针添呢！",
         note="",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么？得打针？",
@@ -2220,8 +2222,8 @@ proof_test_cases_block_19 = [
         yuewen_proofread="妈妈我唔想食药水呀",
         note="",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不要呀妈妈，我不喝呀",
@@ -2238,8 +2240,8 @@ proof_test_cases_block_19 = [
         yuewen_proofread="我唔食士多啤梨药水呀！",
         note="",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="别哭了，不喝药水病不会好的",
@@ -2318,9 +2320,9 @@ proof_test_cases_block_20 = [
         yuewen="嚟啦，食多更！",
         yuewen_proofread="嚟啦，食多更！",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
 ]  # proof_test_cases_block_20
 proof_test_cases_block_21 = [
@@ -2366,9 +2368,9 @@ proof_test_cases_block_21 = [
         yuewen="我饮下一格，又一格，又一格⋯",
         yuewen_proofread="我饮下一格，又一格，又一格⋯",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="就给我喝光了！",
@@ -2395,8 +2397,8 @@ proof_test_cases_block_22 = [
         note="Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', "
         "matching the meaning of '喝光了' in the 中文.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈呀⋯",
@@ -2419,8 +2421,8 @@ proof_test_cases_block_22 = [
         note="Corrected '阿哋' to '我哋' as '我哋' is the correct Cantonese "
         "pronoun for 'we', while '阿哋' is likely a mishearing.",
         difficulty=2,
-        verified=True,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="什么马尔代夫？",
@@ -2434,9 +2436,9 @@ proof_test_cases_block_22 = [
         yuewen="呢，你话我返就同我去马尔代夫㗎嘛！",
         yuewen_proofread="呢，你话我返就同我去马尔代夫㗎嘛！",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="马尔代夫，椰林树影，水清沙幼⋯",
@@ -2476,9 +2478,9 @@ proof_test_cases_block_22 = [
         yuewen="妈妈我唔系讲喇㗎，又系你话嘅⋯",
         yuewen_proofread="妈妈我唔系讲喇㗎，又系你话嘅⋯",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我病好了带我去马尔代夫的！",
@@ -2499,9 +2501,9 @@ proof_test_cases_block_22 = [
         yuewen="唔系㖞，妈妈你话好咗就同我去㗎㖞",
         yuewen_proofread="唔系㖞，妈妈你话好咗就同我去㗎㖞",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你分明讲过病好了就去马尔代夫的",
@@ -2564,9 +2566,9 @@ proof_test_cases_block_22 = [
         yuewen="系喇系喇系喇，发咗喇",
         yuewen_proofread="系喇系喇系喇，发咗喇",
         note="",
-        verified=True,
         difficulty=2,
         prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我们下个星期去，好了吧？",
