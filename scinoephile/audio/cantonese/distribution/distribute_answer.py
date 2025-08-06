@@ -13,10 +13,10 @@ class DistributeAnswer(Answer):
     """Answer for 粤文 distribution."""
 
     yuewen_1_to_append: str = Field(
-        ..., description="粤文 text to append to 粤文 subtitle 1."
+        ..., description="粤文 to append to 粤文 subtitle 1."
     )
     yuewen_2_to_prepend: str = Field(
-        ..., description="粤文 text to prepend to 粤文 subtitle 2."
+        ..., description="粤文 to prepend to 粤文 subtitle 2."
     )
 
     @model_validator(mode="after")

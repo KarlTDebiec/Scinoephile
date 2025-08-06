@@ -12,7 +12,7 @@ from scinoephile.core.abcs import Answer
 class ProofAnswer(Answer):
     """Answer for 粤文 proofing."""
 
-    yuewen_proofread: str = Field(..., description="Proofread 粤文 text.")
+    yuewen_proofread: str = Field(..., description="Proofread 粤文 of subtitle.")
     note: str = Field(..., description="Description of corrections made.")
 
     @model_validator(mode="after")
@@ -20,7 +20,9 @@ class ProofAnswer(Answer):
         """Ensure answer is internally valid."""
         if not self.yuewen_proofread and not self.note:
             raise ValueError(
-                "If Answer omits proofread 粤文 text to indicate pure transcription "
-                "artifacts, it must also include a note describing the issue."
+                "If Answer omits proofread 粤文 of subtitle to indicate that 粤文 is "
+                "believed to be a complete mistranscription of the spoken Cantonese "
+                "and should be omitted, it must also include a note describing the "
+                "issue."
             )
         return self

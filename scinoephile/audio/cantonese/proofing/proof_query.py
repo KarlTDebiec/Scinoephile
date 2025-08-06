@@ -12,14 +12,14 @@ from scinoephile.core.abcs import Query
 class ProofQuery(Query):
     """Query for 粤文 proofing."""
 
-    zhongwen: str = Field(..., description="Known 中文 text")
-    yuewen: str = Field(..., description="Transcribed 粤文 text to proofread.")
+    zhongwen: str = Field(..., description="Known 中文 of subtitle")
+    yuewen: str = Field(..., description="Transcribed 粤文 of subtitle to proofread.")
 
     @model_validator(mode="after")
     def validate_query(self) -> ProofQuery:
         """Ensure query has minimum necessary information."""
         if not self.zhongwen:
-            raise ValueError("Query must have corresponding 中文 text.")
+            raise ValueError("Query must have 中文 subtitle.")
         if not self.yuewen:
-            raise ValueError("Query must have 粤文 text.")
+            raise ValueError("Query must have 粤文 subtitle to proofread.")
         return self

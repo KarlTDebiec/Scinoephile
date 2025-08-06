@@ -56,7 +56,7 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     zhongwen_24="跟周润发，梁朝伟那么靓仔！",
     yuewen_24="好似周润发，同埋梁朝伟咁靓仔！",
     zhongwen_25="胶兜仍然在转，毫无点头迹象",
-    yuewen_25="胶兜依然系噉喺度转，好似一啲点头嘅迹象都冇",
+    yuewen_25="胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
     zhongwen_26="麦太一时心虚",
     yuewen_26="麦太一时心虚",
     zhongwen_27="赶忙趁胶兜落地前另许一个愿望：",
@@ -81,12 +81,15 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="",
-    note_5="",
+    yuewen_revised_5="更正一下：",
+    note_5="Changed '都系唔好：' to '更正一下：' to match the correction phrase "
+    "used in other similar contexts and maintain consistency "
+    "across the series.",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="",
-    note_7="",
+    yuewen_revised_7="转呀，转⋯更正一下：",
+    note_7="Changed '转下，转下⋯都系唔好：' to '转呀，转⋯更正一下：' for consistency with "
+    "the correction phrase and the style of other similar lines.",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -97,8 +100,9 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_11="",
     yuewen_revised_12="",
     note_12="",
-    yuewen_revised_13="",
-    note_13="",
+    yuewen_revised_13="更正一下：左边魂精对上⋯",
+    note_13="Changed '都系唔好：左边魂精对上⋯' to '更正一下：左边魂精对上⋯' for consistency "
+    "with the correction phrase used elsewhere.",
     yuewen_revised_14="",
     note_14="",
     yuewen_revised_15="",
@@ -139,7 +143,6 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_32="",
     yuewen_revised_33="",
     note_33="",
-    verified=True,
 )  # review_test_case_block_0
 review_test_case_block_1 = ReviewTestCase.get_test_case_cls(13)(
     zhongwen_1="最后，胶兜「嘀督」一声落地",
@@ -356,6 +359,7 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
+    verified=True,
 )  # review_test_case_block_3
 review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
@@ -369,7 +373,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_5="就是有点游魂的Miss Chan",
     yuewen_5="不过就有少少游魂嘅班主任Miss Chan",
     zhongwen_6="她的志愿是做第二个王菲",
-    yuewen_6="佢嘅志愿系做第二个王菲",
+    yuewen_6="佢嘅志愿系做下一个王菲",
     zhongwen_7="做第二个陈慧琳也可以",
     yuewen_7="或者系做下一个陈慧琳都得",
     zhongwen_8="我们现在开始点名",
@@ -377,7 +381,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_9="麦唛同学！　　到！",
     yuewen_9="麦唛同学！　　到！",
     zhongwen_10="亚辉同学！　　到！",
-    yuewen_10="阿辉同学！　　到！",
+    yuewen_10="亚辉同学！　　到！",
     zhongwen_11="菇时同学！　　到！",
     yuewen_11="菇时同学！　　到！",
     zhongwen_12="得巴同学！　　到！",
@@ -405,7 +409,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_23="阿June同学！　　到！",
     yuewen_23="阿June同学！　　到！",
     zhongwen_24="亚辉同学！　　到！",
-    yuewen_24="阿辉同学！　　到！",
+    yuewen_24="亚辉同学！　　到！",
     zhongwen_25="得巴同学！　　到！",
     yuewen_25="得巴同学！　　到！",
     zhongwen_26="阿May同学！　　到！",
@@ -427,9 +431,9 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_34="麦兜同学！",
     yuewen_34="麦兜同学！",
     zhongwen_35="麦唛呀，即是呢⋯",
-    yuewen_35="妈妈啊，麦兜同学，即系呢⋯",
+    yuewen_35="麦兜同学，即系呢⋯",
     zhongwen_36="我好像觉得呢⋯",
-    yuewen_36="我个心总系印住印住⋯",
+    yuewen_36="妈妈啊，我个心总系印住印住⋯",
     zhongwen_37="有什么人在喊我似的",
     yuewen_37="好似有人嗌紧我个名噉嘅",
     zhongwen_38="你们不要以为我心散",
@@ -441,9 +445,9 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_41="妈妈说吃橙可通大便",
     yuewen_41="妈妈话食橙会通大便",
     zhongwen_42="「疴」这个我明白，可是「烂﹣煮」呢？",
-    yuewen_42="「疴」呢个我明白，但系「烂煮」呢？",
+    yuewen_42="「疴」呢个我明白，但系「烂﹣煮」呢？",
     zhongwen_43="还有这个「芭﹣娜﹣娜」香蕉",
-    yuewen_43="仲有呢个「芭﹣娜﹣娜」香蕉",
+    yuewen_43="仲有呢个「芭﹣娜﹣娜」香蕉啊",
     zhongwen_44="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
     yuewen_44="点解雨伞会叫做「暗﹣芭﹣娜﹣娜」呢？",
     zhongwen_45="我「暗」的「暗」掉一条蕉",
@@ -536,10 +540,15 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     note_33="",
     yuewen_revised_34="",
     note_34="",
-    yuewen_revised_35="",
-    note_35="",
-    yuewen_revised_36="",
-    note_36="",
+    yuewen_revised_35="麦唛同学，即系呢⋯",
+    note_35='Changed "麦兜同学" to "麦唛同学" for consistency with the rest '
+    "of the name call sequence, as the character being called is "
+    "麦唛, not 麦兜, in this context.",
+    yuewen_revised_36="我好似觉得呢⋯",
+    note_36='Changed "妈妈啊，我个心总系印住印住⋯" to "我好似觉得呢⋯" to match the '
+    "meaning and maintain consistency with the sequence, as this "
+    "line is the student's internal thought, not a line addressed "
+    "to the mother.",
     yuewen_revised_37="",
     note_37="",
     yuewen_revised_38="",
@@ -578,7 +587,6 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     note_54="",
     yuewen_revised_55="",
     note_55="",
-    verified=True,
 )  # review_test_case_block_4
 review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_1="幼稚园楼下，由校长兼营的茶餐厅",
@@ -586,7 +594,7 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_2="我们一班同学下课后经常光顾",
     yuewen_2="我哋一班同学仔放咗学都经常喺房餐",
     zhongwen_3="鱼蛋粗面，麻烦你　　粗面买光了",
-    yuewen_3="唔该，鱼蛋粗啊　　冇粗面噃",
+    yuewen_3="唔该，鱼蛋粗面啊　　冇粗面噃",
     zhongwen_4="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
     yuewen_4="噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃",
     zhongwen_5="那么⋯金钱肚粗面好了　　粗面买光了",
@@ -625,7 +633,8 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     note_1="",
     yuewen_revised_2="我哋一班同学仔放咗学都经常去嗰间茶餐厅",
     note_2='Revised "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
-    "with the context of visiting the restaurant.",
+    'with the context. "房餐" is not a standard or clear term in '
+    "Cantonese for a tea restaurant.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -847,9 +856,9 @@ review_test_case_block_11 = ReviewTestCase.get_test_case_cls(9)(
     zhongwen_4="大家就会有一张纸包鸡及一块鸡",
     yuewen_4="大家就会有一张纸包鸡同埋一嚿鸡啦",
     zhongwen_5="接着把鸡包纸这样子包起那块鸡",
-    yuewen_5="跟住将鸡包纸好似我噉包住嗰块鸡",
+    yuewen_5="跟住将鸡包纸好似我噉包住块鸡",
     zhongwen_6="再依照这样子用包鸡纸把它包起",
-    yuewen_6="然后再好似噉样将包鸡纸包包包包包包住佢",
+    yuewen_6="然后再好似噉样将包鸡纸包住佢",
     zhongwen_7="一味「包鸡纸包鸡包纸包鸡」完成了！",
     yuewen_7="咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
     zhongwen_8="真的很简单吧？",
@@ -866,17 +875,15 @@ review_test_case_block_11 = ReviewTestCase.get_test_case_cls(9)(
     note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="然后再好似噉样将包鸡纸包住佢",
-    note_6="Removed the repeated '包' characters in '包包包包包包住佢' to correct "
-    "the transcription to natural spoken Cantonese. The "
-    "repetition was likely a typographical error or over-literal "
-    "representation of the action.",
+    yuewen_revised_6="",
+    note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
     note_9="",
+    verified=True,
 )  # review_test_case_block_11
 review_test_case_block_12 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_1="今日为大家介绍一味⋯",
@@ -959,6 +966,7 @@ review_test_case_block_12 = ReviewTestCase.get_test_case_cls(20)(
     note_19="",
     yuewen_revised_20="",
     note_20="",
+    verified=True,
 )  # review_test_case_block_12
 review_test_case_block_13 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="从前，有个小朋友早睡晚起；第二天⋯",
@@ -1184,6 +1192,7 @@ review_test_case_block_16 = ReviewTestCase.get_test_case_cls(19)(
     note_18="",
     yuewen_revised_19="",
     note_19="",
+    verified=True,
 )  # review_test_case_block_16
 review_test_case_block_17 = ReviewTestCase.get_test_case_cls(3)(
     zhongwen_1="衰仔，快点起床上学",
@@ -1457,7 +1466,65 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     yuewen_revised_26="",
     note_26="",
 )  # review_test_case_block_22
-review_test_case_block_23 = None  # review_test_case_block_23
+review_test_case_block_23 = ReviewTestCase.get_test_case_cls(14)(
+    zhongwen_1="麦唛，我是麦兜呀",
+    yuewen_1="喂，麦唛啊，我系麦兜啊",
+    zhongwen_2="是这样子的，我明天就飞了",
+    yuewen_2="即系呢，我明日就要飞喇",
+    zhongwen_3="对　　⋯是吗？",
+    yuewen_3="系啊　　⋯系咩？",
+    zhongwen_4="飞机餐很难吃的吗？",
+    yuewen_4="飞机餐好难食㗎？",
+    zhongwen_5="也得吃呀！",
+    yuewen_5="但点都要食㗎啦！",
+    zhongwen_6="难道自己带东西上去吃吗？",
+    yuewen_6="唔通自己带嘢上去食咩？",
+    zhongwen_7="还在讲？",
+    yuewen_7="仲讲哦？",
+    zhongwen_8="快点帮手执行李",
+    yuewen_8="快啲嚟执埋啲行李先啦哦",
+    zhongwen_9="跟我向他们说，我明天去马尔代夫了",
+    yuewen_9="你帮我话畀佢哋知，我明日去马尔代夫喇",
+    zhongwen_10="那边蓝天白云，椰林树影⋯",
+    yuewen_10="嗰度蓝天白云，椰林树⋯",
+    zhongwen_11="还在讲！",
+    yuewen_11="水清净沙有！",
+    zhongwen_12="来了！",
+    yuewen_12="我嚟紧㗎喇！",
+    zhongwen_13="要执行李了，回来再跟你说吧",
+    yuewen_13="我要执行李喇，返嚟先再同你倾过啦",
+    zhongwen_14="再见！",
+    yuewen_14="拜拜！",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    yuewen_revised_8="",
+    note_8="",
+    yuewen_revised_9="",
+    note_9="",
+    yuewen_revised_10="",
+    note_10="",
+    yuewen_revised_11="",
+    note_11="",
+    yuewen_revised_12="",
+    note_12="",
+    yuewen_revised_13="",
+    note_13="",
+    yuewen_revised_14="",
+    note_14="",
+    verified=True,
+)  # review_test_case_block_23
 review_test_case_block_24 = None  # review_test_case_block_24
 review_test_case_block_25 = None  # review_test_case_block_25
 review_test_case_block_26 = None  # review_test_case_block_26
@@ -1533,6 +1600,7 @@ mlamd_review_test_cases: list[ReviewTestCase] = [
     review_test_case_block_20,
     review_test_case_block_21,
     review_test_case_block_22,
+    review_test_case_block_23,
 ]
 """MLAMD 粤文 review test cases."""
 

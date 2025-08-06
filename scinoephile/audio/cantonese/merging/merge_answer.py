@@ -12,7 +12,7 @@ from scinoephile.core.abcs import Answer
 class MergeAnswer(Answer):
     """Answer for 粤文 merging."""
 
-    yuewen_merged: str = Field(..., description="Merged 粤文 subtitle.")
+    yuewen_merged: str = Field(..., description="Merged 粤文 of subtitle.")
 
     @model_validator(mode="after")
     def validate_answer(self) -> MergeAnswer:
