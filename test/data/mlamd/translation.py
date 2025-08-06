@@ -50,10 +50,10 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_22="交！",
     zhongwen_23="太好了！大家去上堂吧",
     yuewen_23="哎，好在！噉大家可以返去上堂喇",
-    yuewen_1="〝我只耳仔好痛呀⋯〞",
-    yuewen_2="〝我日日都望住个窗！〞",
-    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
-    yuewen_4="〝我哋就系春天嘅花！〞",
+    yuewen_1="〝鹅满都快焗到只耳仔痛晒⋯〞",
+    yuewen_2="〝鹅闷日日都对住个窗玩！〞",
+    yuewen_3="〝鹅哋喺壳度练习，鹅闷就胀晒上嚟⋯〞",
+    yuewen_4="〝鹅闷就系春天嘅化身！〞",
     yuewen_13="蛋挞！蛋挞！",
     yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
     yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
@@ -185,7 +185,7 @@ translate_test_case_block_10 = None  # translate_test_case_block_10
 translate_test_case_block_11 = None  # translate_test_case_block_11
 translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     20,
-    (2, 3, 8, 9, 10),
+    (2, 3, 9, 10),
 )(
     zhongwen_1="今日为大家介绍一味⋯",
     yuewen_1="今日要同大家介绍一味⋯",
@@ -202,6 +202,7 @@ translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     zhongwen_8="包住张鸡包纸",
     yuewen_8="包住张鸡包纸",
     zhongwen_9="再包包包包包住个纸鸡包",
+    yuewen_9="再包包包包包住个纸鸡包",
     zhongwen_10="再包包包，纸纸纸",
     zhongwen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
     zhongwen_12="可我妈妈也有她温柔的一面",
@@ -224,7 +225,6 @@ translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     yuewen_20="妈，我想瞓啦",
     yuewen_3="鸡包包鸡包包鸡包纸包纸⋯",
     yuewen_4="包鸡包鸡包纸包鸡",
-    yuewen_9="再包包包包包住个纸鸡包",
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
 )  # translate_test_case_block_12
@@ -242,7 +242,7 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     zhongwen_4="我最喜爱的地方是日本",
     yuewen_4="我最喜爱嘅地方呢，就系日本喇",
     zhongwen_5="那儿有Disneyland和Hello Kitty Land",
-    yuewen_5="嗰度有Disneyland和Hello Kitty呢",
+    yuewen_5="嗰度有Disneyland同埋Hello Kitty Land",
     zhongwen_6="我这个发夹也是在那儿买的",
     yuewen_6="我而家戴紧个发夹都系嗰边买嘅",
     zhongwen_7="我最喜爱的地方是加拿大",

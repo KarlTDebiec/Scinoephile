@@ -1035,8 +1035,8 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="那么⋯金钱肚粗面好了　　粗面买光了",
-        yuewen="噉啊要金钱透粗啊⋯　　冇粗面噃",
-        yuewen_proofread="噉啊要金钱肚粗面啊⋯　　冇粗面噃",
+        yuewen="噉啊⋯要金钱透粗啊　　冇粗面噃",
+        yuewen_proofread="噉啊⋯要金钱肚粗面啊　　冇粗面噃",
         note="Corrected '金钱透粗啊' to '金钱肚粗面啊' as '金钱肚粗面' is the correct dish "
         "name, matching the meaning in the 中文.",
         difficulty=1,
@@ -1112,8 +1112,8 @@ proof_test_cases_block_5 = [
     ),
     ProofTestCase(
         zhongwen="那么净要粗面呢？　　粗面买光了",
-        yuewen="净粗面呢　　冇粗面噃",
-        yuewen_proofread="净粗面呢　　冇粗面噃",
+        yuewen="净粗面呢？　　冇粗面噃",
+        yuewen_proofread="净粗面呢？　　冇粗面噃",
         note="",
         verified=True,
     ),
@@ -1209,8 +1209,8 @@ proof_test_cases_block_7 = [
     ),
     ProofTestCase(
         zhongwen="可每次我总唱成「疴」什么什么的⋯",
-        yuewen="但系唱嚟唱去都系「阿伦厨」，咁「Ballana」噉⋯",
-        yuewen_proofread="但系唱嚟唱去都系「疴﹣兰﹣煮」，咁「芭﹣娜﹣娜」噉⋯",
+        yuewen="但系唱嚟唱去都系「阿伦厨」咁「Ballana」噉⋯",
+        yuewen_proofread="但系唱嚟唱去都系「疴﹣兰﹣煮」咁「芭﹣娜﹣娜」噉⋯",
         note="Corrected '阿伦厨' to '疴兰煮' as it is a likely mishearing and "
         "matches the intended pun on 'orange' ('疴﹣兰﹣煮') in the "
         "context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a "
@@ -1606,15 +1606,15 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="再包包包包包住个纸鸡包",
-        yuewen="再包包包包包住个纸包鸡再包包包",
-        yuewen_proofread="",
-        note="Cleared; 中文 more likely to be accurate that 粤文.",
+        yuewen="再包包包包包住个纸包鸡",
+        yuewen_proofread="再包包包包包住个纸鸡包",
+        note="Corrected '纸包鸡' to '纸鸡包'",
         difficulty=1,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="再包包包，纸纸纸",
-        yuewen="包包鸡包纸包纸纸纸纸纸纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸",
+        yuewen="再包包包包包鸡包纸包纸，纸纸纸纸纸包纸",
         yuewen_proofread="",
         note="Cleared; 中文 more likely to be accurate that 粤文.",
         difficulty=1,
@@ -1622,7 +1622,7 @@ proof_test_cases_block_12 = [
     ),
     ProofTestCase(
         zhongwen="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
-        yuewen="再包鸡鸡⋯",
+        yuewen="纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯",
         yuewen_proofread="",
         note="Cleared; 中文 more likely to be accurate that 粤文.",
         difficulty=1,
@@ -1793,8 +1793,8 @@ proof_test_cases_block_14 = [
     ),
     ProofTestCase(
         zhongwen="奇迹般似的一个号码也没中过！",
-        yuewen="竟然奇迹一样，一个都未中过！",
-        yuewen_proofread="竟然奇迹一样，一个都未中过！",
+        yuewen="竟然奇迹一样一个都未中过！",
+        yuewen_proofread="竟然奇迹一样一个都未中过！",
         note="",
         verified=True,
     ),
@@ -1969,6 +1969,16 @@ proof_test_cases_block_16 = [
         yuewen="我最喜爱嘅地方呢，就系日本喇",
         yuewen_proofread="我最喜爱嘅地方呢，就系日本喇",
         note="",
+        verified=True,
+    ),
+    ProofTestCase(
+        zhongwen="那儿有Disneyland和Hello Kitty Land",
+        yuewen="嗰度好迪士尼呢同埋HelloTT呢",
+        yuewen_proofread="嗰度有Disneyland同埋Hello Kitty Land",
+        note="Corrected '好迪士尼呢同埋HelloTT呢' to '有Disneyland同埋Hello Kitty "
+        "Land' as '好迪士尼呢' is a mishearing of '有Disneyland' and "
+        "'HelloTT' is a mishearing of 'Hello Kitty'.",
+        difficulty=1,
         verified=True,
     ),
     ProofTestCase(
@@ -2430,8 +2440,8 @@ proof_test_cases_block_22 = [
     ),
     ProofTestCase(
         zhongwen="我不是光说的呀，妈妈你说过⋯",
-        yuewen="妈妈我唔系讲喇㗎， 又系你话嘅⋯",
-        yuewen_proofread="妈妈我唔系讲喇㗎， 又系你话嘅⋯",
+        yuewen="妈妈我唔系讲喇㗎，又系你话嘅⋯",
+        yuewen_proofread="妈妈我唔系讲喇㗎，又系你话嘅⋯",
         note="",
         verified=True,
     ),
@@ -2451,8 +2461,8 @@ proof_test_cases_block_22 = [
     ),
     ProofTestCase(
         zhongwen="不是的，妈妈你说我病好了就去的",
-        yuewen="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
-        yuewen_proofread="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
+        yuewen="唔系㖞，妈妈你话好咗就同我去㗎㖞",
+        yuewen_proofread="唔系㖞，妈妈你话好咗就同我去㗎㖞",
         note="",
         verified=True,
     ),

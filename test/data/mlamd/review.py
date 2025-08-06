@@ -265,13 +265,13 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
 )  # review_test_case_block_2
 review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
-    yuewen_1="〝我只耳仔好痛呀⋯〞",
+    yuewen_1="〝鹅满都快焗到只耳仔痛晒⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
-    yuewen_2="〝我日日都望住个窗！〞",
+    yuewen_2="〝鹅闷日日都对住个窗玩！〞",
     zhongwen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
-    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
+    yuewen_3="〝鹅哋喺壳度练习，鹅闷就胀晒上嚟⋯〞",
     zhongwen_4="〝鹅闷是春天滴化！〞",
-    yuewen_4="〝我哋就系春天嘅花！〞",
+    yuewen_4="〝鹅闷就系春天嘅化身！〞",
     zhongwen_5="这个猪样白兔小朋友⋯",
     yuewen_5="呢个扮紧白兔猪样嘅小朋友⋯",
     zhongwen_6="横看竖看也不像发哥伟仔的一个⋯",
@@ -356,7 +356,6 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
-    verified=True,
 )  # review_test_case_block_3
 review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
@@ -591,7 +590,7 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_4="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
     yuewen_4="噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃",
     zhongwen_5="那么⋯金钱肚粗面好了　　粗面买光了",
-    yuewen_5="噉啊要金钱肚粗面啊⋯　　冇粗面噃",
+    yuewen_5="噉啊⋯要金钱肚粗面啊　　冇粗面噃",
     zhongwen_6="那么要鱼蛋油面吧　　鱼蛋买光了",
     yuewen_6="噉啊咁要鱼蛋油面啊　　冇鱼蛋噃",
     zhongwen_7="怎么都买光了？",
@@ -611,7 +610,7 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_14="麻烦你，净要鱼蛋吧　　鱼蛋买光了",
     yuewen_14="噉唔该，净鱼蛋啊　　冇鱼蛋噃",
     zhongwen_15="那么净要粗面呢？　　粗面买光了",
-    yuewen_15="净粗面呢　　冇粗面噃",
+    yuewen_15="净粗面呢？　　冇粗面噃",
     zhongwen_16="看到这里⋯",
     yuewen_16="睇到呢度⋯",
     zhongwen_17="大家大概都知道我是个怎么样的叻仔",
@@ -625,9 +624,8 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="我哋一班同学仔放咗学都经常去嗰间茶餐厅",
-    note_2='Changed "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
-    "with the context (referring to the tea restaurant run by the "
-    "principal).",
+    note_2='Revised "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
+    "with the context of visiting the restaurant.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -662,9 +660,8 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     note_18="",
     yuewen_revised_19="",
     note_19="",
-    yuewen_revised_20="麦兜，射啊！",
-    note_20='Changed "转身食啊！" to "射啊！" to match the context of the '
-    "original (likely a sports or action context, not eating).",
+    yuewen_revised_20="",
+    note_20="",
 )  # review_test_case_block_5
 review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="看着自己每天疴烂煮⋯",
@@ -694,7 +691,7 @@ review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_2="我时常想着学习",
     yuewen_2="我成日想学习",
     zhongwen_3="可每次我总唱成「疴」什么什么的⋯",
-    yuewen_3="但系唱嚟唱去都系「疴﹣兰﹣煮」，咁「芭﹣娜﹣娜」噉⋯",
+    yuewen_3="但系唱嚟唱去都系「疴﹣兰﹣煮」咁「芭﹣娜﹣娜」噉⋯",
     zhongwen_4="是All Things Bright and Beautiful吧？",
     yuewen_4="系唔系All Things Bright and Beautiful呀？",
     zhongwen_5="是的，一切都好！",
@@ -962,7 +959,6 @@ review_test_case_block_12 = ReviewTestCase.get_test_case_cls(20)(
     note_19="",
     yuewen_revised_20="",
     note_20="",
-    verified=True,
 )  # review_test_case_block_12
 review_test_case_block_13 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="从前，有个小朋友早睡晚起；第二天⋯",
@@ -1009,7 +1005,7 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_6="我用一双童子手替妈妈抽的六合彩号码",
     yuewen_6="我用我嘅童子手帮妈妈抽嘅六合彩number",
     zhongwen_7="奇迹般似的一个号码也没中过！",
-    yuewen_7="竟然奇迹一样，一个都未中过！",
+    yuewen_7="竟然奇迹一样一个都未中过！",
     zhongwen_8="叻仔？",
     yuewen_8="叻仔？",
     zhongwen_9="我也试过努力念书，可是⋯",
@@ -1027,8 +1023,9 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="我用我嘅童子手帮妈妈抽嘅六合彩号码",
-    note_6="Changed '六合彩number' to '六合彩号码' for consistency in using "
-    "Cantonese/Mandarin terms throughout the series.",
+    note_6="Changed '六合彩number' to '六合彩号码' for consistency with the rest "
+    "of the series and to use a more natural Cantonese "
+    "transcription.",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -1120,7 +1117,7 @@ review_test_case_block_16 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_4="我最喜爱的地方是日本",
     yuewen_4="我最喜爱嘅地方呢，就系日本喇",
     zhongwen_5="那儿有Disneyland和Hello Kitty Land",
-    yuewen_5="嗰度有Disneyland和Hello Kitty呢",
+    yuewen_5="嗰度有Disneyland同埋Hello Kitty Land",
     zhongwen_6="我这个发夹也是在那儿买的",
     yuewen_6="我而家戴紧个发夹都系嗰边买嘅",
     zhongwen_7="我最喜爱的地方是加拿大",
@@ -1157,12 +1154,8 @@ review_test_case_block_16 = ReviewTestCase.get_test_case_cls(19)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="嗰度有Disneyland同Hello Kitty Land呀",
-    note_5='Changed "和" to "同" and "Hello Kitty呢" to "Hello Kitty '
-    'Land呀" for consistency with the rest of the series and to '
-    "better reflect spoken Cantonese. The original was "
-    "inconsistent with the naming and conjunction style used "
-    "elsewhere.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -1380,13 +1373,13 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_11="说得不错呀！",
     yuewen_11="讲得几好听啊！",
     zhongwen_12="我不是光说的呀，妈妈你说过⋯",
-    yuewen_12="妈妈我唔系讲喇㗎， 又系你话嘅⋯",
+    yuewen_12="妈妈我唔系讲喇㗎，又系你话嘅⋯",
     zhongwen_13="我病好了带我去马尔代夫的！",
     yuewen_13="你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！",
     zhongwen_14="我是说发了财就带你去",
     yuewen_14="我话发咗先至同你去㗎",
     zhongwen_15="不是的，妈妈你说我病好了就去的",
-    yuewen_15="唔系㖞，妈妈，你话好咗就同我去㗎㖞",
+    yuewen_15="唔系㖞，妈妈你话好咗就同我去㗎㖞",
     zhongwen_16="你分明讲过病好了就去马尔代夫的",
     yuewen_16="你明明讲过好返就同你去马尔代夫㗎㖞",
     zhongwen_17="你讲过的！",
@@ -1422,9 +1415,9 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="你话我好返就同我去马尔代夫㗎嘛！",
-    note_7="Changed '呢，你话我返就同我去马尔代夫㗎嘛！' to '你话我好返就同我去马尔代夫㗎嘛！' to correct "
-    "the phrase and match the context and usage of '好返' (recover) "
-    "as in other lines.",
+    note_7='Changed "呢，你话我返就同我去马尔代夫㗎嘛！" to "你话我好返就同我去马尔代夫㗎嘛！" to '
+    'correct the omission of "好" and to match the recurring '
+    "phrase used throughout the series for consistency.",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -1433,10 +1426,8 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_10="",
     yuewen_revised_11="",
     note_11="",
-    yuewen_revised_12="我唔系讲喇㗎，妈妈，又系你话嘅⋯",
-    note_12="Swapped the order to '我唔系讲喇㗎，妈妈，又系你话嘅⋯' to better reflect "
-    "natural spoken Cantonese and match the context of the "
-    "conversation.",
+    yuewen_revised_12="",
+    note_12="",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
