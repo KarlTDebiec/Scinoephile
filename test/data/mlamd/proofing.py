@@ -1516,12 +1516,11 @@ proof_test_cases_block_11 = [
     ProofTestCase(
         zhongwen="接着把鸡包纸这样子包起那块鸡",
         yuewen="跟住将鸡包子好似我噉包住牛鸡",
-        yuewen_proofread="跟住将鸡包纸好似我噉包住嗰块鸡",
+        yuewen_proofread="跟住将鸡包纸好似我噉包住块鸡",
         note="Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of "
         "'鸡包纸' (the paper used to wrap the chicken), and '牛鸡' to "
-        "'嗰块鸡' as '牛鸡' is likely a mishearing of '嗰块鸡' (that piece of "
-        "chicken).",
-        difficulty=1,
+        "'块鸡' as '牛鸡' is likely a mishearing of '块鸡'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
