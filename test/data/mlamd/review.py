@@ -265,13 +265,13 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
 )  # review_test_case_block_2
 review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
-    yuewen_1="〝鹅满都快焗到只耳仔痛晒⋯〞",
+    yuewen_1="〝我只耳仔好痛呀⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
-    yuewen_2="〝鹅闷日日都对住个窗玩！〞",
+    yuewen_2="〝我哋日日都要望住个窗！〞",
     zhongwen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
-    yuewen_3="〝鹅哋喺壳度练习，鹅闷就胀晒上嚟⋯〞",
+    yuewen_3="〝我哋喺度学习，我哋一齐进步⋯〞",
     zhongwen_4="〝鹅闷是春天滴化！〞",
-    yuewen_4="〝鹅闷就系春天嘅化身！〞",
+    yuewen_4="〝我哋就系春天嘅花！〞",
     zhongwen_5="这个猪样白兔小朋友⋯",
     yuewen_5="呢个扮紧白兔猪样嘅小朋友⋯",
     zhongwen_6="横看竖看也不像发哥伟仔的一个⋯",
