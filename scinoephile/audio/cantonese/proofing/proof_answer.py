@@ -20,7 +20,7 @@ class ProofAnswer(Answer):
         """Ensure answer is internally valid."""
         if not self.yuewen_proofread and not self.note:
             raise ValueError(
-                "If Answer omits proofreed 粤文 of subtitle to indicate that 粤文 is "
+                "If Answer omits proofread 粤文 of subtitle to indicate that 粤文 is "
                 "believed to be a complete mistranscription of the spoken Cantonese "
                 "and should be omitted, it must also include a note describing the "
                 "issue."
