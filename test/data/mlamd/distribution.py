@@ -144,8 +144,9 @@ distribute_test_cases_block_3 = [
         yuewen_to_distribute="都唔好湾吉校坟交涉白",
         yuewen_1_to_append="都唔好湾吉校坟交涉白",
         yuewen_2_to_prepend="",
-        verified=True,
+        difficulty=2,
         prompt=True,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="好！各位同学⋯",
@@ -642,8 +643,9 @@ distribute_test_cases_block_20 = [
         yuewen_to_distribute="买二代夫",
         yuewen_1_to_append="",
         yuewen_2_to_prepend="买二代夫",
-        verified=True,
+        difficulty=2,
         prompt=True,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="马尔代夫！",

@@ -689,6 +689,7 @@ shift_test_cases_block_3 = [
         yuewen_2="大湖荒岩宅",
         yuewen_1_shifted="我其实唔系好知佢噏文",
         yuewen_2_shifted="大湖荒岩宅",
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
@@ -1960,6 +1961,7 @@ shift_test_cases_block_12 = [
         yuewen_2="再包包包包包鸡包纸包纸纸纸纸纸",
         yuewen_1_shifted="再包包包包包住个纸包鸡",
         yuewen_2_shifted="再包包包包包鸡包纸包纸纸纸纸纸",
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
@@ -2555,6 +2557,8 @@ shift_test_cases_block_18 = [
         yuewen_2="唔使同佢打多支针添呢",
         yuewen_1_shifted="噉佢食药使唔使咩啊",
         yuewen_2_shifted="唔使同佢打多支针添呢",
+        difficulty=2,
+        prompt=True,
         verified=True,
     ),
     ShiftTestCase(
@@ -2737,6 +2741,8 @@ shift_test_cases_block_21 = [
         yuewen_2="啲嘢所以我全部食晒喇",
         yuewen_1_shifted="我好返喇",
         yuewen_2_shifted="啲嘢所以我全部食晒喇",
+        difficulty=2,
+        prompt=True,
         verified=True,
     ),
     ShiftTestCase(
@@ -2883,6 +2889,8 @@ shift_test_cases_block_22 = [
         yuewen_2="你话我病好咗之日就同我去马尔代夫㗎你讲过㗎",
         yuewen_1_shifted="妈妈我唔系讲喇㗎又系你话嘅",
         yuewen_2_shifted="你话我病好咗之日就同我去马尔代夫㗎你讲过㗎",
+        difficulty=2,
+        prompt=True,
         verified=True,
     ),
     ShiftTestCase(
