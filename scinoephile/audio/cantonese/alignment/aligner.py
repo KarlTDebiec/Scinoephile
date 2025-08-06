@@ -381,16 +381,16 @@ class Aligner:
 
             # Get 粤文
             yw_idxs = sg[1]
-            yw_subs = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
+            yws = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
 
             # If there is no punctuation, whitespace, or ambiguity, just copy over
-            if zw.text == remove_punc_and_whitespace(zw.text) and len(yw_subs) == 1:
+            if zw.text == remove_punc_and_whitespace(zw.text) and len(yws) == 1:
                 # If the 中文 subtitle has no punctuation, and there is only one 粤文
                 # subtitle, just copy it over
-                yw_sub = yw_subs[0]
-                yw_sub.start = zw.start
-                yw_sub.end = zw.end
-                nascent_yw.append(yw_sub)
+                yw = yws[0]
+                yw.start = zw.start
+                yw.end = zw.end
+                nascent_yw.append(yw)
                 nascent_sg.append(([zw_idx], [len(nascent_yw) - 1]))
                 continue
 
@@ -412,12 +412,12 @@ class Aligner:
                     f"{test_case.source_str}\n"
                     f"Exception:\n{exc}"
                 )
-            yw_sub = get_sub_merged(yw_subs, text=answer.yuewen_merged)
-            yw_sub.start = zw.start
-            yw_sub.end = zw.end
+            yw = get_sub_merged(yws, text=answer.yuewen_merged)
+            yw.start = zw.start
+            yw.end = zw.end
 
             # Update sync group
-            nascent_yw.append(yw_sub)
+            nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))
 
