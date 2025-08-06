@@ -1600,6 +1600,7 @@ mlamd_review_test_cases: list[ReviewTestCase] = [
     review_test_case_block_20,
     review_test_case_block_21,
     review_test_case_block_22,
+    review_test_case_block_23,
 ]
 """MLAMD 粤文 review test cases."""
 
