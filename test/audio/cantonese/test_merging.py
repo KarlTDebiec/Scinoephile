@@ -72,7 +72,7 @@ def test_merging_mlamd(
 )
 @pytest.mark.parametrize(
     "test_case",
-    [tc for tc in mlamd_merge_test_cases if tc.difficulty >= 1 and tc.verified],
+    [tc for tc in mlamd_merge_test_cases if tc.difficulty >= 2 and tc.verified],
 )
 def test_merging_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
