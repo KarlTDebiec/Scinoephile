@@ -1971,7 +1971,7 @@ shift_test_cases_block_12 = [
         yuewen_2="纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡",
         yuewen_1_shifted="再包包包包包鸡包纸包纸纸纸纸纸纸包纸",
         yuewen_2_shifted="纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡",
-        difficulty=1,
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
