@@ -1958,9 +1958,8 @@ shift_test_cases_block_12 = [
         yuewen_1="再包包包包包住个纸包鸡",
         zhongwen_2="再包包包，纸纸纸",
         yuewen_2="再包包包包包鸡包纸包纸纸纸纸纸",
-        yuewen_1_shifted="再包包包包包住个纸包鸡再包包包",
-        yuewen_2_shifted="包包鸡包纸包纸纸纸纸纸",
-        difficulty=3,
+        yuewen_1_shifted="再包包包包包住个纸包鸡",
+        yuewen_2_shifted="再包包包包包鸡包纸包纸纸纸纸纸",
         verified=True,
     ),
     ShiftTestCase(

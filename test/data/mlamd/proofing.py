@@ -1972,18 +1972,6 @@ proof_test_cases_block_16 = [
         verified=True,
     ),
     ProofTestCase(
-        zhongwen="那儿有Disneyland和Hello Kitty Land",
-        yuewen="嗰度好迪士尼呢同埋HelloTT呢",
-        yuewen_proofread="嗰度有Disneyland和Hello Kitty呢",
-        note="Corrected '好迪士尼呢同埋HelloTT呢' to '有Disneyland和Hello Kitty呢' as "
-        "'好迪士尼' is likely a mishearing of '有Disneyland', and "
-        "'HelloTT' is a mishearing of 'Hello Kitty'. The corrected "
-        "version preserves the meaning of the original 中文, referring "
-        "to both Disneyland and Hello Kitty Land.",
-        difficulty=1,
-        verified=True,
-    ),
-    ProofTestCase(
         zhongwen="我这个发夹也是在那儿买的",
         yuewen="我而家打紧个发卷都系嗰边买嘅",
         yuewen_proofread="我而家戴紧个发夹都系嗰边买嘅",
