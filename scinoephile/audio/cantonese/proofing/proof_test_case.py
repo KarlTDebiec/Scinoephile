@@ -40,7 +40,7 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         """Ensure query and answer are consistent with one another."""
         if self.yuewen != self.yuewen_proofread and not self.note:
             raise ValueError(
-                "Answer's proofed 粤文 text is modified relative to query's 粤文 "
-                "text, but no note is provided."
+                "Answer's proofread 粤文 of subtitle is modified relative to query's "
+                "粤文 of subtitle, but no note is provided."
             )
         return self

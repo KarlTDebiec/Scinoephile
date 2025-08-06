@@ -172,25 +172,25 @@ def get_merge_query(
             f"Invalid sync group index {sg_idx} "
             f"for alignment with {len(alignment.sync_groups)} sync groups."
         )
-    sync_group = alignment.sync_groups[sg_idx]
+    sg = alignment.sync_groups[sg_idx]
 
     # Get 中文
-    zw_idxs = sync_group[0]
+    zw_idxs = sg[0]
     if len(zw_idxs) != 1:
         raise ScinoephileError(
             f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
         )
-    zw_idx = sync_group[0][0]
-    zhongwen = alignment.zhongwen[zw_idx].text
+    zw_idx = sg[0][0]
+    zw = alignment.zhongwen[zw_idx].text
 
     # Get 粤文
-    yw_idxs = sync_group[1]
+    yw_idxs = sg[1]
     if len(yw_idxs) == 0:
         return None
-    yuewen_to_merge = [alignment.yuewen[i].text for i in yw_idxs]
+    yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    return MergeQuery(zhongwen=zhongwen, yuewen_to_merge=yuewen_to_merge)
+    return MergeQuery(zhongwen=zw, yuewen_to_merge=yws)
 
 
 def get_proof_query(
@@ -211,29 +211,29 @@ def get_proof_query(
             f"Invalid sync group index {sg_idx} "
             f"for alignment with {len(alignment.sync_groups)} sync groups."
         )
-    sync_group = alignment.sync_groups[sg_idx]
+    sg = alignment.sync_groups[sg_idx]
 
     # Get 中文
-    zw_idxs = sync_group[0]
+    zw_idxs = sg[0]
     if len(zw_idxs) != 1:
         raise ScinoephileError(
             f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
         )
-    zw_idx = sync_group[0][0]
-    zhongwen = alignment.zhongwen[zw_idx].text
+    zw_idx = sg[0][0]
+    zw = alignment.zhongwen[zw_idx].text
 
     # Get 粤文
-    yw_idxs = sync_group[1]
+    yw_idxs = sg[1]
     if len(yw_idxs) > 1:
         raise ScinoephileError(
             f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 0 or 1."
         )
     if len(yw_idxs) == 0:
         return None
-    yuewen = alignment.yuewen[yw_idxs[0]].text
+    yw = alignment.yuewen[yw_idxs[0]].text
 
     # Return proof query
-    return ProofQuery(zhongwen=zhongwen, yuewen=yuewen)
+    return ProofQuery(zhongwen=zw, yuewen=yw)
 
 
 def get_review_query(alignment: Alignment, query_cls: type[Query]) -> Query:

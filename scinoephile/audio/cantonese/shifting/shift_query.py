@@ -13,9 +13,9 @@ class ShiftQuery(Query):
     """Query for 粤文 shifting."""
 
     zhongwen_1: str = Field(..., description="Known 中文 of subtitle 1.")
-    yuewen_1: str = Field(..., description="Original 粤文 of subtitle 1.")
+    yuewen_1: str = Field(..., description="Transcribed 粤文 of subtitle 1.")
     zhongwen_2: str = Field(..., description="Known 中文 of subtitle 2.")
-    yuewen_2: str = Field(..., description="Original 粤文 of subtitle 2.")
+    yuewen_2: str = Field(..., description="Transcribed 粤文 of subtitle 2.")
 
     @model_validator(mode="after")
     def validate_query(self) -> ShiftQuery:

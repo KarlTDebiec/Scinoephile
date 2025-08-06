@@ -13,13 +13,15 @@ class DistributeQuery(Query):
     """Query for 粤文 distribution."""
 
     zhongwen_1: str = Field(..., description="Known 中文 of subtitle 1.")
-    yuewen_1_start: str = Field(..., description="Known 粤文 start of subtitle 1.")
+    yuewen_1_start: str = Field(
+        ..., description="Transcribed 粤文 start of subtitle 1."
+    )
     zhongwen_2: str = Field(..., description="Known 中文 of subtitle 2.")
-    yuewen_2_end: str = Field(..., description="Known 粤文 end of subtitle 2.")
+    yuewen_2_end: str = Field(..., description="Transcribed 粤文 end of subtitle 2.")
     yuewen_to_distribute: str = Field(
         ...,
-        description="粤文 to distribute, with start appended to 粤文 subtitle 1 and "
-        "end prepended to 粤文 subtitle 2.",
+        description="Transcribed粤文 to distribute, with start appended to 粤文 "
+        "subtitle 1 and end prepended to 粤文 subtitle 2.",
     )
 
     @model_validator(mode="after")

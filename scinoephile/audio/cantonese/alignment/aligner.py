@@ -452,8 +452,8 @@ class Aligner:
                 continue
             alignment.yuewen[yw_idx].text = answer.yuewen_proofread
 
-        nascent_yuewen_subs = AudioSeries(audio=alignment.yuewen.audio)
-        nascent_sync_groups = []
+        nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
+        nascent_sg = []
         offset = 0
         for sg_idx, sg in enumerate(alignment.sync_groups):
             zw_idxs = sg[0]
@@ -464,20 +464,18 @@ class Aligner:
                 )
             yw_idxs = sg[1]
             if not yw_idxs:
-                nascent_sync_groups.append(sg)
+                nascent_sg.append(sg)
                 continue
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
             if not yw.text:
-                nascent_sync_groups.append(([zw_idx], []))
+                nascent_sg.append(([zw_idx], []))
                 offset -= 1
                 continue
-            nascent_yuewen_subs.append(yw)
-            nascent_sync_groups.append(
-                ([zw_idx], [yw_idx + offset for yw_idx in yw_idxs])
-            )
-        alignment.yuewen = nascent_yuewen_subs
-        alignment._sync_groups_override = nascent_sync_groups
+            nascent_yw.append(yw)
+            nascent_sg.append(([zw_idx], [yw_idx + offset for yw_idx in yw_idxs]))
+        alignment.yuewen = nascent_yw
+        alignment._sync_groups_override = nascent_sg
 
     def _translate(self, alignment: Alignment):
         """Translate 粤文 subs.

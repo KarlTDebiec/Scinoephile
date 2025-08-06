@@ -18,20 +18,12 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
 
     @cached_property
     @override
-    def answer_example(self) -> ProofAnswer:
-        """Example answer."""
-        return ProofAnswer(
-            yuewen_proofread="我哋要盡快走",
-            note="Replaced '我地' with '我哋' to follow standard written Cantonese.",
-        )
-
-    @cached_property
-    @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are a helpful assistant that proofreads 粤文 transcription of spoken
-        Cantonese based on the corresponding 中文 text.
+        You are responsible for proofreading 粤文 subtitles of Cantonese speech.
+        For reference, you are provided the corresponding 中文 subtitles of the same
+        Cantonese speech.
         Your goal is to correct only clear transcription errors in the 粤文 —
         specifically, cases where the transcriber likely misheard a word and wrote a
         similar-sounding but incorrect one.
@@ -41,8 +33,8 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
         临盆).
         If there is truly zero correspondence between the 粤文 and 中文, indicating a
-        complete transcription failure, return empty string for the 粤文 and a note
-        explaining the lack of correspondence.
+        complete mistranscription of the spoken Cantonese, return empty string for the
+        粤文 and a note explaining the lack of correspondence.
 
         Remember:
         - The 粤文 transcription does not need to match the 中文 word-for-word.
