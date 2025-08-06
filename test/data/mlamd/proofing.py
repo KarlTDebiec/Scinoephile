@@ -326,11 +326,12 @@ proof_test_cases_block_1 = [
     ProofTestCase(
         zhongwen="还是似周润发？",
         yuewen="定系话自周人烦啊？",
-        yuewen_proofread="定系似周润发啊？",
-        note="Corrected '话自周人烦' to '似周润发' as it is a mishearing of the "
+        yuewen_proofread="定系话似周润发啊？",
+        note="Corrected '话自周人烦' to '话似周润发' as it is a mishearing of the "
         "actor's name, matching the meaning in the 中文.",
         difficulty=2,
         verified=True,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="为了纪念这赐福的胶兜",
@@ -1759,8 +1760,9 @@ proof_test_cases_block_13 = [
         note="Removed '字幕由Amara.org' as it is not part of the spoken "
         "content and is an artifact from subtitle credits in the "
         "training set.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
+        prompt=True,
     ),
 ]  # proof_test_cases_block_13
 proof_test_cases_block_14 = [
@@ -1973,8 +1975,9 @@ proof_test_cases_block_16 = [
         yuewen_proofread="",
         note="Cleared as '嗨！' bears no resemblance to the original phrase "
         "'校长早晨！' and is clearly a complete mismatch.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="你最喜爱的地方是哪儿？",
@@ -2219,6 +2222,7 @@ proof_test_cases_block_19 = [
         note="",
         difficulty=2,
         verified=True,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="不要呀妈妈，我不喝呀",
@@ -2364,6 +2368,8 @@ proof_test_cases_block_21 = [
         yuewen_proofread="我饮下一格，又一格，又一格⋯",
         note="",
         verified=True,
+        difficulty=2,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="就给我喝光了！",
@@ -2389,8 +2395,9 @@ proof_test_cases_block_22 = [
         yuewen_proofread="饮晒就好返实啦！",
         note="Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', "
         "matching the meaning of '喝光了' in the 中文.",
-        difficulty=1,
+        difficulty=2,
         verified=True,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="妈妈呀⋯",
@@ -2471,6 +2478,8 @@ proof_test_cases_block_22 = [
         yuewen_proofread="妈妈我唔系讲喇㗎，又系你话嘅⋯",
         note="",
         verified=True,
+        difficulty=2,
+        prompt=True,
     ),
     ProofTestCase(
         zhongwen="我病好了带我去马尔代夫的！",
