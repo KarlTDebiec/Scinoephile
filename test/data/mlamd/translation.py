@@ -282,7 +282,39 @@ translate_test_case_block_19 = None  # translate_test_case_block_19
 translate_test_case_block_20 = None  # translate_test_case_block_20
 translate_test_case_block_21 = None  # translate_test_case_block_21
 translate_test_case_block_22 = None  # translate_test_case_block_22
-translate_test_case_block_23 = None  # translate_test_case_block_23
+translate_test_case_block_23 = TranslateTestCase.get_test_case_cls(
+    14,
+    (10,),
+)(
+    zhongwen_1="麦唛，我是麦兜呀",
+    yuewen_1="喂，麦唛啊，我系麦兜啊",
+    zhongwen_2="是这样子的，我明天就飞了",
+    yuewen_2="即系呢，我明日就要飞喇",
+    zhongwen_3="对　　⋯是吗？",
+    yuewen_3="系啊　　⋯系咩？",
+    zhongwen_4="飞机餐很难吃的吗？",
+    yuewen_4="飞机餐好难食㗎？",
+    zhongwen_5="也得吃呀！",
+    yuewen_5="但点都要食㗎啦！",
+    zhongwen_6="难道自己带东西上去吃吗？",
+    yuewen_6="唔通自己带嘢上去食咩？",
+    zhongwen_7="还在讲？",
+    yuewen_7="仲讲哦？",
+    zhongwen_8="快点帮手执行李",
+    yuewen_8="快啲嚟执埋啲行李先啦哦",
+    zhongwen_9="跟我向他们说，我明天去马尔代夫了",
+    yuewen_9="你帮我话畀佢哋知，我明日去马尔代夫喇",
+    zhongwen_10="那边蓝天白云，椰林树影⋯",
+    yuewen_10="嗰度蓝天白云，椰林树影⋯",
+    zhongwen_11="还在讲！",
+    zhongwen_12="来了！",
+    yuewen_12="我嚟紧㗎喇！",
+    zhongwen_13="要执行李了，回来再跟你说吧",
+    yuewen_13="我要执行李喇，返嚟先再同你倾过啦",
+    zhongwen_14="再见！",
+    yuewen_14="拜拜！",
+    yuewen_11="仲讲呀！",
+)  # translate_test_case_block_23
 translate_test_case_block_24 = None  # translate_test_case_block_24
 translate_test_case_block_25 = None  # translate_test_case_block_25
 translate_test_case_block_26 = None  # translate_test_case_block_26

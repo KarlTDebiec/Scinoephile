@@ -2588,94 +2588,114 @@ proof_test_cases_block_22 = [
 proof_test_cases_block_23 = [
     ProofTestCase(
         zhongwen="麦唛，我是麦兜呀",
-        yuewen="喂，麦麦啊，麦豆啊，我系，即系呢",
-        yuewen_proofread="喂，麦麦啊，麦兜啊，我系，即系呢",
-        note="Corrected '麦豆' to '麦兜' as '麦兜' is the correct name, matching "
-        "the 中文 and likely a mishearing.",
+        yuewen="喂，麦麦啊，麦豆啊我系",
+        yuewen_proofread="喂，麦唛啊，我系麦兜啊",
+        note="Corrected '麦麦' to '麦唛' and '麦豆啊我系' to '我系麦兜啊' as these are "
+        "likely mishearings of the character names and the intended "
+        "self-introduction.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="是这样子的，我明天就飞了",
-        yuewen="我明日就要飞喇",
-        yuewen_proofread="我明日就要飞喇",
+        yuewen="即系呢，我明日就要飞喇",
+        yuewen_proofread="即系呢，我明日就要飞喇",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="对　　⋯是吗？",
         yuewen="系啊　　⋯系咩？",
         yuewen_proofread="系啊　　⋯系咩？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="飞机餐很难吃的吗？",
         yuewen="飞机真好难食㗎？",
         yuewen_proofread="飞机餐好难食㗎？",
-        note="Corrected '飞机真好难食㗎？' to '飞机餐好难食㗎？' as '飞机餐' is the correct "
-        "term for 'airplane meal', matching the meaning in the 中文.",
+        note="Corrected '飞机真好难食' to '飞机餐好难食' as '飞机餐' is the correct term "
+        "for 'airplane meal', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="也得吃呀！",
         yuewen="但点都要食㗎啦！",
         yuewen_proofread="但点都要食㗎啦！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="难道自己带东西上去吃吗？",
         yuewen="唔通自己带嘢上去食咩？",
         yuewen_proofread="唔通自己带嘢上去食咩？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="还在讲？",
-        yuewen="仲讲？",
-        yuewen_proofread="仲讲？",
+        yuewen="仲讲哦？",
+        yuewen_proofread="仲讲哦？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="快点帮手执行李",
-        yuewen="哦，快啲嚟执埋啲行李先啦，哦",
-        yuewen_proofread="哦，快啲嚟执埋啲行李先啦，哦",
+        yuewen="快啲嚟执埋啲行李先啦哦",
+        yuewen_proofread="快啲嚟执埋啲行李先啦哦",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="跟我向他们说，我明天去马尔代夫了",
         yuewen="你帮我话畀佢哋知，我明日去买热带裤薄",
         yuewen_proofread="你帮我话畀佢哋知，我明日去马尔代夫喇",
         note="Corrected '买热带裤薄' to '马尔代夫喇' as '买热带裤薄' is a mishearing of "
-        "'马尔代夫' (Maldives), which matches the intended meaning.",
+        "'马尔代夫', matching the intended meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那边蓝天白云，椰林树影⋯",
-        yuewen="𠮶度蓝天五百云，夜临雪⋯",
-        yuewen_proofread="𠮶度蓝天白云，椰林树⋯",
+        yuewen="嗰度蓝天五百云，夜临雪⋯",
+        yuewen_proofread="嗰度蓝天白云，椰林树⋯",
         note="Corrected '五百云' to '白云' as it is a mishearing of '白云', and "
-        "'夜临雪' to '椰林树' as it is a mishearing of '椰林树'.",
+        "'夜临雪' to '椰林树' as it is a mishearing of '椰林树', both matching "
+        "the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="还在讲！",
         yuewen="水清净沙有！",
-        yuewen_proofread="",
-        note="Cleared as '水清净沙有！' bears no resemblance to the original "
-        "phrase '还在讲！' and is clearly a complete transcription "
-        "failure.",
+        yuewen_proofread="水清净沙有！",
+        note="",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="来了！",
         yuewen="我嚟紧㗎喇！",
         yuewen_proofread="我嚟紧㗎喇！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="要执行李了，回来再跟你说吧",
         yuewen="我要执行你喇，返嚟先再同你倾过啦",
         yuewen_proofread="我要执行李喇，返嚟先再同你倾过啦",
         note="Corrected '执行你' to '执行李' as '执行李' (to pack luggage) matches "
-        "the meaning of the 中文, while '执行你' is a mishearing.",
+        "the meaning in the 中文, while '执行你' is a mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="再见！",
         yuewen="拜拜！",
         yuewen_proofread="拜拜！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_23
 proof_test_cases_block_24 = [
