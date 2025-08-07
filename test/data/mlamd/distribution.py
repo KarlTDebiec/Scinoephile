@@ -741,6 +741,7 @@ distribute_test_cases_block_23 = [
         yuewen_to_distribute="哦",
         yuewen_1_to_append="哦",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="要执行李了，回来再跟你说吧",
@@ -750,6 +751,7 @@ distribute_test_cases_block_23 = [
         yuewen_to_distribute="返嚟先再同你倾过啦",
         yuewen_1_to_append="返嚟先再同你倾过啦",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_23
 distribute_test_cases_block_24 = [
@@ -761,6 +763,7 @@ distribute_test_cases_block_24 = [
         yuewen_to_distribute="咁成绩表呢",
         yuewen_1_to_append="咁成绩表呢",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_24
 distribute_test_cases_block_25 = [
@@ -773,6 +776,7 @@ distribute_test_cases_block_25 = [
         yuewen_1_to_append="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
         yuewen_2_to_prepend="",
         difficulty=3,
+        verified=True,
     ),
 ]  # distribute_test_cases_block_25
 distribute_test_cases_block_26 = []  # distribute_test_cases_block_26
@@ -786,6 +790,8 @@ distribute_test_cases_block_28 = [
         yuewen_to_distribute="奥运滑浪风帆选手李丽珊以五场四胜嘅结果夺取香港历史上第一面奥运金牌",
         yuewen_1_to_append="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
         yuewen_2_to_prepend="夺取香港历史上第一面奥运金牌",
+        difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="消息说当李丽珊获悉自己稳夺金牌后",
@@ -795,6 +801,8 @@ distribute_test_cases_block_28 = [
         yuewen_to_distribute="消息话李丽珊喺知道自己稳夺奥运金牌之后好激动噉同在场嘅记者讲",
         yuewen_1_to_append="消息话李丽珊喺知道自己稳夺奥运金牌之后",
         yuewen_2_to_prepend="好激动噉同在场嘅记者讲",
+        difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="对不起，应该　　是垃圾，不是腊鸭！",
@@ -804,6 +812,17 @@ distribute_test_cases_block_28 = [
         yuewen_to_distribute="唔系𫚭鸭",
         yuewen_1_to_append="唔系𫚭鸭",
         yuewen_2_to_prepend="",
+        verified=True,
+    ),
+    DistributeTestCase(
+        zhongwen_1="激动地对在场记者表示她今次的成绩⋯",
+        yuewen_1_start="好激动噉同在场嘅记者讲",
+        zhongwen_2="足以证明香港运动员不是腊鸭！",
+        yuewen_2_end="可以证明到香港嘅运动员唔系𫚭鸭",
+        yuewen_to_distribute="今次佢嘅成绩",
+        yuewen_1_to_append="今次佢嘅成绩",
+        yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_28
 distribute_test_cases_block_29 = [
@@ -815,6 +834,7 @@ distribute_test_cases_block_29 = [
         yuewen_to_distribute="叻仔呀",
         yuewen_1_to_append="叻仔呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="于是，一个梦还没醒⋯",
@@ -824,6 +844,7 @@ distribute_test_cases_block_29 = [
         yuewen_to_distribute="一个梦都未醒",
         yuewen_1_to_append="一个梦都未醒",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_29
 distribute_test_cases_block_30 = []  # distribute_test_cases_block_30
@@ -836,6 +857,7 @@ distribute_test_cases_block_31 = [
         yuewen_to_distribute="三张堂上面",
         yuewen_1_to_append="三张堂上面",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_31
 distribute_test_cases_block_32 = []  # distribute_test_cases_block_32

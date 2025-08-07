@@ -81,15 +81,12 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="更正一下：",
-    note_5="Changed '都系唔好：' to '更正一下：' to match the correction phrase "
-    "used in other similar contexts and maintain consistency "
-    "across the series.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="转呀，转⋯更正一下：",
-    note_7="Changed '转下，转下⋯都系唔好：' to '转呀，转⋯更正一下：' for consistency with "
-    "the correction phrase and the style of other similar lines.",
+    yuewen_revised_7="",
+    note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -100,9 +97,8 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_11="",
     yuewen_revised_12="",
     note_12="",
-    yuewen_revised_13="更正一下：左边魂精对上⋯",
-    note_13="Changed '都系唔好：左边魂精对上⋯' to '更正一下：左边魂精对上⋯' for consistency "
-    "with the correction phrase used elsewhere.",
+    yuewen_revised_13="",
+    note_13="",
     yuewen_revised_14="",
     note_14="",
     yuewen_revised_15="",
@@ -143,6 +139,7 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
     note_32="",
     yuewen_revised_33="",
     note_33="",
+    verified=True,
 )  # review_test_case_block_0
 review_test_case_block_1 = ReviewTestCase.get_test_case_cls(13)(
     zhongwen_1="最后，胶兜「嘀督」一声落地",
@@ -268,11 +265,11 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(16)(
 )  # review_test_case_block_2
 review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
-    yuewen_1="〝我只耳仔好痛呀⋯〞",
+    yuewen_1="〝我只耳仔畀人烙到好痛⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
-    yuewen_2="〝我哋日日都要望住个窗！〞",
+    yuewen_2="〝我日日都要望住个窗！〞",
     zhongwen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
-    yuewen_3="〝我哋喺度学习，我哋一齐进步⋯〞",
+    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
     zhongwen_4="〝鹅闷是春天滴化！〞",
     yuewen_4="〝我哋就系春天嘅花！〞",
     zhongwen_5="这个猪样白兔小朋友⋯",
@@ -292,11 +289,11 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_12="我其实不大明白他的说话",
     yuewen_12="我其实唔系好知佢噏乜",
     zhongwen_13="蛋挞！　　蛋挞！",
-    yuewen_13="蛋挞！蛋挞！",
+    yuewen_13="蛋挞！　蛋挞！",
     zhongwen_14="荔芋火鸭礼！　　荔芋火鸭礼！",
-    yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
+    yuewen_14="荔芋火鸭礼！　荔芋火鸭礼！",
     zhongwen_15="忘记校训九十七⋯　　忘记校训九十七⋯",
-    yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
+    yuewen_15="唔好忘记校训九十七⋯　　唔好忘记校训九十七⋯",
     zhongwen_16="也不能忘记校训九十八！",
     yuewen_16="都唔可以忘记校训九十八！",
     zhongwen_17="也不能忘记校训九十八！",
@@ -359,7 +356,6 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
-    verified=True,
 )  # review_test_case_block_3
 review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
@@ -431,7 +427,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_34="麦兜同学！",
     yuewen_34="麦兜同学！",
     zhongwen_35="麦唛呀，即是呢⋯",
-    yuewen_35="麦兜同学，即系呢⋯",
+    yuewen_35="麦唛呀，即系呢⋯",
     zhongwen_36="我好像觉得呢⋯",
     yuewen_36="妈妈啊，我个心总系印住印住⋯",
     zhongwen_37="有什么人在喊我似的",
@@ -540,15 +536,10 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     note_33="",
     yuewen_revised_34="",
     note_34="",
-    yuewen_revised_35="麦唛同学，即系呢⋯",
-    note_35='Changed "麦兜同学" to "麦唛同学" for consistency with the rest '
-    "of the name call sequence, as the character being called is "
-    "麦唛, not 麦兜, in this context.",
-    yuewen_revised_36="我好似觉得呢⋯",
-    note_36='Changed "妈妈啊，我个心总系印住印住⋯" to "我好似觉得呢⋯" to match the '
-    "meaning and maintain consistency with the sequence, as this "
-    "line is the student's internal thought, not a line addressed "
-    "to the mother.",
+    yuewen_revised_35="",
+    note_35="",
+    yuewen_revised_36="",
+    note_36="",
     yuewen_revised_37="",
     note_37="",
     yuewen_revised_38="",
@@ -587,6 +578,7 @@ review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     note_54="",
     yuewen_revised_55="",
     note_55="",
+    verified=True,
 )  # review_test_case_block_4
 review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     zhongwen_1="幼稚园楼下，由校长兼营的茶餐厅",
@@ -631,10 +623,8 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     yuewen_20="麦兜，转身食啊！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="我哋一班同学仔放咗学都经常去嗰间茶餐厅",
-    note_2='Revised "喺房餐" to "去嗰间茶餐厅" for clarity and consistency '
-    'with the context. "房餐" is not a standard or clear term in '
-    "Cantonese for a tea restaurant.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -671,6 +661,7 @@ review_test_case_block_5 = ReviewTestCase.get_test_case_cls(20)(
     note_19="",
     yuewen_revised_20="",
     note_20="",
+    verified=True,
 )  # review_test_case_block_5
 review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="看着自己每天疴烂煮⋯",
@@ -683,14 +674,11 @@ review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     yuewen_4="世界好美丽！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="日日生肉⋯",
-    note_2='Changed "长肉" to "生肉" as "生肉" is the more natural '
-    "Cantonese expression for 'gaining weight' or 'putting on "
-    "flesh'.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="我感到充满力量！",
-    note_3='Added "我" at the beginning to match the spoken Cantonese '
-    "tendency to include the subject, and for consistency with "
-    "the other sentences.",
+    note_3="Added the subject '我' to match the implied subject in the "
+    "previous subtitles and for consistency with the spoken flow.",
     yuewen_revised_4="",
     note_4="",
 )  # review_test_case_block_6
@@ -720,10 +708,13 @@ review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="世上一切，一切一切⋯",
-    note_6="Added 「一切一切⋯」 to match the repetition in the series and "
-    "maintain consistency with the theme of the song lyrics.",
-    yuewen_revised_7="",
-    note_7="",
+    note_6="Added 「一切一切」 to match the repetition in the sequence and "
+    "maintain consistency with the previous and following "
+    "subtitles.",
+    yuewen_revised_7="所有嗰啲，都几好！All Things Bright and Beautiful",
+    note_7="Removed 「嘢」 after 「嗰啲」 for naturalness and consistency, as "
+    "the previous subtitle already established the context of "
+    '"things".',
 )  # review_test_case_block_7
 review_test_case_block_8 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="一、二、三、四、五、六、七⋯",
@@ -1030,10 +1021,8 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="我用我嘅童子手帮妈妈抽嘅六合彩号码",
-    note_6="Changed '六合彩number' to '六合彩号码' for consistency with the rest "
-    "of the series and to use a more natural Cantonese "
-    "transcription.",
+    yuewen_revised_6="",
+    note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -1042,6 +1031,7 @@ review_test_case_block_14 = ReviewTestCase.get_test_case_cls(10)(
     note_9="",
     yuewen_revised_10="",
     note_10="",
+    verified=True,
 )  # review_test_case_block_14
 review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_1="马尔代夫，座落于印度洋的世外桃源",
@@ -1082,12 +1072,13 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_2="",
     yuewen_revised_3="七彩缤纷嘅珊瑚，目不暇给嘅热带鱼",
     note_3="Removed '群' from '热带鱼群' to maintain consistency with the "
-    "rest of the series, as the original Chinese does not specify "
-    "'群', and the rest of the dialogue does not use '群' when "
-    "referring to fish.",
-    yuewen_revised_4="充满住赤道活力嘅原始海洋，远离繁嚣",
-    note_4="Changed '热力' to '活力' to match the meaning of the original "
-    "Chinese ('活力') and for consistency across the series.",
+    "rest of the subtitles and the likely spoken form, as the "
+    "previous and following lines do not use '群' and the phrase "
+    "is more natural as '热带鱼' in Cantonese speech.",
+    yuewen_revised_4="充满住赤道热力嘅原始海洋，脱离繁嚣",
+    note_4="Changed '远离繁嚣' to '脱离繁嚣' to match the sequence and maintain "
+    "consistency with the theme of '脱离' in the previous and "
+    "following lines.",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
@@ -1103,9 +1094,10 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     yuewen_revised_11="",
     note_11="",
     yuewen_revised_12="咁妈妈你会唔会带我去㗎？",
-    note_12="Changed '走落去' to '带我去' to accurately reflect the meaning of "
-    "the original Chinese ('带我去'), and for consistency with the "
-    "context of the conversation.",
+    note_12="Changed '走落去' to '带我去' to match the context of the "
+    "conversation and the meaning of the Mandarin subtitle, as "
+    "the child is asking if the mother will take them to the "
+    "Maldives, not just 'go down there'.",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1234,14 +1226,11 @@ review_test_case_block_18 = ReviewTestCase.get_test_case_cls(8)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="唔使！帮佢打支针啦！",
-    note_5='Changed "同佢打多支针添呢！" to "帮佢打支针啦！" to better match the '
-    'context and spoken Cantonese. "打多支针添呢" implies giving an '
-    "extra injection, which is not present in the original. "
-    '"打口针" in Mandarin means \'give an injection\', so "打支针" is '
-    'the direct equivalent. "帮佢" is a common way to say \'give '
-    'him/her\' in this context, and "啦" is a more natural '
-    "sentence-final particle here.",
+    yuewen_revised_5="唔使！同佢打支针啦！",
+    note_5='Changed "同佢打多支针添呢！" to "同佢打支针啦！" to better match the '
+    'context and flow. "多支" (another injection) is not implied '
+    'in the Mandarin, and "添呢" is unnecessary here. "啦" is a '
+    "more natural ending for a suggestion in this context.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -1317,8 +1306,7 @@ review_test_case_block_20 = ReviewTestCase.get_test_case_cls(7)(
     note_6="",
     yuewen_revised_7="嚟啦，饮多啲！",
     note_7='Changed "食多更" to "饮多啲" to correctly reflect the context '
-    'of drinking medicine, as in the previous lines. "食多更" is '
-    "not idiomatic and does not fit the context.",
+    "of drinking medicine, as indicated in previous subtitles.",
 )  # review_test_case_block_20
 review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="妈妈，你看！",
@@ -1338,13 +1326,13 @@ review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="妈妈你睇，我好返喇！",
-    note_2="Added '妈妈你睇，' to match the context and maintain consistency "
-    "with the previous and following lines, as the speaker is "
-    "addressing the mother and showing recovery.",
+    note_2="Added '妈妈你睇，' to match the context and continuity from "
+    "subtitle 1, as the speaker is still addressing the mother "
+    "and showing her recovery.",
     yuewen_revised_3="啲药我全部食晒喇",
-    note_3="Removed '所以' as it is not present in the context and is "
-    "unnecessary. The sentence is more natural and consistent "
-    "without it.",
+    note_3="Removed '所以' as it is not necessary and disrupts the natural "
+    "flow of the sentence. The sentence should directly state "
+    "that all the medicine was finished.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -1352,10 +1340,10 @@ review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_revised_6="我饮一格，又饮一格，又饮一格⋯",
     note_6="Changed '我饮下一格，又一格，又一格⋯' to '我饮一格，又饮一格，又饮一格⋯' for "
     "consistency and clarity, matching the repetitive drinking "
-    "action described in the original.",
-    yuewen_revised_7="咪就我饮晒㖞！",
-    note_7="Changed '吓，咪我饮晒㖞！' to '咪就我饮晒㖞！' to better reflect the "
-    "exclamatory tone and the sense of 'so I drank it all!' in "
+    "action described in the Mandarin.",
+    yuewen_revised_7="咪就我饮晒㗎啦！",
+    note_7="Changed '吓，咪我饮晒㖞！' to '咪就我饮晒㗎啦！' to better reflect the "
+    "exclamatory tone and the sense of 'so I finished it all!' in "
     "context.",
 )  # review_test_case_block_21
 review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
@@ -1413,8 +1401,9 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     yuewen_26="好嘢！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="",
-    note_2="",
+    yuewen_revised_2="饮晒就好返啦！",
+    note_2="Removed '实' from '好返实啦', as '好返啦' is the standard colloquial "
+    "form for 'recover'.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -1424,9 +1413,9 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="你话我好返就同我去马尔代夫㗎嘛！",
-    note_7='Changed "呢，你话我返就同我去马尔代夫㗎嘛！" to "你话我好返就同我去马尔代夫㗎嘛！" to '
-    'correct the omission of "好" and to match the recurring '
-    "phrase used throughout the series for consistency.",
+    note_7="Changed '呢，你话我返就同我去马尔代夫㗎嘛！' to '你话我好返就同我去马尔代夫㗎嘛！' for "
+    "consistency with previous and following subtitles, and to "
+    "correct the omission of '好' in '好返'.",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -1435,8 +1424,9 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_10="",
     yuewen_revised_11="",
     note_11="",
-    yuewen_revised_12="",
-    note_12="",
+    yuewen_revised_12="我唔系讲喇㗎，妈妈，又系你话嘅⋯",
+    note_12="Reordered to '我唔系讲喇㗎，妈妈，又系你话嘅⋯' for natural speech flow and "
+    "to match the speaker's perspective.",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1525,14 +1515,209 @@ review_test_case_block_23 = ReviewTestCase.get_test_case_cls(14)(
     note_14="",
     verified=True,
 )  # review_test_case_block_23
-review_test_case_block_24 = None  # review_test_case_block_24
-review_test_case_block_25 = None  # review_test_case_block_25
-review_test_case_block_26 = None  # review_test_case_block_26
-review_test_case_block_27 = None  # review_test_case_block_27
-review_test_case_block_28 = None  # review_test_case_block_28
-review_test_case_block_29 = None  # review_test_case_block_29
-review_test_case_block_30 = None  # review_test_case_block_30
-review_test_case_block_31 = None  # review_test_case_block_31
+review_test_case_block_24 = ReviewTestCase.get_test_case_cls(5)(
+    zhongwen_1="妈妈，我得把出世纸带着吗？",
+    yuewen_1="哎哟，妈妈，我系咪要带埋出世纸去㗎？",
+    zhongwen_2="也要的",
+    yuewen_2="都要㗎",
+    zhongwen_3="那么成绩表呢？",
+    yuewen_3="咁成绩表呢？",
+    zhongwen_4="成绩表就不用了",
+    yuewen_4="成绩表又唔使",
+    zhongwen_5="太好了！吓得我！",
+    yuewen_5="好嘢！吓得我啊！咁都好啲",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    verified=True,
+)  # review_test_case_block_24
+review_test_case_block_25 = ReviewTestCase.get_test_case_cls(4)(
+    zhongwen_1="找到了！",
+    yuewen_1="揾到喇！",
+    zhongwen_2="出世纸给我找到了！",
+    yuewen_2="出世纸俾我揾返到喇！",
+    zhongwen_3="妈妈你替我收好它别抛掉",
+    yuewen_3="妈咪你帮我收好佢，唔好掉咗佢呀",
+    zhongwen_4="抛掉就去不成了",
+    yuewen_4="掉咗就去唔到㗎喇",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    verified=True,
+)  # review_test_case_block_25
+review_test_case_block_26 = ReviewTestCase.get_test_case_cls(8)(
+    zhongwen_1="早机去，晚机返",
+    yuewen_1="早机去，晚机返",
+    zhongwen_2="妈妈说这样才够精明",
+    yuewen_2="妈妈话噉先最著数",
+    zhongwen_3="就这样⋯",
+    yuewen_3="就系噉样⋯",
+    zhongwen_4="我过了我小时候最精明⋯",
+    yuewen_4="我过咗我小时候最著数⋯",
+    zhongwen_5="最美丽的一天",
+    yuewen_5="最完美嘅一日",
+    zhongwen_6="依你说，纸是否可以包着鸡呢？",
+    yuewen_6="噉你话，纸包唔包得住鸡呢？",
+    zhongwen_7="也可以的⋯",
+    yuewen_7="都得嘅⋯",
+    zhongwen_8="特别是小小一块的",
+    yuewen_8="尤其系细细旧嗰啲",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    yuewen_revised_8="",
+    note_8="",
+    verified=True,
+)  # review_test_case_block_26
+review_test_case_block_27 = ReviewTestCase.get_test_case_cls(1)(
+    zhongwen_1="妈妈晚安！",
+    yuewen_1="妈妈早唞！",
+    yuewen_revised_1="",
+    note_1="",
+    verified=True,
+)  # review_test_case_block_27
+review_test_case_block_28 = ReviewTestCase.get_test_case_cls(9)(
+    zhongwen_1="最新消息",
+    yuewen_1="啱啱收到消息",
+    zhongwen_2="奥运滑浪风帆选手李丽珊五场四胜",
+    yuewen_2="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
+    zhongwen_3="夺得香港历史上第一面奥运金牌！",
+    yuewen_3="夺取香港历史上第一面奥运金牌！",
+    zhongwen_4="消息说当李丽珊获悉自己稳夺金牌后",
+    yuewen_4="消息话李丽珊喺知道自己稳夺奥运金牌之后",
+    zhongwen_5="激动地对在场记者表示她今次的成绩⋯",
+    yuewen_5="好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
+    zhongwen_6="足以证明香港运动员不是腊鸭！",
+    yuewen_6="可以证明到香港嘅运动员唔系腊鸭！",
+    zhongwen_7="对不起，应该　　是垃圾，不是腊鸭！",
+    yuewen_7="各位对唔住，应该　　系垃圾，唔系腊鸭！",
+    zhongwen_8="对不起，应该　　不是垃圾，也不是腊鸭！",
+    yuewen_8="对唔住，应该系　　唔系垃圾，亦都唔系腊鸭！",
+    zhongwen_9="特别报告完毕",
+    yuewen_9="特别报告完毕",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    yuewen_revised_8="",
+    note_8="",
+    yuewen_revised_9="",
+    note_9="",
+    verified=True,
+)  # review_test_case_block_28
+review_test_case_block_29 = ReviewTestCase.get_test_case_cls(10)(
+    zhongwen_1="妈妈好像又有计了",
+    yuewen_1="咦，妈妈好似又有计噉噃",
+    zhongwen_2="靓仔，好运，叻仔⋯",
+    yuewen_2="靓仔，好运，叻仔呀⋯",
+    zhongwen_3="好像都没希望了",
+    yuewen_3="睇嚟都唔多靠得住",
+    zhongwen_4="是不是可以靠手瓜呢？",
+    yuewen_4="哗，好唔好靠下个手瓜噉呢？",
+    zhongwen_5="于是，一个梦还没醒⋯",
+    yuewen_5="于是，一个梦都未醒⋯",
+    zhongwen_6="我又得到另一个梦",
+    yuewen_6="我又得到另外一个梦",
+    zhongwen_7="应该是脚瓜",
+    yuewen_7="系咪应该系脚瓜之争",
+    zhongwen_8="我知道一点也不容易",
+    yuewen_8="我知道一啲都唔容易",
+    zhongwen_9="我知道要找到黎根绝对不容易",
+    yuewen_9="我知道要揾到黎根绝对唔容易",
+    zhongwen_10="我知道要他收我做徒弟更加不容易",
+    yuewen_10="我知道要佢收我做徒弟更加唔容易",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    yuewen_revised_8="",
+    note_8="",
+    yuewen_revised_9="",
+    note_9="",
+    yuewen_revised_10="",
+    note_10="",
+    verified=True,
+)  # review_test_case_block_29
+review_test_case_block_30 = ReviewTestCase.get_test_case_cls(3)(
+    zhongwen_1="但无论多不容易，我都要试一试",
+    yuewen_1="但无论几唔容易，我都要试一试",
+    zhongwen_2="我要黎根收我做徒弟！",
+    yuewen_2="我要黎根收我做徒弟！",
+    zhongwen_3="无论几辛苦，我一定要得到奥运金牌！",
+    yuewen_3="无论几辛苦，我一定要攞到奥运金牌！",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    verified=True,
+)  # review_test_case_block_30
+review_test_case_block_31 = ReviewTestCase.get_test_case_cls(5)(
+    zhongwen_1="长洲！长洲！",
+    yuewen_1="长洲！长洲！",
+    zhongwen_2="你孕育了珊珊！你也会孕育我！",
+    yuewen_2="你孕育咗珊珊！你都会孕育我！",
+    zhongwen_3="当我站在奥运会颁奖台上",
+    yuewen_3="当我企喺奥运会颁奖台上面",
+    zhongwen_4="我会举起金牌跟全世界说：",
+    yuewen_4="我会举起金牌同全世界讲：",
+    zhongwen_5="香港运动员不是垃圾！",
+    yuewen_5="香港运动员唔系垃圾！",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+)  # review_test_case_block_31
 review_test_case_block_32 = None  # review_test_case_block_32
 review_test_case_block_33 = None  # review_test_case_block_33
 review_test_case_block_34 = None  # review_test_case_block_34
@@ -1575,32 +1760,10 @@ review_test_case_block_70 = None  # review_test_case_block_70
 review_test_case_block_71 = None  # review_test_case_block_71
 review_test_case_block_72 = None  # review_test_case_block_72
 
-
 mlamd_review_test_cases: list[ReviewTestCase] = [
-    review_test_case_block_0,
-    review_test_case_block_1,
-    review_test_case_block_2,
-    review_test_case_block_3,
-    review_test_case_block_4,
-    review_test_case_block_5,
-    review_test_case_block_6,
-    review_test_case_block_7,
-    review_test_case_block_8,
-    review_test_case_block_9,
-    review_test_case_block_10,
-    review_test_case_block_11,
-    review_test_case_block_12,
-    review_test_case_block_13,
-    review_test_case_block_14,
-    review_test_case_block_15,
-    review_test_case_block_16,
-    review_test_case_block_17,
-    review_test_case_block_18,
-    review_test_case_block_19,
-    review_test_case_block_20,
-    review_test_case_block_21,
-    review_test_case_block_22,
-    review_test_case_block_23,
+    test_case
+    for name, test_case in globals().items()
+    if name.startswith("review_test_case_block_") and test_case is not None
 ]
 """MLAMD 粤文 review test cases."""
 

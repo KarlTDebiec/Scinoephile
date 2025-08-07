@@ -50,19 +50,19 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_22="交！",
     zhongwen_23="太好了！大家去上堂吧",
     yuewen_23="哎，好在！噉大家可以返去上堂喇",
-    yuewen_1="〝我只耳仔好痛呀⋯〞",
-    yuewen_2="〝我哋日日都要望住个窗！〞",
-    yuewen_3="〝我哋喺度学习，我哋一齐进步⋯〞",
+    yuewen_1="〝我只耳仔畀人烙到好痛⋯〞",
+    yuewen_2="〝我日日都要望住个窗！〞",
+    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
     yuewen_4="〝我哋就系春天嘅花！〞",
-    yuewen_13="蛋挞！蛋挞！",
-    yuewen_14="荔芋火鸭礼！荔芋火鸭礼！",
-    yuewen_15="唔好忘记校训九十七⋯唔好忘记校训九十七⋯",
+    yuewen_13="蛋挞！　蛋挞！",
+    yuewen_14="荔芋火鸭礼！　荔芋火鸭礼！",
+    yuewen_15="唔好忘记校训九十七⋯　唔好忘记校训九十七⋯",
     yuewen_16="都唔可以忘记校训九十八！",
     yuewen_17="都唔可以忘记校训九十八！",
 )  # translate_test_case_block_3
 translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     55,
-    (19, 20, 30),
+    (19, 20, 30, 34),
 )(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
     yuewen_1="你哋可能觉得呢间幼稚园好烂",
@@ -130,7 +130,6 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     zhongwen_34="麦兜同学！",
     yuewen_34="麦兜同学！",
     zhongwen_35="麦唛呀，即是呢⋯",
-    yuewen_35="麦兜同学，即系呢⋯",
     zhongwen_36="我好像觉得呢⋯",
     yuewen_36="妈妈啊，我个心总系印住印住⋯",
     zhongwen_37="有什么人在喊我似的",
@@ -174,6 +173,7 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_20="校长早晨！",
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
+    yuewen_35="麦唛呀，即系呢⋯",
 )  # translate_test_case_block_4
 translate_test_case_block_5 = None  # translate_test_case_block_5
 translate_test_case_block_6 = None  # translate_test_case_block_6
@@ -314,15 +314,42 @@ translate_test_case_block_23 = TranslateTestCase.get_test_case_cls(
     zhongwen_14="再见！",
     yuewen_14="拜拜！",
     yuewen_11="仲讲呀！",
+    verified=True,
 )  # translate_test_case_block_23
 translate_test_case_block_24 = None  # translate_test_case_block_24
-translate_test_case_block_25 = None  # translate_test_case_block_25
+translate_test_case_block_25 = TranslateTestCase.get_test_case_cls(
+    4,
+    (1, 2, 3),
+)(
+    zhongwen_1="找到了！",
+    yuewen_1="揾到喇！",
+    zhongwen_2="出世纸给我找到了！",
+    zhongwen_3="妈妈你替我收好它别抛掉",
+    zhongwen_4="抛掉就去不成了",
+    yuewen_2="出世纸俾我揾返到喇！",
+    yuewen_3="妈咪你帮我收好佢，唔好掉咗佢呀",
+    yuewen_4="掉咗就去唔到㗎喇",
+)  # translate_test_case_block_25
 translate_test_case_block_26 = None  # translate_test_case_block_26
 translate_test_case_block_27 = None  # translate_test_case_block_27
 translate_test_case_block_28 = None  # translate_test_case_block_28
 translate_test_case_block_29 = None  # translate_test_case_block_29
 translate_test_case_block_30 = None  # translate_test_case_block_30
-translate_test_case_block_31 = None  # translate_test_case_block_31
+translate_test_case_block_31 = TranslateTestCase.get_test_case_cls(
+    5,
+    (0, 1, 2, 4),
+)(
+    zhongwen_1="长洲！长洲！",
+    zhongwen_2="你孕育了珊珊！你也会孕育我！",
+    zhongwen_3="当我站在奥运会颁奖台上",
+    zhongwen_4="我会举起金牌跟全世界说：",
+    yuewen_4="我会举起金牌同全世界讲：",
+    zhongwen_5="香港运动员不是垃圾！",
+    yuewen_1="长洲！长洲！",
+    yuewen_2="你孕育咗珊珊！你都会孕育我！",
+    yuewen_3="当我企喺奥运会颁奖台上面",
+    yuewen_5="香港运动员唔系垃圾！",
+)  # translate_test_case_block_31
 translate_test_case_block_32 = None  # translate_test_case_block_32
 translate_test_case_block_33 = None  # translate_test_case_block_33
 translate_test_case_block_34 = None  # translate_test_case_block_34
@@ -364,11 +391,11 @@ translate_test_case_block_69 = None  # translate_test_case_block_69
 translate_test_case_block_70 = None  # translate_test_case_block_70
 translate_test_case_block_71 = None  # translate_test_case_block_71
 translate_test_case_block_72 = None  # translate_test_case_block_72
+
 mlamd_translate_test_cases: list[TranslateTestCase] = [
-    translate_test_case_block_3,
-    translate_test_case_block_4,
-    translate_test_case_block_12,
-    translate_test_case_block_16,
+    test_case
+    for name, test_case in globals().items()
+    if name.startswith("translate_test_case_block_") and test_case is not None
 ]
 """MLAMD 粤文 translation test cases."""
 

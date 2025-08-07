@@ -833,9 +833,8 @@ proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="麦唛呀，即是呢⋯",
         yuewen="妈妈啊，麦兜同学，即系呢⋯",
-        yuewen_proofread="麦兜同学，即系呢⋯",
-        note="Removed '妈妈啊，' as two characters are speaking and this is "
-        "associated with the other speaker.",
+        yuewen_proofread="",
+        note="Cleared, as multiple characters are speaking over one another",
         difficulty=3,
         verified=True,
     ),
@@ -2704,30 +2703,35 @@ proof_test_cases_block_24 = [
         yuewen="哎哟，妈妈，我系咪要带埋出世纸去㗎？",
         yuewen_proofread="哎哟，妈妈，我系咪要带埋出世纸去㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="也要的",
         yuewen="都要㗎",
         yuewen_proofread="都要㗎",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="那么成绩表呢？",
         yuewen="咁成绩表呢？",
         yuewen_proofread="咁成绩表呢？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="成绩表就不用了",
         yuewen="成绩表又唔使",
         yuewen_proofread="成绩表又唔使",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="太好了！吓得我！",
         yuewen="好嘢！吓得我啊！咁都好啲",
         yuewen_proofread="好嘢！吓得我啊！咁都好啲",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_24
 proof_test_cases_block_25 = [
@@ -2736,14 +2740,17 @@ proof_test_cases_block_25 = [
         yuewen="揾到喇！",
         yuewen_proofread="揾到喇！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
-        zhongwen="妈妈你替我收好它别抛掉",
-        yuewen="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
+        zhongwen="出世纸给我找到了！",
+        yuewen="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然！",
         yuewen_proofread="",
-        note="Cleared as the provided 粤文 is a repeated string of '竟然' with "
-        "no relation to the original 中文, indicating a complete "
-        "transcription failure.",
+        note="Cleared as the 粤文 is just a repeated string of '竟然' and "
+        "bears no resemblance to the original phrase '出世纸给我找到了！', "
+        "indicating a complete mismatch.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_25
 proof_test_cases_block_26 = [
@@ -2752,61 +2759,70 @@ proof_test_cases_block_26 = [
         yuewen="早机去，晚机返",
         yuewen_proofread="早机去，晚机返",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="妈妈说这样才够精明",
         yuewen="妈妈话噉先最著数",
         yuewen_proofread="妈妈话噉先最著数",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="就这样⋯",
         yuewen="就系噉样⋯",
         yuewen_proofread="就系噉样⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我过了我小时候最精明⋯",
         yuewen="我过咗我小时候最著数⋯",
         yuewen_proofread="我过咗我小时候最著数⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="最美丽的一天",
         yuewen="最完美嘅一日",
         yuewen_proofread="最完美嘅一日",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="依你说，纸是否可以包着鸡呢？",
         yuewen="噉你话，纸包唔包得绝鸡呢？",
         yuewen_proofread="噉你话，纸包唔包得住鸡呢？",
-        note="Corrected '绝鸡' to '住鸡' as '包得住' (can wrap/cover) matches the "
-        "meaning of '包着', while '绝鸡' is likely a mishearing.",
+        note="Corrected '绝鸡' to '住鸡' as '住' is the correct word for 'wrap' "
+        "or 'cover' in this context, matching the meaning of '包着鸡' in "
+        "the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="也可以的⋯",
         yuewen="都得嘅⋯",
         yuewen_proofread="都得嘅⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="特别是小小一块的",
-        yuewen="尤其系细细旧𠮶啲",
+        yuewen="尤其系细细旧嗰啲",
         yuewen_proofread="尤其系细细旧嗰啲",
-        note="Replaced '𠮶啲' with '嗰啲' as '嗰啲' is the standard written "
-        "Cantonese for 'those', and '𠮶啲' is a common mishearing or "
-        "nonstandard variant.",
+        note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_26
 proof_test_cases_block_27 = [
     ProofTestCase(
         zhongwen="妈妈晚安！",
-        yuewen="妈妈，做头！",
-        yuewen_proofread="",
-        note="Cleared as '妈妈，做头！' bears no resemblance to the original "
-        "phrase '妈妈晚安！' and is clearly a complete transcription "
-        "failure.",
+        yuewen="妈妈做头！",
+        yuewen_proofread="妈妈早唞！",
+        note="Corrected '妈妈做头' to '妈妈早唞' as '早唞' is the correct phrase for "
+        "'good night' in Cantonese, while '做头' is a mishearing.",
+        difficulty=2,
+        verified=True,
     ),
 ]  # proof_test_cases_block_27
 proof_test_cases_block_28 = [
@@ -2815,58 +2831,74 @@ proof_test_cases_block_28 = [
         yuewen="啱啱收到消息",
         yuewen_proofread="啱啱收到消息",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="奥运滑浪风帆选手李丽珊五场四胜",
         yuewen="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
         yuewen_proofread="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="夺得香港历史上第一面奥运金牌！",
         yuewen="夺取香港历史上第一面奥运金牌！",
         yuewen_proofread="夺取香港历史上第一面奥运金牌！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="消息说当李丽珊获悉自己稳夺金牌后",
         yuewen="消息话李丽珊喺知道自己稳夺奥运金牌之后",
         yuewen_proofread="消息话李丽珊喺知道自己稳夺奥运金牌之后",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="激动地对在场记者表示她今次的成绩⋯",
-        yuewen="好激动噉同在场嘅记者讲⋯",
-        yuewen_proofread="好激动噉同在场嘅记者讲⋯",
+        yuewen="好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
+        yuewen_proofread="好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="足以证明香港运动员不是腊鸭！",
-        yuewen="今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭！",
-        yuewen_proofread="今次佢嘅成绩可以证明到香港嘅运动员唔系腊鸭！",
+        yuewen="可以证明到香港嘅运动员唔系𫚭鸭！",
+        yuewen_proofread="可以证明到香港嘅运动员唔系腊鸭！",
         note="Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term, matching "
-        "the meaning in the 中文.",
+        "the meaning in the 中文, and '𫚭' is a likely mishearing or "
+        "character error.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="对不起，应该　　是垃圾，不是腊鸭！",
-        yuewen="各位对唔住，应该系垃圾，唔系𫚭鸭！",
-        yuewen_proofread="各位对唔住，应该系垃圾，唔系腊鸭！",
+        yuewen="各位对唔住，应该　　系垃圾，唔系𫚭鸭！",
+        yuewen_proofread="各位对唔住，应该　　系垃圾，唔系腊鸭！",
         note="Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and "
-        "matches the intended meaning.",
+        "matches the meaning in the 中文, while '𫚭鸭' is a likely "
+        "mishearing or character error.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="对不起，应该　　不是垃圾，也不是腊鸭！",
-        yuewen="对唔住，应该系唔系垃圾，亦都唔系𫚭鸭！",
-        yuewen_proofread="对唔住，应该系唔系垃圾，亦都唔系腊鸭！",
+        yuewen="对唔住，应该系　　唔系垃圾，亦都唔系𫚭鸭！",
+        yuewen_proofread="对唔住，应该系　　唔系垃圾，亦都唔系腊鸭！",
         note="Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and "
-        "matches the meaning in the 中文.",
+        "matches the meaning in the 中文, while '𫚭鸭' is a likely "
+        "mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="特别报告完毕",
         yuewen="特别报个原不",
         yuewen_proofread="特别报告完毕",
-        note="Corrected '报个原不' to '报告完毕' as it is a clear mishearing of "
-        "the intended phrase '报告完毕'.",
+        note="Corrected '报个原不' to '报告完毕' as '原不' is a mishearing of '完毕', "
+        "matching the meaning of the 中文.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_28
 proof_test_cases_block_29 = [
@@ -2875,61 +2907,72 @@ proof_test_cases_block_29 = [
         yuewen="咦，妈妈好似又有计噉噃",
         yuewen_proofread="咦，妈妈好似又有计噉噃",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="靓仔，好运，叻仔⋯",
         yuewen="靓仔，好运，叻仔呀⋯",
         yuewen_proofread="靓仔，好运，叻仔呀⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="好像都没希望了",
         yuewen="睇嚟都唔多靠得住",
         yuewen_proofread="睇嚟都唔多靠得住",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="是不是可以靠手瓜呢？",
         yuewen="哗，好唔好靠下个手瓜噉呢？",
         yuewen_proofread="哗，好唔好靠下个手瓜噉呢？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="于是，一个梦还没醒⋯",
         yuewen="于是，一个梦都未醒⋯",
         yuewen_proofread="于是，一个梦都未醒⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我又得到另一个梦",
         yuewen="我又得到另外一个梦",
         yuewen_proofread="我又得到另外一个梦",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="应该是脚瓜",
         yuewen="系咪应该系脚瓜之争",
         yuewen_proofread="系咪应该系脚瓜之争",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我知道一点也不容易",
         yuewen="我知道一啲都唔容易",
         yuewen_proofread="我知道一啲都唔容易",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我知道要找到黎根绝对不容易",
         yuewen="我知道要揾到励根绝对唔容易",
         yuewen_proofread="我知道要揾到黎根绝对唔容易",
-        note="Corrected '励根' to '黎根' as '黎根' matches the name in the 中文 "
-        "and '励根' is likely a mishearing.",
+        note="Corrected '励根' to '黎根' as '黎根' is the correct name, matching "
+        "the 中文 and is a likely mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我知道要他收我做徒弟更加不容易",
         yuewen="我知道要佢收我做徒弟更加唔容易",
         yuewen_proofread="我知道要佢收我做徒弟更加唔容易",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_29
 proof_test_cases_block_30 = [
@@ -2938,21 +2981,26 @@ proof_test_cases_block_30 = [
         yuewen="但无论几唔容易，我都要试一试",
         yuewen_proofread="但无论几唔容易，我都要试一试",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我要黎根收我做徒弟！",
         yuewen="我要来紧收我度徒弟！",
-        yuewen_proofread="我要黎紧收我做徒弟！",
-        note="Corrected '来紧' to '黎紧' and '度徒弟' to '做徒弟' as '黎紧' (coming "
-        "to) and '做徒弟' (as apprentice) match the intended meaning, "
-        "while '度徒弟' is likely a mishearing of '做徒弟'.",
+        yuewen_proofread="我要黎根收我做徒弟！",
+        note="Corrected '来紧收我度徒弟' to '黎根收我做徒弟' as '黎根' is a mishearing of "
+        "'来紧', and '做徒弟' is the correct phrase for 'become "
+        "apprentice', matching the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="无论几辛苦，我一定要得到奥运金牌！",
         yuewen="无论几辛苦，我一定要捞到奥运金牌！",
         yuewen_proofread="无论几辛苦，我一定要攞到奥运金牌！",
         note="Corrected '捞到' to '攞到' as '攞到' is the correct Cantonese verb "
-        "for 'to get/obtain', matching the meaning of the 中文.",
+        "for 'get/obtain', while '捞到' is a likely mishearing.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_30
 proof_test_cases_block_31 = [
@@ -2961,15 +3009,19 @@ proof_test_cases_block_31 = [
         yuewen="三张堂上面",
         yuewen_proofread="",
         note="Cleared as '三张堂上面' bears no resemblance to the original "
-        "phrase '当我站在奥运会颁奖台上' and is clearly a complete transcription "
-        "failure.",
+        "phrase '当我站在奥运会颁奖台上' and is clearly a complete mismatch.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我会举起金牌跟全世界说：",
         yuewen="系今排同全世界讲：",
-        yuewen_proofread="举起金牌同全世界讲：",
-        note="Corrected '系今排' to '举起金牌' as '今排' is a mishearing of '金牌', "
-        "which matches the meaning of the 中文.",
+        yuewen_proofread="我会举起金牌同全世界讲：",
+        note="Added '我会举起金牌' to correct the omission and mishearing of "
+        "'举起金牌' as '今排', which is a phonetic confusion; this restores "
+        "the intended meaning of the sentence.",
+        difficulty=2,
+        verified=True,
     ),
 ]  # proof_test_cases_block_31
 proof_test_cases_block_32 = [

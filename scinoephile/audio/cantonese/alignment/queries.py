@@ -8,9 +8,10 @@ from scinoephile.audio.cantonese.alignment.alignment import Alignment
 from scinoephile.audio.cantonese.distribution import DistributeQuery
 from scinoephile.audio.cantonese.merging import MergeQuery
 from scinoephile.audio.cantonese.proofing import ProofQuery
+from scinoephile.audio.cantonese.review.abcs import ReviewQuery
 from scinoephile.audio.cantonese.shifting import ShiftQuery
+from scinoephile.audio.cantonese.translation.abcs import TranslateQuery
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Query
 
 
 def get_distribute_query(
@@ -236,18 +237,18 @@ def get_proof_query(
     return ProofQuery(zhongwen=zw, yuewen=yw)
 
 
-def get_review_query(alignment: Alignment, query_cls: type[Query]) -> Query:
+def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> ReviewQuery:
     """Get review query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: Query class to instantiate
+        query_cls: ReviewQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, Query):
+    if not issubclass(query_cls, ReviewQuery):
         raise ScinoephileError("query_cls must be a subclass of Query.")
 
     kwargs = {}
@@ -273,19 +274,21 @@ def get_review_query(alignment: Alignment, query_cls: type[Query]) -> Query:
     return query_cls(**kwargs)
 
 
-def get_translate_query(alignment: Alignment, query_cls: type[Query]) -> Query:
+def get_translate_query(
+    alignment: Alignment, query_cls: type[TranslateQuery]
+) -> TranslateQuery:
     """Get translation query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: Query class to instantiate
+        query_cls: TranslateQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, Query):
-        raise ScinoephileError("query_cls must be a subclass of Query.")
+    if not issubclass(query_cls, TranslateQuery):
+        raise ScinoephileError("query_cls must be a subclass of TranslateQuery.")
 
     kwargs = {}
     for sg in alignment.sync_groups:

@@ -1,25 +1,36 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Models related to translation of Cantonese audio."""
+"""Code related to models related to Cantonese audio."""
 
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
-from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
+from scinoephile.audio.cantonese.review.abcs import (
+    ReviewAnswer,
+    ReviewQuery,
+    ReviewTestCase,
+)
+from scinoephile.audio.cantonese.translation.abcs import (
+    TranslateAnswer,
+    TranslateQuery,
+    TranslateTestCase,
+)
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer, Query
 
 
 def get_review_models(
     alignment: Alignment,
-) -> tuple[type[Query], type[Answer], type[ReviewTestCase[Query, Answer]]]:
+) -> tuple[
+    type[ReviewQuery],
+    type[ReviewAnswer],
+    type[ReviewTestCase[ReviewQuery, ReviewAnswer]],
+]:
     """Get review query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        Query, Answer, and ReviewTestCase types for review
+        ReviewQuery, ReviewAnswer, and ReviewTestCase types for review
     Raises:
         ScinoephileError: If sync groups are malformed
     """
@@ -44,22 +55,29 @@ def get_review_models(
             )
 
     # Get classes
-    query_cls = ReviewTestCase.get_query_cls(size)
-    answer_cls = ReviewTestCase.get_answer_cls(size)
+    query_cls = ReviewQuery.get_query_cls(size)
+    answer_cls = ReviewAnswer.get_answer_cls(size)
     test_case_cls = ReviewTestCase.get_test_case_cls(size, query_cls, answer_cls)
     return query_cls, answer_cls, test_case_cls
 
 
 def get_translate_models(
     alignment: Alignment,
-) -> tuple[type[Query], type[Answer], type[TranslateTestCase[Query, Answer]]] | None:
+) -> (
+    tuple[
+        type[TranslateQuery],
+        type[TranslateAnswer],
+        type[TranslateTestCase[TranslateQuery, TranslateAnswer]],
+    ]
+    | None
+):
     """Get translation query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        Query, Answer, and TranslateTestCase types for translation, or None if no
-        translation is needed
+        TranslateQuery, TranslateAnswer, and TranslateTestCase types for translation,
+        or None if no translation is needed
     Raises:
         ScinoephileError: If sync groups are malformed
     """
@@ -91,8 +109,8 @@ def get_translate_models(
     # Get classes
     if missing:
         missing = tuple(missing)
-        query_cls = TranslateTestCase.get_query_cls(size, missing)
-        answer_cls = TranslateTestCase.get_answer_cls(size, missing)
+        query_cls = TranslateQuery.get_query_cls(size, missing)
+        answer_cls = TranslateAnswer.get_answer_cls(size, missing)
         test_case_cls = TranslateTestCase.get_test_case_cls(
             size, missing, query_cls, answer_cls
         )
