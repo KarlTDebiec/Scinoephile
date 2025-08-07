@@ -11,6 +11,8 @@ from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
+from test.data.mnt.translation import mnt_translate_test_cases  # noqa: F401
+from test.data.t.translation import t_translate_test_cases  # noqa: F401
 
 
 @pytest.fixture
@@ -63,6 +65,50 @@ def test_translation_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
 ):
     """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    translator: Translator = request.getfixturevalue(fixture_name)
+    _test_translation(translator, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci(flaky())("translator_few_shot"),
+        # skip_if_ci(flaky())("translator_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", mnt_translate_test_cases)
+def test_translation_mnt(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    translator: Translator = request.getfixturevalue(fixture_name)
+    _test_translation(translator, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        skip_if_ci(flaky())("translator_few_shot"),
+        # skip_if_ci(flaky())("translator_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", t_translate_test_cases)
+def test_translation_t(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
+):
+    """Test with T test cases.
 
     Arguments:
         request: Pytest fixture request

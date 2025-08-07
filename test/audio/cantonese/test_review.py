@@ -11,6 +11,8 @@ from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
+from test.data.mnt.review import mnt_review_test_cases  # noqa: F401
+from test.data.t.review import t_review_test_cases  # noqa: F401
 
 
 @pytest.fixture
@@ -63,6 +65,50 @@ def test_review_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ReviewTestCase
 ):
     """Test with MLAMD test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    reviewer: Reviewer = request.getfixturevalue(fixture_name)
+    _test_review(reviewer, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        # skip_if_ci()("reviewer_few_shot"),
+        skip_if_ci(flaky())("reviewer_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", mnt_review_test_cases)
+def test_review_mnt(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ReviewTestCase
+):
+    """Test with MNT test cases.
+
+    Arguments:
+        request: Pytest fixture request
+        fixture_name: Name of fixture with which to test
+        test_case: Query and expected answer
+    """
+    reviewer: Reviewer = request.getfixturevalue(fixture_name)
+    _test_review(reviewer, test_case)
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    [
+        # skip_if_ci()("reviewer_few_shot"),
+        skip_if_ci(flaky())("reviewer_zero_shot"),
+    ],
+)
+@pytest.mark.parametrize("test_case", t_review_test_cases)
+def test_review_t(
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ReviewTestCase
+):
+    """Test with T test cases.
 
     Arguments:
         request: Pytest fixture request
