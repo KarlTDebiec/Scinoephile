@@ -3030,6 +3030,7 @@ proof_test_cases_block_32 = [
         yuewen="长洲，我终于嚟到长洲嘞！",
         yuewen_proofread="长洲，我终于嚟到长洲嘞！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_32
 proof_test_cases_block_33 = [
@@ -3039,6 +3040,8 @@ proof_test_cases_block_33 = [
         yuewen_proofread="长洲，我要亲吻呢片圣洁嘅土地！",
         note="Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for "
         "'holy' or 'sacred', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_33
 proof_test_cases_block_34 = [

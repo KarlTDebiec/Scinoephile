@@ -2188,6 +2188,8 @@ merge_test_cases_block_33 = [
         zhongwen="长洲，我得亲吻这片圣洁的土地！",
         yuewen_to_merge=["长洲", "我要亲吻呢片盛洁嘅土地"],
         yuewen_merged="长洲，我要亲吻呢片盛洁嘅土地！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_33
 merge_test_cases_block_34 = [

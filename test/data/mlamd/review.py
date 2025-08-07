@@ -1726,7 +1726,13 @@ review_test_case_block_32 = ReviewTestCase.get_test_case_cls(1)(
     note_1="",
     verified=True,
 )  # review_test_case_block_32
-review_test_case_block_33 = None  # review_test_case_block_33
+review_test_case_block_33 = ReviewTestCase.get_test_case_cls(1)(
+    zhongwen_1="长洲，我得亲吻这片圣洁的土地！",
+    yuewen_1="长洲，我要亲吻呢片圣洁嘅土地！",
+    yuewen_revised_1="",
+    note_1="",
+    verified=True,
+)  # review_test_case_block_33
 review_test_case_block_34 = None  # review_test_case_block_34
 review_test_case_block_35 = None  # review_test_case_block_35
 review_test_case_block_36 = None  # review_test_case_block_36
