@@ -3464,6 +3464,7 @@ shift_test_cases_block_31 = [
         yuewen_2="三张堂上面",
         yuewen_1_shifted="",
         yuewen_2_shifted="三张堂上面",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="当我站在奥运会颁奖台上",
@@ -3472,6 +3473,7 @@ shift_test_cases_block_31 = [
         yuewen_2="系今排同全世界讲",
         yuewen_1_shifted="三张堂上面",
         yuewen_2_shifted="系今排同全世界讲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我会举起金牌跟全世界说：",
@@ -3480,6 +3482,7 @@ shift_test_cases_block_31 = [
         yuewen_2="",
         yuewen_1_shifted="系今排同全世界讲",
         yuewen_2_shifted="",
+        verified=True,
     ),
 ]  # shift_test_cases_block_31
 shift_test_cases_block_32 = []  # shift_test_cases_block_32

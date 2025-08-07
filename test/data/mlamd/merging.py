@@ -2179,6 +2179,8 @@ merge_test_cases_block_32 = [
         zhongwen="长洲，我终于来到长洲了！",
         yuewen_to_merge=["长洲", "我终于嚟到长洲嘞"],
         yuewen_merged="长洲，我终于嚟到长洲嘞！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_32
 merge_test_cases_block_33 = [

@@ -1717,8 +1717,15 @@ review_test_case_block_31 = ReviewTestCase.get_test_case_cls(5)(
     note_4="",
     yuewen_revised_5="",
     note_5="",
+    verified=True,
 )  # review_test_case_block_31
-review_test_case_block_32 = None  # review_test_case_block_32
+review_test_case_block_32 = ReviewTestCase.get_test_case_cls(1)(
+    zhongwen_1="长洲，我终于来到长洲了！",
+    yuewen_1="长洲，我终于嚟到长洲嘞！",
+    yuewen_revised_1="",
+    note_1="",
+    verified=True,
+)  # review_test_case_block_32
 review_test_case_block_33 = None  # review_test_case_block_33
 review_test_case_block_34 = None  # review_test_case_block_34
 review_test_case_block_35 = None  # review_test_case_block_35
