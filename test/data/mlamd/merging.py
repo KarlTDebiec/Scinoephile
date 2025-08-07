@@ -1993,26 +1993,22 @@ merge_test_cases_block_24 = [
         zhongwen="妈妈，我得把出世纸带着吗？",
         yuewen_to_merge=["哎哟", "妈妈", "我系咪要带埋出世纸去㗎"],
         yuewen_merged="哎哟，妈妈，我系咪要带埋出世纸去㗎？",
-    ),
-    MergeTestCase(
-        zhongwen="也要的",
-        yuewen_to_merge=["都要㗎"],
-        yuewen_merged="都要㗎",
+        difficulty=2,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="那么成绩表呢？",
         yuewen_to_merge=["咁成绩表呢"],
         yuewen_merged="咁成绩表呢？",
-    ),
-    MergeTestCase(
-        zhongwen="成绩表就不用了",
-        yuewen_to_merge=["成绩表又唔使"],
-        yuewen_merged="成绩表又唔使",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="太好了！吓得我！",
         yuewen_to_merge=["好嘢", "吓得我啊", "咁都好啲"],
         yuewen_merged="好嘢！吓得我啊！咁都好啲",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_24
 merge_test_cases_block_25 = [
@@ -2020,13 +2016,17 @@ merge_test_cases_block_25 = [
         zhongwen="找到了！",
         yuewen_to_merge=["揾到喇"],
         yuewen_merged="揾到喇！",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
-        zhongwen="妈妈你替我收好它别抛掉",
+        zhongwen="出世纸给我找到了！",
         yuewen_to_merge=[
             "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
         ],
-        yuewen_merged="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然",
+        yuewen_merged="竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然！",
+        difficulty=3,
+        verified=True,
     ),
 ]  # merge_test_cases_block_25
 merge_test_cases_block_26 = [
@@ -2034,95 +2034,82 @@ merge_test_cases_block_26 = [
         zhongwen="早机去，晚机返",
         yuewen_to_merge=["早机去", "晚机返"],
         yuewen_merged="早机去，晚机返",
-    ),
-    MergeTestCase(
-        zhongwen="妈妈说这样才够精明",
-        yuewen_to_merge=["妈妈话噉先最著数"],
-        yuewen_merged="妈妈话噉先最著数",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="就这样⋯",
         yuewen_to_merge=["就系噉样"],
         yuewen_merged="就系噉样⋯",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="我过了我小时候最精明⋯",
         yuewen_to_merge=["我过咗我小时候最著数"],
         yuewen_merged="我过咗我小时候最著数⋯",
-    ),
-    MergeTestCase(
-        zhongwen="最美丽的一天",
-        yuewen_to_merge=["最完美嘅一日"],
-        yuewen_merged="最完美嘅一日",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="依你说，纸是否可以包着鸡呢？",
         yuewen_to_merge=["噉你话纸包唔包得绝鸡呢"],
         yuewen_merged="噉你话，纸包唔包得绝鸡呢？",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="也可以的⋯",
         yuewen_to_merge=["都得嘅"],
         yuewen_merged="都得嘅⋯",
-    ),
-    MergeTestCase(
-        zhongwen="特别是小小一块的",
-        yuewen_to_merge=["尤其系细细旧𠮶啲"],
-        yuewen_merged="尤其系细细旧𠮶啲",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_26
 merge_test_cases_block_27 = [
     MergeTestCase(
         zhongwen="妈妈晚安！",
         yuewen_to_merge=["妈妈", "做头"],
-        yuewen_merged="妈妈，做头！",
+        yuewen_merged="妈妈做头！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_27
 merge_test_cases_block_28 = [
     MergeTestCase(
-        zhongwen="最新消息",
-        yuewen_to_merge=["啱啱收到消息"],
-        yuewen_merged="啱啱收到消息",
-    ),
-    MergeTestCase(
-        zhongwen="奥运滑浪风帆选手李丽珊五场四胜",
-        yuewen_to_merge=["奥运滑浪风帆选手李丽珊以五场四胜嘅结果"],
-        yuewen_merged="奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
-    ),
-    MergeTestCase(
         zhongwen="夺得香港历史上第一面奥运金牌！",
         yuewen_to_merge=["夺取香港历史上第一面奥运金牌"],
         yuewen_merged="夺取香港历史上第一面奥运金牌！",
-    ),
-    MergeTestCase(
-        zhongwen="消息说当李丽珊获悉自己稳夺金牌后",
-        yuewen_to_merge=["消息话李丽珊喺知道自己稳夺奥运金牌之后"],
-        yuewen_merged="消息话李丽珊喺知道自己稳夺奥运金牌之后",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="激动地对在场记者表示她今次的成绩⋯",
-        yuewen_to_merge=["好激动噉同在场嘅记者讲"],
-        yuewen_merged="好激动噉同在场嘅记者讲⋯",
+        yuewen_to_merge=["好激动噉同在场嘅记者讲", "今次佢嘅成绩"],
+        yuewen_merged="好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
+        difficulty=2,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="足以证明香港运动员不是腊鸭！",
-        yuewen_to_merge=["今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭"],
-        yuewen_merged="今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭！",
+        yuewen_to_merge=["可以证明到香港嘅运动员唔系𫚭鸭"],
+        yuewen_merged="可以证明到香港嘅运动员唔系𫚭鸭！",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="对不起，应该　　是垃圾，不是腊鸭！",
         yuewen_to_merge=["各位对唔住", "应该系垃圾", "唔系𫚭鸭"],
-        yuewen_merged="各位对唔住，应该系垃圾，唔系𫚭鸭！",
+        yuewen_merged="各位对唔住，应该　　系垃圾，唔系𫚭鸭！",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="对不起，应该　　不是垃圾，也不是腊鸭！",
         yuewen_to_merge=["对唔住", "应该系唔系垃圾", "亦都唔系𫚭鸭"],
-        yuewen_merged="对唔住，应该系唔系垃圾，亦都唔系𫚭鸭！",
-    ),
-    MergeTestCase(
-        zhongwen="特别报告完毕",
-        yuewen_to_merge=["特别报个原不"],
-        yuewen_merged="特别报个原不",
+        yuewen_merged="对唔住，应该系　　唔系垃圾，亦都唔系𫚭鸭！",
+        difficulty=2,
+        verified=True,
     ),
 ]  # merge_test_cases_block_28
 merge_test_cases_block_29 = [
@@ -2130,51 +2117,29 @@ merge_test_cases_block_29 = [
         zhongwen="妈妈好像又有计了",
         yuewen_to_merge=["咦", "妈妈好似又有计噉噃"],
         yuewen_merged="咦，妈妈好似又有计噉噃",
+        difficulty=2,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="靓仔，好运，叻仔⋯",
         yuewen_to_merge=["靓仔", "好运", "叻仔呀"],
         yuewen_merged="靓仔，好运，叻仔呀⋯",
-    ),
-    MergeTestCase(
-        zhongwen="好像都没希望了",
-        yuewen_to_merge=["睇嚟都唔多靠得住"],
-        yuewen_merged="睇嚟都唔多靠得住",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="是不是可以靠手瓜呢？",
         yuewen_to_merge=["哗", "好唔好靠下个手瓜噉呢"],
         yuewen_merged="哗，好唔好靠下个手瓜噉呢？",
+        difficulty=2,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="于是，一个梦还没醒⋯",
         yuewen_to_merge=["于是", "一个梦都未醒"],
         yuewen_merged="于是，一个梦都未醒⋯",
-    ),
-    MergeTestCase(
-        zhongwen="我又得到另一个梦",
-        yuewen_to_merge=["我又得到另外一个梦"],
-        yuewen_merged="我又得到另外一个梦",
-    ),
-    MergeTestCase(
-        zhongwen="应该是脚瓜",
-        yuewen_to_merge=["系咪应该系脚瓜之争"],
-        yuewen_merged="系咪应该系脚瓜之争",
-    ),
-    MergeTestCase(
-        zhongwen="我知道一点也不容易",
-        yuewen_to_merge=["我知道一啲都唔容易"],
-        yuewen_merged="我知道一啲都唔容易",
-    ),
-    MergeTestCase(
-        zhongwen="我知道要找到黎根绝对不容易",
-        yuewen_to_merge=["我知道要揾到励根绝对唔容易"],
-        yuewen_merged="我知道要揾到励根绝对唔容易",
-    ),
-    MergeTestCase(
-        zhongwen="我知道要他收我做徒弟更加不容易",
-        yuewen_to_merge=["我知道要佢收我做徒弟更加唔容易"],
-        yuewen_merged="我知道要佢收我做徒弟更加唔容易",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_29
 merge_test_cases_block_30 = [
@@ -2182,28 +2147,31 @@ merge_test_cases_block_30 = [
         zhongwen="但无论多不容易，我都要试一试",
         yuewen_to_merge=["但无论几唔容易", "我都要试一试"],
         yuewen_merged="但无论几唔容易，我都要试一试",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="我要黎根收我做徒弟！",
         yuewen_to_merge=["我要来紧收我度徒弟"],
         yuewen_merged="我要来紧收我度徒弟！",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="无论几辛苦，我一定要得到奥运金牌！",
         yuewen_to_merge=["无论几辛苦", "我一定要捞到奥运金牌"],
         yuewen_merged="无论几辛苦，我一定要捞到奥运金牌！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_30
 merge_test_cases_block_31 = [
     MergeTestCase(
-        zhongwen="当我站在奥运会颁奖台上",
-        yuewen_to_merge=["三张堂上面"],
-        yuewen_merged="三张堂上面",
-    ),
-    MergeTestCase(
         zhongwen="我会举起金牌跟全世界说：",
         yuewen_to_merge=["系今排同全世界讲"],
         yuewen_merged="系今排同全世界讲：",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_31
 merge_test_cases_block_32 = [

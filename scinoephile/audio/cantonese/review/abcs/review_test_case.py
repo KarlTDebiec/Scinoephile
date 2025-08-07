@@ -1,20 +1,24 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Cantonese audio review test cases."""
+"""Abstract base class for 粤文 review test cases."""
 
 from __future__ import annotations
 
 from abc import ABC
 from functools import cached_property
 
-from pydantic import Field, create_model, model_validator
+from pydantic import create_model, model_validator
 
-from scinoephile.core.abcs import Answer, Query, TestCase
+from scinoephile.audio.cantonese.review.abcs.review_answer import ReviewAnswer
+from scinoephile.audio.cantonese.review.abcs.review_query import ReviewQuery
+from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 
-class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], ABC):
-    """Abstract base class for Cantonese audio review test cases."""
+class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
+    TestCase[TQuery, TAnswer], ABC
+):
+    """Abstract base class for 粤文 review test cases."""
 
     @cached_property
     def size(self) -> int:
@@ -42,9 +46,9 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
     def get_test_case_cls(
         cls,
         size: int,
-        query_cls: type[Query] | None = None,
-        answer_cls: type[Answer] | None = None,
-    ) -> type[ReviewTestCase[Query, Answer]]:
+        query_cls: type[ReviewQuery] | None = None,
+        answer_cls: type[ReviewAnswer] | None = None,
+    ) -> type[ReviewTestCase[ReviewQuery, ReviewAnswer]]:
         """Get test case class for review of Cantonese audio.
 
         Arguments:
@@ -57,9 +61,9 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
             ScinoephileError: If missing indices are out of range
         """
         if query_cls is None:
-            query_cls = cls.get_query_cls(size)
+            query_cls = ReviewQuery.get_query_cls(size)
         if answer_cls is None:
-            answer_cls = cls.get_answer_cls(size)
+            answer_cls = ReviewAnswer.get_answer_cls(size)
         return create_model(
             f"ReviewTestCase_{size}",
             __base__=(
@@ -68,52 +72,6 @@ class ReviewTestCase[TQuery: Query, TAnswer: Answer](TestCase[TQuery, TAnswer], 
                 ReviewTestCase[query_cls, answer_cls],
             ),
         )
-
-    @staticmethod
-    def get_answer_cls(size: int) -> type[Answer]:
-        """Get answer class for review of Cantonese audio.
-
-        Arguments:
-            size: Number of 中文 subtitles
-        Returns:
-            Answer type with appropriate fields
-        """
-        answer_fields = {}
-        for zw_idx in range(size):
-            answer_fields[f"yuewen_revised_{zw_idx + 1}"] = (
-                str,
-                Field(..., description=f"Revised 粤文 text {zw_idx + 1}"),
-            )
-            answer_fields[f"note_{zw_idx + 1}"] = (
-                str,
-                Field(
-                    "",
-                    description=f"Note concerning revision of {zw_idx + 1}",
-                    max_length=1000,
-                ),
-            )
-        return create_model(f"ReviewAnswer_{size}", __base__=Answer, **answer_fields)
-
-    @staticmethod
-    def get_query_cls(size: int) -> type[Query]:
-        """Get query class for review of Cantonese audio.
-
-        Arguments:
-            size: Number of 中文 subtitles
-        Returns:
-            Query type with appropriate fields
-        """
-        query_fields = {}
-        for zw_idx in range(size):
-            query_fields[f"zhongwen_{zw_idx + 1}"] = (
-                str,
-                Field(..., description=f"中文 of text {zw_idx + 1}"),
-            )
-            query_fields[f"yuewen_{zw_idx + 1}"] = (
-                str,
-                Field(..., description=f"粤文 text {zw_idx + 1}"),
-            )
-        return create_model(f"ReviewQuery_{size}", __base__=Query, **query_fields)
 
     @model_validator(mode="after")
     def validate_test_case(self) -> ReviewTestCase:
