@@ -34,7 +34,7 @@ async def _test_distribution(queryer: Distributor, test_case: DistributeTestCase
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = await queryer.acall(test_case.query)
+    answer = await queryer.call(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_1_to_append == test_case.yuewen_1_to_append
         assert answer.yuewen_2_to_prepend == test_case.yuewen_2_to_prepend
