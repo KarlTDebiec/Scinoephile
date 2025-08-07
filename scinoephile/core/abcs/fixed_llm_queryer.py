@@ -15,7 +15,7 @@ from scinoephile.core.abcs.test_case import TestCase
 
 
 class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
-    LLMQueryer[Query, Answer, TestCase], ABC
+    LLMQueryer[TQuery, TAnswer, TTestCase], ABC
 ):
     """Abstract base class for LLM queryers whose classes are fixed for all requests."""
 
@@ -28,6 +28,22 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             LLM's answer
         """
         answer = self._call(
+            system_prompt=self.system_prompt,
+            query=query,
+            answer_cls=self.answer_cls,
+            test_case_cls=self.test_case_cls,
+        )
+        return answer
+
+    async def acall(self, query: TQuery) -> TAnswer:
+        """Query LLM asynchronously.
+
+        Arguments:
+            query: query for LLM
+        Returns:
+            LLM's answer
+        """
+        answer = await self._acall(
             system_prompt=self.system_prompt,
             query=query,
             answer_cls=self.answer_cls,
