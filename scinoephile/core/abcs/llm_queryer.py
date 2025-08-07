@@ -12,6 +12,7 @@ from logging import debug, error, info
 from pathlib import Path
 from textwrap import dedent
 
+import aiofiles
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
@@ -167,12 +168,16 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         # Load from cache if available
         cache_path = self._get_cache_path(system_prompt, query_prompt)
         if cache_path is not None and cache_path.exists():
-            contents = cache_path.read_text(encoding="utf-8")
-            answer = answer_cls.model_validate(json.loads(contents))
-            test_case = test_case_cls.from_query_and_answer(query, answer)
-            self.log_encountered_test_case(test_case)
-            info(f"Loaded from cache: {query.query_key}")
-            return answer
+            try:
+                async with aiofiles.open(cache_path, encoding="utf-8") as f:
+                    contents = await f.read()
+                answer = answer_cls.model_validate(json.loads(contents))
+                test_case = test_case_cls.from_query_and_answer(query, answer)
+                self.log_encountered_test_case(test_case)
+                info(f"Loaded from cache: {query.query_key}")
+                return answer
+            except FileNotFoundError:
+                pass
 
         # Query provider
         answer: TAnswer | None = None
@@ -260,7 +265,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         # Update cache
         if cache_path is not None:
             contents = json.dumps(answer.model_dump(), ensure_ascii=False, indent=2)
-            cache_path.write_text(contents, encoding="utf-8")
+            async with aiofiles.open(cache_path, mode="w", encoding="utf-8") as f:
+                await f.write(contents)
             debug(f"Saved to cache: {cache_path}")
 
         return answer
