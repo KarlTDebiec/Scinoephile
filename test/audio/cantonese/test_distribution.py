@@ -27,14 +27,14 @@ def distributor_zero_shot() -> Distributor:
     return Distributor(cache_dir_path=test_data_root / "cache")
 
 
-def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
+async def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
     """Test.
 
     Arguments:
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = queryer(test_case.query)
+    answer = await queryer.acall(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_1_to_append == test_case.yuewen_1_to_append
         assert answer.yuewen_2_to_prepend == test_case.yuewen_2_to_prepend
@@ -51,7 +51,8 @@ def _test_distribution(queryer: Distributor, test_case: DistributeTestCase):
     "test_case",
     [tc for tc in mlamd_distribute_test_cases if tc.verified],
 )
-def test_distribution_mlamd(
+@pytest.mark.asyncio
+async def test_distribution_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
 ):
     """Test with MLAMD test cases.
@@ -62,7 +63,7 @@ def test_distribution_mlamd(
         test_case: Query and expected answer
     """
     distributor: Distributor = request.getfixturevalue(fixture_name)
-    _test_distribution(distributor, test_case)
+    await _test_distribution(distributor, test_case)
 
 
 @pytest.mark.parametrize(
@@ -76,7 +77,8 @@ def test_distribution_mlamd(
     "test_case",
     [tc for tc in mlamd_distribute_test_cases if tc.difficulty >= 1 and tc.verified],
 )
-def test_distribution_mlamd_difficult(
+@pytest.mark.asyncio
+async def test_distribution_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: DistributeTestCase
 ):
     """Test with MLAMD test cases.
@@ -87,4 +89,4 @@ def test_distribution_mlamd_difficult(
         test_case: Query and expected answer
     """
     distributor: Distributor = request.getfixturevalue(fixture_name)
-    _test_distribution(distributor, test_case)
+    await _test_distribution(distributor, test_case)

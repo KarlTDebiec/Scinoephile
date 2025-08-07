@@ -899,6 +899,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-asyncio"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4e/51/f8794af39eeb870e87a8c8068642fc07bce0c854d6865d7dd0f2a9d338c2/pytest_asyncio-1.1.0.tar.gz", hash = "sha256:796aa822981e01b68c12e4827b8697108f7205020f24b5793b3c41555dab68ea", size = 46652, upload-time = "2025-07-16T04:29:26.393Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/9d/bf86eddabf8c6c9cb1ea9a869d6873b46f105a5d292d3a6f7071f5b07935/pytest_asyncio-1.1.0-py3-none-any.whl", hash = "sha256:5fe2d69607b0bd75c656d1211f969cadba035030156745ee09e7d71740e58ecf", size = 15157, upload-time = "2025-07-16T04:29:24.929Z" },
+]
+
+[[package]]
 name = "pytest-cov"
 version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1057,6 +1069,7 @@ dependencies = [
     { name = "pydub" },
     { name = "pypinyin" },
     { name = "pysubs2" },
+    { name = "pytest-asyncio" },
     { name = "setuptools" },
     { name = "torch" },
     { name = "torchaudio" },
@@ -1089,6 +1102,7 @@ requires-dist = [
     { name = "pydub", specifier = ">=0.25.1" },
     { name = "pypinyin", specifier = ">=0.53.0" },
     { name = "pysubs2", specifier = ">=1.8.0" },
+    { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "setuptools", specifier = ">=76.0.0" },
     { name = "torch", specifier = ">=2.7.1" },
     { name = "torchaudio", specifier = ">=2.7.1" },
