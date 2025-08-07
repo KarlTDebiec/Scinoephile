@@ -36,3 +36,27 @@ class LLMProvider(ABC):
             ScinoephileError: Error during chat completion
         """
         raise NotImplementedError()
+
+    @abstractmethod
+    async def achat_completion(
+        self,
+        model: str,
+        messages: list[dict[str, Any]],
+        temperature: float = 0.0,
+        seed: int = 0,
+        response_format: type[Answer] | None = None,
+    ) -> str:
+        """Return chat completion text asynchronously.
+
+        Arguments:
+            model: Model to use for completion
+            messages: Messages to send
+            temperature: Sampling temperature for randomness
+            seed: Seed for reproducibility
+            response_format: Response format
+        Returns:
+            Completion text from the model
+        Raises:
+            ScinoephileError: Error during chat completion
+        """
+        raise NotImplementedError()

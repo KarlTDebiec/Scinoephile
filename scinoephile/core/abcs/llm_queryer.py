@@ -153,7 +153,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         query: Query,
         answer_cls: type[TAnswer],
         test_case_cls: type[TTestCase],
-    ) -> Answer:
+    ) -> TAnswer:
         # Load from verified log if available
         if query.query_key in self._verified_test_cases:
             test_case = self._verified_test_cases[query.query_key]
@@ -185,6 +185,124 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             # Get answer from provider
             try:
                 content = self.provider.chat_completion(
+                    model=self.model,
+                    messages=messages,
+                    temperature=0,
+                    seed=0,
+                    response_format=answer_cls,
+                )
+            except ScinoephileError as exc:
+                error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
+                if attempt == self.max_attempts:
+                    raise
+                continue
+
+            # Validate answer
+            try:
+                answer = answer_cls.model_validate_json(content)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid content (attempt {attempt}):\n{content}"
+                )
+                if attempt == self.max_attempts:
+                    raise exc
+                messages.append({"role": "assistant", "content": content})
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous response was not valid JSON or did not "
+                            "match the expected schema. "
+                            "Error details:\n"
+                            f"{'\n'.join([e['msg'] for e in exc.errors()])}. "
+                            "Please try again and respond only with a valid JSON "
+                            "object."
+                        ),
+                    }
+                )
+                continue
+
+            # Validate test case
+            try:
+                test_case = test_case_cls.from_query_and_answer(query, answer)
+            except ValidationError as exc:
+                error(
+                    f"Query:\n{query}\n"
+                    f"Yielded invalid answer (attempt {attempt}):\n{answer}"
+                )
+                if attempt == self.max_attempts:
+                    raise exc
+                messages.append({"role": "assistant", "content": content})
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous response was valid JSON, but failed "
+                            "validation when combined with the query.\n"
+                            "Error details:\n"
+                            f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            "Please revise your response accordingly."
+                        ),
+                    }
+                )
+                continue
+
+            break
+        if answer is None or test_case is None:
+            raise ScinoephileError("Unable to obtain valid answer")
+
+        # Log encountered test case
+        self.log_encountered_test_case(test_case)
+        if self.print_test_case:
+            print(f"{test_case.source_str},")
+
+        # Update cache
+        if cache_path is not None:
+            contents = json.dumps(answer.model_dump(), ensure_ascii=False, indent=2)
+            cache_path.write_text(contents, encoding="utf-8")
+            debug(f"Saved to cache: {cache_path}")
+
+        return answer
+
+    async def _acall(
+        self,
+        system_prompt: str,
+        query: Query,
+        answer_cls: type[TAnswer],
+        test_case_cls: type[TTestCase],
+    ) -> TAnswer:
+        # Load from verified log if available
+        if query.query_key in self._verified_test_cases:
+            test_case = self._verified_test_cases[query.query_key]
+            answer = test_case.answer
+            self.log_encountered_test_case(test_case)
+            info(f"Loaded from verified log: {query.query_key}")
+            return answer
+
+        query_prompt = json.dumps(query.model_dump(), indent=4, ensure_ascii=False)
+
+        # Load from cache if available
+        cache_path = self._get_cache_path(system_prompt, query_prompt)
+        if cache_path is not None and cache_path.exists():
+            contents = cache_path.read_text(encoding="utf-8")
+            answer = answer_cls.model_validate(json.loads(contents))
+            test_case = test_case_cls.from_query_and_answer(query, answer)
+            self.log_encountered_test_case(test_case)
+            info(f"Loaded from cache: {query.query_key}")
+            return answer
+
+        # Query provider
+        answer: TAnswer | None = None
+        test_case: TTestCase | None = None
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": query_prompt},
+        ]
+        for attempt in range(1, self.max_attempts + 1):
+            # Get answer from provider
+            try:
+                content = await self.provider.achat_completion(
                     model=self.model,
                     messages=messages,
                     temperature=0,
