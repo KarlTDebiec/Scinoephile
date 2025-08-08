@@ -3030,6 +3030,7 @@ proof_test_cases_block_32 = [
         yuewen="长洲，我终于嚟到长洲嘞！",
         yuewen_proofread="长洲，我终于嚟到长洲嘞！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_32
 proof_test_cases_block_33 = [
@@ -3039,6 +3040,8 @@ proof_test_cases_block_33 = [
         yuewen_proofread="长洲，我要亲吻呢片圣洁嘅土地！",
         note="Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for "
         "'holy' or 'sacred', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_33
 proof_test_cases_block_34 = [
@@ -3047,6 +3050,7 @@ proof_test_cases_block_34 = [
         yuewen="小朋友呀，呢度系南丫岛噃！",
         yuewen_proofread="小朋友呀，呢度系南丫岛噃！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="南丫岛？它也孕育了周润发！",
@@ -3055,73 +3059,91 @@ proof_test_cases_block_34 = [
         note="Corrected '引用' to '孕育' as '孕育' is the correct term for "
         "'nurtured' or 'gave rise to', matching the meaning in the "
         "中文.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_34
 proof_test_cases_block_35 = [
     ProofTestCase(
         zhongwen="想不到我黎根避进南丫岛也给你发现",
         yuewen="制估唔到我嚟跟你入嚟南丫岛都畀你揾到",
-        yuewen_proofread="真估唔到我嚟根避入嚟南丫岛都畀你揾到",
+        yuewen_proofread="真估唔到我黎根避入嚟南丫岛都畀你揾到",
         note="Corrected '制估' to '真估' as '真估唔到' is the correct phrase for "
-        "'想不到', and '跟你' to '根避' to better match the meaning of '黎根避' "
-        "(come to hide/avoid) in the 中文.",
+        "'想不到'; corrected the name '嚟跟' to '黎根' as '黎根' is the "
+        "correct name; corrected '你入' to '避入' as '避入' is the correct "
+        "term for '避进', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="小朋友，你知道什么是狗仔队吧？",
         yuewen="小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
         yuewen_proofread="小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="加上总有小朋友及家长来说要拜我为师",
         yuewen="再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
         yuewen_proofread="再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我才过来南丫岛避一避",
         yuewen="所以我咪过嚟南丫岛避一避",
         yuewen_proofread="所以我咪过嚟南丫岛避一避",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="至于拜师的事⋯",
         yuewen="至于拜师嘅嘢⋯",
         yuewen_proofread="至于拜师嘅嘢⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="拜你个头！",
         yuewen="拜你个头嘅！",
         yuewen_proofread="拜你个头嘅！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你们这些住香港岛的小朋友骄生惯养",
         yuewen="你哋呢班住喺香港岛嘅小朋友娇生惯养",
-        yuewen_proofread="你哋呢班住喺香港岛嘅小朋友娇生惯养",
-        note="",
+        yuewen_proofread="你哋呢班住喺香港岛嘅小朋友骄生惯养",
+        note="Corrected '娇生惯养' to '骄生惯养' to match the correct Cantonese "
+        "term for 'spoiled'",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么吃得苦？",
         yuewen="边挨得苦㗎？",
         yuewen_proofread="边挨得苦㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="想跟珊珊般得奥运金牌？",
         yuewen="想学山伞攞奥运金牌？",
         yuewen_proofread="想学珊珊攞奥运金牌？",
-        note="Corrected '山伞' to '珊珊' as '珊珊' is the correct name, matching "
-        "the reference in the 中文.",
+        note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name "
+        "'珊珊', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="别作梦了！",
         yuewen="食母你嘢！",
-        yuewen_proofread="",
-        note="Cleared as '食母你嘢！' bears no resemblance to the original "
-        "phrase '别作梦了！' and is clearly a complete transcription "
-        "failure.",
+        yuewen_proofread="醒梦你！",
+        note="Corrected '食母你嘢' to '醒梦你' as '醒梦你' is the correct phrase for "
+        "'wake up from your dream', while '食母你嘢' is a vulgar phrase "
+        "that does not match the meaning in the 中文.",
+        difficulty=3,
+        verified=True,
     ),
 ]  # proof_test_cases_block_35
 proof_test_cases_block_36 = [
@@ -3130,74 +3152,88 @@ proof_test_cases_block_36 = [
         yuewen="小朋友，你睇下！",
         yuewen_proofread="小朋友，你睇下！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_36
 proof_test_cases_block_37 = [
     ProofTestCase(
         zhongwen="这个⋯",
-        yuewen="哗⋯",
-        yuewen_proofread="哗⋯",
+        yuewen="哗，呢只⋯",
+        yuewen_proofread="哗，呢只⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
-        yuewen="呢只，呢只脚瓜好粗好大呀！仲大个只瓜呀！",
-        yuewen_proofread="呢只，呢只脚瓜好粗好大呀！仲大过节瓜呀！",
-        note="Corrected '仲大个只瓜呀' to '仲大过节瓜呀' as '节瓜' is the correct term "
-        "matching '一节瓜' in the 中文, and '大过' means 'bigger than'.",
+        yuewen="呢只脚瓜⋯好粗好大呀！仲大个只瓜呀！",
+        yuewen_proofread="呢只脚瓜⋯好粗好大呀！仲大个节瓜呀！",
+        note="Corrected '只瓜' to '节瓜' as '节瓜' is the correct term for "
+        "'zucchini' or 'squash', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="脚瓜的肌肉非常结实⋯",
         yuewen="脚瓜啲肌肉非常结实⋯",
         yuewen_proofread="脚瓜啲肌肉非常结实⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="青筋凸现，钢线似的",
         yuewen="啲青筋凸晒出嚟，好似钢线噉",
         yuewen_proofread="啲青筋凸晒出嚟，好似钢线噉",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="每一条脚毛都硬似铁钉",
         yuewen="啲脚毛，每一条好似铁钉噉硬",
         yuewen_proofread="啲脚毛，每一条好似铁钉噉硬",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="脚趾甲有一寸厚，究竟⋯",
         yuewen="脚趾弓啲脚甲成吋噉厚，究竟⋯",
         yuewen_proofread="脚趾甲啲脚甲成吋噉厚，究竟⋯",
-        note="Corrected '脚趾弓' to '脚趾甲' as '脚趾甲' is the correct term for "
-        "'toenail', matching the meaning in the 中文.",
+        note="Corrected '脚趾弓' to '脚趾甲' as '脚趾弓' is a mishearing of '脚趾甲', "
+        "which matches the meaning of '脚趾甲' in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="要行过几多座山⋯",
         yuewen="要行我几多座山⋯",
         yuewen_proofread="要行过几多座山⋯",
         note="Corrected '行我' to '行过' as '行过' (walk across) matches the "
-        "meaning of '行过' in the 中文, while '行我' is likely a "
-        "mishearing.",
+        "meaning of the 中文, while '行我' is likely a mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="跨过几多个海⋯",
         yuewen="跨我几多个海⋯",
         yuewen_proofread="跨过几多个海⋯",
         note="Corrected '跨我' to '跨过' as '跨过' is the correct verb for "
-        "'cross over' and matches the meaning in the 中文; '跨我' is "
-        "likely a mishearing.",
+        "'cross over', matching the meaning in the 中文, while '跨我' is "
+        "a likely mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="吃过几多苦头⋯",
         yuewen="挨过几多苦头⋯",
         yuewen_proofread="挨过几多苦头⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="才可以练成这举世无双的脚瓜？",
         yuewen="先至可以练成呢只举世无双嘅脚瓜？",
         yuewen_proofread="先至可以练成呢只举世无双嘅脚瓜？",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_37
 proof_test_cases_block_38 = [

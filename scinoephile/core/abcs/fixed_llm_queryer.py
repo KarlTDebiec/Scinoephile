@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from asyncio import run
 from functools import cached_property
 from typing import get_args, get_origin
 
@@ -15,7 +16,7 @@ from scinoephile.core.abcs.test_case import TestCase
 
 
 class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
-    LLMQueryer[Query, Answer, TestCase], ABC
+    LLMQueryer[TQuery, TAnswer, TTestCase], ABC
 ):
     """Abstract base class for LLM queryers whose classes are fixed for all requests."""
 
@@ -27,7 +28,17 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         Returns:
             LLM's answer
         """
-        answer = self._call(
+        return run(self.call(query))
+
+    async def call(self, query: TQuery) -> TAnswer:
+        """Query LLM asynchronously.
+
+        Arguments:
+            query: query for LLM
+        Returns:
+            LLM's answer
+        """
+        answer = await self._call(
             system_prompt=self.system_prompt,
             query=query,
             answer_cls=self.answer_cls,

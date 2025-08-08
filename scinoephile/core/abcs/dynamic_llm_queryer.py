@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from asyncio import run
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
@@ -14,7 +15,7 @@ from scinoephile.core.abcs.test_case import TestCase
 
 
 class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
-    LLMQueryer[Query, Answer, TestCase], ABC
+    LLMQueryer[TQuery, TAnswer, TTestCase], ABC
 ):
     """Abstract base class for LLM queryers whose classes vary between requests."""
 
@@ -23,7 +24,7 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         query: Query,
         answer_cls: type[TAnswer],
         test_case_cls: type[TTestCase],
-    ) -> Answer:
+    ) -> TAnswer:
         """Query LLM.
 
         Arguments:
@@ -33,7 +34,24 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         Returns:
             LLM's answer
         """
-        answer = self._call(
+        return run(self.call(query, answer_cls, test_case_cls))
+
+    async def call(
+        self,
+        query: Query,
+        answer_cls: type[TAnswer],
+        test_case_cls: type[TTestCase],
+    ) -> TAnswer:
+        """Query LLM asynchronously.
+
+        Arguments:
+            query: Query for LLM
+            answer_cls: Class of answer to return
+            test_case_cls: Class of test case to return
+        Returns:
+            LLM's answer
+        """
+        answer = await self._call(
             system_prompt=self.get_system_prompt(answer_cls),
             query=query,
             answer_cls=answer_cls,

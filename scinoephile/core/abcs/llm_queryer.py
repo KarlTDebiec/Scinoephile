@@ -12,6 +12,7 @@ from logging import debug, error, info
 from pathlib import Path
 from textwrap import dedent
 
+import aiofiles
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
@@ -147,13 +148,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             print(f"{test_case.source_str},")
         debug(f"Logged test case: {test_case.query.query_key}")
 
-    def _call(
+    async def _call(
         self,
         system_prompt: str,
         query: Query,
         answer_cls: type[TAnswer],
         test_case_cls: type[TTestCase],
-    ) -> Answer:
+    ) -> TAnswer:
         # Load from verified log if available
         if query.query_key in self._verified_test_cases:
             test_case = self._verified_test_cases[query.query_key]
@@ -167,12 +168,16 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         # Load from cache if available
         cache_path = self._get_cache_path(system_prompt, query_prompt)
         if cache_path is not None and cache_path.exists():
-            contents = cache_path.read_text(encoding="utf-8")
-            answer = answer_cls.model_validate(json.loads(contents))
-            test_case = test_case_cls.from_query_and_answer(query, answer)
-            self.log_encountered_test_case(test_case)
-            info(f"Loaded from cache: {query.query_key}")
-            return answer
+            try:
+                async with aiofiles.open(cache_path, encoding="utf-8") as f:
+                    contents = await f.read()
+                answer = answer_cls.model_validate(json.loads(contents))
+                test_case = test_case_cls.from_query_and_answer(query, answer)
+                self.log_encountered_test_case(test_case)
+                info(f"Loaded from cache: {query.query_key}")
+                return answer
+            except FileNotFoundError:
+                pass
 
         # Query provider
         answer: TAnswer | None = None
@@ -184,7 +189,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
             try:
-                content = self.provider.chat_completion(
+                content = await self.provider.achat_completion(
                     model=self.model,
                     messages=messages,
                     temperature=0,
@@ -260,7 +265,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         # Update cache
         if cache_path is not None:
             contents = json.dumps(answer.model_dump(), ensure_ascii=False, indent=2)
-            cache_path.write_text(contents, encoding="utf-8")
+            async with aiofiles.open(cache_path, mode="w", encoding="utf-8") as f:
+                await f.write(contents)
             debug(f"Saved to cache: {cache_path}")
 
         return answer
