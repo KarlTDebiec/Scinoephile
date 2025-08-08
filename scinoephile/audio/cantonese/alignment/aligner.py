@@ -74,7 +74,9 @@ class Aligner:
         self.reviewer = reviewer
         """Reviews 粤文 text based on corresponding 中文 subtitles."""
 
-    def align(self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries) -> Alignment:
+    async def align(
+        self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
+    ) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
         Presently, this does the following:
@@ -113,29 +115,29 @@ class Aligner:
         iteration = 0
         while distribution_and_shifting_in_progress:
             # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
-            self._distribute(alignment)
+            await self._distribute(alignment)
 
             # Then shift 粤文 subtitles that remain misaligned after distribution
-            distribution_and_shifting_in_progress = self._shift(alignment)
+            distribution_and_shifting_in_progress = await self._shift(alignment)
             iteration += 1
 
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
-        self._merge(alignment)
+        await self._merge(alignment)
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
-        self._proof(alignment)
+        await self._proof(alignment)
 
         # Translate 中文 subtitles for which no 粤文 was transcribed
-        self._translate(alignment)
+        await self._translate(alignment)
 
         # Review 粤文 subtitles
-        self._review(alignment)
+        await self._review(alignment)
 
         # Return final alignment
         print(f"\nFINAL RESULT:\n{alignment}")
         return alignment
 
-    def _distribute(self, alignment: Alignment):
+    async def _distribute(self, alignment: Alignment):
         """Distribute 粤文 subs.
 
         Arguments:
@@ -145,10 +147,10 @@ class Aligner:
         while alignment.yuewen_to_distribute:
             info(f"\nITERATION {iteration}")
             info(alignment)
-            self._distribute_one(alignment)
+            await self._distribute_one(alignment)
             iteration += 1
 
-    def _distribute_one(self, alignment: Alignment):
+    async def _distribute_one(self, alignment: Alignment):
         """Split 粤文 subs.
 
         Arguments:
@@ -182,7 +184,7 @@ class Aligner:
         sg_1_idx, sg_2_idx = zw_idxs
         query = get_distribute_query(alignment, sg_1_idx, sg_2_idx, yw_idx)
         try:
-            answer = self.distributor(query)
+            answer = await self.distributor.call(query)
         except ValidationError as exc:
             answer = DistributeAnswer(
                 yuewen_1_to_append=query.yuewen_to_distribute,
@@ -220,7 +222,7 @@ class Aligner:
         )
         alignment._sync_groups_override = None
 
-    def _shift(self, alignment) -> bool:
+    async def _shift(self, alignment) -> bool:
         """Shift 粤文 text.
 
         Arguments:
@@ -233,7 +235,7 @@ class Aligner:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error; not yet encountered
-            answer = self.shifter(query)
+            answer = await self.shifter.call(query)
 
             # If there is no change, continue
             if (
@@ -351,7 +353,7 @@ class Aligner:
 
         raise ScinoephileError("Unexpected case.")
 
-    def _merge(self, alignment: Alignment):
+    async def _merge(self, alignment: Alignment):
         """Merge 粤文 subs.
 
         Arguments:
@@ -401,7 +403,7 @@ class Aligner:
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                answer = self.merger(query)
+                answer = await self.merger.call(query)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 answer = MergeAnswer(yuewen_merged="".join(query.yuewen_to_merge))
@@ -424,7 +426,7 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    def _proof(self, alignment: Alignment):
+    async def _proof(self, alignment: Alignment):
         """Proofread 粤文 subs.
 
         Arguments:
@@ -435,7 +437,7 @@ class Aligner:
             if query is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            answer = self.proofer(query)
+            answer = await self.proofer.call(query)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -477,7 +479,7 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    def _translate(self, alignment: Alignment):
+    async def _translate(self, alignment: Alignment):
         """Translate 粤文 subs.
 
         Arguments:
@@ -491,7 +493,7 @@ class Aligner:
 
         # Query for 粤文 translation
         query = get_translate_query(alignment, query_cls)
-        answer = self.translator(query, answer_cls, test_case_cls)
+        answer = await self.translator.call(query, answer_cls, test_case_cls)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -526,7 +528,7 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    def _review(self, alignment: Alignment):
+    async def _review(self, alignment: Alignment):
         """Review 粤文 subs.
 
         Arguments:
@@ -537,7 +539,7 @@ class Aligner:
 
         # Query for 粤文 review
         query = get_review_query(alignment, query_cls)
-        answer = self.reviewer(query, answer_cls, test_case_cls)
+        answer = await self.reviewer.call(query, answer_cls, test_case_cls)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)

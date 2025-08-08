@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import asyncio
+
 from scinoephile.audio import (
     AudioSeries,
     get_series_from_segments,
@@ -128,8 +130,8 @@ if __name__ == "__main__":
 
         # Sync segments with the corresponding 中文 subtitles
         zhongwen_series = zhongwen.blocks[i].to_series()
-        op = aligner.align(zhongwen_series, yuewen_series)
-        yuewen_series = op.yuewen
+        alignment = asyncio.run(aligner.align(zhongwen_series, yuewen_series))
+        yuewen_series = alignment.yuewen
 
         # Block complete
         print(f"MANDARIN:\n{zhongwen_series.to_simple_string()}")
