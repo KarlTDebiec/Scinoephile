@@ -2197,63 +2197,59 @@ merge_test_cases_block_34 = [
         zhongwen="小朋友，这儿是南丫岛呀！",
         yuewen_to_merge=["小朋友呀", "呢度系南丫岛噃"],
         yuewen_merged="小朋友呀，呢度系南丫岛噃！",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="南丫岛？它也孕育了周润发！",
         yuewen_to_merge=["南丫岛", "都引用咗周润发噃"],
         yuewen_merged="南丫岛？都引用咗周润发噃！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_34
 merge_test_cases_block_35 = [
     MergeTestCase(
-        zhongwen="想不到我黎根避进南丫岛也给你发现",
-        yuewen_to_merge=["制估唔到我嚟跟你入嚟南丫岛都畀你揾到"],
-        yuewen_merged="制估唔到我嚟跟你入嚟南丫岛都畀你揾到",
-    ),
-    MergeTestCase(
         zhongwen="小朋友，你知道什么是狗仔队吧？",
         yuewen_to_merge=["小朋友", "我谂你都知道乜嘢叫做狗仔队嘞"],
         yuewen_merged="小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
-    ),
-    MergeTestCase(
-        zhongwen="加上总有小朋友及家长来说要拜我为师",
-        yuewen_to_merge=["再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师"],
-        yuewen_merged="再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
-    ),
-    MergeTestCase(
-        zhongwen="我才过来南丫岛避一避",
-        yuewen_to_merge=["所以我咪过嚟南丫岛避一避"],
-        yuewen_merged="所以我咪过嚟南丫岛避一避",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="至于拜师的事⋯",
         yuewen_to_merge=["至于拜师嘅嘢"],
         yuewen_merged="至于拜师嘅嘢⋯",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="拜你个头！",
         yuewen_to_merge=["拜你个头嘅"],
         yuewen_merged="拜你个头嘅！",
-    ),
-    MergeTestCase(
-        zhongwen="你们这些住香港岛的小朋友骄生惯养",
-        yuewen_to_merge=["你哋呢班住喺香港岛嘅小朋友娇生惯养"],
-        yuewen_merged="你哋呢班住喺香港岛嘅小朋友娇生惯养",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="怎么吃得苦？",
         yuewen_to_merge=["边挨得苦㗎"],
         yuewen_merged="边挨得苦㗎？",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="想跟珊珊般得奥运金牌？",
         yuewen_to_merge=["想学山伞攞奥运金牌"],
         yuewen_merged="想学山伞攞奥运金牌？",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="别作梦了！",
         yuewen_to_merge=["食母你嘢"],
         yuewen_merged="食母你嘢！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_35
 merge_test_cases_block_36 = [
@@ -2261,6 +2257,8 @@ merge_test_cases_block_36 = [
         zhongwen="小朋友，你看！",
         yuewen_to_merge=["小朋友", "你睇下"],
         yuewen_merged="小朋友，你睇下！",
+        difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_36
 merge_test_cases_block_37 = [

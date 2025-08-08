@@ -872,6 +872,8 @@ distribute_test_cases_block_35 = [
         yuewen_to_distribute="你哋呢班住喺香港岛嘅小朋友娇生惯养边挨得苦㗎",
         yuewen_1_to_append="你哋呢班住喺香港岛嘅小朋友娇生惯养",
         yuewen_2_to_prepend="边挨得苦㗎",
+        difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="想跟珊珊般得奥运金牌？",
@@ -881,6 +883,8 @@ distribute_test_cases_block_35 = [
         yuewen_to_distribute="想学山伞攞奥运金牌食母你嘢",
         yuewen_1_to_append="想学山伞攞奥运金牌",
         yuewen_2_to_prepend="食母你嘢",
+        difficulty=1,
+        verified=True,
     ),
 ]  # distribute_test_cases_block_35
 distribute_test_cases_block_36 = []  # distribute_test_cases_block_36

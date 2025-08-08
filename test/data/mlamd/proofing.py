@@ -3050,6 +3050,7 @@ proof_test_cases_block_34 = [
         yuewen="小朋友呀，呢度系南丫岛噃！",
         yuewen_proofread="小朋友呀，呢度系南丫岛噃！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="南丫岛？它也孕育了周润发！",
@@ -3058,73 +3059,91 @@ proof_test_cases_block_34 = [
         note="Corrected '引用' to '孕育' as '孕育' is the correct term for "
         "'nurtured' or 'gave rise to', matching the meaning in the "
         "中文.",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_34
 proof_test_cases_block_35 = [
     ProofTestCase(
         zhongwen="想不到我黎根避进南丫岛也给你发现",
         yuewen="制估唔到我嚟跟你入嚟南丫岛都畀你揾到",
-        yuewen_proofread="真估唔到我嚟根避入嚟南丫岛都畀你揾到",
+        yuewen_proofread="真估唔到我黎根避入嚟南丫岛都畀你揾到",
         note="Corrected '制估' to '真估' as '真估唔到' is the correct phrase for "
-        "'想不到', and '跟你' to '根避' to better match the meaning of '黎根避' "
-        "(come to hide/avoid) in the 中文.",
+        "'想不到'; corrected the name '嚟跟' to '黎根' as '黎根' is the "
+        "correct name; corrected '你入' to '避入' as '避入' is the correct "
+        "term for '避进', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="小朋友，你知道什么是狗仔队吧？",
         yuewen="小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
         yuewen_proofread="小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="加上总有小朋友及家长来说要拜我为师",
         yuewen="再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
         yuewen_proofread="再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我才过来南丫岛避一避",
         yuewen="所以我咪过嚟南丫岛避一避",
         yuewen_proofread="所以我咪过嚟南丫岛避一避",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="至于拜师的事⋯",
         yuewen="至于拜师嘅嘢⋯",
         yuewen_proofread="至于拜师嘅嘢⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="拜你个头！",
         yuewen="拜你个头嘅！",
         yuewen_proofread="拜你个头嘅！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你们这些住香港岛的小朋友骄生惯养",
         yuewen="你哋呢班住喺香港岛嘅小朋友娇生惯养",
-        yuewen_proofread="你哋呢班住喺香港岛嘅小朋友娇生惯养",
-        note="",
+        yuewen_proofread="你哋呢班住喺香港岛嘅小朋友骄生惯养",
+        note="Corrected '娇生惯养' to '骄生惯养' to match the correct Cantonese "
+        "term for 'spoiled'",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="怎么吃得苦？",
         yuewen="边挨得苦㗎？",
         yuewen_proofread="边挨得苦㗎？",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="想跟珊珊般得奥运金牌？",
         yuewen="想学山伞攞奥运金牌？",
         yuewen_proofread="想学珊珊攞奥运金牌？",
-        note="Corrected '山伞' to '珊珊' as '珊珊' is the correct name, matching "
-        "the reference in the 中文.",
+        note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name "
+        "'珊珊', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="别作梦了！",
         yuewen="食母你嘢！",
-        yuewen_proofread="",
-        note="Cleared as '食母你嘢！' bears no resemblance to the original "
-        "phrase '别作梦了！' and is clearly a complete transcription "
-        "failure.",
+        yuewen_proofread="醒梦你！",
+        note="Corrected '食母你嘢' to '醒梦你' as '醒梦你' is the correct phrase for "
+        "'wake up from your dream', while '食母你嘢' is a vulgar phrase "
+        "that does not match the meaning in the 中文.",
+        difficulty=3,
+        verified=True,
     ),
 ]  # proof_test_cases_block_35
 proof_test_cases_block_36 = [
@@ -3133,6 +3152,7 @@ proof_test_cases_block_36 = [
         yuewen="小朋友，你睇下！",
         yuewen_proofread="小朋友，你睇下！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_36
 proof_test_cases_block_37 = [
