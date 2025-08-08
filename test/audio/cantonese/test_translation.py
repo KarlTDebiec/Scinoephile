@@ -28,14 +28,14 @@ def translator_zero_shot() -> Translator:
     return Translator(cache_dir_path=test_data_root / "cache")
 
 
-def _test_translation(queryer: Translator, test_case: TranslateTestCase):
+async def _test_translation(queryer: Translator, test_case: TranslateTestCase):
     """Test.
 
     Arguments:
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = queryer(test_case.query, test_case.answer_cls, type(test_case))
+    answer = await queryer.call(test_case.query, test_case.answer_cls, type(test_case))
 
     failures = []
     for field_name, expected_value in test_case.answer.model_dump().items():
@@ -59,7 +59,8 @@ def _test_translation(queryer: Translator, test_case: TranslateTestCase):
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_translate_test_cases)
-def test_translation_mlamd(
+@pytest.mark.asyncio
+async def test_translation_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
 ):
     """Test with MLAMD test cases.
@@ -70,4 +71,4 @@ def test_translation_mlamd(
         test_case: Query and expected answer
     """
     translator: Translator = request.getfixturevalue(fixture_name)
-    _test_translation(translator, test_case)
+    await _test_translation(translator, test_case)

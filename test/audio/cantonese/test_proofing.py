@@ -27,14 +27,14 @@ def proofer_zero_shot() -> Proofer:
     return Proofer(cache_dir_path=test_data_root / "cache")
 
 
-def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
+async def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
     """Test.
 
     Arguments:
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = queryer(test_case.query)
+    answer = await queryer.call(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_proofread == test_case.yuewen_proofread, answer.note
         if test_case.yuewen != test_case.yuewen_proofread:
@@ -62,7 +62,7 @@ def test_proofing_mlamd(
         test_case: Query and expected answer
     """
     proofer: Proofer = request.getfixturevalue(fixture_name)
-    _test_proofing(proofer, test_case)
+    await _test_proofing(proofer, test_case)
 
 
 @pytest.mark.parametrize(
@@ -87,4 +87,4 @@ def test_proofing_mlamd_difficult(
         test_case: Query and expected answer
     """
     proofer: Proofer = request.getfixturevalue(fixture_name)
-    _test_proofing(proofer, test_case)
+    await _test_proofing(proofer, test_case)

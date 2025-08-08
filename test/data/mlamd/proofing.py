@@ -3242,15 +3242,17 @@ proof_test_cases_block_38 = [
         yuewen="我⋯我一定要练成呢只脚挂！",
         yuewen_proofread="我⋯我一定要练成呢只脚瓜！",
         note="Corrected '脚挂' to '脚瓜' as '脚瓜' is the correct Cantonese term "
-        "for 'calf', matching the meaning in the 中文.",
+        "for 'calf', matching the meaning of '脚瓜' in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="师傅！",
         yuewen="师父！",
-        yuewen_proofread="师傅！",
-        note="Corrected '师父' to '师傅' as '师傅' is the correct term for "
-        "addressing a taxi driver or worker, matching the context of "
-        "the 中文.",
+        yuewen_proofread="师父！",
+        note="",
+        difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_38
 proof_test_cases_block_39 = [
@@ -3259,6 +3261,7 @@ proof_test_cases_block_39 = [
         yuewen="我可唔可以去个小便呢？",
         yuewen_proofread="我可唔可以去个小便呢？",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_39
 proof_test_cases_block_40 = [
@@ -3266,47 +3269,57 @@ proof_test_cases_block_40 = [
         zhongwen="每次唱这首歌，我都会急小便",
         yuewen="而知点解每一字唱呢首歌都会急小便",
         yuewen_proofread="唔知点解每一次唱呢首歌都会急小便",
-        note="Corrected '而知' to '唔知' as it is a likely mishearing of '每次' "
-        "or '唔知', and '每一字' to '每一次' to match the meaning of '每次' in "
-        "the 中文.",
+        note="Corrected '而知' to '唔知' as '唔知' (don't know) is a likely "
+        "mishearing and matches the meaning of the sentence; "
+        "corrected '每一字' to '每一次' as '每一字' is a mishearing of '每一次' "
+        "(every time).",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="现在先去，一回恐怕还是会急",
         yuewen="仅次去定先，都怕一阵会再急过",
-        yuewen_proofread="而家去定先，都怕一阵会再急过",
-        note="Corrected '仅次去定先' to '而家去定先' as '而家' (now) is the correct "
-        "term matching the meaning of '现在', while '仅次' is a "
-        "mishearing.",
+        yuewen_proofread="今次去定先，都怕一阵会再急过",
+        note="Corrected '仅次去定先' to '今次去定先' as '今次' (this time) is a likely "
+        "mishearing of '仅次' (next time), and '今次' better matches the "
+        "中文",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="但是我现在一定要唱这首歌",
         yuewen="但系我而家一定要唱呢首歌",
         yuewen_proofread="但系我而家一定要唱呢首歌",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="希望可以改变黎根对我的看法",
         yuewen="希望可以改变黎根对我嘅睇法",
         yuewen_proofread="希望可以改变黎根对我嘅睇法",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我要用这歌打动黎根",
         yuewen="我要用呢首歌打动黎根",
         yuewen_proofread="我要用呢首歌打动黎根",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我要黎根收我做徒弟！",
         yuewen="我要黎根收我做徒弟！",
         yuewen_proofread="我要黎根收我做徒弟！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="歌，是这样唱的⋯",
-        yuewen="𠮶首歌系噉唱嘅⋯",
-        yuewen_proofread="𠮶首歌系噉唱嘅⋯",
+        yuewen="嗰首歌，系噉唱嘅⋯",
+        yuewen_proofread="嗰首歌，系噉唱嘅⋯",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_40
 proof_test_cases_block_41 = [

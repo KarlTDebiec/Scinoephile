@@ -14,8 +14,8 @@ from scinoephile.core.abcs import Query
 class ReviewQuery(Query, ABC):
     """Abstract base class for 粤文 review queries."""
 
-    @staticmethod
-    def get_query_cls(size: int) -> type[ReviewQuery]:
+    @classmethod
+    def get_query_cls(cls, size: int) -> type[ReviewQuery]:
         """Get query class for 粤文 review.
 
         Arguments:
@@ -34,7 +34,7 @@ class ReviewQuery(Query, ABC):
                 Field(..., description=f"Transcribed 粤文 of subtitle {zw_idx + 1}"),
             )
         return create_model(
-            f"ReviewQuery_{size}",
+            f"{cls.__name__}_{size}",
             __base__=ReviewQuery,
             **query_fields,
         )

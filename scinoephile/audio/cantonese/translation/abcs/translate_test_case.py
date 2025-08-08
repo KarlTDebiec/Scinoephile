@@ -82,11 +82,8 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
             query_cls = TranslateQuery.get_query_cls(size, missing)
         if answer_cls is None:
             answer_cls = TranslateAnswer.get_answer_cls(size, missing)
+        name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
         return create_model(
-            f"TranslateTestCase_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-            __base__=(
-                query_cls,
-                answer_cls,
-                TranslateTestCase[query_cls, answer_cls],
-            ),
+            name[:64],
+            __base__=(query_cls, answer_cls, TranslateTestCase[query_cls, answer_cls]),
         )

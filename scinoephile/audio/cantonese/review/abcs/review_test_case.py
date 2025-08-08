@@ -65,12 +65,8 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
         if answer_cls is None:
             answer_cls = ReviewAnswer.get_answer_cls(size)
         return create_model(
-            f"ReviewTestCase_{size}",
-            __base__=(
-                query_cls,
-                answer_cls,
-                ReviewTestCase[query_cls, answer_cls],
-            ),
+            f"{cls.__name__}_{size}",
+            __base__=(query_cls, answer_cls, ReviewTestCase[query_cls, answer_cls]),
         )
 
     @model_validator(mode="after")
