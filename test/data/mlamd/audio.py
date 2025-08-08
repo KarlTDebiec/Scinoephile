@@ -59,35 +59,29 @@ if __name__ == "__main__":
     distributor = Distributor(
         prompt_test_cases=[tc for tc in mlamd_distribute_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_distribute_test_cases if tc.verified],
-        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     shifter = Shifter(
         prompt_test_cases=[tc for tc in mlamd_shift_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_shift_test_cases if tc.verified],
-        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     merger = Merger(
         prompt_test_cases=[tc for tc in mlamd_merge_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_merge_test_cases if tc.verified],
-        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     proofer = Proofer(
         prompt_test_cases=[tc for tc in mlamd_proof_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_proof_test_cases if tc.verified],
-        print_test_case=False,
         cache_dir_path=test_data_root / "cache",
     )
     translator = Translator(
-        print_test_case=True,
         prompt_test_cases=[tc for tc in mlamd_translate_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_translate_test_cases if tc.verified],
         cache_dir_path=test_data_root / "cache",
     )
     reviewer = Reviewer(
-        print_test_case=True,
         prompt_test_cases=[tc for tc in mlamd_review_test_cases if tc.prompt],
         verified_test_cases=[tc for tc in mlamd_review_test_cases if tc.verified],
         cache_dir_path=test_data_root / "cache",
@@ -106,7 +100,7 @@ if __name__ == "__main__":
     for i, block in enumerate(yuewen.blocks):
         print(f"Block {i} ({block.start_idx} - {block.end_idx})")
 
-        if i > 36:
+        if i > 37:
             continue
         update = True
 

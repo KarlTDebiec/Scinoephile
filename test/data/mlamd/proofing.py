@@ -3158,69 +3158,82 @@ proof_test_cases_block_36 = [
 proof_test_cases_block_37 = [
     ProofTestCase(
         zhongwen="这个⋯",
-        yuewen="哗⋯",
-        yuewen_proofread="哗⋯",
+        yuewen="哗，呢只⋯",
+        yuewen_proofread="哗，呢只⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="这脚瓜⋯好粗好大！比一节瓜还要大！",
-        yuewen="呢只，呢只脚瓜好粗好大呀！仲大个只瓜呀！",
-        yuewen_proofread="呢只，呢只脚瓜好粗好大呀！仲大过节瓜呀！",
-        note="Corrected '仲大个只瓜呀' to '仲大过节瓜呀' as '节瓜' is the correct term "
-        "matching '一节瓜' in the 中文, and '大过' means 'bigger than'.",
+        yuewen="呢只脚瓜⋯好粗好大呀！仲大个只瓜呀！",
+        yuewen_proofread="呢只脚瓜⋯好粗好大呀！仲大个节瓜呀！",
+        note="Corrected '只瓜' to '节瓜' as '节瓜' is the correct term for "
+        "'zucchini' or 'squash', matching the meaning in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="脚瓜的肌肉非常结实⋯",
         yuewen="脚瓜啲肌肉非常结实⋯",
         yuewen_proofread="脚瓜啲肌肉非常结实⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="青筋凸现，钢线似的",
         yuewen="啲青筋凸晒出嚟，好似钢线噉",
         yuewen_proofread="啲青筋凸晒出嚟，好似钢线噉",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="每一条脚毛都硬似铁钉",
         yuewen="啲脚毛，每一条好似铁钉噉硬",
         yuewen_proofread="啲脚毛，每一条好似铁钉噉硬",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="脚趾甲有一寸厚，究竟⋯",
         yuewen="脚趾弓啲脚甲成吋噉厚，究竟⋯",
         yuewen_proofread="脚趾甲啲脚甲成吋噉厚，究竟⋯",
-        note="Corrected '脚趾弓' to '脚趾甲' as '脚趾甲' is the correct term for "
-        "'toenail', matching the meaning in the 中文.",
+        note="Corrected '脚趾弓' to '脚趾甲' as '脚趾弓' is a mishearing of '脚趾甲', "
+        "which matches the meaning of '脚趾甲' in the 中文.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="要行过几多座山⋯",
         yuewen="要行我几多座山⋯",
         yuewen_proofread="要行过几多座山⋯",
         note="Corrected '行我' to '行过' as '行过' (walk across) matches the "
-        "meaning of '行过' in the 中文, while '行我' is likely a "
-        "mishearing.",
+        "meaning of the 中文, while '行我' is likely a mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="跨过几多个海⋯",
         yuewen="跨我几多个海⋯",
         yuewen_proofread="跨过几多个海⋯",
         note="Corrected '跨我' to '跨过' as '跨过' is the correct verb for "
-        "'cross over' and matches the meaning in the 中文; '跨我' is "
-        "likely a mishearing.",
+        "'cross over', matching the meaning in the 中文, while '跨我' is "
+        "a likely mishearing.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="吃过几多苦头⋯",
         yuewen="挨过几多苦头⋯",
         yuewen_proofread="挨过几多苦头⋯",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="才可以练成这举世无双的脚瓜？",
         yuewen="先至可以练成呢只举世无双嘅脚瓜？",
         yuewen_proofread="先至可以练成呢只举世无双嘅脚瓜？",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_37
 proof_test_cases_block_38 = [
