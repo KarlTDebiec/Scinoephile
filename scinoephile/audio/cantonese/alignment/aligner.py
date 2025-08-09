@@ -134,7 +134,6 @@ class Aligner:
         await self._review(alignment)
 
         # Return final alignment
-        print(f"\nFINAL RESULT:\n{alignment}")
         return alignment
 
     async def _distribute(self, alignment: Alignment):
@@ -351,7 +350,9 @@ class Aligner:
                     alignment._sync_groups_override = nascent_sg
                     return False
 
-        raise ScinoephileError("Unexpected case.")
+        raise ScinoephileError(
+            f"Unexpected case for Query:\n{query}\n with Answer:\n{answer}\n"
+        )
 
     async def _merge(self, alignment: Alignment):
         """Merge 粤文 subs.
