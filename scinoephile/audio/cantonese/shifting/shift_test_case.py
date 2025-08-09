@@ -11,7 +11,6 @@ from pydantic import model_validator
 from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
 from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
 from scinoephile.core.abcs import TestCase
-from scinoephile.core.text import remove_punc_and_whitespace
 
 
 class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
@@ -41,10 +40,8 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftTestCase:
         """Ensure query and answer are consistent with one another."""
-        expected = remove_punc_and_whitespace(self.yuewen_1 + self.yuewen_2)
-        received = remove_punc_and_whitespace(
-            self.yuewen_1_shifted + self.yuewen_2_shifted
-        )
+        expected = self.yuewen_1 + self.yuewen_2
+        received = self.yuewen_1_shifted + self.yuewen_2_shifted
         if expected != received:
             raise ValueError(
                 "Answer's concatenated shifted 粤文 subtitle 1 and shifted 粤文 "

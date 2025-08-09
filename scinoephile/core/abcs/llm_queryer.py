@@ -13,6 +13,7 @@ from pathlib import Path
 from textwrap import dedent
 
 import aiofiles
+from aiofiles import os as aioos
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
@@ -171,11 +172,18 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             try:
                 async with aiofiles.open(cache_path, encoding="utf-8") as f:
                     contents = await f.read()
-                answer = answer_cls.model_validate(json.loads(contents))
-                test_case = test_case_cls.from_query_and_answer(query, answer)
-                self.log_encountered_test_case(test_case)
-                info(f"Loaded from cache: {query.query_key}")
-                return answer
+                try:
+                    answer = answer_cls.model_validate(json.loads(contents))
+                    test_case = test_case_cls.from_query_and_answer(query, answer)
+                    self.log_encountered_test_case(test_case)
+                    info(f"Loaded from cache: {query.query_key}")
+                    return answer
+                except ValidationError as exc:
+                    error(
+                        f"Cache content for query {query.query_key} is invalid: {exc}"
+                    )
+                    await aioos.remove(cache_path)
+                    info(f"Deleted invalid cache file: {cache_path}")
             except FileNotFoundError:
                 pass
 

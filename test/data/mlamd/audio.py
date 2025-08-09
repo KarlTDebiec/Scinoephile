@@ -106,11 +106,10 @@ async def process_all_blocks(
         Arguments:
             block_idx: Index of the block to process
         """
-        if block_idx > 41:
-            return
+        # if block_idx > 50:
+        #     return
         yuewen_block = yuewen.blocks[block_idx]
         zhongwen_block = zhongwen.blocks[block_idx]
-        print(f"BLOCK {block_idx} ({yuewen_block.start_idx} - {yuewen_block.end_idx}):")
         async with semaphore:
             yuewen_block_series = await process_block(
                 block_idx,
@@ -119,6 +118,7 @@ async def process_all_blocks(
                 transcriber,
                 aligner,
             )
+        print(f"BLOCK {block_idx} ({yuewen_block.start_idx} - {yuewen_block.end_idx}):")
         print(f"中文:\n{zhongwen_block.to_series().to_simple_string()}")
         print(f"粤文:\n{yuewen_block_series.to_simple_string()}")
         all_yuewen_block_series[block_idx] = yuewen_block_series
