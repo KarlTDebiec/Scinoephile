@@ -51,7 +51,7 @@ async def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
 @pytest.mark.parametrize(
     "test_case", [tc for tc in mlamd_proof_test_cases if tc.verified]
 )
-def test_proofing_mlamd(
+async def test_proofing_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ProofTestCase
 ):
     """Test with MLAMD test cases.
@@ -76,7 +76,7 @@ def test_proofing_mlamd(
     "test_case",
     [tc for tc in mlamd_proof_test_cases if tc.difficulty >= 2 and tc.verified],
 )
-def test_proofing_mlamd_difficult(
+async def test_proofing_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ProofTestCase
 ):
     """Test with MLAMD test cases.

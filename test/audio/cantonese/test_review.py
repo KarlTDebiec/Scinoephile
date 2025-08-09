@@ -12,8 +12,6 @@ from scinoephile.testing import test_data_root
 from scinoephile.testing.mark import flaky, skip_if_ci
 from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
 
-f
-
 
 @pytest.fixture
 def reviewer_few_shot() -> Reviewer:
