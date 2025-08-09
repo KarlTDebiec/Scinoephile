@@ -43,14 +43,23 @@ from test.data.mlamd import (
 async def process_block(
     idx: int,
     yuewen_block: AudioBlock,
-    zhongwen_block_series: AudioSeries,
+    zhongwen_block: AudioBlock,
     transcriber: WhisperTranscriber,
     aligner: Aligner,
 ) -> AudioSeries:
+    """Process a single block of audio, transcribing and aligning it with subtitles.
+
+    Arguments:
+        idx: Index of block being processed
+        yuewen_block: Nascent 粤文 block
+        zhongwen_block: Corresponding 中文 block
+        transcriber: Transcriber of 粤语 audio to 粤语 text
+        aligner: Aligner of 粤文 and 中文 subtitles
+    """
     # Transcribe audio
     segments = transcriber(yuewen_block.audio)
 
-    # Split segments into more segments
+    # Split segments based on pauses
     split_segments = []
     for segment in segments:
         split_segments.extend(get_segment_split_on_whitespace(segment))
@@ -66,7 +75,7 @@ async def process_block(
     )
 
     # Sync segments with the corresponding 中文 subtitles
-    alignment = await aligner.align(zhongwen_block_series, yuewen_block_series)
+    alignment = await aligner.align(zhongwen_block.to_series(), yuewen_block_series)
     yuewen_block_series = alignment.yuewen
 
     await update_all_test_cases(test_data_root / "mlamd", idx, aligner)
@@ -74,42 +83,56 @@ async def process_block(
     return yuewen_block_series
 
 
-async def process_all_blocks(yuewen, zhongwen, transcriber, aligner):
-    sem = asyncio.Semaphore(1)
+async def process_all_blocks(
+    yuewen: AudioSeries,
+    zhongwen: AudioSeries,
+    transcriber: WhisperTranscriber,
+    aligner: Aligner,
+):
+    """Process all blocks of audio, transcribing and aligning them with subtitles.
+
+    Arguments:
+        yuewen: Nascent 粤文 subtitles
+        zhongwen: Corresponding 中文 subtitles
+        transcriber: Transcriber of 粤语 audio to 粤语 text
+        aligner: Aligner of 粤文 and 中文 subtitles
+    """
+    semaphore = asyncio.Semaphore(1)
     all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
 
     async def run_block(block_idx: int):
+        """Run processing for a single block of audio.
+
+        Arguments:
+            block_idx: Index of the block to process
+        """
         if block_idx > 41:
             return
         yuewen_block = yuewen.blocks[block_idx]
         zhongwen_block = zhongwen.blocks[block_idx]
-        zhongwen_block_series = zhongwen_block.to_series()
         print(f"BLOCK {block_idx} ({yuewen_block.start_idx} - {yuewen_block.end_idx}):")
-        async with sem:
+        async with semaphore:
             yuewen_block_series = await process_block(
                 block_idx,
                 yuewen_block,
-                zhongwen_block_series,
+                zhongwen_block,
                 transcriber,
                 aligner,
             )
-        # per-block prints, if you want them:
-        print(f"MANDARIN:\n{zhongwen_block_series.to_simple_string()}")
-        print(f"CANTONESE:\n{yuewen_block_series.to_simple_string()}")
+        print(f"中文:\n{zhongwen_block.to_series().to_simple_string()}")
+        print(f"粤文:\n{yuewen_block_series.to_simple_string()}")
         all_yuewen_block_series[block_idx] = yuewen_block_series
 
-    # launch tasks
+    # Run all blocks
     async with asyncio.TaskGroup() as task_group:
         for block_idx in range(len(yuewen.blocks)):
             task_group.create_task(run_block(block_idx))
 
-    # stitch non-None pieces in order
-    parts = [s for s in all_yuewen_block_series if s is not None]
-    yuewen_series = get_concatenated_series(parts)
-
-    # final print if desired
-    print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")
-
+    # Concatenate and return
+    yuewen_series = get_concatenated_series(
+        [s for s in all_yuewen_block_series if s is not None]
+    )
+    print(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
     return yuewen_series
 
 
