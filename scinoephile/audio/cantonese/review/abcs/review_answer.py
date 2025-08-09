@@ -14,8 +14,8 @@ from scinoephile.core.abcs import Answer
 class ReviewAnswer(Answer, ABC):
     """Abstract base class for 粤文 review answers."""
 
-    @staticmethod
-    def get_answer_cls(size: int) -> type[ReviewAnswer]:
+    @classmethod
+    def get_answer_cls(cls, size: int) -> type[ReviewAnswer]:
         """Get answer class for 粤文 review.
 
         Arguments:
@@ -38,7 +38,7 @@ class ReviewAnswer(Answer, ABC):
                 ),
             )
         return create_model(
-            f"ReviewAnswer_{size}",
+            f"{cls.__name__}_{size}",
             __base__=ReviewAnswer,
             **answer_fields,
         )

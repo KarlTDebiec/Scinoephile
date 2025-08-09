@@ -15,8 +15,8 @@ from scinoephile.core.abcs import Query
 class TranslateQuery(Query, ABC):
     """Abstract base class for 粤文 translation queries."""
 
-    @staticmethod
-    def get_query_cls(size: int, missing: tuple[int, ...]) -> type[TranslateQuery]:
+    @classmethod
+    def get_query_cls(cls, size: int, missing: tuple[int, ...]) -> type[TranslateQuery]:
         """Get query class for 粤文 translation.
 
         Arguments:
@@ -44,8 +44,5 @@ class TranslateQuery(Query, ABC):
                         ..., description=f"Transcribed 粤文 of subtitle {zw_idx + 1}"
                     ),
                 )
-        return create_model(
-            f"TranslateQuery_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}",
-            __base__=TranslateQuery,
-            **query_fields,
-        )
+        name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
+        return create_model(name[:64], __base__=TranslateQuery, **query_fields)
