@@ -935,6 +935,7 @@ distribute_test_cases_block_43 = [
         yuewen_1_to_append="希望我可以将我哋长洲人世世代代嘅传统",
         yuewen_2_to_prepend="发扬光大",
         difficulty=1,
+        verified=True,
     ),
 ]  # distribute_test_cases_block_43
 distribute_test_cases_block_44 = [
@@ -947,6 +948,7 @@ distribute_test_cases_block_44 = [
         yuewen_1_to_append="第二样绝技就系",
         yuewen_2_to_prepend="抢爆山",
         difficulty=1,
+        verified=True,
     ),
 ]  # distribute_test_cases_block_44
 distribute_test_cases_block_45 = [
@@ -958,6 +960,7 @@ distribute_test_cases_block_45 = [
         yuewen_to_distribute="顾名思义",
         yuewen_1_to_append="顾名思义",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_45
 distribute_test_cases_block_46 = []  # distribute_test_cases_block_46
@@ -973,6 +976,7 @@ distribute_test_cases_block_50 = [
         yuewen_to_distribute="挨过几多斧头",
         yuewen_1_to_append="挨过几多斧头",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_50
 distribute_test_cases_block_51 = [
@@ -985,6 +989,7 @@ distribute_test_cases_block_51 = [
         yuewen_1_to_append="我都唔知我仔要咁粗嘅脚瓜",
         yuewen_2_to_prepend="有咩用",
         difficulty=1,
+        verified=True,
     ),
 ]  # distribute_test_cases_block_51
 distribute_test_cases_block_52 = []  # distribute_test_cases_block_52
@@ -997,6 +1002,7 @@ distribute_test_cases_block_53 = [
         yuewen_to_distribute="吓得我啊",
         yuewen_1_to_append="吓得我啊",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="信很短",
