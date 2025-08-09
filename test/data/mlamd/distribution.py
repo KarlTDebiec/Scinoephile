@@ -897,6 +897,7 @@ distribute_test_cases_block_37 = [
         yuewen_to_distribute="究竟",
         yuewen_1_to_append="究竟",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="跨过几多个海⋯",
@@ -906,6 +907,7 @@ distribute_test_cases_block_37 = [
         yuewen_to_distribute="跨我几多个海",
         yuewen_1_to_append="跨我几多个海",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="吃过几多苦头⋯",
@@ -915,6 +917,7 @@ distribute_test_cases_block_37 = [
         yuewen_to_distribute="挨过几多苦头",
         yuewen_1_to_append="挨过几多苦头",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_37
 distribute_test_cases_block_38 = []  # distribute_test_cases_block_38

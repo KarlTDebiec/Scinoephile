@@ -27,7 +27,7 @@ def merger_zero_shot() -> Merger:
     return Merger(cache_dir_path=test_data_root / "cache")
 
 
-def _test_merging(queryer: Merger, test_case: MergeTestCase):
+async def _test_merging(queryer: Merger, test_case: MergeTestCase):
     """Test.
 
     Arguments:
@@ -35,7 +35,7 @@ def _test_merging(queryer: Merger, test_case: MergeTestCase):
         test_case: Query and expected answer
     """
     if test_case.difficulty < 3:
-        answer = queryer(test_case.query)
+        answer = await queryer.call(test_case.query)
         assert answer.yuewen_merged == test_case.yuewen_merged
 
 
@@ -49,7 +49,8 @@ def _test_merging(queryer: Merger, test_case: MergeTestCase):
 @pytest.mark.parametrize(
     "test_case", [tc for tc in mlamd_merge_test_cases if tc.verified]
 )
-def test_merging_mlamd(
+@pytest.mark.asyncio
+async def test_merging_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
 ):
     """Test with MLAMD test cases.
@@ -60,7 +61,7 @@ def test_merging_mlamd(
         test_case: Query and expected answer
     """
     merger: Merger = request.getfixturevalue(fixture_name)
-    _test_merging(merger, test_case)
+    await _test_merging(merger, test_case)
 
 
 @pytest.mark.parametrize(
@@ -74,7 +75,8 @@ def test_merging_mlamd(
     "test_case",
     [tc for tc in mlamd_merge_test_cases if tc.difficulty >= 2 and tc.verified],
 )
-def test_merging_mlamd_difficult(
+@pytest.mark.asyncio
+async def test_merging_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
 ):
     """Test with MLAMD test cases.
@@ -85,4 +87,4 @@ def test_merging_mlamd_difficult(
         test_case: Query and expected answer
     """
     merger: Merger = request.getfixturevalue(fixture_name)
-    _test_merging(merger, test_case)
+    await _test_merging(merger, test_case)

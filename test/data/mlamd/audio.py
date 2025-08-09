@@ -7,13 +7,13 @@ from __future__ import annotations
 import asyncio
 
 from scinoephile.audio import (
+    AudioBlock,
     AudioSeries,
     get_series_from_segments,
 )
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import (
-    update_dynamic_test_cases,
-    update_test_cases,
+    update_all_test_cases,
 )
 from scinoephile.audio.cantonese.distribution import Distributor
 from scinoephile.audio.cantonese.merging import Merger
@@ -39,7 +39,104 @@ from test.data.mlamd import (
     mlamd_translate_test_cases,
 )
 
-if __name__ == "__main__":
+
+async def process_block(
+    idx: int,
+    yuewen_block: AudioBlock,
+    zhongwen_block: AudioBlock,
+    transcriber: WhisperTranscriber,
+    aligner: Aligner,
+) -> AudioSeries:
+    """Process a single block of audio, transcribing and aligning it with subtitles.
+
+    Arguments:
+        idx: Index of block being processed
+        yuewen_block: Nascent 粤文 block
+        zhongwen_block: Corresponding 中文 block
+        transcriber: Transcriber of 粤语 audio to 粤语 text
+        aligner: Aligner of 粤文 and 中文 subtitles
+    """
+    # Transcribe audio
+    segments = transcriber(yuewen_block.audio)
+
+    # Split segments based on pauses
+    split_segments = []
+    for segment in segments:
+        split_segments.extend(get_segment_split_on_whitespace(segment))
+
+    # Simplify segments (optional)
+    converted_segments = []
+    for segment in split_segments:
+        converted_segments.append(get_segment_hanzi_converted(segment, "hk2s"))
+
+    # Merge segments into a series
+    yuewen_block_series = get_series_from_segments(
+        converted_segments, offset=yuewen_block[0].start
+    )
+
+    # Sync segments with the corresponding 中文 subtitles
+    alignment = await aligner.align(zhongwen_block.to_series(), yuewen_block_series)
+    yuewen_block_series = alignment.yuewen
+
+    await update_all_test_cases(test_data_root / "mlamd", idx, aligner)
+
+    return yuewen_block_series
+
+
+async def process_all_blocks(
+    yuewen: AudioSeries,
+    zhongwen: AudioSeries,
+    transcriber: WhisperTranscriber,
+    aligner: Aligner,
+):
+    """Process all blocks of audio, transcribing and aligning them with subtitles.
+
+    Arguments:
+        yuewen: Nascent 粤文 subtitles
+        zhongwen: Corresponding 中文 subtitles
+        transcriber: Transcriber of 粤语 audio to 粤语 text
+        aligner: Aligner of 粤文 and 中文 subtitles
+    """
+    semaphore = asyncio.Semaphore(1)
+    all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
+
+    async def run_block(block_idx: int):
+        """Run processing for a single block of audio.
+
+        Arguments:
+            block_idx: Index of the block to process
+        """
+        if block_idx > 41:
+            return
+        yuewen_block = yuewen.blocks[block_idx]
+        zhongwen_block = zhongwen.blocks[block_idx]
+        print(f"BLOCK {block_idx} ({yuewen_block.start_idx} - {yuewen_block.end_idx}):")
+        async with semaphore:
+            yuewen_block_series = await process_block(
+                block_idx,
+                yuewen_block,
+                zhongwen_block,
+                transcriber,
+                aligner,
+            )
+        print(f"中文:\n{zhongwen_block.to_series().to_simple_string()}")
+        print(f"粤文:\n{yuewen_block_series.to_simple_string()}")
+        all_yuewen_block_series[block_idx] = yuewen_block_series
+
+    # Run all blocks
+    async with asyncio.TaskGroup() as task_group:
+        for block_idx in range(len(yuewen.blocks)):
+            task_group.create_task(run_block(block_idx))
+
+    # Concatenate and return
+    yuewen_series = get_concatenated_series(
+        [s for s in all_yuewen_block_series if s is not None]
+    )
+    print(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
+    return yuewen_series
+
+
+async def main():
     test_input_dir = test_data_root / "mlamd" / "input"
     test_output_dir = test_data_root / "mlamd" / "output"
     set_logging_verbosity(1)
@@ -95,76 +192,9 @@ if __name__ == "__main__":
         reviewer=reviewer,
     )
 
-    all_series = []
-    update = True
-    for i, block in enumerate(yuewen.blocks):
-        print(f"Block {i} ({block.start_idx} - {block.end_idx})")
+    # Process all blocks
+    yuewen_series = await process_all_blocks(yuewen, zhongwen, transcriber, aligner)
 
-        if i > 37:
-            continue
-        update = True
 
-        # Transcribe audio
-        segments = transcriber(block.audio)
-
-        # Split segments into more segments
-        split_segments = []
-        for segment in segments:
-            split_segments.extend(get_segment_split_on_whitespace(segment))
-
-        # Simplify segments (optional)
-        converted_segments = []
-        for segment in split_segments:
-            converted_segments.append(get_segment_hanzi_converted(segment, "hk2s"))
-
-        # Merge segments into a series
-        yuewen_series = get_series_from_segments(
-            converted_segments, offset=block[0].start
-        )
-
-        # Sync segments with the corresponding 中文 subtitles
-        zhongwen_series = zhongwen.blocks[i].to_series()
-        alignment = asyncio.run(aligner.align(zhongwen_series, yuewen_series))
-        yuewen_series = alignment.yuewen
-
-        # Block complete
-        print(f"MANDARIN:\n{zhongwen_series.to_simple_string()}")
-        print(f"CANTONESE:\n{yuewen_series.to_simple_string()}")
-        all_series.append(yuewen_series)
-
-        # Replace test case lists in files
-        if update:
-            update_test_cases(
-                test_data_root / "mlamd" / "distribution.py",
-                f"distribute_test_cases_block_{i}",
-                distributor,
-            )
-            update_test_cases(
-                test_data_root / "mlamd" / "shifting.py",
-                f"shift_test_cases_block_{i}",
-                shifter,
-            )
-            update_test_cases(
-                test_data_root / "mlamd" / "merging.py",
-                f"merge_test_cases_block_{i}",
-                merger,
-            )
-            update_test_cases(
-                test_data_root / "mlamd" / "proofing.py",
-                f"proof_test_cases_block_{i}",
-                proofer,
-            )
-            if translator.encountered_test_cases:
-                update_dynamic_test_cases(
-                    test_data_root / "mlamd" / "translation.py",
-                    f"translate_test_case_block_{i}",
-                    translator,
-                )
-            update_dynamic_test_cases(
-                test_data_root / "mlamd" / "review.py",
-                f"review_test_case_block_{i}",
-                reviewer,
-            )
-
-    yuewen_series = get_concatenated_series(all_series)
-    print(f"\nConcatenated Series:\n{yuewen_series.to_simple_string()}")
+if __name__ == "__main__":
+    asyncio.run(main())

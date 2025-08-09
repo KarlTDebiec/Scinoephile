@@ -27,14 +27,14 @@ def shifter_zero_shot() -> Shifter:
     return Shifter(cache_dir_path=test_data_root / "cache")
 
 
-def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
+async def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
     """Test.
 
     Arguments:
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = queryer(test_case.query)
+    answer = await queryer.call(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_1_shifted == test_case.yuewen_1_shifted
         assert answer.yuewen_2_shifted == test_case.yuewen_2_shifted
@@ -50,7 +50,8 @@ def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
 @pytest.mark.parametrize(
     "test_case", [tc for tc in mlamd_shift_test_cases if tc.verified]
 )
-def test_shifting_mlamd(
+@pytest.mark.asyncio
+async def test_shifting_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
 ):
     """Test with MLAMD test cases.
@@ -61,7 +62,7 @@ def test_shifting_mlamd(
         test_case: Query and expected answer
     """
     shifter: Shifter = request.getfixturevalue(fixture_name)
-    _test_shifting(shifter, test_case)
+    await _test_shifting(shifter, test_case)
 
 
 @pytest.mark.parametrize(
@@ -75,7 +76,8 @@ def test_shifting_mlamd(
     "test_case",
     [tc for tc in mlamd_shift_test_cases if tc.difficulty >= 1 and tc.verified],
 )
-def test_shifting_mlamd_difficult(
+@pytest.mark.asyncio
+async def test_shifting_mlamd_difficult(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
 ):
     """Test with MLAMD test cases.
@@ -86,4 +88,4 @@ def test_shifting_mlamd_difficult(
         test_case: Query and expected answer
     """
     shifter: Shifter = request.getfixturevalue(fixture_name)
-    _test_shifting(shifter, test_case)
+    await _test_shifting(shifter, test_case)

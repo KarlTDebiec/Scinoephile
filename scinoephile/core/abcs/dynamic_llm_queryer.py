@@ -62,12 +62,14 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
     @property
     def encountered_test_cases_source_str(self) -> str:
         """String representation of all test cases in the log."""
-        if len(self._encountered_test_cases) != 1:
-            raise ScinoephileError(
-                "Test case log must contain exactly one test case for string "
-                "representation."
-            )
-        return next(iter(self._encountered_test_cases.values())).source_str
+        if len(self._encountered_test_cases) == 0:
+            return "None"
+        if len(self._encountered_test_cases) == 1:
+            return next(iter(self._encountered_test_cases.values())).source_str
+        raise ScinoephileError(
+            "Test case log must contain zero or one test cases for string "
+            "representation."
+        )
 
     def get_system_prompt(self, answer_cls: type[TAnswer]) -> str:
         """Get system prompt for the given answer class.

@@ -28,14 +28,14 @@ def reviewer_zero_shot() -> Reviewer:
     return Reviewer(cache_dir_path=test_data_root / "cache")
 
 
-def _test_review(queryer: Reviewer, test_case: ReviewTestCase):
+async def _test_review(queryer: Reviewer, test_case: ReviewTestCase):
     """Test.
 
     Arguments:
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = queryer(test_case.query, test_case.answer_cls, type(test_case))
+    answer = await queryer.call(test_case.query, test_case.answer_cls, type(test_case))
 
     failures = []
     for field_name, expected_value in test_case.answer.model_dump().items():
@@ -59,7 +59,8 @@ def _test_review(queryer: Reviewer, test_case: ReviewTestCase):
     ],
 )
 @pytest.mark.parametrize("test_case", mlamd_review_test_cases)
-def test_review_mlamd(
+@pytest.mark.asyncio
+async def test_review_mlamd(
     request: pytest.FixtureRequest, fixture_name: str, test_case: ReviewTestCase
 ):
     """Test with MLAMD test cases.
@@ -70,4 +71,4 @@ def test_review_mlamd(
         test_case: Query and expected answer
     """
     reviewer: Reviewer = request.getfixturevalue(fixture_name)
-    _test_review(reviewer, test_case)
+    await _test_review(reviewer, test_case)
