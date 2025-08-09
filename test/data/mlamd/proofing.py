@@ -3327,8 +3327,9 @@ proof_test_cases_block_41 = [
         zhongwen="黎根听完歌以后，表情有点古怪⋯",
         yuewen="黎今听完首歌之后，啲表情有啲古怪⋯",
         yuewen_proofread="黎根听完首歌之后，啲表情有啲古怪⋯",
-        note="Corrected '黎今' to '黎根' as '黎根' is the correct name matching "
-        "the 中文, and '黎今' is likely a mishearing.",
+        note="Corrected '黎今' to '黎根' as '黎今' is a mishearing of the name "
+        "'黎根' in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="我一定要好好把握这机会",
@@ -3346,9 +3347,10 @@ proof_test_cases_block_41 = [
         zhongwen="你唔收我做徒弟，我一世都这么跪着！",
         yuewen="你收我做徒弟，我呢一世都跪喺度！",
         yuewen_proofread="你唔收我做徒弟，我呢一世都跪喺度！",
-        note="Added '唔' before '收我做徒弟' to match the meaning of the 中文, as "
-        "the original 粤文 omitted the negation, likely due to a "
-        "mishearing.",
+        note="Added '唔' before '收我做徒弟' to match the intended meaning of "
+        "'你唔收我做徒弟' in the 中文, as the original 粤文 omitted the negation "
+        "and reversed the meaning.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="起来呀！",
@@ -3360,8 +3362,10 @@ proof_test_cases_block_41 = [
         zhongwen="多谢师傅！",
         yuewen="多谢师父！",
         yuewen_proofread="多谢师傅！",
-        note="Corrected '师父' to '师傅' as '师傅' is the appropriate term for a "
-        "driver or worker, matching the context of the 中文.",
+        note="Corrected '师父' to '师傅' as '师傅' is the correct term for "
+        "addressing a driver or skilled worker, matching the context "
+        "of the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="不⋯我是叫你扶我起来呀！",
@@ -3372,9 +3376,11 @@ proof_test_cases_block_41 = [
     ProofTestCase(
         zhongwen="不成了！我的脚瓜太痹了！",
         yuewen="顶唔顺啊！我个腿挂好鼻啊！字幕由Amara.org社群提供",
-        yuewen_proofread="顶唔顺啊！我个脚瓜好痹啊！字幕由Amara.org社群提供",
-        note="Corrected '腿挂' to '脚瓜' as '脚瓜' is the correct Cantonese term "
-        "for 'calf', matching the meaning of '脚瓜' in the 中文.",
+        yuewen_proofread="顶唔顺啊！我只脚瓜太痹啊！",
+        note="Corrected '腿挂好鼻' to '脚瓜太痹' as '脚瓜' is the correct Cantonese "
+        "term for 'calf' and '太痹' matches the meaning of '太痹了'; also "
+        "removed '字幕由Amara.org社群提供' as it is a subtitle artifact.",
+        difficulty=1,
     ),
 ]  # proof_test_cases_block_41
 proof_test_cases_block_42 = [

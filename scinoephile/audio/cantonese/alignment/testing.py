@@ -4,26 +4,74 @@
 
 from __future__ import annotations
 
+import asyncio
 import re
 from logging import info
 from pathlib import Path
 
+from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.distribution import DistributeTestCase  # noqa: F401
 from scinoephile.audio.cantonese.merging import MergeTestCase  # noqa: F401
 from scinoephile.audio.cantonese.proofing import ProofTestCase  # noqa: F401
 from scinoephile.audio.cantonese.shifting import ShiftTestCase  # noqa: F401
+from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
 
 
-def _replace(path: Path, varible: str, pattern: re.Pattern[str], replacement: str):
-    contents = path.read_text(encoding="utf-8")
+async def _replace(
+    path: Path, varible: str, pattern: re.Pattern[str], replacement: str
+):
+    contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
     replacement = f"{varible} = {replacement}  # {varible}"
     new_contents = pattern.sub(replacement, contents)
-    path.write_text(new_contents, encoding="utf-8")
+    await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
     info(f"Replaced test cases {varible} in {path.name}.")
 
 
-def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
+async def update_all_test_cases(root: Path | str, block_idx: int, aligner: Aligner):
+    root = val_input_dir_path(root)
+
+    tasks = [
+        update_test_cases(
+            root / "distribution.py",
+            f"distribute_test_cases_block_{block_idx}",
+            aligner.distributor,
+        ),
+        update_test_cases(
+            root / "shifting.py",
+            f"shift_test_cases_block_{block_idx}",
+            aligner.shifter,
+        ),
+        update_test_cases(
+            root / "merging.py",
+            f"merge_test_cases_block_{block_idx}",
+            aligner.merger,
+        ),
+        update_test_cases(
+            root / "proofing.py",
+            f"proof_test_cases_block_{block_idx}",
+            aligner.proofer,
+        ),
+        update_dynamic_test_cases(
+            root / "review.py",
+            f"review_test_case_block_{block_idx}",
+            aligner.reviewer,
+        ),
+    ]
+
+    if aligner.translator.encountered_test_cases:
+        tasks.append(
+            update_dynamic_test_cases(
+                root / "translation.py",
+                f"translate_test_case_block_{block_idx}",
+                aligner.translator,
+            )
+        )
+
+    await asyncio.gather(*tasks)
+
+
+async def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
     """Update test cases.
 
     Arguments:
@@ -33,11 +81,13 @@ def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
     """
     pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
     replacement = queryer.encountered_test_cases_source_str
-    _replace(path, variable, pattern, replacement)
-    queryer.clear_encountered_test_cases()
+    await _replace(path, variable, pattern, replacement)
+    await asyncio.to_thread(queryer.clear_encountered_test_cases)
 
 
-def update_dynamic_test_cases(path: Path, variable: str, queryer: DynamicLLMQueryer):
+async def update_dynamic_test_cases(
+    path: Path, variable: str, queryer: DynamicLLMQueryer
+):
     """Update dynamic test cases.
 
     Arguments:
@@ -47,11 +97,12 @@ def update_dynamic_test_cases(path: Path, variable: str, queryer: DynamicLLMQuer
     """
     pattern = re.compile(rf"{variable}\s*=(.*?)# {variable}", re.DOTALL)
     replacement = queryer.encountered_test_cases_source_str
-    _replace(path, variable, pattern, replacement)
-    queryer.clear_encountered_test_cases()
+    await _replace(path, variable, pattern, replacement)
+    await asyncio.to_thread(queryer.clear_encountered_test_cases)
 
 
 __all__ = [
-    "update_test_cases",
     "update_dynamic_test_cases",
+    "update_all_test_cases",
+    "update_test_cases",
 ]
