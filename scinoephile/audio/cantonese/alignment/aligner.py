@@ -351,7 +351,7 @@ class Aligner:
                     return False
 
         raise ScinoephileError(
-            f"Unexpected case for Query:\n{query}\n with Answer:\n{answer}\n"
+            f"Unexpected case:\nQuery:\n{query}\n with Answer:\n{answer}\n"
         )
 
     async def _merge(self, alignment: Alignment):
