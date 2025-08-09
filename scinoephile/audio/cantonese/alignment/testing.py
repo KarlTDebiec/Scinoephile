@@ -10,10 +10,6 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.audio.cantonese.alignment import Aligner
-from scinoephile.audio.cantonese.distribution import DistributeTestCase  # noqa: F401
-from scinoephile.audio.cantonese.merging import MergeTestCase  # noqa: F401
-from scinoephile.audio.cantonese.proofing import ProofTestCase  # noqa: F401
-from scinoephile.audio.cantonese.shifting import ShiftTestCase  # noqa: F401
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
 
@@ -28,45 +24,50 @@ async def _replace(
     info(f"Replaced test cases {varible} in {path.name}.")
 
 
-async def update_all_test_cases(root: Path | str, block_idx: int, aligner: Aligner):
-    root = val_input_dir_path(root)
+async def update_all_test_cases(
+    test_root: Path | str, block_idx: int, aligner: Aligner
+):
+    """Update all test cases for the specified block.
+
+    Arguments:
+        test_root: Path to root directory of test cases
+        block_idx: Index of block for which to update test cases
+        aligner: Aligner containing queryers for test cases
+    """
+    test_root = val_input_dir_path(test_root)
 
     tasks = [
         update_test_cases(
-            root / "distribution.py",
+            test_root / "distribution.py",
             f"distribute_test_cases_block_{block_idx}",
             aligner.distributor,
         ),
         update_test_cases(
-            root / "shifting.py",
+            test_root / "shifting.py",
             f"shift_test_cases_block_{block_idx}",
             aligner.shifter,
         ),
         update_test_cases(
-            root / "merging.py",
+            test_root / "merging.py",
             f"merge_test_cases_block_{block_idx}",
             aligner.merger,
         ),
         update_test_cases(
-            root / "proofing.py",
+            test_root / "proofing.py",
             f"proof_test_cases_block_{block_idx}",
             aligner.proofer,
         ),
         update_dynamic_test_cases(
-            root / "review.py",
+            test_root / "translation.py",
+            f"translate_test_case_block_{block_idx}",
+            aligner.translator,
+        ),
+        update_dynamic_test_cases(
+            test_root / "review.py",
             f"review_test_case_block_{block_idx}",
             aligner.reviewer,
         ),
     ]
-
-    if aligner.translator.encountered_test_cases:
-        tasks.append(
-            update_dynamic_test_cases(
-                root / "translation.py",
-                f"translate_test_case_block_{block_idx}",
-                aligner.translator,
-            )
-        )
 
     await asyncio.gather(*tasks)
 
