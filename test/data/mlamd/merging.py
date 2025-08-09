@@ -2394,42 +2394,49 @@ merge_test_cases_block_41 = [
         yuewen_to_merge=["黎今听完首歌之后", "啲表情有啲古怪"],
         yuewen_merged="黎今听完首歌之后，啲表情有啲古怪⋯",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="我一定要好好把握这机会",
         yuewen_to_merge=["唔", "我一定要好好把握呢个机会"],
         yuewen_merged="唔，我一定要好好把握呢个机会",
         difficulty=2,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="师傅！你收我做徒弟吧！",
         yuewen_to_merge=["师父", "你收我做徒弟啦"],
         yuewen_merged="师父！你收我做徒弟啦！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="你唔收我做徒弟，我一世都这么跪着！",
         yuewen_to_merge=["你收我做徒弟", "我呢一世都跪喺度"],
         yuewen_merged="你收我做徒弟，我呢一世都跪喺度！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="起来呀！",
         yuewen_to_merge=["起身啊"],
         yuewen_merged="起身啊！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="多谢师傅！",
         yuewen_to_merge=["多谢师父"],
         yuewen_merged="多谢师父！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="不⋯我是叫你扶我起来呀！",
         yuewen_to_merge=["唔系啊", "我系叫你扶我起身啊"],
         yuewen_merged="唔系啊⋯我系叫你扶我起身啊！",
         difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="不成了！我的脚瓜太痹了！",
@@ -2442,6 +2449,7 @@ merge_test_cases_block_41 = [
         ],
         yuewen_merged="顶唔顺啊！我个腿挂好鼻啊！字幕由Amara.org社群提供",
         difficulty=2,
+        verified=True,
     ),
 ]  # merge_test_cases_block_41
 merge_test_cases_block_42 = [

@@ -3751,6 +3751,7 @@ shift_test_cases_block_41 = [
         yuewen_2="唔我一定要好好把握呢个机会",
         yuewen_1_shifted="黎今听完首歌之后啲表情有啲古怪",
         yuewen_2_shifted="唔我一定要好好把握呢个机会",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我一定要好好把握这机会",
@@ -3759,6 +3760,7 @@ shift_test_cases_block_41 = [
         yuewen_2="师父你收我做徒弟啦",
         yuewen_1_shifted="唔我一定要好好把握呢个机会",
         yuewen_2_shifted="师父你收我做徒弟啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅！你收我做徒弟吧！",
@@ -3767,6 +3769,7 @@ shift_test_cases_block_41 = [
         yuewen_2="你收我做徒弟我呢一世都跪喺度",
         yuewen_1_shifted="师父你收我做徒弟啦",
         yuewen_2_shifted="你收我做徒弟我呢一世都跪喺度",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="你唔收我做徒弟，我一世都这么跪着！",
@@ -3775,6 +3778,7 @@ shift_test_cases_block_41 = [
         yuewen_2="起身啊",
         yuewen_1_shifted="你收我做徒弟我呢一世都跪喺度",
         yuewen_2_shifted="起身啊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="起来呀！",
@@ -3783,6 +3787,7 @@ shift_test_cases_block_41 = [
         yuewen_2="多谢师父",
         yuewen_1_shifted="起身啊",
         yuewen_2_shifted="多谢师父",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="多谢师傅！",
@@ -3791,6 +3796,7 @@ shift_test_cases_block_41 = [
         yuewen_2="唔系啊我系叫你扶我起身啊",
         yuewen_1_shifted="多谢师父",
         yuewen_2_shifted="唔系啊我系叫你扶我起身啊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不⋯我是叫你扶我起来呀！",
@@ -3799,6 +3805,7 @@ shift_test_cases_block_41 = [
         yuewen_2="顶唔顺啊我个腿挂好鼻啊字幕由Amara.org社群提供",
         yuewen_1_shifted="唔系啊我系叫你扶我起身啊",
         yuewen_2_shifted="顶唔顺啊我个腿挂好鼻啊字幕由Amara.org社群提供",
+        verified=True,
     ),
 ]  # shift_test_cases_block_41
 shift_test_cases_block_42 = [

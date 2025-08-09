@@ -3330,18 +3330,23 @@ proof_test_cases_block_41 = [
         note="Corrected '黎今' to '黎根' as '黎今' is a mishearing of the name "
         "'黎根' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我一定要好好把握这机会",
         yuewen="唔，我一定要好好把握呢个机会",
-        yuewen_proofread="唔，我一定要好好把握呢个机会",
-        note="",
+        yuewen_proofread="我一定要好好把握呢个机会",
+        note="Removed '唔' as it is not present in the 中文 and it confuses "
+        "the meaning of the sentence.",
+        difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="师傅！你收我做徒弟吧！",
         yuewen="师父！你收我做徒弟啦！",
         yuewen_proofread="师父！你收我做徒弟啦！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="你唔收我做徒弟，我一世都这么跪着！",
@@ -3351,36 +3356,40 @@ proof_test_cases_block_41 = [
         "'你唔收我做徒弟' in the 中文, as the original 粤文 omitted the negation "
         "and reversed the meaning.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="起来呀！",
         yuewen="起身啊！",
         yuewen_proofread="起身啊！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="多谢师傅！",
         yuewen="多谢师父！",
-        yuewen_proofread="多谢师傅！",
-        note="Corrected '师父' to '师傅' as '师傅' is the correct term for "
-        "addressing a driver or skilled worker, matching the context "
-        "of the 中文.",
-        difficulty=1,
+        yuewen_proofread="多谢师父！",
+        note="",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不⋯我是叫你扶我起来呀！",
         yuewen="唔系啊⋯我系叫你扶我起身啊！",
         yuewen_proofread="唔系啊⋯我系叫你扶我起身啊！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不成了！我的脚瓜太痹了！",
         yuewen="顶唔顺啊！我个腿挂好鼻啊！字幕由Amara.org社群提供",
-        yuewen_proofread="顶唔顺啊！我只脚瓜太痹啊！",
+        yuewen_proofread="顶唔顺啊！我个脚瓜太痹啊！",
         note="Corrected '腿挂好鼻' to '脚瓜太痹' as '脚瓜' is the correct Cantonese "
         "term for 'calf' and '太痹' matches the meaning of '太痹了'; also "
-        "removed '字幕由Amara.org社群提供' as it is a subtitle artifact.",
-        difficulty=1,
+        "removed '字幕由Amara.org社群提供' as it is a transcription "
+        "artifact.",
+        difficulty=2,
+        verified=True,
     ),
 ]  # proof_test_cases_block_41
 proof_test_cases_block_42 = [
