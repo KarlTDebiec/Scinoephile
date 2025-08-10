@@ -4905,18 +4905,18 @@ proof_test_cases_block_55 = [
     ),
     ProofTestCase(
         zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
-        yuewen="妈妈一个唔觉意，畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        yuewen="妈妈一个唔觉意，畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
         yuewen_proofread="妈妈一个唔觉意，畀酿喺火鸡里面嘅洋葱粒漏咗出嚟",
-        note="Removed '火鸡内脏' as it is a mishearing; the correct phrase "
-        "should refer to '洋葱粒' inside the turkey, matching the "
-        "meaning of the 中文.",
+        note="Removed '火鸡内脏' and '红萝虾粒' as they are likely mishearings; "
+        "kept '洋葱粒' as in the 中文, and rephrased to focus on the onion "
+        "pieces leaking out, matching the original meaning.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="红萝卜粒",
-        yuewen="红萝虾粒流嘅出嚟",
+        yuewen="流嘅出嚟",
         yuewen_proofread="",
-        note="Cleared as '红萝虾粒流嘅出嚟' bears no resemblance to the original "
+        note="Cleared as '流嘅出嚟' bears no resemblance to the original "
         "phrase '红萝卜粒' and is clearly a complete mismatch.",
         difficulty=1,
     ),

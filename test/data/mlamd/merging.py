@@ -3382,14 +3382,13 @@ merge_test_cases_block_55 = [
     ),
     MergeTestCase(
         zhongwen="妈妈不留神漏出了火鸡内的洋葱粒",
-        yuewen_to_merge=["妈妈一个唔觉意", "畀酿喺火鸡里面嘅火鸡内脏洋葱粒"],
-        yuewen_merged="妈妈一个唔觉意，畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        yuewen_to_merge=[
+            "妈妈一个唔觉意",
+            "畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+            "红萝虾粒",
+        ],
+        yuewen_merged="妈妈一个唔觉意，畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
         difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="红萝卜粒",
-        yuewen_to_merge=["红萝虾粒", "流嘅出嚟"],
-        yuewen_merged="红萝虾粒流嘅出嚟",
     ),
     MergeTestCase(
         zhongwen="我说：火鸡「疴烂煮」！",
