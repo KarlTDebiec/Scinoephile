@@ -2778,12 +2778,6 @@ merge_test_cases_block_47 = [
         difficulty=2,
     ),
     MergeTestCase(
-        zhongwen="「珊你个头」却特别刺耳",
-        yuewen_to_merge=["特别瘾"],
-        yuewen_merged="特别瘾",
-        difficulty=2,
-    ),
-    MergeTestCase(
         zhongwen="我⋯我⋯",
         yuewen_to_merge=["我", "我"],
         yuewen_merged="我⋯我⋯",
@@ -3596,6 +3590,12 @@ merge_test_cases_block_58 = [
         difficulty=2,
     ),
     MergeTestCase(
+        zhongwen="之后的，不过是开始了也就吃下去",
+        yuewen_to_merge=["噉解"],
+        yuewen_merged="噉解",
+        difficulty=2,
+    ),
+    MergeTestCase(
         zhongwen="我没有哲学家的头脑⋯",
         yuewen_to_merge=["我冇知学家嘅头脑"],
         yuewen_merged="我冇知学家嘅头脑⋯",
@@ -4270,15 +4270,15 @@ merge_test_cases_block_70 = [
     ),
     MergeTestCase(
         zhongwen="常餐不是卖光了吗？",
-        yuewen_to_merge=["咁你头先又话冇上餐", "系呀", "上餐就系卖晒呀"],
-        yuewen_merged="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
-        difficulty=2,
+        yuewen_to_merge=["咁你头先又话冇上餐"],
+        yuewen_merged="咁你头先又话冇上餐？",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="对，常餐卖光了，要吃特餐吗？",
-        yuewen_to_merge=["咁你试唔试下特餐啦"],
-        yuewen_merged="咁你试唔试下特餐啦？",
-        difficulty=2,
+        yuewen_to_merge=["系呀", "上餐就系卖晒呀", "咁你试唔试下特餐啦"],
+        yuewen_merged="系呀，上餐就系卖晒呀，咁你试唔试下特餐啦？",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="对不起，特餐卖光了",
@@ -4362,20 +4362,20 @@ merge_test_cases_block_71 = [
     ),
     MergeTestCase(
         zhongwen="常餐又怎样呢？",
-        yuewen_to_merge=["噉上餐又点好嘢法呀", "上餐", "上餐"],
-        yuewen_merged="噉上餐又点好嘢法呀？上餐，上餐？",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="常餐早卖光了，你说精采不？",
-        yuewen_to_merge=["一早卖晒啦", "你话好唔好嘢", "好啦好啦"],
-        yuewen_merged="一早卖晒啦，你话好唔好嘢？好啦好啦",
+        yuewen_to_merge=["噉上餐又点好嘢法呀"],
+        yuewen_merged="噉上餐又点好嘢法呀？",
         difficulty=1,
     ),
     MergeTestCase(
+        zhongwen="常餐早卖光了，你说精采不？",
+        yuewen_to_merge=["上餐", "上餐一早卖晒啦", "你话好唔好嘢"],
+        yuewen_merged="上餐，上餐一早卖晒啦，你话好唔好嘢？",
+        difficulty=2,
+    ),
+    MergeTestCase(
         zhongwen="好吧好吧！两份午餐好了",
-        yuewen_to_merge=["要两份午餐啦"],
-        yuewen_merged="要两份午餐啦！",
+        yuewen_to_merge=["好啦好啦", "要两份午餐啦"],
+        yuewen_merged="好啦好啦！要两份午餐啦",
         difficulty=1,
     ),
 ]  # merge_test_cases_block_71

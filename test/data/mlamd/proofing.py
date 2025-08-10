@@ -3959,20 +3959,9 @@ proof_test_cases_block_47 = [
     ),
     ProofTestCase(
         zhongwen="不知道为什么",
-        yuewen="但系山呢个头唔知点解",
-        yuewen_proofread="但系生呢个头唔知点解",
-        note="Corrected '山呢个头' to '生呢个头' as '山' is a likely mishearing of "
-        "'生', which fits the context of '不知道为什么' (not knowing why "
-        "something started/began).",
-        difficulty=1,
-    ),
-    ProofTestCase(
-        zhongwen="「珊你个头」却特别刺耳",
-        yuewen="特别瘾",
-        yuewen_proofread="",
-        note="Cleared as '特别瘾' bears no resemblance to the original phrase "
-        "'「珊你个头」却特别刺耳' and is clearly a complete mismatch.",
-        difficulty=1,
+        yuewen="但系山呢个头唔知点解特别瘾",
+        yuewen_proofread="但系山呢个头唔知点解特别瘾",
+        note="",
     ),
     ProofTestCase(
         zhongwen="我⋯我⋯",
@@ -6385,17 +6374,19 @@ proof_test_cases_block_70 = [
     ),
     ProofTestCase(
         zhongwen="常餐不是卖光了吗？",
-        yuewen="咁你头先又话冇上餐，系呀，上餐就系卖晒呀？",
-        yuewen_proofread="咁你头先又话冇常餐，系呀，常餐就系卖晒呀？",
+        yuewen="咁你头先又话冇上餐？",
+        yuewen_proofread="咁你头先又话冇常餐？",
         note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
         "set meal, matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="对，常餐卖光了，要吃特餐吗？",
-        yuewen="咁你试唔试下特餐啦？",
-        yuewen_proofread="咁你试唔试下特餐啦？",
-        note="",
+        yuewen="系呀，上餐就系卖晒呀，咁你试唔试下特餐啦？",
+        yuewen_proofread="系呀，常餐就系卖晒呀，咁你试唔试下特餐啦？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
+        "set meal, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="来两份特餐吧",
@@ -6542,22 +6533,24 @@ proof_test_cases_block_71 = [
     ),
     ProofTestCase(
         zhongwen="常餐又怎样呢？",
-        yuewen="噉上餐又点好嘢法呀？上餐，上餐？",
-        yuewen_proofread="噉常餐又点好嘢法呀？常餐，常餐？",
+        yuewen="噉上餐又点好嘢法呀？",
+        yuewen_proofread="噉常餐又点好嘢法呀？",
         note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
         "set meal, matching the meaning in the 中文.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="常餐早卖光了，你说精采不？",
-        yuewen="一早卖晒啦，你话好唔好嘢？好啦好啦",
-        yuewen_proofread="一早卖晒啦，你话好唔好嘢？好啦好啦",
-        note="",
+        yuewen="上餐，上餐一早卖晒啦，你话好唔好嘢？",
+        yuewen_proofread="常餐，常餐一早卖晒啦，你话好唔好嘢？",
+        note="Corrected '上餐' to '常餐' as '常餐' is the correct term for the "
+        "set meal, matching the meaning in the 中文.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="好吧好吧！两份午餐好了",
-        yuewen="要两份午餐啦！",
-        yuewen_proofread="要两份午餐啦！",
+        yuewen="好啦好啦！要两份午餐啦",
+        yuewen_proofread="好啦好啦！要两份午餐啦",
         note="",
     ),
 ]  # proof_test_cases_block_71

@@ -2327,7 +2327,7 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(8)(
     zhongwen_4="我咁大个仔，什么「头」也给骂过⋯",
     yuewen_4="我咁大个仔，乜嘢头都畀人闹过⋯",
     zhongwen_5="不知道为什么",
-    yuewen_5="但系生呢个头唔知点解",
+    yuewen_5="但系山呢个头唔知点解特别瘾",
     zhongwen_6="「珊你个头」却特别刺耳",
     yuewen_6="「珊你个头」就特别刺耳",
     zhongwen_7="我⋯我⋯",
@@ -2336,26 +2336,23 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(8)(
     yuewen_8="我唔学抢包山嘞！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="珊珊见唔到我呢个师弟",
-    note_2="Removed 佢 as it is redundant; 珊珊 already refers to the "
-    "subject, and 佢 is unnecessary here in the context of the "
-    "full subtitle set.",
-    yuewen_revised_3="我唯有死死气再爬上组合柜",
-    note_3='Changed "爬返上个组合柜" to "再爬上组合柜" to match the sequence and '
-    "avoid unnecessary use of 返, which is not required in this "
-    "context.",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="我唯有死死气再爬返上个组合柜",
+    note_3="Added '再' to match the sequence and continuity implied in "
+    "the previous subtitles, ensuring consistency with the "
+    "narrative flow.",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="唔知点解",
-    note_5='Removed "但系生呢个头" as it is not present in the context and '
-    "is not needed for the meaning; the phrase should simply be "
-    '"唔知点解" to match the flow of the subtitles.',
+    yuewen_revised_5="但系珊呢个头唔知点解特别瘾",
+    note_5="Corrected '山' to '珊' to match the character's name "
+    "referenced throughout the subtitles.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
     note_7="",
-    yuewen_revised_8="我唔学抢包山啦！",
-    note_8="Changed 嘞 to 啦 for more natural spoken Cantonese in this context.",
+    yuewen_revised_8="",
+    note_8="",
 )  # review_test_case_block_47
 review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="其实今天是我第一次近距离见黎根",
@@ -3853,9 +3850,9 @@ review_test_case_block_70 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_10="唉，快餐不就是常餐",
     yuewen_10="系，快餐就即系常餐啰",
     zhongwen_11="常餐不是卖光了吗？",
-    yuewen_11="咁你头先又话冇常餐，系呀，常餐就系卖晒呀？",
+    yuewen_11="咁你头先又话冇常餐？",
     zhongwen_12="对，常餐卖光了，要吃特餐吗？",
-    yuewen_12="咁你试唔试下特餐啦？",
+    yuewen_12="系呀，常餐就系卖晒呀，咁你试唔试下特餐啦？",
     zhongwen_13="来两份特餐吧",
     yuewen_13="两份特餐啦",
     zhongwen_14="对不起，特餐卖光了",
@@ -3904,11 +3901,8 @@ review_test_case_block_70 = ReviewTestCase.get_test_case_cls(26)(
     note_9="",
     yuewen_revised_10="",
     note_10="",
-    yuewen_revised_11="咁你头先又话冇常餐，系呀，常餐就卖晒呀？",
-    note_11="Removed the extra '系' before '卖晒呀' for naturalness and to "
-    "avoid redundancy in the context of the conversation. The "
-    "phrase '常餐就系卖晒呀' is less natural than '常餐就卖晒呀' in this "
-    "context, as the '系' is not needed here.",
+    yuewen_revised_11="",
+    note_11="",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
@@ -3956,17 +3950,18 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_7="跟常餐一样精采",
     yuewen_7="同常餐一样咁好嘢啰",
     zhongwen_8="常餐又怎样呢？",
-    yuewen_8="噉常餐又点好嘢法呀？常餐，常餐？",
+    yuewen_8="噉常餐又点好嘢法呀？",
     zhongwen_9="常餐早卖光了，你说精采不？",
-    yuewen_9="一早卖晒啦，你话好唔好嘢？好啦好啦",
+    yuewen_9="常餐，常餐一早卖晒啦，你话好唔好嘢？",
     zhongwen_10="好吧好吧！两份午餐好了",
-    yuewen_10="要两份午餐啦！",
+    yuewen_10="好啦好啦！要两份午餐啦",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="太过分啦？噉你哋究竟有啲咩餐呀？",
-    note_2="Removed the redundant '吧' after '啦', as '啦吧' is not natural "
-    "in Cantonese speech and is inconsistent with the rest of the "
-    "subtitles.",
+    yuewen_revised_2="太过分啦，你哋究竟有冇嘢食㗎？",
+    note_2="Revised to better reflect natural spoken Cantonese and "
+    "maintain consistency with the rest of the subtitles. Removed "
+    "'吧' (Mandarin influence), changed '噉你哋究竟有啲咩餐呀？' to "
+    "'你哋究竟有冇嘢食㗎？' which is more idiomatic in this context.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -3977,17 +3972,13 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     note_6="",
     yuewen_revised_7="",
     note_7="",
-    yuewen_revised_8="噉常餐又点好嘢法呀？",
-    note_8="Removed the repeated '常餐，常餐？' at the end, as it is not "
-    "present in the rest of the exchange and breaks the pattern "
-    "of the dialogue.",
-    yuewen_revised_9="常餐一早卖晒啦，你话好唔好嘢？好啦好啦",
-    note_9="Added '常餐' at the start for clarity and consistency with the "
-    "previous subtitle, as the question is about 常餐.",
-    yuewen_revised_10="两份午餐啦！",
-    note_10="Changed '要两份午餐啦！' to '两份午餐啦！' to match the concise ordering "
-    "style in Cantonese and for consistency with the dialogue "
-    "pattern.",
+    yuewen_revised_8="",
+    note_8="",
+    yuewen_revised_9="常餐一早卖晒啦，你话好唔好嘢？",
+    note_9="Removed the repeated '常餐，常餐' for natural flow and to avoid "
+    "redundancy in spoken Cantonese.",
+    yuewen_revised_10="",
+    note_10="",
 )  # review_test_case_block_71
 review_test_case_block_72 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="对不起，午餐卖光了",
