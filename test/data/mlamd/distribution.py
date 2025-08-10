@@ -1151,6 +1151,7 @@ distribute_test_cases_block_58 = [
         yuewen_1_to_append="之后我哋仲食咗一个礼拜嘅",
         yuewen_2_to_prepend="火鸡三文治做早餐",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="之后，我们吃了一个星期的⋯",
@@ -1160,6 +1161,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="之后我哋仲食咗一个礼拜嘅",
         yuewen_1_to_append="之后我哋仲食咗一个礼拜嘅",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="星期天",
@@ -1169,6 +1171,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="星期日",
         yuewen_1_to_append="星期日",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="她把冰箱内剩下来的火鸡肉撕呀撕",
@@ -1178,6 +1181,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="系噉撕系噉撕",
         yuewen_1_to_append="系噉撕系噉撕",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="即是说，火鸡死掉后跟我们一起的日子",
@@ -1187,6 +1191,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="同我哋一齐嘅日子",
         yuewen_1_to_append="同我哋一齐嘅日子",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="我还发觉，火鸡的味道⋯",
@@ -1196,6 +1201,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="火鸡嘅味道",
         yuewen_1_to_append="火鸡嘅味道",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="一次⋯",
@@ -1205,6 +1211,7 @@ distribute_test_cases_block_58 = [
         yuewen_to_distribute="一次",
         yuewen_1_to_append="一次",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_58
 distribute_test_cases_block_59 = [
@@ -1216,6 +1223,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="另一方面",
         yuewen_1_to_append="另一方面",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="香港体运总会霍震霆⋯",
@@ -1226,6 +1234,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="中国香港体育协会企奥委会会长霍振庭",
         yuewen_2_to_prepend="正式向亚运协会提出申请",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="另方面⋯",
@@ -1235,6 +1244,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="另一方面",
         yuewen_1_to_append="另一方面",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="其中港九新界竹战联谊会⋯",
@@ -1245,6 +1255,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="其中港狗新界足战联谊会",
         yuewen_2_to_prepend="更希望打麻雀可以成为亚运项目",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="经已发动所有会员⋯",
@@ -1255,6 +1266,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="全港茶餐厅联工协会经热发动所有会员",
         yuewen_2_to_prepend="争取掟蛋挞成为亚运会比赛项目",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="亦向霍主席当面提出⋯",
@@ -1265,6 +1277,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="立尾同业会亦都向霍主席当面提出",
         yuewen_2_to_prepend="挂立鸭可以成为亚运比赛项目",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="较为特别的是，CIC保险营业员联同⋯",
@@ -1275,6 +1288,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="CIC保险营业员联同",
         yuewen_2_to_prepend="大角嘴春田花花",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="较为特别的是，CIC保险营业员联同⋯",
@@ -1284,6 +1298,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="CIC保险营业员联同",
         yuewen_1_to_append="CIC保险营业员联同",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="附属小学一班小朋友⋯",
@@ -1294,6 +1309,7 @@ distribute_test_cases_block_59 = [
         yuewen_1_to_append="幼稚园附属小学嘅一班小朋友",
         yuewen_2_to_prepend="争取抢包山",
         difficulty=1,
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="附属小学一班小朋友⋯",
@@ -1303,6 +1319,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="幼稚园附属小学嘅一班小朋友",
         yuewen_1_to_append="幼稚园附属小学嘅一班小朋友",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="向全世界人再次证明⋯",
@@ -1312,6 +1329,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="向全世界人再次证明",
         yuewen_1_to_append="向全世界人再次证明",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="另外，全港茶餐厅员工协会⋯",
@@ -1321,6 +1339,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="全港茶餐厅联工协会",
         yuewen_1_to_append="全港茶餐厅联工协会",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="经已发动所有会员⋯",
@@ -1330,6 +1349,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="经热发动所有会员",
         yuewen_1_to_append="经热发动所有会员",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="附属小学一班小朋友⋯",
@@ -1339,6 +1359,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="附属小学嘅一班小朋友",
         yuewen_1_to_append="附属小学嘅一班小朋友",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="一项几乎绝迹的运动⋯",
@@ -1348,6 +1369,7 @@ distribute_test_cases_block_59 = [
         yuewen_to_distribute="一项几乎绝迹嘅运动",
         yuewen_1_to_append="一项几乎绝迹嘅运动",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_59
 distribute_test_cases_block_60 = [
@@ -1401,6 +1423,7 @@ distribute_test_cases_block_69 = [
         yuewen_to_distribute="常餐有咩食㗎",
         yuewen_1_to_append="",
         yuewen_2_to_prepend="常餐有咩食㗎",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="跟特餐一样吧",
@@ -1455,6 +1478,7 @@ distribute_test_cases_block_69 = [
         yuewen_to_distribute="噉晚餐又食啲咩呀",
         yuewen_1_to_append="噉晚餐又食啲咩呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_69
 distribute_test_cases_block_70 = [
@@ -1466,6 +1490,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="特餐有咩食㗎",
         yuewen_1_to_append="特餐有咩食㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="午餐又吃什么呢？",
@@ -1475,6 +1500,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="午餐食乜嘢㗎",
         yuewen_1_to_append="午餐食乜嘢㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="都是晚餐那些吧",
@@ -1484,6 +1510,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="都系晚餐嗰啲嘢啰",
         yuewen_1_to_append="都系晚餐嗰啲嘢啰",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="什么是晚餐？",
@@ -1493,6 +1520,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="咁乜嘢系晚餐呀",
         yuewen_1_to_append="咁乜嘢系晚餐呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="跟快餐一样",
@@ -1502,6 +1530,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="同快餐一样啰",
         yuewen_1_to_append="同快餐一样啰",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="快餐吃什么？",
@@ -1511,6 +1540,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="咁快餐食咩㗎",
         yuewen_1_to_append="咁快餐食咩㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="妈妈，改快餐吧",
@@ -1520,6 +1550,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="不如改快餐啦",
         yuewen_1_to_append="不如改快餐啦",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="快餐有什么？",
@@ -1529,6 +1560,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="快餐有咩㗎",
         yuewen_1_to_append="快餐有咩㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="常餐又有什么呢？",
@@ -1538,6 +1570,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="咁上餐有咩㗎",
         yuewen_1_to_append="咁上餐有咩㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="那么午餐又有什么吃？",
@@ -1547,6 +1580,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="咁午餐有咩食呀",
         yuewen_1_to_append="咁午餐有咩食呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="午餐跟晚餐一样",
@@ -1556,6 +1590,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="午餐同晚餐一样㗎",
         yuewen_1_to_append="午餐同晚餐一样㗎",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="晚餐呢？",
@@ -1565,6 +1600,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="咁晚餐呢",
         yuewen_1_to_append="咁晚餐呢",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="晚餐不就是特餐",
@@ -1574,6 +1610,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="晚餐就即系特餐啰",
         yuewen_1_to_append="晚餐就即系特餐啰",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="特餐卖光了，要试试快餐吗？都一样的",
@@ -1583,6 +1620,7 @@ distribute_test_cases_block_70 = [
         yuewen_to_distribute="一样嘅啫",
         yuewen_1_to_append="一样嘅啫",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_70
 distribute_test_cases_block_71 = [
@@ -1594,6 +1632,7 @@ distribute_test_cases_block_71 = [
         yuewen_to_distribute="噉你哋究竟有啲咩餐呀",
         yuewen_1_to_append="噉你哋究竟有啲咩餐呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="跟晚餐一样精采",
@@ -1603,6 +1642,7 @@ distribute_test_cases_block_71 = [
         yuewen_to_distribute="同晚餐一样咁好嘢",
         yuewen_1_to_append="同晚餐一样咁好嘢",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="晚餐又怎样呢？",
@@ -1612,6 +1652,7 @@ distribute_test_cases_block_71 = [
         yuewen_to_distribute="噉晚餐又点好嘢法呀",
         yuewen_1_to_append="噉晚餐又点好嘢法呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="跟常餐一样精采",
@@ -1621,6 +1662,7 @@ distribute_test_cases_block_71 = [
         yuewen_to_distribute="同上餐一样咁好嘢啰",
         yuewen_1_to_append="同上餐一样咁好嘢啰",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="常餐又怎样呢？",
@@ -1630,6 +1672,7 @@ distribute_test_cases_block_71 = [
         yuewen_to_distribute="噉上餐又点好嘢法呀",
         yuewen_1_to_append="噉上餐又点好嘢法呀",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_71
 distribute_test_cases_block_72 = [
