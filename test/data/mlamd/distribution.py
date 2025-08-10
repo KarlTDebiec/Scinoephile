@@ -1096,6 +1096,7 @@ distribute_test_cases_block_55 = [
         yuewen_to_distribute="失望",
         yuewen_1_to_append="失望",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="那日妈妈竟然跟我说⋯",
@@ -1105,6 +1106,7 @@ distribute_test_cases_block_55 = [
         yuewen_to_distribute="嗰日妈妈竟然同我讲",
         yuewen_1_to_append="嗰日妈妈竟然同我讲",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="妈妈不留神漏出了火鸡内的洋葱粒",
@@ -1114,6 +1116,7 @@ distribute_test_cases_block_55 = [
         yuewen_to_distribute="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         yuewen_1_to_append="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="妈妈不留神漏出了火鸡内的洋葱粒",
@@ -1123,6 +1126,7 @@ distribute_test_cases_block_55 = [
         yuewen_to_distribute="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         yuewen_1_to_append="畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         yuewen_2_to_prepend="",
+        verified=True,
     ),
     DistributeTestCase(
         zhongwen_1="红萝卜粒",
@@ -1130,8 +1134,9 @@ distribute_test_cases_block_55 = [
         zhongwen_2="我说：火鸡「疴烂煮」！",
         yuewen_2_end="我话火鸡我能住呀",
         yuewen_to_distribute="流嘅出嚟",
-        yuewen_1_to_append="",
-        yuewen_2_to_prepend="流嘅出嚟",
+        yuewen_1_to_append="流嘅出嚟",
+        yuewen_2_to_prepend="",
+        verified=True,
     ),
 ]  # distribute_test_cases_block_55
 distribute_test_cases_block_56 = []  # distribute_test_cases_block_56
