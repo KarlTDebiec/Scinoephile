@@ -3917,6 +3917,7 @@ shift_test_cases_block_43 = [
         yuewen_2="因为我系师父最后一个入室弟子",
         yuewen_1_shifted="妈妈喺长洲揾咗间酒楼摆咗几回白丝宴",
         yuewen_2_shifted="因为我系师父最后一个入室弟子",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="因为我是师傅最后一个入室弟子",
@@ -3925,6 +3926,7 @@ shift_test_cases_block_43 = [
         yuewen_2="所以到学嘅乡亲父老特别多",
         yuewen_1_shifted="因为我系师父最后一个入室弟子",
         yuewen_2_shifted="所以到学嘅乡亲父老特别多",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="到贺的乡绅父老特别多",
@@ -3933,6 +3935,7 @@ shift_test_cases_block_43 = [
         yuewen_2="估唔到黄德森都有嚟饮",
         yuewen_1_shifted="所以到学嘅乡亲父老特别多",
         yuewen_2_shifted="估唔到黄德森都有嚟饮",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="想不到黄德森也来了",
@@ -3941,6 +3944,7 @@ shift_test_cases_block_43 = [
         yuewen_2="仲赞我背著啲肉口添",
         yuewen_1_shifted="估唔到黄德森都有嚟饮",
         yuewen_2_shifted="仲赞我背著啲肉口添",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="还赞我背上的肉厚",
@@ -3949,6 +3953,7 @@ shift_test_cases_block_43 = [
         yuewen_2="但系山神就去咗集训冇嚟到",
         yuewen_1_shifted="仲赞我背著啲肉口添",
         yuewen_2_shifted="但系山神就去咗集训冇嚟到",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="珊珊因为去了集训，没来",
@@ -3957,6 +3962,7 @@ shift_test_cases_block_43 = [
         yuewen_2="默默姑侍同德巴都嚟咗",
         yuewen_1_shifted="但系山神就去咗集训冇嚟到",
         yuewen_2_shifted="默默姑侍同德巴都嚟咗",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="麦唛，菇时跟得巴都来了",
@@ -3965,6 +3971,7 @@ shift_test_cases_block_43 = [
         yuewen_2="仲带埋成绩表奖牌同大包嚟添",
         yuewen_1_shifted="默默姑侍同德巴都嚟咗",
         yuewen_2_shifted="仲带埋成绩表奖牌同大包嚟添",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="还带着成绩表，奖牌和大包",
@@ -3973,6 +3980,7 @@ shift_test_cases_block_43 = [
         yuewen_2="佢哋都希望嚟今可以收埋佢哋做徒弟",
         yuewen_1_shifted="仲带埋成绩表奖牌同大包嚟添",
         yuewen_2_shifted="佢哋都希望嚟今可以收埋佢哋做徒弟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他们都希望黎根也可以收他们做徒弟",
@@ -3981,6 +3989,7 @@ shift_test_cases_block_43 = [
         yuewen_2="食完鸡丝翅就到咗拜师仪式",
         yuewen_1_shifted="佢哋都希望嚟今可以收埋佢哋做徒弟",
         yuewen_2_shifted="食完鸡丝翅就到咗拜师仪式",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="吃过鸡丝翅，就是拜师仪式",
@@ -3989,6 +3998,7 @@ shift_test_cases_block_43 = [
         yuewen_2="妈妈针咗杯热茶畀我叫我弟畀师父饮",
         yuewen_1_shifted="食完鸡丝翅就到咗拜师仪式",
         yuewen_2_shifted="妈妈针咗杯热茶畀我叫我弟畀师父饮",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈倒了杯茶给我，让我给师傅喝",
@@ -3997,33 +4007,35 @@ shift_test_cases_block_43 = [
         yuewen_2="哦我前三万苦嚟到长洲揾嚟近",
         yuewen_1_shifted="妈妈针咗杯热茶畀我叫我弟畀师父饮",
         yuewen_2_shifted="哦我前三万苦嚟到长洲揾嚟近",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我千辛万苦来长洲找黎根⋯",
         yuewen_1="哦我前三万苦嚟到长洲揾嚟近",
         zhongwen_2="我终于可以跟珊珊一起练滑浪风帆了！",
         yuewen_2="哦我终于可以同山神一齐练习玩弄风范啊",
-        yuewen_1_shifted="哦我前三万苦嚟到长洲揾嚟近哦我终于可以同山神一齐练习",
-        yuewen_2_shifted="玩弄风范啊",
-        difficulty=1,
+        yuewen_1_shifted="哦我前三万苦嚟到长洲揾嚟近",
+        yuewen_2_shifted="哦我终于可以同山神一齐练习玩弄风范啊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我终于可以跟珊珊一起练滑浪风帆了！",
-        yuewen_1="玩弄风范啊",
+        yuewen_1="哦我终于可以同山神一齐练习玩弄风范啊",
         zhongwen_2="我将茶递给黎根，黎根他⋯",
         yuewen_2="我将杯茶递咗畀嚟跟嚟跟佢",
-        yuewen_1_shifted="玩弄风范啊我将杯茶递咗畀嚟跟",
-        yuewen_2_shifted="嚟跟佢",
-        difficulty=1,
+        yuewen_1_shifted="哦我终于可以同山神一齐练习玩弄风范啊",
+        yuewen_2_shifted="我将杯茶递咗畀嚟跟嚟跟佢",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我将茶递给黎根，黎根他⋯",
-        yuewen_1="嚟跟佢",
+        yuewen_1="我将杯茶递咗畀嚟跟嚟跟佢",
         zhongwen_2="师傅他把茶喝了，正式收我做徒弟",
         yuewen_2="亦唔系师父佢饮咗杯茶正式收咗我做徒弟嘞",
-        yuewen_1_shifted="嚟跟佢亦唔系",
+        yuewen_1_shifted="我将杯茶递咗畀嚟跟嚟跟佢亦唔系",
         yuewen_2_shifted="师父佢饮咗杯茶正式收咗我做徒弟嘞",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅他把茶喝了，正式收我做徒弟",
@@ -4032,6 +4044,7 @@ shift_test_cases_block_43 = [
         yuewen_2="啲来宾睇嚟好高气",
         yuewen_1_shifted="师父佢饮咗杯茶正式收咗我做徒弟嘞",
         yuewen_2_shifted="啲来宾睇嚟好高气",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="宾客们好像都很高兴",
@@ -4040,6 +4053,7 @@ shift_test_cases_block_43 = [
         yuewen_2="特别系长洲啲乡亲父老拍奖拍得特别落力",
         yuewen_1_shifted="啲来宾睇嚟好高气",
         yuewen_2_shifted="特别系长洲啲乡亲父老拍奖拍得特别落力",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="长洲的乡绅父老拍掌拍得特别落力",
@@ -4048,6 +4062,7 @@ shift_test_cases_block_43 = [
         yuewen_2="多谢各位上面多谢各位",
         yuewen_1_shifted="特别系长洲啲乡亲父老拍奖拍得特别落力",
         yuewen_2_shifted="多谢各位上面多谢各位",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="多谢各位赏面！多谢各位！",
@@ -4056,6 +4071,7 @@ shift_test_cases_block_43 = [
         yuewen_2="在下评生有两项称得上得意嘅绝技",
         yuewen_1_shifted="多谢各位上面多谢各位",
         yuewen_2_shifted="在下评生有两项称得上得意嘅绝技",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在下平生有两项称得上得意的绝技",
@@ -4064,6 +4080,7 @@ shift_test_cases_block_43 = [
         yuewen_2="第一样系滑浪风范",
         yuewen_1_shifted="在下评生有两项称得上得意嘅绝技",
         yuewen_2_shifted="第一样系滑浪风范",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="第一项，是滑浪风帆！",
@@ -4073,6 +4090,7 @@ shift_test_cases_block_43 = [
         yuewen_1_shifted="第一样系滑浪风范呢样早已",
         yuewen_2_shifted="传咗畀我外甥女山神啊",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我把它传给外甥女珊珊了",
@@ -4081,6 +4099,7 @@ shift_test_cases_block_43 = [
         yuewen_2="另一项绝技我打算传畀呢个新修嘅徒弟",
         yuewen_1_shifted="传咗畀我外甥女山神啊",
         yuewen_2_shifted="另一项绝技我打算传畀呢个新修嘅徒弟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="另一项绝技，我打算传给这个新徒弟⋯",
@@ -4089,6 +4108,7 @@ shift_test_cases_block_43 = [
         yuewen_2="希望我可以将我哋长洲人世世代代嘅传统",
         yuewen_1_shifted="另一项绝技我打算传畀呢个新修嘅徒弟",
         yuewen_2_shifted="希望我可以将我哋长洲人世世代代嘅传统",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="希望他把长洲人世世代代的绝技",
@@ -4097,6 +4117,7 @@ shift_test_cases_block_43 = [
         yuewen_2="发扬光大",
         yuewen_1_shifted="希望我可以将我哋长洲人世世代代嘅传统",
         yuewen_2_shifted="发扬光大",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="发扬光大！",
@@ -4105,6 +4126,7 @@ shift_test_cases_block_43 = [
         yuewen_2="噉请问嗰样绝技系乜嘢啊",
         yuewen_1_shifted="发扬光大",
         yuewen_2_shifted="噉请问嗰样绝技系乜嘢啊",
+        verified=True,
     ),
 ]  # shift_test_cases_block_43
 shift_test_cases_block_44 = [
@@ -4126,6 +4148,7 @@ shift_test_cases_block_45 = [
         yuewen_2="年轻嘅观众可能唔知乜嘢系抢包山呀",
         yuewen_1_shifted="抢包山?",
         yuewen_2_shifted="年轻嘅观众可能唔知乜嘢系抢包山呀",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="年轻观众可能不知「抢包山」何物",
@@ -4134,6 +4157,7 @@ shift_test_cases_block_45 = [
         yuewen_2="抢包山系长洲独有嘅传统节日",
         yuewen_1_shifted="年轻嘅观众可能唔知乜嘢系抢包山呀",
         yuewen_2_shifted="抢包山系长洲独有嘅传统节日",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="抢包山乃长洲独有传统节日",
@@ -4142,6 +4166,7 @@ shift_test_cases_block_45 = [
         yuewen_2="每年农历四月",
         yuewen_1_shifted="抢包山系长洲独有嘅传统节日",
         yuewen_2_shifted="每年农历四月",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="每年农历四月",
@@ -4150,6 +4175,7 @@ shift_test_cases_block_45 = [
         yuewen_2="长洲嘅居民都会举办太平清朝",
         yuewen_1_shifted="每年农历四月",
         yuewen_2_shifted="长洲嘅居民都会举办太平清朝",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="长洲居民均举办太平清醮",
@@ -4158,6 +4184,7 @@ shift_test_cases_block_45 = [
         yuewen_2="喺北帝庙前搭起三座包山",
         yuewen_1_shifted="长洲嘅居民都会举办太平清朝",
         yuewen_2_shifted="喺北帝庙前搭起三座包山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="于北帝庙前搭起三座包山",
@@ -4166,6 +4193,7 @@ shift_test_cases_block_45 = [
         yuewen_2="噉乜嘢系包山呢?",
         yuewen_1_shifted="喺北帝庙前搭起三座包山",
         yuewen_2_shifted="噉乜嘢系包山呢?",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="什么是包山呢？",
@@ -4174,6 +4202,7 @@ shift_test_cases_block_45 = [
         yuewen_2="顾名思义",
         yuewen_1_shifted="噉乜嘢系包山呢?",
         yuewen_2_shifted="顾名思义",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="顾名思义⋯",
@@ -4182,6 +4211,7 @@ shift_test_cases_block_45 = [
         yuewen_2="包山就系一座由好多好多好多包砌起嘅山",
         yuewen_1_shifted="顾名思义",
         yuewen_2_shifted="包山就系一座由好多好多好多包砌起嘅山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="包山就是一座由好多好多包砌起的山！",
@@ -4190,6 +4220,7 @@ shift_test_cases_block_45 = [
         yuewen_2="一座包山起码六七层楼高",
         yuewen_1_shifted="包山就系一座由好多好多好多包砌起嘅山",
         yuewen_2_shifted="一座包山起码六七层楼高",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一座包山，起码六、七层楼高⋯",
@@ -4198,6 +4229,7 @@ shift_test_cases_block_45 = [
         yuewen_2="噉你可以想像一下嗰度有几多包喇",
         yuewen_1_shifted="一座包山起码六七层楼高",
         yuewen_2_shifted="噉你可以想像一下嗰度有几多包喇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="你可以想像一下包山有多高了吧？",
@@ -4206,6 +4238,7 @@ shift_test_cases_block_45 = [
         yuewen_2="噉抢包山自然就系要将包山嘅包抢到手",
         yuewen_1_shifted="噉你可以想像一下嗰度有几多包喇",
         yuewen_2_shifted="噉抢包山自然就系要将包山嘅包抢到手",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="抢包山，就是要把包山上的包抢到手！",
@@ -4214,6 +4247,7 @@ shift_test_cases_block_45 = [
         yuewen_2="罗古响起",
         yuewen_1_shifted="噉抢包山自然就系要将包山嘅包抢到手",
         yuewen_2_shifted="罗古响起",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="锣鼓响起",
@@ -4222,6 +4256,7 @@ shift_test_cases_block_45 = [
         yuewen_2="数以百计嘅青年就会一涌而上去抢包",
         yuewen_1_shifted="罗古响起",
         yuewen_2_shifted="数以百计嘅青年就会一涌而上去抢包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="数以百计的青年一涌而上抢包",
@@ -4230,6 +4265,7 @@ shift_test_cases_block_45 = [
         yuewen_2="抢到位置越高嘅包就代表越大嘅祝福",
         yuewen_1_shifted="数以百计嘅青年就会一涌而上去抢包",
         yuewen_2_shifted="抢到位置越高嘅包就代表越大嘅祝福",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="抢得位置愈高的包，就是愈大的祝福",
@@ -4238,6 +4274,7 @@ shift_test_cases_block_45 = [
         yuewen_2="更加可以表现自己不凡嘅身手",
         yuewen_1_shifted="抢到位置越高嘅包就代表越大嘅祝福",
         yuewen_2_shifted="更加可以表现自己不凡嘅身手",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="更可以表现自己的不凡身手",
@@ -4246,24 +4283,25 @@ shift_test_cases_block_45 = [
         yuewen_2="但喺1978年两座包山突然塌咗都去抢包山",
         yuewen_1_shifted="更加可以表现自己不凡嘅身手",
         yuewen_2_shifted="但喺1978年两座包山突然塌咗都去抢包山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在1978年两座包山忽然倒下，多人重伤",
         yuewen_1="但喺1978年两座包山突然塌咗都去抢包山",
         zhongwen_2="「抢包山」从此被禁！",
         yuewen_2="而长洲特有嘅传统亦占备为榜",
-        yuewen_1_shifted="但喺1978年两座包山突然塌咗",
-        yuewen_2_shifted="都去抢包山而长洲特有嘅传统亦占备为榜",
-        difficulty=1,
+        yuewen_1_shifted="但喺1978年两座包山突然塌咗都去抢包山",
+        yuewen_2_shifted="而长洲特有嘅传统亦占备为榜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「抢包山」从此被禁！",
-        yuewen_1="都去抢包山而长洲特有嘅传统亦占备为榜",
+        yuewen_1="而长洲特有嘅传统亦占备为榜",
         zhongwen_2="而长洲独有的传统，亦渐被遗忘",
         yuewen_2="长洲特有嘅传统亦占备为榜",
-        yuewen_1_shifted="都去抢包山而",
-        yuewen_2_shifted="长洲特有嘅传统亦占备为榜长洲特有嘅传统亦占备为榜",
-        difficulty=1,
+        yuewen_1_shifted="而长洲特有嘅传统亦占备为榜",
+        yuewen_2_shifted="长洲特有嘅传统亦占备为榜",
+        verified=True,
     ),
 ]  # shift_test_cases_block_45
 shift_test_cases_block_46 = [
@@ -4274,6 +4312,7 @@ shift_test_cases_block_46 = [
         yuewen_2="每个礼拜六我都会搭船过长洲",
         yuewen_1_shifted="奥运金牌我谂呢一世都唔会攞到",
         yuewen_2_shifted="每个礼拜六我都会搭船过长洲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="每个星期六我都搭船过长洲",
@@ -4282,6 +4321,7 @@ shift_test_cases_block_46 = [
         yuewen_2="去学抢包山",
         yuewen_1_shifted="每个礼拜六我都会搭船过长洲",
         yuewen_2_shifted="去学抢包山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="去学抢包山⋯",
@@ -4290,6 +4330,7 @@ shift_test_cases_block_46 = [
         yuewen_2="一日冇奖牌冇对手冇比赛",
         yuewen_1_shifted="去学抢包山",
         yuewen_2_shifted="一日冇奖牌冇对手冇比赛",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一项没有奖牌，没有对手，没有比赛⋯",
@@ -4298,6 +4339,7 @@ shift_test_cases_block_46 = [
         yuewen_2="甚至乎冇人知对佢系运动嘅运动",
         yuewen_1_shifted="一日冇奖牌冇对手冇比赛",
         yuewen_2_shifted="甚至乎冇人知对佢系运动嘅运动",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="甚至没有人知道是运动的运动",
@@ -4306,6 +4348,7 @@ shift_test_cases_block_46 = [
         yuewen_2="更衰嘅系连包山都冇",
         yuewen_1_shifted="甚至乎冇人知对佢系运动嘅运动",
         yuewen_2_shifted="更衰嘅系连包山都冇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="更坏的是，连包山也没有！",
@@ -4314,6 +4357,7 @@ shift_test_cases_block_46 = [
         yuewen_2="师傅净系叫我去佢屋企",
         yuewen_1_shifted="更衰嘅系连包山都冇",
         yuewen_2_shifted="师傅净系叫我去佢屋企",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅只是叫我去他的家⋯",
@@ -4322,6 +4366,7 @@ shift_test_cases_block_46 = [
         yuewen_2="喺个组合柜度爬嚟爬去",
         yuewen_1_shifted="师傅净系叫我去佢屋企",
         yuewen_2_shifted="喺个组合柜度爬嚟爬去",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在组合柜爬来爬去",
@@ -4330,6 +4375,7 @@ shift_test_cases_block_46 = [
         yuewen_2="通三番",
         yuewen_1_shifted="喺个组合柜度爬嚟爬去",
         yuewen_2_shifted="通三番",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="碰！三番！",
@@ -4338,6 +4384,7 @@ shift_test_cases_block_46 = [
         yuewen_2="冇偷懒继续练",
         yuewen_1_shifted="通三番",
         yuewen_2_shifted="冇偷懒继续练",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="别躲懒！继续练！",
@@ -4346,6 +4393,7 @@ shift_test_cases_block_46 = [
         yuewen_2="有一日山伞嚟咗师傅屋企",
         yuewen_1_shifted="冇偷懒继续练",
         yuewen_2_shifted="有一日山伞嚟咗师傅屋企",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一天，珊珊到了师传家！",
@@ -4354,6 +4402,7 @@ shift_test_cases_block_46 = [
         yuewen_2="山伞我个师仔山伞啊",
         yuewen_1_shifted="有一日山伞嚟咗师傅屋企",
         yuewen_2_shifted="山伞我个师仔山伞啊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="珊珊！我的师姐珊珊！",
@@ -4362,6 +4411,7 @@ shift_test_cases_block_46 = [
         yuewen_2="可以见到山伞",
         yuewen_1_shifted="山伞我个师仔山伞啊",
         yuewen_2_shifted="可以见到山伞",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可以看见珊珊⋯",
@@ -4370,6 +4420,7 @@ shift_test_cases_block_46 = [
         yuewen_2="爬得咁辛苦都系值得㗎",
         yuewen_1_shifted="可以见到山伞",
         yuewen_2_shifted="爬得咁辛苦都系值得㗎",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="这几个星期爬得再辛苦也是值得的！",
@@ -4378,6 +4429,7 @@ shift_test_cases_block_46 = [
         yuewen_2="山伞",
         yuewen_1_shifted="爬得咁辛苦都系值得㗎",
         yuewen_2_shifted="山伞",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="珊珊！",
@@ -4386,6 +4438,7 @@ shift_test_cases_block_46 = [
         yuewen_2="伞你个头啊继续练习",
         yuewen_1_shifted="山伞",
         yuewen_2_shifted="伞你个头啊继续练习",
+        verified=True,
     ),
 ]  # shift_test_cases_block_46
 shift_test_cases_block_47 = [
@@ -4502,6 +4555,7 @@ shift_test_cases_block_50 = [
         yuewen_2="跟住黎根讲咗一大堆说话",
         yuewen_1_shifted="麦兜嘅学嘢呢都仲可以",
         yuewen_2_shifted="跟住黎根讲咗一大堆说话",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="黎根接着说了一大堆话⋯",
@@ -4510,6 +4564,7 @@ shift_test_cases_block_50 = [
         yuewen_2="讲下佢嘅抱负佢对麦兜嘅期望",
         yuewen_1_shifted="跟住黎根讲咗一大堆说话",
         yuewen_2_shifted="讲下佢嘅抱负佢对麦兜嘅期望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他的抱负，他对麦兜的期望",
@@ -4518,6 +4573,7 @@ shift_test_cases_block_50 = [
         yuewen_2="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
         yuewen_1_shifted="讲下佢嘅抱负佢对麦兜嘅期望",
         yuewen_2_shifted="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他说他会把他所识的毫不保留教给麦兜",
@@ -4526,6 +4582,7 @@ shift_test_cases_block_50 = [
         yuewen_2="黎根越讲越兴奋",
         yuewen_1_shifted="佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
         yuewen_2_shifted="黎根越讲越兴奋",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="黎根越说越兴奋，直到双眼发光",
@@ -4534,6 +4591,7 @@ shift_test_cases_block_50 = [
         yuewen_2="佢话滑浪风帆都唔系佢最犀利嗰样",
         yuewen_1_shifted="黎根越讲越兴奋",
         yuewen_2_shifted="佢话滑浪风帆都唔系佢最犀利嗰样",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他又说滑浪风帆并不是他最犀利的项目",
@@ -4542,6 +4600,7 @@ shift_test_cases_block_50 = [
         yuewen_2="佢最劲嘅就系抢包山",
         yuewen_1_shifted="佢话滑浪风帆都唔系佢最犀利嗰样",
         yuewen_2_shifted="佢最劲嘅就系抢包山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他最大强项是抢包山",
@@ -4550,6 +4609,7 @@ shift_test_cases_block_50 = [
         yuewen_2="佢话抢包山结合咗南拳",
         yuewen_1_shifted="佢最劲嘅就系抢包山",
         yuewen_2_shifted="佢话抢包山结合咗南拳",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他说抢包山结合了南拳",
@@ -4558,6 +4618,7 @@ shift_test_cases_block_50 = [
         yuewen_2="神功气现代气蟹粗",
         yuewen_1_shifted="佢话抢包山结合咗南拳",
         yuewen_2_shifted="神功气现代气蟹粗",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="神功戏和现代器械操",
@@ -4566,6 +4627,7 @@ shift_test_cases_block_50 = [
         yuewen_2="佢话抢包山先至系佢呢世人最大嘅成就",
         yuewen_1_shifted="神功气现代气蟹粗",
         yuewen_2_shifted="佢话抢包山先至系佢呢世人最大嘅成就",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="他说抢包山才是他一生最大成就",
@@ -4574,6 +4636,7 @@ shift_test_cases_block_50 = [
         yuewen_2="缩嗰只脚唔该",
         yuewen_1_shifted="佢话抢包山先至系佢呢世人最大嘅成就",
         yuewen_2_shifted="缩嗰只脚唔该",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="缩脚，唔该！",
@@ -4582,6 +4645,7 @@ shift_test_cases_block_50 = [
         yuewen_2="你睇下",
         yuewen_1_shifted="缩嗰只脚唔该",
         yuewen_2_shifted="你睇下",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="你看！",
@@ -4590,6 +4654,7 @@ shift_test_cases_block_50 = [
         yuewen_2="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
         yuewen_1_shifted="你睇下",
         yuewen_2_shifted="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="这脚瓜⋯好粗好大！比一节瓜还要大！",
@@ -4598,6 +4663,7 @@ shift_test_cases_block_50 = [
         yuewen_2="脚瓜嘅肌肉非常结实",
         yuewen_1_shifted="哗呢节呢节脚瓜好粗好大呀仲大过节瓜",
         yuewen_2_shifted="脚瓜嘅肌肉非常结实",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="脚瓜的肌肉非常结实⋯",
@@ -4606,6 +4672,7 @@ shift_test_cases_block_50 = [
         yuewen_2="啲青筋凸晒出嚟好似钢线噉",
         yuewen_1_shifted="脚瓜嘅肌肉非常结实",
         yuewen_2_shifted="啲青筋凸晒出嚟好似钢线噉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="青筋凸现，钢线似的",
@@ -4614,6 +4681,7 @@ shift_test_cases_block_50 = [
         yuewen_2="啲脚毛每一条都好似铁钉咁硬",
         yuewen_1_shifted="啲青筋凸晒出嚟好似钢线噉",
         yuewen_2_shifted="啲脚毛每一条都好似铁钉咁硬",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="每一条脚毛都硬似铁钉",
@@ -4622,6 +4690,7 @@ shift_test_cases_block_50 = [
         yuewen_2="脚趾弓啲脚夹成串咁厚",
         yuewen_1_shifted="啲脚毛每一条都好似铁钉咁硬",
         yuewen_2_shifted="脚趾弓啲脚夹成串咁厚",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="脚趾甲有一寸厚，究竟⋯",
@@ -4631,6 +4700,7 @@ shift_test_cases_block_50 = [
         yuewen_1_shifted="脚趾弓啲脚夹成串咁厚究竟",
         yuewen_2_shifted="要行个几度呢?",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="要走过几多座山",
@@ -4640,6 +4710,7 @@ shift_test_cases_block_50 = [
         yuewen_1_shifted="要行个几度呢?几多座山",
         yuewen_2_shifted="挂过几多个海",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="跨过几多个海",
@@ -4648,6 +4719,7 @@ shift_test_cases_block_50 = [
         yuewen_2="挨过几多斧头",
         yuewen_1_shifted="挂过几多个海",
         yuewen_2_shifted="挨过几多斧头",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="吃过几多苦头",
@@ -4656,6 +4728,7 @@ shift_test_cases_block_50 = [
         yuewen_2="先至可以练成呢一只举细无伤嘅脚瓜",
         yuewen_1_shifted="挨过几多斧头",
         yuewen_2_shifted="先至可以练成呢一只举细无伤嘅脚瓜",
+        verified=True,
     ),
 ]  # shift_test_cases_block_50
 shift_test_cases_block_51 = [
@@ -4733,6 +4806,7 @@ shift_test_cases_block_53 = [
         yuewen_2="点解妈妈会用英文写信嘅",
         yuewen_1_shifted="咦估唔到真系妈妈攞咗㖞吓得我啊",
         yuewen_2_shifted="点解妈妈会用英文写信嘅",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈怎么会写起英文信？",
@@ -4741,6 +4815,7 @@ shift_test_cases_block_53 = [
         yuewen_2="封信好短",
         yuewen_1_shifted="点解妈妈会用英文写信嘅",
         yuewen_2_shifted="封信好短",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="信很短",
@@ -4749,6 +4824,7 @@ shift_test_cases_block_53 = [
         yuewen_2="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
         yuewen_1_shifted="封信好短",
         yuewen_2_shifted="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我猜是妈妈用电子辞典逐个字译成英文",
@@ -4757,23 +4833,26 @@ shift_test_cases_block_53 = [
         yuewen_2="于是我让返电子词典将封信译返做中文",
         yuewen_1_shifted="我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
         yuewen_2_shifted="于是我让返电子词典将封信译返做中文",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="于是我又用电子辞典把信译回中文",
         yuewen_1="于是我让返电子词典将封信译返做中文",
         zhongwen_2="信，是妈妈写给奥委会主席的",
         yuewen_2="封信原来系妈妈写畀奥委会主席㗎",
-        yuewen_1_shifted="于是我让返电子词典将封信译返做中文封信原来系",
-        yuewen_2_shifted="妈妈写畀奥委会主席㗎",
-        difficulty=1,
+        yuewen_1_shifted="于是我让返电子词典将封信译返做中文",
+        yuewen_2_shifted="封信原来系妈妈写畀奥委会主席㗎",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="信，是妈妈写给奥委会主席的",
-        yuewen_1="妈妈写畀奥委会主席㗎",
+        yuewen_1="封信原来系妈妈写畀奥委会主席㗎",
         zhongwen_2="「亲爱的主席：」",
         yuewen_2="亲爱的主席",
-        yuewen_1_shifted="妈妈写畀奥委会主席㗎",
+        yuewen_1_shifted="封信原来系妈妈写畀奥委会主席㗎",
         yuewen_2_shifted="亲爱的主席",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「亲爱的主席：」",
@@ -4782,6 +4861,7 @@ shift_test_cases_block_53 = [
         yuewen_2="你好吗我很好",
         yuewen_1_shifted="亲爱的主席",
         yuewen_2_shifted="你好吗我很好",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「你好吗？我很好！」",
@@ -4790,6 +4870,7 @@ shift_test_cases_block_53 = [
         yuewen_2="你吃包吗我吃包",
         yuewen_1_shifted="你好吗我很好",
         yuewen_2_shifted="你吃包吗我吃包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「你吃包吗？我吃包！」",
@@ -4798,6 +4879,7 @@ shift_test_cases_block_53 = [
         yuewen_2="我门居住在香港这类的人肯爱吃包",
         yuewen_1_shifted="你吃包吗我吃包",
         yuewen_2_shifted="我门居住在香港这类的人肯爱吃包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「我们居住在香港这里的人，很爱吃包」",
@@ -4806,6 +4888,7 @@ shift_test_cases_block_53 = [
         yuewen_2="小笼包上海包广东包联融包",
         yuewen_1_shifted="我门居住在香港这类的人肯爱吃包",
         yuewen_2_shifted="小笼包上海包广东包联融包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「小笼包，上海包，广东包，莲蓉包」",
@@ -4814,6 +4897,7 @@ shift_test_cases_block_53 = [
         yuewen_2="好朋友",
         yuewen_1_shifted="小笼包上海包广东包联融包",
         yuewen_2_shifted="好朋友",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「好朋友，我认为",
@@ -4823,6 +4907,7 @@ shift_test_cases_block_53 = [
         yuewen_1_shifted="好朋友我认为",
         yuewen_2_shifted="抢劫嗰些包十分重要",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="抢劫那些包，十分重要」",
@@ -4831,6 +4916,7 @@ shift_test_cases_block_53 = [
         yuewen_2="也算是运动就真",
         yuewen_1_shifted="抢劫嗰些包十分重要",
         yuewen_2_shifted="也算是运动就真",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「也算是运动，就真！」",
@@ -4839,6 +4925,7 @@ shift_test_cases_block_53 = [
         yuewen_2="要大力大吃吻上的粥和大字瓜",
         yuewen_1_shifted="也算是运动就真",
         yuewen_2_shifted="要大力大吃吻上的粥和大字瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「要大力！大吃晚上的粥，和大节瓜！」",
@@ -4847,6 +4934,7 @@ shift_test_cases_block_53 = [
         yuewen_2="按照我愚蠢的见解",
         yuewen_1_shifted="要大力大吃吻上的粥和大字瓜",
         yuewen_2_shifted="按照我愚蠢的见解",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「按照我愚蠢的见解⋯」",
@@ -4855,6 +4943,7 @@ shift_test_cases_block_53 = [
         yuewen_2="抢劫嗰些包系奥运会比赛",
         yuewen_1_shifted="按照我愚蠢的见解",
         yuewen_2_shifted="抢劫嗰些包系奥运会比赛",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「抢劫那些包，是奥运会比赛」",
@@ -4863,6 +4952,7 @@ shift_test_cases_block_53 = [
         yuewen_2="让全世界嘅体育家抢过",
         yuewen_1_shifted="抢劫嗰些包系奥运会比赛",
         yuewen_2_shifted="让全世界嘅体育家抢过",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「让全世界的体育家，抢过！」",
@@ -4871,6 +4961,7 @@ shift_test_cases_block_53 = [
         yuewen_2="世界变和平",
         yuewen_1_shifted="让全世界嘅体育家抢过",
         yuewen_2_shifted="世界变和平",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「世界便和平！」",
@@ -4879,6 +4970,7 @@ shift_test_cases_block_53 = [
         yuewen_2="你有孩子吗",
         yuewen_1_shifted="世界变和平",
         yuewen_2_shifted="你有孩子吗",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「你有孩子吗？」",
@@ -4887,6 +4979,7 @@ shift_test_cases_block_53 = [
         yuewen_2="我有一个孩子麦兜",
         yuewen_1_shifted="你有孩子吗",
         yuewen_2_shifted="我有一个孩子麦兜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「我有一个孩子，麦兜」",
@@ -4895,6 +4988,7 @@ shift_test_cases_block_53 = [
         yuewen_2="终于讲到我啦",
         yuewen_1_shifted="我有一个孩子麦兜",
         yuewen_2_shifted="终于讲到我啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="终于讲到我了！",
@@ -4903,6 +4997,7 @@ shift_test_cases_block_53 = [
         yuewen_2="她系一个好男孩",
         yuewen_1_shifted="终于讲到我啦",
         yuewen_2_shifted="她系一个好男孩",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「他是一个好男孩」",
@@ -4911,6 +5006,7 @@ shift_test_cases_block_53 = [
         yuewen_2="她非常懂得抢劫嗰些包",
         yuewen_1_shifted="她系一个好男孩",
         yuewen_2_shifted="她非常懂得抢劫嗰些包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「他非常懂得抢劫那些包」",
@@ -4919,6 +5015,7 @@ shift_test_cases_block_53 = [
         yuewen_2="有一天我看见她抢劫包",
         yuewen_1_shifted="她非常懂得抢劫嗰些包",
         yuewen_2_shifted="有一天我看见她抢劫包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「有一天，我看见他，抢劫包⋯」",
@@ -4927,6 +5024,7 @@ shift_test_cases_block_53 = [
         yuewen_2="抢了一个奥运金牌",
         yuewen_1_shifted="有一天我看见她抢劫包",
         yuewen_2_shifted="抢了一个奥运金牌",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「抢了一个奥运金牌」",
@@ -4935,6 +5033,7 @@ shift_test_cases_block_53 = [
         yuewen_2="哪便是一个母亲能够有的最好的最大的安慰",
         yuewen_1_shifted="抢了一个奥运金牌",
         yuewen_2_shifted="哪便是一个母亲能够有的最好的最大的安慰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「那便是一个母亲能够有的最大的安慰」",
@@ -4943,6 +5042,7 @@ shift_test_cases_block_53 = [
         yuewen_2="孩子的才干得到了世界人类的知道",
         yuewen_1_shifted="哪便是一个母亲能够有的最好的最大的安慰",
         yuewen_2_shifted="孩子的才干得到了世界人类的知道",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「孩子的才干，得到了世界人类的知道」",
@@ -4951,6 +5051,7 @@ shift_test_cases_block_53 = [
         yuewen_2="父母愿意做什么的东西都得",
         yuewen_1_shifted="孩子的才干得到了世界人类的知道",
         yuewen_2_shifted="父母愿意做什么的东西都得",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「父母愿意做什么的东西都得」",
@@ -4959,6 +5060,7 @@ shift_test_cases_block_53 = [
         yuewen_2="于是我写了这忽然间的信给你",
         yuewen_1_shifted="父母愿意做什么的东西都得",
         yuewen_2_shifted="于是我写了这忽然间的信给你",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「于是我写了这忽然间的信给你」",
@@ -4967,6 +5069,7 @@ shift_test_cases_block_53 = [
         yuewen_2="虽然你不知道我是什么微细的东西",
         yuewen_1_shifted="于是我写了这忽然间的信给你",
         yuewen_2_shifted="虽然你不知道我是什么微细的东西",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「虽然你不知道我是什么微细的东西」",
@@ -4975,6 +5078,7 @@ shift_test_cases_block_53 = [
         yuewen_2="但我的孩子很大很大",
         yuewen_1_shifted="虽然你不知道我是什么微细的东西",
         yuewen_2_shifted="但我的孩子很大很大",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「但我的孩子很大，很大！」",
@@ -4983,6 +5087,7 @@ shift_test_cases_block_53 = [
         yuewen_2="有一天你都会知道",
         yuewen_1_shifted="但我的孩子很大很大",
         yuewen_2_shifted="有一天你都会知道",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「有一天，你都会知道」",
@@ -4991,6 +5096,7 @@ shift_test_cases_block_53 = [
         yuewen_2="多谢合作",
         yuewen_1_shifted="有一天你都会知道",
         yuewen_2_shifted="多谢合作",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「多谢合作！」",
@@ -4999,6 +5105,7 @@ shift_test_cases_block_53 = [
         yuewen_2="你忠实的麦太",
         yuewen_1_shifted="多谢合作",
         yuewen_2_shifted="你忠实的麦太",
+        verified=True,
     ),
 ]  # shift_test_cases_block_53
 shift_test_cases_block_54 = [
@@ -5009,6 +5116,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我决定返长洲继续抢包生",
         yuewen_1_shifted="睇完妈妈封信后",
         yuewen_2_shifted="我决定返长洲继续抢包生",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我决定回长洲继续学捡包山",
@@ -5017,6 +5125,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我唔系为咗见到山神",
         yuewen_1_shifted="我决定返长洲继续抢包生",
         yuewen_2_shifted="我唔系为咗见到山神",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我不是为了见珊珊",
@@ -5025,6 +5134,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我唔知点解要抢嗰啲包",
         yuewen_1_shifted="我唔系为咗见到山神",
         yuewen_2_shifted="我唔知点解要抢嗰啲包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我并不知道为什么要抢那些包",
@@ -5033,6 +5143,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我亦唔信抢包生会成为奥运项目",
         yuewen_1_shifted="我唔知点解要抢嗰啲包",
         yuewen_2_shifted="我亦唔信抢包生会成为奥运项目",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我也不相信抢包山会成为奥运项目",
@@ -5041,6 +5152,7 @@ shift_test_cases_block_54 = [
         yuewen_2="但系我依然努力练习抢包生",
         yuewen_1_shifted="我亦唔信抢包生会成为奥运项目",
         yuewen_2_shifted="但系我依然努力练习抢包生",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可是，我依然努力练习抢包山",
@@ -5049,6 +5161,7 @@ shift_test_cases_block_54 = [
         yuewen_2="因为我爱我妈妈",
         yuewen_1_shifted="但系我依然努力练习抢包生",
         yuewen_2_shifted="因为我爱我妈妈",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="因为，我爱我妈妈",
@@ -5057,6 +5170,7 @@ shift_test_cases_block_54 = [
         yuewen_2="师傅话我嘅攀爬功夫已经唔错",
         yuewen_1_shifted="因为我爱我妈妈",
         yuewen_2_shifted="师傅话我嘅攀爬功夫已经唔错",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅说我攀爬功夫已经不错",
@@ -5065,6 +5179,7 @@ shift_test_cases_block_54 = [
         yuewen_2="可以开始教我十二路抢包手",
         yuewen_1_shifted="师傅话我嘅攀爬功夫已经唔错",
         yuewen_2_shifted="可以开始教我十二路抢包手",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可以开始教我「十二路抢包手」",
@@ -5073,6 +5188,7 @@ shift_test_cases_block_54 = [
         yuewen_2="师傅话",
         yuewen_1_shifted="可以开始教我十二路抢包手",
         yuewen_2_shifted="师傅话",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅说当年师祖要出这套",
@@ -5082,6 +5198,7 @@ shift_test_cases_block_54 = [
         yuewen_1_shifted="师傅话当年师祖使出呢套",
         yuewen_2_shifted="十二路抢包手",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可以开始教我「十二路抢包手」",
@@ -5090,6 +5207,7 @@ shift_test_cases_block_54 = [
         yuewen_2="师傅话当年师祖使出呢套",
         yuewen_1_shifted="可以开始教我十二路抢包手",
         yuewen_2_shifted="师傅话当年师祖使出呢套",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="师傅说当年师祖要出这套",
@@ -5098,6 +5216,7 @@ shift_test_cases_block_54 = [
         yuewen_2="十二路抢包手",
         yuewen_1_shifted="师傅话当年师祖使出呢套",
         yuewen_2_shifted="十二路抢包手",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「十二路抢包手」⋯",
@@ -5106,6 +5225,7 @@ shift_test_cases_block_54 = [
         yuewen_2="连林世荣睇见都大赞老爷",
         yuewen_1_shifted="十二路抢包手",
         yuewen_2_shifted="连林世荣睇见都大赞老爷",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="连林世荣也大大赞好",
@@ -5114,6 +5234,7 @@ shift_test_cases_block_54 = [
         yuewen_2="后来默默话我知",
         yuewen_1_shifted="连林世荣睇见都大赞老爷",
         yuewen_2_shifted="后来默默话我知",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="后来麦嘎告诉我⋯",
@@ -5122,6 +5243,7 @@ shift_test_cases_block_54 = [
         yuewen_2="林世荣即系猪肉荣系黄飞鸿嘅徒弟",
         yuewen_1_shifted="后来默默话我知",
         yuewen_2_shifted="林世荣即系猪肉荣系黄飞鸿嘅徒弟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="林世荣即是猪肉荣，是黄飞鸿的徒弟",
@@ -5130,6 +5252,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我唔知到师傅似唔似黄飞鸿",
         yuewen_1_shifted="林世荣即系猪肉荣系黄飞鸿嘅徒弟",
         yuewen_2_shifted="我唔知到师傅似唔似黄飞鸿",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我不知道师傅像不像黄飞鸿",
@@ -5138,6 +5261,7 @@ shift_test_cases_block_54 = [
         yuewen_2="但系我就肯定似旧猪肉",
         yuewen_1_shifted="我唔知到师傅似唔似黄飞鸿",
         yuewen_2_shifted="但系我就肯定似旧猪肉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我却肯定像一块猪肉",
@@ -5146,6 +5270,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我就系一个揸住两个包",
         yuewen_1_shifted="但系我就肯定似旧猪肉",
         yuewen_2_shifted="我就系一个揸住两个包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我是一块堵住两个包",
@@ -5154,6 +5279,7 @@ shift_test_cases_block_54 = [
         yuewen_2="喺长洲转嚟转去嘅猪肉",
         yuewen_1_shifted="我就系一个揸住两个包",
         yuewen_2_shifted="喺长洲转嚟转去嘅猪肉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在长洲转来转去的猪肉",
@@ -5162,6 +5288,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我一边练习一边乱练一边谂嘢始终",
         yuewen_1_shifted="喺长洲转嚟转去嘅猪肉",
         yuewen_2_shifted="我一边练习一边乱练一边谂嘢始终",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我一边练习，一边胡思乱想；始终⋯",
@@ -5170,6 +5297,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我都唔系咁钟意抢包",
         yuewen_1_shifted="我一边练习一边乱练一边谂嘢始终",
         yuewen_2_shifted="我都唔系咁钟意抢包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我还是不大喜欢抢包",
@@ -5178,6 +5306,7 @@ shift_test_cases_block_54 = [
         yuewen_2="我净系爱我妈妈",
         yuewen_1_shifted="我都唔系咁钟意抢包",
         yuewen_2_shifted="我净系爱我妈妈",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我只是爱我妈妈",
@@ -5186,6 +5315,7 @@ shift_test_cases_block_54 = [
         yuewen_2="于是我咬细牙根",
         yuewen_1_shifted="我净系爱我妈妈",
         yuewen_2_shifted="于是我咬细牙根",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="于是我咬实牙根⋯",
@@ -5194,6 +5324,7 @@ shift_test_cases_block_54 = [
         yuewen_2="一步一步一爪一爪",
         yuewen_1_shifted="于是我咬细牙根",
         yuewen_2_shifted="一步一步一爪一爪",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一步一步，一爪一爪⋯",
@@ -5202,6 +5333,7 @@ shift_test_cases_block_54 = [
         yuewen_2="最后我终于练成十二路抢包手啦",
         yuewen_1_shifted="一步一步一爪一爪",
         yuewen_2_shifted="最后我终于练成十二路抢包手啦",
+        verified=True,
     ),
 ]  # shift_test_cases_block_54
 shift_test_cases_block_55 = [
@@ -5212,6 +5344,7 @@ shift_test_cases_block_55 = [
         yuewen_2="正话嗰个系细路仔麦兜我系大个佬麦兜",
         yuewen_1_shifted="喂我系麦兜啊",
         yuewen_2_shifted="正话嗰个系细路仔麦兜我系大个佬麦兜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="刚才的是小朋友麦兜，我是大个佬麦兜",
@@ -5220,6 +5353,7 @@ shift_test_cases_block_55 = [
         yuewen_2="细路仔麦兜同大个佬麦兜除咗把声唔同之外",
         yuewen_1_shifted="正话嗰个系细路仔麦兜我系大个佬麦兜",
         yuewen_2_shifted="细路仔麦兜同大个佬麦兜除咗把声唔同之外",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="小朋友麦兜和大个佬麦兜除了声音不同⋯",
@@ -5228,6 +5362,7 @@ shift_test_cases_block_55 = [
         yuewen_2="细路仔麦兜嘅世界仲有好多幻想",
         yuewen_1_shifted="细路仔麦兜同大个佬麦兜除咗把声唔同之外",
         yuewen_2_shifted="细路仔麦兜嘅世界仲有好多幻想",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="小朋友麦兜的世界仍然有好多幻想",
@@ -5236,6 +5371,7 @@ shift_test_cases_block_55 = [
         yuewen_2="仲有好多希望",
         yuewen_1_shifted="细路仔麦兜嘅世界仲有好多幻想",
         yuewen_2_shifted="仲有好多希望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="仍然有好多希望",
@@ -5244,6 +5380,7 @@ shift_test_cases_block_55 = [
         yuewen_2="希望失望",
         yuewen_1_shifted="仲有好多希望",
         yuewen_2_shifted="希望失望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="希望⋯失望⋯",
@@ -5252,6 +5389,7 @@ shift_test_cases_block_55 = [
         yuewen_2="希望",
         yuewen_1_shifted="希望失望",
         yuewen_2_shifted="希望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="希望⋯",
@@ -5260,6 +5398,7 @@ shift_test_cases_block_55 = [
         yuewen_2="失望",
         yuewen_1_shifted="希望",
         yuewen_2_shifted="失望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="失望",
@@ -5268,6 +5407,7 @@ shift_test_cases_block_55 = [
         yuewen_2="搞咗一轮就变咗大个佬麦兜",
         yuewen_1_shifted="失望",
         yuewen_2_shifted="搞咗一轮就变咗大个佬麦兜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="久而久之，就变成大个佬麦兜",
@@ -5276,6 +5416,7 @@ shift_test_cases_block_55 = [
         yuewen_2="不过而家我都系想讲返细路仔麦兜",
         yuewen_1_shifted="搞咗一轮就变咗大个佬麦兜",
         yuewen_2_shifted="不过而家我都系想讲返细路仔麦兜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我现在还是多说点小朋友麦兜",
@@ -5284,6 +5425,7 @@ shift_test_cases_block_55 = [
         yuewen_2="细路仔麦兜仲系希望希望",
         yuewen_1_shifted="不过而家我都系想讲返细路仔麦兜",
         yuewen_2_shifted="细路仔麦兜仲系希望希望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="小朋友麦兜仍然希望希望⋯",
@@ -5292,6 +5434,7 @@ shift_test_cases_block_55 = [
         yuewen_2="希望真系有圣诞老人",
         yuewen_1_shifted="细路仔麦兜仲系希望希望",
         yuewen_2_shifted="希望真系有圣诞老人",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="希望真的有圣诞老人",
@@ -5300,6 +5443,7 @@ shift_test_cases_block_55 = [
         yuewen_2="仲系好想好想试下圣诞火鸡嘅滋味",
         yuewen_1_shifted="希望真系有圣诞老人",
         yuewen_2_shifted="仲系好想好想试下圣诞火鸡嘅滋味",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="而且好想试试圣诞火鸡的滋味",
@@ -5308,6 +5452,7 @@ shift_test_cases_block_55 = [
         yuewen_2="系啊我嗰阵我真系仲未食过火鸡",
         yuewen_1_shifted="仲系好想好想试下圣诞火鸡嘅滋味",
         yuewen_2_shifted="系啊我嗰阵我真系仲未食过火鸡",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="对，那时我还没吃过火鸡",
@@ -5316,6 +5461,7 @@ shift_test_cases_block_55 = [
         yuewen_2="所有关于火鸡嘅嘢",
         yuewen_1_shifted="系啊我嗰阵我真系仲未食过火鸡",
         yuewen_2_shifted="所有关于火鸡嘅嘢",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="关于火鸡的一切⋯",
@@ -5324,6 +5470,7 @@ shift_test_cases_block_55 = [
         yuewen_2="圣诞树一闪一闪嘅灯饰",
         yuewen_1_shifted="所有关于火鸡嘅嘢",
         yuewen_2_shifted="圣诞树一闪一闪嘅灯饰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="圣诞树上一闪一闪的饰物",
@@ -5332,6 +5479,7 @@ shift_test_cases_block_55 = [
         yuewen_2="就好似喺天上面落嚟嘅星星噉",
         yuewen_1_shifted="圣诞树一闪一闪嘅灯饰",
         yuewen_2_shifted="就好似喺天上面落嚟嘅星星噉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="就像天上掉落的星星",
@@ -5340,6 +5488,7 @@ shift_test_cases_block_55 = [
         yuewen_2="落喺火炉旁边",
         yuewen_1_shifted="就好似喺天上面落嚟嘅星星噉",
         yuewen_2_shifted="落喺火炉旁边",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="落到火炉旁边",
@@ -5348,6 +5497,7 @@ shift_test_cases_block_55 = [
         yuewen_2="一片一片比窗外面嘅雪仲要白嘅鸡胸肉",
         yuewen_1_shifted="落喺火炉旁边",
         yuewen_2_shifted="一片一片比窗外面嘅雪仲要白嘅鸡胸肉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一片片比外边的雪还要白的鸡胸肉⋯",
@@ -5356,6 +5506,7 @@ shift_test_cases_block_55 = [
         yuewen_2="就喺我哋面前啦",
         yuewen_1_shifted="一片一片比窗外面嘅雪仲要白嘅鸡胸肉",
         yuewen_2_shifted="就喺我哋面前啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="就在我们跟前",
@@ -5364,6 +5515,7 @@ shift_test_cases_block_55 = [
         yuewen_2="香气直入灵魂",
         yuewen_1_shifted="就喺我哋面前啦",
         yuewen_2_shifted="香气直入灵魂",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="香气直入灵魂⋯",
@@ -5372,6 +5524,7 @@ shift_test_cases_block_55 = [
         yuewen_2="就连守喺灵魂旁边嘅天使都醒咗起嚟",
         yuewen_1_shifted="香气直入灵魂",
         yuewen_2_shifted="就连守喺灵魂旁边嘅天使都醒咗起嚟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="连守在灵魂旁边的天使都醒过来",
@@ -5380,6 +5533,7 @@ shift_test_cases_block_55 = [
         yuewen_2="围住呢一嚿好香好香又好盛洁嘅肉",
         yuewen_1_shifted="就连守喺灵魂旁边嘅天使都醒咗起嚟",
         yuewen_2_shifted="围住呢一嚿好香好香又好盛洁嘅肉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="围住这香而圣洁的肉⋯",
@@ -5388,6 +5542,7 @@ shift_test_cases_block_55 = [
         yuewen_2="喺圣诞夜里面飞呀飞呀",
         yuewen_1_shifted="围住呢一嚿好香好香又好盛洁嘅肉",
         yuewen_2_shifted="喺圣诞夜里面飞呀飞呀",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在圣诞夜中飞呀，飞⋯",
@@ -5396,6 +5551,7 @@ shift_test_cases_block_55 = [
         yuewen_2="但系呢一切一切关于火鸡嘅嘢都不过系我嘅想像",
         yuewen_1_shifted="喺圣诞夜里面飞呀飞呀",
         yuewen_2_shifted="但系呢一切一切关于火鸡嘅嘢都不过系我嘅想像",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="这关于火鸡的一切，不过是我的想像",
@@ -5404,6 +5560,7 @@ shift_test_cases_block_55 = [
         yuewen_2="因为我从来都未食过火鸡",
         yuewen_1_shifted="但系呢一切一切关于火鸡嘅嘢都不过系我嘅想像",
         yuewen_2_shifted="因为我从来都未食过火鸡",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我从来没吃过火鸡⋯",
@@ -5412,6 +5569,7 @@ shift_test_cases_block_55 = [
         yuewen_2="就连嗰阵味都未闻过",
         yuewen_1_shifted="因为我从来都未食过火鸡",
         yuewen_2_shifted="就连嗰阵味都未闻过",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="连它的气味也没嗅过",
@@ -5420,6 +5578,7 @@ shift_test_cases_block_55 = [
         yuewen_2="妈妈话火鸡太大",
         yuewen_1_shifted="就连嗰阵味都未闻过",
         yuewen_2_shifted="妈妈话火鸡太大",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈说火鸡太大",
@@ -5428,6 +5587,7 @@ shift_test_cases_block_55 = [
         yuewen_2="我哋一家两口点食都食唔晒",
         yuewen_1_shifted="妈妈话火鸡太大",
         yuewen_2_shifted="我哋一家两口点食都食唔晒",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我们一家两口，吃不下",
@@ -5436,6 +5596,7 @@ shift_test_cases_block_55 = [
         yuewen_2="有一年圣诞节妈妈买咗半边烧鸭庆祝",
         yuewen_1_shifted="我哋一家两口点食都食唔晒",
         yuewen_2_shifted="有一年圣诞节妈妈买咗半边烧鸭庆祝",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="有年圣诞节妈妈买了半只烤鸭庆祝",
@@ -5444,6 +5605,7 @@ shift_test_cases_block_55 = [
         yuewen_2="当时我真系十分十分之失望",
         yuewen_1_shifted="有一年圣诞节妈妈买咗半边烧鸭庆祝",
         yuewen_2_shifted="当时我真系十分十分之失望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="当时的我，十分十分失望",
@@ -5452,6 +5614,7 @@ shift_test_cases_block_55 = [
         yuewen_2="又有一年有间大薄货公司倒闭",
         yuewen_1_shifted="当时我真系十分十分之失望",
         yuewen_2_shifted="又有一年有间大薄货公司倒闭",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="又有一年，一间百货公司结业",
@@ -5460,6 +5623,7 @@ shift_test_cases_block_55 = [
         yuewen_2="妈妈用四折买咗个焗炉仔返屋企",
         yuewen_1_shifted="又有一年有间大薄货公司倒闭",
         yuewen_2_shifted="妈妈用四折买咗个焗炉仔返屋企",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈以四折买了个小小焗炉",
@@ -5468,6 +5632,7 @@ shift_test_cases_block_55 = [
         yuewen_2="可能系因为买咗焗炉嘅样",
         yuewen_1_shifted="妈妈用四折买咗个焗炉仔返屋企",
         yuewen_2_shifted="可能系因为买咗焗炉嘅样",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可能因为买了焗炉而技痒",
@@ -5476,6 +5641,7 @@ shift_test_cases_block_55 = [
         yuewen_2="嗰日妈妈竟然同我讲",
         yuewen_1_shifted="可能系因为买咗焗炉嘅样",
         yuewen_2_shifted="嗰日妈妈竟然同我讲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="那日妈妈竟然跟我说⋯",
@@ -5485,6 +5651,7 @@ shift_test_cases_block_55 = [
         yuewen_1_shifted="嗰日妈妈竟然同我讲佢话",
         yuewen_2_shifted="明日我哋要超级市场抽火鸡",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="让我们明天去超级市场揪火鸡",
@@ -5493,6 +5660,7 @@ shift_test_cases_block_55 = [
         yuewen_2="我同妈妈抽住只火鸡行返屋企嗰阵",
         yuewen_1_shifted="明日我哋要超级市场抽火鸡",
         yuewen_2_shifted="我同妈妈抽住只火鸡行返屋企嗰阵",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我跟妈妈把火鸡揪回家的路上⋯",
@@ -5502,6 +5670,7 @@ shift_test_cases_block_55 = [
         yuewen_1_shifted="我同妈妈抽住只火鸡行返屋企嗰阵喺嗰阵时",
         yuewen_2_shifted="我谂系我生命里面最开心嘅一刻",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="是我生命中最开心的时刻",
@@ -5510,6 +5679,7 @@ shift_test_cases_block_55 = [
         yuewen_2="火鸡终于解冻啦",
         yuewen_1_shifted="我谂系我生命里面最开心嘅一刻",
         yuewen_2_shifted="火鸡终于解冻啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="火鸡终于解冻了",
@@ -5518,6 +5688,7 @@ shift_test_cases_block_55 = [
         yuewen_2="我同妈妈噉双手查满盐",
         yuewen_1_shifted="火鸡终于解冻啦",
         yuewen_2_shifted="我同妈妈噉双手查满盐",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我学着妈妈，把双手涂满盐⋯",
@@ -5526,6 +5697,7 @@ shift_test_cases_block_55 = [
         yuewen_2="喺火鸡封口嘅鸡胸度起细噉啫啫",
         yuewen_1_shifted="我同妈妈噉双手查满盐",
         yuewen_2_shifted="喺火鸡封口嘅鸡胸度起细噉啫啫",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在火鸡丰厚的鸡胸上擦呀，擦",
@@ -5534,6 +5706,7 @@ shift_test_cases_block_55 = [
         yuewen_2="",
         yuewen_1_shifted="喺火鸡封口嘅鸡胸度起细噉啫啫",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="联火鸡时⋯",
@@ -5543,40 +5716,45 @@ shift_test_cases_block_55 = [
         yuewen_1_shifted="联火鸡时",
         yuewen_2_shifted="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈不留神漏出了火鸡内的洋葱粒",
         yuewen_1="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
         zhongwen_2="红萝卜粒",
         yuewen_2="红萝虾粒流嘅出嚟",
-        yuewen_1_shifted="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒红萝虾粒",
-        yuewen_2_shifted="流嘅出嚟",
-        difficulty=1,
+        yuewen_1_shifted="妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
+        yuewen_2_shifted="红萝虾粒流嘅出嚟",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="红萝卜粒",
-        yuewen_1="流嘅出嚟",
+        yuewen_1="红萝虾粒流嘅出嚟",
         zhongwen_2="我说：火鸡「疴烂煮」！",
         yuewen_2="我话火鸡我能住呀",
-        yuewen_1_shifted="流嘅出嚟",
+        yuewen_1_shifted="红萝虾粒流嘅出嚟",
         yuewen_2_shifted="我话火鸡我能住呀",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我说：火鸡「疴烂煮」！",
         yuewen_1="我话火鸡我能住呀",
         zhongwen_2="好勉强把火鸡塞进焗炉内",
         yuewen_2="火鸡好勉强噏咗入焗炉度",
-        yuewen_1_shifted="我话火鸡我能住呀火鸡好勉强",
-        yuewen_2_shifted="噏咗入焗炉度",
-        difficulty=1,
+        yuewen_1_shifted="我话火鸡我能住呀",
+        yuewen_2_shifted="火鸡好勉强噏咗入焗炉度",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="好勉强把火鸡塞进焗炉内",
-        yuewen_1="噏咗入焗炉度",
+        yuewen_1="火鸡好勉强噏咗入焗炉度",
         zhongwen_2="12月24日",
         yuewen_2="10月24日",
-        yuewen_1_shifted="噏咗入焗炉度",
+        yuewen_1_shifted="火鸡好勉强噏咗入焗炉度",
         yuewen_2_shifted="10月24日",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="12月24日",
@@ -5585,6 +5763,7 @@ shift_test_cases_block_55 = [
         yuewen_2="上升嘅白烟同奇异嘅㶶味拨动声声",
         yuewen_1_shifted="10月24日",
         yuewen_2_shifted="上升嘅白烟同奇异嘅㶶味拨动声声",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="上升的白烟跟奇异的焦味拨动星星",
@@ -5593,6 +5772,7 @@ shift_test_cases_block_55 = [
         yuewen_2="个焗炉叱叱叱叱叱叱叱咁",
         yuewen_1_shifted="上升嘅白烟同奇异嘅㶶味拨动声声",
         yuewen_2_shifted="个焗炉叱叱叱叱叱叱叱咁",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="焗炉戚戚恻恻，戚戚恻恻⋯",
@@ -5601,6 +5781,7 @@ shift_test_cases_block_55 = [
         yuewen_2="就好似天赐预祖畀我哋嘅福音",
         yuewen_1_shifted="个焗炉叱叱叱叱叱叱叱咁",
         yuewen_2_shifted="就好似天赐预祖畀我哋嘅福音",
+        verified=True,
     ),
 ]  # shift_test_cases_block_55
 shift_test_cases_block_56 = [
@@ -5696,6 +5877,7 @@ shift_test_cases_block_58 = [
         yuewen_2="测完牙我仲感觉到火鸡嘅美味",
         yuewen_1_shifted="第二日我瞓到好硬",
         yuewen_2_shifted="测完牙我仲感觉到火鸡嘅美味",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="刷过牙我还感觉到火鸡的美味",
@@ -5704,6 +5886,7 @@ shift_test_cases_block_58 = [
         yuewen_2="因为早餐食得硬",
         yuewen_1_shifted="测完牙我仲感觉到火鸡嘅美味",
         yuewen_2_shifted="因为早餐食得硬",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="因为早餐吃得晚⋯",
@@ -5712,6 +5895,7 @@ shift_test_cases_block_58 = [
         yuewen_2="唔餐妈妈净系整咗罐粟米汤畀我",
         yuewen_1_shifted="因为早餐食得硬",
         yuewen_2_shifted="唔餐妈妈净系整咗罐粟米汤畀我",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="午餐时妈妈只煮了罐栗米汤",
@@ -5720,6 +5904,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我系噉用匙羹撩下撩下",
         yuewen_1_shifted="唔餐妈妈净系整咗罐粟米汤畀我",
         yuewen_2_shifted="我系噉用匙羹撩下撩下",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我用汤匙撩了两下",
@@ -5728,6 +5913,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我竟然撩到一粒美味嘅火鸡肉",
         yuewen_1_shifted="我系噉用匙羹撩下撩下",
         yuewen_2_shifted="我竟然撩到一粒美味嘅火鸡肉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="竟然发现美味的火鸡粒",
@@ -5736,6 +5922,7 @@ shift_test_cases_block_58 = [
         yuewen_2="嗰晚唔使讲",
         yuewen_1_shifted="我竟然撩到一粒美味嘅火鸡肉",
         yuewen_2_shifted="嗰晚唔使讲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不用说，那夜就是我渴望了⋯",
@@ -5745,6 +5932,7 @@ shift_test_cases_block_58 = [
         yuewen_1_shifted="嗰晚唔使讲当然系食我限咗",
         yuewen_2_shifted="好耐好耐好耐好耐嘅圣诞火鸡大餐",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="竟然发现美味的火鸡粒",
@@ -5753,6 +5941,7 @@ shift_test_cases_block_58 = [
         yuewen_2="嗰晚唔使讲当然系食我限咗",
         yuewen_1_shifted="我竟然撩到一粒美味嘅火鸡肉",
         yuewen_2_shifted="嗰晚唔使讲当然系食我限咗",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不用说，那夜就是我渴望了⋯",
@@ -5761,6 +5950,7 @@ shift_test_cases_block_58 = [
         yuewen_2="好耐好耐好耐好耐嘅圣诞火鸡大餐",
         yuewen_1_shifted="嗰晚唔使讲当然系食我限咗",
         yuewen_2_shifted="好耐好耐好耐好耐嘅圣诞火鸡大餐",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="很久很久很久的⋯圣诞火鸡大餐！",
@@ -5769,6 +5959,7 @@ shift_test_cases_block_58 = [
         yuewen_2="一片一片嘅火鸡肉半碟嘅有薯仔同节瓜",
         yuewen_1_shifted="好耐好耐好耐好耐嘅圣诞火鸡大餐",
         yuewen_2_shifted="一片一片嘅火鸡肉半碟嘅有薯仔同节瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
@@ -5777,6 +5968,7 @@ shift_test_cases_block_58 = [
         yuewen_2="上面淋咗一层老抽生粉馅",
         yuewen_1_shifted="一片一片嘅火鸡肉半碟嘅有薯仔同节瓜",
         yuewen_2_shifted="上面淋咗一层老抽生粉馅",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="上面淋了老抽生粉献",
@@ -5785,6 +5977,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我哋真系好兴奋好满足",
         yuewen_1_shifted="上面淋咗一层老抽生粉馅",
         yuewen_2_shifted="我哋真系好兴奋好满足",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我们真的好兴奋，好满足",
@@ -5793,6 +5986,7 @@ shift_test_cases_block_58 = [
         yuewen_2="之后我哋仲食咗一个礼拜嘅",
         yuewen_1_shifted="我哋真系好兴奋好满足",
         yuewen_2_shifted="之后我哋仲食咗一个礼拜嘅",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="之后，我们吃了一个星期的⋯",
@@ -5801,6 +5995,7 @@ shift_test_cases_block_58 = [
         yuewen_2="火鸡三文治做早餐",
         yuewen_1_shifted="之后我哋仲食咗一个礼拜嘅",
         yuewen_2_shifted="火鸡三文治做早餐",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="火鸡三文治早餐",
@@ -5809,6 +6004,7 @@ shift_test_cases_block_58 = [
         yuewen_2="星期日",
         yuewen_1_shifted="火鸡三文治做早餐",
         yuewen_2_shifted="星期日",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="星期天",
@@ -5817,6 +6013,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我嘅记心肝同妈妈讲不如饮茶",
         yuewen_1_shifted="星期日",
         yuewen_2_shifted="我嘅记心肝同妈妈讲不如饮茶",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我大着胆跟妈妈说：不如去饮茶吖",
@@ -5825,6 +6022,7 @@ shift_test_cases_block_58 = [
         yuewen_2="妈妈闹我冇意食",
         yuewen_1_shifted="我嘅记心肝同妈妈讲不如饮茶",
         yuewen_2_shifted="妈妈闹我冇意食",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈骂我「冇衣食」⋯",
@@ -5833,6 +6031,7 @@ shift_test_cases_block_58 = [
         yuewen_2="但系都带咗我去饮茶",
         yuewen_1_shifted="妈妈闹我冇意食",
         yuewen_2_shifted="但系都带咗我去饮茶",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不过还是带了我去饮茶",
@@ -5841,6 +6040,7 @@ shift_test_cases_block_58 = [
         yuewen_2="之后妈妈又有计",
         yuewen_1_shifted="但系都带咗我去饮茶",
         yuewen_2_shifted="之后妈妈又有计",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="之后，妈妈又有计⋯",
@@ -5849,6 +6049,7 @@ shift_test_cases_block_58 = [
         yuewen_2="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
         yuewen_1_shifted="之后妈妈又有计",
         yuewen_2_shifted="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="她把冰箱内剩下来的火鸡肉撕呀撕",
@@ -5857,6 +6058,7 @@ shift_test_cases_block_58 = [
         yuewen_2="有时都叫我帮手撕",
         yuewen_1_shifted="佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
         yuewen_2_shifted="有时都叫我帮手撕",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="有时候也叫我帮手撕",
@@ -5865,6 +6067,7 @@ shift_test_cases_block_58 = [
         yuewen_2="火鸡留喺指甲嗰阵味",
         yuewen_1_shifted="有时都叫我帮手撕",
         yuewen_2_shifted="火鸡留喺指甲嗰阵味",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="火鸡留在指甲的味道",
@@ -5873,6 +6076,7 @@ shift_test_cases_block_58 = [
         yuewen_2="原来洗好多次都仲喺度㗎",
         yuewen_1_shifted="火鸡留喺指甲嗰阵味",
         yuewen_2_shifted="原来洗好多次都仲喺度㗎",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="原来得洗好多次",
@@ -5881,6 +6085,7 @@ shift_test_cases_block_58 = [
         yuewen_2="银牙火鸡丝炒米好味道噉",
         yuewen_1_shifted="原来洗好多次都仲喺度㗎",
         yuewen_2_shifted="银牙火鸡丝炒米好味道噉",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="银芽火鸡丝炒米，好味道",
@@ -5889,6 +6094,7 @@ shift_test_cases_block_58 = [
         yuewen_2="焯焯栗子焖火鸡丝煲",
         yuewen_1_shifted="银牙火鸡丝炒米好味道噉",
         yuewen_2_shifted="焯焯栗子焖火鸡丝煲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="栗子炆火鸡丝㷛",
@@ -5897,6 +6103,7 @@ shift_test_cases_block_58 = [
         yuewen_2="花生火鸡骨煲粥",
         yuewen_1_shifted="焯焯栗子焖火鸡丝煲",
         yuewen_2_shifted="花生火鸡骨煲粥",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="花生火鸡骨煲粥",
@@ -5905,6 +6112,7 @@ shift_test_cases_block_58 = [
         yuewen_2="纸包火鸡包包纸",
         yuewen_1_shifted="花生火鸡骨煲粥",
         yuewen_2_shifted="纸包火鸡包包纸",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="纸包火鸡包包纸",
@@ -5913,6 +6121,7 @@ shift_test_cases_block_58 = [
         yuewen_2="包火鸡包包包火鸡包",
         yuewen_1_shifted="纸包火鸡包包纸",
         yuewen_2_shifted="包火鸡包包包火鸡包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="包火鸡包包包火鸡包",
@@ -5921,6 +6130,7 @@ shift_test_cases_block_58 = [
         yuewen_2="让火鸡馅茶面包",
         yuewen_1_shifted="包火鸡包包包火鸡包",
         yuewen_2_shifted="让火鸡馅茶面包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="酿火鸡馅搽面包",
@@ -5929,6 +6139,7 @@ shift_test_cases_block_58 = [
         yuewen_2="唉我后悔讲过火鸡阿宁处呢句嘢",
         yuewen_1_shifted="让火鸡馅茶面包",
         yuewen_2_shifted="唉我后悔讲过火鸡阿宁处呢句嘢",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="唉，我好后悔讲过一句「火鸡疴烂煮」",
@@ -5937,6 +6148,7 @@ shift_test_cases_block_58 = [
         yuewen_2="到端午节当我督开我最钟意食嘅果精粽嘅时候",
         yuewen_1_shifted="唉我后悔讲过火鸡阿宁处呢句嘢",
         yuewen_2_shifted="到端午节当我督开我最钟意食嘅果精粽嘅时候",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
@@ -5945,6 +6157,7 @@ shift_test_cases_block_58 = [
         yuewen_2="发现宿喺咸蛋旁边嘅系一件火鸡背脊",
         yuewen_1_shifted="到端午节当我督开我最钟意食嘅果精粽嘅时候",
         yuewen_2_shifted="发现宿喺咸蛋旁边嘅系一件火鸡背脊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="发现咸蛋旁边是一件火鸡背的时候⋯",
@@ -5953,6 +6166,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我脑部一时想唔通喊咗起上嚟",
         yuewen_1_shifted="发现宿喺咸蛋旁边嘅系一件火鸡背脊",
         yuewen_2_shifted="我脑部一时想唔通喊咗起上嚟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我脑部一时想唔通，哭起来",
@@ -5961,6 +6175,7 @@ shift_test_cases_block_58 = [
         yuewen_2="救命啊",
         yuewen_1_shifted="我脑部一时想唔通喊咗起上嚟",
         yuewen_2_shifted="救命啊",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="救命呀！",
@@ -5969,6 +6184,7 @@ shift_test_cases_block_58 = [
         yuewen_2="妈妈净计计将净低嘅火鸡劈咗",
         yuewen_1_shifted="救命啊",
         yuewen_2_shifted="妈妈净计计将净低嘅火鸡劈咗",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈悄悄把剩下的火鸡扔掉",
@@ -5977,6 +6193,7 @@ shift_test_cases_block_58 = [
         yuewen_2="原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事",
         yuewen_1_shifted="妈妈净计计将净低嘅火鸡劈咗",
         yuewen_2_shifted="原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="那已经是火鸡解冻后差不多半年的事",
@@ -5985,6 +6202,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我嘅美梦同噩梦都同时完结",
         yuewen_1_shifted="原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事",
         yuewen_2_shifted="我嘅美梦同噩梦都同时完结",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我的美梦跟恶梦亦同时完结",
@@ -5993,6 +6211,7 @@ shift_test_cases_block_58 = [
         yuewen_2="后来我先知道",
         yuewen_1_shifted="我嘅美梦同噩梦都同时完结",
         yuewen_2_shifted="后来我先知道",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="后来我才知道⋯",
@@ -6001,6 +6220,7 @@ shift_test_cases_block_58 = [
         yuewen_2="一只火鸡由出世到畀人㓥",
         yuewen_1_shifted="后来我先知道",
         yuewen_2_shifted="一只火鸡由出世到畀人㓥",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一只火鸡由出世到给人宰掉",
@@ -6009,6 +6229,7 @@ shift_test_cases_block_58 = [
         yuewen_2="都不过系几个月之间嘅事",
         yuewen_1_shifted="一只火鸡由出世到畀人㓥",
         yuewen_2_shifted="都不过系几个月之间嘅事",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="也不过是几个月间的事",
@@ -6017,6 +6238,7 @@ shift_test_cases_block_58 = [
         yuewen_2="即系话只火鸡死咗之后同我哋一齐嘅日子",
         yuewen_1_shifted="都不过系几个月之间嘅事",
         yuewen_2_shifted="即系话只火鸡死咗之后同我哋一齐嘅日子",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="即是说，火鸡死掉后跟我们一起的日子",
@@ -6025,6 +6247,7 @@ shift_test_cases_block_58 = [
         yuewen_2="仲长过佢自己本身条命",
         yuewen_1_shifted="即系话只火鸡死咗之后同我哋一齐嘅日子",
         yuewen_2_shifted="仲长过佢自己本身条命",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="还要长过它的一生",
@@ -6033,32 +6256,34 @@ shift_test_cases_block_58 = [
         yuewen_2="我仲发觉到火鸡嘅味道",
         yuewen_1_shifted="仲长过佢自己本身条命",
         yuewen_2_shifted="我仲发觉到火鸡嘅味道",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我还发觉，火鸡的味道⋯",
         yuewen_1="我仲发觉到火鸡嘅味道",
         zhongwen_2="将吃未吃和第一口之间已经是最高峰",
         yuewen_2="味食同食第一啖之间已经系佢嘅最高峰",
-        yuewen_1_shifted="我仲发觉到火鸡嘅味道味食同食第一啖之间已经系佢嘅最高峰",
-        yuewen_2_shifted="",
-        difficulty=1,
+        yuewen_1_shifted="我仲发觉到火鸡嘅味道",
+        yuewen_2_shifted="味食同食第一啖之间已经系佢嘅最高峰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="将吃未吃和第一口之间已经是最高峰",
-        yuewen_1="",
+        yuewen_1="味食同食第一啖之间已经系佢嘅最高峰",
         zhongwen_2="之后的，不过是开始了也就吃下去",
         yuewen_2="之后不过都系食开就食埋落去噉解",
-        yuewen_1_shifted="之后不过都系食开就食埋落去",
-        yuewen_2_shifted="噉解",
-        difficulty=1,
+        yuewen_1_shifted="味食同食第一啖之间已经系佢嘅最高峰",
+        yuewen_2_shifted="之后不过都系食开就食埋落去噉解",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="之后的，不过是开始了也就吃下去",
-        yuewen_1="噉解",
+        yuewen_1="之后不过都系食开就食埋落去噉解",
         zhongwen_2="我没有哲学家的头脑⋯",
         yuewen_2="我冇知学家嘅头脑",
-        yuewen_1_shifted="噉解",
+        yuewen_1_shifted="之后不过都系食开就食埋落去噉解",
         yuewen_2_shifted="我冇知学家嘅头脑",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我没有哲学家的头脑⋯",
@@ -6067,6 +6292,7 @@ shift_test_cases_block_58 = [
         yuewen_2="唔知呢两样嘢要得起嘅呢个得出啲咩道理",
         yuewen_1_shifted="我冇知学家嘅头脑",
         yuewen_2_shifted="唔知呢两样嘢要得起嘅呢个得出啲咩道理",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不知道两件事情应该得出什么道理",
@@ -6075,6 +6301,7 @@ shift_test_cases_block_58 = [
         yuewen_2="但系呢啲谂法",
         yuewen_1_shifted="唔知呢两样嘢要得起嘅呢个得出啲咩道理",
         yuewen_2_shifted="但系呢啲谂法",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可是这些想法⋯",
@@ -6083,6 +6310,7 @@ shift_test_cases_block_58 = [
         yuewen_2="喺我长大之后",
         yuewen_1_shifted="但系呢啲谂法",
         yuewen_2_shifted="喺我长大之后",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在我长大后⋯",
@@ -6091,6 +6319,7 @@ shift_test_cases_block_58 = [
         yuewen_2="系一啲同圣诞节无关嘅日子",
         yuewen_1_shifted="喺我长大之后",
         yuewen_2_shifted="系一啲同圣诞节无关嘅日子",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="在一些跟圣诞节无关的日子⋯",
@@ -6099,6 +6328,7 @@ shift_test_cases_block_58 = [
         yuewen_2="无端端噉喺我脑部出现过两三次",
         yuewen_1_shifted="系一啲同圣诞节无关嘅日子",
         yuewen_2_shifted="无端端噉喺我脑部出现过两三次",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="毫无因由的在我脑中出现过三两次",
@@ -6107,6 +6337,7 @@ shift_test_cases_block_58 = [
         yuewen_2="一次喺我自己嘅婚宴上",
         yuewen_1_shifted="无端端噉喺我脑部出现过两三次",
         yuewen_2_shifted="一次喺我自己嘅婚宴上",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一次，是在我自己的婚宴上",
@@ -6115,6 +6346,7 @@ shift_test_cases_block_58 = [
         yuewen_2="一次",
         yuewen_1_shifted="一次喺我自己嘅婚宴上",
         yuewen_2_shifted="一次",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一次⋯",
@@ -6123,6 +6355,7 @@ shift_test_cases_block_58 = [
         yuewen_2="喺我妈妈火化嗰日",
         yuewen_1_shifted="一次",
         yuewen_2_shifted="喺我妈妈火化嗰日",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="是在我妈妈火化那天",
@@ -6131,6 +6364,7 @@ shift_test_cases_block_58 = [
         yuewen_2="嗰日我望住天东几条灰色嘅烟",
         yuewen_1_shifted="喺我妈妈火化嗰日",
         yuewen_2_shifted="嗰日我望住天东几条灰色嘅烟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="那天，我看着天空几缕灰色的烟",
@@ -6139,6 +6373,7 @@ shift_test_cases_block_58 = [
         yuewen_2="忽然闻到火鸡又浓又淡嘅气味",
         yuewen_1_shifted="嗰日我望住天东几条灰色嘅烟",
         yuewen_2_shifted="忽然闻到火鸡又浓又淡嘅气味",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="忽然间嗅到火鸡又浓又淡的气味",
@@ -6147,6 +6382,7 @@ shift_test_cases_block_58 = [
         yuewen_2="我后悔要妈妈劈咗个忌廉火鸡",
         yuewen_1_shifted="忽然闻到火鸡又浓又淡嘅气味",
         yuewen_2_shifted="我后悔要妈妈劈咗个忌廉火鸡",
+        verified=True,
     ),
 ]  # shift_test_cases_block_58
 shift_test_cases_block_59 = [
@@ -6157,6 +6393,7 @@ shift_test_cases_block_59 = [
         yuewen_2="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
         yuewen_1_shifted="特别报道",
         yuewen_2_shifted="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="奥运金牌得主李丽珊决定参加今届奥运",
@@ -6165,6 +6402,7 @@ shift_test_cases_block_59 = [
         yuewen_2="",
         yuewen_1_shifted="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="向全世界人再次证明⋯",
@@ -6174,6 +6412,7 @@ shift_test_cases_block_59 = [
         yuewen_1_shifted="向全世界人再次证明",
         yuewen_2_shifted="香港嘅运动员唔系腊鸭",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="奥运金牌得主李丽珊决定参加今届奥运",
@@ -6182,6 +6421,7 @@ shift_test_cases_block_59 = [
         yuewen_2="向全世界人再次证明",
         yuewen_1_shifted="奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
         yuewen_2_shifted="向全世界人再次证明",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="向全世界人再次证明⋯",
@@ -6190,6 +6430,7 @@ shift_test_cases_block_59 = [
         yuewen_2="香港嘅运动员唔系腊鸭",
         yuewen_1_shifted="向全世界人再次证明",
         yuewen_2_shifted="香港嘅运动员唔系腊鸭",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="香港运动员不是腊鸭",
@@ -6198,6 +6439,7 @@ shift_test_cases_block_59 = [
         yuewen_2="另一方面",
         yuewen_1_shifted="香港嘅运动员唔系腊鸭",
         yuewen_2_shifted="另一方面",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="另方面⋯",
@@ -6206,6 +6448,7 @@ shift_test_cases_block_59 = [
         yuewen_2="中国香港体育协会企奥委会会长霍振庭",
         yuewen_1_shifted="另一方面",
         yuewen_2_shifted="中国香港体育协会企奥委会会长霍振庭",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="香港体运总会霍震霆⋯",
@@ -6214,6 +6457,7 @@ shift_test_cases_block_59 = [
         yuewen_2="正式向亚运协会提出申请",
         yuewen_1_shifted="中国香港体育协会企奥委会会长霍振庭",
         yuewen_2_shifted="正式向亚运协会提出申请",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="正式向亚运协会提出申请",
@@ -6222,6 +6466,7 @@ shift_test_cases_block_59 = [
         yuewen_2="香港将要争夺下届亚运会嘅主办权",
         yuewen_1_shifted="正式向亚运协会提出申请",
         yuewen_2_shifted="香港将要争夺下届亚运会嘅主办权",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="香港将争夺下届亚运会主办权",
@@ -6230,6 +6475,7 @@ shift_test_cases_block_59 = [
         yuewen_2="多个运动团体立即表示热烈支持",
         yuewen_1_shifted="香港将要争夺下届亚运会嘅主办权",
         yuewen_2_shifted="多个运动团体立即表示热烈支持",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="多个运动团体立即表示热烈支持",
@@ -6238,6 +6484,7 @@ shift_test_cases_block_59 = [
         yuewen_2="其中港狗新界足战联谊会",
         yuewen_1_shifted="多个运动团体立即表示热烈支持",
         yuewen_2_shifted="其中港狗新界足战联谊会",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="其中港九新界竹战联谊会⋯",
@@ -6246,6 +6493,7 @@ shift_test_cases_block_59 = [
         yuewen_2="更希望打麻雀可以成为亚运项目",
         yuewen_1_shifted="其中港狗新界足战联谊会",
         yuewen_2_shifted="更希望打麻雀可以成为亚运项目",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="更希望打麻将可以成为亚运项目",
@@ -6254,6 +6502,7 @@ shift_test_cases_block_59 = [
         yuewen_2="另外",
         yuewen_1_shifted="更希望打麻雀可以成为亚运项目",
         yuewen_2_shifted="另外",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="另外，全港茶餐厅员工协会⋯",
@@ -6263,6 +6512,7 @@ shift_test_cases_block_59 = [
         yuewen_1_shifted="另外全港茶餐厅联工协会",
         yuewen_2_shifted="经热发动所有会员",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="更希望打麻将可以成为亚运项目",
@@ -6271,6 +6521,7 @@ shift_test_cases_block_59 = [
         yuewen_2="另外全港茶餐厅联工协会",
         yuewen_1_shifted="更希望打麻雀可以成为亚运项目",
         yuewen_2_shifted="另外全港茶餐厅联工协会",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="另外，全港茶餐厅员工协会⋯",
@@ -6279,6 +6530,7 @@ shift_test_cases_block_59 = [
         yuewen_2="经热发动所有会员",
         yuewen_1_shifted="另外全港茶餐厅联工协会",
         yuewen_2_shifted="经热发动所有会员",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="经已发动所有会员⋯",
@@ -6287,6 +6539,7 @@ shift_test_cases_block_59 = [
         yuewen_2="争取掟蛋挞成为亚运会比赛项目",
         yuewen_1_shifted="经热发动所有会员",
         yuewen_2_shifted="争取掟蛋挞成为亚运会比赛项目",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="争取「掷蛋挞」成为亚运比赛项目",
@@ -6295,6 +6548,7 @@ shift_test_cases_block_59 = [
         yuewen_2="港狗烧尾掳尾",
         yuewen_1_shifted="争取掟蛋挞成为亚运会比赛项目",
         yuewen_2_shifted="港狗烧尾掳尾",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="港九烧味卤味腊味同业会",
@@ -6304,6 +6558,7 @@ shift_test_cases_block_59 = [
         yuewen_1_shifted="港狗烧尾掳尾立尾同业会",
         yuewen_2_shifted="亦都向霍主席当面提出",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="亦向霍主席当面提出⋯",
@@ -6312,6 +6567,7 @@ shift_test_cases_block_59 = [
         yuewen_2="挂立鸭可以成为亚运比赛项目",
         yuewen_1_shifted="亦都向霍主席当面提出",
         yuewen_2_shifted="挂立鸭可以成为亚运比赛项目",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「挂腊鸭」可以成为亚运比赛项目",
@@ -6320,6 +6576,7 @@ shift_test_cases_block_59 = [
         yuewen_2="较为特别嘅系CIC保险营业员联同",
         yuewen_1_shifted="挂立鸭可以成为亚运比赛项目",
         yuewen_2_shifted="较为特别嘅系CIC保险营业员联同",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="较为特别的是，CIC保险营业员联同⋯",
@@ -6328,6 +6585,7 @@ shift_test_cases_block_59 = [
         yuewen_2="大角嘴春田花花",
         yuewen_1_shifted="较为特别嘅系CIC保险营业员联同",
         yuewen_2_shifted="大角嘴春田花花",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="大角咀春田花花幼稚园⋯",
@@ -6337,6 +6595,7 @@ shift_test_cases_block_59 = [
         yuewen_1_shifted="大角嘴春田花花幼稚园",
         yuewen_2_shifted="附属小学嘅一班小朋友",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="附属小学一班小朋友⋯",
@@ -6345,6 +6604,7 @@ shift_test_cases_block_59 = [
         yuewen_2="争取抢包山",
         yuewen_1_shifted="附属小学嘅一班小朋友",
         yuewen_2_shifted="争取抢包山",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="争取「抢包山」",
@@ -6353,6 +6613,7 @@ shift_test_cases_block_59 = [
         yuewen_2="",
         yuewen_1_shifted="争取抢包山",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一项几乎绝迹的运动⋯",
@@ -6362,6 +6623,7 @@ shift_test_cases_block_59 = [
         yuewen_1_shifted="一项几乎绝迹嘅运动",
         yuewen_2_shifted="成为本港举办亚运重点推介嘅比赛项目",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="争取「抢包山」",
@@ -6370,6 +6632,7 @@ shift_test_cases_block_59 = [
         yuewen_2="一项几乎绝迹嘅运动",
         yuewen_1_shifted="争取抢包山",
         yuewen_2_shifted="一项几乎绝迹嘅运动",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一项几乎绝迹的运动⋯",
@@ -6378,6 +6641,7 @@ shift_test_cases_block_59 = [
         yuewen_2="成为本港举办亚运重点推介嘅比赛项目",
         yuewen_1_shifted="一项几乎绝迹嘅运动",
         yuewen_2_shifted="成为本港举办亚运重点推介嘅比赛项目",
+        verified=True,
     ),
 ]  # shift_test_cases_block_59
 shift_test_cases_block_60 = [
@@ -6388,6 +6652,7 @@ shift_test_cases_block_60 = [
         yuewen_2="最后全部都系banana",
         yuewen_1_shifted="最后",
         yuewen_2_shifted="最后全部都系banana",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="最后，一切成烟",
@@ -6396,6 +6661,7 @@ shift_test_cases_block_60 = [
         yuewen_2="最后佢哋选咗定蛋挞做推介项目",
         yuewen_1_shifted="最后全部都系banana",
         yuewen_2_shifted="最后佢哋选咗定蛋挞做推介项目",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="最后，他们选了「掷蛋挞」做推介项目",
@@ -6404,6 +6670,7 @@ shift_test_cases_block_60 = [
         yuewen_2="至于香港争取申办亚运嘅口号",
         yuewen_1_shifted="最后佢哋选咗定蛋挞做推介项目",
         yuewen_2_shifted="至于香港争取申办亚运嘅口号",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="至于香港争取申办亚运的口号⋯",
@@ -6412,6 +6679,7 @@ shift_test_cases_block_60 = [
         yuewen_2="亦都顺理成章噉叫做香港一蛋挞",
         yuewen_1_shifted="至于香港争取申办亚运嘅口号",
         yuewen_2_shifted="亦都顺理成章噉叫做香港一蛋挞",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="亦顺理成章叫成「香港一蛋挞」",
@@ -6420,6 +6688,7 @@ shift_test_cases_block_60 = [
         yuewen_2="之后李利山丧乱失败",
         yuewen_1_shifted="亦都顺理成章噉叫做香港一蛋挞",
         yuewen_2_shifted="之后李利山丧乱失败",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="之后李丽珊蝉联失败⋯",
@@ -6428,6 +6697,7 @@ shift_test_cases_block_60 = [
         yuewen_2="",
         yuewen_1_shifted="之后李利山丧乱失败",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="亚运主办权⋯",
@@ -6437,6 +6707,7 @@ shift_test_cases_block_60 = [
         yuewen_1_shifted="亚运主办权",
         yuewen_2_shifted="亦都由一个香港人从未听过嘅地方夺得",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="之后李丽珊蝉联失败⋯",
@@ -6445,6 +6716,7 @@ shift_test_cases_block_60 = [
         yuewen_2="亚运主办权",
         yuewen_1_shifted="之后李利山丧乱失败",
         yuewen_2_shifted="亚运主办权",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="亚运主办权⋯",
@@ -6453,6 +6725,7 @@ shift_test_cases_block_60 = [
         yuewen_2="亦都由一个香港人从未听过嘅地方夺得",
         yuewen_1_shifted="亚运主办权",
         yuewen_2_shifted="亦都由一个香港人从未听过嘅地方夺得",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="亦由一个香港人从未听过的地方夺得",
@@ -6461,6 +6734,7 @@ shift_test_cases_block_60 = [
         yuewen_2="谂住可以转行做运动员嘅茶餐厅伙计",
         yuewen_1_shifted="亦都由一个香港人从未听过嘅地方夺得",
         yuewen_2_shifted="谂住可以转行做运动员嘅茶餐厅伙计",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="想着转行当运动员的茶餐厅伙记⋯",
@@ -6469,6 +6743,7 @@ shift_test_cases_block_60 = [
         yuewen_2="都返返去茶餐厅继续钉佢哋嘅蛋挞",
         yuewen_1_shifted="谂住可以转行做运动员嘅茶餐厅伙计",
         yuewen_2_shifted="都返返去茶餐厅继续钉佢哋嘅蛋挞",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="都回到茶餐厅继续掷他们的蛋挞",
@@ -6477,6 +6752,7 @@ shift_test_cases_block_60 = [
         yuewen_2="一切回复正常",
         yuewen_1_shifted="都返返去茶餐厅继续钉佢哋嘅蛋挞",
         yuewen_2_shifted="一切回复正常",
+        verified=True,
     ),
 ]  # shift_test_cases_block_60
 shift_test_cases_block_61 = [
@@ -6554,6 +6830,7 @@ shift_test_cases_block_63 = [
         yuewen_2="长洲嘅厂包经已转咗用塑胶",
         yuewen_1_shifted="因为环保",
         yuewen_2_shifted="长洲嘅厂包经已转咗用塑胶",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="长洲的抢包都转为塑胶",
@@ -6562,6 +6839,7 @@ shift_test_cases_block_63 = [
         yuewen_2="师傅话嗰阵胶气都几丑下",
         yuewen_1_shifted="长洲嘅厂包经已转咗用塑胶",
         yuewen_2_shifted="师傅话嗰阵胶气都几丑下",
+        verified=True,
     ),
 ]  # shift_test_cases_block_63
 shift_test_cases_block_64 = [
@@ -6572,6 +6850,7 @@ shift_test_cases_block_64 = [
         yuewen_2="听讲海盗张宝仔喺里面收埋咗好多宝藏",
         yuewen_1_shifted="墙后个张宝仔洞",
         yuewen_2_shifted="听讲海盗张宝仔喺里面收埋咗好多宝藏",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="听说张保仔在洞内藏了很多宝藏",
@@ -6580,6 +6859,7 @@ shift_test_cases_block_64 = [
         yuewen_2="因为我练过抢包手身手比较灵活",
         yuewen_1_shifted="听讲海盗张宝仔喺里面收埋咗好多宝藏",
         yuewen_2_shifted="因为我练过抢包手身手比较灵活",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="因为我练过抢包手，身手比较灵活⋯",
@@ -6588,6 +6868,7 @@ shift_test_cases_block_64 = [
         yuewen_2="班同我叫我爬佢睇下话唔定会发达",
         yuewen_1_shifted="因为我练过抢包手身手比较灵活",
         yuewen_2_shifted="班同我叫我爬佢睇下话唔定会发达",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="同学们叫我爬进去看看，说不定会发达",
@@ -6596,6 +6877,7 @@ shift_test_cases_block_64 = [
         yuewen_2="于是我就向住呢一个又黑又窄嘅洞",
         yuewen_1_shifted="班同我叫我爬佢睇下话唔定会发达",
         yuewen_2_shifted="于是我就向住呢一个又黑又窄嘅洞",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="于是我就向着这个又黑又窄的洞⋯",
@@ -6604,6 +6886,7 @@ shift_test_cases_block_64 = [
         yuewen_2="系噉爬爬",
         yuewen_1_shifted="于是我就向住呢一个又黑又窄嘅洞",
         yuewen_2_shifted="系噉爬爬",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="一直爬",
@@ -6612,6 +6895,7 @@ shift_test_cases_block_64 = [
         yuewen_2="洞里面乜都冇净系有一个盒",
         yuewen_1_shifted="系噉爬爬",
         yuewen_2_shifted="洞里面乜都冇净系有一个盒",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="洞里面什么也没有，只有一个盒",
@@ -6620,6 +6904,7 @@ shift_test_cases_block_64 = [
         yuewen_2="我好小心揭开呢个盒",
         yuewen_1_shifted="洞里面乜都冇净系有一个盒",
         yuewen_2_shifted="我好小心揭开呢个盒",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="我小心揭开盒⋯",
@@ -6628,6 +6913,7 @@ shift_test_cases_block_64 = [
         yuewen_2="发现入面系一个食净咗嘅大包",
         yuewen_1_shifted="我好小心揭开呢个盒",
         yuewen_2_shifted="发现入面系一个食净咗嘅大包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="发现里面一个没吃完的大包",
@@ -6636,6 +6922,7 @@ shift_test_cases_block_64 = [
         yuewen_2="唔知系咪张宝仔食净㗎啦",
         yuewen_1_shifted="发现入面系一个食净咗嘅大包",
         yuewen_2_shifted="唔知系咪张宝仔食净㗎啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="是不是张保仔吃过的呢？",
@@ -6644,23 +6931,26 @@ shift_test_cases_block_64 = [
         yuewen_2="",
         yuewen_1_shifted="唔知系咪张宝仔食净㗎啦",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「年晚，又培育了珊珊！可惜⋯」",
         yuewen_1="",
         zhongwen_2="揸住个包，我忽然明白⋯",
         yuewen_2="揸住个包我忽然明白",
-        yuewen_1_shifted="揸住个包",
-        yuewen_2_shifted="我忽然明白",
-        difficulty=1,
+        yuewen_1_shifted="",
+        yuewen_2_shifted="揸住个包我忽然明白",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="揸住个包，我忽然明白⋯",
-        yuewen_1="我忽然明白",
+        yuewen_1="揸住个包我忽然明白",
         zhongwen_2="原来有些事情， 没有就是没有",
         yuewen_2="原来有啲嘢冇就真系冇",
-        yuewen_1_shifted="我忽然明白",
+        yuewen_1_shifted="揸住个包我忽然明白",
         yuewen_2_shifted="原来有啲嘢冇就真系冇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="原来有些事情， 没有就是没有",
@@ -6669,6 +6959,7 @@ shift_test_cases_block_64 = [
         yuewen_2="唔得就真系唔得",
         yuewen_1_shifted="原来有啲嘢冇就真系冇",
         yuewen_2_shifted="唔得就真系唔得",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="唔得，就是唔得",
@@ -6677,6 +6968,7 @@ shift_test_cases_block_64 = [
         yuewen_2="冇鱼蛋冇粗面",
         yuewen_1_shifted="唔得就真系唔得",
         yuewen_2_shifted="冇鱼蛋冇粗面",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="没有鱼蛋没有粗面没去成马尔代夫⋯",
@@ -6686,6 +6978,7 @@ shift_test_cases_block_64 = [
         yuewen_1_shifted="冇鱼蛋冇粗面冇去买义大夫",
         yuewen_2_shifted="冇奖牌冇张宝仔宝藏",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="唔得，就是唔得",
@@ -6694,6 +6987,7 @@ shift_test_cases_block_64 = [
         yuewen_2="冇鱼蛋冇粗面冇去买义大夫",
         yuewen_1_shifted="唔得就真系唔得",
         yuewen_2_shifted="冇鱼蛋冇粗面冇去买义大夫",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="没有鱼蛋没有粗面没去成马尔代夫⋯",
@@ -6702,6 +6996,7 @@ shift_test_cases_block_64 = [
         yuewen_2="冇奖牌冇张宝仔宝藏",
         yuewen_1_shifted="冇鱼蛋冇粗面冇去买义大夫",
         yuewen_2_shifted="冇奖牌冇张宝仔宝藏",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="没有奖牌没有张保仔宝藏",
@@ -6710,6 +7005,7 @@ shift_test_cases_block_64 = [
         yuewen_2="而张宝仔亦都冇咬过个包",
         yuewen_1_shifted="冇奖牌冇张宝仔宝藏",
         yuewen_2_shifted="而张宝仔亦都冇咬过个包",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="而张保仔，也没有咬过那个包",
@@ -6718,23 +7014,26 @@ shift_test_cases_block_64 = [
         yuewen_2="原来唔系咁好笑",
         yuewen_1_shifted="而张宝仔亦都冇咬过个包",
         yuewen_2_shifted="原来唔系咁好笑",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="原来蠢，并不那么好笑",
         yuewen_1="原来唔系咁好笑",
         zhongwen_2="蠢会失败⋯",
         yuewen_2="会失败",
-        yuewen_1_shifted="原来唔系咁好笑会失败",
-        yuewen_2_shifted="",
-        difficulty=1,
+        yuewen_1_shifted="原来唔系咁好笑",
+        yuewen_2_shifted="会失败",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="蠢会失败⋯",
-        yuewen_1="",
+        yuewen_1="会失败",
         zhongwen_2="会失望",
         yuewen_2="会失望",
-        yuewen_1_shifted="",
+        yuewen_1_shifted="会失败",
         yuewen_2_shifted="会失望",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="会失望",
@@ -6743,6 +7042,7 @@ shift_test_cases_block_64 = [
         yuewen_2="失望唔系咁好笑",
         yuewen_1_shifted="会失望",
         yuewen_2_shifted="失望唔系咁好笑",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="失望，并不那么好笑",
@@ -6751,6 +7051,7 @@ shift_test_cases_block_64 = [
         yuewen_2="肥都未必好笑",
         yuewen_1_shifted="失望唔系咁好笑",
         yuewen_2_shifted="肥都未必好笑",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="肥，都不一定好笑",
@@ -6759,6 +7060,7 @@ shift_test_cases_block_64 = [
         yuewen_2="肥唔一定大力",
         yuewen_1_shifted="肥都未必好笑",
         yuewen_2_shifted="肥唔一定大力",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="肥，不一定大力",
@@ -6767,6 +7069,7 @@ shift_test_cases_block_64 = [
         yuewen_2="大力亦都唔一定得",
         yuewen_1_shifted="肥唔一定大力",
         yuewen_2_shifted="大力亦都唔一定得",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="大力，亦不一定得",
@@ -6775,6 +7078,7 @@ shift_test_cases_block_64 = [
         yuewen_2="揸住个包我忽然喺度谂",
         yuewen_1_shifted="大力亦都唔一定得",
         yuewen_2_shifted="揸住个包我忽然喺度谂",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="揸住个包，我忽然想⋯",
@@ -6783,6 +7087,7 @@ shift_test_cases_block_64 = [
         yuewen_2="大个咗到我要面对呢一个实角局",
         yuewen_1_shifted="揸住个包我忽然喺度谂",
         yuewen_2_shifted="大个咗到我要面对呢一个实角局",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="长大了，到我要面对这个实掘掘⋯",
@@ -6791,6 +7096,7 @@ shift_test_cases_block_64 = [
         yuewen_2="未必到你发梦",
         yuewen_1_shifted="大个咗到我要面对呢一个实角局",
         yuewen_2_shifted="未必到你发梦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="未必可以发梦，未必那么好笑的⋯",
@@ -6800,6 +7106,7 @@ shift_test_cases_block_64 = [
         yuewen_1_shifted="未必到你发梦又未必咁好笑嘅",
         yuewen_2_shifted="世界嘅时候我会系点㗎呢",
         difficulty=1,
+        verified=True,
     ),
 ]  # shift_test_cases_block_64
 shift_test_cases_block_65 = []  # shift_test_cases_block_65
@@ -6812,6 +7119,7 @@ shift_test_cases_block_67 = [
         yuewen_2="肥啰算大力啦",
         yuewen_1_shifted="系呀我就系大个佬麦豆喇",
         yuewen_2_shifted="肥啰算大力啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="肥，算大力",
@@ -6820,6 +7128,7 @@ shift_test_cases_block_67 = [
         yuewen_2="麻麻地得咁啦",
         yuewen_1_shifted="肥啰算大力啦",
         yuewen_2_shifted="麻麻地得咁啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="麻麻地可以",
@@ -6828,6 +7137,7 @@ shift_test_cases_block_67 = [
         yuewen_2="富家产啰",
         yuewen_1_shifted="麻麻地得咁啦",
         yuewen_2_shifted="富家产啰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="负家产",
@@ -6836,6 +7146,7 @@ shift_test_cases_block_67 = [
         yuewen_2="脚瓜真系几大仲大过个折瓜",
         yuewen_1_shifted="富家产啰",
         yuewen_2_shifted="脚瓜真系几大仲大过个折瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="脚爪是真的大，比一节瓜还要大",
@@ -6844,6 +7155,7 @@ shift_test_cases_block_67 = [
         yuewen_2="脚瓜上面个肌肉非常结实",
         yuewen_1_shifted="脚瓜真系几大仲大过个折瓜",
         yuewen_2_shifted="脚瓜上面个肌肉非常结实",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="脚瓜上的肌肉非常结实⋯",
@@ -6852,6 +7164,7 @@ shift_test_cases_block_67 = [
         yuewen_2="啲青筋一条一条凸下凸下好似钢筋",
         yuewen_1_shifted="脚瓜上面个肌肉非常结实",
         yuewen_2_shifted="啲青筋一条一条凸下凸下好似钢筋",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="青筋一条条凸出来，似钢筋",
@@ -6860,6 +7173,7 @@ shift_test_cases_block_67 = [
         yuewen_2="至于脚趾弓啲脚甲",
         yuewen_1_shifted="啲青筋一条一条凸下凸下好似钢筋",
         yuewen_2_shifted="至于脚趾弓啲脚甲",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="至于脚趾甲⋯",
@@ -6868,6 +7182,7 @@ shift_test_cases_block_67 = [
         yuewen_2="有次我无无聊聊真系走去卡下佢",
         yuewen_1_shifted="至于脚趾弓啲脚甲",
         yuewen_2_shifted="有次我无无聊聊真系走去卡下佢",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="有次我无无聊聊真的量了一下⋯",
@@ -6876,6 +7191,7 @@ shift_test_cases_block_67 = [
         yuewen_2="哗粥粥成串咁厚",
         yuewen_1_shifted="有次我无无聊聊真系走去卡下佢",
         yuewen_2_shifted="哗粥粥成串咁厚",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="足有一寸厚",
@@ -6884,6 +7200,7 @@ shift_test_cases_block_67 = [
         yuewen_2="系呀故事讲完喇",
         yuewen_1_shifted="哗粥粥成串咁厚",
         yuewen_2_shifted="系呀故事讲完喇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="是的，故事讲完了",
@@ -6892,6 +7209,7 @@ shift_test_cases_block_67 = [
         yuewen_2="呢个系一个尝试",
         yuewen_1_shifted="系呀故事讲完喇",
         yuewen_2_shifted="呢个系一个尝试",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="这是一个尝试",
@@ -6900,6 +7218,7 @@ shift_test_cases_block_67 = [
         yuewen_2="失败尝试",
         yuewen_1_shifted="呢个系一个尝试",
         yuewen_2_shifted="失败尝试",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="失败⋯尝试⋯",
@@ -6908,6 +7227,7 @@ shift_test_cases_block_67 = [
         yuewen_2="好多包但系冇包补成功嘅故事",
         yuewen_1_shifted="失败尝试",
         yuewen_2_shifted="好多包但系冇包补成功嘅故事",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="好多包⋯可是没有包保成功的故事",
@@ -6916,6 +7236,7 @@ shift_test_cases_block_67 = [
         yuewen_2="故事讲咗一轮",
         yuewen_1_shifted="好多包但系冇包补成功嘅故事",
         yuewen_2_shifted="故事讲咗一轮",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="故事说了一轮⋯",
@@ -6924,6 +7245,7 @@ shift_test_cases_block_67 = [
         yuewen_2="乜都冇又唔系噃",
         yuewen_1_shifted="故事讲咗一轮",
         yuewen_2_shifted="乜都冇又唔系噃",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="什么也没有？也不是",
@@ -6932,6 +7254,7 @@ shift_test_cases_block_67 = [
         yuewen_2="就系大咗两个脚瓜",
         yuewen_1_shifted="乜都冇又唔系噃",
         yuewen_2_shifted="就系大咗两个脚瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="就是大了双脚瓜",
@@ -6940,6 +7263,7 @@ shift_test_cases_block_67 = [
         yuewen_2="但系冻住两个脚瓜企喺度",
         yuewen_1_shifted="就系大咗两个脚瓜",
         yuewen_2_shifted="但系冻住两个脚瓜企喺度",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可是楝一双脚瓜站这儿⋯",
@@ -6948,6 +7272,7 @@ shift_test_cases_block_67 = [
         yuewen_2="当啲浪打埋嚟",
         yuewen_1_shifted="但系冻住两个脚瓜企喺度",
         yuewen_2_shifted="当啲浪打埋嚟",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="当浪打过来⋯",
@@ -6956,6 +7281,7 @@ shift_test_cases_block_67 = [
         yuewen_2="嗰张感觉真系好好",
         yuewen_1_shifted="当啲浪打埋嚟",
         yuewen_2_shifted="嗰张感觉真系好好",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="那感觉还真不错",
@@ -6964,6 +7290,7 @@ shift_test_cases_block_67 = [
         yuewen_2="你知我麻麻地叻佬",
         yuewen_1_shifted="嗰张感觉真系好好",
         yuewen_2_shifted="你知我麻麻地叻佬",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="你知道我麻麻地叻佬，不懂得⋯",
@@ -6973,6 +7300,7 @@ shift_test_cases_block_67 = [
         yuewen_1_shifted="你知我麻麻地叻佬唔识得",
         yuewen_2_shifted="帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="替自己的故事加点教训呀锦囊呀那些",
@@ -6981,6 +7309,7 @@ shift_test_cases_block_67 = [
         yuewen_2="但系冻住两个脚瓜企喺水嗰度",
         yuewen_1_shifted="帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢",
         yuewen_2_shifted="但系冻住两个脚瓜企喺水嗰度",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="可是，浸一双脚瓜站水中⋯",
@@ -6989,6 +7318,7 @@ shift_test_cases_block_67 = [
         yuewen_2="当风吹喺我个脑部我会谂",
         yuewen_1_shifted="但系冻住两个脚瓜企喺水嗰度",
         yuewen_2_shifted="当风吹喺我个脑部我会谂",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="当风吹向我的脑，我会想⋯",
@@ -6997,6 +7327,7 @@ shift_test_cases_block_67 = [
         yuewen_2="如果妈妈见到我呢个大脚瓜",
         yuewen_1_shifted="当风吹喺我个脑部我会谂",
         yuewen_2_shifted="如果妈妈见到我呢个大脚瓜",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="如果妈妈看见我这个大脚瓜⋯",
@@ -7005,6 +7336,7 @@ shift_test_cases_block_67 = [
         yuewen_2="我谂佢会好开心",
         yuewen_1_shifted="如果妈妈见到我呢个大脚瓜",
         yuewen_2_shifted="我谂佢会好开心",
+        verified=True,
     ),
 ]  # shift_test_cases_block_67
 shift_test_cases_block_68 = [
@@ -7015,6 +7347,7 @@ shift_test_cases_block_68 = [
         yuewen_2="妈妈个Doccom散咗之后佢又有计喇",
         yuewen_1_shifted="都系唔好呀都系出返个锦囊先得",
         yuewen_2_shifted="妈妈个Doccom散咗之后佢又有计喇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="妈妈的dot com散掉后，她又有计",
@@ -7023,6 +7356,7 @@ shift_test_cases_block_68 = [
         yuewen_2="佢出咗半教主送嘅食谱谂住捞返扎沙",
         yuewen_1_shifted="妈妈个Doccom散咗之后佢又有计喇",
         yuewen_2_shifted="佢出咗半教主送嘅食谱谂住捞返扎沙",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="她出版了一本教烹饪的食谱",
@@ -7031,6 +7365,7 @@ shift_test_cases_block_68 = [
         yuewen_2="食谱最后一页系教人整烧鸡嘅",
         yuewen_1_shifted="佢出咗半教主送嘅食谱谂住捞返扎沙",
         yuewen_2_shifted="食谱最后一页系教人整烧鸡嘅",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="食谱最后一页教人整烧鸡",
@@ -7039,6 +7374,7 @@ shift_test_cases_block_68 = [
         yuewen_2="方法简单人人都学得识",
         yuewen_1_shifted="食谱最后一页系教人整烧鸡嘅",
         yuewen_2_shifted="方法简单人人都学得识",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="方法简单，人人可学",
@@ -7047,6 +7383,7 @@ shift_test_cases_block_68 = [
         yuewen_2="烧鸡",
         yuewen_1_shifted="方法简单人人都学得识",
         yuewen_2_shifted="烧鸡",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="「烧鸡」",
@@ -7055,6 +7392,7 @@ shift_test_cases_block_68 = [
         yuewen_2="材料系",
         yuewen_1_shifted="烧鸡",
         yuewen_2_shifted="材料系",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="材料是⋯鸡",
@@ -7064,6 +7402,7 @@ shift_test_cases_block_68 = [
         yuewen_1_shifted="材料系鸡",
         yuewen_2_shifted="方法攞只鸡去烧佢几烧",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="方法：把鸡烧几烧",
@@ -7072,6 +7411,7 @@ shift_test_cases_block_68 = [
         yuewen_2="就噉一味烧鸡就大功告成喇",
         yuewen_1_shifted="方法攞只鸡去烧佢几烧",
         yuewen_2_shifted="就噉一味烧鸡就大功告成喇",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="就这样，一味「烧鸡」大功告成",
@@ -7080,6 +7420,7 @@ shift_test_cases_block_68 = [
         yuewen_2="食谱度又补充噉话",
         yuewen_1_shifted="就噉一味烧鸡就大功告成喇",
         yuewen_2_shifted="食谱度又补充噉话",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="食谱里面补充说：",
@@ -7088,6 +7429,7 @@ shift_test_cases_block_68 = [
         yuewen_2="如果想你个鸡烧得美味可口",
         yuewen_1_shifted="食谱度又补充噉话",
         yuewen_2_shifted="如果想你个鸡烧得美味可口",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="如果你想把鸡烧得美味可口⋯",
@@ -7096,6 +7438,7 @@ shift_test_cases_block_68 = [
         yuewen_2="冇话食完腰心腰肺顶住个胃",
         yuewen_1_shifted="如果想你个鸡烧得美味可口",
         yuewen_2_shifted="冇话食完腰心腰肺顶住个胃",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="吃完后不会心肺实胃气涨",
@@ -7104,6 +7447,7 @@ shift_test_cases_block_68 = [
         yuewen_2="个秘诀系唔该烧得佢好啲啰",
         yuewen_1_shifted="冇话食完腰心腰肺顶住个胃",
         yuewen_2_shifted="个秘诀系唔该烧得佢好啲啰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="秘诀是：拜托，把鸡烧好一点⋯",
@@ -7112,6 +7456,7 @@ shift_test_cases_block_68 = [
         yuewen_2="多谢合作",
         yuewen_1_shifted="个秘诀系唔该烧得佢好啲啰",
         yuewen_2_shifted="多谢合作",
+        verified=True,
     ),
 ]  # shift_test_cases_block_68
 shift_test_cases_block_69 = [
@@ -7120,18 +7465,20 @@ shift_test_cases_block_69 = [
         yuewen_1="唔该我要一个常餐啦",
         zhongwen_2="常餐？常餐有什么吃？",
         yuewen_2="常餐",
-        yuewen_1_shifted="唔该我要一个常餐啦常餐",
-        yuewen_2_shifted="",
-        difficulty=1,
+        yuewen_1_shifted="唔该我要一个常餐啦",
+        yuewen_2_shifted="常餐",
+        difficulty=2,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="常餐？常餐有什么吃？",
-        yuewen_1="",
+        yuewen_1="常餐",
         zhongwen_2="跟特餐一样吧",
         yuewen_2="常餐有咩食㗎同特餐一样啰",
-        yuewen_1_shifted="常餐有咩食㗎",
+        yuewen_1_shifted="常餐常餐有咩食㗎",
         yuewen_2_shifted="同特餐一样啰",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="跟特餐一样吧",
@@ -7140,6 +7487,7 @@ shift_test_cases_block_69 = [
         yuewen_2="",
         yuewen_1_shifted="同特餐一样啰",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="特餐是什么？",
@@ -7149,6 +7497,7 @@ shift_test_cases_block_69 = [
         yuewen_1_shifted="噉特餐系咩嚟㗎",
         yuewen_2_shifted="同快餐咁上下啰",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="跟快餐差不多",
@@ -7157,6 +7506,7 @@ shift_test_cases_block_69 = [
         yuewen_2="噉快餐又系咩嚟㗎",
         yuewen_1_shifted="同快餐咁上下啰",
         yuewen_2_shifted="噉快餐又系咩嚟㗎",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="快餐又是什么？",
@@ -7165,6 +7515,7 @@ shift_test_cases_block_69 = [
         yuewen_2="即系快餐咪真系午餐",
         yuewen_1_shifted="噉快餐又系咩嚟㗎",
         yuewen_2_shifted="即系快餐咪真系午餐",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="快餐即是午餐",
@@ -7173,6 +7524,7 @@ shift_test_cases_block_69 = [
         yuewen_2="",
         yuewen_1_shifted="即系快餐咪真系午餐",
         yuewen_2_shifted="",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="午餐吃什么？",
@@ -7182,6 +7534,7 @@ shift_test_cases_block_69 = [
         yuewen_1_shifted="午餐食咩㗎",
         yuewen_2_shifted="午餐同晚餐一样㗎",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="午餐跟晚餐一样",
@@ -7190,6 +7543,7 @@ shift_test_cases_block_69 = [
         yuewen_2="噉晚餐又食啲咩呀",
         yuewen_1_shifted="午餐同晚餐一样㗎",
         yuewen_2_shifted="噉晚餐又食啲咩呀",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="晚餐又吃什么？",
@@ -7198,6 +7552,7 @@ shift_test_cases_block_69 = [
         yuewen_2="晚餐咪真系常餐啰",
         yuewen_1_shifted="噉晚餐又食啲咩呀",
         yuewen_2_shifted="晚餐咪真系常餐啰",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="晚餐即是常餐",
@@ -7206,6 +7561,7 @@ shift_test_cases_block_69 = [
         yuewen_2="噉呀我要两个常餐啦",
         yuewen_1_shifted="晚餐咪真系常餐啰",
         yuewen_2_shifted="噉呀我要两个常餐啦",
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="那么，两客常餐吧",
@@ -7214,6 +7570,7 @@ shift_test_cases_block_69 = [
         yuewen_2="好嘢呀我哋今日啲常餐",
         yuewen_1_shifted="噉呀我要两个常餐啦",
         yuewen_2_shifted="好嘢呀我哋今日啲常餐",
+        verified=True,
     ),
 ]  # shift_test_cases_block_69
 shift_test_cases_block_70 = [
