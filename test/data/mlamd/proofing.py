@@ -3759,6 +3759,7 @@ proof_test_cases_block_45 = [
         note="Corrected '太平清朝' to '太平清醮' as '清醮' is the correct term for "
         "the festival, while '清朝' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="于北帝庙前搭起三座包山",
@@ -3847,6 +3848,7 @@ proof_test_cases_block_45 = [
         note="Replaced '都去抢包山' with '多人重伤' as '都去抢包山' is a mishearing and "
         "does not match the meaning of '多人重伤' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「抢包山」从此被禁！",
@@ -3856,6 +3858,7 @@ proof_test_cases_block_45 = [
         "original phrase '「抢包山」从此被禁！' and is clearly a complete "
         "mismatch.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="而长洲独有的传统，亦渐被遗忘",
@@ -3864,6 +3867,7 @@ proof_test_cases_block_45 = [
         note="Corrected '占备为榜' to '渐被遗忘' as it is a mishearing of '渐被遗忘', "
         "matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_45
 proof_test_cases_block_46 = [
@@ -3895,6 +3899,7 @@ proof_test_cases_block_46 = [
         note="Corrected '一日' to '一项' as '一项' matches the meaning of '一项' "
         "(an event) in the 中文, while '一日' is likely a mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="甚至没有人知道是运动的运动",
@@ -3932,15 +3937,15 @@ proof_test_cases_block_46 = [
         "matching the meaning in the 中文, and '通' is a likely "
         "mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="别躲懒！继续练！",
         yuewen="冇偷懒！继续练！",
-        yuewen_proofread="唔好偷懒！继续练！",
-        note="Corrected '冇偷懒' to '唔好偷懒' as '唔好' (don't) matches the "
-        "imperative '别' in the 中文, while '冇' (no/have not) is a "
-        "likely mishearing.",
-        difficulty=1,
+        yuewen_proofread="冇偷懒！继续练！",
+        note="",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="一天，珊珊到了师传家！",
@@ -3948,6 +3953,7 @@ proof_test_cases_block_46 = [
         yuewen_proofread="有一日，珊珊嚟咗师傅屋企！",
         note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="珊珊！我的师姐珊珊！",
@@ -3957,6 +3963,7 @@ proof_test_cases_block_46 = [
         "and '师仔' to '师姐' to match the intended meaning of '师姐' "
         "(senior female schoolmate).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="可以看见珊珊⋯",
@@ -3965,6 +3972,7 @@ proof_test_cases_block_46 = [
         note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name "
         "'珊珊', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="这几个星期爬得再辛苦也是值得的！",
@@ -3979,6 +3987,7 @@ proof_test_cases_block_46 = [
         yuewen_proofread="珊珊！",
         note="Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="珊你个头！继续练习！",
@@ -3987,6 +3996,7 @@ proof_test_cases_block_46 = [
         note="Corrected '伞' to '珊' as '珊你个头' is a common Cantonese phrase, "
         "and '伞' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_46
 proof_test_cases_block_47 = [
@@ -3997,6 +4007,7 @@ proof_test_cases_block_47 = [
         note="Corrected '仲唔系？' to '仲唔去？' as '仲唔系' is a mishearing of "
         "'仲唔去', which matches the meaning of '还不去？' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="珊珊没看见我这个师弟",
@@ -4005,6 +4016,7 @@ proof_test_cases_block_47 = [
         note="Corrected '山神' to '珊珊' as '山神' is a mishearing of the name "
         "'珊珊', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我只有死死气再爬上组合柜",
@@ -4042,6 +4054,7 @@ proof_test_cases_block_47 = [
         "the bun-snatching event, and removed '字幕由纱友提供' as it is a "
         "subtitle credit artifact.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_47
 proof_test_cases_block_48 = [
@@ -4156,6 +4169,7 @@ proof_test_cases_block_50 = [
         note="Corrected '气' to '戏' and '气蟹粗' to '器械操' as these are likely "
         "mishearings of the correct terms for '神功戏' and '器械操'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="他说抢包山才是他一生最大成就",
@@ -4214,6 +4228,7 @@ proof_test_cases_block_50 = [
         "likely mishearings; '脚趾甲' means 'toenail' and '成寸' means 'an "
         "inch thick', matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="要走过几多座山",
@@ -4222,6 +4237,7 @@ proof_test_cases_block_50 = [
         note="Corrected '行个几度呢' to '行过' as '行个几度呢' is a mishearing of "
         "'行过', which matches the meaning of '走过' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="跨过几多个海",
@@ -4230,6 +4246,7 @@ proof_test_cases_block_50 = [
         note="Corrected '挂过' to '跨过' as '跨过' (to cross over) matches the "
         "meaning in the 中文, while '挂过' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="吃过几多苦头",
@@ -4239,6 +4256,7 @@ proof_test_cases_block_50 = [
         "'hardship', matching the meaning in the 中文, while '斧头' is a "
         "likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="才可以练成这举世无双的脚瓜？",
@@ -4248,6 +4266,7 @@ proof_test_cases_block_50 = [
         "correct phrase meaning 'peerless' or 'unparalleled', "
         "matching the 中文.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_50
 proof_test_cases_block_51 = [
@@ -4266,6 +4285,7 @@ proof_test_cases_block_51 = [
         "intended meaning is 'will have such big calves', matching "
         "the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="其实我也不知道个仔要这么粗的脚瓜⋯",
@@ -4355,6 +4375,7 @@ proof_test_cases_block_53 = [
         note="Corrected '我让返电子词典' to '我用返电子词典' as '让返' is a mishearing of "
         "'用返', which matches the meaning of '用' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="信，是妈妈写给奥委会主席的",
@@ -4387,13 +4408,11 @@ proof_test_cases_block_53 = [
     ProofTestCase(
         zhongwen="「我们居住在香港这里的人，很爱吃包」",
         yuewen="「我门居住在香港这类的人，肯爱吃包」",
-        yuewen_proofread="「我哋居住在香港呢度嘅人，好爱食包」",
-        note="Corrected '我门' to '我哋' as '我哋' is the correct Cantonese "
-        "pronoun for 'we'; corrected '这类的人' to '呢度嘅人' as '这类' is a "
-        "mishearing of '这里' ('呢度'); corrected '肯爱' to '好爱' as '肯爱' is "
-        "a mishearing of '好爱' (very much love); corrected '吃' to '食' "
-        "for proper Cantonese usage.",
-        difficulty=1,
+        yuewen_proofread="「我们居住在香港这里的人，很爱吃包」",
+        note="Corrected '我门' to '我们', '这类' to '这里', and '肯爱' to '很爱'; the"
+        "passage is a Cantonese reading of standard written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「小笼包，上海包，广东包，莲蓉包」",
@@ -4403,6 +4422,7 @@ proof_test_cases_block_53 = [
         "bun, matching the meaning in the 中文, and '联融' is a likely "
         "mishearing of '莲蓉'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「好朋友，我认为",
@@ -4414,8 +4434,10 @@ proof_test_cases_block_53 = [
     ProofTestCase(
         zhongwen="抢劫那些包，十分重要」",
         yuewen="抢劫嗰些包，十分重要」",
-        yuewen_proofread="抢劫嗰些包，十分重要」",
-        note="",
+        yuewen_proofread="抢劫那些包，十分重要」",
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -4429,10 +4451,10 @@ proof_test_cases_block_53 = [
         zhongwen="「要大力！大吃晚上的粥，和大节瓜！」",
         yuewen="「要大力！大吃吻上的粥，和大字瓜！」",
         yuewen_proofread="「要大力！大吃晚上的粥，和大节瓜！」",
-        note="Corrected '吻上的粥' to '晚上的粥' as '吻上' is a mishearing of '晚上'; "
-        "corrected '大字瓜' to '大节瓜' as '节瓜' is the correct term for the "
-        "vegetable, matching the meaning in the 中文.",
-        difficulty=1,
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「按照我愚蠢的见解⋯」",
@@ -4459,10 +4481,10 @@ proof_test_cases_block_53 = [
         zhongwen="「世界便和平！」",
         yuewen="「世界变和平！」",
         yuewen_proofread="「世界便和平！」",
-        note="Corrected '变' to '便' as '便' is the correct word in this "
-        "context, matching the meaning in the 中文, and '变' is a likely "
-        "mishearing.",
-        difficulty=1,
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「你有孩子吗？」",
@@ -4488,27 +4510,29 @@ proof_test_cases_block_53 = [
     ProofTestCase(
         zhongwen="「他是一个好男孩」",
         yuewen="「她系一个好男孩」",
-        yuewen_proofread="「佢系一个好男孩」",
-        note="Corrected '她' to '佢' as '佢' is the gender-neutral pronoun in "
-        "Cantonese, matching the intended meaning of '他' in the 中文, "
-        "while '她' is a likely mishearing.",
-        difficulty=1,
+        yuewen_proofread="「他是一个好男孩」",
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「他非常懂得抢劫那些包」",
         yuewen="「她非常懂得抢劫嗰些包」",
-        yuewen_proofread="「佢非常懂得抢劫嗰些包」",
-        note="Corrected '她' to '佢' as '佢' is the correct gender-neutral "
-        "pronoun in Cantonese, matching the meaning of '他' in the 中文.",
-        difficulty=1,
+        yuewen_proofread="「他非常懂得抢劫那些包」",
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「有一天，我看见他，抢劫包⋯」",
         yuewen="「有一天，我看见她抢劫包⋯」",
-        yuewen_proofread="「有一天，我看见他抢劫包⋯」",
-        note="Corrected '她' to '他' as the pronoun should match the "
-        "original '他' in the 中文, and '她' is likely a mishearing.",
-        difficulty=1,
+        yuewen_proofread="「有一天，我看见他，抢劫包⋯」",
+        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
+        "written Chinese.",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="「抢了一个奥运金牌」",
@@ -4597,6 +4621,7 @@ proof_test_cases_block_54 = [
         "the Cheung Chau Bun Festival activity, matching the meaning "
         "in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我不是为了见珊珊",
@@ -4604,6 +4629,7 @@ proof_test_cases_block_54 = [
         yuewen_proofread="我唔系为咗见珊珊",
         note="Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我并不知道为什么要抢那些包",
@@ -4619,6 +4645,7 @@ proof_test_cases_block_54 = [
         note="Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for "
         "the traditional event, matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="可是，我依然努力练习抢包山",
@@ -4627,6 +4654,7 @@ proof_test_cases_block_54 = [
         note="Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for "
         "the traditional activity, matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="因为，我爱我妈妈",
