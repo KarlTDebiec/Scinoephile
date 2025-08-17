@@ -412,7 +412,7 @@ translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     zhongwen_10="一座包山，起码六、七层楼高⋯",
     yuewen_10="一座包山，起码六、七层楼高⋯",
     zhongwen_11="你可以想像一下包山有多高了吧？",
-    yuewen_11="噉你可以想像一下包山有几高喇？",
+    yuewen_11="噉你可以想像一下嗰度有几多包喇？",
     zhongwen_12="抢包山，就是要把包山上的包抢到手！",
     yuewen_12="噉抢包山，自然就系要将包山嘅包抢到手！",
     zhongwen_13="锣鼓响起",
@@ -428,7 +428,7 @@ translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     zhongwen_18="「抢包山」从此被禁！",
     zhongwen_19="而长洲独有的传统，亦渐被遗忘",
     yuewen_19="长洲特有嘅传统，亦渐被遗忘",
-    yuewen_18="「抢包山」由此被禁咗！",
+    yuewen_18="「抢包山」由嗰时开始就被禁咗！",
 )  # translate_test_case_block_45
 translate_test_case_block_46 = None  # translate_test_case_block_46
 translate_test_case_block_47 = TranslateTestCase.get_test_case_cls(

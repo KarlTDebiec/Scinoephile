@@ -2053,7 +2053,7 @@ review_test_case_block_42 = ReviewTestCase.get_test_case_cls(12)(
 )  # review_test_case_block_42
 review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_1="妈妈在长洲找了间酒楼摆拜师宴",
-    yuewen_1="妈妈喺长洲揾咗间酒楼摆拜师宴",
+    yuewen_1="妈妈喺长洲揾咗间酒楼摆咗几回拜师宴",
     zhongwen_2="因为我是师傅最后一个入室弟子",
     yuewen_2="因为我系师父最后一个入室弟子",
     zhongwen_3="到贺的乡绅父老特别多",
@@ -2065,7 +2065,7 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_6="珊珊因为去了集训，没来",
     yuewen_6="但系珊珊就去咗集训，冇嚟到",
     zhongwen_7="麦唛，菇时跟得巴都来了",
-    yuewen_7="麦唛，菇时跟得巴都嚟咗",
+    yuewen_7="麦唛，菇时同得巴都嚟咗",
     zhongwen_8="还带着成绩表，奖牌和大包",
     yuewen_8="仲带埋成绩表，奖牌同大包嚟添",
     zhongwen_9="他们都希望黎根也可以收他们做徒弟",
@@ -2079,7 +2079,7 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_13="我终于可以跟珊珊一起练滑浪风帆了！",
     yuewen_13="哦，我终于可以同珊珊一齐练习滑浪风帆啊！",
     zhongwen_14="我将茶递给黎根，黎根他⋯",
-    yuewen_14="我将杯茶递咗畀黎根，黎根佢⋯亦唔系",
+    yuewen_14="我将杯茶递咗畀黎根，黎根佢⋯",
     zhongwen_15="师傅他把茶喝了，正式收我做徒弟",
     yuewen_15="师父佢饮咗杯茶，正式收咗我做徒弟嘞",
     zhongwen_16="宾客们好像都很高兴",
@@ -2095,21 +2095,22 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_21="我把它传给外甥女珊珊了",
     yuewen_21="传咗畀我外甥女珊珊啊",
     zhongwen_22="另一项绝技，我打算传给这个新徒弟⋯",
-    yuewen_22="另一项绝技，我打算传畀呢个新徒弟⋯",
+    yuewen_22="另一项绝技，我打算传畀呢个新修嘅徒弟⋯",
     zhongwen_23="希望他把长洲人世世代代的绝技",
     yuewen_23="希望我可以将我哋长洲人世世代代嘅传统",
     zhongwen_24="发扬光大！",
     yuewen_24="发扬光大！",
     zhongwen_25="请问那是什么绝技呢？",
     yuewen_25="噉请问嗰样绝技系乜嘢啊？",
-    yuewen_revised_1="",
-    note_1="",
+    yuewen_revised_1="妈妈喺长洲揾咗间酒楼摆拜师宴",
+    note_1="Removed '咗几回' as it implies multiple banquets, which is not "
+    "supported by the context. The original only refers to one "
+    "banquet.",
     yuewen_revised_2="",
     note_2="",
     yuewen_revised_3="所以到贺嘅乡绅父老特别多",
-    note_3="Changed '乡亲父老' to '乡绅父老' for consistency with the rest of "
-    "the subtitles and the context, as '乡绅父老' is used elsewhere "
-    "and is more accurate here.",
+    note_3="Changed '乡亲父老' to '乡绅父老' to match the term used in the rest "
+    "of the subtitles for consistency.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2130,9 +2131,8 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     note_12="",
     yuewen_revised_13="",
     note_13="",
-    yuewen_revised_14="我将杯茶递咗畀黎根，黎根佢⋯",
-    note_14="Removed '亦唔系' at the end, as it is not contextually "
-    "appropriate and breaks the flow with the next subtitle.",
+    yuewen_revised_14="",
+    note_14="",
     yuewen_revised_15="",
     note_15="",
     yuewen_revised_16="",
@@ -2144,20 +2144,22 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     yuewen_revised_19="",
     note_19="",
     yuewen_revised_20="第一样，系滑浪风帆！",
-    note_20="Removed '呢样早已' at the end, as it is not present in the "
-    "context and interrupts the flow to the next subtitle.",
+    note_20="Removed '呢样早已' as it is not present in the context and "
+    "breaks the flow with the next subtitle.",
     yuewen_revised_21="",
     note_21="",
-    yuewen_revised_22="",
-    note_22="",
-    yuewen_revised_23="希望我可以将我哋长洲人世世代代嘅绝技",
-    note_23="Changed '传统' to '绝技' for consistency with the previous "
-    "subtitle and the context, as the focus is on '绝技' (special "
-    "skill) rather than '传统' (tradition).",
+    yuewen_revised_22="另一项绝技，我打算传畀呢个新徒弟⋯",
+    note_22="Changed '新修嘅徒弟' to '新徒弟' for naturalness and consistency "
+    "with the rest of the subtitles.",
+    yuewen_revised_23="希望佢可以将我哋长洲人世世代代嘅绝技",
+    note_23="Changed '我' to '佢' and '传统' to '绝技' to match the subject and "
+    "terminology of the previous subtitles.",
     yuewen_revised_24="",
     note_24="",
-    yuewen_revised_25="",
-    note_25="",
+    yuewen_revised_25="咁请问嗰项绝技系乜嘢嚟㗎？",
+    note_25="Changed '噉请问嗰样绝技系乜嘢啊？' to '咁请问嗰项绝技系乜嘢嚟㗎？' for more natural "
+    "Cantonese phrasing and to match the context of asking about "
+    "a skill.",
 )  # review_test_case_block_43
 review_test_case_block_44 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="第二项绝技，就是⋯",
@@ -2191,7 +2193,7 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_10="一座包山，起码六、七层楼高⋯",
     yuewen_10="一座包山，起码六、七层楼高⋯",
     zhongwen_11="你可以想像一下包山有多高了吧？",
-    yuewen_11="噉你可以想像一下包山有几高喇？",
+    yuewen_11="噉你可以想像一下嗰度有几多包喇？",
     zhongwen_12="抢包山，就是要把包山上的包抢到手！",
     yuewen_12="噉抢包山，自然就系要将包山嘅包抢到手！",
     zhongwen_13="锣鼓响起",
@@ -2205,7 +2207,7 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_17="在1978年两座包山忽然倒下，多人重伤",
     yuewen_17="但喺1978年两座包山突然塌咗，多人重伤",
     zhongwen_18="「抢包山」从此被禁！",
-    yuewen_18="「抢包山」由此被禁咗！",
+    yuewen_18="「抢包山」由嗰时开始就被禁咗！",
     zhongwen_19="而长洲独有的传统，亦渐被遗忘",
     yuewen_19="长洲特有嘅传统，亦渐被遗忘",
     yuewen_revised_1="",
@@ -2225,13 +2227,15 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="包山就系一座由好多好多包砌起嘅山！",
-    note_9="Removed one redundant '好多' to maintain consistency and "
-    "naturalness with the rest of the subtitles and the likely "
-    "spoken delivery.",
+    note_9="Removed one redundant '好多' to maintain consistency and avoid "
+    "overemphasis, as the repetition is not present in the rest "
+    "of the subtitles and may be a typographical error.",
     yuewen_revised_10="",
     note_10="",
-    yuewen_revised_11="",
-    note_11="",
+    yuewen_revised_11="噉你可以想像一下包山有几高喇？",
+    note_11="Changed '嗰度有几多包喇' to '包山有几高喇' to better match the context "
+    "and logical flow, as the previous subtitle describes the "
+    "height of the mountain, not the number of buns.",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
@@ -2269,7 +2273,7 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_9="碰！三番！",
     yuewen_9="碰！三番！",
     zhongwen_10="别躲懒！继续练！",
-    yuewen_10="唔好偷懒！继续练！",
+    yuewen_10="冇偷懒！继续练！",
     zhongwen_11="一天，珊珊到了师传家！",
     yuewen_11="有一日，珊珊嚟咗师傅屋企！",
     zhongwen_12="珊珊！我的师姐珊珊！",
@@ -2302,8 +2306,10 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_8="",
     yuewen_revised_9="",
     note_9="",
-    yuewen_revised_10="",
-    note_10="",
+    yuewen_revised_10="唔好偷懒！继续练！",
+    note_10="Changed '冇偷懒！继续练！' to '唔好偷懒！继续练！' to match the imperative "
+    "mood of the Mandarin '别躲懒！', which is a command, not a "
+    "statement.",
     yuewen_revised_11="",
     note_11="",
     yuewen_revised_12="",
@@ -2537,13 +2543,13 @@ review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     zhongwen_9="「你吃包吗？我吃包！」",
     yuewen_9="「你吃包吗？我吃包！」",
     zhongwen_10="「我们居住在香港这里的人，很爱吃包」",
-    yuewen_10="「我哋居住在香港呢度嘅人，好爱食包」",
+    yuewen_10="「我们居住在香港这里的人，很爱吃包」",
     zhongwen_11="「小笼包，上海包，广东包，莲蓉包」",
     yuewen_11="「小笼包，上海包，广东包，莲蓉包」",
     zhongwen_12="「好朋友，我认为",
     yuewen_12="「好朋友，我认为",
     zhongwen_13="抢劫那些包，十分重要」",
-    yuewen_13="抢劫嗰些包，十分重要」",
+    yuewen_13="抢劫那些包，十分重要」",
     zhongwen_14="「也算是运动，就真！」",
     yuewen_14="「也算是运动，就真！」",
     zhongwen_15="「要大力！大吃晚上的粥，和大节瓜！」",
@@ -2563,11 +2569,11 @@ review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     zhongwen_22="终于讲到我了！",
     yuewen_22="终于讲到我啦！",
     zhongwen_23="「他是一个好男孩」",
-    yuewen_23="「佢系一个好男孩」",
+    yuewen_23="「他是一个好男孩」",
     zhongwen_24="「他非常懂得抢劫那些包」",
-    yuewen_24="「佢非常懂得抢劫嗰些包」",
+    yuewen_24="「他非常懂得抢劫那些包」",
     zhongwen_25="「有一天，我看见他，抢劫包⋯」",
-    yuewen_25="「有一天，我看见他抢劫包⋯」",
+    yuewen_25="「有一天，我看见他，抢劫包⋯」",
     zhongwen_26="「抢了一个奥运金牌」",
     yuewen_26="「抢了一个奥运金牌」",
     zhongwen_27="「那便是一个母亲能够有的最大的安慰」",
@@ -2642,8 +2648,8 @@ review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     note_26="",
     yuewen_revised_27="「嗰便是一个母亲能够有嘅最大嘅安慰」",
     note_27="Changed 「哪便是一个母亲能够有的最好的最大的安慰」 to 「嗰便是一个母亲能够有嘅最大嘅安慰」 for "
-    "consistency with Cantonese usage and to avoid redundancy in "
-    "'最好嘅最大嘅'.",
+    "consistency with Cantonese usage and to remove the redundant "
+    'and non-idiomatic repetition of "最好的最大的".',
     yuewen_revised_28="",
     note_28="",
     yuewen_revised_29="",

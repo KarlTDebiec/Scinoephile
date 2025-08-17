@@ -3493,8 +3493,8 @@ proof_test_cases_block_43 = [
         zhongwen="妈妈在长洲找了间酒楼摆拜师宴",
         yuewen="妈妈喺长洲揾咗间酒楼摆咗几回白丝宴",
         yuewen_proofread="妈妈喺长洲揾咗间酒楼摆咗几回拜师宴",
-        note="Corrected '白丝宴' to '拜师宴' as '白丝宴' is a mishearing of "
-        "'拜师宴', which matches the meaning in the 中文.",
+        note="Corrected '白丝宴' to '拜师宴' as '白丝宴' is a mishearing of '拜师宴', "
+        "which matches the meaning in the 中文.",
         difficulty=2,
         verified=True,
     ),
@@ -3605,8 +3605,8 @@ proof_test_cases_block_43 = [
         zhongwen="我将茶递给黎根，黎根他⋯",
         yuewen="我将杯茶递咗畀嚟跟，嚟跟佢⋯亦唔系",
         yuewen_proofread="我将杯茶递咗畀黎根，黎根佢⋯",
-        note="Corrected '嚟跟' to '黎根' as it is a mishearing of the name '黎根'; "
-        "removed '亦唔系' as it seems to be a transcription error.",
+        note="Corrected '嚟跟' to '黎根' as it is a mishearing of the name "
+        "'黎根'; removed '亦唔系' as it seems to be a transcription error.",
         difficulty=2,
         verified=True,
     ),
@@ -4409,8 +4409,9 @@ proof_test_cases_block_53 = [
         zhongwen="「我们居住在香港这里的人，很爱吃包」",
         yuewen="「我门居住在香港这类的人，肯爱吃包」",
         yuewen_proofread="「我们居住在香港这里的人，很爱吃包」",
-        note="Corrected '我门' to '我们', '这类' to '这里', and '肯爱' to '很爱'; the"
-        "passage is a Cantonese reading of standard written Chinese.",
+        note="Corrected '我门' to '我们', '这类' to '这里', and '肯爱' to '很爱'; "
+        "thepassage is a Cantonese reading of standard written "
+        "Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4435,8 +4436,8 @@ proof_test_cases_block_53 = [
         zhongwen="抢劫那些包，十分重要」",
         yuewen="抢劫嗰些包，十分重要」",
         yuewen_proofread="抢劫那些包，十分重要」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4451,8 +4452,8 @@ proof_test_cases_block_53 = [
         zhongwen="「要大力！大吃晚上的粥，和大节瓜！」",
         yuewen="「要大力！大吃吻上的粥，和大字瓜！」",
         yuewen_proofread="「要大力！大吃晚上的粥，和大节瓜！」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4481,8 +4482,8 @@ proof_test_cases_block_53 = [
         zhongwen="「世界便和平！」",
         yuewen="「世界变和平！」",
         yuewen_proofread="「世界便和平！」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4511,8 +4512,8 @@ proof_test_cases_block_53 = [
         zhongwen="「他是一个好男孩」",
         yuewen="「她系一个好男孩」",
         yuewen_proofread="「他是一个好男孩」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4520,8 +4521,8 @@ proof_test_cases_block_53 = [
         zhongwen="「他非常懂得抢劫那些包」",
         yuewen="「她非常懂得抢劫嗰些包」",
         yuewen_proofread="「他非常懂得抢劫那些包」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
@@ -4529,8 +4530,8 @@ proof_test_cases_block_53 = [
         zhongwen="「有一天，我看见他，抢劫包⋯」",
         yuewen="「有一天，我看见她抢劫包⋯」",
         yuewen_proofread="「有一天，我看见他，抢劫包⋯」",
-        note="Reverted to 中文 since this passage is a Cantonese reading of standard "
-        "written Chinese.",
+        note="Reverted to 中文 since this passage is a Cantonese reading of "
+        "standard written Chinese.",
         difficulty=2,
         verified=True,
     ),
