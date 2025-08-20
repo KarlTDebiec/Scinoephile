@@ -104,7 +104,7 @@ def _get_english_text_flattened(text: str) -> str:
 
     # Merge conversations
     flattened = re.sub(
-        r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
+        r"^\s*[–-]\s*(.+)\n[–-]\s*(.+)\s*$",
         lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
         flattened,
         flags=re.M,
