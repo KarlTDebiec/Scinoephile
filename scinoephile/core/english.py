@@ -71,7 +71,10 @@ def _get_english_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)
 
     # Remove leading dash if there is now only one line
-    cleaned = re.sub(r"^\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned)
+    # cleaned = re.sub(r"^\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned)
+    cleaned = re.sub(
+        r"^(?!.*\s{4}-\s).?\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned
+    )
 
     # Remove empty lines
     cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
@@ -104,7 +107,7 @@ def _get_english_text_flattened(text: str) -> str:
 
     # Merge conversations
     flattened = re.sub(
-        r"^\s*-\s*(.+)\n-\s*(.+)\s*$",
+        r"^\s*[–-]\s*(.+)\n[–-]\s*(.+)\s*$",
         lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
         flattened,
         flags=re.M,

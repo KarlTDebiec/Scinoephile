@@ -375,17 +375,17 @@ I had difficulty hearing him.
 76
 00:06:14,625 --> 00:06:17,833
 蛋挞！　　蛋挞！
-Tart!    - Tart!
+- Tart!    - Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
 荔芋火鸭礼！　　荔芋火鸭礼！
-Duck dumpling!    - Duck dumpling!
+- Duck dumpling!    - Duck dumpling!
 
 78
 00:06:23,750 --> 00:06:29,792
 忘记校训九十七⋯　　忘记校训九十七⋯
-The 97 Rule…    - The 97 Rule…
+- The 97 Rule…    - The 97 Rule…
 
 79
 00:06:29,958 --> 00:06:33,083
@@ -470,42 +470,42 @@ Roll call now.
 95
 00:07:21,083 --> 00:07:22,708
 麦唛同学！　　到！
-McMug!    - Present!
+- McMug!    - Present!
 
 96
 00:07:22,917 --> 00:07:24,375
 亚辉同学！　　到！
-Fail!    - Present!
+- Fail!    - Present!
 
 97
 00:07:24,500 --> 00:07:26,667
 菇时同学！　　到！
-Goosie!    - Present!
+- Goosie!    - Present!
 
 98
 00:07:26,833 --> 00:07:28,750
 得巴同学！　　到！
-Darby!    - Present!
+- Darby!    - Present!
 
 99
 00:07:28,917 --> 00:07:31,708
 阿May同学！　　到！
-May!    - Present!
+- May!    - Present!
 
 100
 00:07:31,875 --> 00:07:33,750
 阿June同学！　　到！
-June!    - Present!
+- June!    - Present!
 
 101
 00:07:33,917 --> 00:07:36,667
 阿May同学！　　到！
-May!    - Present!
+- May!    - Present!
 
 102
 00:07:36,958 --> 00:07:40,000
 麦唛同学！　　到！
-McMug!    - Present!
+- McMug!    - Present!
 
 103
 00:07:40,167 --> 00:07:41,292
@@ -540,37 +540,37 @@ Back to roll call.
 109
 00:07:55,792 --> 00:07:57,583
 阿June同学！　　到！
-Fail!    - Present!
+- Fail!    - Present!
 
 110
 00:07:57,792 --> 00:07:58,958
 亚辉同学！　　到！
-Fail!    - Present!
+- Fail!    - Present!
 
 111
 00:07:59,167 --> 00:08:01,333
 得巴同学！　　到！
-Darby!    - Present!
+- Darby!    - Present!
 
 112
 00:08:02,125 --> 00:08:03,250
 阿May同学！　　到！
-May!    - Present!
+- May!    - Present!
 
 113
 00:08:03,500 --> 00:08:05,500
 麦唛同学！　　到！
-McMug!    - Present!
+- McMug!    - Present!
 
 114
 00:08:05,750 --> 00:08:07,875
 菇时同学！　　到！
-Goosie!    - Present!
+- Goosie!    - Present!
 
 115
 00:08:08,125 --> 00:08:09,458
 菇时同学！　　到！
-Goosie!    - Present!
+- Goosie!    - Present!
 
 116
 00:08:09,625 --> 00:08:11,375
@@ -715,22 +715,22 @@ Which we kids frequent after class.
 144
 00:09:27,583 --> 00:09:30,125
 鱼蛋粗面，麻烦你　　粗面买光了
-Fishball noodle, please.    - No noodle left.
+- Fishball noodle, please.    - No noodle left.
 
 145
 00:09:30,417 --> 00:09:33,917
 那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了
-Fishball rice noodle then.    - No fishball left.
+- Fishball rice noodle then.    - No fishball left.
 
 146
 00:09:34,083 --> 00:09:37,792
 那么⋯金钱肚粗面好了　　粗面买光了
-Chicken wing noodle then.    - No noodle left.
+- Chicken wing noodle then.    - No noodle left.
 
 147
 00:09:38,958 --> 00:09:41,833
 那么要鱼蛋油面吧　　鱼蛋买光了
-How about fishball congee?    - No fishball left.
+- How about fishball congee?    - No fishball left.
 
 148
 00:09:42,000 --> 00:09:43,417
@@ -740,7 +740,7 @@ Nothing left today?
 149
 00:09:43,833 --> 00:09:46,625
 来个墨鱼丸粗面吧　　粗面买光了
-How about beef noodle?    - No noodle left.
+- How about beef noodle?    - No noodle left.
 
 150
 00:09:46,917 --> 00:09:47,958
@@ -750,7 +750,7 @@ Again?
 151
 00:09:48,167 --> 00:09:51,708
 麻烦来碗鱼蛋濑吧　　鱼蛋买光了
-Fried chicken wing with fishball…    - No fishball left.
+- Fried chicken wing with fishball…    - No fishball left.
 
 152
 00:09:51,917 --> 00:09:55,333
@@ -770,12 +770,12 @@ Can't combine them?
 155
 00:10:02,458 --> 00:10:04,917
 麻烦你，净要鱼蛋吧　　鱼蛋买光了
-A bowl of fishball then.    - No fishball left.
+- A bowl of fishball then.    - No fishball left.
 
 156
 00:10:05,083 --> 00:10:06,667
 那么净要粗面呢？　　粗面买光了
-A bowl of noodle?    - No noodle left.
+- A bowl of noodle?    - No noodle left.
 
 157
 00:10:07,792 --> 00:10:08,708
@@ -1674,7 +1674,7 @@ We will go to Maldives.
 336
 00:26:13,875 --> 00:26:15,542
 真的吗？　　对
-Really?    - Yes.
+- Really?    - Yes.
 
 337
 00:26:15,750 --> 00:26:17,000
@@ -1719,7 +1719,7 @@ Hey, I'm leaving tomorrow.
 345
 00:27:06,458 --> 00:27:08,667
 对　　⋯是吗？
-Yes…    - Is that right?
+- Yes…    - Is that right?
 
 346
 00:27:08,833 --> 00:27:10,292
@@ -1864,7 +1864,7 @@ If only for one small piece.
 374
 00:33:06,042 --> 00:33:08,250
 妈妈晚安！
-Goodnight, mother!    - Goodnight!
+- Goodnight, mother!    - Goodnight!
 
 375
 00:33:46,542 --> 00:33:48,000
