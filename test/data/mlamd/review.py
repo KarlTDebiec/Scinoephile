@@ -678,7 +678,7 @@ review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     note_2="",
     yuewen_revised_3="我感到充满力量！",
     note_3="Added the subject '我' to match the implied subject in the "
-           "previous subtitles and for consistency with the spoken flow.",
+    "previous subtitles and for consistency with the spoken flow.",
     yuewen_revised_4="",
     note_4="",
 )  # review_test_case_block_6
@@ -709,12 +709,12 @@ review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     note_5="",
     yuewen_revised_6="世上一切，一切一切⋯",
     note_6="Added 「一切一切」 to match the repetition in the sequence and "
-           "maintain consistency with the previous and following "
-           "subtitles.",
+    "maintain consistency with the previous and following "
+    "subtitles.",
     yuewen_revised_7="所有嗰啲，都几好！All Things Bright and Beautiful",
     note_7="Removed 「嘢」 after 「嗰啲」 for naturalness and consistency, as "
-           "the previous subtitle already established the context of "
-           "\"things\".",
+    "the previous subtitle already established the context of "
+    '"things".',
 )  # review_test_case_block_7
 review_test_case_block_8 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="一、二、三、四、五、六、七⋯",
@@ -1072,13 +1072,13 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_2="",
     yuewen_revised_3="七彩缤纷嘅珊瑚，目不暇给嘅热带鱼",
     note_3="Removed '群' from '热带鱼群' to maintain consistency with the "
-           "rest of the subtitles and the likely spoken form, as the "
-           "previous and following lines do not use '群' and the phrase "
-           "is more natural as '热带鱼' in Cantonese speech.",
+    "rest of the subtitles and the likely spoken form, as the "
+    "previous and following lines do not use '群' and the phrase "
+    "is more natural as '热带鱼' in Cantonese speech.",
     yuewen_revised_4="充满住赤道热力嘅原始海洋，脱离繁嚣",
     note_4="Changed '远离繁嚣' to '脱离繁嚣' to match the sequence and maintain "
-           "consistency with the theme of '脱离' in the previous and "
-           "following lines.",
+    "consistency with the theme of '脱离' in the previous and "
+    "following lines.",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
@@ -1095,9 +1095,9 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_11="",
     yuewen_revised_12="咁妈妈你会唔会带我去㗎？",
     note_12="Changed '走落去' to '带我去' to match the context of the "
-            "conversation and the meaning of the Mandarin subtitle, as "
-            "the child is asking if the mother will take them to the "
-            "Maldives, not just 'go down there'.",
+    "conversation and the meaning of the Mandarin subtitle, as "
+    "the child is asking if the mother will take them to the "
+    "Maldives, not just 'go down there'.",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1227,10 +1227,10 @@ review_test_case_block_18 = ReviewTestCase.get_test_case_cls(8)(
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="唔使！同佢打支针啦！",
-    note_5="Changed \"同佢打多支针添呢！\" to \"同佢打支针啦！\" to better match the "
-           "context and flow. \"多支\" (another injection) is not implied "
-           "in the Mandarin, and \"添呢\" is unnecessary here. \"啦\" is a "
-           "more natural ending for a suggestion in this context.",
+    note_5='Changed "同佢打多支针添呢！" to "同佢打支针啦！" to better match the '
+    'context and flow. "多支" (another injection) is not implied '
+    'in the Mandarin, and "添呢" is unnecessary here. "啦" is a '
+    "more natural ending for a suggestion in this context.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -1305,8 +1305,8 @@ review_test_case_block_20 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="嚟啦，饮多啲！",
-    note_7="Changed \"食多更\" to \"饮多啲\" to correctly reflect the context "
-           "of drinking medicine, as indicated in previous subtitles.",
+    note_7='Changed "食多更" to "饮多啲" to correctly reflect the context '
+    "of drinking medicine, as indicated in previous subtitles.",
 )  # review_test_case_block_20
 review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="妈妈，你看！",
@@ -1327,24 +1327,24 @@ review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     note_1="",
     yuewen_revised_2="妈妈你睇，我好返喇！",
     note_2="Added '妈妈你睇，' to match the context and continuity from "
-           "subtitle 1, as the speaker is still addressing the mother "
-           "and showing her recovery.",
+    "subtitle 1, as the speaker is still addressing the mother "
+    "and showing her recovery.",
     yuewen_revised_3="啲药我全部食晒喇",
     note_3="Removed '所以' as it is not necessary and disrupts the natural "
-           "flow of the sentence. The sentence should directly state "
-           "that all the medicine was finished.",
+    "flow of the sentence. The sentence should directly state "
+    "that all the medicine was finished.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="我饮一格，又饮一格，又饮一格⋯",
     note_6="Changed '我饮下一格，又一格，又一格⋯' to '我饮一格，又饮一格，又饮一格⋯' for "
-           "consistency and clarity, matching the repetitive drinking "
-           "action described in the Mandarin.",
+    "consistency and clarity, matching the repetitive drinking "
+    "action described in the Mandarin.",
     yuewen_revised_7="咪就我饮晒㗎啦！",
     note_7="Changed '吓，咪我饮晒㖞！' to '咪就我饮晒㗎啦！' to better reflect the "
-           "exclamatory tone and the sense of 'so I finished it all!' in "
-           "context.",
+    "exclamatory tone and the sense of 'so I finished it all!' in "
+    "context.",
 )  # review_test_case_block_21
 review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_1="喝光了就叻仔了！",
@@ -1403,7 +1403,7 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_1="",
     yuewen_revised_2="饮晒就好返啦！",
     note_2="Removed '实' from '好返实啦', as '好返啦' is the standard colloquial "
-           "form for 'recover'.",
+    "form for 'recover'.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -1414,8 +1414,8 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_6="",
     yuewen_revised_7="你话我好返就同我去马尔代夫㗎嘛！",
     note_7="Changed '呢，你话我返就同我去马尔代夫㗎嘛！' to '你话我好返就同我去马尔代夫㗎嘛！' for "
-           "consistency with previous and following subtitles, and to "
-           "correct the omission of '好' in '好返'.",
+    "consistency with previous and following subtitles, and to "
+    "correct the omission of '好' in '好返'.",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -1426,7 +1426,7 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_11="",
     yuewen_revised_12="我唔系讲喇㗎，妈妈，又系你话嘅⋯",
     note_12="Reordered to '我唔系讲喇㗎，妈妈，又系你话嘅⋯' for natural speech flow and "
-            "to match the speaker's perspective.",
+    "to match the speaker's perspective.",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1777,8 +1777,8 @@ review_test_case_block_35 = ReviewTestCase.get_test_case_cls(10)(
     note_5="",
     yuewen_revised_6="拜你个头！",
     note_6="Removed 嘅 at the end to better match natural spoken "
-           "Cantonese and the tone of the exclamation, as 嘅 is "
-           "unnecessary and not idiomatic in this context.",
+    "Cantonese and the tone of the exclamation, as 嘅 is "
+    "unnecessary and not idiomatic in this context.",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -1828,7 +1828,7 @@ review_test_case_block_37 = ReviewTestCase.get_test_case_cls(10)(
     note_5="",
     yuewen_revised_6="脚趾甲成吋噉厚，究竟⋯",
     note_6="Removed the redundant '啲脚甲' after '脚趾甲' for naturalness and "
-           "to avoid repetition, as '脚趾甲' already refers to toenails.",
+    "to avoid repetition, as '脚趾甲' already refers to toenails.",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -2030,8 +2030,8 @@ review_test_case_block_42 = ReviewTestCase.get_test_case_cls(12)(
     note_2="",
     yuewen_revised_3="喺冰箱度攞咗只雪鸡出嚟解冻",
     note_3="Removed '净系' as it is not supported by context in the "
-           "sequence; the action is not being contrasted or limited, and "
-           "the previous subtitle already covers the narrative flow.",
+    "sequence; the action is not being contrasted or limited, and "
+    "the previous subtitle already covers the narrative flow.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2104,13 +2104,13 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     yuewen_25="噉请问嗰样绝技系乜嘢啊？",
     yuewen_revised_1="妈妈喺长洲揾咗间酒楼摆拜师宴",
     note_1="Removed '咗几回' as it implies multiple banquets, which is not "
-           "supported by the context. The original only refers to one "
-           "banquet.",
+    "supported by the context. The original only refers to one "
+    "banquet.",
     yuewen_revised_2="",
     note_2="",
     yuewen_revised_3="所以到贺嘅乡绅父老特别多",
     note_3="Changed '乡亲父老' to '乡绅父老' to match the term used in the rest "
-           "of the subtitles for consistency.",
+    "of the subtitles for consistency.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2145,21 +2145,21 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     note_19="",
     yuewen_revised_20="第一样，系滑浪风帆！",
     note_20="Removed '呢样早已' as it is not present in the context and "
-            "breaks the flow with the next subtitle.",
+    "breaks the flow with the next subtitle.",
     yuewen_revised_21="",
     note_21="",
     yuewen_revised_22="另一项绝技，我打算传畀呢个新徒弟⋯",
     note_22="Changed '新修嘅徒弟' to '新徒弟' for naturalness and consistency "
-            "with the rest of the subtitles.",
+    "with the rest of the subtitles.",
     yuewen_revised_23="希望佢可以将我哋长洲人世世代代嘅绝技",
     note_23="Changed '我' to '佢' and '传统' to '绝技' to match the subject and "
-            "terminology of the previous subtitles.",
+    "terminology of the previous subtitles.",
     yuewen_revised_24="",
     note_24="",
     yuewen_revised_25="咁请问嗰项绝技系乜嘢嚟㗎？",
     note_25="Changed '噉请问嗰样绝技系乜嘢啊？' to '咁请问嗰项绝技系乜嘢嚟㗎？' for more natural "
-            "Cantonese phrasing and to match the context of asking about "
-            "a skill.",
+    "Cantonese phrasing and to match the context of asking about "
+    "a skill.",
 )  # review_test_case_block_43
 review_test_case_block_44 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="第二项绝技，就是⋯",
@@ -2228,14 +2228,14 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     note_8="",
     yuewen_revised_9="包山就系一座由好多好多包砌起嘅山！",
     note_9="Removed one redundant '好多' to maintain consistency and avoid "
-           "overemphasis, as the repetition is not present in the rest "
-           "of the subtitles and may be a typographical error.",
+    "overemphasis, as the repetition is not present in the rest "
+    "of the subtitles and may be a typographical error.",
     yuewen_revised_10="",
     note_10="",
     yuewen_revised_11="噉你可以想像一下包山有几高喇？",
     note_11="Changed '嗰度有几多包喇' to '包山有几高喇' to better match the context "
-            "and logical flow, as the previous subtitle describes the "
-            "height of the mountain, not the number of buns.",
+    "and logical flow, as the previous subtitle describes the "
+    "height of the mountain, not the number of buns.",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
@@ -2296,8 +2296,8 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_4="",
     yuewen_revised_5="甚至乎冇人知佢系运动嘅运动",
     note_5="Removed the extra '对' in '对佢系运动嘅运动' to correct the phrase to "
-           "'佢系运动嘅运动', which is the correct colloquial structure in "
-           "Cantonese.",
+    "'佢系运动嘅运动', which is the correct colloquial structure in "
+    "Cantonese.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -2308,8 +2308,8 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_9="",
     yuewen_revised_10="唔好偷懒！继续练！",
     note_10="Changed '冇偷懒！继续练！' to '唔好偷懒！继续练！' to match the imperative "
-            "mood of the Mandarin '别躲懒！', which is a command, not a "
-            "statement.",
+    "mood of the Mandarin '别躲懒！', which is a command, not a "
+    "statement.",
     yuewen_revised_11="",
     note_11="",
     yuewen_revised_12="",
@@ -2344,25 +2344,24 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(8)(
     note_1="",
     yuewen_revised_2="珊珊见唔到我呢个师弟",
     note_2="Removed 佢, as it is redundant in this context and not "
-           "natural in a sequence with 珊珊 as the subject.",
+    "natural in a sequence with 珊珊 as the subject.",
     yuewen_revised_3="我唯有死死气再爬上组合柜",
-    note_3="Changed \"爬返上个组合柜\" to \"再爬上组合柜\" to match the sequence and "
-           "avoid unnecessary use of 返 and 个, which are not needed for "
-           "continuity and naturalness in the context.",
+    note_3='Changed "爬返上个组合柜" to "再爬上组合柜" to match the sequence and '
+    "avoid unnecessary use of 返 and 个, which are not needed for "
+    "continuity and naturalness in the context.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="唔知点解",
-    note_5="Revised to \"唔知点解\" for consistency and to match the "
-           "directness of the original. The previous version added "
-           "unnecessary information (但系山呢个头唔知点解特别瘾) that is not present "
-           "in the sequence and could cause confusion.",
+    note_5='Revised to "唔知点解" for consistency and to match the '
+    "directness of the original. The previous version added "
+    "unnecessary information (但系山呢个头唔知点解特别瘾) that is not present "
+    "in the sequence and could cause confusion.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="我唔学抢包山啦！",
-    note_8="Changed 嘞 to 啦 for more natural spoken Cantonese in this "
-           "context.",
+    note_8="Changed 嘞 to 啦 for more natural spoken Cantonese in this context.",
 )  # review_test_case_block_47
 review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="其实今天是我第一次近距离见黎根",
@@ -2379,7 +2378,7 @@ review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     note_2="",
     yuewen_revised_3="但系仲系一副细路仔面容",
     note_3="Changed '但系仲有一副孩子脸' to '但系仲系一副细路仔面容' for more natural and "
-           "accurate Cantonese transcription of '却还是一副孩子脸'.",
+    "accurate Cantonese transcription of '却还是一副孩子脸'.",
     yuewen_revised_4="",
     note_4="",
 )  # review_test_case_block_48
@@ -2446,9 +2445,9 @@ review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     note_4="",
     yuewen_revised_5="黎根越讲越兴奋，直到对眼发光",
     note_5="Added '直到对眼发光' to match the implied continuation of "
-           "excitement in the sequence, as the next subtitle picks up "
-           "from this point. This ensures continuity and completeness of "
-           "the spoken content across subtitles.",
+    "excitement in the sequence, as the next subtitle picks up "
+    "from this point. This ensures continuity and completeness of "
+    "the spoken content across subtitles.",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -2473,8 +2472,8 @@ review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     note_16="",
     yuewen_revised_17="脚趾甲有一寸厚，究竟⋯",
     note_17="Changed '脚趾甲啲脚甲成寸咁厚' to '脚趾甲有一寸厚' for clarity and to avoid "
-            "redundancy, as '脚趾甲' already refers to toenails. This also "
-            "matches the structure and flow of the surrounding subtitles.",
+    "redundancy, as '脚趾甲' already refers to toenails. This also "
+    "matches the structure and flow of the surrounding subtitles.",
     yuewen_revised_18="",
     note_18="",
     yuewen_revised_19="",
@@ -2694,7 +2693,7 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     zhongwen_12="连林世荣也大大赞好",
     yuewen_12="连林世荣睇见都大赞好",
     zhongwen_13="后来麦唛告诉我⋯",
-    yuewen_13="后来麦嘎话我知⋯",
+    yuewen_13="后来麦唛话我知⋯",
     zhongwen_14="林世荣即是猪肉荣，是黄飞鸿的徒弟",
     yuewen_14="林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
     zhongwen_15="我不知道师傅像不像黄飞鸿",
@@ -2702,7 +2701,7 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     zhongwen_16="我却肯定像一块猪肉",
     yuewen_16="但系我就肯定似旧猪肉",
     zhongwen_17="我是一块堵住两个包",
-    yuewen_17="我就系一块堵住两个包",
+    yuewen_17="我就系一个揸住两个包",
     zhongwen_18="在长洲转来转去的猪肉",
     yuewen_18="喺长洲转嚟转去嘅猪肉",
     zhongwen_19="我一边练习，一边胡思乱想；始终⋯",
@@ -2749,15 +2748,18 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
-    yuewen_revised_17="",
-    note_17="",
+    yuewen_revised_17="我就系一旧揸住两个包",
+    note_17="Changed “一个揸住两个包” to “一旧揸住两个包” to match the metaphor of "
+    "being a piece of pork (猪肉) as in the previous and following "
+    "subtitles, ensuring consistency in the metaphorical "
+    "language.",
     yuewen_revised_18="",
     note_18="",
-    yuewen_revised_19="我一边练习，一边胡思乱想；始终⋯",
-    note_19="Changed '一边乱练，一边谂嘢' to '一边胡思乱想' to better match the meaning "
-    "of '胡思乱想' in the context and maintain consistency with the "
-    "rest of the subtitles. Removed the extra '一边乱练' which was "
-    "not present in the original meaning.",
+    yuewen_revised_19="我一边练习，一边谂嘢；始终⋯",
+    note_19="Removed the redundant '一边乱练' to better match the flow and "
+    "logic of the surrounding subtitles, as the original metaphor "
+    "is about thinking while practicing, not practicing "
+    "chaotically.",
     yuewen_revised_20="",
     note_20="",
     yuewen_revised_21="",
@@ -2767,9 +2769,9 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     yuewen_revised_23="",
     note_23="",
     yuewen_revised_24="我最后终于练成「十二路抢包手」啦",
-    note_24="Reordered to '我最后终于练成「十二路抢包手」啦' for consistency with the "
-    "narrative flow and to match the structure of the previous "
-    "subtitles.",
+    note_24="Reordered to match the natural Cantonese phrasing and "
+    "maintain consistency with the narrative flow: '最后我终于练成' → "
+    "'我最后终于练成'.",
 )  # review_test_case_block_54
 review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     zhongwen_1="喂，我是麦兜",
@@ -2835,11 +2837,11 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     zhongwen_31="当时的我，十分十分失望",
     yuewen_31="当时我，真系十分十分之失望",
     zhongwen_32="又有一年，一间百货公司结业",
-    yuewen_32="又有一年，有间百货公司倒闭",
+    yuewen_32="又有一年，有间大百货公司倒闭",
     zhongwen_33="妈妈以四折买了个小小焗炉",
     yuewen_33="妈妈用四折买咗个焗炉仔返屋企",
     zhongwen_34="可能因为买了焗炉而技痒",
-    yuewen_34="可能系因为买咗焗炉而技痒",
+    yuewen_34="可能系因为买咗焗炉嘅样",
     zhongwen_35="那日妈妈竟然跟我说⋯",
     yuewen_35="嗰日妈妈竟然同我讲⋯佢话⋯",
     zhongwen_36="让我们明天去超级市场揪火鸡",
@@ -2938,8 +2940,10 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     note_32="",
     yuewen_revised_33="",
     note_33="",
-    yuewen_revised_34="",
-    note_34="",
+    yuewen_revised_34="可能系因为买咗焗炉所以手痒",
+    note_34='Changed "可能系因为买咗焗炉嘅样" to "可能系因为买咗焗炉所以手痒" to better '
+    "reflect the idiomatic meaning of '技痒' (itchy hands, eager to "
+    "try), which is apparent in the context of the sequence.",
     yuewen_revised_35="",
     note_35="",
     yuewen_revised_36="",
@@ -2952,11 +2956,11 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     note_39="",
     yuewen_revised_40="",
     note_40="",
-    yuewen_revised_41="喺火鸡丰厚嘅鸡胸度，起细噉擦呀擦",
-    note_41="Changed 「啫啫」 to 「擦呀擦」 to accurately reflect the action of "
-    "rubbing (as in the context of applying salt), which is more "
-    "appropriate for the described action and consistent with the "
-    "surrounding subtitles.",
+    yuewen_revised_41="喺火鸡丰厚嘅鸡胸度，轻轻咁擦呀擦",
+    note_41='Changed "起细噉啫啫" to "轻轻咁擦呀擦" to accurately reflect the '
+    "action of rubbing (擦) as described in the context, and to "
+    "avoid confusion with the onomatopoeic '啫啫' which is not "
+    "appropriate here.",
     yuewen_revised_42="",
     note_42="",
     yuewen_revised_43="",
