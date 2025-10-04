@@ -5092,6 +5092,7 @@ proof_test_cases_block_55 = [
         note="Corrected '封口' to '丰厚' as '丰厚' matches the meaning of '丰厚' "
         "(thick, rich) in the 中文, while '封口' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="联火鸡时⋯",
@@ -5125,6 +5126,7 @@ proof_test_cases_block_55 = [
         "a phonetic play on 'orange', matching the style and pun in "
         "the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="好勉强把火鸡塞进焗炉内",
@@ -5133,6 +5135,7 @@ proof_test_cases_block_55 = [
         note="Corrected '噏咗' to '塞咗' as '塞' (to stuff) matches the meaning "
         "of '塞进' in the 中文, while '噏' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="12月24日",
@@ -5141,6 +5144,7 @@ proof_test_cases_block_55 = [
         note="Corrected '10月24日' to '12月24日' as '10' is a likely "
         "mishearing of '12', matching the date in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="上升的白烟跟奇异的焦味拨动星星",
@@ -5150,6 +5154,7 @@ proof_test_cases_block_55 = [
         "(burnt smell) in the 中文, and '拨动声声' to '拨动星星' as '声声' is a "
         "likely mishearing of '星星'.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="焗炉戚戚恻恻，戚戚恻恻⋯",
@@ -5158,6 +5163,7 @@ proof_test_cases_block_55 = [
         note="Corrected '叱叱叱叱' to '戚戚恻恻' as '戚戚恻恻' matches the intended "
         "onomatopoeic phrase in the 中文, while '叱叱叱叱' is a mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="有如天使预早送来的福音",
@@ -5166,6 +5172,7 @@ proof_test_cases_block_55 = [
         note="Corrected '天赐预祖' to '天使预早' as '天赐预祖' is a mishearing of "
         "'天使预早', matching the meaning of '天使预早送来的福音' in the 中文.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_55
 proof_test_cases_block_56 = [
@@ -5258,6 +5265,7 @@ proof_test_cases_block_58 = [
         "the meaning of '很晏' in the 中文, while '好硬' is a likely "
         "mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="刷过牙我还感觉到火鸡的美味",
@@ -5266,6 +5274,7 @@ proof_test_cases_block_58 = [
         note="Corrected '测完牙' to '刷完牙' as '刷牙' is the correct term for "
         "brushing teeth, matching the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="因为早餐吃得晚⋯",
@@ -5274,6 +5283,7 @@ proof_test_cases_block_58 = [
         note="Corrected '食得硬' to '食得晏' as '晏' (late) matches the meaning "
         "of '吃得晚' in the 中文, while '硬' is a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="午餐时妈妈只煮了罐栗米汤",
@@ -5282,6 +5292,7 @@ proof_test_cases_block_58 = [
         note="Corrected '唔餐' to '午餐' as '唔餐' is a mishearing of '午餐', "
         "which matches the meaning in the 中文.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="我用汤匙撩了两下",
@@ -5320,6 +5331,7 @@ proof_test_cases_block_58 = [
         "matches the meaning in the 中文, while '半碟' (half a plate) is "
         "a likely mishearing.",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="上面淋了老抽生粉献",
