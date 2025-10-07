@@ -6859,10 +6859,10 @@ proof_test_cases_block_71 = [
     ProofTestCase(
         zhongwen="太过分了吧？你们究竟有吃的没？",
         yuewen="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
-        yuewen_proofread="太过分啦吧？噉你哋究竟有啲咩餐呀？",
-        note="Corrected '嚟唔嚟普啲呀' to '太过分啦吧' as '嚟唔嚟普啲呀' is a mishearing of "
-        "'太过分了吧', matching the meaning in the 中文.",
-        difficulty=1,
+        yuewen_proofread="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
+        note="",
+        difficulty=2,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="午餐吧，午餐精采呀",

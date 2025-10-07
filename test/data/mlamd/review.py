@@ -3944,7 +3944,7 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="对不起，没快餐了",
     yuewen_1="唔好意思，冇快餐呀",
     zhongwen_2="太过分了吧？你们究竟有吃的没？",
-    yuewen_2="太过分啦吧？噉你哋究竟有啲咩餐呀？",
+    yuewen_2="嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
     zhongwen_3="午餐吧，午餐精采呀",
     yuewen_3="午餐啦，午餐好嘢呀",
     zhongwen_4="怎么个精采法？",
@@ -3963,11 +3963,11 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_10="好啦好啦！要两份午餐啦",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="太过分啦，你哋究竟有冇嘢食㗎？",
-    note_2="Revised to better reflect natural spoken Cantonese and "
-    "maintain consistency with the rest of the subtitles. Removed "
-    "'吧' (Mandarin influence), changed '噉你哋究竟有啲咩餐呀？' to "
-    "'你哋究竟有冇嘢食㗎？' which is more idiomatic in this context.",
+    yuewen_revised_2="太过分啦？你哋究竟有冇嘢食㗎？",
+    note_2="Revised to better match the context and flow: '嚟唔嚟普啲呀？' is "
+    "not a natural response to the previous line, and "
+    "'你哋究竟有啲咩餐呀？' is less direct than '你哋究竟有冇嘢食㗎？', which is a "
+    "more natural way to express the complaint in Cantonese.",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -3980,9 +3980,8 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     note_7="",
     yuewen_revised_8="",
     note_8="",
-    yuewen_revised_9="常餐一早卖晒啦，你话好唔好嘢？",
-    note_9="Removed the repeated '常餐，常餐' for natural flow and to avoid "
-    "redundancy in spoken Cantonese.",
+    yuewen_revised_9="",
+    note_9="",
     yuewen_revised_10="",
     note_10="",
 )  # review_test_case_block_71

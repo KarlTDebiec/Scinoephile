@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+from logging import info
 
 from scinoephile.audio import (
     AudioBlock,
@@ -194,6 +195,14 @@ async def main():
 
     # Process all blocks
     yuewen_series = await process_all_blocks(yuewen, zhongwen, transcriber, aligner)
+
+    # Update output file
+    if len(zhongwen.blocks) == len(yuewen.blocks):
+        outfile_path = test_output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+        if outfile_path.exists():
+            outfile_path.unlink()
+        yuewen_series.save(outfile_path)
+        info(f"Saved 粤文 subtitles to {outfile_path}")
 
 
 if __name__ == "__main__":
