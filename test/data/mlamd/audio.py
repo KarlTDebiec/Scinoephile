@@ -7,7 +7,7 @@ from __future__ import annotations
 import asyncio
 from logging import info
 
-from scinoephile.audio import AudioBlock, AudioSeries
+from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import update_all_test_cases
 from scinoephile.audio.cantonese.distribution import Distributor
@@ -20,10 +20,9 @@ from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_hanzi_converted,
     get_segment_split_on_whitespace,
-    get_series_from_segments,
 )
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import Series
+from scinoephile.core import Series, get_series_with_subs_merged
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
@@ -139,6 +138,15 @@ async def main():
 
     # 中文
     zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
+    if (
+        zhongwen.events[539].text == "不知道为什么"
+        and zhongwen.events[540].text == "「珊你个头」却特别刺耳"
+    ):
+        info(
+            "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
+            "structure is reversed in the 粤文."
+        )
+        zhongwen = get_series_with_subs_merged(zhongwen, 539)
 
     # 粤文
     yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
