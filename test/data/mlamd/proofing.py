@@ -4033,10 +4033,13 @@ proof_test_cases_block_47 = [
         verified=True,
     ),
     ProofTestCase(
-        zhongwen="不知道为什么",
-        yuewen="但系山呢个头唔知点解特别瘾",
-        yuewen_proofread="但系山呢个头唔知点解特别瘾",
-        note="",
+        zhongwen="不知道为什么「珊你个头」却特别刺耳",
+        yuewen="但系「山呢个头」唔知点解特别瘾",
+        yuewen_proofread="但系「珊你个头」唔知点解特别刺耳",
+        note="Corrected '山呢个头' to '珊你个头' as it is a mishearing of the "
+        "phrase, and replaced '特别瘾' with '特别刺耳' to match the meaning "
+        "of '特别刺耳' in the 中文.",
+        difficulty=1,
         verified=True,
     ),
     ProofTestCase(

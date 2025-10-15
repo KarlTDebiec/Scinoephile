@@ -2323,7 +2323,7 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     yuewen_revised_16="",
     note_16="",
 )  # review_test_case_block_46
-review_test_case_block_47 = ReviewTestCase.get_test_case_cls(8)(
+review_test_case_block_47 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="还不去？",
     yuewen_1="仲唔去？",
     zhongwen_2="珊珊没看见我这个师弟",
@@ -2332,36 +2332,30 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(8)(
     yuewen_3="我唯有死死气爬返上个组合柜",
     zhongwen_4="我咁大个仔，什么「头」也给骂过⋯",
     yuewen_4="我咁大个仔，乜嘢「头」都畀人闹过⋯",
-    zhongwen_5="不知道为什么",
-    yuewen_5="但系山呢个头唔知点解特别瘾",
-    zhongwen_6="「珊你个头」却特别刺耳",
-    yuewen_6="「珊你个头」就特别刺耳",
-    zhongwen_7="我⋯我⋯",
-    yuewen_7="我⋯我⋯",
-    zhongwen_8="我唔学抢包山了！",
-    yuewen_8="我唔学抢包山嘞！",
+    zhongwen_5="不知道为什么「珊你个头」却特别刺耳",
+    yuewen_5="但系「珊你个头」唔知点解特别刺耳",
+    zhongwen_6="我⋯我⋯",
+    yuewen_6="我⋯我⋯",
+    zhongwen_7="我唔学抢包山了！",
+    yuewen_7="我唔学抢包山嘞！",
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="珊珊见唔到我呢个师弟",
-    note_2="Removed 佢, as it is redundant in this context and not "
-    "natural in a sequence with 珊珊 as the subject.",
+    note_2="Removed 佢 as it is redundant; 珊珊 already refers to the "
+    "subject, and 佢 is unnecessary in this context.",
     yuewen_revised_3="我唯有死死气再爬上组合柜",
     note_3='Changed "爬返上个组合柜" to "再爬上组合柜" to match the sequence and '
-    "avoid unnecessary use of 返 and 个, which are not needed for "
-    "continuity and naturalness in the context.",
+    "avoid unnecessary use of 返, which implies returning, not "
+    "simply repeating the action. Also removed 个 for consistency "
+    "with the rest of the subtitles.",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="唔知点解",
-    note_5='Revised to "唔知点解" for consistency and to match the '
-    "directness of the original. The previous version added "
-    "unnecessary information (但系山呢个头唔知点解特别瘾) that is not present "
-    "in the sequence and could cause confusion.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
     note_7="",
-    yuewen_revised_8="我唔学抢包山啦！",
-    note_8="Changed 嘞 to 啦 for more natural spoken Cantonese in this context.",
 )  # review_test_case_block_47
 review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="其实今天是我第一次近距离见黎根",

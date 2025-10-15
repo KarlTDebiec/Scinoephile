@@ -2828,6 +2828,13 @@ merge_test_cases_block_47 = [
         verified=True,
     ),
     MergeTestCase(
+        zhongwen="不知道为什么「珊你个头」却特别刺耳",
+        yuewen_to_merge=["但系山呢个头唔知点解特别瘾"],
+        yuewen_merged="但系「山呢个头」唔知点解特别瘾",
+        difficulty=2,
+        verified=True,
+    ),
+    MergeTestCase(
         zhongwen="我⋯我⋯",
         yuewen_to_merge=["我", "我"],
         yuewen_merged="我⋯我⋯",

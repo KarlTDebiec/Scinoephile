@@ -431,27 +431,7 @@ translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     yuewen_18="「抢包山」由嗰时开始就被禁咗！",
 )  # translate_test_case_block_45
 translate_test_case_block_46 = None  # translate_test_case_block_46
-translate_test_case_block_47 = TranslateTestCase.get_test_case_cls(
-    8,
-    (5,),
-)(
-    zhongwen_1="还不去？",
-    yuewen_1="仲唔去？",
-    zhongwen_2="珊珊没看见我这个师弟",
-    yuewen_2="珊珊佢见唔到我呢个师弟",
-    zhongwen_3="我只有死死气再爬上组合柜",
-    yuewen_3="我唯有死死气爬返上个组合柜",
-    zhongwen_4="我咁大个仔，什么「头」也给骂过⋯",
-    yuewen_4="我咁大个仔，乜嘢「头」都畀人闹过⋯",
-    zhongwen_5="不知道为什么",
-    yuewen_5="但系山呢个头唔知点解特别瘾",
-    zhongwen_6="「珊你个头」却特别刺耳",
-    zhongwen_7="我⋯我⋯",
-    yuewen_7="我⋯我⋯",
-    zhongwen_8="我唔学抢包山了！",
-    yuewen_8="我唔学抢包山嘞！",
-    yuewen_6="「珊你个头」就特别刺耳",
-)  # translate_test_case_block_47
+translate_test_case_block_47 = None  # translate_test_case_block_47
 translate_test_case_block_48 = None  # translate_test_case_block_48
 translate_test_case_block_49 = None  # translate_test_case_block_49
 translate_test_case_block_50 = None  # translate_test_case_block_50
