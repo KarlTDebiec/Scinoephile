@@ -10,11 +10,7 @@ from logging import error, info
 import numpy as np
 from pydantic import ValidationError
 
-from scinoephile.audio import (
-    AudioSeries,
-    get_series_with_sub_split_at_idx,
-    get_sub_merged,
-)
+from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
 from scinoephile.audio.cantonese.alignment.models import (
     get_review_models,
@@ -34,6 +30,10 @@ from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.shifting import ShiftAnswer, Shifter, ShiftQuery
 from scinoephile.audio.cantonese.translation import Translator
+from scinoephile.audio.transcription import (
+    get_series_with_sub_split_at_idx,
+    get_sub_merged,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
