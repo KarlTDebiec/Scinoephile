@@ -356,6 +356,7 @@ review_test_case_block_3 = ReviewTestCase.get_test_case_cls(23)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
+    verified=True,
 )  # review_test_case_block_3
 review_test_case_block_4 = ReviewTestCase.get_test_case_cls(55)(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
@@ -676,11 +677,11 @@ review_test_case_block_6 = ReviewTestCase.get_test_case_cls(4)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="我感到充满力量！",
-    note_3="Added the subject '我' to match the implied subject in the "
-    "previous subtitles and for consistency with the spoken flow.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
+    verified=True,
 )  # review_test_case_block_6
 review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="有一首歌，Miss Chan唱的好听",
@@ -696,7 +697,7 @@ review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_6="世上一切，一切一切⋯",
     yuewen_6="世上一切⋯",
     zhongwen_7="所有那些，都好！",
-    yuewen_7="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
+    yuewen_7="所有嗰啲嘢，都几好！",
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="",
@@ -707,14 +708,11 @@ review_test_case_block_7 = ReviewTestCase.get_test_case_cls(7)(
     note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="世上一切，一切一切⋯",
-    note_6="Added 「一切一切」 to match the repetition in the sequence and "
-    "maintain consistency with the previous and following "
-    "subtitles.",
-    yuewen_revised_7="所有嗰啲，都几好！All Things Bright and Beautiful",
-    note_7="Removed 「嘢」 after 「嗰啲」 for naturalness and consistency, as "
-    "the previous subtitle already established the context of "
-    '"things".',
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    verified=True,
 )  # review_test_case_block_7
 review_test_case_block_8 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="一、二、三、四、五、六、七⋯",

@@ -1254,10 +1254,9 @@ proof_test_cases_block_7 = [
     ProofTestCase(
         zhongwen="所有那些，都好！",
         yuewen="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
-        yuewen_proofread="所有嗰啲嘢，都几好！All Things Bright and Beautiful",
-        note="",
-        difficulty=2,
-        prompt=True,
+        yuewen_proofread="所有嗰啲嘢，都几好！",
+        note="Manually overridden to remove English text not subtitled in the 中文",
+        difficulty=3,
         verified=True,
     ),
 ]  # proof_test_cases_block_7
