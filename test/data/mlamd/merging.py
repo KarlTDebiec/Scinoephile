@@ -1688,17 +1688,10 @@ merge_test_cases_block_20 = [
 ]  # merge_test_cases_block_20
 merge_test_cases_block_21 = [
     MergeTestCase(
-        zhongwen="妈妈，你看！",
-        yuewen_to_merge=["妈妈你睇"],
-        yuewen_merged="妈妈，你睇！",
-        difficulty=1,
-        verified=True,
-    ),
-    MergeTestCase(
         zhongwen="妈妈你看，我病好了！",
-        yuewen_to_merge=["我好返喇"],
-        yuewen_merged="我好返喇！",
-        difficulty=2,
+        yuewen_to_merge=["妈妈你睇", "我好返喇"],
+        yuewen_merged="妈妈你睇，我好返喇！",
+        difficulty=1,
         verified=True,
     ),
     MergeTestCase(

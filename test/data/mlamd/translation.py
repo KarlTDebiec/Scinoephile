@@ -280,7 +280,26 @@ translate_test_case_block_17 = None  # translate_test_case_block_17
 translate_test_case_block_18 = None  # translate_test_case_block_18
 translate_test_case_block_19 = None  # translate_test_case_block_19
 translate_test_case_block_20 = None  # translate_test_case_block_20
-translate_test_case_block_21 = None  # translate_test_case_block_21
+translate_test_case_block_21 = TranslateTestCase.get_test_case_cls(
+    7,
+    (0,),
+)(
+    zhongwen_1="妈妈，你看！",
+    zhongwen_2="妈妈你看，我病好了！",
+    yuewen_2="妈妈你睇，我好返喇！",
+    zhongwen_3="我把药都吃光了",
+    yuewen_3="啲药所以我全部食晒喇",
+    zhongwen_4="家中的东西有什么没给你吃光的？",
+    yuewen_4="即系间屋有乜嘢唔系畀你食晒㗎？",
+    zhongwen_5="这次不同呀，原来这么一大樽的",
+    yuewen_5="妈妈，呢次唔同㗎，本来咁大樽嘅",
+    zhongwen_6="我喝一格，又喝一格，又喝一格⋯",
+    yuewen_6="我饮下一格，又一格，又一格⋯",
+    zhongwen_7="就给我喝光了！",
+    yuewen_7="吓，咪我饮晒㖞！",
+    yuewen_1="妈妈你睇！",
+    verified=True,
+)  # translate_test_case_block_21
 translate_test_case_block_22 = None  # translate_test_case_block_22
 translate_test_case_block_23 = None  # translate_test_case_block_23
 translate_test_case_block_24 = None  # translate_test_case_block_24
@@ -296,6 +315,7 @@ translate_test_case_block_25 = TranslateTestCase.get_test_case_cls(
     yuewen_2="出世纸俾我揾返到喇！",
     yuewen_3="妈咪你帮我收好佢，唔好掉咗佢呀",
     yuewen_4="掉咗就去唔到㗎喇",
+    verified=True,
 )  # translate_test_case_block_25
 translate_test_case_block_26 = None  # translate_test_case_block_26
 translate_test_case_block_27 = None  # translate_test_case_block_27
@@ -316,6 +336,7 @@ translate_test_case_block_31 = TranslateTestCase.get_test_case_cls(
     yuewen_2="你孕育咗珊珊！你都会孕育我！",
     yuewen_3="当我企喺奥运会颁奖台上面",
     yuewen_5="香港运动员唔系垃圾！",
+    verified=True,
 )  # translate_test_case_block_31
 translate_test_case_block_32 = None  # translate_test_case_block_32
 translate_test_case_block_33 = None  # translate_test_case_block_33
@@ -428,7 +449,8 @@ translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     zhongwen_18="「抢包山」从此被禁！",
     zhongwen_19="而长洲独有的传统，亦渐被遗忘",
     yuewen_19="长洲特有嘅传统，亦渐被遗忘",
-    yuewen_18="「抢包山」由嗰时开始就被禁咗！",
+    yuewen_18="「抢包山」从此被禁！",
+    verified=True,
 )  # translate_test_case_block_45
 translate_test_case_block_46 = None  # translate_test_case_block_46
 translate_test_case_block_47 = None  # translate_test_case_block_47
@@ -543,6 +565,7 @@ translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     zhongwen_50="有如天使预早送来的福音",
     yuewen_50="就好似天使预早畀我哋嘅福音",
     yuewen_44="红萝卜粒",
+    verified=True,
 )  # translate_test_case_block_55
 translate_test_case_block_56 = None  # translate_test_case_block_56
 translate_test_case_block_57 = None  # translate_test_case_block_57
@@ -617,13 +640,14 @@ translate_test_case_block_64 = TranslateTestCase.get_test_case_cls(
     yuewen_33="未必到你发梦，又未必咁好笑嘅⋯",
     zhongwen_34="世界的时候，我会怎么样？",
     yuewen_34="世界嘅时候，我会系点㗎呢？",
-    yuewen_11="「寻晚，食咗六个餐包」",
-    yuewen_12="「可惜我依然觉得未够饱」",
-    yuewen_13="「寻晚，食咗磅半方包」",
-    yuewen_14="「可惜系我依然觉得唔够顶肚」",
-    yuewen_15="「年少，练咗六套脚法。」",
-    yuewen_16="「可惜我依然觉得未够用。」",
-    yuewen_17="「年晚，又培育咗珊珊！可惜⋯」",
+    yuewen_11="「寻晚，食了六个餐包」",
+    yuewen_12="「可惜我依然系觉得仍未十分饱」",
+    yuewen_13="「寻晚，食了磅半方包」",
+    yuewen_14="「可叹是我依然觉得，不够顶肚」",
+    yuewen_15="「年少，练了六套脚法。」",
+    yuewen_16="「可惜我依然未觉够用。」",
+    yuewen_17="「年晚，又培育了珊珊！可惜⋯」",
+    verified=True,
 )  # translate_test_case_block_64
 translate_test_case_block_65 = None  # translate_test_case_block_65
 translate_test_case_block_66 = TranslateTestCase.get_test_case_cls(

@@ -1930,10 +1930,9 @@ proof_test_cases_block_15 = [
     ProofTestCase(
         zhongwen="妈妈你会带我去吗？",
         yuewen="咁妈妈你会唔会走落去㗎？",
-        yuewen_proofread="咁妈妈你会唔会走落去㗎？",
-        note="",
+        yuewen_proofread="咁妈妈你会唔会走我去㗎？",
+        note="Corrected '走落去' to '走我去'.",
         difficulty=2,
-        prompt=True,
         verified=True,
     ),
     ProofTestCase(
@@ -2325,16 +2324,9 @@ proof_test_cases_block_20 = [
 ]  # proof_test_cases_block_20
 proof_test_cases_block_21 = [
     ProofTestCase(
-        zhongwen="妈妈，你看！",
-        yuewen="妈妈，你睇！",
-        yuewen_proofread="妈妈，你睇！",
-        note="",
-        verified=True,
-    ),
-    ProofTestCase(
         zhongwen="妈妈你看，我病好了！",
-        yuewen="我好返喇！",
-        yuewen_proofread="我好返喇！",
+        yuewen="妈妈你睇，我好返喇！",
+        yuewen_proofread="妈妈你睇，我好返喇！",
         note="",
         verified=True,
     ),
@@ -3195,10 +3187,9 @@ proof_test_cases_block_37 = [
     ProofTestCase(
         zhongwen="脚趾甲有一寸厚，究竟⋯",
         yuewen="脚趾弓啲脚甲成吋噉厚，究竟⋯",
-        yuewen_proofread="脚趾甲啲脚甲成吋噉厚，究竟⋯",
-        note="Corrected '脚趾弓' to '脚趾甲' as '脚趾弓' is a mishearing of '脚趾甲', "
-        "which matches the meaning of '脚趾甲' in the 中文.",
-        difficulty=1,
+        yuewen_proofread="脚趾公啲脚甲成吋噉厚，究竟⋯",
+        note="Corrected '脚趾弓' to '脚趾公'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(

@@ -1055,7 +1055,7 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_11="得搭飞机",
     yuewen_11="搭飞机至到啰",
     zhongwen_12="妈妈你会带我去吗？",
-    yuewen_12="咁妈妈你会唔会走落去㗎？",
+    yuewen_12="咁妈妈你会唔会走我去㗎？",
     zhongwen_13="会！发财了再说吧",
     yuewen_13="会！得发咗先啦",
     zhongwen_14="那么妈妈你什么时候发？",
@@ -1068,15 +1068,10 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="七彩缤纷嘅珊瑚，目不暇给嘅热带鱼",
-    note_3="Removed '群' from '热带鱼群' to maintain consistency with the "
-    "rest of the subtitles and the likely spoken form, as the "
-    "previous and following lines do not use '群' and the phrase "
-    "is more natural as '热带鱼' in Cantonese speech.",
-    yuewen_revised_4="充满住赤道热力嘅原始海洋，脱离繁嚣",
-    note_4="Changed '远离繁嚣' to '脱离繁嚣' to match the sequence and maintain "
-    "consistency with the theme of '脱离' in the previous and "
-    "following lines.",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
@@ -1091,11 +1086,8 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_10="",
     yuewen_revised_11="",
     note_11="",
-    yuewen_revised_12="咁妈妈你会唔会带我去㗎？",
-    note_12="Changed '走落去' to '带我去' to match the context of the "
-    "conversation and the meaning of the Mandarin subtitle, as "
-    "the child is asking if the mother will take them to the "
-    "Maldives, not just 'go down there'.",
+    yuewen_revised_12="",
+    note_12="",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1104,6 +1096,7 @@ review_test_case_block_15 = ReviewTestCase.get_test_case_cls(16)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
+    verified=True,
 )  # review_test_case_block_15
 review_test_case_block_16 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_1="校长早晨！",
@@ -1224,17 +1217,15 @@ review_test_case_block_18 = ReviewTestCase.get_test_case_cls(8)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="唔使！同佢打支针啦！",
-    note_5='Changed "同佢打多支针添呢！" to "同佢打支针啦！" to better match the '
-    'context and flow. "多支" (another injection) is not implied '
-    'in the Mandarin, and "添呢" is unnecessary here. "啦" is a '
-    "more natural ending for a suggestion in this context.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
     note_8="",
+    verified=True,
 )  # review_test_case_block_18
 review_test_case_block_19 = ReviewTestCase.get_test_case_cls(9)(
     zhongwen_1="没事吧？快点先把药水喝掉！",
@@ -1302,15 +1293,15 @@ review_test_case_block_20 = ReviewTestCase.get_test_case_cls(7)(
     note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="嚟啦，饮多啲！",
-    note_7='Changed "食多更" to "饮多啲" to correctly reflect the context '
-    "of drinking medicine, as indicated in previous subtitles.",
+    yuewen_revised_7="",
+    note_7="",
+    verified=True,
 )  # review_test_case_block_20
 review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="妈妈，你看！",
-    yuewen_1="妈妈，你睇！",
+    yuewen_1="妈妈你睇！",
     zhongwen_2="妈妈你看，我病好了！",
-    yuewen_2="我好返喇！",
+    yuewen_2="妈妈你睇，我好返喇！",
     zhongwen_3="我把药都吃光了",
     yuewen_3="啲药所以我全部食晒喇",
     zhongwen_4="家中的东西有什么没给你吃光的？",
@@ -1321,28 +1312,22 @@ review_test_case_block_21 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_6="我饮下一格，又一格，又一格⋯",
     zhongwen_7="就给我喝光了！",
     yuewen_7="吓，咪我饮晒㖞！",
-    yuewen_revised_1="",
-    note_1="",
-    yuewen_revised_2="妈妈你睇，我好返喇！",
-    note_2="Added '妈妈你睇，' to match the context and continuity from "
-    "subtitle 1, as the speaker is still addressing the mother "
-    "and showing her recovery.",
-    yuewen_revised_3="啲药我全部食晒喇",
-    note_3="Removed '所以' as it is not necessary and disrupts the natural "
-    "flow of the sentence. The sentence should directly state "
-    "that all the medicine was finished.",
+    yuewen_revised_1="妈妈，妈妈！",
+    note_1="Manually overridden; '妈妈妈妈' is spoken as 中文 '妈妈，你看！' is "
+    "displayed, but is missing from the transcription.",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="我饮一格，又饮一格，又饮一格⋯",
-    note_6="Changed '我饮下一格，又一格，又一格⋯' to '我饮一格，又饮一格，又饮一格⋯' for "
-    "consistency and clarity, matching the repetitive drinking "
-    "action described in the Mandarin.",
-    yuewen_revised_7="咪就我饮晒㗎啦！",
-    note_7="Changed '吓，咪我饮晒㖞！' to '咪就我饮晒㗎啦！' to better reflect the "
-    "exclamatory tone and the sense of 'so I finished it all!' in "
-    "context.",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="吓，我饮晒㖞！",
+    note_7="Manually overridden; '咪' is an error in transcription.",
+    verified=True,
 )  # review_test_case_block_21
 review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_1="喝光了就叻仔了！",
@@ -1399,9 +1384,8 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     yuewen_26="好嘢！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="饮晒就好返啦！",
-    note_2="Removed '实' from '好返实啦', as '好返啦' is the standard colloquial "
-    "form for 'recover'.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -1410,10 +1394,8 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="你话我好返就同我去马尔代夫㗎嘛！",
-    note_7="Changed '呢，你话我返就同我去马尔代夫㗎嘛！' to '你话我好返就同我去马尔代夫㗎嘛！' for "
-    "consistency with previous and following subtitles, and to "
-    "correct the omission of '好' in '好返'.",
+    yuewen_revised_7="",
+    note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
@@ -1422,9 +1404,8 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_10="",
     yuewen_revised_11="",
     note_11="",
-    yuewen_revised_12="我唔系讲喇㗎，妈妈，又系你话嘅⋯",
-    note_12="Reordered to '我唔系讲喇㗎，妈妈，又系你话嘅⋯' for natural speech flow and "
-    "to match the speaker's perspective.",
+    yuewen_revised_12="",
+    note_12="",
     yuewen_revised_13="",
     note_13="",
     yuewen_revised_14="",
@@ -1453,6 +1434,7 @@ review_test_case_block_22 = ReviewTestCase.get_test_case_cls(26)(
     note_25="",
     yuewen_revised_26="",
     note_26="",
+    verified=True,
 )  # review_test_case_block_22
 review_test_case_block_23 = ReviewTestCase.get_test_case_cls(14)(
     zhongwen_1="麦唛，我是麦兜呀",
@@ -1785,6 +1767,7 @@ review_test_case_block_35 = ReviewTestCase.get_test_case_cls(10)(
     note_9="",
     yuewen_revised_10="",
     note_10="",
+    verified=True,
 )  # review_test_case_block_35
 review_test_case_block_36 = ReviewTestCase.get_test_case_cls(1)(
     zhongwen_1="小朋友，你看！",
@@ -1805,7 +1788,7 @@ review_test_case_block_37 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_5="每一条脚毛都硬似铁钉",
     yuewen_5="啲脚毛，每一条好似铁钉噉硬",
     zhongwen_6="脚趾甲有一寸厚，究竟⋯",
-    yuewen_6="脚趾甲啲脚甲成吋噉厚，究竟⋯",
+    yuewen_6="脚趾公啲脚甲成吋噉厚，究竟⋯",
     zhongwen_7="要行过几多座山⋯",
     yuewen_7="要行过几多座山⋯",
     zhongwen_8="跨过几多个海⋯",
@@ -1824,9 +1807,8 @@ review_test_case_block_37 = ReviewTestCase.get_test_case_cls(10)(
     note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="脚趾甲成吋噉厚，究竟⋯",
-    note_6="Removed the redundant '啲脚甲' after '脚趾甲' for naturalness and "
-    "to avoid repetition, as '脚趾甲' already refers to toenails.",
+    yuewen_revised_6="",
+    note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
