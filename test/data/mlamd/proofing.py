@@ -3400,8 +3400,11 @@ proof_test_cases_block_42 = [
     ProofTestCase(
         zhongwen="从冰箱内拿了只雪鸡出来解冻",
         yuewen="净系喺冰箱度攞咗只雪鸡出嚟解冻",
-        yuewen_proofread="净系喺冰箱度攞咗只雪鸡出嚟解冻",
-        note="",
+        yuewen_proofread="喺冰箱度攞咗只雪鸡出嚟解冻",
+        note="Removed '净系', which does not make grammatical sense and for "
+        "which there is no known phoenetically similar phrase which "
+        "would make sense.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(

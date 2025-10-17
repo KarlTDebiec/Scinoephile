@@ -1985,7 +1985,7 @@ review_test_case_block_42 = ReviewTestCase.get_test_case_cls(12)(
     zhongwen_2="妈妈一句话也没说",
     yuewen_2="妈妈佢乜嘢都冇讲到",
     zhongwen_3="从冰箱内拿了只雪鸡出来解冻",
-    yuewen_3="净系喺冰箱度攞咗只雪鸡出嚟解冻",
+    yuewen_3="喺冰箱度攞咗只雪鸡出嚟解冻",
     zhongwen_4="晚饭时，妈妈倒了三杯米酒",
     yuewen_4="晚饭时候，妈妈倒咗三杯米酒",
     zhongwen_5="又将几只橙和蒸好的鸡放到祖先前",
@@ -2008,10 +2008,8 @@ review_test_case_block_42 = ReviewTestCase.get_test_case_cls(12)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="喺冰箱度攞咗只雪鸡出嚟解冻",
-    note_3="Removed '净系' as it is not supported by context in the "
-    "sequence; the action is not being contrasted or limited, and "
-    "the previous subtitle already covers the narrative flow.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2030,6 +2028,7 @@ review_test_case_block_42 = ReviewTestCase.get_test_case_cls(12)(
     note_11="",
     yuewen_revised_12="",
     note_12="",
+    verified=True,
 )  # review_test_case_block_42
 review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_1="妈妈在长洲找了间酒楼摆拜师宴",
@@ -2187,7 +2186,7 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_17="在1978年两座包山忽然倒下，多人重伤",
     yuewen_17="但喺1978年两座包山突然塌咗，多人重伤",
     zhongwen_18="「抢包山」从此被禁！",
-    yuewen_18="「抢包山」由嗰时开始就被禁咗！",
+    yuewen_18="「抢包山」从此被禁！",
     zhongwen_19="而长洲独有的传统，亦渐被遗忘",
     yuewen_19="长洲特有嘅传统，亦渐被遗忘",
     yuewen_revised_1="",
@@ -2207,15 +2206,15 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="包山就系一座由好多好多包砌起嘅山！",
-    note_9="Removed one redundant '好多' to maintain consistency and avoid "
-    "overemphasis, as the repetition is not present in the rest "
-    "of the subtitles and may be a typographical error.",
+    note_9="Removed one redundant '好多' to match natural spoken "
+    "repetition and avoid overemphasis, as the previous subtitle "
+    "already uses '好多好多' and further repetition is unnecessary in "
+    "context.",
     yuewen_revised_10="",
     note_10="",
     yuewen_revised_11="噉你可以想像一下包山有几高喇？",
-    note_11="Changed '嗰度有几多包喇' to '包山有几高喇' to better match the context "
-    "and logical flow, as the previous subtitle describes the "
-    "height of the mountain, not the number of buns.",
+    note_11="Changed '嗰度有几多包喇' to '包山有几高喇' to better match the logical "
+    "flow and reference to height from the previous subtitle.",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
@@ -3464,19 +3463,19 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     zhongwen_10="是不是张保仔吃过的呢？",
     yuewen_10="唔知系咪张保仔食净㗎啦？",
     zhongwen_11="「寻晚，食了六个餐包」",
-    yuewen_11="「寻晚，食咗六个餐包」",
+    yuewen_11="「寻晚，食了六个餐包」",
     zhongwen_12="「可惜我依然系觉得仍未十分饱」",
-    yuewen_12="「可惜我依然觉得未够饱」",
+    yuewen_12="「可惜我依然系觉得仍未十分饱」",
     zhongwen_13="「寻晚，食了磅半方包」",
-    yuewen_13="「寻晚，食咗磅半方包」",
+    yuewen_13="「寻晚，食了磅半方包」",
     zhongwen_14="「可叹是我依然觉得，不够顶肚」",
-    yuewen_14="「可惜系我依然觉得唔够顶肚」",
+    yuewen_14="「可叹是我依然觉得，不够顶肚」",
     zhongwen_15="「年少，练了六套脚法。」",
-    yuewen_15="「年少，练咗六套脚法。」",
+    yuewen_15="「年少，练了六套脚法。」",
     zhongwen_16="「可惜我依然未觉够用。」",
-    yuewen_16="「可惜我依然觉得未够用。」",
+    yuewen_16="「可惜我依然未觉够用。」",
     zhongwen_17="「年晚，又培育了珊珊！可惜⋯」",
-    yuewen_17="「年晚，又培育咗珊珊！可惜⋯」",
+    yuewen_17="「年晚，又培育了珊珊！可惜⋯」",
     zhongwen_18="揸住个包，我忽然明白⋯",
     yuewen_18="揸住个包，我忽然明白⋯",
     zhongwen_19="原来有些事情， 没有就是没有",
@@ -3518,14 +3517,14 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="班同学叫我爬入去睇下，话唔定会发达",
-    note_4='Changed "爬佢睇下" to "爬入去睇下" for correct transcription of '
-    '"爬进去" in context.',
+    note_4='Changed "爬佢睇下" to "爬入去睇下" for correct meaning and '
+    "consistency with the context (entering the cave).",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="系噉爬",
-    note_6='Removed the repeated "爬" to match the intended meaning of '
-    '"一直爬" (keep crawling), as "系噉爬爬" is not idiomatic and '
-    "likely a typo.",
+    note_6='Removed the repeated "爬" to match the natural flow and '
+    'avoid redundancy, as the phrase "系噉爬" is the standard way '
+    'to express "keep crawling" in Cantonese.',
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -3563,9 +3562,8 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     yuewen_revised_24="",
     note_24="",
     yuewen_revised_25="蠢会失败⋯",
-    note_25='Restored "蠢" at the beginning to match the context and '
-    "flow from the previous subtitle, as the omission breaks the "
-    "meaning and continuity.",
+    note_25='Restored "蠢" at the beginning for consistency with the '
+    "previous subtitle and the narrative flow.",
     yuewen_revised_26="",
     note_26="",
     yuewen_revised_27="",
