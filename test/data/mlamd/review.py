@@ -2036,7 +2036,7 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     zhongwen_2="因为我是师傅最后一个入室弟子",
     yuewen_2="因为我系师父最后一个入室弟子",
     zhongwen_3="到贺的乡绅父老特别多",
-    yuewen_3="所以到贺嘅乡亲父老特别多",
+    yuewen_3="所以到贺嘅乡绅父老特别多",
     zhongwen_4="想不到黄德森也来了",
     yuewen_4="估唔到黄德森都有嚟饮",
     zhongwen_5="还赞我背上的肉厚",
@@ -2081,15 +2081,12 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     yuewen_24="发扬光大！",
     zhongwen_25="请问那是什么绝技呢？",
     yuewen_25="噉请问嗰样绝技系乜嘢啊？",
-    yuewen_revised_1="妈妈喺长洲揾咗间酒楼摆拜师宴",
-    note_1="Removed '咗几回' as it implies multiple banquets, which is not "
-    "supported by the context. The original only refers to one "
-    "banquet.",
+    yuewen_revised_1="",
+    note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="所以到贺嘅乡绅父老特别多",
-    note_3="Changed '乡亲父老' to '乡绅父老' to match the term used in the rest "
-    "of the subtitles for consistency.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2122,23 +2119,19 @@ review_test_case_block_43 = ReviewTestCase.get_test_case_cls(25)(
     note_18="",
     yuewen_revised_19="",
     note_19="",
-    yuewen_revised_20="第一样，系滑浪风帆！",
-    note_20="Removed '呢样早已' as it is not present in the context and "
-    "breaks the flow with the next subtitle.",
+    yuewen_revised_20="",
+    note_20="",
     yuewen_revised_21="",
     note_21="",
-    yuewen_revised_22="另一项绝技，我打算传畀呢个新徒弟⋯",
-    note_22="Changed '新修嘅徒弟' to '新徒弟' for naturalness and consistency "
-    "with the rest of the subtitles.",
-    yuewen_revised_23="希望佢可以将我哋长洲人世世代代嘅绝技",
-    note_23="Changed '我' to '佢' and '传统' to '绝技' to match the subject and "
-    "terminology of the previous subtitles.",
+    yuewen_revised_22="",
+    note_22="",
+    yuewen_revised_23="",
+    note_23="",
     yuewen_revised_24="",
     note_24="",
-    yuewen_revised_25="咁请问嗰项绝技系乜嘢嚟㗎？",
-    note_25="Changed '噉请问嗰样绝技系乜嘢啊？' to '咁请问嗰项绝技系乜嘢嚟㗎？' for more natural "
-    "Cantonese phrasing and to match the context of asking about "
-    "a skill.",
+    yuewen_revised_25="",
+    note_25="",
+    verified=True,
 )  # review_test_case_block_43
 review_test_case_block_44 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="第二项绝技，就是⋯",
@@ -2149,6 +2142,7 @@ review_test_case_block_44 = ReviewTestCase.get_test_case_cls(2)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
+    verified=True,
 )  # review_test_case_block_44
 review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     zhongwen_1="抢包山？",
@@ -2205,16 +2199,12 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     note_7="",
     yuewen_revised_8="",
     note_8="",
-    yuewen_revised_9="包山就系一座由好多好多包砌起嘅山！",
-    note_9="Removed one redundant '好多' to match natural spoken "
-    "repetition and avoid overemphasis, as the previous subtitle "
-    "already uses '好多好多' and further repetition is unnecessary in "
-    "context.",
+    yuewen_revised_9="",
+    note_9="",
     yuewen_revised_10="",
     note_10="",
-    yuewen_revised_11="噉你可以想像一下包山有几高喇？",
-    note_11="Changed '嗰度有几多包喇' to '包山有几高喇' to better match the logical "
-    "flow and reference to height from the previous subtitle.",
+    yuewen_revised_11="",
+    note_11="",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
@@ -2231,6 +2221,7 @@ review_test_case_block_45 = ReviewTestCase.get_test_case_cls(19)(
     note_18="",
     yuewen_revised_19="",
     note_19="",
+    verified=True,
 )  # review_test_case_block_45
 review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_1="奥运金牌⋯这一世是没有机会的了",
@@ -2242,7 +2233,7 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     zhongwen_4="一项没有奖牌，没有对手，没有比赛⋯",
     yuewen_4="一项冇奖牌，冇对手，冇比赛⋯",
     zhongwen_5="甚至没有人知道是运动的运动",
-    yuewen_5="甚至乎冇人知对佢系运动嘅运动",
+    yuewen_5="甚至乎冇人知道佢系运动嘅运动",
     zhongwen_6="更坏的是，连包山也没有！",
     yuewen_6="更衰嘅系，连包山都冇！",
     zhongwen_7="师傅只是叫我去他的家⋯",
@@ -2273,10 +2264,8 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="甚至乎冇人知佢系运动嘅运动",
-    note_5="Removed the extra '对' in '对佢系运动嘅运动' to correct the phrase to "
-    "'佢系运动嘅运动', which is the correct colloquial structure in "
-    "Cantonese.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -2285,10 +2274,8 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_8="",
     yuewen_revised_9="",
     note_9="",
-    yuewen_revised_10="唔好偷懒！继续练！",
-    note_10="Changed '冇偷懒！继续练！' to '唔好偷懒！继续练！' to match the imperative "
-    "mood of the Mandarin '别躲懒！', which is a command, not a "
-    "statement.",
+    yuewen_revised_10="",
+    note_10="",
     yuewen_revised_11="",
     note_11="",
     yuewen_revised_12="",
@@ -2301,6 +2288,7 @@ review_test_case_block_46 = ReviewTestCase.get_test_case_cls(16)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
+    verified=True,
 )  # review_test_case_block_46
 review_test_case_block_47 = ReviewTestCase.get_test_case_cls(7)(
     zhongwen_1="还不去？",
@@ -2319,14 +2307,10 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(7)(
     yuewen_7="我唔学抢包山嘞！",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="珊珊见唔到我呢个师弟",
-    note_2="Removed 佢 as it is redundant; 珊珊 already refers to the "
-    "subject, and 佢 is unnecessary in this context.",
-    yuewen_revised_3="我唯有死死气再爬上组合柜",
-    note_3='Changed "爬返上个组合柜" to "再爬上组合柜" to match the sequence and '
-    "avoid unnecessary use of 返, which implies returning, not "
-    "simply repeating the action. Also removed 个 for consistency "
-    "with the rest of the subtitles.",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -2335,6 +2319,7 @@ review_test_case_block_47 = ReviewTestCase.get_test_case_cls(7)(
     note_6="",
     yuewen_revised_7="",
     note_7="",
+    verified=True,
 )  # review_test_case_block_47
 review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_1="其实今天是我第一次近距离见黎根",
@@ -2342,18 +2327,18 @@ review_test_case_block_48 = ReviewTestCase.get_test_case_cls(4)(
     zhongwen_2="他恐怕都有五十岁了",
     yuewen_2="睇怕佢都有五十岁啦",
     zhongwen_3="却还是一副孩子脸",
-    yuewen_3="但系仲有一副孩子脸",
+    yuewen_3="但系仲有副孩子脸",
     zhongwen_4="鸡尾包！新鲜出炉！",
     yuewen_4="鸡尾包！啱啱出炉嘅！",
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="但系仲系一副细路仔面容",
-    note_3="Changed '但系仲有一副孩子脸' to '但系仲系一副细路仔面容' for more natural and "
-    "accurate Cantonese transcription of '却还是一副孩子脸'.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
+    verified=True,
 )  # review_test_case_block_48
 review_test_case_block_49 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="其实鸡尾包呢⋯",
@@ -2364,6 +2349,7 @@ review_test_case_block_49 = ReviewTestCase.get_test_case_cls(2)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
+    verified=True,
 )  # review_test_case_block_49
 review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     zhongwen_1="麦兜他学东西⋯还可以",
@@ -2399,7 +2385,7 @@ review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     zhongwen_16="每一条脚毛都硬似铁钉",
     yuewen_16="啲脚毛每一条都好似铁钉咁硬",
     zhongwen_17="脚趾甲有一寸厚，究竟⋯",
-    yuewen_17="脚趾甲啲脚甲成寸咁厚，究竟⋯",
+    yuewen_17="脚趾公啲脚甲成寸咁厚，究竟⋯",
     zhongwen_18="要走过几多座山",
     yuewen_18="要行过几多座山?",
     zhongwen_19="跨过几多个海",
@@ -2416,11 +2402,8 @@ review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="黎根越讲越兴奋，直到对眼发光",
-    note_5="Added '直到对眼发光' to match the implied continuation of "
-    "excitement in the sequence, as the next subtitle picks up "
-    "from this point. This ensures continuity and completeness of "
-    "the spoken content across subtitles.",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
     yuewen_revised_7="",
@@ -2443,18 +2426,17 @@ review_test_case_block_50 = ReviewTestCase.get_test_case_cls(21)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
-    yuewen_revised_17="脚趾甲有一寸厚，究竟⋯",
-    note_17="Changed '脚趾甲啲脚甲成寸咁厚' to '脚趾甲有一寸厚' for clarity and to avoid "
-    "redundancy, as '脚趾甲' already refers to toenails. This also "
-    "matches the structure and flow of the surrounding subtitles.",
-    yuewen_revised_18="",
-    note_18="",
+    yuewen_revised_17="",
+    note_17="",
+    yuewen_revised_18="要行过几多座山",
+    note_18="Removed the question mark to match the 中文.",
     yuewen_revised_19="",
     note_19="",
     yuewen_revised_20="",
     note_20="",
     yuewen_revised_21="",
     note_21="",
+    verified=True,
 )  # review_test_case_block_50
 review_test_case_block_51 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="我个仔⋯",
@@ -2481,6 +2463,7 @@ review_test_case_block_51 = ReviewTestCase.get_test_case_cls(6)(
     note_5="",
     yuewen_revised_6="",
     note_6="",
+    verified=True,
 )  # review_test_case_block_51
 review_test_case_block_52 = ReviewTestCase.get_test_case_cls(3)(
     zhongwen_1="我找来找去也找不到那部电子英文辞典",
@@ -2495,6 +2478,7 @@ review_test_case_block_52 = ReviewTestCase.get_test_case_cls(3)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
+    verified=True,
 )  # review_test_case_block_52
 review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     zhongwen_1="想不到真的让妈妈拿去了。吓得我！",
@@ -2619,10 +2603,8 @@ review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     note_25="",
     yuewen_revised_26="",
     note_26="",
-    yuewen_revised_27="「嗰便是一个母亲能够有嘅最大嘅安慰」",
-    note_27="Changed 「哪便是一个母亲能够有的最好的最大的安慰」 to 「嗰便是一个母亲能够有嘅最大嘅安慰」 for "
-    "consistency with Cantonese usage and to remove the redundant "
-    'and non-idiomatic repetition of "最好的最大的".',
+    yuewen_revised_27="",
+    note_27="",
     yuewen_revised_28="",
     note_28="",
     yuewen_revised_29="",
@@ -2639,6 +2621,7 @@ review_test_case_block_53 = ReviewTestCase.get_test_case_cls(35)(
     note_34="",
     yuewen_revised_35="",
     note_35="",
+    verified=True,
 )  # review_test_case_block_53
 review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     zhongwen_1="看完妈妈的信",
@@ -2721,14 +2704,11 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     note_15="",
     yuewen_revised_16="",
     note_16="",
-    yuewen_revised_17="我就系一旧揸住两个包",
-    note_17="Changed “一个揸住两个包” to “一旧揸住两个包” to match the metaphor of "
-    "being a piece of pork (猪肉) as in the previous and following "
-    "subtitles, ensuring consistency in the metaphorical "
-    "language.",
+    yuewen_revised_17="",
+    note_17="",
     yuewen_revised_18="",
     note_18="",
-    yuewen_revised_19="我一边练习，一边谂嘢；始终⋯",
+    yuewen_revised_19="我一边练习，一边乱练嘢；始终⋯",
     note_19="Removed the redundant '一边乱练' to better match the flow and "
     "logic of the surrounding subtitles, as the original metaphor "
     "is about thinking while practicing, not practicing "
@@ -3613,7 +3593,7 @@ review_test_case_block_67 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_7="青筋一条条凸出来，似钢筋",
     yuewen_7="啲青筋一条一条凸下凸下，好似钢筋",
     zhongwen_8="至于脚趾甲⋯",
-    yuewen_8="至于脚趾弓啲脚甲⋯",
+    yuewen_8="至于脚趾公啲脚甲⋯",
     zhongwen_9="有次我无无聊聊真的量了一下⋯",
     yuewen_9="有次我无无聊聊真系走去卡下佢⋯",
     zhongwen_10="足有一寸厚",
@@ -3664,10 +3644,8 @@ review_test_case_block_67 = ReviewTestCase.get_test_case_cls(26)(
     note_6="",
     yuewen_revised_7="",
     note_7="",
-    yuewen_revised_8="至于脚趾甲⋯",
-    note_8='Changed "至于脚趾弓啲脚甲⋯" to "至于脚趾甲⋯" for consistency and '
-    'accuracy, as the rest of the subtitles refer to "脚瓜" and '
-    '"脚趾甲" without mentioning "脚趾弓".',
+    yuewen_revised_8="",
+    note_8="",
     yuewen_revised_9="",
     note_9="",
     yuewen_revised_10="",

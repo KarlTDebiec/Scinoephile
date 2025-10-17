@@ -3501,10 +3501,9 @@ proof_test_cases_block_43 = [
     ProofTestCase(
         zhongwen="到贺的乡绅父老特别多",
         yuewen="所以到学嘅乡亲父老特别多",
-        yuewen_proofread="所以到贺嘅乡亲父老特别多",
-        note="Corrected '到学' to '到贺' as '到贺' (to congratulate) matches the "
-        "meaning in the 中文, while '到学' is a likely mishearing.",
-        difficulty=1,
+        yuewen_proofread="所以到贺嘅乡绅父老特别多",
+        note="Corrected '到学' to '到贺'; corrected '乡亲父老' to '乡绅父老'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -3897,8 +3896,9 @@ proof_test_cases_block_46 = [
     ProofTestCase(
         zhongwen="甚至没有人知道是运动的运动",
         yuewen="甚至乎冇人知对佢系运动嘅运动",
-        yuewen_proofread="甚至乎冇人知对佢系运动嘅运动",
-        note="",
+        yuewen_proofread="甚至乎冇人知道佢系运动嘅运动",
+        note="Corrected '知对' to '知道'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -4071,8 +4071,10 @@ proof_test_cases_block_48 = [
     ProofTestCase(
         zhongwen="却还是一副孩子脸",
         yuewen="但系仲有一副孩子脸",
-        yuewen_proofread="但系仲有一副孩子脸",
-        note="",
+        yuewen_proofread="但系仲有副孩子脸",
+        note="Manually overridden, '一' is not present in the audio but is "
+        "present in the transcript.",
+        difficulty=1,
         verified=True,
     ),
     ProofTestCase(
@@ -4219,19 +4221,16 @@ proof_test_cases_block_50 = [
     ProofTestCase(
         zhongwen="脚趾甲有一寸厚，究竟⋯",
         yuewen="脚趾弓啲脚夹成串咁厚，究竟⋯",
-        yuewen_proofread="脚趾甲啲脚甲成寸咁厚，究竟⋯",
-        note="Corrected '脚趾弓' to '脚趾甲' and '脚夹成串' to '脚甲成寸' as these are "
-        "likely mishearings; '脚趾甲' means 'toenail' and '成寸' means 'an "
-        "inch thick', matching the meaning in the 中文.",
-        difficulty=1,
+        yuewen_proofread="脚趾公啲脚甲成寸咁厚，究竟⋯",
+        note="Corrected '脚趾弓' to '脚趾公'; corrected '脚夹成串' to '脚甲成寸'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="要走过几多座山",
         yuewen="要行个几度呢?几多座山?",
         yuewen_proofread="要行过几多座山?",
-        note="Corrected '行个几度呢' to '行过' as '行个几度呢' is a mishearing of "
-        "'行过', which matches the meaning of '走过' in the 中文.",
+        note="Corrected '行个几度呢' to '行过'.",
         difficulty=1,
         verified=True,
     ),
@@ -6353,9 +6352,9 @@ proof_test_cases_block_67 = [
     ProofTestCase(
         zhongwen="至于脚趾甲⋯",
         yuewen="至于脚趾弓啲脚甲⋯",
-        yuewen_proofread="至于脚趾弓啲脚甲⋯",
-        note="Removed '弓' as it is a likely mishearing",
-        difficulty=1,
+        yuewen_proofread="至于脚趾公啲脚甲⋯",
+        note="Corrected '脚趾弓' to '脚趾公'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
