@@ -3667,7 +3667,7 @@ review_test_case_block_68 = ReviewTestCase.get_test_case_cls(14)(
     zhongwen_2="妈妈的dot com散掉后，她又有计",
     yuewen_2="妈妈嘅dot com散咗之后，佢又有计喇",
     zhongwen_3="她出版了一本教烹饪的食谱",
-    yuewen_3="佢出咗本教煮餸嘅食谱，咁煮喇飯咋晒",
+    yuewen_3="佢出咗本教煮餸嘅食谱，咁煮喇饭咋晒",
     zhongwen_4="食谱最后一页教人整烧鸡",
     yuewen_4="食谱最后一页系教人整烧鸡嘅",
     zhongwen_5="方法简单，人人可学",
@@ -3694,10 +3694,8 @@ review_test_case_block_68 = ReviewTestCase.get_test_case_cls(14)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="佢出咗本教煮餸嘅食谱，咁煮喇饭咋晒。",
-    note_3="Added a period at the end for consistency with other "
-    "subtitles, as the sentence is complete and other lines use "
-    "punctuation.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -3720,6 +3718,7 @@ review_test_case_block_68 = ReviewTestCase.get_test_case_cls(14)(
     note_13="",
     yuewen_revised_14="",
     note_14="",
+    verified=True,
 )  # review_test_case_block_68
 review_test_case_block_69 = ReviewTestCase.get_test_case_cls(13)(
     zhongwen_1="麻烦你，一客常餐",
@@ -3735,7 +3734,7 @@ review_test_case_block_69 = ReviewTestCase.get_test_case_cls(13)(
     zhongwen_6="快餐又是什么？",
     yuewen_6="噉快餐又系咩嚟㗎？",
     zhongwen_7="快餐即是午餐",
-    yuewen_7="即系快餐咪真系午餐",
+    yuewen_7="啫快餐咪就係午餐",
     zhongwen_8="午餐吃什么？",
     yuewen_8="午餐食咩㗎？",
     zhongwen_9="午餐跟晚餐一样",
@@ -3760,23 +3759,21 @@ review_test_case_block_69 = ReviewTestCase.get_test_case_cls(13)(
     note_5="",
     yuewen_revised_6="",
     note_6="",
-    yuewen_revised_7="即系快餐咪午餐啰",
-    note_7='Removed "真系" for naturalness and consistency with the rest '
-    'of the dialogue, and added "啰" to match the ending '
-    "particles used throughout the conversation.",
+    yuewen_revised_7="",
+    note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
     note_9="",
     yuewen_revised_10="",
     note_10="",
-    yuewen_revised_11="晚餐咪常餐啰",
-    note_11='Removed "真系" for consistency with the revised subtitle 7 '
-    "and to better match the colloquial flow of the conversation.",
+    yuewen_revised_11="",
+    note_11="",
     yuewen_revised_12="",
     note_12="",
     yuewen_revised_13="",
     note_13="",
+    verified=True,
 )  # review_test_case_block_69
 review_test_case_block_70 = ReviewTestCase.get_test_case_cls(26)(
     zhongwen_1="对不起，常餐卖光了",
@@ -3883,6 +3880,7 @@ review_test_case_block_70 = ReviewTestCase.get_test_case_cls(26)(
     note_25="",
     yuewen_revised_26="",
     note_26="",
+    verified=True,
 )  # review_test_case_block_70
 review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="对不起，没快餐了",

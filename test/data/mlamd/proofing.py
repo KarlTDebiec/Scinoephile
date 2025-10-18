@@ -6516,10 +6516,8 @@ proof_test_cases_block_68 = [
     ProofTestCase(
         zhongwen="她出版了一本教烹饪的食谱",
         yuewen="佢出咗半教主送嘅食谱，谂住捞返扎沙",
-        yuewen_proofread="佢出咗本教煮餸嘅食谱，咁煮喇飯咋晒",
-        note="Corrected '半教主送' to '本教煮餸' as '本' is a misheard '半', and "
-        "'教主送' is a mishearing of '教煮餸', which matches the meaning of "
-        "'教烹饪' in the 中文; Corrected '谂住捞返扎沙' to '咁煮喇飯咋晒'.",
+        yuewen_proofread="佢出咗本教煮餸嘅食谱，咁煮喇饭咋晒",
+        note="Corrected '半教主送' to '本教煮餸' corrected '谂住捞返扎沙' to '咁煮喇饭咋晒'.",
         difficulty=3,
         verified=True,
     ),
@@ -6648,8 +6646,9 @@ proof_test_cases_block_69 = [
     ProofTestCase(
         zhongwen="快餐即是午餐",
         yuewen="即系快餐咪真系午餐",
-        yuewen_proofread="即系快餐咪真系午餐",
-        note="",
+        yuewen_proofread="啫快餐咪就係午餐",
+        note="Corrected '即系' to '啫'; corrected '咪真系' to '咪就係'.",
+        difficulty=3,
         verified=True,
     ),
     ProofTestCase(
