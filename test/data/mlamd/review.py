@@ -3384,6 +3384,7 @@ review_test_case_block_62 = ReviewTestCase.get_test_case_cls(3)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
+    verified=True,
 )  # review_test_case_block_62
 review_test_case_block_63 = ReviewTestCase.get_test_case_cls(3)(
     zhongwen_1="因为环保⋯",
@@ -3398,6 +3399,7 @@ review_test_case_block_63 = ReviewTestCase.get_test_case_cls(3)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
+    verified=True,
 )  # review_test_case_block_63
 review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     zhongwen_1="长洲有个张保仔洞",
@@ -3407,7 +3409,7 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     zhongwen_3="因为我练过抢包手，身手比较灵活⋯",
     yuewen_3="因为我练过抢包手，身手比较灵活⋯",
     zhongwen_4="同学们叫我爬进去看看，说不定会发达",
-    yuewen_4="班同学叫我爬佢睇下，话唔定会发达",
+    yuewen_4="班同学叫我爬去睇下，话唔定会发达",
     zhongwen_5="于是我就向着这个又黑又窄的洞⋯",
     yuewen_5="于是我就向住呢一个又黑又窄嘅洞⋯",
     zhongwen_6="一直爬",
@@ -3447,9 +3449,9 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     zhongwen_23="而张保仔，也没有咬过那个包",
     yuewen_23="而张保仔，亦都冇咬过个包",
     zhongwen_24="原来蠢，并不那么好笑",
-    yuewen_24="原来，唔系咁好笑",
+    yuewen_24="原来蠢，唔系咁好笑",
     zhongwen_25="蠢会失败⋯",
-    yuewen_25="会失败⋯",
+    yuewen_25="蠢会失败⋯",
     zhongwen_26="会失望",
     yuewen_26="会失望",
     zhongwen_27="失望，并不那么好笑",
@@ -3474,15 +3476,12 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
-    yuewen_revised_4="班同学叫我爬入去睇下，话唔定会发达",
-    note_4='Changed "爬佢睇下" to "爬入去睇下" for correct meaning and '
-    "consistency with the context (entering the cave).",
+    yuewen_revised_4="",
+    note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="系噉爬",
-    note_6='Removed the repeated "爬" to match the natural flow and '
-    'avoid redundancy, as the phrase "系噉爬" is the standard way '
-    'to express "keep crawling" in Cantonese.',
+    yuewen_revised_6="",
+    note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
@@ -3519,9 +3518,8 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     note_23="",
     yuewen_revised_24="",
     note_24="",
-    yuewen_revised_25="蠢会失败⋯",
-    note_25='Restored "蠢" at the beginning for consistency with the '
-    "previous subtitle and the narrative flow.",
+    yuewen_revised_25="",
+    note_25="",
     yuewen_revised_26="",
     note_26="",
     yuewen_revised_27="",
@@ -3540,6 +3538,7 @@ review_test_case_block_64 = ReviewTestCase.get_test_case_cls(34)(
     note_33="",
     yuewen_revised_34="",
     note_34="",
+    verified=True,
 )  # review_test_case_block_64
 review_test_case_block_65 = ReviewTestCase.get_test_case_cls(1)(
     zhongwen_1="「⋯无力挽！」",
@@ -3660,6 +3659,7 @@ review_test_case_block_67 = ReviewTestCase.get_test_case_cls(26)(
     note_25="",
     yuewen_revised_26="",
     note_26="",
+    verified=True,
 )  # review_test_case_block_67
 review_test_case_block_68 = ReviewTestCase.get_test_case_cls(14)(
     zhongwen_1="不成，还是出个锦囊！",

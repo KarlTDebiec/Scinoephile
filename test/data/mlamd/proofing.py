@@ -6098,8 +6098,8 @@ proof_test_cases_block_64 = [
     ProofTestCase(
         zhongwen="同学们叫我爬进去看看，说不定会发达",
         yuewen="班同我叫我爬佢睇下，话唔定会发达",
-        yuewen_proofread="班同学叫我爬佢睇下，话唔定会发达",
-        note="Corrected '班同我' to '班同学' as '班同我' is a mishearing of '班同学'.",
+        yuewen_proofread="班同学叫我爬去睇下，话唔定会发达",
+        note="Corrected '班同我' to '班同学'; corrected '爬佢' to '爬去'.",
         difficulty=1,
         verified=True,
     ),
@@ -6203,15 +6203,17 @@ proof_test_cases_block_64 = [
     ProofTestCase(
         zhongwen="原来蠢，并不那么好笑",
         yuewen="原来，唔系咁好笑",
-        yuewen_proofread="原来，唔系咁好笑",
-        note="",
+        yuewen_proofread="原来蠢，唔系咁好笑",
+        note="Added '蠢'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
         zhongwen="蠢会失败⋯",
         yuewen="会失败⋯",
-        yuewen_proofread="会失败⋯",
-        note="",
+        yuewen_proofread="蠢会失败⋯",
+        note="Added '蠢'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
