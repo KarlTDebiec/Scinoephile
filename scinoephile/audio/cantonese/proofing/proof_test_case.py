@@ -43,4 +43,9 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
                 "Answer's proofread 粤文 of subtitle is modified relative to query's "
                 "粤文 of subtitle, but no note is provided."
             )
+        if self.yuewen == self.yuewen_proofread and self.note:
+            raise ValueError(
+                "Answer's proofread 粤文 of subtitle is identical to query's 粤文 of "
+                "subtitle, but a note is provided."
+            )
         return self
