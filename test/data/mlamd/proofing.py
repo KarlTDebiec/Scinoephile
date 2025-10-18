@@ -7001,10 +7001,9 @@ proof_test_cases_block_72 = [
     ProofTestCase(
         zhongwen="唉，说是说晚餐，还不就是午餐？",
         yuewen="系，个名叫晚餐啫，其实唔系真系午餐？",
-        yuewen_proofread="系，个名叫晚餐啫，其实唔系真系午餐？",
-        note="",
-        difficulty=2,
-        prompt=True,
+        yuewen_proofread="系，个名叫晚餐啫，其实咪就係午餐？",
+        note="Corrected '唔系真系' to '咪就係'.",
+        difficulty=3,
         verified=True,
     ),
     ProofTestCase(

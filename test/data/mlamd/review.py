@@ -3905,11 +3905,8 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_10="好啦好啦！要两份午餐啦",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="太过分啦？你哋究竟有冇嘢食㗎？",
-    note_2="Revised to better match the context and flow: '嚟唔嚟普啲呀？' is "
-    "not a natural response to the previous line, and "
-    "'你哋究竟有啲咩餐呀？' is less direct than '你哋究竟有冇嘢食㗎？', which is a "
-    "more natural way to express the complaint in Cantonese.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -3926,6 +3923,7 @@ review_test_case_block_71 = ReviewTestCase.get_test_case_cls(10)(
     note_9="",
     yuewen_revised_10="",
     note_10="",
+    verified=True,
 )  # review_test_case_block_71
 review_test_case_block_72 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="对不起，午餐卖光了",
@@ -3935,7 +3933,7 @@ review_test_case_block_72 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_3="光天白日，吃什么鬼晚餐？",
     yuewen_3="日光日白，食乜鬼嘢晚餐啊？",
     zhongwen_4="唉，说是说晚餐，还不就是午餐？",
-    yuewen_4="系，个名叫晚餐啫，其实唔系真系午餐？",
+    yuewen_4="系，个名叫晚餐啫，其实咪就係午餐？",
     zhongwen_5="好吧好吧，拜托！两份晚餐！快！",
     yuewen_5="好啦好啦，怕咗你啦！要两份晚餐啦！快啲手啊！",
     zhongwen_6="要快吗？那得吃快餐了！",
@@ -3946,15 +3944,13 @@ review_test_case_block_72 = ReviewTestCase.get_test_case_cls(6)(
     note_2="",
     yuewen_revised_3="",
     note_3="",
-    yuewen_revised_4="系，个名叫晚餐啫，其实都系午餐啫。",
-    note_4="Changed '其实唔系真系午餐？' to '其实都系午餐啫。' to better reflect the "
-    "intended meaning and maintain consistency with the previous "
-    "subtitles. The original phrasing was confusing and did not "
-    "match the context.",
+    yuewen_revised_4="",
+    note_4="",
     yuewen_revised_5="",
     note_5="",
     yuewen_revised_6="",
     note_6="",
+    verified=True,
 )  # review_test_case_block_72
 
 mlamd_review_test_cases: list[ReviewTestCase] = [
