@@ -5994,8 +5994,9 @@ proof_test_cases_block_61 = [
     ProofTestCase(
         zhongwen="之后，茶楼再不卖大包了",
         yuewen="之后，茶楼都冇埋大包",
-        yuewen_proofread="之后，茶楼都冇埋大包",
-        note="",
+        yuewen_proofread="之后，茶楼都冇卖大包",
+        note="Corrected '埋' to '卖'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(

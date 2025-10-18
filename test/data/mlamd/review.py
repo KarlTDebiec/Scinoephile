@@ -2940,14 +2940,13 @@ review_test_case_block_56 = ReviewTestCase.get_test_case_cls(5)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="点点嘅灯光喺海面走来走去⋯",
-    note_3="Removed the repeated '点点点点' and changed '海上面' to '海面' for "
-    "consistency with the rest of the subtitles and to better "
-    "match natural Cantonese speech.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
     note_5="",
+    verified=True,
 )  # review_test_case_block_56
 review_test_case_block_57 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="我从没吃过这么浓味的东西",
@@ -2964,21 +2963,17 @@ review_test_case_block_57 = ReviewTestCase.get_test_case_cls(6)(
     yuewen_6="最靓最靓，最犀利，亦都系最温柔",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="连杯面连烧鸭都冇咁浓嘅味道",
-    note_2="Swapped the order of '烧鸭' and '杯面' to match the logical "
-    "progression and natural speech flow, as '连杯面连烧鸭' is more "
-    "idiomatic in Cantonese and matches the implied escalation in "
-    "the original.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="就好似今晚一切噉",
-    note_5="Changed '今晚嘅嘢' to '今晚一切' to more accurately reflect the "
-    "meaning of 'tonight's everything' as in the Mandarin, and to "
-    "avoid ambiguity in '嘢' (thing).",
+    yuewen_revised_5="",
+    note_5="",
     yuewen_revised_6="",
     note_6="",
+    verified=True,
 )  # review_test_case_block_57
 review_test_case_block_58 = ReviewTestCase.get_test_case_cls(56)(
     zhongwen_1="第二天我睡得很晏⋯",
@@ -3203,10 +3198,9 @@ review_test_case_block_58 = ReviewTestCase.get_test_case_cls(56)(
     note_54="",
     yuewen_revised_55="",
     note_55="",
-    yuewen_revised_56="我后悔要妈妈撇咗最后几件火鸡",
-    note_56='Added "最后" to match the meaning of the original, as the '
-    "regret is about the last few pieces of turkey, not just any "
-    "pieces.",
+    yuewen_revised_56="",
+    note_56="",
+    verified=True,
 )  # review_test_case_block_58
 review_test_case_block_59 = ReviewTestCase.get_test_case_cls(23)(
     zhongwen_1="特别报告",
@@ -3255,11 +3249,8 @@ review_test_case_block_59 = ReviewTestCase.get_test_case_cls(23)(
     yuewen_22="一项几乎绝迹嘅运动⋯",
     zhongwen_23="成为本港举办亚运的重点推介比赛项目",
     yuewen_23="成为本港举办亚运重点推介嘅比赛项目",
-    yuewen_revised_1="特别报告",
-    note_1="Changed '报道' to '报告' for consistency with the rest of the "
-    "subtitles and to match the likely intended meaning, as the "
-    "segment is a 'special report' rather than a 'special news "
-    "report'.",
+    yuewen_revised_1="",
+    note_1="",
     yuewen_revised_2="",
     note_2="",
     yuewen_revised_3="",
@@ -3304,6 +3295,7 @@ review_test_case_block_59 = ReviewTestCase.get_test_case_cls(23)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
+    verified=True,
 )  # review_test_case_block_59
 review_test_case_block_60 = ReviewTestCase.get_test_case_cls(11)(
     zhongwen_1="最后⋯",
@@ -3330,10 +3322,8 @@ review_test_case_block_60 = ReviewTestCase.get_test_case_cls(11)(
     yuewen_11="一切回复正常",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="最后，全部都系「烟」",
-    note_2="Changed 「芭﹣娜﹣娜」 to 「烟」 to match the context and maintain "
-    "consistency with the theme of '成烟' (become smoke) in the "
-    "previous and following subtitles.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -3352,6 +3342,7 @@ review_test_case_block_60 = ReviewTestCase.get_test_case_cls(11)(
     note_10="",
     yuewen_revised_11="",
     note_11="",
+    verified=True,
 )  # review_test_case_block_60
 review_test_case_block_61 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_1="上中学后，我再没有练习抢包手",
@@ -3361,7 +3352,7 @@ review_test_case_block_61 = ReviewTestCase.get_test_case_cls(6)(
     zhongwen_3="我都会手快快替她抢一笼大包",
     yuewen_3="我都会手快快噉帮佢抢个笼大包",
     zhongwen_4="之后，茶楼再不卖大包了",
-    yuewen_4="之后，茶楼都冇埋大包",
+    yuewen_4="之后，茶楼都冇卖大包",
     zhongwen_5="点心车亦转成点心纸",
     yuewen_5="推车仔都转咗用点心纸",
     zhongwen_6="一切落空",
@@ -3370,20 +3361,15 @@ review_test_case_block_61 = ReviewTestCase.get_test_case_cls(6)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="我都会手快快噉帮佢抢一笼大包",
-    note_3="Changed '抢个笼大包' to '抢一笼大包' for consistency with the rest of "
-    "the subtitles, as '一笼' is the correct classifier and matches "
-    "the context.",
-    yuewen_revised_4="之后，茶楼都冇卖大包",
-    note_4="Removed '埋' from '冇埋大包' to correct the meaning. '冇埋' is not "
-    "idiomatic here; '冇卖大包' is the correct way to say 'no longer "
-    "sells big buns'.",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
     yuewen_revised_5="",
     note_5="",
-    yuewen_revised_6="一切落空",
-    note_6="Removed '都' for consistency with the original and the "
-    "overall tone; '一切落空' is more concise and matches the rest of "
-    "the subtitles.",
+    yuewen_revised_6="",
+    note_6="",
+    verified=True,
 )  # review_test_case_block_61
 review_test_case_block_62 = ReviewTestCase.get_test_case_cls(3)(
     zhongwen_1="有时候我也会跟同学回到长洲烧烤",
