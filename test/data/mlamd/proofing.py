@@ -5028,9 +5028,9 @@ proof_test_cases_block_55 = [
     ProofTestCase(
         zhongwen="可能因为买了焗炉而技痒",
         yuewen="可能系因为买咗焗炉嘅样",
-        yuewen_proofread="可能系因为买咗焗炉嘅样",
-        note="",
-        difficulty=1,
+        yuewen_proofread="可能系因为买咗焗炉而技痒",
+        note="Corrected '焗炉嘅样' to '焗炉而技痒'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(
@@ -5083,10 +5083,9 @@ proof_test_cases_block_55 = [
     ProofTestCase(
         zhongwen="在火鸡丰厚的鸡胸上擦呀，擦",
         yuewen="喺火鸡封口嘅鸡胸度，起细噉啫啫",
-        yuewen_proofread="喺火鸡丰厚嘅鸡胸度，起细噉啫啫",
-        note="Corrected '封口' to '丰厚' as '丰厚' matches the meaning of '丰厚' "
-        "(thick, rich) in the 中文, while '封口' is a likely mishearing.",
-        difficulty=1,
+        yuewen_proofread="喺火鸡丰厚嘅鸡胸度，起势噉擦呀擦",
+        note="Corrected '封口' to '丰厚'; corrected '起细噉啫啫' to '起势噉擦呀擦'.",
+        difficulty=2,
         verified=True,
     ),
     ProofTestCase(

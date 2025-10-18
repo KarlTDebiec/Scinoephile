@@ -2708,11 +2708,8 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     note_17="",
     yuewen_revised_18="",
     note_18="",
-    yuewen_revised_19="我一边练习，一边乱练嘢；始终⋯",
-    note_19="Removed the redundant '一边乱练' to better match the flow and "
-    "logic of the surrounding subtitles, as the original metaphor "
-    "is about thinking while practicing, not practicing "
-    "chaotically.",
+    yuewen_revised_19="",
+    note_19="",
     yuewen_revised_20="",
     note_20="",
     yuewen_revised_21="",
@@ -2721,10 +2718,9 @@ review_test_case_block_54 = ReviewTestCase.get_test_case_cls(24)(
     note_22="",
     yuewen_revised_23="",
     note_23="",
-    yuewen_revised_24="我最后终于练成「十二路抢包手」啦",
-    note_24="Reordered to match the natural Cantonese phrasing and "
-    "maintain consistency with the narrative flow: '最后我终于练成' → "
-    "'我最后终于练成'.",
+    yuewen_revised_24="",
+    note_24="",
+    verified=True,
 )  # review_test_case_block_54
 review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     zhongwen_1="喂，我是麦兜",
@@ -2794,7 +2790,7 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     zhongwen_33="妈妈以四折买了个小小焗炉",
     yuewen_33="妈妈用四折买咗个焗炉仔返屋企",
     zhongwen_34="可能因为买了焗炉而技痒",
-    yuewen_34="可能系因为买咗焗炉嘅样",
+    yuewen_34="可能系因为买咗焗炉而技痒",
     zhongwen_35="那日妈妈竟然跟我说⋯",
     yuewen_35="嗰日妈妈竟然同我讲⋯佢话⋯",
     zhongwen_36="让我们明天去超级市场揪火鸡",
@@ -2808,7 +2804,7 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     zhongwen_40="我学着妈妈，把双手涂满盐⋯",
     yuewen_40="我同妈妈，噉双手查满盐⋯",
     zhongwen_41="在火鸡丰厚的鸡胸上擦呀，擦",
-    yuewen_41="喺火鸡丰厚嘅鸡胸度，起细噉啫啫",
+    yuewen_41="喺火鸡丰厚嘅鸡胸度，起势噉擦呀擦",
     zhongwen_42="联火鸡时⋯",
     yuewen_42="联火鸡时⋯",
     zhongwen_43="妈妈不留神漏出了火鸡内的洋葱粒",
@@ -2893,10 +2889,8 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     note_32="",
     yuewen_revised_33="",
     note_33="",
-    yuewen_revised_34="可能系因为买咗焗炉所以手痒",
-    note_34='Changed "可能系因为买咗焗炉嘅样" to "可能系因为买咗焗炉所以手痒" to better '
-    "reflect the idiomatic meaning of '技痒' (itchy hands, eager to "
-    "try), which is apparent in the context of the sequence.",
+    yuewen_revised_34="",
+    note_34="",
     yuewen_revised_35="",
     note_35="",
     yuewen_revised_36="",
@@ -2909,11 +2903,8 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     note_39="",
     yuewen_revised_40="",
     note_40="",
-    yuewen_revised_41="喺火鸡丰厚嘅鸡胸度，轻轻咁擦呀擦",
-    note_41='Changed "起细噉啫啫" to "轻轻咁擦呀擦" to accurately reflect the '
-    "action of rubbing (擦) as described in the context, and to "
-    "avoid confusion with the onomatopoeic '啫啫' which is not "
-    "appropriate here.",
+    yuewen_revised_41="",
+    note_41="",
     yuewen_revised_42="",
     note_42="",
     yuewen_revised_43="",
@@ -2932,6 +2923,7 @@ review_test_case_block_55 = ReviewTestCase.get_test_case_cls(50)(
     note_49="",
     yuewen_revised_50="",
     note_50="",
+    verified=True,
 )  # review_test_case_block_55
 review_test_case_block_56 = ReviewTestCase.get_test_case_cls(5)(
     zhongwen_1="好靓的晚上啊！",
