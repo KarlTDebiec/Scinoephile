@@ -49,3 +49,9 @@ if __name__ == "__main__":
     # Bilingual 简体中文 and English
     zho_hans_eng = get_synced_series(zho_hans, eng)
     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
+
+    # Bilingual 简体粤文 and English
+    if (output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt").exists():
+        yue_hans = Series.load(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+        yue_hans_eng = get_synced_series(yue_hans, eng)
+        yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
