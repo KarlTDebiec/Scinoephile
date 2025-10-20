@@ -25,7 +25,7 @@ from test.data.mlamd import (
 async def main():
     input_dir = test_data_root / "mlamd" / "input"
     output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(1)
+    set_logging_verbosity(2)
 
     # 中文
     zhongwen = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
