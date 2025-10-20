@@ -133,7 +133,7 @@ class CantoneseTranscriptionReviewer:
 
         # Run all blocks
         async with asyncio.TaskGroup() as task_group:
-            for block_idx in [0, 1]:  # range(len(yuewen.blocks)):
+            for block_idx in range(len(yuewen.blocks)):
                 task_group.create_task(run_block(block_idx))
 
         # Concatenate and return
