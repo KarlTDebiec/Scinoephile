@@ -10,34 +10,17 @@ from logging import info
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import Series, get_series_with_subs_merged
+from scinoephile.core import Series
 from scinoephile.testing import test_data_root
-from test.data.mlamd import (
-    mlamd_distribute_test_cases,
-    mlamd_merge_test_cases,
-    mlamd_proof_test_cases,
-    mlamd_review_test_cases,
-    mlamd_shift_test_cases,
-    mlamd_translate_test_cases,
-)
 
 
 async def main():
-    input_dir = test_data_root / "mlamd" / "input"
-    output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(1)
+    input_dir = test_data_root / "mnt" / "input"
+    output_dir = test_data_root / "mnt" / "output"
+    set_logging_verbosity(2)
 
     # 中文
-    zhongwen = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
-    if (
-        zhongwen.events[539].text == "不知道为什么"
-        and zhongwen.events[540].text == "「珊你个头」却特别刺耳"
-    ):
-        info(
-            "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
-            "structure is reversed in the 粤文."
-        )
-        zhongwen = get_series_with_subs_merged(zhongwen, 539)
+    zhongwen = Series.load(output_dir / "zho-Hant_clean_flatten_simplify.srt")
 
     # 粤文
     yuewen = AudioSeries.load(output_dir / "yue-Hans_audio")
@@ -45,12 +28,12 @@ async def main():
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
-        distribute_test_cases=mlamd_distribute_test_cases,
-        shift_test_cases=mlamd_shift_test_cases,
-        merge_test_cases=mlamd_merge_test_cases,
-        proof_test_cases=mlamd_proof_test_cases,
-        translate_test_cases=mlamd_translate_test_cases,
-        review_test_cases=mlamd_review_test_cases,
+        distribute_test_cases=[],
+        shift_test_cases=[],
+        merge_test_cases=[],
+        proof_test_cases=[],
+        translate_test_cases=[],
+        review_test_cases=[],
     )
 
     # Process all blocks
