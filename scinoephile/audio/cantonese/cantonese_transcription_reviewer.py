@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 
 from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
 from scinoephile.audio.cantonese.alignment import Aligner
@@ -22,6 +23,7 @@ from scinoephile.audio.transcription import (
     get_segment_hanzi_converted,
     get_segment_split_on_whitespace,
 )
+from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import test_data_root
 
@@ -31,6 +33,7 @@ class CantoneseTranscriptionReviewer:
 
     def __init__(
         self,
+        test_case_directory_path: Path,
         distribute_test_cases: list[DistributeTestCase],
         shift_test_cases: list[ShiftTestCase],
         merge_test_cases: list[MergeTestCase],
@@ -41,6 +44,7 @@ class CantoneseTranscriptionReviewer:
         """Initialize.
 
         Arguments:
+            test_case_directory_path: path to directory containing test cases
             distribute_test_cases: distribute test cases
             shift_test_cases: shift test cases
             merge_test_cases: merge test cases
@@ -48,6 +52,7 @@ class CantoneseTranscriptionReviewer:
             translate_test_cases: translate test cases
             review_test_cases: review test cases
         """
+        self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
@@ -175,6 +180,6 @@ class CantoneseTranscriptionReviewer:
         )
         yuewen_block_series = alignment.yuewen
 
-        await update_all_test_cases(test_data_root / "mlamd", idx, self.aligner)
+        await update_all_test_cases(self.test_case_directory_path, idx, self.aligner)
 
         return yuewen_block_series
