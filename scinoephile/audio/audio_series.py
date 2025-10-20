@@ -20,7 +20,7 @@ with catch_warnings():
 
 from scinoephile.audio.audio_block import AudioBlock
 from scinoephile.audio.audio_subtitle import AudioSubtitle
-from scinoephile.common import NotAFileError
+from scinoephile.common import DirectoryNotFoundError, NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
     val_input_dir_path,
@@ -226,7 +226,7 @@ class AudioSeries(Series):
         try:
             validated_path = val_input_dir_path(path)
             return cls._load_wav(validated_path, **kwargs)
-        except NotADirectoryError:
+        except (DirectoryNotFoundError, NotADirectoryError):
             try:
                 validated_path = val_input_path(path)
                 video_path = kwargs.pop("video_path", None)
