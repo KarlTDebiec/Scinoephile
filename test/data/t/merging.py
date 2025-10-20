@@ -10,17 +10,34 @@ from scinoephile.audio.cantonese.merging import MergeTestCase
 
 merge_test_cases_block_0 = [
     MergeTestCase(
-        zhongwen="妳们两个累不累啊？",
-        yuewen_to_merge=["之后啦", "转埋呢个弯之后呢"],
-        yuewen_merged="之后啦，转埋呢个弯之后呢？",
-        difficulty=2,
+        zhongwen="警察",
+        yuewen_to_merge=["喂", "警察"],
+        yuewen_merged="喂警察",
     ),
 ]  # merge_test_cases_block_0
 merge_test_cases_block_1 = [
     MergeTestCase(
-        zhongwen="小梅，快躲起来",
-        yuewen_to_merge=["嗌", "嗰个系边个呢"],
-        yuewen_merged="嗌，嗰个系边个呢",
+        zhongwen="﹣检查一下　　﹣收到",
+        yuewen_to_merge=["查下咩料"],
+        yuewen_merged="﹣查下咩料",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="﹣袋子里装什么？　　﹣总机",
+        yuewen_to_merge=["收到", "角度系袋住啲咩呀"],
+        yuewen_merged="收到，角度系袋住啲咩呀？",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
+        yuewen_to_merge=["通话电台", "查", "查个牌匙", "C532743"],
+        yuewen_merged="通话电台 查 查个牌匙：C532743",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="尾数一，季正雄",
+        yuewen_to_merge=["尾数1", "贵正红"],
+        yuewen_merged="尾数1，贵正红",
         difficulty=1,
     ),
 ]  # merge_test_cases_block_1

@@ -10,25 +10,49 @@ from scinoephile.audio.cantonese.shifting import ShiftTestCase
 
 shift_test_cases_block_0 = [
     ShiftTestCase(
-        zhongwen_1="谢谢",
-        yuewen_1="",
-        zhongwen_2="妳们两个累不累啊？",
-        yuewen_2="食埋呢粒糖之后啦",
-        yuewen_1_shifted="食埋呢粒糖",
-        yuewen_2_shifted="之后啦",
+        zhongwen_1="警察",
+        yuewen_1="喂警察",
+        zhongwen_2="拿身份证出来",
+        yuewen_2="攞我新闻证出嚟睇",
+        yuewen_1_shifted="喂警察",
+        yuewen_2_shifted="攞我新闻证出嚟睇",
+    ),
+]  # shift_test_cases_block_0
+shift_test_cases_block_1 = [
+    ShiftTestCase(
+        zhongwen_1="﹣检查一下　　﹣收到",
+        yuewen_1="查下咩料收到",
+        zhongwen_2="﹣袋子里装什么？　　﹣总机",
+        yuewen_2="角度系袋住啲咩呀",
+        yuewen_1_shifted="查下咩料",
+        yuewen_2_shifted="收到角度系袋住啲咩呀",
         difficulty=1,
     ),
     ShiftTestCase(
-        zhongwen_1="妳们两个累不累啊？",
-        yuewen_1="之后啦",
-        zhongwen_2="就快到了",
-        yuewen_2="转埋呢个弯之后呢就会到㗎啦",
-        yuewen_1_shifted="之后啦转埋呢个弯之后呢",
-        yuewen_2_shifted="就会到㗎啦",
-        difficulty=1,
+        zhongwen_1="﹣袋子里装什么？　　﹣总机",
+        yuewen_1="收到角度系袋住啲咩呀",
+        zhongwen_2="﹣打开来看看　　﹣身份证号码：C532743",
+        yuewen_2="通话电台查查个牌匙C532743",
+        yuewen_1_shifted="收到角度系袋住啲咩呀",
+        yuewen_2_shifted="通话电台查查个牌匙C532743",
     ),
-]  # shift_test_cases_block_0
-shift_test_cases_block_1 = []  # shift_test_cases_block_1
+    ShiftTestCase(
+        zhongwen_1="﹣打开来看看　　﹣身份证号码：C532743",
+        yuewen_1="通话电台查查个牌匙C532743",
+        zhongwen_2="尾数一，季正雄",
+        yuewen_2="尾数1贵正红",
+        yuewen_1_shifted="通话电台查查个牌匙C532743",
+        yuewen_2_shifted="尾数1贵正红",
+    ),
+    ShiftTestCase(
+        zhongwen_1="尾数一，季正雄",
+        yuewen_1="尾数1贵正红",
+        zhongwen_2="打开",
+        yuewen_2="打佢",
+        yuewen_1_shifted="尾数1贵正红",
+        yuewen_2_shifted="打佢",
+    ),
+]  # shift_test_cases_block_1
 shift_test_cases_block_2 = []  # shift_test_cases_block_2
 shift_test_cases_block_3 = []  # shift_test_cases_block_3
 shift_test_cases_block_4 = []  # shift_test_cases_block_4

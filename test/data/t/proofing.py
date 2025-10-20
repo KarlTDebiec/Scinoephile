@@ -10,36 +10,64 @@ from scinoephile.audio.cantonese.proofing import ProofTestCase
 
 proof_test_cases_block_0 = [
     ProofTestCase(
-        zhongwen="谢谢",
-        yuewen="食埋呢粒糖",
-        yuewen_proofread="",
-        note="The 粤文 '食埋呢粒糖' ('eat this candy') has no correspondence to "
-        "the 中文 '谢谢' ('thank you'), indicating a complete "
-        "mistranscription.",
-        difficulty=1,
-    ),
-    ProofTestCase(
-        zhongwen="妳们两个累不累啊？",
-        yuewen="之后啦，转埋呢个弯之后呢？",
-        yuewen_proofread="",
-        note="There is zero correspondence between the 粤文 and 中文 "
-        "subtitles, indicating a complete mistranscription.",
-        difficulty=1,
-    ),
-    ProofTestCase(
-        zhongwen="就快到了",
-        yuewen="就会到㗎啦",
-        yuewen_proofread="就会到㗎啦",
+        zhongwen="警察",
+        yuewen="喂警察",
+        yuewen_proofread="喂警察",
         note="",
+    ),
+    ProofTestCase(
+        zhongwen="拿身份证出来",
+        yuewen="攞我新闻证出嚟睇",
+        yuewen_proofread="攞我身份证出嚟睇",
+        note="Corrected '新闻证' (press card) to '身份证' (ID card), as '新闻证' is "
+        "a likely mishearing of '身份证' and does not match the context "
+        "of the Chinese subtitle.",
+        difficulty=1,
     ),
 ]  # proof_test_cases_block_0
 proof_test_cases_block_1 = [
     ProofTestCase(
-        zhongwen="小梅，快躲起来",
-        yuewen="嗌，嗰个系边个呢",
-        yuewen_proofread="",
-        note="The 粤文 subtitle has no correspondence to the 中文 subtitle, "
-        "indicating a complete mistranscription.",
+        zhongwen="﹣检查一下　　﹣收到",
+        yuewen="﹣查下咩料",
+        yuewen_proofread="﹣查下先　　﹣收到",
+        note="Added '﹣收到' to the 粤文 to match the clear two-part exchange "
+        "in the 中文; the original 粤文 omitted the response, which is a "
+        "likely transcription omission.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="﹣袋子里装什么？　　﹣总机",
+        yuewen="收到，角度系袋住啲咩呀？",
+        yuewen_proofread="袋入面装住咩呀？",
+        note="Corrected '角度系袋住啲咩呀？' to '袋入面装住咩呀？' because '角度系' is a clear "
+        "mishearing of '袋子里' (the question is about what's in the "
+        "bag, not about '角度'). '收到' is not relevant to the original "
+        "sentence.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
+        yuewen="通话电台 查 查个牌匙：C532743",
+        yuewen_proofread="打開嚟睇下，身份證號碼：C532743",
+        note="Corrected '通话电台 查 查个牌匙' to '打開嚟睇下，身份證號碼' as the original was "
+        "a clear mistranscription with no phonetic similarity to the "
+        "spoken Cantonese; the numbers were already correct.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="尾数一，季正雄",
+        yuewen="尾数1，贵正红",
+        yuewen_proofread="尾数1，季正雄",
+        note="Corrected '贵正红' to '季正雄' as it is a clear phonetic "
+        "transcription error for the name.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="打开",
+        yuewen="打佢",
+        yuewen_proofread="打開",
+        note="Corrected '打佢' (hit him/her) to '打開' (open), as '打佢' is a "
+        "likely mishearing of the correct word.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_1
