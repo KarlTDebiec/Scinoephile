@@ -100,12 +100,14 @@ class CantoneseTranscriptionReviewer:
         self,
         yuewen: AudioSeries,
         zhongwen: AudioSeries,
+        stop_at_idx: int | None = None,
     ):
         """Process all blocks of audio, transcribing and aligning them with subtitles.
 
         Arguments:
             yuewen: Nascent 粤文 subtitles
             zhongwen: Corresponding 中文 subtitles
+            stop_at_idx: Stop after processing this block index
         """
         semaphore = asyncio.Semaphore(1)
         all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
@@ -132,8 +134,10 @@ class CantoneseTranscriptionReviewer:
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Run all blocks
+        if not stop_at_idx:
+            stop_at_idx = len(yuewen.blocks) - 1
         async with asyncio.TaskGroup() as task_group:
-            for block_idx in [0, 1]:  # range(len(yuewen.blocks)):
+            for block_idx in range(stop_at_idx + 1):
                 task_group.create_task(run_block(block_idx))
 
         # Concatenate and return
