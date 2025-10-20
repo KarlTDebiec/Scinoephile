@@ -7,6 +7,15 @@ from __future__ import annotations
 import asyncio
 from logging import info
 
+from data.mnt import (
+    mnt_distribute_test_cases,
+    mnt_merge_test_cases,
+    mnt_proof_test_cases,
+    mnt_review_test_cases,
+    mnt_shift_test_cases,
+    mnt_translate_test_cases,
+)
+
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
@@ -28,12 +37,13 @@ async def main():
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
-        distribute_test_cases=[],
-        shift_test_cases=[],
-        merge_test_cases=[],
-        proof_test_cases=[],
-        translate_test_cases=[],
-        review_test_cases=[],
+        test_case_directory_path=output_dir,
+        distribute_test_cases=mnt_distribute_test_cases,
+        shift_test_cases=mnt_shift_test_cases,
+        merge_test_cases=mnt_merge_test_cases,
+        proof_test_cases=mnt_proof_test_cases,
+        translate_test_cases=mnt_translate_test_cases,
+        review_test_cases=mnt_review_test_cases,
     )
 
     # Process all blocks

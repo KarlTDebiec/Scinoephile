@@ -45,6 +45,7 @@ async def main():
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
+        test_case_directory_path=output_dir,
         distribute_test_cases=mlamd_distribute_test_cases,
         shift_test_cases=mlamd_shift_test_cases,
         merge_test_cases=mlamd_merge_test_cases,

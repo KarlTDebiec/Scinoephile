@@ -8,6 +8,12 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import SyncTestCase, test_data_root
+from test.data.mnt.distribution import mnt_distribute_test_cases
+from test.data.mnt.merging import mnt_merge_test_cases
+from test.data.mnt.proofing import mnt_proof_test_cases
+from test.data.mnt.review import mnt_review_test_cases
+from test.data.mnt.shifting import mnt_shift_test_cases
+from test.data.mnt.translation import mnt_translate_test_cases
 
 input_dir = test_data_root / "mnt" / "input"
 output_dir = test_data_root / "mnt" / "output"
@@ -1233,5 +1239,11 @@ ___all__ = [
     "mnt_eng_clean",
     "mnt_eng_flatten",
     "mnt_zho_hans_eng",
-    "mnt_test_cases",
+    "mnt_sync_test_cases",
+    "mnt_distribute_test_cases",
+    "mnt_shift_test_cases",
+    "mnt_merge_test_cases",
+    "mnt_proof_test_cases",
+    "mnt_translate_test_cases",
+    "mnt_review_test_cases",
 ]

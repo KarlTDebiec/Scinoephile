@@ -7927,7 +7927,7 @@ shift_test_cases_block_72 = [
 mlamd_shift_test_cases: list[ShiftTestCase] = sum(
     (globals()[f"shift_test_cases_block_{i}"] for i in range(73)), []
 )
-"""MLAMD 粤文 shiting test cases."""
+"""MLAMD 粤文 shifting test cases."""
 
 __all__ = [
     "mlamd_shift_test_cases",
