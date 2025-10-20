@@ -19,7 +19,7 @@ merge_test_cases_block_1 = [
     MergeTestCase(
         zhongwen="﹣检查一下　　﹣收到",
         yuewen_to_merge=["查下咩料"],
-        yuewen_merged="﹣查下咩料",
+        yuewen_merged="查下咩料",
         difficulty=2,
     ),
     MergeTestCase(
@@ -44,20 +44,27 @@ merge_test_cases_block_1 = [
 merge_test_cases_block_2 = [
     MergeTestCase(
         zhongwen="协议中有关香港的安排",
-        yuewen_to_merge=["嘅arrangements", "for", "Hong", "Kong"],
-        yuewen_merged="嘅arrangements for Hong Kong",
+        yuewen_to_merge=[
+            "嘅arrangements",
+            "for",
+            "Hong",
+            "Kong",
+            "contained",
+            "in",
+            "the",
+        ],
+        yuewen_merged="嘅arrangements for Hong Kong contained in the",
         difficulty=2,
     ),
     MergeTestCase(
         zhongwen="不是权宜之计",
-        yuewen_to_merge=["contained", "in", "the", "agreement"],
-        yuewen_merged="contained in the agreement",
-        difficulty=2,
+        yuewen_to_merge=["agreement", "而"],
+        yuewen_merged="agreement而",
     ),
     MergeTestCase(
         zhongwen="这些安排是长期的政策",
         yuewen_to_merge=[
-            "而not",
+            "not",
             "measures",
             "of",
             "expediency",
@@ -65,7 +72,7 @@ merge_test_cases_block_2 = [
             "term",
             "policies",
         ],
-        yuewen_merged="而not measures of expediency嘅好long term policies。",
+        yuewen_merged="not measures of expediency 嘅好long term policies",
         difficulty=2,
     ),
     MergeTestCase(
@@ -82,7 +89,7 @@ merge_test_cases_block_2 = [
             "for",
             "Hong",
         ],
-        yuewen_merged="Which will be incorporated in the basic law for Hong",
+        yuewen_merged="Which will be incorporated in the basic law for Hong。",
         difficulty=2,
     ),
     MergeTestCase(

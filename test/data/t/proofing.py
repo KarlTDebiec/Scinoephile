@@ -12,37 +12,37 @@ proof_test_cases_block_0 = [
     ProofTestCase(
         zhongwen="警察",
         yuewen="喂警察",
-        yuewen_proofread="喂警察",
-        note="",
+        yuewen_proofread="警察",
+        note="Removed '喂' as it is not present in the 中文 and is likely a "
+        "mishearing or extraneous addition.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="拿身份证出来",
         yuewen="攞我新闻证出嚟睇",
-        yuewen_proofread="攞我身份证出嚟睇",
-        note="Corrected '新闻证' (press card) to '身份证' (ID card), as '新闻证' is "
-        "a likely mishearing of '身份证' and does not match the context "
-        "of the Chinese subtitle.",
+        yuewen_proofread="攞身份证出嚟",
+        note="新闻证 (san1 man4 zing3) is a mishearing of 身份证 (san1 fan6 "
+        "zing3); corrected to match the intended meaning.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_0
 proof_test_cases_block_1 = [
     ProofTestCase(
         zhongwen="﹣检查一下　　﹣收到",
-        yuewen="﹣查下咩料",
-        yuewen_proofread="﹣查下先　　﹣收到",
-        note="Added '﹣收到' to the 粤文 to match the clear two-part exchange "
-        "in the 中文; the original 粤文 omitted the response, which is a "
-        "likely transcription omission.",
+        yuewen="查下咩料",
+        yuewen_proofread="查下先",
+        note="Changed '查下咩料' to '查下先' because '查下咩料' does not correspond "
+        "to '检查一下' and is likely a mishearing; '查下先' is a common "
+        "Cantonese way to say 'check for a bit'.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="﹣袋子里装什么？　　﹣总机",
         yuewen="收到，角度系袋住啲咩呀？",
         yuewen_proofread="袋入面装住咩呀？",
-        note="Corrected '角度系袋住啲咩呀？' to '袋入面装住咩呀？' because '角度系' is a clear "
-        "mishearing of '袋子里' (the question is about what's in the "
-        "bag, not about '角度'). '收到' is not relevant to the original "
-        "sentence.",
+        note="Changed '角度系袋住啲咩呀？' to '袋入面装住咩呀？' because '角度' is a clear "
+        "mishearing of '袋度' (in the bag), which matches the context "
+        "of asking what's in the bag.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -50,8 +50,8 @@ proof_test_cases_block_1 = [
         yuewen="通话电台 查 查个牌匙：C532743",
         yuewen_proofread="打開嚟睇下，身份證號碼：C532743",
         note="Corrected '通话电台 查 查个牌匙' to '打開嚟睇下，身份證號碼' as the original was "
-        "a clear mistranscription with no phonetic similarity to the "
-        "spoken Cantonese; the numbers were already correct.",
+        "a complete mistranscription with no correspondence to the "
+        "Chinese subtitle.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -59,7 +59,7 @@ proof_test_cases_block_1 = [
         yuewen="尾数1，贵正红",
         yuewen_proofread="尾数1，季正雄",
         note="Corrected '贵正红' to '季正雄' as it is a clear phonetic "
-        "transcription error for the name.",
+        "mishearing of the name.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -74,33 +74,33 @@ proof_test_cases_block_1 = [
 proof_test_cases_block_2 = [
     ProofTestCase(
         zhongwen="协议中有关香港的安排",
-        yuewen="嘅arrangements for Hong Kong",
+        yuewen="嘅arrangements for Hong Kong contained in the",
         yuewen_proofread="协议中有关香港嘅安排",
-        note="Corrected '嘅arrangements for Hong Kong' to '协议中有关香港嘅安排' "
-        "because the original contained an English phrase likely due "
-        "to mishearing or code-switching, and the correct Cantonese "
-        "phrase is phonetically plausible and matches the meaning.",
+        note="Corrected the 粤文 to match the intended meaning, as the "
+        "original was a mistranscription with English words and "
+        "missing the actual content; this is a clear transcription "
+        "error.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="不是权宜之计",
-        yuewen="contained in the agreement",
+        yuewen="agreement而",
         yuewen_proofread="",
-        note="The 粤文 subtitle is completely unrelated to the 中文 subtitle, "
-        "indicating a total mistranscription.",
+        note="The 粤文 subtitle 'agreement而' has no correspondence to the 中文 "
+        "'不是权宜之计', indicating a complete mistranscription.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="这些安排是长期的政策",
-        yuewen="而not measures of expediency嘅好long term policies。",
-        yuewen_proofread="而not measures of expediency嘅好long term policies。",
+        yuewen="not measures of expediency 嘅好long term policies",
+        yuewen_proofread="not measures of expediency 嘅好long term policies",
         note="",
     ),
     ProofTestCase(
         zhongwen="它们将写入为香港制定的基本法",
-        yuewen="Which will be incorporated in the basic law for Hong",
+        yuewen="Which will be incorporated in the basic law for Hong。",
         yuewen_proofread="",
-        note="The 粤文 is in English and does not correspond at all to the "
+        note="The 粤文 subtitle is in English and does not correspond to the "
         "provided 中文 subtitle, indicating a complete "
         "mistranscription.",
         difficulty=1,
@@ -109,8 +109,9 @@ proof_test_cases_block_2 = [
         zhongwen="五十年不变",
         yuewen="Kong And preserved in tact For 50 years from 1997",
         yuewen_proofread="",
-        note="The provided 粤文 is in English and does not correspond to the "
-        "中文 subtitle, indicating a complete mistranscription.",
+        note="The 粤文 subtitle is in English and does not correspond to the "
+        "provided 中文 subtitle, indicating a complete "
+        "mistranscription.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -120,7 +121,7 @@ proof_test_cases_block_2 = [
         note="Corrected '我们' to '我哋' and added '嘅' at the end to match the "
         "natural Cantonese phrasing and to better reflect the "
         "original meaning; '我们' is a Mandarin reading and '我哋' is the "
-        "correct Cantonese form.",
+        "Cantonese equivalent.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_2

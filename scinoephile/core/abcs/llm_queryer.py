@@ -173,11 +173,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 async with aiofiles.open(cache_path, encoding="utf-8") as f:
                     contents = await f.read()
                 try:
-                    answer = answer_cls.model_validate(json.loads(contents))
-                    test_case = test_case_cls.from_query_and_answer(query, answer)
+                    test_case = test_case_cls.model_validate(json.loads(contents))
                     self.log_encountered_test_case(test_case)
                     info(f"Loaded from cache: {query.query_key}")
-                    return answer
+                    return test_case.answer
                 except ValidationError as exc:
                     error(
                         f"Cache content for query {query.query_key} is invalid: {exc}"
@@ -272,7 +271,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Update cache
         if cache_path is not None:
-            contents = json.dumps(answer.model_dump(), ensure_ascii=False, indent=2)
+            contents = json.dumps(test_case.model_dump(), ensure_ascii=False, indent=2)
             async with aiofiles.open(cache_path, mode="w", encoding="utf-8") as f:
                 await f.write(contents)
             debug(f"Saved to cache: {cache_path}")

@@ -8,19 +8,17 @@ from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 
 review_test_case_block_0 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="警察",
-    yuewen_1="喂警察",
+    yuewen_1="警察",
     zhongwen_2="拿身份证出来",
-    yuewen_2="攞我身份证出嚟睇",
-    yuewen_revised_1="警察",
-    note_1="Removed '喂' to match the context and maintain consistency, "
-    "as the rest of the subtitles do not include interjections "
-    "and the speech likely starts directly with '警察'.",
+    yuewen_2="攞身份证出嚟",
+    yuewen_revised_1="",
+    note_1="",
     yuewen_revised_2="",
     note_2="",
 )  # review_test_case_block_0
 review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     zhongwen_1="﹣检查一下　　﹣收到",
-    yuewen_1="﹣查下先　　﹣收到",
+    yuewen_1="查下先",
     zhongwen_2="﹣袋子里装什么？　　﹣总机",
     yuewen_2="袋入面装住咩呀？",
     zhongwen_3="﹣打开来看看　　﹣身份证号码：C532743",
@@ -31,10 +29,8 @@ review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     yuewen_5="打開",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="袋入面裝住咩呀？總機",
-    note_2="Added '總機' to match the implied response in the sequence, as "
-    "the next subtitle references an ID number, indicating a "
-    "reply was missing in the previous subtitle.",
+    yuewen_revised_2="",
+    note_2="",
     yuewen_revised_3="",
     note_3="",
     yuewen_revised_4="",
@@ -48,7 +44,7 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_2="不是权宜之计",
     yuewen_2="唔係权宜之计",
     zhongwen_3="这些安排是长期的政策",
-    yuewen_3="而not measures of expediency嘅好long term policies。",
+    yuewen_3="not measures of expediency 嘅好long term policies",
     zhongwen_4="它们将写入为香港制定的基本法",
     yuewen_4="呢啲安排会写入为香港制定嘅基本法入面",
     zhongwen_5="五十年不变",
@@ -67,11 +63,10 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="呢啲安排唔係权宜之计，而係好long term policies。",
-    note_3="Revised to provide a more natural and accurate sequence in "
-    "Cantonese, connecting the ideas and removing the English "
-    "phrase 'not measures of expediency' which was out of place. "
-    "Now it reads as a single, coherent statement in Cantonese.",
+    yuewen_revised_3="呢啲安排唔係权宜之计，係好long term嘅政策",
+    note_3="Revised to provide a more accurate and natural Cantonese "
+    "transcription, connecting with previous subtitles and using "
+    "proper code-mixing for 'long term' and 'policies'.",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -83,9 +78,9 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="都系我哋双方共同嘅利益",
-    note_9="Revised to include '利益' (interests) at the end, to match the "
-    "meaning of the original and to maintain consistency with the "
-    "next subtitle, which refers to '责任' (responsibility).",
+    note_9="Revised to match the structure and parallelism of subtitle "
+    "10, and to clarify the meaning as '共同嘅利益' (common interest), "
+    "which is more accurate and consistent with the context.",
     yuewen_revised_10="",
     note_10="",
 )  # review_test_case_block_2
