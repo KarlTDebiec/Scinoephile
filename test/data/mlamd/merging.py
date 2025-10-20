@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.merging import MergeTestCase
 
 merge_test_cases_block_0 = [
@@ -4722,8 +4724,12 @@ merge_test_cases_block_72 = [
         verified=True,
     ),
 ]  # merge_test_cases_block_72
-mlamd_merge_test_cases: list[MergeTestCase] = sum(
-    (globals()[f"merge_test_cases_block_{i}"] for i in range(73)), []
+mlamd_merge_test_cases: list[MergeTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("merge_test_cases_block_") and cases
+    )
 )
 """MLAMD 粤文 merging test cases."""
 

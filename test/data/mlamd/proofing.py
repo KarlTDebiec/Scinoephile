@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.proofing import ProofTestCase
 
 proof_test_cases_block_0 = [
@@ -7021,8 +7023,12 @@ proof_test_cases_block_72 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_72
-mlamd_proof_test_cases: list[ProofTestCase] = sum(
-    (globals()[f"proof_test_cases_block_{i}"] for i in range(73)), []
+mlamd_proof_test_cases: list[ProofTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("proof_test_cases_block_") and cases
+    )
 )
 """MLAMD 粤文 proof test cases."""
 

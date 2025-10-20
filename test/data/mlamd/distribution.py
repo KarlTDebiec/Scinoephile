@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.distribution import DistributeTestCase
 
 distribute_test_cases_block_0 = [
@@ -1694,8 +1696,12 @@ distribute_test_cases_block_72 = [
     ),
 ]  # distribute_test_cases_block_72
 
-mlamd_distribute_test_cases: list[DistributeTestCase] = sum(
-    (globals()[f"distribute_test_cases_block_{i}"] for i in range(73)), []
+mlamd_distribute_test_cases: list[DistributeTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("distribute_test_cases_block_") and cases
+    )
 )
 """MLAMD 粤文 distribute test cases."""
 
