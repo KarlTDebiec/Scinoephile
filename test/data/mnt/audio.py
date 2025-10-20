@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import asyncio
-from logging import info
 
 from data.mnt import (
     mnt_distribute_test_cases,
@@ -37,7 +36,7 @@ async def main():
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
-        test_case_directory_path=output_dir,
+        test_case_directory_path=test_data_root / "mnt",
         distribute_test_cases=mnt_distribute_test_cases,
         shift_test_cases=mnt_shift_test_cases,
         merge_test_cases=mnt_merge_test_cases,
@@ -50,12 +49,12 @@ async def main():
     yuewen_series = await reviewer.process_all_blocks(yuewen, zhongwen)
 
     # Update output file
-    if len(zhongwen.blocks) == len(yuewen.blocks):
-        outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
-        if outfile_path.exists():
-            outfile_path.unlink()
-        yuewen_series.save(outfile_path)
-        info(f"Saved 粤文 subtitles to {outfile_path}")
+    # if len(zhongwen.blocks) == len(yuewen.blocks):
+    #     outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+    #     if outfile_path.exists():
+    #         outfile_path.unlink()
+    #     yuewen_series.save(outfile_path)
+    #     info(f"Saved 粤文 subtitles to {outfile_path}")
 
 
 if __name__ == "__main__":

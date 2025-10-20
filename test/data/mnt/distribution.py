@@ -189,12 +189,15 @@ distribute_test_cases_block_179 = []  # distribute_test_cases_block_179
 distribute_test_cases_block_180 = []  # distribute_test_cases_block_180
 distribute_test_cases_block_181 = []  # distribute_test_cases_block_181
 
-mnt_distribute_test_cases: list[DistributeTestCase] = sum(
-    [
-        test_case
-        for name, test_case in globals().items()
-        if name.startswith("distribute_test_cases_block_") and test_case
-    ]
+mnt_distribute_test_cases: list[DistributeTestCase] = (
+    sum(
+        [
+            test_case
+            for name, test_case in globals().items()
+            if name.startswith("distribute_test_cases_block_") and test_case
+        ]
+    )
+    or []
 )
 """MNT 粤文 distribute test cases."""
 

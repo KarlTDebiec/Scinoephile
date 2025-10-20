@@ -44,6 +44,7 @@ class CantoneseTranscriptionReviewer:
         """Initialize.
 
         Arguments:
+            test_case_directory_path: path to directory containing test cases
             distribute_test_cases: distribute test cases
             shift_test_cases: shift test cases
             merge_test_cases: merge test cases

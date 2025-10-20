@@ -4,10 +4,45 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.proofing import ProofTestCase
 
-proof_test_cases_block_0 = []  # proof_test_cases_block_0
-proof_test_cases_block_1 = []  # proof_test_cases_block_1
+proof_test_cases_block_0 = [
+    ProofTestCase(
+        zhongwen="谢谢",
+        yuewen="食埋呢粒糖",
+        yuewen_proofread="",
+        note="The 粤文 '食埋呢粒糖' ('eat this candy') has no correspondence to "
+        "the 中文 '谢谢' ('thank you'), indicating a complete "
+        "mistranscription.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="妳们两个累不累啊？",
+        yuewen="之后啦，转埋呢个弯之后呢？",
+        yuewen_proofread="",
+        note="There is zero correspondence between the 粤文 and 中文 "
+        "subtitles, indicating a complete mistranscription.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="就快到了",
+        yuewen="就会到㗎啦",
+        yuewen_proofread="就会到㗎啦",
+        note="",
+    ),
+]  # proof_test_cases_block_0
+proof_test_cases_block_1 = [
+    ProofTestCase(
+        zhongwen="小梅，快躲起来",
+        yuewen="嗌，嗰个系边个呢",
+        yuewen_proofread="",
+        note="The 粤文 subtitle has no correspondence to the 中文 subtitle, "
+        "indicating a complete mistranscription.",
+        difficulty=1,
+    ),
+]  # proof_test_cases_block_1
 proof_test_cases_block_2 = []  # proof_test_cases_block_2
 proof_test_cases_block_3 = []  # proof_test_cases_block_3
 proof_test_cases_block_4 = []  # proof_test_cases_block_4
@@ -189,13 +224,14 @@ proof_test_cases_block_179 = []  # proof_test_cases_block_179
 proof_test_cases_block_180 = []  # proof_test_cases_block_180
 proof_test_cases_block_181 = []  # proof_test_cases_block_181
 
-mnt_proof_test_cases: list[ProofTestCase] = sum(
-    [
-        test_case
-        for name, test_case in globals().items()
-        if name.startswith("proof_test_cases_block_") and test_case
-    ]
+mnt_proof_test_cases: list[ProofTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("proof_test_cases_block_") and cases
+    )
 )
+
 """MNT 粤文 proof test cases."""
 
 __all__ = [

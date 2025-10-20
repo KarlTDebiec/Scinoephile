@@ -4,10 +4,26 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.merging import MergeTestCase
 
-merge_test_cases_block_0 = []  # merge_test_cases_block_0
-merge_test_cases_block_1 = []  # merge_test_cases_block_1
+merge_test_cases_block_0 = [
+    MergeTestCase(
+        zhongwen="妳们两个累不累啊？",
+        yuewen_to_merge=["之后啦", "转埋呢个弯之后呢"],
+        yuewen_merged="之后啦，转埋呢个弯之后呢？",
+        difficulty=2,
+    ),
+]  # merge_test_cases_block_0
+merge_test_cases_block_1 = [
+    MergeTestCase(
+        zhongwen="小梅，快躲起来",
+        yuewen_to_merge=["嗌", "嗰个系边个呢"],
+        yuewen_merged="嗌，嗰个系边个呢",
+        difficulty=1,
+    ),
+]  # merge_test_cases_block_1
 merge_test_cases_block_2 = []  # merge_test_cases_block_2
 merge_test_cases_block_3 = []  # merge_test_cases_block_3
 merge_test_cases_block_4 = []  # merge_test_cases_block_4
@@ -189,13 +205,14 @@ merge_test_cases_block_179 = []  # merge_test_cases_block_179
 merge_test_cases_block_180 = []  # merge_test_cases_block_180
 merge_test_cases_block_181 = []  # merge_test_cases_block_181
 
-mnt_merge_test_cases: list[MergeTestCase] = sum(
-    [
-        test_case
-        for name, test_case in globals().items()
-        if name.startswith("merge_test_cases_block_") and test_case
-    ]
+mnt_merge_test_cases: list[MergeTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("merge_test_cases_block_") and cases
+    )
 )
+
 """MNT 粤文 merging test cases."""
 
 __all__ = [

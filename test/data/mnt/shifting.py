@@ -4,9 +4,30 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.shifting import ShiftTestCase
 
-shift_test_cases_block_0 = []  # shift_test_cases_block_0
+shift_test_cases_block_0 = [
+    ShiftTestCase(
+        zhongwen_1="谢谢",
+        yuewen_1="",
+        zhongwen_2="妳们两个累不累啊？",
+        yuewen_2="食埋呢粒糖之后啦",
+        yuewen_1_shifted="食埋呢粒糖",
+        yuewen_2_shifted="之后啦",
+        difficulty=1,
+    ),
+    ShiftTestCase(
+        zhongwen_1="妳们两个累不累啊？",
+        yuewen_1="之后啦",
+        zhongwen_2="就快到了",
+        yuewen_2="转埋呢个弯之后呢就会到㗎啦",
+        yuewen_1_shifted="之后啦转埋呢个弯之后呢",
+        yuewen_2_shifted="就会到㗎啦",
+        difficulty=1,
+    ),
+]  # shift_test_cases_block_0
 shift_test_cases_block_1 = []  # shift_test_cases_block_1
 shift_test_cases_block_2 = []  # shift_test_cases_block_2
 shift_test_cases_block_3 = []  # shift_test_cases_block_3
@@ -189,13 +210,14 @@ shift_test_cases_block_179 = []  # shift_test_cases_block_179
 shift_test_cases_block_180 = []  # shift_test_cases_block_180
 shift_test_cases_block_181 = []  # shift_test_cases_block_181
 
-mnt_shift_test_cases: list[ShiftTestCase] = sum(
-    [
-        test_case
-        for name, test_case in globals().items()
-        if name.startswith("shift_test_cases_block_") and test_case
-    ]
+mnt_shift_test_cases: list[ShiftTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("shift_test_cases_block_") and cases
+    )
 )
+
 """MNT 粤文 shifting test cases."""
 
 __all__ = [
