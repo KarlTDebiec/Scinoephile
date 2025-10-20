@@ -8,6 +8,12 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import test_data_root
+from test.data.t.distribution import t_distribute_test_cases
+from test.data.t.merging import t_merge_test_cases
+from test.data.t.proofing import t_proof_test_cases
+from test.data.t.review import t_review_test_cases
+from test.data.t.shifting import t_shift_test_cases
+from test.data.t.translation import t_translate_test_cases
 
 input_dir = test_data_root / "t" / "input"
 output_dir = test_data_root / "t" / "output"
@@ -106,4 +112,10 @@ ___all__ = [
     "t_eng_flatten",
     "t_eng_clean_flatten",
     "t_zho_hans_eng",
+    "t_distribute_test_cases",
+    "t_shift_test_cases",
+    "t_merge_test_cases",
+    "t_proof_test_cases",
+    "t_translate_test_cases",
+    "t_review_test_cases",
 ]
