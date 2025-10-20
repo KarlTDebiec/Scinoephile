@@ -71,7 +71,59 @@ proof_test_cases_block_1 = [
         difficulty=1,
     ),
 ]  # proof_test_cases_block_1
-proof_test_cases_block_2 = []  # proof_test_cases_block_2
+proof_test_cases_block_2 = [
+    ProofTestCase(
+        zhongwen="协议中有关香港的安排",
+        yuewen="嘅arrangements for Hong Kong",
+        yuewen_proofread="协议中有关香港嘅安排",
+        note="Corrected '嘅arrangements for Hong Kong' to '协议中有关香港嘅安排' "
+        "because the original contained an English phrase likely due "
+        "to mishearing or code-switching, and the correct Cantonese "
+        "phrase is phonetically plausible and matches the meaning.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="不是权宜之计",
+        yuewen="contained in the agreement",
+        yuewen_proofread="",
+        note="The 粤文 subtitle is completely unrelated to the 中文 subtitle, "
+        "indicating a total mistranscription.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="这些安排是长期的政策",
+        yuewen="而not measures of expediency嘅好long term policies。",
+        yuewen_proofread="而not measures of expediency嘅好long term policies。",
+        note="",
+    ),
+    ProofTestCase(
+        zhongwen="它们将写入为香港制定的基本法",
+        yuewen="Which will be incorporated in the basic law for Hong",
+        yuewen_proofread="",
+        note="The 粤文 is in English and does not correspond at all to the "
+        "provided 中文 subtitle, indicating a complete "
+        "mistranscription.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="五十年不变",
+        yuewen="Kong And preserved in tact For 50 years from 1997",
+        yuewen_proofread="",
+        note="The provided 粤文 is in English and does not correspond to the "
+        "中文 subtitle, indicating a complete mistranscription.",
+        difficulty=1,
+    ),
+    ProofTestCase(
+        zhongwen="是中英两国的共同利益",
+        yuewen="也是我们双方共同的",
+        yuewen_proofread="也是我哋双方共同嘅",
+        note="Corrected '我们' to '我哋' and added '嘅' at the end to match the "
+        "natural Cantonese phrasing and to better reflect the "
+        "original meaning; '我们' is a Mandarin reading and '我哋' is the "
+        "correct Cantonese form.",
+        difficulty=1,
+    ),
+]  # proof_test_cases_block_2
 proof_test_cases_block_3 = []  # proof_test_cases_block_3
 proof_test_cases_block_4 = []  # proof_test_cases_block_4
 proof_test_cases_block_5 = []  # proof_test_cases_block_5

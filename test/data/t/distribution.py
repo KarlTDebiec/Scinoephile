@@ -4,11 +4,59 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.distribution import DistributeTestCase
 
 distribute_test_cases_block_0 = []  # distribute_test_cases_block_0
 distribute_test_cases_block_1 = []  # distribute_test_cases_block_1
-distribute_test_cases_block_2 = []  # distribute_test_cases_block_2
+distribute_test_cases_block_2 = [
+    DistributeTestCase(
+        zhongwen_1="协议中有关香港的安排",
+        yuewen_1_start="嘅arrangementsfor",
+        zhongwen_2="不是权宜之计",
+        yuewen_2_end="Kongcontainedin",
+        yuewen_to_distribute="Hong",
+        yuewen_1_to_append="Hong",
+        yuewen_2_to_prepend="",
+    ),
+    DistributeTestCase(
+        zhongwen_1="不是权宜之计",
+        yuewen_1_start="Kongcontainedin",
+        zhongwen_2="这些安排是长期的政策",
+        yuewen_2_end="agreement而notmeasuresofexpediency",
+        yuewen_to_distribute="the",
+        yuewen_1_to_append="the",
+        yuewen_2_to_prepend="",
+    ),
+    DistributeTestCase(
+        zhongwen_1="它们将写入为香港制定的基本法",
+        yuewen_1_start="嘅好longtermpoliciesWhich",
+        zhongwen_2="五十年不变",
+        yuewen_2_end="incorporatedinthebasiclawfor",
+        yuewen_to_distribute="will",
+        yuewen_1_to_append="will",
+        yuewen_2_to_prepend="",
+    ),
+    DistributeTestCase(
+        zhongwen_1="它们将写入为香港制定的基本法",
+        yuewen_1_start="嘅好longtermpoliciesWhichwill",
+        zhongwen_2="五十年不变",
+        yuewen_2_end="incorporatedinthebasiclawfor",
+        yuewen_to_distribute="be",
+        yuewen_1_to_append="be",
+        yuewen_2_to_prepend="",
+    ),
+    DistributeTestCase(
+        zhongwen_1="五十年不变",
+        yuewen_1_start="incorporatedinthebasiclawfor",
+        zhongwen_2="五十年不变",
+        yuewen_2_end="KongAndpreservedintactFor50yearsfrom1997",
+        yuewen_to_distribute="Hong",
+        yuewen_1_to_append="Hong",
+        yuewen_2_to_prepend="",
+    ),
+]  # distribute_test_cases_block_2
 distribute_test_cases_block_3 = []  # distribute_test_cases_block_3
 distribute_test_cases_block_4 = []  # distribute_test_cases_block_4
 distribute_test_cases_block_5 = []  # distribute_test_cases_block_5
@@ -189,15 +237,12 @@ distribute_test_cases_block_179 = []  # distribute_test_cases_block_179
 distribute_test_cases_block_180 = []  # distribute_test_cases_block_180
 distribute_test_cases_block_181 = []  # distribute_test_cases_block_181
 
-t_distribute_test_cases: list[DistributeTestCase] = (
-    sum(
-        [
-            test_case
-            for name, test_case in globals().items()
-            if name.startswith("distribute_test_cases_block_") and test_case
-        ]
+t_distribute_test_cases: list[DistributeTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("distribute_test_cases_block_") and cases
     )
-    or []
 )
 """T 粤文 distribute test cases."""
 

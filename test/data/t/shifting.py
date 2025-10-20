@@ -53,7 +53,69 @@ shift_test_cases_block_1 = [
         yuewen_2_shifted="打佢",
     ),
 ]  # shift_test_cases_block_1
-shift_test_cases_block_2 = []  # shift_test_cases_block_2
+shift_test_cases_block_2 = [
+    ShiftTestCase(
+        zhongwen_1="协议中有关香港的安排",
+        yuewen_1="嘅arrangementsforHong",
+        zhongwen_2="不是权宜之计",
+        yuewen_2="Kongcontainedinthe",
+        yuewen_1_shifted="嘅arrangementsforHongKong",
+        yuewen_2_shifted="containedinthe",
+        difficulty=1,
+    ),
+    ShiftTestCase(
+        zhongwen_1="不是权宜之计",
+        yuewen_1="containedinthe",
+        zhongwen_2="这些安排是长期的政策",
+        yuewen_2="agreement而notmeasuresofexpediency",
+        yuewen_1_shifted="containedintheagreement",
+        yuewen_2_shifted="而notmeasuresofexpediency",
+        difficulty=1,
+    ),
+    ShiftTestCase(
+        zhongwen_1="这些安排是长期的政策",
+        yuewen_1="而notmeasuresofexpediency",
+        zhongwen_2="它们将写入为香港制定的基本法",
+        yuewen_2="嘅好longtermpoliciesWhichwillbe",
+        yuewen_1_shifted="而notmeasuresofexpediency嘅好longtermpolicies",
+        yuewen_2_shifted="Whichwillbe",
+        difficulty=1,
+    ),
+    ShiftTestCase(
+        zhongwen_1="它们将写入为香港制定的基本法",
+        yuewen_1="Whichwillbe",
+        zhongwen_2="五十年不变",
+        yuewen_2="incorporatedinthebasiclawforHong",
+        yuewen_1_shifted="WhichwillbeincorporatedinthebasiclawforHong",
+        yuewen_2_shifted="",
+        difficulty=1,
+    ),
+    ShiftTestCase(
+        zhongwen_1="五十年不变",
+        yuewen_1="",
+        zhongwen_2="五十年不变",
+        yuewen_2="KongAndpreservedintactFor50yearsfrom1997",
+        yuewen_1_shifted="",
+        yuewen_2_shifted="KongAndpreservedintactFor50yearsfrom1997",
+    ),
+    ShiftTestCase(
+        zhongwen_1="五十年不变",
+        yuewen_1="KongAndpreservedintactFor50yearsfrom1997",
+        zhongwen_2="确保《联合声明》",
+        yuewen_2="",
+        yuewen_1_shifted="KongAndpreservedintactFor50yearsfrom1997",
+        yuewen_2_shifted="",
+    ),
+    ShiftTestCase(
+        zhongwen_1="是中英两国的共同利益",
+        yuewen_1="",
+        zhongwen_2="也是我们双方共同的责任",
+        yuewen_2="也是我们双方共同的",
+        yuewen_1_shifted="也是我们双方共同的",
+        yuewen_2_shifted="",
+        difficulty=1,
+    ),
+]  # shift_test_cases_block_2
 shift_test_cases_block_3 = []  # shift_test_cases_block_3
 shift_test_cases_block_4 = []  # shift_test_cases_block_4
 shift_test_cases_block_5 = []  # shift_test_cases_block_5

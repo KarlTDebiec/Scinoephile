@@ -41,7 +41,68 @@ merge_test_cases_block_1 = [
         difficulty=1,
     ),
 ]  # merge_test_cases_block_1
-merge_test_cases_block_2 = []  # merge_test_cases_block_2
+merge_test_cases_block_2 = [
+    MergeTestCase(
+        zhongwen="协议中有关香港的安排",
+        yuewen_to_merge=["嘅arrangements", "for", "Hong", "Kong"],
+        yuewen_merged="嘅arrangements for Hong Kong",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="不是权宜之计",
+        yuewen_to_merge=["contained", "in", "the", "agreement"],
+        yuewen_merged="contained in the agreement",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="这些安排是长期的政策",
+        yuewen_to_merge=[
+            "而not",
+            "measures",
+            "of",
+            "expediency",
+            "嘅好long",
+            "term",
+            "policies",
+        ],
+        yuewen_merged="而not measures of expediency嘅好long term policies。",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="它们将写入为香港制定的基本法",
+        yuewen_to_merge=[
+            "Which",
+            "will",
+            "be",
+            "incorporated",
+            "in",
+            "the",
+            "basic",
+            "law",
+            "for",
+            "Hong",
+        ],
+        yuewen_merged="Which will be incorporated in the basic law for Hong",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="五十年不变",
+        yuewen_to_merge=[
+            "Kong",
+            "And",
+            "preserved",
+            "in",
+            "tact",
+            "For",
+            "50",
+            "years",
+            "from",
+            "1997",
+        ],
+        yuewen_merged="Kong And preserved in tact For 50 years from 1997",
+        difficulty=2,
+    ),
+]  # merge_test_cases_block_2
 merge_test_cases_block_3 = []  # merge_test_cases_block_3
 merge_test_cases_block_4 = []  # merge_test_cases_block_4
 merge_test_cases_block_5 = []  # merge_test_cases_block_5
