@@ -59,6 +59,7 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_15="唔好忘记校训九十七⋯　唔好忘记校训九十七⋯",
     yuewen_16="都唔可以忘记校训九十八！",
     yuewen_17="都唔可以忘记校训九十八！",
+    verified=True,
 )  # translate_test_case_block_3
 translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     55,
@@ -174,6 +175,7 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_21="校长再见！",
     yuewen_31="麦兜！",
     yuewen_35="麦唛呀，即系呢⋯",
+    verified=True,
 )  # translate_test_case_block_4
 translate_test_case_block_5 = None  # translate_test_case_block_5
 translate_test_case_block_6 = None  # translate_test_case_block_6
@@ -226,6 +228,7 @@ translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     yuewen_4="包鸡包鸡包纸包鸡",
     yuewen_10="再包包包，纸纸纸",
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
+    verified=True,
 )  # translate_test_case_block_12
 translate_test_case_block_13 = None  # translate_test_case_block_13
 translate_test_case_block_14 = None  # translate_test_case_block_14
@@ -565,6 +568,7 @@ translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     zhongwen_50="有如天使预早送来的福音",
     yuewen_50="就好似天使预早畀我哋嘅福音",
     yuewen_44="红萝卜粒",
+    verified=True,
 )  # translate_test_case_block_55
 translate_test_case_block_56 = None  # translate_test_case_block_56
 translate_test_case_block_57 = None  # translate_test_case_block_57
