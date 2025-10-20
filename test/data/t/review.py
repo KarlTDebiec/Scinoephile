@@ -6,9 +6,89 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 
-review_test_case_block_0 = None  # review_test_case_block_0
-review_test_case_block_1 = None  # review_test_case_block_1
-review_test_case_block_2 = None  # review_test_case_block_2
+review_test_case_block_0 = ReviewTestCase.get_test_case_cls(2)(
+    zhongwen_1="警察",
+    yuewen_1="喂警察",
+    zhongwen_2="拿身份证出来",
+    yuewen_2="攞我身份证出嚟睇",
+    yuewen_revised_1="警察",
+    note_1="Removed '喂' to match the context and maintain consistency, "
+    "as the rest of the subtitles do not include interjections "
+    "and the speech likely starts directly with '警察'.",
+    yuewen_revised_2="",
+    note_2="",
+)  # review_test_case_block_0
+review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
+    zhongwen_1="﹣检查一下　　﹣收到",
+    yuewen_1="﹣查下先　　﹣收到",
+    zhongwen_2="﹣袋子里装什么？　　﹣总机",
+    yuewen_2="袋入面装住咩呀？",
+    zhongwen_3="﹣打开来看看　　﹣身份证号码：C532743",
+    yuewen_3="打開嚟睇下，身份證號碼：C532743",
+    zhongwen_4="尾数一，季正雄",
+    yuewen_4="尾数1，季正雄",
+    zhongwen_5="打开",
+    yuewen_5="打開",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="袋入面裝住咩呀？總機",
+    note_2="Added '總機' to match the implied response in the sequence, as "
+    "the next subtitle references an ID number, indicating a "
+    "reply was missing in the previous subtitle.",
+    yuewen_revised_3="",
+    note_3="",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+)  # review_test_case_block_1
+review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
+    zhongwen_1="协议中有关香港的安排",
+    yuewen_1="协议中有关香港嘅安排",
+    zhongwen_2="不是权宜之计",
+    yuewen_2="唔係权宜之计",
+    zhongwen_3="这些安排是长期的政策",
+    yuewen_3="而not measures of expediency嘅好long term policies。",
+    zhongwen_4="它们将写入为香港制定的基本法",
+    yuewen_4="呢啲安排会写入为香港制定嘅基本法入面",
+    zhongwen_5="五十年不变",
+    yuewen_5="五十年都唔变",
+    zhongwen_6="五十年不变",
+    yuewen_6="五十年都唔变",
+    zhongwen_7="确保《联合声明》",
+    yuewen_7="确保《联合声明》",
+    zhongwen_8="不受干扰地全面贯彻实施",
+    yuewen_8="可以唔受干扰咁全面贯彻落实",
+    zhongwen_9="是中英两国的共同利益",
+    yuewen_9="也是我哋双方共同嘅",
+    zhongwen_10="也是我们双方共同的责任",
+    yuewen_10="都系我哋双方共同嘅责任",
+    yuewen_revised_1="",
+    note_1="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="呢啲安排唔係权宜之计，而係好long term policies。",
+    note_3="Revised to provide a more natural and accurate sequence in "
+    "Cantonese, connecting the ideas and removing the English "
+    "phrase 'not measures of expediency' which was out of place. "
+    "Now it reads as a single, coherent statement in Cantonese.",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
+    yuewen_revised_7="",
+    note_7="",
+    yuewen_revised_8="",
+    note_8="",
+    yuewen_revised_9="都系我哋双方共同嘅利益",
+    note_9="Revised to include '利益' (interests) at the end, to match the "
+    "meaning of the original and to maintain consistency with the "
+    "next subtitle, which refers to '责任' (responsibility).",
+    yuewen_revised_10="",
+    note_10="",
+)  # review_test_case_block_2
 review_test_case_block_3 = None  # review_test_case_block_3
 review_test_case_block_4 = None  # review_test_case_block_4
 review_test_case_block_5 = None  # review_test_case_block_5

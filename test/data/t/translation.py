@@ -8,7 +8,31 @@ from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
 translate_test_case_block_0 = None  # translate_test_case_block_0
 translate_test_case_block_1 = None  # translate_test_case_block_1
-translate_test_case_block_2 = None  # translate_test_case_block_2
+translate_test_case_block_2 = TranslateTestCase.get_test_case_cls(
+    10,
+    (1, 3, 4, 5, 6, 7, 9),
+)(
+    zhongwen_1="协议中有关香港的安排",
+    yuewen_1="协议中有关香港嘅安排",
+    zhongwen_2="不是权宜之计",
+    zhongwen_3="这些安排是长期的政策",
+    yuewen_3="而not measures of expediency嘅好long term policies。",
+    zhongwen_4="它们将写入为香港制定的基本法",
+    zhongwen_5="五十年不变",
+    zhongwen_6="五十年不变",
+    zhongwen_7="确保《联合声明》",
+    zhongwen_8="不受干扰地全面贯彻实施",
+    zhongwen_9="是中英两国的共同利益",
+    yuewen_9="也是我哋双方共同嘅",
+    zhongwen_10="也是我们双方共同的责任",
+    yuewen_2="唔係权宜之计",
+    yuewen_4="呢啲安排会写入为香港制定嘅基本法入面",
+    yuewen_5="五十年都唔变",
+    yuewen_6="五十年都唔变",
+    yuewen_7="确保《联合声明》",
+    yuewen_8="可以唔受干扰咁全面贯彻落实",
+    yuewen_10="都系我哋双方共同嘅责任",
+)  # translate_test_case_block_2
 translate_test_case_block_3 = None  # translate_test_case_block_3
 translate_test_case_block_4 = None  # translate_test_case_block_4
 translate_test_case_block_5 = None  # translate_test_case_block_5
