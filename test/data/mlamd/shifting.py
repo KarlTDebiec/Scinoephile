@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from itertools import chain
+
 from scinoephile.audio.cantonese.shifting import ShiftTestCase
 
 shift_test_cases_block_0 = [
@@ -7924,8 +7926,12 @@ shift_test_cases_block_72 = [
         verified=True,
     ),
 ]  # shift_test_cases_block_72
-mlamd_shift_test_cases: list[ShiftTestCase] = sum(
-    (globals()[f"shift_test_cases_block_{i}"] for i in range(73)), []
+mlamd_shift_test_cases: list[ShiftTestCase] = list(
+    chain.from_iterable(
+        cases
+        for name, cases in globals().items()
+        if name.startswith("shift_test_cases_block_") and cases
+    )
 )
 """MLAMD 粤文 shifting test cases."""
 

@@ -25,7 +25,7 @@ from test.data.mlamd import (
 async def main():
     input_dir = test_data_root / "mlamd" / "input"
     output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(1)
+    set_logging_verbosity(2)
 
     # 中文
     zhongwen = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
@@ -45,7 +45,7 @@ async def main():
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
-        test_case_directory_path=output_dir,
+        test_case_directory_path=test_data_root / "mlamd",
         distribute_test_cases=mlamd_distribute_test_cases,
         shift_test_cases=mlamd_shift_test_cases,
         merge_test_cases=mlamd_merge_test_cases,
