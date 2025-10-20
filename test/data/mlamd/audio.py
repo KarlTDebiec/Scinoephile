@@ -23,12 +23,12 @@ from test.data.mlamd import (
 
 
 async def main():
-    test_input_dir = test_data_root / "mlamd" / "input"
-    test_output_dir = test_data_root / "mlamd" / "output"
+    input_dir = test_data_root / "mlamd" / "input"
+    output_dir = test_data_root / "mlamd" / "output"
     set_logging_verbosity(1)
 
     # 中文
-    zhongwen = Series.load(test_output_dir / "zho-Hans" / "zho-Hans.srt")
+    zhongwen = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
     if (
         zhongwen.events[539].text == "不知道为什么"
         and zhongwen.events[540].text == "「珊你个头」却特别刺耳"
@@ -40,11 +40,12 @@ async def main():
         zhongwen = get_series_with_subs_merged(zhongwen, 539)
 
     # 粤文
-    yuewen = AudioSeries.load(test_output_dir / "yue-Hans_audio")
+    yuewen = AudioSeries.load(output_dir / "yue-Hans_audio")
     assert len(zhongwen.blocks) == len(yuewen.blocks)
 
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
+        test_case_directory_path=output_dir,
         distribute_test_cases=mlamd_distribute_test_cases,
         shift_test_cases=mlamd_shift_test_cases,
         merge_test_cases=mlamd_merge_test_cases,
@@ -58,7 +59,7 @@ async def main():
 
     # Update output file
     if len(zhongwen.blocks) == len(yuewen.blocks):
-        outfile_path = test_output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+        outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
         if outfile_path.exists():
             outfile_path.unlink()
         yuewen_series.save(outfile_path)
