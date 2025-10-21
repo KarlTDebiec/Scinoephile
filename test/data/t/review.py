@@ -8,7 +8,7 @@ from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 
 review_test_case_block_0 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="警察",
-    yuewen_1="警察",
+    yuewen_1="差人",
     zhongwen_2="拿身份证出来",
     yuewen_2="攞身份证出嚟",
     yuewen_revised_1="",
@@ -44,29 +44,31 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_2="不是权宜之计",
     yuewen_2="唔係权宜之计",
     zhongwen_3="这些安排是长期的政策",
-    yuewen_3="not measures of expediency 嘅好long term policies",
+    yuewen_3="agreement而唔係measuresofexpediency嘅好longtermpolicies",
     zhongwen_4="它们将写入为香港制定的基本法",
     yuewen_4="呢啲安排会写入为香港制定嘅基本法入面",
     zhongwen_5="五十年不变",
-    yuewen_5="五十年都唔变",
+    yuewen_5="五十年都唔会变",
     zhongwen_6="五十年不变",
-    yuewen_6="五十年都唔变",
+    yuewen_6="五十年都唔会变",
     zhongwen_7="确保《联合声明》",
     yuewen_7="确保《联合声明》",
     zhongwen_8="不受干扰地全面贯彻实施",
     yuewen_8="可以唔受干扰咁全面贯彻落实",
     zhongwen_9="是中英两国的共同利益",
-    yuewen_9="也是我哋双方共同嘅",
+    yuewen_9="都係中英两国共同利益",
     zhongwen_10="也是我们双方共同的责任",
-    yuewen_10="都系我哋双方共同嘅责任",
+    yuewen_10="也是我们双方共同的责任",
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="呢啲安排唔係权宜之计，係好long term嘅政策",
-    note_3="Revised to provide a more accurate and natural Cantonese "
-    "transcription, connecting with previous subtitles and using "
-    "proper code-mixing for 'long term' and 'policies'.",
+    yuewen_revised_3="呢啲安排係长期政策，唔係权宜之计",
+    note_3="Revised to remove the English words and to match the context "
+    "and flow of the previous and following subtitles. The phrase "
+    "now reads as a natural continuation: '呢啲安排係长期政策，唔係权宜之计' "
+    "(These arrangements are long-term policies, not measures of "
+    "expediency).",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
@@ -77,12 +79,11 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     note_7="",
     yuewen_revised_8="",
     note_8="",
-    yuewen_revised_9="都系我哋双方共同嘅利益",
-    note_9="Revised to match the structure and parallelism of subtitle "
-    "10, and to clarify the meaning as '共同嘅利益' (common interest), "
-    "which is more accurate and consistent with the context.",
-    yuewen_revised_10="",
-    note_10="",
+    yuewen_revised_9="",
+    note_9="",
+    yuewen_revised_10="都係我哋双方共同责任",
+    note_10="Changed '我们' to '我哋' for consistency with Cantonese usage, "
+    "and omitted '的' to match spoken Cantonese style.",
 )  # review_test_case_block_2
 review_test_case_block_3 = None  # review_test_case_block_3
 review_test_case_block_4 = None  # review_test_case_block_4

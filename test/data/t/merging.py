@@ -10,9 +10,9 @@ from scinoephile.audio.cantonese.merging import MergeTestCase
 
 merge_test_cases_block_0 = [
     MergeTestCase(
-        zhongwen="警察",
-        yuewen_to_merge=["喂", "警察"],
-        yuewen_merged="喂警察",
+        zhongwen="拿身份证出来",
+        yuewen_to_merge=["警察", "攞我新闻证出嚟睇"],
+        yuewen_merged="警察攞我新闻证出嚟睇",
     ),
 ]  # merge_test_cases_block_0
 merge_test_cases_block_1 = [
@@ -57,14 +57,10 @@ merge_test_cases_block_2 = [
         difficulty=2,
     ),
     MergeTestCase(
-        zhongwen="不是权宜之计",
-        yuewen_to_merge=["agreement", "而"],
-        yuewen_merged="agreement而",
-    ),
-    MergeTestCase(
         zhongwen="这些安排是长期的政策",
         yuewen_to_merge=[
-            "not",
+            "agreement",
+            "而not",
             "measures",
             "of",
             "expediency",
@@ -72,8 +68,7 @@ merge_test_cases_block_2 = [
             "term",
             "policies",
         ],
-        yuewen_merged="not measures of expediency 嘅好long term policies",
-        difficulty=2,
+        yuewen_merged="agreement而notmeasuresofexpediency嘅好longtermpolicies",
     ),
     MergeTestCase(
         zhongwen="它们将写入为香港制定的基本法",

@@ -11,18 +11,18 @@ from scinoephile.audio.cantonese.proofing import ProofTestCase
 proof_test_cases_block_0 = [
     ProofTestCase(
         zhongwen="警察",
-        yuewen="喂警察",
-        yuewen_proofread="警察",
-        note="Removed '喂' as it is not present in the 中文 and is likely a "
-        "mishearing or extraneous addition.",
+        yuewen="喂",
+        yuewen_proofread="",
+        note="The 粤文 '喂' (hello/hey) has no correspondence to the 中文 '警察' "
+        "(police), indicating a complete mistranscription.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="拿身份证出来",
-        yuewen="攞我新闻证出嚟睇",
+        yuewen="警察攞我新闻证出嚟睇",
         yuewen_proofread="攞身份证出嚟",
-        note="新闻证 (san1 man4 zing3) is a mishearing of 身份证 (san1 fan6 "
-        "zing3); corrected to match the intended meaning.",
+        note="Corrected '新闻证' (press card) to '身份证' (ID card), as the "
+        "original likely misheard the word; the rest is fine.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_0
@@ -83,18 +83,12 @@ proof_test_cases_block_2 = [
         difficulty=1,
     ),
     ProofTestCase(
-        zhongwen="不是权宜之计",
-        yuewen="agreement而",
-        yuewen_proofread="",
-        note="The 粤文 subtitle 'agreement而' has no correspondence to the 中文 "
-        "'不是权宜之计', indicating a complete mistranscription.",
-        difficulty=1,
-    ),
-    ProofTestCase(
         zhongwen="这些安排是长期的政策",
-        yuewen="not measures of expediency 嘅好long term policies",
-        yuewen_proofread="not measures of expediency 嘅好long term policies",
-        note="",
+        yuewen="agreement而notmeasuresofexpediency嘅好longtermpolicies",
+        yuewen_proofread="agreement而唔係measuresofexpediency嘅好longtermpolicies",
+        note="Corrected 'not' to '唔係' as it is a plausible phonetic "
+        "confusion in Cantonese and matches the intended meaning.",
+        difficulty=1,
     ),
     ProofTestCase(
         zhongwen="它们将写入为香港制定的基本法",
@@ -115,13 +109,12 @@ proof_test_cases_block_2 = [
         difficulty=1,
     ),
     ProofTestCase(
-        zhongwen="是中英两国的共同利益",
+        zhongwen="也是我们双方共同的责任",
         yuewen="也是我们双方共同的",
-        yuewen_proofread="也是我哋双方共同嘅",
-        note="Corrected '我们' to '我哋' and added '嘅' at the end to match the "
-        "natural Cantonese phrasing and to better reflect the "
-        "original meaning; '我们' is a Mandarin reading and '我哋' is the "
-        "Cantonese equivalent.",
+        yuewen_proofread="也是我们双方共同的责任",
+        note="Added '责任' to the end, as it is likely a transcription "
+        "omission and matches the phonetic flow of the original "
+        "sentence.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_2

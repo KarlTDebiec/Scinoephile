@@ -237,10 +237,7 @@ class Aligner:
             answer = await self.shifter.call(query)
 
             # If there is no change, continue
-            if (
-                query.yuewen_1 == answer.yuewen_1_shifted
-                and query.yuewen_2 == answer.yuewen_2_shifted
-            ):
+            if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
                 return True

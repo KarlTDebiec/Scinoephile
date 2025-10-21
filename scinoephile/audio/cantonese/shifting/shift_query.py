@@ -21,7 +21,5 @@ class ShiftQuery(Query):
     def validate_query(self) -> ShiftQuery:
         """Ensure query has minimum necessary information."""
         if not self.yuewen_1 and not self.yuewen_2:
-            raise ValueError(
-                "Query must have 粤文 subtitle 1, 粤文 subtitle 2, or both."
-            )
+            raise ValueError("Query must have yuewen_1, yuewen_2, or both.")
         return self
