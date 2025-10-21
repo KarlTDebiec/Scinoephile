@@ -147,7 +147,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self._encountered_test_cases[key] = test_case
         if self.print_test_case:
             print(f"{test_case.source_str},")
-        debug(f"Logged test case: {test_case.query.query_key}")
+        debug(f"Logged test case: {test_case.query.query_key_str}")
 
     async def _call(
         self,
@@ -161,7 +161,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             test_case = self._verified_test_cases[query.query_key]
             answer = test_case.answer
             self.log_encountered_test_case(test_case)
-            info(f"Loaded from verified log: {query.query_key}")
+            info(f"Loaded from verified log: {query.query_key_str}")
             return answer
 
         query_prompt = json.dumps(query.model_dump(), indent=4, ensure_ascii=False)
@@ -175,11 +175,12 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 try:
                     test_case = test_case_cls.model_validate(json.loads(contents))
                     self.log_encountered_test_case(test_case)
-                    info(f"Loaded from cache: {query.query_key}")
+                    info(f"Loaded from cache: {query.query_key_str}")
                     return test_case.answer
                 except ValidationError as exc:
                     error(
-                        f"Cache content for query {query.query_key} is invalid: {exc}"
+                        f"Cache content for query {query.query_key_str} is invalid: "
+                        f"{exc}"
                     )
                     await aioos.remove(cache_path)
                     info(f"Deleted invalid cache file: {cache_path}")
