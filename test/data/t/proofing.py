@@ -74,47 +74,56 @@ proof_test_cases_block_1 = [
 proof_test_cases_block_2 = [
     ProofTestCase(
         zhongwen="协议中有关香港的安排",
-        yuewen="嘅arrangementsforHongKongcontainedin",
+        yuewen="嘅 arrangements for Hong Kong contained in",
         yuewen_proofread="",
-        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
-        difficulty=1,
+        note="Manually overridden; the zhongwen is a Chinese translation "
+        "of transcribed spoken English.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="不是权宜之计",
-        yuewen="the，agreement，而not，measures，of，expediency",
+        yuewen="the agreement 而 not measures of expediency",
         yuewen_proofread="",
-        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
-        difficulty=1,
+        note="Manually overridden; the zhongwen is a Chinese translation "
+        "of transcribed spoken English.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="这些安排是长期的政策",
-        yuewen="嘅好longtermpolicies",
-        yuewen_proofread="係好longtermpolicies",
-        note="Corrected '嘅' (ge) to '係' (hàih) to align with '是' and fix a "
-        "likely mishearing.",
-        difficulty=1,
+        yuewen="嘅好 long term policies",
+        yuewen_proofread="",
+        note="Manually overridden; the zhongwen is a Chinese translation "
+        "of transcribed spoken English.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="它们将写入为香港制定的基本法",
-        yuewen="Which，will，be，incorporated，in，the，basic，law，for，Hong",
+        yuewen="Which will be incorporated in the basic law for Hong",
         yuewen_proofread="",
-        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
-        difficulty=1,
+        note="Manually overridden; the zhongwen is a Chinese translation "
+        "of transcribed spoken English.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="五十年不变",
-        yuewen="Kong，And，preserved，in，tact，For，50，years，from，1997",
+        yuewen="Kong And preserved in tact For 50 years from 1997",
         yuewen_proofread="",
-        note="Cleared; the yuewen is English fragments and the zhongwen is "
-        "a Chinese translation of the spoken English.",
-        difficulty=1,
+        note="Manually overridden; the zhongwen is a Chinese translation "
+        "of transcribed spoken English.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="也是我们双方共同的责任",
         yuewen="也是我们双方共同的",
-        yuewen_proofread="也是我们双方共同的责任",
-        note="Added the missing word '责任' (jaak yahm) to complete the phrase.",
-        difficulty=1,
+        yuewen_proofread="",
+        note="Manually overridden; the zhongwen is a transcription of spoken Mandarin.",
+        difficulty=3,
+        verified=True,
     ),
 ]  # proof_test_cases_block_2
 proof_test_cases_block_3 = [

@@ -31,7 +31,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
     def __init__(
         self,
-        model: str = "gpt-5",
+        model: str = "gpt-4o",
         prompt_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
         provider: LLMProvider | None = None,
