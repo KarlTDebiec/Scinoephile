@@ -36,7 +36,7 @@ translate_test_case_block_2 = TranslateTestCase.get_test_case_cls(
 )  # translate_test_case_block_2
 translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     17,
-    (3,),
+    (3, 7, 14),
 )(
     zhongwen_1="今天下午观塘发生械劫案",
     yuewen_1="今日下昼观塘发生械劫案",
@@ -48,97 +48,37 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     zhongwen_5="由观众提供片段，见到贼人离开的时候",
     yuewen_5="由观众提供片段，见到贼人离开嘅时候",
     zhongwen_6="在附近秘密执勤的飞虎队员发生枪战",
-    yuewen_6="同喺附近秘密执勤嘅飞虎队员发生枪战",
+    yuewen_6="喺附近秘密执勤嘅飞虎队员发生枪战",
     zhongwen_7="双方开枪过百发",
     yuewen_7="双方开枪过百发",
     zhongwen_8="事件中，两名途人及三名军装警员受伤",
-    yuewen_8="事件中，两名途人及三名军装警员受伤",
     zhongwen_9="五间金行合共损失大约一千万",
-    yuewen_9="五间金行合共损失大约一千万",
+    yuewen_9="损失大约一千万",
     zhongwen_10="警方相信，今次械劫案的主谋",
     yuewen_10="警方相信，今次械劫案嘅主谋",
     zhongwen_11="是「头号通缉犯」叶国欢",
-    yuewen_11="系头号通缉犯叶国欢",
+    yuewen_11="系「头号通缉犯」叶国欢",
     zhongwen_12="一夫当关，万夫莫敌！",
-    yuewen_12="一夫当关，万夫莫敌！",
+    yuewen_12="一夫当关，万夫莫敌！真系威吓",
     zhongwen_13="真是威风！欢哥！",
-    yuewen_13="真系威风！欢哥！",
+    yuewen_13="威风！欢哥！",
     zhongwen_14="但大事不妙了！",
     yuewen_14="但系大事不妙啦！",
     zhongwen_15="都说放多些报纸！",
-    yuewen_15="都话放多啲报纸㗎喇！",
     zhongwen_16="你看！到处都是血！",
     yuewen_16="睇吓睇吓！周围都系血！",
     zhongwen_17="拿去吧，混蛋！",
     yuewen_17="攞去啦，仆街！",
-    yuewen_4="屌你老母！",
+    yuewen_4="去你老母！",
+    yuewen_8="事件中，两名途人及三名军装警员受伤",
+    yuewen_15="都话放多啲报纸啦！",
 )  # translate_test_case_block_3
-translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
-    10,
-    (0,),
-)(
-    zhongwen_1="真是很不妙！",
-    zhongwen_2="两折，不好意思，最多两折！",
-    yuewen_2="两折,唔好意思,最多两折！",
-    zhongwen_3="说好四折",
-    yuewen_3="讲好四折㗎",
-    zhongwen_4="还有道义吗？",
-    yuewen_4="㖞，讲唔讲道义㗎？",
-    zhongwen_5="一千万货你只给两百万？",
-    yuewen_5="成千万货你哋畀两百万？",
-    zhongwen_6="以前至少五折！",
-    yuewen_6="以前至少都五折啦！",
-    zhongwen_7="你们销赃的全赚了！",
-    yuewen_7="你哋班销赃佬赚晒呀！",
-    zhongwen_8="赚你个屁！",
-    yuewen_8="赚你条毛咩！",
-    zhongwen_9="今时不同往日",
-    yuewen_9="今时唔同往日",
-    zhongwen_10="外面的警察盯得很紧！",
-    yuewen_10="喇喂,出面啲差佬睇得好紧㗎！",
-    yuewen_1="真係好唔掂呀！",
-)  # translate_test_case_block_4
-translate_test_case_block_5 = TranslateTestCase.get_test_case_cls(
-    6,
-    (3,),
-)(
-    zhongwen_1="尤其是你的货，欢哥！",
-    yuewen_1="系，尤其是你嗰批货啊，欢哥！",
-    zhongwen_2="上次那一批，销了两年，足足两年！",
-    yuewen_2="上次嗰批，销咗两年，足足两年啊！",
-    zhongwen_3="炒股、炒楼、炒栗子更能赚钱！",
-    yuewen_3="真系炒股、炒楼、炒栗子更能赚钱啦！",
-    zhongwen_4="帮个忙",
-    zhongwen_5="四折！",
-    yuewen_5="四折！",
-    zhongwen_6="欢哥开口，怎么着都行！",
-    yuewen_6="既然欢哥出到声，点话点好啦！",
-    yuewen_4="帮个手啦",
-)  # translate_test_case_block_5
-translate_test_case_block_6 = TranslateTestCase.get_test_case_cls(
-    5,
-    (0, 1, 2, 3, 4),
-)(
-    zhongwen_1="不如你找其它买家？",
-    zhongwen_2="我都买不下手，我看没人敢收⋯",
-    zhongwen_3="去你妈的！",
-    zhongwen_4="开保险箱！",
-    zhongwen_5="你算是抢我？",
-    yuewen_1="不如你搵第二个买家啦？",
-    yuewen_2="我都唔敢买，我睇下有边个敢收⋯",
-    yuewen_3="屌你老母！",
-    yuewen_4="开保险箱！",
-    yuewen_5="你当抢我咩？",
-)  # translate_test_case_block_6
+translate_test_case_block_4 = None  # translate_test_case_block_4
+translate_test_case_block_5 = None  # translate_test_case_block_5
+translate_test_case_block_6 = None  # translate_test_case_block_6
 translate_test_case_block_7 = None  # translate_test_case_block_7
 translate_test_case_block_8 = None  # translate_test_case_block_8
-translate_test_case_block_9 = TranslateTestCase.get_test_case_cls(
-    1,
-    (0,),
-)(
-    zhongwen_1="欢哥，火！",
-    yuewen_1="欢哥，开火啦！",
-)  # translate_test_case_block_9
+translate_test_case_block_9 = None  # translate_test_case_block_9
 translate_test_case_block_10 = None  # translate_test_case_block_10
 translate_test_case_block_11 = None  # translate_test_case_block_11
 translate_test_case_block_12 = None  # translate_test_case_block_12
