@@ -67,9 +67,9 @@ class WhisperTranscriber:
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
             info(f"Loaded from cache: {cache_path}")
-            cache_path.touch()
             with cache_path.open("r", encoding="utf-8") as f:
                 segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
+            cache_path.touch()
             return segments
 
         # Transcribe using Whisper
