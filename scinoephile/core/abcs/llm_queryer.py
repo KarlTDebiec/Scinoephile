@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 from abc import ABC, abstractmethod
@@ -176,6 +177,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     test_case = test_case_cls.model_validate(json.loads(contents))
                     self.log_encountered_test_case(test_case)
                     info(f"Loaded from cache: {query.query_key_str}")
+                    await asyncio.to_thread(cache_path.touch)
                     return test_case.answer
                 except ValidationError as exc:
                     error(
