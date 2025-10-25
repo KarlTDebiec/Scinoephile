@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from logging import debug
+from logging import info
 from pathlib import Path
 from warnings import catch_warnings, filterwarnings
 
@@ -66,7 +66,8 @@ class WhisperTranscriber:
 
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
-            debug(f"Loaded from cache: {cache_path}")
+            info(f"Loaded from cache: {cache_path}")
+            cache_path.touch()
             with cache_path.open("r", encoding="utf-8") as f:
                 segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
             return segments
@@ -88,7 +89,7 @@ class WhisperTranscriber:
                 json.dump(
                     [s.model_dump() for s in segments], f, ensure_ascii=False, indent=2
                 )
-                debug(f"Saved transcription to cache: {cache_path}")
+                info(f"Saved transcription to cache: {cache_path}")
 
         return segments
 
