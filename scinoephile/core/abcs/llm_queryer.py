@@ -31,7 +31,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
     def __init__(
         self,
-        model: str = "gpt-4.1",
+        model: str = "gpt-5",
         prompt_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
         provider: LLMProvider | None = None,
@@ -202,7 +202,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 content = await self.provider.achat_completion(
                     model=self.model,
                     messages=messages,
-                    temperature=0,
                     seed=0,
                     response_format=answer_cls,
                 )

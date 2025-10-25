@@ -68,7 +68,7 @@ shift_test_cases_block_2 = [
         yuewen_2="HongKongcontainedin",
         yuewen_1_shifted="嘅arrangementsforHongKongcontainedin",
         yuewen_2_shifted="",
-        difficulty=1,
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
@@ -78,7 +78,7 @@ shift_test_cases_block_2 = [
         yuewen_2="theagreement而notmeasuresofexpediency",
         yuewen_1_shifted="theagreement而notmeasuresofexpediency",
         yuewen_2_shifted="",
-        difficulty=1,
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
@@ -88,7 +88,7 @@ shift_test_cases_block_2 = [
         yuewen_2="嘅好longtermpoliciesWhichwillbe",
         yuewen_1_shifted="嘅好longtermpolicies",
         yuewen_2_shifted="Whichwillbe",
-        difficulty=1,
+        difficulty=3,
         verified=True,
     ),
     ShiftTestCase(
@@ -98,7 +98,8 @@ shift_test_cases_block_2 = [
         yuewen_2="incorporatedinthebasiclawforHong",
         yuewen_1_shifted="WhichwillbeincorporatedinthebasiclawforHong",
         yuewen_2_shifted="",
-        difficulty=1,
+        difficulty=3,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="五十年不变",
@@ -107,7 +108,8 @@ shift_test_cases_block_2 = [
         yuewen_2="KongAndpreservedintactFor50yearsfrom1997",
         yuewen_1_shifted="KongAndpreservedintactFor50yearsfrom1997",
         yuewen_2_shifted="",
-        difficulty=1,
+        difficulty=3,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="是中英两国的共同利益",
@@ -116,6 +118,8 @@ shift_test_cases_block_2 = [
         yuewen_2="也是我们双方共同的",
         yuewen_1_shifted="",
         yuewen_2_shifted="",
+        difficulty=3,
+        verified=True,
     ),
 ]  # shift_test_cases_block_2
 shift_test_cases_block_3 = [
