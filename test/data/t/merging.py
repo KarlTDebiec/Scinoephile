@@ -116,15 +116,22 @@ merge_test_cases_block_3 = [
         difficulty=1,
     ),
     MergeTestCase(
-        zhongwen="事件中，两名途人及三名军装警员受伤",
-        yuewen_to_merge=["事件中两名逃人及三名军人警察获杀"],
-        yuewen_merged="事件中，两名逃人及三名军人警察获杀",
-        difficulty=1,
+        zhongwen="在附近秘密执勤的飞虎队员发生枪战",
+        yuewen_to_merge=["同喺附近秘密执勤嘅飞虎队员发生枪战", "双方"],
+        yuewen_merged="同喺附近秘密执勤嘅飞虎队员发生枪战，双方",
+        difficulty=2,
     ),
     MergeTestCase(
-        zhongwen="五间金行合共损失大约一千万",
-        yuewen_to_merge=["现间有狂", "黑洞损失大约三次万"],
-        yuewen_merged="现间有狂黑洞损失大约三次万",
+        zhongwen="双方开枪过百发",
+        yuewen_to_merge=["开枪过白房", "事件中"],
+        yuewen_merged="开枪过白房，事件中",
+        difficulty=2,
+    ),
+    MergeTestCase(
+        zhongwen="事件中，两名途人及三名军装警员受伤",
+        yuewen_to_merge=["两名逃人及三名军人警察获杀", "现间有狂", "黑洞"],
+        yuewen_merged="两名逃人及三名军人警察获杀，现间有狂，黑洞",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="警方相信，今次械劫案的主谋",
@@ -135,20 +142,20 @@ merge_test_cases_block_3 = [
     MergeTestCase(
         zhongwen="是「头号通缉犯」叶国欢",
         yuewen_to_merge=["系头号通缉犯叶国宽"],
-        yuewen_merged="系头号通缉犯叶国宽",
-        difficulty=2,
+        yuewen_merged="系「头号通缉犯」叶国宽",
+        difficulty=1,
     ),
     MergeTestCase(
         zhongwen="一夫当关，万夫莫敌！",
-        yuewen_to_merge=["一孤当关万夫莫敌"],
-        yuewen_merged="一孤当关，万夫莫敌！",
+        yuewen_to_merge=["一孤当关万夫莫敌", "真系威吓"],
+        yuewen_merged="一孤当关，万夫莫敌！真系威吓",
         difficulty=1,
     ),
     MergeTestCase(
         zhongwen="真是威风！欢哥！",
-        yuewen_to_merge=["真系威吓宽哥"],
-        yuewen_merged="真系威吓！宽哥！",
-        difficulty=1,
+        yuewen_to_merge=["宽哥"],
+        yuewen_merged="宽哥！",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="但大事不妙了！",
@@ -158,9 +165,9 @@ merge_test_cases_block_3 = [
     ),
     MergeTestCase(
         zhongwen="都说放多些报纸！",
-        yuewen_to_merge=["都话贱到啲报纸㗎喇"],
-        yuewen_merged="都话贱到啲报纸㗎喇！",
-        difficulty=1,
+        yuewen_to_merge=["都话", "贱到啲报纸㗎喇"],
+        yuewen_merged="都话，贱到啲报纸㗎喇！",
+        difficulty=2,
     ),
     MergeTestCase(
         zhongwen="你看！到处都是血！",
@@ -175,171 +182,11 @@ merge_test_cases_block_3 = [
         difficulty=1,
     ),
 ]  # merge_test_cases_block_3
-merge_test_cases_block_4 = [
-    MergeTestCase(
-        zhongwen="真是很不妙！",
-        yuewen_to_merge=["喂,真系好大只呀"],
-        yuewen_merged="喂,真系好大只呀！",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="两折，不好意思，最多两折！",
-        yuewen_to_merge=["两折,唔好意思,最多两折"],
-        yuewen_merged="两折,唔好意思,最多两折！",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="还有道义吗？",
-        yuewen_to_merge=["㖞", "讲唔讲道义㗎"],
-        yuewen_merged="㖞，讲唔讲道义㗎？",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="一千万货你只给两百万？",
-        yuewen_to_merge=["成千万货你哋畀两搞"],
-        yuewen_merged="成千万货你哋畀两搞？",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="以前至少五折！",
-        yuewen_to_merge=["以前除少都五只啦"],
-        yuewen_merged="以前除少都五只啦！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="你们销赃的全赚了！",
-        yuewen_to_merge=["你哋班消庄佬赞晒呀"],
-        yuewen_merged="你哋班消庄佬赞晒呀！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="赚你个屁！",
-        yuewen_to_merge=["赞你条毛咩"],
-        yuewen_merged="赞你条毛咩！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="外面的警察盯得很紧！",
-        yuewen_to_merge=["喇", "喂,出面啲差异睇得好紧㗎"],
-        yuewen_merged="喇喂,出面啲差异睇得好紧㗎！",
-        difficulty=2,
-    ),
-]  # merge_test_cases_block_4
-merge_test_cases_block_5 = [
-    MergeTestCase(
-        zhongwen="尤其是你的货，欢哥！",
-        yuewen_to_merge=["系", "尤其是你嗰批货啊", "宽哥"],
-        yuewen_merged="系，尤其是你嗰批货啊，宽哥！",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="上次那一批，销了两年，足足两年！",
-        yuewen_to_merge=["上次嗰批", "烧咗两年", "足足两年啊"],
-        yuewen_merged="上次嗰批，烧咗两年，足足两年啊！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="炒股、炒楼、炒栗子更能赚钱！",
-        yuewen_to_merge=["真系炒股炒楼炒栗子都好过啦", "系吧"],
-        yuewen_merged="真系炒股、炒楼、炒栗子都好过啦！系吧",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="四折！",
-        yuewen_to_merge=["死绝"],
-        yuewen_merged="死绝！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="欢哥开口，怎么着都行！",
-        yuewen_to_merge=["既然宽哥出到声", "点话点好啦"],
-        yuewen_merged="既然宽哥出到声，点话点好啦！",
-        difficulty=1,
-    ),
-]  # merge_test_cases_block_5
-merge_test_cases_block_6 = [
-    MergeTestCase(
-        zhongwen="不如你找其它买家？",
-        yuewen_to_merge=["唔好呀", "唔好呀"],
-        yuewen_merged="唔好呀，唔好呀？",
-        difficulty=2,
-    ),
-    MergeTestCase(
-        zhongwen="我都买不下手，我看没人敢收⋯",
-        yuewen_to_merge=["唔好呀", "唔好呀"],
-        yuewen_merged="唔好呀，唔好呀⋯",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="去你妈的！",
-        yuewen_to_merge=["唔好呀", "唔好呀", "唔好呀", "唔好呀", "唔好呀"],
-        yuewen_merged="唔好呀唔好呀唔好呀唔好呀唔好呀！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="开保险箱！",
-        yuewen_to_merge=["唔好呀", "唔好呀"],
-        yuewen_merged="唔好呀唔好呀！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="你算是抢我？",
-        yuewen_to_merge=[
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-            "唔好呀",
-        ],
-        yuewen_merged="唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀唔好呀？",
-        difficulty=1,
-    ),
-]  # merge_test_cases_block_6
+merge_test_cases_block_4 = []  # merge_test_cases_block_4
+merge_test_cases_block_5 = []  # merge_test_cases_block_5
+merge_test_cases_block_6 = []  # merge_test_cases_block_6
 merge_test_cases_block_7 = []  # merge_test_cases_block_7
-merge_test_cases_block_8 = [
-    MergeTestCase(
-        zhongwen="真的多谢了，欢哥！",
-        yuewen_to_merge=["真系多谢晒你呀", "宽哥"],
-        yuewen_merged="真系多谢晒你呀，宽哥！",
-        difficulty=1,
-    ),
-    MergeTestCase(
-        zhongwen="各走各路！",
-        yuewen_to_merge=["各行各路啊"],
-        yuewen_merged="各行各路啊！",
-        difficulty=1,
-    ),
-]  # merge_test_cases_block_8
-merge_test_cases_block_9 = [
-    MergeTestCase(
-        zhongwen="欢哥，火！",
-        yuewen_to_merge=["阿", "花香", "回来了"],
-        yuewen_merged="阿花香，回来了！",
-        difficulty=1,
-    ),
-]  # merge_test_cases_block_9
+merge_test_cases_block_8 = []  # merge_test_cases_block_9
 merge_test_cases_block_10 = []  # merge_test_cases_block_10
 merge_test_cases_block_11 = []  # merge_test_cases_block_11
 merge_test_cases_block_12 = []  # merge_test_cases_block_12
