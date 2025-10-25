@@ -115,7 +115,7 @@ class Aligner:
         iteration = 0
         while distribution_and_shifting_in_progress:
             # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
-            await self._distribute(alignment)
+            # await self._distribute(alignment)
 
             # Then shift 粤文 subtitles that remain misaligned after distribution
             distribution_and_shifting_in_progress = await self._shift(alignment)
