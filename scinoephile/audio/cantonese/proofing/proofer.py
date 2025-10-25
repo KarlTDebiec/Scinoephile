@@ -32,7 +32,7 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         transcription mistake.
         Only correct yuewen if there's a plausible phonetic confusion.
         If there is truly zero correspondence between the yuewen and zhongwen,
-        indicating a complete mistranscription of the spoken Cantonese, return empty
+        indicating a complete mistranscription of the spoken Cantonese, return an empty
         string for yuewen.
         If you make changes, include a one-sentence note in English explaining them.
         Include the Yale romanization of Cantonese for any character substitutions.
@@ -40,7 +40,8 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
 
         Remember:
         - The yuewen transcription does not need to match the zhongwen word-for-word.
-        - The speaker may naturally use different wording in Cantonese.
+        - The speaker may naturally use different wording in the spoken Cantonese than
+          present in the zhongwen.
         - Many differences in meaning, tone, or grammar are acceptable if they are not
           transcription errors.
         """
