@@ -46,7 +46,7 @@ async def main():
     )
 
     # Process all blocks
-    yuewen_series = await reviewer.process_all_blocks(yuewen, zhongwen, stop_at_idx=9)
+    yuewen_series = await reviewer.process_all_blocks(yuewen, zhongwen, stop_at_idx=1)
 
     # Update output file
     # if len(zhongwen.blocks) == len(yuewen.blocks):

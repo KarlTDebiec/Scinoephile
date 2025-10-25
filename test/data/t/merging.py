@@ -12,7 +12,10 @@ merge_test_cases_block_0 = [
     MergeTestCase(
         zhongwen="警察",
         yuewen_to_merge=["喂", "警察"],
-        yuewen_merged="喂警察",
+        yuewen_merged="喂，警察",
+        difficulty=2,
+        prompt=True,
+        verified=True,
     ),
 ]  # merge_test_cases_block_0
 merge_test_cases_block_1 = [
@@ -21,24 +24,29 @@ merge_test_cases_block_1 = [
         yuewen_to_merge=["查下咩料", "收到"],
         yuewen_merged="﹣查下咩料　　﹣收到",
         difficulty=1,
+        prompt=True,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="﹣袋子里装什么？　　﹣总机",
-        yuewen_to_merge=["角度系袋住啲咩呀"],
-        yuewen_merged="角度系袋住啲咩呀？",
-        difficulty=2,
+        yuewen_to_merge=["角度系袋住啲咩呀", "通话电台"],
+        yuewen_merged="﹣角度系袋住啲咩呀？　　﹣通话电台",
+        difficulty=1,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
-        yuewen_to_merge=["通话电台", "查", "查个牌匙", "C532743", "尾数1"],
-        yuewen_merged="通话电台 查 查个牌匙 C532743 尾数1",
-        difficulty=2,
+        yuewen_to_merge=["查", "查个牌匙", "C532743"],
+        yuewen_merged="查查个牌匙：C532743",
+        difficulty=3,
+        verified=True,
     ),
     MergeTestCase(
         zhongwen="尾数一，季正雄",
-        yuewen_to_merge=["贵正红"],
-        yuewen_merged="贵正红，",
+        yuewen_to_merge=["尾数1", "贵正红"],
+        yuewen_merged="尾数1，贵正红",
         difficulty=1,
+        verified=True,
     ),
 ]  # merge_test_cases_block_1
 merge_test_cases_block_2 = [

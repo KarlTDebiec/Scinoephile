@@ -21,27 +21,26 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are responsible for proofreading 粤文 subtitles of Cantonese speech.
-        For reference, you are provided the corresponding 中文 subtitles of the same
-        Cantonese speech.
-        Your goal is to correct only clear transcription errors in the 粤文 —
+        You are responsible for proofreading 粤文 (yuewen) subtitles of Cantonese speech.
+        For reference, you are provided the corresponding 中文 (zhongwen) subtitles of
+        the same Cantonese speech.
+        Your goal is to correct only clear transcription errors in the yuewen —
         specifically, cases where the transcriber likely misheard a word and wrote a
         similar-sounding but incorrect one.
-        Do not rewrite correct phrases to match the 中文 wording.
+        Do not rewrite correct phrases to match the zhongwen wording.
         Do not adjust phrasing, grammar, or classifiers unless there's a clear
         transcription mistake.
-        Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
-        临盆).
-        If there is truly zero correspondence between the 粤文 and 中文, indicating a
-        complete mistranscription of the spoken Cantonese, return empty string for the
-        粤文 and a note explaining the lack of correspondence.
+        Only correct yuewen if there's a plausible phonetic confusion.
+        If there is truly zero correspondence between the yuewen and zhongwen,
+        indicating a complete mistranscription of the spoken Cantonese, return empty
+        string for yuewen.
+        If you make changes, include a one-sentence note in English explaining them.
+        Include the Yale romanization of Cantonese for any character substitutions.
+        If you make no changes, return an empty string for the note.
 
         Remember:
-        - The 粤文 transcription does not need to match the 中文 word-for-word.
+        - The yuewen transcription does not need to match the zhongwen word-for-word.
         - The speaker may naturally use different wording in Cantonese.
         - Many differences in meaning, tone, or grammar are acceptable if they are not
           transcription errors.
-
-        Include a one-sentence explanation in English for any correction you make.
-        If you make no changes, return an empty string for the note.
         """

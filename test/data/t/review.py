@@ -8,7 +8,7 @@ from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 
 review_test_case_block_0 = ReviewTestCase.get_test_case_cls(2)(
     zhongwen_1="警察",
-    yuewen_1="警察",
+    yuewen_1="喂，警察",
     zhongwen_2="拿身份证出来",
     yuewen_2="攞身份证出嚟",
     yuewen_revised_1="",
@@ -20,27 +20,27 @@ review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     zhongwen_1="﹣检查一下　　﹣收到",
     yuewen_1="﹣查下咩料　　﹣收到",
     zhongwen_2="﹣袋子里装什么？　　﹣总机",
-    yuewen_2="袋入面装住咩呀？",
+    yuewen_2="﹣袋入面袋住啲咩呀？　　﹣总机",
     zhongwen_3="﹣打开来看看　　﹣身份证号码：C532743",
-    yuewen_3="打開嚟睇下，身份證號碼：C532743",
+    yuewen_3="查查个牌士：C532743",
     zhongwen_4="尾数一，季正雄",
-    yuewen_4="季正雄，",
+    yuewen_4="尾数1，季正雄",
     zhongwen_5="打开",
     yuewen_5="打開",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="袋入面裝咩？總機。",
-    note_2="Added '總機' to match the implied response in the sequence, "
-    "and made the question more concise and natural for spoken "
-    "Cantonese.",
-    yuewen_revised_3="打開嚟睇下。身份證號碼：C532743。",
-    note_3="Split into two sentences for clarity and to match the "
-    "natural pause in speech.",
-    yuewen_revised_4="尾數一，季正雄。",
-    note_4="Added '尾數一' at the beginning to match the sequence and "
-    "context, and added a period for consistency.",
-    yuewen_revised_5="",
-    note_5="",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="打開嚟睇下　　身份证号码：C532743",
+    note_3="Revised to include the missing instruction to open and look, "
+    "matching the sequence and context. The original 粤文 only had "
+    "the ID number check, omitting the 'open and look' part.",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="打开",
+    note_5="Standardized the character to match the rest of the "
+    "subtitles, using simplified '打开' instead of traditional "
+    "'打開', for consistency.",
 )  # review_test_case_block_1
 review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="协议中有关香港的安排",

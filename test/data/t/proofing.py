@@ -11,11 +11,10 @@ from scinoephile.audio.cantonese.proofing import ProofTestCase
 proof_test_cases_block_0 = [
     ProofTestCase(
         zhongwen="警察",
-        yuewen="喂警察",
-        yuewen_proofread="警察",
-        note="Removed '喂' as it is not present in the 中文 and is likely a "
-        "mishearing or extraneous addition.",
-        difficulty=1,
+        yuewen="喂，警察",
+        yuewen_proofread="喂，警察",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="拿身份证出来",
@@ -35,28 +34,29 @@ proof_test_cases_block_1 = [
     ),
     ProofTestCase(
         zhongwen="﹣袋子里装什么？　　﹣总机",
-        yuewen="角度系袋住啲咩呀？",
-        yuewen_proofread="袋入面装住咩呀？",
-        note="Corrected '角度系袋住啲咩呀？' to '袋入面装住咩呀？' because '角度' is a clear "
-        "mishearing of '袋' (bag), which matches the context of "
-        "'袋子里装什么？'.",
+        yuewen="﹣角度系袋住啲咩呀？　　﹣通话电台",
+        yuewen_proofread="﹣袋入面袋住啲咩呀？　　﹣总机",
+        note="Corrected '角度系袋住啲咩呀？' to '袋入面袋住啲咩呀？' as '角度' is a clear "
+        "mishearing of '袋入面'; changed '通话电台' to '总机' to match the "
+        "intended meaning, as '总机' and '通话电台' sound somewhat similar "
+        "in Cantonese and the context is about what's in the bag.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
-        yuewen="通话电台 查 查个牌匙 C532743 尾数1",
-        yuewen_proofread="打開嚟睇下，身份證號碼：C532743",
-        note="Corrected '通话电台 查 查个牌匙' to '打開嚟睇下，身份證號碼' as the original was "
-        "a clear mistranscription with no correspondence to the "
-        "Chinese subtitle.",
+        yuewen="查查个牌匙：C532743",
+        yuewen_proofread="查查个牌士：C532743",
+        note="Corrected '牌匙' to '牌士' as it is a plausible phonetic "
+        "confusion for '牌士', which is a common Cantonese term for "
+        "'身份证' (ID card).",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="尾数一，季正雄",
-        yuewen="贵正红，",
-        yuewen_proofread="季正雄，",
+        yuewen="尾数1，贵正红",
+        yuewen_proofread="尾数1，季正雄",
         note="Corrected '贵正红' to '季正雄' as it is a clear phonetic "
-        "mishearing of the name in the original speech.",
+        "mishearing of the name.",
         difficulty=1,
     ),
     ProofTestCase(
