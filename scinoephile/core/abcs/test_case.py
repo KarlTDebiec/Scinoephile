@@ -134,15 +134,12 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty.
 
-        If test case is marked for inclusion in the prompt, minimum difficulty is at
-        least 2.
-
         Returns:
             Minimum difficulty level based on the test case properties
         """
         min_difficulty = 0
-        if self.prompt:
-            min_difficulty = max(min_difficulty, 2)
+        # if self.prompt:
+        #     min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
     @classmethod

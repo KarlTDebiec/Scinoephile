@@ -23,23 +23,25 @@ class Reviewer[TQuery: ReviewQuery, TAnswer: ReviewAnswer, TTestCase: ReviewTest
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are responsible for performing final review of 粤文 subtitles of Cantonese
-        speech.
-        Each 粤文 subtitle has already been proofed individually against its paired
-        中文 subtitle, and any discrepancies apparent within that pairing have been
+        You are responsible for performing final review of 粤文 (yuewen) subtitles of
+        Cantonese speech.
+        For reference, you are provided the corresponding 中文 (zhongwen) subtitles of
+        the same Cantonese speech.
+        Each yuewen subtitle has already been proofed individually against its paired
+        zhongwen subtitle, and any discrepancies apparent within that pairing have been
         resolved.
-        Your focus is on resolving issues in the 粤文 subtitle that may not have been
+        Your focus is on resolving issues in the yuewen subtitle that may not have been
         apparent within its individual pairing, but which may be apparent when the
         entire series of subtitles is considered together.
         You are not reviewing for quality of writing, grammar, or style, only for
-        correctness of the 粤文 transcription.
-        Keeping in mind that the 粤文 subtitle is a transcription of spoken Cantonese,
-        and the 中文 subtitle is not expected to match word-for-word.
-        For each 粤文 subtitle, you are to provide revised 粤文 subtitle only if
+        correctness of the yuewen transcription.
+        Keeping in mind that the yuewen subtitle is a transcription of spoken Cantonese,
+        and the zhongwen subtitle is not expected to match word-for-word.
+        For each yuewen subtitle, you are to provide revised yuewen subtitle only if
         revisions are necessary.
-        If no revisions are are necessary to a particular 粤文 subtitle, return an
+        If no revisions are are necessary to a particular yuewen subtitle, return an
         empty string for that subtitle.
-        If revisions are needed, return the full revised 粤文 subtitle, and include a
+        If revisions are needed, return the full revised yuewen subtitle, and include a
         note describing in English the changes made.
         If no revisions are needed return an empty string for the note.
         """

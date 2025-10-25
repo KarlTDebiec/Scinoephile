@@ -35,7 +35,6 @@ class OpenAIProvider(LLMProvider):
         self,
         model: str,
         messages: list[dict[str, Any]],
-        temperature: float = 0.0,
         seed: int = 0,
         response_format: type[Answer] | None = None,
     ) -> str:
@@ -44,7 +43,6 @@ class OpenAIProvider(LLMProvider):
         Arguments:
             model: Model to use for completion
             messages: Messages to send
-            temperature: Sampling temperature
             seed: Seed for reproducibility
             response_format: Response format
         Returns:
@@ -57,7 +55,6 @@ class OpenAIProvider(LLMProvider):
                 completion = self.client.beta.chat.completions.parse(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
                     seed=seed,
                     response_format=response_format,
                 )
@@ -65,7 +62,6 @@ class OpenAIProvider(LLMProvider):
                 completion = self.client.chat.completions.create(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
                     seed=seed,
                 )
             return completion.choices[0].message.content
@@ -84,7 +80,6 @@ class OpenAIProvider(LLMProvider):
         self,
         model: str,
         messages: list[dict[str, Any]],
-        temperature: float = 0.0,
         seed: int = 0,
         response_format: type[Answer] | None = None,
     ) -> str:
@@ -106,7 +101,6 @@ class OpenAIProvider(LLMProvider):
                 completion = await self.aclient.beta.chat.completions.parse(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
                     seed=seed,
                     response_format=response_format,
                 )
@@ -114,7 +108,6 @@ class OpenAIProvider(LLMProvider):
                 completion = await self.aclient.chat.completions.create(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
                     seed=seed,
                 )
             return completion.choices[0].message.content
