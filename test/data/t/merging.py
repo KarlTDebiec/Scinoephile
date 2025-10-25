@@ -53,20 +53,18 @@ merge_test_cases_block_2 = [
     MergeTestCase(
         zhongwen="协议中有关香港的安排",
         yuewen_to_merge=["嘅arrangements", "for", "Hong", "Kong", "contained", "in"],
-        yuewen_merged="嘅arrangements for Hong Kong contained in",
-        difficulty=2,
+        yuewen_merged="嘅arrangementsforHongKongcontainedin",
     ),
     MergeTestCase(
         zhongwen="不是权宜之计",
         yuewen_to_merge=["the", "agreement", "而not", "measures", "of", "expediency"],
-        yuewen_merged="the agreement 而not measures of expediency",
+        yuewen_merged="the，agreement，而not，measures，of，expediency",
         difficulty=2,
     ),
     MergeTestCase(
         zhongwen="这些安排是长期的政策",
         yuewen_to_merge=["嘅好long", "term", "policies"],
-        yuewen_merged="嘅好long term policies。",
-        difficulty=2,
+        yuewen_merged="嘅好longtermpolicies",
     ),
     MergeTestCase(
         zhongwen="它们将写入为香港制定的基本法",
@@ -82,7 +80,7 @@ merge_test_cases_block_2 = [
             "for",
             "Hong",
         ],
-        yuewen_merged="Which will be incorporated in the basic law for Hong。",
+        yuewen_merged="Which，will，be，incorporated，in，the，basic，law，for，Hong",
         difficulty=2,
     ),
     MergeTestCase(
@@ -99,7 +97,7 @@ merge_test_cases_block_2 = [
             "from",
             "1997",
         ],
-        yuewen_merged="Kong And preserved in tact For 50 years from 1997",
+        yuewen_merged="Kong，And，preserved，in，tact，For，50，years，from，1997",
         difficulty=2,
     ),
 ]  # merge_test_cases_block_2

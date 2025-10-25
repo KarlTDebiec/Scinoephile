@@ -20,112 +20,100 @@ proof_test_cases_block_0 = [
         zhongwen="拿身份证出来",
         yuewen="攞我新闻证出嚟睇",
         yuewen_proofread="攞身份证出嚟",
-        note="Corrected '新闻证' (sān màn jing) to '身份证' (sān fan jing) as it "
-        "is a plausible mishearing and matches the zhongwen meaning. ",
+        note="Corrected '新闻证' (sān màn jing) to '身份证' (sān fan jing).",
         difficulty=1,
         prompt=True,
+        verified=True,
     ),
 ]  # proof_test_cases_block_0
 proof_test_cases_block_1 = [
     ProofTestCase(
         zhongwen="﹣检查一下　　﹣收到",
         yuewen="﹣查下咩料　　﹣收到",
-        yuewen_proofread="﹣查下咩料　　﹣收到",
-        note="",
+        yuewen_proofread="﹣查下咩里　　﹣收到",
+        note="Corrected '料' (liuh) to '里' (léih).",
+        difficulty=1,
+        prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="﹣袋子里装什么？　　﹣总机",
         yuewen="﹣角度系袋住啲咩呀？　　﹣通话电台",
-        yuewen_proofread="﹣袋入面袋住啲咩呀？　　﹣總機",
-        note="Corrected '角度系袋住啲咩呀' to '袋入面袋住啲咩呀' (doi6 jap6 min6 doi6 zyu6 "
-        "di1 me1 aa3) as '角度系' is a mishearing of '袋入面', and '通话电台' "
-        "to '總機' (zung2 gei1) as it matches the zhongwen and is a "
-        "plausible mishearing.",
+        yuewen_proofread="﹣嗰度系袋住啲咩呀？　　﹣通话电台",
+        note="Corrected '角度' (gok douh) to '嗰度' (gó douh).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
         yuewen="查查个牌匙：C532743",
-        yuewen_proofread="打開嚟睇下：C532743",
-        note="Corrected '查查个牌匙' (chà chà go paai4 si4) to '打開嚟睇下' (daa2 "
-        "hoi1 lai4 tai2 haa5) as the original was a clear mishearing; "
-        "'牌匙' (paai4 si4) is a phonetic confusion for '睇下' (tai2 "
-        "haa5). Yale: daa2 hoi1 lai4 tai2 haa5.",
-        difficulty=1,
+        yuewen_proofread="﹣打开嚟睇下　　﹣查吓个牌匙：C532743",
+        note="Manually overridden; low confidence.",
+        difficulty=3,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="尾数一，季正雄",
         yuewen="尾数1，贵正红",
-        yuewen_proofread="尾数1，季正雄",
-        note="Corrected '贵正红' to '季正雄' as it is a plausible phonetic "
-        "confusion (gwai3/guai3 vs. gwai3/zi3, zung6/hung4 vs. "
-        "hung4/hung4). Yale: gwai3/zi3 zing3 hung4.",
-        difficulty=1,
+        yuewen_proofread="尾数一，季正雄",
+        note="Adjusted '1' to '一'; corrected '贵正红' (gwai jing hùhng) to "
+        "'季正雄' (gwai jing hùhng).",
+        difficulty=2,
+        prompt=True,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="打开",
         yuewen="打佢",
-        yuewen_proofread="打開",
-        note="Corrected '打佢' (daa2 keoi5) to '打開' (daa2 hoi1), as '打佢' is "
-        "a likely mishearing of '打開' which matches the zhongwen and "
-        "is a common phonetic confusion.",
+        yuewen_proofread="打开",
+        note="Corrected '佢' (kéuih) to '开' (hōi) to convey 'open' as in '打开'.",
         difficulty=1,
+        verified=True,
     ),
 ]  # proof_test_cases_block_1
 proof_test_cases_block_2 = [
     ProofTestCase(
         zhongwen="协议中有关香港的安排",
-        yuewen="嘅arrangements for Hong Kong contained in",
-        yuewen_proofread="协议中有关香港嘅安排",
-        note="Corrected '嘅arrangements for Hong Kong contained in' to "
-        "'协议中有关香港嘅安排' to match the intended meaning and fix the clear "
-        "transcription error where English was mistakenly transcribed "
-        "instead of the Cantonese phrase.",
+        yuewen="嘅arrangementsforHongKongcontainedin",
+        yuewen_proofread="",
+        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="不是权宜之计",
-        yuewen="the agreement 而not measures of expediency",
+        yuewen="the，agreement，而not，measures，of，expediency",
         yuewen_proofread="",
-        note="The 粤文 subtitle is in English and does not correspond to the "
-        "中文 subtitle at all, indicating a complete mistranscription.",
+        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="这些安排是长期的政策",
-        yuewen="嘅好long term policies。",
-        yuewen_proofread="呢啲安排係長期嘅政策。",
-        note="Corrected '嘅好long term policies' to '呢啲安排係長期嘅政策' as the "
-        "original 粤文 was a mistranscription with no correspondence to "
-        "the 中文; the speaker likely said something closer to the 中文 "
-        "line.",
+        yuewen="嘅好longtermpolicies",
+        yuewen_proofread="係好longtermpolicies",
+        note="Corrected '嘅' (ge) to '係' (hàih) to align with '是' and fix a "
+        "likely mishearing.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="它们将写入为香港制定的基本法",
-        yuewen="Which will be incorporated in the basic law for Hong。",
+        yuewen="Which，will，be，incorporated，in，the，basic，law，for，Hong",
         yuewen_proofread="",
-        note="The 粤文 subtitle is in English and does not correspond to the "
-        "provided 中文 subtitle, indicating a complete "
-        "mistranscription.",
+        note="Cleared; the zhongwen is a Chinese translation of the spoken English.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="五十年不变",
-        yuewen="Kong And preserved in tact For 50 years from 1997",
+        yuewen="Kong，And，preserved，in，tact，For，50，years，from，1997",
         yuewen_proofread="",
-        note="The 粤文 subtitle is in English and does not correspond to the "
-        "provided 中文 subtitle, indicating a complete "
-        "mistranscription.",
+        note="Cleared; the yuewen is English fragments and the zhongwen is "
+        "a Chinese translation of the spoken English.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="也是我们双方共同的责任",
         yuewen="也是我们双方共同的",
         yuewen_proofread="也是我们双方共同的责任",
-        note="Added '责任' to the end, as it is likely a transcription "
-        "omission and matches the phonetic flow of the original "
-        "sentence.",
+        note="Added the missing word '责任' (jaak yahm) to complete the phrase.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_2

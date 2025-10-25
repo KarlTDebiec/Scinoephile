@@ -15,41 +15,41 @@ review_test_case_block_0 = ReviewTestCase.get_test_case_cls(2)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
+    prompt=True,
+    verified=True,
 )  # review_test_case_block_0
 review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     zhongwen_1="﹣检查一下　　﹣收到",
-    yuewen_1="﹣查下咩料　　﹣收到",
+    yuewen_1="﹣查下咩里　　﹣收到",
     zhongwen_2="﹣袋子里装什么？　　﹣总机",
-    yuewen_2="﹣袋入面袋住啲咩呀？　　﹣總機",
+    yuewen_2="﹣嗰度系袋住啲咩呀？　　﹣通话电台",
     zhongwen_3="﹣打开来看看　　﹣身份证号码：C532743",
-    yuewen_3="打開嚟睇下：C532743",
+    yuewen_3="﹣打开嚟睇下　　﹣查吓个牌匙：C532743",
     zhongwen_4="尾数一，季正雄",
-    yuewen_4="尾数1，季正雄",
+    yuewen_4="尾数一，季正雄",
     zhongwen_5="打开",
-    yuewen_5="打開",
+    yuewen_5="打开",
     yuewen_revised_1="",
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="打開嚟睇下 身分證號碼：C532743",
-    note_3="Split the subtitle into two lines to match the natural "
-    "speech flow and clarify that the number is an ID number, as "
-    "in the Chinese subtitle. Added '身分證號碼：' before the number "
-    "for clarity and consistency.",
+    yuewen_revised_3="",
+    note_3="",
     yuewen_revised_4="",
     note_4="",
     yuewen_revised_5="",
     note_5="",
+    verified=True,
 )  # review_test_case_block_1
 review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="协议中有关香港的安排",
-    yuewen_1="协议中有关香港嘅安排",
+    yuewen_1="喺協議入面有關香港嘅安排",
     zhongwen_2="不是权宜之计",
     yuewen_2="唔係權宜之計",
     zhongwen_3="这些安排是长期的政策",
-    yuewen_3="呢啲安排係長期嘅政策。",
+    yuewen_3="係好longtermpolicies",
     zhongwen_4="它们将写入为香港制定的基本法",
-    yuewen_4="佢哋會寫入為香港制定嘅基本法入面",
+    yuewen_4="呢啲安排會寫入為香港制定嘅《基本法》",
     zhongwen_5="五十年不变",
     yuewen_5="五十年唔變",
     zhongwen_6="五十年不变",
@@ -57,37 +57,36 @@ review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_7="确保《联合声明》",
     yuewen_7="確保《聯合聲明》",
     zhongwen_8="不受干扰地全面贯彻实施",
-    yuewen_8="唔受干擾咁全面貫徹實施",
+    yuewen_8="唔受干擾咁全面貫徹落實",
     zhongwen_9="是中英两国的共同利益",
-    yuewen_9="係中英兩國共同嘅利益",
+    yuewen_9="係中英兩國嘅共同利益",
     zhongwen_10="也是我们双方共同的责任",
     yuewen_10="也是我们双方共同的责任",
     yuewen_revised_1="",
     note_1="",
-    yuewen_revised_2="唔係權宜之計。",
-    note_2="Added a period to match the sentence-final punctuation style "
-    "of the other subtitles.",
-    yuewen_revised_3="",
-    note_3="",
-    yuewen_revised_4="佢哋會寫入為香港制定嘅基本法入面。",
-    note_4="Added a period to match the sentence-final punctuation style "
-    "of the other subtitles.",
-    yuewen_revised_5="五十年唔變。",
-    note_5="Added a period to match the sentence-final punctuation style "
-    "of the other subtitles.",
-    yuewen_revised_6="五十年唔變。",
-    note_6="Added a period to match the sentence-final punctuation style "
-    "of the other subtitles.",
+    yuewen_revised_2="",
+    note_2="",
+    yuewen_revised_3="呢啲安排係長期嘅政策",
+    note_3="Replaced incorrect mixed English ('好longtermpolicies') with "
+    "proper Cantonese, added explicit subject '呢啲安排', and removed "
+    "the unnecessary intensifier to match the intended meaning "
+    "'These arrangements are long-term policy.'",
+    yuewen_revised_4="",
+    note_4="",
+    yuewen_revised_5="",
+    note_5="",
+    yuewen_revised_6="",
+    note_6="",
     yuewen_revised_7="",
     note_7="",
     yuewen_revised_8="",
     note_8="",
     yuewen_revised_9="",
     note_9="",
-    yuewen_revised_10="亦係我哋雙方共同嘅責任。",
-    note_10="Changed '也是我们双方共同的责任' to '亦係我哋雙方共同嘅責任。' to use proper "
-    "Cantonese pronouns and phrasing, and added a period for "
-    "consistency.",
+    yuewen_revised_10="亦都係我哋雙方共同嘅責任",
+    note_10="Converted the Mandarin-style sentence to natural Cantonese, "
+    "using '亦都係我哋…嘅責任' and Cantonese pronoun '我哋' for consistency "
+    "with the rest of the subtitles.",
 )  # review_test_case_block_2
 review_test_case_block_3 = ReviewTestCase.get_test_case_cls(17)(
     zhongwen_1="今天下午观塘发生械劫案",
