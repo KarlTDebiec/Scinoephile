@@ -35,7 +35,8 @@ class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
         indicating a complete mistranscription of the spoken Cantonese, return an empty
         string for yuewen.
         If you make changes, include a one-sentence note in English explaining them.
-        Include the Yale romanization of Cantonese for any character substitutions.
+        Include the Yale romanization of Cantonese with accent marks for any character
+        substitutions.
         If you make no changes, return an empty string for the note.
 
         Remember:

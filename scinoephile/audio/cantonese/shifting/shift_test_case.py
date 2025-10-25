@@ -24,7 +24,10 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty.
 
-        If the test case asks for 粤文 text to be shifted, difficulty is at least 1.
+        0: No change needed
+        1: Change needed
+        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
+        3: Not considered realistic for LLM to handle correctly
 
         Returns:
             Minimum difficulty level based on the test case properties

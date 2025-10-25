@@ -20,9 +20,9 @@ review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     zhongwen_1="﹣检查一下　　﹣收到",
     yuewen_1="﹣查下咩料　　﹣收到",
     zhongwen_2="﹣袋子里装什么？　　﹣总机",
-    yuewen_2="﹣袋入面袋住啲咩呀？　　﹣总机",
+    yuewen_2="﹣袋入面袋住啲咩呀？　　﹣總機",
     zhongwen_3="﹣打开来看看　　﹣身份证号码：C532743",
-    yuewen_3="查查个牌士：C532743",
+    yuewen_3="打開嚟睇下：C532743",
     zhongwen_4="尾数一，季正雄",
     yuewen_4="尾数1，季正雄",
     zhongwen_5="打开",
@@ -31,16 +31,15 @@ review_test_case_block_1 = ReviewTestCase.get_test_case_cls(5)(
     note_1="",
     yuewen_revised_2="",
     note_2="",
-    yuewen_revised_3="打開嚟睇下　　身份证号码：C532743",
-    note_3="Revised to include the missing instruction to open and look, "
-    "matching the sequence and context. The original 粤文 only had "
-    "the ID number check, omitting the 'open and look' part.",
+    yuewen_revised_3="打開嚟睇下 身分證號碼：C532743",
+    note_3="Split the subtitle into two lines to match the natural "
+    "speech flow and clarify that the number is an ID number, as "
+    "in the Chinese subtitle. Added '身分證號碼：' before the number "
+    "for clarity and consistency.",
     yuewen_revised_4="",
     note_4="",
-    yuewen_revised_5="打开",
-    note_5="Standardized the character to match the rest of the "
-    "subtitles, using simplified '打开' instead of traditional "
-    "'打開', for consistency.",
+    yuewen_revised_5="",
+    note_5="",
 )  # review_test_case_block_1
 review_test_case_block_2 = ReviewTestCase.get_test_case_cls(10)(
     zhongwen_1="协议中有关香港的安排",

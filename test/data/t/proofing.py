@@ -20,9 +20,10 @@ proof_test_cases_block_0 = [
         zhongwen="拿身份证出来",
         yuewen="攞我新闻证出嚟睇",
         yuewen_proofread="攞身份证出嚟",
-        note="新闻证 (san1 man4 zing3) is a mishearing of 身份证 (san1 fan6 "
-        "zing3); corrected to match the intended meaning.",
+        note="Corrected '新闻证' (sān màn jing) to '身份证' (sān fan jing) as it "
+        "is a plausible mishearing and matches the zhongwen meaning. ",
         difficulty=1,
+        prompt=True,
     ),
 ]  # proof_test_cases_block_0
 proof_test_cases_block_1 = [
@@ -35,36 +36,39 @@ proof_test_cases_block_1 = [
     ProofTestCase(
         zhongwen="﹣袋子里装什么？　　﹣总机",
         yuewen="﹣角度系袋住啲咩呀？　　﹣通话电台",
-        yuewen_proofread="﹣袋入面袋住啲咩呀？　　﹣总机",
-        note="Corrected '角度系袋住啲咩呀？' to '袋入面袋住啲咩呀？' as '角度' is a clear "
-        "mishearing of '袋入面'; changed '通话电台' to '总机' to match the "
-        "intended meaning, as '总机' and '通话电台' sound somewhat similar "
-        "in Cantonese and the context is about what's in the bag.",
+        yuewen_proofread="﹣袋入面袋住啲咩呀？　　﹣總機",
+        note="Corrected '角度系袋住啲咩呀' to '袋入面袋住啲咩呀' (doi6 jap6 min6 doi6 zyu6 "
+        "di1 me1 aa3) as '角度系' is a mishearing of '袋入面', and '通话电台' "
+        "to '總機' (zung2 gei1) as it matches the zhongwen and is a "
+        "plausible mishearing.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="﹣打开来看看　　﹣身份证号码：C532743",
         yuewen="查查个牌匙：C532743",
-        yuewen_proofread="查查个牌士：C532743",
-        note="Corrected '牌匙' to '牌士' as it is a plausible phonetic "
-        "confusion for '牌士', which is a common Cantonese term for "
-        "'身份证' (ID card).",
+        yuewen_proofread="打開嚟睇下：C532743",
+        note="Corrected '查查个牌匙' (chà chà go paai4 si4) to '打開嚟睇下' (daa2 "
+        "hoi1 lai4 tai2 haa5) as the original was a clear mishearing; "
+        "'牌匙' (paai4 si4) is a phonetic confusion for '睇下' (tai2 "
+        "haa5). Yale: daa2 hoi1 lai4 tai2 haa5.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="尾数一，季正雄",
         yuewen="尾数1，贵正红",
         yuewen_proofread="尾数1，季正雄",
-        note="Corrected '贵正红' to '季正雄' as it is a clear phonetic "
-        "mishearing of the name.",
+        note="Corrected '贵正红' to '季正雄' as it is a plausible phonetic "
+        "confusion (gwai3/guai3 vs. gwai3/zi3, zung6/hung4 vs. "
+        "hung4/hung4). Yale: gwai3/zi3 zing3 hung4.",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="打开",
         yuewen="打佢",
         yuewen_proofread="打開",
-        note="Corrected '打佢' (hit him/her) to '打開' (open), as '打佢' is a "
-        "likely mishearing of the correct word.",
+        note="Corrected '打佢' (daa2 keoi5) to '打開' (daa2 hoi1), as '打佢' is "
+        "a likely mishearing of '打開' which matches the zhongwen and "
+        "is a common phonetic confusion.",
         difficulty=1,
     ),
 ]  # proof_test_cases_block_1

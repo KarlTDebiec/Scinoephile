@@ -69,6 +69,7 @@ shift_test_cases_block_2 = [
         yuewen_1_shifted="嘅arrangementsforHongKongcontainedin",
         yuewen_2_shifted="",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="不是权宜之计",
@@ -78,6 +79,7 @@ shift_test_cases_block_2 = [
         yuewen_1_shifted="theagreement而notmeasuresofexpediency",
         yuewen_2_shifted="",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="这些安排是长期的政策",
@@ -87,6 +89,7 @@ shift_test_cases_block_2 = [
         yuewen_1_shifted="嘅好longtermpolicies",
         yuewen_2_shifted="Whichwillbe",
         difficulty=1,
+        verified=True,
     ),
     ShiftTestCase(
         zhongwen_1="它们将写入为香港制定的基本法",
