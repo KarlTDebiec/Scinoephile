@@ -133,6 +133,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="今日下昼观塘发生械劫案",
         note="Corrected '鞋劫案' (hàaih gip ngon) to '械劫案' (haaih gip ngon).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="四名持枪械匪徒",
@@ -140,6 +141,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="四名持枪械匪徒",
         note="Corrected '枪鞋' (cheung hàaih) to '枪械' (cheung hàaih).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="连环打劫物华街五间金行",
@@ -147,42 +149,45 @@ proof_test_cases_block_3 = [
         yuewen_proofread="连环打劫物华街五间金行",
         note="Corrected '立华街' (lahp wàh gāai) to '物华街' (maht wàh gāai).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="由观众提供片段，见到贼人离开的时候",
         yuewen="由观众提供片段，见到贼人离开嘅时候",
         yuewen_proofread="由观众提供片段，见到贼人离开嘅时候",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="在附近秘密执勤的飞虎队员发生枪战",
-        yuewen="同喺附近秘密执勤嘅飞虎队员发生枪战，双方",
-        yuewen_proofread="喺附近秘密执勤嘅飞虎队员发生枪战",
-        note="Removed extra conjunction '同' (tùng), as it's not present in "
-        "the zhongwen.",
-        difficulty=1,
+        yuewen="同喺附近秘密执勤嘅飞虎队员发生枪战",
+        yuewen_proofread="同喺附近秘密执勤嘅飞虎队员发生枪战",
+        note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="双方开枪过百发",
-        yuewen="开枪过白房，事件中",
+        yuewen="双方开枪过白房",
         yuewen_proofread="双方开枪过百发",
-        note="Corrected '白房' (baahk fòhng) to '百发' (baak faat) and added "
-        "'双方' (sēung fōng).",
+        note="Corrected '白房' (baahk fòng) to '百发' (baahk faat).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="事件中，两名途人及三名军装警员受伤",
-        yuewen="两名逃人及三名军人警察获杀，现间有狂，黑洞",
-        yuewen_proofread="",
-        note="The yuewen '逃人及三名军人警察获杀，现间有狂，黑洞' does not correspond to the "
-        "zhongwen and appears to be a complete mistranscription.",
+        yuewen="事件中，两名逃人及三名军人警察获杀",
+        yuewen_proofread="事件中，两名途人及三名军装警员受伤",
+        note="Corrected '逃人' (tòuh yàhn) to '途人' (tòuh yàhn), and '军人警察获杀' "
+        "(gwān yàhn gíng chaak wuhk saat) to '军装警员受伤' (gwān jōng gíng "
+        "yùhn sauh shāng).",
         difficulty=1,
     ),
     ProofTestCase(
         zhongwen="五间金行合共损失大约一千万",
-        yuewen="损失大约三次万",
-        yuewen_proofread="损失大约一千万",
-        note="Corrected '三次' (sāam chi) to '一千' (yāt chīn) to match '一千万'.",
+        yuewen="现间有狂，黑洞损失大约三次万",
+        yuewen_proofread="",
+        note="The yuewen transcription has no resemblance to the zhongwen "
+        "text, suggesting a complete mistranscription.",
         difficulty=1,
     ),
     ProofTestCase(
@@ -191,6 +196,7 @@ proof_test_cases_block_3 = [
         yuewen_proofread="警方相信，今次械劫案嘅主谋",
         note="Corrected '鞋劫案' (hàaih gip ngon) to '械劫案' (haaih gip ngon).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="是「头号通缉犯」叶国欢",
@@ -198,19 +204,22 @@ proof_test_cases_block_3 = [
         yuewen_proofread="系「头号通缉犯」叶国欢",
         note="Corrected '叶国宽' (yihp gwok kuān) to '叶国欢' (yihp gwok hwān).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="一夫当关，万夫莫敌！",
-        yuewen="一孤当关，万夫莫敌！真系威吓",
-        yuewen_proofread="一夫当关，万夫莫敌！真系威吓",
+        yuewen="一孤当关，万夫莫敌！",
+        yuewen_proofread="一夫当关，万夫莫敌！",
         note="Corrected '孤' (gū) to '夫' (fū).",
         difficulty=1,
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="真是威风！欢哥！",
-        yuewen="宽哥！",
-        yuewen_proofread="威风！欢哥！",
-        note="Added '威风！' as it was missing from the original yuewen.",
+        yuewen="真系威吓！宽哥！",
+        yuewen_proofread="真系威风！欢哥！",
+        note="Corrected '威吓' (wāi haak) to '威风' (wāi fūng) and '宽哥' (fūn "
+        "gō) to '欢哥' (fūn gō).",
         difficulty=1,
     ),
     ProofTestCase(
@@ -222,11 +231,9 @@ proof_test_cases_block_3 = [
     ),
     ProofTestCase(
         zhongwen="都说放多些报纸！",
-        yuewen="都话，贱到啲报纸㗎喇！",
-        yuewen_proofread="",
-        note="The yuewen transcription does not match the zhongwen, "
-        "indicating a complete mistranscription of the spoken "
-        "Cantonese.",
+        yuewen="都话贱到啲报纸㗎喇！",
+        yuewen_proofread="都话多到啲报纸㗎喇！",
+        note="Corrected '贱到' (jihn dou) to '多到' (dōu dou).",
         difficulty=1,
     ),
     ProofTestCase(
@@ -234,12 +241,14 @@ proof_test_cases_block_3 = [
         yuewen="睇吓睇吓！周围都系血！",
         yuewen_proofread="睇吓睇吓！周围都系血！",
         note="",
+        verified=True,
     ),
     ProofTestCase(
         zhongwen="拿去吧，混蛋！",
         yuewen="攞去啦，仆街！",
         yuewen_proofread="攞去啦，仆街！",
         note="",
+        verified=True,
     ),
 ]  # proof_test_cases_block_3
 proof_test_cases_block_4 = []  # proof_test_cases_block_4
