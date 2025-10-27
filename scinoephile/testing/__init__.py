@@ -22,14 +22,14 @@ test_data_root = package_root.parent / "test" / "data"
 
 
 async def _replace(
-    path: Path, varible: str, pattern: re.Pattern[str], replacement: str
+    path: Path, variable: str, pattern: re.Pattern[str], replacement: str
 ):
     contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
-    replacement = f"{varible} = {replacement}  # {varible}"
+    replacement = f"{variable} = {replacement}  # {variable}"
     replacement = replacement.replace("\\n", "\\\\n")
     new_contents = pattern.sub(replacement, contents)
     await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
-    info(f"Replaced test cases {varible} in {path.name}.")
+    info(f"Replaced test cases {variable} in {path.name}.")
 
 
 def flaky(inner: partial | None = None) -> partial:
