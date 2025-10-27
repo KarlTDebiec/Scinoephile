@@ -29,15 +29,15 @@ class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
         )
 
     def get_min_difficulty(self) -> int:
-        """Get minimum difficulty.
+        """Get minimum difficulty based on the test case properties.
 
-        If the test case asks for the 粤文 text to have punctuation or spacing added,
-        difficulty is at least 1. If the test case asks for the 粤文 text to have
-        additional punctuation or spacing not present in the 中文 text added,
-        difficulty is at least 2.
+        0: No change needed
+        1: Change needed
+        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
+        3: Not considered realistic for LLM to handle correctly
 
         Returns:
-            Minimum difficulty level based on the test case properties
+            minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
         if remove_non_punc_and_whitespace(self.yuewen_merged):
