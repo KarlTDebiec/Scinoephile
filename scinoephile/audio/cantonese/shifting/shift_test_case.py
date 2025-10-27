@@ -19,7 +19,10 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     @cached_property
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""
-        return self.yuewen_1_shifted == "" and self.yuewen_2_shifted == ""
+        return (
+            self.yuewen_1 == self.yuewen_1_shifted
+            and self.yuewen_2 == self.yuewen_2_shifted
+        )
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty.
@@ -40,21 +43,13 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftTestCase:
         """Ensure query and answer are consistent with one another."""
-        if (
-            self.yuewen_1 == self.yuewen_1_shifted
-            and self.yuewen_2 == self.yuewen_2_shifted
-        ):
-            raise ValueError(
-                "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's "
-                "yuewen_1 and yuewen_2; if no shift is needed, yuewen_1_shifted and "
-                "yuewen_2_shifted must be empty strings."
-            )
         expected = self.yuewen_1 + self.yuewen_2
         received = self.yuewen_1_shifted + self.yuewen_2_shifted
-        if not self.noop and expected != received:
+        if expected != received:
             raise ValueError(
-                "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not "
-                "match query's concatenated yuewen_1 and yuewen_2:\n"
+                "Answer's concatenated shifted 粤文 subtitle 1 and shifted 粤文 "
+                "subtitle 2 does not match query's concatenated 粤文 subtitle 1 and "
+                "粤文 subtitle 2:\n"
                 f"Expected: {expected}\n"
                 f"Received: {received}"
             )
