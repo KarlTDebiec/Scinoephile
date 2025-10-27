@@ -43,7 +43,7 @@ def format_field(name: str, value: object) -> str:
     escaped_lines = escaped.splitlines()
     for escaped_line in escaped_lines:
         wrapped_lines = get_wrapped_lines(escaped_line)
-        wrapped_sections += [wrapped_lines]
+        wrapped_sections.append(wrapped_lines)
     # Add a trailing newline to all but the last section
     for i in range(len(wrapped_sections) - 1):
         wrapped_sections[i][-1] += "\\n"
