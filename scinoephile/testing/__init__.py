@@ -21,7 +21,7 @@ from scinoephile.testing.sync_test_case import SyncTestCase
 test_data_root = package_root.parent / "test" / "data"
 
 
-async def _replace(
+async def _replace_variable_in_test_case_file(
     path: Path, varible: str, pattern: re.Pattern[str], replacement: str
 ):
     contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
@@ -105,7 +105,7 @@ async def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer)
     """
     pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
     replacement = queryer.encountered_test_cases_source_str
-    await _replace(path, variable, pattern, replacement)
+    await _replace_variable_in_test_case_file(path, variable, pattern, replacement)
     await asyncio.to_thread(queryer.clear_encountered_test_cases)
 
 
@@ -121,7 +121,7 @@ async def update_dynamic_test_cases(
     """
     pattern = re.compile(rf"{variable}\s*=(.*?)# {variable}", re.DOTALL)
     replacement = queryer.encountered_test_cases_source_str
-    await _replace(path, variable, pattern, replacement)
+    await _replace_variable_in_test_case_file(path, variable, pattern, replacement)
     await asyncio.to_thread(queryer.clear_encountered_test_cases)
 
 
