@@ -17,26 +17,46 @@ def format_field(name: str, value: object) -> str:
     Returns:
         Formatted string representation of the field
     """
-    if isinstance(value, str):
-        escaped = value.replace("\\", "\\\\").replace('"', '\\"')
-        if len(escaped) > 60 or "\n" in escaped:
-            wrapped = textwrap.wrap(
-                escaped,
-                width=60,
-                break_long_words=False,
-                break_on_hyphens=False,
-            )
-            # Add a trailing space to all but the last line
-            for i in range(len(wrapped) - 1):
-                wrapped[i] += " "
-            joined_lines = "\n".join(
-                [f'    {name}="{wrapped[0]}"']
-                + [f'    {" " * (len(name) + 1)}"{line}"' for line in wrapped[1:]]
-            )
-            return f"{joined_lines},"
-        else:
-            return f'    {name}="{escaped}",'
-    return f"    {name}={value!r},"
+
+    def get_wrapped_lines(value: str) -> list[str]:
+        if len(value) <= 60:
+            return [value]
+        wrapped_lines = textwrap.wrap(
+            value,
+            width=60,
+            break_long_words=False,
+            break_on_hyphens=False,
+        )
+        # Add a trailing space to all but the last line
+        for i in range(len(wrapped_lines) - 1):
+            wrapped_lines[i] += " "
+        return wrapped_lines
+
+    if not isinstance(value, str):
+        return f"    {name}={value!r},"
+
+    if value == "":
+        return f'    {name}="",'
+
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    wrapped_sections = []
+    escaped_lines = escaped.splitlines()
+    for escaped_line in escaped_lines:
+        wrapped_lines = get_wrapped_lines(escaped_line)
+        wrapped_sections += [wrapped_lines]
+    # Add a trailing newline to all but the last section
+    for i in range(len(wrapped_sections) - 1):
+        wrapped_sections[i][-1] += "\\n"
+    final_lines = [line for section in wrapped_sections for line in section]
+
+    final = (
+        "\n".join(
+            [f'    {name}="{final_lines[0]}"']
+            + [f'    {" " * (len(name) + 1)}"{line}"' for line in final_lines[1:]]
+        )
+        + ","
+    )
+    return final
 
 
 def make_hashable(value: Any) -> Any:
