@@ -5,24 +5,11 @@
 from __future__ import annotations
 
 import asyncio
-import re
-from logging import info
 from pathlib import Path
 
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
-
-
-async def _replace(
-    path: Path, varible: str, pattern: re.Pattern[str], replacement: str
-):
-    contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
-    replacement = f"{varible} = {replacement}  # {varible}"
-    replacement = replacement.replace("\\n", "\\\\n")
-    new_contents = pattern.sub(replacement, contents)
-    await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
-    info(f"Replaced test cases {varible} in {path.name}.")
+from scinoephile.testing import update_dynamic_test_cases, update_test_cases
 
 
 async def update_all_test_cases(
@@ -73,38 +60,6 @@ async def update_all_test_cases(
     await asyncio.gather(*tasks)
 
 
-async def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
-    """Update test cases.
-
-    Arguments:
-        path: Path to file containing test cases
-        variable: Name of the variable containing test cases
-        queryer: LLMQueryer instance to query for test cases
-    """
-    pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
-    replacement = queryer.encountered_test_cases_source_str
-    await _replace(path, variable, pattern, replacement)
-    await asyncio.to_thread(queryer.clear_encountered_test_cases)
-
-
-async def update_dynamic_test_cases(
-    path: Path, variable: str, queryer: DynamicLLMQueryer
-):
-    """Update dynamic test cases.
-
-    Arguments:
-        path: Path to file containing test cases
-        variable: Name of the variable containing test case
-        queryer: DynamicLLMQueryer instance to query for test cases
-    """
-    pattern = re.compile(rf"{variable}\s*=(.*?)# {variable}", re.DOTALL)
-    replacement = queryer.encountered_test_cases_source_str
-    await _replace(path, variable, pattern, replacement)
-    await asyncio.to_thread(queryer.clear_encountered_test_cases)
-
-
 __all__ = [
-    "update_dynamic_test_cases",
     "update_all_test_cases",
-    "update_test_cases",
 ]

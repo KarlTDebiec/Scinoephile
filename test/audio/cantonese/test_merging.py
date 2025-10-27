@@ -7,8 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.audio.cantonese.merging import Merger, MergeTestCase
-from scinoephile.testing import test_data_root
-from scinoephile.testing.mark import skip_if_ci
+from scinoephile.testing import skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 

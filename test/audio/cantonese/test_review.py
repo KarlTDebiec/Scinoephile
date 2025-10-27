@@ -8,8 +8,7 @@ import pytest
 
 from scinoephile.audio.cantonese.review import Reviewer
 from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
-from scinoephile.testing import test_data_root
-from scinoephile.testing.mark import flaky, skip_if_ci
+from scinoephile.testing import flaky, skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
 
 
