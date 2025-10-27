@@ -532,8 +532,7 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        models = get_review_models(alignment)
-        query_cls, answer_cls, test_case_cls = models
+        query_cls, answer_cls, test_case_cls = get_review_models(alignment)
 
         # Query for 粤文 review
         query = get_review_query(alignment, query_cls)

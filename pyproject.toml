@@ -11,6 +11,7 @@ requires-python = ">=3.13"
 dependencies = [
     "aiofiles>=24.1.0",
     "audioop-lts>=0.2.1",
+    "black>=25.9.0",
     "ffmpeg-python>=0.2.0",
     "jieba>=0.42.1",
     "numba>=0.61.0",

@@ -19,6 +19,7 @@ async def _replace(
 ):
     contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
     replacement = f"{varible} = {replacement}  # {varible}"
+    replacement = replacement.replace("\\n", "\\\\n")
     new_contents = pattern.sub(replacement, contents)
     await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
     info(f"Replaced test cases {varible} in {path.name}.")
