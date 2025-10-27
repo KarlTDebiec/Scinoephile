@@ -14,9 +14,7 @@ from typing import Any
 
 from pytest import fixture, mark, param
 
-from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.common import package_root
-from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
 from scinoephile.testing.sync_test_case import SyncTestCase
 
