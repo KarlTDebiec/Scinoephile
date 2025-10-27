@@ -22,7 +22,7 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         return self.yuewen == self.yuewen_proofread
 
     def get_min_difficulty(self) -> int:
-        """Get minimum difficulty.
+        """Get minimum difficulty based on the test case properties.
 
         0: No change needed
         1: Change needed
@@ -30,7 +30,7 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         3: Not considered realistic for LLM to handle correctly
 
         Returns:
-            Minimum difficulty level based on the test case properties
+            minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
         if not self.noop:
