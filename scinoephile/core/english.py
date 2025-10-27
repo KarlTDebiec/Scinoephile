@@ -87,7 +87,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"[^\S\n]*{\\i0}[^\S\n]*", r"{\\i0}", cleaned)
 
     # Collapse adjacent <\i><i>
-    cleaned = re.sub(r"\{\\i0\}\s*\{\\i1\}", "", cleaned)
+    cleaned = re.sub(r"\{\\i0\}[ \t]*\{\\i1\}", "", cleaned)
 
     # Check if any substantive text remains
     if not cleaned:
