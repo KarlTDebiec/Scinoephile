@@ -8,6 +8,7 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import test_data_root
+from test.data.kob.test_cases.proofing import kob_proof_test_cases
 
 input_dir = test_data_root / "kob" / "input"
 output_dir = test_data_root / "kob" / "output"
@@ -106,4 +107,5 @@ ___all__ = [
     "kob_eng_flatten",
     "kob_eng_clean_flatten",
     "kob_yue_hans_eng",
+    "kob_proof_test_cases",
 ]

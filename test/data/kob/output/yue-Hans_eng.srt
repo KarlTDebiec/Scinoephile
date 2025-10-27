@@ -26,7 +26,7 @@ His name!
 6
 00:03:13,777 --> 00:03:17,447
 好叻呀！原来少爷识写自己个名㖞
-Great! Young master knows how to write his name!
+Great! Young master know how to write his name!
 
 7
 00:03:17,530 --> 00:03:18,656
@@ -106,7 +106,7 @@ He knows writing now,
 22
 00:04:01,616 --> 00:04:03,493
 他朝必成大学士
-he will be a scholar one day
+he will be scholar one day
 
 23
 00:04:03,576 --> 00:04:04,828
@@ -196,7 +196,7 @@ I used to depend on myself
 40
 00:04:40,196 --> 00:04:41,990
 成十万两一张，悭住使呀吓
-The cheque is worth 100,000 taels! Don't be an extravagant spender
+The cheques worths 100,000 taels! Don't be an extravagant spender
 
 41
 00:04:42,782 --> 00:04:44,576
@@ -1151,7 +1151,7 @@ Let's go
 231
 00:13:09,330 --> 00:13:12,667
 老爷！呢个玩唔起嘅，见好就收喇
-Master, you can't fool this guy. Let's go
+Master, you can't fool this guy Let's go
 
 232
 00:13:13,668 --> 00:13:14,294
@@ -1721,7 +1721,7 @@ You have flat figure, where are your busts?
 345
 00:20:26,726 --> 00:20:29,604
 咁早未起身呀嘛⋯
-It's early in the morning, they haven't woken up yet
+It's early in the morning, they haven't waken up yet
 
 346
 00:20:30,188 --> 00:20:31,648
@@ -2396,7 +2396,7 @@ Last call
 480
 00:32:01,963 --> 00:32:04,966
 苏察哈尔灿一赔十，博达尔多一赔一
-So, one to ten. Po, one to one
+So, one to ten Po, one to one
 
 481
 00:32:05,800 --> 00:32:09,054
@@ -3831,7 +3831,7 @@ You two can only be beggars
 767
 00:48:19,691 --> 00:48:21,985
 我只系奉本子办事！人嚟！
-I am carrying my duty only. Men!
+I am carrying my duty only Men!
 
 768
 00:48:22,068 --> 00:48:22,652
@@ -5501,7 +5501,7 @@ Now, I will teach you the "Sleeping Disciple's Fist"!
 1101
 01:08:05,335 --> 01:08:07,796
 希望你好好利用，接招喇！
-Hope you can make good use of it. Come on
+Hope you can make good use of it Come on
 
 1102
 01:08:13,218 --> 01:08:17,597
@@ -5606,7 +5606,7 @@ Let's chase them
 1122
 01:11:04,973 --> 01:11:08,184
 唔驶追喇！皇上就快要出发
-Stop. The Emperor is setting off soon
+Stop The Emperor is setting off soon
 
 1123
 01:11:09,769 --> 01:11:10,895
@@ -6910,7 +6910,7 @@ Chan!
 1385
 01:34:21,202 --> 01:34:23,496
 我谂到喇，原来头十七掌融合埋一齐
-I've got it. Just mix the 17 stances,
+I've got it Just mix the 17 stances,
 
 1386
 01:34:23,580 --> 01:34:24,581

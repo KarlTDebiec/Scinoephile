@@ -8,6 +8,7 @@ import re
 from copy import deepcopy
 from logging import info
 
+from scinoephile.core.english.english_proofer import EnglishProofer
 from scinoephile.core.series import Series
 
 
@@ -136,6 +137,7 @@ def _get_english_text_flattened(text: str) -> str:
 
 
 __all__ = [
+    "EnglishProofer",
     "get_english_cleaned",
     "get_english_flattened",
 ]

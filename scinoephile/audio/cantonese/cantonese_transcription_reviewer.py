@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Class for reviewing and refining Cantonese transcriptions."""
+"""Reviews and refines Cantonese transcriptions."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ from scinoephile.testing import test_data_root
 
 
 class CantoneseTranscriptionReviewer:
-    """Class for reviewing and refining Cantonese transcriptions."""
+    """Reviews and refines Cantonese transcriptions."""
 
     def __init__(
         self,
@@ -118,8 +118,6 @@ class CantoneseTranscriptionReviewer:
             Arguments:
                 block_idx: Index of the block to process
             """
-            # if block_idx > 50:
-            #     return
             yuewen_block = yuewen.blocks[block_idx]
             zhongwen_block = zhongwen.blocks[block_idx]
             async with semaphore:
