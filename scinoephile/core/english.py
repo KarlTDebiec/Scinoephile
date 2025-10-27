@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-from logging import info
-
 import re
 from copy import deepcopy
+from logging import info
 
 from scinoephile.core.series import Series
 
