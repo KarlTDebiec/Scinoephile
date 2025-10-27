@@ -1135,7 +1135,6 @@ source = { editable = "." }
 dependencies = [
     { name = "aiofiles" },
     { name = "audioop-lts" },
-    { name = "black" },
     { name = "ffmpeg-python" },
     { name = "jieba" },
     { name = "numba" },
@@ -1159,6 +1158,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "black" },
     { name = "pyright" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -1170,7 +1170,6 @@ dev = [
 requires-dist = [
     { name = "aiofiles", specifier = ">=24.1.0" },
     { name = "audioop-lts", specifier = ">=0.2.1" },
-    { name = "black", specifier = ">=25.9.0" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "jieba", specifier = ">=0.42.1" },
     { name = "numba", specifier = ">=0.61.0" },
@@ -1194,6 +1193,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "black", specifier = ">=25.9.0" },
     { name = "pyright", specifier = ">=1.1.396" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-cov", specifier = ">=6.0.0" },

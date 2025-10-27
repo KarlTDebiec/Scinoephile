@@ -11,7 +11,6 @@ requires-python = ">=3.13"
 dependencies = [
     "aiofiles>=24.1.0",
     "audioop-lts>=0.2.1",
-    "black>=25.9.0",
     "ffmpeg-python>=0.2.0",
     "jieba>=0.42.1",
     "numba>=0.61.0",
@@ -38,6 +37,7 @@ scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 
 [dependency-groups]
 dev = [
+    "black>=25.9.0",
     "pyright>=1.1.396",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
