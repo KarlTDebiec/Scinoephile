@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
+from logging import info
+
 import re
 from copy import deepcopy
-from logging import info
 
 from scinoephile.core.series import Series
 
@@ -61,6 +62,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Revert strange substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
+    # Remove ASS hard-space \h
+    cleaned = re.sub(r"\\h", "", cleaned)
+
     # Remove closed caption annotations ([...])
     cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned, flags=re.DOTALL).strip()
 
@@ -81,6 +85,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Remove whitespace around <i> and <\i>
     cleaned = re.sub(r"[^\S\n]*{\\i1}[^\S\n]*", r"{\\i1}", cleaned)
     cleaned = re.sub(r"[^\S\n]*{\\i0}[^\S\n]*", r"{\\i0}", cleaned)
+
+    # Collapse adjacent <\i><i>
+    cleaned = re.sub(r"\{\\i0\}\s*\{\\i1\}", "", cleaned)
 
     # Check if any substantive text remains
     if not cleaned:
