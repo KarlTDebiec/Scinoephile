@@ -593,6 +593,7 @@ proof_test_case_block_30 = EnglishProofTestCase.get_test_case_cls(4)(
 proof_test_case_block_31 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="Shit, we are late",
     subtitle_2="That Manchurian should be blamed",
+    verified=True,
 )  # proof_test_case_block_31
 # noinspection PyArgumentList
 proof_test_case_block_32 = EnglishProofTestCase.get_test_case_cls(6)(
@@ -602,6 +603,7 @@ proof_test_case_block_32 = EnglishProofTestCase.get_test_case_cls(6)(
     subtitle_4="Let's kill him",
     subtitle_5="Forget it,\nhe doesn't mean to bother us",
     subtitle_6="Let him go",
+    verified=True,
 )  # proof_test_case_block_32
 # noinspection PyArgumentList
 proof_test_case_block_33 = EnglishProofTestCase.get_test_case_cls(9)(
@@ -618,6 +620,7 @@ proof_test_case_block_33 = EnglishProofTestCase.get_test_case_cls(9)(
     revised_9="Let's go, if you want to get married",
     note_9="Changed 'marry' to 'get married' for natural phrasing.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_33
 # noinspection PyArgumentList
 proof_test_case_block_34 = EnglishProofTestCase.get_test_case_cls(11)(
@@ -645,6 +648,7 @@ proof_test_case_block_34 = EnglishProofTestCase.get_test_case_cls(11)(
     revised_8="Don't go around if you haven't\nput on your makeup yet.",
     note_8="Changed 'made up' to 'put on your makeup' for clarity and naturalness.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_34
 # noinspection PyArgumentList
 proof_test_case_block_35 = EnglishProofTestCase.get_test_case_cls(67)(
@@ -715,16 +719,18 @@ proof_test_case_block_35 = EnglishProofTestCase.get_test_case_cls(67)(
     subtitle_65="Magic?",
     subtitle_66="Mr Chiu, then show me your magic",
     subtitle_67="Yes, Your Majesty",
-    revised_2="She... she is going to Peking.",
-    note_2="Added period at the end for consistency.",
     revised_5="Where should I put my pigtail?",
     note_5="Changed 'pig-tail' to 'pigtail'.",
     revised_9="I decided to join the examination for the\nScholar of Martial Arts.",
     note_9="Capitalized 'Scholar' for consistency with other uses.",
     revised_12="For our family, you should do that.",
     note_12="Changed 'the family of us' to 'our family' for natural phrasing.",
-    revised_13="Don't misunderstand it,\nI do it not for no one.",
-    note_13="No change needed; double negative is used for emphasis in dialogue.",
+    revised_13="Don't misunderstand it,\nI'm not doing this for anyone,",
+    note_13="Changed 'I do it not for no one' to 'I'm not doing this for "
+    "anyone' and ended with a comma to connect to subsequent "
+    "line.",
+    revised_14="but for a woman",
+    note_14="Changed 'But' to lowercase 'but' to connect with previous line.",
     revised_16="For a girl, you want to be the Scholar\nof Martial Arts!",
     note_16="Capitalized 'Scholar' for consistency.",
     revised_22="I admire you!",
@@ -737,13 +743,15 @@ proof_test_case_block_35 = EnglishProofTestCase.get_test_case_cls(67)(
     note_36="Changed 'clothe' to 'cloth'.",
     revised_38="But I am not small.",
     note_38="Changed 'no' to 'not'.",
-    revised_46="Please, work hard, men!",
-    note_46="Added comma for clarity.",
+    revised_53="or how can I eat lychee in Peking?",
+    note_53="Changed 'Lychee' to lowercase.",
     revised_56="Take care of my lychee,\nyou fathead!",
     note_56="Changed 'Lychee' to lowercase and 'fat headed' to 'fathead'.",
     revised_61="Hope you will serve our Ching Dynasty\nwholeheartedly.",
     note_61="Changed 'whole-heartedly' to 'wholeheartedly'.",
-    difficulty=1,
+    difficulty=2,
+    prompt=True,
+    verified=True,
 )  # proof_test_case_block_35
 # noinspection PyArgumentList
 proof_test_case_block_36 = None  # proof_test_case_block_36

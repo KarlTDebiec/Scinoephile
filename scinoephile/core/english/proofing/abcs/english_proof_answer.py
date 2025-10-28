@@ -27,7 +27,7 @@ class EnglishProofAnswer(Answer, ABC):
         for idx in range(size):
             answer_fields[f"revised_{idx + 1}"] = (
                 str,
-                Field(..., description=f"Revised subtitle {idx + 1}"),
+                Field("", description=f"Revised subtitle {idx + 1}"),
             )
             answer_fields[f"note_{idx + 1}"] = (
                 str,
