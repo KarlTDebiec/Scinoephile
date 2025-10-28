@@ -975,25 +975,114 @@ proof_test_case_block_50 = EnglishProofTestCase.get_test_case_cls(1)(
     verified=True,
 )  # proof_test_case_block_50
 # noinspection PyArgumentList
-proof_test_case_block_51 = None  # proof_test_case_block_51
+proof_test_case_block_51 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="The candidates please\nget on the horses",
+    revised_1="Candidates, please get on the horses.",
+    note_1="Removed 'The' for natural phrasing and added a comma for clarity.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_51
 # noinspection PyArgumentList
-proof_test_case_block_52 = None  # proof_test_case_block_52
+proof_test_case_block_52 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Mr Chiu",
+    verified=True,
+)  # proof_test_case_block_52
 # noinspection PyArgumentList
-proof_test_case_block_53 = None  # proof_test_case_block_53
+proof_test_case_block_53 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Take these with you, may be you will\nfind them useful",
+    subtitle_2="Here comes the 2nd round",
+    revised_1="Take these with you, maybe you will\nfind them useful",
+    note_1="Changed 'may be' to 'maybe'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_53
 # noinspection PyArgumentList
-proof_test_case_block_54 = None  # proof_test_case_block_54
+proof_test_case_block_54 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="They trick again",
+    subtitle_2="It's corrupt!\nMay I give up the betting?",
+    revised_1="They're tricking us again.",
+    note_1="Changed 'They trick again' to 'They're tricking us again.' "
+    "for correct tense and natural phrasing.",
+    revised_2="It's corrupt!\nMay I give up my bet?",
+    note_2="Changed 'the betting' to 'my bet' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_54
 # noinspection PyArgumentList
-proof_test_case_block_55 = None  # proof_test_case_block_55
+proof_test_case_block_55 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Chan won this race",
+    subtitle_2="Did you tear the ticket?",
+    subtitle_3="Not yet",
+    verified=True,
+)  # proof_test_case_block_55
 # noinspection PyArgumentList
-proof_test_case_block_56 = None  # proof_test_case_block_56
+proof_test_case_block_56 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Are you kidding?",
+    verified=True,
+)  # proof_test_case_block_56
 # noinspection PyArgumentList
-proof_test_case_block_57 = None  # proof_test_case_block_57
+proof_test_case_block_57 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Once again?!",
+    verified=True,
+)  # proof_test_case_block_57
 # noinspection PyArgumentList
-proof_test_case_block_58 = None  # proof_test_case_block_58
+proof_test_case_block_58 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="OK, let's start from the very beginning,\n"
+    "I'll fight with single hand and leg",
+    subtitle_2="I won't take your advantage",
+    revised_1="OK, let's start from the very beginning.\n"
+    "I'll fight with a single hand and leg.",
+    note_1="Added 'a' before 'single hand and leg' and split into two "
+    "sentences for clarity.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_58
 # noinspection PyArgumentList
-proof_test_case_block_59 = None  # proof_test_case_block_59
+proof_test_case_block_59 = EnglishProofTestCase.get_test_case_cls(11)(
+    subtitle_1="How can you use\nsuch dirty stance?",
+    subtitle_2="Have you waken?",
+    subtitle_3="Bravo! He won",
+    subtitle_4="Have some tea",
+    subtitle_5="All the best!",
+    subtitle_6="What did",
+    subtitle_7="you say?",
+    subtitle_8="It's English",
+    subtitle_9="It's English",
+    subtitle_10="There is no regulation stating that\nweapon is not allowed",
+    subtitle_11="You fell down first,\nPo is the winner again",
+    revised_2="Have you woken up?",
+    note_2="Changed 'waken' to 'woken up' for correct usage.",
+    revised_3="Bravo! He won!",
+    note_3="Added exclamation mark for consistency and emphasis.",
+    revised_10="There is no regulation stating that\nweapons are not allowed.",
+    note_10="Changed 'weapon is' to 'weapons are' for subject-verb "
+    "agreement and natural phrasing.",
+    revised_11="You fell down first,\nso Po is the winner again.",
+    note_11="Added 'so' for clarity and natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_59
 # noinspection PyArgumentList
-proof_test_case_block_60 = None  # proof_test_case_block_60
+proof_test_case_block_60 = EnglishProofTestCase.get_test_case_cls(12)(
+    subtitle_1="Damn you Cheng!",
+    subtitle_2="You betrayed me!",
+    subtitle_3="I will beat you to death",
+    subtitle_4="if I see you again",
+    subtitle_5="Forget it, you won't\nsee him anymore",
+    subtitle_6="Why?",
+    subtitle_7="I am now going to kill him!",
+    subtitle_8="I don't have 2 million to lose!",
+    subtitle_9="Just kidding",
+    subtitle_10="You shameless",
+    subtitle_11="Po is the Scholar of Martial Arts",
+    subtitle_12="I did win! Objection",
+    revised_10="You are shameless",
+    note_10="Added 'are' to complete the sentence: 'You are shameless'.",
+    revised_12="I did win! Objection!",
+    note_12="Added an exclamation mark after 'Objection' for emphasis and consistency.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_60
 # noinspection PyArgumentList
 proof_test_case_block_61 = None  # proof_test_case_block_61
 # noinspection PyArgumentList
