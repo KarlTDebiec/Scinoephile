@@ -76,6 +76,25 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
             ),
         )
 
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on the test case properties.
+
+        0: No change needed
+        1: Change needed
+        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
+        3: Not considered realistic for LLM to handle correctly
+
+        Returns:
+            minimum difficulty level based on the test case properties
+        """
+        min_difficulty = super().get_min_difficulty()
+        for idx in range(1, self.size + 1):
+            subtitle = getattr(self, f"subtitle_{idx}")
+            revised = getattr(self, f"revised_{idx}")
+            if revised != "":
+                min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
     @model_validator(mode="after")
     def validate_test_case(self) -> EnglishProofTestCase:
         """Ensure query and answer are consistent with one another."""
