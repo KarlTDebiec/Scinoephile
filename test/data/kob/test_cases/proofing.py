@@ -2525,73 +2525,432 @@ proof_test_case_block_160 = EnglishProofTestCase.get_test_case_cls(1)(
     verified=True,
 )  # proof_test_case_block_160
 # noinspection PyArgumentList
-proof_test_case_block_161 = None  # proof_test_case_block_161
+proof_test_case_block_161 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="So Chan, what are you doing?",
+    subtitle_2="Nothing, I just want\nto beg for money",
+    subtitle_3="Shit, do you want to be killed",
+    subtitle_4="It's you who will be killed",
+    subtitle_5="Chiu wants to raise a rebel,",
+    subtitle_6="he is going to\nassassinate the king",
+    subtitle_7="You fat-headed",
+    subtitle_8="Who do you think you are?",
+    subtitle_9="How dare you frame the courtier?",
+    subtitle_10="I will kill you if you step forward",
+    revised_3="Shit, do you want to get killed?",
+    note_3="Changed 'be killed' to 'get killed' for natural phrasing and "
+    "added a question mark.",
+    revised_7="You fathead!",
+    note_7="Changed 'fat-headed' to 'fathead' and added exclamation mark "
+    "for natural insult.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_161
 # noinspection PyArgumentList
-proof_test_case_block_162 = None  # proof_test_case_block_162
+proof_test_case_block_162 = EnglishProofTestCase.get_test_case_cls(19)(
+    subtitle_1="Chan, how can we fight with them?",
+    subtitle_2="- Senior\n- Yes",
+    subtitle_3="Where are the rest of our men?",
+    subtitle_4="They are coming",
+    subtitle_5="We have no time,",
+    subtitle_6="you stay here to wait for the others",
+    subtitle_7="I will go first",
+    subtitle_8="I will follow",
+    subtitle_9="Be serious",
+    subtitle_10="Master, don't worry",
+    subtitle_11="Am I going to die?",
+    subtitle_12="Say something lucky, OK?",
+    subtitle_13="Sure! Happy birthday to you...",
+    subtitle_14="Happy birthday to you...",
+    subtitle_15="Happy birthday to you...",
+    subtitle_16="That's enough",
+    subtitle_17="I haven't finished",
+    subtitle_18="Go on after I left",
+    subtitle_19="Sure",
+    revised_18="Go on after I've left",
+    note_18="Changed 'I left' to 'I've left' for correct tense.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_162
 # noinspection PyArgumentList
-proof_test_case_block_163 = None  # proof_test_case_block_163
+proof_test_case_block_163 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="There is smoke ahead,\nsomeone must have alarmed them",
+    verified=True,
+)  # proof_test_case_block_163
 # noinspection PyArgumentList
-proof_test_case_block_164 = None  # proof_test_case_block_164
+proof_test_case_block_164 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Get ready the Unicom Smoke",
+    subtitle_2="Yes",
+    subtitle_3="Attack the main camp",
+    revised_1="Get the Kirin Smokes ready",
+    note_1="Changed word order for natural phrasing; corrected 'Unicom "
+    "Smoke' to 'Kirin Smokes'.",
+    difficulty=3,
+    verified=True,
+)  # proof_test_case_block_164
 # noinspection PyArgumentList
-proof_test_case_block_165 = None  # proof_test_case_block_165
+proof_test_case_block_165 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="Rebel! Help!",
+    subtitle_2="They should be killed",
+    subtitle_3="The one who didn't kill you\nshould be killed",
+    subtitle_4="Shit, the poisoned smoke",
+    subtitle_5="is blowing to the Royal camp",
+    revised_5="is blowing toward the Royal camp",
+    note_5="Changed 'to' to 'toward' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_165
 # noinspection PyArgumentList
-proof_test_case_block_166 = None  # proof_test_case_block_166
+proof_test_case_block_166 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="No, the wind direction changed",
+    subtitle_2="Yes, wait for me",
+    subtitle_3="If the beggars don't retreat now,\nwe will kill with no mercy",
+    revised_3="If the beggars don't retreat now,\nwe will kill without mercy",
+    note_3="Changed 'with no mercy' to 'without mercy' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_166
 # noinspection PyArgumentList
-proof_test_case_block_167 = None  # proof_test_case_block_167
+proof_test_case_block_167 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Have a look",
+    verified=True,
+)  # proof_test_case_block_167
 # noinspection PyArgumentList
-proof_test_case_block_168 = None  # proof_test_case_block_168
+proof_test_case_block_168 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="The Unicom Smoke of\nthe Tin Li Sect",
+    revised_1="The Kirin Smokes of\nthe Tin Li Sect",
+    note_1="Corrected 'Unicom Smoke' to 'Kirin Smokes'.",
+    difficulty=3,
+    verified=True,
+)  # proof_test_case_block_168
 # noinspection PyArgumentList
-proof_test_case_block_169 = None  # proof_test_case_block_169
+proof_test_case_block_169 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Be calm, urine is the antidote\nto the poison",
+    subtitle_2="Come and piss",
+    verified=True,
+)  # proof_test_case_block_169
 # noinspection PyArgumentList
-proof_test_case_block_170 = None  # proof_test_case_block_170
+proof_test_case_block_170 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="How about me?",
+    subtitle_2="Don't worry,\nI can give you some urine",
+    subtitle_3="Come on, hold it",
+    verified=True,
+)  # proof_test_case_block_170
 # noinspection PyArgumentList
-proof_test_case_block_171 = None  # proof_test_case_block_171
+proof_test_case_block_171 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Rush in!",
+    verified=True,
+)  # proof_test_case_block_171
 # noinspection PyArgumentList
-proof_test_case_block_172 = None  # proof_test_case_block_172
+proof_test_case_block_172 = EnglishProofTestCase.get_test_case_cls(12)(
+    subtitle_1="How is the situation?",
+    subtitle_2="Thanks for Your Majesty's luck,\nthe wind direction changed",
+    subtitle_3="The smoke is going\nto the other direction",
+    subtitle_4="How about our armies?",
+    subtitle_5="They are all dead",
+    subtitle_6="Take me the sword",
+    subtitle_7="Don't... don't!",
+    subtitle_8="Get lost! Get lost!",
+    subtitle_9="Your Majesty, it's dangerous,\ndon't go!",
+    subtitle_10="Get lost, don't you want\nto wait for death, get lost",
+    subtitle_11="You are ordered to get away",
+    subtitle_12="You can't go!",
+    revised_2="Thanks to Your Majesty's luck,\nthe wind direction changed",
+    note_2="Changed 'for' to 'to' for correct expression: 'Thanks to "
+    "Your Majesty's luck'.",
+    revised_3="The smoke is going\nin the other direction",
+    note_3="Changed 'to' to 'in' for correct phrasing: 'going in the other direction'.",
+    revised_6="Bring me the sword",
+    note_6="Changed 'Take me the sword' to 'Bring me the sword' for natural phrasing.",
+    revised_10="Get lost! Don't you want\nto wait for death? Get lost!",
+    note_10="Added question mark and split for clarity and punctuation.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_172
 # noinspection PyArgumentList
-proof_test_case_block_173 = None  # proof_test_case_block_173
+proof_test_case_block_173 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Protect me",
+    verified=True,
+)  # proof_test_case_block_173
 # noinspection PyArgumentList
-proof_test_case_block_174 = None  # proof_test_case_block_174
+proof_test_case_block_174 = EnglishProofTestCase.get_test_case_cls(16)(
+    subtitle_1="Chan?",
+    subtitle_2="Yushang",
+    subtitle_3="How did you get here?",
+    subtitle_4="It's a long story",
+    subtitle_5="We left our base last night",
+    subtitle_6="We reached the Great Wall",
+    subtitle_7="this morning",
+    subtitle_8="We stayed one hour for lunch",
+    subtitle_9="I pissed once",
+    subtitle_10="Really?",
+    subtitle_11="Yes, then I want to\neat a sweet potato",
+    subtitle_12="But only dumpling left",
+    subtitle_13="You know, I don't\nlike eating dumpling",
+    subtitle_14="I am late to save you,\nplease forgive me",
+    subtitle_15="To protect to Emperor",
+    subtitle_16="Yes",
+    revised_11="Yes, then I wanted to\neat a sweet potato",
+    note_11="Changed 'want' to 'wanted' for correct tense.",
+    revised_12="But only dumplings were left",
+    note_12="Changed 'dumpling' to 'dumplings' and added 'were' for "
+    "grammatical correctness.",
+    revised_13="You know, I don't\nlike eating dumplings",
+    note_13="Changed 'dumpling' to 'dumplings' for consistency.",
+    revised_15="To protect the Emperor",
+    note_15="Changed 'to Emperor' to 'the Emperor'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_174
 # noinspection PyArgumentList
-proof_test_case_block_175 = None  # proof_test_case_block_175
+proof_test_case_block_175 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="You betrayer!",
+    subtitle_2="Catch him",
+    revised_1="You traitor!",
+    note_1="Changed 'betrayer' to 'traitor' for natural English usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_175
 # noinspection PyArgumentList
-proof_test_case_block_176 = None  # proof_test_case_block_176
+proof_test_case_block_176 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Your Majesty",
+    verified=True,
+)  # proof_test_case_block_176
 # noinspection PyArgumentList
-proof_test_case_block_177 = None  # proof_test_case_block_177
+proof_test_case_block_177 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="You bastard, give your kingdom to me",
+    subtitle_2="Are you telling him?",
+    verified=True,
+)  # proof_test_case_block_177
 # noinspection PyArgumentList
-proof_test_case_block_178 = None  # proof_test_case_block_178
+proof_test_case_block_178 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="It's you",
+    subtitle_2="Yes, I am Beggar So",
+    subtitle_3="Why don't you sleep in your hut?",
+    subtitle_4="Well, I am a little bit sleepy",
+    verified=True,
+)  # proof_test_case_block_178
 # noinspection PyArgumentList
-proof_test_case_block_179 = None  # proof_test_case_block_179
+proof_test_case_block_179 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1='"Sleeping Disciple"?',
+    subtitle_2="Yes. Look at you, you are\nlike beggar too",
+    subtitle_3="Are you interested to join us?",
+    subtitle_4="I can't guess you could recover!",
+    subtitle_5="Yes, it's all because of you",
+    revised_2="Yes. Look at you, you are\nlike a beggar too",
+    note_2="Added 'a' before 'beggar'.",
+    revised_4="I couldn't have guessed you would recover!",
+    note_4="Changed 'can't guess you could' to 'couldn't have guessed "
+    "you would' for correct tense and natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_179
 # noinspection PyArgumentList
-proof_test_case_block_180 = None  # proof_test_case_block_180
+proof_test_case_block_180 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Did you generate all your force?\nI didn't",
+    revised_1="Did you use all your force?\nI didn't",
+    note_1="Changed 'generate' to 'use' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_180
 # noinspection PyArgumentList
-proof_test_case_block_181 = None  # proof_test_case_block_181
+proof_test_case_block_181 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1='Fool, only the "Dragon Suppressing\nStances" scare me',
+    subtitle_2="I won't give a damn\nto any other stances",
+    revised_2="I don't give a damn\nabout any other stances",
+    note_2="Changed 'I won't give a damn to any other stances' to 'I "
+    "don't give a damn about any other stances' for correct "
+    "idiomatic usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_181
 # noinspection PyArgumentList
-proof_test_case_block_182 = None  # proof_test_case_block_182
+proof_test_case_block_182 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1='"Dragon Suppress Stances"',
+    subtitle_2='"Dragon in the sky"',
+    subtitle_3='"Dragon swings its tail"',
+    subtitle_4='"Dragon steals the heart"',
+    subtitle_5="Dragon swims,\ndragon in the field,",
+    subtitle_6="dragon dances...",
+    subtitle_7="Dragon's descendant,",
+    subtitle_8="dragon's wish...",
+    subtitle_9="Dragon's spirit, dragon's couple",
+    subtitle_10="Finished",
+    revised_9="Dragon's spirit, dragon's mate",
+    note_9="Changed 'couple' to 'mate' for a more natural phrase in this context.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_182
 # noinspection PyArgumentList
-proof_test_case_block_183 = None  # proof_test_case_block_183
+proof_test_case_block_183 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="You can't finish the last stance,",
+    subtitle_2="you can defeat me",
+    subtitle_3="after learning the 18th stance",
+    subtitle_4="But you have no chance",
+    verified=True,
+)  # proof_test_case_block_183
 # noinspection PyArgumentList
-proof_test_case_block_184 = None  # proof_test_case_block_184
+proof_test_case_block_184 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Chan!",
+    verified=True,
+)  # proof_test_case_block_184
 # noinspection PyArgumentList
-proof_test_case_block_185 = None  # proof_test_case_block_185
+proof_test_case_block_185 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="I've got it\nJust mix the 17 stances,",
+    subtitle_2="it's the 18th stance then",
+    subtitle_3="I am too smart!",
+    revised_1="I've got it!\nJust mix the 17 stances,",
+    note_1="Added exclamation mark for natural speech.",
+    revised_2="Then it's the 18th stance",
+    note_2="Reordered for natural phrasing and removed 'then' from the end.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_185
 # noinspection PyArgumentList
-proof_test_case_block_186 = None  # proof_test_case_block_186
+proof_test_case_block_186 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1='The 18 stance, "It\'s a regret to\nkill the Dragon"!',
+    revised_1='The 18th stance, "It\'s a regret to\nkill the Dragon"!',
+    note_1="Changed '18 stance' to '18th stance' for correct ordinal usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_186
 # noinspection PyArgumentList
-proof_test_case_block_187 = None  # proof_test_case_block_187
+proof_test_case_block_187 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Chan, are you alright?",
+    subtitle_2="See, don't you\nthink I am alright?",
+    subtitle_3="Your post is really smart",
+    subtitle_4="But your look is awful!",
+    subtitle_5="Idiot, I am fine",
+    subtitle_6="I can marry tonight",
+    revised_3="Your pose is really smart",
+    note_3="Changed 'post' to 'pose'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_187
 # noinspection PyArgumentList
-proof_test_case_block_188 = None  # proof_test_case_block_188
+proof_test_case_block_188 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Sister!",
+    subtitle_2="Tracy!",
+    subtitle_3="Where is Chiu?",
+    subtitle_4="He is around",
+    subtitle_5="Around?",
+    subtitle_6="He became ash",
+    subtitle_7="Damn it!",
+    subtitle_8="Master",
+    subtitle_9="Chiu's fellows are\nall caught by us",
+    revised_6="He became ashes",
+    note_6="Changed 'ash' to 'ashes' for correct usage.",
+    revised_9="Chiu's fellows have\nall been caught by us",
+    note_9="Changed 'are all caught' to 'have all been caught' for correct tense.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_188
 # noinspection PyArgumentList
-proof_test_case_block_189 = None  # proof_test_case_block_189
+proof_test_case_block_189 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Thank you, buddies",
+    verified=True,
+)  # proof_test_case_block_189
 # noinspection PyArgumentList
-proof_test_case_block_190 = None  # proof_test_case_block_190
+proof_test_case_block_190 = EnglishProofTestCase.get_test_case_cls(8)(
+    subtitle_1="Yushang",
+    subtitle_2="We have an agreement,\ndo you remember?",
+    subtitle_3="Yes, be the top of all",
+    subtitle_4="Invincible",
+    subtitle_5="But, I can't be the Scholar",
+    subtitle_6="But I don't like Scholar at all",
+    subtitle_7="I love beggar",
+    subtitle_8="You first, I will go after you",
+    revised_6="But I don't like to be the Scholar at all",
+    note_6="Changed 'Scholar' to 'to be a Scholar'",
+    revised_7="I love to be a beggar",
+    note_7="Changed 'beggar' to 'to be a beggar'.",
+    difficulty=2,
+    verified=True,
+)  # proof_test_case_block_190
 # noinspection PyArgumentList
-proof_test_case_block_191 = None  # proof_test_case_block_191
+proof_test_case_block_191 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Seng-ko-lin-ch'in,\nyou are really a fool",
+    subtitle_2="You bring a thief to harm me",
+    subtitle_3="Now, you are titled to be a beggar",
+    subtitle_4="You have potential to be beggar",
+    subtitle_5="Report duty in the temple tomorrow",
+    subtitle_6="If there anyone bullies you,\njust tell them my name",
+    subtitle_7="Thank you, thank you master",
+    subtitle_8="So Chan, what do you want as reward?",
+    subtitle_9="Don't you have anything to tell me?",
+    revised_3="Now, you are entitled to be a beggar",
+    note_3="Changed 'titled' to 'entitled'.",
+    revised_4="You have potential to be a beggar",
+    note_4="Added 'a' before 'beggar'.",
+    revised_6="If anyone bullies you,\njust tell them my name",
+    note_6="Removed 'there' for correct phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_191
 # noinspection PyArgumentList
-proof_test_case_block_192 = None  # proof_test_case_block_192
+proof_test_case_block_192 = EnglishProofTestCase.get_test_case_cls(23)(
+    subtitle_1="Nothing special, let's go",
+    subtitle_2="Mister So!",
+    subtitle_3="Put it down",
+    subtitle_4="Although you have saved me,",
+    subtitle_5="if you don't respect me, I will kill you",
+    subtitle_6="If so, you needn't\nsquat and talk to me",
+    subtitle_7="Don't move, it'll\nattract their attention",
+    subtitle_8="Actually we have no relation,",
+    subtitle_9="we have nothing to chat",
+    subtitle_10="You have billions of fellows",
+    subtitle_11="Your force makes me worry",
+    subtitle_12="The number of fellow doesn't\ndepend on me,",
+    subtitle_13="but you",
+    subtitle_14="What?",
+    subtitle_15="If you are great, making the\nsociety peace and wealthy,",
+    subtitle_16="no one wishes to be beggar, right?",
+    subtitle_17="It's reasonable",
+    subtitle_18="Be smart",
+    subtitle_19="But,",
+    subtitle_20="give me some face",
+    subtitle_21="Yes",
+    subtitle_22="Long life to Your Majesty",
+    subtitle_23="Get up",
+    revised_6="If so, you needn't\nsquat to talk to me",
+    note_6="Changed 'squat and talk to me' to 'squat to talk to me' for "
+    "natural phrasing.",
+    revised_9="we have nothing to chat about",
+    note_9="Added 'about' to complete the phrase 'chat about'.",
+    revised_12="The number of fellows doesn't\ndepend on me,",
+    note_12="Changed 'fellow' to 'fellows' for subject-verb agreement: "
+    "'number of fellows'.",
+    revised_15="If you are great, making the\nsociety peaceful and wealthy,",
+    note_15="Changed 'peace and wealthy' to 'peaceful and wealthy'.",
+    revised_16="no one wishes to be a beggar, right?",
+    note_16="Added 'a' before 'beggar'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_192
 # noinspection PyArgumentList
-proof_test_case_block_193 = None  # proof_test_case_block_193
+proof_test_case_block_193 = EnglishProofTestCase.get_test_case_cls(15)(
+    subtitle_1="Pal, do you know me?",
+    subtitle_2="Of course! You beggar",
+    subtitle_3="You beg with your girl, you think I'll\ngive you money out of mercy?",
+    subtitle_4="Yes, please give me money",
+    subtitle_5="No mercy, go away",
+    subtitle_6="No, you should pay me",
+    subtitle_7="It's a must, pal",
+    subtitle_8="A must? Kidding?",
+    subtitle_9="It's true, be quick",
+    subtitle_10="It's bad luck to meet you",
+    subtitle_11="Stop",
+    subtitle_12="What?",
+    subtitle_13="See my family? Give more",
+    subtitle_14="How much?",
+    subtitle_15="Not less than a thousand, got me?",
+    verified=True,
+)  # proof_test_case_block_193
 # noinspection PyArgumentList
-proof_test_case_block_194 = None  # proof_test_case_block_194
+proof_test_case_block_194 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Say thank you now",
+    subtitle_2="Thank you, uncle",
+    verified=True,
+)  # proof_test_case_block_194
 # noinspection PyArgumentList
 proof_test_case_block_195 = None  # proof_test_case_block_195
 
