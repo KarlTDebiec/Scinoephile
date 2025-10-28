@@ -519,6 +519,10 @@ proof_test_case_block_25 = EnglishProofTestCase.get_test_case_cls(16)(
     subtitle_14="Are you nuts?",
     subtitle_15="Kidding?",
     subtitle_16="Are there anyone hiding here?",
+    revised_4="You know Kung Fu?",
+    note_4="Changed 'Kung-fu' to 'Kung Fu'.",
+    revised_5="No, I don't know Kung Fu at all",
+    note_5="Changed 'Kung-fu' to 'Kung Fu'.",
     revised_16="Is anyone hiding here?",
     note_16="Changed 'Are there anyone hiding here?' to 'Is anyone hiding "
     "here?' for correct grammar.",
@@ -543,6 +547,8 @@ proof_test_case_block_26 = EnglishProofTestCase.get_test_case_cls(13)(
     revised_8="Don't you know it isn't that easy\nto be my husband?",
     note_8="Changed 'it's that easy' to 'it isn't that easy' to match "
     "the intended meaning.",
+    revised_10="I want him to be the superior\nKung Fu master",
+    note_10="Changed 'Kung-fu' to 'Kung Fu'.",
     difficulty=1,
     verified=True,
 )  # proof_test_case_block_26
@@ -556,7 +562,7 @@ proof_test_case_block_27 = EnglishProofTestCase.get_test_case_cls(8)(
     subtitle_6="OK, but you'd give me some time\nto consider it",
     subtitle_7="No problem, I will wait for your answer\noutside the garden",
     subtitle_8="I won't leave until seeing you",
-    revised_5="Because this is too easy for me\nto be the Kung-fu scholar!",
+    revised_5="Because this is too easy for me\nto be the Kung Fu scholar!",
     note_5="Changed 'to me' to 'for me'.",
     revised_6="OK, but you should give me some time\nto consider it",
     note_6="Changed 'you'd' to 'you should'.",
@@ -619,6 +625,8 @@ proof_test_case_block_33 = EnglishProofTestCase.get_test_case_cls(9)(
     subtitle_9="Let's go, if you want to marry",
     revised_9="Let's go, if you want to get married",
     note_9="Changed 'marry' to 'get married' for natural phrasing.",
+    revised_6="Chiu is good at Kung Fu",
+    note_6="Changed 'Kung-fu' to 'Kung Fu'.",
     difficulty=1,
     verified=True,
 )  # proof_test_case_block_33
@@ -1210,65 +1218,497 @@ proof_test_case_block_70 = EnglishProofTestCase.get_test_case_cls(10)(
     verified=True,
 )  # proof_test_case_block_70
 # noinspection PyArgumentList
-proof_test_case_block_71 = None  # proof_test_case_block_71
+proof_test_case_block_71 = EnglishProofTestCase.get_test_case_cls(17)(
+    subtitle_1="What? Are you sure?",
+    subtitle_2="I am fair",
+    subtitle_3="I judge it from the Law Book",
+    subtitle_4="Can I add something?",
+    subtitle_5="Sure, since you are the Emperor",
+    subtitle_6="I want them to be beggars for the rest\nof their lives",
+    subtitle_7="Why couldn't you find out they cheated\nduring the examination?",
+    subtitle_8="Luckily Chiu reported\nit to me on time",
+    subtitle_9="Chiu, you would be rewarded",
+    subtitle_10="I am wandering...",
+    subtitle_11="That's the spirit tablet of my dad,\ndo you want to take it too?",
+    subtitle_12="It's useless for you",
+    subtitle_13="How poor are we...",
+    subtitle_14="I am thinking of my better half...",
+    subtitle_15="Young master,",
+    subtitle_16="from now on,",
+    subtitle_17="you'd be hard working to learn\nhow to write",
+    revised_9="Chiu, you will be rewarded",
+    note_9="Changed 'would' to 'will' for correct tense in this context.",
+    revised_17="you should work hard to learn\nhow to write",
+    note_17="Changed 'you'd be hard working' to 'you should work hard' "
+    "for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_71
 # noinspection PyArgumentList
-proof_test_case_block_72 = None  # proof_test_case_block_72
+proof_test_case_block_72 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="But I can't sell the affection...",
+    verified=True,
+)  # proof_test_case_block_72
 # noinspection PyArgumentList
-proof_test_case_block_73 = None  # proof_test_case_block_73
+proof_test_case_block_73 = EnglishProofTestCase.get_test_case_cls(57)(
+    subtitle_1="Professor",
+    subtitle_2="I will learn it",
+    subtitle_3="I regret that...",
+    subtitle_4="Master, I will take good care of\nlittle turtle",
+    subtitle_5="I am sorry",
+    subtitle_6="We haven't given birth to any\nbaby of yours",
+    subtitle_7="It doesn't matter",
+    subtitle_8="It's all my fault",
+    subtitle_9="If I did better,",
+    subtitle_10="you could have many babies",
+    subtitle_11="But I think",
+    subtitle_12="Chan is enough for me",
+    subtitle_13="Why are you standing here?\nGo now",
+    subtitle_14="Master, we are leaving",
+    subtitle_15="We are leaving, master",
+    subtitle_16="Go, go now",
+    subtitle_17="We are free",
+    subtitle_18="I feel so happy",
+    subtitle_19="How happy are we!",
+    subtitle_20="Go in...",
+    subtitle_21="Hurry up...",
+    subtitle_22="How is it?",
+    subtitle_23="Why are they so happy?",
+    subtitle_24="What happened?",
+    subtitle_25="I am very happy",
+    subtitle_26="Please go in...",
+    subtitle_27="Welcome...",
+    subtitle_28="Damn sequestration,\nI wanna cry, my son",
+    subtitle_29="Hold it, don't lose our face",
+    subtitle_30="Keep on laughing",
+    subtitle_31="Son",
+    subtitle_32="Have you kept any money?",
+    subtitle_33="No, how about you?",
+    subtitle_34="I forgot that",
+    subtitle_35="Shit, damn sequestration!",
+    subtitle_36="Be merciful,",
+    subtitle_37="please give money to us",
+    subtitle_38="Son, that guy is like dad",
+    subtitle_39="You mean the one who sings?",
+    subtitle_40="No, the one who pays",
+    subtitle_41="He is more disgusting\nthan the one who sings",
+    subtitle_42="Not exactly, he is smart",
+    subtitle_43="Dad should be blamed",
+    subtitle_44="I always called you beggar",
+    subtitle_45="Now, it becomes true",
+    subtitle_46="What's wrong with you?",
+    subtitle_47="The emperor wants\nus to be beggars",
+    subtitle_48="Do you think we'd be beggars?",
+    subtitle_49="I am smart, I am keen\nin kung-fu fighting",
+    subtitle_50="Even the Gods won't\nlet me be beggars",
+    subtitle_51="That's true",
+    subtitle_52="Am I like beggar?",
+    subtitle_53="No",
+    subtitle_54="Buy something to eat, you beggars",
+    subtitle_55="You treat us as beggars?",
+    subtitle_56="Damn you!",
+    subtitle_57="It's weird! Let's eat",
+    revised_4="Master, I will take good care of\nthe little turtle",
+    note_4="Added 'the' before 'little turtle'.",
+    revised_28="Damn sequestration,\nI want to cry, my son",
+    note_28="Changed 'wanna' to 'want to' for standard English.",
+    revised_38="Son, that guy is like Dad",
+    note_38="Capitalized 'Dad' as a proper noun.",
+    revised_49="I am smart, I am keen\non Kung Fu fighting",
+    note_49="Changed 'keen in' to 'keen on' for correct usage.",
+    revised_50="Even the gods won't\nlet me be a beggar",
+    note_50="Changed 'Gods' to lowercase and 'beggars' to 'a beggar' for "
+    "subject-verb agreement.",
+    revised_52="Am I like a beggar?",
+    note_52="Added 'a' before 'beggar'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_73
 # noinspection PyArgumentList
-proof_test_case_block_74 = None  # proof_test_case_block_74
+proof_test_case_block_74 = EnglishProofTestCase.get_test_case_cls(14)(
+    subtitle_1="Chan, since we have\nnothing to do",
+    subtitle_2="Let me take a seat,",
+    subtitle_3="may be we can have something\nto eat tonight",
+    subtitle_4="You are treating\nyourself a beggar?",
+    subtitle_5="Dad, don't worry",
+    subtitle_6="I need no begging for money",
+    subtitle_7="How can you get money\nif you don't beg?",
+    subtitle_8="Just ask someone\nto give us money",
+    subtitle_9="Pal, may I know your name?",
+    subtitle_10="Nau Tai Chung",
+    subtitle_11="Do you have money?",
+    subtitle_12="Yes",
+    subtitle_13="Just give it to me",
+    subtitle_14="OK",
+    revised_3="Maybe we can have something\nto eat tonight",
+    note_3="Changed 'may be' to 'maybe'.",
+    revised_4="You are treating\nyourself like a beggar?",
+    note_4="Added 'like' for correct phrasing.",
+    revised_6="I don't need to beg for money",
+    note_6="Changed 'I need no begging for money' to 'I don't need to "
+    "beg for money' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_74
 # noinspection PyArgumentList
-proof_test_case_block_75 = None  # proof_test_case_block_75
+proof_test_case_block_75 = EnglishProofTestCase.get_test_case_cls(29)(
+    subtitle_1="Thank you",
+    subtitle_2="Why should I give you money?",
+    subtitle_3="Why do you ask so many questions?",
+    subtitle_4="But I should know the reason",
+    subtitle_5="Anyway, you should pay it",
+    subtitle_6="No, let's fix it up first",
+    subtitle_7="Just give it to us, why are you\nasking so much?",
+    subtitle_8="Hands off",
+    subtitle_9="You mean robbing?",
+    subtitle_10="Robbery...",
+    subtitle_11="I am not robbing, I am begging",
+    subtitle_12="Begging? How dare are you, you beggar,\nyou are cheating me!",
+    subtitle_13="Don't you think I am stupid?\nI am smart, you know?",
+    subtitle_14="Hey, two days passed,",
+    subtitle_15="It's cold and I am hungry now",
+    subtitle_16="Have you had any idea?",
+    subtitle_17="I have a friend's girl-friend",
+    subtitle_18="who is living in Peking",
+    subtitle_19="She always admires you",
+    subtitle_20="Really?",
+    subtitle_21="Yes, if you are\nwilling to date her",
+    subtitle_22="I think she will help us to\ngo back to Canton",
+    subtitle_23="But, you have to sacrifice",
+    subtitle_24="Do you mean...",
+    subtitle_25="For our family,\njust as you said",
+    subtitle_26="I know it's very hard for you",
+    subtitle_27="Cut the crap,\nlet's go and find her",
+    subtitle_28="I have arranged it",
+    subtitle_29="The one wearing red dress who stands\nunder the lantern, that's her",
+    revised_12="Begging? How dare you, you beggar,\nyou are cheating me!",
+    note_12="Removed 'are' from 'How dare are you' to correct the phrase "
+    "to 'How dare you'.",
+    revised_17="I have a friend's girlfriend",
+    note_17="Changed 'girl-friend' to 'girlfriend'.",
+    revised_29="The one wearing the red dress who stands\n"
+    "under the lantern, that's her",
+    note_29="Added 'the' before 'red dress' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_75
 # noinspection PyArgumentList
-proof_test_case_block_76 = None  # proof_test_case_block_76
+proof_test_case_block_76 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Ghost!",
+    verified=True,
+)  # proof_test_case_block_76
 # noinspection PyArgumentList
-proof_test_case_block_77 = None  # proof_test_case_block_77
+proof_test_case_block_77 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="It's a benefit of you!",
+    subtitle_2="Why don't you go yourself?",
+    revised_1="It's to your benefit!",
+    note_1="Changed 'It's a benefit of you!' to 'It's to your benefit!' "
+    "for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_77
 # noinspection PyArgumentList
-proof_test_case_block_78 = None  # proof_test_case_block_78
+proof_test_case_block_78 = EnglishProofTestCase.get_test_case_cls(8)(
+    subtitle_1="Chan, I haven't tried this before",
+    subtitle_2="Be careful!",
+    subtitle_3="Don't worry",
+    subtitle_4="I'll take care of you",
+    subtitle_5="You want to earn money for\nshark-fins, right?",
+    subtitle_6="Right...",
+    subtitle_7="Get lost...",
+    subtitle_8="No show here",
+    revised_5="You want to earn money for\nshark fin, right?",
+    note_5="Changed 'shark-fins' to 'shark fin' for correct usage "
+    "(referring to the dish or ingredient, not literal fins).",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_78
 # noinspection PyArgumentList
-proof_test_case_block_79 = None  # proof_test_case_block_79
+proof_test_case_block_79 = EnglishProofTestCase.get_test_case_cls(20)(
+    subtitle_1="We just want to earn some money",
+    subtitle_2="to go back to Canton",
+    subtitle_3="Don't be that mean to us",
+    subtitle_4="It's the Royal instruction that,",
+    subtitle_5="the So's family'd\nbe beggars for life",
+    subtitle_6="You two can only be beggars",
+    subtitle_7="I am carrying my duty only\nMen!",
+    subtitle_8="Yes!",
+    subtitle_9="Remove all the things",
+    subtitle_10="Yes",
+    subtitle_11="Help!",
+    subtitle_12="Master Chiu, it's hard\nfor one to carry it",
+    subtitle_13="Ask more men to remove it",
+    subtitle_14="Yes",
+    subtitle_15="What do you want?",
+    subtitle_16="No, we can't move it",
+    subtitle_17="Let me do it",
+    subtitle_18="You want a fight, don't you?",
+    subtitle_19="Last time you can escape from\nYee Hung Hostel",
+    subtitle_20="But you won't be\nthat lucky this time",
+    revised_4="It's the Royal instruction that\nthe So family be beggars for life.",
+    note_4="Removed unnecessary comma and corrected 'the So's family'd' "
+    "to 'the So family be' for clarity and grammar.",
+    revised_7="I am only carrying out my duty.\nMen!",
+    note_7="Changed word order to 'only carrying out my duty' for "
+    "natural phrasing and added punctuation.",
+    revised_19="Last time you escaped from\nYee Hung Hostel,",
+    note_19="Changed 'can escape' to 'escaped' for correct tense and "
+    "added comma for continuity.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_79
 # noinspection PyArgumentList
-proof_test_case_block_80 = None  # proof_test_case_block_80
+proof_test_case_block_80 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="He is powerful!",
+    subtitle_2="I've to defeat him",
+    subtitle_3="by one powerful strike",
+    subtitle_4="I can't give him another chance\nto counter attack",
+    revised_2="I have to defeat him",
+    note_2="Changed contraction 'I've' to 'I have' for clarity and formality.",
+    revised_4="I can't give him another chance\nto counterattack",
+    note_4="Changed 'counter attack' to 'counterattack' (one word).",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_80
 # noinspection PyArgumentList
-proof_test_case_block_81 = None  # proof_test_case_block_81
+proof_test_case_block_81 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Chan...",
+    subtitle_2="Chan...",
+    subtitle_3="Your legs and hands",
+    subtitle_4="are all broken by me",
+    subtitle_5="You will be cripple for the\nrest of your life",
+    subtitle_6="You want to fight? Not now!",
+    subtitle_7="But, you can beg for money",
+    subtitle_8="Be a good beggar",
+    subtitle_9="Go, go away...",
+    revised_5="You will be a cripple for the\nrest of your life",
+    note_5="Added 'a' before 'cripple' for correct grammar.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_81
 # noinspection PyArgumentList
-proof_test_case_block_82 = None  # proof_test_case_block_82
+proof_test_case_block_82 = EnglishProofTestCase.get_test_case_cls(26)(
+    subtitle_1="Don't panic, Chan, it's OK",
+    subtitle_2="Don't panic, you'll be\nalright... Chan!",
+    subtitle_3="I went to the examination hall",
+    subtitle_4="with my son,",
+    subtitle_5="don't you know who\nwas the examiner?",
+    subtitle_6="He is Seng-ko-lin-ch'in,\nthat bastard",
+    subtitle_7="He was the enemy of us!",
+    subtitle_8="About our story...",
+    subtitle_9="Let me stop here first,\nI want a smoke",
+    subtitle_10="It's better to smoke now",
+    subtitle_11="Yes, it's better",
+    subtitle_12="We let him go in",
+    subtitle_13="the Yee Hung Brothel",
+    subtitle_14="But he framed us in return",
+    subtitle_15="He tricked my son",
+    subtitle_16="during the examination",
+    subtitle_17="But, my son was really\nsmart and great",
+    subtitle_18="He finally won the race",
+    subtitle_19="To be the greatest Kung-fu\nfighter, invincible",
+    subtitle_20="Be the top",
+    subtitle_21="Can you do that?",
+    subtitle_22="Sure!",
+    subtitle_23="Well",
+    subtitle_24="Come back to me\nif you can do that",
+    subtitle_25="I think we should fix our\nwedding date first",
+    subtitle_26="Because being the scholar is\ntoo simple to me",
+    revised_7="He was our enemy!",
+    note_7="Changed 'the enemy of us' to 'our enemy' for natural phrasing.",
+    revised_19="To be the greatest Kung Fu\nfighter, invincible",
+    note_19="Changed 'Kung-fu' to 'Kung Fu'.",
+    revised_26="Because being a scholar is\ntoo simple for me.",
+    note_26="Changed 'the scholar' to 'a scholar' and 'to me' to 'for me' "
+    "for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_82
 # noinspection PyArgumentList
-proof_test_case_block_83 = None  # proof_test_case_block_83
+proof_test_case_block_83 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Write your name at once",
+    revised_1="Write your name immediately.",
+    note_1="Changed 'at once' to 'immediately' for more natural phrasing.",
+    difficulty=1,
+)  # proof_test_case_block_83
 # noinspection PyArgumentList
-proof_test_case_block_84 = None  # proof_test_case_block_84
+proof_test_case_block_84 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="I don't know how to write",
+)  # proof_test_case_block_84
 # noinspection PyArgumentList
-proof_test_case_block_85 = None  # proof_test_case_block_85
+proof_test_case_block_85 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Chan, what's wrong with you?",
+)  # proof_test_case_block_85
 # noinspection PyArgumentList
-proof_test_case_block_86 = None  # proof_test_case_block_86
+proof_test_case_block_86 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Nightmare again?",
+    subtitle_2="Don't think so much!",
+)  # proof_test_case_block_86
 # noinspection PyArgumentList
-proof_test_case_block_87 = None  # proof_test_case_block_87
+proof_test_case_block_87 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="Although you have taken",
+    subtitle_2="2 months' rest,",
+    subtitle_3="your legs and hands have not been\ntotally recovered",
+    subtitle_4="Coming",
+    subtitle_5="I am going to beg for food",
+    subtitle_6="I will make the last herbal tea",
+    subtitle_7="for you later",
+    subtitle_8="Dad, you go begging again?",
+    subtitle_9="This job should leave to me",
+    subtitle_10="You are the Scholar...",
+    revised_3="your legs and hands have not totally recovered",
+    note_3="Removed 'been' for correct grammar: 'have not totally recovered'.",
+    revised_9="This job should be left to me",
+    note_9="Changed 'should leave to me' to 'should be left to me' for "
+    "correct passive construction.",
+    difficulty=1,
+)  # proof_test_case_block_87
 # noinspection PyArgumentList
-proof_test_case_block_88 = None  # proof_test_case_block_88
+proof_test_case_block_88 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Chan, to be a beggar,",
+    subtitle_2="there is some lessons!",
+    subtitle_3="You can't just show your hand\nand beg for money",
+    subtitle_4="At least you should have a bowl,\nthat represents your class",
+    subtitle_5="Is it ridiculous?",
+    subtitle_6="Hurry up",
+    subtitle_7="I am coming",
+    subtitle_8="We can't beg for good\nif we are late!",
+    subtitle_9="Yes...",
+    revised_2="there are some lessons!",
+    note_2="Changed 'is' to 'are' for subject-verb agreement.",
+    revised_8="We can't beg well\nif we are late!",
+    note_8="Changed 'beg for good' to 'beg well' for natural phrasing.",
+    difficulty=1,
+)  # proof_test_case_block_88
 # noinspection PyArgumentList
-proof_test_case_block_89 = None  # proof_test_case_block_89
+proof_test_case_block_89 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Give me money please",
+    subtitle_2="Go, go , I won't give you money",
+    subtitle_3="Go, don't stop me\nfrom doing business",
+    revised_1="Give me money, please.",
+    note_1="Added a comma for correct punctuation and a period at the end.",
+    revised_2="Go, go, I won't give you money.",
+    note_2="Removed extra space after the second 'go'.",
+    difficulty=1,
+)  # proof_test_case_block_89
 # noinspection PyArgumentList
-proof_test_case_block_90 = None  # proof_test_case_block_90
+proof_test_case_block_90 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Chan, dad is leaving",
+)  # proof_test_case_block_90
 # noinspection PyArgumentList
-proof_test_case_block_91 = None  # proof_test_case_block_91
+proof_test_case_block_91 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Thank you...",
+)  # proof_test_case_block_91
 # noinspection PyArgumentList
-proof_test_case_block_92 = None  # proof_test_case_block_92
+proof_test_case_block_92 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Thank you...",
+)  # proof_test_case_block_92
 # noinspection PyArgumentList
-proof_test_case_block_93 = None  # proof_test_case_block_93
+proof_test_case_block_93 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Are you that mean?",
+    subtitle_2="Why don't you write it yourself?",
+    subtitle_3="You are off duty, so I just\nwant to lend it",
+    subtitle_4="Don't you think I am idiot?",
+    revised_3="You are off duty, so I just\nwant to borrow it.",
+    note_3="Changed 'lend' to 'borrow' for correct usage.",
+    revised_4="Don't you think I'm an idiot?",
+    note_4="Changed 'I am' to 'I'm' and added 'an' before 'idiot'.",
+    difficulty=1,
+)  # proof_test_case_block_93
 # noinspection PyArgumentList
-proof_test_case_block_94 = None  # proof_test_case_block_94
+proof_test_case_block_94 = EnglishProofTestCase.get_test_case_cls(13)(
+    subtitle_1="Dad!",
+    subtitle_2="What are you doing?",
+    subtitle_3="I am cold... I am cold... Chan",
+    subtitle_4="No, your body is as hot as fire",
+    subtitle_5="Are you sick?",
+    subtitle_6="I am not...",
+    subtitle_7="It's late",
+    subtitle_8="I have to search for food",
+    subtitle_9="Lie down, I will go this time",
+    subtitle_10="Are you go for begging?",
+    subtitle_11="I have my own way to get food",
+    subtitle_12="Take a rest now",
+    subtitle_13="I will take you to the doctor after\ngetting some money",
+    revised_10="Are you going begging?",
+    note_10="Changed 'Are you go for begging?' to 'Are you going "
+    "begging?' for correct grammar.",
+    difficulty=1,
+)  # proof_test_case_block_94
 # noinspection PyArgumentList
-proof_test_case_block_95 = None  # proof_test_case_block_95
+proof_test_case_block_95 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="You bastard, why don't you eat?",
+    subtitle_2="You should eat more so as\nto be strong!",
+)  # proof_test_case_block_95
 # noinspection PyArgumentList
-proof_test_case_block_96 = None  # proof_test_case_block_96
+proof_test_case_block_96 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="Finish it",
+    subtitle_2="No, I am full",
+    subtitle_3="You should take all the food",
+    subtitle_4="OK, just forget it,\nlet's go home",
+    subtitle_5="Come on, eat them all",
+    revised_3="You should eat all the food",
+    note_3="Changed 'take' to 'eat' for clarity and natural phrasing.",
+    difficulty=1,
+)  # proof_test_case_block_96
 # noinspection PyArgumentList
-proof_test_case_block_97 = None  # proof_test_case_block_97
+proof_test_case_block_97 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Little kid!",
+    subtitle_2="What?",
+    subtitle_3="May I...",
+    subtitle_4="No",
+)  # proof_test_case_block_97
 # noinspection PyArgumentList
-proof_test_case_block_98 = None  # proof_test_case_block_98
+proof_test_case_block_98 = EnglishProofTestCase.get_test_case_cls(11)(
+    subtitle_1="Be merciful!",
+    subtitle_2="Be merciful to me please",
+    subtitle_3="My dad is dying!",
+    subtitle_4="Beggar, do you want\nthe broken carbon?",
+    subtitle_5="Thank you",
+    subtitle_6="Can you give me some coins?",
+    subtitle_7="It's you!",
+    subtitle_8="No, you have mistaken",
+    subtitle_9="Sister, it's him",
+    subtitle_10="No, no",
+    subtitle_11="Sister, he is So Chan",
+    revised_2="Be merciful to me, please.",
+    note_2="Added a comma for correct punctuation.",
+    revised_4="Beggar, do you want\nthe broken charcoal?",
+    note_4="Changed 'carbon' to 'charcoal' for correct context.",
+    revised_8="No, you are mistaken.",
+    note_8="Changed 'you have mistaken' to 'you are mistaken.'",
+    difficulty=1,
+)  # proof_test_case_block_98
 # noinspection PyArgumentList
-proof_test_case_block_99 = None  # proof_test_case_block_99
+proof_test_case_block_99 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Wait!",
+)  # proof_test_case_block_99
 # noinspection PyArgumentList
-proof_test_case_block_100 = None  # proof_test_case_block_100
+proof_test_case_block_100 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Miss, who are you looking for?",
+    subtitle_2="I am sorry, I have mistaken",
+    subtitle_3="Tracy, take some dumpling out",
+    subtitle_4="You have mistake,\nhe is not So Chan",
+    subtitle_5="You are like my friend",
+    subtitle_6="Come to get some dumplings if you\nget nothing to eat",
+    subtitle_7="We always have surplus",
+    subtitle_8="Dumpling",
+    subtitle_9="Take it",
+    revised_2="I am sorry, I was mistaken.",
+    note_2="Changed 'I have mistaken' to 'I was mistaken.'",
+    revised_3="Tracy, take some dumplings out.",
+    note_3="Changed 'dumpling' to 'dumplings' for correct plural form "
+    "and added period.",
+    revised_4="You are mistaken,\nhe is not So Chan.",
+    note_4="Changed 'You have mistake' to 'You are mistaken' and added period.",
+    revised_6="Come get some dumplings if you\nhave nothing to eat.",
+    note_6="Changed 'Come to get some dumplings if you get nothing to "
+    "eat' to 'Come get some dumplings if you have nothing to "
+    "eat.'",
+    revised_8="Dumplings.",
+    note_8="Changed 'Dumpling' to 'Dumplings.' for correct plural and punctuation.",
+    difficulty=1,
+)  # proof_test_case_block_100
 # noinspection PyArgumentList
 proof_test_case_block_101 = None  # proof_test_case_block_101
 # noinspection PyArgumentList
