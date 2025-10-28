@@ -1084,25 +1084,131 @@ proof_test_case_block_60 = EnglishProofTestCase.get_test_case_cls(12)(
     verified=True,
 )  # proof_test_case_block_60
 # noinspection PyArgumentList
-proof_test_case_block_61 = None  # proof_test_case_block_61
+proof_test_case_block_61 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="What are you doing?",
+    subtitle_2="The dart is poisoned",
+    subtitle_3="He deserves it!",
+    verified=True,
+)  # proof_test_case_block_61
 # noinspection PyArgumentList
-proof_test_case_block_62 = None  # proof_test_case_block_62
+proof_test_case_block_62 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="He was poisoned by his own dart",
+    subtitle_2="Well, my son will\nbe the Scholar then",
+    subtitle_3="I am going to be rich!",
+    subtitle_4="Yes!",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_62
 # noinspection PyArgumentList
-proof_test_case_block_63 = None  # proof_test_case_block_63
+proof_test_case_block_63 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Thank you, my ancestors!",
+    subtitle_2="You have good judgement",
+    subtitle_3="Sir, His Majesty wants to appoint\nthe title himself",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_63
 # noinspection PyArgumentList
-proof_test_case_block_64 = None  # proof_test_case_block_64
+proof_test_case_block_64 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="I want to take some statement\nfrom you as record",
+    subtitle_2="You won this time, who are you\ngoing to thank?",
+    subtitle_3="Miss Yushang!",
+    subtitle_4="Is Miss Yushang your mom?",
+    revised_1="I want to take a statement\nfrom you for the record",
+    note_1="Changed 'some statement' to 'a statement' and 'as record' to "
+    "'for the record' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_64
 # noinspection PyArgumentList
-proof_test_case_block_65 = None  # proof_test_case_block_65
+proof_test_case_block_65 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="Long life to you!",
+    subtitle_2="Please get up",
+    subtitle_3="Thank you",
+    subtitle_4="Who is the new Scholar\nof Martial Arts?",
+    subtitle_5="Your Majesty, So Chan from Canton\nis the Scholar this year",
+    verified=True,
+)  # proof_test_case_block_65
 # noinspection PyArgumentList
-proof_test_case_block_66 = None  # proof_test_case_block_66
+proof_test_case_block_66 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Your Majesty,\nI am So Cha Ha Yee Chan",
+    subtitle_2="Your Majesty,\nI want to report something",
+    subtitle_3="Go ahead",
+    subtitle_4="I have found that\nSo is illiterate",
+    subtitle_5="So how could he answer the\nquestion paper of strategy?",
+    subtitle_6="That should be tricks",
+    revised_6="That must be a trick.",
+    note_6="Changed 'should be tricks' to 'must be a trick' for natural "
+    "phrasing and subject-verb agreement.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_66
 # noinspection PyArgumentList
-proof_test_case_block_67 = None  # proof_test_case_block_67
+proof_test_case_block_67 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Take the stationery out!",
+    subtitle_2="Yes",
+    verified=True,
+)  # proof_test_case_block_67
 # noinspection PyArgumentList
-proof_test_case_block_68 = None  # proof_test_case_block_68
+proof_test_case_block_68 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="So Cha Ha Yee Chan,\nwrite your name now",
+    subtitle_2="Thank God, he knows how to\nwrite his name!",
+    subtitle_3="He can write his name!",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_68
 # noinspection PyArgumentList
-proof_test_case_block_69 = None  # proof_test_case_block_69
+proof_test_case_block_69 = EnglishProofTestCase.get_test_case_cls(21)(
+    subtitle_1="I don't know how to write",
+    subtitle_2="That's shit!",
+    subtitle_3="Kill him now",
+    subtitle_4="No! No!",
+    subtitle_5="Your Majesty,\nI am the one who cheated",
+    subtitle_6="It's none of his business",
+    subtitle_7="Just chop me to death",
+    subtitle_8="No, you should kill me",
+    subtitle_9="Sorry dad",
+    subtitle_10="I don't know how to write my name",
+    subtitle_11="Stop, I have known it already",
+    subtitle_12="Your Majesty, I should be killed",
+    subtitle_13="Kill me",
+    subtitle_14="No, kill me",
+    subtitle_15="Kill me",
+    subtitle_16="Your Majesty, you'd better kill me",
+    subtitle_17="Shit, are you giving order?",
+    subtitle_18="You two co-operated to cheat me",
+    subtitle_19="The Secretary for Justice,\nannounce the penalty for them",
+    subtitle_20="Come out! Hurry up",
+    subtitle_21="I am here!",
+    revised_11="Stop, I already know it.",
+    note_11="Changed 'I have known it already' to 'I already know it.' "
+    "for natural phrasing.",
+    revised_17="Shit, are you giving orders?",
+    note_17="Changed 'order' to 'orders' for correct usage.",
+    revised_18="You two cooperated to cheat me.",
+    note_18="Changed 'co-operated' to 'cooperated' for standard spelling "
+    "and added period.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_69
 # noinspection PyArgumentList
-proof_test_case_block_70 = None  # proof_test_case_block_70
+proof_test_case_block_70 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="He is the Secretary for Justice",
+    subtitle_2="So's family should be",
+    subtitle_3="sentenced to death",
+    subtitle_4="But their ancestors achieved a lot\nto Ching, they can be exampled",
+    subtitle_5="But, their fortune should be forfeited",
+    subtitle_6="Have you carried out any military duty?",
+    subtitle_7="I haven't gone back to my camp for\n7 years, I haven't done anything",
+    subtitle_8="So, he didn't miscarry out any duty",
+    subtitle_9="So, the maximum penalty",
+    subtitle_10="is forfeiture of property only",
+    revised_4="But their ancestors achieved a lot\n"
+    "for the Ching. They can be exempted.",
+    note_4="Changed 'to Ching' to 'for the Ching' and 'exampled' to "
+    "'exempted'. Split into two sentences for clarity.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_70
 # noinspection PyArgumentList
 proof_test_case_block_71 = None  # proof_test_case_block_71
 # noinspection PyArgumentList
