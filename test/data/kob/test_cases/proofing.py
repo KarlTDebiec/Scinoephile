@@ -2019,45 +2019,263 @@ proof_test_case_block_120 = EnglishProofTestCase.get_test_case_cls(9)(
     verified=True,
 )  # proof_test_case_block_120
 # noinspection PyArgumentList
-proof_test_case_block_121 = None  # proof_test_case_block_121
+proof_test_case_block_121 = EnglishProofTestCase.get_test_case_cls(19)(
+    subtitle_1="See your look,",
+    subtitle_2="it's a waste\nfor you not to beg",
+    subtitle_3="None of your damn business",
+    subtitle_4="You are too lazy to be a beggar!",
+    subtitle_5="Your fellows despise you",
+    subtitle_6="I was always respected by others",
+    subtitle_7="But now, I am despised",
+    subtitle_8="Dislike from you,",
+    subtitle_9="no one respected me before",
+    subtitle_10="Listen to me. Don't go!",
+    subtitle_11="I remembered once in Canton",
+    subtitle_12="A fool paid my living,\nincluding hooking",
+    subtitle_13="What a weird man",
+    subtitle_14="Kid, I remembered you",
+    subtitle_15="Me too",
+    subtitle_16="Hey, hurry up",
+    subtitle_17="Repay my money,\nI am in urgent need",
+    subtitle_18="If I had money,",
+    subtitle_19="I wouldn't be beggar!",
+    revised_19="I wouldn't be a beggar!",
+    note_19="Added 'a' before 'beggar' for correct grammar.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_121
 # noinspection PyArgumentList
-proof_test_case_block_122 = None  # proof_test_case_block_122
+proof_test_case_block_122 = EnglishProofTestCase.get_test_case_cls(30)(
+    subtitle_1="But, don't worry,\nyou were my benefitor,",
+    subtitle_2="I will repay you one day",
+    subtitle_3="Thank you very much",
+    subtitle_4="But, you can't buy\nback what you lost",
+    subtitle_5="even you have money again",
+    subtitle_6="What did I lose?",
+    subtitle_7="Pride and faith",
+    subtitle_8="And your woman too",
+    subtitle_9="What are you?",
+    subtitle_10="I am Hung Yat-sun,\nnicked name Old Bag Sun",
+    subtitle_11="I am the most senior\none among the beggars",
+    subtitle_12="It's good to be beggar",
+    subtitle_13="You can do everything you want",
+    subtitle_14="You can do the same",
+    subtitle_15="Tell me, what do you want?\nI will make your wish come true",
+    subtitle_16="I want to be human again",
+    subtitle_17="Don't you think you\nare not human like?",
+    subtitle_18="Not at all",
+    subtitle_19="So you have to be beggar now",
+    subtitle_20="Very good! Very good!",
+    subtitle_21="But I won't cheat you,\nfrom your head to toes",
+    subtitle_22="Every parts of you are beggar like",
+    subtitle_23="So what?",
+    subtitle_24="That means, you will be beggar\nfor your life",
+    subtitle_25="I don't want to talk to you,\nI want a sleep first",
+    subtitle_26="Don't go, you can achieve\nin your profession",
+    subtitle_27="From my judgement,",
+    subtitle_28="you will be the king of beggars",
+    subtitle_29="King of beggars,\nwhat does that mean?",
+    subtitle_30="That is beggar",
+    revised_1="But, don't worry,\nyou were my benefactor,",
+    note_1="Corrected 'benefitor' to 'benefactor'.",
+    revised_5="even if you have money again",
+    note_5="Added 'if' for correct conditional phrasing.",
+    revised_10="I am Hung Yat-sun,\nnicknamed Old Bag Sun",
+    note_10="Changed 'nicked name' to 'nicknamed'.",
+    revised_12="It's good to be a beggar",
+    note_12="Added 'a' before 'beggar'.",
+    revised_17="Don't you think you\nare not human-like?",
+    note_17="Added hyphen to 'human-like'.",
+    revised_19="So you have to be a beggar now",
+    note_19="Added 'a' before 'beggar'.",
+    revised_22="Every part of you is beggar-like",
+    note_22="Changed 'Every parts' to 'Every part' and added hyphen to 'beggar-like'.",
+    revised_24="That means, you will be a beggar\nfor your life",
+    note_24="Added 'a' before 'beggar'.",
+    revised_25="I don't want to talk to you,\nI want to sleep first",
+    note_25="Changed 'a sleep' to 'to sleep'.",
+    revised_30="That is a beggar",
+    note_30="Added 'a' before 'beggar'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_122
 # noinspection PyArgumentList
-proof_test_case_block_123 = None  # proof_test_case_block_123
+proof_test_case_block_123 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="I won't care who you are,\nI just want to stop the conversation",
+    subtitle_2="Please step aside,\ndon't stop me from sleeping",
+    subtitle_3="Damn you!",
+    subtitle_4="No... I just want to sleep with you",
+    subtitle_5="Idiot!",
+    revised_1="I don't care who you are,\nI just want to stop the conversation",
+    note_1="Changed 'I won't care' to 'I don't care' for correct tense "
+    "and natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_123
 # noinspection PyArgumentList
-proof_test_case_block_124 = None  # proof_test_case_block_124
+proof_test_case_block_124 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Kid, see you in the dream",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_124
 # noinspection PyArgumentList
-proof_test_case_block_125 = None  # proof_test_case_block_125
+proof_test_case_block_125 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Before the Buddha, the Disciples\nreturns to your position",
+    subtitle_2="To suppress the dragon and tight",
+    revised_1="Before the Buddha, the disciples\nreturn to your positions",
+    note_1="Changed 'Disciples returns' to 'disciples return' and 'your "
+    "position' to 'your positions' for subject-verb agreement and "
+    "plural consistency.",
+    revised_2="To suppress the dragon and tiger",
+    note_2="Changed 'tight' to 'tiger' to match the common phrase 'dragon and tiger'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_125
 # noinspection PyArgumentList
-proof_test_case_block_126 = None  # proof_test_case_block_126
+proof_test_case_block_126 = EnglishProofTestCase.get_test_case_cls(7)(
+    subtitle_1="So Chan, you enjoyed the\nprosperity of the world",
+    subtitle_2="And you tasted the bitter\nfruit of the world too",
+    subtitle_3="Now you regretted",
+    subtitle_4="On behalf of Master Hung",
+    subtitle_5='I appoint you to be the\n"Sleeping Disciple"',
+    subtitle_6='Now, I will teach you the\n"Sleeping Disciple\'s Fist"!',
+    subtitle_7="Hope you can make good use of it\nCome on",
+    revised_3="Now you regret it",
+    note_3="Changed 'regretted' to 'regret it' for correct tense and phrasing.",
+    revised_7="Hope you can make good use of it.\nCome on",
+    note_7="Added a period after 'it' to separate the two sentences.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_126
 # noinspection PyArgumentList
-proof_test_case_block_127 = None  # proof_test_case_block_127
+proof_test_case_block_127 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Senior...",
+    verified=True,
+)  # proof_test_case_block_127
 # noinspection PyArgumentList
-proof_test_case_block_128 = None  # proof_test_case_block_128
+proof_test_case_block_128 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="The bitter pasted",
+    revised_1="The bitter past",
+    note_1="Corrected 'pasted' to 'past'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_128
 # noinspection PyArgumentList
-proof_test_case_block_129 = None  # proof_test_case_block_129
+proof_test_case_block_129 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Long life to you...",
+    subtitle_2="Here comes the white Goat",
+    subtitle_3="My mother, give me power",
+    subtitle_4="To save the people!",
+    revised_2="Here comes the White Goat",
+    note_2="Capitalized 'White Goat' as it appears to be a title or name.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_129
 # noinspection PyArgumentList
-proof_test_case_block_130 = None  # proof_test_case_block_130
+proof_test_case_block_130 = EnglishProofTestCase.get_test_case_cls(7)(
+    subtitle_1="Tomorrow the Emperor\nwill go hunting",
+    subtitle_2="I will send him a pretty girl,\nso as to get close to him",
+    subtitle_3="Yuen Ling, you should\nseduce him tomorrow",
+    subtitle_4="Yes",
+    subtitle_5="If we can kill the Emperor,",
+    subtitle_6="I can take over his reign",
+    subtitle_7="I will give you a share of wealth!",
+    verified=True,
+)  # proof_test_case_block_130
 # noinspection PyArgumentList
-proof_test_case_block_131 = None  # proof_test_case_block_131
+proof_test_case_block_131 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Long life to you",
+    subtitle_2="Senior!",
+    subtitle_3="Let's go back now",
+    verified=True,
+)  # proof_test_case_block_131
 # noinspection PyArgumentList
-proof_test_case_block_132 = None  # proof_test_case_block_132
+proof_test_case_block_132 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Senior!",
+    subtitle_2="Let's go!",
+    verified=True,
+)  # proof_test_case_block_132
 # noinspection PyArgumentList
-proof_test_case_block_133 = None  # proof_test_case_block_133
+proof_test_case_block_133 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Senior!",
+    verified=True,
+)  # proof_test_case_block_133
 # noinspection PyArgumentList
-proof_test_case_block_134 = None  # proof_test_case_block_134
+proof_test_case_block_134 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Let's chase them",
+    subtitle_2="Stop\nThe Emperor is setting off soon",
+    subtitle_3="You killed woman...",
+    subtitle_4="You should replace her to be\na gift to the Emperor!",
+    revised_3="You killed a woman...",
+    note_3="Added 'a' before 'woman'.",
+    revised_4="You should replace her as\na gift to the Emperor!",
+    note_4="Changed 'replace her to be' to 'replace her as' for correct usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_134
 # noinspection PyArgumentList
-proof_test_case_block_135 = None  # proof_test_case_block_135
+proof_test_case_block_135 = EnglishProofTestCase.get_test_case_cls(8)(
+    subtitle_1="No one dares come up to fight for\nthe leadership?",
+    subtitle_2='Ask Mok to give us the\n"Dog Hitting Waddy"!',
+    subtitle_3="Ask that old bag to\nhand us the waddy",
+    subtitle_4="Where have they been?",
+    subtitle_5="I don't know,",
+    subtitle_6="I saw them chat,",
+    subtitle_7="then they went away",
+    subtitle_8="Are there any affair between them?",
+    revised_8="Is there any affair between them?",
+    note_8="Changed 'Are there any affair' to 'Is there any affair' for "
+    "correct subject-verb agreement.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_135
 # noinspection PyArgumentList
-proof_test_case_block_136 = None  # proof_test_case_block_136
+proof_test_case_block_136 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Now, we are going to choose\nthe new leader",
+    verified=True,
+)  # proof_test_case_block_136
 # noinspection PyArgumentList
-proof_test_case_block_137 = None  # proof_test_case_block_137
+proof_test_case_block_137 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Uncle Mok...",
+    subtitle_2="I am scared,",
+    subtitle_3="I think you won't come back",
+    subtitle_4="How is it? Where is sister?",
+    subtitle_5="Your sister is caught by Chiu",
+    subtitle_6="We'd find someone to compete\nfor the leadership",
+    revised_4="How is it? Where is my sister?",
+    note_4="Changed 'sister' to 'my sister'.",
+    revised_6="We need to find someone to compete\nfor the leadership",
+    note_6="Changed 'We'd find' to 'We need to find' for correct meaning and grammar.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_137
 # noinspection PyArgumentList
-proof_test_case_block_138 = None  # proof_test_case_block_138
+proof_test_case_block_138 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Who should go?",
+    verified=True,
+)  # proof_test_case_block_138
 # noinspection PyArgumentList
-proof_test_case_block_139 = None  # proof_test_case_block_139
+proof_test_case_block_139 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="I'll do it",
+    subtitle_2="Uncle Mok",
+    subtitle_3="Why don't you let me try?",
+    verified=True,
+)  # proof_test_case_block_139
 # noinspection PyArgumentList
-proof_test_case_block_140 = None  # proof_test_case_block_140
+proof_test_case_block_140 = EnglishProofTestCase.get_test_case_cls(7)(
+    subtitle_1="Chan,",
+    subtitle_2="you are not qualified, come down",
+    subtitle_3="Since you don't have a good candidate,\nI'll give you some advantage",
+    subtitle_4="Chan, it's not a game",
+    subtitle_5="You will be killed, come down",
+    subtitle_6="It doesn't matter, I have forgotten\nmy life already",
+    subtitle_7="Bull shit, throw him to death",
+    revised_7="Bullshit, throw him to his death",
+    note_7="Changed 'Bull shit' to 'Bullshit' and 'throw him to death' "
+    "to 'throw him to his death' for correct usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_140
 # noinspection PyArgumentList
 proof_test_case_block_141 = None  # proof_test_case_block_141
 # noinspection PyArgumentList
