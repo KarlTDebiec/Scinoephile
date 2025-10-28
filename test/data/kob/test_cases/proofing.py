@@ -754,35 +754,226 @@ proof_test_case_block_35 = EnglishProofTestCase.get_test_case_cls(67)(
     verified=True,
 )  # proof_test_case_block_35
 # noinspection PyArgumentList
-proof_test_case_block_36 = None  # proof_test_case_block_36
+proof_test_case_block_36 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="There is nothing surprising, go",
+    subtitle_2="Yes",
+    revised_1="There is nothing surprising. Go.",
+    note_1="Added a period to separate the two sentences for clarity.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_36
 # noinspection PyArgumentList
-proof_test_case_block_37 = None  # proof_test_case_block_37
+proof_test_case_block_37 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="I am sorry for scaring you",
+    subtitle_2="If this girl is real,\nthat's fantastic!",
+    subtitle_3="Hurry up!",
+    subtitle_4="What's the matter?",
+    subtitle_5="Come on, go in",
+    subtitle_6="What's the matter?",
+    subtitle_7="Hide in",
+    subtitle_8="Get ready, young master",
+    subtitle_9="Come on",
+    subtitle_10="Freeze, don't move",
+    revised_7="Hide inside",
+    note_7="Changed 'Hide in' to 'Hide inside' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_37
 # noinspection PyArgumentList
-proof_test_case_block_38 = None  # proof_test_case_block_38
+proof_test_case_block_38 = EnglishProofTestCase.get_test_case_cls(37)(
+    subtitle_1="Sweet smell, are you Piu Hung?",
+    subtitle_2="You are great!\nI love it",
+    subtitle_3="Closer",
+    subtitle_4="So big!\nYou must be Small!",
+    subtitle_5="You are bad, how can\nyou say so to me?",
+    subtitle_6="You are big!",
+    subtitle_7="What? Pregnant woman?\nYou can't cheat me",
+    subtitle_8="You are dad",
+    subtitle_9="How bad are you,\nhow can you guess that?",
+    subtitle_10="Good boy",
+    subtitle_11="I wanted to trick you actually,\nyou are really smart",
+    subtitle_12="Young master has to join\nthe examination tomorrow,",
+    subtitle_13="stop playing",
+    subtitle_14="Get out...",
+    subtitle_15="Chan, have you prepared",
+    subtitle_16="for your examination?",
+    subtitle_17="What should I prepare?\nI must win, don't you know that?",
+    subtitle_18="Yes I do!",
+    subtitle_19="I have faith in you from seeing\nyour behaviour!",
+    subtitle_20="Chan, this is Uncle Cheng",
+    subtitle_21="He will be the examiner",
+    subtitle_22="Say hello to Uncle Cheng",
+    subtitle_23="How are you, Uncle Cheng?",
+    subtitle_24="See",
+    subtitle_25="Doesn't he seem to be the winner?",
+    subtitle_26="It depends on the fate",
+    subtitle_27="Cheng, I've asked someone",
+    subtitle_28="to finish the papers\nwhich you gave me",
+    subtitle_29="Will the questions be changed?",
+    subtitle_30="Don't worry about\nthe question paper",
+    subtitle_31="But about the test\nof arrows shooting,",
+    subtitle_32="riding, boxing and weapons...",
+    subtitle_33="He should try his best",
+    subtitle_34="Don't worry",
+    subtitle_35="My son is keen in martial arts",
+    subtitle_36="So, can I deduct some from the payment\nof 2 million taels?",
+    subtitle_37="We are friends,\nbut that is business",
+    revised_4="So big!\nYou must be small!",
+    note_4="Changed 'Small' to lowercase 'small' as it is not a name.",
+    revised_8="You are a dad.",
+    note_8="Added 'a' before 'dad' for grammatical correctness.",
+    revised_31="But for the test\nof arrow shooting,",
+    note_31="Changed 'test of arrows shooting' to 'test of arrow "
+    "shooting' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_38
 # noinspection PyArgumentList
-proof_test_case_block_39 = None  # proof_test_case_block_39
+proof_test_case_block_39 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Let the Horse teams\nbe the pioneer",
+    subtitle_2="The arrows teams go side ways,\nthe gunmen stay back",
+    revised_1="Let the horse teams\nbe the pioneers",
+    note_1="Changed 'Horse teams' to lowercase 'horse teams' and 'be the "
+    "pioneer' to 'be the pioneers' for subject-verb agreement and "
+    "consistency.",
+    revised_2="The arrow teams go sideways,\nthe gunmen stay back",
+    note_2="Changed 'arrows teams' to 'arrow teams' and 'side ways' to 'sideways'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_39
 # noinspection PyArgumentList
-proof_test_case_block_40 = None  # proof_test_case_block_40
+proof_test_case_block_40 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="The candidates come in",
+    verified=True,
+)  # proof_test_case_block_40
 # noinspection PyArgumentList
-proof_test_case_block_41 = None  # proof_test_case_block_41
+proof_test_case_block_41 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="I can't lift it",
+    subtitle_2="I don't want to waste my force",
+    subtitle_3="Shameless? Damn you!",
+    verified=True,
+)  # proof_test_case_block_41
 # noinspection PyArgumentList
-proof_test_case_block_42 = None  # proof_test_case_block_42
+proof_test_case_block_42 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Oh, 10 marks",
+    verified=True,
+)  # proof_test_case_block_42
 # noinspection PyArgumentList
-proof_test_case_block_43 = None  # proof_test_case_block_43
+proof_test_case_block_43 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="The final race now starts",
+    subtitle_2="The candidates,",
+    subtitle_3="Po Ye Tat Tor from Mongolia",
+    subtitle_4="Bravo...",
+    subtitle_5="And So Cha Ha Yee\nChan from Canton",
+    revised_1="The final race starts now",
+    note_1="Changed word order for natural phrasing.",
+    difficulty=1,
+    prompt=True,
+    verified=True,
+)  # proof_test_case_block_43
 # noinspection PyArgumentList
-proof_test_case_block_44 = None  # proof_test_case_block_44
+proof_test_case_block_44 = EnglishProofTestCase.get_test_case_cls(44)(
+    subtitle_1="Last call",
+    subtitle_2="So, one to ten\nPo, one to one",
+    subtitle_3="Are you kidding, how can the betting rates\ndiffer so much?",
+    subtitle_4="One to ten for Chan? Kidding?",
+    subtitle_5="Why don't you have\nfaith in Chan?",
+    subtitle_6="That is, Chan defaulted\nin weight lifting",
+    subtitle_7="Look, Po entered the final race",
+    subtitle_8="with full marks, it differs",
+    subtitle_9="It's an examination of the Scholar\n"
+    "of Martial Arts, not king of coolie",
+    subtitle_10="It's meaningless to be the champion\nof weight lifting",
+    subtitle_11="You shouldn't put it that way",
+    subtitle_12="What?",
+    subtitle_13="He is smart",
+    subtitle_14="I've studied this\nrace for a long time",
+    subtitle_15="I feel strange about the rate too",
+    subtitle_16="Po is smart and strong",
+    subtitle_17="But see the sweat of his neck",
+    subtitle_18="I think it's because\nhe is getting tired",
+    subtitle_19="Really?",
+    subtitle_20="But this So",
+    subtitle_21="What do you thing?",
+    subtitle_22="He has been disappointing\nthe audience",
+    subtitle_23="But he has achieved very hard",
+    subtitle_24="What?",
+    subtitle_25="He tried very hard",
+    subtitle_26="So I want to bet on him",
+    subtitle_27="How much do you want to bet?",
+    subtitle_28="800,000 taels",
+    subtitle_29="Why not 2 million taels?",
+    subtitle_30="What? Why are you so optimistic\nabout Chan?",
+    subtitle_31="You have good analyse",
+    subtitle_32="I feel Chan",
+    subtitle_33="will be the champion",
+    subtitle_34="Come on",
+    subtitle_35="I want to bet more on him",
+    subtitle_36="Really?",
+    subtitle_37="2 million taels!",
+    subtitle_38="How generous!",
+    subtitle_39="Why don't you bet?",
+    subtitle_40="Why should I bet?\nHe is my son",
+    subtitle_41="Shit, I miss one thing out\nof my calculation",
+    subtitle_42="What?",
+    subtitle_43="The blood",
+    subtitle_44="Here comes the Examiner",
+    revised_9="It's an examination for the Scholar\n"
+    "of Martial Arts, not king of coolies.",
+    note_9="Changed 'of the Scholar' to 'for the Scholar' and 'king of "
+    "coolie' to 'king of coolies'.",
+    revised_21="What do you think?",
+    note_21="Corrected 'thing' to 'think'.",
+    revised_23="But he has worked very hard.",
+    note_23="Changed 'achieved very hard' to 'worked very hard'.",
+    revised_31="You have good analysis.",
+    note_31="Changed 'analyse' to 'analysis'.",
+    revised_41="Shit, I missed one thing in\nmy calculation.",
+    note_41="Changed 'miss' to 'missed' and 'out of' to 'in'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_44
 # noinspection PyArgumentList
-proof_test_case_block_45 = None  # proof_test_case_block_45
+proof_test_case_block_45 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="What? Isn't Cheng the examiner?",
+    verified=True,
+)  # proof_test_case_block_45
 # noinspection PyArgumentList
-proof_test_case_block_46 = None  # proof_test_case_block_46
+proof_test_case_block_46 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="Please take a seat",
+    subtitle_2="Seng-ko-lin-ch'in?!",
+    subtitle_3="What's the problem?",
+    subtitle_4="He is the uncle of Po",
+    subtitle_5="Let's start",
+    verified=True,
+)  # proof_test_case_block_46
 # noinspection PyArgumentList
-proof_test_case_block_47 = None  # proof_test_case_block_47
+proof_test_case_block_47 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Start!",
+    verified=True,
+)  # proof_test_case_block_47
 # noinspection PyArgumentList
-proof_test_case_block_48 = None  # proof_test_case_block_48
+proof_test_case_block_48 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Bravo...",
+    subtitle_2="They should act 2 more marks for that\npowerful shoot",
+    subtitle_3="I do think so",
+    revised_2="They should add 2 more marks for that\npowerful shot",
+    note_2="Changed 'act' to 'add' and 'shoot' to 'shot' for correct usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_48
 # noinspection PyArgumentList
-proof_test_case_block_49 = None  # proof_test_case_block_49
+proof_test_case_block_49 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="So's arrow isn't on the target,\nPo won this section",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_49
 # noinspection PyArgumentList
-proof_test_case_block_50 = None  # proof_test_case_block_50
+proof_test_case_block_50 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Kidding? Damn you!\nThey are cheating",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_50
 # noinspection PyArgumentList
 proof_test_case_block_51 = None  # proof_test_case_block_51
 # noinspection PyArgumentList
