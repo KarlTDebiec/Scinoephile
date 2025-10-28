@@ -1713,45 +1713,311 @@ proof_test_case_block_100 = EnglishProofTestCase.get_test_case_cls(9)(
     verified=True,
 )  # proof_test_case_block_100
 # noinspection PyArgumentList
-proof_test_case_block_101 = None  # proof_test_case_block_101
+proof_test_case_block_101 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Thank you...",
+    subtitle_2="Sister, he wouldn't\nbe that poor",
+    subtitle_3="if not were you",
+    revised_3="if it were not for you",
+    note_3="Changed 'if not were you' to 'if it were not for you' for correct grammar.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_101
 # noinspection PyArgumentList
-proof_test_case_block_102 = None  # proof_test_case_block_102
+proof_test_case_block_102 = EnglishProofTestCase.get_test_case_cls(15)(
+    subtitle_1="Dad, what are you doing?",
+    subtitle_2="I can't stand the hunger",
+    subtitle_3="So I bit the dumpling of the kid",
+    subtitle_4="I have dumpling, take it back",
+    subtitle_5="Could I pay you another head",
+    subtitle_6="if I chopped yours",
+    subtitle_7="Are you the Scholar?",
+    subtitle_8="Yes, are you the Scholar?",
+    subtitle_9="I was nearly the Scholar",
+    subtitle_10="He is the Scholar!",
+    subtitle_11="We should give him face",
+    subtitle_12="Thank you",
+    subtitle_13="Hold it",
+    subtitle_14="Are they going to treat me",
+    subtitle_15="some food?",
+    revised_4="I have a dumpling, take it back",
+    note_4="Added 'a' before 'dumpling' for correct grammar.",
+    revised_5="Could I pay you with another head",
+    note_5="Added 'with' for clarity and natural phrasing.",
+    revised_14="Are they going to treat me to",
+    note_14="Added 'to' for correct idiomatic expression (connects to next subtitle).",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_102
 # noinspection PyArgumentList
-proof_test_case_block_103 = None  # proof_test_case_block_103
+proof_test_case_block_103 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="The dog's rice",
+    subtitle_2="Sir, I will let your dad go if you eat\nthe dog's rice now",
+    verified=True,
+)  # proof_test_case_block_103
 # noinspection PyArgumentList
-proof_test_case_block_104 = None  # proof_test_case_block_104
+proof_test_case_block_104 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="What's the matter?",
+    subtitle_2="Come on",
+    verified=True,
+)  # proof_test_case_block_104
 # noinspection PyArgumentList
-proof_test_case_block_105 = None  # proof_test_case_block_105
+proof_test_case_block_105 = EnglishProofTestCase.get_test_case_cls(7)(
+    subtitle_1="Chan, don't eat that",
+    subtitle_2="You can't face the\nothers if you eat this",
+    subtitle_3="Let's forget about me",
+    subtitle_4="Sir, I was a general in Canton",
+    subtitle_5="So what?",
+    subtitle_6="Stop fighting",
+    subtitle_7="Stand properly",
+    verified=True,
+)  # proof_test_case_block_105
 # noinspection PyArgumentList
-proof_test_case_block_106 = None  # proof_test_case_block_106
+proof_test_case_block_106 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="The Scholar eats the dog's food",
+    subtitle_2="It's quite delicious",
+    subtitle_3="Try some. Come on",
+    verified=True,
+)  # proof_test_case_block_106
 # noinspection PyArgumentList
-proof_test_case_block_107 = None  # proof_test_case_block_107
+proof_test_case_block_107 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="It's delicious, isn't it?",
+    verified=True,
+)  # proof_test_case_block_107
 # noinspection PyArgumentList
-proof_test_case_block_108 = None  # proof_test_case_block_108
+proof_test_case_block_108 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Dad, look!",
+    subtitle_2="There is a slice of meat here",
+    subtitle_3="It's pock chop!",
+    revised_3="It's pork chop!",
+    note_3="Corrected 'pock chop' to 'pork chop'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_108
 # noinspection PyArgumentList
-proof_test_case_block_109 = None  # proof_test_case_block_109
+proof_test_case_block_109 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="They are as hungry as dogs!",
+    subtitle_2="Enjoy the dog food!",
+    subtitle_3="Hurry, finish it",
+    subtitle_4="That's too delicious!",
+    subtitle_5="I want to save it\nfor midnight snack",
+    subtitle_6="It's very clever of you!",
+    subtitle_7="You deserve to be beggars",
+    subtitle_8="The Scholar is eating dog's food",
+    subtitle_9="Come on, let's go and\neat the man's food",
+    revised_8="The Scholar is eating dog food",
+    note_8="Changed 'dog's food' to 'dog food' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_109
 # noinspection PyArgumentList
-proof_test_case_block_110 = None  # proof_test_case_block_110
+proof_test_case_block_110 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Uncle So!",
+    verified=True,
+)  # proof_test_case_block_110
 # noinspection PyArgumentList
-proof_test_case_block_111 = None  # proof_test_case_block_111
+proof_test_case_block_111 = EnglishProofTestCase.get_test_case_cls(13)(
+    subtitle_1="You are...",
+    subtitle_2="My dad was the Master of the\nBeggar's Association",
+    subtitle_3="Why don't you join our Beggar's\nAssociation",
+    subtitle_4="Uncle Mok, isn't it a good idea?",
+    subtitle_5="Good",
+    subtitle_6="Isn't it the association\nfor beggars?",
+    subtitle_7="Yes!",
+    subtitle_8="That's right,\nwe are being beggars",
+    subtitle_9="It's wise to join the Beggars' Association\nso as to be taken care",
+    subtitle_10="Chan...\nwhere is that fool going?",
+    subtitle_11="Where is Chan?",
+    subtitle_12="OK, we will join you!",
+    subtitle_13="Chan... Chan...",
+    revised_2="My dad was the Master of the\nBeggars' Association",
+    note_2="Changed 'Beggar's Association' to 'Beggars' Association' for "
+    "consistency and correct plural possessive.",
+    revised_3="Why don't you join our Beggars'\nAssociation?",
+    note_3="Changed 'Beggar's Association' to 'Beggars' Association' and "
+    "added a question mark.",
+    revised_9="It's wise to join the Beggars' Association\nso as to be taken care of",
+    note_9="Changed 'Beggars' Association' for consistency and added "
+    "'of' to complete the phrase 'taken care of'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_111
 # noinspection PyArgumentList
-proof_test_case_block_112 = None  # proof_test_case_block_112
+proof_test_case_block_112 = EnglishProofTestCase.get_test_case_cls(26)(
+    subtitle_1="Yushang, good year!",
+    subtitle_2="Uncle Mok, happy new year!",
+    subtitle_3="This is for you",
+    subtitle_4="Thank you",
+    subtitle_5="One clothe is for you",
+    subtitle_6="and the other is for Chan",
+    subtitle_7="Thank you. Put it down first",
+    subtitle_8="Do you have any coins?",
+    subtitle_9="Yes!",
+    subtitle_10="Give them to me, come on",
+    subtitle_11="What for?",
+    subtitle_12="It's new year,",
+    subtitle_13="you should receive red pocket",
+    subtitle_14="Come on, happy new year",
+    subtitle_15="Good year!",
+    subtitle_16="Wish you ever beauty",
+    subtitle_17="Thank you...",
+    subtitle_18="Uncle Mok, we needn't give red\npocket to each other",
+    subtitle_19="How about Chan",
+    subtitle_20="Chan?",
+    subtitle_21="He is still sleeping",
+    subtitle_22="Don't wake him up",
+    subtitle_23="I will cook you some new year cake",
+    subtitle_24="Let me help you",
+    subtitle_25="How can he sleep on the\n1st day of this year?",
+    subtitle_26="He is useless",
+    revised_5="One cloth is for you",
+    note_5="Changed 'clothe' to 'cloth'.",
+    revised_13="you should receive a red packet",
+    note_13="Changed 'red pocket' to 'red packet' and added 'a'.",
+    revised_16="Wish you everlasting beauty",
+    note_16="Changed 'ever beauty' to 'everlasting beauty'.",
+    revised_18="Uncle Mok, we don't need to give red\npackets to each other",
+    note_18="Changed 'needn't' to 'don't need to' and 'red pocket' to 'red packets'.",
+    revised_23="I will cook you some New Year cake",
+    note_23="Capitalized 'New Year'.",
+    revised_25="How can he sleep on the\nfirst day of the year?",
+    note_25="Changed '1st day of this year' to 'first day of the year' "
+    "for clarity and natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_112
 # noinspection PyArgumentList
-proof_test_case_block_113 = None  # proof_test_case_block_113
+proof_test_case_block_113 = EnglishProofTestCase.get_test_case_cls(21)(
+    subtitle_1="Are you all here?",
+    subtitle_2="To fight against Chiu, we need a union of\nthe Beggar's Association",
+    subtitle_3="So we must choose a new master to\nin-charge the association",
+    subtitle_4="Yushang...",
+    subtitle_5="To defeat the Lotus position\nof the three seniors",
+    subtitle_6="You should try your best",
+    subtitle_7="Uncle, I don't have\nfaith to defeat them",
+    subtitle_8="Judging from my kung-fu now,",
+    subtitle_9="how can I defeat them and become\nthe new master?",
+    subtitle_10="Take this Taiwan pill, after this,\nyour power will be improved",
+    subtitle_11="No, this is the only medicine to cure\nyour inner injury",
+    subtitle_12="How can I take this?",
+    subtitle_13="Don't worry,",
+    subtitle_14="you can ask my\nson to fight for you",
+    subtitle_15="He was a scholar\nof Martial Arts before...",
+    subtitle_16="Before...",
+    subtitle_17="Look at him, he is son lazy,",
+    subtitle_18="he knows sleeping only",
+    subtitle_19="He is not even\nqualified to be beggar!",
+    subtitle_20="Don't be that frank, can you?",
+    subtitle_21="Don't shout that loudly, OK?",
+    revised_2="To fight against Chiu, we need a union of\nthe Beggars' Association",
+    note_2="Changed 'Beggar's Association' to 'Beggars' Association' for "
+    "correct plural possessive.",
+    revised_3="So we must choose a new master to\nbe in charge of the association",
+    note_3="Changed 'to in-charge the association' to 'to be in charge "
+    "of the association'.",
+    revised_5="To defeat the Lotus Position\nof the three seniors",
+    note_5="Capitalized 'Position' for consistency as a martial arts term.",
+    revised_7="Uncle, I don't have\nfaith that I can defeat them",
+    note_7="Added 'that I can' for clarity and natural phrasing.",
+    revised_10="Take this Taiwanese pill, after this,\nyour power will be improved",
+    note_10="Changed 'Taiwan' to 'Taiwanese'.",
+    revised_15="He was a Scholar\nof Martial Arts before...",
+    note_15="Capitalized 'Scholar' for consistency with previous usage.",
+    revised_17="Look at him, he is so lazy,",
+    note_17="Changed 'son lazy' to 'so lazy'.",
+    revised_18="he only knows how to sleep",
+    note_18="Changed 'he knows sleeping only' to 'he only knows how to "
+    "sleep' for natural phrasing.",
+    revised_19="He is not even\nqualified to be a beggar!",
+    note_19="Added 'a' before 'beggar'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_113
 # noinspection PyArgumentList
-proof_test_case_block_114 = None  # proof_test_case_block_114
+proof_test_case_block_114 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Chan, no matter\nhow they despise you,",
+    subtitle_2="I have faith on you",
+    subtitle_3="Although you lost your power",
+    subtitle_4="With your background,",
+    subtitle_5="only you try hard,",
+    subtitle_6="you can achieve something",
+    subtitle_7="But I am now powerless,\nI don't want to fight again",
+    subtitle_8="You have power!",
+    subtitle_9="Come on, beat me",
+    revised_2="I have faith in you",
+    note_2="Changed 'faith on you' to 'faith in you'.",
+    revised_5="if only you try hard,",
+    note_5="Changed 'only you try hard,' to 'if only you try hard,' for "
+    "correct phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_114
 # noinspection PyArgumentList
-proof_test_case_block_115 = None  # proof_test_case_block_115
+proof_test_case_block_115 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="See, that was powerful",
+    subtitle_2="Well, being a people...",
+    subtitle_3="Forget it, don't waste time",
+    subtitle_4="Why don't you let me sleep?",
+    revised_2="Well, being a person...",
+    note_2="Changed 'people' to 'person' for correct singular usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_115
 # noinspection PyArgumentList
-proof_test_case_block_116 = None  # proof_test_case_block_116
+proof_test_case_block_116 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Why did you lock the door?",
+    subtitle_2="Enjoy sleeping",
+    verified=True,
+)  # proof_test_case_block_116
 # noinspection PyArgumentList
-proof_test_case_block_117 = None  # proof_test_case_block_117
+proof_test_case_block_117 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Son,",
+    subtitle_2="I tried very hard\nto get this for you",
+    subtitle_3="Try hard to practise, be good",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_117
 # noinspection PyArgumentList
-proof_test_case_block_118 = None  # proof_test_case_block_118
+proof_test_case_block_118 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Why do you go up?",
+    subtitle_2="Even you want me\nto practise Kung-fu,",
+    subtitle_3="you should give me a waddy first",
+    subtitle_4="I am sorry, catch it",
+    revised_2="Even if you want me\nto practise Kung Fu,",
+    note_2="Added 'if' for correct conditional phrasing; changed "
+    "'Kung-fu' to 'Kung Fu'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_118
 # noinspection PyArgumentList
-proof_test_case_block_119 = None  # proof_test_case_block_119
+proof_test_case_block_119 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Before being appointed\nimportant task,",
+    subtitle_2="God will give you severe\ntraining for soul and flesh.",
+    revised_1="Before being appointed to an\nimportant task,",
+    note_1="Added 'to an' for correct phrasing.",
+    revised_2="God will give you severe\ntraining for your soul and flesh.",
+    note_2="Added 'your' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_119
 # noinspection PyArgumentList
-proof_test_case_block_120 = None  # proof_test_case_block_120
+proof_test_case_block_120 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="Did you write it?",
+    subtitle_2="It's ugly, it's right\nto wipe it away",
+    subtitle_3="Hey, beggar?",
+    subtitle_4="Yes",
+    subtitle_5="Me too",
+    subtitle_6="Congratulation",
+    subtitle_7="Are there anything to eat?",
+    subtitle_8="No",
+    subtitle_9="Luckily, I have",
+    revised_6="Congratulations",
+    note_6="Changed 'Congratulation' to 'Congratulations'.",
+    revised_7="Is there anything to eat?",
+    note_7="Changed 'Are there anything to eat?' to 'Is there anything "
+    "to eat?' for correct grammar.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_120
 # noinspection PyArgumentList
 proof_test_case_block_121 = None  # proof_test_case_block_121
 # noinspection PyArgumentList
