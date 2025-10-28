@@ -623,10 +623,10 @@ proof_test_case_block_33 = EnglishProofTestCase.get_test_case_cls(9)(
     'using the "Dragon Killing Palms"',
     subtitle_8="So, I can never marry!",
     subtitle_9="Let's go, if you want to marry",
-    revised_9="Let's go, if you want to get married",
-    note_9="Changed 'marry' to 'get married' for natural phrasing.",
     revised_6="Chiu is good at Kung Fu",
     note_6="Changed 'Kung-fu' to 'Kung Fu'.",
+    revised_9="Let's go, if you want to get married",
+    note_9="Changed 'marry' to 'get married' for natural phrasing.",
     difficulty=1,
     verified=True,
 )  # proof_test_case_block_33
@@ -1527,22 +1527,23 @@ proof_test_case_block_82 = EnglishProofTestCase.get_test_case_cls(26)(
 # noinspection PyArgumentList
 proof_test_case_block_83 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Write your name at once",
-    revised_1="Write your name immediately.",
-    note_1="Changed 'at once' to 'immediately' for more natural phrasing.",
-    difficulty=1,
+    verified=True,
 )  # proof_test_case_block_83
 # noinspection PyArgumentList
 proof_test_case_block_84 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="I don't know how to write",
+    verified=True,
 )  # proof_test_case_block_84
 # noinspection PyArgumentList
 proof_test_case_block_85 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Chan, what's wrong with you?",
+    verified=True,
 )  # proof_test_case_block_85
 # noinspection PyArgumentList
 proof_test_case_block_86 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="Nightmare again?",
     subtitle_2="Don't think so much!",
+    verified=True,
 )  # proof_test_case_block_86
 # noinspection PyArgumentList
 proof_test_case_block_87 = EnglishProofTestCase.get_test_case_cls(10)(
@@ -1557,11 +1558,11 @@ proof_test_case_block_87 = EnglishProofTestCase.get_test_case_cls(10)(
     subtitle_9="This job should leave to me",
     subtitle_10="You are the Scholar...",
     revised_3="your legs and hands have not totally recovered",
-    note_3="Removed 'been' for correct grammar: 'have not totally recovered'.",
+    note_3="Removed 'been' for correct grammar.",
     revised_9="This job should be left to me",
-    note_9="Changed 'should leave to me' to 'should be left to me' for "
-    "correct passive construction.",
+    note_9="Changed 'should leave to me' to 'should be left to me'.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_87
 # noinspection PyArgumentList
 proof_test_case_block_88 = EnglishProofTestCase.get_test_case_cls(9)(
@@ -1579,29 +1580,32 @@ proof_test_case_block_88 = EnglishProofTestCase.get_test_case_cls(9)(
     revised_8="We can't beg well\nif we are late!",
     note_8="Changed 'beg for good' to 'beg well' for natural phrasing.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_88
 # noinspection PyArgumentList
 proof_test_case_block_89 = EnglishProofTestCase.get_test_case_cls(3)(
     subtitle_1="Give me money please",
     subtitle_2="Go, go , I won't give you money",
     subtitle_3="Go, don't stop me\nfrom doing business",
-    revised_1="Give me money, please.",
-    note_1="Added a comma for correct punctuation and a period at the end.",
-    revised_2="Go, go, I won't give you money.",
+    revised_2="Go, go, I won't give you money",
     note_2="Removed extra space after the second 'go'.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_89
 # noinspection PyArgumentList
 proof_test_case_block_90 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Chan, dad is leaving",
+    verified=True,
 )  # proof_test_case_block_90
 # noinspection PyArgumentList
 proof_test_case_block_91 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Thank you...",
+    verified=True,
 )  # proof_test_case_block_91
 # noinspection PyArgumentList
 proof_test_case_block_92 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Thank you...",
+    verified=True,
 )  # proof_test_case_block_92
 # noinspection PyArgumentList
 proof_test_case_block_93 = EnglishProofTestCase.get_test_case_cls(4)(
@@ -1609,11 +1613,12 @@ proof_test_case_block_93 = EnglishProofTestCase.get_test_case_cls(4)(
     subtitle_2="Why don't you write it yourself?",
     subtitle_3="You are off duty, so I just\nwant to lend it",
     subtitle_4="Don't you think I am idiot?",
-    revised_3="You are off duty, so I just\nwant to borrow it.",
+    revised_3="You are off duty, so I just\nwant to borrow it",
     note_3="Changed 'lend' to 'borrow' for correct usage.",
-    revised_4="Don't you think I'm an idiot?",
-    note_4="Changed 'I am' to 'I'm' and added 'an' before 'idiot'.",
+    revised_4="Do you think I'm an idiot?",
+    note_4="Changed 'Don't' to 'Do' and 'I am idiot' to 'I'm an idiot?'.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_93
 # noinspection PyArgumentList
 proof_test_case_block_94 = EnglishProofTestCase.get_test_case_cls(13)(
@@ -1634,11 +1639,13 @@ proof_test_case_block_94 = EnglishProofTestCase.get_test_case_cls(13)(
     note_10="Changed 'Are you go for begging?' to 'Are you going "
     "begging?' for correct grammar.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_94
 # noinspection PyArgumentList
 proof_test_case_block_95 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="You bastard, why don't you eat?",
     subtitle_2="You should eat more so as\nto be strong!",
+    verified=True,
 )  # proof_test_case_block_95
 # noinspection PyArgumentList
 proof_test_case_block_96 = EnglishProofTestCase.get_test_case_cls(5)(
@@ -1647,9 +1654,8 @@ proof_test_case_block_96 = EnglishProofTestCase.get_test_case_cls(5)(
     subtitle_3="You should take all the food",
     subtitle_4="OK, just forget it,\nlet's go home",
     subtitle_5="Come on, eat them all",
-    revised_3="You should eat all the food",
-    note_3="Changed 'take' to 'eat' for clarity and natural phrasing.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_96
 # noinspection PyArgumentList
 proof_test_case_block_97 = EnglishProofTestCase.get_test_case_cls(4)(
@@ -1657,6 +1663,7 @@ proof_test_case_block_97 = EnglishProofTestCase.get_test_case_cls(4)(
     subtitle_2="What?",
     subtitle_3="May I...",
     subtitle_4="No",
+    verified=True,
 )  # proof_test_case_block_97
 # noinspection PyArgumentList
 proof_test_case_block_98 = EnglishProofTestCase.get_test_case_cls(11)(
@@ -1671,17 +1678,17 @@ proof_test_case_block_98 = EnglishProofTestCase.get_test_case_cls(11)(
     subtitle_9="Sister, it's him",
     subtitle_10="No, no",
     subtitle_11="Sister, he is So Chan",
-    revised_2="Be merciful to me, please.",
-    note_2="Added a comma for correct punctuation.",
     revised_4="Beggar, do you want\nthe broken charcoal?",
     note_4="Changed 'carbon' to 'charcoal' for correct context.",
-    revised_8="No, you are mistaken.",
-    note_8="Changed 'you have mistaken' to 'you are mistaken.'",
+    revised_8="No, you are mistaken",
+    note_8="Changed 'have mistaken' to 'are mistaken' for correct usage.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_98
 # noinspection PyArgumentList
 proof_test_case_block_99 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Wait!",
+    verified=True,
 )  # proof_test_case_block_99
 # noinspection PyArgumentList
 proof_test_case_block_100 = EnglishProofTestCase.get_test_case_cls(9)(
@@ -1694,20 +1701,16 @@ proof_test_case_block_100 = EnglishProofTestCase.get_test_case_cls(9)(
     subtitle_7="We always have surplus",
     subtitle_8="Dumpling",
     subtitle_9="Take it",
-    revised_2="I am sorry, I was mistaken.",
-    note_2="Changed 'I have mistaken' to 'I was mistaken.'",
-    revised_3="Tracy, take some dumplings out.",
-    note_3="Changed 'dumpling' to 'dumplings' for correct plural form "
-    "and added period.",
-    revised_4="You are mistaken,\nhe is not So Chan.",
-    note_4="Changed 'You have mistake' to 'You are mistaken' and added period.",
-    revised_6="Come get some dumplings if you\nhave nothing to eat.",
-    note_6="Changed 'Come to get some dumplings if you get nothing to "
-    "eat' to 'Come get some dumplings if you have nothing to "
-    "eat.'",
-    revised_8="Dumplings.",
-    note_8="Changed 'Dumpling' to 'Dumplings.' for correct plural and punctuation.",
+    revised_2="I am sorry, I made a mistake",
+    note_2="Changed 'I have mistaken' to 'I made a mistake' for correct usage.",
+    revised_3="Tracy, take some dumplings out",
+    note_3="Changed 'dumpling' to 'dumplings' for correct plural usage.",
+    revised_4="You are mistaken,\nhe is not So Chan",
+    note_4="Changed 'You have mistake' to 'You are mistaken' for correct phrasing.",
+    revised_8="Dumplings",
+    note_8="Changed 'Dumpling' to 'Dumplings' for correct plural usage.",
     difficulty=1,
+    verified=True,
 )  # proof_test_case_block_100
 # noinspection PyArgumentList
 proof_test_case_block_101 = None  # proof_test_case_block_101

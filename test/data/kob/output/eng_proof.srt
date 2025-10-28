@@ -1205,11 +1205,11 @@ Hands off!
 
 283
 00:15:35,686 --> 00:15:36,729
-You know Kung-fu?
+You know Kung Fu?
 
 284
 00:15:37,729 --> 00:15:39,439
-No, I don't know Kung-fu at all
+No, I don't know Kung Fu at all
 
 285
 00:15:40,023 --> 00:15:41,942
@@ -1300,7 +1300,7 @@ How can I be your husband?
 305
 00:16:34,119 --> 00:16:35,871
 I want him to be the superior
-Kung-fu master
+Kung Fu master
 
 306
 00:16:35,954 --> 00:16:37,205
@@ -1334,7 +1334,7 @@ for our wedding
 313
 00:16:57,684 --> 00:17:00,312
 Because this is too easy for me
-to be the Kung-fu scholar!
+to be the Kung Fu scholar!
 
 314
 00:17:01,271 --> 00:17:04,816
@@ -1430,7 +1430,7 @@ Especially him
 
 336
 00:19:45,727 --> 00:19:47,479
-Chiu is good at Kung-fu
+Chiu is good at Kung Fu
 
 337
 00:19:47,563 --> 00:19:50,900
@@ -2973,7 +2973,7 @@ Do you think we'd be beggars?
 698
 00:45:31,356 --> 00:45:33,400
 I am smart, I am keen
-on kung-fu fighting
+on Kung Fu fighting
 
 699
 00:45:33,483 --> 00:45:35,276
@@ -3385,7 +3385,7 @@ Don't panic, Chan, it's OK
 795
 00:49:57,539 --> 00:50:03,670
 Don't panic, you'll be
-alright...Chan!
+alright... Chan!
 
 796
 00:50:05,297 --> 00:50:08,342
@@ -3403,7 +3403,7 @@ was the examiner?
 799
 00:50:12,346 --> 00:50:15,140
 He is Seng-ko-lin-ch'in,
-that bastard.
+that bastard
 
 800
 00:50:15,224 --> 00:50:18,310
@@ -3448,8 +3448,8 @@ during the examination
 
 810
 00:50:39,122 --> 00:50:42,334
-But my son was really
-smart and great.
+But, my son was really
+smart and great
 
 811
 00:50:42,376 --> 00:50:44,461
@@ -3458,7 +3458,7 @@ He finally won the race
 812
 00:50:44,545 --> 00:50:45,463
 To be the greatest Kung Fu
-fighter, invincible.
+fighter, invincible
 
 813
 00:50:45,546 --> 00:50:47,423
@@ -3493,7 +3493,7 @@ too simple for me.
 
 820
 00:51:10,529 --> 00:51:11,613
-Write your name immediately.
+Write your name at once
 
 821
 00:51:14,783 --> 00:51:15,534
@@ -3592,11 +3592,11 @@ Yes...
 
 844
 00:52:48,919 --> 00:52:49,503
-Give me money, please.
+Give me money please
 
 845
 00:52:49,586 --> 00:52:50,796
-Go, go, I won't give you money.
+Go, go, I won't give you money
 
 846
 00:52:50,879 --> 00:52:54,508
@@ -3626,11 +3626,11 @@ Why don't you write it yourself?
 852
 00:53:32,796 --> 00:53:35,590
 You are off duty, so I just
-want to borrow it.
+want to borrow it
 
 853
 00:53:36,592 --> 00:53:37,551
-Don't you think I'm an idiot?
+Do you think I'm an idiot?
 
 854
 00:54:12,586 --> 00:54:13,504
@@ -3704,7 +3704,7 @@ No, I am full
 
 871
 00:55:14,731 --> 00:55:17,067
-You should eat all the food
+You should take all the food
 
 872
 00:55:18,026 --> 00:55:20,070
@@ -3737,7 +3737,7 @@ Be merciful!
 
 879
 00:55:57,900 --> 00:56:02,822
-Be merciful to me, please.
+Be merciful to me please
 
 880
 00:56:05,199 --> 00:56:07,410
@@ -3762,7 +3762,7 @@ It's you!
 
 885
 00:56:18,587 --> 00:56:19,421
-No, you are mistaken.
+No, you are mistaken
 
 886
 00:56:19,963 --> 00:56:21,423
@@ -3786,16 +3786,16 @@ Miss, who are you looking for?
 
 891
 00:56:38,148 --> 00:56:39,733
-I am sorry, I was mistaken.
+I am sorry, I made a mistake
 
 892
 00:56:40,192 --> 00:56:41,735
-Tracy, take some dumplings out.
+Tracy, take some dumplings out
 
 893
 00:56:42,110 --> 00:56:44,112
 You are mistaken,
-he is not So Chan.
+he is not So Chan
 
 894
 00:56:45,697 --> 00:56:46,740
@@ -3803,8 +3803,8 @@ You are like my friend
 
 895
 00:56:47,658 --> 00:56:50,327
-Come get some dumplings if you
-have nothing to eat.
+Come to get some dumplings if you
+get nothing to eat
 
 896
 00:56:51,245 --> 00:56:52,747
@@ -3812,7 +3812,7 @@ We always have surplus
 
 897
 00:56:54,498 --> 00:56:55,207
-Dumplings.
+Dumplings
 
 898
 00:56:55,332 --> 00:56:56,291
