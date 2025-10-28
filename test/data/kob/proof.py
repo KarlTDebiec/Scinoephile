@@ -29,7 +29,7 @@ async def main():
     )
 
     # Process all blocks
-    eng_proof = await proofer.process_all_blocks(eng, stop_at_idx=30)
+    eng_proof = await proofer.process_all_blocks(eng, stop_at_idx=35)
 
     # Update output file
     outfile_path = output_dir / "eng_proof.srt"
