@@ -2277,45 +2277,253 @@ proof_test_case_block_140 = EnglishProofTestCase.get_test_case_cls(7)(
     verified=True,
 )  # proof_test_case_block_140
 # noinspection PyArgumentList
-proof_test_case_block_141 = None  # proof_test_case_block_141
+proof_test_case_block_141 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Well, I will make\nyour wish come true",
+    verified=True,
+)  # proof_test_case_block_141
 # noinspection PyArgumentList
-proof_test_case_block_142 = None  # proof_test_case_block_142
+proof_test_case_block_142 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="What is he doing?",
+    subtitle_2="Sleeping",
+    verified=True,
+)  # proof_test_case_block_142
 # noinspection PyArgumentList
-proof_test_case_block_143 = None  # proof_test_case_block_143
+proof_test_case_block_143 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Isn't this stance...",
+    subtitle_2="Uncle Sun's \"Sleeping Disciple's Fists'?",
+    subtitle_3="Set the position!",
+    revised_2="Uncle Sun's \"Sleeping Disciple's Fists\"?",
+    note_2="Corrected quotes.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_143
 # noinspection PyArgumentList
-proof_test_case_block_144 = None  # proof_test_case_block_144
+proof_test_case_block_144 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Is it dawn?",
+    verified=True,
+)  # proof_test_case_block_144
 # noinspection PyArgumentList
-proof_test_case_block_145 = None  # proof_test_case_block_145
+proof_test_case_block_145 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="I am sorry!",
+    subtitle_2="I won",
+    subtitle_3="What is the use for defeating us?",
+    subtitle_4='You don\'t know how to use the\n"Dog Hitting Waddy".',
+    subtitle_5="You are not qualified to be\nthe leader of us",
+    revised_3="What is the use of defeating us?",
+    note_3="Changed 'for' to 'of' for correct phrasing.",
+    revised_5="You are not qualified to be our leader",
+    note_5="Changed 'the leader of us' to 'our leader' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_145
 # noinspection PyArgumentList
-proof_test_case_block_146 = None  # proof_test_case_block_146
+proof_test_case_block_146 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1='"Dog Hitting Waddy"?',
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_146
 # noinspection PyArgumentList
-proof_test_case_block_147 = None  # proof_test_case_block_147
+proof_test_case_block_147 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="It's for hitting dogs",
+    subtitle_2="I do know how to use this waddy!",
+    subtitle_3="But it's dislike\nfrom the standard stances!",
+    subtitle_4="It's quite powerful!",
+    revised_3="But it's different\nfrom the standard stances!",
+    note_3="Changed 'dislike' to 'different' for correct meaning.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_147
 # noinspection PyArgumentList
-proof_test_case_block_148 = None  # proof_test_case_block_148
+proof_test_case_block_148 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="He broke the waddy!",
+    subtitle_2="He broke the treasure of our Association,\nlet's kill him!",
+    verified=True,
+)  # proof_test_case_block_148
 # noinspection PyArgumentList
-proof_test_case_block_149 = None  # proof_test_case_block_149
+proof_test_case_block_149 = EnglishProofTestCase.get_test_case_cls(33)(
+    subtitle_1="I am Master Hung,\nwho dares go against me?",
+    subtitle_2="I set the rules of the association",
+    subtitle_3="Any student who defeated\nthe Lotus Position",
+    subtitle_4="could be the leader",
+    subtitle_5="Have you all forgotten?",
+    subtitle_6="We becomes the\nbiggest association",
+    subtitle_7="because of being united",
+    subtitle_8='I left you the\n"Dog Hitting Waddy",',
+    subtitle_9="is just for memory",
+    subtitle_10="The waddy is meaningless",
+    subtitle_11="But you fools take\nthis as treasure",
+    subtitle_12="And fight among yourselves for\nthis damn waddy!",
+    subtitle_13="In these five years, you have had no\nleader, don't you feel shy?",
+    subtitle_14="So Chan broke the waddy,",
+    subtitle_15="so you won't fight\nfor this anymore",
+    subtitle_16="He is correct to do so",
+    subtitle_17="This youngster is so junior,",
+    subtitle_18="but he is a genius, a smart ass",
+    subtitle_19="He is being taught by my disciple\nHung Yat Sun",
+    subtitle_20="Who doesn't respect him is going\nagainst me too",
+    subtitle_21="You should respect him,",
+    subtitle_22="your new leader,\nand you'd love him,",
+    subtitle_23="whole-heartedly, to care much for him,\nmaybe, treat him dinner",
+    subtitle_24="Then, although I am in heaven,",
+    subtitle_25="I will bless all of you,\nall the best",
+    subtitle_26="Isn't it true?",
+    subtitle_27="You'd better trust it",
+    subtitle_28="Master Hung's soul talked to us,",
+    subtitle_29="we are blessed",
+    subtitle_30="They are easily to be cheated,\nI am really a genius!",
+    subtitle_31="We'll have better living",
+    subtitle_32="What happened?",
+    subtitle_33="Let's greet the new Master",
+    revised_3="Any student who defeats\nthe Lotus Position",
+    note_3="Changed 'defeated' to 'defeats' for correct tense agreement.",
+    revised_6="We became the\nbiggest association",
+    note_6="Changed 'becomes' to 'became' for correct tense.",
+    revised_9="is just for remembrance",
+    note_9="Changed 'for memory' to 'for remembrance' for natural phrasing.",
+    revised_13="In these five years, you have had no\nleader. Don't you feel ashamed?",
+    note_13="Changed 'don't you feel shy?' to 'Don't you feel ashamed?' "
+    "for natural phrasing and split into two sentences.",
+    revised_18="but he is a genius, a smartass",
+    note_18="Changed 'smart ass' to 'smartass' (one word, informal slang).",
+    revised_20="Whoever doesn't respect him is going\nagainst me too",
+    note_20="Changed 'Who doesn't respect him' to 'Whoever doesn't "
+    "respect him' for correct grammar.",
+    revised_22="your new leader,\nand you should love him,",
+    note_22="Changed 'you'd love him' to 'you should love him' for clarity and tone.",
+    revised_23="wholeheartedly, care for him,\nmaybe treat him to dinner",
+    note_23="Changed 'whole-heartedly, to care much for him, maybe, treat "
+    "him dinner' to 'wholeheartedly, care for him, maybe treat "
+    "him to dinner' for natural phrasing and removed unnecessary "
+    "commas.",
+    revised_30="They are easily cheated,\nI am really a genius!",
+    note_30="Changed 'easily to be cheated' to 'easily cheated' for correct phrasing.",
+    revised_31="We'll have a better life",
+    note_31="Changed 'better living' to 'a better life' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_149
 # noinspection PyArgumentList
-proof_test_case_block_150 = None  # proof_test_case_block_150
+proof_test_case_block_150 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="You should have faith,\nyou won, bravo...",
+    subtitle_2="Uncle Mok, my son is really great!",
+    subtitle_3="I can't guess you have learnt the\n\"Sleeping Disciple's Fists\"?!",
+    subtitle_4="From now on, you are the new leader of us",
+    subtitle_5='This is the book of\n"Dragon Suppressing Stances"',
+    subtitle_6="And, I will give you the Taiwan Pill",
+    subtitle_7="Hope you will be a good leader",
+    subtitle_8="I just want to save Yushang as\nsoon as possible",
+    subtitle_9="Yushang didn't make a wrong choice",
+    subtitle_10="Bravo! Bravo!",
+    revised_3="I can't believe you have learnt the\n\"Sleeping Disciple's Fists\"?!",
+    note_3="Changed 'guess' to 'believe'.",
+    revised_4="From now on, you are our new leader",
+    note_4="Changed 'the new leader of us' to 'our new leader' for natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_150
 # noinspection PyArgumentList
-proof_test_case_block_151 = None  # proof_test_case_block_151
+proof_test_case_block_151 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Uncle Mok, how are you?",
+    subtitle_2="Uncle Mok!",
+    subtitle_3="Uncle Mok...",
+    verified=True,
+)  # proof_test_case_block_151
 # noinspection PyArgumentList
-proof_test_case_block_152 = None  # proof_test_case_block_152
+proof_test_case_block_152 = EnglishProofTestCase.get_test_case_cls(12)(
+    subtitle_1="Do you understand everything",
+    subtitle_2="written in this book?",
+    subtitle_3="Don't think that I am so foolish",
+    subtitle_4="After getting the\nhelp of Taiwan Pill",
+    subtitle_5="My initial power is increased",
+    subtitle_6="I can control the 17th stances",
+    subtitle_7="But the last stance,",
+    subtitle_8="there is no picture\nor description of it",
+    subtitle_9="I can't understand at all",
+    subtitle_10="But Uncle Mok is dead, what'll we do now?",
+    subtitle_11="Just go ahead",
+    subtitle_12="No matter how, I have to save\nYushang first",
+    revised_6="I can control the first 17 stances",
+    note_6="Changed '17th' to 'first 17'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_152
 # noinspection PyArgumentList
-proof_test_case_block_153 = None  # proof_test_case_block_153
+proof_test_case_block_153 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Check whether the camp is ready or not?",
+    subtitle_2="Yes!",
+    verified=True,
+)  # proof_test_case_block_153
 # noinspection PyArgumentList
-proof_test_case_block_154 = None  # proof_test_case_block_154
+proof_test_case_block_154 = EnglishProofTestCase.get_test_case_cls(13)(
+    subtitle_1="Chiu,",
+    subtitle_2="why do you bring this woman here?",
+    subtitle_3="I know the Emperor\nloves pretty woman",
+    subtitle_4="So I want to send him this gift",
+    subtitle_5="And I want to meet him too",
+    subtitle_6="There is no order from the Emperor",
+    subtitle_7="Men, come and take\nthis woman to the camp",
+    subtitle_8="Yes",
+    subtitle_9="Go!",
+    subtitle_10="Sir, you look great!",
+    subtitle_11="I think you should go back",
+    subtitle_12="to your own position",
+    subtitle_13="Yes",
+    revised_3="I know the Emperor\nloves pretty women",
+    note_3="Changed 'woman' to 'women' for correct plural usage.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_154
 # noinspection PyArgumentList
-proof_test_case_block_155 = None  # proof_test_case_block_155
+proof_test_case_block_155 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Your Majesty,",
+    subtitle_2="Officer Chiu brings this woman to you",
+    subtitle_3="Woman?",
+    subtitle_4="Chiu knows my hobby!",
+    subtitle_5="I want to take a bath first,\nbring her to me later",
+    subtitle_6="Yes",
+    verified=True,
+)  # proof_test_case_block_155
 # noinspection PyArgumentList
-proof_test_case_block_156 = None  # proof_test_case_block_156
+proof_test_case_block_156 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="This bastard wants\nto see the Emperor,",
+    subtitle_2="if I let him see His Majesty oftenly,\nmy post will be taken away",
+    revised_2="if I let him see His Majesty often,\nmy post will be taken away",
+    note_2="Changed 'oftenly' to 'often'.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_156
 # noinspection PyArgumentList
-proof_test_case_block_157 = None  # proof_test_case_block_157
+proof_test_case_block_157 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Men",
+    subtitle_2="Sir",
+    subtitle_3="Check what had happened",
+    subtitle_4="Yes",
+    revised_3="Check what has happened",
+    note_3="Changed 'had happened' to 'has happened' for correct tense.",
+    difficulty=1,
+    verified=True,
+)  # proof_test_case_block_157
 # noinspection PyArgumentList
-proof_test_case_block_158 = None  # proof_test_case_block_158
+proof_test_case_block_158 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Sir, there are many people coming\nfrom the forest",
+    subtitle_2="Who are they?",
+    subtitle_3="I don't know!",
+    subtitle_4="Release the alarm smoke",
+    subtitle_5="Be alert",
+    subtitle_6="Yes",
+    verified=True,
+)  # proof_test_case_block_158
 # noinspection PyArgumentList
-proof_test_case_block_159 = None  # proof_test_case_block_159
+proof_test_case_block_159 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="There is smoke ahead,\nlet's get armed",
+    subtitle_2="Yes",
+    verified=True,
+)  # proof_test_case_block_159
 # noinspection PyArgumentList
-proof_test_case_block_160 = None  # proof_test_case_block_160
+proof_test_case_block_160 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Damn you beggars",
+    verified=True,
+)  # proof_test_case_block_160
 # noinspection PyArgumentList
 proof_test_case_block_161 = None  # proof_test_case_block_161
 # noinspection PyArgumentList
