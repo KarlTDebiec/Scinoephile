@@ -95,7 +95,6 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
         """
         min_difficulty = super().get_min_difficulty()
         for idx in range(1, self.size + 1):
-            subtitle = getattr(self, f"subtitle_{idx}")
             revised = getattr(self, f"revised_{idx}")
             if revised != "":
                 min_difficulty = max(min_difficulty, 1)
