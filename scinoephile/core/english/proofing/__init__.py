@@ -7,7 +7,9 @@ from __future__ import annotations
 from scinoephile.core.english.proofing.english_proof_llm_queryer import (
     EnglishProofLLMQueryer,
 )
+from scinoephile.core.english.proofing.english_proofer import EnglishProofer
 
 __all__ = [
     "EnglishProofLLMQueryer",
+    "EnglishProofer",
 ]

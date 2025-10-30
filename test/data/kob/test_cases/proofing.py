@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
 from scinoephile.core.english.proofing.abcs import EnglishProofTestCase
 
 # noinspection PyArgumentList
@@ -2954,7 +2953,7 @@ proof_test_case_block_194 = EnglishProofTestCase.get_test_case_cls(2)(
 # noinspection PyArgumentList
 proof_test_case_block_195 = None  # proof_test_case_block_195
 
-kob_proof_test_cases: list[ReviewTestCase] = [
+kob_proof_test_cases: list[EnglishProofTestCase] = [
     test_case
     for name, test_case in globals().items()
     if name.startswith("proof_test_case_block_") and test_case is not None

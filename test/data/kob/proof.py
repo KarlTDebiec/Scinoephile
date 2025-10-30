@@ -10,7 +10,7 @@ from data.kob import kob_proof_test_cases
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.english import EnglishProofer
+from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.testing import test_data_root
 
 
@@ -24,8 +24,8 @@ async def main():
 
     # Utilities
     proofer = EnglishProofer(
-        test_case_directory_path=test_data_root / "kob" / "test_cases",
         proof_test_cases=kob_proof_test_cases,
+        test_case_directory_path=test_data_root / "kob" / "test_cases",
     )
 
     # Process all blocks

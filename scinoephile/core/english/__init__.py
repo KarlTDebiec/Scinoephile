@@ -4,11 +4,12 @@
 
 from __future__ import annotations
 
+import asyncio
 import re
 from copy import deepcopy
 from logging import info
 
-from scinoephile.core.english.english_proofer import EnglishProofer
+from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.core.series import Series
 
 
@@ -18,7 +19,7 @@ def get_english_cleaned(series: Series) -> Series:
     Arguments:
         series: Series to clean
     Returns:
-        Cleaned series
+        cleaned Series
     """
     series = deepcopy(series)
     new_events = []
@@ -36,9 +37,9 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
 
     Arguments:
         series: Series to flatten
-        exclusions: List of subtitle indexes to exclude from flattening
+        exclusions: list of subtitle indexes to exclude from flattening
     Returns:
-        Flattened series
+        flattened Series
     """
     if not exclusions:
         exclusions = []
@@ -49,6 +50,27 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
             continue
         event.text = _get_english_text_flattened(event.text.strip())
     return series
+
+
+def get_english_proofed(
+    series: Series, proofer: EnglishProofer | None = None
+) -> Series:
+    """Get English series proofed.
+
+    Arguments:
+        series: Series to proof
+        proofer: EnglishProofer to use
+    Returns:
+        proofed Series
+    """
+    if proofer is None:
+        from data.kob.test_cases.proofing import kob_proof_test_cases
+
+        proofer = EnglishProofer(proof_test_cases=kob_proof_test_cases)
+
+    proofed = asyncio.run(proofer.process_all_blocks(series))
+
+    return proofed
 
 
 def _get_english_text_cleaned(text: str) -> str | None:
@@ -137,7 +159,7 @@ def _get_english_text_flattened(text: str) -> str:
 
 
 __all__ = [
-    "EnglishProofer",
     "get_english_cleaned",
     "get_english_flattened",
+    "get_english_proofed",
 ]

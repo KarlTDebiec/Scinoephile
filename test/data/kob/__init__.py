@@ -83,6 +83,12 @@ def kob_eng_clean_flatten() -> Series:
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
+@pytest.fixture
+def kob_eng_proof() -> Series:
+    """KOB English proofed series."""
+    return Series.load(output_dir / "eng_proof.srt")
+
+
 # endregion
 
 

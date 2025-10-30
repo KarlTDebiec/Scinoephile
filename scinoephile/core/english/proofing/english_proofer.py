@@ -8,7 +8,6 @@ import asyncio
 import re
 from pathlib import Path
 
-from scinoephile.audio.cantonese.alignment.testing import update_dynamic_test_cases
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
@@ -18,7 +17,7 @@ from scinoephile.core.english.proofing.abcs import (
     EnglishProofQuery,
     EnglishProofTestCase,
 )
-from scinoephile.testing import test_data_root
+from scinoephile.testing import test_data_root, update_dynamic_test_cases
 
 
 class EnglishProofer:
@@ -26,23 +25,26 @@ class EnglishProofer:
 
     def __init__(
         self,
-        test_case_directory_path: Path,
         proof_test_cases: list[EnglishProofTestCase],
+        test_case_directory_path: Path | None = None,
     ):
         """Initialize.
 
         Arguments:
-            test_case_directory_path: path to directory containing test cases
             proof_test_cases: proof test cases
+            test_case_directory_path: path to directory containing test cases
         """
-        self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
-        """Path to directory containing test cases."""
         self.proofer = EnglishProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
         """Proofreads English subtitles."""
+
+        if test_case_directory_path is not None:
+            test_case_directory_path = val_input_dir_path(test_case_directory_path)
+        self.test_case_directory_path = test_case_directory_path
+        """Path to directory containing test cases."""
 
     async def process_all_blocks(
         self,
@@ -53,7 +55,7 @@ class EnglishProofer:
 
         Arguments:
             series: English subtitles
-            stop_at_idx: Stop processing at this index
+            stop_at_idx: stop processing at this index
         """
         semaphore = asyncio.Semaphore(1)
         all_block_series: list | None = [None] * len(series.blocks)
@@ -110,11 +112,12 @@ class EnglishProofer:
                 subtitle.text = revised
             nascent_series.append(subtitle)
 
-        await update_dynamic_test_cases(
-            self.test_case_directory_path / "proofing.py",
-            f"proof_test_case_block_{block_idx}",
-            self.proofer,
-        )
+        if self.test_case_directory_path is not None:
+            await update_dynamic_test_cases(
+                self.test_case_directory_path / "proofing.py",
+                f"proof_test_case_block_{block_idx}",
+                self.proofer,
+            )
 
         return nascent_series
 
