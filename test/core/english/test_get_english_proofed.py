@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 import pytest
-from data.kob.test_cases.proofing import kob_proof_test_cases
 
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_proofed
 from scinoephile.core.english.proofing import EnglishProofLLMQueryer
 from scinoephile.testing import test_data_root
+from test.data.kob import kob_proof_test_cases
 
 
 @pytest.fixture
