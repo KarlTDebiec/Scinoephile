@@ -64,7 +64,7 @@ def get_english_proofed(
         proofed Series
     """
     if proofer is None:
-        from data.kob.test_cases.proofing import kob_proof_test_cases
+        from test.data.kob import kob_proof_test_cases
 
         proofer = EnglishProofer(proof_test_cases=kob_proof_test_cases)
 
