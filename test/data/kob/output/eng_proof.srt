@@ -21,7 +21,7 @@ His name!
 
 6
 00:03:13,777 --> 00:03:17,489
-Great! Young master know how to
+Great! Young master knows how to
 write his name!
 
 7
@@ -90,7 +90,7 @@ He knows writing now,
 
 22
 00:04:01,617 --> 00:04:03,494
-he will be scholar one day
+he will be a scholar one day
 
 23
 00:04:03,577 --> 00:04:04,828
@@ -138,16 +138,16 @@ Let's go!
 
 33
 00:04:20,594 --> 00:04:22,971
-Chan, come and sit…
+Chan, come and sit...
 
 34
 00:04:23,597 --> 00:04:26,100
-I am so pleased that you are that hard
-working and filial
+I am so pleased that you are that
+hard-working and filial
 
 35
 00:04:26,767 --> 00:04:30,145
-Listen to me, I am notorious of being
+Listen to me, I am notorious for being
 a spendthrift
 
 36
@@ -168,7 +168,7 @@ I used to depend on myself
 
 40
 00:04:40,197 --> 00:04:41,865
-The cheques worths 100,000 taels!
+The cheque is worth 100,000 taels!
 Don't be an extravagant spender
 
 41
@@ -199,7 +199,7 @@ But you should dress up first
 
 47
 00:04:54,878 --> 00:04:56,546
-You are like beggar!
+You are like a beggar!
 
 48
 00:04:57,047 --> 00:04:59,132
@@ -208,7 +208,7 @@ I do want to be a rich beggar!
 
 49
 00:05:02,386 --> 00:05:03,637
-That fat-headed…
+That fat-headed...
 
 50
 00:05:03,720 --> 00:05:04,721
@@ -225,7 +225,7 @@ of my son is great!
 
 53
 00:05:09,560 --> 00:05:12,104
-If I hold a birthday party in future,
+If I hold a birthday party in the future,
 I want a better invitation card!
 
 54
@@ -240,16 +240,16 @@ with Peking Opera!
 
 56
 00:05:39,631 --> 00:05:41,883
-But, I am appreciated
+But, I appreciate
 to view this
 
 57
 00:05:44,094 --> 00:05:46,763
-Money…
+Money...
 
 58
 00:05:47,598 --> 00:05:50,392
-Tips. Tips…
+Tips. Tips...
 
 59
 00:05:50,475 --> 00:05:51,726
@@ -257,7 +257,7 @@ Happy birthday to you, Mr So
 
 60
 00:05:51,810 --> 00:05:53,979
-I am homeless and sick…
+I am homeless and sick...
 
 61
 00:05:54,062 --> 00:05:57,607
@@ -328,7 +328,7 @@ Please follow me
 
 77
 00:06:22,049 --> 00:06:25,177
-Come into my room…
+Come into my room...
 
 78
 00:06:25,260 --> 00:06:27,179
@@ -336,7 +336,7 @@ Mr So!
 
 79
 00:06:27,262 --> 00:06:28,722
-Hello…
+Hello...
 
 80
 00:06:28,805 --> 00:06:29,723
@@ -362,7 +362,7 @@ the mourning uniform!
 
 85
 00:06:37,606 --> 00:06:38,941
-Is your dad passed away?
+Has your dad passed away?
 
 86
 00:06:40,484 --> 00:06:42,569
@@ -397,11 +397,11 @@ Mr So has come
 
 93
 00:07:03,215 --> 00:07:04,758
-Congratulation!
+Congratulations!
 
 94
 00:07:04,842 --> 00:07:05,926
-This way…
+This way...
 
 95
 00:07:06,009 --> 00:07:08,261
@@ -411,7 +411,7 @@ you must be very happy!
 96
 00:07:08,345 --> 00:07:10,556
 We have some new girls,
-you must be satisfied with it
+you must be satisfied with them
 
 97
 00:07:10,639 --> 00:07:11,765
@@ -453,7 +453,7 @@ Just tell me
 105
 00:07:27,322 --> 00:07:29,407
 I won't mind,
-every women is just the same
+every woman is just the same
 
 106
 00:07:29,491 --> 00:07:30,534
@@ -486,8 +486,8 @@ She used her eyes
 
 113
 00:07:44,423 --> 00:07:47,343
-Tempting, and I smell blood
-I haven't seen such eyesight before
+Tempting, and I smell blood.
+I haven't seen such eyesight before.
 
 114
 00:07:48,093 --> 00:07:49,970
@@ -495,7 +495,7 @@ Who is she?
 
 115
 00:07:50,053 --> 00:07:52,055
-Miss Yushang comes to be part time
+Miss Yushang comes to be a part-time
 hooker only
 
 116
@@ -549,7 +549,7 @@ Let's go
 
 128
 00:08:16,580 --> 00:08:17,498
-May I be excused
+May I be excused?
 
 129
 00:08:17,581 --> 00:08:19,249
@@ -557,7 +557,7 @@ Mr Chiu, Miss Yushang has arrived
 
 130
 00:08:22,127 --> 00:08:25,756
-How are you? Mr Chiu
+How are you, Mr Chiu?
 
 131
 00:08:30,886 --> 00:08:31,929
@@ -565,7 +565,7 @@ A pretty woman!
 
 132
 00:08:33,764 --> 00:08:36,642
-Mr Chiu, about tonight…
+Mr Chiu, about tonight...
 
 133
 00:08:36,725 --> 00:08:37,851
@@ -574,11 +574,11 @@ $100,000
 134
 00:08:37,935 --> 00:08:40,855
 if Miss Yushang sleeps with our
-young master tonight…
+young master tonight...
 
 135
 00:08:40,938 --> 00:08:42,523
-You are not welcomed
+You are not welcome
 
 136
 00:08:42,606 --> 00:08:45,400
@@ -602,7 +602,7 @@ more than $100,000
 
 141
 00:08:53,033 --> 00:08:54,701
-Yushang will sleep with whom
+Yushang will sleep with whomever
 
 142
 00:08:54,785 --> 00:08:56,412
@@ -632,12 +632,12 @@ I love the pearl more
 
 148
 00:09:15,597 --> 00:09:18,266
-Mr Chiu, I will wait
+Mr Chiu, I will wait for
 you in my room
 
 149
 00:09:19,101 --> 00:09:20,811
-Does the pearl worth $100,000?
+Is the pearl worth $100,000?
 
 150
 00:09:21,728 --> 00:09:23,855
@@ -659,7 +659,7 @@ I love it very much
 
 154
 00:09:33,657 --> 00:09:34,616
-Mr So…
+Mr So...
 
 155
 00:09:34,700 --> 00:09:35,534
@@ -730,11 +730,11 @@ and Crane's Fists too!
 
 171
 00:10:29,421 --> 00:10:31,173
-Well, try me mantis!
+Well, try me, mantis!
 
 172
 00:10:44,728 --> 00:10:46,605
-Bravo…
+Bravo...
 
 173
 00:10:46,688 --> 00:10:48,982
@@ -758,7 +758,7 @@ You move fast!
 
 178
 00:11:03,330 --> 00:11:04,456
-It seems to be powerful…
+It seems to be powerful...
 
 179
 00:11:06,416 --> 00:11:09,294
@@ -772,12 +772,12 @@ Canton has arrived
 
 181
 00:11:18,053 --> 00:11:20,764
-Get lost…
+Get lost...
 
 182
 00:11:21,431 --> 00:11:23,391
-Who dares bully my son,
-let me teach him a lesson
+Who dares bully my son?
+Let me teach him a lesson.
 
 183
 00:11:24,226 --> 00:11:25,018
@@ -798,7 +798,7 @@ What? You bullied others?
 187
 00:11:29,523 --> 00:11:31,358
 How much does he have?
-Is he qualified to be bullied by you?
+Is he even qualified to be bullied by you?
 
 188
 00:11:31,859 --> 00:11:32,818
@@ -826,8 +826,8 @@ Chan
 
 194
 00:11:42,828 --> 00:11:44,371
-They send you so valuable present,
-you'd stop bullying them
+They sent you such a valuable present,
+you should stop bullying them.
 
 195
 00:11:44,872 --> 00:11:45,998
@@ -839,8 +839,8 @@ Master
 
 197
 00:11:46,874 --> 00:11:49,126
-King of Iron Hat, Seng-ko-lin-ch'in
-is written on the medal
+King of Iron Hat, Seng-ko-lin-ch'in,
+is written on the medal.
 
 198
 00:11:59,845 --> 00:12:01,305
@@ -857,7 +857,7 @@ Hold it, according to the Ching's law,
 
 201
 00:12:04,850 --> 00:12:07,394
-Courtier is to allowed hooking
+Courtiers are not allowed to partake in hooking
 
 202
 00:12:07,477 --> 00:12:08,895
@@ -865,7 +865,7 @@ Now, you are in the brothel
 
 203
 00:12:08,979 --> 00:12:11,023
-Do you know you have committed
+Do you know you have violated
 the laws of Ching?
 
 204
@@ -875,15 +875,15 @@ How about you?
 205
 00:12:13,233 --> 00:12:14,109
 - You mean me?
--Yes!
+- Yes!
 
 206
 00:12:14,193 --> 00:12:16,237
-That's right, I come…
+That's right, I come...
 
 207
 00:12:16,320 --> 00:12:17,112
-- to arrest…
+- to arrest...
 - You!
 
 208
@@ -902,7 +902,7 @@ those bad people
 
 211
 00:12:22,993 --> 00:12:24,036
-By the way…
+By the way...
 
 212
 00:12:24,077 --> 00:12:25,829
@@ -919,11 +919,11 @@ So your crime is doubled
 
 215
 00:12:31,710 --> 00:12:32,836
-It may cause to capital punishment
+It may result in capital punishment
 
 216
 00:12:32,920 --> 00:12:35,423
-Kill him…
+Kill him...
 
 217
 00:12:39,718 --> 00:12:40,886
@@ -935,7 +935,7 @@ anyone without a tail should be killed
 
 219
 00:12:43,222 --> 00:12:45,099
-So you…
+So you...
 
 220
 00:12:47,976 --> 00:12:49,019
@@ -944,7 +944,7 @@ Do you want to see my hair?
 221
 00:12:49,102 --> 00:12:50,395
 You can see as much as you want!
-Fat-headed
+Fathead.
 
 222
 00:12:50,479 --> 00:12:52,856
@@ -957,7 +957,7 @@ OK, it's finished
 224
 00:12:55,192 --> 00:12:57,569
 General So, let's play happily together,
-so forget it
+so just forget it.
 
 225
 00:12:57,653 --> 00:12:58,988
@@ -987,8 +987,8 @@ Let's go
 
 231
 00:13:09,289 --> 00:13:12,626
-Master, you can't fool this guy
-Let's go
+Master, you can't fool this guy.
+Let's go.
 
 232
 00:13:13,669 --> 00:13:14,295
@@ -1023,7 +1023,7 @@ The Taiping Reign
 239
 00:13:49,037 --> 00:13:50,539
 And he framed us, the Beggars Association,
-to be the assassinators
+to be the assassins
 
 240
 00:13:51,290 --> 00:13:52,917
@@ -1031,7 +1031,7 @@ Thus made us
 
 241
 00:13:53,125 --> 00:13:54,668
-being despised by the world
+to be despised by the world
 
 242
 00:13:55,586 --> 00:13:56,962
@@ -1054,7 +1054,7 @@ until he is trapped
 246
 00:14:05,512 --> 00:14:07,889
 Because we can't defeat him even
-we group together
+if we group together
 
 247
 00:14:08,223 --> 00:14:09,766
@@ -1067,7 +1067,7 @@ Senior, somebody is coming
 
 249
 00:14:13,228 --> 00:14:14,271
-Get ready…
+Get ready...
 
 250
 00:14:22,738 --> 00:14:24,198
@@ -1080,11 +1080,11 @@ Where is Mister Chiu?
 
 252
 00:14:26,366 --> 00:14:27,701
-The pearl of Mr Chiu is broken
+The pearl of Mr. Chiu is broken
 
 253
 00:14:27,784 --> 00:14:29,744
-by Mr So and become pearl powder
+by Mr. So and became pearl powder
 
 254
 00:14:29,828 --> 00:14:31,121
@@ -1100,7 +1100,7 @@ he is really romantic and funny
 
 257
 00:14:36,627 --> 00:14:37,294
-But…
+But...
 
 258
 00:14:37,377 --> 00:14:39,713
@@ -1113,7 +1113,7 @@ I won't give it back
 
 260
 00:14:41,715 --> 00:14:43,550
-About the personality of Mr So…
+About the personality of Mr So...
 
 261
 00:14:43,634 --> 00:14:45,261
@@ -1129,7 +1129,7 @@ Yes, you are right
 
 264
 00:14:47,804 --> 00:14:48,388
-Miss Seven…
+Miss Seven...
 
 265
 00:14:48,472 --> 00:14:49,932
@@ -1145,8 +1145,7 @@ I don't know
 
 268
 00:14:57,231 --> 00:15:00,234
-Miss, first of all, I have a good
-news to you
+Miss, first of all, I have good news for you
 
 269
 00:15:00,817 --> 00:15:02,152
@@ -1170,7 +1169,7 @@ I wish to pay you 100 pearls
 
 274
 00:15:10,077 --> 00:15:12,997
-for you your company tonight
+for your company tonight
 
 275
 00:15:13,080 --> 00:15:14,206
@@ -1182,7 +1181,7 @@ Please get out
 
 277
 00:15:17,209 --> 00:15:18,335
-I haven't chosen a wrong one
+I haven't chosen the wrong one
 
 278
 00:15:18,418 --> 00:15:20,337
@@ -1190,7 +1189,7 @@ OK, I will drink this wine first
 
 279
 00:15:21,255 --> 00:15:22,256
-No…
+No...
 
 280
 00:15:28,554 --> 00:15:30,806
@@ -1206,11 +1205,11 @@ Hands off!
 
 283
 00:15:35,686 --> 00:15:36,729
-You know Kung-fu?
+You know Kung Fu?
 
 284
 00:15:37,729 --> 00:15:39,439
-No, I don't know Kung-fu at all
+No, I don't know Kung Fu at all
 
 285
 00:15:40,023 --> 00:15:41,942
@@ -1257,7 +1256,7 @@ Kidding?
 
 295
 00:16:07,843 --> 00:16:09,303
-Are there anyone hiding here?
+Is anyone hiding here?
 
 296
 00:16:12,890 --> 00:16:14,767
@@ -1291,7 +1290,7 @@ Hey
 
 303
 00:16:29,072 --> 00:16:30,407
-Don't you know it's that easy
+Don't you know it isn't that easy
 to be my husband?
 
 304
@@ -1301,7 +1300,7 @@ How can I be your husband?
 305
 00:16:34,119 --> 00:16:35,871
 I want him to be the superior
-Kung-fu master
+Kung Fu master
 
 306
 00:16:35,954 --> 00:16:37,205
@@ -1334,12 +1333,12 @@ for our wedding
 
 313
 00:16:57,684 --> 00:17:00,312
-Because, this is too easy to me
-to be the Kung-fu scholar!
+Because this is too easy for me
+to be the Kung Fu scholar!
 
 314
 00:17:01,271 --> 00:17:04,816
-OK, but you'd give me some time
+OK, but you should give me some time
 to consider it
 
 315
@@ -1357,12 +1356,12 @@ Crazy!
 
 318
 00:17:38,141 --> 00:17:40,769
-We come for the Beggars Association,
-those unrelated persons leave at once
+We come from the Beggars Association,
+Those unrelated,  leave at once.
 
 319
 00:18:37,826 --> 00:18:40,579
-Sir, the timing is fit
+Sir, the timing is right
 
 320
 00:18:41,079 --> 00:18:42,956
@@ -1386,7 +1385,7 @@ That Manchurian should be blamed
 
 325
 00:19:15,405 --> 00:19:17,240
-Sister…
+Sister...
 
 326
 00:19:17,324 --> 00:19:18,075
@@ -1431,7 +1430,7 @@ Especially him
 
 336
 00:19:45,727 --> 00:19:47,479
-Chiu is good at Kung-fu
+Chiu is good at Kung Fu
 
 337
 00:19:47,563 --> 00:19:50,900
@@ -1444,7 +1443,7 @@ So, I can never marry!
 
 339
 00:19:53,819 --> 00:19:55,821
-Let's go, if you want to marry
+Let's go, if you want to get married
 
 340
 00:20:14,548 --> 00:20:16,633
@@ -1465,23 +1464,23 @@ Yes!
 
 344
 00:20:25,017 --> 00:20:26,644
-You have flat figure,
-where are your busts?
+You have a flat figure,
+where is your bust?
 
 345
 00:20:26,727 --> 00:20:29,605
 It's early in the morning,
-they haven't waken up yet
+it hasn't woken up yet.
 
 346
 00:20:30,147 --> 00:20:31,690
-It's lucky of you
-for not being killed
+You're lucky
+not to have been killed.
 
 347
 00:20:31,773 --> 00:20:33,483
 Don't go around if you haven't
-made up yet
+put on your makeup yet.
 
 348
 00:20:33,567 --> 00:20:34,651
@@ -1502,7 +1501,7 @@ Where is she going?
 
 352
 00:20:47,581 --> 00:20:51,376
-She… she is going to Peking
+She... she is going to Peking
 
 353
 00:20:52,085 --> 00:20:53,086
@@ -1514,15 +1513,15 @@ Men should contribute to the country
 
 355
 00:20:58,425 --> 00:21:02,429
-Where should I put my pig-tail?
+Where should I put my pigtail?
 
 356
 00:21:02,513 --> 00:21:04,515
-Swing and swing…
+Swing and swing...
 
 357
 00:21:04,598 --> 00:21:06,600
-I pull it and play it…
+I pull it and play it...
 
 358
 00:21:06,683 --> 00:21:07,934
@@ -1531,7 +1530,7 @@ Dad!
 359
 00:21:08,769 --> 00:21:10,354
 I decided to join the examination for the
-scholar of Martial Arts
+Scholar of Martial Arts.
 
 360
 00:21:10,687 --> 00:21:12,063
@@ -1544,16 +1543,16 @@ for 25 years
 
 362
 00:21:14,816 --> 00:21:16,568
-For the family of us, you should do that
+For our family, you should do that.
 
 363
 00:21:16,652 --> 00:21:18,821
 Don't misunderstand it,
-I do it not for no one
+I'm not doing this for anyone,
 
 364
 00:21:18,904 --> 00:21:19,696
-But for a woman
+but for a woman
 
 365
 00:21:19,780 --> 00:21:20,948
@@ -1561,7 +1560,7 @@ What a hero!
 
 366
 00:21:21,323 --> 00:21:23,492
-For a girl, you want to be the scholar
+For a girl, you want to be the Scholar
 of Martial Arts!
 
 367
@@ -1588,7 +1587,7 @@ you are great!
 
 372
 00:21:34,211 --> 00:21:35,421
-I am admiring you!
+I admire you!
 
 373
 00:21:35,504 --> 00:21:36,505
@@ -1622,7 +1621,7 @@ Be careful!
 380
 00:21:52,354 --> 00:21:54,773
 If you break my stuff,
-I will teach you good lesson
+I will teach you a good lesson.
 
 381
 00:21:55,399 --> 00:21:56,358
@@ -1630,7 +1629,7 @@ Be careful!
 
 382
 00:21:57,401 --> 00:21:58,152
-Good morning dad
+Good morning, Dad.
 
 383
 00:21:58,235 --> 00:21:58,819
@@ -1647,7 +1646,7 @@ Sure
 
 386
 00:22:00,696 --> 00:22:02,364
-Please leave me a clothe
+Please leave me a cloth.
 
 387
 00:22:02,447 --> 00:22:04,157
@@ -1656,7 +1655,7 @@ you don't need this
 
 388
 00:22:04,575 --> 00:22:05,534
-But I am no small
+But I am not small.
 
 389
 00:22:07,119 --> 00:22:09,455
@@ -1708,7 +1707,7 @@ Be careful!
 
 400
 00:22:33,061 --> 00:22:34,646
-Tie it well…
+Tie it well...
 
 401
 00:22:34,688 --> 00:22:35,981
@@ -1721,11 +1720,11 @@ Sure,
 
 403
 00:22:37,191 --> 00:22:39,193
-or how can I eat Lychee in Peking?
+or how can I eat lychee in Peking?
 
 404
 00:22:39,860 --> 00:22:41,278
-Push it over…
+Push it over...
 
 405
 00:22:42,446 --> 00:22:45,532
@@ -1733,8 +1732,8 @@ Be careful
 
 406
 00:22:45,616 --> 00:22:48,244
-Take care of my Lychee,
-you fat headed!
+Take care of my lychee,
+you fathead!
 
 407
 00:22:49,328 --> 00:22:51,455
@@ -1757,7 +1756,7 @@ the Deputy Secretary
 411
 00:23:05,969 --> 00:23:08,972
 Hope you will serve our Ching Dynasty
-whole-heartedly
+wholeheartedly.
 
 412
 00:23:09,598 --> 00:23:10,682
@@ -1786,7 +1785,7 @@ Yes, Your Majesty
 
 418
 00:25:40,999 --> 00:25:42,125
-There is nothing surprising, go
+There is nothing surprising. Go.
 
 419
 00:25:42,251 --> 00:25:43,210
@@ -1819,7 +1818,7 @@ What's the matter?
 
 426
 00:26:13,824 --> 00:26:16,952
-Hide in
+Hide inside
 
 427
 00:26:19,037 --> 00:26:19,871
@@ -1849,7 +1848,7 @@ Closer
 433
 00:26:38,098 --> 00:26:40,350
 So big!
-You must be Small!
+You must be small!
 
 434
 00:26:40,767 --> 00:26:43,561
@@ -1867,7 +1866,7 @@ You can't cheat me
 
 437
 00:26:49,693 --> 00:26:50,611
-You are dad
+You are a dad.
 
 438
 00:26:50,694 --> 00:26:53,906
@@ -1894,7 +1893,7 @@ stop playing
 
 443
 00:27:04,249 --> 00:27:05,417
-Get out…
+Get out...
 
 444
 00:27:06,585 --> 00:27:08,587
@@ -1966,12 +1965,12 @@ the question paper
 
 460
 00:27:42,996 --> 00:27:44,247
-But about the test
-of arrows shooting,
+But for the test
+of arrow shooting,
 
 461
 00:27:44,331 --> 00:27:45,958
-riding, boxing and weapons…
+riding, boxing and weapons...
 
 462
 00:27:46,041 --> 00:27:47,417
@@ -1997,12 +1996,12 @@ but that is business
 
 467
 00:28:04,226 --> 00:28:08,230
-Let the Horse teams
-be the pioneer
+Let the horse teams
+be the pioneers
 
 468
 00:28:08,313 --> 00:28:10,816
-The arrows teams go side ways,
+The arrow teams go sideways,
 the gunmen stay back
 
 469
@@ -2027,7 +2026,7 @@ Oh, 10 marks
 
 474
 00:31:43,529 --> 00:31:46,115
-The final race now starts
+The final race starts now
 
 475
 00:31:47,366 --> 00:31:48,492
@@ -2039,7 +2038,7 @@ Po Ye Tat Tor from Mongolia
 
 477
 00:31:51,203 --> 00:31:54,873
-Bravo…
+Bravo...
 
 478
 00:31:54,957 --> 00:31:57,334
@@ -2084,8 +2083,8 @@ with full marks, it differs
 
 487
 00:32:24,528 --> 00:32:27,614
-It's an examination of the Scholar
-of Martial Arts, not king of coolie
+It's an examination for the Scholar
+of Martial Arts, not king of coolies.
 
 488
 00:32:28,115 --> 00:32:29,658
@@ -2136,7 +2135,7 @@ But this So
 
 499
 00:32:50,095 --> 00:32:51,013
-What do you thing?
+What do you think?
 
 500
 00:32:51,096 --> 00:32:52,347
@@ -2145,7 +2144,7 @@ the audience
 
 501
 00:32:52,431 --> 00:32:55,309
-But he has achieved very hard
+But he has worked very hard.
 
 502
 00:32:55,434 --> 00:32:56,852
@@ -2178,7 +2177,7 @@ about Chan?
 
 509
 00:33:12,117 --> 00:33:13,660
-You have good analyse
+You have good analysis.
 
 510
 00:33:13,744 --> 00:33:14,411
@@ -2219,8 +2218,8 @@ He is my son
 
 519
 00:33:31,261 --> 00:33:34,264
-Shit, I miss one thing out
-of my calculation
+Shit, I missed one thing in
+my calculation.
 
 520
 00:33:34,681 --> 00:33:35,515
@@ -2264,12 +2263,12 @@ Start!
 
 530
 00:34:39,037 --> 00:34:41,122
-Bravo…
+Bravo...
 
 531
 00:34:41,498 --> 00:34:44,418
-They should act 2 more marks for that
-powerful shoot
+They should add 2 more marks for that
+powerful shot
 
 532
 00:34:44,501 --> 00:34:46,253
@@ -2287,8 +2286,7 @@ They are cheating
 
 535
 00:35:06,690 --> 00:35:08,901
-The candidates please
-get on the horses
+Candidates, please get on the horses.
 
 536
 00:35:11,987 --> 00:35:12,946
@@ -2296,7 +2294,7 @@ Mr Chiu
 
 537
 00:35:17,034 --> 00:35:19,662
-Take these with you, may be you will
+Take these with you, maybe you will
 find them useful
 
 538
@@ -2305,12 +2303,12 @@ Here comes the 2nd round
 
 539
 00:35:53,237 --> 00:35:54,572
-They trick again
+They're tricking us again.
 
 540
 00:35:55,489 --> 00:35:58,450
 It's corrupt!
-May I give up the betting?
+May I give up my bet?
 
 541
 00:36:22,975 --> 00:36:24,351
@@ -2334,8 +2332,8 @@ Once again?!
 
 546
 00:37:51,146 --> 00:37:52,939
-OK, let's start from the very beginning,
-I'll fight with single hand and leg
+OK, let's start from the very beginning.
+I'll fight with a single hand and leg.
 
 547
 00:37:53,065 --> 00:37:54,441
@@ -2348,11 +2346,11 @@ such dirty stance?
 
 549
 00:38:07,412 --> 00:38:09,039
-Have you waken?
+Have you woken up?
 
 550
 00:38:09,831 --> 00:38:11,416
-Bravo! He won
+Bravo! He won!
 
 551
 00:38:11,500 --> 00:38:13,419
@@ -2381,12 +2379,12 @@ It's English
 557
 00:38:21,093 --> 00:38:22,553
 There is no regulation stating that
-weapon is not allowed
+weapons are not allowed.
 
 558
 00:38:22,970 --> 00:38:26,265
 You fell down first,
-Po is the winner again
+so Po is the winner again.
 
 559
 00:38:30,185 --> 00:38:31,395
@@ -2427,7 +2425,7 @@ Just kidding
 
 568
 00:38:44,408 --> 00:38:45,492
-You shameless
+You are shameless
 
 569
 00:38:45,742 --> 00:38:50,121
@@ -2435,7 +2433,7 @@ Po is the Scholar of Martial Arts
 
 570
 00:38:50,664 --> 00:38:52,791
-I did win! Objection
+I did win! Objection!
 
 571
 00:39:10,893 --> 00:39:11,936
@@ -2481,8 +2479,8 @@ the title himself
 
 581
 00:39:55,437 --> 00:39:59,399
-I want to take some statement
-from you as record
+I want to take a statement
+from you for the record
 
 582
 00:39:59,525 --> 00:40:02,111
@@ -2545,7 +2543,7 @@ question paper of strategy?
 
 595
 00:40:46,363 --> 00:40:47,364
-That should be tricks
+That must be a trick.
 
 596
 00:40:52,077 --> 00:40:53,203
@@ -2612,7 +2610,7 @@ I don't know how to write my name
 
 611
 00:41:38,749 --> 00:41:39,833
-Stop, I have known it already
+Stop, I already know it.
 
 612
 00:41:39,958 --> 00:41:41,418
@@ -2636,11 +2634,11 @@ Your Majesty, you'd better kill me
 
 617
 00:41:44,671 --> 00:41:46,798
-Shit, are you giving order?
+Shit, are you giving orders?
 
 618
 00:41:47,382 --> 00:41:48,633
-You two co-operated to cheat me
+You two cooperated to cheat me.
 
 619
 00:41:49,343 --> 00:41:51,053
@@ -2670,7 +2668,7 @@ sentenced to death
 625
 00:42:09,363 --> 00:42:11,949
 But their ancestors achieved a lot
-to Ching, they can be exampled
+for the Ching. They can be exempted.
 
 626
 00:42:12,032 --> 00:42:15,160
@@ -2734,11 +2732,11 @@ it to me on time
 
 640
 00:42:53,282 --> 00:42:56,202
-Chiu, you would be rewarded
+Chiu, you will be rewarded
 
 641
 00:42:58,871 --> 00:43:02,666
-I am wandering…
+I am wandering...
 
 642
 00:43:02,749 --> 00:43:05,043
@@ -2751,11 +2749,11 @@ It's useless for you
 
 644
 00:43:09,131 --> 00:43:19,391
-How poor are we…
+How poor are we...
 
 645
 00:43:19,474 --> 00:43:25,855
-I am thinking of my better half…
+I am thinking of my better half...
 
 646
 00:43:25,939 --> 00:43:26,940
@@ -2767,12 +2765,12 @@ from now on,
 
 648
 00:43:28,901 --> 00:43:30,903
-you'd be hard working to learn
+you should work hard to learn
 how to write
 
 649
 00:43:34,948 --> 00:43:41,788
-But I can't sell the affection…
+But I can't sell the affection...
 
 650
 00:43:45,250 --> 00:43:46,168
@@ -2784,12 +2782,12 @@ I will learn it
 
 652
 00:43:49,796 --> 00:43:54,426
-I regret that…
+I regret that...
 
 653
 00:43:54,968 --> 00:43:57,637
 Master, I will take good care of
-little turtle
+the little turtle
 
 654
 00:43:57,804 --> 00:43:59,055
@@ -2855,11 +2853,11 @@ How happy are we!
 
 669
 00:44:28,377 --> 00:44:29,628
-Go in…
+Go in...
 
 670
 00:44:29,711 --> 00:44:30,921
-Hurry up…
+Hurry up...
 
 671
 00:44:31,004 --> 00:44:32,172
@@ -2879,16 +2877,16 @@ I am very happy
 
 675
 00:44:38,428 --> 00:44:39,930
-Please go in…
+Please go in...
 
 676
 00:44:40,013 --> 00:44:41,014
-Welcome…
+Welcome...
 
 677
 00:44:41,974 --> 00:44:45,144
 Damn sequestration,
-I wanna cry, my son
+I want to cry, my son
 
 678
 00:44:45,227 --> 00:44:47,354
@@ -2928,7 +2926,7 @@ please give money to us
 
 687
 00:45:10,544 --> 00:45:12,296
-Son, that guy is like dad
+Son, that guy is like Dad
 
 688
 00:45:13,005 --> 00:45:14,048
@@ -2975,12 +2973,12 @@ Do you think we'd be beggars?
 698
 00:45:31,356 --> 00:45:33,400
 I am smart, I am keen
-in kung-fu fighting
+on Kung Fu fighting
 
 699
 00:45:33,483 --> 00:45:35,276
-Even the Gods won't
-let me be beggars
+Even the gods won't
+let me be a beggar
 
 700
 00:45:35,360 --> 00:45:36,319
@@ -2988,7 +2986,7 @@ That's true
 
 701
 00:45:36,403 --> 00:45:37,237
-Am I like beggar?
+Am I like a beggar?
 
 702
 00:45:37,321 --> 00:45:38,322
@@ -3021,13 +3019,13 @@ Let me take a seat,
 
 709
 00:45:56,507 --> 00:45:57,925
-may be we can have something
+Maybe we can have something
 to eat tonight
 
 710
 00:45:58,008 --> 00:45:59,384
 You are treating
-yourself a beggar?
+yourself like a beggar?
 
 711
 00:45:59,968 --> 00:46:01,052
@@ -3035,7 +3033,7 @@ Dad, don't worry
 
 712
 00:46:01,094 --> 00:46:02,846
-I need no begging for money
+I don't need to beg for money
 
 713
 00:46:02,930 --> 00:46:04,098
@@ -3110,7 +3108,7 @@ You mean robbing?
 
 730
 00:46:33,126 --> 00:46:34,586
-Robbery…
+Robbery...
 
 731
 00:46:35,754 --> 00:46:37,464
@@ -3118,7 +3116,7 @@ I am not robbing, I am begging
 
 732
 00:46:37,548 --> 00:46:41,385
-Begging? How dare are you, you beggar,
+Begging? How dare you, you beggar,
 you are cheating me!
 
 733
@@ -3140,7 +3138,7 @@ Have you had any idea?
 
 737
 00:46:49,852 --> 00:46:50,728
-I have a friend's girl-friend
+I have a friend's girlfriend
 
 738
 00:46:51,144 --> 00:46:53,647
@@ -3170,7 +3168,7 @@ But, you have to sacrifice
 
 744
 00:47:06,326 --> 00:47:07,494
-Do you mean…
+Do you mean...
 
 745
 00:47:07,578 --> 00:47:10,039
@@ -3192,7 +3190,7 @@ I have arranged it
 
 749
 00:47:14,793 --> 00:47:17,254
-The one wearing red dress who stands
+The one wearing the red dress who stands
 under the lantern, that's her
 
 750
@@ -3201,7 +3199,7 @@ Ghost!
 
 751
 00:47:30,058 --> 00:47:30,892
-It's a benefit of you!
+It's to your benefit!
 
 752
 00:47:30,976 --> 00:47:33,103
@@ -3226,15 +3224,15 @@ I'll take care of you
 757
 00:47:52,539 --> 00:47:54,207
 You want to earn money for
-shark-fins, right?
+shark fin, right?
 
 758
 00:47:54,291 --> 00:47:55,167
-Right…
+Right...
 
 759
 00:47:57,211 --> 00:48:00,172
-Get lost…
+Get lost...
 
 760
 00:48:00,297 --> 00:48:01,507
@@ -3254,7 +3252,8 @@ Don't be that mean to us
 
 764
 00:48:13,352 --> 00:48:14,311
-It's the Royal instruction that,
+It's the Royal instruction that
+the So family be beggars for life.
 
 765
 00:48:14,645 --> 00:48:17,022
@@ -3267,7 +3266,7 @@ You two can only be beggars
 
 767
 00:48:19,691 --> 00:48:21,902
-I am carrying my duty only
+I am only carrying out my duty.
 Men!
 
 768
@@ -3317,8 +3316,8 @@ You want a fight, don't you?
 
 779
 00:48:42,089 --> 00:48:43,591
-Last time you can escape from
-Yee Hung Hostel
+Last time you escaped from
+Yee Hung Hostel,
 
 780
 00:48:44,007 --> 00:48:45,425
@@ -3331,7 +3330,7 @@ He is powerful!
 
 782
 00:48:50,973 --> 00:48:51,932
-I've to defeat him
+I have to defeat him
 
 783
 00:48:52,015 --> 00:48:53,433
@@ -3340,15 +3339,15 @@ by one powerful strike
 784
 00:48:53,517 --> 00:48:55,477
 I can't give him another chance
-to counter attack
+to counterattack
 
 785
 00:49:16,623 --> 00:49:20,085
-Chan…
+Chan...
 
 786
 00:49:20,169 --> 00:49:22,338
-Chan…
+Chan...
 
 787
 00:49:22,421 --> 00:49:24,256
@@ -3360,7 +3359,7 @@ are all broken by me
 
 789
 00:49:26,675 --> 00:49:28,260
-You will be cripple for the
+You will be a cripple for the
 rest of your life
 
 790
@@ -3377,7 +3376,7 @@ Be a good beggar
 
 793
 00:49:40,272 --> 00:49:44,151
-Go, go away…
+Go, go away...
 
 794
 00:49:52,534 --> 00:49:56,246
@@ -3386,7 +3385,7 @@ Don't panic, Chan, it's OK
 795
 00:49:57,539 --> 00:50:03,670
 Don't panic, you'll be
-alright… Chan!
+alright... Chan!
 
 796
 00:50:05,297 --> 00:50:08,342
@@ -3408,11 +3407,11 @@ that bastard
 
 800
 00:50:15,224 --> 00:50:18,310
-He was the enemy of us!
+He was our enemy!
 
 801
 00:50:18,644 --> 00:50:20,146
-About our story…
+About our story...
 
 802
 00:50:20,229 --> 00:50:21,731
@@ -3458,7 +3457,7 @@ He finally won the race
 
 812
 00:50:44,545 --> 00:50:45,463
-To be the greatest Kung-fu
+To be the greatest Kung Fu
 fighter, invincible
 
 813
@@ -3489,8 +3488,8 @@ wedding date first
 
 819
 00:50:57,808 --> 00:51:00,728
-Because being the scholar is
-too simple to me
+Because being a scholar is
+too simple for me.
 
 820
 00:51:10,529 --> 00:51:11,613
@@ -3522,8 +3521,7 @@ Although you have taken
 
 827
 00:51:46,732 --> 00:51:48,150
-your legs and hands have not been
-totally recovered
+your legs and hands have not totally recovered
 
 828
 00:51:49,610 --> 00:51:50,778
@@ -3547,11 +3545,11 @@ Dad, you go begging again?
 
 833
 00:51:59,661 --> 00:52:01,705
-This job should leave to me
+This job should be left to me
 
 834
 00:52:01,788 --> 00:52:03,331
-You are the Scholar…
+You are the Scholar...
 
 835
 00:52:06,585 --> 00:52:09,880
@@ -3559,7 +3557,7 @@ Chan, to be a beggar,
 
 836
 00:52:09,963 --> 00:52:11,715
-there is some lessons!
+there are some lessons!
 
 837
 00:52:12,257 --> 00:52:14,760
@@ -3585,12 +3583,12 @@ I am coming
 
 842
 00:52:26,188 --> 00:52:27,523
-We can't beg for good
+We can't beg well
 if we are late!
 
 843
 00:52:27,606 --> 00:52:28,941
-Yes…
+Yes...
 
 844
 00:52:48,919 --> 00:52:49,503
@@ -3598,7 +3596,7 @@ Give me money please
 
 845
 00:52:49,586 --> 00:52:50,796
-Go, go , I won't give you money
+Go, go, I won't give you money
 
 846
 00:52:50,879 --> 00:52:54,508
@@ -3611,11 +3609,11 @@ Chan, dad is leaving
 
 848
 00:53:11,733 --> 00:53:14,694
-Thank you…
+Thank you...
 
 849
 00:53:21,493 --> 00:53:23,161
-Thank you…
+Thank you...
 
 850
 00:53:30,502 --> 00:53:31,503
@@ -3628,11 +3626,11 @@ Why don't you write it yourself?
 852
 00:53:32,796 --> 00:53:35,590
 You are off duty, so I just
-want to lend it
+want to borrow it
 
 853
 00:53:36,592 --> 00:53:37,551
-Don't you think I am idiot?
+Do you think I'm an idiot?
 
 854
 00:54:12,586 --> 00:54:13,504
@@ -3644,7 +3642,7 @@ What are you doing?
 
 856
 00:54:16,882 --> 00:54:20,344
-I am cold… I am cold… Chan
+I am cold... I am cold... Chan
 
 857
 00:54:22,346 --> 00:54:25,474
@@ -3656,7 +3654,7 @@ Are you sick?
 
 859
 00:54:27,434 --> 00:54:28,936
-I am not…
+I am not...
 
 860
 00:54:30,562 --> 00:54:31,396
@@ -3672,7 +3670,7 @@ Lie down, I will go this time
 
 863
 00:54:38,570 --> 00:54:39,738
-Are you go for begging?
+Are you going begging?
 
 864
 00:54:40,697 --> 00:54:42,616
@@ -3727,7 +3725,7 @@ What?
 
 876
 00:55:29,162 --> 00:55:29,829
-May I…
+May I...
 
 877
 00:55:29,913 --> 00:55:30,872
@@ -3748,7 +3746,7 @@ My dad is dying!
 881
 00:56:09,620 --> 00:56:11,580
 Beggar, do you want
-the broken carbon?
+the broken charcoal?
 
 882
 00:56:11,663 --> 00:56:12,789
@@ -3764,7 +3762,7 @@ It's you!
 
 885
 00:56:18,587 --> 00:56:19,421
-No, you have mistaken
+No, you are mistaken
 
 886
 00:56:19,963 --> 00:56:21,423
@@ -3788,15 +3786,15 @@ Miss, who are you looking for?
 
 891
 00:56:38,148 --> 00:56:39,733
-I am sorry, I have mistaken
+I am sorry, I made a mistake
 
 892
 00:56:40,192 --> 00:56:41,735
-Tracy, take some dumpling out
+Tracy, take some dumplings out
 
 893
 00:56:42,110 --> 00:56:44,112
-You have mistake,
+You are mistaken,
 he is not So Chan
 
 894
@@ -3814,7 +3812,7 @@ We always have surplus
 
 897
 00:56:54,498 --> 00:56:55,207
-Dumpling
+Dumplings
 
 898
 00:56:55,332 --> 00:56:56,291
@@ -3822,7 +3820,7 @@ Take it
 
 899
 00:57:00,003 --> 00:57:01,588
-Thank you…
+Thank you...
 
 900
 00:57:04,341 --> 00:57:05,092
@@ -3831,7 +3829,7 @@ be that poor
 
 901
 00:57:05,175 --> 00:57:07,928
-if not were you
+if it were not for you
 
 902
 00:57:21,650 --> 00:57:23,694
@@ -3847,11 +3845,11 @@ So I bit the dumpling of the kid
 
 905
 00:57:30,534 --> 00:57:32,119
-I have dumpling, take it back
+I have a dumpling, take it back
 
 906
 00:57:32,202 --> 00:57:32,994
-Could I pay you another head
+Could I pay you with another head
 
 907
 00:57:33,078 --> 00:57:35,163
@@ -3887,7 +3885,7 @@ Hold it
 
 915
 00:57:55,184 --> 00:57:56,811
-Are they going to treat me
+Are they going to treat me to
 
 916
 00:57:56,894 --> 00:57:59,230
@@ -3965,7 +3963,7 @@ There is a slice of meat here
 
 934
 00:59:11,510 --> 00:59:13,429
-It's pock chop!
+It's pork chop!
 
 935
 00:59:23,605 --> 00:59:25,232
@@ -3998,7 +3996,7 @@ You deserve to be beggars
 
 942
 00:59:42,457 --> 00:59:43,917
-The Scholar is eating dog's food
+The Scholar is eating dog food
 
 943
 00:59:44,084 --> 00:59:45,210
@@ -4011,17 +4009,17 @@ Uncle So!
 
 945
 00:59:57,681 --> 00:59:58,974
-You are…
+You are...
 
 946
 00:59:59,474 --> 01:00:01,059
 My dad was the Master of the
-Beggar's Association
+Beggars' Association
 
 947
 01:00:01,435 --> 01:00:03,646
-Why don't you join our Beggar's
-Association
+Why don't you join our Beggars'
+Association?
 
 948
 01:00:04,104 --> 01:00:05,230
@@ -4048,11 +4046,11 @@ we are being beggars
 953
 01:00:10,861 --> 01:00:12,905
 It's wise to join the Beggars' Association
-so as to be taken care
+so as to be taken care of
 
 954
 01:00:12,946 --> 01:00:15,323
-Chan…
+Chan...
 where is that fool going?
 
 955
@@ -4065,7 +4063,7 @@ OK, we will join you!
 
 957
 01:00:18,035 --> 01:00:20,371
-Chan… Chan…
+Chan... Chan...
 
 958
 01:00:32,549 --> 01:00:35,177
@@ -4085,7 +4083,7 @@ Thank you
 
 962
 01:00:42,476 --> 01:00:43,727
-One clothe is for you
+One cloth is for you
 
 963
 01:00:43,810 --> 01:00:44,894
@@ -4117,7 +4115,7 @@ It's new year,
 
 970
 01:00:54,947 --> 01:00:56,699
-you should receive red pocket
+you should receive a red packet
 
 971
 01:00:56,782 --> 01:00:58,325
@@ -4129,16 +4127,16 @@ Good year!
 
 973
 01:00:59,743 --> 01:01:00,953
-Wish you ever beauty
+Wish you everlasting beauty
 
 974
 01:01:00,994 --> 01:01:01,745
-Thank you…
+Thank you...
 
 975
 01:01:01,828 --> 01:01:02,829
-Uncle Mok, we needn't give red
-pocket to each other
+Uncle Mok, we don't need to give red
+packets to each other
 
 976
 01:01:02,913 --> 01:01:03,997
@@ -4158,7 +4156,7 @@ Don't wake him up
 
 980
 01:01:13,048 --> 01:01:14,508
-I will cook you some new year cake
+I will cook you some New Year cake
 
 981
 01:01:15,133 --> 01:01:17,927
@@ -4167,7 +4165,7 @@ Let me help you
 982
 01:01:19,471 --> 01:01:21,181
 How can he sleep on the
-1st day of this year?
+first day of the year?
 
 983
 01:01:22,558 --> 01:01:24,393
@@ -4180,20 +4178,20 @@ Are you all here?
 985
 01:01:29,273 --> 01:01:32,026
 To fight against Chiu, we need a union of
-the Beggar's Association
+the Beggars' Association
 
 986
 01:01:33,402 --> 01:01:35,738
 So we must choose a new master to
-in-charge the association
+be in charge of the association
 
 987
 01:01:37,030 --> 01:01:38,949
-Yushang…
+Yushang...
 
 988
 01:01:40,117 --> 01:01:41,952
-To defeat the Lotus position
+To defeat the Lotus Position
 of the three seniors
 
 989
@@ -4203,7 +4201,7 @@ You should try your best
 990
 01:01:43,871 --> 01:01:46,749
 Uncle, I don't have
-faith to defeat them
+faith that I can defeat them
 
 991
 01:01:47,207 --> 01:01:49,000
@@ -4216,7 +4214,7 @@ the new master?
 
 993
 01:01:53,380 --> 01:01:56,592
-Take this Taiwan pill, after this,
+Take this Taiwanese pill, after this,
 your power will be improved
 
 994
@@ -4239,25 +4237,25 @@ son to fight for you
 
 998
 01:02:05,350 --> 01:02:07,936
-He was a scholar
-of Martial Arts before…
+He was a Scholar
+of Martial Arts before...
 
 999
 01:02:08,020 --> 01:02:09,104
-Before…
+Before...
 
 1000
 01:02:09,188 --> 01:02:10,731
-Look at him, he is son lazy,
+Look at him, he is so lazy,
 
 1001
 01:02:10,814 --> 01:02:12,816
-he knows sleeping only
+he only knows how to sleep
 
 1002
 01:02:13,192 --> 01:02:15,027
 He is not even
-qualified to be beggar!
+qualified to be a beggar!
 
 1003
 01:02:15,110 --> 01:02:16,612
@@ -4274,7 +4272,7 @@ how they despise you,
 
 1006
 01:02:34,421 --> 01:02:36,089
-I have faith on you
+I have faith in you
 
 1007
 01:02:37,216 --> 01:02:39,093
@@ -4286,7 +4284,7 @@ With your background,
 
 1009
 01:02:41,553 --> 01:02:43,055
-only you try hard,
+if only you try hard,
 
 1010
 01:02:43,096 --> 01:02:45,140
@@ -4311,7 +4309,7 @@ See, that was powerful
 
 1015
 01:02:55,651 --> 01:02:57,278
-Well, being a people…
+Well, being a person...
 
 1016
 01:02:57,819 --> 01:02:59,404
@@ -4348,8 +4346,8 @@ Why do you go up?
 
 1024
 01:03:56,420 --> 01:03:58,088
-Even you want me
-to practise Kung-fu,
+Even if you want me
+to practise Kung Fu,
 
 1025
 01:03:58,172 --> 01:04:00,508
@@ -4361,13 +4359,13 @@ I am sorry, catch it
 
 1027
 01:04:12,603 --> 01:04:15,272
-Before being appointed
+Before being appointed to an
 important task,
 
 1028
 01:04:15,355 --> 01:04:20,485
 God will give you severe
-training for soul and flesh.
+training for your soul and flesh.
 
 1029
 01:04:27,576 --> 01:04:30,245
@@ -4392,11 +4390,11 @@ Me too
 
 1034
 01:04:42,674 --> 01:04:43,675
-Congratulation
+Congratulations
 
 1035
 01:04:44,384 --> 01:04:46,177
-Are there anything to eat?
+Is there anything to eat?
 
 1036
 01:04:46,261 --> 01:04:47,262
@@ -4483,12 +4481,12 @@ If I had money,
 
 1056
 01:05:38,814 --> 01:05:41,191
-I wouldn't be beggar!
+I wouldn't be a beggar!
 
 1057
 01:05:45,279 --> 01:05:47,907
 But, don't worry,
-you were my benefitor,
+you were my benefactor,
 
 1058
 01:05:47,990 --> 01:05:49,200
@@ -4505,7 +4503,7 @@ back what you lost
 
 1061
 01:05:55,372 --> 01:05:57,040
-even you have money again
+even if you have money again
 
 1062
 01:05:58,709 --> 01:05:59,585
@@ -4526,7 +4524,7 @@ What are you?
 1066
 01:06:07,843 --> 01:06:11,805
 I am Hung Yat-sun,
-nicked name Old Bag Sun
+nicknamed Old Bag Sun
 
 1067
 01:06:11,889 --> 01:06:15,351
@@ -4535,7 +4533,7 @@ one among the beggars
 
 1068
 01:06:15,434 --> 01:06:16,685
-It's good to be beggar
+It's good to be a beggar
 
 1069
 01:06:17,144 --> 01:06:18,771
@@ -4557,7 +4555,7 @@ I want to be human again
 1073
 01:06:24,359 --> 01:06:26,069
 Don't you think you
-are not human like?
+are not human-like?
 
 1074
 01:06:27,613 --> 01:06:28,948
@@ -4565,7 +4563,7 @@ Not at all
 
 1075
 01:06:29,031 --> 01:06:31,492
-So you have to be beggar now
+So you have to be a beggar now
 
 1076
 01:06:33,952 --> 01:06:36,580
@@ -4578,7 +4576,7 @@ from your head to toes
 
 1078
 01:06:40,542 --> 01:06:42,794
-Every parts of you are beggar like
+Every part of you is beggar-like
 
 1079
 01:06:44,338 --> 01:06:45,005
@@ -4586,13 +4584,13 @@ So what?
 
 1080
 01:06:45,088 --> 01:06:47,465
-That means, you will be beggar
+That means, you will be a beggar
 for your life
 
 1081
 01:06:50,385 --> 01:06:52,846
 I don't want to talk to you,
-I want a sleep first
+I want to sleep first
 
 1082
 01:06:53,347 --> 01:06:55,349
@@ -4614,11 +4612,11 @@ what does that mean?
 
 1086
 01:07:03,106 --> 01:07:04,149
-That is beggar
+That is a beggar
 
 1087
 01:07:08,320 --> 01:07:10,280
-I won't care who you are,
+I don't care who you are,
 I just want to stop the conversation
 
 1088
@@ -4632,7 +4630,7 @@ Damn you!
 
 1090
 01:07:14,243 --> 01:07:16,454
-No… I just want to sleep with you
+No... I just want to sleep with you
 
 1091
 01:07:17,704 --> 01:07:18,538
@@ -4644,12 +4642,12 @@ Kid, see you in the dream
 
 1093
 01:07:36,515 --> 01:07:38,934
-Before the Buddha, the Disciples
-returns to your position
+Before the Buddha, the disciples
+return to your positions
 
 1094
 01:07:40,394 --> 01:07:43,647
-To suppress the dragon and tight
+To suppress the dragon and tiger
 
 1095
 01:07:50,654 --> 01:07:53,031
@@ -4663,7 +4661,7 @@ fruit of the world too
 
 1097
 01:07:55,325 --> 01:07:56,618
-Now you regretted
+Now you regret it
 
 1098
 01:07:56,994 --> 01:07:59,705
@@ -4681,24 +4679,24 @@ Now, I will teach you the
 
 1101
 01:08:05,377 --> 01:08:07,838
-Hope you can make good use of it
+Hope you can make good use of it.
 Come on
 
 1102
 01:08:13,218 --> 01:08:17,597
-Senior…
+Senior...
 
 1103
 01:08:22,728 --> 01:08:25,356
-The bitter pasted
+The bitter past
 
 1104
 01:08:30,277 --> 01:08:33,822
-Long life to you…
+Long life to you...
 
 1105
 01:08:36,450 --> 01:08:38,994
-Here comes the white Goat
+Here comes the White Goat
 
 1106
 01:08:39,661 --> 01:08:43,790
@@ -4774,11 +4772,11 @@ The Emperor is setting off soon
 
 1123
 01:11:09,770 --> 01:11:10,896
-You killed woman…
+You killed a woman...
 
 1124
 01:11:11,230 --> 01:11:12,398
-You should replace her to be
+You should replace her as
 a gift to the Emperor!
 
 1125
@@ -4814,7 +4812,7 @@ then they went away
 
 1132
 01:11:41,426 --> 01:11:42,594
-Are there any affair between them?
+Is there any affair between them?
 
 1133
 01:11:54,398 --> 01:11:55,733
@@ -4823,7 +4821,7 @@ the new leader
 
 1134
 01:12:02,573 --> 01:12:03,532
-Uncle Mok…
+Uncle Mok...
 
 1135
 01:12:03,615 --> 01:12:04,533
@@ -4835,7 +4833,7 @@ I think you won't come back
 
 1137
 01:12:05,450 --> 01:12:06,534
-How is it? Where is sister?
+How is it? Where is my sister?
 
 1138
 01:12:07,661 --> 01:12:09,204
@@ -4843,7 +4841,7 @@ Your sister is caught by Chiu
 
 1139
 01:12:09,872 --> 01:12:11,832
-We'd find someone to compete
+We need to find someone to compete
 for the leadership
 
 1140
@@ -4890,7 +4888,7 @@ my life already
 
 1150
 01:13:32,246 --> 01:13:33,289
-Bull shit, throw him to death
+Bullshit, throw him to his death
 
 1151
 01:13:43,131 --> 01:13:44,758
@@ -4907,11 +4905,11 @@ Sleeping
 
 1154
 01:14:29,887 --> 01:14:31,305
-Isn't this stance…
+Isn't this stance...
 
 1155
 01:14:32,347 --> 01:14:34,349
-Uncle Sun's "Sleeping Disciple's Fists'?
+Uncle Sun's "Sleeping Disciple's Fists"?
 
 1156
 01:14:35,350 --> 01:14:36,226
@@ -4931,7 +4929,7 @@ I won
 
 1160
 01:15:54,888 --> 01:15:56,098
-What is the use for defeating us?
+What is the use of defeating us?
 
 1161
 01:15:56,181 --> 01:15:57,057
@@ -4940,8 +4938,7 @@ You don't know how to use the
 
 1162
 01:15:58,058 --> 01:15:59,101
-You are not qualified to be
-the leader of us
+You are not qualified to be our leader
 
 1163
 01:16:02,646 --> 01:16:04,064
@@ -4957,7 +4954,7 @@ I do know how to use this waddy!
 
 1166
 01:16:13,615 --> 01:16:14,616
-But it's dislike
+But it's different
 from the standard stances!
 
 1167
@@ -4984,7 +4981,7 @@ I set the rules of the association
 
 1172
 01:16:45,397 --> 01:16:48,233
-Any student who defeated
+Any student who defeats
 the Lotus Position
 
 1173
@@ -4997,7 +4994,7 @@ Have you all forgotten?
 
 1175
 01:16:53,030 --> 01:16:55,324
-We becomes the
+We became the
 biggest association
 
 1176
@@ -5011,7 +5008,7 @@ I left you the
 
 1178
 01:17:00,078 --> 01:17:02,372
-is just for memory
+is just for remembrance
 
 1179
 01:17:02,789 --> 01:17:05,041
@@ -5030,7 +5027,7 @@ this damn waddy!
 1182
 01:17:10,672 --> 01:17:13,341
 In these five years, you have had no
-leader, don't you feel shy?
+leader. Don't you feel ashamed?
 
 1183
 01:17:13,926 --> 01:17:15,219
@@ -5051,7 +5048,7 @@ This youngster is so junior,
 
 1187
 01:17:19,515 --> 01:17:20,975
-but he is a genius, a smart ass
+but he is a genius, a smartass
 
 1188
 01:17:21,058 --> 01:17:23,269
@@ -5060,7 +5057,7 @@ Hung Yat Sun
 
 1189
 01:17:23,352 --> 01:17:24,979
-Who doesn't respect him is going
+Whoever doesn't respect him is going
 against me too
 
 1190
@@ -5070,12 +5067,12 @@ You should respect him,
 1191
 01:17:28,023 --> 01:17:29,316
 your new leader,
-and you'd love him,
+and you should love him,
 
 1192
 01:17:29,399 --> 01:17:32,944
-whole-heartedly, to care much for him,
-maybe, treat him dinner
+wholeheartedly, care for him,
+maybe treat him to dinner
 
 1193
 01:17:32,986 --> 01:17:34,196
@@ -5104,12 +5101,12 @@ we are blessed
 
 1199
 01:17:50,629 --> 01:17:53,006
-They are easily to be cheated,
+They are easily cheated,
 I am really a genius!
 
 1200
 01:17:53,924 --> 01:17:55,134
-We'll have better living
+We'll have a better life
 
 1201
 01:17:57,469 --> 01:17:59,346
@@ -5122,7 +5119,7 @@ Let's greet the new Master
 1203
 01:18:05,811 --> 01:18:10,274
 You should have faith,
-you won, bravo…
+you won, bravo...
 
 1204
 01:18:12,109 --> 01:18:14,278
@@ -5130,12 +5127,12 @@ Uncle Mok, my son is really great!
 
 1205
 01:18:16,822 --> 01:18:18,532
-I can't guess you have learnt the
+I can't believe you have learnt the
 "Sleeping Disciple's Fists"?!
 
 1206
 01:18:20,742 --> 01:18:23,245
-From now on, you are the new leader of us
+From now on, you are our new leader
 
 1207
 01:18:24,454 --> 01:18:26,331
@@ -5173,7 +5170,7 @@ Uncle Mok!
 
 1215
 01:18:55,819 --> 01:19:00,073
-Uncle Mok…
+Uncle Mok...
 
 1216
 01:19:49,373 --> 01:19:50,291
@@ -5198,7 +5195,7 @@ My initial power is increased
 
 1221
 01:19:59,925 --> 01:20:02,511
-I can control the 17th stances
+I can control the first 17 stances
 
 1222
 01:20:02,928 --> 01:20:05,597
@@ -5245,7 +5242,7 @@ why do you bring this woman here?
 1232
 01:21:54,289 --> 01:21:55,624
 I know the Emperor
-loves pretty woman
+loves pretty women
 
 1233
 01:21:55,707 --> 01:21:58,084
@@ -5320,7 +5317,7 @@ to see the Emperor,
 
 1250
 01:23:15,746 --> 01:23:18,832
-if I let him see His Majesty oftenly,
+if I let him see His Majesty often,
 my post will be taken away
 
 1251
@@ -5333,7 +5330,7 @@ Sir
 
 1253
 01:23:27,466 --> 01:23:28,634
-Check what had happened
+Check what has happened
 
 1254
 01:23:28,717 --> 01:23:29,718
@@ -5388,7 +5385,7 @@ to beg for money
 
 1266
 01:25:09,026 --> 01:25:11,278
-Shit, do you want to be killed
+Shit, do you want to get killed?
 
 1267
 01:25:11,653 --> 01:25:12,821
@@ -5405,7 +5402,7 @@ assassinate the king
 
 1270
 01:25:17,409 --> 01:25:18,619
-You fat-headed
+You fathead!
 
 1271
 01:25:19,828 --> 01:25:21,163
@@ -5470,15 +5467,15 @@ Say something lucky, OK?
 
 1286
 01:25:50,859 --> 01:25:55,447
-Sure! Happy birthday to you…
+Sure! Happy birthday to you...
 
 1287
 01:25:55,489 --> 01:25:58,492
-Happy birthday to you…
+Happy birthday to you...
 
 1288
 01:25:58,909 --> 01:26:00,244
-Happy birthday to you…
+Happy birthday to you...
 
 1289
 01:26:00,327 --> 01:26:01,286
@@ -5490,7 +5487,7 @@ I haven't finished
 
 1291
 01:26:02,454 --> 01:26:03,413
-Go on after I left
+Go on after I've left
 
 1292
 01:26:03,497 --> 01:26:04,540
@@ -5503,7 +5500,7 @@ someone must have alarmed them
 
 1294
 01:26:21,557 --> 01:26:22,391
-Get ready the Unicom Smoke
+Get the Kirin Smokes ready
 
 1295
 01:26:22,474 --> 01:26:22,975
@@ -5532,7 +5529,7 @@ Shit, the poisoned smoke
 
 1301
 01:27:35,422 --> 01:27:36,632
-is blowing to the Royal camp
+is blowing toward the Royal camp
 
 1302
 01:27:42,804 --> 01:27:44,472
@@ -5545,7 +5542,7 @@ Yes, wait for me
 1304
 01:27:48,977 --> 01:27:51,104
 If the beggars don't retreat now,
-we will kill with no mercy
+we will kill without mercy
 
 1305
 01:28:10,207 --> 01:28:11,208
@@ -5553,7 +5550,7 @@ Have a look
 
 1306
 01:28:15,587 --> 01:28:16,630
-The Unicom Smoke of
+The Kirin Smokes of
 the Tin Li Sect
 
 1307
@@ -5588,13 +5585,13 @@ How is the situation?
 
 1314
 01:29:00,007 --> 01:29:02,009
-Thanks for Your Majesty's luck,
+Thanks to Your Majesty's luck,
 the wind direction changed
 
 1315
 01:29:02,134 --> 01:29:03,594
 The smoke is going
-to the other direction
+in the other direction
 
 1316
 01:29:03,677 --> 01:29:05,179
@@ -5606,11 +5603,11 @@ They are all dead
 
 1318
 01:29:08,056 --> 01:29:08,932
-Take me the sword
+Bring me the sword
 
 1319
 01:29:09,016 --> 01:29:09,975
-Don't… don't!
+Don't... don't!
 
 1320
 01:29:10,100 --> 01:29:11,643
@@ -5623,8 +5620,8 @@ don't go!
 
 1322
 01:29:13,812 --> 01:29:16,690
-Get lost, don't you want
-to wait for death, get lost
+Get lost! Don't you want
+to wait for death? Get lost!
 
 1323
 01:29:18,108 --> 01:29:19,151
@@ -5680,17 +5677,17 @@ Really?
 
 1336
 01:30:44,736 --> 01:30:45,987
-Yes, then I want to
+Yes, then I wanted to
 eat a sweet potato
 
 1337
 01:30:46,113 --> 01:30:47,072
-But only dumpling left
+But only dumplings were left
 
 1338
 01:30:47,155 --> 01:30:49,532
 You know, I don't
-like eating dumpling
+like eating dumplings
 
 1339
 01:30:50,701 --> 01:30:52,703
@@ -5699,7 +5696,7 @@ please forgive me
 
 1340
 01:30:55,122 --> 01:30:55,873
-To protect to Emperor
+To protect the Emperor
 
 1341
 01:30:56,373 --> 01:30:57,332
@@ -5707,7 +5704,7 @@ Yes
 
 1342
 01:31:00,669 --> 01:31:01,336
-You betrayer!
+You traitor!
 
 1343
 01:31:01,420 --> 01:31:02,129
@@ -5748,7 +5745,7 @@ Well, I am a little bit sleepy
 1352
 01:32:06,443 --> 01:32:10,364
 Yes. Look at you, you are
-like beggar too
+like a beggar too
 
 1353
 01:32:10,447 --> 01:32:11,949
@@ -5756,7 +5753,7 @@ Are you interested to join us?
 
 1354
 01:32:13,867 --> 01:32:15,994
-I can't guess you could recover!
+I couldn't have guessed you would recover!
 
 1355
 01:32:16,453 --> 01:32:18,163
@@ -5764,7 +5761,7 @@ Yes, it's all because of you
 
 1356
 01:32:22,709 --> 01:32:24,711
-Did you generate all your force?
+Did you use all your force?
 I didn't
 
 1357
@@ -5774,8 +5771,8 @@ Stances" scare me
 
 1358
 01:32:46,525 --> 01:32:48,277
-I won't give a damn
-to any other stances
+I don't give a damn
+about any other stances
 
 1359
 01:33:00,831 --> 01:33:02,666
@@ -5800,7 +5797,7 @@ dragon in the field,
 
 1364
 01:33:10,841 --> 01:33:11,884
-dragon dances…
+dragon dances...
 
 1365
 01:33:11,925 --> 01:33:12,884
@@ -5808,11 +5805,11 @@ Dragon's descendant,
 
 1366
 01:33:12,968 --> 01:33:14,011
-dragon's wish…
+dragon's wish...
 
 1367
 01:33:14,094 --> 01:33:15,345
-Dragon's spirit, dragon's couple
+Dragon's spirit, dragon's mate
 
 1368
 01:33:15,429 --> 01:33:16,805
@@ -5840,12 +5837,12 @@ Chan!
 
 1374
 01:34:21,245 --> 01:34:23,497
-I've got it
+I've got it!
 Just mix the 17 stances,
 
 1375
 01:34:23,580 --> 01:34:24,539
-it's the 18th stance then
+Then it's the 18th stance
 
 1376
 01:34:25,207 --> 01:34:26,834
@@ -5853,7 +5850,7 @@ I am too smart!
 
 1377
 01:34:56,864 --> 01:34:59,200
-The 18 stance, "It's a regret to
+The 18th stance, "It's a regret to
 kill the Dragon"!
 
 1378
@@ -5867,7 +5864,7 @@ think I am alright?
 
 1380
 01:35:34,026 --> 01:35:35,152
-Your post is really smart
+Your pose is really smart
 
 1381
 01:35:35,235 --> 01:35:37,028
@@ -5903,7 +5900,7 @@ Around?
 
 1389
 01:35:58,967 --> 01:36:00,218
-He became ash
+He became ashes
 
 1390
 01:36:01,094 --> 01:36:02,721
@@ -5915,8 +5912,8 @@ Master
 
 1392
 01:36:04,181 --> 01:36:06,016
-Chiu's fellows are
-all caught by us
+Chiu's fellows have
+all been caught by us
 
 1393
 01:36:10,229 --> 01:36:11,313
@@ -5945,11 +5942,11 @@ But, I can't be the Scholar
 
 1399
 01:36:27,037 --> 01:36:29,957
-But I don't like Scholar at all
+But I don't like to be the Scholar at all
 
 1400
 01:36:30,290 --> 01:36:31,708
-I love beggar
+I love to be a beggar
 
 1401
 01:36:33,669 --> 01:36:34,920
@@ -5966,11 +5963,11 @@ You bring a thief to harm me
 
 1404
 01:36:54,147 --> 01:36:55,899
-Now, you are titled to be a beggar
+Now, you are entitled to be a beggar
 
 1405
 01:36:56,400 --> 01:36:58,736
-You have potential to be beggar
+You have potential to be a beggar
 
 1406
 01:36:59,486 --> 01:37:00,654
@@ -5978,7 +5975,7 @@ Report duty in the temple tomorrow
 
 1407
 01:37:01,280 --> 01:37:02,698
-If there anyone bullies you,
+If anyone bullies you,
 just tell them my name
 
 1408
@@ -6016,7 +6013,7 @@ if you don't respect me, I will kill you
 1416
 01:37:30,809 --> 01:37:33,020
 If so, you needn't
-squat and talk to me
+squat to talk to me
 
 1417
 01:37:33,812 --> 01:37:36,440
@@ -6029,7 +6026,7 @@ Actually we have no relation,
 
 1419
 01:37:41,028 --> 01:37:42,696
-we have nothing to chat
+we have nothing to chat about
 
 1420
 01:37:43,197 --> 01:37:44,657
@@ -6041,7 +6038,7 @@ Your force makes me worry
 
 1422
 01:37:48,202 --> 01:37:50,246
-The number of fellow doesn't
+The number of fellows doesn't
 depend on me,
 
 1423
@@ -6055,11 +6052,11 @@ What?
 1425
 01:37:53,665 --> 01:37:56,293
 If you are great, making the
-society peace and wealthy,
+society peaceful and wealthy,
 
 1426
 01:37:56,668 --> 01:37:58,795
-no one wishes to be beggar, right?
+no one wishes to be a beggar, right?
 
 1427
 01:38:00,380 --> 01:38:02,090
