@@ -8,6 +8,8 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import test_data_root
+
+# ruff: noqa: F401 F403
 from test.data.kob.test_cases.proofing import kob_proof_test_cases
 
 input_dir = test_data_root / "kob" / "input"

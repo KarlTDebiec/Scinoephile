@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+from logging import info
 from pathlib import Path
 
 from scinoephile.common.validation import val_input_dir_path
@@ -69,8 +70,8 @@ class EnglishProofer:
             block = series.blocks[block_idx]
             async with semaphore:
                 block_series = await self.process_block(block_idx, block)
-            print(f"BLOCK {block_idx} ({block.start_idx} - {block.end_idx}):")
-            print(f"English:\n{block.to_series().to_simple_string()}")
+            info(f"BLOCK {block_idx} ({block.start_idx} - {block.end_idx}):")
+            info(f"English:\n{block.to_series().to_simple_string()}")
             all_block_series[block_idx] = block_series
 
         # Run all blocks
@@ -84,7 +85,7 @@ class EnglishProofer:
         proofread_series = get_concatenated_series(
             [s for s in all_block_series if s is not None]
         )
-        print(f"Concatenated Series:\n{proofread_series.to_simple_string()}")
+        info(f"Concatenated Series:\n{proofread_series.to_simple_string()}")
         return proofread_series
 
     async def process_block(
