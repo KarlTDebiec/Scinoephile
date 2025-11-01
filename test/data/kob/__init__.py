@@ -9,6 +9,9 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
+# ruff: noqa: F401 F403
+from test.data.kob.test_cases.proofing import kob_proof_test_cases
+
 input_dir = test_data_root / "kob" / "input"
 output_dir = test_data_root / "kob" / "output"
 
@@ -77,9 +80,15 @@ def kob_eng_flatten() -> Series:
 
 
 @pytest.fixture
-def kob_eng_clean_flatten() -> Series:
-    """KOB English cleaned and flattened series."""
-    return Series.load(output_dir / "eng_clean_flatten.srt")
+def kob_eng_proof() -> Series:
+    """KOB English proofed series."""
+    return Series.load(output_dir / "eng_proof.srt")
+
+
+@pytest.fixture
+def kob_eng_proof_clean_flatten() -> Series:
+    """KOB English proofed, cleaned and flattened series."""
+    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
 
 
 # endregion
@@ -104,6 +113,8 @@ ___all__ = [
     "kob_eng",
     "kob_eng_clean",
     "kob_eng_flatten",
-    "kob_eng_clean_flatten",
+    "kob_eng_proof",
+    "kob_eng_proof_clean_flatten",
     "kob_yue_hans_eng",
+    "kob_proof_test_cases",
 ]
