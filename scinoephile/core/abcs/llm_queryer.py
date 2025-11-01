@@ -52,10 +52,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             print_test_case: Whether to print test case after merging
             max_attempts: Maximum number of attempts
         """
-        self.provider = provider or OpenAIProvider()
-        """LLM Provider to use for queries."""
         self.model = model
         """Model name to use for queries."""
+        self._provider = provider
 
         # Track which test cases are to be included in the prompt for few-shot learning
         self._prompt_test_cases: dict[tuple, TTestCase] = {}
@@ -85,6 +84,18 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Whether to print test case after merging query and answer."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
+
+    @property
+    def provider(self):
+        """LLM Provider to use for queries."""
+        if self._provider is None:
+            self._provider = OpenAIProvider()
+        return self._provider
+
+    @provider.setter
+    def provider(self, value: LLMProvider):
+        """Set LLM Provider to use for queries."""
+        self._provider = value
 
     @cached_property
     @abstractmethod
