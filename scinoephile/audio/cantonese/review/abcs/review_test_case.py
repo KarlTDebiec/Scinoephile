@@ -73,8 +73,8 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     def validate_test_case(self) -> ReviewTestCase:
         """Ensure query and answer are consistent with one another."""
         for idx in range(1, self.size + 1):
-            yuewen_revised = getattr(self, f"yuewen_revised_{idx}")
             yuewen = getattr(self, f"yuewen_{idx}")
+            yuewen_revised = getattr(self, f"yuewen_revised_{idx}")
             note = getattr(self, f"note_{idx}")
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
