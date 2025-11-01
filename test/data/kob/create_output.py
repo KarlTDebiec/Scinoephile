@@ -53,9 +53,10 @@ if __name__ == "__main__":
     )
     eng_proof = get_english_proofed(eng, proofer)
     eng_proof.save(output_dir / "eng_proof.srt")
-    eng_clean_flatten = get_english_flattened(eng_clean)
-    eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
+    eng_proof_clean = get_english_cleaned(eng_proof)
+    eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
+    eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
     # Bilingual 简体粵文 and English
-    yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
+    yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_proof_clean_flatten)
     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
