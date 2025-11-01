@@ -6,7 +6,12 @@ from __future__ import annotations
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.english import (
+    EnglishProofer,
+    get_english_cleaned,
+    get_english_flattened,
+    get_english_proofed,
+)
 from scinoephile.core.hanzi import (
     OpenCCConfig,
     get_hanzi_cleaned,
@@ -15,6 +20,7 @@ from scinoephile.core.hanzi import (
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.testing import test_data_root
+from test.data.kob import kob_proof_test_cases
 
 if __name__ == "__main__":
     input_dir = test_data_root / "kob" / "input"
@@ -41,6 +47,12 @@ if __name__ == "__main__":
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
+    proofer = EnglishProofer(
+        proof_test_cases=kob_proof_test_cases,
+        test_case_directory_path=test_data_root / "kob" / "test_cases",
+    )
+    eng_proof = get_english_proofed(eng, proofer)
+    eng_proof.save(output_dir / "eng_proof.srt")
     eng_clean_flatten = get_english_flattened(eng_clean)
     eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
