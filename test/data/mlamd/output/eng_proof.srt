@@ -262,7 +262,7 @@ Spring Flower offers white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
-"We are all happy children..."
+"We are all happy children..." 1
 
 65
 00:05:36,042 --> 00:05:40,917
@@ -283,11 +283,11 @@ This piggy kid in a rabbit outfit...
 69
 00:05:54,292 --> 00:05:58,625
 Who doesn't look the least
-like Chow or Leung...
+like Chow or Leung.
 
 70
 00:05:58,792 --> 00:06:01,167
-That's me, McDull.
+That's me, McDull
 
 71
 00:06:02,292 --> 00:06:04,000
@@ -304,31 +304,31 @@ As a result, he speaks with an accent.
 
 74
 00:06:09,083 --> 00:06:10,208
-For many years...
+For many years
 
 75
 00:06:10,458 --> 00:06:12,875
-I had difficulty understanding him.
+I had difficulty hearing him.
 
 76
 00:06:14,625 --> 00:06:17,833
-- Tart!    - Tart!
+Tart! Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
-- Duck dumpling!    - Duck dumpling!
+- Duck dumpling! Duck dumpling!
 
 78
 00:06:23,750 --> 00:06:29,792
-- The 97 Rule...    - The 97 Rule...
+The 97 Rule... The 97 Rule...
 
 79
 00:06:29,958 --> 00:06:33,083
-shall be replaced by the 98 Rule!
+Shall be replaced by the 98 Rule!
 
 80
 00:06:33,250 --> 00:06:38,792
-shall be replaced by the 98 Rule!
+Shall be replaced by the 98 Rule!
 
 81
 00:06:39,167 --> 00:06:40,667
@@ -340,7 +340,7 @@ We are sharing an important issue...
 
 83
 00:06:43,375 --> 00:06:45,000
-this morning:
+This morning:
 
 84
 00:06:45,375 --> 00:06:48,417
@@ -353,7 +353,7 @@ Yes!
 
 86
 00:06:50,958 --> 00:06:54,375
-Great! Now move on to class.
+Great! Now move to class.
 
 87
 00:06:57,875 --> 00:07:00,417
@@ -379,11 +379,11 @@ her absent-minded way.
 
 92
 00:07:13,917 --> 00:07:16,083
-also, she is a Faye Wong wannabe.
+Also, she is a Faye Wong wannabe.
 
 93
 00:07:16,375 --> 00:07:18,708
-actually, Kelly Chan will do!
+Actually, Kelly Chan will do!
 
 94
 00:07:18,833 --> 00:07:20,750
@@ -499,7 +499,7 @@ Hey, I don't understand.
 
 122
 00:08:22,333 --> 00:08:23,625
-I keep feeling that.
+I keep feeling that...
 
 123
 00:08:23,792 --> 00:08:27,625
@@ -543,7 +543,7 @@ How are these two things related?
 
 133
 00:08:57,958 --> 00:09:00,500
-There are so many things that
+There are SO many things that
 I don't understand.
 
 134

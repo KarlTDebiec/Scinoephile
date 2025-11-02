@@ -244,6 +244,8 @@ test_case_block_3 = EnglishProofTestCase.get_test_case_cls(23)(
     revised_23="Great! Now move on to class.",
     note_23="Changed 'move to class' to 'move on to class' for natural phrasing.",
     difficulty=1,
+    prompt=True,
+    verified=True,
 )  # test_case_block_3
 # noinspection PyArgumentList
 test_case_block_4 = EnglishProofTestCase.get_test_case_cls(55)(
