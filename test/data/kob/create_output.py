@@ -49,7 +49,7 @@ if __name__ == "__main__":
     eng_flatten.save(output_dir / "eng_flatten.srt")
     proofer = EnglishProofer(
         proof_test_cases=kob_english_proof_test_cases,
-        test_case_directory_path=test_data_root / "kob" / "test_cases",
+        test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
     )
     eng_proof = get_english_proofed(eng, proofer)
     eng_proof.save(output_dir / "eng_proof.srt")
