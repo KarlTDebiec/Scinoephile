@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from data.kob import kob_english_proof_test_cases
+
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_proofed
@@ -19,8 +21,8 @@ if __name__ == "__main__":
     # English
     eng = Series.load(input_dir / "eng.srt")
     proofer = EnglishProofer(
-        proof_test_cases=mlamd_english_proof_test_cases,
+        proof_test_cases=kob_english_proof_test_cases + mlamd_english_proof_test_cases,
         test_case_path=test_data_root / "mlamd" / "core" / "english" / "proof.py",
     )
-    eng_proof = get_english_proofed(eng, proofer, stop_at_idx=5)
+    eng_proof = get_english_proofed(eng, proofer, stop_at_idx=4)
     eng_proof.save(output_dir / "eng_proof.srt")

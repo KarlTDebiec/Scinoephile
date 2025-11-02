@@ -67,8 +67,12 @@ def get_english_proofed(
     """
     if proofer is None:
         from test.data.kob import kob_english_proof_test_cases
+        from test.data.mlamd import mlamd_english_proof_test_cases
 
-        proofer = EnglishProofer(proof_test_cases=kob_english_proof_test_cases)
+        proofer = EnglishProofer(
+            proof_test_cases=kob_english_proof_test_cases
+            + mlamd_english_proof_test_cases
+        )
 
     proofed = asyncio.run(proofer.process_all_blocks(series, **kwargs))
 
