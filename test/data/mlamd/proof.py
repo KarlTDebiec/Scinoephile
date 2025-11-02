@@ -4,13 +4,12 @@
 
 from __future__ import annotations
 
-from data.kob import kob_english_proof_test_cases
-
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_proofed
 from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.testing import test_data_root
+from test.data.kob import kob_english_proof_test_cases
 from test.data.mlamd import mlamd_english_proof_test_cases
 
 if __name__ == "__main__":
