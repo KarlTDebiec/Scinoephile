@@ -115,8 +115,8 @@ class EnglishProofer:
 
         if self.test_case_directory_path is not None:
             await update_dynamic_test_cases(
-                self.test_case_directory_path / "proofing.py",
-                f"proof_test_case_block_{block_idx}",
+                self.test_case_directory_path / "english_proof.py",
+                f"test_case_block_{block_idx}",
                 self.proofer,
             )
 

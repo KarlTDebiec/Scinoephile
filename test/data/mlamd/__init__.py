@@ -4,15 +4,12 @@
 
 from __future__ import annotations
 
-from logging import debug, info
-
 import pytest
 from PIL import Image
 
-from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import ScinoephileError
 from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
+from test.data.mlamd.core.english.proof import mlamd_english_proof_test_cases
 from test.data.mlamd.distribution import mlamd_distribute_test_cases
 from test.data.mlamd.merging import mlamd_merge_test_cases
 from test.data.mlamd.proofing import mlamd_proof_test_cases
@@ -115,44 +112,5 @@ ___all__ = [
     "mlamd_proof_test_cases",
     "mlamd_translate_test_cases",
     "mlamd_review_test_cases",
+    "mlamd_english_proof_test_cases",
 ]
-
-if __name__ == "__main__":
-    set_logging_verbosity(1)
-
-    test_case_lists = {
-        "Distribute": mlamd_distribute_test_cases,
-        "Shift": mlamd_shift_test_cases,
-        "Merge": mlamd_merge_test_cases,
-        "Proof": mlamd_proof_test_cases,
-    }
-    for test_case_type, test_cases in test_case_lists.items():
-        info(f"Validating {test_case_type} test cases...")
-
-        # Validate test cases
-        test_case_dict = {}
-        noops = 0
-        for test_case in test_cases:
-            if test_case.noop:
-                debug(test_case.source_str)
-                noops += 1
-            else:
-                info(test_case.source_str)
-            if test_case.key in test_case_dict:
-                raise ScinoephileError(f"Duplicate found:\n{test_case.source_str}")
-            test_case_dict[test_case.key] = test_case
-        info(
-            f"{test_case_type} test cases validated: {len(test_case_dict)} "
-            f"unique keys, of which {len(test_cases) - noops} direct changes."
-        )
-
-        # Validate queries
-        query_dict = {}
-        for test_case in test_cases:
-            debug(test_case.source_str)
-            if test_case.query.query_key in query_dict:
-                raise ScinoephileError(
-                    f"Duplicate query found:\n{test_case.source_str}"
-                )
-            query_dict[test_case.query.query_key] = test_case.query
-        info(f"{test_case_type} queries validated: {len(query_dict)} unique keys.")
