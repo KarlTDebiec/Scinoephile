@@ -1535,15 +1535,14 @@ test_case_block_67 = EnglishProofTestCase.get_test_case_cls(1)(
     difficulty=1,
 )  # test_case_block_67
 # noinspection PyArgumentList
-test_case_block_68 = EnglishProofTestCase.get_test_case_cls(3)(
+test_case_block_68 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1='\\"Fat, Still\\"',
     subtitle_2="'Powerful\\\"",
-    subtitle_3="",
     revised_1='"Fat, Still"',
     note_1="Removed unnecessary escape characters from the quotation marks.",
     revised_2='"Powerful"',
-    note_2="Changed single and escaped double quotes to standard double "
-    "quotation marks.",
+    note_2="Corrected mismatched quotation marks and removed unnecessary "
+    "escape character.",
     difficulty=1,
 )  # test_case_block_68
 # noinspection PyArgumentList

@@ -3516,395 +3516,391 @@ What shall I be?
 "Powerful"
 
 847
-01:07:42,250 --> 01:07:44,542
-
-
-848
 01:08:19,458 --> 01:08:22,333
 Right, I am McDull the big guy.
 
-849
+848
 01:08:23,542 --> 01:08:26,500
 Fat, with raw power.
 
-850
+849
 01:08:27,083 --> 01:08:28,958
 Not doing too well.
 
-851
+850
 01:08:29,750 --> 01:08:31,333
 Negative property.
 
-852
+851
 01:08:34,042 --> 01:08:38,292
 With a pair of really thick calves.
 
-853
+852
 01:08:39,250 --> 01:08:41,917
 Very muscular...
 
-854
+853
 01:08:42,375 --> 01:08:47,083
 With steely veins running down.
 
-855
+854
 01:08:47,917 --> 01:08:50,000
 As for the toenails...
 
-856
+855
 01:08:50,333 --> 01:08:53,417
 I got bored one time and stared at it...
 
-857
+856
 01:08:53,833 --> 01:08:56,750
 They're tough, no kidding!
 
-858
+857
 01:08:58,458 --> 01:09:00,958
 Yes, the story ends here.
 
-859
+858
 01:09:01,708 --> 01:09:03,500
 This is a try.
 
-860
+859
 01:09:04,375 --> 01:09:07,417
 Error... Try...
 
-861
+860
 01:09:07,917 --> 01:09:11,458
 No guarantee that one would make it.
 
-862
+861
 01:09:12,875 --> 01:09:14,500
 In the end...
 
-863
+862
 01:09:14,917 --> 01:09:18,042
 Zero gain? Not really.
 
-864
+863
 01:09:18,625 --> 01:09:21,667
 I have my calves.
 
-865
+864
 01:09:23,083 --> 01:09:25,792
 But, standing here like this...
 
-866
+865
 01:09:26,250 --> 01:09:28,250
 When the waves hit...
 
-867
+866
 01:09:29,000 --> 01:09:32,250
 I feel great.
 
-868
+867
 01:09:34,167 --> 01:09:37,083
 You see, smart guys like me
 don't really know...
 
-869
+868
 01:09:37,250 --> 01:09:41,500
 How to make a lesson out of
 my own story.
 
-870
+869
 01:09:42,042 --> 01:09:44,833
 With calves in water...
 
-871
+870
 01:09:45,292 --> 01:09:50,417
 When the wind blows, I'd think...
 
-872
+871
 01:09:50,750 --> 01:09:53,167
 If mother could see me like this...
 
-873
+872
 01:09:55,167 --> 01:09:57,208
 She'd be happy.
 
-874
+873
 01:10:12,500 --> 01:10:15,750
 I've come up with a lesson!
 
-875
+874
 01:10:16,417 --> 01:10:20,708
 Mother got inspired after
 her dot com failed.
 
-876
+875
 01:10:21,208 --> 01:10:24,958
 She published a cookbook.
 
-877
+876
 01:10:25,250 --> 01:10:28,042
 The last recipe was "Roast Chicken".
 
-878
+877
 01:10:28,417 --> 01:10:30,875
 A simple dish no less.
 
-879
+878
 01:10:31,000 --> 01:10:32,000
 "Roast Chicken".
 
-880
+879
 01:10:32,292 --> 01:10:34,375
 Ingredient: chicken.
 
-881
+880
 01:10:34,625 --> 01:10:38,625
 Method: roast the chicken.
 
-882
+881
 01:10:38,833 --> 01:10:43,083
 That way, you have a roast chicken.
 
-883
+882
 01:10:44,417 --> 01:10:46,375
 There was a remark in the cookbook:
 
-884
+883
 01:10:47,083 --> 01:10:49,417
 If you want a delicious chicken...
 
-885
+884
 01:10:50,125 --> 01:10:52,750
 A chicken that wouldn't upset you...
 
-886
+885
 01:10:53,250 --> 01:10:58,250
 The secret is: please, roast it well!
 
-887
+886
 01:10:59,083 --> 01:11:01,208
 Thank you!
 
-888
+887
 01:11:40,583 --> 01:11:42,542
 One Regular, please.
 
-889
+888
 01:11:42,667 --> 01:11:44,667
 What's a Regular?
 
-890
+889
 01:11:44,833 --> 01:11:46,042
 The same as Special.
 
-891
+890
 01:11:46,167 --> 01:11:47,292
 What's a Special?
 
-892
+891
 01:11:47,458 --> 01:11:48,792
 Same as Quickie.
 
-893
+892
 01:11:48,917 --> 01:11:50,375
 What's a Quickie?
 
-894
+893
 01:11:50,625 --> 01:11:52,625
 A Quickie is a Lunch.
 
-895
+894
 01:11:52,833 --> 01:11:53,875
 What's for Lunch?
 
-896
+895
 01:11:54,000 --> 01:11:55,750
 The same as Supper.
 
-897
+896
 01:11:55,917 --> 01:11:57,333
 What's for Supper?
 
-898
+897
 01:11:57,500 --> 01:11:59,667
 Same as Regular.
 
-899
+898
 01:11:59,833 --> 01:12:01,792
 We'll have the Regular.
 
-900
+899
 01:12:01,875 --> 01:12:04,750
 Our Regular today is fantastic!
 
-901
+900
 01:12:09,125 --> 01:12:11,417
 Sorry, Regular is gone.
 
-902
+901
 01:12:11,875 --> 01:12:13,083
 We can have the Special.
 
-903
+902
 01:12:13,333 --> 01:12:15,208
 What's a Special?
 
-904
+903
 01:12:15,458 --> 01:12:17,042
 A Special is Lunch.
 
-905
+904
 01:12:17,542 --> 01:12:18,792
 What's for Lunch?
 
-906
+905
 01:12:19,083 --> 01:12:20,625
 What you get for Supper.
 
-907
+906
 01:12:20,875 --> 01:12:22,292
 What's for Supper?
 
-908
+907
 01:12:22,458 --> 01:12:23,792
 Same as Quickie.
 
-909
+908
 01:12:23,917 --> 01:12:25,208
 What's for Quickie?
 
-910
+909
 01:12:25,375 --> 01:12:27,667
 A Quickie is a Regular.
 
-911
+910
 01:12:27,833 --> 01:12:29,750
 But you said Regular is gone!
 
-912
+911
 01:12:29,875 --> 01:12:33,417
 Regular sure is gone.
 How about the Special?
 
-913
+912
 01:12:34,167 --> 01:12:35,542
 It's the Special, then.
 
-914
+913
 01:12:37,500 --> 01:12:40,500
 Sorry, Special is gone.
 
-915
+914
 01:12:41,167 --> 01:12:43,708
 Mother, let's have the Quickie.
 
-916
+915
 01:12:44,042 --> 01:12:45,417
 What's for Quickie?
 
-917
+916
 01:12:45,542 --> 01:12:47,167
 A Quickie is a Regular.
 
-918
+917
 01:12:47,333 --> 01:12:48,833
 What's for Regular?
 
-919
+918
 01:12:49,167 --> 01:12:51,167
 A Regular is a Lunch.
 
-920
+919
 01:12:51,292 --> 01:12:52,958
 What's for Lunch?
 
-921
+920
 01:12:53,167 --> 01:12:55,375
 Same as Supper.
 
-922
+921
 01:12:55,542 --> 01:12:56,292
 And Supper?
 
-923
+922
 01:12:56,458 --> 01:12:58,125
 Supper is like Special.
 
-924
+923
 01:12:58,292 --> 01:13:00,250
 But you said the Special is gone.
 
-925
+924
 01:13:00,375 --> 01:13:05,125
 The Special sure is gone.
 Try Quickie. It's the same.
 
-926
+925
 01:13:05,292 --> 01:13:06,333
 We'll have Quickie.
 
-927
+926
 01:13:09,667 --> 01:13:11,542
 Sorry, Quickie is gone.
 
-928
+927
 01:13:11,667 --> 01:13:14,375
 This is too much!
 Is there anything we can eat here?
 
-929
+928
 01:13:14,542 --> 01:13:16,333
 Try the Lunch. It's fantastic!
 
-930
+929
 01:13:16,375 --> 01:13:17,417
 How so?
 
-931
+930
 01:13:17,583 --> 01:13:18,833
 It's like the Supper.
 
-932
+931
 01:13:18,958 --> 01:13:20,375
 What about the Supper?
 
-933
+932
 01:13:20,542 --> 01:13:22,208
 It's like the Regular.
 
-934
+933
 01:13:22,333 --> 01:13:23,542
 And what about the Regular?
 
-935
+934
 01:13:23,750 --> 01:13:27,292
 The Regular is gone. Isn't that fantastic?
 
-936
+935
 01:13:29,917 --> 01:13:31,625
 Great! We'll have Lunch.
 
-937
+936
 01:13:35,625 --> 01:13:37,625
 Sorry, lunch is gone.
 
-938
+937
 01:13:37,792 --> 01:13:40,500
 Try our Supper. It's all the same.
 
-939
+938
 01:13:40,667 --> 01:13:42,542
 I'm not having supper
 under broad daylight!
 
-940
+939
 01:13:42,792 --> 01:13:46,125
 What's in a name?
 It's the same as Lunch.
 
-941
+940
 01:13:46,333 --> 01:13:49,750
 Great! Whatever you say!
 And make it quick!
 
-942
+941
 01:13:49,917 --> 01:13:53,417
 You want it quick? Try Quickie!
 
