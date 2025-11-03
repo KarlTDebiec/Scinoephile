@@ -25,9 +25,8 @@ async def _replace_variable_in_test_case_file(
     path: Path, variable: str, pattern: re.Pattern[str], replacement: str
 ):
     contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
-    replacement = f"{variable} = {replacement}  # {variable}"
-    replacement = replacement.replace("\\n", "\\\\n")
-    new_contents = pattern.sub(replacement, contents)
+    block = f"{variable} = {replacement}  # {variable}"
+    new_contents = pattern.sub(lambda _m: block, contents)
     await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
     info(f"Replaced test cases {variable} in {path.name}.")
 

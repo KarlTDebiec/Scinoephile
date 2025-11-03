@@ -168,7 +168,7 @@ To commemorate this, Mrs. McBing...
 
 41
 00:03:03,208 --> 00:03:06,250
-Decided to name her son McNificent.
+Decided to name her son McNificient.
 
 42
 00:03:07,250 --> 00:03:09,750
@@ -184,7 +184,7 @@ Dear all...
 
 45
 00:03:13,458 --> 00:03:16,208
-I am the boy, no more McNificent...
+I am the boy, no more McNificient...
 
 46
 00:03:16,875 --> 00:03:18,542
@@ -312,15 +312,15 @@ I had difficulty hearing him.
 
 76
 00:06:14,625 --> 00:06:17,833
-- Tart!    - Tart!
+- Tart! - Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
-- Duck dumpling!    - Duck dumpling!
+- Duck dumpling! - Duck dumpling!
 
 78
 00:06:23,750 --> 00:06:29,792
-- The 97 Rule...    - The 97 Rule...
+- The 97 Rule... - The 97 Rule...
 
 79
 00:06:29,958 --> 00:06:33,083
@@ -391,35 +391,35 @@ Roll call now.
 
 95
 00:07:21,083 --> 00:07:22,708
-- McMug!    - Present!
+- McMug! - Present!
 
 96
 00:07:22,917 --> 00:07:24,375
-- Fail!    - Present!
+- Fai! - Present!
 
 97
 00:07:24,500 --> 00:07:26,667
-- Goosie!    - Present!
+- Goosie! - Present!
 
 98
 00:07:26,833 --> 00:07:28,750
-- Darby!    - Present!
+- Darby! - Present!
 
 99
 00:07:28,917 --> 00:07:31,708
-- May!    - Present!
+- May! - Present!
 
 100
 00:07:31,875 --> 00:07:33,750
-- June!    - Present!
+- June! - Present!
 
 101
 00:07:33,917 --> 00:07:36,667
-- May!    - Present!
+- May! - Present!
 
 102
 00:07:36,958 --> 00:07:40,000
-- McMug!    - Present!
+- McMug! - Present!
 
 103
 00:07:40,167 --> 00:07:41,292
@@ -447,31 +447,31 @@ Back to roll call.
 
 109
 00:07:55,792 --> 00:07:57,583
-- Fail!    - Present!
+- Fai! - Present!
 
 110
 00:07:57,792 --> 00:07:58,958
-- Fail!    - Present!
+- Fai! - Present!
 
 111
 00:07:59,167 --> 00:08:01,333
-- Darby!    - Present!
+- Darby! - Present!
 
 112
 00:08:02,125 --> 00:08:03,250
-- May!    - Present!
+- May! - Present!
 
 113
 00:08:03,500 --> 00:08:05,500
-- McMug!    - Present!
+- McMug! - Present!
 
 114
 00:08:05,750 --> 00:08:07,875
-- Goosie!    - Present!
+- Goosie! - Present!
 
 115
 00:08:08,125 --> 00:08:09,458
-- Goosie!    - Present!
+- Goosie! - Present!
 
 116
 00:08:09,625 --> 00:08:11,375
@@ -543,7 +543,8 @@ How are these two things related?
 
 133
 00:08:57,958 --> 00:09:00,500
-There are so many things that I don't understand.
+There are so many things that
+I don't understand.
 
 134
 00:09:00,667 --> 00:09:02,292
@@ -571,7 +572,7 @@ I shall understand everything!
 
 140
 00:09:13,458 --> 00:09:14,583
-And then ...
+And then...
 
 141
 00:09:15,125 --> 00:09:17,292
@@ -587,19 +588,23 @@ Which we kids frequent after class.
 
 144
 00:09:27,583 --> 00:09:30,125
-- Fishball noodle, please.    - No noodle left.
+- Fishball noodle, please.
+- No noodle left.
 
 145
 00:09:30,417 --> 00:09:33,917
-- Fishball rice noodle then.    - No fishball left.
+- Fishball rice noodle then.
+- No fishball left.
 
 146
 00:09:34,083 --> 00:09:37,792
-- Chicken wing noodle then.    - No noodle left.
+- Chicken wing noodle then.
+- No noodle left.
 
 147
 00:09:38,958 --> 00:09:41,833
-- How about fishball congee?    - No fishball left.
+- How about fishball congee?
+- No fishball left.
 
 148
 00:09:42,000 --> 00:09:43,417
@@ -607,7 +612,8 @@ Nothing left today?
 
 149
 00:09:43,833 --> 00:09:46,625
-- How about beef noodle?    - No noodle left.
+- How about beef noodle?
+- No noodle left.
 
 150
 00:09:46,917 --> 00:09:47,958
@@ -615,7 +621,8 @@ Again?
 
 151
 00:09:48,167 --> 00:09:51,708
-- Fried chicken wing with fishball...    - No fishball left.
+- Fried chicken wing with fishball...
+- No fishball left.
 
 152
 00:09:51,917 --> 00:09:55,333
@@ -631,11 +638,13 @@ Can't combine them?
 
 155
 00:10:02,458 --> 00:10:04,917
-- A bowl of fishball then.    - No fishball left.
+- A bowl of fishball then.
+- No fishball left.
 
 156
 00:10:05,083 --> 00:10:06,667
-- A bowl of noodle?    - No noodle left.
+- A bowl of noodle?
+- No noodle left.
 
 157
 00:10:07,792 --> 00:10:08,708
@@ -687,7 +696,8 @@ But it just comes out different.
 
 169
 00:10:41,792 --> 00:10:44,375
-You mean "All Things Bright and Beautiful"?
+You mean
+"All Things Bright and Beautiful"?
 
 170
 00:10:44,542 --> 00:10:46,375
@@ -739,11 +749,13 @@ Yes, she is really something.
 
 182
 00:13:09,042 --> 00:13:11,792
-She works in insurance, real estate and trading.
+She works in insurance,
+real estate and trading.
 
 183
 00:13:11,958 --> 00:13:15,333
-At the height of IT, she even sets up her cooking site...
+At the height of IT,
+she even sets up her cooking site...
 
 184
 00:13:15,750 --> 00:13:19,500
@@ -775,7 +787,8 @@ The ingredient: a chicken bun.
 
 191
 00:13:37,708 --> 00:13:42,750
-Slowly, we tear the paper away from the bun.
+Slowly, we tear the paper away
+from the bun
 
 192
 00:13:42,958 --> 00:13:45,708
@@ -827,15 +840,18 @@ Chicken Bun Paper Bunning a Bun.
 
 204
 00:14:41,125 --> 00:14:45,042
-First, unwrap the chicken from the paper.
+First, unwrap the chicken
+from the paper.
 
 205
 00:14:45,500 --> 00:14:49,708
-Now we have a paper and a piece of chicken.
+Now we have a paper and
+a piece of chicken.
 
 206
 00:14:49,875 --> 00:14:54,458
-Use the bun paper to wrap up the chicken like this...
+Use the bun paper to wrap up
+the chicken like this...
 
 207
 00:14:54,625 --> 00:14:59,458
@@ -843,7 +859,8 @@ And then wrap it like this...
 
 208
 00:14:59,875 --> 00:15:05,292
-The delicious Chicken Bun Paper Bunning a Bun!
+The delicious Chicken Bun Paper
+Bunning a Bun!
 
 209
 00:15:05,458 --> 00:15:06,958
@@ -903,7 +920,8 @@ But my mother has her tender side.
 
 223
 00:15:57,917 --> 00:16:01,083
-Every night, she tells me a story before sleep.
+Every night,
+she tells me a story before sleep.
 
 224
 00:16:02,375 --> 00:16:05,792
@@ -923,7 +941,8 @@ He grew up and got rich.
 
 228
 00:16:18,375 --> 00:16:21,708
-Once upon a time, a boy was naughty. One day...
+Once upon a time, a boy was naughty.
+One day...
 
 229
 00:16:21,833 --> 00:16:23,417
@@ -935,7 +954,8 @@ Mother, I want to sleep.
 
 231
 00:16:30,167 --> 00:16:34,625
-Once upon a time, a boy slept a lot. Next day...
+Once upon a time, a boy slept a lot.
+Next day...
 
 232
 00:16:34,750 --> 00:16:36,625
@@ -963,7 +983,8 @@ For her, it is always...
 
 238
 00:17:08,458 --> 00:17:11,500
-But there are things that simply cannot be gained.
+But there are things that
+simply cannot be gained.
 
 239
 00:17:13,042 --> 00:17:14,792
@@ -983,7 +1004,8 @@ When it comes to luck...
 
 243
 00:17:21,042 --> 00:17:23,750
-The lottery numbers that mother obliges to draw...
+The lottery numbers that
+mother obliges to draw...
 
 244
 00:17:24,250 --> 00:17:27,875
@@ -1011,7 +1033,8 @@ Maldives, a world outside our world.
 
 250
 00:17:50,125 --> 00:17:56,375
-The sky blue, clouds white, the trees tall and water bright.
+The sky blue, clouds white,
+the trees tall and water bright.
 
 251
 00:17:56,500 --> 00:18:00,875
@@ -1023,7 +1046,8 @@ The primitive ocean of primitive energy.
 
 253
 00:18:07,458 --> 00:18:09,792
-Experience a world that knows no boundary!
+Experience a world that
+knows no boundary!
 
 254
 00:18:09,958 --> 00:18:13,333
@@ -1031,7 +1055,8 @@ Enjoy a trip to your ideal world.
 
 255
 00:18:14,500 --> 00:18:20,250
-Brilliant Touring Agency, license no. 350999
+Brilliant Touring Agency,
+license no. 350999
 
 256
 00:18:22,792 --> 00:18:25,625
@@ -1087,7 +1112,8 @@ My favourite place is Japan.
 
 269
 00:19:36,042 --> 00:19:39,208
-They have Disneyland and Hello Kitty Land.
+They have Disneyland and
+Hello Kitty Land.
 
 270
 00:19:39,333 --> 00:19:43,583
@@ -1107,7 +1133,8 @@ My favourite place is Bangkok.
 
 274
 00:19:53,792 --> 00:19:57,917
-They have water sports and shark's fin soup.
+They have water sports and
+shark's fin soup.
 
 275
 00:19:58,458 --> 00:20:01,292
@@ -1139,7 +1166,8 @@ As for the place I most want to go, wow!
 
 282
 00:20:23,000 --> 00:20:27,917
-There, the sky is blue, clouds white, the trees tall...
+There, the sky is blue,
+clouds white, the trees tall...
 
 283
 00:20:28,042 --> 00:20:32,292
@@ -1211,7 +1239,8 @@ You won't get well without the medicine.
 
 300
 00:23:53,708 --> 00:23:56,917
-Sweetie, we will go to Maldives once you get well.
+Sweetie, we will go to Maldives once
+you get well.
 
 301
 00:23:57,542 --> 00:23:58,708
@@ -1267,7 +1296,8 @@ I've taken all the medicine.
 
 314
 00:24:56,167 --> 00:24:58,667
-But you've taken everything edible at home.
+But you've taken everything edible
+at home.
 
 315
 00:24:58,833 --> 00:25:02,417
@@ -1307,7 +1337,7 @@ Maldives?
 
 324
 00:25:24,958 --> 00:25:28,417
-You said we would go once I got well.
+You said we would go once I get well.
 
 325
 00:25:28,583 --> 00:25:31,958
@@ -1331,7 +1361,7 @@ Mother, you promised...
 
 330
 00:25:45,458 --> 00:25:50,417
-We'd go to Maldives once I got well.
+We'd go to Maldives once I get well.
 
 331
 00:25:50,583 --> 00:25:53,500
@@ -1343,7 +1373,7 @@ No, that wasn't what you meant.
 
 333
 00:26:01,625 --> 00:26:06,083
-You said we'd go once I got well.
+You said we'd go once I get well.
 
 334
 00:26:07,042 --> 00:26:09,125
@@ -1359,7 +1389,7 @@ We will go to Maldives.
 
 337
 00:26:13,875 --> 00:26:15,542
-- Really?    - Yes.
+- Really? - Yes.
 
 338
 00:26:15,750 --> 00:26:17,000
@@ -1395,7 +1425,7 @@ Hey, I'm leaving tomorrow.
 
 346
 00:27:06,458 --> 00:27:08,667
-- Yes...    - Is that right?
+- Yes... - Is that right?
 
 347
 00:27:08,833 --> 00:27:10,292
@@ -1443,7 +1473,8 @@ See you!
 
 358
 00:27:44,667 --> 00:27:48,458
-Mother, do I need to bring my birth certificate?
+Mother, do I need to bring
+my birth certificate?
 
 359
 00:27:48,625 --> 00:27:49,458
@@ -1491,7 +1522,8 @@ Hence...
 
 370
 00:32:28,917 --> 00:32:30,875
-The most beautiful day in my childhood experience...
+The most beautiful day
+in my childhood experience...
 
 371
 00:32:31,000 --> 00:32:32,875
@@ -1499,7 +1531,8 @@ Passed.
 
 372
 00:32:33,417 --> 00:32:35,958
-Do you think paper is a good chicken wrapper?
+Do you think paper is
+a good chicken wrapper?
 
 373
 00:32:36,542 --> 00:32:37,875
@@ -1511,7 +1544,7 @@ If only for one small piece.
 
 375
 00:33:06,042 --> 00:33:08,250
-- Goodnight, mother!    - Goodnight!
+- Goodnight, mother! - Goodnight!
 
 376
 00:33:46,542 --> 00:33:48,000
@@ -1523,7 +1556,8 @@ windsurfing athlete San San Li...
 
 378
 00:33:52,458 --> 00:33:55,667
-Has just won the first gold medal in Hong Kong history!
+Has just won the first gold medal
+in Hong Kong history!
 
 379
 00:33:55,833 --> 00:33:59,708
@@ -1535,7 +1569,8 @@ Told reporters that her result...
 
 381
 00:34:04,000 --> 00:34:07,667
-Helps prove that Hong Kong athletes are horrible...
+Helps prove that
+Hong Kong athletes are horrible...
 
 382
 00:34:09,292 --> 00:34:13,708
@@ -1543,7 +1578,8 @@ Excuse me, it should be "honourable".
 
 383
 00:34:13,875 --> 00:34:18,875
-Hong Kong athletes are honourable athletes.
+Hong Kong athletes
+are honourable athletes.
 
 384
 00:34:19,042 --> 00:34:21,000
@@ -1615,7 +1651,8 @@ Cheung Chau!
 
 401
 00:35:26,792 --> 00:35:31,250
-You raised San San, now you will raise me!
+You raised San San,
+now you will raise me!
 
 402
 00:35:31,542 --> 00:35:34,542
@@ -1643,7 +1680,8 @@ Kiddo, this is Lamma Island.
 
 408
 00:36:14,667 --> 00:36:19,542
-Lamma Island? Where Chow Yun Fat grew up?
+Lamma Island?
+Where Chow Yun Fat grew up?
 
 409
 00:36:29,708 --> 00:36:34,500
