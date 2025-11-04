@@ -48,6 +48,16 @@ def test_get_english_flattened_kob(kob_eng: Series, kob_eng_flatten: Series):
     _test_get_english_flattened(kob_eng, kob_eng_flatten)
 
 
+def test_get_english_flattened_mlamd(mlamd_eng: Series, mlamd_eng_flatten: Series):
+    """Test get_english_flattened with MLAMD English subtitles.
+
+    Arguments:
+        mlamd_eng: MLAMD English series fixture
+        mlamd_eng_flatten: Expected flattened MLAMD English series fixture
+    """
+    _test_get_english_flattened(mlamd_eng, mlamd_eng_flatten)
+
+
 def test_get_english_flattened_mnt(mnt_eng: Series, mnt_eng_flatten: Series):
     """Test get_english_flattened with MNT English subtitles.
 

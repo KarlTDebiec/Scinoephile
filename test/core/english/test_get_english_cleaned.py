@@ -44,6 +44,16 @@ def test_get_english_cleaned_kob(kob_eng: Series, kob_eng_clean: Series):
     _test_get_english_cleaned(kob_eng, kob_eng_clean)
 
 
+def test_get_english_cleaned_mlamd(mlamd_eng: Series, mlamd_eng_clean: Series):
+    """Test get_english_cleaned with MLAMD English subtitles.
+
+    Arguments:
+        mlamd_eng: MLAMD English series fixture
+        mlamd_eng_clean: Expected cleaned MLAMD English series fixture
+    """
+    _test_get_english_cleaned(mlamd_eng, mlamd_eng_clean)
+
+
 def test_get_english_cleaned_mnt(mnt_eng: Series, mnt_eng_clean: Series):
     """Test get_english_cleaned with MNT English subtitles.
 
