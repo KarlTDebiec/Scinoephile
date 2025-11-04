@@ -26,7 +26,7 @@ class EnglishProofer:
 
     def __init__(
         self,
-        proof_test_cases: list[EnglishProofTestCase],
+        proof_test_cases: list[EnglishProofTestCase] | None = None,
         test_case_path: Path | None = None,
     ):
         """Initialize.
@@ -35,6 +35,14 @@ class EnglishProofer:
             proof_test_cases: proof test cases
             test_case_path: path to file containing test cases
         """
+        if proof_test_cases is None:
+            from test.data.kob import kob_english_proof_test_cases
+            from test.data.mlamd import mlamd_english_proof_test_cases
+
+            proof_test_cases = (
+                kob_english_proof_test_cases + mlamd_english_proof_test_cases
+            )
+
         self.proofer = EnglishProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],

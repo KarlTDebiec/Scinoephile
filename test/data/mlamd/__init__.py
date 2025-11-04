@@ -7,6 +7,7 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
+from scinoephile.core import Series
 from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
 
@@ -76,23 +77,31 @@ def mlamd_zho_hant_validation_directory() -> str:
 # region English
 @pytest.fixture
 def mlamd_eng() -> ImageSeries:
-    """MLAMD English image series."""
-    try:
-        return ImageSeries.load(output_dir / "eng")
-    except FileNotFoundError:
-        return ImageSeries.load(input_dir / "eng.sup")
-
-
-@pytest.fixture()
-def mlamd_eng_image() -> Image.Image:
-    """MLAMD English image."""
-    return Image.open(output_dir / "eng" / "0001.png")
+    """MLAMD English series."""
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
-def mlamd_eng_validation_directory() -> str:
-    """MLAMD English validation directory."""
-    return output_dir / "eng_validation"
+def mlamd_eng_clean() -> Series:
+    """MLAMD English cleaned series."""
+    return Series.load(output_dir / "eng_clean.srt")
+
+
+@pytest.fixture
+def mlamd_eng_flatten() -> Series:
+    """MLAMD English flattened series."""
+    return Series.load(output_dir / "eng_flatten.srt")
+
+
+def mlamd_eng_proof() -> Series:
+    """MLAMD English proofed series."""
+    return Series.load(output_dir / "eng_proof.srt")
+
+
+@pytest.fixture
+def mlamd_eng_proof_clean_flatten() -> Series:
+    """MLAMD English proofed, cleaned and flattened series."""
+    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
 
 
 # endregion
@@ -106,8 +115,10 @@ ___all__ = [
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_validation_directory",
     "mlamd_eng",
-    "mlamd_eng_image",
-    "mlamd_eng_validation_directory",
+    "mlamd_eng_clean",
+    "mlamd_eng_flatten",
+    "mlamd_eng_proof",
+    "mlamd_eng_proof_clean_flatten",
     "mlamd_distribute_test_cases",
     "mlamd_shift_test_cases",
     "mlamd_merge_test_cases",
