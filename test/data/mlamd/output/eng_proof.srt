@@ -1810,11 +1810,11 @@ The song goes like this...
 
 440
 00:38:26,042 --> 00:38:27,542
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 441
 00:38:27,667 --> 00:38:29,417
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 442
 00:38:29,542 --> 00:38:33,250
@@ -1822,11 +1822,11 @@ The song goes like this...
 
 443
 00:38:33,375 --> 00:38:35,083
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 444
 00:38:35,208 --> 00:38:36,875
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 445
 00:38:37,042 --> 00:38:40,667
@@ -1834,11 +1834,11 @@ The song goes like this...
 
 446
 00:38:41,000 --> 00:38:42,583
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 447
 00:38:42,708 --> 00:38:44,500
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 448
 00:38:44,667 --> 00:38:48,875
@@ -1850,11 +1850,11 @@ The song goes like this...
 
 450
 00:38:54,500 --> 00:38:57,542
-'Respect my mother.'
+"Respect my mother."
 
 451
 00:38:58,375 --> 00:39:03,750
-'Eat the bun, toughen my calf...'
+"Eat the bun, toughen my calf..."
 
 452
 00:39:03,917 --> 00:39:07,333
@@ -1862,11 +1862,11 @@ The song goes like this...
 
 453
 00:39:08,458 --> 00:39:10,000
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 454
 00:39:10,125 --> 00:39:11,875
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 455
 00:39:12,042 --> 00:39:15,500
@@ -1874,11 +1874,11 @@ The song goes like this...
 
 456
 00:39:15,708 --> 00:39:17,667
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 457
 00:39:17,792 --> 00:39:19,458
-'Big bun, have two more...'
+"Big bun, have two more..."
 
 458
 00:39:19,625 --> 00:39:24,792
@@ -1948,7 +1948,7 @@ She mumbles something when...
 
 474
 00:40:39,500 --> 00:40:44,292
-We pay our respect to our ancestor.
+We pay our respect to our ancestors.
 
 475
 00:40:45,708 --> 00:40:49,875
@@ -1965,7 +1965,7 @@ Be good,
 478
 00:40:55,208 --> 00:40:58,667
 learn with the master and
-honor the ancestor.
+honour the ancestors.
 
 479
 00:41:05,625 --> 00:41:10,083
@@ -1994,7 +1994,7 @@ San San is in training and couldn't come.
 
 485
 00:41:28,458 --> 00:41:31,333
-LA and my mates are there too...
+All my mates are there too...
 
 486
 00:41:31,500 --> 00:41:35,292
@@ -2147,7 +2147,7 @@ the more blessed you are.
 
 521
 00:44:02,417 --> 00:44:05,833
-And the more praises you get.
+And the more praise you get.
 
 522
 00:44:07,000 --> 00:44:11,792
@@ -2219,7 +2219,7 @@ Seeing San San...
 
 538
 00:45:08,458 --> 00:45:11,583
-Makes me forget all these weeks of
+Makes me forget all these weeks'
 hard work.
 
 539
@@ -2319,11 +2319,11 @@ His strongest is really bun snatching...
 
 562
 00:47:00,833 --> 00:47:03,625
-Something combining Fist,
+Something combining martial arts,
 
 563
 00:47:03,750 --> 00:47:06,458
-ritual and gymnastics.
+acrobatic opera, and gymnastics.
 
 564
 00:47:06,750 --> 00:47:11,500
@@ -2440,7 +2440,7 @@ the Olympic Committee Chairman.
 
 591
 00:49:04,667 --> 00:49:06,083
-"Dear Chairman:",
+"Dear Chairman:"
 
 592
 00:49:06,250 --> 00:49:08,500
@@ -2448,7 +2448,7 @@ the Olympic Committee Chairman.
 
 593
 00:49:08,667 --> 00:49:10,917
-"You like buns? I like buns!"
+"You like bun? I like bun!"
 
 594
 00:49:11,083 --> 00:49:15,292
@@ -2456,7 +2456,7 @@ the Olympic Committee Chairman.
 
 595
 00:49:15,500 --> 00:49:19,917
-"Buns of all sorts."
+"Buns of all sort."
 
 596
 00:49:20,042 --> 00:49:22,125
@@ -2473,15 +2473,15 @@ it is important to snatch buns."
 599
 00:49:27,958 --> 00:49:32,500
 "One needs energy,
-and many nights of congee."
+and many night congee."
 
 600
 00:49:32,667 --> 00:49:34,708
-"In my humble opinion..."
+"In my stupid opinion..."
 
 601
 00:49:35,000 --> 00:49:38,958
-"Snatching buns is an Olympic game."
+"Snatching bun is an Olympic game."
 
 602
 00:49:39,083 --> 00:49:41,958
@@ -2608,7 +2608,7 @@ in its prime...
 
 631
 00:51:18,125 --> 00:51:21,042
-was much admired by Butcher Lin!
+Was much admired by Butcher Lin!
 
 632
 00:51:22,167 --> 00:51:24,000
@@ -2713,7 +2713,7 @@ Dull the boy hoped a lot.
 
 656
 00:52:54,500 --> 00:52:56,417
-He hoped there was a Santa Claus.
+He hoped there WAS a Santa Claus.
 
 657
 00:52:56,583 --> 00:53:00,042
@@ -3162,7 +3162,7 @@ throw the turkey away.
 
 763
 01:00:21,833 --> 01:00:23,208
-'Special Report'
+"Special Report"
 
 764
 01:00:23,417 --> 01:00:28,000
@@ -3175,7 +3175,7 @@ To prove to the world that...
 
 766
 01:00:29,917 --> 01:00:32,542
-HK athletes are formidable.
+HK athletes are horrible.
 
 767
 01:00:33,167 --> 01:00:34,083
@@ -3217,7 +3217,7 @@ have vowed...
 
 776
 01:00:58,625 --> 01:01:02,458
-to campaign for 'Tart Throwing'.
+To campaign for "Tart Throwing".
 
 777
 01:01:02,917 --> 01:01:05,125
@@ -3230,7 +3230,7 @@ They believe...
 
 779
 01:01:07,667 --> 01:01:11,000
-'Duck Hanging'
+"Duck Hanging"
 would make an ideal addition.
 
 780
@@ -3252,7 +3252,7 @@ In support of...
 
 784
 01:01:22,708 --> 01:01:24,375
-'Bun Snatching'...
+"Bun Snatching"...
 
 785
 01:01:24,542 --> 01:01:28,542
@@ -3364,8 +3364,8 @@ there was a Cheung Po Tsai Cave.
 
 810
 01:04:11,792 --> 01:04:15,792
-Where legend claimed
-the pirate hid his treasure.
+Where legend claims
+a pirate hid his treasure.
 
 811
 01:04:16,958 --> 01:04:20,500
@@ -3411,7 +3411,7 @@ Maybe the pirate didn't get to finish it.
 
 821
 01:05:05,333 --> 01:05:13,250
-"Eating 1½lb white bread last night..."
+"Eating 1 ½lb white bread last night..."
 
 822
 01:05:13,417 --> 01:05:24,792
@@ -3473,7 +3473,7 @@ Disappointed is not funny.
 
 836
 01:06:34,208 --> 01:06:36,208
-Fatness is not funny too.
+Fatness is not funny either.
 
 837
 01:06:37,500 --> 01:06:39,667
@@ -3541,7 +3541,7 @@ Very muscular...
 
 853
 01:08:42,375 --> 01:08:47,083
-With steely veins running down.
+With steely veins running down them.
 
 854
 01:08:47,917 --> 01:08:50,000
@@ -3549,7 +3549,7 @@ As for the toenails...
 
 855
 01:08:50,333 --> 01:08:53,417
-I got bored one time and stared at it...
+I got bored one time and stared at them...
 
 856
 01:08:53,833 --> 01:08:56,750
@@ -3603,7 +3603,7 @@ don't really know...
 868
 01:09:37,250 --> 01:09:41,500
 How to make a lesson out of
-my own story.
+their own story.
 
 869
 01:09:42,042 --> 01:09:44,833
@@ -3744,7 +3744,7 @@ What's a Special?
 
 903
 01:12:15,458 --> 01:12:17,042
-A Special is Lunch.
+A Special is a Lunch.
 
 904
 01:12:17,542 --> 01:12:18,792
@@ -3879,7 +3879,7 @@ Great! We'll have Lunch.
 
 936
 01:13:35,625 --> 01:13:37,625
-Sorry, lunch is gone.
+Sorry, Lunch is gone.
 
 937
 01:13:37,792 --> 01:13:40,500

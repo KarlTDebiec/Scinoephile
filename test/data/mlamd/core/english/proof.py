@@ -95,7 +95,7 @@ test_case_block_2 = EnglishProofTestCase.get_test_case_cls(17)(
     subtitle_16="Yeah!",
     subtitle_17="Spring Flower offer white teachers!",
     revised_1='"My School"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
+    note_1="Corrected quotation marks.",
     revised_12="Only 10 minutes' walk from\nthe MTR Station!",
     note_12="Added possessive apostrophe to 'minutes'' for correct phrasing.",
     revised_17="Spring Flower offers white teachers!",
@@ -295,8 +295,7 @@ test_case_block_7 = EnglishProofTestCase.get_test_case_cls(7)(
     subtitle_6="All things on earth...",
     subtitle_7="They are fine!!",
     revised_4='You mean\n"All Things Bright and Beautiful"?',
-    note_4="Removed unnecessary escape characters from the quotation "
-    "marks and corrected spacing.",
+    note_4="Corrected quotation marks and spacing.",
     difficulty=1,
     prompt=True,
     verified=True,
@@ -305,7 +304,7 @@ test_case_block_7 = EnglishProofTestCase.get_test_case_cls(7)(
 test_case_block_8 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1='\\"My Mother\\"',
     revised_1='"My Mother"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
+    note_1="Corrected quotation marks.",
     difficulty=1,
     prompt=True,
     verified=True,
@@ -772,15 +771,18 @@ test_case_block_37 = EnglishProofTestCase.get_test_case_cls(10)(
     subtitle_8="How many seas must it pass...",
     subtitle_9="How much pain must it bear...",
     subtitle_10="Before a calf becomes a calf?",
+    verified=True,
 )  # test_case_block_37
 # noinspection PyArgumentList
 test_case_block_38 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="I shall have this calf!",
     subtitle_2="Master!",
+    verified=True,
 )  # test_case_block_38
 # noinspection PyArgumentList
 test_case_block_39 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="Can I take a pee?",
+    verified=True,
 )  # test_case_block_39
 # noinspection PyArgumentList
 test_case_block_40 = EnglishProofTestCase.get_test_case_cls(26)(
@@ -810,45 +812,46 @@ test_case_block_40 = EnglishProofTestCase.get_test_case_cls(26)(
     subtitle_24="'Big bun, have two more...\\\" '",
     subtitle_25="'Big bun, have two more...\\\" '",
     subtitle_26='\\"Forget about indigestion.\\"',
-    revised_8="'Big bun, have two more...'",
-    note_8="Removed unnecessary escape character from the quotation mark.",
-    revised_9="'Big bun, have two more...'",
-    note_9="Removed unnecessary escape character from the quotation mark.",
+    revised_8='"Big bun, have two more..."',
+    note_8="Corrected quotation marks.",
+    revised_9='"Big bun, have two more..."',
+    note_9="Corrected quotation marks.",
     revised_10='"Forget about indigestion."',
-    note_10="Removed unnecessary escape character from the quotation mark.",
-    revised_11="'Big bun, have two more...'",
-    note_11="Removed unnecessary escape character from the quotation mark.",
-    revised_12="'Big bun, have two more...'",
-    note_12="Removed unnecessary escape character from the quotation mark.",
+    note_10="Corrected quotation marks.",
+    revised_11='"Big bun, have two more..."',
+    note_11="Corrected quotation marks.",
+    revised_12='"Big bun, have two more..."',
+    note_12="Corrected quotation marks.",
     revised_13='"Forget about indigestion."',
-    note_13="Removed unnecessary escape character from the quotation mark.",
-    revised_14="'Big bun, have two more...'",
-    note_14="Removed unnecessary escape character from the quotation mark.",
-    revised_15="'Big bun, have two more...'",
-    note_15="Removed unnecessary escape character from the quotation mark.",
+    note_13="Corrected quotation marks.",
+    revised_14='"Big bun, have two more..."',
+    note_14="Corrected quotation marks.",
+    revised_15='"Big bun, have two more..."',
+    note_15="Corrected quotation marks.",
     revised_16='"Forget about indigestion."',
-    note_16="Removed unnecessary escape character from the quotation mark.",
+    note_16="Corrected quotation marks.",
     revised_17='"Eat the bun, grow a calf..."',
-    note_17="Removed unnecessary escape character from the quotation mark.",
-    revised_18="'Respect my mother.'",
-    note_18="Removed unnecessary escape character from the quotation mark.",
-    revised_19="'Eat the bun, toughen my calf...'",
-    note_19="Removed unnecessary escape character from the quotation mark.",
+    note_17="Corrected quotation marks.",
+    revised_18='"Respect my mother."',
+    note_18="Corrected quotation marks.",
+    revised_19='"Eat the bun, toughen my calf..."',
+    note_19="Corrected quotation marks.",
     revised_20='"Serve my country."',
-    note_20="Removed unnecessary escape character from the quotation mark.",
-    revised_21="'Big bun, have two more...'",
-    note_21="Removed unnecessary escape character from the quotation mark.",
-    revised_22="'Big bun, have two more...'",
-    note_22="Removed unnecessary escape character from the quotation mark.",
+    note_20="Corrected quotation marks.",
+    revised_21='"Big bun, have two more..."',
+    note_21="Corrected quotation marks.",
+    revised_22='"Big bun, have two more..."',
+    note_22="Corrected quotation marks.",
     revised_23='"Forget about indigestion."',
-    note_23="Removed unnecessary escape character from the quotation mark.",
-    revised_24="'Big bun, have two more...'",
-    note_24="Removed unnecessary escape character from the quotation mark.",
-    revised_25="'Big bun, have two more...'",
-    note_25="Removed unnecessary escape character from the quotation mark.",
+    note_23="Corrected quotation marks.",
+    revised_24='"Big bun, have two more..."',
+    note_24="Corrected quotation marks.",
+    revised_25='"Big bun, have two more..."',
+    note_25="Corrected quotation marks.",
     revised_26='"Forget about indigestion."',
-    note_26="Removed unnecessary escape character from the quotation mark.",
+    note_26="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_40
 # noinspection PyArgumentList
 test_case_block_41 = EnglishProofTestCase.get_test_case_cls(8)(
@@ -863,6 +866,7 @@ test_case_block_41 = EnglishProofTestCase.get_test_case_cls(8)(
     revised_6="Thank you, Master!",
     note_6="Added a comma and capitalized 'Master' as a form of address.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_41
 # noinspection PyArgumentList
 test_case_block_42 = EnglishProofTestCase.get_test_case_cls(12)(
@@ -884,10 +888,12 @@ test_case_block_42 = EnglishProofTestCase.get_test_case_cls(12)(
     note_3="Changed 'defreeze' to 'defrost' for correct usage.",
     revised_4="At dinner,\nMother offers 3 glasses of wine...",
     note_4="Capitalized 'Mother' as it is used as a proper noun.",
-    revised_12="learn with the master and\nhonor the ancestor.",
-    note_12="Changed 'honour' to 'honor' for American English "
-    "consistency, if that is the style being used.",
+    revised_8="We pay our respect to our ancestors.",
+    note_8="Changed 'ancestor' to plural 'ancestors' for correct usage.",
+    revised_12="learn with the master and\nhonour the ancestors.",
+    note_12="Changed 'ancestor' to plural 'ancestors' for correct usage.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_42
 # noinspection PyArgumentList
 test_case_block_43 = EnglishProofTestCase.get_test_case_cls(25)(
@@ -916,17 +922,19 @@ test_case_block_43 = EnglishProofTestCase.get_test_case_cls(25)(
     subtitle_23="Let him show the world...",
     subtitle_24="what a marvelous skill that is!",
     subtitle_25="Can you tell us what skill is that?",
-    revised_7="LA and my mates are there too...",
-    note_7="Changed 'LA I my mates' to 'LA and my mates' for correct phrasing.",
+    revised_7="All my mates are there too...",
+    note_7="Corrected 'LA I my mates' to 'All my mates'.",
     revised_25="Can you tell us what skill that is?",
     note_25="Changed 'what skill is that' to 'what skill that is' for "
     "correct word order.",
-    difficulty=1,
+    difficulty=3,
+    verified=True,
 )  # test_case_block_43
 # noinspection PyArgumentList
 test_case_block_44 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="That is...",
     subtitle_2="Bun snatching!",
+    verified=True,
 )  # test_case_block_44
 # noinspection PyArgumentList
 test_case_block_45 = EnglishProofTestCase.get_test_case_cls(19)(
@@ -961,9 +969,12 @@ test_case_block_45 = EnglishProofTestCase.get_test_case_cls(19)(
     note_9="Changed 'bun' to 'buns' for correct plural usage.",
     revised_10="Each stack coming up to 6 or 7 storeys.",
     note_10="Changed comma to 'or' for natural phrasing.",
+    revised_16="And the more praise you get.",
+    note_16="Changed 'praises' to singular 'praise' for correct usage.",
     revised_18='"Bun Snatching" was thus banned!',
     note_18="Removed unnecessary escape characters from the quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_45
 # noinspection PyArgumentList
 test_case_block_46 = EnglishProofTestCase.get_test_case_cls(16)(
@@ -983,9 +994,8 @@ test_case_block_46 = EnglishProofTestCase.get_test_case_cls(16)(
     subtitle_14="Makes me forget all these weeks'\nhard work.",
     subtitle_15="San San!",
     subtitle_16="San yourself! Work!",
-    revised_14="Makes me forget all these weeks of\nhard work.",
-    note_14="Changed 'weeks'' to 'weeks of' for correct phrasing.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_46
 # noinspection PyArgumentList
 test_case_block_47 = EnglishProofTestCase.get_test_case_cls(8)(
@@ -1000,6 +1010,7 @@ test_case_block_47 = EnglishProofTestCase.get_test_case_cls(8)(
     revised_5='But "San yourself"...',
     note_5="Removed unnecessary escape characters from the quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_47
 # noinspection PyArgumentList
 test_case_block_48 = EnglishProofTestCase.get_test_case_cls(4)(
@@ -1007,11 +1018,13 @@ test_case_block_48 = EnglishProofTestCase.get_test_case_cls(4)(
     subtitle_2="He must be around 50,",
     subtitle_3="with a baby face.",
     subtitle_4="Fresh from the oven!",
+    verified=True,
 )  # test_case_block_48
 # noinspection PyArgumentList
 test_case_block_49 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1="This thing...",
     subtitle_2="What does it look like?",
+    verified=True,
 )  # test_case_block_49
 # noinspection PyArgumentList
 test_case_block_50 = EnglishProofTestCase.get_test_case_cls(21)(
@@ -1038,9 +1051,14 @@ test_case_block_50 = EnglishProofTestCase.get_test_case_cls(21)(
     subtitle_21="Before a calf becomes a calf?",
     revised_3="His ambition, his expectations of Dull.",
     note_3="Changed 'expectation' to 'expectations' for correct plural usage.",
-    revised_9="ritual and gymnastics.",
-    note_9="Changed 'gymnastic' to 'gymnastics' for correct noun form.",
-    difficulty=1,
+    revised_8="Something combining martial arts,",
+    note_8="Changed 'Fist' to 'martial arts' for clarity and natural phrasing.",
+    revised_9="acrobatic opera, and gymnastics.",
+    note_9="Changed 'ritual' to 'acrobatic opera' for clarity and "
+    "natural phrasing; changed 'gymnastic' to 'gymnastics' for "
+    "correct noun form.",
+    difficulty=3,
+    verified=True,
 )  # test_case_block_50
 # noinspection PyArgumentList
 test_case_block_51 = EnglishProofTestCase.get_test_case_cls(6)(
@@ -1054,12 +1072,14 @@ test_case_block_51 = EnglishProofTestCase.get_test_case_cls(6)(
     note_3="Changed word order for correct phrasing: 'why would Dull "
     "need' to 'why Dull would need'.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_51
 # noinspection PyArgumentList
 test_case_block_52 = EnglishProofTestCase.get_test_case_cls(3)(
     subtitle_1="The electronic dictionary\ncannot be found.",
     subtitle_2="Where could it be?",
     subtitle_3="Could it be that...?",
+    verified=True,
 )  # test_case_block_52
 # noinspection PyArgumentList
 test_case_block_53 = EnglishProofTestCase.get_test_case_cls(35)(
@@ -1098,69 +1118,60 @@ test_case_block_53 = EnglishProofTestCase.get_test_case_cls(35)(
     subtitle_33='"One day, you will know him too."',
     subtitle_34='\\"Thank you for your cooperation.\\"',
     subtitle_35='\\"Yours faithfully, Mrs. Mc\\"',
-    revised_7='"Dear Chairman:",',
-    note_7="Removed unnecessary escape characters from the quotation "
-    "marks and added a comma for letter format.",
+    revised_7='"Dear Chairman:"',
+    note_7="Corrected quotation marks.",
     revised_8='"How are you? I am fine."',
-    note_8="Removed unnecessary single and escape quotation marks; "
-    "standardized to double quotes.",
-    revised_9='"You like buns? I like buns!"',
-    note_9="Changed 'bun' to 'buns' for correct plural usage and removed "
-    "unnecessary escape characters.",
-    revised_11='"Buns of all sorts."',
-    note_11="Changed 'sort' to 'sorts' for correct plural usage and "
-    "removed unnecessary escape characters.",
+    note_8="Corrected quotation marks.",
+    revised_9='"You like bun? I like bun!"',
+    note_9="Corrected quotation marks.",
+    revised_11='"Buns of all sort."',
+    note_11="Corrected quotation marks.",
     revised_12='"Dear friend,',
-    note_12="Changed single quote to double quote for consistency.",
+    note_12="Corrected quotation marks.",
     revised_13='it is important to snatch buns."',
-    note_13="Changed ending single quote to double quote for consistency.",
+    note_13="Corrected quotation marks.",
     revised_14='"It is a game, no joke."',
-    note_14="Removed unnecessary escape characters from the quotation marks.",
-    revised_15='"One needs energy,\nand many nights of congee."',
-    note_15="Changed 'night congee' to 'nights of congee' for natural "
-    "phrasing and removed unnecessary escape characters.",
-    revised_16='"In my humble opinion..."',
-    note_16="Changed 'stupid' to 'humble' for natural phrasing and "
-    "removed unnecessary escape characters.",
-    revised_17='"Snatching buns is an Olympic game."',
-    note_17="Changed 'bun' to 'buns' for correct plural usage and added "
-    "double quotes for consistency.",
+    note_14="Corrected quotation marks.",
+    revised_15='"One needs energy,\nand many night congee."',
+    note_15="Corrected quotation marks.",
+    revised_16='"In my stupid opinion..."',
+    note_16="Corrected quotation marks.",
+    revised_17='"Snatching bun is an Olympic game."',
+    note_17="Corrected quotation marks.",
     revised_18='"Let athletes all over the world snatch!"',
-    note_18="Removed unnecessary escape characters from the quotation marks.",
+    note_18="Corrected quotation marks.",
     revised_19='"And there will be peace."',
-    note_19="Removed unnecessary single and escape quotation marks; "
-    "standardized to double quotes.",
+    note_19="Corrected quotation marks.",
     revised_20='"Do you have children?"',
-    note_20="Removed unnecessary escape characters from the quotation marks.",
+    note_20="Corrected quotation marks.",
     revised_21='"I have a boy, Dull."',
-    note_21="Removed unnecessary escape characters from the quotation marks.",
+    note_21="Corrected quotation marks.",
     revised_23='"He is a good boy."',
-    note_23="Removed unnecessary escape characters from the quotation marks.",
+    note_23="Corrected quotation marks.",
     revised_24='"He knows how to snatch buns."',
-    note_24="Removed unnecessary escape characters from the quotation marks.",
+    note_24="Corrected quotation marks.",
     revised_25='"One day,\nI can see him snatching buns..."',
-    note_25="Removed unnecessary escape characters from the quotation marks.",
+    note_25="Corrected quotation marks.",
     revised_26='"Ending up snatching\nan Olympic medal."',
-    note_26="Removed unnecessary escape characters from the quotation marks.",
+    note_26="Corrected quotation marks.",
     revised_27='"That is the biggest comfort\na mother can get."',
-    note_27="Removed unnecessary escape characters from the quotation marks.",
+    note_27="Corrected quotation marks.",
     revised_28='"Let the world know\nthe talent of your children."',
-    note_28="Removed unnecessary escape characters from the quotation marks.",
+    note_28="Corrected quotation marks.",
     revised_29='"Parents will do anything for that."',
-    note_29="Removed unnecessary escape characters from the quotation marks.",
+    note_29="Corrected quotation marks.",
     revised_30='"That is why I write you this sudden letter."',
-    note_30="Removed unnecessary escape characters from the quotation marks.",
+    note_30="Corrected quotation marks.",
     revised_31='"Although you don\'t know\nhumble things like me."',
-    note_31="Changed single quote to double quote for consistency and "
-    "removed escape characters.",
+    note_31="Corrected quotation marks.",
     revised_32='"But my boy is big, very big."',
-    note_32="Changed single quote to double quote for consistency and "
-    "removed escape characters.",
+    note_32="Corrected quotation marks.",
     revised_34='"Thank you for your cooperation."',
-    note_34="Removed unnecessary escape characters from the quotation marks.",
+    note_34="Corrected quotation marks.",
     revised_35='"Yours faithfully, Mrs. Mc"',
-    note_35="Removed unnecessary escape characters from the quotation marks.",
-    difficulty=1,
+    note_35="Corrected quotation marks.",
+    difficulty=3,
+    verified=True,
 )  # test_case_block_53
 # noinspection PyArgumentList
 test_case_block_54 = EnglishProofTestCase.get_test_case_cls(24)(
@@ -1189,13 +1200,11 @@ test_case_block_54 = EnglishProofTestCase.get_test_case_cls(24)(
     subtitle_23="Step by step, claw by claw...",
     subtitle_24='I make it pass\nthe\\"12 Bun Snatching Hands\\".',
     revised_9='Now I\'ll learn the\n"12 Bun Snatching Hands".',
-    note_9="Removed unnecessary escape characters from the quotation marks.",
-    revised_12="was much admired by Butcher Lin!",
-    note_12="Changed 'Was' to lowercase 'was' for correct sentence continuation.",
+    note_9="Corrected quotation marks.",
     revised_24='I make it past\nthe "12 Bun Snatching Hands".',
-    note_24="Changed 'pass' to 'past' for correct usage and removed "
-    "unnecessary escape characters from the quotation marks.",
+    note_24="Changed 'pass' to 'past' for correct usage and corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_54
 # noinspection PyArgumentList
 test_case_block_55 = EnglishProofTestCase.get_test_case_cls(51)(
@@ -1251,9 +1260,7 @@ test_case_block_55 = EnglishProofTestCase.get_test_case_cls(51)(
     subtitle_50="The oven hummed. Hummed.",
     subtitle_51="It was like early blessing from the angels.",
     revised_1='"There is no deformity,\nbut saves us from a dream"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
-    revised_13="He hoped there was a Santa Claus.",
-    note_13="Changed 'WAS' to lowercase 'was' for consistency.",
+    note_1="verified=True,.",
     revised_15="Right, I hadn't eaten any turkey then.",
     note_15="Changed 'haven't' to 'hadn't' for correct tense.",
     revised_34="At a close-down sale.",
@@ -1261,6 +1268,7 @@ test_case_block_55 = EnglishProofTestCase.get_test_case_cls(51)(
     revised_48="24th December",
     note_48="Removed comma after '24th'.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_55
 # noinspection PyArgumentList
 test_case_block_56 = EnglishProofTestCase.get_test_case_cls(5)(
@@ -1272,6 +1280,7 @@ test_case_block_56 = EnglishProofTestCase.get_test_case_cls(5)(
     revised_2="Mother and I sat at the seafront.",
     note_2="Changed 'me' to 'I' for correct grammar.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_56
 # noinspection PyArgumentList
 test_case_block_57 = EnglishProofTestCase.get_test_case_cls(6)(
@@ -1281,6 +1290,7 @@ test_case_block_57 = EnglishProofTestCase.get_test_case_cls(6)(
     subtitle_4="Then exploded.",
     subtitle_5="Like everything tonight...",
     subtitle_6="Most beautiful, brilliant, and tender.",
+    verified=True,
 )  # test_case_block_57
 # noinspection PyArgumentList
 test_case_block_58 = EnglishProofTestCase.get_test_case_cls(56)(
@@ -1357,13 +1367,15 @@ test_case_block_58 = EnglishProofTestCase.get_test_case_cls(56)(
     revised_56="I regretted I made mother\nthrow the turkey away.",
     note_56="Changed 'threw' to 'throw' for correct verb form after 'made'.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_58
 # noinspection PyArgumentList
 test_case_block_59 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1='\\"Special Report\\"',
     revised_1='"Special Report"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
+    note_1="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_59
 # noinspection PyArgumentList
 test_case_block_60 = EnglishProofTestCase.get_test_case_cls(23)(
@@ -1390,26 +1402,23 @@ test_case_block_60 = EnglishProofTestCase.get_test_case_cls(23)(
     subtitle_21="In support of...",
     subtitle_22="'Bun Snatching\\\"...",
     subtitle_23="A game thought extinct.",
-    revised_1="'Special Report'",
-    note_1="Removed unnecessary escape character from the quotation mark "
-    "and replaced with correct single quotation marks.",
-    revised_4="HK athletes are formidable.",
-    note_4="Changed 'horrible' to 'formidable' for correct meaning in "
-    "context (positive, not negative).",
+    revised_1='"Special Report"',
+    note_1="Corrected quotation marks.",
     revised_11="is proposing Mahjong as an official game.",
     note_11="Changed 'for official game' to 'as an official game' for "
     "correct phrasing and lowercased 'is' to match sentence flow.",
-    revised_14="to campaign for 'Tart Throwing'.",
-    note_14="Removed unnecessary escape characters and corrected "
-    "capitalization for sentence flow.",
-    revised_17="'Duck Hanging'\nwould make an ideal addition.",
-    note_17="Removed unnecessary escape characters from the quotation marks.",
+    revised_14='To campaign for "Tart Throwing".',
+    note_14="Corrected quotation marks.",
+    revised_17='"Duck Hanging"\nwould make an ideal addition.',
+    note_17="Corrected quotation marks.",
     revised_18="More interestingly,\nCIC Insurance is joining forces with...",
     note_18="Changed 'interesting' to 'interestingly' and 'joining force' "
     "to 'joining forces' for correct adverb and plural usage.",
-    revised_22="'Bun Snatching'...",
-    note_22="Removed unnecessary escape character from the quotation mark.",
+    revised_22='"Bun Snatching"...',
+    note_22="Corrected quotation marks.",
     difficulty=1,
+    prompt=True,
+    verified=True,
 )  # test_case_block_60
 # noinspection PyArgumentList
 test_case_block_61 = EnglishProofTestCase.get_test_case_cls(11)(
@@ -1429,6 +1438,7 @@ test_case_block_61 = EnglishProofTestCase.get_test_case_cls(11)(
     revised_5='"HK, One Big Tart" was a logical choice.',
     note_5="Removed unnecessary escape characters from the quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_61
 # noinspection PyArgumentList
 test_case_block_62 = EnglishProofTestCase.get_test_case_cls(6)(
@@ -1440,14 +1450,16 @@ test_case_block_62 = EnglishProofTestCase.get_test_case_cls(6)(
     subtitle_6="Everything came to nothing.",
     revised_5="Carts were replaced by order sheets.",
     note_5="Changed 'ordering sheet' to 'order sheets' for correct "
-    "plural usage and natural phrasing.",
+    "plural and phrasing.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_62
 # noinspection PyArgumentList
 test_case_block_63 = EnglishProofTestCase.get_test_case_cls(3)(
     subtitle_1="At times, I'd go to Cheung Chau\nfor barbecue.",
     subtitle_2="The master looked older...",
     subtitle_3="Each time I saw him.",
+    verified=True,
 )  # test_case_block_63
 # noinspection PyArgumentList
 test_case_block_64 = EnglishProofTestCase.get_test_case_cls(3)(
@@ -1460,6 +1472,7 @@ test_case_block_64 = EnglishProofTestCase.get_test_case_cls(3)(
     note_2="Changed 'to snatch' to 'to snatching' for correct gerund "
     "usage after 'changed to'.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_64
 # noinspection PyArgumentList
 test_case_block_65 = EnglishProofTestCase.get_test_case_cls(34)(
@@ -1499,51 +1512,54 @@ test_case_block_65 = EnglishProofTestCase.get_test_case_cls(34)(
     subtitle_34="What shall I be?",
     revised_1="On Cheung Chau\nthere was a Cheung Po Tsai Cave.",
     note_1="Changed 'was' to 'there was' for correct phrasing.",
+    revised_2="Where legend claims\na pirate hid his treasure.",
+    note_2="Changed 'claimed' to 'claims' for present tense consistency "
+    "with the legend.",
     revised_11='"Eating 6 buns last night..."',
-    note_11="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_11="Corrected quotation marks.",
     revised_12='"Still left me hungry."',
-    note_12="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_12="Corrected quotation marks.",
+    revised_13='"Eating 1 ½lb white bread last night..."',
+    note_13="Corrected spacing in '1½lb' to '1 ½lb'.",
     revised_14='"Still left me hungry."',
-    note_14="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_14="Corrected quotation marks.",
     revised_15='"Excelled 6 sets of steps\nwhen I was young..."',
-    note_15="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_15="Corrected quotation marks.",
     revised_16='"Still left me empty."',
-    note_16="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_16="Corrected quotation marks.",
     revised_17='"Brought up San San\nwhen I am old! Still..."',
-    note_17="Changed single quote to double quote and removed unnecessary "
-    "escape character.",
+    note_17="Corrected quotation marks.",
+    revised_28="Fatness is not funny either.",
+    note_28="Changed 'too' to 'either' for natural phrasing in negative context.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_65
 # noinspection PyArgumentList
 test_case_block_66 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1="'... Nothing shall be done!\\\"",
     revised_1='"... Nothing shall be done!"',
-    note_1="Replaced single quotation mark and escaped double quote with "
-    "standard double quotation marks for consistency.",
+    note_1="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_66
 # noinspection PyArgumentList
 test_case_block_67 = EnglishProofTestCase.get_test_case_cls(1)(
     subtitle_1='\\"I Have Grown Up\\"',
     revised_1='"I Have Grown Up"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
+    note_1="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_67
 # noinspection PyArgumentList
 test_case_block_68 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_1='\\"Fat, Still\\"',
     subtitle_2="'Powerful\\\"",
     revised_1='"Fat, Still"',
-    note_1="Removed unnecessary escape characters from the quotation marks.",
+    note_1="Corrected quotation marks.",
     revised_2='"Powerful"',
-    note_2="Corrected mismatched quotation marks and removed unnecessary "
-    "escape character.",
+    note_2="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_68
 # noinspection PyArgumentList
 test_case_block_69 = EnglishProofTestCase.get_test_case_cls(26)(
@@ -1573,9 +1589,14 @@ test_case_block_69 = EnglishProofTestCase.get_test_case_cls(26)(
     subtitle_24="When the wind blows, I'd think...",
     subtitle_25="If mother could see me like this...",
     subtitle_26="She'd be happy.",
-    revised_22="How to make a lesson out of\nmy own story.",
-    note_22="Changed 'his' to 'my' for first-person consistency.",
+    revised_7="With steely veins running down them.",
+    note_7="Added 'them' for clarity and grammatical correctness.",
+    revised_9="I got bored one time and stared at them...",
+    note_9="Changed 'it' to 'them' to match plural 'toenails'.",
+    revised_22="How to make a lesson out of\ntheir own story.",
+    note_22="Changed 'his' to 'their' for first-person consistency.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_69
 # noinspection PyArgumentList
 test_case_block_70 = EnglishProofTestCase.get_test_case_cls(14)(
@@ -1594,10 +1615,11 @@ test_case_block_70 = EnglishProofTestCase.get_test_case_cls(14)(
     subtitle_13="The secret is: please, roast it well!",
     subtitle_14="Thank you!",
     revised_4='The last recipe was "Roast Chicken".',
-    note_4="Removed unnecessary escape characters from the quotation marks.",
+    note_4="Corrected quotation marks.",
     revised_6='"Roast Chicken".',
-    note_6="Removed unnecessary escape characters from the quotation marks.",
+    note_6="Corrected quotation marks.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_70
 # noinspection PyArgumentList
 test_case_block_71 = EnglishProofTestCase.get_test_case_cls(13)(
@@ -1614,6 +1636,7 @@ test_case_block_71 = EnglishProofTestCase.get_test_case_cls(13)(
     subtitle_11="Same as Regular.",
     subtitle_12="We'll have the Regular.",
     subtitle_13="Our Regular today is fantastic!",
+    verified=True,
 )  # test_case_block_71
 # noinspection PyArgumentList
 test_case_block_72 = EnglishProofTestCase.get_test_case_cls(26)(
@@ -1643,12 +1666,36 @@ test_case_block_72 = EnglishProofTestCase.get_test_case_cls(26)(
     subtitle_24="But you said the Special is gone.",
     subtitle_25="The Special sure is gone.\nTry Quickie. It's the same.",
     subtitle_26="We'll have Quickie.",
-    revised_4="A Special is Lunch.",
-    note_4="Removed the article 'a' before 'Lunch' for consistency with "
-    "other menu item phrasing.",
     difficulty=1,
+    verified=True,
 )  # test_case_block_72
-
+# noinspection PyArgumentList
+test_case_block_73 = EnglishProofTestCase.get_test_case_cls(10)(
+    subtitle_1="Sorry, Quickie is gone.",
+    subtitle_2="This is too much!\nIs there anything we can eat here?",
+    subtitle_3="Try the Lunch. It's fantastic!",
+    subtitle_4="How so?",
+    subtitle_5="It's like the Supper.",
+    subtitle_6="What about the Supper?",
+    subtitle_7="It's like the Regular.",
+    subtitle_8="And what about the Regular?",
+    subtitle_9="The Regular is gone. Isn't that fantastic?",
+    subtitle_10="Great! We'll have Lunch.",
+    verified=True,
+)  # test_case_block_73
+# noinspection PyArgumentList
+test_case_block_74 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="Sorry, Lunch is gone.",
+    subtitle_2="Try our Supper. It's all the same.",
+    subtitle_3="I'm not having supper\nunder board daylight!",
+    subtitle_4="What's in a name?\nIt's the same as Lunch.",
+    subtitle_5="Great! Whatever you say!\nAnd make it quick!",
+    subtitle_6="You want it quick? Try Quickie!",
+    revised_3="I'm not having supper\nunder broad daylight!",
+    note_3="Changed 'board daylight' to 'broad daylight'.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_74
 mlamd_english_proof_test_cases: list[EnglishProofTestCase] = [
     test_case
     for name, test_case in globals().items()
