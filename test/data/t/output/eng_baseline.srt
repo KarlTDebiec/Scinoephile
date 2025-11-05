@@ -19,7 +19,7 @@ Show me your ID.
 5
 00:02:12,874 --> 00:02:17,166
 - Let me see.
-- Please verify ID number C532743…
+- Please verify ID number C532743...
 
 6
 00:02:17,208 --> 00:02:18,791
@@ -332,7 +332,7 @@ We are in love but can't be together.
 
 81
 00:08:44,000 --> 00:08:52,916
-I wait day by day but you never come back…
+I wait day by day but you never come back...
 
 82
 00:08:53,000 --> 00:09:02,291
@@ -364,7 +364,7 @@ red skirt, red scarf,
 
 89
 00:09:26,541 --> 00:09:28,916
-like white paper…
+like white paper...
 
 90
 00:09:38,958 --> 00:09:41,666
@@ -441,7 +441,7 @@ But after 48 hours, they have to release me.
 
 108
 00:10:53,625 --> 00:10:56,208
-By that time, however, you son will be…
+By that time, however, you son will be...
 
 109
 00:10:59,791 --> 00:11:01,958
@@ -538,7 +538,7 @@ Shouldn't you ask Mr Ho where his son is?
 
 132
 00:12:48,916 --> 00:12:50,291
-My son…
+My son...
 
 133
 00:12:50,583 --> 00:12:51,958
@@ -992,7 +992,7 @@ Give me a second.
 244
 00:19:29,124 --> 00:19:30,583
 - Hurry up!
-- Tell me the room number…
+- Tell me the room number...
 
 245
 00:19:30,625 --> 00:19:32,750
@@ -1560,7 +1560,7 @@ I've quit smoking.
 
 384
 00:27:44,666 --> 00:27:46,000
-"Whoring, gambling, drinking, roaming…
+"Whoring, gambling, drinking, roaming...
 
 385
 00:27:46,083 --> 00:27:47,708
@@ -1913,7 +1913,7 @@ we rob the gold shop right away.
 471
 00:32:40,750 --> 00:32:43,249
 It's the racing night. It will be crowded.
-After it's done…
+After it's done...
 
 472
 00:32:43,291 --> 00:32:45,541
@@ -2190,7 +2190,7 @@ Mr Cheuk, can you let my husband go?
 
 539
 00:36:44,666 --> 00:36:47,291
-Name a price. I'll pay you from my own pocket…
+Name a price. I'll pay you from my own pocket...
 
 540
 00:36:55,041 --> 00:36:56,166
@@ -2275,7 +2275,7 @@ We have a daughter.
 
 560
 00:38:18,083 --> 00:38:19,874
-I don't feel comfortable…
+I don't feel comfortable...
 
 561
 00:38:19,958 --> 00:38:21,916
@@ -2419,7 +2419,7 @@ Come again tomorrow.
 
 596
 00:41:09,416 --> 00:41:11,666
-All right. Yes…
+All right. Yes...
 
 597
 00:41:16,333 --> 00:41:18,166
@@ -2647,7 +2647,7 @@ Let's go for more fun.
 
 653
 00:43:48,000 --> 00:43:50,208
-I can't…
+I can't...
 
 654
 00:43:52,083 --> 00:43:53,916
@@ -3393,11 +3393,11 @@ I'll act according to the law!
 
 836
 00:58:21,000 --> 00:58:21,750
-Great, there's a vase in the toilet…
+Great, there's a vase in the toilet...
 
 837
 00:58:21,791 --> 00:58:22,791
-We're lucky…
+We're lucky...
 
 838
 00:58:22,833 --> 00:58:24,499
@@ -3811,7 +3811,7 @@ You already know all those officials
 
 939
 01:07:40,916 --> 01:07:42,916
-and connections well…
+and connections well...
 
 940
 01:07:43,083 --> 01:07:44,499
@@ -3927,7 +3927,7 @@ Seriously, we can make it work.
 
 968
 01:09:47,791 --> 01:09:49,375
-The 3 Kings of Thieves join forces…
+The 3 Kings of Thieves join forces...
 
 969
 01:10:26,083 --> 01:10:28,791
@@ -3963,7 +3963,7 @@ You're here just for the location.
 
 977
 01:11:27,666 --> 01:11:28,291
-Listen to me…
+Listen to me...
 
 978
 01:11:28,333 --> 01:11:29,375
@@ -3971,7 +3971,7 @@ No more!
 
 979
 01:11:29,416 --> 01:11:29,833
-Listen to me…
+Listen to me...
 
 980
 01:11:29,874 --> 01:11:31,291
@@ -4323,7 +4323,7 @@ in 1988.
 
 1067
 01:18:19,499 --> 01:18:20,791
-And Landmark in 1992…
+And Landmark in 1992...
 
 1068
 01:18:22,041 --> 01:18:25,625
@@ -4353,7 +4353,7 @@ and the cops were dumb.
 
 1074
 01:18:40,750 --> 01:18:43,958
-- I just took advantage of the situation…
+- I just took advantage of the situation...
 - Hold on! Don't hang up.
 
 1075
