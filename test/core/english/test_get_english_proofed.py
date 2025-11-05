@@ -70,3 +70,13 @@ def test_get_english_proofed_mlamd(mlamd_eng: Series, mlamd_eng_proof: Series):
         mlamd_eng_proof: Expected proofed MLAMD English series fixture
     """
     _test_get_english_proofed(mlamd_eng, mlamd_eng_proof)
+
+
+def test_get_english_proofed_t(t_eng: Series, t_eng_proof: Series):
+    """Test get_english_proofed with T English subtitles.
+
+    Arguments:
+        t_eng: T English series fixture
+        t_eng_proof: Expected proofed T English series fixture
+    """
+    _test_get_english_proofed(t_eng, t_eng_proof)

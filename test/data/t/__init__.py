@@ -9,6 +9,9 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
+# ruff: noqa: F401 F403
+from test.data.t.core.english.proof import t_english_proof_test_cases
+
 input_dir = test_data_root / "t" / "input"
 output_dir = test_data_root / "t" / "output"
 
@@ -77,9 +80,15 @@ def t_eng_flatten() -> Series:
 
 
 @pytest.fixture
-def t_eng_clean_flatten() -> Series:
-    """T English cleaned and flattened series."""
-    return Series.load(output_dir / "eng_clean_flatten.srt")
+def t_eng_proof() -> Series:
+    """T English proofed series."""
+    return Series.load(output_dir / "eng_proof.srt")
+
+
+@pytest.fixture
+def t_eng_proof_clean_flatten() -> Series:
+    """T English proofed, cleaned and flattened series."""
+    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
 
 
 # endregion
@@ -104,6 +113,8 @@ ___all__ = [
     "t_eng",
     "t_eng_clean",
     "t_eng_flatten",
-    "t_eng_clean_flatten",
+    "t_eng_proof",
+    "t_eng_proof_clean_flatten",
     "t_zho_hans_eng",
+    "t_english_proof_test_cases",
 ]

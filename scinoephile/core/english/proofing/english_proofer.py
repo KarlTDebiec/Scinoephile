@@ -38,9 +38,12 @@ class EnglishProofer:
         if proof_test_cases is None:
             from test.data.kob import kob_english_proof_test_cases
             from test.data.mlamd import mlamd_english_proof_test_cases
+            from test.data.t import t_english_proof_test_cases
 
             proof_test_cases = (
-                kob_english_proof_test_cases + mlamd_english_proof_test_cases
+                kob_english_proof_test_cases
+                + mlamd_english_proof_test_cases
+                + t_english_proof_test_cases
             )
 
         self.proofer = EnglishProofLLMQueryer(
