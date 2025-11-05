@@ -1,9 +1,9 @@
 1
-00:01:58,792 --> 00:02:00,459
+00:01:58,791 --> 00:02:00,458
 Police.
 
 2
-00:02:00,500 --> 00:02:02,417
+00:02:00,499 --> 00:02:02,416
 Show me your ID.
 
 3
@@ -14,12 +14,12 @@ Show me your ID.
 4
 00:02:11,083 --> 00:02:12,833
 - What's in your bag?
-- Headquarter,
+- Headquarters,
 
 5
-00:02:12,875 --> 00:02:17,167
+00:02:12,874 --> 00:02:17,166
 - Let me see.
-- please verify ID number C532743...
+- Please verify ID number C532743…
 
 6
 00:02:17,208 --> 00:02:18,791
@@ -30,11 +30,11 @@ Bracket 1, Kwai Ching-hung.
 Open it.
 
 8
-00:02:31,250 --> 00:02:33,500
-The arrangement for Hong Kong
+00:02:31,249 --> 00:02:33,499
+The arrangements for Hong Kong
 
 9
-00:02:33,542 --> 00:02:35,417
+00:02:33,541 --> 00:02:35,416
 contained in the agreement
 are not measures of expediency.
 
@@ -44,15 +44,15 @@ contained in the agreement
 are not measures of expediency.
 
 11
-00:02:38,542 --> 00:02:42,709
+00:02:38,541 --> 00:02:42,708
 They are long-term policies which will be incorporated
 
 12
-00:02:42,750 --> 00:02:45,125
+00:02:42,750 --> 00:02:45,124
 in the Basic Law for Hong Kong
 
 13
-00:02:45,167 --> 00:02:50,084
+00:02:45,166 --> 00:02:50,083
 and preserved intact for 50 years from 1997.
 
 14
@@ -78,17 +78,17 @@ implemented with no encumbrances.
 An armed robbery took place this afternoon in Kwun Tong.
 
 19
-00:03:29,042 --> 00:03:30,500
+00:03:29,041 --> 00:03:30,499
 4 armed suspects robbed 5 gold shops
 on Mut Wah Street.
 
 20
-00:03:30,542 --> 00:03:33,084
+00:03:30,541 --> 00:03:33,083
 4 armed suspects robbed 5 gold shops
 on Mut Wah Street.
 
 21
-00:03:33,125 --> 00:03:34,208
+00:03:33,124 --> 00:03:34,208
 Fuck you!
 
 22
@@ -104,7 +104,7 @@ the robbers exchanged fire
 with the Special Duties Unit.
 
 25
-00:03:42,792 --> 00:03:46,334
+00:03:42,791 --> 00:03:46,333
 2 passersby and 3 policemen
 were injured in the incident.
 
@@ -117,7 +117,7 @@ The 5 gold shops lost $10M in total.
 The police believe the mastermind
 
 28
-00:03:51,750 --> 00:03:53,667
+00:03:51,750 --> 00:03:53,666
 is the "Most Wanted" Yip Kwok-foon.
 
 29
@@ -125,11 +125,11 @@ is the "Most Wanted" Yip Kwok-foon.
 Bro Foon, you're unbeatable!
 
 30
-00:03:58,833 --> 00:04:00,500
+00:03:58,833 --> 00:04:00,499
 Bro Foon, you're unbeatable!
 
 31
-00:04:01,042 --> 00:04:03,125
+00:04:01,041 --> 00:04:03,124
 But shit has hit the fan!
 
 32
@@ -137,11 +137,11 @@ But shit has hit the fan!
 I told you to put more newspaper underneath!
 
 33
-00:04:05,792 --> 00:04:07,834
+00:04:05,791 --> 00:04:07,833
 Look, there's blood everywhere!
 
 34
-00:04:07,917 --> 00:04:10,084
+00:04:07,916 --> 00:04:10,083
 Take it, jerk!
 
 35
@@ -149,39 +149,39 @@ Take it, jerk!
 Shit has really hit the fan!
 
 36
-00:04:15,250 --> 00:04:18,583
+00:04:15,249 --> 00:04:18,583
 I can give you 20% tops. Sorry.
 
 37
-00:04:18,625 --> 00:04:20,125
+00:04:18,625 --> 00:04:20,124
 We agreed on 40%.
 
 38
-00:04:20,167 --> 00:04:21,584
+00:04:20,166 --> 00:04:21,583
 Don't you have moral principle?
 
 39
-00:04:21,792 --> 00:04:24,125
-You're paying $2M for $10M's worth of swag?
+00:04:21,791 --> 00:04:24,124
+You're paying $2M for $10M worth of swag?
 
 40
-00:04:24,167 --> 00:04:25,667
+00:04:24,166 --> 00:04:25,666
 We used to get 50%!
 
 41
-00:04:25,875 --> 00:04:27,625
+00:04:25,874 --> 00:04:27,625
 Now you fences are getting it all!
 
 42
-00:04:27,667 --> 00:04:29,375
+00:04:27,666 --> 00:04:29,375
 We're getting shit!
 
 43
 00:04:29,458 --> 00:04:31,458
-Time has changed.
+Times have changed.
 
 44
-00:04:31,500 --> 00:04:34,042
+00:04:31,499 --> 00:04:34,041
 The cops are on the prowl!
 
 45
@@ -189,7 +189,7 @@ The cops are on the prowl!
 Especially for your swag, Bro Foon!
 
 46
-00:04:43,500 --> 00:04:47,167
+00:04:43,499 --> 00:04:47,166
 It took us 2 years to fence it last time!
 
 47
@@ -198,7 +198,7 @@ Stocks, real estate,
 and even chestnuts are more profitable!
 
 48
-00:04:53,292 --> 00:04:55,042
+00:04:53,291 --> 00:04:55,041
 Do me a favor.
 
 49
@@ -206,39 +206,39 @@ Do me a favor.
 40%.
 
 50
-00:04:59,042 --> 00:05:02,792
+00:04:59,041 --> 00:05:02,791
 Bro Foon, you always have your way!
 
 51
-00:05:07,750 --> 00:05:09,917
+00:05:07,750 --> 00:05:09,916
 How about you find another fence?
 
 52
-00:05:09,958 --> 00:05:12,500
+00:05:09,958 --> 00:05:12,499
 If I can't take it, I doubt others would dare to!
 
 53
-00:05:12,542 --> 00:05:14,125
+00:05:12,541 --> 00:05:14,124
 Fuck you!
 
 54
-00:05:16,042 --> 00:05:18,042
+00:05:16,041 --> 00:05:18,041
 Open the safe!
 
 55
-00:05:18,250 --> 00:05:19,667
+00:05:18,249 --> 00:05:19,666
 Are you robbing me?
 
 56
-00:05:29,375 --> 00:05:31,500
+00:05:29,375 --> 00:05:31,499
 Don't make me do it.
 
 57
-00:05:56,833 --> 00:05:58,875
+00:05:56,833 --> 00:05:58,874
 Thanks so much, Bro Foon.
 
 58
-00:06:00,500 --> 00:06:02,917
+00:06:00,499 --> 00:06:02,916
 Don't look me up in the future.
 
 59
@@ -258,23 +258,23 @@ Light, Bro Foon.
 Fisherman!
 
 63
-00:07:26,250 --> 00:07:27,542
+00:07:26,249 --> 00:07:27,541
 Don't worry.
 
 64
-00:07:27,667 --> 00:07:29,625
+00:07:27,666 --> 00:07:29,625
 These ships belong to Yi Fa.
 
 65
-00:07:30,125 --> 00:07:30,917
+00:07:30,124 --> 00:07:30,916
 What's Yi Fa?
 
 66
-00:07:30,958 --> 00:07:32,250
+00:07:30,958 --> 00:07:32,249
 Yi Fa from Panyu, Guangzhou.
 
 67
-00:07:32,292 --> 00:07:33,792
+00:07:32,291 --> 00:07:33,791
 They smuggle electric appliances.
 
 68
@@ -282,16 +282,16 @@ They smuggle electric appliances.
 So pompously? So brazenly?
 
 69
-00:07:37,667 --> 00:07:41,459
+00:07:37,666 --> 00:07:41,458
 They have strong backing. It's legit!
 
 70
-00:07:42,042 --> 00:07:47,834
+00:07:42,041 --> 00:07:47,833
 A TV set sells for $2K
 in Hong Kong and $8K in China.
 
 71
-00:07:51,417 --> 00:07:53,417
+00:07:51,416 --> 00:07:53,416
 They earn millions of dollars in each transaction.
 
 72
@@ -299,7 +299,7 @@ They earn millions of dollars in each transaction.
 Cash keeps rolling in!
 
 73
-00:08:08,375 --> 00:08:10,417
+00:08:08,375 --> 00:08:10,416
 Used notes with no consecutive serial numbers.
 
 74
@@ -311,11 +311,11 @@ I need them today!
 You have $80M over there.
 
 76
-00:08:13,667 --> 00:08:17,334
-I want it by 5pm!
+00:08:13,666 --> 00:08:17,333
+I want it by 5 PM!
 
 77
-00:08:17,375 --> 00:08:20,167
+00:08:17,375 --> 00:08:20,166
 You go get it. I want it now!
 
 78
@@ -331,19 +331,19 @@ Manager Fok!
 We are in love but can't be together.
 
 81
-00:08:44,000 --> 00:08:52,917
-I wait day by day but you never come back...
+00:08:44,000 --> 00:08:52,916
+I wait day by day but you never come back…
 
 82
-00:08:53,000 --> 00:09:02,292
+00:08:53,000 --> 00:09:02,291
 I want to forget you but you haunt my memory.
 
 83
-00:09:04,417 --> 00:09:06,042
+00:09:04,416 --> 00:09:06,041
 Mr Cheuk,
 
 84
-00:09:06,125 --> 00:09:08,708
+00:09:06,124 --> 00:09:08,708
 let's discuss the price.
 
 85
@@ -351,20 +351,20 @@ let's discuss the price.
 Was it a bit flat?
 
 86
-00:09:16,792 --> 00:09:18,625
+00:09:16,791 --> 00:09:18,625
 No way! Let's start over!
 
 87
-00:09:20,125 --> 00:09:22,333
+00:09:20,124 --> 00:09:22,333
 Red face,
 
 88
-00:09:22,792 --> 00:09:25,625
+00:09:22,791 --> 00:09:25,625
 red skirt, red scarf,
 
 89
-00:09:26,542 --> 00:09:28,917
-like white paper...
+00:09:26,541 --> 00:09:28,916
+like white paper…
 
 90
 00:09:38,958 --> 00:09:41,666
@@ -379,11 +379,11 @@ I said let's start over. Didn't you hear me?
 Let's not waste time!
 
 93
-00:10:05,167 --> 00:10:06,584
+00:10:05,166 --> 00:10:06,583
 Mr Tycoon,
 
 94
-00:10:09,042 --> 00:10:11,792
+00:10:09,041 --> 00:10:11,791
 we agreed on $3 billion.
 
 95
@@ -400,15 +400,15 @@ out of the blue.
 I've only got $500M on hand.
 
 98
-00:10:25,542 --> 00:10:28,250
+00:10:25,541 --> 00:10:28,249
 Did I say you could go?
 
 99
-00:10:28,625 --> 00:10:31,125
+00:10:28,625 --> 00:10:31,124
 Take the $500M now.
 
 100
-00:10:31,167 --> 00:10:32,667
+00:10:31,166 --> 00:10:32,666
 Don't get too greedy.
 
 101
@@ -416,7 +416,7 @@ Don't get too greedy.
 Then I'll give you back half of your son.
 
 102
-00:10:34,417 --> 00:10:36,959
+00:10:34,416 --> 00:10:36,958
 You want the upper or lower half?
 
 103
@@ -424,7 +424,7 @@ You want the upper or lower half?
 Do you really think I won't call the police?
 
 104
-00:10:41,125 --> 00:10:43,333
+00:10:41,124 --> 00:10:43,333
 Do the cops know where your son is?
 
 105
@@ -441,10 +441,10 @@ But after 48 hours, they have to release me.
 
 108
 00:10:53,625 --> 00:10:56,208
-By that time, however, you son will be...
+By that time, however, you son will be…
 
 109
-00:10:59,792 --> 00:11:01,959
+00:10:59,791 --> 00:11:01,958
 Call the Commissioner of Police!
 
 110
@@ -456,15 +456,15 @@ I said let's start over. Didn't you hear me?
 You hear me, or not?
 
 112
-00:11:13,042 --> 00:11:15,209
+00:11:13,041 --> 00:11:15,208
 If you can't hear me with your ear,
 
 113
-00:11:15,250 --> 00:11:18,000
+00:11:15,249 --> 00:11:18,000
 I might as well cut if off, OK?
 
 114
-00:11:18,042 --> 00:11:21,292
+00:11:18,041 --> 00:11:21,291
 Please don't!
 
 115
@@ -472,23 +472,23 @@ Please don't!
 I'm sorry! I'm sorry!
 
 116
-00:11:27,917 --> 00:11:30,709
+00:11:27,916 --> 00:11:30,708
 You should've said so earlier.
 
 117
-00:11:43,833 --> 00:11:45,250
+00:11:43,833 --> 00:11:45,249
 What's up?
 
 118
-00:11:45,292 --> 00:11:47,125
+00:11:45,291 --> 00:11:47,124
 The Commissioner didn't answer?
 
 119
-00:11:57,208 --> 00:11:59,500
+00:11:57,208 --> 00:11:59,499
 You're playing me, right?
 
 120
-00:11:59,542 --> 00:12:01,125
+00:11:59,541 --> 00:12:01,124
 Let's play it all the way then!
 
 121
@@ -496,15 +496,15 @@ Let's play it all the way then!
 Leaving so soon, Officer Wu?
 
 122
-00:12:20,292 --> 00:12:21,625
+00:12:20,291 --> 00:12:21,625
 Mr Tycoon is looking for you.
 
 123
-00:12:21,792 --> 00:12:25,125
+00:12:21,791 --> 00:12:25,124
 Mr Tycoon, didn't you call the cops? Come here!
 
 124
-00:12:28,292 --> 00:12:29,500
+00:12:28,291 --> 00:12:29,499
 Mr Ho.
 
 125
@@ -520,7 +520,7 @@ but they are useless.
 No wonder it was easy to kidnap your son.
 
 128
-00:12:37,667 --> 00:12:39,334
+00:12:37,666 --> 00:12:39,333
 So, you are willing to confess?
 
 129
@@ -528,7 +528,7 @@ So, you are willing to confess?
 Officer,
 
 130
-00:12:41,250 --> 00:12:44,583
+00:12:41,249 --> 00:12:44,583
 if I said I'd fucked your mother,
 did I really fuck her?
 
@@ -537,27 +537,27 @@ did I really fuck her?
 Shouldn't you ask Mr Ho where his son is?
 
 132
-00:12:48,917 --> 00:12:50,292
-My son...
+00:12:48,916 --> 00:12:50,291
+My son…
 
 133
 00:12:50,583 --> 00:12:51,958
 is all right.
 
 134
-00:12:52,625 --> 00:12:55,042
+00:12:52,625 --> 00:12:55,041
 I came here to borrow money from Mr Tycoon.
 
 135
-00:12:55,167 --> 00:12:57,375
+00:12:55,166 --> 00:12:57,375
 Is that a crime?
 
 136
-00:12:57,417 --> 00:12:59,834
+00:12:57,416 --> 00:12:59,833
 Mr Ho, tell us if he's threatening you.
 
 137
-00:12:59,875 --> 00:13:01,167
+00:12:59,874 --> 00:13:01,166
 We can arrest him right away!
 
 138
@@ -569,11 +569,11 @@ No, he's not.
 Have you heard it loud and clear, Officer?
 
 140
-00:13:04,625 --> 00:13:06,875
+00:13:04,625 --> 00:13:06,874
 I said he's not threatening me!
 
 141
-00:13:08,417 --> 00:13:11,459
+00:13:08,416 --> 00:13:11,458
 Calm down, Royal Hong Kong Police!
 
 142
@@ -585,15 +585,15 @@ Mr Tycoon,
 how much will you "lend" me?
 
 144
-00:13:16,208 --> 00:13:17,500
+00:13:16,208 --> 00:13:17,499
 $3 billion.
 
 145
-00:13:39,250 --> 00:13:41,125
+00:13:39,249 --> 00:13:41,124
 Are you in Guangzhou for business or leisure?
 
 146
-00:13:44,500 --> 00:13:45,500
+00:13:44,499 --> 00:13:45,499
 Excuse me?
 
 147
@@ -601,7 +601,7 @@ Excuse me?
 Business? Travel?
 
 148
-00:13:51,250 --> 00:13:53,292
+00:13:51,249 --> 00:13:53,291
 Yea, I am a businessman.
 
 149
@@ -609,27 +609,27 @@ Yea, I am a businessman.
 Guangzhou Railway Station
 
 150
-00:14:23,958 --> 00:14:25,875
+00:14:23,958 --> 00:14:25,874
 I'd like to reserve a private room
 
 151
 00:14:28,625 --> 00:14:30,083
-at 8pm tomorrow.
+at 8 PM tomorrow.
 
 152
-00:14:31,167 --> 00:14:34,250
+00:14:31,166 --> 00:14:34,249
 My name is Chen. Thank you.
 
 153
-00:14:58,958 --> 00:15:00,500
+00:14:58,958 --> 00:15:00,499
 Hello, Commander.
 
 154
-00:15:00,542 --> 00:15:02,584
-8pm tomorrow at Fengman Restaurant.
+00:15:00,541 --> 00:15:02,583
+8 PM tomorrow at Fengman Restaurant.
 
 155
-00:15:04,667 --> 00:15:06,917
+00:15:04,666 --> 00:15:06,916
 Who the fuck am I? I'm Chiu.
 
 156
@@ -637,7 +637,7 @@ Who the fuck am I? I'm Chiu.
 Don't make me fucking wait for you.
 
 157
-00:15:08,792 --> 00:15:10,000
+00:15:08,791 --> 00:15:10,000
 That's it.
 
 158
@@ -645,7 +645,7 @@ That's it.
 Fengman Restaurant
 
 159
-00:16:00,625 --> 00:16:02,667
+00:16:00,625 --> 00:16:02,666
 Almost there, Mr Fong.
 
 160
@@ -653,11 +653,11 @@ Almost there, Mr Fong.
 OK.
 
 161
-00:16:04,667 --> 00:16:06,042
+00:16:04,666 --> 00:16:06,041
 Which room?
 
 162
-00:16:06,250 --> 00:16:08,167
+00:16:06,249 --> 00:16:08,166
 OK. Coming.
 
 163
@@ -674,19 +674,19 @@ Take it. Let me put the tie on.
 Da-bao. This way.
 
 166
-00:16:14,792 --> 00:16:15,500
+00:16:14,791 --> 00:16:15,499
 Mr Fong.
 
 167
-00:16:15,625 --> 00:16:16,667
+00:16:15,625 --> 00:16:16,666
 Where's the vase?
 
 168
-00:16:17,042 --> 00:16:18,000
+00:16:17,041 --> 00:16:18,000
 It's just a cheap one.
 
 169
-00:16:18,042 --> 00:16:19,417
+00:16:18,041 --> 00:16:19,416
 Never mind. Let's go.
 
 170
@@ -698,7 +698,7 @@ Chief Chen.
 Chief Chen.
 
 172
-00:16:31,167 --> 00:16:32,917
+00:16:31,166 --> 00:16:32,916
 This is Zhang Da-bao, Boss Zhang,
 
 173
@@ -714,7 +714,7 @@ who has bought Yi Fa.
 This is Chief Chen from Industry and Commerce.
 
 176
-00:16:39,792 --> 00:16:41,334
+00:16:39,791 --> 00:16:41,333
 We're buddies.
 
 177
@@ -722,23 +722,23 @@ We're buddies.
 Nice to meet you, Chief Chen.
 
 178
-00:16:42,500 --> 00:16:43,792
+00:16:42,499 --> 00:16:43,791
 Nice to meet you.
 
 179
-00:16:44,042 --> 00:16:44,584
+00:16:44,041 --> 00:16:44,583
 Let's have a drink.
 
 180
-00:16:44,667 --> 00:16:45,542
+00:16:44,666 --> 00:16:45,541
 Let's drink together.
 
 181
-00:16:45,583 --> 00:16:47,500
+00:16:45,583 --> 00:16:47,499
 Have a seat.
 
 182
-00:16:49,500 --> 00:16:50,625
+00:16:49,499 --> 00:16:50,625
 Bottoms up!
 
 183
@@ -746,23 +746,23 @@ Bottoms up!
 Boss Zhang cannot drink?
 
 184
-00:16:56,375 --> 00:16:57,417
+00:16:56,375 --> 00:16:57,416
 Bottoms up!
 
 185
-00:16:57,458 --> 00:16:59,125
+00:16:57,458 --> 00:16:59,124
 I said bottoms up!
 
 186
-00:16:59,167 --> 00:17:00,000
+00:16:59,166 --> 00:17:00,000
 Yes!
 
 187
-00:17:00,042 --> 00:17:01,667
+00:17:00,041 --> 00:17:01,666
 Bottoms up!
 
 188
-00:17:06,375 --> 00:17:08,042
+00:17:06,375 --> 00:17:08,041
 Da-bao is my buddy.
 
 189
@@ -770,56 +770,56 @@ Da-bao is my buddy.
 We've only met quite recently.
 
 190
-00:17:10,792 --> 00:17:13,459
+00:17:10,791 --> 00:17:13,458
 But we hit it off right away!
 
 191
-00:17:13,542 --> 00:17:14,917
+00:17:13,541 --> 00:17:14,916
 Chief Chen,
 
 192
-00:17:15,792 --> 00:17:17,292
+00:17:15,791 --> 00:17:17,291
 Chief Chen,
 
 193
-00:17:17,833 --> 00:17:19,250
+00:17:17,833 --> 00:17:19,249
 please help him.
 
 194
-00:17:19,292 --> 00:17:23,375
+00:17:19,291 --> 00:17:23,375
 This vase must be expensive!
 
 195
-00:17:23,875 --> 00:17:25,583
+00:17:23,874 --> 00:17:25,583
 Just a modest gift.
 
 196
-00:17:25,833 --> 00:17:27,125
+00:17:25,833 --> 00:17:27,124
 Here's how it works:
 
 197
-00:17:27,167 --> 00:17:30,667
+00:17:27,166 --> 00:17:30,666
 when Chief Chen grows tired of it,
 Boss Zhang can buy it back!
 
 198
-00:17:30,750 --> 00:17:33,500
+00:17:30,750 --> 00:17:33,499
 It's worth at least RMB¥300K!
 
 199
-00:17:35,417 --> 00:17:37,375
+00:17:35,416 --> 00:17:37,375
 Didn't we agree on RMB¥200K?
 
 200
-00:17:38,292 --> 00:17:39,875
+00:17:38,291 --> 00:17:39,874
 I got the price wrong?
 
 201
-00:17:40,542 --> 00:17:42,584
+00:17:40,541 --> 00:17:42,583
 Oh, even Homer sometimes nods.
 
 202
-00:17:42,625 --> 00:17:43,792
+00:17:42,625 --> 00:17:43,791
 No way!
 
 203
@@ -831,11 +831,11 @@ Chief Chen is a connoisseur.
 What do we know?
 
 205
-00:17:48,875 --> 00:17:51,292
+00:17:48,874 --> 00:17:51,291
 If Chief Chen says RMB¥300K, then it's RMB¥300K.
 
 206
-00:17:52,417 --> 00:17:54,292
+00:17:52,416 --> 00:17:54,291
 Come get the business license tomorrow.
 
 207
@@ -843,15 +843,15 @@ Come get the business license tomorrow.
 I'll have it nicely framed for you.
 
 208
-00:17:57,667 --> 00:17:58,834
+00:17:57,666 --> 00:17:58,833
 Thanks so much, Chief Chen.
 
 209
-00:17:58,917 --> 00:18:00,625
+00:17:58,916 --> 00:18:00,625
 We're buddies.
 
 210
-00:18:00,667 --> 00:18:03,417
+00:18:00,666 --> 00:18:03,416
 Boss Zhang, what would you like to eat?
 
 211
@@ -875,7 +875,7 @@ Shall we have a seafood platter?
 Let me order it.
 
 216
-00:18:18,042 --> 00:18:19,292
+00:18:18,041 --> 00:18:19,291
 Waiter!
 
 217
@@ -883,7 +883,7 @@ Waiter!
 Mr Zhang, best of luck with your business!
 
 218
-00:18:21,333 --> 00:18:22,875
+00:18:21,333 --> 00:18:22,874
 Thanks a lot.
 
 219
@@ -899,7 +899,7 @@ Bottoms up!
 Bottoms up!
 
 222
-00:18:36,542 --> 00:18:40,334
+00:18:36,541 --> 00:18:40,333
 This guy plays golf every Sunday
 in Clear Water Bay.
 
@@ -908,7 +908,7 @@ in Clear Water Bay.
 One-way road. Quiet. No phone signal. It may work.
 
 224
-00:18:45,667 --> 00:18:47,417
+00:18:45,666 --> 00:18:47,416
 Hey! Where's our rice?
 
 225
@@ -916,27 +916,27 @@ Hey! Where's our rice?
 Next.
 
 226
-00:18:49,500 --> 00:18:51,208
+00:18:49,499 --> 00:18:51,208
 This one is easy.
 
 227
-00:18:51,292 --> 00:18:53,375
+00:18:51,291 --> 00:18:53,375
 A super playboy.
 
 228
-00:18:53,417 --> 00:18:55,834
+00:18:53,416 --> 00:18:55,833
 Drunk every night.
 
 229
-00:18:57,125 --> 00:18:59,875
+00:18:57,124 --> 00:18:59,874
 He recently has an actress as a mistress.
 
 230
-00:19:02,875 --> 00:19:03,750
+00:19:02,874 --> 00:19:03,750
 Hey!
 
 231
-00:19:03,792 --> 00:19:04,625
+00:19:03,791 --> 00:19:04,625
 Where is our rice?
 
 232
@@ -948,23 +948,23 @@ Rice? Give me a second.
 Your rice is coming right away.
 
 234
-00:19:09,250 --> 00:19:11,125
+00:19:09,249 --> 00:19:11,124
 Sometimes he would send his driver away.
 
 235
-00:19:11,167 --> 00:19:13,209
+00:19:11,166 --> 00:19:13,208
 Sorry to keep you waiting.
 
 236
-00:19:13,292 --> 00:19:14,500
+00:19:13,291 --> 00:19:14,499
 Enjoy your food.
 
 237
-00:19:14,917 --> 00:19:16,167
+00:19:14,916 --> 00:19:16,166
 Close the door.
 
 238
-00:19:19,792 --> 00:19:21,709
+00:19:19,791 --> 00:19:21,708
 Sir, please follow me.
 
 239
@@ -976,12 +976,12 @@ Give me a cup of tea.
 Hey! Haven't you gone to the bathroom just now?
 
 241
-00:19:24,708 --> 00:19:26,500
+00:19:24,708 --> 00:19:26,499
 - Wait! Don't puke.
 - Hey! The rice is cold!
 
 242
-00:19:26,542 --> 00:19:27,584
+00:19:26,541 --> 00:19:27,583
 Give me a second.
 
 243
@@ -990,9 +990,9 @@ Give me a second.
 - I want tea.
 
 244
-00:19:29,125 --> 00:19:30,583
+00:19:29,124 --> 00:19:30,583
 - Hurry up!
-- Tell me the room number...
+- Tell me the room number…
 
 245
 00:19:30,625 --> 00:19:32,750
@@ -1000,7 +1000,7 @@ Give me a second.
 - Give me a second. I'll show you the way.
 
 246
-00:19:32,792 --> 00:19:33,625
+00:19:32,791 --> 00:19:33,625
 Sure, I'll get you tea.
 
 247
@@ -1012,55 +1012,55 @@ Give me a second. I will be right back.
 Take it easy.
 
 249
-00:19:40,792 --> 00:19:43,459
+00:19:40,791 --> 00:19:43,458
 We came to China to shake off those cop dogs.
 
 250
-00:19:43,500 --> 00:19:44,583
+00:19:43,499 --> 00:19:44,583
 You went too far last time!
 
 251
-00:19:44,625 --> 00:19:46,917
+00:19:44,625 --> 00:19:46,916
 I live life to the full.
 
 252
-00:19:48,000 --> 00:19:50,042
+00:19:48,000 --> 00:19:50,041
 C'est la vie.
 
 253
-00:19:50,125 --> 00:19:51,750
+00:19:50,124 --> 00:19:51,750
 There's no other way.
 
 254
-00:19:55,417 --> 00:20:00,000
+00:19:55,416 --> 00:20:00,000
 We've stolen cars, committed burglaries,
 
 255
-00:20:00,042 --> 00:20:01,417
+00:20:00,041 --> 00:20:01,416
 and robbed cash vans.
 
 256
-00:20:02,417 --> 00:20:05,250
+00:20:02,416 --> 00:20:05,249
 We even kidnapped the tycoon's son.
 
 257
-00:20:05,292 --> 00:20:06,792
-Should we do more kidnaps?
+00:20:05,291 --> 00:20:06,791
+Should we do more kidnappings?
 
 258
-00:20:08,750 --> 00:20:10,500
+00:20:08,750 --> 00:20:10,499
 What do you have in mind?
 
 259
-00:20:11,417 --> 00:20:13,459
+00:20:11,416 --> 00:20:13,458
 Spit it out. We can discuss.
 
 260
-00:20:37,042 --> 00:20:39,375
+00:20:37,041 --> 00:20:39,375
 I'm a mountaineer.
 
 261
-00:20:40,042 --> 00:20:41,709
+00:20:40,041 --> 00:20:41,708
 After conquering one mountain,
 
 262
@@ -1068,15 +1068,15 @@ After conquering one mountain,
 I need to find a higher and harder mountain.
 
 263
-00:20:46,292 --> 00:20:47,875
+00:20:46,291 --> 00:20:47,874
 That's it.
 
 264
-00:20:50,583 --> 00:20:52,125
+00:20:50,583 --> 00:20:52,124
 Before finding that mountain,
 
 265
-00:20:52,167 --> 00:20:54,042
+00:20:52,166 --> 00:20:54,041
 let's find the money first.
 
 266
@@ -1084,25 +1084,25 @@ let's find the money first.
 Let's keep doing it.
 
 267
-00:20:58,167 --> 00:21:00,500
+00:20:58,166 --> 00:21:00,499
 Cheng, 53 years old.
 
 268
-00:21:00,542 --> 00:21:03,959
+00:21:00,541 --> 00:21:03,958
 No children. His wife is in charge.
 
 269
-00:21:04,708 --> 00:21:08,250
+00:21:04,708 --> 00:21:08,249
 A mobile phone used to cost over RMB¥10K.
 Who could afford that?
 
 270
-00:21:08,292 --> 00:21:10,959
+00:21:08,291 --> 00:21:10,958
 Not everyone is a child of
 a high-ranking official.
 
 271
-00:21:12,542 --> 00:21:14,667
+00:21:12,541 --> 00:21:14,666
 Now the cheaper, the better.
 
 272
@@ -1110,11 +1110,11 @@ Now the cheaper, the better.
 We have a population of 10 million.
 
 273
-00:21:18,417 --> 00:21:20,875
+00:21:18,416 --> 00:21:20,874
 Say RMB¥1K a set,
 
 274
-00:21:22,792 --> 00:21:25,250
+00:21:22,791 --> 00:21:25,249
 RMB¥10K for 10 sets.
 
 275
@@ -1122,11 +1122,11 @@ RMB¥10K for 10 sets.
 We will be fatter than Chow Yun-fat!
 
 276
-00:21:30,083 --> 00:21:33,875
+00:21:30,083 --> 00:21:33,874
 Beepers are already outdated.
 
 277
-00:21:35,125 --> 00:21:39,708
+00:21:35,124 --> 00:21:39,708
 OK, I'll talk to you later.
 
 278
@@ -1134,20 +1134,20 @@ OK, I'll talk to you later.
 Excuse me, Boss.
 
 279
-00:21:49,083 --> 00:21:50,500
+00:21:49,083 --> 00:21:50,499
 Please go on.
 
 280
-00:21:51,417 --> 00:21:54,875
+00:21:51,416 --> 00:21:54,874
 Don't give us a hard time.
 We're doing small business.
 
 281
-00:21:54,917 --> 00:22:00,000
+00:21:54,916 --> 00:22:00,000
 Big Bro, these kids are great.
 
 282
-00:22:00,750 --> 00:22:02,667
+00:22:00,750 --> 00:22:02,666
 The guy who came in first
 has criminal record in Hong Kong.
 
@@ -1156,19 +1156,19 @@ has criminal record in Hong Kong.
 Don't know why you brought him here.
 
 284
-00:22:05,083 --> 00:22:06,875
+00:22:05,083 --> 00:22:06,874
 I told you to bring some decent-looking guys.
 
 285
-00:22:06,917 --> 00:22:09,625
+00:22:06,916 --> 00:22:09,625
 They all look like criminals and idiots.
 
 286
-00:22:10,167 --> 00:22:13,542
+00:22:10,166 --> 00:22:13,541
 You should be out of business.
 
 287
-00:22:18,708 --> 00:22:20,250
+00:22:18,708 --> 00:22:20,249
 What is he staring at?
 
 288
@@ -1180,7 +1180,7 @@ He is smart and helpful
 I don't want the guy in blue either.
 
 290
-00:22:33,292 --> 00:22:35,167
+00:22:33,291 --> 00:22:35,166
 You only need two men this time?
 
 291
@@ -1188,31 +1188,31 @@ You only need two men this time?
 Take the others to broaden their horizons.
 
 292
-00:22:44,667 --> 00:22:47,209
+00:22:44,666 --> 00:22:47,208
 Got it!
 
 293
-00:22:47,417 --> 00:22:49,084
+00:22:47,416 --> 00:22:49,083
 Let me see to it.
 
 294
-00:22:50,917 --> 00:22:53,959
+00:22:50,916 --> 00:22:53,958
 What are you fucking looking at?
 
 295
-00:22:54,000 --> 00:22:56,500
+00:22:54,000 --> 00:22:56,499
 You, you, get lost!
 
 296
-00:22:56,542 --> 00:22:59,834
+00:22:56,541 --> 00:22:59,833
 Stop drinking and scram!
 
 297
-00:22:59,875 --> 00:23:02,125
+00:22:59,874 --> 00:23:02,124
 You two come with me.
 
 298
-00:23:06,167 --> 00:23:07,959
+00:23:06,166 --> 00:23:07,958
 Faster.
 
 299
@@ -1220,7 +1220,7 @@ Faster.
 So slow!
 
 300
-00:23:12,375 --> 00:23:13,667
+00:23:12,375 --> 00:23:13,666
 Big Bro Chiu,
 
 301
@@ -1232,35 +1232,35 @@ Wang Lei.
 Hong Qi.
 
 303
-00:23:16,125 --> 00:23:17,125
+00:23:16,124 --> 00:23:17,124
 Say Big Bro Chiu.
 
 304
-00:23:17,167 --> 00:23:18,084
+00:23:17,166 --> 00:23:18,083
 Big Bro Chiu!
 
 305
-00:23:19,542 --> 00:23:20,459
+00:23:19,541 --> 00:23:20,458
 They understand Cantonese?
 
 306
-00:23:20,500 --> 00:23:23,375
+00:23:20,499 --> 00:23:23,375
 Of course!
 
 307
-00:23:24,583 --> 00:23:27,500
+00:23:24,583 --> 00:23:27,499
 Come have a drink.
 
 308
-00:23:27,833 --> 00:23:29,250
+00:23:27,833 --> 00:23:29,249
 Spruce them up before sending them to Hong Kong.
 
 309
-00:23:29,292 --> 00:23:31,750
+00:23:29,291 --> 00:23:31,750
 Sure will!
 
 310
-00:23:46,292 --> 00:23:47,542
+00:23:46,291 --> 00:23:47,541
 Motherfucker.
 
 311
@@ -1272,7 +1272,7 @@ Sit and eat.
 Commander,
 
 313
-00:23:54,250 --> 00:23:56,042
+00:23:54,249 --> 00:23:56,041
 who's this Big Bro Chiu?
 
 314
@@ -1280,7 +1280,7 @@ who's this Big Bro Chiu?
 Who cares if he is Big Bro Chiu or not?
 
 315
-00:24:04,125 --> 00:24:05,667
+00:24:04,124 --> 00:24:05,666
 He is a douchebag.
 
 316
@@ -1288,7 +1288,7 @@ He is a douchebag.
 He is a sly,
 
 317
-00:24:07,417 --> 00:24:09,500
+00:24:07,416 --> 00:24:09,499
 old fox who changes identities.
 
 318
@@ -1296,23 +1296,23 @@ old fox who changes identities.
 He looks fucking like Kwai Ching-hung,
 
 319
-00:24:14,667 --> 00:24:16,459
+00:24:14,666 --> 00:24:16,458
 the invisible King of Thieves in Hong Kong.
 
 320
-00:24:17,292 --> 00:24:20,084
+00:24:17,291 --> 00:24:20,083
 Kwai Ching-hung disappeared
 
 321
-00:24:20,125 --> 00:24:21,708
+00:24:20,124 --> 00:24:21,708
 after killing cops.
 
 322
-00:24:21,792 --> 00:24:24,542
+00:24:21,791 --> 00:24:24,541
 Then Big Bro Chiu popped up.
 
 323
-00:24:24,583 --> 00:24:28,500
+00:24:24,583 --> 00:24:28,499
 Big Bro Chiu is just a name.
 
 324
@@ -1320,7 +1320,7 @@ Big Bro Chiu is just a name.
 Is Fai here?
 
 325
-00:24:52,417 --> 00:24:53,959
+00:24:52,416 --> 00:24:53,958
 Fai.
 
 326
@@ -1328,16 +1328,16 @@ Fai.
 What's up?
 
 327
-00:24:55,583 --> 00:24:57,250
+00:24:55,583 --> 00:24:57,249
 - Someone is looking for you.
-- Hey.
+    - Hey.
 
 328
-00:24:59,500 --> 00:25:00,792
+00:24:59,499 --> 00:25:00,791
 Bro Coke?
 
 329
-00:25:01,500 --> 00:25:02,292
+00:25:01,499 --> 00:25:02,291
 Hey!
 
 330
@@ -1346,10 +1346,10 @@ She's Thai?
 
 331
 00:25:03,083 --> 00:25:04,458
-Noon, go buy a dozen of Cokes.
+Noon, go buy a dozen Cokes.
 
 332
-00:25:04,542 --> 00:25:05,709
+00:25:04,541 --> 00:25:05,708
 When did you come back?
 
 333
@@ -1357,55 +1357,55 @@ When did you come back?
 Just now.
 
 334
-00:25:07,708 --> 00:25:10,250
+00:25:07,708 --> 00:25:10,249
 You are too kind. Come in and have a seat.
 
 335
-00:25:10,292 --> 00:25:11,167
+00:25:10,291 --> 00:25:11,166
 Did you just speak Thai?
 
 336
-00:25:11,292 --> 00:25:13,417
+00:25:11,291 --> 00:25:13,416
 Do you think I speak French?
 
 337
-00:25:31,167 --> 00:25:32,334
+00:25:31,166 --> 00:25:32,333
 You stink!
 
 338
-00:25:32,375 --> 00:25:33,875
+00:25:32,375 --> 00:25:33,874
 Really?
 
 339
-00:25:34,083 --> 00:25:35,125
+00:25:34,083 --> 00:25:35,124
 Bo.
 
 340
-00:25:35,167 --> 00:25:36,834
+00:25:35,166 --> 00:25:36,833
 How can you be so rude?
 
 341
-00:25:36,917 --> 00:25:38,709
+00:25:36,916 --> 00:25:38,708
 Come help set the table.
 
 342
-00:25:39,250 --> 00:25:40,792
+00:25:39,249 --> 00:25:40,791
 Dinner will be served soon.
 
 343
-00:25:41,583 --> 00:25:42,875
+00:25:41,583 --> 00:25:42,874
 Naughty girl.
 
 344
-00:25:43,167 --> 00:25:43,959
+00:25:43,166 --> 00:25:43,958
 Go wash your hands.
 
 345
-00:25:44,000 --> 00:25:45,500
+00:25:44,000 --> 00:25:45,499
 I did wash my hands.
 
 346
-00:25:46,250 --> 00:25:49,500
+00:25:46,249 --> 00:25:49,499
 You ate yesterday. Are you going to eat today?
 
 347
@@ -1413,7 +1413,7 @@ You ate yesterday. Are you going to eat today?
 Bo, slow down. Don't rush.
 
 348
-00:25:53,875 --> 00:25:55,292
+00:25:53,874 --> 00:25:55,291
 Bro Coke.
 
 349
@@ -1429,7 +1429,7 @@ Shall we share it?
 Don't let her drink it.
 
 352
-00:26:03,042 --> 00:26:05,417
+00:26:03,041 --> 00:26:05,416
 She was coughing.
 I don't wanna spend money on meds.
 
@@ -1438,11 +1438,11 @@ I don't wanna spend money on meds.
 I wasn't coughing. I just had a fever.
 
 354
-00:26:07,417 --> 00:26:09,084
+00:26:07,416 --> 00:26:09,083
 It's all right to have a sip.
 
 355
-00:26:09,167 --> 00:26:11,167
+00:26:09,166 --> 00:26:11,166
 Not coughing? You are being cheeky!
 
 356
@@ -1458,15 +1458,15 @@ Fai, I'm not gonna eat. I'm running late.
 You're going now?
 
 359
-00:26:25,292 --> 00:26:26,000
+00:26:25,291 --> 00:26:26,000
 Yes.
 
 360
-00:26:29,875 --> 00:26:31,833
+00:26:29,874 --> 00:26:31,833
 Be a good girl.
 
 361
-00:26:34,917 --> 00:26:36,500
+00:26:34,916 --> 00:26:36,499
 Bro Coke, dig in.
 
 362
@@ -1474,19 +1474,19 @@ Bro Coke, dig in.
 She's not eating with us?
 
 363
-00:26:38,417 --> 00:26:40,334
+00:26:38,416 --> 00:26:40,333
 She has to work night shift.
 
 364
-00:26:43,417 --> 00:26:45,334
+00:26:43,416 --> 00:26:45,333
 She's a legit masseuse.
 
 365
-00:26:46,542 --> 00:26:48,084
+00:26:46,541 --> 00:26:48,083
 Eat some barbecued pork.
 
 366
-00:26:48,417 --> 00:26:50,042
+00:26:48,416 --> 00:26:50,041
 Bo, eat some veggies.
 
 367
@@ -1494,7 +1494,7 @@ Bo, eat some veggies.
 You seldom eat veggies.
 
 368
-00:26:54,042 --> 00:26:55,917
+00:26:54,041 --> 00:26:55,916
 Shall we go to Ocean Park?
 
 369
@@ -1502,15 +1502,15 @@ Shall we go to Ocean Park?
 Shall we ride the roller coaster?
 
 370
-00:27:04,667 --> 00:27:08,209
+00:27:04,666 --> 00:27:08,208
 Shall we fly higher and farther?
 
 371
-00:27:08,250 --> 00:27:12,292
+00:27:08,249 --> 00:27:12,291
 Tickle, tickle.
 
 372
-00:27:16,792 --> 00:27:18,709
+00:27:16,791 --> 00:27:18,708
 Stop making noise, or the landlady will be nasty.
 
 373
@@ -1522,15 +1522,15 @@ She's nasty because you haven't paid the rent.
 You're being cheeky. Come down.
 
 375
-00:27:22,500 --> 00:27:25,167
+00:27:22,499 --> 00:27:25,166
 What a dragon lady, arguing with your father!
 
 376
-00:27:25,583 --> 00:27:28,500
+00:27:25,583 --> 00:27:28,499
 This girl plays too much! Wear your slippers.
 
 377
-00:27:28,542 --> 00:27:31,584
+00:27:28,541 --> 00:27:31,583
 Have you finished your homework? Homework first.
 
 378
@@ -1538,16 +1538,16 @@ Have you finished your homework? Homework first.
 Quick!
 
 379
-00:27:34,167 --> 00:27:35,959
+00:27:34,166 --> 00:27:35,958
 - I'll spank you.
 - Good girl.
 
 380
-00:27:36,917 --> 00:27:38,792
+00:27:36,916 --> 00:27:38,791
 This naughty girl!
 
 381
-00:27:41,292 --> 00:27:42,584
+00:27:41,291 --> 00:27:42,583
 I've quit smoking.
 
 382
@@ -1559,35 +1559,35 @@ Quit?
 I've quit smoking.
 
 384
-00:27:44,667 --> 00:27:46,000
-"Whoring, gambling, drinking, roaming...
+00:27:44,666 --> 00:27:46,000
+"Whoring, gambling, drinking, roaming…
 
 385
 00:27:46,083 --> 00:27:47,708
 and smoking are the hobbies of a king."
 
 386
-00:27:47,750 --> 00:27:49,292
+00:27:47,750 --> 00:27:49,291
 Your mantra.
 
 387
-00:27:52,208 --> 00:27:54,875
+00:27:52,208 --> 00:27:54,874
 I'm on dialysis. I have to quit.
 
 388
-00:27:55,917 --> 00:27:57,125
+00:27:55,916 --> 00:27:57,124
 Told you you're impotent.
 
 389
-00:27:57,167 --> 00:27:58,209
+00:27:57,166 --> 00:27:58,208
 You feel dizzy when you squat.
 
 390
-00:27:58,250 --> 00:27:59,292
+00:27:58,249 --> 00:27:59,291
 Fuck!
 
 391
-00:28:00,792 --> 00:28:02,375
+00:28:00,791 --> 00:28:02,375
 What have you been up to?
 
 392
@@ -1599,19 +1599,19 @@ What can I do?
 I used to do temporary construction work.
 
 394
-00:28:06,500 --> 00:28:07,750
+00:28:06,499 --> 00:28:07,750
 Now I'm a full-time babysitter.
 
 395
-00:28:07,792 --> 00:28:09,500
+00:28:07,791 --> 00:28:09,499
 What about you?
 
 396
-00:28:09,542 --> 00:28:10,542
+00:28:09,541 --> 00:28:10,541
 Me?
 
 397
-00:28:11,250 --> 00:28:13,375
+00:28:11,249 --> 00:28:13,375
 I sell this in China.
 
 398
@@ -1619,16 +1619,16 @@ I sell this in China.
 People won't use beepers anymore.
 
 399
-00:28:17,042 --> 00:28:18,834
+00:28:17,041 --> 00:28:18,833
 Every Chinese will own
 a mobile phone in the future.
 
 400
-00:28:18,875 --> 00:28:21,583
+00:28:18,874 --> 00:28:21,583
 One sells for RMB¥1K, 10 for RMB¥10K.
 
 401
-00:28:21,625 --> 00:28:22,875
+00:28:21,625 --> 00:28:22,874
 I'll be fatter than Chow Yun-fat.
 
 402
@@ -1636,7 +1636,7 @@ I'll be fatter than Chow Yun-fat.
 Fat with loads of money?
 
 403
-00:28:25,125 --> 00:28:27,417
+00:28:25,124 --> 00:28:27,416
 Great.
 
 404
@@ -1644,7 +1644,7 @@ Great.
 You're doing great. You're becoming a boss.
 
 405
-00:28:34,917 --> 00:28:39,792
+00:28:34,916 --> 00:28:39,791
 Going straight is better than going astray.
 
 406
@@ -1652,7 +1652,7 @@ Going straight is better than going astray.
 We're not fierce enough to be Kings of Thieves.
 
 407
-00:28:42,750 --> 00:28:45,417
+00:28:42,750 --> 00:28:45,416
 All we did were some petty crimes.
 
 408
@@ -1660,16 +1660,16 @@ All we did were some petty crimes.
 Our life was insecure. We couldn't sleep well.
 
 409
-00:28:49,667 --> 00:28:53,125
+00:28:49,666 --> 00:28:53,124
 And we didn't earn that much.
 So what's the point?
 
 410
-00:28:59,417 --> 00:29:01,209
+00:28:59,416 --> 00:29:01,208
 I'd like to stay here for a few days.
 
 411
-00:29:01,250 --> 00:29:01,958
+00:29:01,249 --> 00:29:01,958
 What?
 
 412
@@ -1677,19 +1677,19 @@ What?
 I can sleep on the couch.
 
 413
-00:29:04,792 --> 00:29:05,625
+00:29:04,791 --> 00:29:05,625
 What's that for?
 
 414
-00:29:05,667 --> 00:29:09,500
+00:29:05,666 --> 00:29:09,499
 Take it. It will lessen your wife's burden.
 
 415
-00:29:10,917 --> 00:29:14,375
+00:29:10,916 --> 00:29:14,375
 Dad, I can't find my school manual!
 
 416
-00:29:15,000 --> 00:29:16,417
+00:29:15,000 --> 00:29:16,416
 Dad, Dad.
 
 417
@@ -1701,15 +1701,15 @@ Coming!
 That's fine
 
 419
-00:29:36,250 --> 00:29:38,750
+00:29:36,249 --> 00:29:38,750
 (Gold shop)
 
 420
-00:29:49,292 --> 00:29:52,417
+00:29:49,291 --> 00:29:52,416
 (Jockey Club)
 
 421
-00:29:52,500 --> 00:29:55,250
+00:29:52,499 --> 00:29:55,249
 Panyu Yi Fa Market
 
 422
@@ -1721,23 +1721,23 @@ Panyu Yi Fa Market
 Plus 80 VCD players. RMB¥4K a piece.
 
 424
-00:30:02,542 --> 00:30:04,209
+00:30:02,541 --> 00:30:04,208
 RMB¥680K, thank you.
 
 425
-00:30:07,250 --> 00:30:09,125
+00:30:07,249 --> 00:30:09,124
 You pay me RMB¥700K.
 
 426
-00:30:09,667 --> 00:30:10,875
+00:30:09,666 --> 00:30:10,874
 I will notify you once the goods are delivered.
 
 427
-00:30:10,917 --> 00:30:12,042
+00:30:10,916 --> 00:30:12,041
 Next.
 
 428
-00:30:12,125 --> 00:30:15,333
+00:30:12,124 --> 00:30:15,333
 RMB¥30K for Chief Chen. Please count it.
 
 429
@@ -1749,27 +1749,27 @@ Business License
 RMB¥30K. The amount is correct.
 
 431
-00:30:37,375 --> 00:30:39,125
+00:30:37,375 --> 00:30:39,124
 Will notify you once the goods are onboard.
 
 432
-00:30:41,250 --> 00:30:43,292
+00:30:41,249 --> 00:30:43,291
 Please extend my thanks to Chief Chen.
 
 433
-00:30:44,333 --> 00:30:47,875
+00:30:44,333 --> 00:30:47,874
 My VCD player is broken.
 
 434
-00:30:47,917 --> 00:30:49,959
+00:30:47,916 --> 00:30:49,958
 I'll give you a new one. Kam.
 
 435
-00:30:50,000 --> 00:30:50,917
+00:30:50,000 --> 00:30:50,916
 Yes.
 
 436
-00:30:52,500 --> 00:30:55,792
+00:30:52,499 --> 00:30:55,791
 The latest 33-inch TV set.
 
 437
@@ -1777,7 +1777,7 @@ The latest 33-inch TV set.
 Good stuff.
 
 438
-00:30:57,250 --> 00:30:58,583
+00:30:57,249 --> 00:30:58,583
 I'll give it to you, too.
 
 439
@@ -1785,11 +1785,11 @@ I'll give it to you, too.
 Thanks so much, Boss Zhang.
 
 440
-00:31:00,125 --> 00:31:01,167
+00:31:00,124 --> 00:31:01,166
 You're welcome.
 
 441
-00:31:02,875 --> 00:31:05,542
+00:31:02,874 --> 00:31:05,541
 Gui, Guang, a 33-inch TV set and a VCD player.
 
 442
@@ -1797,7 +1797,7 @@ Gui, Guang, a 33-inch TV set and a VCD player.
 Gui, Guang, a 33-inch TV set and a VCD player.
 
 443
-00:31:07,125 --> 00:31:08,458
+00:31:07,124 --> 00:31:08,458
 Sure.
 
 444
@@ -1809,7 +1809,7 @@ Da-bao Electronics
 She is greedy.
 
 446
-00:31:16,542 --> 00:31:18,334
+00:31:16,541 --> 00:31:18,333
 That's business.
 
 447
@@ -1830,7 +1830,7 @@ No worries. They will take care of it.
 - What's wrong?
 
 451
-00:31:26,542 --> 00:31:28,250
+00:31:26,541 --> 00:31:28,249
 Boss Zhang.
 
 452
@@ -1854,7 +1854,7 @@ Close the door.
 Want to play tough guy? Call your wife now.
 
 457
-00:31:57,875 --> 00:31:59,458
+00:31:57,874 --> 00:31:59,458
 Call your wife now.
 
 458
@@ -1862,19 +1862,19 @@ Call your wife now.
 Tell your folks you're OK, asshole.
 
 459
-00:32:01,042 --> 00:32:03,125
+00:32:01,041 --> 00:32:03,124
 If you kill me, you won't get a cent.
 
 460
-00:32:03,167 --> 00:32:04,792
+00:32:03,166 --> 00:32:04,791
 Are you threatening me?
 
 461
-00:32:09,042 --> 00:32:10,875
+00:32:09,041 --> 00:32:10,874
 Cheuk, be patient.
 
 462
-00:32:10,917 --> 00:32:13,334
+00:32:10,916 --> 00:32:13,333
 If he doesn't talk, don't give him food or water.
 
 463
@@ -1886,7 +1886,7 @@ You're so noisy.
 Hey, what are you doing?
 
 465
-00:32:25,500 --> 00:32:27,542
+00:32:25,499 --> 00:32:27,541
 Get him back! Get him back!
 
 466
@@ -1894,7 +1894,7 @@ Get him back! Get him back!
 This is the gold shop.
 
 467
-00:32:30,125 --> 00:32:32,167
+00:32:30,124 --> 00:32:32,166
 Usually there's a police wagon at the entrance.
 
 468
@@ -1902,26 +1902,26 @@ Usually there's a police wagon at the entrance.
 Jockey Club is across the street.
 
 469
-00:32:34,125 --> 00:32:36,292
+00:32:34,124 --> 00:32:36,291
 We keep a close eye on the police wagon.
 
 470
-00:32:36,333 --> 00:32:40,250
-As soon as it leaves at 8pm,
+00:32:36,333 --> 00:32:40,249
+As soon as it leaves at 8 PM,
 we rob the gold shop right away.
 
 471
-00:32:40,750 --> 00:32:43,250
+00:32:40,750 --> 00:32:43,249
 It's the racing night. It will be crowded.
-After it's done...
+After it's done…
 
 472
-00:32:43,292 --> 00:32:45,542
+00:32:43,291 --> 00:32:45,541
 - There's not much money in this.
 - Follow me closely.
 
 473
-00:32:47,042 --> 00:32:48,167
+00:32:47,041 --> 00:32:48,166
 What did you just say?
 
 474
@@ -1929,20 +1929,20 @@ What did you just say?
 You've committed big crimes.
 
 475
-00:32:52,542 --> 00:32:55,167
+00:32:52,541 --> 00:32:55,166
 Why pick this small gold shop?
 
 476
-00:32:55,208 --> 00:32:56,250
+00:32:55,208 --> 00:32:56,249
 Yes,
 
 477
-00:32:56,292 --> 00:32:59,584
+00:32:56,291 --> 00:32:59,583
 I've heard the 3 Kings
 of Thieves would join forces.
 
 478
-00:32:59,792 --> 00:33:02,292
+00:32:59,791 --> 00:33:02,291
 At least millions of dollars will be involved.
 
 479
@@ -1950,28 +1950,28 @@ At least millions of dollars will be involved.
 What 3 Kings of Thieves?
 
 480
-00:33:05,667 --> 00:33:07,042
+00:33:05,666 --> 00:33:07,041
 Say it!
 
 481
-00:33:08,042 --> 00:33:11,625
+00:33:08,041 --> 00:33:11,625
 Bro Foon, are you making a comeback?
 
 482
-00:33:11,750 --> 00:33:14,250
+00:33:11,750 --> 00:33:14,249
 This time with Cheuk Tze-keung
 and Kwai Ching-hung.
 
 483
-00:33:14,292 --> 00:33:18,875
+00:33:14,291 --> 00:33:18,874
 The 3 Kings of Thieves are collaborating?
 
 484
-00:33:19,792 --> 00:33:22,167
+00:33:19,791 --> 00:33:22,166
 Someone has seen you three meeting in China.
 
 485
-00:33:23,625 --> 00:33:25,250
+00:33:23,625 --> 00:33:25,249
 Where did you hear this?
 
 486
@@ -1979,7 +1979,7 @@ Where did you hear this?
 Everyone is saying that.
 
 487
-00:33:27,792 --> 00:33:29,334
+00:33:27,791 --> 00:33:29,333
 And you believe it?
 
 488
@@ -1992,16 +1992,16 @@ make money by toting guns?
 If I'm Kwai,
 
 490
-00:33:35,042 --> 00:33:36,375
+00:33:35,041 --> 00:33:36,375
 I don't have
 to eat lunch boxes with you.
 
 491
-00:33:38,167 --> 00:33:39,709
+00:33:38,166 --> 00:33:39,708
 Idiots.
 
 492
-00:33:42,167 --> 00:33:43,709
+00:33:42,166 --> 00:33:43,708
 That's ridiculous!
 
 493
@@ -2009,7 +2009,7 @@ That's ridiculous!
 Yip is all noise and fury.
 
 494
-00:33:45,625 --> 00:33:47,292
+00:33:45,625 --> 00:33:47,291
 Kwai is hush and shush.
 
 495
@@ -2021,7 +2021,7 @@ We are so different. How can it work?
 Smuggle more goods with me.
 
 497
-00:33:51,792 --> 00:33:53,625
+00:33:51,791 --> 00:33:53,625
 Let's make more money together!
 
 498
@@ -2029,35 +2029,35 @@ Let's make more money together!
 Got it.
 
 499
-00:33:56,042 --> 00:33:57,125
+00:33:56,041 --> 00:33:57,124
 Brilliant!
 
 500
-00:33:57,167 --> 00:34:01,209
+00:33:57,166 --> 00:34:01,208
 Sometimes I feel like toting my gun again.
 
 501
-00:34:01,250 --> 00:34:02,875
+00:34:01,249 --> 00:34:02,874
 Robbery! Robbery!
 
 502
-00:34:02,917 --> 00:34:04,000
+00:34:02,916 --> 00:34:04,000
 That's so cool!
 
 503
-00:34:04,042 --> 00:34:05,375
+00:34:04,041 --> 00:34:05,375
 You call that cool?
 
 504
-00:34:05,875 --> 00:34:07,958
+00:34:05,874 --> 00:34:07,958
 Big Bro wielding AK-47 is cool!
 
 505
-00:34:08,750 --> 00:34:10,167
+00:34:08,750 --> 00:34:10,166
 Not like this.
 
 506
-00:34:10,667 --> 00:34:12,167
+00:34:10,666 --> 00:34:12,166
 AK-47 recoil is powerful.
 
 507
@@ -2065,7 +2065,7 @@ AK-47 recoil is powerful.
 Don't hold it.
 
 508
-00:34:13,500 --> 00:34:14,583
+00:34:13,499 --> 00:34:14,583
 Press it.
 
 509
@@ -2077,7 +2077,7 @@ Stand firm.
 Shoot the hell out of him.
 
 511
-00:34:27,083 --> 00:34:30,250
+00:34:27,083 --> 00:34:30,249
 What the fuck?! Join me
 
 512
@@ -2093,7 +2093,7 @@ Big Bro Chiu,
 how much can we earn from robbing this gold shop?
 
 515
-00:34:50,625 --> 00:34:51,417
+00:34:50,625 --> 00:34:51,416
 You're calling or not?
 
 516
@@ -2101,7 +2101,7 @@ You're calling or not?
 If the 3 Kings of Thieves join forces,
 
 517
-00:34:55,375 --> 00:34:57,167
+00:34:55,375 --> 00:34:57,166
 even if we open a fish ball stall together,
 
 518
@@ -2109,47 +2109,47 @@ even if we open a fish ball stall together,
 we will create a stir, right?
 
 519
-00:35:00,042 --> 00:35:02,000
+00:35:00,041 --> 00:35:02,000
 What shall I call our stall?
 
 520
-00:35:02,042 --> 00:35:03,292
+00:35:02,041 --> 00:35:03,291
 Are you calling your family or not?
 
 521
-00:35:21,375 --> 00:35:23,042
+00:35:21,375 --> 00:35:23,041
 Hey, wake up!
 
 522
-00:35:25,417 --> 00:35:26,625
+00:35:25,416 --> 00:35:26,625
 Gold depository?
 
 523
-00:35:27,167 --> 00:35:28,417
+00:35:27,166 --> 00:35:28,416
 Racecourse?
 
 524
-00:35:33,250 --> 00:35:35,208
+00:35:33,249 --> 00:35:35,208
 Kidnap Hong Kong Governor Chris Patten?
 
 525
-00:35:35,250 --> 00:35:37,125
+00:35:35,249 --> 00:35:37,124
 The Head of Hong Kong and Macau Affairs, Lu Ping?
 
 526
-00:35:37,667 --> 00:35:38,875
+00:35:37,666 --> 00:35:38,874
 No way.
 
 527
-00:36:01,292 --> 00:36:02,334
+00:36:01,291 --> 00:36:02,333
 What are you listening?
 
 528
-00:36:02,417 --> 00:36:04,459
+00:36:02,416 --> 00:36:04,458
 The 4 Heavenly Kings singing on stage together.
 
 529
-00:36:04,500 --> 00:36:05,792
+00:36:04,499 --> 00:36:05,791
 What are they singing?
 
 530
@@ -2161,15 +2161,15 @@ I can't hear a thing. What's so good about it?
 When the 4 Heavenly Kings sing together,
 
 532
-00:36:12,208 --> 00:36:14,125
+00:36:12,208 --> 00:36:14,124
 it's terrific no matter what they sing.
 
 533
-00:36:16,250 --> 00:36:18,958
+00:36:16,249 --> 00:36:18,958
 Water, give me water.
 
 534
-00:36:19,250 --> 00:36:22,167
+00:36:19,249 --> 00:36:22,166
 I will make the call.
 
 535
@@ -2177,11 +2177,11 @@ I will make the call.
 How's my husband? I beg you!
 
 536
-00:36:36,500 --> 00:36:38,833
+00:36:36,499 --> 00:36:38,833
 He's not in good health. Don't hurt him.
 
 537
-00:36:38,875 --> 00:36:42,292
+00:36:38,874 --> 00:36:42,291
 We are not as loaded as it may seem.
 
 538
@@ -2189,11 +2189,11 @@ We are not as loaded as it may seem.
 Mr Cheuk, can you let my husband go?
 
 539
-00:36:44,667 --> 00:36:47,292
-Name a price. I'll pay you from my own pocket...
+00:36:44,666 --> 00:36:47,291
+Name a price. I'll pay you from my own pocket…
 
 540
-00:36:55,042 --> 00:36:56,167
+00:36:55,041 --> 00:36:56,166
 Hello?
 
 541
@@ -2201,7 +2201,7 @@ Hello?
 I have $80M in cash.
 
 542
-00:36:59,375 --> 00:37:00,667
+00:36:59,375 --> 00:37:00,666
 Is it OK?
 
 543
@@ -2209,32 +2209,32 @@ Is it OK?
 $80M it is!
 
 544
-00:37:02,417 --> 00:37:04,375
+00:37:02,416 --> 00:37:04,375
 Find Yip and Kwai!
 
 545
-00:37:07,750 --> 00:37:08,500
+00:37:07,750 --> 00:37:08,499
 What the hell?
 
 546
-00:37:08,542 --> 00:37:10,084
+00:37:08,541 --> 00:37:10,083
 The 3 Kings of Thieves
 join forces for the first time.
 
 547
-00:37:10,125 --> 00:37:12,250
+00:37:10,124 --> 00:37:12,249
 It will be terrific no matter what we do!
 
 548
-00:37:12,542 --> 00:37:13,584
+00:37:12,541 --> 00:37:13,583
 You don't even have a plan yet,
 
 549
-00:37:13,667 --> 00:37:15,209
+00:37:13,666 --> 00:37:15,208
 and you want 2 wanted men around you?
 
 550
-00:37:15,250 --> 00:37:15,958
+00:37:15,249 --> 00:37:15,958
 You know I will
 
 551
@@ -2246,19 +2246,19 @@ come up with a plan!
 This is the mountain I'm looking for.
 
 553
-00:37:20,042 --> 00:37:22,125
+00:37:20,041 --> 00:37:22,124
 Himalaya!
 
 554
-00:37:50,750 --> 00:37:52,250
+00:37:50,750 --> 00:37:52,249
 Having night snack?
 
 555
-00:37:52,542 --> 00:37:53,459
+00:37:52,541 --> 00:37:53,458
 There's Coke in the fridge.
 
 556
-00:37:53,500 --> 00:37:55,208
+00:37:53,499 --> 00:37:55,208
 OK, I'll get it myself.
 
 557
@@ -2266,39 +2266,39 @@ OK, I'll get it myself.
 Fai, how long is your friend staying?
 
 558
-00:38:14,500 --> 00:38:16,292
+00:38:14,499 --> 00:38:16,291
 3 or 4 nights.
 
 559
-00:38:16,625 --> 00:38:18,042
+00:38:16,625 --> 00:38:18,041
 We have a daughter.
 
 560
-00:38:18,083 --> 00:38:19,875
-I don't feel comfortable...
+00:38:18,083 --> 00:38:19,874
+I don't feel comfortable…
 
 561
 00:38:19,958 --> 00:38:21,916
 with a guy suddenly staying with us.
 
 562
-00:38:22,875 --> 00:38:26,208
+00:38:22,874 --> 00:38:26,208
 What does he do?
 
 563
-00:38:27,792 --> 00:38:30,959
+00:38:27,791 --> 00:38:30,958
 He sells mobile phones.
 
 564
-00:38:31,000 --> 00:38:32,417
+00:38:31,000 --> 00:38:32,416
 Don't worry.
 
 565
-00:38:32,917 --> 00:38:34,375
+00:38:32,916 --> 00:38:34,375
 Go to sleep.
 
 566
-00:38:34,417 --> 00:38:34,917
+00:38:34,416 --> 00:38:34,916
 OK.
 
 567
@@ -2306,15 +2306,15 @@ OK.
 I'll go to bed after sewing.
 
 568
-00:38:45,375 --> 00:38:48,250
+00:38:45,375 --> 00:38:48,249
 I will arrive with clients in 3 minutes.
 
 569
-00:38:48,417 --> 00:38:49,750
+00:38:48,416 --> 00:38:49,750
 Got it.
 
 570
-00:38:53,375 --> 00:38:57,125
+00:38:53,375 --> 00:38:57,124
 Gui, Guang, unload the goods. Be quick.
 
 571
@@ -2322,15 +2322,15 @@ Gui, Guang, unload the goods. Be quick.
 Big Bro, we have a situation!
 
 572
-00:39:16,667 --> 00:39:18,500
+00:39:16,666 --> 00:39:18,499
 Panyu Customs!
 
 573
-00:39:19,875 --> 00:39:21,833
+00:39:19,874 --> 00:39:21,833
 Kam! Kam!
 
 574
-00:39:21,875 --> 00:39:23,375
+00:39:21,874 --> 00:39:23,375
 Chung, pull over!
 
 575
@@ -2342,15 +2342,15 @@ Take a look over there.
 Take a look again over there.
 
 577
-00:39:32,792 --> 00:39:34,292
+00:39:32,791 --> 00:39:34,291
 Don't move. Hands on your head.
 
 578
-00:39:34,917 --> 00:39:36,334
+00:39:34,916 --> 00:39:36,333
 Let's go.
 
 579
-00:39:38,417 --> 00:39:39,750
+00:39:38,416 --> 00:39:39,750
 Let's go.
 
 580
@@ -2362,7 +2362,7 @@ What about Kam?
 Find Mr Fong.
 
 582
-00:39:47,292 --> 00:39:50,709
+00:39:47,291 --> 00:39:50,708
 Chinese customs
 
 583
@@ -2370,19 +2370,19 @@ Chinese customs
 Comrade.
 
 584
-00:39:56,125 --> 00:39:57,250
+00:39:56,124 --> 00:39:57,249
 What do you want?
 
 585
-00:39:57,292 --> 00:39:58,834
+00:39:57,291 --> 00:39:58,833
 We're looking for Chief Long.
 
 586
-00:39:58,875 --> 00:40:00,458
+00:39:58,874 --> 00:40:00,458
 We're wondering
 
 587
-00:40:00,500 --> 00:40:04,708
+00:40:00,499 --> 00:40:04,708
 if he can discharge the Lianhuashan goods and men?
 
 588
@@ -2390,7 +2390,7 @@ if he can discharge the Lianhuashan goods and men?
 We know Mr Fong.
 
 589
-00:40:13,542 --> 00:40:15,542
+00:40:13,541 --> 00:40:15,541
 In 4 days, the goods will be confiscated
 
 590
@@ -2398,11 +2398,11 @@ In 4 days, the goods will be confiscated
 and the men will be executed.
 
 591
-00:40:18,542 --> 00:40:20,292
+00:40:18,541 --> 00:40:20,291
 Yes, we understand.
 
 592
-00:40:41,375 --> 00:40:43,292
+00:40:41,375 --> 00:40:43,291
 Chief, someone wants to see you.
 
 593
@@ -2414,12 +2414,12 @@ OK.
 Chief Long is busy today.
 
 595
-00:40:51,375 --> 00:40:52,875
+00:40:51,375 --> 00:40:52,874
 Come again tomorrow.
 
 596
-00:41:09,417 --> 00:41:11,667
-All right. Yes...
+00:41:09,416 --> 00:41:11,666
+All right. Yes…
 
 597
 00:41:16,333 --> 00:41:18,166
@@ -2430,7 +2430,7 @@ Chief Long is not seeing guests today.
 Come again tomorrow.
 
 599
-00:41:19,792 --> 00:41:20,584
+00:41:19,791 --> 00:41:20,583
 Asshole.
 
 600
@@ -2442,15 +2442,15 @@ Who do you think you are?
 You don't want to save Kam anymore?
 
 602
-00:41:27,250 --> 00:41:28,917
+00:41:27,249 --> 00:41:28,916
 Yes, yes.
 
 603
-00:41:34,875 --> 00:41:36,833
+00:41:34,874 --> 00:41:36,833
 Chief Long said he wanted to talk over dinner.
 
 604
-00:41:36,875 --> 00:41:38,583
+00:41:36,874 --> 00:41:38,583
 Find a restaurant and wait for him.
 
 605
@@ -2458,11 +2458,11 @@ Find a restaurant and wait for him.
 Good.
 
 606
-00:41:39,750 --> 00:41:41,792
+00:41:39,750 --> 00:41:41,791
 Fengman Restaurant.
 
 607
-00:41:50,917 --> 00:41:51,584
+00:41:50,916 --> 00:41:51,583
 Hello?
 
 608
@@ -2474,23 +2474,23 @@ I am in Fugui Restaurant with Chief Long.
 Coming right away.
 
 610
-00:41:55,417 --> 00:41:56,459
+00:41:55,416 --> 00:41:56,458
 Let's go.
 
 611
-00:41:56,917 --> 00:41:58,667
+00:41:56,916 --> 00:41:58,666
 Remember to bring a vase.
 
 612
-00:42:00,792 --> 00:42:01,625
+00:42:00,791 --> 00:42:01,625
 Take the vase.
 
 613
-00:42:01,667 --> 00:42:03,000
+00:42:01,666 --> 00:42:03,000
 Quick!
 
 614
-00:42:03,042 --> 00:42:04,209
+00:42:03,041 --> 00:42:04,208
 Okay!
 
 615
@@ -2510,23 +2510,23 @@ He's my buddy.
 Chief Long, nice to meet you.
 
 619
-00:42:17,333 --> 00:42:21,125
+00:42:17,333 --> 00:42:21,124
 I'm an official but you made me wait!
 
 620
-00:42:22,542 --> 00:42:23,459
+00:42:22,541 --> 00:42:23,458
 Sorry,
 
 621
-00:42:23,500 --> 00:42:24,625
+00:42:23,499 --> 00:42:24,625
 I went to Fengman Restaurant.
 
 622
-00:42:24,667 --> 00:42:26,500
+00:42:24,666 --> 00:42:26,499
 Is the food there edible?
 
 623
-00:42:27,167 --> 00:42:29,334
+00:42:27,166 --> 00:42:29,333
 He knows nothing about food!
 
 624
@@ -2534,11 +2534,11 @@ He knows nothing about food!
 Chief Long is a foodie.
 
 625
-00:42:33,125 --> 00:42:34,708
+00:42:33,124 --> 00:42:34,708
 Yes, you're right.
 
 626
-00:42:36,250 --> 00:42:38,958
+00:42:36,249 --> 00:42:38,958
 Chief Long, he's my buddy.
 
 627
@@ -2546,15 +2546,15 @@ Chief Long, he's my buddy.
 Help him this time.
 
 628
-00:42:41,875 --> 00:42:43,458
+00:42:41,874 --> 00:42:43,458
 Thank you.
 
 629
-00:42:43,500 --> 00:42:45,792
+00:42:43,499 --> 00:42:45,791
 He's your buddy, not mine.
 
 630
-00:42:46,042 --> 00:42:50,000
+00:42:46,041 --> 00:42:50,000
 I only help my friends!
 
 631
@@ -2562,23 +2562,23 @@ I only help my friends!
 If we hit it off, we're friends.
 
 632
-00:42:53,500 --> 00:42:54,625
+00:42:53,499 --> 00:42:54,625
 I'm hungry!
 
 633
-00:42:54,667 --> 00:42:55,375
+00:42:54,666 --> 00:42:55,375
 Let's order first.
 
 634
-00:42:55,417 --> 00:42:57,750
+00:42:55,416 --> 00:42:57,750
 Yes, let's order.
 
 635
-00:42:58,625 --> 00:43:00,125
+00:42:58,625 --> 00:43:00,124
 What would you like?
 
 636
-00:43:00,167 --> 00:43:00,792
+00:43:00,166 --> 00:43:00,791
 What would you like?
 
 637
@@ -2590,23 +2590,23 @@ Braised pork with preserved vegetables.
 It's not refined enough for me.
 
 639
-00:43:05,375 --> 00:43:06,542
+00:43:05,375 --> 00:43:06,541
 Let's order delicacies.
 
 640
-00:43:06,583 --> 00:43:08,125
+00:43:06,583 --> 00:43:08,124
 Waiter!
 
 641
-00:43:15,417 --> 00:43:17,000
+00:43:15,416 --> 00:43:17,000
 Thanks a lot.
 
 642
-00:43:19,375 --> 00:43:22,125
+00:43:19,375 --> 00:43:22,124
 What's your name?
 
 643
-00:43:22,167 --> 00:43:23,625
+00:43:22,166 --> 00:43:23,625
 Boss Zhang.
 
 644
@@ -2614,7 +2614,7 @@ Boss Zhang.
 Boss Zhang, right?
 
 645
-00:43:26,375 --> 00:43:29,792
+00:43:26,375 --> 00:43:29,791
 You're a fun guy! A fun guy!
 
 646
@@ -2626,7 +2626,7 @@ Thank you.
 Chief Long, thanks for your help.
 
 648
-00:43:35,500 --> 00:43:39,792
+00:43:35,499 --> 00:43:39,791
 Let's sing karaoke first.
 
 649
@@ -2638,7 +2638,7 @@ OK, karaoke first.
 Chung
 
 651
-00:43:44,792 --> 00:43:46,959
+00:43:44,791 --> 00:43:46,958
 Give me name cards of karaoke bars and the phone.
 
 652
@@ -2647,7 +2647,7 @@ Let's go for more fun.
 
 653
 00:43:48,000 --> 00:43:50,208
-I can't...
+I can't…
 
 654
 00:43:52,083 --> 00:43:53,916
@@ -2662,15 +2662,15 @@ It's good to take a bath.
 Find a sauna.
 
 657
-00:44:01,708 --> 00:44:04,125
+00:44:01,708 --> 00:44:04,124
 Don't forget the vase.
 
 658
-00:44:04,167 --> 00:44:05,584
+00:44:04,166 --> 00:44:05,583
 Yes.
 
 659
-00:44:14,792 --> 00:44:17,792
+00:44:14,791 --> 00:44:17,791
 Chinese customs
 
 660
@@ -2679,11 +2679,11 @@ Thanks to connections,
 I didn't need to rot in jail.
 
 661
-00:44:20,875 --> 00:44:22,375
+00:44:20,874 --> 00:44:22,375
 We stayed in a motel,
 
 662
-00:44:22,417 --> 00:44:24,917
+00:44:22,416 --> 00:44:24,916
 with a bed, TV, OK food,
 
 663
@@ -2691,15 +2691,15 @@ with a bed, TV, OK food,
 though no whores!
 
 664
-00:44:26,708 --> 00:44:28,250
+00:44:26,708 --> 00:44:28,249
 It's not bad, huh? What do you say?
 
 665
-00:44:28,292 --> 00:44:29,667
+00:44:28,291 --> 00:44:29,666
 Yes, yes.
 
 666
-00:44:32,042 --> 00:44:34,959
+00:44:32,041 --> 00:44:34,958
 Asshole, you didn't need to carouse
 with those officials!
 
@@ -2708,23 +2708,23 @@ with those officials!
 Don't complain about carousing,
 
 668
-00:44:37,250 --> 00:44:38,750
+00:44:37,249 --> 00:44:38,750
 for money's sake.
 
 669
-00:44:42,125 --> 00:44:43,875
+00:44:42,124 --> 00:44:43,874
 Hey! Come here.
 
 670
-00:44:43,917 --> 00:44:45,667
+00:44:43,916 --> 00:44:45,666
 Our goods!
 
 671
-00:44:51,917 --> 00:44:53,250
+00:44:51,916 --> 00:44:53,249
 Come.
 
 672
-00:44:53,917 --> 00:44:57,792
+00:44:53,916 --> 00:44:57,791
 Your goods are here.
 
 673
@@ -2732,19 +2732,19 @@ Your goods are here.
 Take a look. Any problems?
 
 674
-00:44:59,667 --> 00:45:02,125
+00:44:59,666 --> 00:45:02,124
 Thanks so much.
 
 675
-00:45:02,167 --> 00:45:04,125
+00:45:02,166 --> 00:45:04,124
 Let me take a look.
 
 676
-00:45:04,167 --> 00:45:08,542
+00:45:04,166 --> 00:45:08,541
 Sign here if there's no problem.
 
 677
-00:45:08,583 --> 00:45:10,125
+00:45:08,583 --> 00:45:10,124
 Thanks so much.
 
 678
@@ -2764,11 +2764,11 @@ in the police station?
 No news about Yip in China?
 
 682
-00:47:54,708 --> 00:47:57,250
+00:47:54,708 --> 00:47:57,249
 What about his underlings? His fences?
 
 683
-00:47:57,292 --> 00:48:00,834
+00:47:57,291 --> 00:48:00,833
 His fellow illegal immigrants? His village mates?
 
 684
@@ -2780,39 +2780,39 @@ Can't find them?
 Nothing at all?
 
 686
-00:48:09,667 --> 00:48:10,875
+00:48:09,666 --> 00:48:10,874
 Good.
 
 687
-00:48:12,250 --> 00:48:13,625
+00:48:12,249 --> 00:48:13,625
 Good.
 
 688
-00:48:23,542 --> 00:48:24,917
+00:48:23,541 --> 00:48:24,916
 Fuck you!
 
 689
-00:48:25,417 --> 00:48:27,334
+00:48:25,416 --> 00:48:27,333
 Fuck you!
 
 690
-00:48:28,917 --> 00:48:31,375
+00:48:28,916 --> 00:48:31,375
 The cops have offered a $1M reward on him.
 
 691
-00:48:31,417 --> 00:48:32,917
+00:48:31,416 --> 00:48:32,916
 But there's no news over these years.
 
 692
-00:48:33,000 --> 00:48:35,500
+00:48:33,000 --> 00:48:35,499
 Give me some time.
 
 693
-00:48:35,542 --> 00:48:37,667
+00:48:35,541 --> 00:48:37,666
 Reward money is a good idea.
 
 694
-00:48:39,167 --> 00:48:41,667
+00:48:39,166 --> 00:48:41,666
 The cops offer $1M; I'll up it to $10M!
 
 695
@@ -2820,15 +2820,15 @@ The cops offer $1M; I'll up it to $10M!
 If it's not enough, then $100M!
 
 696
-00:48:44,042 --> 00:48:45,834
+00:48:44,041 --> 00:48:45,833
 I'll set up a special phone line.
 
 697
-00:48:45,875 --> 00:48:49,292
+00:48:45,874 --> 00:48:49,291
 Whoever knows their whereabouts will get the money.
 
 698
-00:48:50,750 --> 00:48:53,417
+00:48:50,750 --> 00:48:53,416
 So brazenly? The cops will tap the phone.
 
 699
@@ -2837,12 +2837,12 @@ Those assholes will prevent the 3 Kings
 from meeting up.
 
 700
-00:48:55,500 --> 00:48:57,167
+00:48:55,499 --> 00:48:57,166
 Those assholes will prevent the 3 Kings
 from meeting up.
 
 701
-00:48:57,542 --> 00:48:59,084
+00:48:57,541 --> 00:48:59,083
 Not necessarily.
 
 702
@@ -2854,19 +2854,19 @@ The cops want them too.
 They will send loads of people after us.
 
 704
-00:49:04,792 --> 00:49:07,042
+00:49:04,791 --> 00:49:07,041
 Find a way to shake them off.
 
 705
-00:49:14,917 --> 00:49:15,375
+00:49:14,916 --> 00:49:15,375
 Hello?
 
 706
-00:49:15,417 --> 00:49:15,792
+00:49:15,416 --> 00:49:15,791
 Hello?
 
 707
-00:49:15,875 --> 00:49:16,792
+00:49:15,874 --> 00:49:16,791
 Are you Cheuk?
 
 708
@@ -2874,24 +2874,24 @@ Are you Cheuk?
 Yes.
 
 709
-00:49:22,000 --> 00:49:24,167
+00:49:22,000 --> 00:49:24,166
 Noon tomorrow. Bring a purple umbrella
 to Temple Street.
 
 710
-00:49:24,208 --> 00:49:25,500
+00:49:24,208 --> 00:49:25,499
 I'll have you picked up.
 
 711
-00:49:26,292 --> 00:49:27,417
+00:49:26,291 --> 00:49:27,416
 Get on.
 
 712
-00:49:31,167 --> 00:49:32,084
+00:49:31,166 --> 00:49:32,083
 Take off your clothes.
 
 713
-00:49:32,125 --> 00:49:32,917
+00:49:32,124 --> 00:49:32,916
 Take them all off.
 
 714
@@ -2903,23 +2903,23 @@ I worked with Kwai once. He's so average.
 I know Yip. He lived in Guangdong.
 
 716
-00:50:06,750 --> 00:50:07,917
+00:50:06,750 --> 00:50:07,916
 Kwai's real name is Xing Zhennan.
 
 717
-00:50:08,042 --> 00:50:09,500
+00:50:08,041 --> 00:50:09,499
 His ancestral house was built by me.
 
 718
-00:50:09,667 --> 00:50:10,750
+00:50:09,666 --> 00:50:10,750
 Yes.
 
 719
-00:50:11,750 --> 00:50:12,417
+00:50:11,750 --> 00:50:12,416
 OK.
 
 720
-00:50:32,792 --> 00:50:35,667
+00:50:32,791 --> 00:50:35,666
 I drove for Yip and was chased by the cops.
 
 721
@@ -2939,15 +2939,15 @@ We wielded AK-47 together.
 Mr Cheuk, I envy you. I admire all your works.
 
 725
-00:50:42,417 --> 00:50:44,875
+00:50:42,416 --> 00:50:44,874
 Yip bought sex from me.
 
 726
-00:50:44,917 --> 00:50:47,542
+00:50:44,916 --> 00:50:47,541
 He was loud and proud.
 
 727
-00:50:49,875 --> 00:50:52,708
+00:50:49,874 --> 00:50:52,708
 Heists? Hong Kong kids?
 
 728
@@ -2955,12 +2955,12 @@ Heists? Hong Kong kids?
 These barking dogs are sneaky wussies.
 
 729
-00:50:56,000 --> 00:51:00,667
+00:50:56,000 --> 00:51:00,666
 I imported the Chinese
 retired soldiers to Hong Kong.
 
 730
-00:51:01,250 --> 00:51:04,042
+00:51:01,249 --> 00:51:04,041
 What did I teach them before a heist?
 
 731
@@ -2968,7 +2968,7 @@ What did I teach them before a heist?
 Moral principle!
 
 732
-00:51:06,125 --> 00:51:08,167
+00:51:06,124 --> 00:51:08,166
 Father of the Chinese retired soldiers,
 
 733
@@ -2976,11 +2976,11 @@ Father of the Chinese retired soldiers,
 can you cut to the chase?
 
 734
-00:51:09,667 --> 00:51:11,875
+00:51:09,666 --> 00:51:11,874
 Do you know Yip or Kwai?
 
 735
-00:51:11,917 --> 00:51:14,792
+00:51:11,916 --> 00:51:14,791
 Don't interrupt me when I talk.
 
 736
@@ -2988,11 +2988,11 @@ Don't interrupt me when I talk.
 If I talk too fast, you won't understand!
 
 737
-00:51:17,917 --> 00:51:19,375
+00:51:17,916 --> 00:51:19,375
 Where was I?
 
 738
-00:51:19,792 --> 00:51:21,292
+00:51:19,791 --> 00:51:21,291
 Moral principle.
 
 739
@@ -3000,16 +3000,16 @@ Moral principle.
 I once brought 3 Mainlanders
 
 740
-00:51:26,250 --> 00:51:30,208
+00:51:26,249 --> 00:51:30,208
 to a showdown with the cops. Bang!
 
 741
-00:51:30,250 --> 00:51:33,042
+00:51:30,249 --> 00:51:33,041
 One of them, Wei,
 was so scared he dropped his gun!
 
 742
-00:51:33,167 --> 00:51:36,042
+00:51:33,166 --> 00:51:36,041
 You know what? I rushed to save him!
 
 743
@@ -3021,7 +3021,7 @@ He owes me a lot.
 Know who Kun-xi is?
 
 745
-00:51:45,417 --> 00:51:47,042
+00:51:45,416 --> 00:51:47,041
 Yip's former boss?
 
 746
@@ -3033,19 +3033,19 @@ Quincy is Wei's godson.
 Want to meet him?
 
 748
-00:51:54,167 --> 00:51:55,417
+00:51:54,166 --> 00:51:55,416
 $1M!
 
 749
-00:51:57,292 --> 00:51:58,500
+00:51:57,291 --> 00:51:58,499
 You better check him out thoroughly.
 
 750
-00:51:58,542 --> 00:52:00,500
+00:51:58,541 --> 00:52:00,499
 Check me out? Motherfucker.
 
 751
-00:52:00,917 --> 00:52:02,500
+00:52:00,916 --> 00:52:02,499
 It's just $1M.
 
 752
@@ -3053,11 +3053,11 @@ It's just $1M.
 Act fast.
 
 753
-00:52:05,167 --> 00:52:07,209
+00:52:05,166 --> 00:52:07,208
 Quincy will stand in front of you tomorrow.
 
 754
-00:52:07,250 --> 00:52:08,542
+00:52:07,249 --> 00:52:08,541
 Give me the dough.
 
 755
@@ -3065,27 +3065,27 @@ Give me the dough.
 Hey.
 
 756
-00:52:28,125 --> 00:52:29,750
+00:52:28,124 --> 00:52:29,750
 Thanks so much!
 
 757
-00:52:30,750 --> 00:52:32,417
+00:52:30,750 --> 00:52:32,416
 Let's go have some fun?
 
 758
-00:52:52,042 --> 00:52:55,167
+00:52:52,041 --> 00:52:55,166
 Are you tight in cash lately, Taishan Boy?
 
 759
-00:52:55,250 --> 00:52:58,042
+00:52:55,249 --> 00:52:58,041
 How can 3 pieces be enough?
 
 760
-00:53:07,667 --> 00:53:12,209
+00:53:07,666 --> 00:53:12,208
 Guns are for firing, not for sniffing.
 
 761
-00:53:18,917 --> 00:53:22,334
+00:53:18,916 --> 00:53:22,333
 Our commander taught us: safety first.
 
 762
@@ -3103,15 +3103,15 @@ is looking for Yip and Kwai?
 Mr Cheuk says he wants to meet those two.
 
 765
-00:53:34,667 --> 00:53:37,209
+00:53:34,666 --> 00:53:37,208
 Look, he has set up a special phone line.
 
 766
-00:53:37,250 --> 00:53:39,750
+00:53:37,249 --> 00:53:39,750
 Info for money.
 
 767
-00:53:39,792 --> 00:53:41,584
+00:53:39,791 --> 00:53:41,583
 How generous!
 
 768
@@ -3119,15 +3119,15 @@ How generous!
 Both of them are very dangerous.
 
 769
-00:53:45,875 --> 00:53:48,792
+00:53:45,874 --> 00:53:48,791
 Which kingpin is not dangerous?
 
 770
-00:53:48,833 --> 00:53:50,875
-They are being so brazenly?
+00:53:48,833 --> 00:53:50,874
+They are being so brazen?
 
 771
-00:53:50,917 --> 00:53:52,542
+00:53:50,916 --> 00:53:52,541
 The Handover is imminent.
 
 772
@@ -3154,19 +3154,19 @@ The restoration of this
 Association depends on you!
 
 777
-00:54:08,250 --> 00:54:12,333
+00:54:08,249 --> 00:54:12,333
 Keep me posted, kiddo.
 
 778
-00:54:12,375 --> 00:54:15,125
+00:54:12,375 --> 00:54:15,124
 Keep me posted!
 
 779
-00:54:28,750 --> 00:54:29,667
+00:54:28,750 --> 00:54:29,666
 Stand still, sir.
 
 780
-00:54:29,750 --> 00:54:30,792
+00:54:29,750 --> 00:54:30,791
 What's wrong?
 
 781
@@ -3178,7 +3178,7 @@ Where are you going?
 Home.
 
 783
-00:54:32,750 --> 00:54:34,167
+00:54:32,750 --> 00:54:34,166
 Your ID, please.
 
 784
@@ -3186,7 +3186,7 @@ Your ID, please.
 Bo!
 
 785
-00:54:42,500 --> 00:54:45,167
+00:54:42,499 --> 00:54:45,166
 Why didn't you come home right after school?
 
 786
@@ -3198,11 +3198,11 @@ I told you so many times.
 Where have you been?
 
 788
-00:54:49,250 --> 00:54:51,667
+00:54:49,249 --> 00:54:51,666
 We've been looking for you everywhere.
 
 789
-00:54:52,917 --> 00:54:55,584
+00:54:52,916 --> 00:54:55,583
 Bro Coke, you should've told us beforehand.
 
 790
@@ -3219,19 +3219,19 @@ Shut up!
 Still drinking? Bad girl!
 
 793
-00:55:14,083 --> 00:55:15,500
+00:55:14,083 --> 00:55:15,499
 What happened?
 
 794
-00:55:18,042 --> 00:55:19,625
+00:55:18,041 --> 00:55:19,625
 She's naughty.
 
 795
-00:55:19,667 --> 00:55:21,750
+00:55:19,666 --> 00:55:21,750
 Teach your girl at home, not on the street.
 
 796
-00:55:21,792 --> 00:55:23,167
+00:55:21,791 --> 00:55:23,166
 - I'm sorry.
 - You've frightened her.
 
@@ -3240,7 +3240,7 @@ Teach your girl at home, not on the street.
 Yes, I'm sorry.
 
 798
-00:55:26,125 --> 00:55:27,625
+00:55:26,124 --> 00:55:27,625
 Let's go home.
 
 799
@@ -3248,7 +3248,7 @@ Let's go home.
 Thank you, sir.
 
 800
-00:55:44,292 --> 00:55:45,667
+00:55:44,291 --> 00:55:45,666
 Sorry.
 
 801
@@ -3256,11 +3256,11 @@ Sorry.
 Darling.
 
 802
-00:55:57,042 --> 00:55:58,417
+00:55:57,041 --> 00:55:58,416
 Daddy loves you.
 
 803
-00:55:58,458 --> 00:55:59,500
+00:55:58,458 --> 00:55:59,499
 My good girl.
 
 804
@@ -3268,11 +3268,11 @@ My good girl.
 3 Days!
 
 805
-00:56:03,292 --> 00:56:06,875
+00:56:03,291 --> 00:56:06,874
 Chief Song helped us recover the goods in 3 days.
 
 806
-00:56:06,917 --> 00:56:09,542
+00:56:06,916 --> 00:56:09,541
 Chief Song, my buddy!
 
 807
@@ -3280,15 +3280,15 @@ Chief Song, my buddy!
 You rock!
 
 808
-00:56:11,125 --> 00:56:15,833
+00:56:11,124 --> 00:56:15,833
 It's incumbent on the police to maintain order.
 
 809
-00:56:15,917 --> 00:56:17,584
+00:56:15,916 --> 00:56:17,583
 It's incumbent on the police to maintain order.
 
 810
-00:56:17,625 --> 00:56:18,875
+00:56:17,625 --> 00:56:18,874
 Boss Zhang,
 
 811
@@ -3300,7 +3300,7 @@ can you do me a favor?
 Go!
 
 813
-00:56:36,042 --> 00:56:37,959
+00:56:36,041 --> 00:56:37,958
 Let him vent his anger.
 
 814
@@ -3308,7 +3308,7 @@ Let him vent his anger.
 Stop!
 
 815
-00:56:55,000 --> 00:56:59,250
+00:56:55,000 --> 00:56:59,249
 Chief Song, you're a tea connoisseur.
 
 816
@@ -3320,7 +3320,7 @@ Enough.
 I need you to do me a favor.
 
 818
-00:57:09,417 --> 00:57:10,917
+00:57:09,416 --> 00:57:10,916
 What do you mean?
 
 819
@@ -3332,19 +3332,19 @@ They are the sons of my ex-commander's friend.
 They are the sons of my ex-commander's friend.
 
 821
-00:57:16,792 --> 00:57:18,875
+00:57:16,791 --> 00:57:18,874
 Forgive them.
 
 822
-00:57:19,917 --> 00:57:21,917
+00:57:19,916 --> 00:57:21,916
 Give me face.
 
 823
-00:57:26,000 --> 00:57:27,667
+00:57:26,000 --> 00:57:27,666
 They robbed me.
 
 824
-00:57:29,125 --> 00:57:31,875
+00:57:29,124 --> 00:57:31,874
 What have you lost?
 
 825
@@ -3352,55 +3352,55 @@ What have you lost?
 They robbed me! Me!
 
 826
-00:57:37,125 --> 00:57:39,208
+00:57:37,124 --> 00:57:39,208
 We're good buddies.
 
 827
-00:57:39,250 --> 00:57:41,125
+00:57:39,249 --> 00:57:41,124
 Who do you think you are?
 
 828
-00:57:41,167 --> 00:57:42,917
+00:57:41,166 --> 00:57:42,916
 A petit bourgeois!
 
 829
-00:57:43,667 --> 00:57:48,084
+00:57:43,666 --> 00:57:48,083
 A greedy, smuggling, tax-evading petit bourgeois!
 
 830
-00:57:48,917 --> 00:57:51,125
+00:57:48,916 --> 00:57:51,124
 Don't think too highly of yourself.
 
 831
-00:57:51,167 --> 00:57:54,584
+00:57:51,166 --> 00:57:54,583
 We're good buddies.
 
 832
-00:57:54,875 --> 00:57:56,417
+00:57:54,874 --> 00:57:56,416
 Take them away!
 
 833
-00:57:57,417 --> 00:57:59,625
+00:57:57,416 --> 00:57:59,625
 We're good buddies.
 
 834
-00:58:01,125 --> 00:58:02,542
+00:58:01,124 --> 00:58:02,541
 Shoot him,
 
 835
-00:58:02,583 --> 00:58:04,875
+00:58:02,583 --> 00:58:04,874
 I'll act according to the law!
 
 836
 00:58:21,000 --> 00:58:21,750
-Great, there's a vase in the toilet...
+Great, there's a vase in the toilet…
 
 837
-00:58:21,792 --> 00:58:22,792
-We're lucky...
+00:58:21,791 --> 00:58:22,791
+We're lucky…
 
 838
-00:58:22,833 --> 00:58:24,500
+00:58:22,833 --> 00:58:24,499
 It's small but it will do.
 
 839
@@ -3408,7 +3408,7 @@ It's small but it will do.
 We're good buddies.
 
 840
-00:59:21,542 --> 00:59:23,792
+00:59:21,541 --> 00:59:23,791
 RMB¥2M, thank you!
 
 841
@@ -3416,7 +3416,7 @@ RMB¥2M, thank you!
 I receive RMB¥1.3M from you. Thanks.
 
 842
-00:59:25,250 --> 00:59:26,417
+00:59:25,249 --> 00:59:26,416
 I'll notify you once we have the goods.
 
 843
@@ -3424,11 +3424,11 @@ I'll notify you once we have the goods.
 Next.
 
 844
-00:59:27,667 --> 00:59:29,000
+00:59:27,666 --> 00:59:29,000
 Take your time.
 
 845
-00:59:29,042 --> 00:59:30,417
+00:59:29,041 --> 00:59:30,416
 It's insane!
 
 846
@@ -3436,19 +3436,19 @@ It's insane!
 Everyone out.
 
 847
-00:59:32,792 --> 00:59:35,084
+00:59:32,791 --> 00:59:35,083
 Get out!
 
 848
-00:59:35,292 --> 00:59:37,584
+00:59:35,291 --> 00:59:37,583
 It's insane!
 
 849
-00:59:37,625 --> 00:59:38,500
+00:59:37,625 --> 00:59:38,499
 What happened?
 
 850
-00:59:38,542 --> 00:59:40,959
+00:59:38,541 --> 00:59:40,958
 Bro Foon, Cheuk has gone mad!
 
 851
@@ -3456,27 +3456,27 @@ Bro Foon, Cheuk has gone mad!
 He set up a special phone line to look for you.
 
 852
-00:59:59,375 --> 01:00:00,875
+00:59:59,375 --> 01:00:00,874
 Inspector Wu.
 
 853
-01:00:01,250 --> 01:00:03,458
+01:00:01,249 --> 01:00:03,458
 You're difficult to tail.
 
 854
-01:00:03,500 --> 01:00:05,167
+01:00:03,499 --> 01:00:05,166
 I had to wait here for you!
 
 855
-01:00:05,625 --> 01:00:06,917
+01:00:05,625 --> 01:00:06,916
 I caught this guy for you.
 
 856
-01:00:06,958 --> 01:00:10,125
+01:00:06,958 --> 01:00:10,124
 He said you gave him $1M for Kun-xi's whereabouts.
 
 857
-01:00:12,667 --> 01:00:13,917
+01:00:12,666 --> 01:00:13,916
 Is it a crime to look for someone?
 
 858
@@ -3484,11 +3484,11 @@ Is it a crime to look for someone?
 No.
 
 859
-01:00:16,083 --> 01:00:17,875
+01:00:16,083 --> 01:00:17,874
 But have you checked him out?
 
 860
-01:00:17,917 --> 01:00:20,167
+01:00:17,916 --> 01:00:20,166
 He's been in jail for 20 years.
 
 861
@@ -3500,7 +3500,7 @@ The phone numbers back then only had 6 digits!
 He's out of touch now!
 
 863
-01:00:24,125 --> 01:00:24,958
+01:00:24,124 --> 01:00:24,958
 Out of touch?
 
 864
@@ -3508,23 +3508,23 @@ Out of touch?
 If I go to China, Wei will pick me up!
 
 865
-01:00:27,417 --> 01:00:28,292
+01:00:27,416 --> 01:00:28,291
 Wei?
 
 866
-01:00:28,375 --> 01:00:30,125
+01:00:28,375 --> 01:00:30,124
 He was shot dead two years ago!
 
 867
-01:00:30,167 --> 01:00:32,125
+01:00:30,166 --> 01:00:32,124
 Kun-xi betrayed him!
 
 868
-01:00:32,833 --> 01:00:33,875
+01:00:32,833 --> 01:00:33,874
 Have you been conned?
 
 869
-01:00:33,917 --> 01:00:35,667
+01:00:33,916 --> 01:00:35,666
 I can arrest him now if you have.
 
 870
@@ -3532,11 +3532,11 @@ I can arrest him now if you have.
 An eye for an eye.
 
 871
-01:00:37,667 --> 01:00:38,542
+01:00:37,666 --> 01:00:38,541
 That's moral principle.
 
 872
-01:00:38,583 --> 01:00:39,500
+01:00:38,583 --> 01:00:39,499
 Calm down!
 
 873
@@ -3548,19 +3548,19 @@ I'm very calm.
 Or I'd have kicked you too!
 
 875
-01:00:47,750 --> 01:00:49,292
+01:00:47,750 --> 01:00:49,291
 Want to report the crime?
 
 876
-01:00:49,667 --> 01:00:52,042
+01:00:49,666 --> 01:00:52,041
 If not, I'll let him go.
 
 877
-01:00:52,833 --> 01:00:53,875
+01:00:52,833 --> 01:00:53,874
 Well?
 
 878
-01:00:57,042 --> 01:01:00,042
+01:00:57,041 --> 01:01:00,041
 If not, I'll let him go!
 
 879
@@ -3568,7 +3568,7 @@ If not, I'll let him go!
 Get lost!
 
 880
-01:01:01,042 --> 01:01:02,167
+01:01:01,041 --> 01:01:02,166
 - Are you assaulting a police officer?
 - Don't play tricks.
 
@@ -3577,7 +3577,7 @@ Get lost!
 So what? Motherfucker!
 
 882
-01:01:04,667 --> 01:01:05,917
+01:01:04,666 --> 01:01:05,916
 Don't give up,
 
 883
@@ -3585,37 +3585,37 @@ Don't give up,
 keep searching for him.
 
 884
-01:01:07,417 --> 01:01:09,875
+01:01:07,416 --> 01:01:09,874
 The Royal Hong Kong Police relies
 on your phone calls.
 
 885
-01:01:09,958 --> 01:01:12,125
+01:01:09,958 --> 01:01:12,124
 The Royal Hong Kong Police relies
 on your phone calls.
 
 886
-01:01:21,125 --> 01:01:22,875
+01:01:21,124 --> 01:01:22,874
 Why don't you just drop it?
 
 887
-01:01:23,417 --> 01:01:26,834
+01:01:23,416 --> 01:01:26,833
 Don't ruin your impeccable record.
 
 888
-01:01:28,500 --> 01:01:30,417
+01:01:28,499 --> 01:01:30,416
 I'd help you if I could!
 
 889
-01:01:31,500 --> 01:01:32,833
+01:01:31,499 --> 01:01:32,833
 Even if you were to hit me,
 
 890
-01:01:32,875 --> 01:01:36,417
+01:01:32,874 --> 01:01:36,416
 I must say it's a dead end!
 
 891
-01:01:41,375 --> 01:01:43,250
+01:01:41,375 --> 01:01:43,249
 I know, I know!
 
 892
@@ -3627,11 +3627,11 @@ We've come to the climax of tonight.
 The last leg of the Triple Trio.
 
 894
-01:01:47,250 --> 01:01:51,250
+01:01:47,249 --> 01:01:51,249
 The $170M jackpot pool.
 
 895
-01:01:51,292 --> 01:01:54,625
+01:01:51,291 --> 01:01:54,625
 Plus the total bet amount. A single winner
 
 896
@@ -3643,28 +3643,28 @@ can collect over $300M.
 Many horse racing fans are placing bets.
 
 898
-01:02:00,792 --> 01:02:02,084
+01:02:00,791 --> 01:02:02,083
 The whole city is abuzz!
 
 899
-01:02:02,125 --> 01:02:04,583
+01:02:02,124 --> 01:02:04,583
 A single winning ticket will make
 you richer than any kings.
 
 900
-01:02:04,667 --> 01:02:06,125
+01:02:04,666 --> 01:02:06,124
 See if you can win.
 
 901
-01:02:06,167 --> 01:02:10,875
+01:02:06,166 --> 01:02:10,874
 Bets are placed on Wind Chaser.
 
 902
-01:02:11,250 --> 01:02:12,417
+01:02:11,249 --> 01:02:12,416
 Gold Weather is the horse least expected to win.
 
 903
-01:02:12,458 --> 01:02:16,125
+01:02:12,458 --> 01:02:16,124
 The odds are 99.
 
 904
@@ -3672,7 +3672,7 @@ The odds are 99.
 Win and Place.
 
 905
-01:02:22,125 --> 01:02:25,375
+01:02:22,124 --> 01:02:25,375
 Motherfucker, almost $400M in the pool.
 
 906
@@ -3680,7 +3680,7 @@ Motherfucker, almost $400M in the pool.
 Hong Kong citizens are robbed by the Triple Trio.
 
 907
-01:02:30,250 --> 01:02:32,500
+01:02:30,249 --> 01:02:32,499
 What does Triple Trio mean?
 
 908
@@ -3693,15 +3693,15 @@ has attracted many fans queuing
 to place their bets.
 
 910
-01:03:00,042 --> 01:03:00,750
+01:03:00,041 --> 01:03:00,750
 No more clothes pegs?
 
 911
-01:03:00,792 --> 01:03:01,459
+01:03:00,791 --> 01:03:01,458
 No.
 
 912
-01:03:01,500 --> 01:03:02,292
+01:03:01,499 --> 01:03:02,291
 Go get some in the room.
 
 913
@@ -3709,23 +3709,23 @@ Go get some in the room.
 Sure.
 
 914
-01:04:00,167 --> 01:04:02,125
+01:04:00,166 --> 01:04:02,124
 The race is about to start.
 
 915
-01:04:02,167 --> 01:04:05,125
+01:04:02,166 --> 01:04:05,124
 The $170M jackpot pool.
 
 916
-01:04:05,167 --> 01:04:06,375
+01:04:05,166 --> 01:04:06,375
 A single winner
 
 917
-01:04:06,417 --> 01:04:08,250
+01:04:06,416 --> 01:04:08,249
 can collect over $300M!
 
 918
-01:04:08,375 --> 01:04:10,292
+01:04:08,375 --> 01:04:10,291
 Who will be the lucky one?
 
 919
@@ -3733,11 +3733,11 @@ Who will be the lucky one?
 A dark horse will increase the size
 
 920
-01:04:12,375 --> 01:04:14,167
+01:04:12,375 --> 01:04:14,166
 of the betting pool.
 
 921
-01:04:14,417 --> 01:04:16,959
+01:04:14,416 --> 01:04:16,958
 The horses are in the stalls and ready to go.
 
 922
@@ -3745,7 +3745,7 @@ The horses are in the stalls and ready to go.
 Which horse will take off first?
 
 923
-01:04:18,792 --> 01:04:20,959
+01:04:18,791 --> 01:04:20,958
 It's Wind Chaser.
 
 924
@@ -3753,7 +3753,7 @@ It's Wind Chaser.
 It runs faster and faster.
 
 925
-01:04:22,792 --> 01:04:24,042
+01:04:22,791 --> 01:04:24,041
 The rest can hardly catch up.
 
 926
@@ -3761,7 +3761,7 @@ The rest can hardly catch up.
 Go! Go! Go!
 
 927
-01:04:30,542 --> 01:04:37,500
+01:04:30,541 --> 01:04:37,499
 Faster! Faster! Faster!
 
 928
@@ -3770,15 +3770,15 @@ No one wins. The warehouse
 must be filled with money.
 
 929
-01:05:05,667 --> 01:05:06,917
+01:05:05,666 --> 01:05:06,916
 Big Bro Chiu.
 
 930
-01:06:55,500 --> 01:06:56,125
+01:06:55,499 --> 01:06:56,124
 Hey.
 
 931
-01:06:56,167 --> 01:06:59,875
+01:06:56,166 --> 01:06:59,874
 Mr Cheuk, you know who Kun-xi is?
 
 932
@@ -3786,23 +3786,23 @@ Mr Cheuk, you know who Kun-xi is?
 It's Kun-xi speaking.
 
 933
-01:07:02,667 --> 01:07:06,875
+01:07:02,666 --> 01:07:06,874
 Look me up in Guangdong. I won't let you down.
 
 934
-01:07:18,125 --> 01:07:21,458
+01:07:18,124 --> 01:07:21,458
 You're really quitting? It's a cushy job.
 
 935
-01:07:21,500 --> 01:07:22,917
+01:07:21,499 --> 01:07:22,916
 You're telling me!
 
 936
-01:07:24,167 --> 01:07:25,792
+01:07:24,166 --> 01:07:25,791
 Talk to Big Bro yourself.
 
 937
-01:07:26,875 --> 01:07:32,125
+01:07:26,874 --> 01:07:32,124
 I have invested all I got in the goods.
 
 938
@@ -3810,11 +3810,11 @@ I have invested all I got in the goods.
 You already know all those officials
 
 939
-01:07:40,917 --> 01:07:42,917
-and connections well...
+01:07:40,916 --> 01:07:42,916
+and connections well…
 
 940
-01:07:43,083 --> 01:07:44,500
+01:07:43,083 --> 01:07:44,499
 What did you say?
 
 941
@@ -3826,7 +3826,7 @@ Fisherman!
 Yes, Bro Foon.
 
 943
-01:07:51,042 --> 01:07:52,834
+01:07:51,041 --> 01:07:52,833
 Give me Cheuk's number.
 
 944
@@ -3846,15 +3846,15 @@ No.
 Give me the number!
 
 948
-01:07:59,875 --> 01:08:01,208
+01:07:59,874 --> 01:08:01,208
 Sure.
 
 949
-01:08:09,875 --> 01:08:14,000
+01:08:09,874 --> 01:08:14,000
 Fuck! Thought I would be famous overnight.
 
 950
-01:08:14,417 --> 01:08:15,834
+01:08:14,416 --> 01:08:15,833
 What a waste of time!
 
 951
@@ -3862,31 +3862,31 @@ What a waste of time!
 Fame is not an issue.
 
 952
-01:08:19,958 --> 01:08:22,875
+01:08:19,958 --> 01:08:22,874
 I can't just go back empty-handed.
 
 953
-01:08:22,917 --> 01:08:25,042
+01:08:22,916 --> 01:08:25,041
 Not to mention having to chew this bread here.
 
 954
-01:08:33,250 --> 01:08:34,750
+01:08:33,249 --> 01:08:34,750
 Big Bro Chiu,
 
 955
-01:08:34,792 --> 01:08:37,125
+01:08:34,791 --> 01:08:37,124
 coming to Hong Kong has not been easy for us.
 
 956
-01:08:37,167 --> 01:08:40,334
+01:08:37,166 --> 01:08:40,333
 We can't just go back like this.
 
 957
-01:08:48,167 --> 01:08:51,334
+01:08:48,166 --> 01:08:51,333
 Big Bro Chiu, you really want us to leave?
 
 958
-01:08:55,125 --> 01:08:57,167
+01:08:55,124 --> 01:08:57,166
 If you guys have something big in mind,
 
 959
@@ -3898,23 +3898,23 @@ count us in!
 We can do anything.
 
 961
-01:09:04,417 --> 01:09:06,042
+01:09:04,416 --> 01:09:06,041
 I can keep a secret.
 
 962
-01:09:06,083 --> 01:09:08,500
+01:09:06,083 --> 01:09:08,499
 If you say you're Big Bro Chiu, then so be it.
 
 963
-01:09:08,542 --> 01:09:10,917
+01:09:08,541 --> 01:09:10,916
 I understand. Don't worry.
 
 964
-01:09:11,250 --> 01:09:14,958
+01:09:11,249 --> 01:09:14,958
 I know the rules. It's between you and me.
 
 965
-01:09:15,417 --> 01:09:17,542
+01:09:15,416 --> 01:09:17,541
 We have moral principle.
 
 966
@@ -3926,15 +3926,15 @@ Share it.
 Seriously, we can make it work.
 
 968
-01:09:47,792 --> 01:09:49,375
-The 3 Kings of Thieves join forces...
+01:09:47,791 --> 01:09:49,375
+The 3 Kings of Thieves join forces…
 
 969
 01:10:26,083 --> 01:10:28,791
 Mind your own business.
 
 970
-01:10:28,833 --> 01:10:30,500
+01:10:28,833 --> 01:10:30,499
 Mind your own business.
 
 971
@@ -3942,39 +3942,39 @@ Mind your own business.
 Aren't you on dialysis? Still smoking?
 
 972
-01:11:04,417 --> 01:11:06,959
+01:11:04,416 --> 01:11:06,958
 Old habits die hard.
 
 973
-01:11:10,917 --> 01:11:13,084
+01:11:10,916 --> 01:11:13,083
 Are you still angry with me?
 
 974
-01:11:13,125 --> 01:11:15,833
+01:11:13,124 --> 01:11:15,833
 You're planning to rob the gold shop downstairs?
 
 975
-01:11:21,542 --> 01:11:23,750
+01:11:21,541 --> 01:11:23,750
 I thought you're paying me a visit.
 
 976
-01:11:24,333 --> 01:11:26,250
+01:11:24,333 --> 01:11:26,249
 You're here just for the location.
 
 977
-01:11:27,667 --> 01:11:28,292
-Listen to me...
+01:11:27,666 --> 01:11:28,291
+Listen to me…
 
 978
 01:11:28,333 --> 01:11:29,375
 No more!
 
 979
-01:11:29,417 --> 01:11:29,834
-Listen to me...
+01:11:29,416 --> 01:11:29,833
+Listen to me…
 
 980
-01:11:29,875 --> 01:11:31,292
+01:11:29,874 --> 01:11:31,291
 I treat you as my brother. You treat me as a fool!
 
 981
@@ -3982,23 +3982,23 @@ I treat you as my brother. You treat me as a fool!
 I never treat you as a fool.
 
 982
-01:11:31,958 --> 01:11:34,125
+01:11:31,958 --> 01:11:34,124
 Forget it! Just shut up!
 
 983
-01:11:35,958 --> 01:11:38,500
+01:11:35,958 --> 01:11:38,499
 I have a wife and a daughter now.
 
 984
-01:11:39,042 --> 01:11:41,334
+01:11:39,041 --> 01:11:41,333
 My life is great.
 
 985
-01:11:41,375 --> 01:11:43,917
+01:11:41,375 --> 01:11:43,916
 Can you leave my family alone?
 
 986
-01:11:56,167 --> 01:11:57,959
+01:11:56,166 --> 01:11:57,958
 I'm in the wrong this time.
 
 987
@@ -4006,7 +4006,7 @@ I'm in the wrong this time.
 You know it's hard to make a living.
 
 988
-01:12:14,667 --> 01:12:16,417
+01:12:14,666 --> 01:12:16,416
 We're sworn brothers.
 
 989
@@ -4014,15 +4014,15 @@ We're sworn brothers.
 I owe you this time.
 
 990
-01:12:23,042 --> 01:12:25,959
+01:12:23,041 --> 01:12:25,958
 Forget what happened these past few days.
 
 991
-01:12:27,042 --> 01:12:28,750
+01:12:27,041 --> 01:12:28,750
 Keep it to yourself.
 
 992
-01:12:50,917 --> 01:12:52,542
+01:12:50,916 --> 01:12:52,541
 I'll leave early tomorrow morning.
 
 993
@@ -4030,15 +4030,15 @@ I'll leave early tomorrow morning.
 You won't see me again.
 
 994
-01:13:14,667 --> 01:13:15,917
+01:13:14,666 --> 01:13:15,916
 Uncle Coke.
 
 995
-01:13:18,875 --> 01:13:20,292
+01:13:18,874 --> 01:13:20,291
 Not in bed yet?
 
 996
-01:13:33,583 --> 01:13:36,250
+01:13:33,583 --> 01:13:36,249
 Guangdong province
 
 997
@@ -4050,11 +4050,11 @@ Sai Wan Container Terminal, Hong Kong
 Mr Cheuk,
 
 999
-01:14:55,500 --> 01:14:57,292
+01:14:55,499 --> 01:14:57,291
 I've heard so much about you.
 
 1000
-01:15:01,250 --> 01:15:02,500
+01:15:01,249 --> 01:15:02,499
 Where's Yip?
 
 1001
@@ -4062,31 +4062,31 @@ Where's Yip?
 Let me show you something.
 
 1002
-01:15:05,958 --> 01:15:07,250
+01:15:05,958 --> 01:15:07,249
 This way.
 
 1003
-01:15:09,958 --> 01:15:12,875
+01:15:09,958 --> 01:15:12,874
 Mr Cheuk. How's your journey?
 
 1004
-01:15:12,917 --> 01:15:15,084
+01:15:12,916 --> 01:15:15,083
 I'll treat you to something special.
 
 1005
-01:15:15,125 --> 01:15:17,875
+01:15:15,124 --> 01:15:17,874
 Shrimps and crabs are local specialties.
 
 1006
-01:15:18,000 --> 01:15:21,250
+01:15:18,000 --> 01:15:21,249
 After food we'll find two shampoo girls for you.
 
 1007
-01:15:21,292 --> 01:15:23,334
+01:15:21,291 --> 01:15:23,333
 This way, please.
 
 1008
-01:15:25,125 --> 01:15:28,708
+01:15:25,124 --> 01:15:28,708
 Type 54 pistols, grenades, AK weapons.
 
 1009
@@ -4094,11 +4094,11 @@ Type 54 pistols, grenades, AK weapons.
 I've got all you want.
 
 1010
-01:15:30,708 --> 01:15:32,125
+01:15:30,708 --> 01:15:32,124
 Where's Yip?
 
 1011
-01:15:34,042 --> 01:15:37,500
+01:15:34,041 --> 01:15:37,499
 The truck outside holds a ton of dynamite.
 
 1012
@@ -4106,11 +4106,11 @@ The truck outside holds a ton of dynamite.
 Bang!
 
 1013
-01:15:39,750 --> 01:15:41,250
+01:15:39,750 --> 01:15:41,249
 You can blow up whatever you want.
 
 1014
-01:15:42,292 --> 01:15:44,209
+01:15:42,291 --> 01:15:44,208
 Where's Yip?
 
 1015
@@ -4118,7 +4118,7 @@ Where's Yip?
 They were all retired soldiers.
 
 1016
-01:15:51,417 --> 01:15:52,917
+01:15:51,416 --> 01:15:52,916
 They're fearless veterans in battles!
 
 1017
@@ -4126,7 +4126,7 @@ They're fearless veterans in battles!
 I want Yip!
 
 1018
-01:16:00,000 --> 01:16:01,250
+01:16:00,000 --> 01:16:01,249
 Coin!
 
 1019
@@ -4134,7 +4134,7 @@ Coin!
 Give it to me!
 
 1020
-01:16:14,042 --> 01:16:16,667
+01:16:14,041 --> 01:16:16,666
 Big Bro, let's think it through.
 
 1021
@@ -4142,7 +4142,7 @@ Big Bro, let's think it through.
 Give it to me!
 
 1022
-01:16:18,792 --> 01:16:19,667
+01:16:18,791 --> 01:16:19,666
 We're doing all right.
 
 1023
@@ -4162,51 +4162,51 @@ We're making money!
 We can't be robbers for the rest of our lives!
 
 1027
-01:16:27,500 --> 01:16:29,333
+01:16:27,499 --> 01:16:29,333
 You do it!
 
 1028
-01:16:29,375 --> 01:16:31,125
+01:16:29,375 --> 01:16:31,124
 You have struck a deal with the Fisherman!
 
 1029
-01:16:32,292 --> 01:16:34,584
+01:16:32,291 --> 01:16:34,583
 Big Bro, he was just thinking out loud.
 
 1030
-01:16:34,625 --> 01:16:35,875
+01:16:34,625 --> 01:16:35,874
 Leave if you want!
 
 1031
-01:16:35,958 --> 01:16:37,250
+01:16:35,958 --> 01:16:37,249
 I won't stop you!
 
 1032
-01:16:37,292 --> 01:16:39,209
+01:16:37,291 --> 01:16:39,208
 Do you know what time it is? You don't sleep?
 
 1033
-01:16:39,250 --> 01:16:41,125
+01:16:39,249 --> 01:16:41,124
 Go fuck yourself!
 
 1034
-01:16:42,667 --> 01:16:44,000
+01:16:42,666 --> 01:16:44,000
 Fuck you!
 
 1035
-01:16:44,125 --> 01:16:45,042
+01:16:44,124 --> 01:16:45,041
 Come down!
 
 1036
-01:17:00,333 --> 01:17:02,500
+01:17:00,333 --> 01:17:02,499
 Yip has retired!
 
 1037
-01:17:02,542 --> 01:17:04,209
+01:17:02,541 --> 01:17:04,208
 He used to be my man!
 
 1038
-01:17:04,250 --> 01:17:05,292
+01:17:04,249 --> 01:17:05,291
 Am I not a better partner?
 
 1039
@@ -4214,11 +4214,11 @@ Am I not a better partner?
 Who the hell are you?
 
 1040
-01:17:12,500 --> 01:17:13,208
+01:17:12,499 --> 01:17:13,208
 Hello?
 
 1041
-01:17:13,250 --> 01:17:15,042
+01:17:13,249 --> 01:17:15,041
 Hello, Cheuk.
 
 1042
@@ -4226,7 +4226,7 @@ Hello, Cheuk.
 It's Yip Kwok-foon speaking.
 
 1043
-01:17:20,292 --> 01:17:21,375
+01:17:20,291 --> 01:17:21,375
 Are you kidding me?
 
 1044
@@ -4234,7 +4234,7 @@ Are you kidding me?
 Why should I believe you?
 
 1045
-01:17:23,875 --> 01:17:25,958
+01:17:23,874 --> 01:17:25,958
 I am who I am!
 
 1046
@@ -4242,35 +4242,35 @@ I am who I am!
 If you don't believe me, let's meet up!
 
 1047
-01:17:29,042 --> 01:17:30,459
+01:17:29,041 --> 01:17:30,458
 Wait. Got another call.
 
 1048
-01:17:30,500 --> 01:17:31,083
+01:17:30,499 --> 01:17:31,083
 Fuck you!
 
 1049
-01:17:31,167 --> 01:17:32,584
+01:17:31,166 --> 01:17:32,583
 Wait for what? Hello?
 
 1050
-01:17:33,125 --> 01:17:33,792
+01:17:33,124 --> 01:17:33,791
 Hello?
 
 1051
-01:17:34,125 --> 01:17:34,917
+01:17:34,124 --> 01:17:34,916
 Hey!
 
 1052
-01:17:35,417 --> 01:17:36,000
+01:17:35,416 --> 01:17:36,000
 Hey!
 
 1053
-01:17:40,167 --> 01:17:41,250
+01:17:40,166 --> 01:17:41,249
 You are dead!
 
 1054
-01:17:41,667 --> 01:17:42,917
+01:17:41,666 --> 01:17:42,916
 Go up!
 
 1055
@@ -4298,48 +4298,48 @@ Who's speaking?
 Kwai Ching-hung.
 
 1061
-01:18:03,125 --> 01:18:04,708
+01:18:03,124 --> 01:18:04,708
 Need my help?
 
 1062
-01:18:06,125 --> 01:18:07,708
+01:18:06,124 --> 01:18:07,708
 Are you kidding me?
 
 1063
-01:18:09,458 --> 01:18:11,500
+01:18:09,458 --> 01:18:11,499
 Do you have any proof?
 
 1064
-01:18:12,417 --> 01:18:15,250
+01:18:12,416 --> 01:18:15,249
 I robbed Tung Shing Watch in 1986.
 
 1065
-01:18:16,042 --> 01:18:17,500
+01:18:16,041 --> 01:18:17,499
 I killed 3 plainclothes
 
 1066
-01:18:17,542 --> 01:18:19,209
+01:18:17,541 --> 01:18:19,208
 in 1988.
 
 1067
-01:18:19,500 --> 01:18:20,792
-And Landmark in 1992...
+01:18:19,499 --> 01:18:20,791
+And Landmark in 1992…
 
 1068
-01:18:22,042 --> 01:18:25,625
+01:18:22,041 --> 01:18:25,625
 Wasn't it Yip who robbed Landmark in 1992!
 
 1069
-01:18:28,042 --> 01:18:30,125
+01:18:28,041 --> 01:18:30,124
 Don't be so gullible.
 
 1070
-01:18:30,750 --> 01:18:34,125
+01:18:30,750 --> 01:18:34,124
 Jumbo Watch in 1994
 and Lucky Guy Jewellery two years ago.
 
 1071
-01:18:34,250 --> 01:18:35,958
+01:18:34,249 --> 01:18:35,958
 I did them all.
 
 1072
@@ -4347,17 +4347,17 @@ I did them all.
 Do you think only Yip had AK-47?
 
 1073
-01:18:38,042 --> 01:18:40,709
+01:18:38,041 --> 01:18:40,708
 He loved to be on camera
 and the cops were dumb.
 
 1074
 01:18:40,750 --> 01:18:43,958
-- I just took advantage of the situation...
+- I just took advantage of the situation…
 - Hold on! Don't hang up.
 
 1075
-01:18:56,500 --> 01:18:57,792
+01:18:56,499 --> 01:18:57,791
 What did you just say?
 
 1076
@@ -4365,7 +4365,7 @@ What did you just say?
 Fuck you!
 
 1077
-01:18:58,667 --> 01:18:59,375
+01:18:58,666 --> 01:18:59,375
 Are you playing me?
 
 1078
@@ -4378,7 +4378,7 @@ Landmark in 1992, Jumbo in 1994,
 and Lucky Guy two years ago.
 
 1080
-01:19:09,792 --> 01:19:10,584
+01:19:09,791 --> 01:19:10,583
 Are you responsible for all?
 
 1081
@@ -4386,7 +4386,7 @@ Are you responsible for all?
 No!
 
 1082
-01:19:11,667 --> 01:19:12,667
+01:19:11,666 --> 01:19:12,666
 I never did my jobs in clandestine!
 
 1083
@@ -4398,11 +4398,11 @@ Why should I hide myself?
 We're all here.
 
 1085
-01:19:51,958 --> 01:19:52,875
+01:19:51,958 --> 01:19:52,874
 Where are you right now?
 
 1086
-01:19:52,917 --> 01:19:54,292
+01:19:52,916 --> 01:19:54,291
 Hong Kong!
 
 1087
@@ -4418,7 +4418,7 @@ Hello?
 Hello?
 
 1090
-01:20:31,542 --> 01:20:32,625
+01:20:31,541 --> 01:20:32,625
 Hello?
 
 1091
@@ -4438,11 +4438,11 @@ Yes.
 Where are you?
 
 1095
-01:20:41,875 --> 01:20:42,792
+01:20:41,874 --> 01:20:42,791
 Hong Kong.
 
 1096
-01:20:47,625 --> 01:20:49,500
+01:20:47,625 --> 01:20:49,499
 Call you when I'm back in Hong Kong.
 
 1097
@@ -4450,31 +4450,31 @@ Call you when I'm back in Hong Kong.
 Let's talk later.
 
 1098
-01:21:01,500 --> 01:21:03,000
+01:21:01,499 --> 01:21:03,000
 Motherfucker! The 3 Kings
 
 1099
-01:21:03,042 --> 01:21:04,375
+01:21:03,041 --> 01:21:04,375
 of Thieves have nothing to do with you.
 
 1100
-01:21:05,042 --> 01:21:06,709
+01:21:05,041 --> 01:21:06,708
 Since you're here,
 
 1101
-01:21:07,750 --> 01:21:09,792
+01:21:07,750 --> 01:21:09,791
 you can't bail without leaving something.
 
 1102
-01:21:15,000 --> 01:21:16,167
+01:21:15,000 --> 01:21:16,166
 Yes.
 
 1103
-01:21:37,875 --> 01:21:39,917
+01:21:37,874 --> 01:21:39,916
 There's less than $10M here.
 
 1104
-01:21:40,667 --> 01:21:42,542
+01:21:40,666 --> 01:21:42,541
 Mr Cheuk's life
 
 1105
@@ -4486,7 +4486,7 @@ worth at least $100M!
 Put your guns down!
 
 1107
-01:22:02,417 --> 01:22:04,792
+01:22:02,416 --> 01:22:04,791
 Retired soldiers? Go!
 
 1108
@@ -4494,7 +4494,7 @@ Retired soldiers? Go!
 Car key.
 
 1109
-01:22:11,917 --> 01:22:13,209
+01:22:11,916 --> 01:22:13,208
 Car key!
 
 1110
@@ -4502,36 +4502,36 @@ Car key!
 You think I'm bullshitting?
 
 1111
-01:22:31,667 --> 01:22:33,584
+01:22:31,666 --> 01:22:33,583
 If you don't treat me as your Big Bro,
 let's split!
 
 1112
-01:22:34,417 --> 01:22:36,500
+01:22:34,416 --> 01:22:36,499
 Big Bro, we always follow your orders.
 
 1113
-01:22:36,542 --> 01:22:37,875
+01:22:36,541 --> 01:22:37,874
 You said "drop the guns," we dropped the guns.
 
 1114
-01:22:37,917 --> 01:22:38,625
+01:22:37,916 --> 01:22:38,625
 You said "drop the guns," we dropped the guns.
 
 1115
-01:22:38,667 --> 01:22:39,584
+01:22:38,666 --> 01:22:39,583
 Is that very hard for you?
 
 1116
-01:22:39,625 --> 01:22:40,500
+01:22:39,625 --> 01:22:40,499
 No, we always follow you, Big Bro.
 
 1117
-01:22:40,542 --> 01:22:41,834
+01:22:40,541 --> 01:22:41,833
 No, we always follow you, Big Bro.
 
 1118
-01:22:41,917 --> 01:22:43,667
+01:22:41,916 --> 01:22:43,666
 We support you no matter what!
 
 1119
@@ -4539,11 +4539,11 @@ We support you no matter what!
 Are you looking down on me?
 
 1120
-01:22:49,417 --> 01:22:51,292
+01:22:49,416 --> 01:22:51,291
 I stoop so low that I need your support?
 
 1121
-01:22:51,792 --> 01:22:53,042
+01:22:51,791 --> 01:22:53,041
 I don't need you!
 
 1122
@@ -4551,7 +4551,7 @@ I don't need you!
 You're just my followers!
 
 1123
-01:22:57,333 --> 01:22:58,875
+01:22:57,333 --> 01:22:58,874
 Hey you!
 
 1124
@@ -4559,7 +4559,7 @@ Hey you!
 What are you fighting for?
 
 1125
-01:23:01,667 --> 01:23:04,792
+01:23:01,666 --> 01:23:04,791
 Sorry, we're tourists.
 
 1126
@@ -4571,7 +4571,7 @@ We got lost, so we quarreled.
 The residents upstairs filed a complaint.
 
 1128
-01:23:11,542 --> 01:23:13,125
+01:23:11,541 --> 01:23:13,124
 - Where are your IDs?
 - Here.
 
@@ -4580,19 +4580,19 @@ The residents upstairs filed a complaint.
 We planned to take a boat to Macau
 
 1130
-01:23:25,125 --> 01:23:26,500
+01:23:25,124 --> 01:23:26,499
 but got lost here.
 
 1131
-01:23:26,542 --> 01:23:28,084
+01:23:26,541 --> 01:23:28,083
 We couldn't find the pier.
 
 1132
-01:23:28,167 --> 01:23:31,167
+01:23:28,166 --> 01:23:31,166
 So we quarreled.
 
 1133
-01:23:33,750 --> 01:23:34,917
+01:23:33,750 --> 01:23:34,916
 Call the station.
 
 1134
@@ -4600,19 +4600,19 @@ Call the station.
 PC1844 calling the station. Send.
 
 1135
-01:23:43,667 --> 01:23:45,709
+01:23:43,666 --> 01:23:45,708
 Quick!
 
 1136
-01:23:45,750 --> 01:23:47,500
+01:23:45,750 --> 01:23:47,499
 Don't let him flee!
 
 1137
-01:23:47,542 --> 01:23:48,917
+01:23:47,541 --> 01:23:48,916
 Motherfucker!
 
 1138
-01:23:50,000 --> 01:23:51,917
+01:23:50,000 --> 01:23:51,916
 He's in the front!
 
 1139
@@ -4632,11 +4632,11 @@ Believe it or not, they called me up!
 I even got a whole ton of dynamite!
 
 1143
-01:24:26,500 --> 01:24:28,625
+01:24:26,499 --> 01:24:28,625
 It will work this time. Get me a boat.
 
 1144
-01:24:28,667 --> 01:24:30,792
+01:24:28,666 --> 01:24:30,791
 I have an idea!
 
 1145
@@ -4645,8 +4645,8 @@ We'll blow up the Handover ceremony!
 
 1146
 01:24:32,208 --> 01:24:34,166
-We can threaten either the British queen‭
-or the Chinese government.‬
+We can threaten either the British queen
+or the Chinese government.
 
 1147
 01:24:34,208 --> 01:24:36,083
@@ -4657,20 +4657,20 @@ It will create a stir for sure!
 What the fuck!
 
 1149
-01:25:25,583 --> 01:25:26,875
+01:25:25,583 --> 01:25:26,874
 The night snack is here. Back yet?
 
 1150
-01:25:26,917 --> 01:25:27,750
+01:25:26,916 --> 01:25:27,750
 Coming back.
 
 1151
-01:25:27,833 --> 01:25:30,125
+01:25:27,833 --> 01:25:30,124
 We're at the entrance
 to the complainant's building.
 
 1152
-01:25:30,500 --> 01:25:33,333
+01:25:30,499 --> 01:25:33,333
 It's quiet. No one's here. OVER.
 
 1153
@@ -4678,7 +4678,7 @@ It's quiet. No one's here. OVER.
 Be civilized. Don't talk too loud.
 
 1154
-01:25:38,042 --> 01:25:40,542
+01:25:38,041 --> 01:25:40,541
 If you go to Macau, take the ferry in Sheung Wan.
 
 1155
@@ -4686,19 +4686,19 @@ If you go to Macau, take the ferry in Sheung Wan.
 This is Sai Wan.
 
 1156
-01:25:42,250 --> 01:25:43,042
+01:25:42,249 --> 01:25:43,041
 Oh.
 
 1157
-01:25:43,542 --> 01:25:46,209
+01:25:43,541 --> 01:25:46,208
 Go to the main street and take a cab.
 
 1158
-01:25:46,500 --> 01:25:47,292
+01:25:46,499 --> 01:25:47,291
 Take a cab!
 
 1159
-01:25:52,042 --> 01:25:54,667
+01:25:52,041 --> 01:25:54,666
 Mainlanders are numskulls.
 
 1160
@@ -4710,23 +4710,23 @@ Quick!
 Mainlanders?
 
 1162
-01:28:45,667 --> 01:28:47,500
+01:28:45,666 --> 01:28:47,499
 I'm Yip Kwok-foon!
 
 1163
-01:29:59,750 --> 01:30:02,500
+01:29:59,750 --> 01:30:02,499
 Military Police
 
 1164
-01:31:24,250 --> 01:31:25,083
+01:31:24,249 --> 01:31:25,083
 Waiter.
 
 1165
-01:31:26,167 --> 01:31:28,000
+01:31:26,166 --> 01:31:28,000
 Sir, have you reserved a table?
 
 1166
-01:31:28,042 --> 01:31:29,459
+01:31:28,041 --> 01:31:29,458
 I booked a room under the name of Chen.
 
 1167
@@ -4734,15 +4734,15 @@ I booked a room under the name of Chen.
 Give me a second.
 
 1168
-01:31:33,042 --> 01:31:36,209
+01:31:33,041 --> 01:31:36,208
 Mr Chen. Please follow me.
 
 1169
-01:31:36,625 --> 01:31:37,875
+01:31:36,625 --> 01:31:37,874
 This way, please.
 
 1170
-01:31:37,917 --> 01:31:38,917
+01:31:37,916 --> 01:31:38,916
 Hey.
 
 1171
@@ -4750,7 +4750,7 @@ Hey.
 Where is our rice?
 
 1172
-01:31:39,750 --> 01:31:40,875
+01:31:39,750 --> 01:31:40,874
 Rice? Give me a second.
 
 1173
@@ -4758,19 +4758,19 @@ Rice? Give me a second.
 Your rice is coming right away.
 
 1174
-01:31:45,417 --> 01:31:47,250
+01:31:45,416 --> 01:31:47,249
 Sorry to keep you waiting.
 
 1175
-01:31:47,333 --> 01:31:48,500
+01:31:47,333 --> 01:31:48,499
 Thank you.
 
 1176
-01:31:48,542 --> 01:31:50,000
+01:31:48,541 --> 01:31:50,000
 Enjoy your food.
 
 1177
-01:31:50,500 --> 01:31:52,208
+01:31:50,499 --> 01:31:52,208
 Mr Chen. This way, please.
 
 1178
@@ -4778,28 +4778,28 @@ Mr Chen. This way, please.
 Hey! Haven't you gone to the bathroom just now?
 
 1179
-01:31:55,375 --> 01:31:59,167
+01:31:55,375 --> 01:31:59,166
 Wait! Don't puke!
 
 1180
-01:31:59,708 --> 01:32:01,875
+01:31:59,708 --> 01:32:01,874
 Are you all right?
 
 1181
-01:32:02,000 --> 01:32:05,042
+01:32:02,000 --> 01:32:05,041
 I thought you went to the restroom.
 Why are you here?
 
 1182
-01:32:05,583 --> 01:32:06,875
+01:32:05,583 --> 01:32:06,874
 I'm sorry. This way, please.
 
 1183
-01:32:06,917 --> 01:32:08,209
+01:32:06,916 --> 01:32:08,208
 We are super busy today.
 
 1184
-01:32:08,250 --> 01:32:09,375
+01:32:08,249 --> 01:32:09,375
 - Hey!
 - This way, please.
 
@@ -4808,20 +4808,20 @@ We are super busy today.
 The rice is cold!
 
 1186
-01:32:11,250 --> 01:32:12,250
+01:32:11,249 --> 01:32:12,249
 Give me a second.
 
 1187
-01:32:12,292 --> 01:32:13,917
+01:32:12,291 --> 01:32:13,916
 - I'm sorry. The rice is cold?
 - I want tea.
 
 1188
-01:32:13,958 --> 01:32:15,125
+01:32:13,958 --> 01:32:15,124
 Give me a second. I'll give you another bowl.
 
 1189
-01:32:15,167 --> 01:32:16,584
+01:32:15,166 --> 01:32:16,583
 - Quick!
 - Tell me the room number. I'll look for it myself.
 
@@ -4831,23 +4831,23 @@ Give me a second. I'll give you another bowl.
 - Give me a second.
 
 1191
-01:32:18,875 --> 01:32:19,667
+01:32:18,874 --> 01:32:19,666
 Sure I'll get you tea.
 
 1192
-01:32:19,708 --> 01:32:22,500
+01:32:19,708 --> 01:32:22,499
 Give me a second. I'll be right back.
 
 1193
-01:32:27,542 --> 01:32:29,750
+01:32:27,541 --> 01:32:29,750
 We should not forget you.
 
 1194
-01:32:29,792 --> 01:32:33,209
+01:32:29,791 --> 01:32:33,208
 And we should watch with the closest interests
 
 1195
-01:32:33,292 --> 01:32:39,084
+01:32:33,291 --> 01:32:39,083
 as you embark on this new era
 of your remarkable history.
 

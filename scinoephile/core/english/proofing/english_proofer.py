@@ -9,7 +9,7 @@ import re
 from logging import info
 from pathlib import Path
 
-from scinoephile.common.validation import val_input_path
+from scinoephile.common.validation import val_output_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.english.proofing import EnglishProofLLMQueryer
@@ -51,7 +51,7 @@ class EnglishProofer:
         """Proofreads English subtitles."""
 
         if test_case_path is not None:
-            test_case_path = val_input_path(test_case_path)
+            test_case_path = val_output_path(test_case_path, exist_ok=True)
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -81,6 +81,11 @@ class EnglishProofer:
             info(f"BLOCK {block_idx} ({block.start_idx} - {block.end_idx}):")
             info(f"English:\n{block.to_series().to_simple_string()}")
             all_block_series[block_idx] = block_series
+
+        # Ensure test case file exists
+        if self.test_case_path is not None and not self.test_case_path.exists():
+            self.test_case_path.parent.mkdir(parents=True, exist_ok=True)
+            self.create_test_case_file(self.test_case_path, len(series.blocks))
 
         # Run all blocks
         if stop_at_idx is None:
@@ -129,6 +134,42 @@ class EnglishProofer:
             )
 
         return nascent_series
+
+    @staticmethod
+    def create_test_case_file(test_case_path: Path, n_blocks: int):
+        """Create a test case file.
+
+        Arguments:
+            test_case_path: path to file to create
+            n_blocks: number of blocks for which to create test cases
+        """
+        header = '''"""English proof test cases."""
+    
+from __future__ import annotations
+    
+from scinoephile.core.english.proofing.abcs import EnglishProofTestCase'''
+
+        blocks = "\n".join(
+            f"# noinspection PyArgumentList\n"
+            f"test_case_block_{i} = None  # test_case_block_{i}"
+            for i in range(n_blocks)
+        )
+
+        footer = '''
+english_proof_test_cases: list[EnglishProofTestCase] = [
+    test_case
+    for name, test_case in globals().items()
+    if name.startswith("test_case_block_") and test_case is not None
+]
+"""English proof test cases."""
+
+__all__ = [
+    "english_proof_test_cases",
+    ]'''
+
+        contents = f"{header}\n\n{blocks}\n\n{footer}\n"
+        test_case_path.write_text(contents, encoding="utf-8")
+        info(f"Created test case file at {test_case_path}.")
 
     @staticmethod
     def get_models(

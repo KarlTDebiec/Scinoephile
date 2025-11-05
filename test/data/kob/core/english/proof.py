@@ -2950,8 +2950,6 @@ test_case_block_194 = EnglishProofTestCase.get_test_case_cls(2)(
     subtitle_2="Thank you, uncle",
     verified=True,
 )  # test_case_block_194
-# noinspection PyArgumentList
-test_case_block_195 = None  # test_case_block_195
 
 kob_english_proof_test_cases: list[EnglishProofTestCase] = [
     test_case
