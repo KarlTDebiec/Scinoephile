@@ -616,9 +616,9 @@ test_case_block_48 = EnglishProofTestCase.get_test_case_cls(9)(
     subtitle_7="after killing cops.",
     subtitle_8="Then Big Bro Chiu popped up.",
     subtitle_9="Big Bro Chiu is just a name.",
-    verified=True,
     difficulty=1,
     prompt=True,
+    verified=True,
 )  # test_case_block_48
 # noinspection PyArgumentList
 test_case_block_49 = EnglishProofTestCase.get_test_case_cls(13)(
@@ -662,59 +662,370 @@ test_case_block_50 = EnglishProofTestCase.get_test_case_cls(20)(
     subtitle_18="It's all right to have a sip.",
     subtitle_19="Not coughing? You are being cheeky!",
     subtitle_20="I say no Coke.",
-    verified=True,
     difficulty=1,
+    verified=True,
 )  # test_case_block_50
 # noinspection PyArgumentList
-test_case_block_51 = None  # test_case_block_51
+test_case_block_51 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Fai, I'm not gonna eat. I'm running late.",
+    subtitle_2="You're going now?",
+    subtitle_3="Yes.",
+    verified=True,
+)  # test_case_block_51
 # noinspection PyArgumentList
-test_case_block_52 = None  # test_case_block_52
+test_case_block_52 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Be a good girl.",
+    verified=True,
+)  # test_case_block_52
 # noinspection PyArgumentList
-test_case_block_53 = None  # test_case_block_53
+test_case_block_53 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Bro Coke, dig in.",
+    subtitle_2="She's not eating with us?",
+    subtitle_3="She has to work night shift.",
+    verified=True,
+)  # test_case_block_53
 # noinspection PyArgumentList
-test_case_block_54 = None  # test_case_block_54
+test_case_block_54 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="She's a legit masseuse.",
+    subtitle_2="Eat some barbecued pork.",
+    subtitle_3="Bo, eat some veggies.",
+    subtitle_4="You seldom eat veggies.",
+    subtitle_5="Shall we go to Ocean Park?",
+    subtitle_6="Shall we ride the roller coaster?",
+    verified=True,
+)  # test_case_block_54
 # noinspection PyArgumentList
-test_case_block_55 = None  # test_case_block_55
+test_case_block_55 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Shall we fly higher and farther?",
+    subtitle_2="Tickle, tickle.",
+    verified=True,
+)  # test_case_block_55
 # noinspection PyArgumentList
-test_case_block_56 = None  # test_case_block_56
+test_case_block_56 = EnglishProofTestCase.get_test_case_cls(38)(
+    subtitle_1="Stop making noise, or the landlady will be nasty.",
+    subtitle_2="She's nasty because you haven't paid the rent.",
+    subtitle_3="You're being cheeky. Come down.",
+    subtitle_4="What a dragon lady, arguing with your father!",
+    subtitle_5="This girl plays too much! Wear your slippers.",
+    subtitle_6="Have you finished your homework? Homework first.",
+    subtitle_7="Quick!",
+    subtitle_8="- I'll spank you.\n- Good girl.",
+    subtitle_9="This naughty girl!",
+    subtitle_10="I've quit smoking.",
+    subtitle_11="Quit?",
+    subtitle_12="I've quit smoking.",
+    subtitle_13='"Whoring, gambling, drinking, roaming...',
+    subtitle_14='and smoking are the hobbies of a king."',
+    subtitle_15="Your mantra.",
+    subtitle_16="I'm on dialysis. I have to quit.",
+    subtitle_17="Told you you're impotent.",
+    subtitle_18="You feel dizzy when you squat.",
+    subtitle_19="Fuck!",
+    subtitle_20="What have you been up to?",
+    subtitle_21="What can I do?",
+    subtitle_22="I used to do temporary construction work.",
+    subtitle_23="Now I'm a full-time babysitter.",
+    subtitle_24="What about you?",
+    subtitle_25="Me?",
+    subtitle_26="I sell this in China.",
+    subtitle_27="People won't use beepers anymore.",
+    subtitle_28="Every Chinese will own\na mobile phone in the future.",
+    subtitle_29="One sells for RMB¥1K, 10 for RMB¥10K.",
+    subtitle_30="I'll be fatter than Chow Yun-fat.",
+    subtitle_31="Fat with loads of money?",
+    subtitle_32="Great.",
+    subtitle_33="You're doing great. You're becoming a boss.",
+    subtitle_34="Going straight is better than going astray.",
+    subtitle_35="We're not fierce enough to be Kings of Thieves.",
+    subtitle_36="All we did were some petty crimes.",
+    subtitle_37="Our life was insecure. We couldn't sleep well.",
+    subtitle_38="And we didn't earn that much.\nSo what's the point?",
+    revised_29="One sells for ¥1,000, ten for ¥10,000.",
+    note_29="Changed 'RMB¥1K' to '¥1,000' and '10 for RMB¥10K' to 'ten "
+    "for ¥10,000' for clarity and standard formatting.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_56
 # noinspection PyArgumentList
-test_case_block_57 = None  # test_case_block_57
+test_case_block_57 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="I'd like to stay here for a few days.",
+    subtitle_2="What?",
+    subtitle_3="I can sleep on the couch.",
+    subtitle_4="What's that for?",
+    subtitle_5="Take it. It will lessen your wife's burden.",
+    subtitle_6="Dad, I can't find my school manual!",
+    subtitle_7="Dad, Dad.",
+    subtitle_8="Coming!",
+    subtitle_9="That's fine",
+    revised_9="That's fine.",
+    note_9="Added a period at the end for sentence completion.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_57
 # noinspection PyArgumentList
-test_case_block_58 = None  # test_case_block_58
+test_case_block_58 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="(Gold shop)",
+    verified=True,
+)  # test_case_block_58
 # noinspection PyArgumentList
-test_case_block_59 = None  # test_case_block_59
+test_case_block_59 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="(Jockey Club)",
+    subtitle_2="Panyu Yi Fa Market",
+    subtitle_3="30 sets of 29-inch TVs. RMB¥12K apiece.",
+    subtitle_4="Plus 80 VCD players. RMB¥4K a piece.",
+    subtitle_5="RMB¥680K, thank you.",
+    revised_3="30 sets of 29-inch TVs. ¥12,000 apiece.",
+    note_3="Changed 'RMB¥12K' to '¥12,000' for clarity and standard formatting.",
+    revised_4="Plus 80 VCD players. ¥4,000 apiece.",
+    note_4="Changed 'RMB¥4K a piece.' to '¥4,000 apiece.' for clarity "
+    "and correct word usage.",
+    revised_5="¥680,000, thank you.",
+    note_5="Changed 'RMB¥680K' to '¥680,000' for clarity and standard formatting.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_59
 # noinspection PyArgumentList
-test_case_block_60 = None  # test_case_block_60
+test_case_block_60 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="You pay me RMB¥700K.",
+    subtitle_2="I will notify you once the goods are delivered.",
+    subtitle_3="Next.",
+    subtitle_4="RMB¥30K for Chief Chen. Please count it.",
+    subtitle_5="Business License",
+    revised_1="You pay me ¥700,000.",
+    note_1="Changed 'RMB¥700K' to '¥700,000' for clarity and standard formatting.",
+    revised_4="¥30,000 for Chief Chen. Please count it.",
+    note_4="Changed 'RMB¥30K' to '¥30,000' for clarity and standard formatting.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_60
 # noinspection PyArgumentList
-test_case_block_61 = None  # test_case_block_61
+test_case_block_61 = EnglishProofTestCase.get_test_case_cls(23)(
+    subtitle_1="RMB¥30K. The amount is correct.",
+    subtitle_2="Will notify you once the goods are onboard.",
+    subtitle_3="Please extend my thanks to Chief Chen.",
+    subtitle_4="My VCD player is broken.",
+    subtitle_5="I'll give you a new one. Kam.",
+    subtitle_6="Yes.",
+    subtitle_7="The latest 33-inch TV set.",
+    subtitle_8="Good stuff.",
+    subtitle_9="I'll give it to you, too.",
+    subtitle_10="Thanks so much, Boss Zhang.",
+    subtitle_11="You're welcome.",
+    subtitle_12="Gui, Guang, a 33-inch TV set and a VCD player.",
+    subtitle_13="Gui, Guang, a 33-inch TV set and a VCD player.",
+    subtitle_14="Sure.",
+    subtitle_15="Da-bao Electronics",
+    subtitle_16="She is greedy.",
+    subtitle_17="That's business.",
+    subtitle_18="Don't pull a long face all day long.",
+    subtitle_19="Boss Zhang, Boss Zhang.",
+    subtitle_20="No worries. They will take care of it.",
+    subtitle_21="- Quick\n- What's wrong?",
+    subtitle_22="Boss Zhang.",
+    subtitle_23="What's wrong?",
+    revised_1="¥30,000. The amount is correct.",
+    note_1="Changed 'RMB¥30K' to '¥30,000' for clarity and standard formatting.",
+    revised_2="Will notify you once the goods are on board.",
+    note_2="Changed 'onboard' to 'on board' for correct usage.",
+    revised_21="- Quick.\n- What's wrong?",
+    note_21="Added period after 'Quick' for punctuation consistency.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_61
 # noinspection PyArgumentList
-test_case_block_62 = None  # test_case_block_62
+test_case_block_62 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Something wrong with the goods?",
+    subtitle_2="No, close the door.",
+    subtitle_3="Close the door.",
+    verified=True,
+)  # test_case_block_62
 # noinspection PyArgumentList
-test_case_block_63 = None  # test_case_block_63
+test_case_block_63 = EnglishProofTestCase.get_test_case_cls(1)(
+    subtitle_1="Want to play tough guy? Call your wife now.",
+    verified=True,
+)  # test_case_block_63
 # noinspection PyArgumentList
-test_case_block_64 = None  # test_case_block_64
+test_case_block_64 = EnglishProofTestCase.get_test_case_cls(4)(
+    subtitle_1="Call your wife now.",
+    subtitle_2="Tell your folks you're OK, asshole.",
+    subtitle_3="If you kill me, you won't get a cent.",
+    subtitle_4="Are you threatening me?",
+    verified=True,
+)  # test_case_block_64
 # noinspection PyArgumentList
-test_case_block_65 = None  # test_case_block_65
+test_case_block_65 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Cheuk, be patient.",
+    subtitle_2="If he doesn't talk, don't give him food or water.",
+    verified=True,
+)  # test_case_block_65
 # noinspection PyArgumentList
-test_case_block_66 = None  # test_case_block_66
+test_case_block_66 = EnglishProofTestCase.get_test_case_cls(48)(
+    subtitle_1="You're so noisy.",
+    subtitle_2="Hey, what are you doing?",
+    subtitle_3="Get him back! Get him back!",
+    subtitle_4="This is the gold shop.",
+    subtitle_5="Usually there's a police wagon at the entrance.",
+    subtitle_6="Jockey Club is across the street.",
+    subtitle_7="We keep a close eye on the police wagon.",
+    subtitle_8="As soon as it leaves at 8pm,\nwe rob the gold shop right away.",
+    subtitle_9="It's the racing night. It will be crowded.\nAfter it's done...",
+    subtitle_10="- There's not much money in this.\n- Follow me closely.",
+    subtitle_11="What did you just say?",
+    subtitle_12="You've committed big crimes.",
+    subtitle_13="Why pick this small gold shop?",
+    subtitle_14="Yes,",
+    subtitle_15="I've heard the 3 Kings\nof Thieves would join forces.",
+    subtitle_16="At least millions of dollars will be involved.",
+    subtitle_17="What 3 Kings of Thieves?",
+    subtitle_18="Say it!",
+    subtitle_19="Bro Foon, are you making a comeback?",
+    subtitle_20="This time with Cheuk Tze-keung\nand Kwai Ching-hung.",
+    subtitle_21="The 3 Kings of Thieves are collaborating?",
+    subtitle_22="Someone has seen you three meeting in China.",
+    subtitle_23="Where did you hear this?",
+    subtitle_24="Everyone is saying that.",
+    subtitle_25="And you believe it?",
+    subtitle_26="Didn't Big Bro say you couldn't\nmake money by toting guns?",
+    subtitle_27="If I'm Kwai,",
+    subtitle_28="I don't have\nto eat lunch boxes with you.",
+    subtitle_29="Idiots.",
+    subtitle_30="That's ridiculous!",
+    subtitle_31="Yip is all noise and fury.",
+    subtitle_32="Kwai is hush and shush.",
+    subtitle_33="We are so different. How can it work?",
+    subtitle_34="Smuggle more goods with me.",
+    subtitle_35="Let's make more money together!",
+    subtitle_36="Got it.",
+    subtitle_37="Brilliant!",
+    subtitle_38="Sometimes I feel like toting my gun again.",
+    subtitle_39="Robbery! Robbery!",
+    subtitle_40="That's so cool!",
+    subtitle_41="You call that cool?",
+    subtitle_42="Big Bro wielding AK-47 is cool!",
+    subtitle_43="Not like this.",
+    subtitle_44="AK-47 recoil is powerful.",
+    subtitle_45="Don't hold it.",
+    subtitle_46="Press it.",
+    subtitle_47="Stand firm.",
+    subtitle_48="Shoot the hell out of him.",
+    revised_8="As soon as it leaves at 8 PM,\nwe rob the gold shop right away.",
+    note_8="Changed '8pm' to '8 PM' for standard formatting.",
+    revised_15="I've heard the Three Kings\nof Thieves would join forces.",
+    note_15="Changed '3 Kings' to 'Three Kings' for consistency and formality.",
+    revised_17="What Three Kings of Thieves?",
+    note_17="Changed '3 Kings' to 'Three Kings' for consistency and formality.",
+    revised_21="The Three Kings of Thieves are collaborating?",
+    note_21="Changed '3 Kings' to 'Three Kings' for consistency and formality.",
+    revised_38="Sometimes I feel like toting a gun again.",
+    note_38="Changed 'my gun' to 'a gun' for more natural phrasing.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_66
 # noinspection PyArgumentList
-test_case_block_67 = None  # test_case_block_67
+test_case_block_67 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="What the fuck?! Join me",
+    subtitle_2="or go home and eat shit.",
+    verified=True,
+)  # test_case_block_67
 # noinspection PyArgumentList
-test_case_block_68 = None  # test_case_block_68
+test_case_block_68 = EnglishProofTestCase.get_test_case_cls(2)(
+    subtitle_1="Big Bro Chiu,",
+    subtitle_2="how much can we earn from robbing this gold shop?",
+    verified=True,
+)  # test_case_block_68
 # noinspection PyArgumentList
-test_case_block_69 = None  # test_case_block_69
+test_case_block_69 = EnglishProofTestCase.get_test_case_cls(6)(
+    subtitle_1="You're calling or not?",
+    subtitle_2="If the 3 Kings of Thieves join forces,",
+    subtitle_3="even if we open a fish ball stall together,",
+    subtitle_4="we will create a stir, right?",
+    subtitle_5="What shall I call our stall?",
+    subtitle_6="Are you calling your family or not?",
+    revised_1="Are you calling or not?",
+    note_1="Changed 'You're calling or not?' to 'Are you calling or "
+    "not?' for correct question structure.",
+    revised_2="If the Three Kings of Thieves join forces,",
+    note_2="Changed '3 Kings' to 'Three Kings' for consistency and formality.",
+    revised_3="even if we open a fishball stall together,",
+    note_3="Changed 'fish ball' to 'fishball' for consistency with common usage.",
+    difficulty=1,
+    prompt=True,
+    verified=True,
+)  # test_case_block_69
 # noinspection PyArgumentList
-test_case_block_70 = None  # test_case_block_70
+test_case_block_70 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Hey, wake up!",
+    subtitle_2="Gold depository?",
+    subtitle_3="Racecourse?",
+    verified=True,
+)  # test_case_block_70
 # noinspection PyArgumentList
-test_case_block_71 = None  # test_case_block_71
+test_case_block_71 = EnglishProofTestCase.get_test_case_cls(3)(
+    subtitle_1="Kidnap Hong Kong Governor Chris Patten?",
+    subtitle_2="The Head of Hong Kong and Macau Affairs, Lu Ping?",
+    subtitle_3="No way.",
+    verified=True,
+)  # test_case_block_71
 # noinspection PyArgumentList
-test_case_block_72 = None  # test_case_block_72
+test_case_block_72 = EnglishProofTestCase.get_test_case_cls(8)(
+    subtitle_1="What are you listening?",
+    subtitle_2="The 4 Heavenly Kings singing on stage together.",
+    subtitle_3="What are they singing?",
+    subtitle_4="I can't hear a thing. What's so good about it?",
+    subtitle_5="When the 4 Heavenly Kings sing together,",
+    subtitle_6="it's terrific no matter what they sing.",
+    subtitle_7="Water, give me water.",
+    subtitle_8="I will make the call.",
+    revised_1="What are you listening to?",
+    note_1="Added 'to' at the end for correct phrasing.",
+    revised_2="The Four Heavenly Kings singing on stage together.",
+    note_2="Spelled out '4' as 'Four' and capitalized for proper noun usage.",
+    revised_5="When the Four Heavenly Kings sing together,",
+    note_5="Spelled out '4' as 'Four' and capitalized for proper noun usage.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_72
 # noinspection PyArgumentList
-test_case_block_73 = None  # test_case_block_73
+test_case_block_73 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="How's my husband? I beg you!",
+    subtitle_2="He's not in good health. Don't hurt him.",
+    subtitle_3="We are not as loaded as it may seem.",
+    subtitle_4="Mr Cheuk, can you let my husband go?",
+    subtitle_5="Name a price. I'll pay you from my own pocket...",
+    verified=True,
+)  # test_case_block_73
 # noinspection PyArgumentList
-test_case_block_74 = None  # test_case_block_74
+test_case_block_74 = EnglishProofTestCase.get_test_case_cls(5)(
+    subtitle_1="Hello?",
+    subtitle_2="I have $80M in cash.",
+    subtitle_3="Is it OK?",
+    subtitle_4="$80M it is!",
+    subtitle_5="Find Yip and Kwai!",
+    revised_2="I have $80 million in cash.",
+    note_2="Changed '$80M' to '$80 million' for clarity and consistency.",
+    revised_4="$80 million it is!",
+    note_4="Changed '$80M' to '$80 million' for clarity and consistency.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_74
 # noinspection PyArgumentList
-test_case_block_75 = None  # test_case_block_75
+test_case_block_75 = EnglishProofTestCase.get_test_case_cls(9)(
+    subtitle_1="What the hell?",
+    subtitle_2="The 3 Kings of Thieves\njoin forces for the first time.",
+    subtitle_3="It will be terrific no matter what we do!",
+    subtitle_4="You don't even have a plan yet,",
+    subtitle_5="and you want 2 wanted men around you?",
+    subtitle_6="You know I will",
+    subtitle_7="come up with a plan!",
+    subtitle_8="This is the mountain I'm looking for.",
+    subtitle_9="Himalaya!",
+    revised_2="The Three Kings of Thieves\njoin forces for the first time.",
+    note_2="Spelled out '3' as 'Three' for consistency and formality.",
+    revised_5="and you want two wanted men around you?",
+    note_5="Spelled out '2' as 'two' for consistency and formality.",
+    difficulty=1,
+    verified=True,
+)  # test_case_block_75
 # noinspection PyArgumentList
 test_case_block_76 = None  # test_case_block_76
 # noinspection PyArgumentList

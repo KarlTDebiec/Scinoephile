@@ -36,15 +36,19 @@ class EnglishProofer:
             test_case_path: path to file containing test cases
         """
         if proof_test_cases is None:
-            from test.data.kob import kob_english_proof_test_cases
-            from test.data.mlamd import mlamd_english_proof_test_cases
-            from test.data.t import t_english_proof_test_cases
+            proof_test_cases = []
+            try:
+                from test.data.kob import kob_english_proof_test_cases
+                from test.data.mlamd import mlamd_english_proof_test_cases
+                from test.data.t import t_english_proof_test_cases
 
-            proof_test_cases = (
-                kob_english_proof_test_cases
-                + mlamd_english_proof_test_cases
-                + t_english_proof_test_cases
-            )
+                proof_test_cases = (
+                    kob_english_proof_test_cases
+                    + mlamd_english_proof_test_cases
+                    + t_english_proof_test_cases
+                )
+            except ImportError:
+                pass
 
         self.proofer = EnglishProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
@@ -147,9 +151,9 @@ class EnglishProofer:
             n_blocks: number of blocks for which to create test cases
         """
         header = '''"""English proof test cases."""
-    
+
 from __future__ import annotations
-    
+
 from scinoephile.core.english.proofing.abcs import EnglishProofTestCase'''
 
         blocks = "\n".join(

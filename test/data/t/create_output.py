@@ -40,7 +40,7 @@ if __name__ == "__main__":
     proofer = EnglishProofer(
         test_case_path=test_data_root / "t" / "core" / "english" / "proof.py",
     )
-    eng_proof = get_english_proofed(eng, proofer, stop_at_idx=50)
+    eng_proof = get_english_proofed(eng, proofer, stop_at_idx=75)
     eng_proof.save(output_dir / "eng_proof.srt")
     # eng_clean_flatten = get_english_flattened(eng_clean)
     # eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
