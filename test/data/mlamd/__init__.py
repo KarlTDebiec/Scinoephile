@@ -93,6 +93,7 @@ def mlamd_eng_flatten() -> Series:
     return Series.load(output_dir / "eng_flatten.srt")
 
 
+@pytest.fixture
 def mlamd_eng_proof() -> Series:
     """MLAMD English proofed series."""
     return Series.load(output_dir / "eng_proof.srt")
