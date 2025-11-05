@@ -9,7 +9,7 @@ import re
 from logging import info
 from pathlib import Path
 
-from scinoephile.common.validation import val_input_dir_path
+from scinoephile.common.validation import val_input_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.english.proofing import EnglishProofLLMQueryer
@@ -26,15 +26,23 @@ class EnglishProofer:
 
     def __init__(
         self,
-        proof_test_cases: list[EnglishProofTestCase],
-        test_case_directory_path: Path | None = None,
+        proof_test_cases: list[EnglishProofTestCase] | None = None,
+        test_case_path: Path | None = None,
     ):
         """Initialize.
 
         Arguments:
             proof_test_cases: proof test cases
-            test_case_directory_path: path to directory containing test cases
+            test_case_path: path to file containing test cases
         """
+        if proof_test_cases is None:
+            from test.data.kob import kob_english_proof_test_cases
+            from test.data.mlamd import mlamd_english_proof_test_cases
+
+            proof_test_cases = (
+                kob_english_proof_test_cases + mlamd_english_proof_test_cases
+            )
+
         self.proofer = EnglishProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
@@ -42,10 +50,10 @@ class EnglishProofer:
         )
         """Proofreads English subtitles."""
 
-        if test_case_directory_path is not None:
-            test_case_directory_path = val_input_dir_path(test_case_directory_path)
-        self.test_case_directory_path = test_case_directory_path
-        """Path to directory containing test cases."""
+        if test_case_path is not None:
+            test_case_path = val_input_path(test_case_path)
+        self.test_case_path = test_case_path
+        """Path to file containing test cases."""
 
     async def process_all_blocks(
         self,
@@ -113,10 +121,10 @@ class EnglishProofer:
                 subtitle.text = revised
             nascent_series.append(subtitle)
 
-        if self.test_case_directory_path is not None:
+        if self.test_case_path is not None:
             await update_dynamic_test_cases(
-                self.test_case_directory_path / "proofing.py",
-                f"proof_test_case_block_{block_idx}",
+                self.test_case_path,
+                f"test_case_block_{block_idx}",
                 self.proofer,
             )
 

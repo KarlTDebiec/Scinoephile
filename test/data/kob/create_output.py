@@ -20,7 +20,6 @@ from scinoephile.core.hanzi import (
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.testing import test_data_root
-from test.data.kob import kob_proof_test_cases
 
 if __name__ == "__main__":
     input_dir = test_data_root / "kob" / "input"
@@ -48,8 +47,7 @@ if __name__ == "__main__":
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
     proofer = EnglishProofer(
-        proof_test_cases=kob_proof_test_cases,
-        test_case_directory_path=test_data_root / "kob" / "test_cases",
+        test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
     )
     eng_proof = get_english_proofed(eng, proofer)
     eng_proof.save(output_dir / "eng_proof.srt")

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.test_get_english_proofed"""
+"""Tests of scinoephile.core.english.test_get_english_proofed."""
 
 from __future__ import annotations
 
@@ -10,14 +10,16 @@ from scinoephile.core import Series
 from scinoephile.core.english import get_english_proofed
 from scinoephile.core.english.proofing import EnglishProofLLMQueryer
 from scinoephile.testing import test_data_root
-from test.data.kob import kob_proof_test_cases
+from test.data.kob import kob_english_proof_test_cases
+from test.data.mlamd import mlamd_english_proof_test_cases
 
 
 @pytest.fixture
 def english_proof_llm_queryer_few_shot() -> EnglishProofLLMQueryer:
     """LLMQueryer with few-shot examples."""
     return EnglishProofLLMQueryer(
-        prompt_test_cases=[tc for tc in kob_proof_test_cases if tc.prompt],
+        prompt_test_cases=[tc for tc in kob_english_proof_test_cases if tc.prompt]
+        + [tc for tc in mlamd_english_proof_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
@@ -58,3 +60,13 @@ def test_get_english_proofed_kob(kob_eng: Series, kob_eng_proof: Series):
         kob_eng_proof: Expected proofed KOB English series fixture
     """
     _test_get_english_proofed(kob_eng, kob_eng_proof)
+
+
+def test_get_english_proofed_mlamd(mlamd_eng: Series, mlamd_eng_proof: Series):
+    """Test get_english_proofed with MLAMD English subtitles.
+
+    Arguments:
+        mlamd_eng: MLAMD English series fixture
+        mlamd_eng_proof: Expected proofed MLAMD English series fixture
+    """
+    _test_get_english_proofed(mlamd_eng, mlamd_eng_proof)

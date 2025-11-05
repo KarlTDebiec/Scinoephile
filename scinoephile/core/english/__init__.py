@@ -8,6 +8,7 @@ import asyncio
 import re
 from copy import deepcopy
 from logging import info
+from typing import Any
 
 from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.core.series import Series
@@ -53,22 +54,21 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
 
 
 def get_english_proofed(
-    series: Series, proofer: EnglishProofer | None = None
+    series: Series, proofer: EnglishProofer | None = None, **kwargs: Any
 ) -> Series:
     """Get English series proofed.
 
     Arguments:
         series: Series to proof
         proofer: EnglishProofer to use
+        kwargs: additional keyword arguments for EnglishProofer.process_all_blocks
     Returns:
         proofed Series
     """
     if proofer is None:
-        from test.data.kob import kob_proof_test_cases
+        proofer = EnglishProofer()
 
-        proofer = EnglishProofer(proof_test_cases=kob_proof_test_cases)
-
-    proofed = asyncio.run(proofer.process_all_blocks(series))
+    proofed = asyncio.run(proofer.process_all_blocks(series, **kwargs))
 
     return proofed
 
