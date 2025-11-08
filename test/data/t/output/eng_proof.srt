@@ -41,7 +41,7 @@ are not measures of expediency.
 10
 00:02:35,458 --> 00:02:38,458
 contained in the agreement
-are not measures of expediency
+are not measures of expediency.
 
 11
 00:02:38,542 --> 00:02:42,709

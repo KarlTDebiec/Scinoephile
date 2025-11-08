@@ -43,8 +43,6 @@ test_case_block_2 = EnglishProofTestCase.get_test_case_cls(10)(
     "implemented with no encumbrances.",
     revised_1="The arrangements for Hong Kong",
     note_1="Changed 'arrangement' to plural 'arrangements' for subject-verb agreement.",
-    revised_3="contained in the agreement\nare not measures of expediency",
-    note_3="Removed period at the end to match subtitle style.",
     revised_7="It is in the common interests",
     note_7="Added 'in' to correct the phrase to 'It is in the common interests'.",
     difficulty=1,
