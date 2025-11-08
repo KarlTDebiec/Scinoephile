@@ -1578,12 +1578,12 @@ test_case_block_124 = EnglishProofTestCase.get_test_case_cls(12)(
     subtitle_10="What happened?",
     subtitle_11="Bro Foon, Cheuk has gone mad!",
     subtitle_12="He set up a special phone line to look for you.",
-    revised_1="¥2,000,000, thank you!",
-    note_1="Changed 'RMB¥2M' to '¥2,000,000' for clarity and standard formatting.",
-    revised_2="I received ¥1,300,000 from you. Thanks.",
-    note_2="Changed 'RMB¥1.3M' to '¥1,300,000' for clarity and standard "
-    "formatting; changed 'receive' to 'received' for correct "
-    "tense.",
+    revised_1="¥2 million, thank you!",
+    note_1="Changed 'RMB¥2M' to '¥2 million' for clarity and standard formatting.",
+    revised_2="I received ¥1.3 million from you. Thanks.",
+    note_2="Changed 'RMB¥1.3M' to '¥1.3 million' for clarity and "
+    "standard formatting; changed 'receive' to 'received' for "
+    "correct tense.",
     difficulty=1,
     verified=True,
 )  # test_case_block_124
