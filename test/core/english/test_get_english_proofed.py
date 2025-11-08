@@ -12,6 +12,7 @@ from scinoephile.core.english.proofing import EnglishProofLLMQueryer
 from scinoephile.testing import test_data_root
 from test.data.kob import kob_english_proof_test_cases
 from test.data.mlamd import mlamd_english_proof_test_cases
+from test.data.t import t_english_proof_test_cases
 
 
 @pytest.fixture
@@ -19,7 +20,8 @@ def english_proof_llm_queryer_few_shot() -> EnglishProofLLMQueryer:
     """LLMQueryer with few-shot examples."""
     return EnglishProofLLMQueryer(
         prompt_test_cases=[tc for tc in kob_english_proof_test_cases if tc.prompt]
-        + [tc for tc in mlamd_english_proof_test_cases if tc.prompt],
+        + [tc for tc in mlamd_english_proof_test_cases if tc.prompt]
+        + [tc for tc in t_english_proof_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
@@ -70,3 +72,13 @@ def test_get_english_proofed_mlamd(mlamd_eng: Series, mlamd_eng_proof: Series):
         mlamd_eng_proof: Expected proofed MLAMD English series fixture
     """
     _test_get_english_proofed(mlamd_eng, mlamd_eng_proof)
+
+
+def test_get_english_proofed_t(t_eng: Series, t_eng_proof: Series):
+    """Test get_english_proofed with T English subtitles.
+
+    Arguments:
+        t_eng: T English series fixture
+        t_eng_proof: Expected proofed T English series fixture
+    """
+    _test_get_english_proofed(t_eng, t_eng_proof)
