@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+from importlib.util import module_from_spec, spec_from_file_location
 from logging import info
 from pathlib import Path
 
@@ -28,12 +29,15 @@ class EnglishProofer:
         self,
         proof_test_cases: list[EnglishProofTestCase] | None = None,
         test_case_path: Path | None = None,
+        verify_if_no_changes: bool = False,
     ):
         """Initialize.
 
         Arguments:
             proof_test_cases: proof test cases
             test_case_path: path to file containing test cases
+            verify_if_no_changes: automatically mark test cases as verified if no
+              changes are suggested
         """
         if proof_test_cases is None:
             proof_test_cases = []
@@ -50,17 +54,29 @@ class EnglishProofer:
             except ImportError:
                 pass
 
-        self.proofer = EnglishProofLLMQueryer(
+        if test_case_path is not None:
+            test_case_path = val_output_path(test_case_path, exist_ok=True)
+
+            if test_case_path.exists():
+                spec = spec_from_file_location("test_cases", test_case_path)
+                module = module_from_spec(spec)
+                spec.loader.exec_module(module)
+
+                for name in getattr(module, "__all__", []):
+                    if name.endswith("english_proof_test_cases"):
+                        if value := getattr(module, name, None):
+                            proof_test_cases.extend(value)
+
+        self.test_case_path = test_case_path
+        """Path to file containing test cases."""
+
+        self.llm_queryer = EnglishProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
+            verify_if_no_changes=verify_if_no_changes,
         )
         """Proofreads English subtitles."""
-
-        if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-        self.test_case_path = test_case_path
-        """Path to file containing test cases."""
 
     async def process_all_blocks(
         self,
@@ -125,7 +141,7 @@ class EnglishProofer:
 
         # Query for proofreading
         query = self.get_query(block, query_cls)
-        answer = await self.proofer.call(query, answer_cls, test_case_cls)
+        answer = await self.llm_queryer.call(query, answer_cls, test_case_cls)
 
         nascent_series = Series()
         for sub_idx, subtitle in enumerate(block):
@@ -137,7 +153,7 @@ class EnglishProofer:
             await update_dynamic_test_cases(
                 self.test_case_path,
                 f"test_case_block_{block_idx}",
-                self.proofer,
+                self.llm_queryer,
             )
 
         return nascent_series

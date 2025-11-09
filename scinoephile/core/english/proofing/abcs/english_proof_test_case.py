@@ -23,6 +23,15 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
     """Abstract base class for English proof test cases."""
 
     @cached_property
+    def noop(self) -> bool:
+        """Whether this test case is a no-op."""
+        for idx in range(1, self.size + 1):
+            revised = getattr(self, f"revised_{idx}")
+            if revised != "":
+                return False
+        return True
+
+    @cached_property
     def size(self) -> int:
         """Get size of the test case."""
         idxs = [
@@ -94,10 +103,8 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        for idx in range(1, self.size + 1):
-            revised = getattr(self, f"revised_{idx}")
-            if revised != "":
-                min_difficulty = max(min_difficulty, 1)
+        if not self.noop:
+            min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
