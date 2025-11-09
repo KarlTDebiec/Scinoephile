@@ -38,19 +38,22 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         *,
         cache_dir_path: str | None = None,
         print_test_case: bool = False,
-        max_attempts: int = 2,
+        max_attempts: int = 5,
+        verify_if_no_changes: bool = False,
     ):
         """Initialize.
 
         Arguments:
-            model: Model to use
-            prompt_test_cases: Test cases included in the prompt for few-shot learning
-            verified_test_cases: Test cases whose answers are verified and for which
+            model: model to use
+            prompt_test_cases: test cases included in the prompt for few-shot learning
+            verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
-            provider: Provider to use for queries
-            cache_dir_path: Directory in which to cache
-            print_test_case: Whether to print test case after merging
-            max_attempts: Maximum number of attempts
+            provider: provider to use for queries
+            cache_dir_path: directory in which to cache
+            print_test_case: whether to print test case after merging
+            max_attempts: maximum number of attempts
+            verify_if_no_changes: automatically mark test cases as verified if no
+              changes
         """
         self.model = model
         """Model name to use for queries."""
@@ -84,6 +87,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Whether to print test case after merging query and answer."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
+        self.verify_if_no_changes = verify_if_no_changes
+        """Automatically mark test cases as verified if no changes."""
 
     @property
     def provider(self):
@@ -149,7 +154,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Log a test case as having been encountered.
 
         Arguments:
-            test_case: Test case to log
+            test_case: test case to log
         """
         key = test_case.query.query_key
         if key in self._prompt_test_cases:
@@ -252,6 +257,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             # Validate test case
             try:
                 test_case = test_case_cls.from_query_and_answer(query, answer)
+                if self.verify_if_no_changes and test_case.noop:
+                    test_case.verified = True
             except ValidationError as exc:
                 error(
                     f"Query:\n{query}\n"
@@ -296,8 +303,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Get cache path based on hash of prompts.
 
         Arguments:
-            system_prompt: System prompt used for the query
-            query_prompt: Query prompt used for the query
+            system_prompt: system prompt used for the query
+            query_prompt: query prompt used for the query
         Returns:
             Path to cache file
         """
@@ -312,7 +319,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Get system prompt for the given answer class.
 
         Arguments:
-            answer_example: Class of answer to return
+            answer_example: class of answer to return
         Returns:
             System prompt for the given answer class
         """

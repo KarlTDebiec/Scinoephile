@@ -33,6 +33,7 @@ class EnglishProofLLMQueryer[
         If no revisions are needed, return an empty string for the revised subtitle and
         its note.
         Do not add periods to the end of subtitles spuriously.
+        Do not change spelling from British to American English or vice versa.
         """
 
     @staticmethod
