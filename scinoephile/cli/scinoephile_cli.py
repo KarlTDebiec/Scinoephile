@@ -170,7 +170,7 @@ class ScinoephileCli(CommandLineInterface):
             english.save(operations["save_english"])
         if "save_hanzi" in operations:
             if zhongwen is None:
-                raise ScinoephileError("Hanzi series not loaded and cannot be saved")
+                raise ScinoephileError("Zhongwen series not loaded and cannot be saved")
             zhongwen.save(operations["save_hanzi"])
 
     @classmethod
