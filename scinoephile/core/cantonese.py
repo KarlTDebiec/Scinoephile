@@ -68,16 +68,16 @@ def get_cantonese_romanization(series: Series) -> Series:
 
 
 def _get_cantonese_character_romanization(hanzi: str) -> str:
-    """Get the Yale Cantonese romanization of a single Hanzi.
+    """Get the Yale Cantonese romanization of a single 汉字.
 
     Arguments:
-        hanzi: Hanzi
+        hanzi: 汉字
     Returns:
         Yale Cantonese romanization
     """
     if len(hanzi) != 1:
         raise ScinoephileError(
-            "get_cantonese_character_romanization only accepts single hanzi"
+            "get_cantonese_character_romanization only accepts single 汉字"
         )
 
     # If known to be unmatched, stop early
@@ -140,10 +140,10 @@ def _get_cantonese_character_romanization(hanzi: str) -> str:
 
 
 def _get_cantonese_text_romanization(text: str) -> str:
-    """Get the Yale Cantonese romanization of Hanzi text.
+    """Get the Yale Cantonese romanization of 中文 text.
 
     Arguments:
-        text: Hanzi text
+        text: 中文 text
     Returns:
         Yale Cantonese romanization
     """

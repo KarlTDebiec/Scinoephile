@@ -20,8 +20,8 @@ from scinoephile.audio.cantonese.translation import Translator
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
-    get_segment_hanzi_converted,
     get_segment_split_on_whitespace,
+    get_segment_zhongwen_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.blocks import get_concatenated_series
@@ -171,7 +171,7 @@ class CantoneseTranscriptionReviewer:
         # Simplify segments (optional)
         converted_segments = []
         for segment in split_segments:
-            converted_segments.append(get_segment_hanzi_converted(segment, "hk2s"))
+            converted_segments.append(get_segment_zhongwen_converted(segment, "hk2s"))
 
         # Merge segments into a series
         yuewen_block_series = get_series_from_segments(

@@ -7,12 +7,12 @@ from __future__ import annotations
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
-from scinoephile.core.hanzi import (
-    get_hanzi_cleaned,
-    get_hanzi_converted,
-    get_hanzi_flattened,
-)
 from scinoephile.core.synchronization import get_synced_series
+from scinoephile.core.zhongwen import (
+    get_zhongwen_cleaned,
+    get_zhongwen_converted,
+    get_zhongwen_flattened,
+)
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -22,14 +22,14 @@ if __name__ == "__main__":
 
     # 繁體中文
     zho_hant = Series.load(input_dir / "zho-Hant.srt")
-    zho_hant_clean = get_hanzi_cleaned(zho_hant)
+    zho_hant_clean = get_zhongwen_cleaned(zho_hant)
     zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
-    zho_hant_flatten = get_hanzi_flattened(zho_hant)
+    zho_hant_flatten = get_zhongwen_flattened(zho_hant)
     zho_hant_flatten.save(output_dir / "zho-Hant_flatten.srt")
-    zho_hant_simplify = get_hanzi_converted(zho_hant)
+    zho_hant_simplify = get_zhongwen_converted(zho_hant)
     zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
-    zho_hant_clean_flatten_simplify = get_hanzi_converted(
-        get_hanzi_flattened(zho_hant_clean)
+    zho_hant_clean_flatten_simplify = get_zhongwen_converted(
+        get_zhongwen_flattened(zho_hant_clean)
     )
     zho_hant_clean_flatten_simplify.save(
         output_dir / "zho-Hant_clean_flatten_simplify.srt"

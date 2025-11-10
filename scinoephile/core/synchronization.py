@@ -171,9 +171,9 @@ def get_synced_series(one: Series, two: Series) -> Series:
 
     pair_blocks = get_pair_blocks_by_pause(one, two)
     for one_block, two_block in pair_blocks:
-        hanzi_str, english_str = get_pair_strings(one_block, two_block)
-        debug(f"ONE:\n{hanzi_str}")
-        debug(f"TWO:\n{english_str}")
+        one_str, two_str = get_pair_strings(one_block, two_block)
+        debug(f"ONE:\n{one_str}")
+        debug(f"TWO:\n{two_str}")
 
         groups = get_sync_groups(one_block, two_block)
         debug(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")

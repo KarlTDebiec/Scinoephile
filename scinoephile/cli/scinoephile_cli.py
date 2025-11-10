@@ -16,13 +16,13 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
-from scinoephile.core.hanzi import (
-    OpenCCConfig,
-    get_hanzi_cleaned,
-    get_hanzi_converted,
-    get_hanzi_flattened,
-)
 from scinoephile.core.synchronization import get_synced_series
+from scinoephile.core.zhongwen import (
+    OpenCCConfig,
+    get_zhongwen_cleaned,
+    get_zhongwen_converted,
+    get_zhongwen_flattened,
+)
 
 
 class ScinoephileCli(CommandLineInterface):
@@ -133,29 +133,29 @@ class ScinoephileCli(CommandLineInterface):
             operations: Operations to be performed, keys are operations and values are
               the arguments to be passed to the corresponding functions, if applicable
         """
-        bilingual = english = hanzi = None
+        bilingual = english = zhongwen = None
 
         # Input operations
         if "load_bilingual" in operations:
             bilingual = Series.load(operations["load_bilingual"])
         if "load_english" in operations:
             english = Series.load(operations["load_english"])
-        if "load_hanzi" in operations:
-            hanzi = Series.load(operations["load_hanzi"])
+        if "load_zhongwen" in operations:
+            zhongwen = Series.load(operations["load_zhongwen"])
 
         # Operation operations
         if "clean_hanzi" in operations:
-            hanzi = get_hanzi_cleaned(hanzi)
+            zhongwen = get_zhongwen_cleaned(zhongwen)
         if "clean_english" in operations:
             english = get_english_cleaned(english)
         if "flatten_english" in operations:
             english = get_english_flattened(english)
         if "flatten_hanzi" in operations:
-            hanzi = get_hanzi_flattened(hanzi)
+            zhongwen = get_zhongwen_flattened(zhongwen)
         if "convert_hanzi" in operations:
-            hanzi = get_hanzi_converted(hanzi, operations["convert_hanzi"])
+            zhongwen = get_zhongwen_converted(zhongwen, operations["convert_hanzi"])
         if "sync_bilingual" in operations:
-            bilingual = get_synced_series(hanzi, english)
+            bilingual = get_synced_series(zhongwen, english)
 
         # Output operations
         if "save_bilingual" in operations:
@@ -169,9 +169,9 @@ class ScinoephileCli(CommandLineInterface):
                 raise ScinoephileError("English series not loaded and cannot be saved")
             english.save(operations["save_english"])
         if "save_hanzi" in operations:
-            if hanzi is None:
+            if zhongwen is None:
                 raise ScinoephileError("Hanzi series not loaded and cannot be saved")
-            hanzi.save(operations["save_hanzi"])
+            zhongwen.save(operations["save_hanzi"])
 
     @classmethod
     def determine_operations(
@@ -181,8 +181,8 @@ class ScinoephileCli(CommandLineInterface):
         bilingual_outfile: Path | None = None,
         english_infile: Path | None = None,
         english_outfile: Path | None = None,
-        hanzi_infile: Path | None = None,
-        hanzi_outfile: Path | None = None,
+        zhongwen_infile: Path | None = None,
+        zhongwen_outfile: Path | None = None,
         clean: bool = False,
         flatten: bool = False,
         overwrite: bool = False,
@@ -194,11 +194,11 @@ class ScinoephileCli(CommandLineInterface):
 
         bif bof eif eof cif cof f   c   Actions
         --- --- --- --- --- --- --- --- ------------------------------------------------
-        0   1   1   0   1   0   1   1   load_english, load_hanzi, flatten_english,
+        0   1   1   0   1   0   1   1   load_english, load_zhongwen, flatten_english,
                                         flatten_hanzi, convert_hanzi, sync_bilingual,
                                         save_bilingual
         0   0   1   1   0   0   1   0   load_english, flatten_english, save_english
-        0   0   0   0   1   1   1   1   load_hanzi, flatten_hanzi, convert_hanzi,
+        0   0   0   0   1   1   1   1   load_zhongwen, flatten_hanzi, convert_hanzi,
                                         save_hanzi
 
         Arguments:
@@ -206,8 +206,8 @@ class ScinoephileCli(CommandLineInterface):
             bilingual_outfile: Bilingual subtitle outfile
             english_infile: English subtitle infile
             english_outfile: English subtitle outfile
-            hanzi_infile: Hanzi subtitle infile
-            hanzi_outfile: Hanzi subtitle outfile
+            zhongwen_infile: Hanzi subtitle infile
+            zhongwen_outfile: Hanzi subtitle outfile
             clean: Clean subtitles of closed-caption annotations and other anomalies
             flatten: Flatten multi-line subtitles into single lines
             overwrite: Overwrite outfiles if they exist
@@ -219,17 +219,17 @@ class ScinoephileCli(CommandLineInterface):
         operations = {}
 
         # Compile input operations
-        if not (bilingual_infile or english_infile or hanzi_infile):
+        if not (bilingual_infile or english_infile or zhongwen_infile):
             cls.argparser().error("At least one infile required")
         if bilingual_infile:
             operations["load_bilingual"] = bilingual_infile
         if english_infile:
             operations["load_english"] = english_infile
-        if hanzi_infile:
-            operations["load_hanzi"] = hanzi_infile
+        if zhongwen_infile:
+            operations["load_zhongwen"] = zhongwen_infile
 
         # Compile output operations
-        if not (bilingual_outfile or english_outfile or hanzi_outfile):
+        if not (bilingual_outfile or english_outfile or zhongwen_outfile):
             cls.argparser().error("At least one outfile required")
         if bilingual_outfile:
             if bilingual_outfile.exists() and not overwrite:
@@ -239,20 +239,20 @@ class ScinoephileCli(CommandLineInterface):
             if english_outfile.exists() and not overwrite:
                 cls.argparser().error(f"{english_outfile} already exists")
             operations["save_english"] = english_outfile
-        if hanzi_outfile:
-            if hanzi_outfile.exists() and not overwrite:
-                cls.argparser().error(f"{hanzi_outfile} already exists")
-            operations["save_hanzi"] = hanzi_outfile
+        if zhongwen_outfile:
+            if zhongwen_outfile.exists() and not overwrite:
+                cls.argparser().error(f"{zhongwen_outfile} already exists")
+            operations["save_hanzi"] = zhongwen_outfile
 
         # Compile operations
         if clean:
-            if hanzi_infile:
+            if zhongwen_infile:
                 operations["clean_hanzi"] = True
             if english_infile:
                 operations["clean_english"] = True
         if flatten:
             if not (english_infile and (bilingual_outfile or english_outfile)) and not (
-                hanzi_infile and (bilingual_outfile or hanzi_outfile)
+                zhongwen_infile and (bilingual_outfile or zhongwen_outfile)
             ):
                 cls.argparser().error(
                     "At least one infile and one outfile including the same language "
@@ -260,14 +260,14 @@ class ScinoephileCli(CommandLineInterface):
                 )
             if english_infile and (bilingual_outfile or english_outfile):
                 operations["flatten_english"] = True
-            if hanzi_infile and (bilingual_outfile or hanzi_outfile):
+            if zhongwen_infile and (bilingual_outfile or zhongwen_outfile):
                 operations["flatten_hanzi"] = True
         if convert is not None:
-            if not hanzi_infile or bilingual_infile:
+            if not zhongwen_infile or bilingual_infile:
                 cls.argparser().error("Hanzi infile required for convert")
             operations["convert_hanzi"] = convert
         if "save_bilingual" in operations and "load_bilingual" not in operations:
-            if "load_english" not in operations and "load_hanzi" not in operations:
+            if "load_english" not in operations and "load_zhongwen" not in operations:
                 cls.argparser().error(
                     "Bilingual outfile requires English and Hanzi infiles"
                 )

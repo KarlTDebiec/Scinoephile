@@ -10,25 +10,25 @@ from logging import error
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
-from scinoephile.core.hanzi import OpenCCConfig, get_hanzi_text_converted
+from scinoephile.core.zhongwen import OpenCCConfig, get_zhongwen_text_converted
 
 
-def get_segment_hanzi_converted(
+def get_segment_zhongwen_converted(
     segment: TranscribedSegment,
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
 ) -> TranscribedSegment:
-    """Convert Hanzi between character sets.
+    """Convert 中文 between character sets.
 
     Arguments:
         segment: Transcribed segment to convert
         config: OpenCC configuration for conversion
         apply_exclusions: Whether to apply character exclusions during conversion
     Returns:
-        Transcribed segment with converted Hanzi text
+        Transcribed segment with converted 中文 text
     """
     converted_segment = deepcopy(segment)
-    converted_segment.text = get_hanzi_text_converted(
+    converted_segment.text = get_zhongwen_text_converted(
         converted_segment.text, config, apply_exclusions
     )
 
@@ -152,7 +152,7 @@ __all__ = [
     "TranscribedSegment",
     "TranscribedWord",
     "WhisperTranscriber",
-    "get_segment_hanzi_converted",
+    "get_segment_zhongwen_converted",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
