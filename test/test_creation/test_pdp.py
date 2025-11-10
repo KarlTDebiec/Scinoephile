@@ -72,10 +72,10 @@ def _test_get_test_cases_pdp(pdp_yue_hant_simplify: Series, pdp_eng_clean: Serie
         bilingual_blocks.append(sync_series)
 
         test_case = SyncTestCase(
-            hanzi_start=hanzi_start,
-            hanzi_end=hanzi_end,
-            english_start=english_start,
-            english_end=english_end,
+            one_start=hanzi_start,
+            one_end=hanzi_end,
+            two_start=english_start,
+            two_end=english_end,
             sync_groups=sync_groups,
         )
         print(f"\nTEST CASE:\n{test_case}")

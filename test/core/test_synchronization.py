@@ -21,52 +21,47 @@ from test.data.mnt import mnt_sync_test_cases  # noqa: F401
 from test.data.pdp import pdp_sync_test_cases  # noqa: F401
 
 
-def _test_blocks(hanzi: Series, english: Series, test_case: SyncTestCase):
+def _test_blocks(one: Series, two: Series, test_case: SyncTestCase):
     """Test synchronization blocks.
 
     Arguments:
-        hanzi: Hanzi series with which to test
-        english: English series with which to test
-        test_case: Indexes for slicing input block and expected output for validation
+        one: series one with which to test
+        two: series two with which to test
+        test_case: indexes for slicing input block and expected output for validation
     """
     print()
 
     # Get and print subtitles
-    hanzi_block = hanzi.slice(test_case.hanzi_start, test_case.hanzi_end)
-    english_block = english.slice(test_case.english_start, test_case.english_end)
-    hanzi_str, english_str = get_pair_strings(hanzi_block, english_block)
-    print(
-        f"CHINESE ({test_case.hanzi_start + 1} - {test_case.hanzi_end}):\n{hanzi_str}"
-    )
-    print(
-        f"ENGLISH ({test_case.english_start + 1} - {test_case.english_end}):\n"
-        f"{english_str}"
-    )
+    one_block = one.slice(test_case.one_start, test_case.one_end)
+    two_block = two.slice(test_case.two_start, test_case.two_end)
+    one_str, two_str = get_pair_strings(one_block, two_block)
+    print(f"ONE ({test_case.one_start + 1} - {test_case.one_end}):\n{one_str}")
+    print(f"TWO ({test_case.two_start + 1} - {test_case.two_end}):\n{two_str}")
 
     # Get and print overlap matrix
-    overlap = get_sync_overlap_matrix(hanzi_block, english_block)
+    overlap = get_sync_overlap_matrix(one_block, two_block)
     print(f"OVERLAP: {get_overlap_string(overlap)}")
 
     # Get and print sync groups
-    sync_groups = get_sync_groups(hanzi_block, english_block)
+    sync_groups = get_sync_groups(one_block, two_block)
     print(f"SYNC GROUPS:\n{get_sync_groups_string(sync_groups)}")
 
     assert sync_groups == test_case.sync_groups
 
     # Get and print synced series
-    series = get_synced_series_from_groups(hanzi_block, english_block, sync_groups)
+    series = get_synced_series_from_groups(one_block, two_block, sync_groups)
     print(f"SYNCED SUBTITLES:\n{series.to_simple_string()}")
 
 
-def _test_get_synced_series(hanzi: Series, english: Series, expected: Series):
+def _test_get_synced_series(one: Series, two: Series, expected: Series):
     """Test get_synced_series.
 
     Arguments:
-        hanzi: Hanzi series with which to test
-        english: English series with which to test
-        expected: Expected output series
+        one: series one with which to test
+        two: series two with which to test
+        expected: expected output series
     """
-    bilingual = get_synced_series(hanzi, english)
+    bilingual = get_synced_series(one, two)
     assert len(bilingual) == len(expected)
 
     errors = []

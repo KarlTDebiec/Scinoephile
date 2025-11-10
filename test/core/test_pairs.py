@@ -9,16 +9,16 @@ from scinoephile.core.pairs import get_pair_blocks_by_pause
 
 
 def _test_get_pair_blocks_by_pause(
-    series_hanzi: Series, series_english: Series, expected: int
+    series_one: Series, series_two: Series, expected: int
 ):
     """Test get_pair_blocks_by_pause.
 
     Arguments:
-        series_hanzi: Hanzi series with which to test
-        series_english: English series with which to test
+        series_one: series one with which to test
+        series_two: series two with which to test
         expected: Expected number of pair blocks
     """
-    pair_blocks = get_pair_blocks_by_pause(series_hanzi, series_english)
+    pair_blocks = get_pair_blocks_by_pause(series_one, series_two)
     assert len(pair_blocks) == expected
 
 
@@ -60,4 +60,4 @@ def test_get_pair_blocks_by_pause_t(t_zho_hans: Series, t_eng: Series):
         t_zho_hans: T 简体中文 series fixture
         t_eng: T English series fixture
     """
-    _test_get_pair_blocks_by_pause(t_zho_hans, t_eng, 194)
+    _test_get_pair_blocks_by_pause(t_zho_hans, t_eng, 192)

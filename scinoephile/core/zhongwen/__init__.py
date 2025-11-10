@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to hanzi text."""
+"""Core code related to 中文 text."""
 
 from __future__ import annotations
 
@@ -10,9 +10,9 @@ from functools import cache
 
 from opencc import OpenCC
 
-from scinoephile.core.hanzi.opencc_config import OpenCCConfig
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
+from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
 
 conversion_exclusions = {
     "嗰": "𠮶",
@@ -22,8 +22,8 @@ half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
 
 
-def get_hanzi_cleaned(series: Series) -> Series:
-    """Get hanzi series cleaned.
+def get_zhongwen_cleaned(series: Series) -> Series:
+    """Get 中文 series cleaned.
 
     Arguments:
         series: Series to clean
@@ -33,7 +33,7 @@ def get_hanzi_cleaned(series: Series) -> Series:
     series = deepcopy(series)
     new_events = []
     for event in series:
-        text = _get_hanzi_text_cleaned(event.text.strip())
+        text = _get_zhongwen_text_cleaned(event.text.strip())
         if text:
             event.text = text
             new_events.append(event)
@@ -42,8 +42,8 @@ def get_hanzi_cleaned(series: Series) -> Series:
 
 
 @cache
-def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
-    """Get OpenCC converter for hanzi character set conversion.
+def get_zhongwen_converter(config: OpenCCConfig) -> OpenCC:
+    """Get OpenCC converter for 中文 character set conversion.
 
     Arguments:
         config: OpenCC configuration
@@ -53,12 +53,12 @@ def get_hanzi_converter(config: OpenCCConfig) -> OpenCC:
     return OpenCC(config)
 
 
-def get_hanzi_converted(
+def get_zhongwen_converted(
     series: Series,
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
 ) -> Series:
-    """Get hanzi converted between character sets.
+    """Get 中文 converted between character sets.
 
     Arguments:
         series: Series to convert
@@ -69,14 +69,14 @@ def get_hanzi_converted(
     """
     series = deepcopy(series)
     for event in series:
-        event.text = get_hanzi_text_converted(
+        event.text = get_zhongwen_text_converted(
             event.text, config, apply_exclusions=apply_exclusions
         )
     return series
 
 
-def get_hanzi_flattened(series: Series) -> Series:
-    """Get multi-line hanzi series flattened to single lines.
+def get_zhongwen_flattened(series: Series) -> Series:
+    """Get multi-line 中文 series flattened to single lines.
 
     Arguments:
         series: Series to flatten
@@ -85,14 +85,14 @@ def get_hanzi_flattened(series: Series) -> Series:
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_hanzi_text_flattened(event.text)
+        event.text = _get_zhongwen_text_flattened(event.text)
     return series
 
 
-def get_hanzi_text_converted(
+def get_zhongwen_text_converted(
     text: str, config: OpenCCConfig, apply_exclusions: bool = True
 ) -> str:
-    """Get hanzi text converted between character sets.
+    """Get 中文 text converted between character sets.
 
     Arguments:
         text: Text to convert
@@ -101,7 +101,7 @@ def get_hanzi_text_converted(
     Returns:
         Converted text
     """
-    converter = get_hanzi_converter(config)
+    converter = get_zhongwen_converter(config)
     converted_text = converter.convert(text)
 
     if apply_exclusions and config in (
@@ -117,8 +117,8 @@ def get_hanzi_text_converted(
     return converted_text
 
 
-def _get_hanzi_text_cleaned(text: str) -> str | None:
-    """Get hanzi text cleaned.
+def _get_zhongwen_text_cleaned(text: str) -> str | None:
+    """Get 中文 text cleaned.
 
     Arguments:
         text: Text to clean
@@ -147,8 +147,8 @@ def _get_hanzi_text_cleaned(text: str) -> str | None:
     return cleaned
 
 
-def _get_hanzi_text_flattened(text: str) -> str:
-    """Get multi-line hanzi text flattened to a single line.
+def _get_zhongwen_text_flattened(text: str) -> str:
+    """Get multi-line 中文 text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 
@@ -179,10 +179,10 @@ def _get_hanzi_text_flattened(text: str) -> str:
 
 __all__ = [
     "OpenCCConfig",
-    "get_hanzi_cleaned",
-    "get_hanzi_converted",
-    "get_hanzi_converter",
-    "get_hanzi_flattened",
-    "get_hanzi_text_converted",
+    "get_zhongwen_cleaned",
+    "get_zhongwen_converted",
+    "get_zhongwen_converter",
+    "get_zhongwen_flattened",
+    "get_zhongwen_text_converted",
     "half_to_full_punc_for_cleaning",
 ]

@@ -12,8 +12,8 @@ from scinoephile.core.english import (
     get_english_flattened,
     get_english_proofed,
 )
-from scinoephile.core.hanzi import get_hanzi_cleaned, get_hanzi_flattened
 from scinoephile.core.synchronization import get_synced_series
+from scinoephile.core.zhongwen import get_zhongwen_cleaned, get_zhongwen_flattened
 from scinoephile.testing import test_data_root
 
 if __name__ == "__main__":
@@ -23,8 +23,8 @@ if __name__ == "__main__":
 
     # 简体中文
     zho_hans = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
-    zho_hans = get_hanzi_cleaned(zho_hans)
-    zho_hans = get_hanzi_flattened(zho_hans)
+    zho_hans = get_zhongwen_cleaned(zho_hans)
+    zho_hans = get_zhongwen_flattened(zho_hans)
     zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
 
     # ValidationManager(
@@ -35,8 +35,8 @@ if __name__ == "__main__":
 
     # 繁體中文
     zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")
-    zho_hant = get_hanzi_cleaned(zho_hant)
-    zho_hant = get_hanzi_flattened(zho_hant)
+    zho_hant = get_zhongwen_cleaned(zho_hant)
+    zho_hant = get_zhongwen_flattened(zho_hant)
     zho_hant.save(output_dir / "zho-Hant" / "zho-Hant.srt")
 
     # ValidationManager(

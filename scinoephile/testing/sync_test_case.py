@@ -13,13 +13,13 @@ from scinoephile.core.synchronization import SyncGroup
 class SyncTestCase:
     """Test case for synchronization."""
 
-    hanzi_start: int
-    """Start index of Hanzi subtitles."""
-    hanzi_end: int
-    """End index of Hanzi subtitles."""
-    english_start: int
-    """Start index of English subtitles."""
-    english_end: int
-    """End index of English subtitles."""
+    one_start: int
+    """Start index of series one."""
+    one_end: int
+    """End index of series one."""
+    two_start: int
+    """Start index of series two."""
+    two_end: int
+    """End index of series two."""
     sync_groups: list[SyncGroup] | None = None
     """Expected synchronization groups."""

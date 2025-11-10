@@ -159,6 +159,7 @@ def _get_english_text_flattened(text: str) -> str:
 
 
 __all__ = [
+    "EnglishProofer",
     "get_english_cleaned",
     "get_english_flattened",
     "get_english_proofed",
