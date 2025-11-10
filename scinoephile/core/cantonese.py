@@ -54,7 +54,7 @@ re_jyutping = re.compile(r"[a-z]+\d")
 
 
 def get_cantonese_romanization(series: Series) -> Series:
-    """Get the Yale Cantonese romanization of Hanzi series.
+    """Get the Yale Cantonese romanization of a series.
 
     Arguments:
         series: Series for which to get Yale Cantonese romanization
@@ -68,16 +68,16 @@ def get_cantonese_romanization(series: Series) -> Series:
 
 
 def _get_cantonese_character_romanization(hanzi: str) -> str:
-    """Get the Yale Cantonese romanization of a single 汉字.
+    """Get the Yale Cantonese romanization of a single Chinese character.
 
     Arguments:
-        hanzi: 汉字
+        hanzi: Chinese character
     Returns:
         Yale Cantonese romanization
     """
     if len(hanzi) != 1:
         raise ScinoephileError(
-            "get_cantonese_character_romanization only accepts single 汉字"
+            "get_cantonese_character_romanization only accepts single Chinese character"
         )
 
     # If known to be unmatched, stop early
@@ -140,10 +140,10 @@ def _get_cantonese_character_romanization(hanzi: str) -> str:
 
 
 def _get_cantonese_text_romanization(text: str) -> str:
-    """Get the Yale Cantonese romanization of 中文 text.
+    """Get the Yale Cantonese romanization of Chinese text.
 
     Arguments:
-        text: 中文 text
+        text: Chinese text
     Returns:
         Yale Cantonese romanization
     """
