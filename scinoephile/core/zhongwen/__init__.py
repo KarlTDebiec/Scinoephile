@@ -4,15 +4,18 @@
 
 from __future__ import annotations
 
+import asyncio
 import re
 from copy import deepcopy
 from functools import cache
+from typing import Any
 
 from opencc import OpenCC
 
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
+from scinoephile.core.zhongwen.proofing import ZhongwenProofer
 
 conversion_exclusions = {
     "嗰": "𠮶",
@@ -87,6 +90,26 @@ def get_zhongwen_flattened(series: Series) -> Series:
     for event in series:
         event.text = _get_zhongwen_text_flattened(event.text)
     return series
+
+
+def get_zhongwen_proofed(
+    series: Series, proofer: ZhongwenProofer | None = None, **kwargs: Any
+) -> Series:
+    """Get 中文 series proofed.
+
+    Arguments:
+        series: Series to proof
+        proofer: ZhongwenProofer to use
+        kwargs: additional keyword arguments for ZhongwenProofer.process_all_blocks
+    Returns:
+        proofed Series
+    """
+    if proofer is None:
+        proofer = ZhongwenProofer()
+
+    proofed = asyncio.run(proofer.process_all_blocks(series, **kwargs))
+
+    return proofed
 
 
 def get_zhongwen_text_converted(
@@ -183,6 +206,7 @@ __all__ = [
     "get_zhongwen_converted",
     "get_zhongwen_converter",
     "get_zhongwen_flattened",
+    "get_zhongwen_proofed",
     "get_zhongwen_text_converted",
     "half_to_full_punc_for_cleaning",
 ]

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreads English subtitles."""
+"""Proofreads Zhongwen subtitles."""
 
 from __future__ import annotations
 
@@ -13,22 +13,22 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.english.proofing.abcs import (
-    EnglishProofQuery,
-    EnglishProofTestCase,
+from scinoephile.core.zhongwen.proofing.abcs import (
+    ZhongwenProofQuery,
+    ZhongwenProofTestCase,
 )
-from scinoephile.core.english.proofing.english_proof_llm_queryer import (
-    EnglishProofLLMQueryer,
+from scinoephile.core.zhongwen.proofing.zhongwen_proof_llm_queryer import (
+    ZhongwenProofLLMQueryer,
 )
 from scinoephile.testing import test_data_root, update_dynamic_test_cases
 
 
-class EnglishProofer:
-    """Proofreads English subtitles."""
+class ZhongwenProofer:
+    """Proofreads Zhongwen subtitles."""
 
     def __init__(
         self,
-        proof_test_cases: list[EnglishProofTestCase] | None = None,
+        proof_test_cases: list[ZhongwenProofTestCase] | None = None,
         test_case_path: Path | None = None,
         verify_if_no_changes: bool = False,
     ):
@@ -42,18 +42,18 @@ class EnglishProofer:
         """
         if proof_test_cases is None:
             proof_test_cases = []
-            try:
-                from test.data.kob import kob_english_proof_test_cases
-                from test.data.mlamd import mlamd_english_proof_test_cases
-                from test.data.t import t_english_proof_test_cases
-
-                proof_test_cases = (
-                    kob_english_proof_test_cases
-                    + mlamd_english_proof_test_cases
-                    + t_english_proof_test_cases
-                )
-            except ImportError:
-                pass
+            # try:
+            #     from test.data.kob import kob_zhongwen_proof_test_cases
+            #     from test.data.mlamd import mlamd_zhongwen_proof_test_cases
+            #     from test.data.t import t_zhongwen_proof_test_cases
+            #
+            #     proof_test_cases = (
+            #         kob_zhongwen_proof_test_cases
+            #         + mlamd_zhongwen_proof_test_cases
+            #         + t_zhongwen_proof_test_cases
+            #     )
+            # except ImportError:
+            #     pass
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -64,20 +64,20 @@ class EnglishProofer:
                 spec.loader.exec_module(module)
 
                 for name in getattr(module, "__all__", []):
-                    if name.endswith("english_proof_test_cases"):
+                    if name.endswith("zhongwen_proof_test_cases"):
                         if value := getattr(module, name, None):
                             proof_test_cases.extend(value)
 
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        self.llm_queryer = EnglishProofLLMQueryer(
+        self.llm_queryer = ZhongwenProofLLMQueryer(
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
             verify_if_no_changes=verify_if_no_changes,
         )
-        """Proofreads English subtitles."""
+        """Proofreads Zhongwen subtitles."""
 
     async def process_all_blocks(
         self,
@@ -87,7 +87,7 @@ class EnglishProofer:
         """Process all blocks.
 
         Arguments:
-            series: English subtitles
+            series: 中文 subtitles
             stop_at_idx: stop processing at this index
         """
         semaphore = asyncio.Semaphore(1)
@@ -103,7 +103,7 @@ class EnglishProofer:
             async with semaphore:
                 block_series = await self.process_block(block_idx, block)
             info(f"BLOCK {block_idx} ({block.start_idx} - {block.end_idx}):")
-            info(f"English:\n{block.to_series().to_simple_string()}")
+            info(f"Zhongwen:\n{block.to_series().to_simple_string()}")
             all_block_series[block_idx] = block_series
 
         # Ensure test case file exists
@@ -138,7 +138,7 @@ class EnglishProofer:
         Returns:
             Series
         """
-        test_case_cls = EnglishProofTestCase.get_test_case_cls(len(block))
+        test_case_cls = ZhongwenProofTestCase.get_test_case_cls(len(block))
         query_cls = test_case_cls.query_cls
         answer_cls = test_case_cls.answer_cls
 
@@ -148,7 +148,7 @@ class EnglishProofer:
 
         nascent_series = Series()
         for sub_idx, subtitle in enumerate(block):
-            if revised := getattr(answer, f"revised_{sub_idx + 1}"):
+            if revised := getattr(answer, f"xiugai_{sub_idx + 1}"):
                 subtitle.text = revised
             nascent_series.append(subtitle)
 
@@ -169,11 +169,11 @@ class EnglishProofer:
             test_case_path: path to file to create
             n_blocks: number of blocks for which to create test cases
         """
-        header = '''"""English proof test cases."""
+        header = '''"""Zhongwen proof test cases."""
 
 from __future__ import annotations
 
-from scinoephile.core.english.proofing.abcs import EnglishProofTestCase'''
+from scinoephile.core.zhongwen.proofing.abcs import ZhongwenProofTestCase'''
 
         blocks = "\n".join(
             f"# noinspection PyArgumentList\n"
@@ -182,15 +182,15 @@ from scinoephile.core.english.proofing.abcs import EnglishProofTestCase'''
         )
 
         footer = '''
-english_proof_test_cases: list[EnglishProofTestCase] = [
+zhongwen_proof_test_cases: list[ZhongwenProofTestCase] = [
     test_case
     for name, test_case in globals().items()
     if name.startswith("test_case_block_") and test_case is not None
 ]
-"""English proof test cases."""
+"""中文 proof test cases."""
 
 __all__ = [
-    "english_proof_test_cases",
+    "zhongwen_proof_test_cases",
     ]'''
 
         contents = f"{header}\n\n{blocks}\n\n{footer}\n"
@@ -199,8 +199,8 @@ __all__ = [
 
     @staticmethod
     def get_query(
-        series: Series, query_cls: type[EnglishProofQuery]
-    ) -> EnglishProofQuery:
+        series: Series, query_cls: type[ZhongwenProofQuery]
+    ) -> ZhongwenProofQuery:
         """Get the query for a given series.
 
         Arguments:
@@ -211,6 +211,6 @@ __all__ = [
         """
         kwargs = {}
         for idx, subtitle in enumerate(series.events, 1):
-            kwargs[f"subtitle_{idx}"] = re.sub(r"\\N", r"\n", subtitle.text).strip()
+            kwargs[f"zimu_{idx}"] = re.sub(r"\\N", r"\n", subtitle.text).strip()
 
         return query_cls(**kwargs)
