@@ -20,6 +20,11 @@ from scinoephile.core.text import (
 class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
     """Test case for 粤文 merging; may also be used for few-shot prompt."""
 
+    answer_cls = MergeAnswer
+    """Answer class for this test case."""
+    query_cls = MergeQuery
+    """Query class for this test case."""
+
     @cached_property
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""

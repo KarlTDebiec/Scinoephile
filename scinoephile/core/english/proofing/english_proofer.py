@@ -15,7 +15,6 @@ from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.english.proofing import EnglishProofLLMQueryer
 from scinoephile.core.english.proofing.abcs import (
-    EnglishProofAnswer,
     EnglishProofQuery,
     EnglishProofTestCase,
 )
@@ -137,7 +136,9 @@ class EnglishProofer:
         Returns:
             Series
         """
-        query_cls, answer_cls, test_case_cls = self.get_models(len(block))
+        test_case_cls = EnglishProofTestCase.get_test_case_cls(len(block))
+        query_cls = test_case_cls.query_cls
+        answer_cls = test_case_cls.answer_cls
 
         # Query for proofreading
         query = self.get_query(block, query_cls)
@@ -193,26 +194,6 @@ __all__ = [
         contents = f"{header}\n\n{blocks}\n\n{footer}\n"
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
-
-    @staticmethod
-    def get_models(
-        size: int,
-    ) -> tuple[
-        type[EnglishProofQuery], type[EnglishProofAnswer], type[EnglishProofTestCase]
-    ]:
-        """Get proofreading query, answer and test case for a series of a given size.
-
-        Arguments:
-            size: length of series
-        Returns
-            EnglishProofQuery, EnglishProofAnswer, and EnglishProofTestCase classes
-        """
-        query_cls = EnglishProofQuery.get_query_cls(size)
-        answer_cls = EnglishProofAnswer.get_answer_cls(size)
-        test_case_cls = EnglishProofTestCase.get_test_case_cls(
-            size, query_cls, answer_cls
-        )
-        return query_cls, answer_cls, test_case_cls
 
     @staticmethod
     def get_query(

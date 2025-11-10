@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cached_property
+from typing import ClassVar
 
 from pydantic import create_model
 
@@ -21,6 +22,9 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
     TestCase[TQuery, TAnswer], ABC
 ):
     """Abstract base class for 粤文 translation test cases."""
+
+    query_cls: ClassVar[type[TranslateQuery]]
+    answer_cls: ClassVar[type[TranslateAnswer]]
 
     @cached_property
     def missing(self) -> tuple[int, ...]:
@@ -63,27 +67,26 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         cls,
         size: int,
         missing: tuple[int, ...],
-        query_cls: type[TranslateQuery] | None = None,
-        answer_cls: type[TranslateAnswer] | None = None,
     ) -> type[TranslateTestCase[TranslateQuery, TranslateAnswer]]:
         """Get test case class 粤文 translation.
 
         Arguments:
             size: Number of 中文 subtitles
             missing: Indices of 中文 subtitles that are missing 粤文
-            query_cls: Optional query class, if not provided it will be created
-            answer_cls: Optional answer class, if not provided it will be created
         Returns:
             TranslateTestCase type with appropriate query and answer models
         Raises:
             ScinoephileError: If missing indices are out of range
         """
-        if query_cls is None:
-            query_cls = TranslateQuery.get_query_cls(size, missing)
-        if answer_cls is None:
-            answer_cls = TranslateAnswer.get_answer_cls(size, missing)
+        query_cls = TranslateQuery.get_query_cls(size, missing)
+        answer_cls = TranslateAnswer.get_answer_cls(size, missing)
         name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-        return create_model(
+        model = create_model(
             name[:64],
             __base__=(query_cls, answer_cls, TranslateTestCase[query_cls, answer_cls]),
+            __module__=cls.__module__,
         )
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+
+        return model

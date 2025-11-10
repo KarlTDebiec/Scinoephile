@@ -16,6 +16,11 @@ from scinoephile.core.abcs import TestCase
 class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
     """Test case for 粤文 proofing; may also be used for few-shot prompt."""
 
+    answer_cls = ProofAnswer
+    """Answer class for this test case."""
+    query_cls = ProofQuery
+    """Query class for this test case."""
+
     @cached_property
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""

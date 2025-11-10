@@ -16,6 +16,9 @@ from scinoephile.core.abcs import TestCase
 class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     """Test case for 粤文 shifting; may also be used for few-shot prompt."""
 
+    query_cls = ShiftQuery
+    answer_cls = ShiftAnswer
+
     @cached_property
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""

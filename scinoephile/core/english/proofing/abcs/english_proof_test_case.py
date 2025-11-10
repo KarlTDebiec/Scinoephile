@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cached_property
+from typing import ClassVar
 
 from pydantic import create_model, model_validator
 
@@ -21,6 +22,9 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
     TestCase[TQuery, TAnswer], ABC
 ):
     """Abstract base class for English proof test cases."""
+
+    query_cls: ClassVar[type[EnglishProofQuery]]
+    answer_cls: ClassVar[type[EnglishProofAnswer]]
 
     @cached_property
     def noop(self) -> bool:
@@ -63,33 +67,32 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
     def get_test_case_cls(
         cls,
         size: int,
-        query_cls: type[EnglishProofQuery] | None = None,
-        answer_cls: type[EnglishProofAnswer] | None = None,
     ) -> type[EnglishProofTestCase[EnglishProofQuery, EnglishProofAnswer]]:
         """Get test case class for English proofing.
 
         Arguments:
             size: number of subtitles
-            query_cls: optional query model, if not provided it will be created
-            answer_cls: optional answer model, if not provided it will be created
         Returns:
             EnglishProofTestCase type with appropriate EnglishProofQuery and
             EnglishProofAnswer models
         Raises:
             ScinoephileError: if missing indices are out of range
         """
-        if query_cls is None:
-            query_cls = EnglishProofQuery.get_query_cls(size)
-        if answer_cls is None:
-            answer_cls = EnglishProofAnswer.get_answer_cls(size)
-        return create_model(
+        query_cls = EnglishProofQuery.get_query_cls(size)
+        answer_cls = EnglishProofAnswer.get_answer_cls(size)
+        model = create_model(
             f"{cls.__name__}_{size}",
             __base__=(
                 query_cls,
                 answer_cls,
                 EnglishProofTestCase[query_cls, answer_cls],
             ),
+            __module__=cls.__module__,
         )
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+
+        return model
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.

@@ -16,6 +16,11 @@ class DistributeTestCase(
 ):
     """Test case for 粤文 distribution; may also be used for few-shot prompt."""
 
+    answer_cls = DistributeAnswer
+    """Answer class for this test case."""
+    query_cls = DistributeQuery
+    """Query class for this test case."""
+
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
 
