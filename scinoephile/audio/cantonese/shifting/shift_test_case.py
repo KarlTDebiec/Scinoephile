@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import ClassVar
 
 from pydantic import model_validator
 
@@ -16,8 +17,10 @@ from scinoephile.core.abcs import TestCase
 class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     """Test case for 粤文 shifting; may also be used for few-shot prompt."""
 
-    query_cls = ShiftQuery
-    answer_cls = ShiftAnswer
+    answer_cls: ClassVar[type[ShiftAnswer]] = ShiftAnswer
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[ShiftQuery]] = ShiftQuery
+    """Query class for this test case."""
 
     @cached_property
     def noop(self) -> bool:
