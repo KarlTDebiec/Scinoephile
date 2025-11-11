@@ -69,7 +69,9 @@ def main():
 
         simp_path = repo_root / "docs" / f"README.{iso_code}-hans.md"
         info(f"Updating {simp_path.name}")
-        updated_simp_chinese = get_zhongwen_converter(config).convert(updated_trad_chinese)
+        updated_simp_chinese = get_zhongwen_converter(config).convert(
+            updated_trad_chinese
+        )
         simp_path.write_text(
             (header + updated_simp_chinese).rstrip() + "\n", encoding="utf-8"
         )

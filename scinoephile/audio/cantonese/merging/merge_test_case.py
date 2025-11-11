@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import ClassVar
 
 from pydantic import model_validator
 
@@ -20,9 +21,9 @@ from scinoephile.core.text import (
 class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
     """Test case for 粤文 merging; may also be used for few-shot prompt."""
 
-    answer_cls = MergeAnswer
+    answer_cls: ClassVar[type[MergeAnswer]] = MergeAnswer
     """Answer class for this test case."""
-    query_cls = MergeQuery
+    query_cls: ClassVar[type[MergeQuery]] = MergeQuery
     """Query class for this test case."""
 
     @cached_property

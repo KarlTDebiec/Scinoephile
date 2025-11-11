@@ -35,9 +35,9 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
-    answer_cls: ClassVar[type(TAnswer)]
+    answer_cls: ClassVar[type[Answer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type(TQuery)]
+    query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
 
     difficulty: int = Field(
