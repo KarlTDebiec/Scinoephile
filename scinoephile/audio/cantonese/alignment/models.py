@@ -55,9 +55,9 @@ def get_review_models(
             )
 
     # Get classes
-    query_cls = ReviewQuery.get_query_cls(size)
-    answer_cls = ReviewAnswer.get_answer_cls(size)
-    test_case_cls = ReviewTestCase.get_test_case_cls(size, query_cls, answer_cls)
+    test_case_cls = ReviewTestCase.get_test_case_cls(size)
+    query_cls = test_case_cls.query_cls
+    answer_cls = test_case_cls.answer_cls
     return query_cls, answer_cls, test_case_cls
 
 
@@ -109,11 +109,9 @@ def get_translate_models(
     # Get classes
     if missing:
         missing = tuple(missing)
-        query_cls = TranslateQuery.get_query_cls(size, missing)
-        answer_cls = TranslateAnswer.get_answer_cls(size, missing)
-        test_case_cls = TranslateTestCase.get_test_case_cls(
-            size, missing, query_cls, answer_cls
-        )
+        test_case_cls = TranslateTestCase.get_test_case_cls(size, missing)
+        query_cls = test_case_cls.query_cls
+        answer_cls = test_case_cls.answer_cls
         return query_cls, answer_cls, test_case_cls
 
     return None

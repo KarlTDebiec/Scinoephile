@@ -54,7 +54,7 @@ re_jyutping = re.compile(r"[a-z]+\d")
 
 
 def get_cantonese_romanization(series: Series) -> Series:
-    """Get the Yale Cantonese romanization of a series.
+    """Get the Yale Cantonese romanization of a Chinese series.
 
     Arguments:
         series: Series for which to get Yale Cantonese romanization

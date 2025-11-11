@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from abc import ABC
 from functools import cached_property
-from typing import Self
+from typing import ClassVar, Self
 
 from pydantic import BaseModel, Field, model_validator
 from pydantic.fields import FieldInfo
@@ -35,6 +35,11 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
+    answer_cls: ClassVar[type[Answer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[Query]]
+    """Query class for this test case."""
+
     difficulty: int = Field(
         0, description="Difficulty level of the test case, used for filtering."
     )
@@ -57,14 +62,6 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         )
 
     @cached_property
-    def answer_cls(self) -> type[TAnswer]:
-        """Answer parent class."""
-        for base in type(self).__mro__:
-            if base is not self.__class__ and issubclass(base, Answer):
-                return base
-        raise TypeError("No Answer subclass found in MRO.")
-
-    @cached_property
     def answer_fields(self) -> dict[str, FieldInfo]:
         """List of answer fields."""
         return self.answer_cls.model_fields
@@ -83,16 +80,8 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     def query(self) -> TQuery:
         """Query part of the test case."""
         return self.query_cls.model_validate(
-            {k: getattr(self, k) for k in self.query_cls.model_fields}
+            {k: getattr(self, k) for k in self.query_fields}
         )
-
-    @cached_property
-    def query_cls(self) -> type[TQuery]:
-        """Query parent class."""
-        for base in type(self).__mro__:
-            if base is not self.__class__ and issubclass(base, Query):
-                return base
-        raise TypeError("No Query subclass found in MRO.")
 
     @cached_property
     def query_fields(self) -> dict[str, FieldInfo]:

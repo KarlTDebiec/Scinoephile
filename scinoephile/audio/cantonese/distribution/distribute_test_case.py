@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from pydantic import model_validator
 
 from scinoephile.audio.cantonese.distribution.distribute_answer import DistributeAnswer
@@ -15,6 +17,11 @@ class DistributeTestCase(
     DistributeQuery, DistributeAnswer, TestCase[DistributeQuery, DistributeAnswer]
 ):
     """Test case for 粤文 distribution; may also be used for few-shot prompt."""
+
+    answer_cls: ClassVar[type[DistributeAnswer]] = DistributeAnswer
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[DistributeQuery]] = DistributeQuery
+    """Query class for this test case."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.

@@ -78,7 +78,5 @@ def main():
         info(f"Updated {simp_path.name}")
 
 
-
-
 if __name__ == "__main__":
     main()

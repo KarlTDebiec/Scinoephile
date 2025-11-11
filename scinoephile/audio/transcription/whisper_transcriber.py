@@ -10,6 +10,7 @@ from logging import info
 from pathlib import Path
 from warnings import catch_warnings, filterwarnings
 
+import torch
 import whisper_timestamped as whisper
 
 with catch_warnings():
@@ -38,7 +39,8 @@ class WhisperTranscriber:
             cache_dir_path: Directory in which to cache
         """
         self.model_name = model_name
-        self.model = whisper.load_model(model_name)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model = whisper.load_model(model_name, device=device)
         self.language = language
         self.cache_dir_path = None
         if cache_dir_path is not None:
