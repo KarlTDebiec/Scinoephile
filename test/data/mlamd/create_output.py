@@ -20,7 +20,7 @@ if __name__ == "__main__":
     proofer = ZhongwenProofer(
         test_case_path=test_data_root / "mlamd" / "core" / "zhongwen" / "proof.py",
     )
-    zho_hans_proof = get_zhongwen_proofed(zho_hans, proofer, stop_at_idx=1)
+    zho_hans_proof = get_zhongwen_proofed(zho_hans, proofer, stop_at_idx=4)
     zho_hans_proof.save(output_dir / "zho-Hans_proof.srt")
 
     # zho_hans = get_zhongwen_cleaned(zho_hans)
