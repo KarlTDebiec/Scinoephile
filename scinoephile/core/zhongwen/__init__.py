@@ -25,7 +25,7 @@ half_to_full_punc_for_cleaning["-"] = "﹣"
 half_to_full_punc_for_cleaning["－"] = "﹣"
 
 
-def get_zhongwen_cleaned(series: Series) -> Series:
+def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get 中文 series cleaned.
 
     Arguments:
@@ -37,7 +37,7 @@ def get_zhongwen_cleaned(series: Series) -> Series:
     new_events = []
     for event in series:
         text = _get_zhongwen_text_cleaned(event.text.strip())
-        if text:
+        if text or not remove_empty:
             event.text = text
             new_events.append(event)
     series.events = new_events

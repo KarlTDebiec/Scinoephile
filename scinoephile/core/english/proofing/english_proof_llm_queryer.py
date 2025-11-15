@@ -25,15 +25,19 @@ class EnglishProofLLMQueryer[
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """
-        You are responsible for proofreading English subtitles.
+        You are responsible for proofreading English subtitles generated using OCR.
         For each subtitle, you are to provide revised subtitle only if revisions are
         necessary.
         If revisions are needed, return the full revised subtitle, and a note describing
         the changes made.
         If no revisions are needed, return an empty string for the revised subtitle and
         its note.
-        Do not add periods to the end of subtitles spuriously.
+        Make changes only when necessary to correct errors clearly resulting from OCR.
+        Do not add stylistic changes or improve phrasing.
+        Do not change colloquialisms or dialect such as 'gonna' or 'wanna'.
         Do not change spelling from British to American English or vice versa.
+        Do not remove subtitle markup such as italics ('{\\i1}' and '{\\i0}').
+        Do not remove newlines ('\\n').
         """
 
     @staticmethod

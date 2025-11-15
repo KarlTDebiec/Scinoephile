@@ -53,6 +53,7 @@ half_punc = {
     "RIGHT SQUARE BRACKET": "]",
     "RING OPERATOR": "∘",
     "SEMICOLON": ";",
+    "SOLIDUS": "/",
     "TILDE": "~",
 }
 """Selected half-width punctuation characters."""
@@ -79,6 +80,7 @@ full_punc = {
     "FULLWIDTH RIGHT SQUARE BRACKET": "］",
     "FULLWIDTH RIGHT WHITE PARENTHESIS": "｠",
     "FULLWIDTH SEMICOLON": "；",
+    "FULLWIDTH SOLIDUS": "／",
     "FULLWIDTH TILDE": "～",
     "IDEOGRAPHIC COMMA": "、",
     "IDEOGRAPHIC FULL STOP": "。",

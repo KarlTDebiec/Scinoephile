@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from logging import debug
+from logging import debug, info
 from pprint import pformat
 
 import numpy as np
@@ -176,10 +176,10 @@ def get_synced_series(one: Series, two: Series) -> Series:
         debug(f"TWO:\n{two_str}")
 
         groups = get_sync_groups(one_block, two_block)
-        debug(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
+        info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
 
         synced_block = get_synced_series_from_groups(one_block, two_block, groups)
-        debug(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
+        info(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
     synced = get_concatenated_series(synced_blocks)
@@ -386,6 +386,8 @@ def _get_sync_groups(
 
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)
+
+    info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     return sync_groups
 
