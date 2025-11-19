@@ -12,8 +12,8 @@ from scinoephile.core.abcs import Answer
 class ProofAnswer(Answer):
     """Answer for 粤文 proofing."""
 
-    yuewen_proofread: str = Field(..., description="Proofread 粤文 of subtitle.")
-    note: str = Field(..., description="Description of corrections made.")
+    yuewen_proofread: str = Field(..., description="Proofread 粤文 of subtitle")
+    note: str = Field(..., description="Description of corrections made")
 
     @model_validator(mode="after")
     def validate_answer(self) -> ProofAnswer:

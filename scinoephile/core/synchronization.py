@@ -34,9 +34,9 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     if len(one) != len(two):
         return False
 
-    overlap = get_sync_overlap_matrix(one, two)
-    if not np.all(overlap == np.diag(np.diag(overlap))):
-        return False
+    for one_sub, two_sub in zip(one, two):
+        if one_sub.start != two_sub.start or one_sub.end != two_sub.end:
+            return False
 
     return True
 

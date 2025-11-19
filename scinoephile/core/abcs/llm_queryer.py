@@ -39,7 +39,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         cache_dir_path: str | None = None,
         print_test_case: bool = False,
         max_attempts: int = 5,
-        verify_if_no_changes: bool = False,
+        verify_if_noop: bool = False,
     ):
         """Initialize.
 
@@ -52,7 +52,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             cache_dir_path: directory in which to cache
             print_test_case: whether to print test case after merging
             max_attempts: maximum number of attempts
-            verify_if_no_changes: automatically mark test cases as verified if no
+            verify_if_noop: automatically mark test cases as verified if no
               changes
         """
         self.model = model
@@ -87,7 +87,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Whether to print test case after merging query and answer."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
-        self.verify_if_no_changes = verify_if_no_changes
+        self.verify_if_noop = verify_if_noop
         """Automatically mark test cases as verified if no changes."""
 
     @property
@@ -257,7 +257,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             # Validate test case
             try:
                 test_case = test_case_cls.from_query_and_answer(query, answer)
-                if self.verify_if_no_changes and test_case.noop:
+                if self.verify_if_noop and test_case.noop:
                     test_case.verified = True
             except ValidationError as exc:
                 error(
