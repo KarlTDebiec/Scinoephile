@@ -12,7 +12,6 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError, Series, Subtitle
 from scinoephile.core.synchronization import are_series_one_to_one
-from scinoephile.core.zhongwen import get_zhongwen_cleaned
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_queryer import (
     ZhongwenFusionLLMQueryer,
 )
@@ -30,12 +29,14 @@ class ZhongwenFuser:
         self,
         test_cases: list[ZhongwenFusionTestCase] | None = None,
         test_case_path: Path | None = None,
+        auto_verify: bool = False,
     ):
         """Initialize.
 
         Arguments:
             test_cases: test cases
             test_case_path: path to file containing test cases
+            auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
             test_cases = []
@@ -72,6 +73,7 @@ class ZhongwenFuser:
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
+            auto_verify=auto_verify,
         )
         """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
 
@@ -89,8 +91,6 @@ class ZhongwenFuser:
                 "PaddleOCR and Google Lens OCR series must have the same number of "
                 "subtitles."
             )
-        paddle = get_zhongwen_cleaned(paddle, remove_empty=False)
-        lens = get_zhongwen_cleaned(lens, remove_empty=False)
 
         # Ensure test case file exists
         if self.test_case_path is not None and not self.test_case_path.exists():

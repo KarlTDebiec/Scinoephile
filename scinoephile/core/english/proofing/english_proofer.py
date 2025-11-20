@@ -30,15 +30,14 @@ class EnglishProofer:
         self,
         proof_test_cases: list[EnglishProofTestCase] | None = None,
         test_case_path: Path | None = None,
-        verify_if_noop: bool = False,
+        auto_verify: bool = False,
     ):
         """Initialize.
 
         Arguments:
             proof_test_cases: proof test cases
             test_case_path: path to file containing test cases
-            verify_if_noop: automatically mark test cases as verified if no
-              changes are suggested
+            auto_verify: automatically verify test cases if they meet selected criteria
         """
         if proof_test_cases is None:
             proof_test_cases = []
@@ -75,7 +74,7 @@ class EnglishProofer:
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
-            verify_if_noop=verify_if_noop,
+            auto_verify=auto_verify,
         )
         """Proofreads English subtitles."""
 

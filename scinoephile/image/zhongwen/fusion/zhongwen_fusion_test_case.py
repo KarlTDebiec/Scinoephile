@@ -25,6 +25,17 @@ class ZhongwenFusionTestCase(
     query_cls: ClassVar[type[ZhongwenFusionQuery]] = ZhongwenFusionQuery
     """Query class for this test case."""
 
+    def get_auto_verified(self) -> bool:
+        """Whether this test case should automatically be verified."""
+        auto_verified = super().get_auto_verified()
+        print(self.source_str)
+        if self.lens == self.ronghe and "\n" not in self.lens:
+            auto_verified = True
+        if self.paddle == self.ronghe and "\n" not in self.paddle:
+            auto_verified = True
+        print(auto_verified)
+        return auto_verified
+
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
 

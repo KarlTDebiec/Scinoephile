@@ -39,7 +39,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         cache_dir_path: str | None = None,
         print_test_case: bool = False,
         max_attempts: int = 5,
-        verify_if_noop: bool = False,
+        auto_verify: bool = False,
     ):
         """Initialize.
 
@@ -52,8 +52,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             cache_dir_path: directory in which to cache
             print_test_case: whether to print test case after merging
             max_attempts: maximum number of attempts
-            verify_if_noop: automatically mark test cases as verified if no
-              changes
+            auto_verify: automatically mark test cases as verified if no changes
         """
         self.model = model
         """Model name to use for queries."""
@@ -87,8 +86,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Whether to print test case after merging query and answer."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
-        self.verify_if_noop = verify_if_noop
-        """Automatically mark test cases as verified if no changes."""
+        self.auto_verify = auto_verify
+        """Automatically verify test cases if they meet selected criteria."""
 
     @property
     def provider(self):
@@ -191,6 +190,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     contents = await f.read()
                 try:
                     test_case = test_case_cls.model_validate(json.loads(contents))
+                    if self.auto_verify and test_case.get_auto_verified():
+                        test_case.verified = True
                     self.log_encountered_test_case(test_case)
                     info(f"Loaded from cache: {query.query_key_str}")
                     await asyncio.to_thread(cache_path.touch)
@@ -257,7 +258,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             # Validate test case
             try:
                 test_case = test_case_cls.from_query_and_answer(query, answer)
-                if self.verify_if_noop and test_case.noop:
+                if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
             except ValidationError as exc:
                 error(

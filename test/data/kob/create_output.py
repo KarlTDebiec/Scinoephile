@@ -6,6 +6,11 @@ from __future__ import annotations
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
+from scinoephile.core.zhongwen import (
+    OpenCCConfig,
+    get_zhongwen_cleaned,
+    get_zhongwen_converted,
+)
 from scinoephile.image.zhongwen import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 
@@ -16,12 +21,20 @@ if __name__ == "__main__":
 
     # 繁體中文
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
+    zho_hant_paddle = get_zhongwen_cleaned(zho_hant_paddle, remove_empty=False)
+    zho_hant_paddle = get_zhongwen_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
     zho_hant_lens = Series.load(input_dir / "zho-Hant_lens.srt")
+    zho_hant_lens = get_zhongwen_cleaned(zho_hant_lens, remove_empty=False)
+    zho_hant_lens = get_zhongwen_converted(zho_hant_lens, config=OpenCCConfig.s2t)
     fuser = ZhongwenFuser(
         test_case_path=test_data_root / "kob" / "image" / "zhongwen" / "fusion.py",
+        auto_verify=True,
     )
     zho_hant_fused = get_zhongwen_ocr_fused(
-        zho_hant_paddle, zho_hant_lens, fuser, stop_at_idx=50
+        zho_hant_paddle,
+        zho_hant_lens,
+        fuser,
+        stop_at_idx=10,
     )
 
     # 简体粵文

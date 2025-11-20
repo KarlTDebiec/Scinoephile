@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import Any
 
 from scinoephile.core.series import Series
-from scinoephile.image.zhongwen.fusion.zhongwhen_fuser import ZhongwenFuser
+from scinoephile.image.zhongwen.fusion.zhongwen_fuser import ZhongwenFuser
 
 
 def get_zhongwen_ocr_fused(
