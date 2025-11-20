@@ -34,7 +34,6 @@ if __name__ == "__main__":
         zho_hant_paddle,
         zho_hant_lens,
         fuser,
-        stop_at_idx=200,
     )
 
     # 简体粵文
