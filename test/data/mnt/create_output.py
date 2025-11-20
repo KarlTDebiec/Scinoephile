@@ -40,7 +40,6 @@ zho_hant_fused = get_zhongwen_ocr_fused(
         test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
         auto_verify=True,
     ),
-    stop_at_idx=100,
 )
 zho_hant_fused.save(output_dir / "zho-Hans_fuse.srt")
 
