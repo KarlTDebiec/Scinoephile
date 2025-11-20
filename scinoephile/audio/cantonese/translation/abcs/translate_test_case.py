@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from abc import ABC
-from functools import cached_property
 from typing import ClassVar
 
 from pydantic import create_model
@@ -26,7 +25,7 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
     query_cls: ClassVar[type[TranslateQuery]]
     answer_cls: ClassVar[type[TranslateAnswer]]
 
-    @cached_property
+    @property
     def missing(self) -> tuple[int, ...]:
         """Indices of missing 粤文 subtitles."""
         yw_idxs = [
@@ -36,7 +35,7 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         ]
         return tuple(yw_idxs)
 
-    @cached_property
+    @property
     def size(self) -> int:
         """Size of the test case."""
         zw_idxs = [
@@ -46,7 +45,7 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         ]
         return max(zw_idxs) + 1
 
-    @cached_property
+    @property
     def source_str(self) -> str:
         """Python source-like string representation."""
         lines = (

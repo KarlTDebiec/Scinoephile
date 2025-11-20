@@ -95,12 +95,12 @@ class ZhongwenFuser:
         # Ensure test case file exists
         if self.test_case_path is not None and not self.test_case_path.exists():
             self.test_case_path.parent.mkdir(parents=True, exist_ok=True)
-            self.create_test_case_file(self.test_case_path, len(paddle.blocks))
+            self.create_test_case_file(self.test_case_path)
 
         # Run all blocks
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(paddle)
-        for sub_idx, (paddle_sub, lens_sub) in enumerate(zip(paddle, lens)):
+        for sub_idx, (paddle_sub, lens_sub) in enumerate(zip(paddle, lens), 1):
             if sub_idx >= stop_at_idx:
                 break
             paddle_text = paddle_sub.text

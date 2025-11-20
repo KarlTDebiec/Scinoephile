@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import cached_property
 
 from scinoephile.core.text import get_char_type
 
@@ -27,12 +26,12 @@ class CharPair:
     whitespace: str
     """Whitespace between the two characters."""
 
-    @cached_property
+    @property
     def type_1(self) -> str:
         """Type of the first character."""
         return get_char_type(self.char_1)
 
-    @cached_property
+    @property
     def type_2(self) -> str:
         """Type of the second character."""
         return get_char_type(self.char_2)

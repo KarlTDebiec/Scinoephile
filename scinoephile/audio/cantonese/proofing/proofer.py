@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
 from typing import override
 
 from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
@@ -16,7 +15,7 @@ from scinoephile.core.abcs import FixedLLMQueryer
 class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
-    @cached_property
+    @property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

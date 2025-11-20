@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from abc import ABC
-from functools import cached_property
 from typing import ClassVar
 
 from pydantic import create_model, model_validator
@@ -28,7 +27,7 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
     query_cls: ClassVar[type[ZhongwenProofQuery]]
     answer_cls: ClassVar[type[ZhongwenProofAnswer]]
 
-    @cached_property
+    @property
     def noop(self) -> bool:
         """Whether this test case is a no-op."""
         for idx in range(1, self.size + 1):
@@ -37,7 +36,7 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
                 return False
         return True
 
-    @cached_property
+    @property
     def size(self) -> int:
         """Get size of the test case."""
         idxs = [
@@ -45,7 +44,7 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
         ]
         return max(idxs) + 1
 
-    @cached_property
+    @property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
         lines = [f"{ZhongwenProofTestCase.__name__}.get_test_case_cls({self.size})("]

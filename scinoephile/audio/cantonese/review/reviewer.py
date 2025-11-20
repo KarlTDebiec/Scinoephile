@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
-
 from scinoephile.audio.cantonese.review.abcs import (
     ReviewAnswer,
     ReviewQuery,
@@ -19,7 +17,7 @@ class Reviewer[TQuery: ReviewQuery, TAnswer: ReviewAnswer, TTestCase: ReviewTest
 ):
     """Reviews 粤文 text based on corresponding 中文."""
 
-    @cached_property
+    @property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """

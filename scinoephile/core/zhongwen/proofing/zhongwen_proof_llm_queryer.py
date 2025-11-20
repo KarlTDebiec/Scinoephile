@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
-
 from scinoephile.core.abcs import DynamicLLMQueryer
 from scinoephile.core.zhongwen.proofing.abcs import (
     ZhongwenProofAnswer,
@@ -21,7 +19,7 @@ class ZhongwenProofLLMQueryer[
 ](DynamicLLMQueryer[ZhongwenProofQuery, ZhongwenProofAnswer, ZhongwenProofTestCase]):
     """Proofreads 中文 subtitles."""
 
-    @cached_property
+    @property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """

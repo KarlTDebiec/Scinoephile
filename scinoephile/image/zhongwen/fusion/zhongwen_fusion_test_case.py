@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.abcs import TestCase
+from scinoephile.core.text import whitespace
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_answer import (
     ZhongwenFusionAnswer,
 )
@@ -28,12 +29,12 @@ class ZhongwenFusionTestCase(
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
         auto_verified = super().get_auto_verified()
-        print(self.source_str)
+        if any(ch in self.ronghe for ch in whitespace.values()):
+            return False
         if self.lens == self.ronghe and "\n" not in self.lens:
             auto_verified = True
         if self.paddle == self.ronghe and "\n" not in self.paddle:
             auto_verified = True
-        print(auto_verified)
         return auto_verified
 
     def get_min_difficulty(self) -> int:
@@ -49,4 +50,6 @@ class ZhongwenFusionTestCase(
         """
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
+        if any(ch in self.ronghe for ch in whitespace.values()):
+            min_difficulty = max(min_difficulty, 2)
         return min_difficulty

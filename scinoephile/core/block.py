@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from functools import cached_property
 from typing import TYPE_CHECKING
 
 from scinoephile.core.subtitle import Subtitle
@@ -73,17 +72,17 @@ class Block:
             f"end_idx={self.end_idx})"
         )
 
-    @cached_property
+    @property
     def end(self) -> int:
         """End time of block."""
         return self._series[self.end_idx - 1].end
 
-    @cached_property
+    @property
     def events(self) -> list[Subtitle]:
         """List of subtitles in the block."""
         return self._series.slice(self.start_idx, self.end_idx).events
 
-    @cached_property
+    @property
     def start(self) -> int:
         """Start time of block."""
         return self._series[self.start_idx].start

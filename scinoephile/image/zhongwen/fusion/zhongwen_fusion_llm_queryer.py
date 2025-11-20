@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
 from typing import override
 
 from scinoephile.core.abcs import FixedLLMQueryer
@@ -22,7 +21,7 @@ class ZhongwenFusionLLMQueryer(
 ):
     """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
 
-    @cached_property
+    @property
     @override
     def base_system_prompt(self) -> str:
         """Base system prompt."""

@@ -8,7 +8,6 @@ import asyncio
 import hashlib
 import json
 from abc import ABC, abstractmethod
-from functools import cached_property
 from logging import debug, error, info
 from pathlib import Path
 from textwrap import dedent
@@ -101,7 +100,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """Set LLM Provider to use for queries."""
         self._provider = value
 
-    @cached_property
+    @property
     @abstractmethod
     def base_system_prompt(self) -> str:
         """Base system prompt."""
@@ -118,7 +117,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """String representation of all test cases in the log."""
         raise NotImplementedError()
 
-    @cached_property
+    @property
     def prompt_test_cases(self) -> dict[tuple, TTestCase]:
         """Test cases included in the prompt for few-shot learning."""
         return self._prompt_test_cases
@@ -140,7 +139,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             )
         return few_shot
 
-    @cached_property
+    @property
     def verified_test_cases(self) -> dict[tuple, TTestCase]:
         """Test cases whose answers are verified for which LLM will not be queried."""
         return self._verified_test_cases

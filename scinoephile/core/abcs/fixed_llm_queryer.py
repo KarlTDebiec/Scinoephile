@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from abc import ABC
 from asyncio import run
-from functools import cached_property
 from typing import get_args, get_origin
 
 from scinoephile.core.abcs.answer import Answer
@@ -46,7 +45,7 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         )
         return answer
 
-    @cached_property
+    @property
     def answer_cls(self) -> type[TAnswer]:
         """Answer class."""
         for base in getattr(self.__class__, "__orig_bases__", []):
@@ -56,7 +55,7 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             f"Could not determine answer class for {self.__class__.__name__}"
         )
 
-    @cached_property
+    @property
     def answer_example(self) -> TAnswer:
         """Example answer."""
         return self.answer_cls(
@@ -76,7 +75,7 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         test_case_log_str += "]"
         return test_case_log_str
 
-    @cached_property
+    @property
     def query_cls(self) -> type[TQuery]:
         """Query class."""
         for base in getattr(self.__class__, "__orig_bases__", []):
@@ -86,12 +85,12 @@ class FixedLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             f"Could not determine query class for {self.__class__.__name__}"
         )
 
-    @cached_property
+    @property
     def system_prompt(self) -> str:
         """System prompt template."""
         return self._get_system_prompt(self.answer_example)
 
-    @cached_property
+    @property
     def test_case_cls(self) -> type[TTestCase]:
         """Test case class."""
         for base in getattr(self.__class__, "__orig_bases__", []):
