@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from scinoephile.image.zhongwen.fusion.zhongwen_fuser import ZhongwenFuser
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_answer import (
     ZhongwenFusionAnswer,
 )
@@ -16,6 +17,7 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
 )
 
 __all__ = [
+    "ZhongwenFuser",
     "ZhongwenFusionAnswer",
     "ZhongwenFusionLLMQueryer",
     "ZhongwenFusionQuery",

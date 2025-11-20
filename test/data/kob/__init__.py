@@ -11,6 +11,9 @@ from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
 from test.data.kob.core.english.proof import kob_english_proof_test_cases
+from test.data.kob.image.zhongwen.fusion import (
+    test_cases as kob_zhongwen_fusion_test_cases,
+)
 
 input_dir = test_data_root / "kob" / "input"
 output_dir = test_data_root / "kob" / "output"
@@ -117,4 +120,5 @@ ___all__ = [
     "kob_eng_proof_clean_flatten",
     "kob_yue_hans_eng",
     "kob_english_proof_test_cases",
+    "kob_zhongwen_fusion_test_cases",
 ]

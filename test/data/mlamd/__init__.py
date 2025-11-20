@@ -14,6 +14,9 @@ from scinoephile.testing import test_data_root
 # ruff: noqa: F401 F403
 from test.data.mlamd.core.english.proof import mlamd_english_proof_test_cases
 from test.data.mlamd.distribution import mlamd_distribute_test_cases
+from test.data.mlamd.image.zhongwen.fusion import (
+    test_cases as mlamd_zhongwen_fusion_test_cases,
+)
 from test.data.mlamd.merging import mlamd_merge_test_cases
 from test.data.mlamd.proofing import mlamd_proof_test_cases
 from test.data.mlamd.review import mlamd_review_test_cases
@@ -127,4 +130,5 @@ ___all__ = [
     "mlamd_translate_test_cases",
     "mlamd_review_test_cases",
     "mlamd_english_proof_test_cases",
+    "mlamd_zhongwen_fusion_test_cases",
 ]
