@@ -40,18 +40,27 @@ class ZhongwenFuser:
         """
         if test_cases is None:
             test_cases = []
-            # try:
-            #     from test.data.kob import kob_zhongwen_proof_test_cases
-            #     from test.data.mlamd import mlamd_zhongwen_proof_test_cases
-            #     from test.data.t import t_zhongwen_proof_test_cases
-            #
-            #     test_cases = (
-            #         kob_zhongwen_proof_test_cases
-            #         + mlamd_zhongwen_proof_test_cases
-            #         + t_zhongwen_proof_test_cases
-            #     )
-            # except ImportError:
-            #     pass
+            try:
+                # noinspection PyUnusedImports
+                from test.data.kob import kob_zhongwen_fusion_test_cases
+
+                # noinspection PyUnusedImports
+                from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
+
+                # noinspection PyUnusedImports
+                from test.data.mnt import mnt_zhongwen_fusion_test_cases
+
+                # noinspection PyUnusedImports
+                from test.data.t import t_zhongwen_fusion_test_cases
+
+                test_cases = (
+                    kob_zhongwen_fusion_test_cases
+                    + mlamd_zhongwen_fusion_test_cases
+                    + mnt_zhongwen_fusion_test_cases
+                    + t_zhongwen_fusion_test_cases
+                )
+            except ImportError:
+                pass
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
