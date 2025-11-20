@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 
+# noinspection PyArgumentList
 test_cases = [
     ZhongwenFusionTestCase(
         lens="少爺！\n準備好了",

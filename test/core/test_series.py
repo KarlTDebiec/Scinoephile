@@ -16,7 +16,6 @@ from scinoephile.testing import test_data_root
     [
         "kob/input/eng.srt",
         "mnt/input/eng.srt",
-        "pdp/input/eng.srt",
         "t/input/eng.srt",
     ],
 )

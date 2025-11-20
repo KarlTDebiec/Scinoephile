@@ -18,7 +18,6 @@ from scinoephile.core.synchronization import (
 )
 from scinoephile.testing import SyncTestCase
 from test.data.mnt import mnt_sync_test_cases  # noqa: F401
-from test.data.pdp import pdp_sync_test_cases  # noqa: F401
 
 
 def _test_blocks(one: Series, two: Series, test_case: SyncTestCase):
@@ -92,22 +91,6 @@ def test_blocks_mnt(
     _test_blocks(mnt_zho_hant_clean_flatten_simplify, mnt_eng_clean_flatten, test_case)
 
 
-@pytest.mark.parametrize("test_case", pdp_sync_test_cases)
-def test_blocks_pdp(
-    pdp_yue_hant_clean_flatten_simplify: Series,
-    pdp_eng_clean_flatten: Series,
-    test_case: SyncTestCase,
-):
-    """Test synchronization blocks for PDP.
-
-    Arguments:
-        pdp_yue_hant_clean_flatten_simplify: PDP 繁体粤文 series fixture
-        pdp_eng_clean_flatten: PDP English series fixture
-        test_case: Indexes for slicing input block and expected output for validation
-    """
-    _test_blocks(pdp_yue_hant_clean_flatten_simplify, pdp_eng_clean_flatten, test_case)
-
-
 # get_synced_series
 def test_get_synced_series_mnt(
     mnt_zho_hant_clean_flatten_simplify: Series,
@@ -125,23 +108,4 @@ def test_get_synced_series_mnt(
         mnt_zho_hant_clean_flatten_simplify,
         mnt_eng_clean_flatten,
         mnt_zho_hans_eng,
-    )
-
-
-def test_get_synced_series_pdp(
-    pdp_yue_hant_clean_flatten_simplify: Series,
-    pdp_eng_clean_flatten: Series,
-    pdp_yue_hans_eng: Series,
-):
-    """Test get_synced_series with PDP.
-
-    Arguments:
-        pdp_yue_hant_clean_flatten_simplify: PDP 繁体粤文 series fixture
-        pdp_eng_clean_flatten: PDP English series fixture
-        pdp_yue_hans_eng: Expected output bilingual series fixture
-    """
-    _test_get_synced_series(
-        pdp_yue_hant_clean_flatten_simplify,
-        pdp_eng_clean_flatten,
-        pdp_yue_hans_eng,
     )

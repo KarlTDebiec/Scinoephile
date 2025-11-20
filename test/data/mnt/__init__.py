@@ -9,6 +9,11 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.testing import SyncTestCase, test_data_root
 from test.data.mnt.distribution import mnt_distribute_test_cases
+
+# ruff: noqa: F401 F403
+from test.data.mnt.image.zhongwen.fusion import (
+    test_cases as mnt_zhongwen_fusion_test_cases,
+)
 from test.data.mnt.merging import mnt_merge_test_cases
 from test.data.mnt.proofing import mnt_proof_test_cases
 from test.data.mnt.review import mnt_review_test_cases
@@ -1246,4 +1251,5 @@ ___all__ = [
     "mnt_proof_test_cases",
     "mnt_translate_test_cases",
     "mnt_review_test_cases",
+    "mnt_zhongwen_fusion_test_cases",
 ]

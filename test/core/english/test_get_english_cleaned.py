@@ -64,16 +64,6 @@ def test_get_english_cleaned_mnt(mnt_eng: Series, mnt_eng_clean: Series):
     _test_get_english_cleaned(mnt_eng, mnt_eng_clean)
 
 
-def test_get_english_cleaned_pdp(pdp_eng: Series, pdp_eng_clean: Series):
-    """Test get_english_cleaned with PDP English subtitles.
-
-    Arguments:
-        pdp_eng: PDP English series fixture
-        pdp_eng_clean: Expected cleaned PDP English series fixture
-    """
-    _test_get_english_cleaned(pdp_eng, pdp_eng_clean)
-
-
 def test_get_english_cleaned_t(t_eng: Series, t_eng_clean: Series):
     """Test get_english_cleaned with T English subtitles.
 

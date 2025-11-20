@@ -22,15 +22,15 @@ from scinoephile.testing import test_data_root
     [
         (
             (ScinoephileCli,),
-            "pdp/input/eng.srt",
+            "t/input/eng.srt",
             "--clean",
-            "pdp/output/eng_clean.srt",
+            "t/output/eng_clean.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/eng.srt",
+            "t/input/eng.srt",
             "--flatten",
-            "pdp/output/eng_flatten.srt",
+            "t/output/eng_flatten.srt",
         ),
     ],
 )
@@ -71,21 +71,15 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/zho-Hant.srt",
+            "t/input/zho-Hant.srt",
             "--flatten",
-            "pdp/output/zho-Hant_flatten.srt",
+            "t/output/zho-Hant_flatten.srt",
         ),
         (
             (ScinoephileCli,),
-            "pdp/input/zho-Hant.srt",
+            "t/input/zho-Hant.srt",
             "--convert",
-            "pdp/output/zho-Hant_simplify.srt",
-        ),
-        (
-            (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "--convert hk2s",
-            "pdp/output/yue-Hant_simplify.srt",
+            "t/output/zho-Hant_simplify.srt",
         ),
     ],
 )
@@ -126,10 +120,10 @@ def test_chinese(
     [
         (
             (ScinoephileCli,),
-            "pdp/input/yue-Hant.srt",
-            "pdp/input/eng.srt",
+            "t/input/zho-Hant.srt",
+            "t/input/eng.srt",
             "--clean --flatten --convert hk2s",
-            "pdp/output/yue-Hans_eng.srt",
+            "t/output/zho-Hans_eng.srt",
         ),
     ],
 )
