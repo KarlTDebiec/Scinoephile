@@ -14,6 +14,7 @@ from scinoephile.core.zhongwen import (
 from scinoephile.image.zhongwen import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
+from test.data.t import t_zhongwen_fusion_test_cases
 
 if __name__ == "__main__":
     input_dir = test_data_root / "kob" / "input"
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     zho_hant_lens = get_zhongwen_cleaned(zho_hant_lens, remove_empty=False)
     zho_hant_lens = get_zhongwen_converted(zho_hant_lens, config=OpenCCConfig.s2t)
     fuser = ZhongwenFuser(
-        test_cases=mlamd_zhongwen_fusion_test_cases,
+        test_cases=mlamd_zhongwen_fusion_test_cases + t_zhongwen_fusion_test_cases,
         test_case_path=test_data_root / "kob" / "image" / "zhongwen" / "fusion.py",
         auto_verify=True,
     )

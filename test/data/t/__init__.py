@@ -11,6 +11,9 @@ from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
 from test.data.t.core.english.proof import t_english_proof_test_cases
+from test.data.t.image.zhongwen.fusion import (
+    test_cases as t_zhongwen_fusion_test_cases,
+)
 
 input_dir = test_data_root / "t" / "input"
 output_dir = test_data_root / "t" / "output"
@@ -117,4 +120,5 @@ ___all__ = [
     "t_eng_proof_clean_flatten",
     "t_zho_hans_eng",
     "t_english_proof_test_cases",
+    "t_zhongwen_fusion_test_cases",
 ]

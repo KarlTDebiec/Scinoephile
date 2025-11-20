@@ -14,6 +14,7 @@ from scinoephile.image.zhongwen import get_zhongwen_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser
 from scinoephile.testing import test_data_root
 from test.data.kob import kob_zhongwen_fusion_test_cases
+from test.data.t import t_zhongwen_fusion_test_cases
 
 if __name__ == "__main__":
     input_dir = test_data_root / "mlamd" / "input"
@@ -21,14 +22,14 @@ if __name__ == "__main__":
     set_logging_verbosity(2)
 
     # 简体中文
-    zho_hans_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
+    zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
-    zho_hans_lens = Series.load(input_dir / "zho-Hant_lens.srt")
+    zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
     zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
     zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
     fuser = ZhongwenFuser(
-        test_cases=kob_zhongwen_fusion_test_cases,
+        test_cases=kob_zhongwen_fusion_test_cases + t_zhongwen_fusion_test_cases,
         test_case_path=test_data_root / "mlamd" / "image" / "zhongwen" / "fusion.py",
         auto_verify=True,
     )
