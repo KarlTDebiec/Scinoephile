@@ -3068,8 +3068,7 @@ KTV的卡片,还有电话
 
 749
 00:51:56,000 --> 00:51:57,250
-一百万! HTTP error: 502 - <!DOCTYPE html> <html lang=en> <meta charset=utf-8> <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width"> <title>Error 502 (Server Error)!!1</title> <style> *{margin:0;padding:0}html,code{font:15px/22px arial,sans-serif}html{background:#fff;color:#222;padding:15px}body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 015px}* > body{background:url(//www.google.com/images/errors/robot.png) 100% 5px no-repeat;padding-right:205px}p{margin:11px ┌───────────────────── Traceback (most recent call last) ─────────────────────┐ │ in send_request:114 │ │ │ │ in raise_for_status:829 │ └─────────────────────────────────────────────────────────────────────────────┘ HTTPStatusError: Server error '502 Bad Gateway' for url 'https://lensfrontend-pa.googleapis.com/v1/crupload' For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502 LensAPI processing error: HTTP ошибка: 502 (Status Code: 502) Response Body (partial): <!DOCTYPE html> <html lang=en> <meta charset=utf-8> <meta name=viewport
-content="initial-scale=1, minimum-scale=1, width=device-width"> <title>Error 502 (Server Error)!!1</title> <style> *... ┌───────────────────── Traceback (most recent call last) ─────────────────────┐ │ in send_request:114 │ │ │ │ in raise_for_status:829 │ └─────────────────────────────────────────────────────────────────────────────┘ HTTPStatusError: Server error '502 Bad Gateway' for url 'https://lensfrontend-pa.googleapis.com/v1/crupload' For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502 The above exception was the direct cause of the following exception: ┌───────────────────── Traceback (most recent call last) ─────────────────────┐ │ in process_image:301 │ │ │ │ in send_request:167 │ └─────────────────────────────────────────────────────────────────────────────┘ LensAPIError: HTTP ошибка: 502 (Status Code: 502) Response Body (partial): <!DOCTYPE html> <html lang=en> <meta charset=utf-8> <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width"> <title>Error 502 (Server Error)!!1</title> <style> *...
+一百万!
 
 750
 00:51:59,125 --> 00:52:00,375
@@ -3085,8 +3084,7 @@ content="initial-scale=1, minimum-scale=1, width=device-width"> <title>Error 502
 
 753
 00:52:04,917 --> 00:52:06,292
-但是要快 - (754/1196) Error for: 0753.png - HTTP ошибка: 502 (Status Code: 502) Response Body (partial): <!DOCTYPE html> <html lang=en> <meta charset=utf-8>
-<meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width"> <title>Error 502 (Server Error)!!1</title> <style> *...
+但是要快
 
 754
 00:52:07,000 --> 00:52:09,083

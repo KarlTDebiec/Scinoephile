@@ -492,6 +492,7 @@ test_cases = [
         ronghe="不好意思，饭是冷的吗？　　我要茶！",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="快点\n小姐，麻烦你告诉我⋯",
@@ -501,6 +502,7 @@ test_cases = [
         "Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR "
         "中多余的“麻”。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="我要茶！\n等我一下，我带你去",
@@ -508,6 +510,7 @@ test_cases = [
         ronghe="我要茶！　　等我一下，我带你去",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="茶，我帮你拿",
@@ -520,9 +523,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="我们之前偷车、爆窃、打劫运钞车",
         paddle="我们之前偷车 爆窃 打劫运钞车",
-        ronghe="我们之前偷车　爆窃　打劫运钞车",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="我们之前偷车、爆窃、打劫运钞车",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的顿号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="说出来，\n我们商量一下",
@@ -531,6 +536,7 @@ test_cases = [
         beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的“手”；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="当然得再找一座更高、更难爬的山",
@@ -603,9 +609,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="明白，\n完全明白",
         paddle="明白， 完全明白",
-        ronghe="明白，　　完全明白",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="明白，完全明白",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="你看看看，\n他妈的看什么？",
@@ -618,10 +625,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="走了，向阳、老胡",
         paddle="走了， 向阳 老胡",
-        ronghe="走了，　　向阳、老胡",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代；包括了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的逗号。",
-        difficulty=2,
+        ronghe="走了，向阳、老胡",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和顿号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="你们两个，\n跟我进来",
@@ -677,6 +685,7 @@ test_cases = [
         ronghe="有人找你　　喂",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="泰国人？",
@@ -690,9 +699,10 @@ test_cases = [
         lens="Noon，\n去买可乐",
         paddle="Noon＇去买可乐",
         ronghe="Noon，去买可乐",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和换行符已被省略；未采用 "
-        "PaddleOCR 中的全角单引号。",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
+        "OCR 中存在但 PaddleOCR 中不存在的换行符；使用了 Google Lens OCR 的英文标点。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="你坐一下，很快开饭",
@@ -705,9 +715,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="你昨天吃过饭，今天要不要吃？就是嘛",
         paddle="你昨天吃过饭 今天要不要吃？就是嘛",
-        ronghe="你昨天吃过饭　　今天要不要吃？就是嘛",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="你昨天吃过饭，今天要不要吃？就是嘛",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="慢慢来，\n宝儿，这么着急",
@@ -756,6 +768,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="做好功课没有？快点，进去做功课",
@@ -771,6 +784,7 @@ test_cases = [
         ronghe="我待会打你屁股　　真乖",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="「嫖赌饮荡吹⋯",
@@ -815,10 +829,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="三十部廿九吋新画皇，每部一万二",
         paddle="三十部廿九时新画皇 每部一万二",
-        ronghe="三十部廿九吋新画皇　　每部一万二",
-        beizhu="采用了 Google Lens OCR 中更准确的“吋”字；Google Lens OCR 和 PaddleOCR "
-        "中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="三十部廿九吋新画皇，每部一万二",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和“吋”字，修正了 "
+        "PaddleOCR 错误识别为“时”的字。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="送你一部新的，金",
@@ -868,6 +883,7 @@ test_cases = [
         ronghe="快点　　什么事？",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="不是，关门",
@@ -884,6 +900,7 @@ test_cases = [
         beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余逗号和空格；省略了 Google "
         "Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="喂，\n干什么？",
@@ -905,11 +922,12 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="那天跑夜马，会有好多人，搞定之后⋯",
         paddle="那天跑夜马，会有好多人 搞定之后",
-        ronghe="那天跑夜马，会有好多人　　搞定之后⋯",
-        beizhu="将了 Google Lens OCR 中显示为逗号和省略号，PaddleOCR "
-        "中显示为空格的间隙替换为两个表意空格；包括了 Google Lens OCR 中存在但 PaddleOCR "
-        "中不存在的省略号。",
-        difficulty=2,
+        ronghe="那天跑夜马，会有好多人，搞定之后⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和省略号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        prompt=True,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="赚不了钱！\n记得要跟紧我",
@@ -917,6 +935,7 @@ test_cases = [
         ronghe="赚不了钱！　　记得要跟紧我",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="听人家说，你们三大贼王合作",
@@ -951,6 +970,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的顿号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="一个「砰！砰！砰！」",
@@ -973,9 +993,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="打劫！\n打劫！",
         paddle="打劫！打劫！",
-        ronghe="打劫！　　打劫！",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="打劫！打劫！",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="老大开AK才威风！",
@@ -989,9 +1010,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="怎么了？\n跟就跟",
         paddle="怎么了？跟就跟",
-        ronghe="怎么了？　　跟就跟",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="怎么了？跟就跟",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="潮哥，那⋯",
@@ -1006,9 +1028,10 @@ test_cases = [
         lens="就算开\n「鱼蛋档」",
         paddle="就算开 1 鱼蛋档」",
         ronghe="就算开「鱼蛋档」",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符，并修正了 PaddleOCR 错误识别的“1”为正确的引号。",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号和正确的汉字；省略了 Google "
+        "Lens OCR 中存在但 PaddleOCR 中不存在的换行符，以及 PaddleOCR 中错误的“1”。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="也很轰动吧？",
@@ -1021,9 +1044,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="我肯打了，\n我打了",
         paddle="我肯打了 我打了",
-        ronghe="我肯打了　　我打了",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="我肯打了，我打了",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
+        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="卓先生，你怎么才肯放过我丈夫？",
@@ -1089,6 +1114,7 @@ test_cases = [
         "OCR 中存在但 PaddleOCR 中不存在的换行符和 PaddleOCR 中存在但 Google Lens OCR "
         "中不存在的空格。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="三、四晚吧",
@@ -1155,6 +1181,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="科长，\n有人找你",
@@ -1193,16 +1220,19 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="⋯\n行⋯",
         paddle="行·",
-        ronghe="⋯行⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符处的省略号，省略了换行符。",
+        ronghe="行⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="有人架子真大，官等人！",
         paddle="有人架子真大   官等人！",
-        ronghe="有人架子真大　　官等人！",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="有人架子真大，官等人！",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="就是，\n他不懂吃！",
@@ -1211,6 +1241,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="是⋯⋯",
@@ -1233,9 +1264,10 @@ test_cases = [
         lens="谈得合，\n玩得开，便是朋友",
         paddle="谈得合，玩得开， 便是朋友",
         ronghe="谈得合，玩得开，便是朋友",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR "
-        "中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符和 PaddleOCR 中存在但 "
+        "Google Lens OCR 中不存在的空格。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="是，应该点菜了",
@@ -1312,11 +1344,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="⋯\n对⋯",
         paddle="对·",
-        ronghe="⋯对⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行前的省略号；省略了 "
-        "Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符；用 Google Lens OCR "
-        "的汉字和标点替换了 PaddleOCR 的内容。",
+        ronghe="对⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="混蛋，又不是你招呼那些官！",
@@ -1354,10 +1385,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="⋯\n感谢⋯",
         paddle="感谢．",
-        ronghe="⋯感谢⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和前置省略号；省略了 Google "
-        "Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        ronghe="感谢⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="没问题的话，在这里签个字，别弄错了",
@@ -1390,6 +1421,7 @@ test_cases = [
         ronghe="谁报料，谁就有钱收",
         beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="那么张扬？\n警察一定窃听",
@@ -1419,10 +1451,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="我有一次，带大圈文、湖南鬼、潮州威",
         paddle="我有一次， 带大圈文 湖南鬼 潮州威",
-        ronghe="我有一次，　　带大圈文、湖南鬼、潮州威",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和顿号；将 PaddleOCR "
-        "中的空格替换为两个表意空格。",
-        difficulty=2,
+        ronghe="我有一次，带大圈文、湖南鬼、潮州威",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和顿号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="跟警察驳火的时候，「砰！砰！砰！」",
@@ -1450,42 +1483,10 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="一百万！HTTP error：502﹣<！DOCTYPE html>    Error 502（Server "
-        "Error）！！1  *｛margin：0；padding：0｝html，code｛font：15px／22px "
-        "arial，sans﹣serif｝html｛background：＃fff；color：＃222；padding：15px｝body｛margin：7% "
-        "auto 0；max﹣width：390px；min﹣height：180px；padding：30px 015px｝* "
-        "> "
-        "body｛background：url（／／www．google．com／images／errors／robot．png）100% "
-        "5px no﹣repeat；padding﹣right：205px｝p｛margin：11px "
-        "┌───────────────────── Traceback（most recent call "
-        "last）─────────────────────┐ │ in send_request：114 │ │ │ │ in "
-        "raise_for_status：829 │ "
-        "└─────────────────────────────────────────────────────────────────────────────┘ "
-        "HTTPStatusError：Server error＇502 Bad Gateway＇for "
-        "url＇https：／／lensfrontend﹣pa．googleapis．com／v1／crupload＇For "
-        "more information "
-        "check：https：／／developer．mozilla．org／en﹣US／docs／Web／HTTP／Status／502 "
-        "LensAPI processing error：HTTP ошибка：502（Status "
-        "Code：502）Response Body（partial）：<！DOCTYPE html>    Error "
-        "502（Server Error）！！1  *⋯┌───────────────────── "
-        "Traceback（most recent call last）─────────────────────┐ │ in "
-        "send_request：114 │ │ │ │ in raise_for_status：829 │ "
-        "└─────────────────────────────────────────────────────────────────────────────┘ "
-        "HTTPStatusError：Server error＇502 Bad Gateway＇for "
-        "url＇https：／／lensfrontend﹣pa．googleapis．com／v1／crupload＇For "
-        "more information "
-        "check：https：／／developer．mozilla．org／en﹣US／docs／Web／HTTP／Status／502 "
-        "The above exception was the direct cause of the following "
-        "exception：┌───────────────────── Traceback（most recent call "
-        "last）─────────────────────┐ │ in process_image：301 │ │ │ │ "
-        "in send_request：167 │ "
-        "└─────────────────────────────────────────────────────────────────────────────┘ "
-        "LensAPIError：HTTP ошибка：502（Status Code：502）Response "
-        "Body（partial）：<！DOCTYPE html>    Error 502（Server Error）！！1 "
-        "*⋯",
+        lens="一百万！",
         paddle="百万！",
-        ronghe="百万！",
-        beizhu="仅保留了 PaddleOCR 中的有效字幕内容，省略了 Google Lens OCR 返回的错误信息和无关内容。",
+        ronghe="一百万！",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的“一”。",
         difficulty=1,
         verified=True,
     ),
@@ -1494,16 +1495,6 @@ test_cases = [
         paddle="百万而已",
         ronghe="一百万而已",
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的“一”。",
-        difficulty=1,
-        verified=True,
-    ),
-    ZhongwenFusionTestCase(
-        lens="但是要快﹣（754／1196）Error for：0753．png﹣HTTP ошибка：502（Status "
-        "Code：502）Response Body（partial）：<！DOCTYPE html>\n"
-        "Error 502（Server Error）！！1  *⋯",
-        paddle="但是要快",
-        ronghe="但是要快",
-        beizhu="省略了 Google Lens OCR 中出现的错误提示和乱码，仅保留了有效的字幕内容。",
         difficulty=1,
         verified=True,
     ),
@@ -1547,6 +1538,7 @@ test_cases = [
         ronghe="先生，请站住",
         beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="我刚好顺路\n吓坏我们了",
@@ -1554,6 +1546,7 @@ test_cases = [
         ronghe="我刚好顺路　　吓坏我们了",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="不好意思\n把小女孩吓坏了",
@@ -1561,6 +1554,7 @@ test_cases = [
         ronghe="不好意思　　把小女孩吓坏了",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="是，不好意思⋯",
@@ -1575,8 +1569,9 @@ test_cases = [
         paddle="宋局  你真是好兄弟",
         ronghe="宋局，你真是好兄弟",
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        "OCR 中存在但 PaddleOCR 中不存在的换行符和 PaddleOCR 中多余的空格。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="他们俩，\n是我当兵时",
@@ -1585,6 +1580,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="一个唯利是图、走私逃税的小资",
@@ -1598,10 +1594,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="⋯\n幸好⋯",
         paddle="幸好．",
-        ronghe="⋯幸好⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行前的内容；省略了 "
-        "Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        ronghe="幸好⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符。",
         difficulty=1,
+        prompt=True,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="老板，\n多谢二百万",
@@ -1610,6 +1607,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="出去等，先出去，出去",
@@ -1630,9 +1628,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="疯了，\n疯了！",
         paddle="疯了， 疯了！",
-        ronghe="疯了，　　疯了！",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="疯了，疯了！",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        prompt=True,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="欢哥，卓子强真的疯了",
@@ -1654,9 +1654,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="江湖救急，有借有还",
         paddle="江湖救急 有借有还",
-        ronghe="江湖救急　　有借有还",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="江湖救急，有借有还",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="道义啊⋯",
@@ -1688,13 +1690,16 @@ test_cases = [
         ronghe="你袭警？　　别耍花样",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="我也要说，死路一条！",
         paddle="我也要说 死路一条！",
-        ronghe="我也要说　　死路一条！",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="我也要说，死路一条！",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="我知道，\n我知道了！",
@@ -1749,16 +1754,19 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="快！快！\n快！",
         paddle="快！快！快！",
-        ronghe="快！快！　　快！",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="快！快！快！",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="上来海陆丰找我，保证你不会失望",
         paddle="上来海陆丰找我 保证你不会失望",
-        ronghe="上来海陆丰找我　　保证你不会失望",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="上来海陆丰找我，保证你不会失望",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="真的不干？\n赚到笑啊",
@@ -1832,6 +1840,7 @@ test_cases = [
         ronghe="说真的，我们可以的",
         beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="你们三大贼王合作⋯",
@@ -1856,6 +1865,7 @@ test_cases = [
         ronghe="算了，不用说了！",
         beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="来，\n这边这边",
@@ -1863,6 +1873,7 @@ test_cases = [
         ronghe="来，这边这边",
         beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="黑星、手榴弹、AK",
@@ -1924,9 +1935,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="94年珍宝表行、前年好运佳",
         paddle="94年珍宝表行 前年好运佳",
-        ronghe="94年珍宝表行　　前年好运佳",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="94年珍宝表行、前年好运佳",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的顿号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="你以为只有他有AK吗？",
@@ -1947,9 +1960,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="92年置地、94年珍宝、前年好运佳",
         paddle="92年置地 94年珍宝 前年好运佳",
-        ronghe="92年置地　　94年珍宝　　前年好运佳",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
-        difficulty=2,
+        ronghe="92年置地、94年珍宝、前年好运佳",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="鬼鬼祟祟？\n见不了人啊？",
@@ -1988,10 +2003,10 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="⋯\n不是⋯",
         paddle="不是．",
-        ronghe="⋯不是⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行前的省略号；省略了 "
-        "PaddleOCR 中存在但 Google Lens OCR 中不存在的句号。",
+        ronghe="不是⋯",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="不好意思，警察大哥，我们来旅游的",
@@ -2006,9 +2021,10 @@ test_cases = [
         lens="迷了路，\n便吵了两句",
         paddle="迷了路，1 便吵了两句",
         ronghe="迷了路，便吵了两句",
-        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的“1”以及空格；省略了 Google "
-        "Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，以及 PaddleOCR "
+        "中多余的“1”。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="证件呢？\n有",
@@ -2016,14 +2032,16 @@ test_cases = [
         ronghe="证件呢？　　有",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="PC1844，\n叫电台",
         paddle="PC1844，F 叫电台",
         ronghe="PC1844，叫电台",
-        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的“F”；省略了 Google Lens "
+        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的 'F'；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="快点！\n追快点！",
@@ -2046,17 +2064,18 @@ test_cases = [
         paddle="知道 直，马上回来",
         ronghe="知道，马上回来",
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符；省略了 PaddleOCR 中多余的“直”。",
+        "OCR 中存在但 PaddleOCR 中不存在的换行符，并去除了 PaddleOCR 中多余的“直”。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="文明些，\n不用高声说话",
         paddle="文明些 ， 不用高声说话",
         ronghe="文明些，不用高声说话",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符和 PaddleOCR 中存在但 Google Lens OCR "
-        "中不存在的空格。",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格和换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="去澳门，\n是上环码头",
@@ -2081,6 +2100,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="「大陆喱」？",
@@ -2093,10 +2113,11 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="你好，\n先生请问几位？",
         paddle="你好 先生请问几位？",
-        ronghe="你好，　　先生请问几位？",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；将了 Google Lens "
-        "OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
-        difficulty=2,
+        ronghe="你好，先生请问几位？",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
+        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="陈先生，这边请",
@@ -2122,6 +2143,7 @@ test_cases = [
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens "
         "OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="喂\n这边请",
@@ -2129,6 +2151,7 @@ test_cases = [
         ronghe="喂　　这边请",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="快！\n小姐，你告诉我，我自己去找吧",
@@ -2136,6 +2159,7 @@ test_cases = [
         ronghe="快！　　小姐，你告诉我，我自己去找吧",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
     ZhongwenFusionTestCase(
         lens="我要茶！\n我带你去，等我一下",
@@ -2143,6 +2167,7 @@ test_cases = [
         ronghe="我要茶！　　我带你去，等我一下",
         beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
+        verified=True,
     ),
 ]  # test_cases
 """中文 fusion test cases."""
