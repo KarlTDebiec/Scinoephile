@@ -170,8 +170,9 @@ test_case_block_17 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
     zimu_1="我说再唱一次，1 你听到没有？",
     zimu_2="别再浪费时间！",
     xiugai_1="我说再唱一次，你听到没有？",
-    beizhu_1="将“1”改为“你”，修正数字误识别为汉字。",
+    beizhu_1="将“1”更正为“你”，修正错别字。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_17
 # noinspection PyArgumentList
 test_case_block_18 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
@@ -265,9 +266,7 @@ test_case_block_26 = ZhongwenProofreadingTestCase.get_test_case_cls(21)(
 test_case_block_27 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
     zimu_1="David Michael Wu",
     zimu_2="来广州做生意还是旅？",
-    xiugai_2="来广州做生意还是旅游？",
-    beizhu_2="将“旅？”改为“旅游？”，补全漏字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_27
 # noinspection PyArgumentList
 test_case_block_28 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
@@ -652,8 +651,9 @@ test_case_block_57 = ZhongwenProofreadingTestCase.get_test_case_cls(38)(
     zimu_37="生活没保障 章，觉也睡不好",
     zimu_38="又不是赚很多，也不知为了什么",
     xiugai_37="生活没保障，觉也睡不好",
-    beizhu_37="将“生活没保障 章，觉也睡不好”中的“章”改为逗号，修正错字。",
+    beizhu_37="将“生活没保障 章，觉也睡不好”中的“ 章”改为逗号，修正错字和空格错误。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_57
 # noinspection PyArgumentList
 test_case_block_58 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
@@ -667,8 +667,9 @@ test_case_block_58 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
     zimu_8="来了！",
     zimu_9="行了",
     xiugai_7="爸爸，爸爸",
-    beizhu_7="将“爸爸 ，爸爸”中的全角空格去除，修正多余空格。",
+    beizhu_7="将“爸爸 ，爸爸”中的空格去除，修正多余空格。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_58
 # noinspection PyArgumentList
 test_case_block_59 = ZhongwenProofreadingTestCase.get_test_case_cls(4)(
@@ -676,9 +677,7 @@ test_case_block_59 = ZhongwenProofreadingTestCase.get_test_case_cls(4)(
     zimu_2="三十部廿九吋新画皇，每部一万二",
     zimu_3="另外八十部VCD机，每部四千",
     zimu_4="多谢你，六十八万",
-    xiugai_2="三十部二十九吋新画皇，每部一万二",
-    beizhu_2="将“廿九”改为“二十九”，修正数字用字错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_59
 # noinspection PyArgumentList
 test_case_block_60 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
@@ -688,8 +687,9 @@ test_case_block_60 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
     zimu_4="陈科的三十万，1 你点算一下",
     zimu_5="企业法人营业执照",
     xiugai_4="陈科的三十万，你点算一下",
-    beizhu_4="删除了“1 ”，修正多余字符。",
+    beizhu_4="将“1”删除，修正多余字符。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_60
 # noinspection PyArgumentList
 test_case_block_61 = ZhongwenProofreadingTestCase.get_test_case_cls(23)(
@@ -1045,8 +1045,9 @@ test_case_block_92 = ZhongwenProofreadingTestCase.get_test_case_cls(16)(
     zimu_15="泡澡，泡澡好",
     zimu_16="找间桑拿",
     xiugai_8="我们去找间KTV，先唱歌吧",
-    beizhu_8="去掉“KTV”前的多余空格。",
+    beizhu_8="去除“KTV”前多余的空格。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_92
 # noinspection PyArgumentList
 test_case_block_93 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -1152,6 +1153,7 @@ test_case_block_104 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     xiugai_1="明天十二时，在庙街打把紫色伞",
     beizhu_1="删除重复的“在”，修正多余字符。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_104
 # noinspection PyArgumentList
 test_case_block_105 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -1299,9 +1301,7 @@ test_case_block_116 = ZhongwenProofreadingTestCase.get_test_case_cls(11)(
     zimu_9="算不了什么",
     zimu_10="张总",
     zimu_11="我倒要请你帮个忙",
-    xiugai_2="爸爸疼你",
-    beizhu_2="将“妳”改为“你”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_116
 # noinspection PyArgumentList
 test_case_block_117 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1419,9 +1419,7 @@ test_case_block_127 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
     zimu_6="继续找他们",
     zimu_7="我们皇家警察抓不抓到人就看你！",
     zimu_8="靠你的电话啊！",
-    xiugai_3="你袭警？别耍花样",
-    beizhu_3="去除多余空格，修正排版错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_127
 # noinspection PyArgumentList
 test_case_block_128 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
@@ -1545,8 +1543,9 @@ test_case_block_140 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_2="我们来到香港也不容易",
     zimu_3="总不能， 就这样回去吧",
     xiugai_3="总不能，就这样回去吧",
-    beizhu_3="去掉“总不能， 就这样回去吧”中的多余空格，修正 OCR 识别错误。",
+    beizhu_3="去除“总不能”与“就这样回去吧”之间多余的空格，修正 OCR 识别导致的断句错误。",
     difficulty=1,
+    verified=True,
 )  # test_case_block_140
 # noinspection PyArgumentList
 test_case_block_141 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1691,8 +1690,8 @@ test_case_block_161 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="全都部队出身",
     zimu_2="胆大包天，身经百战！",
     zimu_3="我要叶国欢！",
-    xiugai_1="全都部队出身！",
-    beizhu_1="补充遗漏的感叹号，修正 OCR 漏识。",
+    xiugai_1="全都是部队出身",
+    beizhu_1="将“全都部队出身”更正为“全都是部队出身”，补全漏字。",
     difficulty=1,
 )  # test_case_block_161
 # noinspection PyArgumentList

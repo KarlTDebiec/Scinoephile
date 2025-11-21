@@ -1143,9 +1143,9 @@ test_cases = [
     ),
     ZhongwenFusionTestCase(
         lens="金，金！",
-        paddle="金﹣金！",
+        paddle="金－金！",
         ronghe="金，金！",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号，省略了 PaddleOCR "
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
         "中存在但 Google Lens OCR 中不存在的破折号。",
         difficulty=1,
         verified=True,
@@ -1984,10 +1984,9 @@ test_cases = [
     ),
     ZhongwenFusionTestCase(
         lens="一场来到",
-        paddle="﹣场来到",
+        paddle="－场来到",
         ronghe="一场来到",
-        beizhu="采用了 Google Lens OCR 中更准确的汉字“场”而非 PaddleOCR 中的“﹣”；省略了 "
-        "PaddleOCR 中存在但 Google Lens OCR 中不存在的破折号。",
+        beizhu="采用了 Google Lens OCR 中更准确的汉字“一”，而非 PaddleOCR 中的“－”。",
         difficulty=1,
         verified=True,
     ),
