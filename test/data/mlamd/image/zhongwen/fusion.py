@@ -355,19 +355,20 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="还有这个「芭﹣娜﹣哪」香蕉",
-        paddle="还有这个 芭﹣娜﹣哪 香蕉",
-        ronghe="还有这个「芭﹣娜﹣哪」香蕉",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号和标点；Google Lens "
-        "OCR 和 PaddleOCR 中出现的空格已被省略。",
+        lens="还有这个「芭－娜－哪」香蕉",
+        paddle="还有这个 芭－娜－哪 香蕉",
+        ronghe="还有这个「芭－娜－哪」香蕉",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号和破折号；省略了 PaddleOCR "
+        "中存在但 Google Lens OCR 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="为什么雨伞又会是「暗﹣芭﹣娜﹣哪」呢？",
-        paddle="为什么雨伞又会是「暗﹣芭﹣娜﹣哪﹣呢？",
-        ronghe="为什么雨伞又会是「暗﹣芭﹣娜﹣哪」呢？",
-        beizhu="采用了 Google Lens OCR 中更准确的汉字和标点，省略了 PaddleOCR 中多余的破折号。",
+        lens="为什么雨伞又会是「暗－芭－娜－哪」呢？",
+        paddle="为什么雨伞又会是「暗－芭－娜－哪－呢？",
+        ronghe="为什么雨伞又会是「暗－芭－娜－哪」呢？",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号和标点，修正了 PaddleOCR "
+        "中多余的破折号。",
         difficulty=1,
         verified=True,
     ),
@@ -1382,9 +1383,9 @@ test_cases = [
     ),
     ZhongwenFusionTestCase(
         lens="「多谢合作！」",
-        paddle="多谢合作！﹣",
+        paddle="多谢合作！－",
         ronghe="「多谢合作！」",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号；省略了 PaddleOCR "
+        beizhu="采用了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号；省略了 PaddleOCR "
         "中存在但 Google Lens OCR 中不存在的破折号。",
         difficulty=1,
         verified=True,
