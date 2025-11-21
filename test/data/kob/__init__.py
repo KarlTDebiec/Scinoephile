@@ -27,6 +27,18 @@ output_dir = test_data_root / title / "output"
 
 # 繁體中文
 @pytest.fixture
+def kob_zho_hant_lens() -> Series:
+    """KOB 繁體中文 subtitles OCRed using Google Lens OCR."""
+    return Series.load(input_dir / "zho-Hant_lens.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_paddle() -> Series:
+    """KOB 繁體中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_paddle.srt")
+
+
+@pytest.fixture
 def kob_zho_hant_fuse() -> Series:
     """KOB 繁體中文 fused subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse.srt")
