@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from scinoephile.core import Series
 from scinoephile.core.cantonese import (
     _get_cantonese_text_romanization,  # noqa
@@ -31,6 +33,12 @@ def test_get_cantonese_romanization_kob(kob_yue_hant: Series):
     _test_get_cantonese_romanization(kob_yue_hant)
 
 
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("你好世界", "néih hóu sai gaai"),
+    ],
+)
 def test_get_cantonese_text_romanization(text: str, expected: str):
     """Test _get_cantonese_text_romanization.
 

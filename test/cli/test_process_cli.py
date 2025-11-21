@@ -71,9 +71,9 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "t/input/zho-Hant.srt",
+            "t/input/zho-Hans.srt",
             "--flatten",
-            "t/output/zho-Hant_flatten.srt",
+            "t/output/zho-Hans_flatten.srt",
         ),
         (
             (ScinoephileCli,),
@@ -120,9 +120,9 @@ def test_chinese(
     [
         (
             (ScinoephileCli,),
-            "t/input/zho-Hant.srt",
-            "t/input/eng.srt",
-            "--clean --flatten --convert hk2s",
+            "t/input/zho-Hans.srt",
+            "t/output/eng_proof.srt",
+            "--clean --flatten",
             "t/output/zho-Hans_eng.srt",
         ),
     ],
