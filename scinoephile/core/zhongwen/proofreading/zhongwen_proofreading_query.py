@@ -1,22 +1,23 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 proof queries."""
+"""Abstract base class for 中文 proofreading queries."""
 
 from __future__ import annotations
 
 from abc import ABC
+from typing import Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Query
 
 
-class ZhongwenProofQuery(Query, ABC):
-    """Abstract base class for 中文 proof queries."""
+class ZhongwenProofreadingQuery(Query, ABC):
+    """Abstract base class for 中文 proofreading queries."""
 
     @classmethod
-    def get_query_cls(cls, size: int) -> type[ZhongwenProofQuery]:
-        """Get query class for 中文 proofing.
+    def get_query_cls(cls, size: int) -> type[Self]:
+        """Get query class for 中文 proofreading.
 
         Arguments:
             size: number of subtitles
@@ -29,8 +30,4 @@ class ZhongwenProofQuery(Query, ABC):
                 str,
                 Field(..., description=f"第 {idx + 1} 条字幕"),
             )
-        return create_model(
-            f"{cls.__name__}_{size}",
-            __base__=ZhongwenProofQuery,
-            **query_fields,
-        )
+        return create_model(f"{cls.__name__}_{size}", __base__=cls, **query_fields)

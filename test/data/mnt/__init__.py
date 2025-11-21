@@ -4,24 +4,24 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import SyncTestCase, test_data_root
-from test.data.mnt.distribution import mnt_distribute_test_cases
 
 # ruff: noqa: F401 F403
+from test.data.mnt.core.zhongwen.proofreading import (
+    test_cases as mnt_zhongwen_proofreading_test_cases,
+)
 from test.data.mnt.image.zhongwen.fusion import (
     test_cases as mnt_zhongwen_fusion_test_cases,
 )
-from test.data.mnt.merging import mnt_merge_test_cases
-from test.data.mnt.proofing import mnt_proof_test_cases
-from test.data.mnt.review import mnt_review_test_cases
-from test.data.mnt.shifting import mnt_shift_test_cases
-from test.data.mnt.translation import mnt_translate_test_cases
 
-input_dir = test_data_root / "mnt" / "input"
-output_dir = test_data_root / "mnt" / "output"
+title = Path(__file__).parent.name
+input_dir = test_data_root / title / "input"
+output_dir = test_data_root / title / "output"
 
 
 # region 繁体中文
@@ -1245,11 +1245,6 @@ ___all__ = [
     "mnt_eng_flatten",
     "mnt_zho_hans_eng",
     "mnt_sync_test_cases",
-    "mnt_distribute_test_cases",
-    "mnt_shift_test_cases",
-    "mnt_merge_test_cases",
-    "mnt_proof_test_cases",
-    "mnt_translate_test_cases",
-    "mnt_review_test_cases",
     "mnt_zhongwen_fusion_test_cases",
+    "mnt_zhongwen_proofreading_test_cases",
 ]

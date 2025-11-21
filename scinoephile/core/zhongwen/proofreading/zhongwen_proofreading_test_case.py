@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 proof test cases."""
+"""Abstract base class for 中文 proofreading test cases."""
 
 from __future__ import annotations
 
@@ -11,21 +11,22 @@ from pydantic import create_model, model_validator
 
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
-from scinoephile.core.zhongwen.proofing.abcs.zhongwen_proof_answer import (
-    ZhongwenProofAnswer,
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
+    ZhongwenProofreadingAnswer,
 )
-from scinoephile.core.zhongwen.proofing.abcs.zhongwen_proof_query import (
-    ZhongwenProofQuery,
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
+    ZhongwenProofreadingQuery,
 )
 
 
-class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAnswer](
-    TestCase[TQuery, TAnswer], ABC
-):
-    """Abstract base class for 中文 proof test cases."""
+class ZhongwenProofreadingTestCase[
+    TQuery: ZhongwenProofreadingQuery,
+    TAnswer: ZhongwenProofreadingAnswer,
+](TestCase[TQuery, TAnswer], ABC):
+    """Abstract base class for 中文 proofreading test cases."""
 
-    query_cls: ClassVar[type[ZhongwenProofQuery]]
-    answer_cls: ClassVar[type[ZhongwenProofAnswer]]
+    query_cls: ClassVar[type[ZhongwenProofreadingQuery]] = ZhongwenProofreadingQuery
+    answer_cls: ClassVar[type[ZhongwenProofreadingAnswer]] = ZhongwenProofreadingAnswer
 
     @property
     def noop(self) -> bool:
@@ -38,7 +39,7 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
 
     @property
     def size(self) -> int:
-        """Get size of the test case."""
+        """Size of the test case."""
         idxs = [
             int(s.split("_")[1]) - 1 for s in self.query_fields if s.startswith("zimu_")
         ]
@@ -47,7 +48,9 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
     @property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
-        lines = [f"{ZhongwenProofTestCase.__name__}.get_test_case_cls({self.size})("]
+        lines = [
+            f"{ZhongwenProofreadingTestCase.__name__}.get_test_case_cls({self.size})("
+        ]
         for field in self.query_fields:
             value = getattr(self, field)
             lines.append(format_field(field, value))
@@ -66,7 +69,11 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
     def get_test_case_cls(
         cls,
         size: int,
-    ) -> type[ZhongwenProofTestCase[ZhongwenProofQuery, ZhongwenProofAnswer]]:
+    ) -> type[
+        ZhongwenProofreadingTestCase[
+            ZhongwenProofreadingQuery, ZhongwenProofreadingAnswer
+        ]
+    ]:
         """Get test case class for 中文 proofing.
 
         Arguments:
@@ -77,15 +84,11 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
         Raises:
             ScinoephileError: if missing indices are out of range
         """
-        query_cls = ZhongwenProofQuery.get_query_cls(size)
-        answer_cls = ZhongwenProofAnswer.get_answer_cls(size)
+        query_cls = cls.query_cls.get_query_cls(size)
+        answer_cls = cls.answer_cls.get_answer_cls(size)
         model = create_model(
             f"{cls.__name__}_{size}",
-            __base__=(
-                query_cls,
-                answer_cls,
-                ZhongwenProofTestCase[query_cls, answer_cls],
-            ),
+            __base__=(query_cls, answer_cls, cls[query_cls, answer_cls]),
             __module__=cls.__module__,
         )
         model.query_cls = query_cls
@@ -110,7 +113,7 @@ class ZhongwenProofTestCase[TQuery: ZhongwenProofQuery, TAnswer: ZhongwenProofAn
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ZhongwenProofTestCase:
+    def validate_test_case(self) -> ZhongwenProofreadingTestCase:
         """Ensure query and answer are consistent with one another."""
         for idx in range(1, self.size + 1):
             subtitle = getattr(self, f"zimu_{idx}")

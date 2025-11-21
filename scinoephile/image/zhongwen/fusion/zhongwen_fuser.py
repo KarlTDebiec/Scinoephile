@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+"""Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
 
 from __future__ import annotations
 
@@ -21,9 +21,31 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
 )
 from scinoephile.testing import test_data_root, update_test_cases
 
+try:
+    # noinspection PyUnusedImports
+    from test.data.kob import kob_zhongwen_fusion_test_cases
+
+    # noinspection PyUnusedImports
+    from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
+
+    # noinspection PyUnusedImports
+    from test.data.mnt import mnt_zhongwen_fusion_test_cases
+
+    # noinspection PyUnusedImports
+    from test.data.t import t_zhongwen_fusion_test_cases
+
+    default_test_cases = (
+        kob_zhongwen_fusion_test_cases
+        + mlamd_zhongwen_fusion_test_cases
+        + mnt_zhongwen_fusion_test_cases
+        + t_zhongwen_fusion_test_cases
+    )
+except ImportError:
+    default_test_cases = []
+
 
 class ZhongwenFuser:
-    """Fuses OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+    """Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
 
     def __init__(
         self,
@@ -39,28 +61,7 @@ class ZhongwenFuser:
             auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
-            test_cases = []
-            try:
-                # noinspection PyUnusedImports
-                from test.data.kob import kob_zhongwen_fusion_test_cases
-
-                # noinspection PyUnusedImports
-                from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
-
-                # noinspection PyUnusedImports
-                from test.data.mnt import mnt_zhongwen_fusion_test_cases
-
-                # noinspection PyUnusedImports
-                from test.data.t import t_zhongwen_fusion_test_cases
-
-                test_cases = (
-                    kob_zhongwen_fusion_test_cases
-                    + mlamd_zhongwen_fusion_test_cases
-                    + mnt_zhongwen_fusion_test_cases
-                    + t_zhongwen_fusion_test_cases
-                )
-            except ImportError:
-                pass
+            test_cases = default_test_cases
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -87,14 +88,14 @@ class ZhongwenFuser:
         """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
 
     def fuse(self, paddle: Series, lens: Series, stop_at_idx: int | None = None):
-        """Process all blocks.
+        """Fuse OCRed 中文 text from PaddleOCR and Google Lens OCR.
 
         Arguments:
-            paddle: subtitles OCRed using PaddleOCR
-            lens: subtitles OCRed using Google Lens
+            paddle: 中文 subtitles OCRed using PaddleOCR
+            lens: 中文 subtitles OCRed using Google Lens
             stop_at_idx: stop processing at this index
         """
-        # Check and clean series
+        # Validate series
         if not are_series_one_to_one(paddle, lens):
             raise ScinoephileError(
                 "PaddleOCR and Google Lens OCR series must have the same number of "
@@ -106,10 +107,10 @@ class ZhongwenFuser:
             self.test_case_path.parent.mkdir(parents=True, exist_ok=True)
             self.create_test_case_file(self.test_case_path)
 
-        # Run all blocks
+        # Fuse subtitles
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(paddle)
-        for sub_idx, (paddle_sub, lens_sub) in enumerate(zip(paddle, lens), 1):
+        for sub_idx, (paddle_sub, lens_sub) in enumerate(zip(paddle, lens)):
             if sub_idx >= stop_at_idx:
                 break
             paddle_text = paddle_sub.text
@@ -117,7 +118,7 @@ class ZhongwenFuser:
             if paddle_text == lens_text:
                 output_subtitles.append(paddle_sub)
                 info(
-                    f"Subtitle {sub_idx} identical:     "
+                    f"Subtitle {sub_idx + 1} identical:     "
                     f"{paddle_text.replace('\n', ' ')}"
                 )
                 continue
@@ -126,13 +127,14 @@ class ZhongwenFuser:
                     continue
                 output_subtitles.append(lens_sub)
                 info(
-                    f"Subtitle {sub_idx} from Lens:      {lens_text.replace('\n', ' ')}"
+                    f"Subtitle {sub_idx + 1} from Lens:      "
+                    f"{lens_text.replace('\n', ' ')}"
                 )
                 continue
             if not lens_text:
                 output_subtitles.append(paddle_sub)
                 info(
-                    f"Subtitle {sub_idx} from PaddleOCR: "
+                    f"Subtitle {sub_idx + 1} from PaddleOCR: "
                     f"{paddle_text.replace('\n', ' ')}"
                 )
                 continue
@@ -143,7 +145,9 @@ class ZhongwenFuser:
                 end=paddle_sub.end,
                 text=answer.ronghe,
             )
-            info(f"Subtitle {sub_idx} fused:         {sub.text.replace('\n', '\\n')}")
+            info(
+                f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"
+            )
             output_subtitles.append(sub)
 
         # Concatenate and return

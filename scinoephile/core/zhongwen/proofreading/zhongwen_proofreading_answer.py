@@ -1,22 +1,23 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 proof answers."""
+"""Abstract base class for 中文 proofreading answers."""
 
 from __future__ import annotations
 
 from abc import ABC
+from typing import Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
 
 
-class ZhongwenProofAnswer(Answer, ABC):
-    """Abstract base class for 中文 proof answers."""
+class ZhongwenProofreadingAnswer(Answer, ABC):
+    """Abstract base class for 中文 proofreading answers."""
 
     @classmethod
-    def get_answer_cls(cls, size: int) -> type[ZhongwenProofAnswer]:
-        """Get answer class for 中文 proofing.
+    def get_answer_cls(cls, size: int) -> type[Self]:
+        """Get answer class for 中文 proofreading.
 
         Arguments:
             size: number of subtitles
@@ -37,8 +38,4 @@ class ZhongwenProofAnswer(Answer, ABC):
                     max_length=1000,
                 ),
             )
-        return create_model(
-            f"{cls.__name__}_{size}",
-            __base__=ZhongwenProofAnswer,
-            **answer_fields,
-        )
+        return create_model(f"{cls.__name__}_{size}", __base__=cls, **answer_fields)

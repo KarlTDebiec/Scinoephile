@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from PIL import Image
 
@@ -13,6 +15,9 @@ from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
 from test.data.mlamd.core.english.proof import mlamd_english_proof_test_cases
+from test.data.mlamd.core.zhongwen.proofreading import (
+    test_cases as mlamd_zhongwen_proofreading_test_cases,
+)
 from test.data.mlamd.distribution import mlamd_distribute_test_cases
 from test.data.mlamd.image.zhongwen.fusion import (
     test_cases as mlamd_zhongwen_fusion_test_cases,
@@ -23,8 +28,9 @@ from test.data.mlamd.review import mlamd_review_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
 from test.data.mlamd.translation import mlamd_translate_test_cases
 
-input_dir = test_data_root / "mlamd" / "input"
-output_dir = test_data_root / "mlamd" / "output"
+title = Path(__file__).parent.name
+input_dir = test_data_root / title / "input"
+output_dir = test_data_root / title / "output"
 
 
 # region 简体中文
@@ -131,4 +137,5 @@ ___all__ = [
     "mlamd_review_test_cases",
     "mlamd_english_proof_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
+    "mlamd_zhongwen_proofreading_test_cases",
 ]

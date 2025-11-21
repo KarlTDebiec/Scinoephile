@@ -8,15 +8,22 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.zhongwen import (
-    get_zhongwen_cleaned,
-    get_zhongwen_converted,
+from scinoephile.core.zhongwen import get_zhongwen_cleaned, get_zhongwen_converted
+from scinoephile.core.zhongwen.proofreading import (
+    ZhongwenProofreader,
+    get_zhongwen_proofread,
 )
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
-from test.data.kob import kob_zhongwen_fusion_test_cases
-from test.data.mnt import mnt_zhongwen_fusion_test_cases
-from test.data.t import t_zhongwen_fusion_test_cases
+from test.data.kob import (
+    kob_zhongwen_fusion_test_cases,
+    kob_zhongwen_proofreading_test_cases,
+)
+from test.data.mnt import (
+    mnt_zhongwen_fusion_test_cases,
+    mnt_zhongwen_proofreading_test_cases,
+)
+from test.data.t import t_zhongwen_fusion_test_cases, t_zhongwen_proofreading_test_cases
 
 title = Path(__file__).parent.name
 input_dir = test_data_root / title / "input"
@@ -30,7 +37,7 @@ zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
 zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
 zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
 zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
-zho_hans_fused = get_zhongwen_ocr_fused(
+zho_hans_fuse = get_zhongwen_ocr_fused(
     zho_hans_paddle,
     zho_hans_lens,
     ZhongwenFuser(
@@ -41,13 +48,21 @@ zho_hans_fused = get_zhongwen_ocr_fused(
         auto_verify=True,
     ),
 )
-zho_hans_fused.save(output_dir / "zho-Hans_fuse.srt")
-# zho_hans = Series.load(input_dir / "zho-Hans.srt")
-# proofer = ZhongwenProofer(
-#     test_case_path=test_data_root / "mlamd" / "core" / "zhongwen" / "proof.py",
-# )
-# zho_hans_proof = get_zhongwen_proofed(zho_hans, proofer, stop_at_idx=4)
-# zho_hans_proof.save(output_dir / "zho-Hans_proof.srt")
+zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
+zho_hans_fuse = Series.load(output_dir / "zho-Hans_fuse.srt")
+zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
+zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
+zho_hans_fused_proofread = get_zhongwen_proofread(
+    zho_hans_fuse,
+    ZhongwenProofreader(
+        test_cases=kob_zhongwen_proofreading_test_cases
+        + mnt_zhongwen_proofreading_test_cases
+        + t_zhongwen_proofreading_test_cases,
+        test_case_path=test_data_root / title / "core" / "zhongwen" / "proofreading.py",
+        auto_verify=True,
+    ),
+)
+zho_hans_fused_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
 
 # zho_hans = get_zhongwen_cleaned(zho_hans)
 # zho_hans = get_zhongwen_flattened(zho_hans)

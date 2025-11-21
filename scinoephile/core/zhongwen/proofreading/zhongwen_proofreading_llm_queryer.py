@@ -1,23 +1,33 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreads 中文 subtitles."""
+"""Queries LLM to proofread 中文 subtitles."""
 
 from __future__ import annotations
 
 from scinoephile.core.abcs import DynamicLLMQueryer
-from scinoephile.core.zhongwen.proofing.abcs import (
-    ZhongwenProofAnswer,
-    ZhongwenProofQuery,
-    ZhongwenProofTestCase,
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
+    ZhongwenProofreadingAnswer,
+)
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
+    ZhongwenProofreadingQuery,
+)
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
+    ZhongwenProofreadingTestCase,
 )
 
 
-class ZhongwenProofLLMQueryer[
-    TQuery: ZhongwenProofQuery,
-    TAnswer: ZhongwenProofAnswer,
-    TTestCase: ZhongwenProofTestCase,
-](DynamicLLMQueryer[ZhongwenProofQuery, ZhongwenProofAnswer, ZhongwenProofTestCase]):
-    """Proofreads 中文 subtitles."""
+class ZhongwenProofreadingLLMQueryer[
+    TQuery: ZhongwenProofreadingQuery,
+    TAnswer: ZhongwenProofreadingAnswer,
+    TTestCase: ZhongwenProofreadingTestCase,
+](
+    DynamicLLMQueryer[
+        ZhongwenProofreadingQuery,
+        ZhongwenProofreadingAnswer,
+        ZhongwenProofreadingTestCase,
+    ]
+):
+    """Queries LLM to proofread 中文 subtitles."""
 
     @property
     def base_system_prompt(self) -> str:

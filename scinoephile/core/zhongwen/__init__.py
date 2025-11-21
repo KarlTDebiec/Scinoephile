@@ -4,21 +4,20 @@
 
 from __future__ import annotations
 
-import asyncio
 import re
 from copy import deepcopy
 from functools import cache
-from typing import Any
 
 from opencc import OpenCC
 
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
-from scinoephile.core.zhongwen.proofing import ZhongwenProofer
 
 conversion_exclusions = {
     "嗰": "𠮶",
+    "纔": "才",
+    "喫": "",
 }
 half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
 half_to_full_punc_for_cleaning["-"] = "﹣"
@@ -30,6 +29,7 @@ def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
 
     Arguments:
         series: Series to clean
+        remove_empty: whether to remove subtitles with empty text
     Returns:
         Cleaned series
     """
@@ -92,26 +92,6 @@ def get_zhongwen_flattened(series: Series) -> Series:
     return series
 
 
-def get_zhongwen_proofed(
-    series: Series, proofer: ZhongwenProofer | None = None, **kwargs: Any
-) -> Series:
-    """Get 中文 series proofed.
-
-    Arguments:
-        series: Series to proof
-        proofer: ZhongwenProofer to use
-        kwargs: additional keyword arguments for ZhongwenProofer.process_all_blocks
-    Returns:
-        proofed Series
-    """
-    if proofer is None:
-        proofer = ZhongwenProofer()
-
-    proofed = asyncio.run(proofer.process_all_blocks(series, **kwargs))
-
-    return proofed
-
-
 def get_zhongwen_text_converted(
     text: str, config: OpenCCConfig, apply_exclusions: bool = True
 ) -> str:
@@ -127,15 +107,25 @@ def get_zhongwen_text_converted(
     converter = get_zhongwen_converter(config)
     converted_text = converter.convert(text)
 
-    if apply_exclusions and config in (
-        OpenCCConfig.t2s,
-        OpenCCConfig.tw2s,
-        OpenCCConfig.hk2s,
-        OpenCCConfig.tw2sp,
-    ):
-        for trad_char, simp_char in conversion_exclusions.items():
-            if trad_char in text and simp_char in converted_text:
-                converted_text = converted_text.replace(simp_char, trad_char)
+    if apply_exclusions:
+        if config in (
+            OpenCCConfig.t2s,
+            OpenCCConfig.tw2s,
+            OpenCCConfig.hk2s,
+            OpenCCConfig.tw2sp,
+        ):
+            for trad_char, simp_char in conversion_exclusions.items():
+                if trad_char in text and simp_char in converted_text:
+                    converted_text = converted_text.replace(simp_char, trad_char)
+        if config in (
+            OpenCCConfig.s2t,
+            OpenCCConfig.s2tw,
+            OpenCCConfig.s2hk,
+            OpenCCConfig.s2twp,
+        ):
+            for trad_char, simp_char in conversion_exclusions.items():
+                if simp_char in text and trad_char in converted_text:
+                    converted_text = converted_text.replace(trad_char, simp_char)
 
     return converted_text
 
@@ -206,7 +196,6 @@ __all__ = [
     "get_zhongwen_converted",
     "get_zhongwen_converter",
     "get_zhongwen_flattened",
-    "get_zhongwen_proofed",
     "get_zhongwen_text_converted",
     "half_to_full_punc_for_cleaning",
 ]

@@ -560,11 +560,10 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="欢迎大家收看<麦太世界>",
-        paddle="欢迎大家收看 看<麦太世界",
-        ronghe="欢迎大家收看<麦太世界>",
-        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余“看”字；采用了 Google "
-        "Lens OCR 的汉字和标点。",
+        lens="欢迎大家收看＜麦太世界＞",
+        paddle="欢迎大家收看 看＜麦太世界",
+        ronghe="欢迎大家收看＜麦太世界＞",
+        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余“看”字。",
         difficulty=1,
         verified=True,
     ),
@@ -817,9 +816,9 @@ test_cases = [
     ZhongwenFusionTestCase(
         lens="对\n⋯是吗？",
         paddle="对⋯是吗？",
-        ronghe="对⋯是吗？",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
-        difficulty=1,
+        ronghe="对　　⋯是吗？",
+        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
+        difficulty=2,
         verified=True,
     ),
     ZhongwenFusionTestCase(
@@ -2216,6 +2215,14 @@ test_cases = [
         paddle="唉，让 说是说晚餐，还不就是午餐？",
         ronghe="唉，说是说晚餐，还不就是午餐？",
         beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的“让”。",
+        difficulty=1,
+        verified=True,
+    ),
+    ZhongwenFusionTestCase(
+        lens="要快吗？\n那得吃快餐了！",
+        paddle="要快吗？那得吃快餐了！",
+        ronghe="要快吗？那得吃快餐了！",
+        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),

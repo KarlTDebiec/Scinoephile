@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.core import Series
@@ -11,12 +13,16 @@ from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
 from test.data.kob.core.english.proof import kob_english_proof_test_cases
+from test.data.kob.core.zhongwen.proofreading import (
+    test_cases as kob_zhongwen_proofreading_test_cases,
+)
 from test.data.kob.image.zhongwen.fusion import (
     test_cases as kob_zhongwen_fusion_test_cases,
 )
 
-input_dir = test_data_root / "kob" / "input"
-output_dir = test_data_root / "kob" / "output"
+title = Path(__file__).parent.name
+input_dir = test_data_root / title / "input"
+output_dir = test_data_root / title / "output"
 
 
 # region 简体粤文
@@ -121,4 +127,5 @@ ___all__ = [
     "kob_yue_hans_eng",
     "kob_english_proof_test_cases",
     "kob_zhongwen_fusion_test_cases",
+    "kob_zhongwen_proofreading_test_cases",
 ]

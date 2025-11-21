@@ -2967,6 +2967,14 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
+    ZhongwenFusionTestCase(
+        lens="跟住我⋯走吧⋯",
+        paddle="跟住我·走吧·",
+        ronghe="跟住我⋯走吧⋯",
+        beizhu="采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。",
+        difficulty=1,
+        verified=True,
+    ),
 ]  # test_cases
 """KOB 中文 fusion test cases."""
 

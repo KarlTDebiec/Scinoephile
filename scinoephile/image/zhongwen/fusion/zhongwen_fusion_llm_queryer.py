@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+"""Queries LLM to fuse OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
 class ZhongwenFusionLLMQueryer(
     FixedLLMQueryer[ZhongwenFusionQuery, ZhongwenFusionAnswer, ZhongwenFusionTestCase]
 ):
-    """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+    """Queries LLM to fuse OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
 
     @property
     @override
