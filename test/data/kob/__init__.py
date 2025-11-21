@@ -25,28 +25,41 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 
 
+# 繁體中文
+@pytest.fixture
+def kob_zho_hant_fuse() -> Series:
+    """KOB 繁體中文 fused subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_fuse_proofread() -> Series:
+    """KOB 简体粤文 fused and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse_proofread.srt")
+
+
 # region 简体粤文
 @pytest.fixture
 def kob_yue_hans() -> Series:
-    """KOB 简体粤文 series."""
+    """KOB 简体粤文 subtitles."""
     return Series.load(input_dir / "yue-Hans.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean() -> Series:
-    """KOB 简体粤文 cleaned series."""
+    """KOB 简体粤文 cleaned subtitles."""
     return Series.load(output_dir / "yue-Hans_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_flatten() -> Series:
-    """KOB 简体粤文 flattened series."""
+    """KOB 简体粤文 flattened subtitles."""
     return Series.load(output_dir / "yue-Hans_flatten.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean_flatten() -> Series:
-    """KOB 简体粤文 cleaned and flattened series."""
+    """KOB 简体粤文 cleaned and flattened subtitles."""
     return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
 
 
@@ -56,13 +69,13 @@ def kob_yue_hans_clean_flatten() -> Series:
 # region 繁体粤文
 @pytest.fixture
 def kob_yue_hant() -> Series:
-    """KOB 繁体粤文 series."""
+    """KOB 繁体粤文 subtitles."""
     return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_simplify() -> Series:
-    """KOB 繁体粤文 simplified series."""
+    """KOB 繁体粤文 simplified subtitles."""
     return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
@@ -72,31 +85,31 @@ def kob_yue_hant_simplify() -> Series:
 # region English
 @pytest.fixture
 def kob_eng() -> Series:
-    """KOB English series."""
+    """KOB English subtitles."""
     return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def kob_eng_clean() -> Series:
-    """KOB English cleaned series."""
+    """KOB English cleaned subtitles."""
     return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def kob_eng_flatten() -> Series:
-    """KOB English flattened series."""
+    """KOB English flattened subtitles."""
     return Series.load(output_dir / "eng_flatten.srt")
 
 
 @pytest.fixture
 def kob_eng_proof() -> Series:
-    """KOB English proofed series."""
+    """KOB English proofed subtitles."""
     return Series.load(output_dir / "eng_proof.srt")
 
 
 @pytest.fixture
 def kob_eng_proof_clean_flatten() -> Series:
-    """KOB English proofed, cleaned and flattened series."""
+    """KOB English proofed, cleaned and flattened subtitles."""
     return Series.load(output_dir / "eng_proof_clean_flatten.srt")
 
 
@@ -106,13 +119,15 @@ def kob_eng_proof_clean_flatten() -> Series:
 # region Bilingual 简体粤文 and English
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
-    """KOB Bilingual 简体粤文 and English series."""
+    """KOB Bilingual 简体粤文 and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 # endregion
 
 ___all__ = [
+    "kob_zho_hant_fuse",
+    "kob_zho_hant_fuse_proofread",
     "kob_yue_hans",
     "kob_yue_hans_clean",
     "kob_yue_hans_flatten",
