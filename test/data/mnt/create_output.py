@@ -8,9 +8,12 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
+from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
     get_zhongwen_converted,
+    get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
@@ -55,7 +58,7 @@ zho_hans_fused.save(output_dir / "zho-Hans_fuse.srt")
 zho_hans_fuse = Series.load(output_dir / "zho-Hans_fuse.srt")
 zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
 zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
-zho_hans_fused_proofread = get_zhongwen_proofread(
+zho_hans_fuse_proofread = get_zhongwen_proofread(
     zho_hans_fuse,
     ZhongwenProofreader(
         test_cases=kob_zhongwen_proofreading_test_cases
@@ -65,32 +68,40 @@ zho_hans_fused_proofread = get_zhongwen_proofread(
         auto_verify=True,
     ),
 )
-zho_hans_fused_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+zho_hans_fuse_proofread_clean = get_zhongwen_cleaned(zho_hans_fuse_proofread)
+zho_hans_fuse_proofread_clean.save(
+    output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean.srt"
+)
+zho_hans_fuse_proofread_clean_flatten = get_zhongwen_flattened(
+    zho_hans_fuse_proofread_clean
+)
+zho_hans_fuse_proofread_clean_flatten.save(
+    output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean_flatten.srt"
+)
 
 # 繁體中文
-# zho_hant = Series.load(input_dir / "zho-Hant.srt")
-# zho_hant_clean = get_zhongwen_cleaned(zho_hant)
-# zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
-# zho_hant_flatten = get_zhongwen_flattened(zho_hant)
-# zho_hant_flatten.save(output_dir / "zho-Hant_flatten.srt")
-# zho_hant_simplify = get_zhongwen_converted(zho_hant)
-# zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
-# zho_hant_clean_flatten_simplify = get_zhongwen_converted(
-#     get_zhongwen_flattened(zho_hant_clean)
-# )
-# zho_hant_clean_flatten_simplify.save(
-#     output_dir / "zho-Hant_clean_flatten_simplify.srt"
-# )
+zho_hant = Series.load(input_dir / "zho-Hant.srt")
+zho_hant_clean = get_zhongwen_cleaned(zho_hant)
+zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
+zho_hant_flatten = get_zhongwen_flattened(zho_hant)
+zho_hant_flatten.save(output_dir / "zho-Hant_flatten.srt")
+zho_hant_simplify = get_zhongwen_converted(zho_hant)
+zho_hant_simplify.save(output_dir / "zho-Hant_simplify.srt")
+zho_hant_clean_flatten_simplify = get_zhongwen_converted(
+    get_zhongwen_flattened(zho_hant_clean)
+)
+zho_hant_clean_flatten_simplify.save(output_dir / "zho-Hant_clean_flatten_simplify.srt")
 
 # English
-# eng = Series.load(input_dir / "eng.srt")
-# eng_clean = get_english_cleaned(eng)
-# eng_clean.save(output_dir / "eng_clean.srt")
-# eng_flatten = get_english_flattened(eng)
-# eng_flatten.save(output_dir / "eng_flatten.srt")
-# eng_clean_flatten = get_english_flattened(eng_clean)
-# eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
+eng = Series.load(input_dir / "eng.srt")
+eng_clean = get_english_cleaned(eng)
+eng_clean.save(output_dir / "eng_clean.srt")
+eng_flatten = get_english_flattened(eng)
+eng_flatten.save(output_dir / "eng_flatten.srt")
+eng_clean_flatten = get_english_flattened(eng_clean)
+eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
 # Bilingual 简体中文 and English
-# zho_hans_eng = get_synced_series(zho_hant_clean_flatten_simplify, eng_clean_flatten)
-# zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
+zho_hans_eng = get_synced_series(zho_hant_clean_flatten_simplify, eng_clean_flatten)
+zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")

@@ -25,7 +25,47 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 
 
-# region 简体中文
+# region 简体中文 (OCR)
+@pytest.fixture
+def t_zho_hans_lens() -> Series:
+    """T 简体中文 subtitles OCRed using Google Lens OCR."""
+    return Series.load(input_dir / "zho-Hans_lens.srt")
+
+
+@pytest.fixture
+def t_zho_hans_paddle() -> Series:
+    """T 简体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hans_paddle.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse() -> Series:
+    """T 简体中文 fused subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_proofread() -> Series:
+    """T 简体中文 fused and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_proofread_clean() -> Series:
+    """T 简体中文 fused, proofread, and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_proofread_clean_flatten() -> Series:
+    """T 简体中文 fused, proofread, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+
+
+# endregion
+
+
+# region 简体中文 (SRT)
 @pytest.fixture
 def t_zho_hans() -> Series:
     """T 简体中文 series."""
@@ -113,6 +153,12 @@ def t_zho_hans_eng() -> Series:
 # endregion
 
 ___all__ = [
+    "t_zho_hans_lens",
+    "t_zho_hans_paddle",
+    "t_zho_hans_fuse",
+    "t_zho_hans_fuse_proofread",
+    "t_zho_hans_fuse_proofread_clean",
+    "t_zho_hans_fuse_proofread_clean_flatten",
     "t_zho_hans",
     "t_zho_hans_clean",
     "t_zho_hans_flatten",
