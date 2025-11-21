@@ -1,7 +1,6 @@
-"""中文 proof test cases."""
-
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""KOB 中文 proof test cases."""
 
 from __future__ import annotations
 

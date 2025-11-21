@@ -151,7 +151,7 @@ class ZhongwenProofreader:
             test_case_path: path to file to create
             n_blocks: number of blocks for which to create test cases
         """
-        header = '''"""中文 proof test cases."""
+        header = '''"""中文 proofreading test cases."""
 
 from __future__ import annotations
 

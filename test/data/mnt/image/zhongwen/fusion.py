@@ -90,11 +90,10 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="那一定是＂灰尘精灵＂",
+        lens="那一定是〝灰尘精灵〞",
         paddle="那一定是＂灰尘精灵 =",
-        ronghe="那一定是＂灰尘精灵＂",
-        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的等号；保留了 Google Lens "
-        "OCR 中更准确的标点符号。",
+        ronghe="那一定是〝灰尘精灵〞",
+        beizhu="采用了 Google Lens OCR 中更准确的引号和结尾标点，省略了 PaddleOCR 中错误的等号。",
         difficulty=1,
         verified=True,
     ),
@@ -150,10 +149,11 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="＂哇啦哇啦＂的乱跑啊",
+        lens="〝哇啦哇啦〞的乱跑啊",
         paddle="哇啦哇啦〝的乱跑啊",
-        ronghe="＂哇啦哇啦＂的乱跑啊",
-        beizhu="采用了 Google Lens OCR 中更准确的引号和汉字。",
+        ronghe="〝哇啦哇啦〞的乱跑啊",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的前后引号，并修正了 PaddleOCR "
+        "中引号位置错误。",
         difficulty=1,
         verified=True,
     ),
@@ -672,9 +672,10 @@ test_cases = [
     ),
     ZhongwenFusionTestCase(
         lens="打搅了，伯伯，请问⋯⋯",
-        paddle="打搅了，1 伯伯，请问﹣﹣﹣﹣﹣",
+        paddle="打搅了，1 伯伯，请问－－－－－",
         ronghe="打搅了，伯伯，请问⋯⋯",
-        beizhu="采用了 Google Lens OCR 中更准确的汉字和标点，省略了 PaddleOCR 中错误的“1”和破折号。",
+        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的汉字、标点和省略号；省略了 "
+        "PaddleOCR 中存在但 Google Lens OCR 中不存在的数字“1”和破折号。",
         difficulty=1,
         verified=True,
     ),
@@ -761,9 +762,9 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="＂七国山医院＂",
+        lens="〝七国山医院〞",
         paddle="七国山医院",
-        ronghe="＂七国山医院＂",
+        ronghe="〝七国山医院〞",
         beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号。",
         difficulty=1,
         verified=True,
@@ -777,10 +778,10 @@ test_cases = [
         verified=True,
     ),
     ZhongwenFusionTestCase(
-        lens="＂送给妈妈＂",
+        lens="〝送给妈妈〞",
         paddle="1 送给妈妈",
-        ronghe="＂送给妈妈＂",
-        beizhu="采用了 Google Lens OCR 中更准确的引号和汉字，省略了 PaddleOCR 中错误的“1”。",
+        ronghe="〝送给妈妈〞",
+        beizhu="采用了 Google Lens OCR 中更准确的引号和文本内容，省略了 PaddleOCR 中错误的“1”。",
         difficulty=1,
         verified=True,
     ),

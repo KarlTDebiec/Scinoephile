@@ -135,7 +135,7 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     Returns:
         Cleaned text
     """
-    # Revert strange substitution in pysubs2/subrip.py:66
+    # Revert substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Replace '...' with '⋯'
@@ -147,6 +147,8 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     # Replace half-width punctuation with full-width punctuation
     for old_punc, new_punc in half_to_full_punc.items():
         cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
+
+    cleaned = _replace_full_width_double_quotes(cleaned)
 
     # Remove whitespace before and after specified characters
     cleaned = re.sub(r"[^\S\n]*([、「」『』《》])[^\S\n]*", r"\1", cleaned)
@@ -185,6 +187,33 @@ def _get_zhongwen_text_flattened(text: str) -> str:
         )
 
     return flattened
+
+
+def _replace_full_width_double_quotes(text: str) -> str:
+    """Replace '＂' characters with angled '〝' and '〞' characters.
+
+    Arguments:
+        text: text in which to replace quotes
+    Returns:
+        text with quotes replaced
+    """
+    count = text.count("＂")
+    if count == 0 or count % 2 != 0:
+        return text
+    result: list[str] = []
+    next_quote_should_be_an_open_quote = True
+
+    for character in text:
+        if character == "＂":
+            if next_quote_should_be_an_open_quote:
+                result.append("〝")
+            else:
+                result.append("〞")
+            next_quote_should_be_an_open_quote = not next_quote_should_be_an_open_quote
+        else:
+            result.append(character)
+
+    return "".join(result)
 
 
 __all__ = [

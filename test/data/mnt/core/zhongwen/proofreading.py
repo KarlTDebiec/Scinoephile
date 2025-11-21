@@ -1,7 +1,6 @@
-"""中文 proof test cases."""
-
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""MNT 中文 proofreading test cases."""
 
 from __future__ import annotations
 
@@ -142,16 +141,13 @@ test_case_block_19 = ZhongwenProofreadingTestCase.get_test_case_cls(12)(
     zimu_10="快点",
     zimu_11="等人家嘛",
     zimu_12="快点",
-    xiugai_3="还是吃橡果子的老鼠呢？",
-    beizhu_3="去除“\\n”换行符，修正OCR误识。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_19
 # noinspection PyArgumentList
 test_case_block_20 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
     zimu_1="进去罗",
-    xiugai_1="进去咯",
-    beizhu_1="将“罗”改为“咯”，修正错别字。",
-    difficulty=1,
+    difficulty=3,
+    verified=True,
 )  # test_case_block_20
 # noinspection PyArgumentList
 test_case_block_21 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -172,14 +168,13 @@ test_case_block_22 = ZhongwenProofreadingTestCase.get_test_case_cls(7)(
 # noinspection PyArgumentList
 test_case_block_23 = ZhongwenProofreadingTestCase.get_test_case_cls(6)(
     zimu_1="有没有？",
-    zimu_2="那一定是＂灰尘精灵＂",
+    zimu_2="那一定是〝灰尘精灵〞",
     zimu_3="灰尘精灵",
     zimu_4="画册里有吗？",
     zimu_5="有啊",
     zimu_6="今天天气那么好\n不可能会有鬼的",
-    xiugai_2="那一定是“灰尘精灵”",
-    beizhu_2="将“＂”改为“””，修正引号为中文全角引号。",
-    difficulty=1,
+    prompt=True,
+    verified=True,
 )  # test_case_block_23
 # noinspection PyArgumentList
 test_case_block_24 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
@@ -252,9 +247,7 @@ test_case_block_34 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="爸爸，真的有怪东西",
     zimu_2="那真是太棒了",
     zimu_3="爸爸从小就梦想\n能够住在鬼屋里面",
-    xiugai_3="爸爸从小就梦想能够住在鬼屋里面",
-    beizhu_3="去除“梦想”与“能够住在鬼屋里面”之间的换行符，修正换行错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_34
 # noinspection PyArgumentList
 test_case_block_35 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -303,7 +296,7 @@ test_case_block_40 = ZhongwenProofreadingTestCase.get_test_case_cls(14)(
     zimu_1="看样子是煤煤虫在作怪",
     zimu_2="煤煤虫？",
     zimu_3="你说的煤煤虫是不是会",
-    zimu_4="＂哇啦哇啦＂的乱跑啊",
+    zimu_4="〝哇啦哇啦〞的乱跑啊",
     zimu_5="是啊",
     zimu_6="它们专门跑到没人住的旧房子里",
     zimu_7="然后弄得满屋子的灰尘和煤灰",
@@ -314,9 +307,7 @@ test_case_block_40 = ZhongwenProofreadingTestCase.get_test_case_cls(14)(
     zimu_12="只要对它们笑笑\n它们就不会害人",
     zimu_13="住上一阵子之后\n它们自然就会不见",
     zimu_14="说不定它们已经在天花板上\n讨论该搬去哪里了",
-    xiugai_9="想不到你们也看到",
-    beizhu_9="将“妳们”改为“你们”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_40
 # noinspection PyArgumentList
 test_case_block_41 = ZhongwenProofreadingTestCase.get_test_case_cls(10)(
@@ -374,9 +365,7 @@ test_case_block_47 = ZhongwenProofreadingTestCase.get_test_case_cls(7)(
     zimu_5="婆婆，谢谢您的糯米团",
     zimu_6="真是太谢谢您了",
     zimu_7="婆婆再见",
-    xiugai_3="不过，婆婆这个糯米团很好吃",
-    beizhu_3="将“不过\\n婆婆这个糯米团很好吃”中的换行符改为逗号，修正OCR识别错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_47
 # noinspection PyArgumentList
 test_case_block_48 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -394,12 +383,13 @@ test_case_block_49 = ZhongwenProofreadingTestCase.get_test_case_cls(4)(
 )  # test_case_block_49
 # noinspection PyArgumentList
 test_case_block_50 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
-    zimu_1="一\n﹣",
+    zimu_1="一\n－",
     zimu_2="很好，加油",
     zimu_3="用力，加把劲",
-    xiugai_1="一﹣",
-    beizhu_1="去除换行符，将“一\\n﹣”合并为“一﹣”。",
-    difficulty=1,
+    xiugai_1="一、二、一、二、一、二",
+    beizhu_1="补充数字和顿号，修正 OCR 漏识内容。",
+    difficulty=3,
+    verified=True,
 )  # test_case_block_50
 # noinspection PyArgumentList
 test_case_block_51 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -443,13 +433,8 @@ test_case_block_55 = ZhongwenProofreadingTestCase.get_test_case_cls(13)(
     zimu_11="妈妈很高兴你们都来了",
     zimu_12="新家怎么样啦",
     zimu_13="都整理好了没？",
-    xiugai_2="你好",
-    beizhu_2="将“妳好”改为“你好”，修正错别字。",
-    xiugai_4="小美你也来啦",
-    beizhu_4="将“妳”改为“你”，修正错别字。",
-    xiugai_7="你也来啦",
-    beizhu_7="将“妳”改为“你”，修正错别字。",
-    difficulty=1,
+    prompt=True,
+    verified=True,
 )  # test_case_block_55
 # noinspection PyArgumentList
 test_case_block_56 = ZhongwenProofreadingTestCase.get_test_case_cls(26)(
@@ -639,9 +624,7 @@ test_case_block_75 = ZhongwenProofreadingTestCase.get_test_case_cls(22)(
     zimu_20="小美说\n她看到一只大龙猫",
     zimu_21="大龙猫？",
     zimu_22="这边！",
-    xiugai_2="你干什么睡在这里！",
-    beizhu_2="将“妳”改为“你”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_75
 # noinspection PyArgumentList
 test_case_block_76 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -655,9 +638,7 @@ test_case_block_77 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
     zimu_3="可是这里只有一条路啊",
     zimu_4="小美，你快回来啊",
     zimu_5="小美，回来啊",
-    xiugai_2="它刚才睡在一棵很大的树里面",
-    beizhu_2="去掉“它刚才\n睡在一棵很大的树里面”中的换行符，修正OCR换行错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_77
 # noinspection PyArgumentList
 test_case_block_78 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
@@ -846,11 +827,7 @@ test_case_block_95 = ZhongwenProofreadingTestCase.get_test_case_cls(18)(
     zimu_16="真是孝顺啊",
     zimu_17="小美，拜拜",
     zimu_18="拜拜",
-    xiugai_6="对了，这是勘太今天借我们的伞",
-    beizhu_6="将“对了\\n这是勘太今天借我们的伞”中的换行符去除。",
-    xiugai_8="这么破的伞实在真不好意思",
-    beizhu_8="将“伞子”改为“伞实在”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_95
 # noinspection PyArgumentList
 test_case_block_96 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -874,9 +851,7 @@ test_case_block_99 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="爸爸没有搭这班车",
     zimu_2="一定是搭下一班啦",
     zimu_3="小美，妳到婆婆家等好不好？",
-    xiugai_3="小美，你到婆婆家等好不好？",
-    beizhu_3="将“妳”改为“你”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_99
 # noinspection PyArgumentList
 test_case_block_100 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -890,11 +865,7 @@ test_case_block_101 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
     zimu_3="早跟你说过的嘛",
     zimu_4="要不要先到婆婆家去睡一下？",
     zimu_5="爸爸就快到了\n撑着点啊",
-    xiugai_2="你困啦",
-    beizhu_2="将“妳”改为“你”，修正错别字。",
-    xiugai_5="爸爸就快到了撑着点啊",
-    beizhu_5="去除“\n”，修正换行符为连续文本。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_101
 # noinspection PyArgumentList
 test_case_block_102 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -982,9 +953,7 @@ test_case_block_113 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="学校很快就要放暑假了",
     zimu_2="希望妈妈的病\n能够快点好起来好吗？",
     zimu_3="小月",
-    xiugai_2="希望妈妈的病能够快点好起来好吗？",
-    beizhu_2="去除“希望妈妈的病”与“能够快点好起来好吗？”之间的换行符，合并为一句。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_113
 # noinspection PyArgumentList
 test_case_block_114 = ZhongwenProofreadingTestCase.get_test_case_cls(6)(
@@ -1096,9 +1065,7 @@ test_case_block_128 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="电报",
     zimu_2="你们不在\n所以邮差送去我家",
     zimu_3="给我们的",
-    xiugai_2="你们不在，所以邮差送去我家",
-    beizhu_2="将“你们不在\\n所以邮差送去我家”中的换行符去除，合并为一句。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_128
 # noinspection PyArgumentList
 test_case_block_129 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -1119,11 +1086,7 @@ test_case_block_130 = ZhongwenProofreadingTestCase.get_test_case_cls(11)(
     zimu_9="爸爸研究室的电话号码\n我是知道",
     zimu_10="可是没有电话可打呀",
     zimu_11="勘太\n你带小月去打电话",
-    xiugai_9="爸爸研究室的电话号码我是知道",
-    beizhu_9="去掉“\\n”，修正换行符误识。",
-    xiugai_11="勘太你带小月去打电话",
-    beizhu_11="去掉“\\n”，修正换行符误识。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_130
 # noinspection PyArgumentList
 test_case_block_131 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1133,9 +1096,7 @@ test_case_block_131 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
 # noinspection PyArgumentList
 test_case_block_132 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
     zimu_1="小美妳回去婆婆那里",
-    xiugai_1="小美你回去婆婆那里",
-    beizhu_1="将“妳”改为“你”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_132
 # noinspection PyArgumentList
 test_case_block_133 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
@@ -1147,9 +1108,7 @@ test_case_block_133 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
     zimu_6="请问是考古学教室吗？",
     zimu_7="我爸爸⋯\n麻烦请草壁先生听电话",
     zimu_8="我叫做草壁月",
-    xiugai_7="我爸爸⋯麻烦请草壁先生听电话",
-    beizhu_7="去除换行符，将“我爸爸⋯\n麻烦请草壁先生听电话”合并为一行。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_133
 # noinspection PyArgumentList
 test_case_block_134 = ZhongwenProofreadingTestCase.get_test_case_cls(13)(
@@ -1232,11 +1191,7 @@ test_case_block_141 = ZhongwenProofreadingTestCase.get_test_case_cls(11)(
     zimu_9="别哭了别哭了",
     zimu_10="在妳爸爸回来之前",
     zimu_11="婆婆都会陪着妳的\n好不好呀",
-    xiugai_8="妳妈妈哪舍得下妳们这些可爱的孩子",
-    beizhu_8="去除“\\n”换行符，修正OCR识别错误。",
-    xiugai_11="婆婆都会陪着妳的好不好呀",
-    beizhu_11="去除“\\n”换行符，修正OCR识别错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_141
 # noinspection PyArgumentList
 test_case_block_142 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1279,10 +1234,7 @@ test_case_block_146 = ZhongwenProofreadingTestCase.get_test_case_cls(6)(
     zimu_4="这个嘛⋯⋯小女孩啊",
     zimu_5="没什么印象",
     zimu_6="她会不会没往这边来",
-    xiugai_2="您有没有看见束辫子的小女孩从这条路经过",
-    beizhu_2="去除“您有没有看见束辫子的小女孩\n"
-    "从这条路经过”中的换行符，修正OCR换行错误。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_146
 # noinspection PyArgumentList
 test_case_block_147 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -1313,9 +1265,7 @@ test_case_block_149 = ZhongwenProofreadingTestCase.get_test_case_cls(16)(
     zimu_14="松乡！？",
     zimu_15="会不会搞错了呀",
     zimu_16="就是啊",
-    xiugai_5="你妹妹？",
-    beizhu_5="将“妳妹妹？”改为“你妹妹？”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_149
 # noinspection PyArgumentList
 test_case_block_150 = ZhongwenProofreadingTestCase.get_test_case_cls(11)(
@@ -1376,11 +1326,7 @@ test_case_block_157 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
     zimu_7="快点啊，天要黑了",
     zimu_8="不好意思啊",
     zimu_9="大家辛苦你们\n再回头去找找好了",
-    xiugai_2="我还以为这是小美的",
-    beizhu_2="将“我还以\\n这是小美的”改为“我还以为这是小美的”，补全漏字。",
-    xiugai_9="大家辛苦你们了，再回头去找找好了",
-    beizhu_9="将“大家辛苦你们\\n再回头去找找好了”改为“大家辛苦你们了，再回头去找找好了”，补全漏字并合并断行。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_157
 # noinspection PyArgumentList
 test_case_block_158 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
@@ -1440,12 +1386,10 @@ test_case_block_165 = ZhongwenProofreadingTestCase.get_test_case_cls(5)(
 )  # test_case_block_165
 # noinspection PyArgumentList
 test_case_block_166 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
-    zimu_1="＂七国山医院＂",
+    zimu_1="〝七国山医院〞",
     zimu_2="你要送我们去医院吗？",
     zimu_3="谢谢你",
-    xiugai_1="“七国山医院”",
-    beizhu_1="将全角引号“＂”改为中文引号“””。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_166
 # noinspection PyArgumentList
 test_case_block_167 = ZhongwenProofreadingTestCase.get_test_case_cls(13)(
@@ -1483,10 +1427,8 @@ test_case_block_170 = ZhongwenProofreadingTestCase.get_test_case_cls(6)(
     zimu_3="我好像看到小月和小美坐在那棵松树上笑",
     zimu_4="搞不好是真的也说不定啊",
     zimu_5="妳看",
-    zimu_6="＂送给妈妈＂",
-    xiugai_6="“送给妈妈”",
-    beizhu_6="将“＂送给妈妈＂”中的全角引号改为中文引号。",
-    difficulty=1,
+    zimu_6="〝送给妈妈〞",
+    verified=True,
 )  # test_case_block_170
 # noinspection PyArgumentList
 test_case_block_171 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
