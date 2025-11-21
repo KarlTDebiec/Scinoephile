@@ -83,9 +83,9 @@ test_case_block_2 = ZhongwenProofreadingTestCase.get_test_case_cls(16)(
 # noinspection PyArgumentList
 test_case_block_3 = ZhongwenProofreadingTestCase.get_test_case_cls(23)(
     zimu_1="鹅满是快烙滴好耳痛⋯",
-    zimu_2="＂鹅闷天天一戏个窗！＂",
+    zimu_2="〝鹅闷天天一戏个窗！〞",
     zimu_3="鹅们在壳习，鹅闷载升胀 II",
-    zimu_4="＂鹅闷是春天滴化！＂",
+    zimu_4="〝鹅闷是春天滴化！〞",
     zimu_5="这个猪样白兔小朋友⋯",
     zimu_6="横看竖看也不像发哥伟仔的一个⋯",
     zimu_7="就是我，麦兜",
@@ -107,12 +107,8 @@ test_case_block_3 = ZhongwenProofreadingTestCase.get_test_case_cls(23)(
     zimu_23="太好了！大家去上堂吧",
     xiugai_1="〝鹅满是快烙滴好耳痛⋯〞",
     beizhu_1="将“＂”改为“〝”，修正了OCR识别错误。",
-    xiugai_2="〝鹅闷天天一戏个窗！〞",
-    beizhu_2="将“＂”改为“〝”，修正了OCR识别错误。",
     xiugai_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
     beizhu_3="将“ II”改为“⋯”，修正了OCR识别错误。",
-    xiugai_4="〝鹅闷是春天滴化！〞",
-    beizhu_4="将“＂”改为“〝”，修正了OCR识别错误。",
     difficulty=3,
     verified=True,
 )  # test_case_block_3
