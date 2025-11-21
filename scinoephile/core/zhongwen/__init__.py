@@ -17,11 +17,8 @@ from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
 conversion_exclusions = {
     "嗰": "𠮶",
     "纔": "才",
-    "喫": "",
+    "喫": "吃",
 }
-half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
-half_to_full_punc_for_cleaning["-"] = "﹣"
-half_to_full_punc_for_cleaning["－"] = "﹣"
 
 
 def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
@@ -148,7 +145,7 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
 
     # Replace half-width punctuation with full-width punctuation
-    for old_punc, new_punc in half_to_full_punc_for_cleaning.items():
+    for old_punc, new_punc in half_to_full_punc.items():
         cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
 
     # Remove whitespace before and after specified characters
@@ -197,5 +194,4 @@ __all__ = [
     "get_zhongwen_converter",
     "get_zhongwen_flattened",
     "get_zhongwen_text_converted",
-    "half_to_full_punc_for_cleaning",
 ]

@@ -96,7 +96,7 @@ test_case_block_5 = ZhongwenProofreadingTestCase.get_test_case_cls(31)(
     zimu_10="乞丐也是人",
     zimu_11="只要有錢的都可以來",
     zimu_12="你這個月來這裡",
-    zimu_13="喫飯看戲宵夜嫖妓，我包",
+    zimu_13="吃飯看戲宵夜嫖妓，我包",
     zimu_14="你包？",
     zimu_15="不可以嗎？",
     zimu_16="可以，可以",
@@ -536,7 +536,7 @@ test_case_block_33 = ZhongwenProofreadingTestCase.get_test_case_cls(67)(
     zimu_50="綁牢一點⋯綁牢一點",
     zimu_51="老爺，樹也要搬？",
     zimu_52="當然",
-    zimu_53="否則我到京城那有荔枝喫？",
+    zimu_53="否則我到京城那有荔枝吃？",
     zimu_54="推到那邊⋯推到那邊",
     zimu_55="小心點⋯小心我的荔枝",
     zimu_56="小心我的荔枝，笨蛋",
@@ -551,9 +551,9 @@ test_case_block_33 = ZhongwenProofreadingTestCase.get_test_case_cls(67)(
     zimu_65="異術？",
     zimu_66="趙先生，你就示範給朕看",
     zimu_67="是",
-    xiugai_53="否則我到京城哪有荔枝喫？",
-    beizhu_53="将“那有荔枝喫？”更正为“哪有荔枝喫？”，修正错别字。",
-    difficulty=3,
+    xiugai_53="否則我到京城哪有荔枝吃？",
+    beizhu_53="将“那有荔枝吃？”更正为“哪有荔枝吃？”，修正错别字。",
+    difficulty=1,
     verified=True,
 )  # test_case_block_33
 # noinspection PyArgumentList
@@ -780,10 +780,6 @@ test_case_block_55 = ZhongwenProofreadingTestCase.get_test_case_cls(10)(
     zimu_8="洋文",
     zimu_9="例上沒有說明不準用暗器",
     zimu_10="你先掉下來，這個回合判博達爾多勝",
-    xiugai_9="例上沒有說明不准用暗器",
-    beizhu_9="将“不準”更正为“不准”，修正错别字。",
-    difficulty=1,
-    prompt=True,
     verified=True,
 )  # test_case_block_55
 # noinspection PyArgumentList
@@ -987,15 +983,13 @@ test_case_block_69 = ZhongwenProofreadingTestCase.get_test_case_cls(31)(
 test_case_block_70 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
     zimu_1="你真的當我們是乞丐？",
     zimu_2="混你的帳！你⋯",
-    zimu_3="太過分了！喫飯喫飯",
-    xiugai_3="太過分了！吃飯吃飯",
-    beizhu_3="将“喫飯喫飯”更正为“吃飯吃飯”，修正错别字。",
-    difficulty=1,
+    zimu_3="太過分了！吃飯吃飯",
+    verified=True,
 )  # test_case_block_70
 # noinspection PyArgumentList
 test_case_block_71 = ZhongwenProofreadingTestCase.get_test_case_cls(12)(
-    zimu_1="阿燦，反正喫飽沒事幹",
-    zimu_2="讓我在那邊坐一會，說不定有晚飯喫",
+    zimu_1="阿燦，反正吃飽沒事幹",
+    zimu_2="讓我在那邊坐一會，說不定有晚飯吃",
     zimu_3="那你真的當自己是乞丐嗎",
     zimu_4="阿爹！不用擔心",
     zimu_5="想要錢都不需要去討",
@@ -1058,13 +1052,11 @@ test_case_block_75 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
     zimu_2="小心點",
     zimu_3="不用怕，我會很小心",
     zimu_4="確保你沒有事",
-    zimu_5="你也想賺點錢喫碗魚翅吧？",
+    zimu_5="你也想賺點錢吃碗魚翅吧？",
     zimu_6="對⋯",
     zimu_7="走開⋯走開",
     zimu_8="不許在這兒賣藝",
-    xiugai_5="你也想賺點錢吃碗魚翅吧？",
-    beizhu_5="將“喫”更正為“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_75
 # noinspection PyArgumentList
 test_case_block_76 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
@@ -1077,11 +1069,8 @@ test_case_block_76 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
     zimu_7="我是奉本子辦事！人來",
     zimu_8="有　　將所有東西搬走",
     zimu_9="是",
-    xiugai_7="我是奉本子辦事！人來！",
-    beizhu_7="补全句末缺失的感叹号“！”。",
-    xiugai_8="有！將所有東西搬走",
-    beizhu_8="补全句首缺失的感叹号“！”。",
-    difficulty=1,
+    prompt=True,
+    verified=True,
 )  # test_case_block_76
 # noinspection PyArgumentList
 test_case_block_77 = ZhongwenProofreadingTestCase.get_test_case_cls(12)(
@@ -1097,9 +1086,7 @@ test_case_block_77 = ZhongwenProofreadingTestCase.get_test_case_cls(12)(
     zimu_10="這個人非同小可",
     zimu_11="我一定要在第一招出盡力打敗他",
     zimu_12="不然他就會有還擊的機會",
-    xiugai_9="這次你沒有這勝算",
-    beizhu_9="將“勝券”更正為“勝算”，修正錯別字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_77
 # noinspection PyArgumentList
 test_case_block_78 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
@@ -1217,43 +1204,27 @@ test_case_block_88 = ZhongwenProofreadingTestCase.get_test_case_cls(13)(
     zimu_5="你病了？",
     zimu_6="沒有⋯沒有",
     zimu_7="這麼晚了",
-    zimu_8="阿爹出去討些東西給你喫",
+    zimu_8="阿爹出去討些東西給你吃",
     zimu_9="你快躺下吧，今天讓我去",
     zimu_10="你去討飯？",
     zimu_11="沒有問題，我會有辦法",
     zimu_12="你休息一下",
     zimu_13="我找到錢就回來帶你看大夫",
-    xiugai_8="阿爹出去討些東西給你吃",
-    beizhu_8="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_88
 # noinspection PyArgumentList
 test_case_block_89 = ZhongwenProofreadingTestCase.get_test_case_cls(10)(
-    zimu_1="你這渾小子為何不喫",
-    zimu_2="你不喫又怎能像阿爹般強壯",
-    zimu_3="快點喫",
-    zimu_4="喫不下了，我飽了",
-    zimu_5="飽⋯飽也要喫，快點喫",
-    zimu_6="不喫嗎！不喫就回家",
-    zimu_7="喫！快點喫，喫",
+    zimu_1="你這渾小子為何不吃",
+    zimu_2="你不吃又怎能像阿爹般強壯",
+    zimu_3="快點吃",
+    zimu_4="吃不下了，我飽了",
+    zimu_5="飽⋯飽也要吃，快點吃",
+    zimu_6="不吃嗎！不吃就回家",
+    zimu_7="吃！快點吃，吃",
     zimu_8="小朋友",
     zimu_9="甚麼？",
     zimu_10="可不可以⋯　　不可以",
-    xiugai_1="你這渾小子為何不吃",
-    beizhu_1="将“喫”更正为“吃”，修正异体字。",
-    xiugai_2="你不吃又怎能像阿爹般強壯",
-    beizhu_2="将“喫”更正为“吃”，修正异体字。",
-    xiugai_3="快點吃",
-    beizhu_3="将“喫”更正为“吃”，修正异体字。",
-    xiugai_4="吃不下了，我飽了",
-    beizhu_4="将“喫”更正为“吃”，修正异体字。",
-    xiugai_5="飽⋯飽也要吃，快點吃",
-    beizhu_5="将“喫”更正为“吃”，修正异体字。",
-    xiugai_6="不吃嗎！不吃就回家",
-    beizhu_6="将“喫”更正为“吃”，修正异体字。",
-    xiugai_7="吃！快點吃，吃",
-    beizhu_7="将“喫”更正为“吃”，修正异体字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_89
 # noinspection PyArgumentList
 test_case_block_90 = ZhongwenProofreadingTestCase.get_test_case_cls(11)(
@@ -1282,13 +1253,11 @@ test_case_block_92 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
     zimu_3="小翠，去拿幾個饅頭出來",
     zimu_4="你認錯人了！他不是蘇燦",
     zimu_5="你很像我一個朋友",
-    zimu_6="以後沒東西喫，就到我家取饅頭",
-    zimu_7="我家裡人少，喫不完",
+    zimu_6="以後沒東西吃，就到我家取饅頭",
+    zimu_7="我家裡人少，吃不完",
     zimu_8="饅頭來了",
     zimu_9="拿去",
-    xiugai_6="以後沒東西吃，就到我家取饅頭",
-    beizhu_6="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_92
 # noinspection PyArgumentList
 test_case_block_93 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
@@ -1301,7 +1270,7 @@ test_case_block_93 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
 test_case_block_94 = ZhongwenProofreadingTestCase.get_test_case_cls(14)(
     zimu_1="阿爹！怎麼呢",
     zimu_2="阿燦！我剛剛餓壞了",
-    zimu_3="看見小孩子喫饅頭，我借來咬一口",
+    zimu_3="看見小孩子吃饅頭，我借來咬一口",
     zimu_4="我這裡有饅頭！還給他",
     zimu_5="這樣也可以嗎？",
     zimu_6="我斬了你個頭再還給你可不可以？",
@@ -1313,55 +1282,41 @@ test_case_block_94 = ZhongwenProofreadingTestCase.get_test_case_cls(14)(
     zimu_12="多謝⋯多謝",
     zimu_13="等一等！相請不如偶遇",
     zimu_14="相請不如偶遇，是否想請我們喝酒呢",
-    xiugai_3="看見小孩子吃饅頭，我借來咬一口",
-    beizhu_3="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_94
 # noinspection PyArgumentList
 test_case_block_95 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
-    zimu_1="給狗喫的飯到",
-    zimu_2="狀元爺，喫完這飯就放你的爹",
-    xiugai_1="給狗吃的飯到",
-    beizhu_1="将“喫”更正为“吃”，修正错别字。",
-    xiugai_2="狀元爺，吃完這飯就放你的爹",
-    beizhu_2="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    zimu_1="給狗吃的飯到",
+    zimu_2="狀元爺，吃完這飯就放你的爹",
+    verified=True,
 )  # test_case_block_95
 # noinspection PyArgumentList
 test_case_block_96 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
     zimu_1="甚麼？",
-    zimu_2="喫吧",
-    xiugai_2="吃吧",
-    beizhu_2="将“喫吧”更正为“吃吧”，修正了异体字。",
-    difficulty=1,
+    zimu_2="吃吧",
+    verified=True,
 )  # test_case_block_96
 # noinspection PyArgumentList
 test_case_block_97 = ZhongwenProofreadingTestCase.get_test_case_cls(7)(
-    zimu_1="阿燦！你不能喫",
-    zimu_2="你喫了後怎樣見人？",
+    zimu_1="阿燦！你不能吃",
+    zimu_2="你吃了後怎樣見人？",
     zimu_3="阿爹年紀大沒甚麼大不了",
     zimu_4="老兄，說到底我是廣州將軍",
     zimu_5="想怎樣呀？",
     zimu_6="不要打",
     zimu_7="站好",
-    xiugai_1="阿燦！你不能吃",
-    beizhu_1="将“喫”更正为“吃”，修正错别字。",
-    xiugai_2="你吃了後怎樣見人？",
-    beizhu_2="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_97
 # noinspection PyArgumentList
 test_case_block_98 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
-    zimu_1="狀元爺喫狗的飯",
+    zimu_1="狀元爺吃狗的飯",
     zimu_2="爹，味道不錯",
     zimu_3="嚐嚐⋯嚐嚐，來⋯來",
-    xiugai_1="状元爷吃狗的饭",
-    beizhu_1="将“狀元爺喫狗的飯”中的“狀”改为“状”，“爺”改为“爷”，“喫”改为“吃”，“飯”改为“饭”，修正繁体字和异体字为简体字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_98
 # noinspection PyArgumentList
 test_case_block_99 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-    zimu_1="好喫，是嗎？",
+    zimu_1="好吃，是嗎？",
     verified=True,
 )  # test_case_block_99
 # noinspection PyArgumentList
@@ -1374,25 +1329,15 @@ test_case_block_100 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
 # noinspection PyArgumentList
 test_case_block_101 = ZhongwenProofreadingTestCase.get_test_case_cls(9)(
     zimu_1="你倆比狗還要餓！",
-    zimu_2="註定這輩子都喫狗的飯",
-    zimu_3="喫吧！快點吧！",
-    zimu_4="這碗飯太好喫了",
+    zimu_2="註定這輩子都吃狗的飯",
+    zimu_3="吃吧！快點吧！",
+    zimu_4="這碗飯太好吃了",
     zimu_5="這一口我想留下來作夜宵",
     zimu_6="多虧你想像得到",
     zimu_7="真是天生當乞丐的料子",
-    zimu_8="狀元爺都要喫狗的飯",
-    zimu_9="來！我們去喫人的飯吧",
-    xiugai_2="註定這輩子都吃狗的飯",
-    beizhu_2="将“喫”更正为“吃”，修正异体字。",
-    xiugai_3="吃吧！快點吧！",
-    beizhu_3="将“喫”更正为“吃”，修正异体字。",
-    xiugai_4="這碗飯太好吃了",
-    beizhu_4="将“喫”更正为“吃”，修正异体字。",
-    xiugai_8="狀元爺都要吃狗的飯",
-    beizhu_8="将“喫”更正为“吃”，修正异体字。",
-    xiugai_9="來！我們去吃人的飯吧",
-    beizhu_9="将“喫”更正为“吃”，修正异体字。",
-    difficulty=1,
+    zimu_8="狀元爺都要吃狗的飯",
+    zimu_9="來！我們去吃人的飯吧",
+    verified=True,
 )  # test_case_block_101
 # noinspection PyArgumentList
 test_case_block_102 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1436,7 +1381,7 @@ test_case_block_104 = ZhongwenProofreadingTestCase.get_test_case_cls(44)(
     zimu_16="阿燦？他由年三十睡到大年初一",
     zimu_17="還沒睡醒",
     zimu_18="他剛剛才睡！別把他吵醒",
-    zimu_19="我做年糕給大家喫吧",
+    zimu_19="我做年糕給大家吃吧",
     zimu_20="好！我幫你",
     zimu_21="新年還在睡覺",
     zimu_22="真是沒用的傢伙！",
@@ -1449,9 +1394,9 @@ test_case_block_104 = ZhongwenProofreadingTestCase.get_test_case_cls(44)(
     zimu_29="莫大叔！蓮花落陣你也沒把握",
     zimu_30="以我現在打狗棒法的功力",
     zimu_31="怎麼可能打敗三位長老當上幫主呢？",
-    zimu_32="這顆大還丹，你喫了之後會功力大增",
+    zimu_32="這顆大還丹，你吃了之後會功力大增",
     zimu_33="不行！這顆大還丹是給你治內傷用的",
-    zimu_34="我怎麼能喫呢？",
+    zimu_34="我怎麼能吃呢？",
     zimu_35="不用擔心不用擔心",
     zimu_36="想找人比武可以找我兒子",
     zimu_37="我兒子怎麼說也是一個武狀元",
@@ -1519,11 +1464,9 @@ test_case_block_111 = ZhongwenProofreadingTestCase.get_test_case_cls(8)(
     zimu_4="是",
     zimu_5="我也是",
     zimu_6="恭喜你",
-    zimu_7="有沒有東西喫？　　沒有",
+    zimu_7="有沒有東西吃？　　沒有",
     zimu_8="正好我有",
-    xiugai_7="有沒有東西吃？　　沒有",
-    beizhu_7="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_111
 # noinspection PyArgumentList
 test_case_block_112 = ZhongwenProofreadingTestCase.get_test_case_cls(18)(
@@ -1537,7 +1480,7 @@ test_case_block_112 = ZhongwenProofreadingTestCase.get_test_case_cls(18)(
     zimu_8="我一輩子沒被人瞧得起過",
     zimu_9="聽我說，先別走，聽我說",
     zimu_10="記得有一次，在廣東",
-    zimu_11="請我喫飯喝酒嫖妓過夜",
+    zimu_11="請我吃飯喝酒嫖妓過夜",
     zimu_12="這樣的人也有",
     zimu_13="帥哥，我記得你",
     zimu_14="臭小子，我也記得你",
@@ -1545,9 +1488,7 @@ test_case_block_112 = ZhongwenProofreadingTestCase.get_test_case_cls(18)(
     zimu_16="還我錢讓我頂一下",
     zimu_17="如果我有錢",
     zimu_18="我也不用在這兒捱饅頭",
-    xiugai_11="請我吃飯喝酒嫖妓過夜",
-    beizhu_11="將“喫飯”更正為“吃飯”，修正异体字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_112
 # noinspection PyArgumentList
 test_case_block_113 = ZhongwenProofreadingTestCase.get_test_case_cls(24)(
@@ -1702,9 +1643,7 @@ test_case_block_130 = ZhongwenProofreadingTestCase.get_test_case_cls(6)(
     zimu_4="沒事嗎？　　姐姐呢？",
     zimu_5="你姐姐給趙無極抓了",
     zimu_6="我們要找人上去選幫主",
-    xiugai_2="真的被你嚇了一跳",
-    beizhu_2="将“嚇我一跳”更正为“嚇了一跳”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_130
 # noinspection PyArgumentList
 test_case_block_131 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
@@ -1812,7 +1751,7 @@ test_case_block_142 = ZhongwenProofreadingTestCase.get_test_case_cls(33)(
     zimu_28="洪七公顯靈",
     zimu_29="天有眼，我們有福",
     zimu_30="就這樣瞞天過海，我果真是天才！",
-    zimu_31="大家有飯喫了",
+    zimu_31="大家有飯吃了",
     zimu_32="發生甚麼事？",
     zimu_33="參見幫主",
     verified=True,
@@ -1970,9 +1909,7 @@ test_case_block_156 = ZhongwenProofreadingTestCase.get_test_case_cls(18)(
     zimu_16="夠了夠了",
     zimu_17="還沒唱完",
     zimu_18="等我走了你再才唱　　好的",
-    xiugai_18="等我走了你再唱　　好的",
-    beizhu_18="将“等我走了你再才唱　　好的”更正为“等我走了你再唱　　好的”，去掉多余的“才”字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_156
 # noinspection PyArgumentList
 test_case_block_157 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
@@ -2052,25 +1989,19 @@ test_case_block_167 = ZhongwenProofreadingTestCase.get_test_case_cls(16)(
     zimu_2="如霜",
     zimu_3="你怎麼來到這裡的？",
     zimu_4="怎麼來？就說來話長",
-    zimu_5="昨天晚上我未喫夜宵就臨夜起程",
+    zimu_5="昨天晚上我未吃夜宵就臨夜起程",
     zimu_6="攀過金山嶺",
     zimu_7="到今天早上已經身在萬裏長城",
-    zimu_8="我們停了半個時辰喫早飯",
+    zimu_8="我們停了半個時辰吃早飯",
     zimu_9="我還小個便",
     zimu_10="是嗎？　　是",
-    zimu_11="我本來想找蕃薯喫",
+    zimu_11="我本來想找蕃薯吃",
     zimu_12="誰知道只是饅頭",
     zimu_13="你知道的，饅頭根本不合我胃口",
     zimu_14="微臣救駕來遲，望皇上恕罪",
     zimu_15="保護皇上",
     zimu_16="是",
-    xiugai_5="昨天晚上我未吃夜宵就臨夜起程",
-    beizhu_5="将“喫”更正为“吃”，修正错别字。",
-    xiugai_8="我們停了半個時辰吃早飯",
-    beizhu_8="将“喫”更正为“吃”，修正错别字。",
-    xiugai_11="我本來想找番薯吃",
-    beizhu_11="将“蕃薯喫”更正为“番薯吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_167
 # noinspection PyArgumentList
 test_case_block_168 = ZhongwenProofreadingTestCase.get_test_case_cls(2)(
@@ -2153,10 +2084,8 @@ test_case_block_178 = ZhongwenProofreadingTestCase.get_test_case_cls(3)(
 )  # test_case_block_178
 # noinspection PyArgumentList
 test_case_block_179 = ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-    zimu_1="第十八掌﹣殺龍有悔",
-    xiugai_1="第十八掌－殺龍有悔",
-    beizhu_1="将“﹣”更正为“－”，修正破折号为标准全角破折号。",
-    difficulty=1,
+    zimu_1="第十八掌－殺龍有悔",
+    verified=True,
 )  # test_case_block_179
 # noinspection PyArgumentList
 test_case_block_180 = ZhongwenProofreadingTestCase.get_test_case_cls(7)(
@@ -2236,9 +2165,7 @@ test_case_block_185 = ZhongwenProofreadingTestCase.get_test_case_cls(23)(
     zimu_21="好",
     zimu_22="皇上吉祥",
     zimu_23="萬歲萬萬歲　　平身",
-    xiugai_9="其實我跟你沒醙沒轕",
-    beizhu_9="将“醪”更正为“醙”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_185
 # noinspection PyArgumentList
 test_case_block_186 = ZhongwenProofreadingTestCase.get_test_case_cls(15)(
@@ -2263,11 +2190,9 @@ test_case_block_186 = ZhongwenProofreadingTestCase.get_test_case_cls(15)(
 test_case_block_187 = ZhongwenProofreadingTestCase.get_test_case_cls(4)(
     zimu_1="還不快謝謝人家？",
     zimu_2="謝謝",
-    zimu_3="快點喫吧",
+    zimu_3="快點吃吧",
     zimu_4="跟住我⋯走吧⋯",
-    xiugai_3="快點吃吧",
-    beizhu_3="将“喫”更正为“吃”，修正错别字。",
-    difficulty=1,
+    verified=True,
 )  # test_case_block_187
 
 
