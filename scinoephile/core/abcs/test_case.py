@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from functools import cached_property
 from typing import ClassVar, Self
 
 from pydantic import BaseModel, Field, model_validator
@@ -61,17 +60,17 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             {k: getattr(self, k) for k in self.answer_cls.model_fields}
         )
 
-    @cached_property
+    @property
     def answer_fields(self) -> dict[str, FieldInfo]:
         """List of answer fields."""
         return self.answer_cls.model_fields
 
-    @cached_property
+    @property
     def key(self) -> tuple[str, ...]:
         """Unique key for the test case."""
         return tuple(list(self.query.query_key) + list(self.answer.answer_key))
 
-    @cached_property
+    @property
     def noop(self) -> bool:
         """Whether this test case is a no-op."""
         return False
@@ -83,24 +82,30 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
             {k: getattr(self, k) for k in self.query_fields}
         )
 
-    @cached_property
+    @property
     def query_fields(self) -> dict[str, FieldInfo]:
         """List of query fields."""
         return self.query_cls.model_fields
 
-    @cached_property
+    @property
     def source_str(self) -> str:
         """Python source-like string representation."""
-        lines = (
-            [f"{self.__class__.__name__}("]
-            + [format_field(f, getattr(self, f)) for f in self.query_fields]
-            + [format_field(f, getattr(self, f)) for f in self.answer_fields]
-            + [format_field(f, getattr(self, f)) for f in self.test_case_fields]
-            + [")"]
-        )
+        lines = [f"{self.__class__.__name__}("]
+        for field in self.query_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        for field in self.answer_fields:
+            value = getattr(self, field)
+            if value == "":
+                continue
+            lines.append(format_field(field, value))
+        for field in self.test_case_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        lines.append(")")
         return "\n".join(lines)
 
-    @cached_property
+    @property
     def test_case_fields(self) -> dict[str, FieldInfo]:
         """List of test case fields."""
         exclusions = set()
@@ -119,6 +124,12 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         """Ensure difficulty reflects prompt/split status if not already higher."""
         self.difficulty = max(self.difficulty, self.get_min_difficulty())
         return self
+
+    def get_auto_verified(self) -> bool:
+        """Whether this test case should automatically be verified."""
+        if self.noop:
+            return True
+        return False
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.

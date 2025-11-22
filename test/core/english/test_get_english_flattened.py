@@ -68,16 +68,6 @@ def test_get_english_flattened_mnt(mnt_eng: Series, mnt_eng_flatten: Series):
     _test_get_english_flattened(mnt_eng, mnt_eng_flatten)
 
 
-def test_get_english_flattened_pdp(pdp_eng: Series, pdp_eng_flatten: Series):
-    """Test get_english_flattened with PDP English subtitles.
-
-    Arguments:
-        pdp_eng: PDP English series fixture
-        pdp_eng_flatten: Expected flattened PDP English series fixture
-    """
-    _test_get_english_flattened(pdp_eng, pdp_eng_flatten)
-
-
 def test_get_english_flattened_t(t_eng: Series, t_eng_flatten: Series):
     """Test get_english_flattened with T English subtitles.
 

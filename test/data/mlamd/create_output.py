@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import (
@@ -13,59 +15,101 @@ from scinoephile.core.english import (
     get_english_proofed,
 )
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zhongwen import get_zhongwen_cleaned, get_zhongwen_flattened
+from scinoephile.core.zhongwen import (
+    get_zhongwen_cleaned,
+    get_zhongwen_converted,
+    get_zhongwen_flattened,
+)
+from scinoephile.core.zhongwen.proofreading import (
+    ZhongwenProofreader,
+    get_zhongwen_proofread,
+)
+from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
+from test.data.kob import (
+    kob_zhongwen_fusion_test_cases,
+    kob_zhongwen_proofreading_test_cases,
+)
+from test.data.mnt import (
+    mnt_zhongwen_fusion_test_cases,
+    mnt_zhongwen_proofreading_test_cases,
+)
+from test.data.t import t_zhongwen_fusion_test_cases, t_zhongwen_proofreading_test_cases
 
-if __name__ == "__main__":
-    input_dir = test_data_root / "mlamd" / "input"
-    output_dir = test_data_root / "mlamd" / "output"
-    set_logging_verbosity(2)
+title = Path(__file__).parent.name
+input_dir = test_data_root / title / "input"
+output_dir = test_data_root / title / "output"
+set_logging_verbosity(2)
 
-    # 简体中文
-    zho_hans = Series.load(output_dir / "zho-Hans" / "zho-Hans.srt")
-    zho_hans = get_zhongwen_cleaned(zho_hans)
-    zho_hans = get_zhongwen_flattened(zho_hans)
-    zho_hans.save(output_dir / "zho-Hans" / "zho-Hans.srt")
+# 简体中文
+zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
+zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
+zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
+zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
+zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
+zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
+zho_hans_fuse = get_zhongwen_ocr_fused(
+    zho_hans_paddle,
+    zho_hans_lens,
+    ZhongwenFuser(
+        test_cases=kob_zhongwen_fusion_test_cases
+        + mnt_zhongwen_fusion_test_cases
+        + t_zhongwen_fusion_test_cases,
+        test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
+        auto_verify=True,
+    ),
+)
+zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
+zho_hans_fuse = Series.load(output_dir / "zho-Hans_fuse.srt")
+zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
+zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
+zho_hans_fuse_proofread = get_zhongwen_proofread(
+    zho_hans_fuse,
+    ZhongwenProofreader(
+        test_cases=kob_zhongwen_proofreading_test_cases
+        + mnt_zhongwen_proofreading_test_cases
+        + t_zhongwen_proofreading_test_cases,
+        test_case_path=test_data_root / title / "core" / "zhongwen" / "proofreading.py",
+        auto_verify=True,
+    ),
+)
+zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+zho_hans_fuse_proofread_clean = get_zhongwen_cleaned(zho_hans_fuse_proofread)
+zho_hans_fuse_proofread_clean.save(
+    output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean.srt"
+)
+zho_hans_fuse_proofread_clean_flatten = get_zhongwen_flattened(
+    zho_hans_fuse_proofread_clean
+)
+zho_hans_fuse_proofread_clean_flatten.save(
+    output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean_flatten.srt"
+)
 
-    # ValidationManager(
-    #     output_dir / "zho-Hans",
-    #     output_dir / "zho-Hans_validation",
-    #     False,
-    # ).validate()
+# 繁體中文
 
-    # 繁體中文
-    zho_hant = Series.load(output_dir / "zho-Hant" / "zho-Hant.srt")
-    zho_hant = get_zhongwen_cleaned(zho_hant)
-    zho_hant = get_zhongwen_flattened(zho_hant)
-    zho_hant.save(output_dir / "zho-Hant" / "zho-Hant.srt")
+# English
+eng = Series.load(input_dir / "eng.srt")
+eng_clean = get_english_cleaned(eng)
+eng_clean.save(output_dir / "eng_clean.srt")
+eng_flatten = get_english_flattened(eng)
+eng_flatten.save(output_dir / "eng_flatten.srt")
+proofer = EnglishProofer(
+    test_case_path=test_data_root / "mlamd" / "core" / "english" / "proof.py",
+)
+eng_proof = get_english_proofed(eng, proofer)
+eng_proof.save(output_dir / "eng_proof.srt")
+eng_proof_clean = get_english_cleaned(eng_proof)
+eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
+eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
-    # ValidationManager(
-    #     output_dir / "zho-Hant",
-    #     output_dir / "zho-Hant_validation",
-    #     False,
-    # ).validate()
+# Bilingual 简体中文 and English
+zho_hans_eng = get_synced_series(
+    zho_hans_fuse_proofread_clean_flatten, eng_proof_clean_flatten
+)
+zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
 
-    # English
-    eng = Series.load(input_dir / "eng.srt")
-    eng_clean = get_english_cleaned(eng)
-    eng_clean.save(output_dir / "eng_clean.srt")
-    eng_flatten = get_english_flattened(eng)
-    eng_flatten.save(output_dir / "eng_flatten.srt")
-    proofer = EnglishProofer(
-        test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
-    )
-    eng_proof = get_english_proofed(eng, proofer)
-    eng_proof.save(output_dir / "eng_proof.srt")
-    eng_proof_clean = get_english_cleaned(eng_proof)
-    eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
-    eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
-
-    # Bilingual 简体中文 and English
-    zho_hans_eng = get_synced_series(zho_hans, eng_proof_clean_flatten)
-    zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
-
-    # Bilingual 简体粤文 and English
-    if (output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt").exists():
-        yue_hans = Series.load(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
-        yue_hans_eng = get_synced_series(yue_hans, eng_proof_clean_flatten)
-        yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
+# Bilingual 简体粤文 and English
+if (output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt").exists():
+    yue_hans = Series.load(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+    yue_hans_eng = get_synced_series(yue_hans, eng_proof_clean_flatten)
+    yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")

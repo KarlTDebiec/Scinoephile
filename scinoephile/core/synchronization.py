@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
-from logging import debug
+from logging import debug, info
 from pprint import pformat
 
 import numpy as np
@@ -35,9 +34,9 @@ def are_series_one_to_one(one: Series, two: Series) -> bool:
     if len(one) != len(two):
         return False
 
-    overlap = get_sync_overlap_matrix(one, two)
-    if not np.all(overlap == np.diag(np.diag(overlap))):
-        return False
+    for one_sub, two_sub in zip(one, two):
+        if one_sub.start != two_sub.start or one_sub.end != two_sub.end:
+            return False
 
     return True
 
@@ -176,10 +175,10 @@ def get_synced_series(one: Series, two: Series) -> Series:
         debug(f"TWO:\n{two_str}")
 
         groups = get_sync_groups(one_block, two_block)
-        debug(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
+        info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
 
         synced_block = get_synced_series_from_groups(one_block, two_block, groups)
-        debug(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
+        info(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
     synced = get_concatenated_series(synced_blocks)
@@ -204,52 +203,81 @@ def get_synced_series_from_groups(
     synced = Series()
 
     for group in groups:
-        one_events = [one[i] for i in group[0]]
-        two_events = [two[i] for i in group[1]]
+        one_subs = [one[i] for i in group[0]]
+        two_subs = [two[i] for i in group[1]]
 
         # One to zero mapping
-        if len(one_events) == 1 and len(two_events) == 0:
-            synced.events.append(deepcopy(one_events[0]))
+        if len(one_subs) == 1 and len(two_subs) == 0:
+            synced.events.append(
+                Subtitle(
+                    start=one_subs[0].start,
+                    end=one_subs[0].end,
+                    text=one_subs[0].text,
+                )
+            )
             continue
 
         # Zero to one mapping
-        if len(one_events) == 0 and len(two_events) == 1:
-            synced.events.append(deepcopy(two_events[0]))
+        if len(one_subs) == 0 and len(two_subs) == 1:
+            synced.events.append(
+                Subtitle(
+                    start=two_subs[0].start,
+                    end=two_subs[0].end,
+                    text=two_subs[0].text,
+                )
+            )
             continue
 
         # One to one mapping
-        if len(one_events) == 1 and len(two_events) == 1:
-            synced_event = deepcopy(one_events[0])
-            synced_event.text = f"{one_events[0].text}\n{two_events[0].text}"
-            synced.events.append(synced_event)
+        if len(one_subs) == 1 and len(two_subs) == 1:
+            synced.events.append(
+                Subtitle(
+                    start=min(one_subs[0].start, two_subs[0].start),
+                    end=max(one_subs[0].end, two_subs[0].end),
+                    text=f"{one_subs[0].text}\n{two_subs[0].text}",
+                )
+            )
             continue
 
         # Many to one mapping
-        if len(one_events) > 1 and len(two_events) == 1:
-            two_text = two_events[0].text
-            start = one_events[0].start
-            end = one_events[-1].end
-            edges = np.linspace(start, end, len(one_events) + 1, dtype=int)
+        if len(one_subs) > 1 and len(two_subs) == 1:
+            two_sub = two_subs[0]
+            group_start = min(one_subs[0].start, two_sub.start)
+            group_end = max(one_subs[-1].end, two_sub.end)
+            edges = np.linspace(group_start, group_end, len(one_subs) + 1, dtype=int)
 
-            for event, start, end in zip(one_events, edges[:-1], edges[1:]):
-                text = f"{event.text}\n{two_text}"
-                synced.events.append(Subtitle(start=start, end=end, text=text))
+            for one_sub, start, end in zip(one_subs, edges[:-1], edges[1:]):
+                synced.events.append(
+                    Subtitle(
+                        start=start,
+                        end=end,
+                        text=f"{one_sub.text}\n{two_sub.text}",
+                    )
+                )
             continue
 
         # One to many mapping
-        if len(one_events) == 1 and len(two_events) > 1:
-            one_text = one_events[0].text
-            start = two_events[0].start
-            end = two_events[-1].end
-            edges = np.linspace(start, end, len(two_events) + 1, dtype=int)
+        if len(one_subs) == 1 and len(two_subs) > 1:
+            one_sub = one_subs[0]
+            group_start = min(one_sub.start, two_subs[0].start)
+            group_end = max(one_sub.end, two_subs[-1].end)
+            edges = np.linspace(group_start, group_end, len(two_subs) + 1, dtype=int)
 
-            for event, start, end in zip(two_events, edges[:-1], edges[1:]):
-                text = f"{one_text}\n{event.text}"
-                synced.events.append(Subtitle(start=start, end=end, text=text))
+            for two_sub, start, end in zip(two_subs, edges[:-1], edges[1:]):
+                synced.events.append(
+                    Subtitle(
+                        start=start,
+                        end=end,
+                        text=f"{one_sub.text}\n{two_sub.text}",
+                    )
+                )
             continue
 
         # Anything else is unsupported
-        raise ScinoephileError()
+        raise ScinoephileError(
+            f"Unsupported sync group with {len(one_subs)} subtitles from series one "
+            f"and {len(two_subs)} subtitles from series two."
+        )
 
     return synced
 
@@ -386,6 +414,8 @@ def _get_sync_groups(
 
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)
+
+    info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     return sync_groups
 

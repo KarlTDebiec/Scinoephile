@@ -13,10 +13,12 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.english.proofing import EnglishProofLLMQueryer
 from scinoephile.core.english.proofing.abcs import (
     EnglishProofQuery,
     EnglishProofTestCase,
+)
+from scinoephile.core.english.proofing.english_proof_llm_queryer import (
+    EnglishProofLLMQueryer,
 )
 from scinoephile.testing import test_data_root, update_dynamic_test_cases
 
@@ -28,15 +30,14 @@ class EnglishProofer:
         self,
         proof_test_cases: list[EnglishProofTestCase] | None = None,
         test_case_path: Path | None = None,
-        verify_if_no_changes: bool = False,
+        auto_verify: bool = False,
     ):
         """Initialize.
 
         Arguments:
             proof_test_cases: proof test cases
             test_case_path: path to file containing test cases
-            verify_if_no_changes: automatically mark test cases as verified if no
-              changes are suggested
+            auto_verify: automatically verify test cases if they meet selected criteria
         """
         if proof_test_cases is None:
             proof_test_cases = []
@@ -73,7 +74,7 @@ class EnglishProofer:
             prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
-            verify_if_no_changes=verify_if_no_changes,
+            auto_verify=auto_verify,
         )
         """Proofreads English subtitles."""
 

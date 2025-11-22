@@ -12,7 +12,7 @@ from scinoephile.core.abcs import Query
 class ProofQuery(Query):
     """Query for 粤文 proofing."""
 
-    zhongwen: str = Field(..., description="Known 中文 of subtitle")
+    zhongwen: str = Field(..., description="Known 中文 of subtitle。")
     yuewen: str = Field(..., description="Transcribed 粤文 of subtitle to proofread.")
 
     @model_validator(mode="after")

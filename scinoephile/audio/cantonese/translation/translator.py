@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
-
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 from scinoephile.core.abcs import DynamicLLMQueryer
 from scinoephile.documentation.translation import TranslateAnswer, TranslateQuery
@@ -18,7 +16,7 @@ class Translator[
 ](DynamicLLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
     """Translates 粤文 text based on corresponding 中文."""
 
-    @cached_property
+    @property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return (

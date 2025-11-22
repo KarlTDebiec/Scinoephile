@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
-
 from scinoephile.core.abcs import FixedLLMQueryer
 from scinoephile.documentation.translation.translate_answer import TranslateAnswer
 from scinoephile.documentation.translation.translate_query import TranslateQuery
@@ -15,12 +13,12 @@ from scinoephile.documentation.translation.translate_test_case import TranslateT
 class Translator(FixedLLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
     """Translates README from English to Chinese."""
 
-    @cached_property
+    @property
     def answer_example(self) -> TranslateAnswer:
         """Example answer."""
         return TranslateAnswer(updated_chinese="Updated Chinese README")
 
-    @cached_property
+    @property
     def base_system_prompt(self) -> str:
         """Base system prompt."""
         return """

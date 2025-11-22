@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from functools import cached_property
 from typing import ClassVar
 
 from pydantic import model_validator
@@ -22,7 +21,7 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
     query_cls: ClassVar[type[ShiftQuery]] = ShiftQuery
     """Query class for this test case."""
 
-    @cached_property
+    @property
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""
         return (

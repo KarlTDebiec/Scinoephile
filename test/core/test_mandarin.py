@@ -33,15 +33,6 @@ def test_get_mandarin_romanization_mnt(mnt_zho_hant: Series):
     _test_get_mandarin_romanization(mnt_zho_hant)
 
 
-def test_get_mandarin_romanization_pdp(pdp_zho_hant: Series):
-    """Test get_mandarin_romanization with PDP 繁体中文 subtitles.
-
-    Arguments:
-        pdp_zho_hant: PDP 繁体中文 series fixture
-    """
-    _test_get_mandarin_romanization(pdp_zho_hant)
-
-
 def test_get_mandarin_romanization_t(t_zho_hans: Series):
     """Test get_mandarin_romanization with T 简体中文 subtitles.
 

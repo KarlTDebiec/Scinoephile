@@ -4,19 +4,64 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.core import Series
 from scinoephile.testing import SyncTestCase, test_data_root
-from test.data.mnt.distribution import mnt_distribute_test_cases
-from test.data.mnt.merging import mnt_merge_test_cases
-from test.data.mnt.proofing import mnt_proof_test_cases
-from test.data.mnt.review import mnt_review_test_cases
-from test.data.mnt.shifting import mnt_shift_test_cases
-from test.data.mnt.translation import mnt_translate_test_cases
 
-input_dir = test_data_root / "mnt" / "input"
-output_dir = test_data_root / "mnt" / "output"
+# ruff: noqa: F401 F403
+from test.data.mnt.core.zhongwen.proofreading import (
+    test_cases as mnt_zhongwen_proofreading_test_cases,
+)
+from test.data.mnt.image.zhongwen.fusion import (
+    test_cases as mnt_zhongwen_fusion_test_cases,
+)
+
+title = Path(__file__).parent.name
+input_dir = test_data_root / title / "input"
+output_dir = test_data_root / title / "output"
+
+
+# region 简体中文 (OCR)
+@pytest.fixture
+def mnt_zho_hans_lens() -> Series:
+    """MNT 简体中文 subtitles OCRed using Google Lens OCR."""
+    return Series.load(input_dir / "zho-Hans_lens.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_paddle() -> Series:
+    """MNT 简体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hans_paddle.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_fuse() -> Series:
+    """MNT 简体中文 fused subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_fuse_proofread() -> Series:
+    """MNT 简体中文 fused and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_fuse_proofread_clean() -> Series:
+    """MNT 简体中文 fused, proofread, and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_fuse_proofread_clean_flatten() -> Series:
+    """MNT 简体中文 fused, proofread, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+
+
+# endregion
 
 
 # region 繁体中文
@@ -1230,6 +1275,12 @@ mnt_sync_test_cases = [
 # endregion
 
 ___all__ = [
+    "mnt_zho_hans_lens",
+    "mnt_zho_hans_paddle",
+    "mnt_zho_hans_fuse",
+    "mnt_zho_hans_fuse_proofread",
+    "mnt_zho_hans_fuse_proofread_clean",
+    "mnt_zho_hans_fuse_proofread_clean_flatten",
     "mnt_zho_hant",
     "mnt_zho_hant_clean",
     "mnt_zho_hant_flatten",
@@ -1240,10 +1291,6 @@ ___all__ = [
     "mnt_eng_flatten",
     "mnt_zho_hans_eng",
     "mnt_sync_test_cases",
-    "mnt_distribute_test_cases",
-    "mnt_shift_test_cases",
-    "mnt_merge_test_cases",
-    "mnt_proof_test_cases",
-    "mnt_translate_test_cases",
-    "mnt_review_test_cases",
+    "mnt_zhongwen_fusion_test_cases",
+    "mnt_zhongwen_proofreading_test_cases",
 ]

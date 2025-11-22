@@ -8,5 +8,4 @@ from __future__ import annotations
 from test.data.kob import *
 from test.data.mlamd import *
 from test.data.mnt import *
-from test.data.pdp import *
 from test.data.t import *

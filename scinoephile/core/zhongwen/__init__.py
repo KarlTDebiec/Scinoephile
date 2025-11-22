@@ -16,17 +16,17 @@ from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
 
 conversion_exclusions = {
     "嗰": "𠮶",
+    "纔": "才",
+    "喫": "吃",
 }
-half_to_full_punc_for_cleaning = deepcopy(half_to_full_punc)
-half_to_full_punc_for_cleaning["-"] = "﹣"
-half_to_full_punc_for_cleaning["－"] = "﹣"
 
 
-def get_zhongwen_cleaned(series: Series) -> Series:
+def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get 中文 series cleaned.
 
     Arguments:
         series: Series to clean
+        remove_empty: whether to remove subtitles with empty text
     Returns:
         Cleaned series
     """
@@ -34,7 +34,7 @@ def get_zhongwen_cleaned(series: Series) -> Series:
     new_events = []
     for event in series:
         text = _get_zhongwen_text_cleaned(event.text.strip())
-        if text:
+        if text or not remove_empty:
             event.text = text
             new_events.append(event)
     series.events = new_events
@@ -104,15 +104,25 @@ def get_zhongwen_text_converted(
     converter = get_zhongwen_converter(config)
     converted_text = converter.convert(text)
 
-    if apply_exclusions and config in (
-        OpenCCConfig.t2s,
-        OpenCCConfig.tw2s,
-        OpenCCConfig.hk2s,
-        OpenCCConfig.tw2sp,
-    ):
-        for trad_char, simp_char in conversion_exclusions.items():
-            if trad_char in text and simp_char in converted_text:
-                converted_text = converted_text.replace(simp_char, trad_char)
+    if apply_exclusions:
+        if config in (
+            OpenCCConfig.t2s,
+            OpenCCConfig.tw2s,
+            OpenCCConfig.hk2s,
+            OpenCCConfig.tw2sp,
+        ):
+            for trad_char, simp_char in conversion_exclusions.items():
+                if trad_char in text and simp_char in converted_text:
+                    converted_text = converted_text.replace(simp_char, trad_char)
+        if config in (
+            OpenCCConfig.s2t,
+            OpenCCConfig.s2tw,
+            OpenCCConfig.s2hk,
+            OpenCCConfig.s2twp,
+        ):
+            for trad_char, simp_char in conversion_exclusions.items():
+                if simp_char in text and trad_char in converted_text:
+                    converted_text = converted_text.replace(trad_char, simp_char)
 
     return converted_text
 
@@ -125,7 +135,7 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     Returns:
         Cleaned text
     """
-    # Revert strange substitution in pysubs2/subrip.py:66
+    # Revert substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
     # Replace '...' with '⋯'
@@ -135,8 +145,10 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
 
     # Replace half-width punctuation with full-width punctuation
-    for old_punc, new_punc in half_to_full_punc_for_cleaning.items():
+    for old_punc, new_punc in half_to_full_punc.items():
         cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
+
+    cleaned = _replace_full_width_double_quotes(cleaned)
 
     # Remove whitespace before and after specified characters
     cleaned = re.sub(r"[^\S\n]*([、「」『』《》])[^\S\n]*", r"\1", cleaned)
@@ -167,7 +179,7 @@ def _get_zhongwen_text_flattened(text: str) -> str:
 
     # Merge conversations
     conversation = re.match(
-        r"^[-﹣]?[^\S\n]*(?P<first>.+)[\s]+[-﹣][^\S\n]*(?P<second>.+)$", flattened
+        r"^[-－﹣]?[^\S\n]*(?P<first>.+)[\s]+[-－﹣][^\S\n]*(?P<second>.+)$", flattened
     )
     if conversation is not None:
         flattened = (
@@ -177,6 +189,33 @@ def _get_zhongwen_text_flattened(text: str) -> str:
     return flattened
 
 
+def _replace_full_width_double_quotes(text: str) -> str:
+    """Replace '＂' characters with angled '〝' and '〞' characters.
+
+    Arguments:
+        text: text in which to replace quotes
+    Returns:
+        text with quotes replaced
+    """
+    count = text.count("＂")
+    if count == 0 or count % 2 != 0:
+        return text
+    result: list[str] = []
+    next_quote_should_be_an_open_quote = True
+
+    for character in text:
+        if character == "＂":
+            if next_quote_should_be_an_open_quote:
+                result.append("〝")
+            else:
+                result.append("〞")
+            next_quote_should_be_an_open_quote = not next_quote_should_be_an_open_quote
+        else:
+            result.append(character)
+
+    return "".join(result)
+
+
 __all__ = [
     "OpenCCConfig",
     "get_zhongwen_cleaned",
@@ -184,5 +223,4 @@ __all__ = [
     "get_zhongwen_converter",
     "get_zhongwen_flattened",
     "get_zhongwen_text_converted",
-    "half_to_full_punc_for_cleaning",
 ]

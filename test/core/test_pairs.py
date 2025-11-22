@@ -43,16 +43,6 @@ def test_get_pair_blocks_by_pause_mnt(mnt_zho_hant: Series, mnt_eng: Series):
     _test_get_pair_blocks_by_pause(mnt_zho_hant, mnt_eng, 176)
 
 
-def test_get_pair_blocks_by_pause_pdp(pdp_yue_hant: Series, pdp_eng: Series):
-    """Test get_pair_blocks_by_pause with PDP 繁体粤文 and English subtitles.
-
-    Arguments:
-        pdp_yue_hant: PDP 繁体粤文 series fixture
-        pdp_eng: PDP English series fixture
-    """
-    _test_get_pair_blocks_by_pause(pdp_yue_hant, pdp_eng, 203)
-
-
 def test_get_pair_blocks_by_pause_t(t_zho_hans: Series, t_eng: Series):
     """Test get_pair_blocks_by_pause with T 简体中文 and English subtitles.
 

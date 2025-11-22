@@ -379,7 +379,7 @@ Tart! - Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
-荔芋火鸭礼！　　荔芋火鸭礼！
+荔芋火鸭札！　　荔芋火鸭札！
 Duck dumpling! - Duck dumpling!
 
 78
@@ -624,7 +624,7 @@ I was contemplating something academic:
 
 126
 00:08:33,833 --> 00:08:36,917
-橙，为什么会是「疴﹣烂﹣煮」呢？
+橙，为什么会是「疴－烂－煮」呢？
 How does this universe work?
 
 127
@@ -634,17 +634,17 @@ I mean, I ate 6 oranges that morning…
 
 128
 00:08:40,042 --> 00:08:44,542
-「疴」这个我明白，可是「烂﹣煮」呢？
+「疴」这个我明白，可是「烂－煮」呢？
 And my stomach wouldn't stop.
 
 129
 00:08:44,708 --> 00:08:47,125
-还有这个「芭﹣娜﹣娜」香蕉
+还有这个「芭－娜－哪」香蕉
 Then I ate 3 bananas this morning.
 
 130
 00:08:47,292 --> 00:08:50,375
-为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？
+为什么雨伞又会是「暗－芭－娜－哪」呢？
 Again my stomach wouldn't stop…
 
 131
@@ -789,7 +789,7 @@ you can probably tell how smart I am.
 
 159
 00:10:11,583 --> 00:10:13,958
-那时候我无忧无虑，万事无所谓﹣﹣
+那时候我无忧无虑，万事无所谓－－
 Nothing worried me, all things were fine.
 
 160
@@ -804,7 +804,7 @@ Shoot, Dull!
 
 162
 00:10:23,833 --> 00:10:25,625
-看着自己每天疴烂煮⋯
+看著自己每天疴烂煮⋯
 Watching myself grow and grow…
 
 163
@@ -829,7 +829,7 @@ There is a song Miss Chan loves…
 
 167
 00:10:37,000 --> 00:10:38,375
-我时常想着学习
+我时常想著学习
 Which I always want to learn…
 
 168
@@ -919,7 +919,7 @@ Offering brilliant dishes.
 
 185
 00:13:23,333 --> 00:13:25,500
-欢迎大家收看《麦太世界》
+欢迎大家收看＜麦太世界＞
 Welcome to "Mrs. Mc Can Cook".
 
 186
@@ -999,7 +999,7 @@ Isn't this a lovely bun?
 
 201
 00:14:33,292 --> 00:14:37,375
-现在要教大家一味别致小菜﹣
+现在要教大家一味别致小菜－
 A novelty today for everyone:
 
 202
@@ -1019,7 +1019,7 @@ Now we have a paper and a piece of chicken.
 
 205
 00:14:49,875 --> 00:14:54,458
-接着把鸡包纸这样子包起那块鸡
+接著把鸡包纸这样子包起那块鸡
 Use the bun paper to wrap up the chicken like this…
 
 206
@@ -1333,7 +1333,7 @@ My favourite place is Japan.
 
 268
 00:19:36,042 --> 00:19:39,208
-那儿有Disneyland和Hello Kitty Land
+那儿有 Disneyland 和 Hello Kitty Land
 They have Disneyland and Hello Kitty Land.
 
 269
@@ -1778,7 +1778,7 @@ See you!
 
 357
 00:27:44,667 --> 00:27:48,458
-妈妈，我得把出世纸带着吗？
+妈妈，我得把出世纸带著吗？
 Mother, do I need to bring my birth certificate?
 
 358
@@ -1848,7 +1848,7 @@ Passed.
 
 371
 00:32:33,417 --> 00:32:35,958
-依你说，纸是否可以包着鸡呢？
+依你说，纸是否可以包著鸡呢？
 Do you think paper is a good chicken wrapper?
 
 372
@@ -2296,7 +2296,7 @@ Master! Please be my master!
 
 461
 00:39:40,000 --> 00:39:43,750
-你唔收我做徒弟，我一世都这么跪着！
+你唔收我做徒弟，我一世都这么跪著！
 Or let me kneel here forever!
 
 462
@@ -2351,7 +2351,7 @@ Mother then tells me to kneel down.
 
 472
 00:40:34,667 --> 00:40:38,458
-妈妈跟着又念念有词的
+妈妈跟著又念念有词的
 She mumbles something when…
 
 473
@@ -2416,7 +2416,7 @@ All my mates are there too…
 
 485
 00:41:31,500 --> 00:41:35,292
-还带着成绩表，奖牌和大包
+还带著成绩表，奖牌和大包
 Bringing school report, medals and big buns.
 
 486
@@ -2766,7 +2766,7 @@ Dull… he's not a bad student.
 
 555
 00:46:39,667 --> 00:46:42,125
-黎根接着说了一大堆话⋯
+黎根接著说了一大堆话⋯
 Logan then proceeds to tell me a lot…
 
 556
@@ -3091,7 +3091,7 @@ After reading mother's letter…
 
 620
 00:50:44,000 --> 00:50:47,000
-我决定回长洲继续学捡包山
+我决定回长洲继续学抢包山
 I go back to Cheung Chau to practice.
 
 621
@@ -3131,7 +3131,7 @@ Now I'll learn the "12 Bun Snatching Hands".
 
 628
 00:51:13,000 --> 00:51:16,042
-师傅说当年师祖要出这套
+师傅说当年师祖耍出这套
 Master says these 12 hands,
 
 629
@@ -3166,7 +3166,7 @@ But I must be the ultimate pork…
 
 635
 00:51:35,708 --> 00:51:37,708
-我是一块堵住两个包
+我是一块揸住两个包
 The pork that struts about
 
 636
@@ -3355,7 +3355,7 @@ The two of us would never finish it.
 
 673
 00:53:50,417 --> 00:53:54,208
-有年圣诞节妈妈买了半只烤鸭庆祝
+有年圣诞节妈妈买了半只烧鸭庆祝
 One Christmas we celebrated with roast duck.
 
 674
@@ -3405,7 +3405,7 @@ The turkey was ready.
 
 683
 00:54:22,208 --> 00:54:24,542
-我学着妈妈，把双手涂满盐⋯
+我学著妈妈，把双手涂满盐⋯
 Following mother, with salt on both hands…
 
 684
@@ -3530,7 +3530,7 @@ As we had a late breakfast…
 
 708
 00:56:24,125 --> 00:56:27,583
-午餐时妈妈只煮了罐栗米汤
+午餐时妈妈只煮了罐粟米汤
 There was only corn soup for lunch.
 
 709
@@ -3585,7 +3585,7 @@ Sunday,
 
 719
 00:56:58,208 --> 00:57:01,542
-我大着胆跟妈妈说：不如去饮茶吖
+我大著胆跟妈妈说：不如去饮茶吖
 I boldly suggested eating out.
 
 720
@@ -3780,7 +3780,7 @@ It was at my mother's cremation.
 
 758
 00:59:08,875 --> 00:59:12,833
-那天，我看着天空几缕灰色的烟
+那天，我看著天空几缕灰色的烟
 That day, I was looking at the smoke rising up.
 
 759
@@ -3950,7 +3950,7 @@ Went to a place Hong Kong people have never heard of.
 
 792
 01:02:58,500 --> 01:03:01,625
-想着转行当运动员的茶餐厅伙记⋯
+想著转行当运动员的茶餐厅伙记⋯
 Tearoom workers, those aspiring athletes…
 
 793
@@ -4045,7 +4045,7 @@ My mates said I should take a look and maybe get rich.
 
 811
 01:04:25,417 --> 01:04:29,042
-于是我就向着这个又黑又窄的洞⋯
+于是我就向著这个又黑又窄的洞⋯
 So I crawled along the dark and narrow cave.
 
 812
@@ -4090,7 +4090,7 @@ Maybe the pirate didn't get to finish it.
 
 820
 01:05:13,417 --> 01:05:24,792
-「可叹是我依然觉得，不够顶肚」
+「可叹是我依然觉饿，不够顶肚」
 "Still left me hungry."
 
 821
@@ -4115,7 +4115,7 @@ Bun in hand, I suddenly realized…
 
 825
 01:06:02,333 --> 01:06:06,292
-原来有些事情， 没有就是没有
+原来有些事情，没有就是没有
 There are things that cannot be forced.
 
 826
@@ -4203,7 +4203,7 @@ What shall I be?
 "Fat, Still"
 
 843
-01:07:42,250 --> 01:07:44,542
+01:07:39,792 --> 01:07:44,542
 橙
 "Powerful"
 
@@ -4229,7 +4229,7 @@ Negative property.
 
 848
 01:08:34,042 --> 01:08:38,292
-脚爪是真的大，比一节瓜还要大
+脚瓜是真的大，比一节瓜还要大
 With a pair of really thick calves.
 
 849
@@ -4609,7 +4609,7 @@ Sorry, Quickie is gone.
 
 924
 01:13:11,667 --> 01:13:14,375
-太过分了吧？你们究竟有吃的没？
+太过份了吧？你们究竟有吃的没？
 This is too much! Is there anything we can eat here?
 
 925

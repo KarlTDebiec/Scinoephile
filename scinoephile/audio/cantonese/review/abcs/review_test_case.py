@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from abc import ABC
-from functools import cached_property
 from typing import ClassVar
 
 from pydantic import create_model, model_validator
@@ -24,7 +23,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     query_cls: ClassVar[type[ReviewQuery]]
     answer_cls: ClassVar[type[ReviewAnswer]]
 
-    @cached_property
+    @property
     def size(self) -> int:
         """Get size of the test case."""
         zw_idxs = [
@@ -34,7 +33,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
         ]
         return max(zw_idxs) + 1
 
-    @cached_property
+    @property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
         lines = (

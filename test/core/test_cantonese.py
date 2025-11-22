@@ -33,15 +33,6 @@ def test_get_cantonese_romanization_kob(kob_yue_hant: Series):
     _test_get_cantonese_romanization(kob_yue_hant)
 
 
-def test_get_cantonese_romanization_pdp(pdp_yue_hant: Series):
-    """Test get_cantonese_romanization with PDP 繁体粤文 subtitles.
-
-    Arguments:
-        pdp_yue_hant: PDP 繁体粤文 series fixture
-    """
-    _test_get_cantonese_romanization(pdp_yue_hant)
-
-
 @pytest.mark.parametrize(
     ("text", "expected"),
     [

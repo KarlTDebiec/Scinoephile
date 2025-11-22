@@ -107,16 +107,6 @@ def test_get_zhongwen_cleaned_mnt(mnt_zho_hant: Series, mnt_zho_hant_clean: Seri
     _test_get_zhongwen_cleaned(mnt_zho_hant, mnt_zho_hant_clean)
 
 
-def test_get_zhongwen_cleaned_pdp(pdp_yue_hant: Series, pdp_yue_hant_clean: Series):
-    """Test get_zhongwen_cleaned with PDP 繁体粤文 subtitles.
-
-    Arguments:
-        pdp_yue_hant: PDP 繁体粤文 series fixture
-        pdp_yue_hant_clean: Expected cleaned PDP 繁体粤文 series fixture
-    """
-    _test_get_zhongwen_cleaned(pdp_yue_hant, pdp_yue_hant_clean)
-
-
 def test_get_zhongwen_cleaned_t(t_zho_hans: Series, t_zho_hans_clean: Series):
     """Test get_zhongwen_cleaned with T 簡體中文 subtitles.
 
@@ -149,16 +139,6 @@ def test_get_zhongwen_flattened_mnt(mnt_zho_hant: Series, mnt_zho_hant_flatten: 
         mnt_zho_hant_flatten: Expected flattened MNT 繁体中文 series fixture
     """
     _test_get_zhongwen_flattened(mnt_zho_hant, mnt_zho_hant_flatten)
-
-
-def test_get_zhongwen_flattened_pdp(pdp_yue_hant: Series, pdp_yue_hant_flatten: Series):
-    """Test get_zhongwen_flattened with PDP 繁体粤文 subtitles.
-
-    Arguments:
-        pdp_yue_hant: PDP 繁体粤文 series fixture
-        pdp_yue_hant_flatten: Expected flattened PDP 繁体粤文 series fixture
-    """
-    _test_get_zhongwen_flattened(pdp_yue_hant, pdp_yue_hant_flatten)
 
 
 def test_get_zhongwen_flattened_t(t_zho_hans: Series, t_zho_hans_flatten: Series):
@@ -197,18 +177,6 @@ def test_get_zhongwen_converted_mnt(
         mnt_zho_hant_simplify: Expected simplified MNT 繁体中文 series fixture
     """
     _test_get_zhongwen_converted(mnt_zho_hant, OpenCCConfig.t2s, mnt_zho_hant_simplify)
-
-
-def test_get_zhongwen_converted_pdp(
-    pdp_yue_hant: Series, pdp_yue_hant_simplify: Series
-):
-    """Test get_zhongwen_converted with PDP 繁体粤文 subtitles.
-
-    Arguments:
-        pdp_yue_hant: PDP 繁体粤文 series fixture
-        pdp_yue_hant_simplify: Expected simplified PDP 繁体粤文 series fixture
-    """
-    _test_get_zhongwen_converted(pdp_yue_hant, OpenCCConfig.hk2s, pdp_yue_hant_simplify)
 
 
 def test_get_zhongwen_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
