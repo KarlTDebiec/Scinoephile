@@ -14,11 +14,12 @@ from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.core.series import Series
 
 
-def get_english_cleaned(series: Series) -> Series:
+def get_english_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get English series cleaned.
 
     Arguments:
         series: Series to clean
+        remove_empty: whether to remove subtitles with empty text
     Returns:
         cleaned Series
     """
@@ -26,7 +27,7 @@ def get_english_cleaned(series: Series) -> Series:
     new_events = []
     for event in series:
         text = _get_english_text_cleaned(event.text.strip())
-        if text:
+        if text or not remove_empty:
             event.text = text
             new_events.append(event)
     series.events = new_events
