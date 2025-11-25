@@ -16,6 +16,7 @@ from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
 from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer
+from scinoephile.core.abcs.llm_queryer import LLMQueryer
 from scinoephile.testing.sync_test_case import SyncTestCase
 
 test_data_root = package_root.parent / "test" / "data"
@@ -94,7 +95,7 @@ def skip_if_codex(inner: partial | None = None) -> partial:
     return partial(param, marks=marks)
 
 
-async def update_test_cases(path: Path, variable: str, queryer: FixedLLMQueryer):
+async def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
     """Update test cases.
 
     Arguments:

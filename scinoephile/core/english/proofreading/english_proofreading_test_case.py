@@ -84,8 +84,8 @@ class EnglishProofreadingTestCase[
         Raises:
             ScinoephileError: if missing indices are out of range
         """
-        query_cls = cls.get_query_cls(size)
-        answer_cls = cls.get_answer_cls(size)
+        query_cls = cls.query_cls.get_query_cls(size)
+        answer_cls = cls.answer_cls.get_answer_cls(size)
         model = create_model(
             f"{cls.__name__}_{size}",
             __base__=(query_cls, answer_cls, cls[query_cls, answer_cls]),

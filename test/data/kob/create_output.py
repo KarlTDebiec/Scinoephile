@@ -125,7 +125,7 @@ if "English (OCR)" in actions:
             / "proofreading.py",
             auto_verify=True,
         ),
-        stop_at_idx=2,
+        stop_at_idx=20,
     )
     eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 

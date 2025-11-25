@@ -46,6 +46,16 @@ class EnglishProofreadingLLMQueryer[
         Do not remove newlines ('\\n').
         """
 
+    @property
+    def encountered_test_cases_source_str(self) -> str:
+        """String representation of all test cases in the log."""
+        test_case_log_str = "[\n"
+        for test_case in self._encountered_test_cases.values():
+            source_str: str = test_case.source_str
+            test_case_log_str += f"{source_str},\n"
+        test_case_log_str += "]"
+        return test_case_log_str
+
     @staticmethod
     def get_answer_example(answer_cls: type[TAnswer]) -> TAnswer:
         """Example answer."""
