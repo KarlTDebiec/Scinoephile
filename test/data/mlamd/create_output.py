@@ -33,7 +33,11 @@ from test.data.mnt import (
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
-from test.data.t import t_zhongwen_fusion_test_cases, t_zhongwen_proofreading_test_cases
+from test.data.t import (
+    t_english_fusion_test_cases,
+    t_zhongwen_fusion_test_cases,
+    t_zhongwen_proofreading_test_cases,
+)
 
 title = Path(__file__).parent.name
 input_dir = test_data_root / title / "input"
@@ -104,7 +108,9 @@ if "English (OCR)" in actions:
         eng_tesseract,
         eng_lens,
         EnglishFuser(
-            test_cases=kob_english_fusion_test_cases + mnt_english_fusion_test_cases,
+            test_cases=kob_english_fusion_test_cases
+            + mnt_english_fusion_test_cases
+            + t_english_fusion_test_cases,
             test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
             auto_verify=True,
         ),

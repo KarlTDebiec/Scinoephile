@@ -31,7 +31,11 @@ from test.data.mlamd import (
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
-from test.data.t import t_zhongwen_fusion_test_cases, t_zhongwen_proofreading_test_cases
+from test.data.t import (
+    t_english_fusion_test_cases,
+    t_zhongwen_fusion_test_cases,
+    t_zhongwen_proofreading_test_cases,
+)
 
 title = Path(__file__).parent.name
 input_dir = test_data_root / title / "input"
@@ -39,8 +43,8 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 actions = {
     # "简体中文 (OCR)",
-    # "繁體中文",
     "English (OCR)",
+    # "繁體中文 (SRT)",
     # "Bilingual 简体中文 and English",
 }
 
@@ -92,7 +96,25 @@ if "简体中文 (OCR)" in actions:
         output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean_flatten.srt"
     )
 
-if "繁體中文" in actions:
+if "English (OCR)" in actions:
+    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
+    eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
+    eng_lens = Series.load(input_dir / "eng_lens.srt")
+    eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
+    eng_fuse = get_english_ocr_fused(
+        eng_tesseract,
+        eng_lens,
+        EnglishFuser(
+            test_cases=kob_english_fusion_test_cases
+            + mlamd_english_fusion_test_cases
+            + t_english_fusion_test_cases,
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+            auto_verify=True,
+        ),
+    )
+    eng_fuse.save(output_dir / "eng_fuse.srt")
+
+if "繁體中文 (SRT)" in actions:
     zho_hant = Series.load(input_dir / "zho-Hant.srt")
     zho_hant_clean = get_zhongwen_cleaned(zho_hant)
     zho_hant_clean.save(output_dir / "zho-Hant_clean.srt")
@@ -106,23 +128,6 @@ if "繁體中文" in actions:
     zho_hant_clean_flatten_simplify.save(
         output_dir / "zho-Hant_clean_flatten_simplify.srt"
     )
-
-if "English (OCR)" in actions:
-    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
-    eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
-    eng_lens = Series.load(input_dir / "eng_lens.srt")
-    eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
-    eng_fuse = get_english_ocr_fused(
-        eng_tesseract,
-        eng_lens,
-        EnglishFuser(
-            test_cases=kob_english_fusion_test_cases + mlamd_english_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
-            auto_verify=True,
-        ),
-    )
-    eng_fuse.save(output_dir / "eng_fuse.srt")
-
 
 # if "Bilingual 简体中文 and English" in actions:
 #     zho_hans_eng = get_synced_series(zho_hant_clean_flatten_simplify, eng_clean_flatten)

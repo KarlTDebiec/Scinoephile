@@ -16,6 +16,9 @@ from test.data.t.core.english.proof import t_english_proof_test_cases
 from test.data.t.core.zhongwen.proofreading import (
     test_cases as t_zhongwen_proofreading_test_cases,
 )
+from test.data.t.image.english.fusion import (
+    test_cases as t_english_fusion_test_cases,
+)
 from test.data.t.image.zhongwen.fusion import (
     test_cases as t_zhongwen_fusion_test_cases,
 )
@@ -171,6 +174,7 @@ ___all__ = [
     "t_eng_proof",
     "t_eng_proof_clean_flatten",
     "t_zho_hans_eng",
+    "t_english_fusion_test_cases",
     "t_english_proof_test_cases",
     "t_zhongwen_fusion_test_cases",
     "t_zhongwen_proofreading_test_cases",
