@@ -1,23 +1,31 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreads English subtitles."""
+"""Queries LLM to proofread English subtitles."""
 
 from __future__ import annotations
 
 from scinoephile.core.abcs import DynamicLLMQueryer
-from scinoephile.core.english.proofing.abcs import (
-    EnglishProofAnswer,
-    EnglishProofQuery,
-    EnglishProofTestCase,
+from scinoephile.core.english.proofreading.english_proofreading_answer import (
+    EnglishProofreadingAnswer,
+)
+from scinoephile.core.english.proofreading.english_proofreading_query import (
+    EnglishProofreadingQuery,
+)
+from scinoephile.core.english.proofreading.english_proofreading_test_case import (
+    EnglishProofreadingTestCase,
 )
 
 
-class EnglishProofLLMQueryer[
-    TQuery: EnglishProofQuery,
-    TAnswer: EnglishProofAnswer,
-    TTestCase: EnglishProofTestCase,
-](DynamicLLMQueryer[EnglishProofQuery, EnglishProofAnswer, EnglishProofTestCase]):
-    """Proofreads English subtitles."""
+class EnglishProofreadingLLMQueryer[
+    TQuery: EnglishProofreadingQuery,
+    TAnswer: EnglishProofreadingAnswer,
+    TTestCase: EnglishProofreadingTestCase,
+](
+    DynamicLLMQueryer[
+        EnglishProofreadingQuery, EnglishProofreadingAnswer, EnglishProofreadingTestCase
+    ]
+):
+    """Queries LLM to proofread English subtitles."""
 
     @property
     def base_system_prompt(self) -> str:

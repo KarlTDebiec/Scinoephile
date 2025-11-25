@@ -2,7 +2,6 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code related to 中文 proofreading."""
 
-import asyncio
 from typing import Any
 
 from scinoephile.core.series import Series

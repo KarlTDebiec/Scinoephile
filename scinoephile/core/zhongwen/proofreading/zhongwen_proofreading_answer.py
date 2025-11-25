@@ -22,7 +22,7 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
         Arguments:
             size: number of subtitles
         Returns:
-            ZhongwenProofAnswer type with appropriate fields
+            ZhongwenProofreadingAnswer type with appropriate fields
         """
         answer_fields = {}
         for idx in range(size):

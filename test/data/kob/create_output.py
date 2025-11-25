@@ -8,11 +8,10 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.english import (
-    EnglishProofer,
-    get_english_cleaned,
-    get_english_flattened,
-    get_english_proofed,
+from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.english.proofreading import (
+    EnglishProofreader,
+    get_english_proofread,
 )
 from scinoephile.core.zhongwen import (
     OpenCCConfig,
@@ -112,6 +111,24 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
+    eng_fuse_proofread = get_english_proofread(
+        eng_fuse,
+        EnglishProofreader(
+            test_cases=[],
+            # mlamd_english_proofreading_test_cases
+            # + mnt_english_proofreading_test_cases
+            # + t_english_proofreading_test_cases,
+            test_case_path=test_data_root
+            / title
+            / "core"
+            / "english"
+            / "proofreading.py",
+            auto_verify=True,
+        ),
+        stop_at_idx=2,
+    )
+    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+
 
 if "简体粵文 (SRT)" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
@@ -127,14 +144,13 @@ if "繁體粵文 (SRT)" in actions:
     yue_hant_simplify = get_zhongwen_converted(yue_hant, OpenCCConfig.hk2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
-
 if "English (SRT)" in actions:
     eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
-    proofer = EnglishProofer(
+    proofer = EnglishProofreader(
         test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
     )
     eng_proof = get_english_proofed(eng, proofer)

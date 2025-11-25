@@ -1,7 +1,6 @@
-"""中文 fusion test cases."""
-
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""T 中文 fusion test cases."""
 
 from __future__ import annotations
 
@@ -2169,7 +2168,7 @@ test_cases = [
         verified=True,
     ),
 ]  # test_cases
-"""中文 fusion test cases."""
+"""T 中文 fusion test cases."""
 
 __all__ = [
     "test_cases",

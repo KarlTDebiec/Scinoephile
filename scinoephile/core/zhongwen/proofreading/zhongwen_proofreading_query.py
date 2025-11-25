@@ -22,7 +22,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
         Arguments:
             size: number of subtitles
         Returns:
-            ZhongwenProofQuery type with appropriate fields
+            ZhongwenProofreadingQuery type with appropriate fields
         """
         query_fields = {}
         for idx in range(size):

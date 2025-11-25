@@ -174,6 +174,7 @@ from __future__ import annotations
 
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 
+# noinspection PyArgumentList
 test_cases = []  # test_cases
 """中文 fusion test cases."""
 

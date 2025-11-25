@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreads 中文 subtitles."""
+"""Proofreads English subtitles."""
 
 from __future__ import annotations
 
@@ -13,46 +13,49 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_queryer import (
-    ZhongwenProofreadingLLMQueryer,
+from scinoephile.core.english.proofreading.english_proofreading_llm_queryer import (
+    EnglishProofreadingLLMQueryer,
 )
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
-    ZhongwenProofreadingQuery,
+from scinoephile.core.english.proofreading.english_proofreading_query import (
+    EnglishProofreadingQuery,
 )
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
-    ZhongwenProofreadingTestCase,
+from scinoephile.core.english.proofreading.english_proofreading_test_case import (
+    EnglishProofreadingTestCase,
 )
-from scinoephile.testing import test_data_root, update_dynamic_test_cases
+from scinoephile.testing import (
+    test_data_root,
+    update_test_cases,
+)
 
 try:
     # noinspection PyUnusedImports
-    from test.data.kob import kob_zhongwen_proofreading_test_cases
+    from test.data.kob import kob_english_proofreading_test_cases
 
     # noinspection PyUnusedImports
-    from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
+    from test.data.mlamd import mlamd_english_proofreading_test_cases
 
     # noinspection PyUnusedImports
-    from test.data.mnt import mnt_zhongwen_proofreading_test_cases
+    from test.data.mnt import mnt_english_proofreading_test_cases
 
     # noinspection PyUnusedImports
-    from test.data.t import t_zhongwen_proofreading_test_cases
+    from test.data.t import t_english_proofreading_test_cases
 
     default_test_cases = (
-        kob_zhongwen_proofreading_test_cases
-        + mlamd_zhongwen_proofreading_test_cases
-        + mnt_zhongwen_proofreading_test_cases
-        + t_zhongwen_proofreading_test_cases
+        kob_english_proofreading_test_cases
+        + mlamd_english_proofreading_test_cases
+        + mnt_english_proofreading_test_cases
+        + t_english_proofreading_test_cases
     )
 except ImportError:
     default_test_cases = []
 
 
-class ZhongwenProofreader:
-    """Proofreads 中文 subtitles."""
+class EnglishProofreader:
+    """Proofreads English subtitles."""
 
     def __init__(
         self,
-        test_cases: list[ZhongwenProofreadingTestCase] | None = None,
+        test_cases: list[EnglishProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
     ):
@@ -82,19 +85,19 @@ class ZhongwenProofreader:
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        self.llm_queryer = ZhongwenProofreadingLLMQueryer(
+        self.llm_queryer = EnglishProofreadingLLMQueryer(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Proofreads 中文 subtitles."""
+        """Proofreads English subtitles."""
 
     def proofread(self, series: Series, stop_at_idx: int | None = None):
-        """Proofread 中文 subtitles.
+        """Proofread English subtitles.
 
         Arguments:
-            series: 中文 subtitles
+            series: English subtitles
             stop_at_idx: stop processing at this index
         """
         # Ensure test case file exists
@@ -110,7 +113,7 @@ class ZhongwenProofreader:
                 break
 
             # Query for proofreading
-            test_case_cls = ZhongwenProofreadingTestCase.get_test_case_cls(len(block))
+            test_case_cls = EnglishProofreadingTestCase.get_test_case_cls(len(block))
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
             query = self.get_query(block.to_series(), query_cls)
@@ -118,23 +121,19 @@ class ZhongwenProofreader:
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                if revised := getattr(answer, f"xiugai_{sub_idx + 1}"):
+                if revised := getattr(answer, f"revised_{sub_idx + 1}"):
                     subtitle.text = revised
                 output_series.append(subtitle)
 
-            if self.test_case_path is not None:
-                asyncio.run(
-                    update_dynamic_test_cases(
-                        self.test_case_path,
-                        f"test_case_block_{block_idx}",
-                        self.llm_queryer,
-                    )
-                )
             info(
                 f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
                 f"{block.to_series().to_simple_string()}"
             )
             all_output_series[block_idx] = output_series
+        if self.test_case_path is not None:
+            asyncio.run(
+                update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+            )
 
         # Concatenate and return
         output_series = get_concatenated_series(
@@ -151,35 +150,26 @@ class ZhongwenProofreader:
             test_case_path: path to file to create
             n_blocks: number of blocks for which to create test cases
         """
-        header = '''"""中文 proofreading test cases."""
+        contents = '''"""English proofreading test cases."""
 
 from __future__ import annotations
 
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase'''
-        blocks = "\n".join(
-            f"# noinspection PyArgumentList\n"
-            f"test_case_block_{i} = None  # test_case_block_{i}"
-            for i in range(n_blocks)
-        )
-        footer = '''
-test_cases: list[ZhongwenProofreadingTestCase] = [
-    test_case
-    for name, test_case in globals().items()
-    if name.startswith("test_case_block_") and test_case is not None
-]
-"""中文 proofreading test cases."""
+from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+
+# noinspection PyArgumentList
+test_cases = []  # test_cases
+"""English proofreading test cases."""
 
 __all__ = [
     "test_cases",
 ]'''
-        contents = f"{header}\n\n{blocks}\n\n{footer}\n"
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
 
     @staticmethod
     def get_query(
-        series: Series, query_cls: type[ZhongwenProofreadingQuery]
-    ) -> ZhongwenProofreadingQuery:
+        series: Series, query_cls: type[EnglishProofreadingQuery]
+    ) -> EnglishProofreadingQuery:
         """Get the query for a given series.
 
         Arguments:
@@ -190,6 +180,6 @@ __all__ = [
         """
         kwargs = {}
         for idx, subtitle in enumerate(series.events, 1):
-            kwargs[f"zimu_{idx}"] = re.sub(r"\\N", r"\n", subtitle.text).strip()
+            kwargs[f"subtitle_{idx}"] = re.sub(r"\\N", r"\n", subtitle.text).strip()
 
         return query_cls(**kwargs)

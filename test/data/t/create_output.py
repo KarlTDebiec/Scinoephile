@@ -9,7 +9,7 @@ from pathlib import Path
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import (
-    EnglishProofer,
+    EnglishProofreader,
     get_english_cleaned,
     get_english_flattened,
     get_english_proofed,
@@ -143,7 +143,7 @@ if "English (SRT)" in actions:
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
-    proofer = EnglishProofer(
+    proofer = EnglishProofreader(
         test_case_path=test_data_root / "t" / "core" / "english" / "proof.py",
     )
     eng_proof = get_english_proofed(eng, proofer)

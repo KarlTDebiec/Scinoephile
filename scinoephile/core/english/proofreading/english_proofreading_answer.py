@@ -1,27 +1,28 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English proof answers."""
+"""Abstract base class for English proofreading answers."""
 
 from __future__ import annotations
 
 from abc import ABC
+from typing import Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
 
 
-class EnglishProofAnswer(Answer, ABC):
-    """Abstract base class for English proof answers."""
+class EnglishProofreadingAnswer(Answer, ABC):
+    """Abstract base class for English proofreading answers."""
 
     @classmethod
-    def get_answer_cls(cls, size: int) -> type[EnglishProofAnswer]:
-        """Get answer class for English proofing.
+    def get_answer_cls(cls, size: int) -> type[Self]:
+        """Get answer class for English proofreading.
 
         Arguments:
             size: number of subtitles
         Returns:
-            EnglishProofAnswer type with appropriate fields
+            EnglishProofreadingAnswer type with appropriate fields
         """
         answer_fields = {}
         for idx in range(size):
@@ -37,8 +38,4 @@ class EnglishProofAnswer(Answer, ABC):
                     max_length=1000,
                 ),
             )
-        return create_model(
-            f"{cls.__name__}_{size}",
-            __base__=EnglishProofAnswer,
-            **answer_fields,
-        )
+        return create_model(f"{cls.__name__}_{size}", __base__=cls, **answer_fields)

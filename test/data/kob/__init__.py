@@ -12,7 +12,6 @@ from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
-from test.data.kob.core.english.proof import kob_english_proof_test_cases
 from test.data.kob.core.zhongwen.proofreading import (
     test_cases as kob_zhongwen_proofreading_test_cases,
 )

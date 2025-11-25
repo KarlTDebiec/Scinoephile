@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English proof test cases."""
+"""Abstract base class for English proofreading test cases."""
 
 from __future__ import annotations
 
@@ -10,20 +10,23 @@ from typing import ClassVar
 from pydantic import create_model, model_validator
 
 from scinoephile.core.abcs import TestCase
-from scinoephile.core.english.proofing.abcs.english_proof_answer import (
-    EnglishProofAnswer,
+from scinoephile.core.english.proofreading.english_proofreading_answer import (
+    EnglishProofreadingAnswer,
 )
-from scinoephile.core.english.proofing.abcs.english_proof_query import EnglishProofQuery
+from scinoephile.core.english.proofreading.english_proofreading_query import (
+    EnglishProofreadingQuery,
+)
 from scinoephile.core.models import format_field
 
 
-class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswer](
-    TestCase[TQuery, TAnswer], ABC
-):
-    """Abstract base class for English proof test cases."""
+class EnglishProofreadingTestCase[
+    TQuery: EnglishProofreadingQuery,
+    TAnswer: EnglishProofreadingAnswer,
+](TestCase[TQuery, TAnswer], ABC):
+    """Abstract base class for English proofreading test cases."""
 
-    query_cls: ClassVar[type[EnglishProofQuery]]
-    answer_cls: ClassVar[type[EnglishProofAnswer]]
+    query_cls: ClassVar[type[EnglishProofreadingQuery]] = EnglishProofreadingQuery
+    answer_cls: ClassVar[type[EnglishProofreadingAnswer]] = EnglishProofreadingAnswer
 
     @property
     def noop(self) -> bool:
@@ -47,7 +50,9 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
     @property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
-        lines = [f"{EnglishProofTestCase.__name__}.get_test_case_cls({self.size})("]
+        lines = [
+            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls({self.size})("
+        ]
         for field in self.query_fields:
             value = getattr(self, field)
             lines.append(format_field(field, value))
@@ -66,26 +71,24 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
     def get_test_case_cls(
         cls,
         size: int,
-    ) -> type[EnglishProofTestCase[EnglishProofQuery, EnglishProofAnswer]]:
+    ) -> type[
+        EnglishProofreadingTestCase[EnglishProofreadingQuery, EnglishProofreadingAnswer]
+    ]:
         """Get test case class for English proofing.
 
         Arguments:
             size: number of subtitles
         Returns:
-            EnglishProofTestCase type with appropriate EnglishProofQuery and
-            EnglishProofAnswer models
+            EnglishProofreadingTestCase type with appropriate EnglishProofreadingQuery
+            and EnglishProofAnswer models
         Raises:
             ScinoephileError: if missing indices are out of range
         """
-        query_cls = EnglishProofQuery.get_query_cls(size)
-        answer_cls = EnglishProofAnswer.get_answer_cls(size)
+        query_cls = cls.get_query_cls(size)
+        answer_cls = cls.get_answer_cls(size)
         model = create_model(
             f"{cls.__name__}_{size}",
-            __base__=(
-                query_cls,
-                answer_cls,
-                EnglishProofTestCase[query_cls, answer_cls],
-            ),
+            __base__=(query_cls, answer_cls, cls[query_cls, answer_cls]),
             __module__=cls.__module__,
         )
         model.query_cls = query_cls
@@ -110,7 +113,7 @@ class EnglishProofTestCase[TQuery: EnglishProofQuery, TAnswer: EnglishProofAnswe
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> EnglishProofTestCase:
+    def validate_test_case(self) -> EnglishProofreadingTestCase:
         """Ensure query and answer are consistent with one another."""
         for idx in range(1, self.size + 1):
             subtitle = getattr(self, f"subtitle_{idx}")

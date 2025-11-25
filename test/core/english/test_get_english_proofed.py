@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_proofed
-from scinoephile.core.english.proofing import EnglishProofLLMQueryer
+from scinoephile.core.english.proofreading import EnglishProofreadingLLMQueryer
 from scinoephile.testing import test_data_root
 from test.data.kob import kob_english_proof_test_cases
 from test.data.mlamd import mlamd_english_proof_test_cases
@@ -16,9 +16,9 @@ from test.data.t import t_english_proof_test_cases
 
 
 @pytest.fixture
-def english_proof_llm_queryer_few_shot() -> EnglishProofLLMQueryer:
+def english_proof_llm_queryer_few_shot() -> EnglishProofreadingLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return EnglishProofLLMQueryer(
+    return EnglishProofreadingLLMQueryer(
         prompt_test_cases=[tc for tc in kob_english_proof_test_cases if tc.prompt]
         + [tc for tc in mlamd_english_proof_test_cases if tc.prompt]
         + [tc for tc in t_english_proof_test_cases if tc.prompt],
@@ -27,9 +27,9 @@ def english_proof_llm_queryer_few_shot() -> EnglishProofLLMQueryer:
 
 
 @pytest.fixture
-def english_proof_llm_queryer_zero_shot() -> EnglishProofLLMQueryer:
+def english_proof_llm_queryer_zero_shot() -> EnglishProofreadingLLMQueryer:
     """LLMQueryer with no examples."""
-    return EnglishProofLLMQueryer(cache_dir_path=test_data_root / "cache")
+    return EnglishProofreadingLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
 def _test_get_english_proofed(series: Series, expected: Series):

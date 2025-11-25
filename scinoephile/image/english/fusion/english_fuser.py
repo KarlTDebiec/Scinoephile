@@ -180,6 +180,7 @@ from __future__ import annotations
 
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 
+# noinspection PyArgumentList
 test_cases = []  # test_cases
 """English fusion test cases."""
 

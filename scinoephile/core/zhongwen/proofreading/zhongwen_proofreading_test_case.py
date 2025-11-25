@@ -79,8 +79,8 @@ class ZhongwenProofreadingTestCase[
         Arguments:
             size: number of subtitles
         Returns:
-            ZhongwenProofTestCase type with appropriate ZhongwenProofQuery and
-            ZhongwenProofAnswer models
+            ZhongwenProofreadingTestCase type with appropriate ZhongwenProofreadingQuery
+            and ZhongwenProofreadingAnswer models
         Raises:
             ScinoephileError: if missing indices are out of range
         """
