@@ -29,6 +29,7 @@ from test.data.kob import (
     kob_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
+    mnt_english_fusion_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
@@ -103,7 +104,7 @@ if "English (OCR)" in actions:
         eng_tesseract,
         eng_lens,
         EnglishFuser(
-            test_cases=kob_english_fusion_test_cases,
+            test_cases=kob_english_fusion_test_cases + mnt_english_fusion_test_cases,
             test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
             auto_verify=True,
         ),

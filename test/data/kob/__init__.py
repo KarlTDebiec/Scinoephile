@@ -95,19 +95,19 @@ def kob_yue_hant_simplify() -> Series:
 @pytest.fixture
 def kob_eng_lens() -> Series:
     """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "english_lens.srt")
+    return Series.load(input_dir / "eng_lens.srt")
 
 
 @pytest.fixture
 def kob_eng_tesseract() -> Series:
     """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "english_tesseract.srt")
+    return Series.load(input_dir / "eng_tesseract.srt")
 
 
 @pytest.fixture
 def kob_eng_fuse() -> Series:
     """KOB English fused subtitles."""
-    return Series.load(output_dir / "english_fuse.srt")
+    return Series.load(output_dir / "eng_fuse.srt")
 
 
 # English

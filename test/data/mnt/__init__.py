@@ -15,6 +15,9 @@ from scinoephile.testing import SyncTestCase, test_data_root
 from test.data.mnt.core.zhongwen.proofreading import (
     test_cases as mnt_zhongwen_proofreading_test_cases,
 )
+from test.data.mnt.image.english.fusion import (
+    test_cases as mnt_english_fusion_test_cases,
+)
 from test.data.mnt.image.zhongwen.fusion import (
     test_cases as mnt_zhongwen_fusion_test_cases,
 )
@@ -24,7 +27,7 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 
 
-# region 简体中文 (OCR)
+# 简体中文 (OCR)
 @pytest.fixture
 def mnt_zho_hans_lens() -> Series:
     """MNT 简体中文 subtitles OCRed using Google Lens OCR."""
@@ -61,10 +64,7 @@ def mnt_zho_hans_fuse_proofread_clean_flatten() -> Series:
     return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
 
 
-# endregion
-
-
-# region 繁体中文
+# 繁体中文
 @pytest.fixture
 def mnt_zho_hant() -> Series:
     """MNT 繁体中文 series."""
@@ -95,45 +95,30 @@ def mnt_zho_hant_clean_flatten_simplify() -> Series:
     return Series.load(output_dir / "zho-Hant_clean_flatten_simplify.srt")
 
 
-# endregion
-
-
-# region English
+# English (OCR)
 @pytest.fixture
-def mnt_eng() -> Series:
-    """MNT English series."""
-    return Series.load(input_dir / "eng.srt")
+def mnt_eng_lens() -> Series:
+    """MNT English subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "eng_lens.srt")
 
 
 @pytest.fixture
-def mnt_eng_clean() -> Series:
-    """MNT English cleaned series."""
-    return Series.load(output_dir / "eng_clean.srt")
+def mnt_eng_tesseract() -> Series:
+    """MNT English subtitles OCRed using Tesseract."""
+    return Series.load(input_dir / "eng_tesseract.srt")
 
 
 @pytest.fixture
-def mnt_eng_flatten() -> Series:
-    """MNT English flattened series."""
-    return Series.load(output_dir / "eng_flatten.srt")
+def mnt_eng_fuse() -> Series:
+    """MNT English fused subtitles."""
+    return Series.load(output_dir / "eng_fuse.srt")
 
 
-@pytest.fixture
-def mnt_eng_clean_flatten() -> Series:
-    """MNT English cleaned and flattened series."""
-    return Series.load(output_dir / "eng_clean_flatten.srt")
-
-
-# endregion
-
-
-# region Bilingual 简体中文 and English
+# Bilingual 简体中文 and English
 @pytest.fixture
 def mnt_zho_hans_eng() -> Series:
     """MNT Bilingual 简体中文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
-
-
-# endregion
 
 
 # region 简体中文 and English synchronization test cases
@@ -1286,11 +1271,12 @@ ___all__ = [
     "mnt_zho_hant_flatten",
     "mnt_zho_hant_simplify",
     "mnt_zho_hant_clean_flatten_simplify",
-    "mnt_eng",
-    "mnt_eng_clean",
-    "mnt_eng_flatten",
+    "mnt_eng_lens",
+    "mnt_eng_tesseract",
+    "mnt_eng_fuse",
     "mnt_zho_hans_eng",
     "mnt_sync_test_cases",
+    "mnt_english_fusion_test_cases",
     "mnt_zhongwen_fusion_test_cases",
     "mnt_zhongwen_proofreading_test_cases",
 ]

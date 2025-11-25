@@ -120,7 +120,6 @@ if "English (OCR)" in actions:
             test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
             auto_verify=True,
         ),
-        stop_at_idx=100,
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
 

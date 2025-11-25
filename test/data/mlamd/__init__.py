@@ -75,19 +75,19 @@ def mlamd_zho_hans_fuse_proofread_clean_flatten() -> Series:
 @pytest.fixture
 def mlamd_eng_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "english_lens.srt")
+    return Series.load(input_dir / "eng_lens.srt")
 
 
 @pytest.fixture
 def mlamd_eng_tesseract() -> Series:
     """MLAMD English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "english_tesseract.srt")
+    return Series.load(input_dir / "eng_tesseract.srt")
 
 
 @pytest.fixture
 def mlamd_eng_fuse() -> Series:
     """MLAMD English fused subtitles."""
-    return Series.load(output_dir / "english_fuse.srt")
+    return Series.load(output_dir / "eng_fuse.srt")
 
 
 ___all__ = [
