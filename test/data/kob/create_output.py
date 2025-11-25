@@ -46,8 +46,17 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
-# 繁體中文
-if False:
+actions = {
+    # "繁體中文 (OCR)",
+    # "简体粵文",
+    # "繁體粵文",
+    "English (OCR)",
+    # "English",
+    # "Bilingual 简体粵文 and English",
+}
+
+# 繁體中文 (OCR)
+if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
     zho_hant_paddle = get_zhongwen_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zhongwen_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
@@ -86,7 +95,7 @@ if False:
     zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")
 
 # 简体粵文
-if False:
+if "简体粵文" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_clean = get_zhongwen_cleaned(yue_hans)
     yue_hans_clean.save(output_dir / "yue-Hans_clean.srt")
@@ -96,30 +105,30 @@ if False:
     yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
 
 # 繁體粵文
-if False:
+if "繁體粵文" in actions:
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_simplify = get_zhongwen_converted(yue_hant, OpenCCConfig.hk2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
 # English (OCR)
-eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
-eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
-eng_lens = Series.load(input_dir / "eng_lens.srt")
-eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
-eng_fuse = get_english_ocr_fused(
-    eng_tesseract,
-    eng_lens,
-    EnglishFuser(
-        test_cases=[],
-        test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
-        auto_verify=True,
-        stop_at_idx=5,
-    ),
-)
-eng_fuse.save(output_dir / "eng_fuse.srt")
+if "English (OCR)" in actions:
+    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
+    eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
+    eng_lens = Series.load(input_dir / "eng_lens.srt")
+    eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
+    eng_fuse = get_english_ocr_fused(
+        eng_tesseract,
+        eng_lens,
+        EnglishFuser(
+            test_cases=[],
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+            auto_verify=True,
+        ),
+    )
+    eng_fuse.save(output_dir / "eng_fuse.srt")
 
 # English
-if False:
+if "English" in actions:
     eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
     eng_clean.save(output_dir / "eng_clean.srt")
@@ -135,6 +144,6 @@ if False:
     eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
 # Bilingual 简体粵文 and English
-if False:
+if "Bilingual 简体粵文 and English" in actions:
     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_proof_clean_flatten)
     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")

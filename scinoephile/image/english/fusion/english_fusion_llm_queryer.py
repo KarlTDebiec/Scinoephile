@@ -29,8 +29,8 @@ class EnglishFusionLLMQueryer(
         You are responsible for merging English subtitle OCR results from two different
         sources: Google Lens and Tesseract.
         Please follow these guidelines:
-        * Google Lens is more reliable at recognizing English words.
-        * Google Lens is more reliable at recognizing punctuation marks.        
-        * Tesseract is more reliable at recognizing italics.
-        * Tesseract is more reliable at recognizing line breaks.
+        * Google Lens is more reliable at recognizing text overall.
+        * Tesseract is more reliable at italics.
+        * Tesseract is more reliable at line breaks.
+        * Tesseract is more reliable at the capitalization of the first word.
         """

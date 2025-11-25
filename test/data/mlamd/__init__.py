@@ -7,10 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from PIL import Image
 
 from scinoephile.core import Series
-from scinoephile.image import ImageSeries
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -19,6 +17,9 @@ from test.data.mlamd.core.zhongwen.proofreading import (
     test_cases as mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mlamd.distribution import mlamd_distribute_test_cases
+from test.data.mlamd.image.english.fusion import (
+    test_cases as mlamd_english_fusion_test_cases,
+)
 from test.data.mlamd.image.zhongwen.fusion import (
     test_cases as mlamd_zhongwen_fusion_test_cases,
 )
@@ -33,10 +34,10 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 
 
-# region 简体中文
+# 简体中文 (OCR)
 @pytest.fixture
 def mlamd_zho_hans_lens() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using Google Lens OCR."""
+    """MLAMD 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_lens.srt")
 
 
@@ -70,41 +71,23 @@ def mlamd_zho_hans_fuse_proofread_clean_flatten() -> Series:
     return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
 
 
-# endregion
-
-
-# region English
+# English (OCR)
 @pytest.fixture
-def mlamd_eng() -> Series:
-    """MLAMD English subtitles."""
-    return Series.load(input_dir / "eng.srt")
+def mlamd_eng_lens() -> Series:
+    """MLAMD English subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "english_lens.srt")
 
 
 @pytest.fixture
-def mlamd_eng_clean() -> Series:
-    """MLAMD English cleaned subtitles."""
-    return Series.load(output_dir / "eng_clean.srt")
+def mlamd_eng_tesseract() -> Series:
+    """MLAMD English subtitles OCRed using Tesseract."""
+    return Series.load(input_dir / "english_tesseract.srt")
 
 
 @pytest.fixture
-def mlamd_eng_flatten() -> Series:
-    """MLAMD English flattened subtitles."""
-    return Series.load(output_dir / "eng_flatten.srt")
-
-
-@pytest.fixture
-def mlamd_eng_proof() -> Series:
-    """MLAMD English proofed subtitles."""
-    return Series.load(output_dir / "eng_proof.srt")
-
-
-@pytest.fixture
-def mlamd_eng_proof_clean_flatten() -> Series:
-    """MLAMD English proofed, cleaned and flattened subtitles."""
-    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
-
-
-# endregion
+def mlamd_eng_fuse() -> Series:
+    """MLAMD English fused subtitles."""
+    return Series.load(output_dir / "english_fuse.srt")
 
 
 ___all__ = [
@@ -114,17 +97,16 @@ ___all__ = [
     "mlamd_zho_hans_fuse_proofread",
     "mlamd_zho_hans_fuse_proofread_clean",
     "mlamd_zho_hans_fuse_proofread_clean_flatten",
-    "mlamd_eng",
-    "mlamd_eng_clean",
-    "mlamd_eng_flatten",
-    "mlamd_eng_proof",
-    "mlamd_eng_proof_clean_flatten",
+    "mlamd_eng_lens",
+    "mlamd_eng_tesseract",
+    "mlamd_eng_fuse",
     "mlamd_distribute_test_cases",
     "mlamd_shift_test_cases",
     "mlamd_merge_test_cases",
     "mlamd_proof_test_cases",
     "mlamd_translate_test_cases",
     "mlamd_review_test_cases",
+    "mlamd_english_fusion_test_cases",
     "mlamd_english_proof_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
     "mlamd_zhongwen_proofreading_test_cases",

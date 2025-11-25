@@ -115,6 +115,12 @@ class EnglishFuser:
                 break
             tesseract_text = tesseract_sub.text
             lens_text = lens_sub.text
+            if not tesseract_text and not lens_text:
+                output_subtitles.append(
+                    Subtitle(start=tesseract_sub.start, end=tesseract_sub.end, text="")
+                )
+                info(f"Subtitle {sub_idx + 1} empty.")
+                continue
             if tesseract_text == lens_text:
                 output_subtitles.append(tesseract_sub)
                 info(
@@ -143,7 +149,7 @@ class EnglishFuser:
             sub = Subtitle(
                 start=tesseract_sub.start,
                 end=tesseract_sub.end,
-                text=answer.ronghe,
+                text=answer.fused,
             )
             info(
                 f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"

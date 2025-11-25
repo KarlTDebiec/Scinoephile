@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.abcs import TestCase
-from scinoephile.core.text import whitespace
 from scinoephile.image.english.fusion.english_fusion_answer import (
     EnglishFusionAnswer,
 )
@@ -29,7 +28,7 @@ class EnglishFusionTestCase(
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
         auto_verified = super().get_auto_verified()
-        if any(ch in self.fused for ch in whitespace.values()):
+        if self.get_min_difficulty() > 1:
             return False
         if self.lens == self.fused and "\n" not in self.lens:
             auto_verified = True
@@ -50,6 +49,6 @@ class EnglishFusionTestCase(
         """
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
-        if any(ch in self.fused for ch in whitespace.values()):
+        if "-" in self.fused or '"' in self.fused:
             min_difficulty = max(min_difficulty, 2)
         return min_difficulty
