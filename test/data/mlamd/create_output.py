@@ -41,13 +41,11 @@ set_logging_verbosity(2)
 
 actions = {
     # "简体中文 (OCR)",
-    # "繁體中文 (OCR)",
     "English (OCR)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
 }
 
-# 简体中文 (OCR)
 if "简体中文 (OCR)" in actions:
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
@@ -96,9 +94,6 @@ if "简体中文 (OCR)" in actions:
         output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean_flatten.srt"
     )
 
-# 繁體中文 (OCR)
-
-# English (OCR)
 if "English (OCR)" in actions:
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
@@ -115,12 +110,10 @@ if "English (OCR)" in actions:
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
 
-# Bilingual 简体中文 and English
 # if "Bilingual 简体中文 and English" in actions:
 #     zho_hans_eng = get_synced_series(zho_hans_fuse_proofread_clean_flatten, eng_fuse)
 #     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
 
-# Bilingual 简体粤文 and English
 # if "Bilingual 简体粤文 and English" in actions:
 #     if (output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt").exists():
 #         yue_hans = Series.load(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")

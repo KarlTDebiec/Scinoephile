@@ -29,6 +29,7 @@ from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
+    mlamd_english_fusion_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
@@ -55,7 +56,6 @@ actions = {
     # "Bilingual 简体粵文 and English",
 }
 
-# 繁體中文 (OCR)
 if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
     zho_hant_paddle = get_zhongwen_cleaned(zho_hant_paddle, remove_empty=False)
@@ -94,7 +94,6 @@ if "繁體中文 (OCR)" in actions:
     )
     zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")
 
-# 简体粵文
 if "简体粵文" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_clean = get_zhongwen_cleaned(yue_hans)
@@ -104,13 +103,11 @@ if "简体粵文" in actions:
     yue_hans_clean_flatten = get_zhongwen_flattened(yue_hans_clean)
     yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
 
-# 繁體粵文
 if "繁體粵文" in actions:
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_simplify = get_zhongwen_converted(yue_hant, OpenCCConfig.hk2s)
     yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
 
-# English (OCR)
 if "English (OCR)" in actions:
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
@@ -120,14 +117,13 @@ if "English (OCR)" in actions:
         eng_tesseract,
         eng_lens,
         EnglishFuser(
-            test_cases=[],
+            test_cases=mlamd_english_fusion_test_cases,
             test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
             auto_verify=True,
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
 
-# English
 if "English" in actions:
     eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
@@ -143,7 +139,6 @@ if "English" in actions:
     eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
     eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
-# Bilingual 简体粵文 and English
 if "Bilingual 简体粵文 and English" in actions:
     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_proof_clean_flatten)
     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
