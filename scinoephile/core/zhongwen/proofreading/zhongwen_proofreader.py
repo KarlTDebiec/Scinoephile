@@ -22,7 +22,7 @@ from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
     ZhongwenProofreadingTestCase,
 )
-from scinoephile.testing import test_data_root, update_dynamic_test_cases
+from scinoephile.testing import test_data_root, update_test_cases
 
 try:
     # noinspection PyUnusedImports
@@ -122,19 +122,15 @@ class ZhongwenProofreader:
                     subtitle.text = revised
                 output_series.append(subtitle)
 
-            if self.test_case_path is not None:
-                asyncio.run(
-                    update_dynamic_test_cases(
-                        self.test_case_path,
-                        f"test_case_block_{block_idx}",
-                        self.llm_queryer,
-                    )
-                )
             info(
                 f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
                 f"{block.to_series().to_simple_string()}"
             )
             all_output_series[block_idx] = output_series
+        if self.test_case_path is not None:
+            asyncio.run(
+                update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+            )
 
         # Concatenate and return
         output_series = get_concatenated_series(
@@ -151,28 +147,19 @@ class ZhongwenProofreader:
             test_case_path: path to file to create
             n_blocks: number of blocks for which to create test cases
         """
-        header = '''"""中文 proofreading test cases."""
+        contents = '''"""中文 proofreading test cases."""
 
 from __future__ import annotations
 
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase'''
-        blocks = "\n".join(
-            f"# noinspection PyArgumentList\n"
-            f"test_case_block_{i} = None  # test_case_block_{i}"
-            for i in range(n_blocks)
-        )
-        footer = '''
-test_cases: list[ZhongwenProofreadingTestCase] = [
-    test_case
-    for name, test_case in globals().items()
-    if name.startswith("test_case_block_") and test_case is not None
-]
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+
+# noinspection PyArgumentList
+test_cases = []  # test_cases
 """中文 proofreading test cases."""
 
 __all__ = [
     "test_cases",
 ]'''
-        contents = f"{header}\n\n{blocks}\n\n{footer}\n"
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
 
