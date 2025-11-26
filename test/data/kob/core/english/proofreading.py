@@ -79,6 +79,10 @@ test_cases = [
         subtitle_1="Your Majesty, how do you think about\nthe Cantonese Opera?",
         subtitle_2="For sure, it can't compete with Peking Opera!",
         subtitle_3="But, I am appreciated to view this",
+        revised_3="But, I appreciate viewing this",
+        note_3="Corrected 'I am appreciated to view this' to 'I appreciate "
+        "viewing this' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(31)(
@@ -113,6 +117,10 @@ test_cases = [
         subtitle_29="I'll appreciate it if you",
         subtitle_30="speak something nice in front of the emperor",
         subtitle_31="Please have the towel",
+        revised_25="Has your dad passed away?",
+        note_25="Changed 'Is your dad passed away?' to 'Has your dad passed "
+        "away?' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(15)(
@@ -131,6 +139,17 @@ test_cases = [
         subtitle_13="What kind of woman do you want? Just tell me",
         subtitle_14="I won't mind, every women is just the same",
         subtitle_15="Nothing special",
+        revised_2="Congratulations!",
+        note_2="Corrected 'Congratulation!' to 'Congratulations!' for proper usage.",
+        revised_5="We have some new girls,\nyou must be satisfied with them",
+        note_5="Changed 'it' to 'them' to correctly refer to 'girls' (plural).",
+        revised_11="You, cooked fish, why don't you\ncome and serve Mr So?",
+        note_11="Changed 'cooked fishes' to 'cooked fish' for correct "
+        "pluralization (fish is both singular and plural).",
+        revised_14="I won't mind, every woman is just the same",
+        note_14="Changed 'women' to 'woman' for correct singular usage in "
+        "this context.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(24)(
@@ -158,6 +177,15 @@ test_cases = [
         subtitle_22="- May I be excused\n- Mr Chiu",
         subtitle_23="Miss Yushang has arrived",
         subtitle_24="How are you? Mr Chiu",
+        revised_9="Miss Yushang comes to be a part-time hooker only",
+        note_9="Added 'a' before 'part-time hooker' and hyphenated "
+        "'part-time' for correct grammar and adjective use.",
+        revised_16="The room service, please",
+        note_16="Added comma for correct phrasing: 'The room service, please.'",
+        revised_24="How are you, Mr Chiu?",
+        note_24="Added comma and question mark for correct address and "
+        "sentence completion.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(14)(
@@ -176,6 +204,11 @@ test_cases = [
         subtitle_13="The cheque is too simple to me",
         subtitle_14="I have a pearl which is granted by the\n"
         "Royal family, it's invaluable!",
+        revised_5="You are not welcome",
+        note_5="Corrected 'welcomed' to 'welcome'.",
+        revised_11="Don't quarrel because of such\na small amount, isn't it right?",
+        note_11="Added 'a' before 'small amount' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(5)(
@@ -184,6 +217,9 @@ test_cases = [
         subtitle_3="Does the pearl worth 100,000 taels?",
         subtitle_4="Don't you think that's too little for you?",
         subtitle_5="I love money too. But, I don't like you",
+        revised_2="Mr Chiu, I will wait for you in my room",
+        note_2="Added 'for' to correct the phrase to 'wait for you'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(10)(
@@ -197,6 +233,9 @@ test_cases = [
         subtitle_8="I trust your arrangement",
         subtitle_9="None of my business",
         subtitle_10="How bold are you?",
+        revised_5="Yushang doesn't like me. I deserve it.",
+        note_5="Replaced comma with a period to separate two sentences.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -222,6 +261,10 @@ test_cases = [
         subtitle_3="Actually it's not Tiger's Claws,",
         subtitle_4="it's beggar's fists!",
         subtitle_5="That's why it's too weak",
+        revised_2="Your Tiger's Claws are defeated",
+        note_2="Capitalized 'Claws' to match the usage in the following "
+        "subtitle and for consistency.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
@@ -248,6 +291,9 @@ test_cases = [
         subtitle_15="They send you so valuable present,\nyou'd stop bullying them",
         subtitle_16="- Come on, give tips to the girl here\n- Master",
         subtitle_17="King of Iron Hat, Seng-ko-lin-ch'in\nis written on the medal",
+        revised_15="They send you such a valuable present,\nyou'd stop bullying them",
+        note_15="Changed 'so' to 'such' for correct usage: 'such a valuable present'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(19)(
@@ -270,6 +316,16 @@ test_cases = [
         subtitle_17="So your crime is doubled",
         subtitle_18="It may cause to capital punishment",
         subtitle_19="Kill him…",
+        revised_6="Do you know you have violated the laws of Ching?",
+        note_6="Changed 'committed the laws of Ching' to 'violated the laws "
+        "of Ching' for correct meaning.",
+        revised_16="Today is the birthday of the ex-Empress Dowager",
+        note_16="Changed 'Ex-Empress' to 'ex-Empress' (lowercase 'ex-' as per "
+        "convention).",
+        revised_18="It may lead to capital punishment",
+        note_18="Changed 'cause to capital punishment' to 'lead to capital "
+        "punishment' for correct phrasing.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(18)(
@@ -291,6 +347,10 @@ test_cases = [
         subtitle_16="OK, go",
         subtitle_17="Just forget the trouble",
         subtitle_18="Young master, your hat",
+        revised_5="You can see as much as you want! Fat-head",
+        note_5="Corrected 'Fat-headed' to 'Fat-head' for proper insult form; "
+        "'Fat-headed' is not standard in this context.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -313,6 +373,15 @@ test_cases = [
         subtitle_12="I will try my best to seduce him to the bed",
         subtitle_13="Senior, somebody is coming",
         subtitle_14="Get ready…",
+        revised_4="And he framed us, the Beggars Association,\nto be the assassins",
+        note_4="Corrected 'assassinators' to 'assassins'.",
+        revised_6="to be despised by the world",
+        note_6="Changed 'being despised by the world' to 'to be despised by "
+        "the world' for correct grammar.",
+        revised_11="Because we can't defeat him even if\nwe group together",
+        note_11="Added 'if' after 'even' for correct grammar: 'even if we "
+        "group together'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(15)(
@@ -331,6 +400,9 @@ test_cases = [
         subtitle_13="Leave here first",
         subtitle_14="Yes, you are right",
         subtitle_15="- Miss Seven…\n- Just accept this",
+        revised_4="by Mr So and became pearl powder",
+        note_4="Changed 'become' to 'became' for correct past tense.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(14)(
@@ -348,6 +420,15 @@ test_cases = [
         subtitle_12="I haven't chosen a wrong one",
         subtitle_13="OK, I will drink this wine first",
         subtitle_14="No…",
+        revised_3="Miss, first of all, I have good news for you",
+        note_3="Changed 'a good news to you' to 'good news for you' for "
+        "correct grammar and usage.",
+        revised_9="for your company tonight",
+        note_9="Removed extra 'you' to correct the phrase to 'for your "
+        "company tonight'.",
+        revised_12="I haven't chosen the wrong one",
+        note_12="Changed 'a wrong one' to 'the wrong one' for correct idiomatic usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(16)(
@@ -367,6 +448,12 @@ test_cases = [
         subtitle_14="Are you nuts?",
         subtitle_15="Kidding?",
         subtitle_16="Are there anyone hiding here?",
+        revised_4="You know kung fu?",
+        note_4="Corrected 'Kung-fu' to 'kung fu' for standard spelling.",
+        revised_16="Is there anyone hiding here?",
+        note_16="Corrected 'Are there anyone' to 'Is there anyone' for "
+        "correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(13)(
@@ -383,6 +470,10 @@ test_cases = [
         subtitle_11="Be the top of all",
         subtitle_12="Can you do that?",
         subtitle_13="Let me think for one second",
+        revised_8="Don't you know it isn't that easy to be my husband?",
+        note_8="Corrected 'it's' to 'it isn't' to match the intended meaning "
+        "(that it is not easy to be my husband).",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(8)(
@@ -394,6 +485,9 @@ test_cases = [
         subtitle_6="OK, but you'd give me some time to consider it",
         subtitle_7="No problem, I will wait for your answer\noutside the garden",
         subtitle_8="I won't leave until seeing you",
+        revised_5="Because, this is too easy for me\nto be the Kung-fu scholar!",
+        note_5="Corrected 'to me' to 'for me' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -410,6 +504,9 @@ test_cases = [
         subtitle_2="The road is safe now, please go",
         subtitle_3="Good, very good",
         subtitle_4="Let's go!",
+        revised_1="Sir, the timing is right",
+        note_1="Replaced 'fit' with 'right' for correct usage in this context.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -451,6 +548,11 @@ test_cases = [
         subtitle_9="I won't do it again",
         subtitle_10="Stop waiting for Miss Yushang, she left",
         subtitle_11="What?",
+        revised_5="You have a flat figure, where are your busts?",
+        note_5="Added 'a' before 'flat figure' for correct grammar.",
+        revised_6="It's early in the morning,\nthey haven't woken up yet",
+        note_6="Corrected 'waken' to 'woken' for correct verb form.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(67)(
@@ -522,6 +624,29 @@ test_cases = [
         subtitle_65="Magic?",
         subtitle_66="Mr Chiu, then show me your magic",
         subtitle_67="Yes, Your Majesty",
+        revised_5="Where should I put my pigtail?",
+        note_5="Corrected 'pig-tail' to 'pigtail'.",
+        revised_9="I decided to join the examination for the\nScholar of Martial Arts",
+        note_9="Capitalized 'Scholar' to match the title format used elsewhere.",
+        revised_12="For the sake of our family, you should do that",
+        note_12="Changed 'For the family of us' to 'For the sake of our "
+        "family' for correct phrasing.",
+        revised_16="For a girl, you want to be the Scholar\nof Martial Arts!",
+        note_16="Capitalized 'Scholar' to match the title format used elsewhere.",
+        revised_30="If you break my stuff,\nI will teach you a good lesson",
+        note_30="Added 'a' before 'good lesson' for correct grammar.",
+        revised_32="Good morning Dad",
+        note_32="Capitalized 'Dad' as a form of address.",
+        revised_36="Please leave me a cloth",
+        note_36="Corrected 'clothe' to 'cloth'.",
+        revised_46="Please, work hard, men!",
+        note_46="Added comma after 'hard' for correct address to 'men'.",
+        revised_56="Take care of my lychee, you fathead!",
+        note_56="Changed 'Lychee' to lowercase and 'fat headed' to 'fathead' "
+        "for correct usage.",
+        revised_61="Hope you will serve our Ching Dynasty\nwholeheartedly",
+        note_61="Changed 'whole-heartedly' to 'wholeheartedly' (no hyphen needed).",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -583,11 +708,26 @@ test_cases = [
         subtitle_35="My son is keen in martial arts",
         subtitle_36="So, can I deduct some from the payment\nof 2 million taels?",
         subtitle_37="We are friends, but that is business",
+        revised_8="You are a dad.",
+        note_8="Added 'a' before 'dad' for correct grammar and added period "
+        "at the end.",
+        revised_26="It depends on fate.",
+        note_26="Removed 'the' before 'fate' for correct idiomatic usage and "
+        "added period at the end.",
+        revised_35="My son is keen on martial arts.",
+        note_35="Changed 'keen in' to 'keen on' for correct usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="Let the Horse teams be the pioneer",
         subtitle_2="The arrows teams go side ways,\nthe gunmen stay back",
+        revised_1="Let the horse teams be the pioneer",
+        note_1="Changed 'Horse' to lowercase 'horse' for consistency with "
+        "'arrows teams' and 'gunmen'.",
+        revised_2="The arrows teams go sideways,\nthe gunmen stay back",
+        note_2="Corrected 'side ways' to 'sideways'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -658,6 +798,13 @@ test_cases = [
         subtitle_47="The blood",
         subtitle_48="Here comes the Examiner",
         subtitle_49="What? Isn't Cheng the examiner?",
+        revised_25="What do you think?",
+        note_25="Corrected 'thing' to 'think'.",
+        revised_27="But he has worked vert hard",
+        note_27="Change 'achieved' to 'worked'.",
+        revised_35="You have good analysis",
+        note_35="Corrected 'analyse' to 'analysis'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(5)(
@@ -676,6 +823,9 @@ test_cases = [
         subtitle_1="They should act 2 more marks for that\npowerful shoot",
         subtitle_2="I do think so",
         subtitle_3="So's arrow isn't on the target,\nPo won this section",
+        revised_1="They should add 2 more marks for that\npowerful shoot",
+        note_1="Corrected 'act' to 'add' for correct meaning: 'add 2 more marks'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -700,6 +850,9 @@ test_cases = [
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="They trick again",
         subtitle_2="It's corrupt! May I give up the betting?",
+        revised_1="They tricked again",
+        note_1="Changed 'trick' to 'tricked' for correct tense.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
@@ -720,6 +873,10 @@ test_cases = [
         subtitle_1="OK, let's start from the very beginning,\n"
         "I'll fight with single hand and leg",
         subtitle_2="I won't take your advantage",
+        revised_1="OK, let's start from the very beginning,\n"
+        "I'll fight with a single hand and leg",
+        note_1="Added 'a' before 'single hand and leg' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(10)(
@@ -733,6 +890,13 @@ test_cases = [
         subtitle_8="It's English",
         subtitle_9="There is no regulation stating that\nweapon is not allowed",
         subtitle_10="You fell down first, Po is the winner again",
+        revised_1="How can you use such a dirty stance?",
+        note_1="Added 'a' before 'dirty stance' for correct grammar.",
+        revised_2="Have you woken?",
+        note_2="Corrected 'waken' to 'woken'.",
+        revised_9="There is no regulation stating that a\nweapon is not allowed",
+        note_9="Added 'a' before 'weapon' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(11)(
@@ -747,6 +911,8 @@ test_cases = [
         subtitle_9="You shameless",
         subtitle_10="Po is the Scholar of Martial Arts",
         subtitle_11="I did win! Objection",
+        difficulty=1,
+        prompt=True,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(8)(
@@ -775,6 +941,9 @@ test_cases = [
         subtitle_2="You won this time, who are you going to thank?",
         subtitle_3="Miss Yushang!",
         subtitle_4="Is Miss Yushang his mom?",
+        revised_1="I want to take a statement from you as record",
+        note_1="Added 'a' before 'statement' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(11)(
@@ -790,7 +959,9 @@ test_cases = [
         subtitle_10="So how could he answer the\nquestion paper of strategy?",
         subtitle_11="That should be tricks",
         revised_9="I have found that So is illiterate",
-        note_9="Removed the unnecessary period after 'that'.",
+        note_9="Removed the period after 'that' for correct sentence structure.",
+        revised_11="That should be a trick",
+        note_11="Changed 'tricks' to 'a trick' for correct singular usage in context.",
         difficulty=1,
         verified=True,
     ),
@@ -842,6 +1013,10 @@ test_cases = [
         subtitle_7="So, he didn't miscarry out any duty",
         subtitle_8="So, the maximum penalty",
         subtitle_9="is forfeiture of property only",
+        revised_3="But their ancestors achieved a lot\nfor Ching, they can be exempted",
+        note_3="Corrected 'to Ching, they can be exampled' to 'for Ching, "
+        "they can be exempted' for correct meaning and grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(18)(
@@ -864,7 +1039,7 @@ test_cases = [
         subtitle_17="from now on,",
         subtitle_18="you'd be hard working to learn how to write",
         revised_18="you'd be hardworking to learn how to write",
-        note_18="Corrected 'hard working' to 'hardworking'.",
+        note_18="Corrected 'hard working' to 'hardworking' (should be one word).",
         difficulty=1,
         verified=True,
     ),
@@ -890,6 +1065,9 @@ test_cases = [
         subtitle_15="We are free",
         subtitle_16="I feel so happy",
         subtitle_17="How happy are we!",
+        revised_4="Master, I will take good care of the little turtle",
+        note_4="Added 'the' before 'little turtle' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(31)(
@@ -924,6 +1102,11 @@ test_cases = [
         subtitle_29="Am I like beggar?",
         subtitle_30="No",
         subtitle_31="Buy something to eat, you beggars",
+        revised_27="Even the Gods won't let me be a beggar",
+        note_27="Changed 'be beggars' to 'be a beggar' for correct singular usage.",
+        revised_29="Am I like a beggar?",
+        note_29="Added 'a' before 'beggar' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
@@ -981,8 +1164,10 @@ test_cases = [
         subtitle_28="I have arranged it",
         subtitle_29="The one wearing red dress who stands\n"
         "under the lantern, that's her",
+        revised_12="Begging? How dare you, you beggar,\nyou are cheating me!",
+        note_12="Corrected 'How dare are you' to 'How dare you' for correct grammar.",
         revised_17="I have a friend's girlfriend",
-        note_17="Corrected 'girl-friend' to 'girlfriend'.",
+        note_17="Corrected 'girl-friend' to 'girlfriend' (no hyphen needed).",
         difficulty=1,
         verified=True,
     ),
@@ -993,6 +1178,9 @@ test_cases = [
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="It's a benefit of you!",
         subtitle_2="Why don't you go yourself?",
+        revised_1="It's a benefit for you!",
+        note_1="Changed 'of' to 'for' to correct the preposition: 'benefit for you'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(8)(
@@ -1016,6 +1204,12 @@ test_cases = [
         subtitle_7="I am carrying my duty only Men!",
         subtitle_8="- Yes!\n- Remove all the things",
         subtitle_9="Yes",
+        revised_4="It's the Royal instruction that",
+        note_4="Removed comma.",
+        revised_7="I am carrying out my duty only, men!",
+        note_7="Added 'out' after 'carrying' and a comma before 'men' for "
+        "correct phrasing and punctuation.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(12)(
@@ -1031,6 +1225,12 @@ test_cases = [
         subtitle_10="He is powerful!",
         subtitle_11="I've to defeat him by one powerful strike",
         subtitle_12="I can't give him another chance to counter attack",
+        revised_8="Last time you escaped from Yee Hung Hostel",
+        note_8="Changed 'you can escape' to 'you escaped' for correct tense "
+        "and grammar.",
+        revised_11="I've got to defeat him by one powerful strike",
+        note_11="Expanded contraction 'I've' to 'I've got' for correct usage "
+        "in this context.",
         revised_12="I can't give him another chance to counterattack",
         note_12="Changed 'counter attack' to 'counterattack' (one word).",
         difficulty=1,
@@ -1045,6 +1245,9 @@ test_cases = [
         subtitle_6="But, you can beg for money",
         subtitle_7="Be a good beggar",
         subtitle_8="Go, go away…",
+        revised_4="You will be a cripple for the rest of your life",
+        note_4="Added 'a' before 'cripple' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(26)(
@@ -1074,6 +1277,9 @@ test_cases = [
         subtitle_24="Come back to me if you can do that",
         subtitle_25="I think we should fix our wedding date first",
         subtitle_26="Because being the scholar is too simple to me",
+        revised_26="Because being the scholar is too simple for me",
+        note_26="Changed 'to me' to 'for me' for correct usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1109,6 +1315,19 @@ test_cases = [
         subtitle_16="We can't beg for good if we are late!",
         subtitle_17="Yes…",
         subtitle_18="You not a master now.",
+        revised_7="This job should be left to me",
+        note_7="Corrected 'should leave to me' to 'should be left to me' for "
+        "correct grammar.",
+        revised_10="there are some lessons!",
+        note_10="Corrected 'there is some lessons!' to 'there are some "
+        "lessons!' for subject-verb agreement.",
+        revised_16="We can't beg for food if we are late!",
+        note_16="Corrected 'beg for good' to 'beg for food' to match context "
+        "and likely intended meaning.",
+        revised_18="You're not a master now.",
+        note_18="Corrected 'You not a master now.' to 'You're not a master "
+        "now.' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(4)(
@@ -1127,6 +1346,9 @@ test_cases = [
         subtitle_2="Why don't you write it yourself?",
         subtitle_3="You are off duty, so I just want to lend it",
         subtitle_4="Don't you think I am idiot?",
+        revised_4="Don't you think I am an idiot?",
+        note_4="Added 'an' before 'idiot' for correct grammar.",
+        difficulty=1,
         prompt=True,
         verified=True,
     ),
@@ -1144,6 +1366,10 @@ test_cases = [
         subtitle_11="I have my own way to get food",
         subtitle_12="Take a rest now",
         subtitle_13="I will take you to the doctor after\ngetting some money",
+        revised_10="Are you going for begging?",
+        note_10="Corrected 'Are you go for begging?' to 'Are you going for "
+        "begging?' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(10)(
@@ -1171,6 +1397,14 @@ test_cases = [
         subtitle_9="Sister, it's him",
         subtitle_10="No, no",
         subtitle_11="Sister, he is So Chan",
+        revised_2="Be merciful to me, please",
+        note_2="Added a comma after 'me' for correct punctuation.",
+        revised_4="Beggar, do you want the broken charcoal?",
+        note_4="Corrected 'carbon' to 'charcoal', which is the correct term "
+        "in this context.",
+        revised_8="No, you are mistaken",
+        note_8="Changed 'you have mistaken' to 'you are mistaken' for correct usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1187,12 +1421,25 @@ test_cases = [
         subtitle_7="We always have surplus",
         subtitle_8="Dumpling",
         subtitle_9="Take it",
+        revised_2="I am sorry, I was mistaken",
+        note_2="Changed 'have mistaken' to 'was mistaken' for correct usage.",
+        revised_3="Tracy, take some dumplings out",
+        note_3="Changed 'dumpling' to 'dumplings' for correct plural usage.",
+        revised_4="You are mistaken, he is not So Chan",
+        note_4="Changed 'have mistake' to 'are mistaken' for correct phrasing.",
+        revised_8="Dumplings",
+        note_8="Changed 'Dumpling' to 'Dumplings' for correct plural usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
         subtitle_1="Thank you…",
         subtitle_2="Sister,",
         subtitle_3="he wouldn't be that poor if not were you",
+        revised_3="he wouldn't be that poor if it were not for you",
+        note_3="Corrected 'if not were you' to 'if it were not for you' for "
+        "proper grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(14)(
@@ -1210,6 +1457,9 @@ test_cases = [
         subtitle_12="Thank you",
         subtitle_13="Hold it",
         subtitle_14="Are they going to treat me some food?",
+        revised_4="I have a dumpling, take it back",
+        note_4="Added 'a' before 'dumpling' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1246,6 +1496,9 @@ test_cases = [
         subtitle_1="Dad, look!",
         subtitle_2="There is a slice of meat here",
         subtitle_3="It's pock chop!",
+        revised_3="It's pork chop!",
+        note_3="Corrected 'pock chop' to 'pork chop'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(9)(
@@ -1258,6 +1511,9 @@ test_cases = [
         subtitle_7="You deserve to be beggars",
         subtitle_8="The Scholar is eating dog's food",
         subtitle_9="Come on, let's go and eat the man's food",
+        revised_8="The Scholar is eating dog food",
+        note_8='Changed "dog\'s food" to "dog food" for correct usage.',
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1278,6 +1534,15 @@ test_cases = [
         subtitle_11="Where is Chan?",
         subtitle_12="OK, we will join you!",
         subtitle_13="Chan… Chan…",
+        revised_2="My dad was the Master of the\nBeggars' Association",
+        note_2="Added apostrophe to 'Beggars'' for correct possessive form.",
+        revised_3="Why don't you join our Beggars' Association",
+        note_3="Added apostrophe to 'Beggars'' for correct possessive form.",
+        revised_9="It's wise to join the Beggars' Association\n"
+        "so as to be taken care of",
+        note_9="Added 'of' to complete the phrase 'taken care of'. Added "
+        "apostrophe to 'Beggars'' for correct possessive form.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(44)(
@@ -1326,8 +1591,16 @@ test_cases = [
         subtitle_42="He is not even qualified to be beggar!",
         subtitle_43="Don't be that frank, can you?",
         subtitle_44="Don't shout that loudly, OK?",
-        revised_25="So we must choose a new master to\nin charge the association",
-        note_25="Changed 'in-charge' to 'in charge'.",
+        revised_5="One cloth is for you\nand the other is for Chan",
+        note_5="Corrected 'clothe' to 'cloth'.",
+        revised_10="It's new year, you should receive a red packet",
+        note_10="Added 'a' before 'red pocket' for correct grammar.",
+        revised_14="Uncle Mok, we needn't give red\npackets to each other",
+        note_14="Changed 'red pocket' to 'red packets' for correct plural usage.",
+        revised_25="So we must choose a new master to\nbe in charge of the association",
+        note_25="Changed 'in-charge' to 'be in charge of' for correct usage.",
+        revised_42="He is not even qualified to be a beggar!",
+        note_42="Added 'a' before 'beggar' for correct grammar.",
         difficulty=1,
         verified=True,
     ),
@@ -1341,6 +1614,11 @@ test_cases = [
         subtitle_7="But I am now powerless,\nI don't want to fight again",
         subtitle_8="You have power!",
         subtitle_9="Come on, beat me",
+        revised_2="I have faith in you",
+        note_2="Corrected 'faith on you' to 'faith in you'.",
+        revised_5="only if you try hard,",
+        note_5="Added 'if' to correct the conditional phrase: 'only if you try hard'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(4)(
@@ -1365,11 +1643,16 @@ test_cases = [
         subtitle_2="Even you want me to practise Kung-fu,",
         subtitle_3="you should give me a waddy first",
         subtitle_4="I am sorry, catch it",
+        difficulty=1,
+        prompt=True,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="Before being appointed important task,",
         subtitle_2="God will give you severe\ntraining for soul and flesh.",
+        revised_1="Before being appointed an important task,",
+        note_1="Added 'an' before 'important task' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(8)(
@@ -1381,6 +1664,12 @@ test_cases = [
         subtitle_6="Congratulation",
         subtitle_7="- Are there anything to eat?\n- No",
         subtitle_8="Luckily, I have",
+        revised_6="Congratulations",
+        note_6="Corrected 'Congratulation' to 'Congratulations'.",
+        revised_7="- Is there anything to eat?\n- No",
+        note_7="Corrected 'Are there anything to eat?' to 'Is there anything "
+        "to eat?' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(18)(
@@ -1402,6 +1691,9 @@ test_cases = [
         subtitle_16="Repay my money, I am in urgent need",
         subtitle_17="If I had money,",
         subtitle_18="I wouldn't be beggar!",
+        revised_18="I wouldn't be a beggar!",
+        note_18="Added 'a' before 'beggar' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(24)(
@@ -1430,12 +1722,25 @@ test_cases = [
         subtitle_23="So what?",
         subtitle_24="That means, you will be beggar for your life",
         revised_1="But, don't worry, you were my benefactor,",
-        note_1="Corrected 'benefit or,' to 'benefactor,' which is the "
-        "correct word in context.",
+        note_1="Corrected 'benefit or' to 'benefactor'.",
+        revised_5="even if you have money again",
+        note_5="Added 'if' to correct the conditional phrase: 'even if you "
+        "have money again'.",
         revised_10="I am Hung Yat-sun, nicknamed Old Bag Sun",
         note_10="Corrected 'nicked name' to 'nicknamed'.",
+        revised_12="It's good to be a beggar",
+        note_12="Added 'a' before 'beggar' for correct grammar.",
         revised_17="Don't you think you are not human-like?",
         note_17="Added hyphen to 'human-like' for correct compound adjective.",
+        revised_19="So you have to be a beggar now",
+        note_19="Added 'a' before 'beggar' for correct grammar.",
+        revised_21="But I won't cheat you, from your head to toe",
+        note_21="Changed 'toes' to 'toe' for the correct idiom: 'from head to toe'.",
+        revised_22="Every part of you is beggar-like",
+        note_22="Changed 'Every parts' to 'Every part' and added hyphen to "
+        "'beggar-like'.",
+        revised_24="That means, you will be a beggar for your life",
+        note_24="Added 'a' before 'beggar' for correct grammar.",
         difficulty=1,
         verified=True,
     ),
@@ -1446,6 +1751,10 @@ test_cases = [
         subtitle_4="you will be the king of beggars",
         subtitle_5="King of beggars, what does that mean?",
         subtitle_6="That is beggar",
+        revised_1="I don't want to talk to you, I want to sleep first",
+        note_1="Changed 'I want a sleep first' to 'I want to sleep first' "
+        "for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(6)(
@@ -1464,6 +1773,12 @@ test_cases = [
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="Before the Buddha, the Disciples\nreturns to your position",
         subtitle_2="To suppress the dragon and tight",
+        revised_1="Before the Buddha, the Disciples\nreturn to your position",
+        note_1="Changed 'returns' to 'return' for subject-verb agreement.",
+        revised_2="To suppress the dragon and tiger",
+        note_2="Corrected 'tight' to 'tiger', which is the likely intended "
+        "word in the common phrase 'dragon and tiger'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(7)(
@@ -1474,6 +1789,11 @@ test_cases = [
         subtitle_5='I appoint you to be the "Sleeping Disciple"',
         subtitle_6='Now, I will teach you the\n"Sleeping Disciple\'s Fist"!',
         subtitle_7="Hope you can make good use of it Come on",
+        revised_3="Now you regret it",
+        note_3="Changed 'regretted' to 'regret it' for correct tense and grammar.",
+        revised_7="Hope you can make good use of it. Come on",
+        note_7="Added a period between 'it' and 'Come on' to separate the sentences.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1482,6 +1802,9 @@ test_cases = [
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
         subtitle_1="The bitter pasted",
+        revised_1="The bitter past",
+        note_1="Corrected 'pasted' to 'past' to fix the OCR error.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(4)(
@@ -1489,6 +1812,9 @@ test_cases = [
         subtitle_2="Here comes the white Goat",
         subtitle_3="My mother, give me power",
         subtitle_4="To save the people!",
+        revised_2="Here comes the White Goat",
+        note_2="Capitalized 'White Goat' as it appears to be a proper noun or title.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(7)(
@@ -1521,6 +1847,11 @@ test_cases = [
         subtitle_2="The Emperor is setting off soon",
         subtitle_3="You killed woman…",
         subtitle_4="You should replace her to be\na gift to the Emperor!",
+        revised_3="You killed a woman…",
+        note_3="Added 'a' before 'woman' for correct grammar.",
+        revised_4="You should replace her as\na gift to the Emperor!",
+        note_4="Changed 'replace her to be' to 'replace her as' for correct usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1534,6 +1865,11 @@ test_cases = [
         subtitle_3="I saw them chat,",
         subtitle_4="then they went away",
         subtitle_5="Are there any affair between them?",
+        revised_5="Is there any affair between them?",
+        note_5="Changed 'Are there any affair between them?' to 'Is there "
+        "any affair between them?' for correct subject-verb agreement "
+        "and singular noun usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1547,6 +1883,9 @@ test_cases = [
         subtitle_4="- How is it?\n- Where is sister?",
         subtitle_5="Your sister is caught by Chiu",
         subtitle_6="We'd find someone to compete for the leadership",
+        revised_6="We'd better find someone to compete for the leadership",
+        note_6="Added 'better' to correct the grammar: 'We'd better find someone...'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1584,8 +1923,7 @@ test_cases = [
         subtitle_2="Uncle Sun's \"Sleeping Disciple's Fists'?",
         subtitle_3="Set the position!",
         revised_2="Uncle Sun's \"Sleeping Disciple's Fists\"?",
-        note_2="Corrected the closing single quote to a closing double quote "
-        "for consistency and accuracy.",
+        note_2="Corrected quotation marks.",
         difficulty=1,
         verified=True,
     ),
@@ -1599,6 +1937,10 @@ test_cases = [
         subtitle_3="What is the use for defeating us?",
         subtitle_4='You don\'t know how to use the\n"Dog Hitting Waddy".',
         subtitle_5="You are not qualified to be the leader of us",
+        revised_3="What is the use of defeating us?",
+        note_3="Corrected 'for' to 'of' in 'What is the use of defeating "
+        "us?' for correct idiomatic usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1610,6 +1952,10 @@ test_cases = [
         subtitle_2="I do know how to use this waddy!",
         subtitle_3="But it's dislike from the standard stances!",
         subtitle_4="It's quite powerful!",
+        revised_3="But it's different from the standard stances!",
+        note_3="Corrected 'dislike' to 'different' for correct meaning: "
+        "'different from the standard stances'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1651,6 +1997,12 @@ test_cases = [
         subtitle_31="We'll have better living",
         subtitle_32="What happened?",
         subtitle_33="Let's greet the new Master",
+        revised_6="We became the biggest association",
+        note_6="Corrected 'becomes' to 'beaome' for subject-verb agreement.",
+        revised_30="They are easy to be cheated,\nI am really a genius!",
+        note_30="Corrected 'easily to be cheated' to 'easy to be cheated' for "
+        "correct usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(10)(
@@ -1664,6 +2016,10 @@ test_cases = [
         subtitle_8="I just want to save Yushang as soon as possible",
         subtitle_9="Yushang didn't make a wrong choice",
         subtitle_10="Bravo! Bravo!",
+        revised_3="I can't guess you have learnt the\n\"Sleeping Disciple's Fist\"?!",
+        note_3="Corrected 'Fists' to 'Fist' to match the likely intended "
+        "singular form of the martial arts style name.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
@@ -1696,6 +2052,9 @@ test_cases = [
         subtitle_21="",
         subtitle_22="",
         subtitle_23="",
+        revised_13="I can control the 17 stances",
+        note_13="Corrected '17th stances' to '17 stances' for grammatical accuracy.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1713,6 +2072,9 @@ test_cases = [
         subtitle_7="Men, come and take this woman to the camp",
         subtitle_8="Yes",
         subtitle_9="Go!",
+        revised_3="I know the Emperor loves pretty women",
+        note_3="Corrected 'woman' to 'women' for correct plural form.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(4)(
@@ -1734,12 +2096,18 @@ test_cases = [
     EnglishProofreadingTestCase.get_test_case_cls(2)(
         subtitle_1="This bastard wants to see the Emperor,",
         subtitle_2="if I let him see His Majesty oftenly,\nmy post will be taken away",
+        revised_2="if I let him see His Majesty often,\nmy post will be taken away",
+        note_2="Corrected 'oftenly' to 'often'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
         subtitle_1="Men",
         subtitle_2="Sir",
         subtitle_3="- Check what had happened\n- Yes",
+        revised_3="- Check what has happened\n- Yes",
+        note_3="Changed 'had' to 'has' for correct tense in the context.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(6)(
@@ -1771,6 +2139,9 @@ test_cases = [
         subtitle_8="Who do you think you are?",
         subtitle_9="How dare you frame the courtier?",
         subtitle_10="I will kill you if you step forward",
+        revised_5="Chiu wants to raise a rebellion,",
+        note_5="Corrected 'raise a rebel' to 'raise a rebellion' for correct meaning.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(18)(
@@ -1792,12 +2163,16 @@ test_cases = [
         subtitle_16="That's enough",
         subtitle_17="I haven't finished",
         subtitle_18="- Go on after I left\n- Sure",
+        revised_18="- Go on after I've left\n- Sure",
+        note_18="Changed 'after I left' to 'after I've left' for correct tense.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
         subtitle_1="There is smoke ahead,\nsomeone must have alarmed them",
         subtitle_2="- Get ready the Unicorn Smoke\n- Yes",
         subtitle_3="Attack the main camp",
+        prompt=True,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(5)(
@@ -1850,6 +2225,15 @@ test_cases = [
         subtitle_10="Get lost, don't you want\nto wait for death, get lost",
         subtitle_11="You are ordered to get away",
         subtitle_12="You can't go!",
+        revised_3="The smoke is going in the other direction",
+        note_3="Changed 'to' to 'in' for correct phrasing: 'going in the "
+        "other direction'.",
+        revised_6="Bring me the sword",
+        note_6="Changed 'Take me the sword' to 'Bring me the sword' for correct usage.",
+        revised_10="Get lost, don't you want\nto wait for death? Get lost",
+        note_10="Added a question mark after 'wait for death' to correct the "
+        "sentence structure.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1873,6 +2257,11 @@ test_cases = [
         subtitle_14="I am late to save you, please forgive me",
         subtitle_15="To protect the Emperor",
         subtitle_16="Yes",
+        revised_12="But only dumplings left",
+        note_12="Changed 'dumpling' to 'dumplings' for correct plural form.",
+        revised_13="You know, I don't like eating dumplings",
+        note_13="Changed 'dumpling' to 'dumplings' for correct plural form.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(2)(
@@ -1902,6 +2291,9 @@ test_cases = [
         subtitle_3="Are you interested to join us?",
         subtitle_4="I can't guess you could recover!",
         subtitle_5="Yes, it's all because of you",
+        revised_2="Yes. Look at you, you are like a beggar too",
+        note_2="Added 'a' before 'beggar' for correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1945,6 +2337,9 @@ test_cases = [
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
         subtitle_1='The 18 stance, "It\'s a regret to kill the Dragon"!',
+        revised_1='The 18th stance, "It\'s a regret to kill the Dragon"!',
+        note_1="Corrected '18 stance' to '18th stance' for proper ordinal usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(7)(
@@ -1955,6 +2350,9 @@ test_cases = [
         subtitle_5="Idiot, I am fine",
         subtitle_6="I can marry tonight",
         subtitle_7="You are great!",
+        revised_3="Your pose is really smart",
+        note_3="Corrected 'post' to 'pose' to match the intended meaning.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(8)(
@@ -1966,6 +2364,12 @@ test_cases = [
         subtitle_6="Damn it!",
         subtitle_7="Master",
         subtitle_8="Chiu's fellows are all caught by us",
+        revised_5="He became ashes",
+        note_5="Corrected 'ash' to 'ashes' for proper usage in this context.",
+        revised_8="Chiu's fellows have all been caught by us",
+        note_8="Changed 'are all caught by us' to 'have all been caught by "
+        "us' for correct tense and grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(1)(
@@ -1981,6 +2385,10 @@ test_cases = [
         subtitle_6="But I don't like Scholar at all",
         subtitle_7="I love beggar",
         subtitle_8="You first, I will go after you",
+        revised_7="I love beggars.",
+        note_7="Changed 'beggar' to 'beggars' for correct grammar (referring "
+        "to a group/type, not a single person).",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(9)(
@@ -1993,6 +2401,12 @@ test_cases = [
         subtitle_7="Thank you, thank you master",
         subtitle_8="So Chan, what do you want as reward?",
         subtitle_9="Don't you have anything to tell me?",
+        revised_4="You have potential to be a beggar",
+        note_4="Added 'a' before 'beggar' for correct grammar.",
+        revised_6="If there is anyone bullies you,\njust tell them my name",
+        note_6="Corrected 'If there anyone' to 'If there is anyone' for "
+        "correct grammar.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(23)(
@@ -2019,6 +2433,15 @@ test_cases = [
         subtitle_21="Yes",
         subtitle_22="Long life…",
         subtitle_23="- …to Your Majesty\n- Get up",
+        revised_10="we have nothing to chat about",
+        note_10="Added 'about' to complete the phrase 'nothing to chat about'.",
+        revised_13="The number of fellows doesn't depend on me,",
+        note_13="Changed 'fellow' to 'fellows' for subject-verb agreement: "
+        "'number of fellows'.",
+        revised_16="If you are great, making the\nsociety peaceful and wealthy,",
+        note_16="Corrected 'peace' to 'peaceful' for correct adjective usage: "
+        "'peaceful and wealthy'.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(15)(
