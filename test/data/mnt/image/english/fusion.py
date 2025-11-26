@@ -54,11 +54,10 @@ test_cases = [
     EnglishFusionTestCase(
         lens="Through the tunnel we'll go♪",
         tesseract="♪ Through the tunnel we'll 90 ♪",
-        fused="Through the tunnel we'll go♪",
-        note="Used Lens text for correct lyrics and placement of the music "
-        "note; ignored Tesseract's '90' error and extra music note at "
-        "the start.",
+        fused="♪ Through the tunnel we'll go ♪",
+        note="Corrected '90' to 'go' from Lens; added musical notes from Tesseract.",
         difficulty=1,
+        prompt=True,
         verified=True,
     ),
     EnglishFusionTestCase(
@@ -957,9 +956,8 @@ test_cases = [
     EnglishFusionTestCase(
         lens="A magical adventure for you",
         tesseract="PA magical adventure for you ♪",
-        fused="A magical adventure for you ♪",
-        note="Used 'A' from Lens instead of 'PA' and added musical note "
-        "from Tesseract.",
+        fused="♪ A magical adventure for you ♪",
+        note="Corrected leading character to musical note.",
         difficulty=1,
         verified=True,
     ),
