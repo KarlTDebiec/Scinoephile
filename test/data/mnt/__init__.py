@@ -12,6 +12,9 @@ from scinoephile.core import Series
 from scinoephile.testing import SyncTestCase, test_data_root
 
 # ruff: noqa: F401 F403
+from test.data.mnt.core.english.proofreading import (
+    test_cases as mnt_english_proofreading_test_cases,
+)
 from test.data.mnt.core.zhongwen.proofreading import (
     test_cases as mnt_zhongwen_proofreading_test_cases,
 )
@@ -1277,6 +1280,7 @@ ___all__ = [
     "mnt_zho_hans_eng",
     "mnt_sync_test_cases",
     "mnt_english_fusion_test_cases",
+    "mnt_english_proofreading_test_cases",
     "mnt_zhongwen_fusion_test_cases",
     "mnt_zhongwen_proofreading_test_cases",
 ]

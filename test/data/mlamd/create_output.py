@@ -35,11 +35,13 @@ from test.data.kob import (
 )
 from test.data.mnt import (
     mnt_english_fusion_test_cases,
+    mnt_english_proofreading_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
 from test.data.t import (
     t_english_fusion_test_cases,
+    t_english_proofreading_test_cases,
     t_zhongwen_fusion_test_cases,
     t_zhongwen_proofreading_test_cases,
 )
@@ -124,9 +126,9 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread(
         eng_fuse,
         EnglishProofreader(
-            test_cases=kob_english_proofreading_test_cases,
-            # + mnt_english_proofreading_test_cases
-            # + t_english_proofreading_test_cases,
+            test_cases=kob_english_proofreading_test_cases
+            + mnt_english_proofreading_test_cases
+            + t_english_proofreading_test_cases,
             test_case_path=test_data_root
             / title
             / "core"

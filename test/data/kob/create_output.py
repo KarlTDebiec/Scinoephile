@@ -28,16 +28,19 @@ from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fu
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     mlamd_english_fusion_test_cases,
+    mlamd_english_proofreading_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
     mnt_english_fusion_test_cases,
+    mnt_english_proofreading_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
 from test.data.t import (
     t_english_fusion_test_cases,
+    t_english_proofreading_test_cases,
     t_zhongwen_fusion_test_cases,
     t_zhongwen_proofreading_test_cases,
 )
@@ -114,10 +117,9 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread(
         eng_fuse,
         EnglishProofreader(
-            test_cases=[],
-            # mlamd_english_proofreading_test_cases
-            # + mnt_english_proofreading_test_cases
-            # + t_english_proofreading_test_cases,
+            test_cases=mlamd_english_proofreading_test_cases
+            + mnt_english_proofreading_test_cases
+            + t_english_proofreading_test_cases,
             test_case_path=test_data_root
             / title
             / "core"
@@ -148,14 +150,14 @@ if "English (SRT)" in actions:
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
-    proofer = EnglishProofreader(
-        test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
-    )
-    eng_proof = get_english_proofed(eng, proofer)
-    eng_proof.save(output_dir / "eng_proof.srt")
-    eng_proof_clean = get_english_cleaned(eng_proof)
-    eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
-    eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
+    # proofer = EnglishProofreader(
+    #     test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
+    # )
+    # eng_proof = get_english_proofed(eng, proofer)
+    # eng_proof.save(output_dir / "eng_proof.srt")
+    # eng_proof_clean = get_english_cleaned(eng_proof)
+    # eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
+    # eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
 # if "Bilingual 简体粵文 and English" in actions:
 #     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_proof_clean_flatten)

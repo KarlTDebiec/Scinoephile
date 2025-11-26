@@ -12,6 +12,9 @@ from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
+from test.data.mlamd.core.english.proofreading import (
+    test_cases as mlamd_english_proofreading_test_cases,
+)
 from test.data.mlamd.core.zhongwen.proofreading import (
     test_cases as mlamd_zhongwen_proofreading_test_cases,
 )
@@ -106,6 +109,7 @@ ___all__ = [
     "mlamd_translate_test_cases",
     "mlamd_review_test_cases",
     "mlamd_english_fusion_test_cases",
+    "mlamd_english_proofreading_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
     "mlamd_zhongwen_proofreading_test_cases",
 ]

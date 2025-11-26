@@ -8,11 +8,10 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.english import (
+from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.english.proofreading import (
     EnglishProofreader,
-    get_english_cleaned,
-    get_english_flattened,
-    get_english_proofed,
+    get_english_proofread,
 )
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
@@ -28,16 +27,19 @@ from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fu
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     kob_english_fusion_test_cases,
+    kob_english_proofreading_test_cases,
     kob_zhongwen_fusion_test_cases,
     kob_zhongwen_proofreading_test_cases,
 )
 from test.data.mlamd import (
     mlamd_english_fusion_test_cases,
+    mlamd_english_proofreading_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
     mnt_english_fusion_test_cases,
+    mnt_english_proofreading_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
@@ -122,7 +124,21 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
-
+    eng_fuse_proofread = get_english_proofread(
+        eng_fuse,
+        EnglishProofreader(
+            test_cases=kob_english_proofreading_test_cases
+            + mlamd_english_proofreading_test_cases
+            + mnt_english_proofreading_test_cases,
+            test_case_path=test_data_root
+            / title
+            / "core"
+            / "english"
+            / "proofreading.py",
+            auto_verify=True,
+        ),
+        stop_at_idx=10,
+    )
 if "简体中文 (SRT)" in actions:
     zho_hans = Series.load(input_dir / "zho-Hans.srt")
     zho_hans_clean = get_zhongwen_cleaned(zho_hans)
@@ -143,14 +159,14 @@ if "English (SRT)" in actions:
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
-    proofer = EnglishProofreader(
-        test_case_path=test_data_root / "t" / "core" / "english" / "proof.py",
-    )
-    eng_proof = get_english_proofed(eng, proofer)
-    eng_proof.save(output_dir / "eng_proof.srt")
-    eng_proof_clean = get_english_cleaned(eng_proof)
-    eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
-    eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
+    # proofer = EnglishProofreader(
+    #     test_case_path=test_data_root / "t" / "core" / "english" / "proof.py",
+    # )
+    # eng_proof = get_english_proofed(eng, proofer)
+    # eng_proof.save(output_dir / "eng_proof.srt")
+    # eng_proof_clean = get_english_cleaned(eng_proof)
+    # eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
+    # eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
 
 # if "Bilingual 简体中文 and English" in actions:
 #     zho_hans_eng = get_synced_series(zho_hans_clean_flatten, eng_proof_clean_flatten)
