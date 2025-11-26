@@ -1086,7 +1086,7 @@ test_cases = [
     EnglishFusionTestCase(
         lens="… to Your Majesty - Get up",
         tesseract="- to Your Majesty\n- Get up",
-        fused="- … to Your Majesty\n- Get up",
+        fused="- …to Your Majesty\n- Get up",
         note="Manually corrected.",
         difficulty=2,
         verified=True,

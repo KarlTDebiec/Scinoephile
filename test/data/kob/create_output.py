@@ -125,10 +125,8 @@ if "English (OCR)" in actions:
             / "proofreading.py",
             auto_verify=True,
         ),
-        stop_at_idx=20,
     )
     eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
-
 
 if "简体粵文 (SRT)" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")

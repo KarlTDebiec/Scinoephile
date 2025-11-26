@@ -11,6 +11,10 @@ from scinoephile.core import Series
 from scinoephile.core.english import (
     get_english_cleaned,
 )
+from scinoephile.core.english.proofreading import (
+    EnglishProofreader,
+    get_english_proofread,
+)
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
     get_zhongwen_converted,
@@ -25,6 +29,7 @@ from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fu
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     kob_english_fusion_test_cases,
+    kob_english_proofreading_test_cases,
     kob_zhongwen_fusion_test_cases,
     kob_zhongwen_proofreading_test_cases,
 )
@@ -116,6 +121,22 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
+    eng_fuse_proofread = get_english_proofread(
+        eng_fuse,
+        EnglishProofreader(
+            test_cases=kob_english_proofreading_test_cases,
+            # + mnt_english_proofreading_test_cases
+            # + t_english_proofreading_test_cases,
+            test_case_path=test_data_root
+            / title
+            / "core"
+            / "english"
+            / "proofreading.py",
+            auto_verify=True,
+        ),
+        stop_at_idx=10,
+    )
+    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 
 # if "Bilingual 简体中文 and English" in actions:
 #     zho_hans_eng = get_synced_series(zho_hans_fuse_proofread_clean_flatten, eng_fuse)

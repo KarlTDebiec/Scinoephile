@@ -12,6 +12,9 @@ from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
+from test.data.kob.core.english.proofreading import (
+    test_cases as kob_english_proofreading_test_cases,
+)
 from test.data.kob.core.zhongwen.proofreading import (
     test_cases as kob_zhongwen_proofreading_test_cases,
 )
@@ -166,7 +169,7 @@ ___all__ = [
     "kob_eng_proof_clean_flatten",
     "kob_yue_hans_eng",
     "kob_english_fusion_test_cases",
-    "kob_english_proof_test_cases",
+    "kob_english_proofreading_test_cases",
     "kob_zhongwen_fusion_test_cases",
     "kob_zhongwen_proofreading_test_cases",
 ]
