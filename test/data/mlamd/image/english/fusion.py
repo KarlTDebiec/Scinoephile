@@ -27,9 +27,10 @@ test_cases = [
     EnglishFusionTestCase(
         lens="To commemorate this, Mrs. McBing …",
         tesseract="To commemorate this, Mrs. McBing",
-        fused="To commemorate this, Mrs. McBing …",
-        note="Kept ellipsis from Google Lens.",
+        fused="To commemorate this, Mrs. McBing…",
+        note="Kept ellipsis from Google Lens; removed space before ellipsis.",
         difficulty=1,
+        prompt=True,
         verified=True,
     ),
     EnglishFusionTestCase(
@@ -51,8 +52,9 @@ test_cases = [
     EnglishFusionTestCase(
         lens="Yeah! The one at the junction…\n…",
         tesseract="Yeah! The one at the junction …",
-        fused="Yeah! The one at the junction …",
-        note="Used single line and space before ellipsis as in Tesseract.",
+        fused="Yeah! The one at the junction…",
+        note="Kept ellipsis from Lens and removed extra line break and "
+        "space before ellipsis.",
         difficulty=1,
         verified=True,
     ),
