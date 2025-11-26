@@ -68,7 +68,8 @@ test_cases = [
         subtitle_6="Uh!",
         subtitle_7="Hey, thanks a lot.",
         revised_5="MAN: Okay, sure. Good to meet you.",
-        note_5="Changed 'Sure' to 'sure' for correct capitalization after a comma.",
+        note_5="Changed 'Sure' to lowercase 'sure' after the comma for "
+        "correct punctuation.",
         difficulty=1,
         verified=True,
     ),
@@ -791,6 +792,9 @@ test_cases = [
         subtitle_7="I didn't see another path to take.",
         subtitle_8="Hey, where are you going?",
         subtitle_9="SATSUKI: Mei, come back!",
+        revised_2="(BREATHING HEAVILY)",
+        note_2="Corrected 'HEAVY' to 'HEAVILY' for proper adverb usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(4)(
@@ -966,6 +970,9 @@ test_cases = [
         subtitle_2="(CLOCK CHIMING)",
         subtitle_3="Dad left his umbrella here.",
         subtitle_4="- I better take it to him.\n- I wanna go, too.",
+        revised_4="- I'd better take it to him.\n- I wanna go, too.",
+        note_4="Changed 'I better' to 'I'd better' for grammatical correctness.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(6)(
