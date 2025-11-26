@@ -42,6 +42,15 @@ test_cases = [
         subtitle_31="But luck is essential still.",
         subtitle_32="Of course Chow and Leung are\nlucky guys…",
         subtitle_33="But then they are smart too!",
+        revised_3="It flew along Garden Street…",
+        note_3="Corrected 'flied' to 'flew'.",
+        revised_7="Lingered a bit… Correction:",
+        note_7="Added a space after the ellipsis before 'Correction:' for clarity.",
+        revised_8="It flew over the railway, turned right…",
+        note_8="Corrected 'flied' to 'flew'.",
+        revised_10="It flew on…",
+        note_10="Corrected 'flied' to 'flew'.",
+        difficulty=1,
         prompt=True,
         verified=True,
     ),
@@ -79,6 +88,12 @@ test_cases = [
         subtitle_15="White teachers for English class?",
         subtitle_16="Yeah!",
         subtitle_17="Spring Flower offer white teachers!",
+        revised_12="Only 10 minutes' walk from\nthe MTR Station!",
+        note_12="Added possessive apostrophe to 'minutes'' for correct "
+        "expression: '10 minutes' walk'.",
+        revised_17="Spring Flower offers white teachers!",
+        note_17="Corrected 'offer' to 'offers' to match subject-verb agreement.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(23)(
@@ -204,6 +219,10 @@ test_cases = [
         subtitle_2="Everyday…",
         subtitle_3="I feel full of strength!",
         subtitle_4="The world is beautiful!",
+        revised_2="Every day…",
+        note_2="Corrected 'Everyday…' to 'Every day…' ('everyday' is an "
+        "adjective; 'every day' is correct here).",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(7)(
@@ -265,6 +284,10 @@ test_cases = [
         subtitle_4="Do it like this…",
         subtitle_5="And we have a Paper Bun.",
         subtitle_6="Isn't this a lovely bun?",
+        revised_3="The ingredient takes only paper.",
+        note_3="Removed the article 'a' before 'paper' to correct the phrase "
+        "to 'takes only paper.'",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(9)(
@@ -277,6 +300,13 @@ test_cases = [
         subtitle_7="The delicious Chicken Bun Paper\nBunning a Bun!",
         subtitle_8="Such a simple dish!",
         subtitle_9="See if the chicken is good!",
+        revised_2="Chicken Bun Paper Bun-ning a Bun.",
+        note_2="Added hyphen to 'Bun-ning' to clarify the play on words and "
+        "match the likely intended pun.",
+        revised_7="The delicious Chicken Bun Paper\nBun-ning a Bun!",
+        note_7="Added hyphen to 'Bun-ning' to match the correction in "
+        "subtitle 2 and maintain consistency.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(20)(
@@ -340,6 +370,7 @@ test_cases = [
         subtitle_25="When will you get rich?",
         subtitle_26="Soon…",
         subtitle_27="In my dream!",
+        prompt=True,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(19)(
@@ -363,7 +394,8 @@ test_cases = [
         subtitle_18="There, the sky is blue,\nclouds white, the trees tall…",
         subtitle_19="It is a world outside our world.",
         revised_12="What's-its-name.",
-        note_12="Added hyphens to 'What's-its-name.' to correct the compound phrase.",
+        note_12="Corrected 'What's-it's name.' to 'What's-its-name.' to fix "
+        "the possessive error and match the intended phrase.",
         difficulty=1,
         verified=True,
     ),
@@ -444,9 +476,11 @@ test_cases = [
         subtitle_25="We will go next week, ok?",
         subtitle_26="Bravo!",
         revised_10="Those words have flair.",
-        note_10="Corrected 'flare' to 'flair'.",
+        note_10="Corrected 'flare' to 'flair' (correct word for style or panache).",
         revised_15="No, that wasn't what you meant.",
-        note_15="Corrected 'mean' to 'meant'.",
+        note_15="Corrected 'mean' to 'meant' for correct tense.",
+        revised_25="We will go next week, OK?",
+        note_25="Capitalized 'ok' to 'OK' for standard usage.",
         difficulty=1,
         verified=True,
     ),
@@ -507,6 +541,9 @@ test_cases = [
         subtitle_7='Excuse me, it should be"honourable".',
         subtitle_8="Hong Kong athletes\nare honourable athletes.",
         subtitle_9="End of special report.",
+        revised_4="San San, when confirming her winning…",
+        note_4="Changed 'when confirmed her winning' to 'when confirming her "
+        "winning' for correct grammar.",
         revised_7='Excuse me, it should be "honourable".',
         note_7="Added a space after 'be' and before the quotation mark for "
         "correct formatting.",
@@ -647,6 +684,10 @@ test_cases = [
         subtitle_10="She says in her solemn, tender voice:",
         subtitle_11="Be good,",
         subtitle_12="learn with the master and\nhonour the ancestor.",
+        revised_3="But starts to defrost a chicken.",
+        note_3="Corrected 'defreeze' to 'defrost', which is the correct verb "
+        "for thawing food.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(25)(
@@ -704,6 +745,12 @@ test_cases = [
         subtitle_19="And the unique tradition is lost.",
         revised_4="Each year, in the fourth month,",
         note_4="Corrected 'forth' to 'fourth'.",
+        revised_6="Set up 3 stacks of buns to celebrate.",
+        note_6="Changed 'bun' to 'buns' for correct plural form.",
+        revised_7="Stacks of buns?",
+        note_7="Changed 'bun' to 'buns' for correct plural form.",
+        revised_9="A stack of buns is a stack of many buns!",
+        note_9="Changed 'bun' to 'buns' for correct plural form.",
         difficulty=1,
         verified=True,
     ),
@@ -828,6 +875,9 @@ test_cases = [
         subtitle_33='"One day, you will know him too."',
         subtitle_34='"Thank you for your cooperation."',
         subtitle_35='"Yours faithfully, Mrs. Mc"',
+        revised_11='"Buns of all sorts."',
+        note_11="Corrected 'sort' to 'sorts' for correct plural usage.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(24)(
@@ -855,8 +905,9 @@ test_cases = [
         subtitle_22="Hence I hang on…",
         subtitle_23="Step by step, claw by claw…",
         subtitle_24='I make it pass\nthe"12 Bun Snatching Hands".',
-        revised_24='I make it pass\nthe "12 Bun Snatching Hands".',
-        note_24="Added a space after 'the' before the quoted technique name.",
+        revised_24='I make it past\nthe "12 Bun Snatching Hands".',
+        note_24="Corrected 'make it pass' to 'make it past' and added a space "
+        "after 'the' for correct phrase formatting.",
         difficulty=1,
         verified=True,
     ),
@@ -914,6 +965,8 @@ test_cases = [
         subtitle_51="It was like early blessing from the angels.",
         revised_34="At a closedown sale.",
         note_34="Corrected 'closed own sale' to 'closedown sale'.",
+        revised_48="24th December",
+        note_48="Removed comma after '24th' for correct date formatting.",
         difficulty=1,
         verified=True,
     ),
@@ -923,6 +976,10 @@ test_cases = [
         subtitle_3="Lights shimmered on the sea.",
         subtitle_4="Beautiful and gentle.",
         subtitle_5="So beautiful!",
+        revised_2="Mother and I sat at the seafront.",
+        note_2="Replaced 'me' with 'I' for correct grammar: 'Mother and I "
+        "sat at the seafront.'",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(6)(
@@ -992,9 +1049,16 @@ test_cases = [
         subtitle_55="Suddenly, the smell of\nthe turkey returned.",
         subtitle_56="I regretted I made mother\nthrew the turkey away.",
         revised_9="Slices of meat,\naccompanied by gourd and potato…",
-        note_9="Corrected 'guard' to 'gourd'.",
-        revised_28="Turkey pâté with bread.",
-        note_28="Corrected 'Turkey Pete' to 'Turkey pâté'.",
+        note_9="Corrected 'guard' to 'gourd' (vegetable) as appropriate for "
+        "food context.",
+        revised_28="Turkey pate with bread.",
+        note_28="Corrected 'Turkey Pete' to 'Turkey pate' (food item).",
+        revised_35="It was already half a year later.",
+        note_35="Added 'a' to correct 'half year' to 'half a year'.",
+        revised_43="Taking the first bite is all that matters.",
+        note_43="Added 'that' for correct phrase: 'all that matters'.",
+        revised_56="I regretted I made mother\nthrow the turkey away.",
+        note_56="Corrected 'threw' to 'throw' for correct verb tense after 'made'.",
         difficulty=1,
         verified=True,
     ),
@@ -1027,11 +1091,13 @@ test_cases = [
         subtitle_22='"Bun Snatching"…',
         subtitle_23="A game thought extinct.",
         revised_1='"Special Report"',
-        note_1="Changed single quote to double quotes for consistency and "
-        "corrected closing quote direction.",
+        note_1="Corrected the opening single quote to a double quote for "
+        "consistency and proper formatting.",
         revised_14='To campaign for "Tart Throwing".',
-        note_14="Added space after 'for' and corrected quote formatting "
-        "around 'Tart Throwing'.",
+        note_14="Added a space after 'for' and corrected the quotation mark "
+        "placement for clarity.",
+        revised_18="More interesting,\nCIC Insurance is joining forces with…",
+        note_18="Corrected 'joining force' to 'joining forces' for correct grammar.",
         difficulty=1,
         verified=True,
     ),
@@ -1056,6 +1122,9 @@ test_cases = [
         subtitle_4="Then they stopped selling buns.",
         subtitle_5="Carts were replaced by ordering sheet.",
         subtitle_6="Everything came to nothing.",
+        revised_5="Carts were replaced by ordering sheets.",
+        note_5="Changed 'ordering sheet' to 'ordering sheets' for correct plural form.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(3)(
@@ -1068,6 +1137,9 @@ test_cases = [
         subtitle_1="For environmental reason…",
         subtitle_2="They'd changed to snatch plastic buns.",
         subtitle_3="Master thought they stunk.",
+        revised_1="For environmental reasons…",
+        note_1="Changed 'reason' to 'reasons' for correct usage in this context.",
+        difficulty=1,
         verified=True,
     ),
     EnglishProofreadingTestCase.get_test_case_cls(34)(
@@ -1166,8 +1238,8 @@ test_cases = [
         subtitle_13="The secret is: please, roast it well!",
         subtitle_14="Thank you!",
         revised_4='The last recipe was "Roast Chicken".',
-        note_4="Added a space after 'was' and before the opening quotation "
-        "mark for correct punctuation.",
+        note_4="Added a space after 'was' and before the quotation mark for "
+        "correct formatting.",
         difficulty=1,
         verified=True,
     ),

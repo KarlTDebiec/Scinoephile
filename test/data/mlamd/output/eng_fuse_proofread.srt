@@ -8,7 +8,7 @@ A pan appeared in the sky.
 
 3
 00:00:55,042 --> 00:00:58,208
-It flied along Garden Street…
+It flew along Garden Street…
 
 4
 00:00:58,375 --> 00:01:04,750
@@ -25,11 +25,11 @@ It first arrived at the Market Building…
 
 7
 00:01:10,333 --> 00:01:13,292
-Lingered a bit…Correction:
+Lingered a bit… Correction:
 
 8
 00:01:13,375 --> 00:01:18,458
-It flied over the railway, turned right…
+It flew over the railway, turned right…
 
 9
 00:01:18,583 --> 00:01:23,792
@@ -37,7 +37,7 @@ And headed directly for the Bazaar.
 
 10
 00:01:23,917 --> 00:01:25,708
-It flied on…
+It flew on…
 
 11
 00:01:25,875 --> 00:01:29,042
@@ -236,7 +236,7 @@ The Spring Flower Kindergarten!
 
 58
 00:05:04,000 --> 00:05:08,208
-Only 10 minutes walk from
+Only 10 minutes' walk from
 the MTR Station!
 
 59
@@ -258,7 +258,7 @@ Yeah!
 
 63
 00:05:17,125 --> 00:05:22,417
-Spring Flower offer white teachers!
+Spring Flower offers white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
@@ -672,7 +672,7 @@ Watching myself grow and grow…
 
 163
 00:10:26,333 --> 00:10:27,625
-Everyday…
+Every day…
 
 164
 00:10:27,833 --> 00:10:29,292
@@ -816,7 +816,7 @@ Now we shall do a Paper Bun.
 
 198
 00:14:11,292 --> 00:14:14,667
-The ingredient takes only a paper.
+The ingredient takes only paper.
 
 199
 00:14:14,958 --> 00:14:19,333
@@ -836,7 +836,7 @@ A novelty today for everyone:
 
 203
 00:14:37,542 --> 00:14:40,958
-Chicken Bun Paper Bunning a Bun.
+Chicken Bun Paper Bun-ning a Bun.
 
 204
 00:14:41,125 --> 00:14:45,042
@@ -860,7 +860,7 @@ And then wrap it like this…
 208
 00:14:59,875 --> 00:15:05,292
 The delicious Chicken Bun Paper
-Bunning a Bun!
+Bun-ning a Bun!
 
 209
 00:15:05,458 --> 00:15:06,958
@@ -1411,7 +1411,7 @@ Sure, sure, I am rich.
 
 342
 00:26:22,208 --> 00:26:23,500
-We will go next week, ok?
+We will go next week, OK?
 
 343
 00:26:23,625 --> 00:26:24,542
@@ -1563,7 +1563,7 @@ in Hong Kong history!
 
 379
 00:33:55,833 --> 00:33:59,708
-San San, when confirmed her winning…
+San San, when confirming her winning…
 
 380
 00:33:59,833 --> 00:34:03,875
@@ -1927,7 +1927,7 @@ She won't say a word…
 
 469
 00:40:14,458 --> 00:40:18,250
-But starts to defreeze a chicken.
+But starts to defrost a chicken.
 
 470
 00:40:20,667 --> 00:40:24,500
@@ -2107,11 +2107,11 @@ Cheung Chau people…
 
 511
 00:43:25,958 --> 00:43:28,667
-Set up 3 stacks of bun to celebrate.
+Set up 3 stacks of buns to celebrate.
 
 512
 00:43:29,750 --> 00:43:31,333
-Stacks of bun?
+Stacks of buns?
 
 513
 00:43:31,792 --> 00:43:32,875
@@ -2119,7 +2119,7 @@ Literally speaking…
 
 514
 00:43:33,083 --> 00:43:38,375
-A stack of bun is a stack of many buns!
+A stack of buns is a stack of many buns!
 
 515
 00:43:38,750 --> 00:43:41,958
@@ -2457,7 +2457,7 @@ the Olympic Committee Chairman.
 
 595
 00:49:15,500 --> 00:49:19,917
-"Buns of all sort."
+"Buns of all sorts."
 
 596
 00:49:20,042 --> 00:49:22,125
@@ -2658,7 +2658,7 @@ Step by step, claw by claw…
 
 643
 00:51:55,167 --> 00:51:59,833
-I make it pass
+I make it past
 the "12 Bun Snatching Hands".
 
 644
@@ -2860,7 +2860,7 @@ into the oven.
 
 691
 00:54:42,042 --> 00:54:43,500
-24th, December
+24th December
 
 692
 00:54:44,000 --> 00:54:47,625
@@ -2881,7 +2881,7 @@ Such a beautiful night!
 
 696
 00:55:05,542 --> 00:55:07,583
-Mother and me sat at the seafront.
+Mother and I sat at the seafront.
 
 697
 00:55:08,250 --> 00:55:12,042
@@ -3035,7 +3035,7 @@ Paper turkey paper bun.
 
 733
 00:57:37,125 --> 00:57:39,667
-Turkey pâté with bread.
+Turkey pate with bread.
 
 734
 00:57:40,625 --> 00:57:46,625
@@ -3066,7 +3066,7 @@ the turkey…
 
 740
 00:58:06,167 --> 00:58:10,417
-It was already half year later.
+It was already half a year later.
 
 741
 00:58:10,542 --> 00:58:14,542
@@ -3099,7 +3099,7 @@ I realized also, with turkey…
 
 748
 00:58:31,583 --> 00:58:35,792
-Taking the first bite is all it matters.
+Taking the first bite is all that matters.
 
 749
 00:58:36,333 --> 00:58:40,083
@@ -3155,7 +3155,7 @@ the turkey returned.
 761
 00:59:18,000 --> 00:59:22,542
 I regretted I made mother
-threw the turkey away.
+throw the turkey away.
 
 762
 01:00:11,583 --> 01:00:18,500
@@ -3237,7 +3237,7 @@ would make an ideal addition.
 780
 01:01:12,042 --> 01:01:15,958
 More interesting,
-CIC Insurance is joining force with…
+CIC Insurance is joining forces with…
 
 781
 01:01:16,083 --> 01:01:17,958
@@ -3327,7 +3327,7 @@ Then they stopped selling buns.
 
 801
 01:03:26,167 --> 01:03:28,708
-Carts were replaced by ordering sheet.
+Carts were replaced by ordering sheets.
 
 802
 01:03:29,417 --> 01:03:31,542
@@ -3348,7 +3348,7 @@ Each time I saw him.
 
 806
 01:03:54,250 --> 01:03:55,542
-For environmental reason…
+For environmental reasons…
 
 807
 01:03:55,708 --> 01:03:58,958
