@@ -139,6 +139,8 @@ if "English (OCR)" in actions:
         ),
         stop_at_idx=10,
     )
+    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+
 if "简体中文 (SRT)" in actions:
     zho_hans = Series.load(input_dir / "zho-Hans.srt")
     zho_hans_clean = get_zhongwen_cleaned(zho_hans)
