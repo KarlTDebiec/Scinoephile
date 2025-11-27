@@ -67,7 +67,7 @@ if "简体中文 (OCR)" in actions:
     zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
     zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
     zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
-    zho_hant_fused = get_zhongwen_ocr_fused(
+    zho_hans_fuse = get_zhongwen_ocr_fused(
         zho_hans_paddle,
         zho_hans_lens,
         ZhongwenFuser(
@@ -78,10 +78,8 @@ if "简体中文 (OCR)" in actions:
             auto_verify=True,
         ),
     )
-    zho_hant_fused.save(output_dir / "zho-Hans_fuse.srt")
-    zho_hans_fuse = Series.load(output_dir / "zho-Hans_fuse.srt")
-    zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
-    zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
+    zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
+    zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse, remove_empty=False)
     zho_hans_fuse_proofread = get_zhongwen_proofread(
         zho_hans_fuse,
         ZhongwenProofreader(

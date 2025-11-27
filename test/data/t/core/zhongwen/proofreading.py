@@ -613,11 +613,16 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4)(
-        zimu_1="番禺易发市场",
-        zimu_2="三十部廿九吋新画皇，每部一万二",
-        zimu_3="另外八十部VCD机，每部四千",
-        zimu_4="多谢你，六十八万",
+    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
+        zimu_1="",
+        verified=True,
+    ),
+    ZhongwenProofreadingTestCase.get_test_case_cls(5)(
+        zimu_1="",
+        zimu_2="番禺易发市场",
+        zimu_3="三十部廿九吋新画皇，每部一万二",
+        zimu_4="另外八十部VCD机，每部四千",
+        zimu_5="多谢你，六十八万",
         verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(5)(

@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import Self
 
 from pydantic import Field, create_model
@@ -16,6 +17,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
     """Abstract base class for 中文 proofreading queries."""
 
     @classmethod
+    @cache
     def get_query_cls(cls, size: int) -> type[Self]:
         """Get query class for 中文 proofreading.
 

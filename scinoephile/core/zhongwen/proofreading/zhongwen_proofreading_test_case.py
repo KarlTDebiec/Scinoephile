@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar
 
 from pydantic import create_model, model_validator
@@ -66,6 +67,7 @@ class ZhongwenProofreadingTestCase[
         return "\n".join(lines)
 
     @classmethod
+    @cache
     def get_test_case_cls(
         cls,
         size: int,

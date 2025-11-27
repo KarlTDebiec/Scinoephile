@@ -1,41 +1,13 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.test_get_english_proofed."""
+"""Tests of scinoephile.core.english.get_english_proofread."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import (
-    EnglishProofreadingLLMQueryer,
-    get_english_proofread,
-)
-from scinoephile.testing import test_data_root
-from test.data.kob import kob_english_proofreading_test_cases
-from test.data.mlamd import mlamd_english_proofreading_test_cases
-from test.data.mnt import mnt_english_proofreading_test_cases
-from test.data.t import t_english_proofreading_test_cases
-
-
-@pytest.fixture
-def english_proofreading_llm_queryer_few_shot() -> EnglishProofreadingLLMQueryer:
-    """LLMQueryer with few-shot examples."""
-    return EnglishProofreadingLLMQueryer(
-        prompt_test_cases=[
-            tc for tc in kob_english_proofreading_test_cases if tc.prompt
-        ]
-        + [tc for tc in mlamd_english_proofreading_test_cases if tc.prompt]
-        + [tc for tc in mnt_english_proofreading_test_cases if tc.prompt]
-        + [tc for tc in t_english_proofreading_test_cases if tc.prompt],
-        cache_dir_path=test_data_root / "cache",
-    )
-
-
-@pytest.fixture
-def english_proofreading_llm_queryer_zero_shot() -> EnglishProofreadingLLMQueryer:
-    """LLMQueryer with no examples."""
-    return EnglishProofreadingLLMQueryer(cache_dir_path=test_data_root / "cache")
+from scinoephile.core.english.proofreading import get_english_proofread
 
 
 def _test_get_english_proofed(series: Series, expected: Series):

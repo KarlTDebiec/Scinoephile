@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import Self
 
 from pydantic import Field, create_model
@@ -16,6 +17,7 @@ class EnglishProofreadingAnswer(Answer, ABC):
     """Abstract base class for English proofreading answers."""
 
     @classmethod
+    @cache
     def get_answer_cls(cls, size: int) -> type[Self]:
         """Get answer class for English proofreading.
 
