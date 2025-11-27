@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
+"""Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ except ImportError:
 
 
 class ZhongwenFuser:
-    """Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
+    """Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
     def __init__(
         self,
@@ -85,10 +85,10 @@ class ZhongwenFuser:
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+        """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens."""
 
     def fuse(self, paddle: Series, lens: Series, stop_at_idx: int | None = None):
-        """Fuse OCRed 中文 text from PaddleOCR and Google Lens OCR.
+        """Fuse OCRed 中文 text from PaddleOCR and Google Lens.
 
         Arguments:
             paddle: 中文 subtitles OCRed using PaddleOCR
@@ -98,7 +98,7 @@ class ZhongwenFuser:
         # Validate series
         if not are_series_one_to_one(paddle, lens):
             raise ScinoephileError(
-                "PaddleOCR and Google Lens OCR series must have the same number of "
+                "PaddleOCR and Google Lens series must have the same number of "
                 "subtitles."
             )
 

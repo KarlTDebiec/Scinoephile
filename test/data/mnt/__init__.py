@@ -33,7 +33,7 @@ output_dir = test_data_root / title / "output"
 # 简体中文 (OCR)
 @pytest.fixture
 def mnt_zho_hans_lens() -> Series:
-    """MNT 简体中文 subtitles OCRed using Google Lens OCR."""
+    """MNT 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_lens.srt")
 
 

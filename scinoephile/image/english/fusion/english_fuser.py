@@ -98,7 +98,7 @@ class EnglishFuser:
         # Validate series
         if not are_series_one_to_one(tesseract, lens):
             raise ScinoephileError(
-                "Tesseract and Google Lens OCRed series must have the same number of "
+                "Tesseract and Google Lensed series must have the same number of "
                 "subtitles."
             )
 
