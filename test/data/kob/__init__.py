@@ -55,7 +55,26 @@ def kob_zho_hant_fuse_proofread() -> Series:
     return Series.load(output_dir / "zho-Hant_fuse_proofread.srt")
 
 
-# 简体粤文
+# English (OCR)
+@pytest.fixture
+def kob_eng_lens() -> Series:
+    """KOB English subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "eng_lens.srt")
+
+
+@pytest.fixture
+def kob_eng_tesseract() -> Series:
+    """KOB English subtitles OCRed using Tesseract."""
+    return Series.load(input_dir / "eng_tesseract.srt")
+
+
+@pytest.fixture
+def kob_eng_fuse() -> Series:
+    """KOB English fused subtitles."""
+    return Series.load(output_dir / "eng_fuse.srt")
+
+
+# 简体粤文 (SRT)
 @pytest.fixture
 def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles."""
@@ -80,7 +99,7 @@ def kob_yue_hans_clean_flatten() -> Series:
     return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
 
 
-# 繁体粤文
+# 繁体粤文 (SRT)
 @pytest.fixture
 def kob_yue_hant() -> Series:
     """KOB 繁体粤文 subtitles."""
@@ -93,26 +112,7 @@ def kob_yue_hant_simplify() -> Series:
     return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
-# English (OCR)
-@pytest.fixture
-def kob_eng_lens() -> Series:
-    """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_lens.srt")
-
-
-@pytest.fixture
-def kob_eng_tesseract() -> Series:
-    """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
-
-
-@pytest.fixture
-def kob_eng_fuse() -> Series:
-    """KOB English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
-
-
-# English
+# English (SRT)
 @pytest.fixture
 def kob_eng() -> Series:
     """KOB English subtitles."""
@@ -132,18 +132,12 @@ def kob_eng_flatten() -> Series:
 
 
 @pytest.fixture
-def kob_eng_proof() -> Series:
-    """KOB English proofed subtitles."""
-    return Series.load(output_dir / "eng_proof.srt")
+def kob_eng_clean_flatten() -> Series:
+    """KOB English cleaned and flattened subtitles."""
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
-@pytest.fixture
-def kob_eng_proof_clean_flatten() -> Series:
-    """KOB English proofed, cleaned and flattened subtitles."""
-    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
-
-
-# Bilingual 简体粤文 and English
+# Bilingual 简体粤文 and English (SRT)
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
     """KOB Bilingual 简体粤文 and English subtitles."""
@@ -153,20 +147,20 @@ def kob_yue_hans_eng() -> Series:
 ___all__ = [
     "kob_zho_hant_fuse",
     "kob_zho_hant_fuse_proofread",
+    "kob_eng_lens",
+    "kob_eng_tesseract",
+    "kob_eng_fuse",
+    "kob_eng_fuse_proofread",
     "kob_yue_hans",
     "kob_yue_hans_clean",
     "kob_yue_hans_flatten",
     "kob_yue_hans_clean_flatten",
     "kob_yue_hant",
     "kob_yue_hant_simplify",
-    "kob_eng_lens",
-    "kob_eng_tesseract",
-    "kob_eng_fuse",
     "kob_eng",
     "kob_eng_clean",
     "kob_eng_flatten",
-    "kob_eng_proof",
-    "kob_eng_proof_clean_flatten",
+    "kob_eng_clean_flatten",
     "kob_yue_hans_eng",
     "kob_english_fusion_test_cases",
     "kob_english_proofreading_test_cases",

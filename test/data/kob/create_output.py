@@ -13,6 +13,7 @@ from scinoephile.core.english.proofreading import (
     EnglishProofreader,
     get_english_proofread,
 )
+from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     OpenCCConfig,
     get_zhongwen_cleaned,
@@ -51,12 +52,12 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "繁體中文 (OCR)",
+    "繁體中文 (OCR)",
     "English (OCR)",
-    # "简体粵文 (SRT)",
-    # "繁體粵文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体粵文 and English",
+    "简体粵文 (SRT)",
+    "繁體粵文 (SRT)",
+    "English (SRT)",
+    "Bilingual 简体粵文 and English",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -150,15 +151,11 @@ if "English (SRT)" in actions:
     eng_clean.save(output_dir / "eng_clean.srt")
     eng_flatten = get_english_flattened(eng)
     eng_flatten.save(output_dir / "eng_flatten.srt")
-    # proofer = EnglishProofreader(
-    #     test_case_path=test_data_root / "kob" / "core" / "english" / "proof.py",
-    # )
-    # eng_proof = get_english_proofed(eng, proofer)
-    # eng_proof.save(output_dir / "eng_proof.srt")
-    # eng_proof_clean = get_english_cleaned(eng_proof)
-    # eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
-    # eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
+    eng_clean_flatten = get_english_flattened(eng_clean)
+    eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
-# if "Bilingual 简体粵文 and English" in actions:
-#     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_proof_clean_flatten)
-#     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
+if "Bilingual 简体粵文 and English" in actions:
+    yue_hans_clean_flatten = Series.load(output_dir / "yue-Hans_clean_flatten.srt")
+    eng_clean_flatten = Series.load(output_dir / "eng_clean_flatten.srt")
+    yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
+    yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
