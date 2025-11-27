@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import asyncio
 import re
-from importlib.util import module_from_spec, spec_from_file_location
 from logging import info, warning
 from pathlib import Path
 
@@ -22,7 +21,11 @@ from scinoephile.core.english.proofreading.english_proofreading_query import (
 from scinoephile.core.english.proofreading.english_proofreading_test_case import (
     EnglishProofreadingTestCase,
 )
-from scinoephile.testing import test_data_root, update_test_cases
+from scinoephile.testing import (
+    get_test_cases_from_file_path,
+    test_data_root,
+    update_test_cases,
+)
 
 
 class EnglishProofreader:
@@ -46,17 +49,7 @@ class EnglishProofreader:
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-
-            if test_case_path.exists():
-                spec = spec_from_file_location("test_cases", test_case_path)
-                module = module_from_spec(spec)
-                spec.loader.exec_module(module)
-
-                for name in getattr(module, "__all__", []):
-                    if name.endswith("test_cases"):
-                        if value := getattr(module, name, None):
-                            test_cases.extend(value)
-
+            test_cases.extend(get_test_cases_from_file_path(test_case_path))
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -119,6 +112,11 @@ class EnglishProofreader:
 
     @classmethod
     def get_default_test_cases(cls):
+        """Get default test cases included with package.
+
+        Returns:
+            test cases
+        """
         try:
             # noinspection PyUnusedImports
             from test.data.kob import kob_english_proofreading_test_cases

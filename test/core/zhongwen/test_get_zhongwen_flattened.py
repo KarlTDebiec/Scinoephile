@@ -56,7 +56,8 @@ def test_get_zhongwen_flattened_mlamd(
 
     Arguments:
         mlamd_zho_hans_fuse_proofread_clean: MLAMD 简体中文 series fixture
-        mnt_zho_hant_flatten: Expected flattened MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_proofread_clean_flatten: Expected flattened MLAMD 简体中文
+          series fixture
     """
     _test_get_zhongwen_flattened(
         mlamd_zho_hans_fuse_proofread_clean, mlamd_zho_hans_fuse_proofread_clean_flatten

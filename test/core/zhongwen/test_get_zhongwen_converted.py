@@ -55,7 +55,8 @@ def test_get_zhongwen_converted_mnt(
 
     Arguments:
         mnt_zho_hant_clean_flatten: MNT 繁体中文 series fixture
-        mnt_zho_hant_clean_flatten_simplify: Expected simplified MNT 繁体中文 series fixture
+        mnt_zho_hant_clean_flatten_simplify: Expected simplified MNT 繁体中文 series
+          fixture
     """
     _test_get_zhongwen_converted(
         mnt_zho_hant_clean_flatten,

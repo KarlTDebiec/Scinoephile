@@ -38,8 +38,8 @@ def test_get_zhongwen_proofread_kob(
     """Test get_zhongwen_proofread with KOB English subtitles.
 
     Arguments:
-        kob_zho_hans_fuse: KOB English series fixture
-        kob_zho_hant_fuse: Expected proofread KOB English series fixture
+        kob_zho_hant_fuse: KOB English series fixture
+        kob_zho_hant_fuse_proofread: Expected proofread KOB English series fixture
     """
     _test_get_zhongwen_proofread(kob_zho_hant_fuse, kob_zho_hant_fuse_proofread)
 

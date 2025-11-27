@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.zhongwen.get_zhongwen_cleaned"""
+"""Tests of scinoephile.core.zhongwen.get_zhongwen_cleaned."""
 
 from __future__ import annotations
 
@@ -47,7 +47,8 @@ def test_get_zhongwen_cleaned_mlamd(
 
     Arguments:
         mlamd_zho_hans_fuse_proofread: MLAMD 繁体中文 series fixture
-        mlamd_zho_hans_fuse_proofread_clean: Expected cleaned MLAMD 繁体中文 series fixture
+        mlamd_zho_hans_fuse_proofread_clean: Expected cleaned MLAMD 繁体中文 series
+          fixture
     """
     _test_get_zhongwen_cleaned(
         mlamd_zho_hans_fuse_proofread, mlamd_zho_hans_fuse_proofread_clean
