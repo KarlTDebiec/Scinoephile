@@ -8,34 +8,9 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.zhongwen import (
-    OpenCCConfig,
-    _get_zhongwen_text_flattened,
-    get_zhongwen_cleaned,
-    get_zhongwen_converted,
-    get_zhongwen_converter,
+    _get_zhongwen_text_flattened,  # noqa
     get_zhongwen_flattened,
 )
-
-
-# region Implementations
-def _test_get_zhongwen_cleaned(series: Series, expected: Series):
-    """Test get_zhongwen_cleaned.
-
-    Arguments:
-        series: Series with which to test
-        expected: Expected output series
-    """
-    output = get_zhongwen_cleaned(series)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
 
 
 def _test_get_zhongwen_flattened(series: Series, expected: Series):
@@ -61,153 +36,55 @@ def _test_get_zhongwen_flattened(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def _test_get_zhongwen_converted(series: Series, config: OpenCCConfig, expected):
-    """Test get_zhongwen_converted.
-
-    Arguments:
-        series: Series with which to test
-        config: OpenCCConfig for conversion
-        expected: Expected output series
-    """
-    output = get_zhongwen_converted(series, config)
-    assert len(series) == len(output)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
-
-
-# endregion
-
-
-# region get_zhongwen_cleaned
-def test_get_zhongwen_cleaned_kob(kob_yue_hans: Series, kob_yue_hans_clean: Series):
-    """Test get_zhongwen_cleaned with KOB 简体粤文 subtitles.
-
-    Arguments:
-        kob_yue_hans: KOB 简体粤文 series fixture
-        kob_yue_hans_clean: Expected cleaned KOB 简体粤文 series fixture
-    """
-    _test_get_zhongwen_cleaned(kob_yue_hans, kob_yue_hans_clean)
-
-
-def test_get_zhongwen_cleaned_mnt(mnt_zho_hant: Series, mnt_zho_hant_clean: Series):
-    """Test get_zhongwen_cleaned with MNT 繁体中文 subtitles.
-
-    Arguments:
-        mnt_zho_hant: MNT 繁体中文 series fixture
-        mnt_zho_hant_clean: Expected cleaned MNT 繁体中文 series fixture
-    """
-    _test_get_zhongwen_cleaned(mnt_zho_hant, mnt_zho_hant_clean)
-
-
-def test_get_zhongwen_cleaned_t(t_zho_hans: Series, t_zho_hans_clean: Series):
-    """Test get_zhongwen_cleaned with T 簡體中文 subtitles.
-
-    Arguments:
-        t_zho_hans: T 簡體中文 series fixture
-        t_zho_hans_clean: Expected cleaned T 簡體中文 series fixture
-    """
-    _test_get_zhongwen_cleaned(t_zho_hans, t_zho_hans_clean)
-
-
-# endregion
-
-
-# region get_zhongwen_flattened
-def test_get_zhongwen_flattened_kob(kob_yue_hans: Series, kob_yue_hans_flatten: Series):
+def test_get_zhongwen_flattened_kob(
+    kob_yue_hans_clean: Series, kob_yue_hans_clean_flatten: Series
+):
     """Test get_zhongwen_flattened with KOB 简体粤文 subtitles.
 
     Arguments:
-        kob_yue_hans: KOB 简体粤文 series fixture
-        kob_yue_hans_flatten: Expected flattened KOB 简体粤文 series fixture
+        kob_yue_hans_clean: KOB 简体粤文 series fixture
+        kob_yue_hans_clean_flatten: Expected flattened KOB 简体粤文 series fixture
     """
-    _test_get_zhongwen_flattened(kob_yue_hans, kob_yue_hans_flatten)
+    _test_get_zhongwen_flattened(kob_yue_hans_clean, kob_yue_hans_clean_flatten)
 
 
-def test_get_zhongwen_flattened_mnt(mnt_zho_hant: Series, mnt_zho_hant_flatten: Series):
+def test_get_zhongwen_flattened_mlamd(
+    mlamd_zho_hans_fuse_proofread_clean: Series,
+    mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
+):
+    """Test get_zhongwen_flattened with MLAMD 简体中文 subtitles.
+
+    Arguments:
+        mlamd_zho_hans_fuse_proofread_clean: MLAMD 简体中文 series fixture
+        mnt_zho_hant_flatten: Expected flattened MLAMD 简体中文 series fixture
+    """
+    _test_get_zhongwen_flattened(
+        mlamd_zho_hans_fuse_proofread_clean, mlamd_zho_hans_fuse_proofread_clean_flatten
+    )
+
+
+def test_get_zhongwen_flattened_mnt(
+    mnt_zho_hant_clean: Series, mnt_zho_hant_clean_flatten: Series
+):
     """Test get_zhongwen_flattened with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hant: MNT 繁体中文 series fixture
-        mnt_zho_hant_flatten: Expected flattened MNT 繁体中文 series fixture
+        mnt_zho_hant_clean: MNT 繁体中文 series fixture
+        mnt_zho_hant_clean_flatten: Expected flattened MNT 繁体中文 series fixture
     """
-    _test_get_zhongwen_flattened(mnt_zho_hant, mnt_zho_hant_flatten)
+    _test_get_zhongwen_flattened(mnt_zho_hant_clean, mnt_zho_hant_clean_flatten)
 
 
-def test_get_zhongwen_flattened_t(t_zho_hans: Series, t_zho_hans_flatten: Series):
+def test_get_zhongwen_flattened_t(
+    t_zho_hans_clean: Series, t_zho_hans_clean_flatten: Series
+):
     """Test get_zhongwen_flattened with T 簡體中文 subtitles.
 
     Arguments:
-        t_zho_hans: T 簡體中文 series fixture
-        t_zho_hans_flatten: Expected flattened T 簡體中文 series fixture
+        t_zho_hans_clean: T 簡體中文 series fixture
+        t_zho_hans_clean_flatten: Expected flattened T 簡體中文 series fixture
     """
-    _test_get_zhongwen_flattened(t_zho_hans, t_zho_hans_flatten)
-
-
-# endregion
-
-
-# region get_zhongwen_converted
-def test_get_zhongwen_converted_kob(
-    kob_yue_hant: Series, kob_yue_hant_simplify: Series
-):
-    """Test get_zhongwen_converted with KOB 繁体粤文 subtitles.
-
-    Arguments:
-        kob_yue_hant: KOB 繁体粤文 series fixture
-        kob_yue_hant_simplify: Expected simplified KOB 繁体粤文 series fixture
-    """
-    _test_get_zhongwen_converted(kob_yue_hant, OpenCCConfig.hk2s, kob_yue_hant_simplify)
-
-
-def test_get_zhongwen_converted_mnt(
-    mnt_zho_hant: Series, mnt_zho_hant_simplify: Series
-):
-    """Test get_zhongwen_converted with MNT 繁体中文 subtitles.
-
-    Arguments:
-        mnt_zho_hant: MNT 繁体中文 series fixture
-        mnt_zho_hant_simplify: Expected simplified MNT 繁体中文 series fixture
-    """
-    _test_get_zhongwen_converted(mnt_zho_hant, OpenCCConfig.t2s, mnt_zho_hant_simplify)
-
-
-def test_get_zhongwen_converted_t(t_zho_hant: Series, t_zho_hant_simplify: Series):
-    """Test get_zhongwen_converted with T 繁体中文 subtitles.
-
-    Arguments:
-        t_zho_hant: T 繁体中文 series fixture
-        t_zho_hant_simplify: Expected simplified T 繁体中文 series fixture
-    """
-    _test_get_zhongwen_converted(t_zho_hant, OpenCCConfig.t2s, t_zho_hant_simplify)
-
-
-# endregion
-
-
-@pytest.mark.parametrize(
-    ("text", "config", "expected"),
-    [
-        ("漢字轉換", OpenCCConfig.t2s, "汉字转换"),
-        ("汉字转换", OpenCCConfig.s2t, "漢字轉換"),
-    ],
-)
-def test_get_zhongwen_converter(text: str, config: OpenCCConfig, expected: str):
-    """Test get_zhongwen_converter.
-
-    Arguments:
-        text: Text to convert
-        config: Conversion configuration
-        expected: Expected converted text
-    """
-    assert get_zhongwen_converter(config).convert(text) == expected
+    _test_get_zhongwen_flattened(t_zho_hans_clean, t_zho_hans_clean_flatten)
 
 
 @pytest.mark.parametrize(

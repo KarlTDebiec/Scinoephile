@@ -67,7 +67,7 @@ def mnt_zho_hans_fuse_proofread_clean_flatten() -> Series:
     return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
 
 
-# 繁体中文
+# 繁体中文 (SRT)
 @pytest.fixture
 def mnt_zho_hant() -> Series:
     """MNT 繁体中文 series."""
@@ -81,15 +81,9 @@ def mnt_zho_hant_clean() -> Series:
 
 
 @pytest.fixture
-def mnt_zho_hant_flatten() -> Series:
-    """MNT 繁体中文 flattened series."""
-    return Series.load(output_dir / "zho-Hant_flatten.srt")
-
-
-@pytest.fixture
-def mnt_zho_hant_simplify() -> Series:
-    """MNT 繁体中文 simplified series."""
-    return Series.load(output_dir / "zho-Hant_simplify.srt")
+def mnt_zho_hant_clean_flatten() -> Series:
+    """MNT 繁体中文 cleaned and flattened series."""
+    return Series.load(output_dir / "zho-Hant_clean_flatten.srt")
 
 
 @pytest.fixture
@@ -1289,8 +1283,7 @@ ___all__ = [
     "mnt_zho_hans_fuse_proofread_clean_flatten",
     "mnt_zho_hant",
     "mnt_zho_hant_clean",
-    "mnt_zho_hant_flatten",
-    "mnt_zho_hant_simplify",
+    "mnt_zho_hant_clean_flatten",
     "mnt_zho_hant_clean_flatten_simplify",
     "mnt_eng_lens",
     "mnt_eng_tesseract",
