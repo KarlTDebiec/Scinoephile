@@ -7,7 +7,7 @@ from __future__ import annotations
 import asyncio
 import re
 from importlib.util import module_from_spec, spec_from_file_location
-from logging import error, info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -117,6 +117,34 @@ class ZhongwenProofreader:
         info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series
 
+    @classmethod
+    def get_default_test_cases(cls):
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import kob_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import mnt_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import t_zhongwen_proofreading_test_cases
+
+            return (
+                kob_zhongwen_proofreading_test_cases
+                + mlamd_zhongwen_proofreading_test_cases
+                + mnt_zhongwen_proofreading_test_cases
+                + t_zhongwen_proofreading_test_cases
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+            return []
+
     @staticmethod
     def create_test_case_file(test_case_path: Path, n_blocks: int):
         """Create a test case file.
@@ -140,31 +168,6 @@ __all__ = [
 ]'''
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
-
-    @staticmethod
-    def get_default_test_cases():
-        try:
-            # noinspection PyUnusedImports
-            from test.data.kob import kob_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.mnt import mnt_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.t import t_zhongwen_proofreading_test_cases
-
-            return (
-                kob_zhongwen_proofreading_test_cases
-                + mlamd_zhongwen_proofreading_test_cases
-                + mnt_zhongwen_proofreading_test_cases
-                + t_zhongwen_proofreading_test_cases
-            )
-        except ImportError as exc:
-            error(exc)
-            return []
 
     @staticmethod
     def get_query(

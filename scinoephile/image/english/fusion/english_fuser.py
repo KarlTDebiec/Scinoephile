@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import asyncio
 from importlib.util import module_from_spec, spec_from_file_location
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -20,28 +20,6 @@ from scinoephile.image.english.fusion.english_fusion_test_case import (
     EnglishFusionTestCase,
 )
 from scinoephile.testing import test_data_root, update_test_cases
-
-try:
-    # noinspection PyUnusedImports
-    from test.data.kob import kob_english_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mlamd import mlamd_english_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mnt import mnt_english_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.t import t_english_fusion_test_cases
-
-    default_test_cases = (
-        kob_english_fusion_test_cases
-        + mlamd_english_fusion_test_cases
-        + mnt_english_fusion_test_cases
-        + t_english_fusion_test_cases
-    )
-except ImportError:
-    default_test_cases = []
 
 
 class EnglishFuser:
@@ -61,7 +39,7 @@ class EnglishFuser:
             auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
-            test_cases = default_test_cases
+            test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -85,7 +63,8 @@ class EnglishFuser:
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Queries LLM to fuse OCRed English subtitles from Google Lens and Tesseract."""
+        """Queries LLM to fuse OCRed English subtitles from Google Lens and
+        Tesseract."""
 
     def fuse(self, tesseract: Series, lens: Series, stop_at_idx: int | None = None):
         """Fuse OCRed English subtitles from Google Lens and Tesseract.
@@ -166,6 +145,34 @@ class EnglishFuser:
                 update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
             )
         return output_series
+
+    @classmethod
+    def get_default_test_cases(cls):
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import kob_english_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import mlamd_english_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import mnt_english_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import t_english_fusion_test_cases
+
+            return (
+                kob_english_fusion_test_cases
+                + mlamd_english_fusion_test_cases
+                + mnt_english_fusion_test_cases
+                + t_english_fusion_test_cases
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+            return []
 
     @staticmethod
     def create_test_case_file(test_case_path: Path):

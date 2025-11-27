@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import asyncio
 from importlib.util import module_from_spec, spec_from_file_location
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -20,28 +20,6 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
     ZhongwenFusionTestCase,
 )
 from scinoephile.testing import test_data_root, update_test_cases
-
-try:
-    # noinspection PyUnusedImports
-    from test.data.kob import kob_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mnt import mnt_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.t import t_zhongwen_fusion_test_cases
-
-    default_test_cases = (
-        kob_zhongwen_fusion_test_cases
-        + mlamd_zhongwen_fusion_test_cases
-        + mnt_zhongwen_fusion_test_cases
-        + t_zhongwen_fusion_test_cases
-    )
-except ImportError:
-    default_test_cases = []
 
 
 class ZhongwenFuser:
@@ -61,7 +39,7 @@ class ZhongwenFuser:
             auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
-            test_cases = default_test_cases
+            test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -115,6 +93,12 @@ class ZhongwenFuser:
                 break
             paddle_text = paddle_sub.text
             lens_text = lens_sub.text
+            if not paddle_text and not lens_text:
+                output_subtitles.append(
+                    Subtitle(start=paddle_sub.start, end=paddle_sub.end, text="")
+                )
+                info(f"Subtitle {sub_idx + 1} empty.")
+                continue
             if paddle_text == lens_text:
                 output_subtitles.append(paddle_sub)
                 info(
@@ -160,6 +144,34 @@ class ZhongwenFuser:
                 update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
             )
         return output_series
+
+    @classmethod
+    def get_default_test_cases(cls):
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import kob_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import mnt_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import t_zhongwen_fusion_test_cases
+
+            return (
+                kob_zhongwen_fusion_test_cases
+                + mlamd_zhongwen_fusion_test_cases
+                + mnt_zhongwen_fusion_test_cases
+                + t_zhongwen_fusion_test_cases
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+            return []
 
     @staticmethod
     def create_test_case_file(test_case_path: Path):
