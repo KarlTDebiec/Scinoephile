@@ -117,6 +117,24 @@ def mnt_eng_fuse() -> Series:
     return Series.load(output_dir / "eng_fuse.srt")
 
 
+@pytest.fixture
+def mnt_eng_fuse_proofread() -> Series:
+    """MNT English fused and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
+
+
+@pytest.fixture
+def mnt_eng_fuse_proofread_clean() -> Series:
+    """MNT English fused, proofread, and cleaned subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread_clean.srt")
+
+
+@pytest.fixture
+def mnt_eng_fuse_proofread_clean_flatten() -> Series:
+    """MNT English fused, proofread, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread_clean_flatten.srt")
+
+
 # Bilingual 简体中文 and English
 @pytest.fixture
 def mnt_zho_hans_eng() -> Series:

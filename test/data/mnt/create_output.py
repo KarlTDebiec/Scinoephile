@@ -155,6 +155,8 @@ if "Bilingual 简体中文 and English" in actions:
     zho_hans_fuse_proofread_clean_flatten = Series.load(
         output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt"
     )
+    del zho_hans_fuse_proofread_clean_flatten.events[0]
+    del zho_hans_fuse_proofread_clean_flatten.events[-1]
     eng_fuse_proofread_clean_flatten = Series.load(
         output_dir / "eng_fuse_proofread_clean_flatten.srt"
     )

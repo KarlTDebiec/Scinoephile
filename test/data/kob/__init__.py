@@ -74,6 +74,12 @@ def kob_eng_fuse() -> Series:
     return Series.load(output_dir / "eng_fuse.srt")
 
 
+@pytest.fixture
+def kob_eng_fuse_proofread() -> Series:
+    """KOB English fused and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
+
+
 # 简体粤文 (SRT)
 @pytest.fixture
 def kob_yue_hans() -> Series:
