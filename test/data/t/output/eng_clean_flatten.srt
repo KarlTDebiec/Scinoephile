@@ -12,11 +12,11 @@ Show me your ID.
 
 4
 00:02:11,083 --> 00:02:12,833
-- What's in your bag?    - Headquarters,
+- What's in your bag?    - Headquarter,
 
 5
 00:02:12,875 --> 00:02:17,167
-- Let me see.    - Please verify ID number C532743…
+- Let me see.    - please verify ID number C532743…
 
 6
 00:02:17,208 --> 00:02:18,791
@@ -28,7 +28,7 @@ Open it.
 
 8
 00:02:31,250 --> 00:02:33,500
-The arrangements for Hong Kong
+The arrangement for Hong Kong
 
 9
 00:02:33,542 --> 00:02:35,417
@@ -52,7 +52,7 @@ and preserved intact for 50 years from 1997.
 
 14
 00:02:50,958 --> 00:02:53,375
-It is in the common interests
+It is the common interests
 
 15
 00:02:53,458 --> 00:02:57,916
@@ -72,11 +72,11 @@ An armed robbery took place this afternoon in Kwun Tong.
 
 19
 00:03:29,042 --> 00:03:30,500
-Four armed suspects robbed five gold shops on Mut Wah Street.
+4 armed suspects robbed 5 gold shops on Mut Wah Street.
 
 20
 00:03:30,542 --> 00:03:33,084
-Four armed suspects robbed five gold shops on Mut Wah Street.
+4 armed suspects robbed 5 gold shops on Mut Wah Street.
 
 21
 00:03:33,125 --> 00:03:34,208
@@ -96,11 +96,11 @@ with the Special Duties Unit.
 
 25
 00:03:42,792 --> 00:03:46,334
-Two passersby and three policemen were injured in the incident.
+2 passersby and 3 policemen were injured in the incident.
 
 26
 00:03:46,458 --> 00:03:49,416
-The five gold shops lost $10 million in total.
+The 5 gold shops lost $10M in total.
 
 27
 00:03:49,458 --> 00:03:51,708
@@ -148,11 +148,11 @@ We agreed on 40%.
 
 38
 00:04:20,167 --> 00:04:21,584
-Don't you have any moral principles?
+Don't you have moral principle?
 
 39
 00:04:21,792 --> 00:04:24,125
-You're paying $2M for $10M worth of swag?
+You're paying $2M for $10M's worth of swag?
 
 40
 00:04:24,167 --> 00:04:25,667
@@ -168,7 +168,7 @@ We're getting shit!
 
 43
 00:04:29,458 --> 00:04:31,458
-Times have changed.
+Time has changed.
 
 44
 00:04:31,500 --> 00:04:34,042
@@ -180,7 +180,7 @@ Especially for your swag, Bro Foon!
 
 46
 00:04:43,500 --> 00:04:47,167
-It took us two years to fence it last time!
+It took us 2 years to fence it last time!
 
 47
 00:04:47,375 --> 00:04:50,583
@@ -296,11 +296,11 @@ I need them today!
 
 75
 00:08:11,958 --> 00:08:13,625
-You have $80 million over there.
+You have $80M over there.
 
 76
 00:08:13,667 --> 00:08:17,334
-I want it by 5 PM!
+I want it by 5pm!
 
 77
 00:08:17,375 --> 00:08:20,167
@@ -384,7 +384,7 @@ It's impossible to get so much cash out of the blue.
 
 97
 00:10:16,750 --> 00:10:19,708
-I've only got $500 million on hand.
+I've only got $500M on hand.
 
 98
 00:10:25,542 --> 00:10:28,250
@@ -392,7 +392,7 @@ Did I say you could go?
 
 99
 00:10:28,625 --> 00:10:31,125
-Take the $500 million now.
+Take the $500M now.
 
 100
 00:10:31,167 --> 00:10:32,667
@@ -428,7 +428,7 @@ But after 48 hours, they have to release me.
 
 108
 00:10:53,625 --> 00:10:56,208
-By that time, however, your son will be…
+By that time, however, you son will be…
 
 109
 00:10:59,792 --> 00:11:01,959
@@ -448,7 +448,7 @@ If you can't hear me with your ear,
 
 113
 00:11:15,250 --> 00:11:18,000
-I might as well cut it off, OK?
+I might as well cut if off, OK?
 
 114
 00:11:18,042 --> 00:11:21,292
@@ -588,7 +588,7 @@ Business? Travel?
 
 148
 00:13:51,250 --> 00:13:53,292
-Yeah, I am a businessman.
+Yea, I am a businessman.
 
 149
 00:13:59,583 --> 00:14:03,208
@@ -600,7 +600,7 @@ I'd like to reserve a private room
 
 151
 00:14:28,625 --> 00:14:30,083
-at 8 PM tomorrow.
+at 8pm tomorrow.
 
 152
 00:14:31,167 --> 00:14:34,250
@@ -612,7 +612,7 @@ Hello, Commander.
 
 154
 00:15:00,542 --> 00:15:02,584
-8 PM tomorrow at Fengman Restaurant.
+8pm tomorrow at Fengman Restaurant.
 
 155
 00:15:04,667 --> 00:15:06,917
@@ -788,11 +788,11 @@ when Chief Chen grows tired of it, Boss Zhang can buy it back!
 
 198
 00:17:30,750 --> 00:17:33,500
-It's worth at least ¥300,000!
+It's worth at least RMB¥300K!
 
 199
 00:17:35,417 --> 00:17:37,375
-Didn't we agree on ¥200,000?
+Didn't we agree on RMB¥200K?
 
 200
 00:17:38,292 --> 00:17:39,875
@@ -816,7 +816,7 @@ What do we know?
 
 205
 00:17:48,875 --> 00:17:51,292
-If Chief Chen says ¥300,000, then it's ¥300,000.
+If Chief Chen says RMB¥300K, then it's RMB¥300K.
 
 206
 00:17:52,417 --> 00:17:54,292
@@ -912,7 +912,7 @@ Drunk every night.
 
 229
 00:18:57,125 --> 00:18:59,875
-He recently took an actress as a mistress.
+He recently has an actress as a mistress.
 
 230
 00:19:02,875 --> 00:19:03,750
@@ -1024,7 +1024,7 @@ We even kidnapped the tycoon's son.
 
 257
 00:20:05,292 --> 00:20:06,792
-Should we do more kidnappings?
+Should we do more kidnaps?
 
 258
 00:20:08,750 --> 00:20:10,500
@@ -1072,7 +1072,7 @@ No children. His wife is in charge.
 
 269
 00:21:04,708 --> 00:21:08,250
-A mobile phone used to cost over ¥10,000. Who could afford that?
+A mobile phone used to cost over RMB¥10K. Who could afford that?
 
 270
 00:21:08,292 --> 00:21:10,959
@@ -1084,15 +1084,15 @@ Now the cheaper, the better.
 
 272
 00:21:16,000 --> 00:21:18,375
-We have a population of ten million.
+We have a population of 10 million.
 
 273
 00:21:18,417 --> 00:21:20,875
-Say ¥1,000 a set,
+Say RMB¥1K a set,
 
 274
 00:21:22,792 --> 00:21:25,250
-¥10,000 for ten sets.
+RMB¥10K for 10 sets.
 
 275
 00:21:25,375 --> 00:21:29,000
@@ -1124,7 +1124,7 @@ Big Bro, these kids are great.
 
 282
 00:22:00,750 --> 00:22:02,667
-The guy who came in first has a criminal record in Hong Kong.
+The guy who came in first has criminal record in Hong Kong.
 
 283
 00:22:02,708 --> 00:22:04,375
@@ -1320,7 +1320,7 @@ She's Thai?
 
 331
 00:25:03,083 --> 00:25:04,458
-Noon, go buy a dozen Cokes.
+Noon, go buy a dozen of Cokes.
 
 332
 00:25:04,542 --> 00:25:05,709
@@ -1596,7 +1596,7 @@ Every Chinese will own a mobile phone in the future.
 
 400
 00:28:18,875 --> 00:28:21,583
-One sells for ¥1,000, ten for ¥10,000.
+One sells for RMB¥1K, 10 for RMB¥10K.
 
 401
 00:28:21,625 --> 00:28:22,875
@@ -1668,7 +1668,7 @@ Coming!
 
 418
 00:29:19,708 --> 00:29:20,833
-That's fine.
+That's fine
 
 419
 00:29:36,250 --> 00:29:38,750
@@ -1684,19 +1684,19 @@ Panyu Yi Fa Market
 
 422
 00:29:57,333 --> 00:29:59,791
-30 sets of 29-inch TVs. ¥12,000 apiece.
+30 sets of 29-inch TVs. RMB¥12K apiece.
 
 423
 00:29:59,833 --> 00:30:02,416
-Plus 80 VCD players. ¥4,000 apiece.
+Plus 80 VCD players. RMB¥4K a piece.
 
 424
 00:30:02,542 --> 00:30:04,209
-¥680,000, thank you.
+RMB¥680K, thank you.
 
 425
 00:30:07,250 --> 00:30:09,125
-You pay me ¥700,000.
+You pay me RMB¥700K.
 
 426
 00:30:09,667 --> 00:30:10,875
@@ -1708,7 +1708,7 @@ Next.
 
 428
 00:30:12,125 --> 00:30:15,333
-¥30,000 for Chief Chen. Please count it.
+RMB¥30K for Chief Chen. Please count it.
 
 429
 00:30:17,833 --> 00:30:21,375
@@ -1716,11 +1716,11 @@ Business License
 
 430
 00:30:33,333 --> 00:30:36,291
-¥30,000. The amount is correct.
+RMB¥30K. The amount is correct.
 
 431
 00:30:37,375 --> 00:30:39,125
-Will notify you once the goods are on board.
+Will notify you once the goods are onboard.
 
 432
 00:30:41,250 --> 00:30:43,292
@@ -1796,7 +1796,7 @@ No worries. They will take care of it.
 
 450
 00:31:24,833 --> 00:31:26,333
-- Quick.    - What's wrong?
+- Quick    - What's wrong?
 
 451
 00:31:26,542 --> 00:31:28,250
@@ -1876,7 +1876,7 @@ We keep a close eye on the police wagon.
 
 470
 00:32:36,333 --> 00:32:40,250
-As soon as it leaves at 8 PM, we rob the gold shop right away.
+As soon as it leaves at 8pm, we rob the gold shop right away.
 
 471
 00:32:40,750 --> 00:32:43,250
@@ -1904,7 +1904,7 @@ Yes,
 
 477
 00:32:56,292 --> 00:32:59,584
-I've heard the Three Kings of Thieves would join forces.
+I've heard the 3 Kings of Thieves would join forces.
 
 478
 00:32:59,792 --> 00:33:02,292
@@ -1912,7 +1912,7 @@ At least millions of dollars will be involved.
 
 479
 00:33:03,083 --> 00:33:04,916
-What Three Kings of Thieves?
+What 3 Kings of Thieves?
 
 480
 00:33:05,667 --> 00:33:07,042
@@ -1928,7 +1928,7 @@ This time with Cheuk Tze-keung and Kwai Ching-hung.
 
 483
 00:33:14,292 --> 00:33:18,875
-The Three Kings of Thieves are collaborating?
+The 3 Kings of Thieves are collaborating?
 
 484
 00:33:19,792 --> 00:33:22,167
@@ -1996,7 +1996,7 @@ Brilliant!
 
 500
 00:33:57,167 --> 00:34:01,209
-Sometimes I feel like toting a gun again.
+Sometimes I feel like toting my gun again.
 
 501
 00:34:01,250 --> 00:34:02,875
@@ -2056,15 +2056,15 @@ how much can we earn from robbing this gold shop?
 
 515
 00:34:50,625 --> 00:34:51,417
-Are you calling or not?
+You're calling or not?
 
 516
 00:34:51,458 --> 00:34:55,333
-If the Three Kings of Thieves join forces,
+If the 3 Kings of Thieves join forces,
 
 517
 00:34:55,375 --> 00:34:57,167
-even if we open a fishball stall together,
+even if we open a fish ball stall together,
 
 518
 00:34:57,208 --> 00:34:59,583
@@ -2104,11 +2104,11 @@ No way.
 
 527
 00:36:01,292 --> 00:36:02,334
-What are you listening to?
+What are you listening?
 
 528
 00:36:02,417 --> 00:36:04,459
-The Four Heavenly Kings singing on stage together.
+The 4 Heavenly Kings singing on stage together.
 
 529
 00:36:04,500 --> 00:36:05,792
@@ -2120,7 +2120,7 @@ I can't hear a thing. What's so good about it?
 
 531
 00:36:10,208 --> 00:36:12,166
-When the Four Heavenly Kings sing together,
+When the 4 Heavenly Kings sing together,
 
 532
 00:36:12,208 --> 00:36:14,125
@@ -2160,7 +2160,7 @@ Hello?
 
 541
 00:36:56,208 --> 00:36:59,333
-I have $80 million in cash.
+I have $80M in cash.
 
 542
 00:36:59,375 --> 00:37:00,667
@@ -2168,7 +2168,7 @@ Is it OK?
 
 543
 00:37:00,958 --> 00:37:02,375
-$80 million it is!
+$80M it is!
 
 544
 00:37:02,417 --> 00:37:04,375
@@ -2180,7 +2180,7 @@ What the hell?
 
 546
 00:37:08,542 --> 00:37:10,084
-The Three Kings of Thieves join forces for the first time.
+The 3 Kings of Thieves join forces for the first time.
 
 547
 00:37:10,125 --> 00:37:12,250
@@ -2192,7 +2192,7 @@ You don't even have a plan yet,
 
 549
 00:37:13,667 --> 00:37:15,209
-and you want two wanted men around you?
+and you want 2 wanted men around you?
 
 550
 00:37:15,250 --> 00:37:15,958
@@ -2212,7 +2212,7 @@ Himalaya!
 
 554
 00:37:50,750 --> 00:37:52,250
-Having a night snack?
+Having night snack?
 
 555
 00:37:52,542 --> 00:37:53,459
@@ -2228,7 +2228,7 @@ Fai, how long is your friend staying?
 
 558
 00:38:14,500 --> 00:38:16,292
-Three or four nights.
+3 or 4 nights.
 
 559
 00:38:16,625 --> 00:38:18,042
@@ -2268,7 +2268,7 @@ I'll go to bed after sewing.
 
 568
 00:38:45,375 --> 00:38:48,250
-I will arrive with clients in three minutes.
+I will arrive with clients in 3 minutes.
 
 569
 00:38:48,417 --> 00:38:49,750
@@ -2352,7 +2352,7 @@ We know Mr Fong.
 
 589
 00:40:13,542 --> 00:40:15,542
-In four days, the goods will be confiscated
+In 4 days, the goods will be confiscated
 
 590
 00:40:15,583 --> 00:40:18,000
@@ -2600,7 +2600,7 @@ Chung
 
 651
 00:43:44,792 --> 00:43:46,959
-Give me the name cards of karaoke bars and the phone.
+Give me name cards of karaoke bars and the phone.
 
 652
 00:43:47,000 --> 00:43:47,958
@@ -2756,7 +2756,7 @@ Fuck you!
 
 690
 00:48:28,917 --> 00:48:31,375
-The cops have offered a $1 million reward on him.
+The cops have offered a $1M reward on him.
 
 691
 00:48:31,417 --> 00:48:32,917
@@ -2772,11 +2772,11 @@ Reward money is a good idea.
 
 694
 00:48:39,167 --> 00:48:41,667
-The cops offer $1 million; I'll up it to $10 million!
+The cops offer $1M; I'll up it to $10M!
 
 695
 00:48:41,708 --> 00:48:43,583
-If it's not enough, then $100 million!
+If it's not enough, then $100M!
 
 696
 00:48:44,042 --> 00:48:45,834
@@ -2792,11 +2792,11 @@ So brazenly? The cops will tap the phone.
 
 699
 00:48:53,458 --> 00:48:55,458
-Those assholes will prevent the Three Kings from meeting up.
+Those assholes will prevent the 3 Kings from meeting up.
 
 700
 00:48:55,500 --> 00:48:57,167
-Those assholes will prevent the Three Kings from meeting up.
+Those assholes will prevent the 3 Kings from meeting up.
 
 701
 00:48:57,542 --> 00:48:59,084
@@ -2888,7 +2888,7 @@ I was present in Yip's every heist.
 
 723
 00:50:38,708 --> 00:50:39,708
-We wielded AK-47s together.
+We wielded AK-47 together.
 
 724
 00:50:39,750 --> 00:50:42,375
@@ -2952,7 +2952,7 @@ Moral principle.
 
 739
 00:51:21,333 --> 00:51:26,208
-I once brought three Mainlanders
+I once brought 3 Mainlanders
 
 740
 00:51:26,250 --> 00:51:30,208
@@ -2988,7 +2988,7 @@ Want to meet him?
 
 748
 00:51:54,167 --> 00:51:55,417
-$1 million!
+$1M!
 
 749
 00:51:57,292 --> 00:51:58,500
@@ -3000,7 +3000,7 @@ Check me out? Motherfucker.
 
 751
 00:52:00,917 --> 00:52:02,500
-It's just $1 million.
+It's just $1M.
 
 752
 00:52:03,083 --> 00:52:04,458
@@ -3032,7 +3032,7 @@ Are you tight in cash lately, Taishan Boy?
 
 759
 00:52:55,250 --> 00:52:58,042
-How can three pieces be enough?
+How can 3 pieces be enough?
 
 760
 00:53:07,667 --> 00:53:12,209
@@ -3076,7 +3076,7 @@ Which kingpin is not dangerous?
 
 770
 00:53:48,833 --> 00:53:50,875
-Are they being so brazen?
+They are being so brazenly?
 
 771
 00:53:50,917 --> 00:53:52,542
@@ -3084,7 +3084,7 @@ The Handover is imminent.
 
 772
 00:53:52,583 --> 00:53:55,375
-Because the Handover is imminent, you have to go big!
+Because the Handover is imminent, you have to do big!
 
 773
 00:53:55,458 --> 00:53:59,541
@@ -3212,11 +3212,11 @@ My good girl.
 
 804
 00:56:01,958 --> 00:56:03,083
-Three days!
+3 Days!
 
 805
 00:56:03,292 --> 00:56:06,875
-Chief Song helped us recover the goods in three days.
+Chief Song helped us recover the goods in 3 days.
 
 806
 00:56:06,917 --> 00:56:09,542
@@ -3308,11 +3308,11 @@ Who do you think you are?
 
 828
 00:57:41,167 --> 00:57:42,917
-A petite bourgeois!
+A petit bourgeois!
 
 829
 00:57:43,667 --> 00:57:48,084
-A greedy, smuggling, tax-evading petite bourgeois!
+A greedy, smuggling, tax-evading petit bourgeois!
 
 830
 00:57:48,917 --> 00:57:51,125
@@ -3356,11 +3356,11 @@ We're good buddies.
 
 840
 00:59:21,542 --> 00:59:23,792
-¥2 million, thank you!
+RMB¥2M, thank you!
 
 841
 00:59:23,833 --> 00:59:25,208
-I received ¥1.3 million from you. Thanks.
+I receive RMB¥1.3M from you. Thanks.
 
 842
 00:59:25,250 --> 00:59:26,417
@@ -3420,7 +3420,7 @@ I caught this guy for you.
 
 856
 01:00:06,958 --> 01:00:10,125
-He said you gave him $1 million for Kun-xi's whereabouts.
+He said you gave him $1M for Kun-xi's whereabouts.
 
 857
 01:00:12,667 --> 01:00:13,917
@@ -3532,11 +3532,11 @@ keep searching for him.
 
 884
 01:01:07,417 --> 01:01:09,875
-The Royal Hong Kong Police rely on your phone calls.
+The Royal Hong Kong Police relies on your phone calls.
 
 885
 01:01:09,958 --> 01:01:12,125
-The Royal Hong Kong Police rely on your phone calls.
+The Royal Hong Kong Police relies on your phone calls.
 
 886
 01:01:21,125 --> 01:01:22,875
@@ -3564,7 +3564,7 @@ I know, I know!
 
 892
 01:01:43,583 --> 01:01:45,583
-We've come to the climax of tonight's event.
+We've come to the climax of tonight.
 
 893
 01:01:45,625 --> 01:01:47,208
@@ -3572,7 +3572,7 @@ The last leg of the Triple Trio.
 
 894
 01:01:47,250 --> 01:01:51,250
-The $170 million jackpot pool.
+The $170M jackpot pool.
 
 895
 01:01:51,292 --> 01:01:54,625
@@ -3580,7 +3580,7 @@ Plus the total bet amount. A single winner
 
 896
 01:01:54,750 --> 01:01:57,708
-can collect over $300 million.
+can collect over $300M.
 
 897
 01:01:57,750 --> 01:02:00,750
@@ -3592,7 +3592,7 @@ The whole city is abuzz!
 
 899
 01:02:02,125 --> 01:02:04,583
-A single winning ticket will make you richer than any king.
+A single winning ticket will make you richer than any kings.
 
 900
 01:02:04,667 --> 01:02:06,125
@@ -3608,7 +3608,7 @@ Gold Weather is the horse least expected to win.
 
 903
 01:02:12,458 --> 01:02:16,125
-The odds are 99 to 1.
+The odds are 99.
 
 904
 01:02:17,000 --> 01:02:18,583
@@ -3616,7 +3616,7 @@ Win and Place.
 
 905
 01:02:22,125 --> 01:02:25,375
-Motherfucker, almost $400 million in the pool.
+Motherfucker, almost $400M in the pool.
 
 906
 01:02:26,000 --> 01:02:28,833
@@ -3628,7 +3628,7 @@ What does Triple Trio mean?
 
 908
 01:02:33,708 --> 01:02:37,166
-The $170 million jackpot pool
+The $170M jackpot pool
 
 909
 01:02:37,208 --> 01:02:39,291
@@ -3656,7 +3656,7 @@ The race is about to start.
 
 915
 01:04:02,167 --> 01:04:05,125
-The $170 million jackpot pool.
+The $170M jackpot pool.
 
 916
 01:04:05,167 --> 01:04:06,375
@@ -3664,7 +3664,7 @@ A single winner
 
 917
 01:04:06,417 --> 01:04:08,250
-can collect over $300 million!
+can collect over $300M!
 
 918
 01:04:08,375 --> 01:04:10,292
@@ -3720,7 +3720,7 @@ Hey.
 
 931
 01:06:56,167 --> 01:06:59,875
-Mr. Cheuk, you know who Kun-xi is?
+Mr Cheuk, you know who Kun-xi is?
 
 932
 01:07:00,375 --> 01:07:02,625
@@ -3856,7 +3856,7 @@ I know the rules. It's between you and me.
 
 965
 01:09:15,417 --> 01:09:17,542
-We have moral principles.
+We have moral principle.
 
 966
 01:09:31,333 --> 01:09:32,583
@@ -3868,7 +3868,7 @@ Seriously, we can make it work.
 
 968
 01:09:47,792 --> 01:09:49,375
-The Three Kings of Thieves join forces…
+The 3 Kings of Thieves join forces…
 
 969
 01:10:26,083 --> 01:10:28,791
@@ -3896,7 +3896,7 @@ You're planning to rob the gold shop downstairs?
 
 975
 01:11:21,542 --> 01:11:23,750
-I thought you were paying me a visit.
+I thought you're paying me a visit.
 
 976
 01:11:24,333 --> 01:11:26,250
@@ -4008,7 +4008,7 @@ This way.
 
 1003
 01:15:09,958 --> 01:15:12,875
-Mr. Cheuk, how was your journey?
+Mr Cheuk. How's your journey?
 
 1004
 01:15:12,917 --> 01:15:15,084
@@ -4020,7 +4020,7 @@ Shrimps and crabs are local specialties.
 
 1006
 01:15:18,000 --> 01:15:21,250
-After food, we'll find two shampoo girls for you.
+After food we'll find two shampoo girls for you.
 
 1007
 01:15:21,292 --> 01:15:23,334
@@ -4028,7 +4028,7 @@ This way, please.
 
 1008
 01:15:25,125 --> 01:15:28,708
-Type 54 pistols, grenades, AKs.
+Type 54 pistols, grenades, AK weapons.
 
 1009
 01:15:28,750 --> 01:15:30,458
@@ -4256,7 +4256,7 @@ I robbed Tung Shing Watch in 1986.
 
 1065
 01:18:16,042 --> 01:18:17,500
-I killed three plainclothes
+I killed 3 plainclothes
 
 1066
 01:18:17,542 --> 01:18:19,209
@@ -4268,7 +4268,7 @@ And Landmark in 1992…
 
 1068
 01:18:22,042 --> 01:18:25,625
-Wasn't it Yip who robbed Landmark in 1992?
+Wasn't it Yip who robbed Landmark in 1992!
 
 1069
 01:18:28,042 --> 01:18:30,125
@@ -4284,7 +4284,7 @@ I did them all.
 
 1072
 01:18:36,000 --> 01:18:38,000
-Do you think only Yip had an AK-47?
+Do you think only Yip had AK-47?
 
 1073
 01:18:38,042 --> 01:18:40,709
@@ -4316,7 +4316,7 @@ Landmark in 1992, Jumbo in 1994, and Lucky Guy two years ago.
 
 1080
 01:19:09,792 --> 01:19:10,584
-Are you responsible for all of them?
+Are you responsible for all?
 
 1081
 01:19:10,625 --> 01:19:11,625
@@ -4324,7 +4324,7 @@ No!
 
 1082
 01:19:11,667 --> 01:19:12,667
-I never did my jobs clandestinely!
+I never did my jobs in clandestine!
 
 1083
 01:19:12,833 --> 01:19:15,458
@@ -4388,7 +4388,7 @@ Let's talk later.
 
 1098
 01:21:01,500 --> 01:21:03,000
-Motherfucker! The Three Kings
+Motherfucker! The 3 Kings
 
 1099
 01:21:03,042 --> 01:21:04,375
@@ -4408,7 +4408,7 @@ Yes.
 
 1103
 01:21:37,875 --> 01:21:39,917
-There's less than $10 million here.
+There's less than $10M here.
 
 1104
 01:21:40,667 --> 01:21:42,542
@@ -4416,7 +4416,7 @@ Mr Cheuk's life
 
 1105
 01:21:44,333 --> 01:21:46,750
-worth at least $100 million!
+worth at least $100M!
 
 1106
 01:21:58,708 --> 01:21:59,708
@@ -4580,7 +4580,7 @@ We'll blow up the Handover ceremony!
 
 1146
 01:24:32,208 --> 01:24:34,166
-We can threaten either the British Queen or the Chinese government.
+We can threaten either the British queen‭ or the Chinese government.‬
 
 1147
 01:24:34,208 --> 01:24:36,083
@@ -4596,7 +4596,7 @@ The night snack is here. Back yet?
 
 1150
 01:25:26,917 --> 01:25:27,750
-Coming back now.
+Coming back.
 
 1151
 01:25:27,833 --> 01:25:30,125
@@ -4668,7 +4668,7 @@ Give me a second.
 
 1168
 01:31:33,042 --> 01:31:36,209
-Mr. Chen, please follow me.
+Mr Chen. Please follow me.
 
 1169
 01:31:36,625 --> 01:31:37,875
@@ -4704,11 +4704,11 @@ Enjoy your food.
 
 1177
 01:31:50,500 --> 01:31:52,208
-Mr. Chen, this way, please.
+Mr Chen. This way, please.
 
 1178
 01:31:52,833 --> 01:31:55,291
-Hey! Didn't you just go to the bathroom?
+Hey! Haven't you gone to the bathroom just now?
 
 1179
 01:31:55,375 --> 01:31:59,167
@@ -4772,7 +4772,7 @@ We should not forget you.
 
 1194
 01:32:29,792 --> 01:32:33,209
-And we should watch with the closest interest
+And we should watch with the closest interests
 
 1195
 01:32:33,292 --> 01:32:39,084

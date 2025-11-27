@@ -1637,10 +1637,6 @@ test_cases = [
         zimu_1="喂？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="喂？",
-        verified=True,
-    ),
     ZhongwenProofreadingTestCase.get_test_case_cls(6)(
         zimu_1="喂？",
         zimu_2="季正雄，你还在吗？",

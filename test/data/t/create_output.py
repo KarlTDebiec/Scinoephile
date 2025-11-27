@@ -13,6 +13,7 @@ from scinoephile.core.english.proofreading import (
     EnglishProofreader,
     get_english_proofread,
 )
+from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
     get_zhongwen_converted,
@@ -50,12 +51,12 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "简体中文 (OCR)",
+    "简体中文 (OCR)",
     "English (OCR)",
-    # "简体中文 (SRT)",
-    # "繁體中文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体中文 and English",
+    "简体中文 (SRT)",
+    "繁體中文 (SRT)",
+    "English (SRT)",
+    "Bilingual 简体中文 and English",
 }
 
 # 简体中文 (OCR)
@@ -96,16 +97,6 @@ if "简体中文 (OCR)" in actions:
         ),
     )
     zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
-    zho_hans_fuse_proofread_clean = get_zhongwen_cleaned(zho_hans_fuse_proofread)
-    zho_hans_fuse_proofread_clean.save(
-        output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean.srt"
-    )
-    zho_hans_fuse_proofread_clean_flatten = get_zhongwen_flattened(
-        zho_hans_fuse_proofread_clean
-    )
-    zho_hans_fuse_proofread_clean_flatten.save(
-        output_dir / "zho-Hans" / "zho-Hans_fuse_proofread_clean_flatten.srt"
-    )
 
 if "English (OCR)" in actions:
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
@@ -144,8 +135,6 @@ if "简体中文 (SRT)" in actions:
     zho_hans = Series.load(input_dir / "zho-Hans.srt")
     zho_hans_clean = get_zhongwen_cleaned(zho_hans)
     zho_hans_clean.save(output_dir / "zho-Hans_clean.srt")
-    zho_hans_flatten = get_zhongwen_flattened(zho_hans)
-    zho_hans_flatten.save(output_dir / "zho-Hans_flatten.srt")
     zho_hans_clean_flatten = get_zhongwen_flattened(zho_hans_clean)
     zho_hans_clean_flatten.save(output_dir / "zho-Hans_clean_flatten.srt")
 
@@ -158,17 +147,11 @@ if "English (SRT)" in actions:
     eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
     eng_clean.save(output_dir / "eng_clean.srt")
-    eng_flatten = get_english_flattened(eng)
-    eng_flatten.save(output_dir / "eng_flatten.srt")
-    # proofer = EnglishProofreader(
-    #     test_case_path=test_data_root / "t" / "core" / "english" / "proof.py",
-    # )
-    # eng_proof = get_english_proofed(eng, proofer)
-    # eng_proof.save(output_dir / "eng_proof.srt")
-    # eng_proof_clean = get_english_cleaned(eng_proof)
-    # eng_proof_clean_flatten = get_english_flattened(eng_proof_clean)
-    # eng_proof_clean_flatten.save(output_dir / "eng_proof_clean_flatten.srt")
+    eng_clean_flatten = get_english_flattened(eng_clean)
+    eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 
-# if "Bilingual 简体中文 and English" in actions:
-#     zho_hans_eng = get_synced_series(zho_hans_clean_flatten, eng_proof_clean_flatten)
-#     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
+if "Bilingual 简体中文 and English" in actions:
+    zho_hans_clean_flatten = Series.load(output_dir / "zho-Hans_clean_flatten.srt")
+    eng_clean_flatten = Series.load(output_dir / "eng_clean_flatten.srt")
+    zho_hans_eng = get_synced_series(zho_hans_clean_flatten, eng_clean_flatten)
+    zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
