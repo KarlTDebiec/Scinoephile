@@ -853,10 +853,6 @@ test_cases = [
         verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="小美",
-        verified=True,
-    ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
         zimu_1="那是我们种橡果子的地方",
         verified=True,
     ),
@@ -1078,10 +1074,6 @@ test_cases = [
         zimu_1="小美真是笨蛋\n不知道路又爱乱跑",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="小美",
-        verified=True,
-    ),
     ZhongwenProofreadingTestCase.get_test_case_cls(6)(
         zimu_1="打搅了，伯伯，请问⋯⋯",
         zimu_2="您有没有看见束辫子的小女孩\n从这条路经过",
@@ -1094,10 +1086,6 @@ test_cases = [
     ZhongwenProofreadingTestCase.get_test_case_cls(2)(
         zimu_1="妳确定她是往这边来的？",
         zimu_2="我也不知道",
-        verified=True,
-    ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="小美",
         verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(16)(
@@ -1195,15 +1183,7 @@ test_cases = [
         verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="小美",
-        verified=True,
-    ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
         zimu_1="树林开出了一条路了",
-        verified=True,
-    ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1)(
-        zimu_1="小美",
         verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(3)(

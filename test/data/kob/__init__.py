@@ -88,12 +88,6 @@ def kob_yue_hans_clean() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans_flatten() -> Series:
-    """KOB 简体粤文 flattened subtitles."""
-    return Series.load(output_dir / "yue-Hans_flatten.srt")
-
-
-@pytest.fixture
 def kob_yue_hans_clean_flatten() -> Series:
     """KOB 简体粤文 cleaned and flattened subtitles."""
     return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
@@ -126,18 +120,12 @@ def kob_eng_clean() -> Series:
 
 
 @pytest.fixture
-def kob_eng_flatten() -> Series:
-    """KOB English flattened subtitles."""
-    return Series.load(output_dir / "eng_flatten.srt")
-
-
-@pytest.fixture
 def kob_eng_clean_flatten() -> Series:
     """KOB English cleaned and flattened subtitles."""
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
-# Bilingual 简体粤文 and English (SRT)
+# Bilingual 简体粤文 and English
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
     """KOB Bilingual 简体粤文 and English subtitles."""

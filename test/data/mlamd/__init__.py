@@ -73,6 +73,19 @@ def mlamd_zho_hans_fuse_proofread_clean_flatten() -> Series:
     return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
 
 
+# 繁體中文 (OCR)
+@pytest.fixture
+def mlamd_zho_hant_lens() -> Series:
+    """MLAMD 繁體中文 subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "zho-Hant_lens.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_paddle() -> Series:
+    """MLAMD 繁體中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_paddle.srt")
+
+
 # English (OCR)
 @pytest.fixture
 def mlamd_eng_lens() -> Series:
@@ -92,6 +105,45 @@ def mlamd_eng_fuse() -> Series:
     return Series.load(output_dir / "eng_fuse.srt")
 
 
+@pytest.fixture
+def mlamd_eng_fuse_proofread() -> Series:
+    """MLAMD English fused and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_proofread_clean() -> Series:
+    """MLAMD English fused, proofread, and cleaned subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread_clean.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_proofread_clean_flatten() -> Series:
+    """MLAMD English fused, proofread, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread_clean_flatten.srt")
+
+
+# 简体粤文 (Transcription)
+@pytest.fixture
+def mlamd_yue_hans() -> Series:
+    """MLAMD 简体粤文 subtitles transcribed."""
+    return Series.load(output_dir / "yue-Hans.srt")
+
+
+# Bilingual 简体粤文 and English
+@pytest.fixture()
+def mlamd_zho_hans_eng() -> Series:
+    """MLAMD Bilingual 简体中文 and English subtitles."""
+    return Series.load(output_dir / "zho-Hans_eng.srt")
+
+
+# Bilingual 简体粤文 and English
+@pytest.fixture()
+def mlamd_yue_hans_eng() -> Series:
+    """MLAMD Bilingual 简体粤文 and English subtitles."""
+    return Series.load(output_dir / "yue-Hans_eng.srt")
+
+
 ___all__ = [
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
@@ -99,9 +151,17 @@ ___all__ = [
     "mlamd_zho_hans_fuse_proofread",
     "mlamd_zho_hans_fuse_proofread_clean",
     "mlamd_zho_hans_fuse_proofread_clean_flatten",
+    "mlamd_zho_hant_lens",
+    "mlamd_zho_hant_paddle",
     "mlamd_eng_lens",
     "mlamd_eng_tesseract",
     "mlamd_eng_fuse",
+    "mlamd_eng_fuse_proofread",
+    "mlamd_eng_fuse_proofread_clean",
+    "mlamd_eng_fuse_proofread_clean_flatten",
+    "mlamd_yue_hans",
+    "mlamd_zho_hans_eng",
+    "mlamd_yue_hans_eng",
     "mlamd_distribute_test_cases",
     "mlamd_shift_test_cases",
     "mlamd_merge_test_cases",

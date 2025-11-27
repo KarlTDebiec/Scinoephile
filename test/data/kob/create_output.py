@@ -79,7 +79,6 @@ if "繁體中文 (OCR)" in actions:
         ),
     )
     zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
-    zho_hant_fuse = Series.load(output_dir / "zho-Hant_fuse.srt")
     zho_hant_fuse = get_zhongwen_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zhongwen_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
     zho_hant_fuse_proofread = get_zhongwen_proofread(
@@ -135,8 +134,6 @@ if "简体粵文 (SRT)" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_clean = get_zhongwen_cleaned(yue_hans)
     yue_hans_clean.save(output_dir / "yue-Hans_clean.srt")
-    yue_hans_flatten = get_zhongwen_flattened(yue_hans)
-    yue_hans_flatten.save(output_dir / "yue-Hans_flatten.srt")
     yue_hans_clean_flatten = get_zhongwen_flattened(yue_hans_clean)
     yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
 
@@ -149,8 +146,6 @@ if "English (SRT)" in actions:
     eng = Series.load(input_dir / "eng.srt")
     eng_clean = get_english_cleaned(eng)
     eng_clean.save(output_dir / "eng_clean.srt")
-    eng_flatten = get_english_flattened(eng)
-    eng_flatten.save(output_dir / "eng_flatten.srt")
     eng_clean_flatten = get_english_flattened(eng_clean)
     eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
 

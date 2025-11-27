@@ -16,7 +16,7 @@ It flew along Garden Street…
 4
 00:00:58,375 --> 00:01:04,750
 经过好彩酒家再左转返出花园街乐园牛丸王对上⋯
-Turned left, and stopped at the Beefball King.
+Turned left, and stopped at the Beef ball King.
 
 5
 00:01:05,750 --> 00:01:06,958
@@ -136,7 +136,7 @@ Made a final amendment:
 28
 00:02:18,042 --> 00:02:21,708
 就算唔系咁聪明同咁靓仔，只要福星高照
-Her boy need not be smart or handsome
+Her boy needed not to be smart or handsome
 
 29
 00:02:21,875 --> 00:02:24,917
@@ -320,7 +320,7 @@ Spring Flower offers white teachers!
 65
 00:05:36,042 --> 00:05:40,917
 〝我日日都要望住个窗！〞
-"We sing every day!"
+"We sing everyday!"
 
 66
 00:05:41,042 --> 00:05:45,625
@@ -375,17 +375,17 @@ I had difficulty hearing him.
 76
 00:06:14,625 --> 00:06:17,833
 蛋挞！　蛋挞！
-Tart! - Tart!
+- Tart!    - Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
 荔芋火鸭礼！　荔芋火鸭礼！
-Duck dumpling! - Duck dumpling!
+- Duck dumpling!    - Duck dumpling!
 
 78
 00:06:23,750 --> 00:06:29,792
 唔好忘记校训九十七⋯　唔好忘记校训九十七⋯
-The 97 Rule… - The 97 Rule…
+- The 97 Rule…    - The 97 Rule…
 
 79
 00:06:29,958 --> 00:06:33,083
@@ -470,42 +470,42 @@ Roll call now.
 95
 00:07:21,083 --> 00:07:22,708
 麦唛同学！　　到！
-McMug! - Present!
+- McMug!    - Present!
 
 96
 00:07:22,917 --> 00:07:24,375
 亚辉同学！　　到！
-Fai! - Present!
+- Fai!    - Present!
 
 97
 00:07:24,500 --> 00:07:26,667
 菇时同学！　　到！
-Goosie! - Present!
+- Goosie!    - Present!
 
 98
 00:07:26,833 --> 00:07:28,750
 得巴同学！　　到！
-Darby! - Present!
+- Darby!    - Present!
 
 99
 00:07:28,917 --> 00:07:31,708
 阿May同学！　　到！
-May! - Present!
+- May!    - Present!
 
 100
 00:07:31,875 --> 00:07:33,750
 阿June同学！　　到！
-June! - Present!
+- June!    - Present!
 
 101
 00:07:33,917 --> 00:07:36,667
 阿May同学！　　到！
-May! - Present!
+- May!    - Present!
 
 102
 00:07:36,958 --> 00:07:40,000
 麦唛同学！　　到！
-McMug! - Present!
+- McMug!    - Present!
 
 103
 00:07:40,167 --> 00:07:41,292
@@ -540,37 +540,37 @@ Back to roll call.
 109
 00:07:55,792 --> 00:07:57,583
 阿June同学！　　到！
-Fai! - Present!
+- Fai!    - Present!
 
 110
 00:07:57,792 --> 00:07:58,958
 亚辉同学！　　到！
-Fai! - Present!
+- Fai!    - Present!
 
 111
 00:07:59,167 --> 00:08:01,333
 得巴同学！　　到！
-Darby! - Present!
+- Darby!    - Present!
 
 112
 00:08:02,125 --> 00:08:03,250
 阿May同学！　　到！
-May! - Present!
+- May!    - Present!
 
 113
 00:08:03,500 --> 00:08:05,500
 麦唛同学！　　到！
-McMug! - Present!
+- McMug!    - Present!
 
 114
 00:08:05,750 --> 00:08:07,875
 菇时同学！　　到！
-Goosie! - Present!
+- Goosie!    - Present!
 
 115
 00:08:08,125 --> 00:08:09,458
 菇时同学！　　到！
-Goosie! - Present!
+- Goosie!    - Present!
 
 116
 00:08:09,625 --> 00:08:11,375
@@ -715,22 +715,22 @@ Which we kids frequent after class.
 144
 00:09:27,583 --> 00:09:30,125
 唔该，鱼蛋粗面啊　　冇粗面噃
-- Fishball noodles, please.    - No noodles left.
+- Fishball noodle, please.    - No noodle left.
 
 145
 00:09:30,417 --> 00:09:33,917
 噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃
-- Fishball rice noodles then.    - No fishballs left.
+- Fishball rice noodle then.    - No fishball left.
 
 146
 00:09:34,083 --> 00:09:37,792
 噉啊⋯要金钱肚粗面啊　　冇粗面噃
-- Chicken wing noodles then.    - No noodles left.
+- Chicken wing noodle then.    - No noodle left.
 
 147
 00:09:38,958 --> 00:09:41,833
 噉啊咁要鱼蛋油面啊　　冇鱼蛋噃
-- How about fishball congee?    - No fishballs left.
+- How about fishball congee?    - No fishball left.
 
 148
 00:09:42,000 --> 00:09:43,417
@@ -740,7 +740,7 @@ Nothing left today?
 149
 00:09:43,833 --> 00:09:46,625
 噉要墨鱼丸粗面啊　　冇粗面噃
-- How about beef noodles?    - No noodles left.
+- How about beef noodle?    - No noodle left.
 
 150
 00:09:46,917 --> 00:09:47,958
@@ -750,7 +750,7 @@ Again?
 151
 00:09:48,167 --> 00:09:51,708
 噉唔该畀碗鱼蛋濑啊　　冇鱼蛋噃
-- Fried chicken wing with fishballs…    - No fishballs left.
+- Fried chicken wing with fishball…    - No fishball left.
 
 152
 00:09:51,917 --> 00:09:55,333
@@ -770,12 +770,12 @@ Can't combine them?
 155
 00:10:02,458 --> 00:10:04,917
 噉唔该，净鱼蛋啊　　冇鱼蛋噃
-- A bowl of fishballs then.    - No fishballs left.
+- A bowl of fishball then.    - No fishball left.
 
 156
 00:10:05,083 --> 00:10:06,667
 净粗面呢？　　冇粗面噃
-- A bowl of noodles?    - No noodles left.
+- A bowl of noodle?    - No noodle left.
 
 157
 00:10:07,792 --> 00:10:08,708
@@ -795,7 +795,7 @@ Nothing worried me, all things were fine.
 160
 00:10:14,292 --> 00:10:17,000
 冇鱼蛋咩？粗面都好啊
-No fishballs left? Let's get some noodles.
+No fishball left? Let's get some noodle.
 
 161
 00:10:17,167 --> 00:10:20,042
@@ -905,7 +905,7 @@ She works in insurance, real estate and trading.
 182
 00:13:11,958 --> 00:13:15,333
 佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯
-At the height of IT, she even set up her cooking site…
+At the height of IT, she even sets up her cooking site…
 
 183
 00:13:15,750 --> 00:13:19,500
@@ -970,7 +970,7 @@ Thank you, everyone!
 195
 00:14:04,667 --> 00:14:07,083
 好高兴咁快又同大家见面
-How time flies since the last episode!
+How time flies since last episode!
 
 196
 00:14:07,250 --> 00:14:10,708
@@ -980,7 +980,7 @@ Now we shall do a Paper Bun.
 197
 00:14:11,292 --> 00:14:14,667
 材料都好简单，只需要白纸一张
-The only ingredient is paper.
+The ingredient takes only paper.
 
 198
 00:14:14,958 --> 00:14:19,333
@@ -1005,7 +1005,7 @@ A novelty today for everyone:
 202
 00:14:37,542 --> 00:14:40,958
 包鸡纸包鸡包纸包鸡
-Chicken Bun Paper Bunning a Bun.
+Chicken Bun Paper Bun-ning a Bun.
 
 203
 00:14:41,125 --> 00:14:45,042
@@ -1030,7 +1030,7 @@ And then wrap it like this…
 207
 00:14:59,875 --> 00:15:05,292
 咁一味「包鸡纸包鸡包纸包鸡」就完成喇！
-The delicious Chicken Bun Paper Bunning a Bun!
+The delicious Chicken Bun Paper Bun-ning a Bun!
 
 208
 00:15:05,458 --> 00:15:06,958
@@ -1065,7 +1065,7 @@ Bunning the Paper Chicken.
 214
 00:15:29,750 --> 00:15:31,583
 做法都好简单
-It's simple work.
+It takes simple work.
 
 215
 00:15:31,792 --> 00:15:34,958
@@ -1195,7 +1195,7 @@ Talking about Chow look-alike…
 240
 00:17:17,167 --> 00:17:18,875
 大家都唔好再提！
-You still think it's going to happen?
+You still think it's going happen?
 
 241
 00:17:19,917 --> 00:17:20,875
@@ -1205,7 +1205,7 @@ When it comes to luck…
 242
 00:17:21,042 --> 00:17:23,750
 我用我嘅童子手帮妈妈抽嘅六合彩number
-The lottery numbers that Mother obliges to draw…
+The lottery numbers that mother obliges to draw…
 
 243
 00:17:24,250 --> 00:17:27,875
@@ -1269,7 +1269,7 @@ Brilliant Touring Agency, license no. 350999
 255
 00:18:22,792 --> 00:18:25,625
 妈妈你知唔知到马尔代夫系边㗎？
-Mother, do you know where the Maldives is?
+Mother, you know where Maldives is?
 
 256
 00:18:25,958 --> 00:18:27,417
@@ -1429,7 +1429,7 @@ Take some medicine and he'll be fine.
 287
 00:22:26,542 --> 00:22:29,250
 医生啊，啲药食咗会唔会有嗰啲咩㗎？
-After the medicine, will he need some other thing?
+Will he not what after the medicine?
 
 288
 00:22:29,292 --> 00:22:30,625
@@ -1439,7 +1439,7 @@ No!
 289
 00:22:30,792 --> 00:22:32,125
 噉佢食药使唔使咩啊？
-So with the medicine, he won't need some other thing?
+Need he not what for the medicine?
 
 290
 00:22:32,250 --> 00:22:33,875
@@ -1469,7 +1469,7 @@ How are you doing? Take the medicine.
 295
 00:23:42,125 --> 00:23:45,125
 妈妈我唔想食药水呀
-Mother, I don't want medicine.
+Mother I don't want medicine.
 
 296
 00:23:45,292 --> 00:23:47,917
@@ -1499,7 +1499,7 @@ Really?
 301
 00:23:58,833 --> 00:24:00,625
 妈妈几时呃过你呀？
-Has Mother ever lied before?
+Has mother ever lied before?
 
 302
 00:24:01,125 --> 00:24:03,542
@@ -1609,12 +1609,12 @@ Maldives?
 323
 00:25:24,958 --> 00:25:28,417
 呢，你话我返就同我去马尔代夫㗎嘛！
-You said we would go once I got well.
+You said we would go once I get well.
 
 324
 00:25:28,583 --> 00:25:31,958
 马尔代夫呢，椰林树影，水清沙幼⋯
-Maldives, where the trees are tall and water bright…
+Maldives, where the trees tall and water bright…
 
 325
 00:25:32,083 --> 00:25:35,167
@@ -1639,7 +1639,7 @@ Mother, you promised…
 329
 00:25:45,458 --> 00:25:50,417
 你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！
-We'd go to Maldives once I got well.
+We'd go to Maldives once I get well.
 
 330
 00:25:50,583 --> 00:25:53,500
@@ -1654,7 +1654,7 @@ No, that wasn't what you meant.
 332
 00:26:01,625 --> 00:26:06,083
 你明明讲过好返就同你去马尔代夫㗎㖞
-You said we'd go once I got well.
+You said we'd go once I get well.
 
 333
 00:26:07,042 --> 00:26:09,125
@@ -1674,7 +1674,7 @@ We will go to Maldives.
 336
 00:26:13,875 --> 00:26:15,542
 真嘅？　　系啊
-Really? - Yes.
+- Really?    - Yes.
 
 337
 00:26:15,750 --> 00:26:17,000
@@ -1719,7 +1719,7 @@ Hey, I'm leaving tomorrow.
 345
 00:27:06,458 --> 00:27:08,667
 系啊　　⋯系咩？
-Yes… - Is that right?
+- Yes…    - Is that right?
 
 346
 00:27:08,833 --> 00:27:10,292
@@ -1754,7 +1754,7 @@ Tell them I'm going to Maldives tomorrow.
 352
 00:27:22,833 --> 00:27:26,708
 嗰度蓝天白云，椰林树⋯
-Where the trees are tall and water bright…
+Where the trees tall and water bright…
 
 353
 00:27:26,833 --> 00:27:27,917
@@ -1864,7 +1864,7 @@ If only for one small piece.
 374
 00:33:06,042 --> 00:33:08,250
 妈妈早唞！
-Good night, Mother! - Good night!
+- Goodnight, mother!    - Goodnight!
 
 375
 00:33:46,542 --> 00:33:48,000
@@ -1879,22 +1879,22 @@ windsurfing athlete San San Li…
 377
 00:33:52,458 --> 00:33:55,667
 夺取香港历史上第一面奥运金牌！
-has just won the first gold medal in Hong Kong history!
+Has just won the first gold medal in Hong Kong history!
 
 378
 00:33:55,833 --> 00:33:59,708
 消息话李丽珊喺知道自己稳夺奥运金牌之后
-San San, when her win was confirmed…
+San San, when confirming her winning…
 
 379
 00:33:59,833 --> 00:34:03,875
 好激动噉同在场嘅记者讲今次佢嘅成绩⋯
-told reporters that her result…
+Told reporters that her result…
 
 380
 00:34:04,000 --> 00:34:07,667
 可以证明到香港嘅运动员唔系腊鸭！
-helped prove that Hong Kong athletes are horrible…
+Help proves that Hong Kong athletes are horrible…
 
 381
 00:34:09,292 --> 00:34:13,708
@@ -1947,7 +1947,7 @@ Another one begins.
 
 391
 00:34:41,000 --> 00:34:43,417
-"aka: How Does a Calf Become a Calf?"
+"Aka: How Does a Calf Become a Calf?"
 
 392
 00:34:43,500 --> 00:34:45,417
@@ -2012,7 +2012,7 @@ HK athletes are honourable athletes!
 404
 00:35:49,792 --> 00:35:53,417
 长洲，我终于嚟到长洲嘞！
-Cheung Chau, I finally made it here.
+Cheung Chau, I finally make it here.
 
 405
 00:35:58,333 --> 00:36:05,583
@@ -2307,7 +2307,7 @@ Get up…
 463
 00:39:46,167 --> 00:39:47,250
 多谢师父！
-Thank you, Master!
+Thank you master!
 
 464
 00:39:47,417 --> 00:39:50,167
@@ -2322,7 +2322,7 @@ My calf has gone numb!
 466
 00:40:07,833 --> 00:40:10,917
 我将今日发生嘅嘢话晒畀妈妈听
-I tell Mother what happened today.
+I tell mother what happened today.
 
 467
 00:40:11,625 --> 00:40:14,333
@@ -2337,7 +2337,7 @@ But starts to defrost a chicken.
 469
 00:40:20,667 --> 00:40:24,500
 晚饭时候，妈妈倒咗三杯米酒
-At dinner, Mother offers 3 glasses of wine…
+At dinner, mother offers 3 glasses of wine…
 
 470
 00:40:24,833 --> 00:40:30,333
@@ -2357,7 +2357,7 @@ She mumbles something when…
 473
 00:40:39,500 --> 00:40:44,292
 然之后我哋又一齐对住祖先拜多几拜
-We pay our respect to our ancestors.
+We pay our respect to our ancestor.
 
 474
 00:40:45,708 --> 00:40:49,875
@@ -2377,7 +2377,7 @@ Be good,
 477
 00:40:55,208 --> 00:40:58,667
 跟师父学嘢，光宗耀祖！
-learn with the master and honour the ancestors.
+learn with the master and honour the ancestor.
 
 478
 00:41:05,625 --> 00:41:10,083
@@ -2502,7 +2502,7 @@ what a marvelous skill that is!
 502
 00:42:46,292 --> 00:42:48,583
 噉请问嗰样绝技系乜嘢啊？
-Can you tell us what skill that is?
+Can you tell us what skill is that?
 
 503
 00:42:55,958 --> 00:42:59,083
@@ -2562,7 +2562,7 @@ A stack of buns is a stack of many buns!
 514
 00:43:38,750 --> 00:43:41,958
 一座包山，起码六、七层楼高⋯
-Each stack coming up to 6 or 7 storeys.
+Each stack coming up to 6, 7 storeys.
 
 515
 00:43:42,500 --> 00:43:46,208
@@ -2592,7 +2592,7 @@ The higher the bun you snatch, the more blessed you are.
 520
 00:44:02,417 --> 00:44:05,833
 更加可以表现自己不凡嘅身手
-And the more praise you get.
+And the more praises you get.
 
 521
 00:44:07,000 --> 00:44:11,792
@@ -2772,7 +2772,7 @@ Logan then proceeds to tell me a lot…
 556
 00:46:42,583 --> 00:46:46,208
 讲下佢嘅抱负，佢对麦兜嘅期望
-His ambition, his expectations of Dull.
+His ambition, his expectation of Dull.
 
 557
 00:46:46,583 --> 00:46:51,125
@@ -2797,12 +2797,12 @@ His strongest is really bun snatching…
 561
 00:47:00,833 --> 00:47:03,625
 佢话抢包山结合咗南拳
-Something combining martial arts,
+Something combining Fist,
 
 562
 00:47:03,750 --> 00:47:06,458
 神功戏同现代器械操
-acrobatic opera, and gymnastics.
+ritual and gymnastic.
 
 563
 00:47:06,750 --> 00:47:11,500
@@ -2877,7 +2877,7 @@ Your son, he will get this calf.
 577
 00:47:58,042 --> 00:48:01,583
 其实我都唔知我仔要咁粗嘅脚瓜⋯
-I have no idea why Dull would need…
+I have no idea why would Dull need…
 
 578
 00:48:01,708 --> 00:48:02,958
@@ -2962,7 +2962,7 @@ It is addressed to the Olympic Committee Chairman.
 594
 00:49:15,500 --> 00:49:19,917
 「小笼包，上海包，广东包，莲蓉包」
-"Buns of all sort."
+"Buns of all sorts."
 
 595
 00:49:20,042 --> 00:49:22,125
@@ -3276,7 +3276,7 @@ And he hoped to eat a Christmas turkey.
 657
 00:53:00,833 --> 00:53:03,958
 系啊，我嗰阵我真系仲未食过火鸡
-Right, I hadn't eaten any turkey then.
+Right, I haven't eaten any turkey then.
 
 658
 00:53:04,250 --> 00:53:05,875
@@ -3371,7 +3371,7 @@ Another year, she bought a mini-oven at 60% off…
 676
 00:54:00,875 --> 00:54:03,833
 妈妈用四折买咗个焗炉仔返屋企
-At a close-down sale.
+At a closedown sale.
 
 677
 00:54:04,250 --> 00:54:06,500
@@ -3651,7 +3651,7 @@ Paper turkey paper bun.
 732
 00:57:37,125 --> 00:57:39,667
 酿火鸡馅搽面包
-Turkey pâté with bread.
+Turkey pate with bread.
 
 733
 00:57:40,625 --> 00:57:46,625
@@ -3701,7 +3701,7 @@ Later, I learned that…
 742
 00:58:16,792 --> 00:58:18,625
 一只火鸡由出世到畀人㓥
-A serving turkey needs only to be raised…
+A serving turkey needs only be raised…
 
 743
 00:58:18,792 --> 00:58:21,083
@@ -3846,7 +3846,7 @@ Among them, the Bamboo Game Association…
 771
 01:00:50,958 --> 01:00:53,875
 更希望打麻雀可以成为亚运项目
-is proposing Mahjong as an official game.
+Is proposing Mahjong for official game.
 
 772
 01:00:54,375 --> 01:00:57,000
@@ -3881,7 +3881,7 @@ They believe…
 778
 01:01:12,042 --> 01:01:15,958
 较为特别嘅系，CIC保险营业员联同⋯
-More interestingly, CIC Insurance is joining forces with…
+More interesting, CIC Insurance is joining forces with…
 
 779
 01:01:16,083 --> 01:01:17,958
@@ -3986,7 +3986,7 @@ Then they stopped selling buns.
 799
 01:03:26,167 --> 01:03:28,708
 推车仔都转咗用点心纸
-Carts were replaced by order sheets.
+Carts were replaced by ordering sheets.
 
 800
 01:03:29,417 --> 01:03:31,542
@@ -4016,7 +4016,7 @@ For environmental reasons…
 805
 01:03:55,708 --> 01:03:58,958
 长洲嘅抢包经已转咗用塑胶
-They'd changed to snatching plastic buns.
+They'd changed to snatch plastic buns.
 
 806
 01:04:00,125 --> 01:04:03,417
@@ -4026,12 +4026,12 @@ Master thought they stunk.
 807
 01:04:09,250 --> 01:04:11,417
 长洲有个张保仔洞
-On Cheung Chau there was a Cheung Po Tsai Cave.
+On Cheung Chau was a Cheung Po Tsai Cave.
 
 808
 01:04:11,792 --> 01:04:15,792
 听讲海盗张保仔喺里面收埋咗好多宝藏
-Where legend claims a pirate hid his treasure.
+Where legend claimed the pirate hid his treasure.
 
 809
 01:04:16,958 --> 01:04:20,500
@@ -4086,7 +4086,7 @@ Maybe the pirate didn't get to finish it.
 819
 01:05:05,333 --> 01:05:13,250
 「寻晚，食了磅半方包」
-"Eating 1 ½lb white bread last night…"
+"Eating 1½lb white bread last night…"
 
 820
 01:05:13,417 --> 01:05:24,792
@@ -4161,7 +4161,7 @@ Disappointed is not funny.
 834
 01:06:34,208 --> 01:06:36,208
 肥，都未必好笑
-Fatness is not funny either.
+Fatness is not funny too.
 
 835
 01:06:37,500 --> 01:06:39,667
@@ -4196,7 +4196,7 @@ What shall I be?
 841
 01:07:05,375 --> 01:07:16,417
 「⋯无力挽！」
-"… Nothing shall be done!"
+"…Nothing shall be done!"
 
 842
 01:07:35,292 --> 01:07:37,125
@@ -4240,7 +4240,7 @@ Very muscular…
 850
 01:08:42,375 --> 01:08:47,083
 啲青筋一条一条凸下凸下，好似钢筋
-With steely veins running down them.
+With steely veins running down.
 
 851
 01:08:47,917 --> 01:08:50,000
@@ -4250,7 +4250,7 @@ As for the toenails…
 852
 01:08:50,333 --> 01:08:53,417
 有次我无无聊聊真系走去卡下佢⋯
-I got bored one time and stared at them…
+I got bored one time and stared at it…
 
 853
 01:08:53,833 --> 01:08:56,750
@@ -4315,7 +4315,7 @@ You see, smart guys like me don't really know…
 865
 01:09:37,250 --> 01:09:41,500
 帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢
-How to make a lesson out of their own story.
+How to make a lesson out of his own story.
 
 866
 01:09:42,042 --> 01:09:44,833
