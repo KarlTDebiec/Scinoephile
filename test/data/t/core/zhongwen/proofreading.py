@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""T 中文 proof test cases."""
+"""T 中文 proofreading test cases."""
 
 from __future__ import annotations
 
@@ -1534,9 +1534,7 @@ test_cases = [
         zimu_1="全都部队出身",
         zimu_2="胆大包天，身经百战！",
         zimu_3="我要叶国欢！",
-        xiugai_1="全都是部队出身",
-        beizhu_1="将“全都部队出身”更正为“全都是部队出身”，补全漏字。",
-        difficulty=1,
+        verified=True,
     ),
     ZhongwenProofreadingTestCase.get_test_case_cls(1)(
         zimu_1="零钱！",

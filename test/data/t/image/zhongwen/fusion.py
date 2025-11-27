@@ -53,8 +53,8 @@ test_cases = [
         lens="警方相信，今次械劫案的主谋",
         paddle="警方相信 今次械劫案的主谋",
         ronghe="警方相信，今次械劫案的主谋",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -78,8 +78,8 @@ test_cases = [
         lens="两折，不好意思，最多两折！",
         paddle="两折  不好意思 最多两折！",
         ronghe="两折，不好意思，最多两折！",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -95,8 +95,8 @@ test_cases = [
         lens="炒股、炒楼、炒栗子更能赚钱！",
         paddle="炒股 炒楼 炒栗子更能赚钱！",
         ronghe="炒股、炒楼、炒栗子更能赚钱！",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的顿号和逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的顿号和逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -112,8 +112,8 @@ test_cases = [
         lens="真的多谢了，欢哥！",
         paddle="真的多谢了 欢哥！",
         ronghe="真的多谢了，欢哥！",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -121,8 +121,8 @@ test_cases = [
         lens="什么\n「易发」？",
         paddle="什么「易发」",
         ronghe="什么「易发」？",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号；省略了 Google Lens OCR "
+        "中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -154,8 +154,8 @@ test_cases = [
         lens="一趟都数百万！",
         paddle="趟都数百万！",
         ronghe="一趟都数百万！",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的“一”；以 Google Lens "
-        "OCR 结果为主。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的“一”；以 Google Lens OCR "
+        "结果为主。",
         difficulty=1,
         verified=True,
     ),
