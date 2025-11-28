@@ -7,6 +7,7 @@ from __future__ import annotations
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 
 # noinspection PyArgumentList
+# ruff: noqa: E501
 test_cases = [
     ZhongwenFusionTestCase(
         lens="经好彩酒家左转花园街乐园牛丸王⋯",

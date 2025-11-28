@@ -7,6 +7,7 @@ from __future__ import annotations
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
 
 # noinspection PyArgumentList
+# ruff: noqa: E501
 test_cases = [
     ZhongwenProofreadingTestCase.get_test_case_cls(33)(
         zimu_1="在麦太即将临盆的时候",

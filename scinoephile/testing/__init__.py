@@ -17,7 +17,7 @@ from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_output_path
-from scinoephile.core.abcs import DynamicLLMQueryer, FixedLLMQueryer, TestCase
+from scinoephile.core.abcs import DynamicLLMQueryer, TestCase
 from scinoephile.core.abcs.llm_queryer import LLMQueryer
 from scinoephile.testing.sync_test_case import SyncTestCase
 
