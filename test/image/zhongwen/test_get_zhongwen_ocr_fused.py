@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.image.zhongwen.get_zhongwen_ocr_fused"""
+"""Tests of scinoephile.image.zhongwen.get_zhongwen_ocr_fused."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def test_get_zhongwen_ocr_fused_kob(
     Arguments:
         kob_zho_hant_paddle: KOB 中文 subtitles OCRed using Tesseract fixture
         kob_zho_hant_lens: KOB 中文 subtitles OCRed using Google Lens fixture
-        kob_zho_hant_fuse：Expected fused KOB 中文 subtitles fixture
+        kob_zho_hant_fuse: Expected fused KOB 中文 subtitles fixture
     """
     paddle = get_zhongwen_cleaned(kob_zho_hant_paddle, remove_empty=False)
     paddle = get_zhongwen_converted(paddle, config=OpenCCConfig.s2t)
@@ -65,7 +65,7 @@ def test_get_zhongwen_ocr_fused_mlamd(
     Arguments:
         mlamd_zho_hans_paddle: MLAMD 中文 subtitles OCRed using Tesseract fixture
         mlamd_zho_hans_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
-        mlamd_zho_hans_fuse：Expected fused MLAMD 中文 subtitles fixture
+        mlamd_zho_hans_fuse: Expected fused MLAMD 中文 subtitles fixture
     """
     paddle = get_zhongwen_cleaned(mlamd_zho_hans_paddle, remove_empty=False)
     paddle = get_zhongwen_converted(paddle)
@@ -82,7 +82,7 @@ def test_get_zhongwen_ocr_fused_mnt(
     Arguments:
         mnt_zho_hans_paddle: MNT 中文 subtitles OCRed using Tesseract fixture
         mnt_zho_hans_lens: MNT 中文 subtitles OCRed using Google Lens fixture
-        mnt_zho_hans_fuse：Expected fused MNT 中文 subtitles fixture
+        mnt_zho_hans_fuse: Expected fused MNT 中文 subtitles fixture
     """
     paddle = get_zhongwen_cleaned(mnt_zho_hans_paddle, remove_empty=False)
     paddle = get_zhongwen_converted(paddle)
@@ -99,7 +99,7 @@ def test_get_zhongwen_ocr_fused_t(
     Arguments:
         t_zho_hans_paddle: T 中文 subtitles OCRed using Tesseract fixture
         t_zho_hans_lens: T 中文 subtitles OCRed using Google Lens fixture
-        t_zho_hans_fuse：Expected fused T 中文 subtitles fixture
+        t_zho_hans_fuse: Expected fused T 中文 subtitles fixture
     """
     paddle = get_zhongwen_cleaned(t_zho_hans_paddle, remove_empty=False)
     paddle = get_zhongwen_converted(paddle)

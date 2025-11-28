@@ -42,7 +42,7 @@ def test_get_english_ocr_fused_kob(
     Arguments:
         kob_eng_tesseract: KOB English subtitles OCRed using Tesseract fixture
         kob_eng_lens: KOB English subtitles OCRed using Google Lens fixture
-        kob_eng_fuse：Expected fused KOB English subtitles fixture
+        kob_eng_fuse: Expected fused KOB English subtitles fixture
     """
     tesseract = get_english_cleaned(kob_eng_tesseract, remove_empty=False)
     lens = get_english_cleaned(kob_eng_lens, remove_empty=False)
@@ -57,7 +57,7 @@ def test_get_english_ocr_fused_mlamd(
     Arguments:
         mlamd_eng_tesseract: MLAMD English subtitles OCRed using Tesseract fixture
         mlamd_eng_lens: MLAMD English subtitles OCRed using Google Lens fixture
-        mlamd_eng_fuse：Expected fused MLAMD English subtitles fixture
+        mlamd_eng_fuse: Expected fused MLAMD English subtitles fixture
     """
     tesseract = get_english_cleaned(mlamd_eng_tesseract, remove_empty=False)
     lens = get_english_cleaned(mlamd_eng_lens, remove_empty=False)
@@ -72,7 +72,7 @@ def test_get_english_ocr_fused_mnt(
     Arguments:
         mnt_eng_tesseract: MNT English subtitles OCRed using Tesseract fixture
         mnt_eng_lens: MNT English subtitles OCRed using Google Lens fixture
-        mnt_eng_fuse：Expected fused MNT English subtitles fixture
+        mnt_eng_fuse: Expected fused MNT English subtitles fixture
     """
     tesseract = get_english_cleaned(mnt_eng_tesseract, remove_empty=False)
     lens = get_english_cleaned(mnt_eng_lens, remove_empty=False)
@@ -87,7 +87,7 @@ def test_get_english_ocr_fused_t(
     Arguments:
         t_eng_tesseract: T English subtitles OCRed using Tesseract fixture
         t_eng_lens: T English subtitles OCRed using Google Lens fixture
-        t_eng_fuse：Expected fused T English subtitles fixture
+        t_eng_fuse: Expected fused T English subtitles fixture
     """
     tesseract = get_english_cleaned(t_eng_tesseract, remove_empty=False)
     lens = get_english_cleaned(t_eng_lens, remove_empty=False)
