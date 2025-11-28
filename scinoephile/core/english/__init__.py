@@ -4,21 +4,19 @@
 
 from __future__ import annotations
 
-import asyncio
 import re
 from copy import deepcopy
 from logging import info
-from typing import Any
 
-from scinoephile.core.english.proofing import EnglishProofer
 from scinoephile.core.series import Series
 
 
-def get_english_cleaned(series: Series) -> Series:
+def get_english_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get English series cleaned.
 
     Arguments:
         series: Series to clean
+        remove_empty: whether to remove subtitles with empty text
     Returns:
         cleaned Series
     """
@@ -26,7 +24,7 @@ def get_english_cleaned(series: Series) -> Series:
     new_events = []
     for event in series:
         text = _get_english_text_cleaned(event.text.strip())
-        if text:
+        if text or not remove_empty:
             event.text = text
             new_events.append(event)
     series.events = new_events
@@ -51,26 +49,6 @@ def get_english_flattened(series: Series, exclusions: list[int] = None) -> Serie
             continue
         event.text = _get_english_text_flattened(event.text.strip())
     return series
-
-
-def get_english_proofed(
-    series: Series, proofer: EnglishProofer | None = None, **kwargs: Any
-) -> Series:
-    """Get English series proofed.
-
-    Arguments:
-        series: Series to proof
-        proofer: EnglishProofer to use
-        kwargs: additional keyword arguments for EnglishProofer.process_all_blocks
-    Returns:
-        proofed Series
-    """
-    if proofer is None:
-        proofer = EnglishProofer()
-
-    proofed = asyncio.run(proofer.process_all_blocks(series, **kwargs))
-
-    return proofed
 
 
 def _get_english_text_cleaned(text: str) -> str | None:
@@ -159,8 +137,6 @@ def _get_english_text_flattened(text: str) -> str:
 
 
 __all__ = [
-    "EnglishProofer",
     "get_english_cleaned",
     "get_english_flattened",
-    "get_english_proofed",
 ]

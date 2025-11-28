@@ -28,9 +28,9 @@ from scinoephile.testing import test_data_root
         ),
         (
             (ScinoephileCli,),
-            "t/input/eng.srt",
+            "t/output/eng_clean.srt",
             "--flatten",
-            "t/output/eng_flatten.srt",
+            "t/output/eng_clean_flatten.srt",
         ),
     ],
 )
@@ -71,9 +71,9 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "t/input/zho-Hans.srt",
+            "t/output/zho-Hans_clean.srt",
             "--flatten",
-            "t/output/zho-Hans_flatten.srt",
+            "t/output/zho-Hans_clean_flatten.srt",
         ),
         (
             (ScinoephileCli,),
@@ -121,7 +121,7 @@ def test_chinese(
         (
             (ScinoephileCli,),
             "t/input/zho-Hans.srt",
-            "t/output/eng_proof.srt",
+            "t/input/eng.srt",
             "--clean --flatten",
             "t/output/zho-Hans_eng.srt",
         ),

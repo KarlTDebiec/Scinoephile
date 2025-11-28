@@ -1,19 +1,19 @@
-"""中文 fusion test cases."""
-
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""T 中文 fusion test cases."""
 
 from __future__ import annotations
 
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 
 # noinspection PyArgumentList
+# ruff: noqa: E501
 test_cases = [
     ZhongwenFusionTestCase(
         lens="检查一下\n收到",
         paddle="检查一下 收到",
         ronghe="检查一下　　收到",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
+        beizhu="将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
         verified=True,
     ),
@@ -21,7 +21,7 @@ test_cases = [
         lens="袋子里装什么？\n总机",
         paddle="袋子里装什么？ 总机",
         ronghe="袋子里装什么？　　总机",
-        beizhu="将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
+        beizhu="将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。",
         difficulty=2,
         verified=True,
     ),
@@ -29,7 +29,7 @@ test_cases = [
         lens="打开来看看 身份证号码 C532743",
         paddle="打开来看看 身份证号码C532743",
         ronghe="打开来看看　　身份证号码C532743",
-        beizhu="Google Lens OCR 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
+        beizhu="Google Lens 和 PaddleOCR 中出现的空格已被两个表意空格取代。",
         difficulty=2,
         prompt=True,
         verified=True,
@@ -38,7 +38,7 @@ test_cases = [
         lens="尾数一，\n季正雄",
         paddle="尾数一，季正雄",
         ronghe="尾数一，季正雄",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -46,7 +46,7 @@ test_cases = [
         lens="确保\n《联合声明》",
         paddle="确保《联合声明》",
         ronghe="确保《联合声明》",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -54,8 +54,8 @@ test_cases = [
         lens="警方相信，今次械劫案的主谋",
         paddle="警方相信 今次械劫案的主谋",
         ronghe="警方相信，今次械劫案的主谋",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -63,7 +63,7 @@ test_cases = [
         lens="是「头号通缉犯」叶国欢",
         paddle="是「头号通缉犯 叶国欢",
         ronghe="是「头号通缉犯」叶国欢",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的引号和标点。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的引号和标点。",
         difficulty=1,
         verified=True,
     ),
@@ -71,7 +71,7 @@ test_cases = [
         lens="你看！\n到处都是血！",
         paddle="你看！到处都是血！",
         ronghe="你看！到处都是血！",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -79,8 +79,8 @@ test_cases = [
         lens="两折，不好意思，最多两折！",
         paddle="两折  不好意思 最多两折！",
         ronghe="两折，不好意思，最多两折！",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -88,7 +88,7 @@ test_cases = [
         lens="一千万货你只给两百万？",
         paddle="千万货你只给两百万？",
         ronghe="一千万货你只给两百万？",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的“一”。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的“一”。",
         difficulty=1,
         verified=True,
     ),
@@ -96,8 +96,8 @@ test_cases = [
         lens="炒股、炒楼、炒栗子更能赚钱！",
         paddle="炒股 炒楼 炒栗子更能赚钱！",
         ronghe="炒股、炒楼、炒栗子更能赚钱！",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的顿号和逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的顿号和逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -105,7 +105,7 @@ test_cases = [
         lens="我都买不下手，我看没人敢收⋯",
         paddle="我都买不下手，我看没人敢收",
         ronghe="我都买不下手，我看没人敢收⋯",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。",
         difficulty=1,
         verified=True,
     ),
@@ -113,8 +113,8 @@ test_cases = [
         lens="真的多谢了，欢哥！",
         paddle="真的多谢了 欢哥！",
         ronghe="真的多谢了，欢哥！",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR "
-        "中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -122,8 +122,8 @@ test_cases = [
         lens="什么\n「易发」？",
         paddle="什么「易发」",
         ronghe="什么「易发」？",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的问号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的问号；省略了 Google Lens OCR "
+        "中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -131,7 +131,7 @@ test_cases = [
         lens="番禺\n「易发」",
         paddle="番禺「易发」",
         ronghe="番禺「易发」",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
@@ -139,7 +139,7 @@ test_cases = [
         lens="这么大模大样？\n如此明目张胆？",
         paddle="这么大模大样？如此明目张胆？",
         ronghe="这么大模大样？如此明目张胆？",
-        beizhu="省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=2,
         verified=True,
     ),
@@ -147,7 +147,7 @@ test_cases = [
         lens="一部电视机，香港卖两千，大陆卖八千",
         paddle="一部电视机 ， 香港卖两千，大陆卖八千",
         ronghe="一部电视机，香港卖两千，大陆卖八千",
-        beizhu="省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。",
+        beizhu="省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
@@ -155,8 +155,8 @@ test_cases = [
         lens="一趟都数百万！",
         paddle="趟都数百万！",
         ronghe="一趟都数百万！",
-        beizhu="包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的“一”；以 Google Lens "
-        "OCR 结果为主。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的“一”；以 Google Lens OCR "
+        "结果为主。",
         difficulty=1,
         verified=True,
     ),
@@ -2169,7 +2169,7 @@ test_cases = [
         verified=True,
     ),
 ]  # test_cases
-"""中文 fusion test cases."""
+"""T 中文 fusion test cases."""
 
 __all__ = [
     "test_cases",

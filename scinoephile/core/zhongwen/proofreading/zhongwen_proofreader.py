@@ -6,8 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import re
-from importlib.util import module_from_spec, spec_from_file_location
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -22,30 +21,11 @@ from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
     ZhongwenProofreadingTestCase,
 )
-from scinoephile.testing import test_data_root, update_dynamic_test_cases
-
-try:
-    # noinspection PyUnusedImports
-    # from test.data.kob import kob_zhongwen_proofreading_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
-
-    # noinspection PyUnusedImports
-    # from test.data.mnt import mnt_zhongwen_proofreading_test_cases
-
-    # noinspection PyUnusedImports
-    # from test.data.t import t_zhongwen_proofreading_test_cases
-
-    default_test_cases = (
-        # kob_zhongwen_proofreading_test_cases
-        # +
-        mlamd_zhongwen_proofreading_test_cases
-        # + mnt_zhongwen_proofreading_test_cases
-        # + t_zhongwen_proofreading_test_cases
-    )
-except ImportError:
-    default_test_cases = []
+from scinoephile.testing import (
+    get_test_cases_from_file_path,
+    test_data_root,
+    update_test_cases,
+)
 
 
 class ZhongwenProofreader:
@@ -65,21 +45,11 @@ class ZhongwenProofreader:
             auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
-            test_cases = default_test_cases
+            test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-
-            if test_case_path.exists():
-                spec = spec_from_file_location("test_cases", test_case_path)
-                module = module_from_spec(spec)
-                spec.loader.exec_module(module)
-
-                for name in getattr(module, "__all__", []):
-                    if name.endswith("test_cases"):
-                        if value := getattr(module, name, None):
-                            test_cases.extend(value)
-
+            test_cases.extend(get_test_cases_from_file_path(test_case_path))
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -109,6 +79,7 @@ class ZhongwenProofreader:
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
                 break
+
             # Query for proofreading
             test_case_cls = ZhongwenProofreadingTestCase.get_test_case_cls(len(block))
             query_cls = test_case_cls.query_cls
@@ -122,19 +93,15 @@ class ZhongwenProofreader:
                     subtitle.text = revised
                 output_series.append(subtitle)
 
-            if self.test_case_path is not None:
-                asyncio.run(
-                    update_dynamic_test_cases(
-                        self.test_case_path,
-                        f"test_case_block_{block_idx}",
-                        self.llm_queryer,
-                    )
-                )
             info(
                 f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
                 f"{block.to_series().to_simple_string()}"
             )
             all_output_series[block_idx] = output_series
+        if self.test_case_path is not None:
+            asyncio.run(
+                update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+            )
 
         # Concatenate and return
         output_series = get_concatenated_series(
@@ -142,6 +109,39 @@ class ZhongwenProofreader:
         )
         info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series
+
+    @classmethod
+    def get_default_test_cases(cls):
+        """Get default test cases included with package.
+
+        Returns:
+            test cases
+        """
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import kob_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import mnt_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import t_zhongwen_proofreading_test_cases
+
+            return (
+                kob_zhongwen_proofreading_test_cases
+                + mlamd_zhongwen_proofreading_test_cases
+                + mnt_zhongwen_proofreading_test_cases
+                + t_zhongwen_proofreading_test_cases
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+            return []
 
     @staticmethod
     def create_test_case_file(test_case_path: Path, n_blocks: int):
@@ -151,28 +151,19 @@ class ZhongwenProofreader:
             test_case_path: path to file to create
             n_blocks: number of blocks for which to create test cases
         """
-        header = '''"""中文 proofreading test cases."""
+        contents = '''"""中文 proofreading test cases."""
 
 from __future__ import annotations
 
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase'''
-        blocks = "\n".join(
-            f"# noinspection PyArgumentList\n"
-            f"test_case_block_{i} = None  # test_case_block_{i}"
-            for i in range(n_blocks)
-        )
-        footer = '''
-test_cases: list[ZhongwenProofreadingTestCase] = [
-    test_case
-    for name, test_case in globals().items()
-    if name.startswith("test_case_block_") and test_case is not None
-]
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+
+# noinspection PyArgumentList
+test_cases = []  # test_cases
 """中文 proofreading test cases."""
 
 __all__ = [
     "test_cases",
 ]'''
-        contents = f"{header}\n\n{blocks}\n\n{footer}\n"
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
 

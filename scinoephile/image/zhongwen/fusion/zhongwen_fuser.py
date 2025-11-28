@@ -1,12 +1,11 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
+"""Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
 from __future__ import annotations
 
 import asyncio
-from importlib.util import module_from_spec, spec_from_file_location
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -19,33 +18,15 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_query import ZhongwenFusi
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
     ZhongwenFusionTestCase,
 )
-from scinoephile.testing import test_data_root, update_test_cases
-
-try:
-    # noinspection PyUnusedImports
-    from test.data.kob import kob_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.mnt import mnt_zhongwen_fusion_test_cases
-
-    # noinspection PyUnusedImports
-    from test.data.t import t_zhongwen_fusion_test_cases
-
-    default_test_cases = (
-        kob_zhongwen_fusion_test_cases
-        + mlamd_zhongwen_fusion_test_cases
-        + mnt_zhongwen_fusion_test_cases
-        + t_zhongwen_fusion_test_cases
-    )
-except ImportError:
-    default_test_cases = []
+from scinoephile.testing import (
+    get_test_cases_from_file_path,
+    test_data_root,
+    update_test_cases,
+)
 
 
 class ZhongwenFuser:
-    """Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens OCR."""
+    """Fuses OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
     def __init__(
         self,
@@ -61,21 +42,11 @@ class ZhongwenFuser:
             auto_verify: automatically verify test cases if they meet selected criteria
         """
         if test_cases is None:
-            test_cases = default_test_cases
+            test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-
-            if test_case_path.exists():
-                spec = spec_from_file_location("test_cases", test_case_path)
-                module = module_from_spec(spec)
-                spec.loader.exec_module(module)
-
-                for name in getattr(module, "__all__", []):
-                    if name.endswith("test_cases"):
-                        if value := getattr(module, name, None):
-                            test_cases.extend(value)
-
+            test_cases.extend(get_test_cases_from_file_path(test_case_path))
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -85,10 +56,10 @@ class ZhongwenFuser:
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens OCR."""
+        """Queries LLM to fuse OCRed 中文 text from PaddleOCR and Google Lens."""
 
     def fuse(self, paddle: Series, lens: Series, stop_at_idx: int | None = None):
-        """Fuse OCRed 中文 text from PaddleOCR and Google Lens OCR.
+        """Fuse OCRed 中文 text from PaddleOCR and Google Lens.
 
         Arguments:
             paddle: 中文 subtitles OCRed using PaddleOCR
@@ -98,7 +69,7 @@ class ZhongwenFuser:
         # Validate series
         if not are_series_one_to_one(paddle, lens):
             raise ScinoephileError(
-                "PaddleOCR and Google Lens OCR series must have the same number of "
+                "PaddleOCR and Google Lens series must have the same number of "
                 "subtitles."
             )
 
@@ -115,6 +86,12 @@ class ZhongwenFuser:
                 break
             paddle_text = paddle_sub.text
             lens_text = lens_sub.text
+            if not paddle_text and not lens_text:
+                output_subtitles.append(
+                    Subtitle(start=paddle_sub.start, end=paddle_sub.end, text="")
+                )
+                info(f"Subtitle {sub_idx + 1} empty.")
+                continue
             if paddle_text == lens_text:
                 output_subtitles.append(paddle_sub)
                 info(
@@ -161,6 +138,39 @@ class ZhongwenFuser:
             )
         return output_series
 
+    @classmethod
+    def get_default_test_cases(cls):
+        """Get default test cases included with package.
+
+        Returns:
+            test cases
+        """
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import kob_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import mlamd_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import mnt_zhongwen_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import t_zhongwen_fusion_test_cases
+
+            return (
+                kob_zhongwen_fusion_test_cases
+                + mlamd_zhongwen_fusion_test_cases
+                + mnt_zhongwen_fusion_test_cases
+                + t_zhongwen_fusion_test_cases
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+            return []
+
     @staticmethod
     def create_test_case_file(test_case_path: Path):
         """Create a test case file.
@@ -174,6 +184,7 @@ from __future__ import annotations
 
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 
+# noinspection PyArgumentList
 test_cases = []  # test_cases
 """中文 fusion test cases."""
 

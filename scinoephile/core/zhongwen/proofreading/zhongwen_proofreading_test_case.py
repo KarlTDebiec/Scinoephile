@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar
 
 from pydantic import create_model, model_validator
@@ -66,6 +67,7 @@ class ZhongwenProofreadingTestCase[
         return "\n".join(lines)
 
     @classmethod
+    @cache
     def get_test_case_cls(
         cls,
         size: int,
@@ -79,8 +81,8 @@ class ZhongwenProofreadingTestCase[
         Arguments:
             size: number of subtitles
         Returns:
-            ZhongwenProofTestCase type with appropriate ZhongwenProofQuery and
-            ZhongwenProofAnswer models
+            ZhongwenProofreadingTestCase type with appropriate ZhongwenProofreadingQuery
+            and ZhongwenProofreadingAnswer models
         Raises:
             ScinoephileError: if missing indices are out of range
         """

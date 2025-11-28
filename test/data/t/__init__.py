@@ -12,9 +12,14 @@ from scinoephile.core import Series
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
-from test.data.t.core.english.proof import t_english_proof_test_cases
+from test.data.t.core.english.proofreading import (
+    test_cases as t_english_proofreading_test_cases,
+)
 from test.data.t.core.zhongwen.proofreading import (
     test_cases as t_zhongwen_proofreading_test_cases,
+)
+from test.data.t.image.english.fusion import (
+    test_cases as t_english_fusion_test_cases,
 )
 from test.data.t.image.zhongwen.fusion import (
     test_cases as t_zhongwen_fusion_test_cases,
@@ -25,10 +30,10 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 
 
-# region 简体中文 (OCR)
+# 简体中文 (OCR)
 @pytest.fixture
 def t_zho_hans_lens() -> Series:
-    """T 简体中文 subtitles OCRed using Google Lens OCR."""
+    """T 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_lens.srt")
 
 
@@ -50,22 +55,45 @@ def t_zho_hans_fuse_proofread() -> Series:
     return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
 
 
+# 繁體中文 (OCR)
 @pytest.fixture
-def t_zho_hans_fuse_proofread_clean() -> Series:
-    """T 简体中文 fused, proofread, and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean.srt")
+def t_zho_hant_lens() -> Series:
+    """T 繁體中文 subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "zho-Hant_lens.srt")
 
 
 @pytest.fixture
-def t_zho_hans_fuse_proofread_clean_flatten() -> Series:
-    """T 简体中文 fused, proofread, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+def t_zho_hant_paddle() -> Series:
+    """T 繁體中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_paddle.srt")
 
 
-# endregion
+# English (OCR)
+@pytest.fixture
+def t_eng_lens() -> Series:
+    """T English subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "eng_lens.srt")
 
 
-# region 简体中文 (SRT)
+@pytest.fixture
+def t_eng_tesseract() -> Series:
+    """T English subtitles OCRed using Tesseract."""
+    return Series.load(input_dir / "eng_tesseract.srt")
+
+
+@pytest.fixture
+def t_eng_fuse() -> Series:
+    """T English fused subtitles."""
+    return Series.load(output_dir / "eng_fuse.srt")
+
+
+@pytest.fixture
+def t_eng_fuse_proofread() -> Series:
+    """T English fused and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
+
+
+# 简体中文 (SRT)
 @pytest.fixture
 def t_zho_hans() -> Series:
     """T 简体中文 series."""
@@ -79,21 +107,12 @@ def t_zho_hans_clean() -> Series:
 
 
 @pytest.fixture
-def t_zho_hans_flatten() -> Series:
-    """T 简体中文 flattened series."""
-    return Series.load(output_dir / "zho-Hans_flatten.srt")
-
-
-@pytest.fixture
 def t_zho_hans_clean_flatten() -> Series:
     """T 简体中文 cleaned and flattened series."""
     return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
 
 
-# endregion
-
-
-# region 繁体中文
+# 繁体中文
 @pytest.fixture
 def t_zho_hant() -> Series:
     """T 繁体中文 series."""
@@ -106,10 +125,7 @@ def t_zho_hant_simplify() -> Series:
     return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
-# endregion
-
-
-# region English
+# English (SRT)
 @pytest.fixture
 def t_eng() -> Series:
     """T English series."""
@@ -123,34 +139,17 @@ def t_eng_clean() -> Series:
 
 
 @pytest.fixture
-def t_eng_flatten() -> Series:
-    """T English flattened series."""
-    return Series.load(output_dir / "eng_flatten.srt")
+def t_eng_clean_flatten() -> Series:
+    """T English cleaned and flattened series."""
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
-@pytest.fixture
-def t_eng_proof() -> Series:
-    """T English proofed series."""
-    return Series.load(output_dir / "eng_proof.srt")
-
-
-@pytest.fixture
-def t_eng_proof_clean_flatten() -> Series:
-    """T English proofed, cleaned and flattened series."""
-    return Series.load(output_dir / "eng_proof_clean_flatten.srt")
-
-
-# endregion
-
-
-# region Bilingual 简体中文 and English
+# Bilingual 简体中文 and English
 @pytest.fixture
 def t_zho_hans_eng() -> Series:
     """T Bilingual 简体粤文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
-
-# endregion
 
 ___all__ = [
     "t_zho_hans_lens",
@@ -171,7 +170,8 @@ ___all__ = [
     "t_eng_proof",
     "t_eng_proof_clean_flatten",
     "t_zho_hans_eng",
-    "t_english_proof_test_cases",
+    "t_english_fusion_test_cases",
+    "t_english_proofreading_test_cases",
     "t_zhongwen_fusion_test_cases",
     "t_zhongwen_proofreading_test_cases",
 ]

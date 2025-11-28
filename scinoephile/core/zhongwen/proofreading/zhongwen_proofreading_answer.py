@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import Self
 
 from pydantic import Field, create_model
@@ -16,13 +17,14 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
     """Abstract base class for 中文 proofreading answers."""
 
     @classmethod
+    @cache
     def get_answer_cls(cls, size: int) -> type[Self]:
         """Get answer class for 中文 proofreading.
 
         Arguments:
             size: number of subtitles
         Returns:
-            ZhongwenProofAnswer type with appropriate fields
+            ZhongwenProofreadingAnswer type with appropriate fields
         """
         answer_fields = {}
         for idx in range(size):

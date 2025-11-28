@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.test_get_english_cleaned."""
+"""Tests of scinoephile.core.english.get_english_cleaned."""
 
 from __future__ import annotations
 
@@ -9,7 +9,6 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.english import (
     _get_english_text_cleaned,  # noqa
-    _get_english_text_flattened,  # noqa
     get_english_cleaned,
 )
 
@@ -44,24 +43,28 @@ def test_get_english_cleaned_kob(kob_eng: Series, kob_eng_clean: Series):
     _test_get_english_cleaned(kob_eng, kob_eng_clean)
 
 
-def test_get_english_cleaned_mlamd(mlamd_eng: Series, mlamd_eng_clean: Series):
+def test_get_english_cleaned_mlamd(
+    mlamd_eng_fuse_proofread: Series, mlamd_eng_fuse_proofread_clean: Series
+):
     """Test get_english_cleaned with MLAMD English subtitles.
 
     Arguments:
-        mlamd_eng: MLAMD English series fixture
-        mlamd_eng_clean: Expected cleaned MLAMD English series fixture
+        mlamd_eng_fuse_proofread: MLAMD English series fixture
+        mlamd_eng_fuse_proofread_clean: Expected cleaned MLAMD English series fixture
     """
-    _test_get_english_cleaned(mlamd_eng, mlamd_eng_clean)
+    _test_get_english_cleaned(mlamd_eng_fuse_proofread, mlamd_eng_fuse_proofread_clean)
 
 
-def test_get_english_cleaned_mnt(mnt_eng: Series, mnt_eng_clean: Series):
+def test_get_english_cleaned_mnt(
+    mnt_eng_fuse_proofread: Series, mnt_eng_fuse_proofread_clean: Series
+):
     """Test get_english_cleaned with MNT English subtitles.
 
     Arguments:
-        mnt_eng: MNT English series fixture
-        mnt_eng_clean: Expected cleaned MNT English series fixture
+        mnt_eng_fuse_proofread: MNT English series fixture
+        mnt_eng_fuse_proofread_clean: Expected cleaned MNT English series fixture
     """
-    _test_get_english_cleaned(mnt_eng, mnt_eng_clean)
+    _test_get_english_cleaned(mnt_eng_fuse_proofread, mnt_eng_fuse_proofread_clean)
 
 
 def test_get_english_cleaned_t(t_eng: Series, t_eng_clean: Series):
