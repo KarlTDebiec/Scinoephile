@@ -9,7 +9,6 @@ from logging import info
 from pathlib import Path
 
 from data.mlamd import (
-    mlamd_distribute_test_cases,
     mlamd_merge_test_cases,
     mlamd_proof_test_cases,
     mlamd_review_test_cases,
@@ -173,7 +172,6 @@ if "简体粤文 (Transcription)" in actions:
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
         test_case_directory_path=test_data_root / "mlamd",
-        distribute_test_cases=mlamd_distribute_test_cases,
         shift_test_cases=mlamd_shift_test_cases,
         merge_test_cases=mlamd_merge_test_cases,
         proof_test_cases=mlamd_proof_test_cases,

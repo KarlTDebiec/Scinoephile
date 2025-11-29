@@ -7,7 +7,6 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import error, info
 
-import numpy as np
 from pydantic import ValidationError
 
 from scinoephile.audio import (
@@ -21,14 +20,12 @@ from scinoephile.audio.cantonese.alignment.models import (
     get_translate_models,
 )
 from scinoephile.audio.cantonese.alignment.queries import (
-    get_distribute_query,
     get_merge_query,
     get_proof_query,
     get_review_query,
     get_shift_query,
     get_translate_query,
 )
-from scinoephile.audio.cantonese.distribution import DistributeAnswer, Distributor
 from scinoephile.audio.cantonese.merging import MergeAnswer, Merger, MergeTestCase
 from scinoephile.audio.cantonese.proofing import Proofer
 from scinoephile.audio.cantonese.review import Reviewer
@@ -44,7 +41,6 @@ class Aligner:
 
     def __init__(
         self,
-        distributor: Distributor,
         shifter: Shifter,
         merger: Merger,
         proofer: Proofer,
@@ -54,7 +50,6 @@ class Aligner:
         """Initialize.
 
         Arguments:
-            distributor: Cantonese splitter
             shifter: Cantonese shifter
             merger: Cantonese merger
             proofer: Cantonese proofer
@@ -67,8 +62,6 @@ class Aligner:
         """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifter = shifter
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
-        self.distributor = distributor
-        """Distributes 粤文 text based on corresponding 中文."""
         self.translator = translator
         """Translates 粤文 text based on corresponding 中文."""
         self.reviewer = reviewer
@@ -95,31 +88,13 @@ class Aligner:
         """
         alignment = Alignment(zhongwen_subs, yuewen_subs)
 
-        # Distribute and shift 粤文 subtitles to match 中文 subtitles
-        # Each round of this loop first distributes 粤文 subtitles that overlap with
-        # multiple 中文 subtitles, and then shifts 粤文 subtitle text that remains
-        # misaligned after distribution.
-        # Distribution may involve simply assigning a 粤文 subtitle to one of the two
-        # 中文 subtitles with which it partially overlaps, or it may involve splitting
-        # the 粤文 subtitle into two 粤文 subtitles, to be paired with the two 中文
-        # subtitles. Each time a 粤文 subtitle is split, distribution is implicitly
-        # restarted by clearing the sync group override; via the on-the-fly calculation
-        # of the overlap matrix, sync_groups, and 粤文 to review.
-        # Distribution stops automatically when all 粤文 subtitles have been assigned
-        # to sync groups, i.e., when there are no more 粤文 subtitles to distribute.
-        # Similarly, shifting may involve simply shifting a whole 粤文 subtitle from one
-        # sync group to another, or it may involve splitting a 粤文 subtitle into two
-        # 粤文 subtitles. As with distribution, each time a 粤文 subtitle is split,
-        # shifting is implicitly restarted by clearing the sync group override.
-        distribution_and_shifting_in_progress = True
-        iteration = 0
-        while distribution_and_shifting_in_progress:
-            # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
-            # await self._distribute(alignment)
-
-            # Then shift 粤文 subtitles that remain misaligned after distribution
-            distribution_and_shifting_in_progress = await self._shift(alignment)
-            iteration += 1
+        # Shifting may involve simply shifting a whole 粤文 subtitle from one sync group
+        # to another, or it may involve splitting a 粤文 subtitle into two 粤文
+        # subtitles. Each time a 粤文 subtitle is split, shifting is implicitly
+        # restarted by clearing the sync group override.
+        shifting_in_progress = True
+        while shifting_in_progress:
+            shifting_in_progress = await self._shift(alignment)
 
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
         await self._merge(alignment)
@@ -135,91 +110,6 @@ class Aligner:
 
         # Return final alignment
         return alignment
-
-    async def _distribute(self, alignment: Alignment):
-        """Distribute 粤文 subs.
-
-        Arguments:
-            alignment: Nascent alignment
-        """
-        iteration = 0
-        while alignment.yuewen_to_distribute:
-            info(f"\nITERATION {iteration}")
-            info(alignment)
-            await self._distribute_one(alignment)
-            iteration += 1
-
-    async def _distribute_one(self, alignment: Alignment):
-        """Split 粤文 subs.
-
-        Arguments:
-            alignment: Nascent alignment
-        """
-        # Get sync group and yuewen indexes
-        yw_idx = alignment.yuewen_to_distribute[0]
-        zw_idxs = np.where(alignment.scaled_overlap[:, yw_idx] > 0.33)[0]
-
-        # Case: 粤文 overlaps with nothing
-        # Action: just remove it
-        if len(zw_idxs) == 0:
-            yw = AudioSeries(audio=alignment.yuewen.audio)
-            yw.events = (
-                alignment.yuewen.events[:yw_idx] + alignment.yuewen.events[yw_idx + 1 :]
-            )
-            alignment.yuewen = yw
-            alignment._sync_groups_override = None
-            return
-
-        # Case: 粤文 overlaps with more than 2 中文
-        # Action: Raise; this has not yet been encountered
-        if len(zw_idxs) != 2:
-            raise ScinoephileError(
-                f"Situation not supported: 粤文 subtitle {yw_idx} overlaps with "
-                f"{len(zw_idxs)} sync groups: {zw_idxs.tolist()}.\n{alignment}"
-            )
-
-        # Case: 粤文 overlaps with two sync groups
-        # Action: Query to distribute 粤文 between sync groups
-        sg_1_idx, sg_2_idx = zw_idxs
-        query = get_distribute_query(alignment, sg_1_idx, sg_2_idx, yw_idx)
-        try:
-            answer = await self.distributor.call(query)
-        except ValidationError as exc:
-            answer = DistributeAnswer(
-                yuewen_1_to_append=query.yuewen_to_distribute,
-                yuewen_2_to_prepend="",
-            )
-            test_case = query.to_test_case(answer)
-            error(
-                f"Error distributing 粤文 subtitle {yw_idx} between sync groups "
-                f"{sg_1_idx} and {sg_2_idx}; distributing to first group.\n"
-                f"Test case:\n"
-                f"{test_case.source_str}\n"
-                f"Exception:\n{exc}\n"
-            )
-
-        # Case: 粤文 should be assigned to sync group 1
-        # Action: Append 粤文 to sync group 1 and set override
-        if answer.yuewen_1_to_append and not answer.yuewen_2_to_prepend:
-            nascent_sg = deepcopy(alignment.sync_groups)
-            nascent_sg[sg_1_idx][1].append(yw_idx)
-            alignment._sync_groups_override = nascent_sg
-            return
-
-        # Case: 粤文 should be assigned to sync group 2
-        # Action: Prepend 粤文 to sync group 2 and set override
-        if not answer.yuewen_1_to_append and answer.yuewen_2_to_prepend:
-            nascent_sg = deepcopy(alignment.sync_groups)
-            nascent_sg[sg_2_idx][1].insert(0, yw_idx)
-            alignment._sync_groups_override = nascent_sg
-            return
-
-        # Case: 粤文 should be split between two sync groups
-        # Action: Split 粤文 as specified in the answer; clear sync group override
-        alignment.yuewen = get_series_with_sub_split_at_idx(
-            alignment.yuewen, yw_idx, len(answer.yuewen_1_to_append)
-        )
-        alignment._sync_groups_override = None
 
     async def _shift(self, alignment) -> bool:
         """Shift 粤文 text.

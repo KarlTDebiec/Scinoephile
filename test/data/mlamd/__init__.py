@@ -18,7 +18,6 @@ from test.data.mlamd.core.english.proofreading import (
 from test.data.mlamd.core.zhongwen.proofreading import (
     test_cases as mlamd_zhongwen_proofreading_test_cases,
 )
-from test.data.mlamd.distribution import mlamd_distribute_test_cases
 from test.data.mlamd.image.english.fusion import (
     test_cases as mlamd_english_fusion_test_cases,
 )
@@ -162,7 +161,6 @@ ___all__ = [
     "mlamd_yue_hans",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
-    "mlamd_distribute_test_cases",
     "mlamd_shift_test_cases",
     "mlamd_merge_test_cases",
     "mlamd_proof_test_cases",

@@ -26,11 +26,6 @@ async def update_all_test_cases(
 
     tasks = [
         update_test_cases(
-            test_root / "distribution.py",
-            f"distribute_test_cases_block_{block_idx}",
-            aligner.distributor,
-        ),
-        update_test_cases(
             test_root / "shifting.py",
             f"shift_test_cases_block_{block_idx}",
             aligner.shifter,
