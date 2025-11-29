@@ -1356,9 +1356,9 @@ proof_test_cases_block_10 = [
 ]  # proof_test_cases_block_10
 proof_test_cases_block_11 = [
     ProofTestCase(
-        zhongwen="现在要教大家一味别致小菜﹣",
-        yuewen="间阵要教大家一味几别节嘅小菜﹣",
-        yuewen_proofread="间阵要教大家一味几别致嘅小菜﹣",
+        zhongwen="现在要教大家一味别致小菜－",
+        yuewen="间阵要教大家一味几别节嘅小菜－",
+        yuewen_proofread="间阵要教大家一味几别致嘅小菜－",
         note="Corrected '别节' to '别致' as '别致' is the correct term for "
         "'unique' or 'special', matching the meaning in the 中文.",
         difficulty=2,
@@ -1394,7 +1394,7 @@ proof_test_cases_block_11 = [
         verified=True,
     ),
     ProofTestCase(
-        zhongwen="接着把鸡包纸这样子包起那块鸡",
+        zhongwen="接著把鸡包纸这样子包起那块鸡",
         yuewen="跟住将鸡包子好似我噉包住牛鸡",
         yuewen_proofread="跟住将鸡包纸好似我噉包住块鸡",
         note="Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of "
@@ -1417,9 +1417,9 @@ proof_test_cases_block_11 = [
         zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
         yuewen="咁一味「包鸡子包鸡包子包鸡」就完成喇！",
         yuewen_proofread="咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
-        note="Corrected '包鸡子包鸡包子包鸡' to '包鸡纸包鸡包纸包鸡' as '纸' is the correct "
-        "word in the dish name, matching the 中文 and avoiding the "
-        "mishearing of '子' for '纸'.",
+        note="Corrected '子包鸡包子包鸡' to '纸包鸡包纸包鸡' as '纸' is the correct "
+        "character for '纸包鸡', matching the intended dish name in the "
+        "中文.",
         difficulty=1,
         verified=True,
     ),
@@ -1427,14 +1427,12 @@ proof_test_cases_block_11 = [
         zhongwen="真的很简单吧？",
         yuewen="系咪好简单呢？",
         yuewen_proofread="系咪好简单呢？",
-        note="",
         verified=True,
     ),
     ProofTestCase(
         zhongwen="还真有一块鸡吃呢！",
         yuewen="仲真系有嚿鸡食添！",
         yuewen_proofread="仲真系有嚿鸡食添！",
-        note="",
         verified=True,
     ),
 ]  # proof_test_cases_block_11

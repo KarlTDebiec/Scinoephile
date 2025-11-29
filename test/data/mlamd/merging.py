@@ -1066,9 +1066,9 @@ merge_test_cases_block_10 = [
 ]  # merge_test_cases_block_10
 merge_test_cases_block_11 = [
     MergeTestCase(
-        zhongwen="现在要教大家一味别致小菜﹣",
+        zhongwen="现在要教大家一味别致小菜－",
         yuewen_to_merge=["间阵要教大家一味几别节嘅小菜"],
-        yuewen_merged="间阵要教大家一味几别节嘅小菜﹣",
+        yuewen_merged="间阵要教大家一味几别节嘅小菜－",
         difficulty=1,
         verified=True,
     ),
@@ -1082,8 +1082,7 @@ merge_test_cases_block_11 = [
         zhongwen="一味「包鸡纸包鸡包纸包鸡」完成了！",
         yuewen_to_merge=["咁一味包鸡子包鸡包子包鸡就完成喇"],
         yuewen_merged="咁一味「包鸡子包鸡包子包鸡」就完成喇！",
-        difficulty=2,
-        prompt=True,
+        difficulty=1,
         verified=True,
     ),
     MergeTestCase(
