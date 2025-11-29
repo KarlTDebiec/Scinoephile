@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import update_all_test_cases
-from scinoephile.audio.cantonese.distribution import DistributeTestCase, Distributor
 from scinoephile.audio.cantonese.merging import Merger, MergeTestCase
 from scinoephile.audio.cantonese.proofing import Proofer, ProofTestCase
 from scinoephile.audio.cantonese.review import Reviewer
@@ -34,7 +33,6 @@ class CantoneseTranscriptionReviewer:
     def __init__(
         self,
         test_case_directory_path: Path,
-        distribute_test_cases: list[DistributeTestCase],
         shift_test_cases: list[ShiftTestCase],
         merge_test_cases: list[MergeTestCase],
         proof_test_cases: list[ProofTestCase],
@@ -45,7 +43,6 @@ class CantoneseTranscriptionReviewer:
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
-            distribute_test_cases: distribute test cases
             shift_test_cases: shift test cases
             merge_test_cases: merge test cases
             proof_test_cases: proof test cases
@@ -55,11 +52,6 @@ class CantoneseTranscriptionReviewer:
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
             "khleeloo/whisper-large-v3-cantonese",
-            cache_dir_path=test_data_root / "cache",
-        )
-        self.distributor = Distributor(
-            prompt_test_cases=[tc for tc in distribute_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in distribute_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
         self.shifter = Shifter(
@@ -88,7 +80,6 @@ class CantoneseTranscriptionReviewer:
             cache_dir_path=test_data_root / "cache",
         )
         self.aligner = Aligner(
-            distributor=self.distributor,
             shifter=self.shifter,
             merger=self.merger,
             proofer=self.proofer,
