@@ -74,9 +74,7 @@ class Alignment:
             return self._sync_groups_override
 
         # Each sync group must be one 中文 and zero or more 粤文.
-        nascent_sync_groups = []
-        for zw_idx in range(len(self.zhongwen)):
-            nascent_sync_groups.append(([zw_idx], []))
+        nascent_sync_groups = [([i], []) for i, _ in enumerate(self.zhongwen)]
 
         # For each 粤文, find the corresponding 中文 and add it to the sync group.
         for yw_idx in range(len(self.yuewen)):
