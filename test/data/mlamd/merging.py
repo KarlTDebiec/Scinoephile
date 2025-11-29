@@ -395,7 +395,7 @@ merge_test_cases_block_3 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="荔芋火鸭礼！　　荔芋火鸭礼！",
+        zhongwen="荔芋火鸭札！　　荔芋火鸭札！",
         yuewen_to_merge=["湾吉校坟交涉设"],
         yuewen_merged="湾吉校坟交涉设",
         difficulty=3,
@@ -606,7 +606,7 @@ merge_test_cases_block_4 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="橙，为什么会是「疴﹣烂﹣煮」呢？",
+        zhongwen="橙，为什么会是「疴－烂－煮」呢？",
         yuewen_to_merge=["点解橙叫Orange呢"],
         yuewen_merged="点解橙叫「Orange」呢？",
         difficulty=2,
@@ -620,7 +620,7 @@ merge_test_cases_block_4 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="「疴」这个我明白，可是「烂﹣煮」呢？",
+        zhongwen="「疴」这个我明白，可是「烂－煮」呢？",
         yuewen_to_merge=["噢", "呢个我明白", "但系橙呢"],
         yuewen_merged="「噢」呢个我明白，但系「橙」呢？",
         difficulty=2,
@@ -628,17 +628,17 @@ merge_test_cases_block_4 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="还有这个「芭﹣娜﹣娜」香蕉",
+        zhongwen="还有这个「芭－娜－哪」香蕉",
         yuewen_to_merge=["仲有呢个啊", "芭拉娜啊", "香蕉啊"],
-        yuewen_merged="仲有呢个啊「芭﹣拉﹣娜」啊香蕉啊",
-        difficulty=3,
+        yuewen_merged="仲有呢个啊「芭－拉－娜」啊香蕉啊",
+        difficulty=2,
         prompt=True,
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
+        zhongwen="为什么雨伞又会是「暗－芭－娜－哪」呢？",
         yuewen_to_merge=["点解雨姐会叫做暗芭拉娜呢"],
-        yuewen_merged="点解雨姐会叫做「暗﹣芭﹣拉﹣娜」呢？",
+        yuewen_merged="点解雨姐会叫做「暗－芭－拉－娜」呢？",
         difficulty=2,
         prompt=True,
         verified=True,
@@ -809,9 +809,9 @@ merge_test_cases_block_5 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="那时候我无忧无虑，万事无所谓﹣﹣",
+        zhongwen="那时候我无忧无虑，万事无所谓－－",
         yuewen_to_merge=["果只我无忧无虑", "冇乜所谓"],
-        yuewen_merged="果只我无忧无虑，冇乜所谓﹣﹣",
+        yuewen_merged="果只我无忧无虑，冇乜所谓－－",
         difficulty=1,
         verified=True,
     ),
@@ -832,7 +832,7 @@ merge_test_cases_block_5 = [
 ]  # merge_test_cases_block_5
 merge_test_cases_block_6 = [
     MergeTestCase(
-        zhongwen="看着自己每天疴烂煮⋯",
+        zhongwen="看著自己每天疴烂煮⋯",
         yuewen_to_merge=["睇住自己日日柯能处"],
         yuewen_merged="睇住自己日日柯能处⋯",
         difficulty=1,
@@ -990,9 +990,9 @@ merge_test_cases_block_9 = [
         verified=True,
     ),
     MergeTestCase(
-        zhongwen="欢迎大家收看《麦太世界》",
+        zhongwen="欢迎大家收看＜麦太世界＞",
         yuewen_to_merge=["欢迎大家收睇麦太世界"],
-        yuewen_merged="欢迎大家收睇《麦太世界》",
+        yuewen_merged="欢迎大家收睇＜麦太世界＞",
         difficulty=1,
         verified=True,
     ),
