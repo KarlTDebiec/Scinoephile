@@ -115,7 +115,7 @@ class Aligner:
         iteration = 0
         while distribution_and_shifting_in_progress:
             # First distribute 粤文 subtitles that overlap with multiple 中文 subtitles
-            await self._distribute(alignment)
+            # await self._distribute(alignment)
 
             # Then shift 粤文 subtitles that remain misaligned after distribution
             distribution_and_shifting_in_progress = await self._shift(alignment)
@@ -237,10 +237,7 @@ class Aligner:
             answer = await self.shifter.call(query)
 
             # If there is no change, continue
-            if (
-                query.yuewen_1 == answer.yuewen_1_shifted
-                and query.yuewen_2 == answer.yuewen_2_shifted
-            ):
+            if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
                 return True
@@ -535,8 +532,7 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
-        models = get_review_models(alignment)
-        query_cls, answer_cls, test_case_cls = models
+        query_cls, answer_cls, test_case_cls = get_review_models(alignment)
 
         # Query for 粤文 review
         query = get_review_query(alignment, query_cls)

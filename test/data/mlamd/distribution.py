@@ -8,51 +8,7 @@ from itertools import chain
 
 from scinoephile.audio.cantonese.distribution import DistributeTestCase
 
-distribute_test_cases_block_0 = [
-    DistributeTestCase(
-        zhongwen_1="再右拐窝打老道向女人街方向飞⋯",
-        yuewen_1_start="再右转抹返出去窝打炉道",
-        zhongwen_2="飞呀，飞⋯",
-        yuewen_2_end="飞下",
-        yuewen_to_distribute="向女人街方向飞下下",
-        yuewen_1_to_append="向女人街方向飞下下",
-        yuewen_2_to_prepend="",
-        difficulty=2,
-        prompt=True,
-        verified=True,
-    ),
-    DistributeTestCase(
-        zhongwen_1="飞呀，飞⋯",
-        yuewen_1_start="飞下",
-        zhongwen_2="胶兜最后飞进广华医院候产房",
-        yuewen_2_end="最后胶兜飞咗入广华医院嘅后产房",
-        yuewen_to_distribute="飞下",
-        yuewen_1_to_append="飞下",
-        yuewen_2_to_prepend="",
-        difficulty=2,
-        verified=True,
-    ),
-    DistributeTestCase(
-        zhongwen_1="或者读书唔叻，工作叻呢？",
-        yuewen_1_start="或者读书唔叻",
-        zhongwen_2="又或者⋯",
-        yuewen_2_end="又或者呢",
-        yuewen_to_distribute="出嚟做嘢叻啦",
-        yuewen_1_to_append="出嚟做嘢叻啦",
-        yuewen_2_to_prepend="",
-        verified=True,
-    ),
-    DistributeTestCase(
-        zhongwen_1="唔聪明唔靓仔也算了，只要福星高照",
-        yuewen_1_start="就算唔系咁聪明同咁靓仔",
-        zhongwen_2="一世够运，逢凶化吉！",
-        yuewen_2_end="一世救运乜嘢事都逢凶化㗎喇",
-        yuewen_to_distribute="只要复星高照",
-        yuewen_1_to_append="只要复星高照",
-        yuewen_2_to_prepend="",
-        verified=True,
-    ),
-]  # distribute_test_cases_block_0
+distribute_test_cases_block_0 = []  # distribute_test_cases_block_0
 distribute_test_cases_block_1 = []  # distribute_test_cases_block_1
 distribute_test_cases_block_2 = [
     DistributeTestCase(
