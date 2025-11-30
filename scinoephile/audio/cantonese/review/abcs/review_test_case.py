@@ -36,13 +36,19 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     @property
     def source_str(self) -> str:
         """Get Python source-like string representation."""
-        lines = (
-            [f"{ReviewTestCase.__name__}.get_test_case_cls({self.size})("]
-            + [format_field(f, getattr(self, f)) for f in self.query_fields]
-            + [format_field(f, getattr(self, f)) for f in self.answer_fields]
-            + [format_field(f, getattr(self, f)) for f in self.test_case_fields]
-            + [")"]
-        )
+        lines = [f"{ReviewTestCase.__name__}.get_test_case_cls({self.size})("]
+        for field in self.query_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        for field in self.answer_fields:
+            value = getattr(self, field)
+            if value == "":
+                continue
+            lines.append(format_field(field, value))
+        for field in self.test_case_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        lines.append(")")
         return "\n".join(lines)
 
     @classmethod

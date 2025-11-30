@@ -8,6 +8,7 @@ from itertools import chain
 
 from scinoephile.audio.cantonese.proofing import ProofTestCase
 
+# noinspection PyArgumentList
 proof_test_cases_block_0 = [
     ProofTestCase(
         zhongwen="在麦太即将临盆的时候",
@@ -259,6 +260,7 @@ proof_test_cases_block_0 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_0
+# noinspection PyArgumentList
 proof_test_cases_block_1 = [
     ProofTestCase(
         zhongwen="最后，胶兜「嘀督」一声落地",
@@ -354,6 +356,7 @@ proof_test_cases_block_1 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_1
+# noinspection PyArgumentList
 proof_test_cases_block_2 = [
     ProofTestCase(
         zhongwen="麦太，没见面一阵",
@@ -466,6 +469,7 @@ proof_test_cases_block_2 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_2
+# noinspection PyArgumentList
 proof_test_cases_block_3 = [
     ProofTestCase(
         zhongwen="这个猪样白兔小朋友⋯",
@@ -594,6 +598,7 @@ proof_test_cases_block_3 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_3
+# noinspection PyArgumentList
 proof_test_cases_block_4 = [
     ProofTestCase(
         zhongwen="你们可能觉得这间幼稚园很烂",
@@ -920,6 +925,7 @@ proof_test_cases_block_4 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_4
+# noinspection PyArgumentList
 proof_test_cases_block_5 = [
     ProofTestCase(
         zhongwen="幼稚园楼下，由校长兼营的茶餐厅",
@@ -930,9 +936,10 @@ proof_test_cases_block_5 = [
     ProofTestCase(
         zhongwen="我们一班同学下课后经常光顾",
         yuewen="我哋一班同学仔放咗学都经常系傍陈",
-        yuewen_proofread="我哋一班同学仔放咗学都经常喺房餐",
-        note="Corrected '系傍陈' to '喺房餐' as '喺房餐' matches the meaning of "
-        "'喺房餐' in the 中文, while '系傍陈' is likely a mishearing.",
+        yuewen_proofread="我哋一班同学仔放咗学都经常去傍衬",
+        note="Corrected '系傍陈' to '去傍衬' as '去傍衬' (go to patronize) matches "
+        "the meaning of '光顾' in the 中文, while '系傍陈' is likely a "
+        "mishearing.",
         difficulty=3,
         verified=True,
     ),
@@ -1068,6 +1075,7 @@ proof_test_cases_block_5 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_5
+# noinspection PyArgumentList
 proof_test_cases_block_6 = [
     ProofTestCase(
         zhongwen="看著自己每天疴烂煮⋯",
@@ -1101,6 +1109,7 @@ proof_test_cases_block_6 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_6
+# noinspection PyArgumentList
 proof_test_cases_block_7 = [
     ProofTestCase(
         zhongwen="有一首歌，Miss Chan唱的好听",
@@ -1157,6 +1166,7 @@ proof_test_cases_block_7 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_7
+# noinspection PyArgumentList
 proof_test_cases_block_8 = [
     ProofTestCase(
         zhongwen="一、二、三、四、五、六、七⋯",
@@ -1209,6 +1219,7 @@ proof_test_cases_block_8 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_8
+# noinspection PyArgumentList
 proof_test_cases_block_9 = [
     ProofTestCase(
         zhongwen="是的，我妈妈真的很厉害",
@@ -1310,6 +1321,7 @@ proof_test_cases_block_9 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_9
+# noinspection PyArgumentList
 proof_test_cases_block_10 = [
     ProofTestCase(
         zhongwen="好高兴这么快又跟大家见面",
@@ -1348,6 +1360,7 @@ proof_test_cases_block_10 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_10
+# noinspection PyArgumentList
 proof_test_cases_block_11 = [
     ProofTestCase(
         zhongwen="现在要教大家一味别致小菜－",
@@ -1430,6 +1443,7 @@ proof_test_cases_block_11 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_11
+# noinspection PyArgumentList
 proof_test_cases_block_12 = [
     ProofTestCase(
         zhongwen="今日为大家介绍一味⋯",
@@ -1560,6 +1574,7 @@ proof_test_cases_block_12 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_12
+# noinspection PyArgumentList
 proof_test_cases_block_13 = [
     ProofTestCase(
         zhongwen="从前，有个小朋友早睡晚起；第二天⋯",
@@ -1613,6 +1628,7 @@ proof_test_cases_block_13 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_13
+# noinspection PyArgumentList
 proof_test_cases_block_14 = [
     ProofTestCase(
         zhongwen="可有些事情，要是真的不成呢？",
@@ -1678,6 +1694,7 @@ proof_test_cases_block_14 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_14
+# noinspection PyArgumentList
 proof_test_cases_block_15 = [
     ProofTestCase(
         zhongwen="马尔代夫，座落于印度洋的世外桃源",
@@ -1797,6 +1814,7 @@ proof_test_cases_block_15 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_15
+# noinspection PyArgumentList
 proof_test_cases_block_16 = [
     ProofTestCase(
         zhongwen="校长早晨！",
@@ -1941,6 +1959,7 @@ proof_test_cases_block_16 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_16
+# noinspection PyArgumentList
 proof_test_cases_block_17 = [
     ProofTestCase(
         zhongwen="衰仔，快点起床上学",
@@ -1961,6 +1980,7 @@ proof_test_cases_block_17 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_17
+# noinspection PyArgumentList
 proof_test_cases_block_18 = [
     ProofTestCase(
         zhongwen="开点药给他吃就没事了",
@@ -2012,6 +2032,7 @@ proof_test_cases_block_18 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_18
+# noinspection PyArgumentList
 proof_test_cases_block_19 = [
     ProofTestCase(
         zhongwen="没事吧？快点先把药水喝掉！",
@@ -2076,6 +2097,7 @@ proof_test_cases_block_19 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_19
+# noinspection PyArgumentList
 proof_test_cases_block_20 = [
     ProofTestCase(
         zhongwen="好呀，马尔代夫！",
@@ -2115,6 +2137,7 @@ proof_test_cases_block_20 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_20
+# noinspection PyArgumentList
 proof_test_cases_block_21 = [
     ProofTestCase(
         zhongwen="妈妈你看，我病好了！",
@@ -2157,6 +2180,7 @@ proof_test_cases_block_21 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_21
+# noinspection PyArgumentList
 proof_test_cases_block_22 = [
     ProofTestCase(
         zhongwen="喝光了就叻仔了！",
@@ -2337,6 +2361,7 @@ proof_test_cases_block_22 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_22
+# noinspection PyArgumentList
 proof_test_cases_block_23 = [
     ProofTestCase(
         zhongwen="麦唛，我是麦兜呀",
@@ -2441,6 +2466,7 @@ proof_test_cases_block_23 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_23
+# noinspection PyArgumentList
 proof_test_cases_block_24 = [
     ProofTestCase(
         zhongwen="妈妈，我得把出世纸带著吗？",
@@ -2473,6 +2499,7 @@ proof_test_cases_block_24 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_24
+# noinspection PyArgumentList
 proof_test_cases_block_25 = [
     ProofTestCase(
         zhongwen="找到了！",
@@ -2490,6 +2517,7 @@ proof_test_cases_block_25 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_25
+# noinspection PyArgumentList
 proof_test_cases_block_26 = [
     ProofTestCase(
         zhongwen="早机去，晚机返",
@@ -2544,6 +2572,7 @@ proof_test_cases_block_26 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_26
+# noinspection PyArgumentList
 proof_test_cases_block_27 = [
     ProofTestCase(
         zhongwen="妈妈晚安！",
@@ -2555,6 +2584,7 @@ proof_test_cases_block_27 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_27
+# noinspection PyArgumentList
 proof_test_cases_block_28 = [
     ProofTestCase(
         zhongwen="最新消息",
@@ -2626,6 +2656,7 @@ proof_test_cases_block_28 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_28
+# noinspection PyArgumentList
 proof_test_cases_block_29 = [
     ProofTestCase(
         zhongwen="妈妈好像又有计了",
@@ -2691,6 +2722,7 @@ proof_test_cases_block_29 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_29
+# noinspection PyArgumentList
 proof_test_cases_block_30 = [
     ProofTestCase(
         zhongwen="但无论多不容易，我都要试一试",
@@ -2718,6 +2750,7 @@ proof_test_cases_block_30 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_30
+# noinspection PyArgumentList
 proof_test_cases_block_31 = [
     ProofTestCase(
         zhongwen="当我站在奥运会颁奖台上",
@@ -2738,6 +2771,7 @@ proof_test_cases_block_31 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_31
+# noinspection PyArgumentList
 proof_test_cases_block_32 = [
     ProofTestCase(
         zhongwen="长洲，我终于来到长洲了！",
@@ -2746,6 +2780,7 @@ proof_test_cases_block_32 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_32
+# noinspection PyArgumentList
 proof_test_cases_block_33 = [
     ProofTestCase(
         zhongwen="长洲，我得亲吻这片圣洁的土地！",
@@ -2757,6 +2792,7 @@ proof_test_cases_block_33 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_33
+# noinspection PyArgumentList
 proof_test_cases_block_34 = [
     ProofTestCase(
         zhongwen="小朋友，这儿是南丫岛呀！",
@@ -2775,6 +2811,7 @@ proof_test_cases_block_34 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_34
+# noinspection PyArgumentList
 proof_test_cases_block_35 = [
     ProofTestCase(
         zhongwen="想不到我黎根避进南丫岛也给你发现",
@@ -2852,6 +2889,7 @@ proof_test_cases_block_35 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_35
+# noinspection PyArgumentList
 proof_test_cases_block_36 = [
     ProofTestCase(
         zhongwen="小朋友，你看！",
@@ -2860,6 +2898,7 @@ proof_test_cases_block_36 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_36
+# noinspection PyArgumentList
 proof_test_cases_block_37 = [
     ProofTestCase(
         zhongwen="这个⋯",
@@ -2934,6 +2973,7 @@ proof_test_cases_block_37 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_37
+# noinspection PyArgumentList
 proof_test_cases_block_38 = [
     ProofTestCase(
         zhongwen="我⋯我一定要练成这脚瓜！",
@@ -2951,6 +2991,7 @@ proof_test_cases_block_38 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_38
+# noinspection PyArgumentList
 proof_test_cases_block_39 = [
     ProofTestCase(
         zhongwen="我可以去小个便吗？",
@@ -2959,6 +3000,7 @@ proof_test_cases_block_39 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_39
+# noinspection PyArgumentList
 proof_test_cases_block_40 = [
     ProofTestCase(
         zhongwen="每次唱这首歌，我都会急小便",
@@ -3012,6 +3054,7 @@ proof_test_cases_block_40 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_40
+# noinspection PyArgumentList
 proof_test_cases_block_41 = [
     ProofTestCase(
         zhongwen="黎根听完歌以后，表情有点古怪⋯",
@@ -3077,6 +3120,7 @@ proof_test_cases_block_41 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_41
+# noinspection PyArgumentList
 proof_test_cases_block_42 = [
     ProofTestCase(
         zhongwen="我将今天发生的事讲给妈妈听",
@@ -3169,6 +3213,7 @@ proof_test_cases_block_42 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_42
+# noinspection PyArgumentList
 proof_test_cases_block_43 = [
     ProofTestCase(
         zhongwen="妈妈在长洲找了间酒楼摆拜师宴",
@@ -3374,6 +3419,7 @@ proof_test_cases_block_43 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_43
+# noinspection PyArgumentList
 proof_test_cases_block_44 = [
     ProofTestCase(
         zhongwen="第二项绝技，就是⋯",
@@ -3392,6 +3438,7 @@ proof_test_cases_block_44 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_44
+# noinspection PyArgumentList
 proof_test_cases_block_45 = [
     ProofTestCase(
         zhongwen="抢包山？",
@@ -3523,6 +3570,7 @@ proof_test_cases_block_45 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_45
+# noinspection PyArgumentList
 proof_test_cases_block_46 = [
     ProofTestCase(
         zhongwen="奥运金牌⋯这一世是没有机会的了",
@@ -3644,6 +3692,7 @@ proof_test_cases_block_46 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_46
+# noinspection PyArgumentList
 proof_test_cases_block_47 = [
     ProofTestCase(
         zhongwen="还不去？",
@@ -3702,6 +3751,7 @@ proof_test_cases_block_47 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_47
+# noinspection PyArgumentList
 proof_test_cases_block_48 = [
     ProofTestCase(
         zhongwen="其实今天是我第一次近距离见黎根",
@@ -3731,6 +3781,7 @@ proof_test_cases_block_48 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_48
+# noinspection PyArgumentList
 proof_test_cases_block_49 = [
     ProofTestCase(
         zhongwen="其实鸡尾包呢⋯",
@@ -3748,6 +3799,7 @@ proof_test_cases_block_49 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_49
+# noinspection PyArgumentList
 proof_test_cases_block_50 = [
     ProofTestCase(
         zhongwen="麦兜他学东西⋯还可以",
@@ -3894,6 +3946,7 @@ proof_test_cases_block_50 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_50
+# noinspection PyArgumentList
 proof_test_cases_block_51 = [
     ProofTestCase(
         zhongwen="我个仔⋯",
@@ -3936,6 +3989,7 @@ proof_test_cases_block_51 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_51
+# noinspection PyArgumentList
 proof_test_cases_block_52 = [
     ProofTestCase(
         zhongwen="我找来找去也找不到那部电子英文辞典",
@@ -3956,6 +4010,7 @@ proof_test_cases_block_52 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_52
+# noinspection PyArgumentList
 proof_test_cases_block_53 = [
     ProofTestCase(
         zhongwen="想不到真的让妈妈拿去了。吓得我！",
@@ -4197,6 +4252,7 @@ proof_test_cases_block_53 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_53
+# noinspection PyArgumentList
 proof_test_cases_block_54 = [
     ProofTestCase(
         zhongwen="看完妈妈的信",
@@ -4368,6 +4424,7 @@ proof_test_cases_block_54 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_54
+# noinspection PyArgumentList
 proof_test_cases_block_55 = [
     ProofTestCase(
         zhongwen="喂，我是麦兜",
@@ -4719,6 +4776,7 @@ proof_test_cases_block_55 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_55
+# noinspection PyArgumentList
 proof_test_cases_block_56 = [
     ProofTestCase(
         zhongwen="好靓的晚上啊！",
@@ -4751,6 +4809,7 @@ proof_test_cases_block_56 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_56
+# noinspection PyArgumentList
 proof_test_cases_block_57 = [
     ProofTestCase(
         zhongwen="我从没吃过这么浓味的东西",
@@ -4789,6 +4848,7 @@ proof_test_cases_block_57 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_57
+# noinspection PyArgumentList
 proof_test_cases_block_58 = [
     ProofTestCase(
         zhongwen="第二天我睡得很晏⋯",
@@ -5196,6 +5256,7 @@ proof_test_cases_block_58 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_58
+# noinspection PyArgumentList
 proof_test_cases_block_59 = [
     ProofTestCase(
         zhongwen="特别报告",
@@ -5363,6 +5424,7 @@ proof_test_cases_block_59 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_59
+# noinspection PyArgumentList
 proof_test_cases_block_60 = [
     ProofTestCase(
         zhongwen="最后⋯",
@@ -5443,6 +5505,7 @@ proof_test_cases_block_60 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_60
+# noinspection PyArgumentList
 proof_test_cases_block_61 = [
     ProofTestCase(
         zhongwen="上中学后，我再没有练习抢包手",
@@ -5488,6 +5551,7 @@ proof_test_cases_block_61 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_61
+# noinspection PyArgumentList
 proof_test_cases_block_62 = [
     ProofTestCase(
         zhongwen="有时候我也会跟同学回到长洲烧烤",
@@ -5511,6 +5575,7 @@ proof_test_cases_block_62 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_62
+# noinspection PyArgumentList
 proof_test_cases_block_63 = [
     ProofTestCase(
         zhongwen="因为环保⋯",
@@ -5537,6 +5602,7 @@ proof_test_cases_block_63 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_63
+# noinspection PyArgumentList
 proof_test_cases_block_64 = [
     ProofTestCase(
         zhongwen="长洲有个张保仔洞",
@@ -5735,6 +5801,7 @@ proof_test_cases_block_64 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_64
+# noinspection PyArgumentList
 proof_test_cases_block_65 = [
     ProofTestCase(
         zhongwen="「⋯无力挽！」",
@@ -5746,7 +5813,9 @@ proof_test_cases_block_65 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_65
+# noinspection PyArgumentList
 proof_test_cases_block_66 = []  # proof_test_cases_block_66
+# noinspection PyArgumentList
 proof_test_cases_block_67 = [
     ProofTestCase(
         zhongwen="是的，我就是大个佬麦兜",
@@ -5928,6 +5997,7 @@ proof_test_cases_block_67 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_67
+# noinspection PyArgumentList
 proof_test_cases_block_68 = [
     ProofTestCase(
         zhongwen="不成，还是出个锦囊！",
@@ -6021,6 +6091,7 @@ proof_test_cases_block_68 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_68
+# noinspection PyArgumentList
 proof_test_cases_block_69 = [
     ProofTestCase(
         zhongwen="麻烦你，一客常餐",
@@ -6103,6 +6174,7 @@ proof_test_cases_block_69 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_69
+# noinspection PyArgumentList
 proof_test_cases_block_70 = [
     ProofTestCase(
         zhongwen="对不起，常餐卖光了",
@@ -6284,6 +6356,7 @@ proof_test_cases_block_70 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_70
+# noinspection PyArgumentList
 proof_test_cases_block_71 = [
     ProofTestCase(
         zhongwen="对不起，没快餐了",
@@ -6355,6 +6428,7 @@ proof_test_cases_block_71 = [
         verified=True,
     ),
 ]  # proof_test_cases_block_71
+# noinspection PyArgumentList
 proof_test_cases_block_72 = [
     ProofTestCase(
         zhongwen="对不起，午餐卖光了",

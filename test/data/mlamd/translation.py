@@ -321,7 +321,7 @@ translate_test_case_block_21 = TranslateTestCase.get_test_case_cls(
     yuewen_6="我饮下一格，又一格，又一格⋯",
     zhongwen_7="就给我喝光了！",
     yuewen_7="吓，咪我饮晒㖞！",
-    yuewen_1="妈妈你睇！",
+    yuewen_1="妈妈，你睇！",
     verified=True,
 )  # translate_test_case_block_21
 # noinspection PyArgumentList
