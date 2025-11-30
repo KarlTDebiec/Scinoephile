@@ -4267,8 +4267,9 @@ proof_test_cases_block_54 = [
     ProofTestCase(
         zhongwen="师傅说当年师祖耍出这套",
         yuewen="师傅话当年师祖使出呢套",
-        note="Corrected '使出' to '要出' as '要出' matches the meaning of '要出' "
-        "in the 中文, while '使出' is likely a mishearing.",
+        yuewen_proofread="师傅话当年师祖要出呢套",
+        note="Corrected '使出' to '要出' as '要出' (to want to show) matches the "
+        "meaning in the 中文, while '使出' is a likely mishearing.",
         difficulty=1,
         verified=True,
     ),
@@ -4899,6 +4900,7 @@ proof_test_cases_block_58 = [
     ProofTestCase(
         zhongwen="我大著胆跟妈妈说：不如去饮茶吖",
         yuewen="我嘅记心肝同妈妈讲：不如饮茶",
+        yuewen_proofread="我大着胆同妈妈讲：不如饮茶",
         note="Corrected '我嘅记心肝' to '我大着胆' as '记心肝' is a mishearing of "
         "'大着胆', which matches the meaning of '我大着胆' in the 中文.",
         difficulty=3,
