@@ -27,7 +27,7 @@ class ReviewAnswer(Answer, ABC):
         for zw_idx in range(size):
             answer_fields[f"yuewen_revised_{zw_idx + 1}"] = (
                 str,
-                Field(..., description=f"Revised 粤文 of subtitle {zw_idx + 1}"),
+                Field("", description=f"Revised 粤文 of subtitle {zw_idx + 1}"),
             )
             answer_fields[f"note_{zw_idx + 1}"] = (
                 str,
@@ -38,7 +38,5 @@ class ReviewAnswer(Answer, ABC):
                 ),
             )
         return create_model(
-            f"{cls.__name__}_{size}",
-            __base__=ReviewAnswer,
-            **answer_fields,
+            f"{cls.__name__}_{size}", __base__=ReviewAnswer, **answer_fields
         )

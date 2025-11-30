@@ -5,92 +5,12 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.distribution import DistributeQuery
 from scinoephile.audio.cantonese.merging import MergeQuery
 from scinoephile.audio.cantonese.proofing import ProofQuery
 from scinoephile.audio.cantonese.review.abcs import ReviewQuery
 from scinoephile.audio.cantonese.shifting import ShiftQuery
 from scinoephile.audio.cantonese.translation.abcs import TranslateQuery
 from scinoephile.core import ScinoephileError
-
-
-def get_distribute_query(
-    alignment: Alignment, sg_1_idx: int, sg_2_idx: int, yw_idx: int
-) -> DistributeQuery:
-    """Get distribute query for an alignment at provided indexes.
-
-    Arguments:
-        alignment: Nascent Cantonese alignment
-        sg_1_idx: Index of sync group 1
-        sg_2_idx: Index of sync group 2
-        yw_idx: Index of 粤文 sub to distribute
-    Returns:
-        Query
-    """
-    # Get sync groups
-    if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
-        raise ScinoephileError(
-            f"Invalid sync group index {sg_1_idx} "
-            f"for alignment with {len(alignment.sync_groups)} sync groups."
-        )
-    if sg_2_idx < 0 or sg_2_idx >= len(alignment.sync_groups):
-        raise ScinoephileError(
-            f"Invalid sync group index {sg_2_idx} "
-            f"for alignment with {len(alignment.sync_groups)} sync groups."
-        )
-    if sg_1_idx + 1 != sg_2_idx:
-        raise ScinoephileError(
-            f"Sync groups {sg_1_idx} and {sg_2_idx} are not consecutive."
-        )
-    sg_1 = alignment.sync_groups[sg_1_idx]
-    sg_2 = alignment.sync_groups[sg_2_idx]
-
-    # Get 中文 1
-    sg_1_zw_idxs = sg_1[0]
-    if len(sg_1_zw_idxs) != 1:
-        raise ScinoephileError(
-            f"Sync group {sg_1_idx} has {len(sg_1_zw_idxs)} 中文 subs, expected 1."
-        )
-    sg_1_zw_idx = sg_1_zw_idxs[0]
-    zw_1 = alignment.zhongwen[sg_1_zw_idx].text
-
-    # Get 中文 2
-    sg_2_zw_idxs = sg_2[0]
-    if len(sg_2_zw_idxs) != 1:
-        raise ScinoephileError(
-            f"Sync group {sg_2_idx} has {len(sg_2_zw_idxs)} 中文 subs, expected 1."
-        )
-    sg_2_zw_idx = sg_2_zw_idxs[0]
-    if sg_1_zw_idx + 1 != sg_2_zw_idx:
-        raise ScinoephileError(
-            f"中文 indexes {sg_1_zw_idx} and {sg_2_zw_idx} are not consecutive."
-        )
-    zw_2 = alignment.zhongwen[sg_2_zw_idx].text
-
-    # Get 粤文 1
-    sg_1_yw_idxs = sg_1[1]
-    yw_1_start = "".join([alignment.yuewen[i].text for i in sg_1_yw_idxs])
-
-    # Get 粤文 2
-    sg_2_yw_idxs = sg_2[1]
-    yw_2_end = "".join([alignment.yuewen[i].text for i in sg_2_yw_idxs])
-
-    # Get 粤文 to distribute
-    if yw_idx not in alignment.yuewen_to_distribute:
-        raise ScinoephileError(
-            f"Invalid 粤文 index {yw_idx} "
-            f"not in yuewen_to_review: {alignment.yuewen_to_distribute}"
-        )
-    yw_to_distribute = alignment.yuewen[yw_idx].text
-
-    # Return merge query
-    return DistributeQuery(
-        zhongwen_1=zw_1,
-        yuewen_1_start=yw_1_start,
-        zhongwen_2=zw_2,
-        yuewen_2_end=yw_2_end,
-        yuewen_to_distribute=yw_to_distribute,
-    )
 
 
 def get_shift_query(alignment: Alignment, sg_1_idx: int) -> ShiftQuery | None:
@@ -316,7 +236,6 @@ def get_translate_query(
 
 
 __all__ = [
-    "get_distribute_query",
     "get_shift_query",
     "get_merge_query",
     "get_proof_query",

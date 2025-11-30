@@ -4,10 +4,22 @@
 
 from __future__ import annotations
 
+import asyncio
+from logging import info
 from pathlib import Path
 
+from data.mlamd import (
+    mlamd_merge_test_cases,
+    mlamd_proof_test_cases,
+    mlamd_review_test_cases,
+    mlamd_shift_test_cases,
+    mlamd_translate_test_cases,
+)
+
+from scinoephile.audio import AudioSeries
+from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import Series
+from scinoephile.core import Series, get_series_with_subs_merged
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
     EnglishProofreader,
@@ -51,10 +63,11 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
+    "简体粤文 (Transcription)"
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -140,6 +153,42 @@ if "English (OCR)" in actions:
     eng_fuse_proofread_clean_flatten.save(
         output_dir / "eng_fuse_proofread_clean_flatten.srt"
     )
+
+if "简体粤文 (Transcription)" in actions:
+    zhongwen = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+    if (
+        zhongwen.events[539].text == "不知道为什么"
+        and zhongwen.events[540].text == "「珊你个头」却特别刺耳"
+    ):
+        info(
+            "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
+            "structure is reversed in the 粤文."
+        )
+        zhongwen = get_series_with_subs_merged(zhongwen, 539)
+
+    # 粤文
+    yuewen = AudioSeries.load(output_dir / "yue-Hans_audio")
+
+    # Utilities
+    reviewer = CantoneseTranscriptionReviewer(
+        test_case_directory_path=test_data_root / "mlamd",
+        shift_test_cases=mlamd_shift_test_cases,
+        merge_test_cases=mlamd_merge_test_cases,
+        proof_test_cases=mlamd_proof_test_cases,
+        translate_test_cases=mlamd_translate_test_cases,
+        review_test_cases=mlamd_review_test_cases,
+    )
+
+    # Process all blocks
+    yuewen_series = asyncio.run(reviewer.process_all_blocks(yuewen, zhongwen))
+
+    # Update output file
+    if len(zhongwen.blocks) == len(yuewen.blocks):
+        outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+        if outfile_path.exists():
+            outfile_path.unlink()
+        yuewen_series.save(outfile_path)
+        info(f"Saved 粤文 subtitles to {outfile_path}")
 
 if "Bilingual 简体中文 and English" in actions:
     zho_hans_fuse_proofread_clean_flatten = Series.load(

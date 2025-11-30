@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.testing import SyncTestCase, test_data_root
+from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
 from test.data.mnt.core.english.proofreading import (

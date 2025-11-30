@@ -6,9 +6,13 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
 
+# noinspection PyArgumentList
 translate_test_case_block_0 = None  # translate_test_case_block_0
+# noinspection PyArgumentList
 translate_test_case_block_1 = None  # translate_test_case_block_1
+# noinspection PyArgumentList
 translate_test_case_block_2 = None  # translate_test_case_block_2
+# noinspection PyArgumentList
 translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     23,
     (0, 1, 2, 3, 12, 13, 14, 15, 16),
@@ -34,7 +38,7 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     zhongwen_12="我其实不大明白他的说话",
     yuewen_12="我其实唔系好知佢噏乜",
     zhongwen_13="蛋挞！　　蛋挞！",
-    zhongwen_14="荔芋火鸭礼！　　荔芋火鸭礼！",
+    zhongwen_14="荔芋火鸭札！　　荔芋火鸭札！",
     zhongwen_15="忘记校训九十七⋯　　忘记校训九十七⋯",
     zhongwen_16="也不能忘记校训九十八！",
     zhongwen_17="也不能忘记校训九十八！",
@@ -50,17 +54,18 @@ translate_test_case_block_3 = TranslateTestCase.get_test_case_cls(
     yuewen_22="交！",
     zhongwen_23="太好了！大家去上堂吧",
     yuewen_23="哎，好在！噉大家可以返去上堂喇",
-    yuewen_1="〝我只耳仔畀人烙到好痛⋯〞",
-    yuewen_2="〝我日日都要望住个窗！〞",
-    yuewen_3="〝我哋喺度学习，我哋一齐成长⋯〞",
-    yuewen_4="〝我哋就系春天嘅花！〞",
-    yuewen_13="蛋挞！　蛋挞！",
-    yuewen_14="荔芋火鸭礼！　荔芋火鸭礼！",
-    yuewen_15="唔好忘记校训九十七⋯　唔好忘记校训九十七⋯",
+    yuewen_1="〝鹅满是快烙滴好耳痛⋯〞",
+    yuewen_2="〝鹅闷天天一戏个窗！〞",
+    yuewen_3="〝鹅们在壳习，鹅闷载升胀⋯〞",
+    yuewen_4="〝鹅闷是春天滴化！〞",
+    yuewen_13="蛋挞！　　蛋挞！",
+    yuewen_14="荔芋火鸭扎！　　荔芋火鸭扎！",
+    yuewen_15="唔好忘记校训九十七⋯　　唔好忘记校训九十七⋯",
     yuewen_16="都唔可以忘记校训九十八！",
     yuewen_17="都唔可以忘记校训九十八！",
     verified=True,
 )  # translate_test_case_block_3
+# noinspection PyArgumentList
 translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     55,
     (19, 20, 30, 34),
@@ -139,16 +144,16 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_38="你哋唔好以为我心散啊",
     zhongwen_39="其实我正在思考一个学术问题：",
     yuewen_39="其实我系喺度思考紧一啲学术性嘅问题：",
-    zhongwen_40="橙，为什么会是「疴﹣烂﹣煮」呢？",
-    yuewen_40="点解橙叫「疴﹣烂﹣煮」呢？",
+    zhongwen_40="橙，为什么会是「疴－烂－煮」呢？",
+    yuewen_40="点解橙叫「疴－烂－煮」呢？",
     zhongwen_41="妈妈说吃橙可通大便",
     yuewen_41="妈妈话食橙会通大便",
-    zhongwen_42="「疴」这个我明白，可是「烂﹣煮」呢？",
-    yuewen_42="「疴」呢个我明白，但系「烂﹣煮」呢？",
-    zhongwen_43="还有这个「芭﹣娜﹣娜」香蕉",
-    yuewen_43="仲有呢个「芭﹣娜﹣娜」香蕉啊",
-    zhongwen_44="为什么雨伞又会是「暗﹣芭﹣娜﹣娜」呢？",
-    yuewen_44="点解雨伞会叫做「暗﹣芭﹣娜﹣娜」呢？",
+    zhongwen_42="「疴」这个我明白，可是「烂－煮」呢？",
+    yuewen_42="「疴」呢个我明白，但系「烂－煮」呢？",
+    zhongwen_43="还有这个「芭－娜－哪」香蕉",
+    yuewen_43="仲有呢个「芭－娜－哪」香蕉啊",
+    zhongwen_44="为什么雨伞又会是「暗－芭－娜－哪」呢？",
+    yuewen_44="点解雨伞会叫做「暗－芭－娜－哪」呢？",
     zhongwen_45="我「暗」的「暗」掉一条蕉",
     yuewen_45="嗱，我「暗」啦，噉我「暗」嗰条蕉",
     zhongwen_46="至多是疴烂煮，怎么会下起雨来呢？",
@@ -177,13 +182,21 @@ translate_test_case_block_4 = TranslateTestCase.get_test_case_cls(
     yuewen_35="麦唛呀，即系呢⋯",
     verified=True,
 )  # translate_test_case_block_4
+# noinspection PyArgumentList
 translate_test_case_block_5 = None  # translate_test_case_block_5
+# noinspection PyArgumentList
 translate_test_case_block_6 = None  # translate_test_case_block_6
+# noinspection PyArgumentList
 translate_test_case_block_7 = None  # translate_test_case_block_7
+# noinspection PyArgumentList
 translate_test_case_block_8 = None  # translate_test_case_block_8
+# noinspection PyArgumentList
 translate_test_case_block_9 = None  # translate_test_case_block_9
+# noinspection PyArgumentList
 translate_test_case_block_10 = None  # translate_test_case_block_10
+# noinspection PyArgumentList
 translate_test_case_block_11 = None  # translate_test_case_block_11
+# noinspection PyArgumentList
 translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     20,
     (2, 3, 9, 10),
@@ -230,9 +243,13 @@ translate_test_case_block_12 = TranslateTestCase.get_test_case_cls(
     yuewen_11="纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
     verified=True,
 )  # translate_test_case_block_12
+# noinspection PyArgumentList
 translate_test_case_block_13 = None  # translate_test_case_block_13
+# noinspection PyArgumentList
 translate_test_case_block_14 = None  # translate_test_case_block_14
+# noinspection PyArgumentList
 translate_test_case_block_15 = None  # translate_test_case_block_15
+# noinspection PyArgumentList
 translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     19,
     (0, 1),
@@ -243,8 +260,8 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     yuewen_3="你最喜爱嘅地方喺边度呀？",
     zhongwen_4="我最喜爱的地方是日本",
     yuewen_4="我最喜爱嘅地方呢，就系日本喇",
-    zhongwen_5="那儿有Disneyland和Hello Kitty Land",
-    yuewen_5="嗰度有Disneyland同埋Hello Kitty Land",
+    zhongwen_5="那儿有 Disneyland 和 Hello Kitty Land",
+    yuewen_5="嗰度有 Disney 同埋 Hello Kitty",
     zhongwen_6="我这个发夹也是在那儿买的",
     yuewen_6="我而家戴紧个发夹都系嗰边买嘅",
     zhongwen_7="我最喜爱的地方是加拿大",
@@ -275,14 +292,18 @@ translate_test_case_block_16 = TranslateTestCase.get_test_case_cls(
     yuewen_19="座落于印度洋嘅世外桃源",
     yuewen_1="校长早晨！",
     yuewen_2="校长再见！",
-    difficulty=2,
     prompt=True,
     verified=True,
 )  # translate_test_case_block_16
+# noinspection PyArgumentList
 translate_test_case_block_17 = None  # translate_test_case_block_17
+# noinspection PyArgumentList
 translate_test_case_block_18 = None  # translate_test_case_block_18
+# noinspection PyArgumentList
 translate_test_case_block_19 = None  # translate_test_case_block_19
+# noinspection PyArgumentList
 translate_test_case_block_20 = None  # translate_test_case_block_20
+# noinspection PyArgumentList
 translate_test_case_block_21 = TranslateTestCase.get_test_case_cls(
     7,
     (0,),
@@ -300,12 +321,16 @@ translate_test_case_block_21 = TranslateTestCase.get_test_case_cls(
     yuewen_6="我饮下一格，又一格，又一格⋯",
     zhongwen_7="就给我喝光了！",
     yuewen_7="吓，咪我饮晒㖞！",
-    yuewen_1="妈妈你睇！",
+    yuewen_1="妈妈，你睇！",
     verified=True,
 )  # translate_test_case_block_21
+# noinspection PyArgumentList
 translate_test_case_block_22 = None  # translate_test_case_block_22
+# noinspection PyArgumentList
 translate_test_case_block_23 = None  # translate_test_case_block_23
+# noinspection PyArgumentList
 translate_test_case_block_24 = None  # translate_test_case_block_24
+# noinspection PyArgumentList
 translate_test_case_block_25 = TranslateTestCase.get_test_case_cls(
     4,
     (1, 2, 3),
@@ -320,11 +345,17 @@ translate_test_case_block_25 = TranslateTestCase.get_test_case_cls(
     yuewen_4="掉咗就去唔到㗎喇",
     verified=True,
 )  # translate_test_case_block_25
+# noinspection PyArgumentList
 translate_test_case_block_26 = None  # translate_test_case_block_26
+# noinspection PyArgumentList
 translate_test_case_block_27 = None  # translate_test_case_block_27
+# noinspection PyArgumentList
 translate_test_case_block_28 = None  # translate_test_case_block_28
+# noinspection PyArgumentList
 translate_test_case_block_29 = None  # translate_test_case_block_29
+# noinspection PyArgumentList
 translate_test_case_block_30 = None  # translate_test_case_block_30
+# noinspection PyArgumentList
 translate_test_case_block_31 = TranslateTestCase.get_test_case_cls(
     5,
     (0, 1, 2, 4),
@@ -341,14 +372,23 @@ translate_test_case_block_31 = TranslateTestCase.get_test_case_cls(
     yuewen_5="香港运动员唔系垃圾！",
     verified=True,
 )  # translate_test_case_block_31
+# noinspection PyArgumentList
 translate_test_case_block_32 = None  # translate_test_case_block_32
+# noinspection PyArgumentList
 translate_test_case_block_33 = None  # translate_test_case_block_33
+# noinspection PyArgumentList
 translate_test_case_block_34 = None  # translate_test_case_block_34
+# noinspection PyArgumentList
 translate_test_case_block_35 = None  # translate_test_case_block_35
+# noinspection PyArgumentList
 translate_test_case_block_36 = None  # translate_test_case_block_36
+# noinspection PyArgumentList
 translate_test_case_block_37 = None  # translate_test_case_block_37
+# noinspection PyArgumentList
 translate_test_case_block_38 = None  # translate_test_case_block_38
+# noinspection PyArgumentList
 translate_test_case_block_39 = None  # translate_test_case_block_39
+# noinspection PyArgumentList
 translate_test_case_block_40 = TranslateTestCase.get_test_case_cls(
     26,
     (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25),
@@ -407,10 +447,15 @@ translate_test_case_block_40 = TranslateTestCase.get_test_case_cls(
     yuewen_26="「大包，整多两笼唔怕滞」",
     verified=True,
 )  # translate_test_case_block_40
+# noinspection PyArgumentList
 translate_test_case_block_41 = None  # translate_test_case_block_41
+# noinspection PyArgumentList
 translate_test_case_block_42 = None  # translate_test_case_block_42
+# noinspection PyArgumentList
 translate_test_case_block_43 = None  # translate_test_case_block_43
+# noinspection PyArgumentList
 translate_test_case_block_44 = None  # translate_test_case_block_44
+# noinspection PyArgumentList
 translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     19,
     (17,),
@@ -455,15 +500,25 @@ translate_test_case_block_45 = TranslateTestCase.get_test_case_cls(
     yuewen_18="「抢包山」从此被禁！",
     verified=True,
 )  # translate_test_case_block_45
+# noinspection PyArgumentList
 translate_test_case_block_46 = None  # translate_test_case_block_46
+# noinspection PyArgumentList
 translate_test_case_block_47 = None  # translate_test_case_block_47
+# noinspection PyArgumentList
 translate_test_case_block_48 = None  # translate_test_case_block_48
+# noinspection PyArgumentList
 translate_test_case_block_49 = None  # translate_test_case_block_49
+# noinspection PyArgumentList
 translate_test_case_block_50 = None  # translate_test_case_block_50
+# noinspection PyArgumentList
 translate_test_case_block_51 = None  # translate_test_case_block_51
+# noinspection PyArgumentList
 translate_test_case_block_52 = None  # translate_test_case_block_52
+# noinspection PyArgumentList
 translate_test_case_block_53 = None  # translate_test_case_block_53
+# noinspection PyArgumentList
 translate_test_case_block_54 = None  # translate_test_case_block_54
+# noinspection PyArgumentList
 translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     50,
     (43,),
@@ -526,7 +581,7 @@ translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     yuewen_28="妈妈话火鸡太大",
     zhongwen_29="我们一家两口，吃不下",
     yuewen_29="我哋一家两口，点食都食唔晒",
-    zhongwen_30="有年圣诞节妈妈买了半只烤鸭庆祝",
+    zhongwen_30="有年圣诞节妈妈买了半只烧鸭庆祝",
     yuewen_30="有一年圣诞节妈妈买咗半边烧鸭庆祝",
     zhongwen_31="当时的我，十分十分失望",
     yuewen_31="当时我，真系十分十分之失望",
@@ -546,10 +601,10 @@ translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     yuewen_38="我谂系我生命里面最开心嘅一刻",
     zhongwen_39="火鸡终于解冻了",
     yuewen_39="火鸡终于解冻啦",
-    zhongwen_40="我学着妈妈，把双手涂满盐⋯",
-    yuewen_40="我同妈妈，噉双手查满盐⋯",
+    zhongwen_40="我学著妈妈，把双手涂满盐⋯",
+    yuewen_40="我同妈妈，噉双手搽满盐⋯",
     zhongwen_41="在火鸡丰厚的鸡胸上擦呀，擦",
-    yuewen_41="喺火鸡丰厚嘅鸡胸度，起势噉擦呀擦",
+    yuewen_41="喺火鸡丰厚嘅鸡胸度，起细噉擦擦",
     zhongwen_42="联火鸡时⋯",
     yuewen_42="联火鸡时⋯",
     zhongwen_43="妈妈不留神漏出了火鸡内的洋葱粒",
@@ -570,14 +625,23 @@ translate_test_case_block_55 = TranslateTestCase.get_test_case_cls(
     yuewen_44="红萝卜粒",
     verified=True,
 )  # translate_test_case_block_55
+# noinspection PyArgumentList
 translate_test_case_block_56 = None  # translate_test_case_block_56
+# noinspection PyArgumentList
 translate_test_case_block_57 = None  # translate_test_case_block_57
+# noinspection PyArgumentList
 translate_test_case_block_58 = None  # translate_test_case_block_58
+# noinspection PyArgumentList
 translate_test_case_block_59 = None  # translate_test_case_block_59
+# noinspection PyArgumentList
 translate_test_case_block_60 = None  # translate_test_case_block_60
+# noinspection PyArgumentList
 translate_test_case_block_61 = None  # translate_test_case_block_61
+# noinspection PyArgumentList
 translate_test_case_block_62 = None  # translate_test_case_block_62
+# noinspection PyArgumentList
 translate_test_case_block_63 = None  # translate_test_case_block_63
+# noinspection PyArgumentList
 translate_test_case_block_64 = TranslateTestCase.get_test_case_cls(
     34,
     (10, 11, 12, 13, 14, 15, 16),
@@ -590,7 +654,7 @@ translate_test_case_block_64 = TranslateTestCase.get_test_case_cls(
     yuewen_3="因为我练过抢包手，身手比较灵活⋯",
     zhongwen_4="同学们叫我爬进去看看，说不定会发达",
     yuewen_4="班同学叫我爬去睇下，话唔定会发达",
-    zhongwen_5="于是我就向着这个又黑又窄的洞⋯",
+    zhongwen_5="于是我就向著这个又黑又窄的洞⋯",
     yuewen_5="于是我就向住呢一个又黑又窄嘅洞⋯",
     zhongwen_6="一直爬",
     yuewen_6="系噉爬爬",
@@ -605,13 +669,13 @@ translate_test_case_block_64 = TranslateTestCase.get_test_case_cls(
     zhongwen_11="「寻晚，食了六个餐包」",
     zhongwen_12="「可惜我依然系觉得仍未十分饱」",
     zhongwen_13="「寻晚，食了磅半方包」",
-    zhongwen_14="「可叹是我依然觉得，不够顶肚」",
+    zhongwen_14="「可叹是我依然觉饿，不够顶肚」",
     zhongwen_15="「年少，练了六套脚法。」",
     zhongwen_16="「可惜我依然未觉够用。」",
     zhongwen_17="「年晚，又培育了珊珊！可惜⋯」",
     zhongwen_18="揸住个包，我忽然明白⋯",
     yuewen_18="揸住个包，我忽然明白⋯",
-    zhongwen_19="原来有些事情， 没有就是没有",
+    zhongwen_19="原来有些事情，没有就是没有",
     yuewen_19="原来有啲嘢，冇就真系冇",
     zhongwen_20="唔得，就是唔得",
     yuewen_20="唔得，就真系唔得",
@@ -652,7 +716,9 @@ translate_test_case_block_64 = TranslateTestCase.get_test_case_cls(
     yuewen_17="「年晚，又培育了珊珊！可惜⋯」",
     verified=True,
 )  # translate_test_case_block_64
+# noinspection PyArgumentList
 translate_test_case_block_65 = None  # translate_test_case_block_65
+# noinspection PyArgumentList
 translate_test_case_block_66 = TranslateTestCase.get_test_case_cls(
     1,
     (0,),
@@ -661,11 +727,17 @@ translate_test_case_block_66 = TranslateTestCase.get_test_case_cls(
     yuewen_1="橙",
     verified=True,
 )  # translate_test_case_block_66
+# noinspection PyArgumentList
 translate_test_case_block_67 = None  # translate_test_case_block_67
+# noinspection PyArgumentList
 translate_test_case_block_68 = None  # translate_test_case_block_68
+# noinspection PyArgumentList
 translate_test_case_block_69 = None  # translate_test_case_block_69
+# noinspection PyArgumentList
 translate_test_case_block_70 = None  # translate_test_case_block_70
+# noinspection PyArgumentList
 translate_test_case_block_71 = None  # translate_test_case_block_71
+# noinspection PyArgumentList
 translate_test_case_block_72 = None  # translate_test_case_block_72
 
 mlamd_translate_test_cases: list[TranslateTestCase] = [

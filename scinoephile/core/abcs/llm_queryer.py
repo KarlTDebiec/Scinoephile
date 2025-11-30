@@ -30,7 +30,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
     def __init__(
         self,
-        model: str = "gpt-4.1",
+        model: str = "gpt-5.1",
         prompt_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
         provider: LLMProvider | None = None,

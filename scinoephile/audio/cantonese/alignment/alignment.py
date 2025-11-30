@@ -1,10 +1,9 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Runnable for getting sync groups between source and transcribed series."""
+"""Nascent alignment between 中文 and 粤文 subtitles."""
 
 from __future__ import annotations
 
-from copy import deepcopy
 from pprint import pformat
 
 import numpy as np
@@ -22,12 +21,7 @@ from scinoephile.core.synchronization import (
 
 
 class Alignment:
-    """Nascent alignment between 中文 and 粤文 subtitles.
-
-    Notes:
-        * There is no apply_merge here; logic is in CantoneseAligner.
-        * apply_split and apply_shift may also belong elsewhere.
-    """
+    """Nascent alignment between 中文 and 粤文 subtitles."""
 
     def __init__(self, zhongwen: AudioSeries, yuewen: AudioSeries):
         """Initialize.
@@ -80,19 +74,12 @@ class Alignment:
             return self._sync_groups_override
 
         # Each sync group must be one 中文 and zero or more 粤文.
-        nascent_sync_groups = []
-        for zw_idx in range(len(self.zhongwen)):
-            nascent_sync_groups.append(([zw_idx], []))
+        nascent_sync_groups = [([i], []) for i, _ in enumerate(self.zhongwen)]
 
         # For each 粤文, find the corresponding 中文 and add it to the sync group.
-        scaled_overlap = deepcopy(self.scaled_overlap)
         for yw_idx in range(len(self.yuewen)):
-            rank = np.argsort(scaled_overlap[:, yw_idx])[::-1]
-            zw_idxs = np.where(scaled_overlap[:, yw_idx] > 0.33)[0]
-
-            if len(zw_idxs) == 1:
-                sg_idx = zw_idx = zw_idxs[0]
-                nascent_sync_groups[sg_idx][1].append(yw_idx)
+            sg_idx = np.argmax(self.overlap[:, yw_idx])
+            nascent_sync_groups[sg_idx][1].append(yw_idx)
 
         return nascent_sync_groups
 
