@@ -129,14 +129,6 @@ class Aligner:
             # If there is no change, continue
             if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
                 continue
-            # TODO: Remove this once all test cases are cleaned up
-            if (
-                query.yuewen_1 == answer.yuewen_1_shifted
-                and query.yuewen_2 == answer.yuewen_2_shifted
-            ):
-                answer.yuewen_1_shifted = ""
-                answer.yuewen_2_shifted = ""
-                continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
                 return True
         return False

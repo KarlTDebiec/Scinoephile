@@ -47,10 +47,6 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
             self.yuewen_1 == self.yuewen_1_shifted
             and self.yuewen_2 == self.yuewen_2_shifted
         ):
-            # TODO: Remove this once all saved test cases are updated
-            self.yuewen_1_shifted = ""
-            self.yuewen_2_shifted = ""
-            return self
             raise ValueError(
                 "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's "
                 "yuewen_1 and yuewen_2; if no shift is needed, yuewen_1_shifted and "

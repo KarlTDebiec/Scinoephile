@@ -180,16 +180,15 @@ if "简体粤文 (Transcription)" in actions:
     )
 
     # Process all blocks
-    # yuewen_series = await reviewer.process_all_blocks(yuewen, zhongwen)
     yuewen_series = asyncio.run(reviewer.process_all_blocks(yuewen, zhongwen))
 
     # Update output file
-    # if len(zhongwen.blocks) == len(yuewen.blocks):
-    #     outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
-    #     if outfile_path.exists():
-    #         outfile_path.unlink()
-    #     yuewen_series.save(outfile_path)
-    #     info(f"Saved 粤文 subtitles to {outfile_path}")
+    if len(zhongwen.blocks) == len(yuewen.blocks):
+        outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+        if outfile_path.exists():
+            outfile_path.unlink()
+        yuewen_series.save(outfile_path)
+        info(f"Saved 粤文 subtitles to {outfile_path}")
 
 if "Bilingual 简体中文 and English" in actions:
     zho_hans_fuse_proofread_clean_flatten = Series.load(
