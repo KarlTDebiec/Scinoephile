@@ -45,7 +45,13 @@ class EnglishProofreadingLLMQueryer[
         return test_case_log_str
 
     def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
-        """Example answer."""
+        """Example answer.
+
+        Arguments:
+            answer_cls: Answer class
+        Returns:
+            Example answer
+        """
         answer_values = {}
         for key in answer_cls.model_fields.keys():
             kind, idx = key.rsplit("_", 1)

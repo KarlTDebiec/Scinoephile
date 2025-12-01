@@ -71,6 +71,17 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
             "representation."
         )
 
+    @abstractmethod
+    def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
+        """Example answer.
+
+        Arguments:
+            answer_cls: Answer class
+        Returns:
+            Example answer
+        """
+        raise NotImplementedError()
+
     def get_system_prompt(self, answer_cls: type[TAnswer]) -> str:
         """Get system prompt for the given answer class.
 
@@ -81,9 +92,3 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         """
         answer_example = self.get_answer_example(answer_cls)
         return self._get_system_prompt(answer_example)
-
-    @staticmethod
-    @abstractmethod
-    def get_answer_example(answer_cls: type[TAnswer]) -> TAnswer:
-        """Example answer."""
-        raise NotImplementedError()
