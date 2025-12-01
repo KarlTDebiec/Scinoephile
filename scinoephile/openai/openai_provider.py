@@ -122,6 +122,8 @@ class OpenAIProvider(LLMProvider):
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
+            # TODO: Parse out rate limit and backoff properly
+            # Probably subclass Scinoephile Error and store time to wait there
             if exc_code == "rate_limit_exceeded":
                 await asyncio.sleep(1)
             raise ScinoephileError(

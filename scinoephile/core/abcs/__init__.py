@@ -8,14 +8,16 @@ from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.dynamic_llm_queryer import DynamicLLMQueryer
 from scinoephile.core.abcs.fixed_llm_queryer import FixedLLMQueryer
 from scinoephile.core.abcs.llm_provider import LLMProvider
+from scinoephile.core.abcs.llm_text import LLMText
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.abcs.test_case import TestCase
 
 __all__ = [
     "Answer",
     "DynamicLLMQueryer",
-    "LLMProvider",
     "FixedLLMQueryer",
+    "LLMProvider",
+    "LLMText",
     "Query",
     "TestCase",
 ]

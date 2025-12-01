@@ -8,6 +8,7 @@ import asyncio
 import re
 from logging import info, warning
 from pathlib import Path
+from textwrap import dedent
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
@@ -70,11 +71,10 @@ class ZhongwenProofreader:
         """
         # Ensure test case file exists
         if self.test_case_path is not None and not self.test_case_path.exists():
-            self.test_case_path.parent.mkdir(parents=True, exist_ok=True)
-            self.create_test_case_file(self.test_case_path, len(series.blocks))
+            self.create_test_case_file(self.test_case_path)
 
         # Proofread subtitles
-        all_output_series: list[Series | None] = [None] * len(series.blocks)
+        output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
@@ -97,7 +97,7 @@ class ZhongwenProofreader:
                 f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
                 f"{block.to_series().to_simple_string()}"
             )
-            all_output_series[block_idx] = output_series
+            output_series_to_concatenate[block_idx] = output_series
         if self.test_case_path is not None:
             asyncio.run(
                 update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
@@ -105,7 +105,7 @@ class ZhongwenProofreader:
 
         # Concatenate and return
         output_series = get_concatenated_series(
-            [s for s in all_output_series if s is not None]
+            [s for s in output_series_to_concatenate if s is not None]
         )
         info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series
@@ -120,14 +120,8 @@ class ZhongwenProofreader:
         try:
             # noinspection PyUnusedImports
             from test.data.kob import kob_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
             from test.data.mlamd import mlamd_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
             from test.data.mnt import mnt_zhongwen_proofreading_test_cases
-
-            # noinspection PyUnusedImports
             from test.data.t import t_zhongwen_proofreading_test_cases
 
             return (
@@ -144,26 +138,27 @@ class ZhongwenProofreader:
             return []
 
     @staticmethod
-    def create_test_case_file(test_case_path: Path, n_blocks: int):
+    def create_test_case_file(test_case_path: Path):
         """Create a test case file.
 
         Arguments:
             test_case_path: path to file to create
-            n_blocks: number of blocks for which to create test cases
         """
-        contents = '''"""中文 proofreading test cases."""
+        contents = dedent('''
+            """中文 proofreading test cases."""
 
-from __future__ import annotations
+            from __future__ import annotations
 
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+            from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
 
-# noinspection PyArgumentList
-test_cases = []  # test_cases
-"""中文 proofreading test cases."""
+            # noinspection PyArgumentList
+            test_cases = []  # test_cases
+            """中文 proofreading test cases."""
 
-__all__ = [
-    "test_cases",
-]'''
+            __all__ = [
+                "test_cases",
+            ]''').strip()
+        test_case_path.parent.mkdir(parents=True, exist_ok=True)
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
 
