@@ -1,19 +1,17 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text strings to be used for LLM correspondece for 中文 proofreading."""
+"""Text strings to be used for LLM correspondence for 中文 proofreading."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.core.zhongwen.abcs import ZhongwenLLMText
 
 
-@dataclass()
 class ZhongwenProofreadingLLMText(ZhongwenLLMText):
-    """Text strings to be used for LLM correspondece for 中文 proofreading."""
+    """Text strings to be used for LLM correspondence for 中文 proofreading."""
 
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         你负责校对由 OCR 识别生成的中文字幕。

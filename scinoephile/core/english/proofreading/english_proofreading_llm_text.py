@@ -1,19 +1,17 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text strings to be used for LLM correspondece for English proofreading."""
+"""Text strings to be used for LLM correspondence for English proofreading."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import ClassVar
 
 from scinoephile.core.english.abcs import EnglishLLMText
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 
-@dataclass()
 class EnglishProofreadingLLMText(EnglishLLMText):
-    """Text strings to be used for LLM correspondece for English proofreading."""
+    """Text strings to be used for LLM correspondence for English proofreading."""
 
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for proofreading English subtitles generated using OCR.

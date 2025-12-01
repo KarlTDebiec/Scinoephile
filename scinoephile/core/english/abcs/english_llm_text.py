@@ -33,7 +33,7 @@ class EnglishLLMText(LLMText, ABC):
         "Your previous response was not valid JSON or did "
         "not match the expected schema. Error details:"
     )
-    """Text preceding answer validatation errors."""
+    """Text preceding answer validation errors."""
 
     answer_invalid_post: ClassVar[str] = (
         "Please try again and respond only with a valid "

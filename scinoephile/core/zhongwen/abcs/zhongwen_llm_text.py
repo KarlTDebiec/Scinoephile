@@ -28,7 +28,7 @@ class ZhongwenLLMText(LLMText, ABC):
     answer_invalid_pre: ClassVar[str] = (
         "你之前的回复不是有效的 JSON，或未符合预期的模式要求。错误详情："
     )
-    """Text preceding answer validatation errors."""
+    """Text preceding answer validation errors."""
 
     answer_invalid_post: ClassVar[str] = (
         "请重新尝试，并仅返回一个符合该模式要求的有效 JSON 对象。"

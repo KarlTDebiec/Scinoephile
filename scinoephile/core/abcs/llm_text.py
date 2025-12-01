@@ -27,7 +27,7 @@ class LLMText(ABC):
     """Text preceding each few-shot expected answer."""
 
     answer_invalid_pre: ClassVar[str]
-    """Text preceding answer validatation errors."""
+    """Text preceding answer validation errors."""
 
     answer_invalid_post: ClassVar[str]
     """Text following answer validation errors."""
