@@ -35,6 +35,7 @@ class ZhongwenProofreadingLLMQueryer[
     """Queries LLM to proofread 中文 subtitles."""
 
     text: ClassVar[type[ZhongwenProofreadingLLMText]] = ZhongwenProofreadingLLMText
+    """Text strings to be used for corresponding with LLM."""
 
     @property
     def encountered_test_cases_source_str(self) -> str:

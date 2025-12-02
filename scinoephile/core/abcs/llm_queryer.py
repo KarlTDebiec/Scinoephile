@@ -30,6 +30,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """Abstract base class for LLM queryers."""
 
     text: ClassVar[type[LLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     def __init__(
         self,
