@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.audio.cantonese.proofing import ProofingLLMText
 from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
+from scinoephile.audio.cantonese.proofing.proofing_llm_text import ProofingLLMText
 from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
 from scinoephile.audio.cantonese.proofing.proofing_test_case import ProofingTestCase
 from scinoephile.core.abcs import FixedLLMQueryer
