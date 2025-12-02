@@ -47,9 +47,7 @@ class ZhongwenProofreadingLLMQueryer[
         test_case_log_str += "]"
         return test_case_log_str
 
-    def get_answer_example(
-        self, answer_cls: type[TAnswer]
-    ) -> ZhongwenProofreadingAnswer:
+    def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
         """Example answer.
 
         Arguments:

@@ -25,3 +25,4 @@ class ZhongwenFusionLLMQueryer(
     """Queries LLM to fuse OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
     text: ClassVar[type[ZhongwenFusionLLMText]] = ZhongwenFusionLLMText
+    """Text strings to be used for corresponding with LLM."""
