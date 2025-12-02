@@ -14,7 +14,7 @@ class ShiftingLLMText(EnglishLLMText):
     """Text for LLM correspondence for 粤文 transcription shifting."""
 
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for matching 粤文 (yuewen) subtitles of Cantonese speech to 
+        You are responsible for matching 粤文 (yuewen) subtitles of Cantonese speech to
         中文 (zhongwen) subtitles of the same Cantonese speech.
         You will be given a 中文 subtitle (zhongwen_1) and its nascent 粤文 subtitle
         (yuewen_1), and a second 中文 subtitle (zhongwen_2) with its nascent 粤文
