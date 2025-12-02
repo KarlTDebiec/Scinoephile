@@ -20,17 +20,25 @@ from scinoephile.audio.cantonese.alignment.models import (
     get_translate_models,
 )
 from scinoephile.audio.cantonese.alignment.queries import (
-    get_merge_query,
-    get_proof_query,
+    get_merging_query,
+    get_proofing_query,
     get_review_query,
-    get_shift_query,
-    get_translate_query,
+    get_shifting_query,
+    get_translation_query,
 )
-from scinoephile.audio.cantonese.merging import MergeAnswer, Merger, MergeTestCase
-from scinoephile.audio.cantonese.proofing import Proofer
-from scinoephile.audio.cantonese.review import Reviewer
-from scinoephile.audio.cantonese.shifting import ShiftAnswer, Shifter, ShiftQuery
-from scinoephile.audio.cantonese.translation import Translator
+from scinoephile.audio.cantonese.merging import (
+    MergingAnswer,
+    MergingLLMQueryer,
+    MergingTestCase,
+)
+from scinoephile.audio.cantonese.proofing import ProofingLLMQueryer
+from scinoephile.audio.cantonese.review import ReviewLLMQueryer
+from scinoephile.audio.cantonese.shifting import (
+    ShiftingAnswer,
+    ShiftingLLMQueryer,
+    ShiftingQuery,
+)
+from scinoephile.audio.cantonese.translation import TranslationLLMQueryer
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
@@ -41,30 +49,30 @@ class Aligner:
 
     def __init__(
         self,
-        shifter: Shifter,
-        merger: Merger,
-        proofer: Proofer,
-        translator: Translator,
-        reviewer: Reviewer,
+        shifting_llm_queryer: ShiftingLLMQueryer,
+        merging_llm_queryer: MergingLLMQueryer,
+        proofing_llm_queryer: ProofingLLMQueryer,
+        translation_llm_queryer: TranslationLLMQueryer,
+        review_llm_queryer: ReviewLLMQueryer,
     ):
         """Initialize.
 
         Arguments:
-            shifter: Cantonese shifter
-            merger: Cantonese merger
-            proofer: Cantonese proofer
-            translator: Cantonese translator
-            reviewer: Cantonese reviewer
+            shifting_llm_queryer: ShiftingLLMQueryer
+            merging_llm_queryer: MergingLLMQueryer
+            proofing_llm_queryer: ProofingLLMQueryer
+            translation_llm_queryer: TranslationLLMQueryer
+            review_llm_queryer: ReviewLLMQueryer
         """
-        self.merger = merger
+        self.merging_llm_queryer = merging_llm_queryer
         """Merges transcribed 粤文 text based on corresponding 中文."""
-        self.proofer = proofer
+        self.proofing_llm_queryer = proofing_llm_queryer
         """Proofreads 粤文 text based on the corresponding 中文."""
-        self.shifter = shifter
+        self.shifting_llm_queryer = shifting_llm_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
-        self.translator = translator
+        self.translation_llm_queryer = translation_llm_queryer
         """Translates 粤文 text based on corresponding 中文."""
-        self.reviewer = reviewer
+        self.review_llm_queryer = review_llm_queryer
         """Reviews 粤文 text based on corresponding 中文 subtitles."""
 
     async def align(
@@ -119,12 +127,12 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            query = get_shift_query(alignment, sg_1_idx)
+            query = get_shifting_query(alignment, sg_1_idx)
             if query is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error; not yet encountered
-            answer = await self.shifter.call(query)
+            answer = await self.shifting_llm_queryer.call(query)
 
             # If there is no change, continue
             if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
@@ -137,8 +145,8 @@ class Aligner:
         self,
         alignment: Alignment,
         sg_1_idx: int,
-        query: ShiftQuery,
-        answer: ShiftAnswer,
+        query: ShiftingQuery,
+        answer: ShiftingAnswer,
     ) -> bool:
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
@@ -285,17 +293,17 @@ class Aligner:
                 continue
 
             # Query for 粤文 merge
-            query = get_merge_query(alignment, sg_idx)
+            query = get_merging_query(alignment, sg_idx)
             if query is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                answer = await self.merger.call(query)
+                answer = await self.merging_llm_queryer.call(query)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
-                answer = MergeAnswer(yuewen_merged="".join(query.yuewen_to_merge))
-                test_case = MergeTestCase.from_query_and_answer(query, answer)
+                answer = MergingAnswer(yuewen_merged="".join(query.yuewen_to_merge))
+                test_case = MergingTestCase.from_query_and_answer(query, answer)
                 error(
                     f"Error merging sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
@@ -321,11 +329,11 @@ class Aligner:
             alignment: Nascent alignment
         """
         for sg_idx in range(len(alignment.sync_groups)):
-            query = get_proof_query(alignment, sg_idx)
+            query = get_proofing_query(alignment, sg_idx)
             if query is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            answer = await self.proofer.call(query)
+            answer = await self.proofing_llm_queryer.call(query)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -380,8 +388,10 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = models
 
         # Query for 粤文 translation
-        query = get_translate_query(alignment, query_cls)
-        answer = await self.translator.call(query, answer_cls, test_case_cls)
+        query = get_translation_query(alignment, query_cls)
+        answer = await self.translation_llm_queryer.call(
+            query, answer_cls, test_case_cls
+        )
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -426,7 +436,7 @@ class Aligner:
 
         # Query for 粤文 review
         query = get_review_query(alignment, query_cls)
-        answer = await self.reviewer.call(query, answer_cls, test_case_cls)
+        answer = await self.review_llm_queryer.call(query, answer_cls, test_case_cls)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)

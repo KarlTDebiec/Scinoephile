@@ -9,21 +9,23 @@ from typing import ClassVar
 
 from pydantic import create_model
 
-from scinoephile.audio.cantonese.translation.abcs.translate_answer import (
-    TranslateAnswer,
+from scinoephile.audio.cantonese.translation.translation_answer import (
+    TranslationAnswer,
 )
-from scinoephile.audio.cantonese.translation.abcs.translate_query import TranslateQuery
+from scinoephile.audio.cantonese.translation.translation_query import (
+    TranslationQuery,
+)
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 
-class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
+class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
     TestCase[TQuery, TAnswer], ABC
 ):
     """Abstract base class for 粤文 translation test cases."""
 
-    query_cls: ClassVar[type[TranslateQuery]]
-    answer_cls: ClassVar[type[TranslateAnswer]]
+    query_cls: ClassVar[type[TranslationQuery]]
+    answer_cls: ClassVar[type[TranslationAnswer]]
 
     @property
     def missing(self) -> tuple[int, ...]:
@@ -50,7 +52,7 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         """Python source-like string representation."""
         lines = (
             [
-                f"{TranslateTestCase.__name__}.get_test_case_cls(",
+                f"{TranslationTestCase.__name__}.get_test_case_cls(",
                 f"    {self.size}, {self.missing},",
                 ")(",
             ]
@@ -66,7 +68,7 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         cls,
         size: int,
         missing: tuple[int, ...],
-    ) -> type[TranslateTestCase[TranslateQuery, TranslateAnswer]]:
+    ) -> type[TranslationTestCase[TranslationQuery, TranslationAnswer]]:
         """Get test case class 粤文 translation.
 
         Arguments:
@@ -77,12 +79,16 @@ class TranslateTestCase[TQuery: TranslateQuery, TAnswer: TranslateAnswer](
         Raises:
             ScinoephileError: If missing indices are out of range
         """
-        query_cls = TranslateQuery.get_query_cls(size, missing)
-        answer_cls = TranslateAnswer.get_answer_cls(size, missing)
+        query_cls = TranslationQuery.get_query_cls(size, missing)
+        answer_cls = TranslationAnswer.get_answer_cls(size, missing)
         name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
         model = create_model(
             name[:64],
-            __base__=(query_cls, answer_cls, TranslateTestCase[query_cls, answer_cls]),
+            __base__=(
+                query_cls,
+                answer_cls,
+                TranslationTestCase[query_cls, answer_cls],
+            ),
             __module__=cls.__module__,
         )
         model.query_cls = query_cls

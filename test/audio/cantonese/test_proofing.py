@@ -6,27 +6,27 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.proofing import Proofer, ProofTestCase
+from scinoephile.audio.cantonese.proofing import ProofingLLMQueryer, ProofingTestCase
 from scinoephile.testing import skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_proof_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def proofer_few_shot() -> Proofer:
+def proofing_llm_queryer_few_shot() -> ProofingLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return Proofer(
+    return ProofingLLMQueryer(
         prompt_test_cases=[tc for tc in mlamd_proof_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def proofer_zero_shot() -> Proofer:
+def proofing_llm_queryer_zero_shot() -> ProofingLLMQueryer:
     """LLMQueryer with no examples."""
-    return Proofer(cache_dir_path=test_data_root / "cache")
+    return ProofingLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
-async def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
+async def _test_proofing(queryer: ProofingLLMQueryer, test_case: ProofingTestCase):
     """Test.
 
     Arguments:
@@ -51,7 +51,7 @@ async def _test_proofing(queryer: Proofer, test_case: ProofTestCase):
     "test_case", [tc for tc in mlamd_proof_test_cases if tc.verified]
 )
 async def test_proofing_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: ProofTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ProofingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -60,7 +60,7 @@ async def test_proofing_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    proofer: Proofer = request.getfixturevalue(fixture_name)
+    proofer: ProofingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_proofing(proofer, test_case)
 
 
@@ -76,7 +76,7 @@ async def test_proofing_mlamd(
     [tc for tc in mlamd_proof_test_cases if tc.difficulty >= 2 and tc.verified],
 )
 async def test_proofing_mlamd_difficult(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: ProofTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ProofingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -85,5 +85,5 @@ async def test_proofing_mlamd_difficult(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    proofer: Proofer = request.getfixturevalue(fixture_name)
+    proofer: ProofingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_proofing(proofer, test_case)

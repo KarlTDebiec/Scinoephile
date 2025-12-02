@@ -27,28 +27,28 @@ async def update_all_test_cases(
     tasks = [
         update_test_cases(
             test_root / "shifting.py",
-            f"shift_test_cases_block_{block_idx}",
-            aligner.shifter,
+            f"shifting_test_cases_block_{block_idx}",
+            aligner.shifting_llm_queryer,
         ),
         update_test_cases(
             test_root / "merging.py",
-            f"merge_test_cases_block_{block_idx}",
-            aligner.merger,
+            f"merging_test_cases_block_{block_idx}",
+            aligner.merging_llm_queryer,
         ),
         update_test_cases(
             test_root / "proofing.py",
-            f"proof_test_cases_block_{block_idx}",
-            aligner.proofer,
+            f"proofing_test_cases_block_{block_idx}",
+            aligner.proofing_llm_queryer,
         ),
         update_dynamic_test_cases(
             test_root / "translation.py",
-            f"translate_test_case_block_{block_idx}",
-            aligner.translator,
+            f"translation_test_case_block_{block_idx}",
+            aligner.translation_llm_queryer,
         ),
         update_dynamic_test_cases(
             test_root / "review.py",
             f"review_test_case_block_{block_idx}",
-            aligner.reviewer,
+            aligner.review_llm_queryer,
         ),
     ]
 

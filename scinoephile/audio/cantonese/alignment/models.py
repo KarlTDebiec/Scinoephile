@@ -5,15 +5,11 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.review.abcs import (
-    ReviewAnswer,
-    ReviewQuery,
-    ReviewTestCase,
-)
-from scinoephile.audio.cantonese.translation.abcs import (
-    TranslateAnswer,
-    TranslateQuery,
-    TranslateTestCase,
+from scinoephile.audio.cantonese.review import ReviewAnswer, ReviewQuery, ReviewTestCase
+from scinoephile.audio.cantonese.translation import (
+    TranslationAnswer,
+    TranslationQuery,
+    TranslationTestCase,
 )
 from scinoephile.core import ScinoephileError
 
@@ -65,9 +61,9 @@ def get_translate_models(
     alignment: Alignment,
 ) -> (
     tuple[
-        type[TranslateQuery],
-        type[TranslateAnswer],
-        type[TranslateTestCase[TranslateQuery, TranslateAnswer]],
+        type[TranslationQuery],
+        type[TranslationAnswer],
+        type[TranslationTestCase[TranslationQuery, TranslationAnswer]],
     ]
     | None
 ):
@@ -76,8 +72,8 @@ def get_translate_models(
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        TranslateQuery, TranslateAnswer, and TranslateTestCase types for translation,
-        or None if no translation is needed
+        TranslationQuery, TranslationAnswer, and TranslationTestCase types for
+        translation, or None if no translation is needed
     Raises:
         ScinoephileError: If sync groups are malformed
     """
@@ -109,7 +105,7 @@ def get_translate_models(
     # Get classes
     if missing:
         missing = tuple(missing)
-        test_case_cls = TranslateTestCase.get_test_case_cls(size, missing)
+        test_case_cls = TranslationTestCase.get_test_case_cls(size, missing)
         query_cls = test_case_cls.query_cls
         answer_cls = test_case_cls.answer_cls
         return query_cls, answer_cls, test_case_cls

@@ -9,8 +9,8 @@ from typing import ClassVar
 
 from pydantic import create_model, model_validator
 
-from scinoephile.audio.cantonese.review.abcs.review_answer import ReviewAnswer
-from scinoephile.audio.cantonese.review.abcs.review_query import ReviewQuery
+from scinoephile.audio.cantonese.review.review_answer import ReviewAnswer
+from scinoephile.audio.cantonese.review.review_query import ReviewQuery
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 

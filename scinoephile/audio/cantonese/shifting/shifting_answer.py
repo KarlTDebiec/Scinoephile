@@ -9,7 +9,7 @@ from pydantic import Field
 from scinoephile.core.abcs import Answer
 
 
-class ShiftAnswer(Answer):
+class ShiftingAnswer(Answer):
     """Answer for 粤文 shifting."""
 
     yuewen_1_shifted: str = Field("", description="Shifted 粤文 of subtitle 1.")

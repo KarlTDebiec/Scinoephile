@@ -8,17 +8,19 @@ from typing import ClassVar
 
 from pydantic import model_validator
 
-from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
-from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
+from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
+from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
 from scinoephile.core.abcs import TestCase
 
 
-class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
+class ProofingTestCase(
+    ProofingQuery, ProofingAnswer, TestCase[ProofingQuery, ProofingAnswer]
+):
     """Test case for 粤文 proofing; may also be used for few-shot prompt."""
 
-    answer_cls: ClassVar[type[ProofAnswer]] = ProofAnswer
+    answer_cls: ClassVar[type[ProofingAnswer]] = ProofingAnswer
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ProofQuery]] = ProofQuery
+    query_cls: ClassVar[type[ProofingQuery]] = ProofingQuery
     """Query class for this test case."""
 
     @property
@@ -43,7 +45,7 @@ class ProofTestCase(ProofQuery, ProofAnswer, TestCase[ProofQuery, ProofAnswer]):
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ProofTestCase:
+    def validate_test_case(self) -> ProofingTestCase:
         """Ensure query and answer are consistent with one another."""
         if self.yuewen != self.yuewen_proofread and not self.note:
             raise ValueError(
