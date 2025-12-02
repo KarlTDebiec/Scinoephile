@@ -14,7 +14,8 @@ translation_test_case_block_1 = None  # translation_test_case_block_1
 translation_test_case_block_2 = None  # translation_test_case_block_2
 # noinspection PyArgumentList
 translation_test_case_block_3 = TranslationTestCase.get_test_case_cls(
-    23, (0, 1, 2, 3, 12, 13, 14, 15, 16),
+    23,
+    (0, 1, 2, 3, 12, 13, 14, 15, 16),
 )(
     zhongwen_1="〝鹅满是快烙滴好耳痛⋯〞",
     zhongwen_2="〝鹅闷天天一戏个窗！〞",
@@ -66,7 +67,8 @@ translation_test_case_block_3 = TranslationTestCase.get_test_case_cls(
 )  # translation_test_case_block_3
 # noinspection PyArgumentList
 translation_test_case_block_4 = TranslationTestCase.get_test_case_cls(
-    55, (19, 20, 30, 34),
+    55,
+    (19, 20, 30, 34),
 )(
     zhongwen_1="你们可能觉得这间幼稚园很烂",
     yuewen_1="你哋可能觉得呢间幼稚园好烂",
@@ -196,7 +198,8 @@ translation_test_case_block_10 = None  # translation_test_case_block_10
 translation_test_case_block_11 = None  # translation_test_case_block_11
 # noinspection PyArgumentList
 translation_test_case_block_12 = TranslationTestCase.get_test_case_cls(
-    20, (2, 3, 9, 10),
+    20,
+    (2, 3, 9, 10),
 )(
     zhongwen_1="今日为大家介绍一味⋯",
     yuewen_1="今日要同大家介绍一味⋯",
@@ -248,7 +251,8 @@ translation_test_case_block_14 = None  # translation_test_case_block_14
 translation_test_case_block_15 = None  # translation_test_case_block_15
 # noinspection PyArgumentList
 translation_test_case_block_16 = TranslationTestCase.get_test_case_cls(
-    19, (0, 1),
+    19,
+    (0, 1),
 )(
     zhongwen_1="校长早晨！",
     zhongwen_2="校长再见！",
@@ -301,7 +305,8 @@ translation_test_case_block_19 = None  # translation_test_case_block_19
 translation_test_case_block_20 = None  # translation_test_case_block_20
 # noinspection PyArgumentList
 translation_test_case_block_21 = TranslationTestCase.get_test_case_cls(
-    7, (0,),
+    7,
+    (0,),
 )(
     zhongwen_1="妈妈，你看！",
     zhongwen_2="妈妈你看，我病好了！",
@@ -327,7 +332,8 @@ translation_test_case_block_23 = None  # translation_test_case_block_23
 translation_test_case_block_24 = None  # translation_test_case_block_24
 # noinspection PyArgumentList
 translation_test_case_block_25 = TranslationTestCase.get_test_case_cls(
-    4, (1, 2, 3),
+    4,
+    (1, 2, 3),
 )(
     zhongwen_1="找到了！",
     yuewen_1="揾到喇！",
@@ -351,7 +357,8 @@ translation_test_case_block_29 = None  # translation_test_case_block_29
 translation_test_case_block_30 = None  # translation_test_case_block_30
 # noinspection PyArgumentList
 translation_test_case_block_31 = TranslationTestCase.get_test_case_cls(
-    5, (0, 1, 2, 4),
+    5,
+    (0, 1, 2, 4),
 )(
     zhongwen_1="长洲！长洲！",
     zhongwen_2="你孕育了珊珊！你也会孕育我！",
@@ -383,7 +390,8 @@ translation_test_case_block_38 = None  # translation_test_case_block_38
 translation_test_case_block_39 = None  # translation_test_case_block_39
 # noinspection PyArgumentList
 translation_test_case_block_40 = TranslationTestCase.get_test_case_cls(
-    26, (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25),
+    26,
+    (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25),
 )(
     zhongwen_1="每次唱这首歌，我都会急小便",
     yuewen_1="唔知点解每一次唱呢首歌都会急小便",
@@ -449,7 +457,8 @@ translation_test_case_block_43 = None  # translation_test_case_block_43
 translation_test_case_block_44 = None  # translation_test_case_block_44
 # noinspection PyArgumentList
 translation_test_case_block_45 = TranslationTestCase.get_test_case_cls(
-    19, (17,),
+    19,
+    (17,),
 )(
     zhongwen_1="抢包山？",
     yuewen_1="抢包山？",

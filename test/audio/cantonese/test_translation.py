@@ -6,8 +6,10 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.translation import TranslationLLMQueryer
-from scinoephile.audio.cantonese.translation.abcs import TranslationTestCase
+from scinoephile.audio.cantonese.translation import (
+    TranslationLLMQueryer,
+    TranslationTestCase,
+)
 from scinoephile.testing import flaky, skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
 

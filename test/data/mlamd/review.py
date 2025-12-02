@@ -979,8 +979,8 @@ review_test_case_block_35 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_10="醒梦你！",
     yuewen_revised_6="拜你个头！",
     note_6="Removed 嘅 at the end to better match natural spoken "
-           "Cantonese and the tone of the exclamation, as 嘅 is "
-           "unnecessary and not idiomatic in this context.",
+    "Cantonese and the tone of the exclamation, as 嘅 is "
+    "unnecessary and not idiomatic in this context.",
     verified=True,
 )  # review_test_case_block_35
 # noinspection PyArgumentList
