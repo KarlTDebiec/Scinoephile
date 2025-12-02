@@ -10,13 +10,14 @@ from pathlib import Path
 from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
 from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.audio.cantonese.alignment.testing import update_all_test_cases
-from scinoephile.audio.cantonese.merging import Merger, MergeTestCase
-from scinoephile.audio.cantonese.proofing import Proofer, ProofTestCase
-from scinoephile.audio.cantonese.review import Reviewer
-from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
-from scinoephile.audio.cantonese.shifting import Shifter, ShiftTestCase
-from scinoephile.audio.cantonese.translation import Translator
-from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
+from scinoephile.audio.cantonese.merging import MergingLLMQueryer, MergingTestCase
+from scinoephile.audio.cantonese.proofing import ProofingLLMQueryer, ProofingTestCase
+from scinoephile.audio.cantonese.review import ReviewLLMQueryer, ReviewTestCase
+from scinoephile.audio.cantonese.shifting import ShiftingLLMQueryer, ShiftingTestCase
+from scinoephile.audio.cantonese.translation import (
+    TranslationLLMQueryer,
+    TranslationTestCase,
+)
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_split_on_whitespace,
@@ -33,20 +34,20 @@ class CantoneseTranscriptionReviewer:
     def __init__(
         self,
         test_case_directory_path: Path,
-        shift_test_cases: list[ShiftTestCase],
-        merge_test_cases: list[MergeTestCase],
-        proof_test_cases: list[ProofTestCase],
-        translate_test_cases: list[TranslateTestCase],
+        shifting_test_cases: list[ShiftingTestCase],
+        merging_test_cases: list[MergingTestCase],
+        proofing_test_cases: list[ProofingTestCase],
+        translation_test_cases: list[TranslationTestCase],
         review_test_cases: list[ReviewTestCase],
     ):
         """Initialize.
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
-            shift_test_cases: shift test cases
-            merge_test_cases: merge test cases
-            proof_test_cases: proof test cases
-            translate_test_cases: translate test cases
+            shifting_test_cases: shift test cases
+            merging_test_cases: merging test cases
+            proofing_test_cases: proof test cases
+            translation_test_cases: translate test cases
             review_test_cases: review test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
@@ -54,37 +55,37 @@ class CantoneseTranscriptionReviewer:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
         )
-        self.shifter = Shifter(
-            prompt_test_cases=[tc for tc in shift_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in shift_test_cases if tc.verified],
+        self.shifting_llm_queryer = ShiftingLLMQueryer(
+            prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.merger = Merger(
-            prompt_test_cases=[tc for tc in merge_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in merge_test_cases if tc.verified],
+        self.merging_llm_queryer = MergingLLMQueryer(
+            prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.proofer = Proofer(
-            prompt_test_cases=[tc for tc in proof_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in proof_test_cases if tc.verified],
+        self.proofing_llm_queryer = ProofingLLMQueryer(
+            prompt_test_cases=[tc for tc in proofing_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.translator = Translator(
-            prompt_test_cases=[tc for tc in translate_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in translate_test_cases if tc.verified],
+        self.translation_llm_queryer = TranslationLLMQueryer(
+            prompt_test_cases=[tc for tc in translation_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.reviewer = Reviewer(
+        self.review_llm_queryer = ReviewLLMQueryer(
             prompt_test_cases=[tc for tc in review_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in review_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
         self.aligner = Aligner(
-            shifter=self.shifter,
-            merger=self.merger,
-            proofer=self.proofer,
-            translator=self.translator,
-            reviewer=self.reviewer,
+            shifting_llm_queryer=self.shifting_llm_queryer,
+            merging_llm_queryer=self.merging_llm_queryer,
+            proofing_llm_queryer=self.proofing_llm_queryer,
+            translation_llm_queryer=self.translation_llm_queryer,
+            review_llm_queryer=self.review_llm_queryer,
         )
 
     async def process_all_blocks(

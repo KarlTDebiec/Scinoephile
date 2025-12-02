@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
-from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
-from scinoephile.audio.cantonese.proofing.proof_test_case import ProofTestCase
-from scinoephile.audio.cantonese.proofing.proofer import Proofer
+from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
+from scinoephile.audio.cantonese.proofing.proofing_llm_queryer import ProofingLLMQueryer
+from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
+from scinoephile.audio.cantonese.proofing.proofing_test_case import ProofingTestCase
 
 __all__ = [
-    "ProofAnswer",
-    "ProofQuery",
-    "ProofTestCase",
-    "Proofer",
+    "ProofingAnswer",
+    "ProofingQuery",
+    "ProofingTestCase",
+    "ProofingLLMQueryer",
 ]

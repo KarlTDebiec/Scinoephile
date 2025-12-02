@@ -1,10 +1,10 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Test data for MLAMD."""
+"""MLAMD 粤文 review test cases."""
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
+from scinoephile.audio.cantonese.review import ReviewTestCase
 
 # noinspection PyArgumentList
 review_test_case_block_0 = ReviewTestCase.get_test_case_cls(33)(
@@ -979,8 +979,8 @@ review_test_case_block_35 = ReviewTestCase.get_test_case_cls(10)(
     yuewen_10="醒梦你！",
     yuewen_revised_6="拜你个头！",
     note_6="Removed 嘅 at the end to better match natural spoken "
-    "Cantonese and the tone of the exclamation, as 嘅 is "
-    "unnecessary and not idiomatic in this context.",
+           "Cantonese and the tone of the exclamation, as 嘅 is "
+           "unnecessary and not idiomatic in this context.",
     verified=True,
 )  # review_test_case_block_35
 # noinspection PyArgumentList

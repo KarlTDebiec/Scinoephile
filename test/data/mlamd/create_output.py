@@ -172,10 +172,10 @@ if "简体粤文 (Transcription)" in actions:
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
         test_case_directory_path=test_data_root / "mlamd",
-        shift_test_cases=mlamd_shift_test_cases,
-        merge_test_cases=mlamd_merge_test_cases,
-        proof_test_cases=mlamd_proof_test_cases,
-        translate_test_cases=mlamd_translate_test_cases,
+        shifting_test_cases=mlamd_shift_test_cases,
+        merging_test_cases=mlamd_merge_test_cases,
+        proofing_test_cases=mlamd_proof_test_cases,
+        translation_test_cases=mlamd_translate_test_cases,
         review_test_cases=mlamd_review_test_cases,
     )
 

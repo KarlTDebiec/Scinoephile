@@ -4,17 +4,17 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review.abcs import (
-    ReviewAnswer,
-    ReviewQuery,
-    ReviewTestCase,
-)
+from scinoephile.audio.cantonese.review.review_answer import ReviewAnswer
+from scinoephile.audio.cantonese.review.review_query import ReviewQuery
+from scinoephile.audio.cantonese.review.review_test_case import ReviewTestCase
 from scinoephile.core.abcs import DynamicLLMQueryer
 
 
-class Reviewer[TQuery: ReviewQuery, TAnswer: ReviewAnswer, TTestCase: ReviewTestCase](
-    DynamicLLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]
-):
+class ReviewLLMQueryer[
+    TQuery: ReviewQuery,
+    TAnswer: ReviewAnswer,
+    TTestCase: ReviewTestCase,
+](DynamicLLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]):
     """Reviews 粤文 text based on corresponding 中文."""
 
     @property

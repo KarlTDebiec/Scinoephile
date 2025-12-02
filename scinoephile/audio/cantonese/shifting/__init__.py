@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
-from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
-from scinoephile.audio.cantonese.shifting.shift_test_case import ShiftTestCase
-from scinoephile.audio.cantonese.shifting.shifter import Shifter
+from scinoephile.audio.cantonese.shifting.shifting_answer import ShiftingAnswer
+from scinoephile.audio.cantonese.shifting.shifting_llm_queryer import ShiftingLLMQueryer
+from scinoephile.audio.cantonese.shifting.shifting_query import ShiftingQuery
+from scinoephile.audio.cantonese.shifting.shifting_test_case import ShiftingTestCase
 
 __all__ = [
-    "ShiftAnswer",
-    "ShiftQuery",
-    "ShiftTestCase",
-    "Shifter",
+    "ShiftingAnswer",
+    "ShiftingLLMQueryer",
+    "ShiftingQuery",
+    "ShiftingTestCase",
 ]

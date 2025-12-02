@@ -8,8 +8,8 @@ from typing import ClassVar
 
 from pydantic import model_validator
 
-from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
-from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
+from scinoephile.audio.cantonese.merging.merging_answer import MergingAnswer
+from scinoephile.audio.cantonese.merging.merging_query import MergingQuery
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
@@ -17,12 +17,14 @@ from scinoephile.core.text import (
 )
 
 
-class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
+class MergingTestCase(
+    MergingQuery, MergingAnswer, TestCase[MergingQuery, MergingAnswer]
+):
     """Test case for 粤文 merging; may also be used for few-shot prompt."""
 
-    answer_cls: ClassVar[type[MergeAnswer]] = MergeAnswer
+    answer_cls: ClassVar[type[MergingAnswer]] = MergingAnswer
     """Answer class for this test case."""
-    query_cls: ClassVar[type[MergeQuery]] = MergeQuery
+    query_cls: ClassVar[type[MergingQuery]] = MergingQuery
     """Query class for this test case."""
 
     @property
@@ -54,7 +56,7 @@ class MergeTestCase(MergeQuery, MergeAnswer, TestCase[MergeQuery, MergeAnswer]):
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> MergeTestCase:
+    def validate_test_case(self) -> MergingTestCase:
         """Ensure query and answer are consistent with one another."""
         expected = "".join(remove_punc_and_whitespace(s) for s in self.yuewen_to_merge)
         received = remove_punc_and_whitespace(self.yuewen_merged)

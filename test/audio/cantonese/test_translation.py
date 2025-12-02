@@ -6,28 +6,30 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.translation import Translator
-from scinoephile.audio.cantonese.translation.abcs import TranslateTestCase
+from scinoephile.audio.cantonese.translation import TranslationLLMQueryer
+from scinoephile.audio.cantonese.translation.abcs import TranslationTestCase
 from scinoephile.testing import flaky, skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_translate_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def translator_few_shot() -> Translator:
+def translation_llm_queryer_few_shot() -> TranslationLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return Translator(
+    return TranslationLLMQueryer(
         prompt_test_cases=[tc for tc in mlamd_translate_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def translator_zero_shot() -> Translator:
+def translation_llm_queryer_zero_shot() -> TranslationLLMQueryer:
     """LLMQueryer with no examples."""
-    return Translator(cache_dir_path=test_data_root / "cache")
+    return TranslationLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
-async def _test_translation(queryer: Translator, test_case: TranslateTestCase):
+async def _test_translation(
+    queryer: TranslationLLMQueryer, test_case: TranslationTestCase
+):
     """Test.
 
     Arguments:
@@ -60,7 +62,7 @@ async def _test_translation(queryer: Translator, test_case: TranslateTestCase):
 @pytest.mark.parametrize("test_case", mlamd_translate_test_cases)
 @pytest.mark.asyncio
 async def test_translation_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslateTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: TranslationTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -69,5 +71,5 @@ async def test_translation_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    translator: Translator = request.getfixturevalue(fixture_name)
+    translator: TranslationLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_translation(translator, test_case)

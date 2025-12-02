@@ -12,13 +12,13 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
 
-class TranslateAnswer(Answer, ABC):
+class TranslationAnswer(Answer, ABC):
     """Abstract base class for 粤文 translation answers."""
 
     @classmethod
     def get_answer_cls(
         cls, size: int, missing: tuple[int, ...]
-    ) -> type[TranslateAnswer]:
+    ) -> type[TranslationAnswer]:
         """Get answer class for 粤文 translation.
 
         Arguments:
@@ -41,4 +41,4 @@ class TranslateAnswer(Answer, ABC):
                     Field(..., description=f"Translated 粤文 of subtitle {zw_idx + 1}"),
                 )
         name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-        return create_model(name[:64], __base__=TranslateAnswer, **answer_fields)
+        return create_model(name[:64], __base__=TranslationAnswer, **answer_fields)

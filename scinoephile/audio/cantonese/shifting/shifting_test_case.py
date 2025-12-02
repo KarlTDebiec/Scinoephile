@@ -8,16 +8,18 @@ from typing import ClassVar
 
 from pydantic import model_validator
 
-from scinoephile.audio.cantonese.shifting.shift_answer import ShiftAnswer
-from scinoephile.audio.cantonese.shifting.shift_query import ShiftQuery
+from scinoephile.audio.cantonese.shifting.shifting_answer import ShiftingAnswer
+from scinoephile.audio.cantonese.shifting.shifting_query import ShiftingQuery
 from scinoephile.core.abcs import TestCase
 
 
-class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
+class ShiftingTestCase(
+    ShiftingQuery, ShiftingAnswer, TestCase[ShiftingQuery, ShiftingAnswer]
+):
     """Test case for 粤文 shifting; may also be used for few-shot prompt."""
 
-    query_cls: ClassVar[type[ShiftQuery]] = ShiftQuery
-    answer_cls: ClassVar[type[ShiftAnswer]] = ShiftAnswer
+    query_cls: ClassVar[type[ShiftingQuery]] = ShiftingQuery
+    answer_cls: ClassVar[type[ShiftingAnswer]] = ShiftingAnswer
 
     @property
     def noop(self) -> bool:
@@ -41,7 +43,7 @@ class ShiftTestCase(ShiftQuery, ShiftAnswer, TestCase[ShiftQuery, ShiftAnswer]):
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ShiftTestCase:
+    def validate_test_case(self) -> ShiftingTestCase:
         """Ensure query and answer are consistent with one another."""
         if (
             self.yuewen_1 == self.yuewen_1_shifted

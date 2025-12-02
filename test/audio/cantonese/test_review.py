@@ -6,28 +6,27 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.review import Reviewer
-from scinoephile.audio.cantonese.review.abcs import ReviewTestCase
+from scinoephile.audio.cantonese.review import ReviewLLMQueryer, ReviewTestCase
 from scinoephile.testing import flaky, skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_review_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def reviewer_few_shot() -> Reviewer:
+def review_llm_queryer_few_shot() -> ReviewLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return Reviewer(
+    return ReviewLLMQueryer(
         prompt_test_cases=[tc for tc in mlamd_review_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def reviewer_zero_shot() -> Reviewer:
+def review_llm_queryer_zero_shot() -> ReviewLLMQueryer:
     """LLMQueryer with no examples."""
-    return Reviewer(cache_dir_path=test_data_root / "cache")
+    return ReviewLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
-async def _test_review(queryer: Reviewer, test_case: ReviewTestCase):
+async def _test_review(queryer: ReviewLLMQueryer, test_case: ReviewTestCase):
     """Test.
 
     Arguments:
@@ -69,5 +68,5 @@ async def test_review_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    reviewer: Reviewer = request.getfixturevalue(fixture_name)
+    reviewer: ReviewLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_review(reviewer, test_case)
