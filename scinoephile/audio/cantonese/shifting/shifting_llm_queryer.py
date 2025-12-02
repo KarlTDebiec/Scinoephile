@@ -4,19 +4,20 @@
 
 from __future__ import annotations
 
+from abc import ABC
 from typing import ClassVar
 
 from scinoephile.audio.cantonese.shifting.shifting_answer import ShiftingAnswer
 from scinoephile.audio.cantonese.shifting.shifting_llm_text import ShiftingLLMText
 from scinoephile.audio.cantonese.shifting.shifting_query import ShiftingQuery
 from scinoephile.audio.cantonese.shifting.shifting_test_case import ShiftingTestCase
-from scinoephile.core.abcs import FixedLLMQueryer
+from scinoephile.core.abcs import LLMQueryer
 
 
 class ShiftingLLMQueryer(
-    FixedLLMQueryer[ShiftingQuery, ShiftingAnswer, ShiftingTestCase]
+    LLMQueryer[ShiftingQuery, ShiftingAnswer, ShiftingTestCase], ABC
 ):
     """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
-    text: ClassVar[type[ShiftingLLMText]] = ShiftingLLMText
+    text: ClassVar[type[ShiftingLLMText]]
     """Text strings to be used for corresponding with LLM."""

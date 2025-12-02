@@ -4,13 +4,15 @@
 
 from __future__ import annotations
 
-from scinoephile.core.abcs import FixedLLMQueryer
+from abc import ABC
+
+from scinoephile.core.abcs import LLMQueryer
 from scinoephile.documentation.translation.translate_answer import TranslateAnswer
 from scinoephile.documentation.translation.translate_query import TranslateQuery
 from scinoephile.documentation.translation.translate_test_case import TranslateTestCase
 
 
-class Translator(FixedLLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase]):
+class Translator(LLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase], ABC):
     """Translates README from English to Chinese."""
 
     @property

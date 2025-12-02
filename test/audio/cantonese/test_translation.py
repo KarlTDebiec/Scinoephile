@@ -38,7 +38,9 @@ async def _test_translation(
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = await queryer.call(test_case.query, test_case.answer_cls, type(test_case))
+    answer = await queryer.call_async(
+        test_case.query, test_case.answer_cls, type(test_case)
+    )
 
     failures = []
     for field_name, expected_value in test_case.answer.model_dump().items():

@@ -4,17 +4,18 @@
 
 from __future__ import annotations
 
+from abc import ABC
 from typing import ClassVar
 
 from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
 from scinoephile.audio.cantonese.proofing.proofing_llm_text import ProofingLLMText
 from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
 from scinoephile.audio.cantonese.proofing.proofing_test_case import ProofingTestCase
-from scinoephile.core.abcs import FixedLLMQueryer
+from scinoephile.core.abcs import LLMQueryer
 
 
 class ProofingLLMQueryer(
-    FixedLLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase]
+    LLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase], ABC
 ):
     """Proofreads 粤文 text based on the corresponding 中文."""
 

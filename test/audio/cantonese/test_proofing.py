@@ -33,7 +33,7 @@ async def _test_proofing(queryer: ProofingLLMQueryer, test_case: ProofingTestCas
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = await queryer.call(test_case.query)
+    answer = await queryer.call_async(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_proofread == test_case.yuewen_proofread, answer.note
         if test_case.yuewen != test_case.yuewen_proofread:

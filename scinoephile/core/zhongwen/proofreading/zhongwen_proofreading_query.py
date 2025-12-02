@@ -6,30 +6,47 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Self
+from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Query
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
+    ZhongwenProofreadingLLMText,
+)
 
 
 class ZhongwenProofreadingQuery(Query, ABC):
     """Abstract base class for 中文 proofreading queries."""
 
+    text: ClassVar[type[ZhongwenProofreadingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
+
     @classmethod
     @cache
-    def get_query_cls(cls, size: int) -> type[Self]:
+    def get_query_cls(
+        cls,
+        size: int,
+        text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
+    ) -> type[Self]:
         """Get query class for 中文 proofreading.
 
         Arguments:
             size: number of subtitles
+            text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenProofreadingQuery type with appropriate fields
+            ZhongwenProofreadingQuery type with appropriate fields and descriptions
         """
-        query_fields = {}
+        fields = {}
         for idx in range(size):
-            query_fields[f"zimu_{idx + 1}"] = (
+            fields[f"zimu_{idx + 1}"] = (
                 str,
-                Field(..., description=f"第 {idx + 1} 条字幕"),
+                Field(..., description=text.zimu_description.format(idx=idx + 1)),
             )
-        return create_model(f"{cls.__name__}_{size}", __base__=cls, **query_fields)
+        return create_model(
+            f"{cls.__name__}_{size}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[ZhongwenProofreadingLLMText]], text),
+            **fields,
+        )

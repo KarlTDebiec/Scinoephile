@@ -33,7 +33,7 @@ async def _test_shifting(queryer: ShiftingLLMQueryer, test_case: ShiftingTestCas
         queryer: LLMQueryer with which to test
         test_case: Query and expected answer
     """
-    answer = await queryer.call(test_case.query)
+    answer = await queryer.call_async(test_case.query)
     if test_case.difficulty < 3:
         assert answer.yuewen_1_shifted == test_case.yuewen_1_shifted
         assert answer.yuewen_2_shifted == test_case.yuewen_2_shifted

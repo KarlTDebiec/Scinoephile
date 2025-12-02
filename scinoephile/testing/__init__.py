@@ -17,21 +17,10 @@ from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_output_path
-from scinoephile.core.abcs import DynamicLLMQueryer, TestCase
-from scinoephile.core.abcs.llm_queryer import LLMQueryer
+from scinoephile.core.abcs import LLMQueryer, TestCase
 from scinoephile.testing.sync_test_case import SyncTestCase
 
 test_data_root = package_root.parent / "test" / "data"
-
-
-async def _replace_variable_in_test_case_file(
-    path: Path, variable: str, pattern: re.Pattern[str], replacement: str
-):
-    contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
-    block = f"{variable} = {replacement}  # {variable}"
-    new_contents = pattern.sub(lambda _m: block, contents)
-    await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
-    info(f"Replaced test cases {variable} in {path.name}.")
 
 
 def flaky(inner: partial | None = None) -> partial:
@@ -48,9 +37,7 @@ def flaky(inner: partial | None = None) -> partial:
     return partial(param, marks=marks)
 
 
-def get_test_cases_from_file_path(
-    test_case_path: Path,
-) -> list[TestCase]:
+def get_test_cases_from_file_path(test_case_path: Path) -> list[TestCase]:
     """Get test cases from file path.
 
     Arguments:
@@ -127,34 +114,40 @@ def skip_if_codex(inner: partial | None = None) -> partial:
     return partial(param, marks=marks)
 
 
-async def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
-    """Update test cases.
+def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
+    """Update test cases synchronously.
 
     Arguments:
-        path: Path to file containing test cases
-        variable: Name of the variable containing test cases
+        path: path to file containing test cases
+        variable: name of the variable containing test cases
         queryer: LLMQueryer instance to query for test cases
     """
     pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
-    replacement = queryer.encountered_test_cases_source_str
-    await _replace_variable_in_test_case_file(path, variable, pattern, replacement)
-    await asyncio.to_thread(queryer.clear_encountered_test_cases)
+    replacement = queryer.get_encountered_test_cases_source_str()
+    contents = path.read_text(encoding="utf-8")
+    block = f"{variable} = {replacement}  # {variable}"
+    new_contents = pattern.sub(lambda _m: block, contents)
+    path.write_text(new_contents, encoding="utf-8")
+    info(f"Replaced test cases {variable} in {path.name}.")
+    queryer.encountered_test_cases = {}
 
 
-async def update_dynamic_test_cases(
-    path: Path, variable: str, queryer: DynamicLLMQueryer
-):
-    """Update dynamic test cases.
+async def update_test_cases_async(path: Path, variable: str, queryer: LLMQueryer):
+    """Update test cases asynchronously.
 
     Arguments:
-        path: Path to file containing test cases
-        variable: Name of the variable containing test case
-        queryer: DynamicLLMQueryer instance to query for test cases
+        path: path to file containing test cases
+        variable: name of the variable containing test cases
+        queryer: LLMQueryer instance to query for test cases
     """
-    pattern = re.compile(rf"{variable}\s*=(.*?)# {variable}", re.DOTALL)
-    replacement = queryer.encountered_test_cases_source_str
-    await _replace_variable_in_test_case_file(path, variable, pattern, replacement)
-    await asyncio.to_thread(queryer.clear_encountered_test_cases)
+    pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
+    replacement = queryer.get_encountered_test_cases_source_str()
+    contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
+    block = f"{variable} = {replacement}  # {variable}"
+    new_contents = pattern.sub(lambda _m: block, contents)
+    await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
+    info(f"Replaced test cases {variable} in {path.name}.")
+    queryer.encountered_test_cases = {}
 
 
 __all__ = [
@@ -165,6 +158,6 @@ __all__ = [
     "skip_if_ci",
     "skip_if_codex",
     "test_data_root",
-    "update_dynamic_test_cases",
     "update_test_cases",
+    "update_test_cases_async",
 ]

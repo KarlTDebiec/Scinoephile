@@ -35,7 +35,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
 
     @property
     def source_str(self) -> str:
-        """Get Python source-like string representation."""
+        """Get Python source string."""
         lines = [f"{ReviewTestCase.__name__}.get_test_case_cls({self.size})("]
         for field in self.query_fields:
             value = getattr(self, field)

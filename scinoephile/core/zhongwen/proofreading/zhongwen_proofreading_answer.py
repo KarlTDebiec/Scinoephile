@@ -6,38 +6,55 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Self
+from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
+    ZhongwenProofreadingLLMText,
+)
 
 
 class ZhongwenProofreadingAnswer(Answer, ABC):
     """Abstract base class for 中文 proofreading answers."""
 
+    text: ClassVar[type[ZhongwenProofreadingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
+
     @classmethod
     @cache
-    def get_answer_cls(cls, size: int) -> type[Self]:
+    def get_answer_cls(
+        cls,
+        size: int,
+        text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
+    ) -> type[Self]:
         """Get answer class for 中文 proofreading.
 
         Arguments:
             size: number of subtitles
+            text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenProofreadingAnswer type with appropriate fields
+            ZhongwenProofreadingAnswer type with appropriate fields and descriptions
         """
-        answer_fields = {}
+        fields = {}
         for idx in range(size):
-            answer_fields[f"xiugai_{idx + 1}"] = (
+            fields[f"xiugai_{idx + 1}"] = (
                 str,
-                Field("", description=f"第 {idx + 1} 条修改后的字幕"),
+                Field("", description=text.beizhu_description.format(idx=idx + 1)),
             )
-            answer_fields[f"beizhu_{idx + 1}"] = (
+            fields[f"beizhu_{idx + 1}"] = (
                 str,
                 Field(
                     "",
-                    description=f"关于第 {idx + 1} 条字幕修改的备注说明",
+                    description=text.beizhu_description.format(idx=idx + 1),
                     max_length=1000,
                 ),
             )
-        return create_model(f"{cls.__name__}_{size}", __base__=cls, **answer_fields)
+        return create_model(
+            f"{cls.__name__}_{size}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[ZhongwenProofreadingLLMText]], text),
+            **fields,
+        )

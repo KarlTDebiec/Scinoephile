@@ -1,25 +1,56 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Answer for English OCR fusion."""
+"""Abstract base class for English OCR fusion answers."""
 
 from __future__ import annotations
 
-from pydantic import Field, model_validator
+from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
+
+from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Answer
+from scinoephile.image.english.fusion.english_fusion_llm_text import (
+    EnglishFusionLLMText,
+)
 
 
-class EnglishFusionAnswer(Answer):
-    """Answer for English OCR fusion."""
+class EnglishFusionAnswer(Answer, ABC):
+    """Abstract base class for English OCR fusion answers."""
 
-    fused: str = Field(..., description="Merged subtitle text")
-    note: str = Field(..., description="Explanation of changes made")
+    text: ClassVar[type[EnglishFusionLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
-    def validate_answer(self) -> EnglishFusionAnswer:
+    def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
         if not self.fused:
-            raise ValueError("Merged subtitle text is required.")
+            raise ValueError(self.text.fused_missing_error)
         if not self.note:
-            raise ValueError("Note is required.")
+            raise ValueError(self.text.note_missing_error)
         return self
+
+    @classmethod
+    @cache
+    def get_answer_cls(
+        cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
+    ) -> type[Self]:
+        """Get concrete class for English OCR fusion answer.
+
+        Arguments:
+            text: LLMText providing descriptions and messages
+        Returns:
+            EnglishFusionAnswer type with appropriate fields and descriptions
+        """
+        fields = {
+            "fused": (str, Field(..., description=text.fused_description)),
+            "note": (str, Field(..., description=text.note_description)),
+        }
+        return create_model(
+            f"{cls.__name__}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[EnglishFusionLLMText]], text),
+            **fields,
+        )

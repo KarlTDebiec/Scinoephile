@@ -34,7 +34,7 @@ async def _test_merging(queryer: MergingLLMQueryer, test_case: MergingTestCase):
         test_case: Query and expected answer
     """
     if test_case.difficulty < 3:
-        answer = await queryer.call(test_case.query)
+        answer = await queryer.call_async(test_case.query)
         assert answer.yuewen_merged == test_case.yuewen_merged
 
 

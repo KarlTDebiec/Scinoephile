@@ -34,13 +34,3 @@ class ReviewLLMText(EnglishLLMText):
         note describing in English the changes made.
         If no revisions are needed return an empty string for the note.""")
     """Base system prompt."""
-
-    answer_example_yuewen_revised_description: ClassVar[str] = (
-        "粤文 subtitle {idx} revised based on query's 中文 subtitle {idx}, or an empty "
-        "string if no revision is necessary."
-    )
-
-    answer_example_note_description: ClassVar[str] = (
-        "Note concerning revisions to 粤文 subtitle {idx}, or an empty string if no "
-        "revision is necessary."
-    )

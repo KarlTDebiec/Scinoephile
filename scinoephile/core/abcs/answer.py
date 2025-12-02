@@ -6,20 +6,19 @@ from __future__ import annotations
 
 import json
 from abc import ABC
+from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.models import make_hashable
+from scinoephile.core.abcs.llm_text import LLMText
 
 
 class Answer(BaseModel, ABC):
     """Abstract base class for LLM answers."""
 
+    text: ClassVar[type[LLMText]]
+    """Text strings to be used for corresponding with LLM."""
+
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
-
-    @property
-    def answer_key(self) -> tuple:
-        """Unique key for the answer, with hashable values."""
-        return tuple(make_hashable(getattr(self, field)) for field in self.model_fields)

@@ -5,25 +5,54 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
 
-from pydantic import Field, model_validator
+from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
+from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_text import (
+    ZhongwenFusionLLMText,
+)
 
 
 class ZhongwenFusionQuery(Query, ABC):
     """Query for 中文 OCR fusion."""
 
-    lens: str = Field(..., description="Google Lens 提取的字幕文本")
-    paddle: str = Field(..., description="PaddleOCR 提取的字幕文本")
+    text: ClassVar[type[ZhongwenFusionLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> ZhongwenFusionQuery:
         """Ensure query is internally valid."""
         if not self.lens:
-            raise ValueError("缺少 Google Lens 的中文字幕文本。")
+            raise ValueError(self.text.lens_missing_error)
         if not self.paddle:
-            raise ValueError("缺少 PaddleOCR 的中文字幕文本。")
+            raise ValueError(self.text.paddle_missing_error)
         if self.lens == self.paddle:
-            raise ValueError("Google Lens 与 PaddleOCR 的字幕文本不能完全相同。")
+            raise ValueError(self.text.lens_paddle_equal_error)
         return self
+
+    @classmethod
+    @cache
+    def get_query_cls(
+        cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
+    ) -> type[Self]:
+        """Get concrete class for 中文 OCR fusion query.
+
+        Arguments:
+            text: LLMText providing descriptions and messages
+        Returns:
+            ZhongwenFusionQuery type with appropriate fields and descriptions
+        """
+        fields = {
+            "lens": (str, Field(..., description=text.lens_description)),
+            "paddle": (str, Field(..., description=text.paddle_description)),
+        }
+        return create_model(
+            f"{cls.__name__}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[ZhongwenFusionLLMText]], text),
+            **fields,
+        )

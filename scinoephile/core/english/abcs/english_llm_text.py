@@ -13,6 +13,7 @@ from scinoephile.core.abcs import LLMText
 class EnglishLLMText(LLMText, ABC):
     """Text strings to be used for corresponding with an LLM in English."""
 
+    # Prompt
     schema_intro: ClassVar[str] = (
         "Your response must be a JSON object with the following structure:"
     )
@@ -29,6 +30,7 @@ class EnglishLLMText(LLMText, ABC):
     few_shot_answer_intro: ClassVar[str] = "Expected answer:"
     """Text preceding each few-shot expected answer."""
 
+    # Answer validation errors
     answer_invalid_pre: ClassVar[str] = (
         "Your previous response was not valid JSON or did "
         "not match the expected schema. Error details:"
@@ -41,6 +43,7 @@ class EnglishLLMText(LLMText, ABC):
     )
     """Text following answer validation errors."""
 
+    # Test case validation errors
     test_case_invalid_pre: ClassVar[str] = (
         "Your previous response was valid JSON compliant with "
         "the answer schema, but not valid for this specific query. Error details:"

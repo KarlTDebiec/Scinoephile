@@ -6,38 +6,55 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Self
+from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
+from scinoephile.core.english.proofreading.english_proofreading_llm_text import (
+    EnglishProofreadingLLMText,
+)
 
 
 class EnglishProofreadingAnswer(Answer, ABC):
     """Abstract base class for English proofreading answers."""
 
+    text: ClassVar[type[EnglishProofreadingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
+
     @classmethod
     @cache
-    def get_answer_cls(cls, size: int) -> type[Self]:
+    def get_answer_cls(
+        cls,
+        size: int,
+        text: type[EnglishProofreadingLLMText] = EnglishProofreadingLLMText,
+    ) -> type[Self]:
         """Get answer class for English proofreading.
 
         Arguments:
             size: number of subtitles
+            text: LLMText providing descriptions and messages
         Returns:
-            EnglishProofreadingAnswer type with appropriate fields
+            EnglishProofreadingAnswer type with appropriate fields and descriptions
         """
-        answer_fields = {}
+        fields = {}
         for idx in range(size):
-            answer_fields[f"revised_{idx + 1}"] = (
+            fields[f"revised_{idx + 1}"] = (
                 str,
-                Field("", description=f"Revised subtitle {idx + 1}"),
+                Field("", description=text.revised_description.format(idx=idx + 1)),
             )
-            answer_fields[f"note_{idx + 1}"] = (
+            fields[f"note_{idx + 1}"] = (
                 str,
                 Field(
                     "",
-                    description=f"Note concerning revision of subtitle {idx + 1}",
+                    description=text.note_description.format(idx=idx + 1),
                     max_length=1000,
                 ),
             )
-        return create_model(f"{cls.__name__}_{size}", __base__=cls, **answer_fields)
+        return create_model(
+            f"{cls.__name__}_{size}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[EnglishProofreadingLLMText]], text),
+            **fields,
+        )

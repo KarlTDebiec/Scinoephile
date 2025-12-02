@@ -10,20 +10,16 @@ from scinoephile.audio.cantonese.review.review_answer import ReviewAnswer
 from scinoephile.audio.cantonese.review.review_llm_text import ReviewLLMText
 from scinoephile.audio.cantonese.review.review_query import ReviewQuery
 from scinoephile.audio.cantonese.review.review_test_case import ReviewTestCase
-from scinoephile.core.abcs import DynamicLLMQueryer
+from scinoephile.core.abcs import LLMQueryer
 
 
-class ReviewLLMQueryer[
-    TQuery: ReviewQuery,
-    TAnswer: ReviewAnswer,
-    TTestCase: ReviewTestCase,
-](DynamicLLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]):
+class ReviewLLMQueryer(LLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]):
     """Reviews 粤文 text based on corresponding 中文."""
 
     text: ClassVar[type[ReviewLLMText]] = ReviewLLMText
     """Text strings to be used for corresponding with LLM."""
 
-    def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
+    def get_answer_example(self, answer_cls: type[ReviewAnswer]) -> ReviewAnswer:
         """Example answer.
 
         Arguments:

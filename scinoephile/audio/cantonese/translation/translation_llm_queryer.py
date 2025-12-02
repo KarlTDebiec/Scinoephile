@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from abc import ABC
 from typing import ClassVar
 
 from scinoephile.audio.cantonese.translation.translation_answer import TranslationAnswer
@@ -14,20 +15,20 @@ from scinoephile.audio.cantonese.translation.translation_query import Translatio
 from scinoephile.audio.cantonese.translation.translation_test_case import (
     TranslationTestCase,
 )
-from scinoephile.core.abcs import DynamicLLMQueryer
+from scinoephile.core.abcs import LLMQueryer
 
 
-class TranslationLLMQueryer[
-    TQuery: TranslationQuery,
-    TAnswer: TranslationAnswer,
-    TTestCase: TranslationTestCase,
-](DynamicLLMQueryer[TranslationQuery, TranslationAnswer, TranslationTestCase]):
+class TranslationLLMQueryer(
+    LLMQueryer[TranslationQuery, TranslationAnswer, TranslationTestCase], ABC
+):
     """Translates 粤文 text based on corresponding 中文."""
 
     text: ClassVar[type[TranslationLLMText]] = TranslationLLMText
     """Text strings to be used for corresponding with LLM."""
 
-    def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
+    def get_answer_example(
+        self, answer_cls: type[TranslationAnswer]
+    ) -> TranslationAnswer:
         """Example answer.
 
         Arguments:
