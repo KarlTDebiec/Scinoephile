@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from typing import override
+from typing import ClassVar
 
 from scinoephile.core.abcs import FixedLLMQueryer
 from scinoephile.image.english.fusion.english_fusion_answer import (
     EnglishFusionAnswer,
+)
+from scinoephile.image.english.fusion.english_fusion_llm_text import (
+    EnglishFusionLLMText,
 )
 from scinoephile.image.english.fusion.english_fusion_query import EnglishFusionQuery
 from scinoephile.image.english.fusion.english_fusion_test_case import (
@@ -21,16 +24,5 @@ class EnglishFusionLLMQueryer(
 ):
     """Queries LLM to fuse OCRed English subtitles from Google Lens and Tesseract."""
 
-    @property
-    @override
-    def base_system_prompt(self) -> str:
-        """Base system prompt."""
-        return """
-        You are responsible for merging English subtitle OCR results from two different
-        sources: Google Lens and Tesseract.
-        Please follow these guidelines:
-        * Google Lens is more reliable at recognizing text overall.
-        * Tesseract is more reliable at italics.
-        * Tesseract is more reliable at line breaks.
-        * Tesseract is more reliable at the capitalization of the first word.
-        """
+    text: ClassVar[type[EnglishFusionLLMText]] = EnglishFusionLLMText
+    """Text strings to be used for corresponding with LLM."""
