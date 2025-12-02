@@ -12,11 +12,13 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
-class TranslateQuery(Query, ABC):
+class TranslationQuery(Query, ABC):
     """Abstract base class for 粤文 translation queries."""
 
     @classmethod
-    def get_query_cls(cls, size: int, missing: tuple[int, ...]) -> type[TranslateQuery]:
+    def get_query_cls(
+        cls, size: int, missing: tuple[int, ...]
+    ) -> type[TranslationQuery]:
         """Get query class for 粤文 translation.
 
         Arguments:
@@ -45,4 +47,4 @@ class TranslateQuery(Query, ABC):
                     ),
                 )
         name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-        return create_model(name[:64], __base__=TranslateQuery, **query_fields)
+        return create_model(name[:64], __base__=TranslationQuery, **query_fields)

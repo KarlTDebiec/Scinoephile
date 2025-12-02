@@ -4,8 +4,18 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.translation.translator import Translator
+from scinoephile.audio.cantonese.translation.translation_answer import TranslationAnswer
+from scinoephile.audio.cantonese.translation.translation_llm_queryer import (
+    TranslationLLMQueryer,
+)
+from scinoephile.audio.cantonese.translation.translation_query import TranslationQuery
+from scinoephile.audio.cantonese.translation.translation_test_case import (
+    TranslationTestCase,
+)
 
 __all__ = [
-    "Translator",
+    "TranslationAnswer",
+    "TranslationLLMQueryer",
+    "TranslationQuery",
+    "TranslationTestCase",
 ]

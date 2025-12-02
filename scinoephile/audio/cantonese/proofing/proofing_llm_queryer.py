@@ -6,13 +6,15 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.proofing.proof_answer import ProofAnswer
-from scinoephile.audio.cantonese.proofing.proof_query import ProofQuery
-from scinoephile.audio.cantonese.proofing.proof_test_case import ProofTestCase
+from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
+from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
+from scinoephile.audio.cantonese.proofing.proofing_test_case import ProofingTestCase
 from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Proofer(FixedLLMQueryer[ProofQuery, ProofAnswer, ProofTestCase]):
+class ProofingLLMQueryer(
+    FixedLLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase]
+):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
     @property

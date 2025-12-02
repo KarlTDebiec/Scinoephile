@@ -6,27 +6,27 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.merging import Merger, MergeTestCase
+from scinoephile.audio.cantonese.merging import MergingLLMQueryer, MergingTestCase
 from scinoephile.testing import skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_merge_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def merger_few_shot() -> Merger:
+def merging_llm_queryer_few_shot() -> MergingLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return Merger(
+    return MergingLLMQueryer(
         prompt_test_cases=[tc for tc in mlamd_merge_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def merger_zero_shot() -> Merger:
+def merging_llm_queryer_zero_shot() -> MergingLLMQueryer:
     """LLMQueryer with no examples."""
-    return Merger(cache_dir_path=test_data_root / "cache")
+    return MergingLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
-async def _test_merging(queryer: Merger, test_case: MergeTestCase):
+async def _test_merging(queryer: MergingLLMQueryer, test_case: MergingTestCase):
     """Test.
 
     Arguments:
@@ -50,7 +50,7 @@ async def _test_merging(queryer: Merger, test_case: MergeTestCase):
 )
 @pytest.mark.asyncio
 async def test_merging_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -59,7 +59,7 @@ async def test_merging_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    merger: Merger = request.getfixturevalue(fixture_name)
+    merger: MergingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_merging(merger, test_case)
 
 
@@ -76,7 +76,7 @@ async def test_merging_mlamd(
 )
 @pytest.mark.asyncio
 async def test_merging_mlamd_difficult(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: MergeTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: MergingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -85,5 +85,5 @@ async def test_merging_mlamd_difficult(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    merger: Merger = request.getfixturevalue(fixture_name)
+    merger: MergingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_merging(merger, test_case)

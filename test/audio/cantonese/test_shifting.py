@@ -6,27 +6,27 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.audio.cantonese.shifting import Shifter, ShiftTestCase
+from scinoephile.audio.cantonese.shifting import ShiftingLLMQueryer, ShiftingTestCase
 from scinoephile.testing import skip_if_ci, test_data_root
 from test.data.mlamd import mlamd_shift_test_cases  # noqa: F401
 
 
 @pytest.fixture
-def shifter_few_shot() -> Shifter:
+def shifting_llm_queryer_few_shot() -> ShiftingLLMQueryer:
     """LLMQueryer with few-shot examples."""
-    return Shifter(
+    return ShiftingLLMQueryer(
         prompt_test_cases=[tc for tc in mlamd_shift_test_cases if tc.prompt],
         cache_dir_path=test_data_root / "cache",
     )
 
 
 @pytest.fixture
-def shifter_zero_shot() -> Shifter:
+def shifting_llm_queryer_zero_shot() -> ShiftingLLMQueryer:
     """LLMQueryer with no examples."""
-    return Shifter(cache_dir_path=test_data_root / "cache")
+    return ShiftingLLMQueryer(cache_dir_path=test_data_root / "cache")
 
 
-async def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
+async def _test_shifting(queryer: ShiftingLLMQueryer, test_case: ShiftingTestCase):
     """Test.
 
     Arguments:
@@ -51,7 +51,7 @@ async def _test_shifting(queryer: Shifter, test_case: ShiftTestCase):
 )
 @pytest.mark.asyncio
 async def test_shifting_mlamd(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -60,7 +60,7 @@ async def test_shifting_mlamd(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    shifter: Shifter = request.getfixturevalue(fixture_name)
+    shifter: ShiftingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_shifting(shifter, test_case)
 
 
@@ -77,7 +77,7 @@ async def test_shifting_mlamd(
 )
 @pytest.mark.asyncio
 async def test_shifting_mlamd_difficult(
-    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftTestCase
+    request: pytest.FixtureRequest, fixture_name: str, test_case: ShiftingTestCase
 ):
     """Test with MLAMD test cases.
 
@@ -86,5 +86,5 @@ async def test_shifting_mlamd_difficult(
         fixture_name: Name of fixture with which to test
         test_case: Query and expected answer
     """
-    shifter: Shifter = request.getfixturevalue(fixture_name)
+    shifter: ShiftingLLMQueryer = request.getfixturevalue(fixture_name)
     await _test_shifting(shifter, test_case)

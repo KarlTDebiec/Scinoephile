@@ -5,16 +5,16 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.merging import MergeQuery
-from scinoephile.audio.cantonese.proofing import ProofQuery
-from scinoephile.audio.cantonese.review.abcs import ReviewQuery
-from scinoephile.audio.cantonese.shifting import ShiftQuery
-from scinoephile.audio.cantonese.translation.abcs import TranslateQuery
+from scinoephile.audio.cantonese.merging import MergingQuery
+from scinoephile.audio.cantonese.proofing import ProofingQuery
+from scinoephile.audio.cantonese.review import ReviewQuery
+from scinoephile.audio.cantonese.shifting import ShiftingQuery
+from scinoephile.audio.cantonese.translation import TranslationQuery
 from scinoephile.core import ScinoephileError
 
 
-def get_shift_query(alignment: Alignment, sg_1_idx: int) -> ShiftQuery | None:
-    """Get shift query for an alignment at provided sync group index.
+def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | None:
+    """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
         alignment: Nascent Cantonese alignment
@@ -72,14 +72,11 @@ def get_shift_query(alignment: Alignment, sg_1_idx: int) -> ShiftQuery | None:
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    return ShiftQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
+    return ShiftingQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
 
 
-def get_merge_query(
-    alignment: Alignment,
-    sg_idx: int,
-) -> MergeQuery | None:
-    """Get merge query for an alignment's sync group.
+def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
+    """Get merging query for an alignment's sync group.
 
     Arguments:
         alignment: Nascent Cantonese alignment
@@ -111,14 +108,11 @@ def get_merge_query(
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    return MergeQuery(zhongwen=zw, yuewen_to_merge=yws)
+    return MergingQuery(zhongwen=zw, yuewen_to_merge=yws)
 
 
-def get_proof_query(
-    alignment: Alignment,
-    sg_idx: int,
-) -> ProofQuery | None:
-    """Get proof query for an alignment's sync group.
+def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | None:
+    """Get proofing query for an alignment's sync group.
 
     Arguments:
         alignment: Nascent Cantonese alignment
@@ -154,7 +148,7 @@ def get_proof_query(
     yw = alignment.yuewen[yw_idxs[0]].text
 
     # Return proof query
-    return ProofQuery(zhongwen=zw, yuewen=yw)
+    return ProofingQuery(zhongwen=zw, yuewen=yw)
 
 
 def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> ReviewQuery:
@@ -194,21 +188,22 @@ def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> Revi
     return query_cls(**kwargs)
 
 
-def get_translate_query(
-    alignment: Alignment, query_cls: type[TranslateQuery]
-) -> TranslateQuery:
+def get_translation_query(
+    alignment: Alignment,
+    query_cls: type[TranslationQuery],
+) -> TranslationQuery:
     """Get translation query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: TranslateQuery class to instantiate
+        query_cls: TranslationQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, TranslateQuery):
-        raise ScinoephileError("query_cls must be a subclass of TranslateQuery.")
+    if not issubclass(query_cls, TranslationQuery):
+        raise ScinoephileError("query_cls must be a subclass of TranslationQuery.")
 
     kwargs = {}
     for sg in alignment.sync_groups:
@@ -236,9 +231,9 @@ def get_translate_query(
 
 
 __all__ = [
-    "get_shift_query",
-    "get_merge_query",
-    "get_proof_query",
+    "get_shifting_query",
+    "get_merging_query",
+    "get_proofing_query",
     "get_review_query",
-    "get_translate_query",
+    "get_translation_query",
 ]

@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
-from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
-from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
-from scinoephile.audio.cantonese.merging.merger import Merger
+from scinoephile.audio.cantonese.merging.merging_answer import MergingAnswer
+from scinoephile.audio.cantonese.merging.merging_llm_queryer import MergingLLMQueryer
+from scinoephile.audio.cantonese.merging.merging_query import MergingQuery
+from scinoephile.audio.cantonese.merging.merging_test_case import MergingTestCase
 
 __all__ = [
-    "MergeAnswer",
-    "MergeQuery",
-    "MergeTestCase",
-    "Merger",
+    "MergingAnswer",
+    "MergingLLMQueryer",
+    "MergingQuery",
+    "MergingTestCase",
 ]

@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from typing import override
 
-from scinoephile.audio.cantonese.merging.merge_answer import MergeAnswer
-from scinoephile.audio.cantonese.merging.merge_query import MergeQuery
-from scinoephile.audio.cantonese.merging.merge_test_case import MergeTestCase
+from scinoephile.audio.cantonese.merging.merging_answer import MergingAnswer
+from scinoephile.audio.cantonese.merging.merging_query import MergingQuery
+from scinoephile.audio.cantonese.merging.merging_test_case import MergingTestCase
 from scinoephile.core.abcs import FixedLLMQueryer
 
 
-class Merger(FixedLLMQueryer[MergeQuery, MergeAnswer, MergeTestCase]):
+class MergingLLMQueryer(FixedLLMQueryer[MergingQuery, MergingAnswer, MergingTestCase]):
     """Merges transcribed 粤文 text based on corresponding 中文."""
 
     @property
