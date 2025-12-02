@@ -4,18 +4,19 @@
 
 from __future__ import annotations
 
+from scinoephile.audio.cantonese.translation.translation_answer import TranslationAnswer
+from scinoephile.audio.cantonese.translation.translation_query import TranslationQuery
 from scinoephile.audio.cantonese.translation.translation_test_case import (
     TranslationTestCase,
 )
 from scinoephile.core.abcs import DynamicLLMQueryer
-from scinoephile.documentation.translation import TranslateAnswer, TranslateQuery
 
 
 class TranslationLLMQueryer[
-    TQuery: TranslateQuery,
-    TAnswer: TranslateAnswer,
+    TQuery: TranslationQuery,
+    TAnswer: TranslationAnswer,
     TTestCase: TranslationTestCase,
-](DynamicLLMQueryer[TranslateQuery, TranslateAnswer, TranslationTestCase]):
+](DynamicLLMQueryer[TranslationQuery, TranslationAnswer, TranslationTestCase]):
     """Translates 粤文 text based on corresponding 中文."""
 
     @property

@@ -72,8 +72,8 @@ def get_translate_models(
     Arguments:
         alignment: Nascent Cantonese alignment
     Returns:
-        TranslateQuery, TranslateAnswer, and TranslateTestCase types for translation,
-        or None if no translation is needed
+        TranslationQuery, TranslationAnswer, and TranslationTestCase types for
+        translation, or None if no translation is needed
     Raises:
         ScinoephileError: If sync groups are malformed
     """

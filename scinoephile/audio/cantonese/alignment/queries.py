@@ -196,14 +196,14 @@ def get_translation_query(
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: TranslateQuery class to instantiate
+        query_cls: TranslationQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
     if not issubclass(query_cls, TranslationQuery):
-        raise ScinoephileError("query_cls must be a subclass of TranslateQuery.")
+        raise ScinoephileError("query_cls must be a subclass of TranslationQuery.")
 
     kwargs = {}
     for sg in alignment.sync_groups:

@@ -44,10 +44,10 @@ class CantoneseTranscriptionReviewer:
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
-            shifting_test_cases: shift test cases
+            shifting_test_cases: shifting test cases
             merging_test_cases: merging test cases
-            proofing_test_cases: proof test cases
-            translation_test_cases: translate test cases
+            proofing_test_cases: proofing test cases
+            translation_test_cases: translation test cases
             review_test_cases: review test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
