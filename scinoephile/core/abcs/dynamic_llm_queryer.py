@@ -78,7 +78,7 @@ class DynamicLLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](
         Arguments:
             answer_cls: Answer class
         Returns:
-            Example answer
+            example answer
         """
         raise NotImplementedError()
 

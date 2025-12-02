@@ -55,7 +55,7 @@ class ZhongwenProofreadingLLMQueryer[
         Arguments:
             answer_cls: Answer class
         Returns:
-            Example answer
+            example answer
         """
         answer_values = {}
         for key in answer_cls.model_fields.keys():

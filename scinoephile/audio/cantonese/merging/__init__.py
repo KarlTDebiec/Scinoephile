@@ -6,12 +6,14 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging.merging_answer import MergingAnswer
 from scinoephile.audio.cantonese.merging.merging_llm_queryer import MergingLLMQueryer
+from scinoephile.audio.cantonese.merging.merging_llm_text import MergingLLMText
 from scinoephile.audio.cantonese.merging.merging_query import MergingQuery
 from scinoephile.audio.cantonese.merging.merging_test_case import MergingTestCase
 
 __all__ = [
     "MergingAnswer",
     "MergingLLMQueryer",
+    "MergingLLMText",
     "MergingQuery",
     "MergingTestCase",
 ]

@@ -4,7 +4,12 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from scinoephile.audio.cantonese.translation.translation_answer import TranslationAnswer
+from scinoephile.audio.cantonese.translation.translation_llm_text import (
+    TranslationLLMText,
+)
 from scinoephile.audio.cantonese.translation.translation_query import TranslationQuery
 from scinoephile.audio.cantonese.translation.translation_test_case import (
     TranslationTestCase,
@@ -19,21 +24,21 @@ class TranslationLLMQueryer[
 ](DynamicLLMQueryer[TranslationQuery, TranslationAnswer, TranslationTestCase]):
     """Translates 粤文 text based on corresponding 中文."""
 
-    @property
-    def base_system_prompt(self) -> str:
-        """Base system prompt."""
-        return (
-            "Translate the missing 粤文 subtitles based on the corresponding 中文 "
-            "subtitles."
-        )
+    text: ClassVar[type[TranslationLLMText]] = TranslationLLMText
+    """Text strings to be used for corresponding with LLM."""
 
-    @staticmethod
-    def get_answer_example(answer_cls: type[TAnswer]) -> TAnswer:
-        """Example answer."""
+    def get_answer_example(self, answer_cls: type[TAnswer]) -> TAnswer:
+        """Example answer.
+
+        Arguments:
+            answer_cls: Answer class
+        Returns:
+            example answer
+        """
         answer_values = {}
         for key in answer_cls.model_fields.keys():
             idx = key.split("_")[1]
-            answer_values[key] = (
-                f"粤文 subtitle {idx} translated from query's 中文 subtitle {idx}"
+            answer_values[key] = self.text.answer_example_yuewen_description.format(
+                idx=idx
             )
         return answer_cls(**answer_values)
