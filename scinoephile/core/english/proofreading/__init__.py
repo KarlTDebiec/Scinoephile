@@ -13,6 +13,9 @@ from scinoephile.core.english.proofreading.english_proofreading_answer import (
 from scinoephile.core.english.proofreading.english_proofreading_llm_queryer import (
     EnglishProofreadingLLMQueryer,
 )
+from scinoephile.core.english.proofreading.english_proofreading_llm_text import (
+    EnglishProofreadingLLMText,
+)
 from scinoephile.core.english.proofreading.english_proofreading_query import (
     EnglishProofreadingQuery,
 )
@@ -46,6 +49,7 @@ __all__ = [
     "EnglishProofreader",
     "EnglishProofreadingAnswer",
     "EnglishProofreadingLLMQueryer",
+    "EnglishProofreadingLLMText",
     "EnglishProofreadingQuery",
     "EnglishProofreadingTestCase",
     "get_english_proofread",

@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from typing import override
+from typing import ClassVar
 
 from scinoephile.core.abcs import FixedLLMQueryer
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_answer import (
     ZhongwenFusionAnswer,
+)
+from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_text import (
+    ZhongwenFusionLLMText,
 )
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_query import ZhongwenFusionQuery
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
@@ -21,14 +24,5 @@ class ZhongwenFusionLLMQueryer(
 ):
     """Queries LLM to fuse OCRed 中文 subtitles from PaddleOCR and Google Lens."""
 
-    @property
-    @override
-    def base_system_prompt(self) -> str:
-        """Base system prompt."""
-        return """
-        你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：PaddleOCR 和 Google Lens。
-        请遵循以下原则：
-        * Google Lens 在识别汉字方面更可靠。
-        * Google Lens 在标点符号方面更可靠。
-        * PaddleOCR 在换行格式方面更可靠。
-        """
+    text: ClassVar[type[ZhongwenFusionLLMText]] = ZhongwenFusionLLMText
+    """Text strings to be used for corresponding with LLM."""

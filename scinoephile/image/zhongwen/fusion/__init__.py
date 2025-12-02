@@ -14,6 +14,9 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_answer import (
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_queryer import (
     ZhongwenFusionLLMQueryer,
 )
+from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_text import (
+    ZhongwenFusionLLMText,
+)
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_query import ZhongwenFusionQuery
 from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
     ZhongwenFusionTestCase,
@@ -43,6 +46,7 @@ __all__ = [
     "ZhongwenFuser",
     "ZhongwenFusionAnswer",
     "ZhongwenFusionLLMQueryer",
+    "ZhongwenFusionLLMText",
     "ZhongwenFusionQuery",
     "ZhongwenFusionTestCase",
     "get_zhongwen_ocr_fused",

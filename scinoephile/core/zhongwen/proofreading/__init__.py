@@ -16,6 +16,9 @@ from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import 
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_queryer import (
     ZhongwenProofreadingLLMQueryer,
 )
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
+    ZhongwenProofreadingLLMText,
+)
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
     ZhongwenProofreadingQuery,
 )
@@ -48,6 +51,7 @@ __all__ = [
     "ZhongwenProofreader",
     "ZhongwenProofreadingAnswer",
     "ZhongwenProofreadingLLMQueryer",
+    "ZhongwenProofreadingLLMText",
     "ZhongwenProofreadingQuery",
     "ZhongwenProofreadingTestCase",
     "get_zhongwen_proofread",

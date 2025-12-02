@@ -7,6 +7,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from functools import cache
+from textwrap import dedent
 
 from scinoephile.core.exceptions import ScinoephileError
 
@@ -141,6 +142,7 @@ re_western = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
 
 
+@cache
 def get_char_type(char: str) -> str:
     """Return character type.
 
@@ -188,6 +190,20 @@ def get_char_type(char: str) -> str:
     raise ScinoephileError(
         f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
     )
+
+
+def get_dedented_and_compacted_multiline_text(text: str) -> str:
+    """Get multi-line string dedented and with newlines compacted.
+
+    Arguments:
+        text: text to process
+    Returns:
+        dedented and compacted text
+    """
+    text = dedent(text).strip()
+    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+    text = re.sub(r"\n{2,}", "\n", text)
+    return text
 
 
 @cache
@@ -242,6 +258,7 @@ __all__ = [
     "re_hanzi_rare",
     "re_western",
     "get_char_type",
+    "get_dedented_and_compacted_multiline_text",
     "get_text_type",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",

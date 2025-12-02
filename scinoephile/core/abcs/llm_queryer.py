@@ -10,7 +10,7 @@ import json
 from abc import ABC, abstractmethod
 from logging import debug, error, info
 from pathlib import Path
-from textwrap import dedent
+from typing import ClassVar
 
 import aiofiles
 from aiofiles import os as aioos
@@ -20,6 +20,7 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
+from scinoephile.core.abcs.llm_text import LLMText
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.abcs.test_case import TestCase
 from scinoephile.openai import OpenAIProvider
@@ -27,6 +28,9 @@ from scinoephile.openai import OpenAIProvider
 
 class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """Abstract base class for LLM queryers."""
+
+    text: ClassVar[type[LLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     def __init__(
         self,
@@ -36,7 +40,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         provider: LLMProvider | None = None,
         *,
         cache_dir_path: str | None = None,
-        print_test_case: bool = False,
         max_attempts: int = 5,
         auto_verify: bool = False,
     ):
@@ -49,7 +52,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
               LLM need not be queried
             provider: provider to use for queries
             cache_dir_path: directory in which to cache
-            print_test_case: whether to print test case after merging
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
         """
@@ -81,8 +83,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        self.print_test_case = print_test_case
-        """Whether to print test case after merging query and answer."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
@@ -99,12 +99,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     def provider(self, value: LLMProvider):
         """Set LLM Provider to use for queries."""
         self._provider = value
-
-    @property
-    @abstractmethod
-    def base_system_prompt(self) -> str:
-        """Base system prompt."""
-        raise NotImplementedError()
 
     @property
     def encountered_test_cases(self) -> dict[tuple, TTestCase]:
@@ -127,13 +121,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """String representation of all test cases in the log."""
         if not self.prompt_test_cases:
             return ""
-        few_shot = "\n\nHere are some examples of queries and expected answers:"
+        few_shot = f"\n\n{self.text.few_shot_intro}"
         for test_case in self.prompt_test_cases.values():
-            few_shot += "\n\nExample query:\n"
+            few_shot += f"\n\n{self.text.few_shot_query_intro}\n"
             few_shot += json.dumps(
                 test_case.query.model_dump(), indent=4, ensure_ascii=False
             )
-            few_shot += "\nExpected answer:\n"
+            few_shot += f"\n{self.text.few_shot_answer_intro}\n"
             few_shot += json.dumps(
                 test_case.answer.model_dump(), indent=4, ensure_ascii=False
             )
@@ -155,13 +149,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             test_case: test case to log
         """
         key = test_case.query.query_key
-        if key in self._prompt_test_cases:
-            test_case.prompt = True
-        if key in self._verified_test_cases:
-            test_case.verified = True
+        test_case.prompt = key in self._prompt_test_cases
+        test_case.verified = key in self._verified_test_cases
         self._encountered_test_cases[key] = test_case
-        if self.print_test_case:
-            print(f"{test_case.source_str},")
         debug(f"Logged test case: {test_case.query.query_key_str}")
 
     async def _call(
@@ -243,12 +233,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     {
                         "role": "user",
                         "content": (
-                            "Your previous response was not valid JSON or did not "
-                            "match the expected schema. "
-                            "Error details:\n"
-                            f"{'\n'.join([e['msg'] for e in exc.errors()])}. "
-                            "Please try again and respond only with a valid JSON "
-                            "object."
+                            f"{self.text.answer_invalid_pre}\n"
+                            f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            f"{self.text.answer_invalid_post}"
                         ),
                     }
                 )
@@ -271,11 +258,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                     {
                         "role": "user",
                         "content": (
-                            "Your previous response was valid JSON, but failed "
-                            "validation when combined with the query.\n"
-                            "Error details:\n"
+                            f"{self.text.test_case_invalid_pre}\n"
                             f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
-                            "Please revise your response accordingly."
+                            f"{self.text.test_case_invalid_post}"
                         ),
                     }
                 )
@@ -287,8 +272,6 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         # Log encountered test case
         self.log_encountered_test_case(test_case)
-        if self.print_test_case:
-            print(f"{test_case.source_str},")
 
         # Update cache
         if cache_path is not None:
@@ -323,11 +306,9 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         Returns:
             System prompt for the given answer class
         """
-        system_prompt = dedent(self.base_system_prompt).strip().replace("\n", " ")
+        system_prompt = self.text.base_system_prompt
         system_prompt += self.prompt_test_cases_few_shot_str
-        system_prompt += (
-            "\n\nYour response must be a JSON object with the following structure:\n"
-        )
+        system_prompt += f"\n\n{self.text.schema_intro}\n"
         system_prompt += json.dumps(
             answer_example.model_dump(), indent=4, ensure_ascii=False
         )
