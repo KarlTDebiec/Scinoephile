@@ -300,8 +300,8 @@ class Aligner:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
+            query, answer_cls, test_case_cls = query_and_friends
             try:
-                query, answer_cls, test_case_cls = query_and_friends
                 answer = await self.merging_llm_queryer.call_async(
                     query, answer_cls, test_case_cls
                 )

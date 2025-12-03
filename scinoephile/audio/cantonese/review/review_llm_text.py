@@ -51,8 +51,8 @@ class ReviewLLMText(EnglishLLMText):
 
     # Test case validation errors
     yuewen_unmodified_error: ClassVar[str] = (
-        "Answer's revised 粤文 text {idx} is not modified relative to query's 粤文 text "
-        "{idx}, if no revision is needed an empty string must be provided."
+        "Answer's revised 粤文 text {idx} is not modified relative to query's 粤文 "
+        "text {idx}, if no revision is needed an empty string must be provided."
     )
     """Error message when revised 粤文 is unmodified."""
 
