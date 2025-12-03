@@ -7,6 +7,11 @@ from __future__ import annotations
 import textwrap
 from typing import Any
 
+__all__ = [
+    "format_field",
+    "make_hashable",
+]
+
 
 def format_field(name: str, value: object) -> str:
     """Format a field for source representation.
@@ -72,9 +77,3 @@ def make_hashable(value: Any) -> Any:
     elif isinstance(value, dict):
         return tuple(sorted((k, make_hashable(v)) for k, v in value.items()))
     return value
-
-
-__all__ = [
-    "format_field",
-    "make_hashable",
-]

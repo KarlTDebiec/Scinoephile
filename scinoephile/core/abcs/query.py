@@ -10,8 +10,10 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.abcs.llm_text import LLMText
-from scinoephile.core.models import make_hashable
+from ..models import make_hashable
+from .llm_text import LLMText
+
+__all__ = ["Query"]
 
 
 class Query(BaseModel, ABC):

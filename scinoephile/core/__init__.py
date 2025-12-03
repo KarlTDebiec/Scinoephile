@@ -10,10 +10,19 @@ Many functions herein follow the naming convention:
 
 from __future__ import annotations
 
-from scinoephile.core.block import Block
-from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.series import Series
-from scinoephile.core.subtitle import Subtitle
+from .block import Block
+from .exceptions import ScinoephileError
+from .series import Series
+from .subtitle import Subtitle
+
+__all__ = [
+    "Block",
+    "ScinoephileError",
+    "Series",
+    "Subtitle",
+    "get_series_with_subs_merged",
+    "get_sub_merged",
+]
 
 
 def get_series_with_subs_merged(series: Series, idx: int) -> Series:
@@ -53,13 +62,3 @@ def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle
         text = "".join(sub.text for sub in subs)
 
     return Subtitle(start=subs[0].start, end=subs[-1].end, text=text)
-
-
-__all__ = [
-    "Block",
-    "ScinoephileError",
-    "Series",
-    "Subtitle",
-    "get_series_with_subs_merged",
-    "get_sub_merged",
-]

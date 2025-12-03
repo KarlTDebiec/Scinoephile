@@ -9,6 +9,8 @@ from typing import ClassVar
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.core.zhongwen.abcs import ZhongwenLLMText
 
+__all__ = ["ZhongwenProofreadingLLMText"]
+
 
 class ZhongwenProofreadingLLMText(ZhongwenLLMText):
     """Text for LLM correspondence for 中文 proofreading."""

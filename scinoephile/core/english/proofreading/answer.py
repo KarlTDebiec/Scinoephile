@@ -14,6 +14,8 @@ from scinoephile.core.abcs import Answer
 
 from .llm_text import EnglishProofreadingLLMText
 
+__all__ = ["EnglishProofreadingAnswer"]
+
 
 class EnglishProofreadingAnswer(Answer, ABC):
     """Abstract base class for English proofreading answers."""

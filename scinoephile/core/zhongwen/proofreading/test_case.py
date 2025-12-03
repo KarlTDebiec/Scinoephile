@@ -12,15 +12,12 @@ from pydantic import create_model, model_validator
 
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
-    ZhongwenProofreadingAnswer,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
-    ZhongwenProofreadingLLMText,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
-    ZhongwenProofreadingQuery,
-)
+
+from .answer import ZhongwenProofreadingAnswer
+from .llm_text import ZhongwenProofreadingLLMText
+from .query import ZhongwenProofreadingQuery
+
+__all__ = ["ZhongwenProofreadingTestCase"]
 
 
 class ZhongwenProofreadingTestCase(

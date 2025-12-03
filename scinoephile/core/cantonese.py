@@ -14,9 +14,14 @@ import pycantonese
 from opencc import OpenCC
 
 from scinoephile.common import package_root
-from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.series import Series
-from scinoephile.core.text import full_to_half_punc, get_char_type, re_western
+
+from .exceptions import ScinoephileError
+from .series import Series
+from .text import full_to_half_punc, get_char_type, re_western
+
+__all__ = [
+    "get_cantonese_romanization",
+]
 
 _s2t = OpenCC("s2t")
 
@@ -168,8 +173,3 @@ def _get_cantonese_text_romanization(text: str) -> str:
     text_romanization = text_romanization.strip()
 
     return text_romanization
-
-
-__all__ = [
-    "get_cantonese_romanization",
-]

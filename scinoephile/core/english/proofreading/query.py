@@ -11,9 +11,10 @@ from typing import ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Query
-from scinoephile.core.english.proofreading.llm_text import (
-    EnglishProofreadingLLMText,
-)
+
+from .llm_text import EnglishProofreadingLLMText
+
+__all__ = ["EnglishProofreadingQuery"]
 
 
 class EnglishProofreadingQuery(Query, ABC):

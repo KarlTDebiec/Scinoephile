@@ -12,7 +12,17 @@ from opencc import OpenCC
 
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
-from scinoephile.core.zhongwen.opencc_config import OpenCCConfig
+
+from .opencc_config import OpenCCConfig
+
+__all__ = [
+    "OpenCCConfig",
+    "get_zhongwen_cleaned",
+    "get_zhongwen_converted",
+    "get_zhongwen_converter",
+    "get_zhongwen_flattened",
+    "get_zhongwen_text_converted",
+]
 
 conversion_exclusions = {
     "嗰": "𠮶",
@@ -214,13 +224,3 @@ def _replace_full_width_double_quotes(text: str) -> str:
             result.append(character)
 
     return "".join(result)
-
-
-__all__ = [
-    "OpenCCConfig",
-    "get_zhongwen_cleaned",
-    "get_zhongwen_converted",
-    "get_zhongwen_converter",
-    "get_zhongwen_flattened",
-    "get_zhongwen_text_converted",
-]

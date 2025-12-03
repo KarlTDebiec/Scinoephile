@@ -10,7 +10,9 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.abcs.llm_text import LLMText
+from .llm_text import LLMText
+
+__all__ = ["Answer"]
 
 
 class Answer(BaseModel, ABC):

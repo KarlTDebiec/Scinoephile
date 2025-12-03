@@ -10,6 +10,11 @@ from logging import info
 
 from scinoephile.core.series import Series
 
+__all__ = [
+    "get_english_cleaned",
+    "get_english_flattened",
+]
+
 
 def get_english_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get English series cleaned.
@@ -134,9 +139,3 @@ def _get_english_text_flattened(text: str) -> str:
         flags=re.M,
     )
     return flattened
-
-
-__all__ = [
-    "get_english_cleaned",
-    "get_english_flattened",
-]

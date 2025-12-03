@@ -7,18 +7,13 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.abcs import LLMQueryer
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
-    ZhongwenProofreadingAnswer,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
-    ZhongwenProofreadingLLMText,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
-    ZhongwenProofreadingQuery,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
-    ZhongwenProofreadingTestCase,
-)
+
+from .answer import ZhongwenProofreadingAnswer
+from .llm_text import ZhongwenProofreadingLLMText
+from .query import ZhongwenProofreadingQuery
+from .test_case import ZhongwenProofreadingTestCase
+
+__all__ = ["ZhongwenProofreadingLLMQueryer"]
 
 
 class ZhongwenProofreadingLLMQueryer(

@@ -12,17 +12,16 @@ from textwrap import dedent
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.english.proofreading.llm_queryer import (
-    EnglishProofreadingLLMQueryer,
-)
-from scinoephile.core.english.proofreading.test_case import (
-    EnglishProofreadingTestCase,
-)
 from scinoephile.testing import (
     get_test_cases_from_file_path,
     test_data_root,
     update_test_cases,
 )
+
+from .llm_queryer import EnglishProofreadingLLMQueryer
+from .test_case import EnglishProofreadingTestCase
+
+__all__ = ["EnglishProofreader"]
 
 
 class EnglishProofreader:

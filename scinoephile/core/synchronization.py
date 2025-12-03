@@ -9,11 +9,22 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_pair_blocks_by_pause, get_pair_strings
-from scinoephile.core.series import Series
-from scinoephile.core.subtitle import Subtitle
+from .blocks import get_concatenated_series
+from .exceptions import ScinoephileError
+from .pairs import get_pair_blocks_by_pause, get_pair_strings
+from .series import Series
+from .subtitle import Subtitle
+
+__all__ = [
+    "SyncGroup",
+    "are_series_one_to_one",
+    "get_overlap_string",
+    "get_sync_groups",
+    "get_sync_groups_string",
+    "get_sync_overlap_matrix",
+    "get_synced_series",
+    "get_synced_series_from_groups",
+]
 
 SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
@@ -455,15 +466,3 @@ def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
             )
 
     return sorted_groups
-
-
-__all__ = [
-    "SyncGroup",
-    "are_series_one_to_one",
-    "get_overlap_string",
-    "get_sync_groups",
-    "get_sync_groups_string",
-    "get_sync_overlap_matrix",
-    "get_synced_series",
-    "get_synced_series_from_groups",
-]

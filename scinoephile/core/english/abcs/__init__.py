@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core.english.abcs.english_llm_text import (
-    EnglishLLMText,
-)
+from .english_llm_text import EnglishLLMText
 
 __all__ = [
     "EnglishLLMText",

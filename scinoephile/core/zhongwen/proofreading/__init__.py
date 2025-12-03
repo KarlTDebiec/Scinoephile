@@ -7,24 +7,23 @@ from __future__ import annotations
 from typing import Any
 
 from scinoephile.core.series import Series
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreader import (
-    ZhongwenProofreader,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
-    ZhongwenProofreadingAnswer,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_queryer import (
-    ZhongwenProofreadingLLMQueryer,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
-    ZhongwenProofreadingLLMText,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
-    ZhongwenProofreadingQuery,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
-    ZhongwenProofreadingTestCase,
-)
+
+from .answer import ZhongwenProofreadingAnswer
+from .llm_queryer import ZhongwenProofreadingLLMQueryer
+from .llm_text import ZhongwenProofreadingLLMText
+from .proofreader import ZhongwenProofreader
+from .query import ZhongwenProofreadingQuery
+from .test_case import ZhongwenProofreadingTestCase
+
+__all__ = [
+    "ZhongwenProofreader",
+    "ZhongwenProofreadingAnswer",
+    "ZhongwenProofreadingLLMQueryer",
+    "ZhongwenProofreadingLLMText",
+    "ZhongwenProofreadingQuery",
+    "ZhongwenProofreadingTestCase",
+    "get_zhongwen_proofread",
+]
 
 
 def get_zhongwen_proofread(
@@ -45,14 +44,3 @@ def get_zhongwen_proofread(
     proofread = proofreader.proofread(series, **kwargs)
 
     return proofread
-
-
-__all__ = [
-    "ZhongwenProofreader",
-    "ZhongwenProofreadingAnswer",
-    "ZhongwenProofreadingLLMQueryer",
-    "ZhongwenProofreadingLLMText",
-    "ZhongwenProofreadingQuery",
-    "ZhongwenProofreadingTestCase",
-    "get_zhongwen_proofread",
-]

@@ -9,8 +9,12 @@ from copy import deepcopy
 import jieba
 from pypinyin import pinyin
 
-from scinoephile.core.series import Series
-from scinoephile.core.text import full_to_half_punc
+from .series import Series
+from .text import full_to_half_punc
+
+__all__ = [
+    "get_mandarin_romanization",
+]
 
 
 def get_mandarin_romanization(series: Series) -> Series:
@@ -50,8 +54,3 @@ def _get_mandarin_text_romanization(text: str) -> str:
     text_romanization = text_romanization.strip()
 
     return text_romanization
-
-
-__all__ = [
-    "get_mandarin_romanization",
-]

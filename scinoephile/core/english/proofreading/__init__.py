@@ -15,6 +15,16 @@ from .proofreader import EnglishProofreader
 from .query import EnglishProofreadingQuery
 from .test_case import EnglishProofreadingTestCase
 
+__all__ = [
+    "EnglishProofreader",
+    "EnglishProofreadingAnswer",
+    "EnglishProofreadingLLMQueryer",
+    "EnglishProofreadingLLMText",
+    "EnglishProofreadingQuery",
+    "EnglishProofreadingTestCase",
+    "get_english_proofread",
+]
+
 
 def get_english_proofread(
     series: Series, proofreader: EnglishProofreader | None = None, **kwargs: Any
@@ -34,14 +44,3 @@ def get_english_proofread(
     proofread = proofreader.proofread(series, **kwargs)
 
     return proofread
-
-
-__all__ = [
-    "EnglishProofreader",
-    "EnglishProofreadingAnswer",
-    "EnglishProofreadingLLMQueryer",
-    "EnglishProofreadingLLMText",
-    "EnglishProofreadingQuery",
-    "EnglishProofreadingTestCase",
-    "get_english_proofread",
-]

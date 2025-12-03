@@ -11,10 +11,12 @@ from typing import ClassVar, Self
 from pydantic import BaseModel, Field, model_validator
 from pydantic.fields import FieldInfo
 
-from scinoephile.core.abcs.answer import Answer
-from scinoephile.core.abcs.llm_text import LLMText
-from scinoephile.core.abcs.query import Query
-from scinoephile.core.models import format_field
+from ..models import format_field
+from .answer import Answer
+from .llm_text import LLMText
+from .query import Query
+
+__all__ = ["TestCase"]
 
 
 class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):

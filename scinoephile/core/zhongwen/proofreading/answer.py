@@ -11,9 +11,10 @@ from typing import ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
-    ZhongwenProofreadingLLMText,
-)
+
+from .llm_text import ZhongwenProofreadingLLMText
+
+__all__ = ["ZhongwenProofreadingAnswer"]
 
 
 class ZhongwenProofreadingAnswer(Answer, ABC):

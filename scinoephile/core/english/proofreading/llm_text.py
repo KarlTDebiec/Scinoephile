@@ -9,6 +9,8 @@ from typing import ClassVar
 from scinoephile.core.english.abcs import EnglishLLMText
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
+__all__ = ["EnglishProofreadingLLMText"]
+
 
 class EnglishProofreadingLLMText(EnglishLLMText):
     """Text for LLM correspondence for English proofreading."""
