@@ -6,8 +6,14 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from scinoephile.core import ScinoephileError
-from scinoephile.core.series import Series
+from .exceptions import ScinoephileError
+from .series import Series
+
+__all__ = [
+    "get_pair_blocks_by_pause",
+    "get_pair_with_zero_start",
+    "get_pair_strings",
+]
 
 
 def get_pair_blocks_by_pause(
@@ -153,10 +159,3 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     one_string = one.to_simple_string(start=start, duration=duration)
     two_string = two.to_simple_string(start=start, duration=duration)
     return one_string, two_string
-
-
-__all__ = [
-    "get_pair_blocks_by_pause",
-    "get_pair_with_zero_start",
-    "get_pair_strings",
-]

@@ -9,6 +9,8 @@ from typing import ClassVar
 
 from scinoephile.core.abcs import LLMText
 
+__all__ = ["EnglishLLMText"]
+
 
 class EnglishLLMText(LLMText, ABC):
     """Text strings to be used for corresponding with an LLM in English."""

@@ -9,7 +9,26 @@ import unicodedata
 from functools import cache
 from textwrap import dedent
 
-from scinoephile.core.exceptions import ScinoephileError
+from .exceptions import ScinoephileError
+
+__all__ = [
+    "half_punc",
+    "full_punc",
+    "whitespace",
+    "half_punc_chars",
+    "full_punc_chars",
+    "whitespace_chars",
+    "half_to_full_punc",
+    "full_to_half_punc",
+    "re_hanzi",
+    "re_hanzi_rare",
+    "re_western",
+    "get_char_type",
+    "get_dedented_and_compacted_multiline_text",
+    "get_text_type",
+    "remove_non_punc_and_whitespace",
+    "remove_punc_and_whitespace",
+]
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
@@ -243,23 +262,3 @@ def remove_punc_and_whitespace(text: str) -> str:
     """
     chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
     return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
-
-
-__all__ = [
-    "half_punc",
-    "full_punc",
-    "whitespace",
-    "half_punc_chars",
-    "full_punc_chars",
-    "whitespace_chars",
-    "half_to_full_punc",
-    "full_to_half_punc",
-    "re_hanzi",
-    "re_hanzi_rare",
-    "re_western",
-    "get_char_type",
-    "get_dedented_and_compacted_multiline_text",
-    "get_text_type",
-    "remove_non_punc_and_whitespace",
-    "remove_punc_and_whitespace",
-]

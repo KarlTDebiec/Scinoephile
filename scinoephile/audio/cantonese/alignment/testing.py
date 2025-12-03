@@ -7,9 +7,14 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
-from scinoephile.audio.cantonese.alignment import Aligner
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.testing import update_test_cases_async
+
+from .aligner import Aligner
+
+__all__ = [
+    "update_all_test_cases",
+]
 
 
 async def update_all_test_cases(
@@ -53,8 +58,3 @@ async def update_all_test_cases(
     ]
 
     await asyncio.gather(*tasks)
-
-
-__all__ = [
-    "update_all_test_cases",
-]

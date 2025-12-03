@@ -6,23 +6,24 @@ from __future__ import annotations
 
 from typing import Any
 
-from scinoephile.core.english.proofreading.english_proofreader import EnglishProofreader
-from scinoephile.core.english.proofreading.english_proofreading_answer import (
-    EnglishProofreadingAnswer,
-)
-from scinoephile.core.english.proofreading.english_proofreading_llm_queryer import (
-    EnglishProofreadingLLMQueryer,
-)
-from scinoephile.core.english.proofreading.english_proofreading_llm_text import (
-    EnglishProofreadingLLMText,
-)
-from scinoephile.core.english.proofreading.english_proofreading_query import (
-    EnglishProofreadingQuery,
-)
-from scinoephile.core.english.proofreading.english_proofreading_test_case import (
-    EnglishProofreadingTestCase,
-)
 from scinoephile.core.series import Series
+
+from .answer import EnglishProofreadingAnswer
+from .llm_queryer import EnglishProofreadingLLMQueryer
+from .llm_text import EnglishProofreadingLLMText
+from .proofreader import EnglishProofreader
+from .query import EnglishProofreadingQuery
+from .test_case import EnglishProofreadingTestCase
+
+__all__ = [
+    "EnglishProofreader",
+    "EnglishProofreadingAnswer",
+    "EnglishProofreadingLLMQueryer",
+    "EnglishProofreadingLLMText",
+    "EnglishProofreadingQuery",
+    "EnglishProofreadingTestCase",
+    "get_english_proofread",
+]
 
 
 def get_english_proofread(
@@ -43,14 +44,3 @@ def get_english_proofread(
     proofread = proofreader.proofread(series, **kwargs)
 
     return proofread
-
-
-__all__ = [
-    "EnglishProofreader",
-    "EnglishProofreadingAnswer",
-    "EnglishProofreadingLLMQueryer",
-    "EnglishProofreadingLLMText",
-    "EnglishProofreadingQuery",
-    "EnglishProofreadingTestCase",
-    "get_english_proofread",
-]

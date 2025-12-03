@@ -7,10 +7,12 @@ from __future__ import annotations
 from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
-from scinoephile.core.subtitle import Subtitle
+from .subtitle import Subtitle
 
 if TYPE_CHECKING:
-    from scinoephile.core.series import Series
+    from .series import Series
+
+__all__ = ["Block"]
 
 
 class Block:

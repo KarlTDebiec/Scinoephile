@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core.zhongwen.abcs.zhongwen_llm_text import ZhongwenLLMText
+from .zhongwen_llm_text import ZhongwenLLMText
 
 __all__ = [
     "ZhongwenLLMText",

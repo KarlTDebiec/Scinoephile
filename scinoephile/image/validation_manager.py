@@ -10,17 +10,20 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_input_dir_path, val_input_path
 from scinoephile.core import ScinoephileError
-from scinoephile.image.bbox_manager import BboxManager
-from scinoephile.image.drawing import (
+
+from .bbox_manager import BboxManager
+from .drawing import (
     get_img_diff,
     get_img_of_text,
     get_img_of_text_with_bboxes,
     get_img_scaled_to_bbox,
     get_imgs_stacked,
 )
-from scinoephile.image.image_series import ImageSeries
-from scinoephile.image.image_subtitle import ImageSubtitle
-from scinoephile.image.whitespace_manager import WhitespaceManager
+from .image_series import ImageSeries
+from .image_subtitle import ImageSubtitle
+from .whitespace_manager import WhitespaceManager
+
+__all__ = ["ValidationManager"]
 
 
 class ValidationManager:

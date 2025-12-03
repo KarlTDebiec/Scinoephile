@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from PIL import Image, ImageChops
 
+__all__ = ["get_bbox"]
+
 
 def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
     """Get bbox of non-white/transparent pixels in an image.

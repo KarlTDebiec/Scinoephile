@@ -14,18 +14,6 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.alignment.models import (
-    get_review_models,
-    get_translate_models,
-)
-from scinoephile.audio.cantonese.alignment.queries import (
-    get_merging_query,
-    get_proofing_query,
-    get_review_query,
-    get_shifting_query,
-    get_translation_query,
-)
 from scinoephile.audio.cantonese.merging import (
     MergingLLMQueryer,
     MergingTestCase,
@@ -41,6 +29,18 @@ from scinoephile.audio.cantonese.translation import TranslationLLMQueryer
 from scinoephile.core import ScinoephileError
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
+
+from .alignment import Alignment
+from .models import get_review_models, get_translate_models
+from .queries import (
+    get_merging_query,
+    get_proofing_query,
+    get_review_query,
+    get_shifting_query,
+    get_translation_query,
+)
+
+__all__ = ["Aligner"]
 
 
 class Aligner:

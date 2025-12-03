@@ -11,9 +11,12 @@ from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import val_input_path, val_output_path
-from scinoephile.core.block import Block
-from scinoephile.core.blocks import get_block_indexes_by_pause
-from scinoephile.core.subtitle import Subtitle
+
+from .block import Block
+from .blocks import get_block_indexes_by_pause
+from .subtitle import Subtitle
+
+__all__ = ["Series"]
 
 
 class Series(SSAFile):

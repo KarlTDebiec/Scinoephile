@@ -14,6 +14,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
 
+__all__ = ["OpenAIProvider"]
+
 
 class OpenAIProvider(LLMProvider):
     """OpenAI LLM Provider."""

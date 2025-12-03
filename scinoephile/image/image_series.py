@@ -19,7 +19,10 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError, Series
-from scinoephile.image.image_subtitle import ImageSubtitle
+
+from .image_subtitle import ImageSubtitle
+
+__all__ = ["ImageSeries"]
 
 
 class ImageSeries(Series):

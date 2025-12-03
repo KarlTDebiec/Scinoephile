@@ -9,8 +9,11 @@ from logging import info
 import numpy as np
 
 from scinoephile.common import package_root
-from scinoephile.image.char_pair import CharPair
-from scinoephile.image.image_subtitle import ImageSubtitle
+
+from .char_pair import CharPair
+from .image_subtitle import ImageSubtitle
+
+__all__ = ["WhitespaceManager"]
 
 
 class WhitespaceManager:

@@ -7,7 +7,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
-from scinoephile.core.abcs.answer import Answer
+from .answer import Answer
+
+__all__ = ["LLMProvider"]
 
 
 class LLMProvider(ABC):

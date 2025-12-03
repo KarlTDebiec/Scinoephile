@@ -9,6 +9,8 @@ from io import BytesIO
 
 from PIL import Image
 
+__all__ = ["get_base64_image"]
+
 
 def get_base64_image(image: Image.Image) -> str:
     """Get base64 encoding of image.

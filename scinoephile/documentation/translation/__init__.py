@@ -4,10 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.documentation.translation.translate_answer import TranslateAnswer
-from scinoephile.documentation.translation.translate_query import TranslateQuery
-from scinoephile.documentation.translation.translate_test_case import TranslateTestCase
-from scinoephile.documentation.translation.translator import Translator
+from .answer import TranslateAnswer
+from .query import TranslateQuery
+from .test_case import TranslateTestCase
+from .translator import Translator
 
 __all__ = [
     "TranslateAnswer",

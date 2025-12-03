@@ -8,6 +8,8 @@ from dataclasses import dataclass
 
 from scinoephile.core.synchronization import SyncGroup
 
+__all__ = ["SyncTestCase"]
+
 
 @dataclass(slots=True)
 class SyncTestCase:
