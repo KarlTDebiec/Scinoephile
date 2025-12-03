@@ -13,12 +13,14 @@ from argparse import (
 )
 from datetime import datetime
 from inspect import cleandoc
-from logging import FileHandler, basicConfig, getLogger, info
+from logging import FileHandler, getLogger
 from pathlib import Path
 from sys import argv
 from typing import Any
 
-from .logs import set_logging_verbosity
+from .logs import initialize_logging, set_logging_verbosity
+
+LOGGER = getLogger(__name__)
 
 
 class CommandLineInterface(ABC):
@@ -106,10 +108,7 @@ class CommandLineInterface(ABC):
         parser = cls.argparser()
         kwargs = vars(parser.parse_args())
 
-        # Stdout logging
-        logger = getLogger()
-        logger.handlers.clear()
-        basicConfig()
+        logger = initialize_logging()
         verbosity = kwargs.pop("verbosity", 1)
         set_logging_verbosity(verbosity)
 
@@ -119,7 +118,7 @@ class CommandLineInterface(ABC):
             log_file_path = Path(log_file).resolve()
             file_logger = FileHandler(log_file_path)
             logger.addHandler(file_logger)
-            info(f"Logging to {log_file_path} at level {logger.level}")
+            LOGGER.info("Logging to %s at level %s", log_file_path, logger.level)
 
         cls._main(**kwargs)
 
@@ -136,7 +135,7 @@ class CommandLineInterface(ABC):
         """Log the command line with which the script was run."""
         args = argv[:]
         command_line = " ".join(args)
-        info(f"Run with command line: {command_line}")
+        LOGGER.info("Run with command line: %s", command_line)
 
     @classmethod
     @abstractmethod
