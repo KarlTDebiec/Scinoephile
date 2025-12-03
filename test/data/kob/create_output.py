@@ -22,6 +22,7 @@ from scinoephile.core.zhongwen import (
 )
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
+    ZhongwenProofreadingTraditionalLLMText,
     get_zhongwen_proofread,
 )
 from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
@@ -93,6 +94,7 @@ if "繁體中文 (OCR)" in actions:
             / "zhongwen"
             / "proofreading.py",
             auto_verify=True,
+            text=ZhongwenProofreadingTraditionalLLMText,
         ),
     )
     zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")

@@ -7,6 +7,10 @@ from __future__ import annotations
 from typing import Any
 
 from scinoephile.core.series import Series
+from scinoephile.core.zhongwen.proofreading import (
+    zhongwen_proofreading_simplified_llm_text,
+    zhongwen_proofreading_traditional_llm_text,
+)
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreader import (
     ZhongwenProofreader,
 )
@@ -26,21 +30,32 @@ from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case impo
     ZhongwenProofreadingTestCase,
 )
 
+ZhongwenProofreadingSimplifiedLLMText = (
+    zhongwen_proofreading_simplified_llm_text.ZhongwenProofreadingSimplifiedLLMText
+)
+ZhongwenProofreadingTraditionalLLMText = (
+    zhongwen_proofreading_traditional_llm_text.ZhongwenProofreadingTraditionalLLMText
+)
+
 
 def get_zhongwen_proofread(
-    series: Series, proofreader: ZhongwenProofreader | None = None, **kwargs: Any
+    series: Series,
+    proofreader: ZhongwenProofreader | None = None,
+    text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingSimplifiedLLMText,
+    **kwargs: Any,
 ) -> Series:
     """Get 中文 series proofread.
 
     Arguments:
         series: Series to proofread
         proofreader: ZhongwenProofreader to use
+        text: LLM text class specifying the language variant for prompts
         kwargs: additional keyword arguments for ZhongwenProofreader.proofread
     Returns:
         proofread Series
     """
     if proofreader is None:
-        proofreader = ZhongwenProofreader()
+        proofreader = ZhongwenProofreader(text=text)
 
     proofread = proofreader.proofread(series, **kwargs)
 
@@ -52,6 +67,8 @@ __all__ = [
     "ZhongwenProofreadingAnswer",
     "ZhongwenProofreadingLLMQueryer",
     "ZhongwenProofreadingLLMText",
+    "ZhongwenProofreadingSimplifiedLLMText",
+    "ZhongwenProofreadingTraditionalLLMText",
     "ZhongwenProofreadingQuery",
     "ZhongwenProofreadingTestCase",
     "get_zhongwen_proofread",

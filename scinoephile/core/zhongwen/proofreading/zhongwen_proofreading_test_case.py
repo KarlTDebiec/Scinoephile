@@ -12,6 +12,9 @@ from pydantic import create_model, model_validator
 
 from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
+from scinoephile.core.zhongwen.proofreading import (
+    zhongwen_proofreading_simplified_llm_text,
+)
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
     ZhongwenProofreadingAnswer,
 )
@@ -112,7 +115,9 @@ class ZhongwenProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
+        text: type[ZhongwenProofreadingLLMText] = (
+            zhongwen_proofreading_simplified_llm_text.ZhongwenProofreadingSimplifiedLLMText
+        ),
     ) -> type[Self]:
         """Get concrete test case class with provided size and text.
 
@@ -122,8 +127,8 @@ class ZhongwenProofreadingTestCase(
         Returns:
             TestCase type with appropriate fields and text
         """
-        query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
-        answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)
+        query_cls = ZhongwenProofreadingQuery.get_query_cls(size, text)
+        answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size, text)
         return create_model(
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
