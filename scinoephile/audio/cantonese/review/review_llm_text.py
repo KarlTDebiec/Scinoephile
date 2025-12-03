@@ -34,3 +34,13 @@ class ReviewLLMText(EnglishLLMText):
         note describing in English the changes made.
         If no revisions are needed return an empty string for the note.""")
     """Base system prompt."""
+
+    # Query descriptions
+
+    # Query validation errors
+
+    # Answer descriptions
+
+    # Answer validation erros
+
+    # Test case validation errors

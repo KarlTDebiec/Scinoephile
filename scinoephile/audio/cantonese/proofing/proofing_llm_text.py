@@ -38,3 +38,44 @@ class ProofingLLMText(EnglishLLMText):
         Include a one-sentence explanation in English for any correction you make.
         If you make no changes, return an empty string for the note.""")
     """Base system prompt."""
+
+    # Query descriptions
+    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle"
+    """Description of 'zhongwen' field."""
+
+    yuewen_description: ClassVar[str] = "Transcribed 粤文 of subtitle to proofread"
+    """Description of 'yuewen' field."""
+
+    # Query validation errors
+    zhongwen_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
+    """Error message when 'zhongwen' is missing."""
+
+    yuewen_missing_error: ClassVar[str] = "Query must have 粤文 subtitle to proofread."
+    """Error message when 'yuewen' is missing."""
+
+    # Answer descriptions
+    yuewen_proofread_description: ClassVar[str] = "Proofread 粤文 of subtitle"
+    """Description of 'yuewen_proofread' field."""
+
+    note_description: ClassVar[str] = "Description of corrections made"
+    """Description of 'note' field."""
+
+    # Answer validation erros
+    yuewen_proofread_and_note_missing_error: ClassVar[str] = (
+        "If Answer omits proofread 粤文 of subtitle to indicate that 粤文 is "
+        "believed to be a complete mistranscription of the spoken Cantonese "
+        "and should be omitted, it must also include a note describing the issue."
+    )
+    """Error message when both 'yuewen_proofread' and 'note' are missing."""
+
+    # Test case validation errors
+    yuewen_modified_note_missing_error: ClassVar[str] = (
+        "Answer's proofread 粤文 of subtitle is modified relative to query's "
+        "粤文 of subtitle, but no note is provided."
+    )
+    """Error message when proofread 粤文 is modified but note is omitted."""
+
+    yuewen_unmodified_note_provided_error: ClassVar[str] = (
+        "Answer's proofread 粤文 of subtitle is identical to query's 粤文 of "
+        "subtitle, but a note is provided."
+    )

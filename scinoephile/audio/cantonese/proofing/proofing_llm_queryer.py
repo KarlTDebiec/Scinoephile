@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from abc import ABC
 from typing import ClassVar
 
 from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
@@ -14,9 +13,7 @@ from scinoephile.audio.cantonese.proofing.proofing_test_case import ProofingTest
 from scinoephile.core.abcs import LLMQueryer
 
 
-class ProofingLLMQueryer(
-    LLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase], ABC
-):
+class ProofingLLMQueryer(LLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
     text: ClassVar[type[ProofingLLMText]] = ProofingLLMText
