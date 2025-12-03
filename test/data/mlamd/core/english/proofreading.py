@@ -5,13 +5,13 @@
 from __future__ import annotations
 
 from scinoephile.core.english.proofreading import (
-    EnglishProofreadingLLMText,
+    EnglishProofreadingPrompt,
     EnglishProofreadingTestCase,
 )
 
 # noinspection PyArgumentList
 test_cases = [
-    EnglishProofreadingTestCase.get_test_case_cls(33, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(33, EnglishProofreadingPrompt)(
         subtitle_1="When Mrs. McBing was in labour…",
         subtitle_2="A pan appeared in the sky.",
         subtitle_3="It flied along Garden Street…",
@@ -57,7 +57,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingPrompt)(
         subtitle_1="Finally, the pan dropped to the floor…",
         subtitle_2="Mrs. McBing,\nbelieving her wish granted…",
         subtitle_3="Thought that was magnificent!",
@@ -73,7 +73,7 @@ test_cases = [
         subtitle_13="I'm McDull!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingPrompt)(
         subtitle_1='"My School"',
         subtitle_2="Oh dear,",
         subtitle_3="your calves have grown strong.",
@@ -99,7 +99,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingPrompt)(
         subtitle_1='"We are all happy children…"',
         subtitle_2='"We sing everyday!"',
         subtitle_3='"We learn as we grow…"',
@@ -125,7 +125,7 @@ test_cases = [
         subtitle_23="Great! Now move to class.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(55, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(55, EnglishProofreadingPrompt)(
         subtitle_1="You might conclude that\nthis is a shabby school.",
         subtitle_2="But, for me and my mates…",
         subtitle_3="This is the most beautiful paradise!",
@@ -194,7 +194,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingPrompt)(
         subtitle_1="Our headmaster runs a tea stand…",
         subtitle_2="Which we kids frequent after class.",
         subtitle_3="- Fishball noodle, please.\n- No noodle left.",
@@ -217,7 +217,7 @@ test_cases = [
         subtitle_20="Shoot, Dull!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Watching myself grow and grow…",
         subtitle_2="Everyday…",
         subtitle_3="I feel full of strength!",
@@ -228,7 +228,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="There is a song Miss Chan loves…",
         subtitle_2="Which I always want to learn…",
         subtitle_3="But it just comes out different.",
@@ -238,11 +238,11 @@ test_cases = [
         subtitle_7="They are fine!!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='"My Mother"',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="1,2,3,4,5,6,7…",
         subtitle_2="No pain no gain!",
         subtitle_3="Monday till Sunday… No pain no gain!",
@@ -258,7 +258,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingPrompt)(
         subtitle_1="Yes, she is really something.",
         subtitle_2="She works in insurance,\nreal estate and trading.",
         subtitle_3="At the height of IT,\nshe even sets up her cooking site…",
@@ -280,7 +280,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="How time flies since last episode!",
         subtitle_2="Now we shall do a Paper Bun.",
         subtitle_3="The ingredient takes only a paper.",
@@ -293,7 +293,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="A novelty today for everyone:",
         subtitle_2="Chicken Bun Paper Bunning a Bun.",
         subtitle_3="First, unwrap the chicken\nfrom the paper.",
@@ -312,7 +312,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingPrompt)(
         subtitle_1="Kids are bound to love…",
         subtitle_2="today's dish…",
         subtitle_3="Bunning a Chicken Bun Paper…",
@@ -335,7 +335,7 @@ test_cases = [
         subtitle_20="Mother, I want to sleep.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Once upon a time, a boy slept a lot.\nNext day…",
         subtitle_2="He died.",
         subtitle_3="That is my mother's direct approach.",
@@ -345,7 +345,7 @@ test_cases = [
         subtitle_7='"no pain no gain".',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(27, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(27, EnglishProofreadingPrompt)(
         subtitle_1="But there are things that\nsimply cannot be gained.",
         subtitle_2="Days come and go.",
         subtitle_3="Talking about Chow look-alike…",
@@ -376,7 +376,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingPrompt)(
         subtitle_1="Good morning, sir!",
         subtitle_2="Good day, sir!",
         subtitle_3="Where is your favourite place?",
@@ -402,13 +402,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Rise and shine, kiddo.",
         subtitle_2="Oh?",
         subtitle_3="Mother!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Take some medicine and he'll be fine.",
         subtitle_2="Will he not what after the medicine?",
         subtitle_3="No!",
@@ -419,7 +419,7 @@ test_cases = [
         subtitle_8="Is he scared of dying?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="How are you doing? Take the medicine.",
         subtitle_2="Mother I don't want medicine.",
         subtitle_3="Please mother, no.",
@@ -431,7 +431,7 @@ test_cases = [
         subtitle_9="Now, drink up.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Yes, Maldives!",
         subtitle_2="Maldives!",
         subtitle_3="Maldives!",
@@ -441,7 +441,7 @@ test_cases = [
         subtitle_7="Come on, drink up!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Look, mother!",
         subtitle_2="Mother, I am well!",
         subtitle_3="I've taken all the medicine.",
@@ -451,7 +451,7 @@ test_cases = [
         subtitle_7="I did it!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingPrompt)(
         subtitle_1="Now I am a good boy!",
         subtitle_2="Now I am not sick!",
         subtitle_3="Mother…",
@@ -487,7 +487,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="This is McDull.",
         subtitle_2="Hey, I'm leaving tomorrow.",
         subtitle_3="- Yes…    - Is that right?",
@@ -504,7 +504,7 @@ test_cases = [
         subtitle_14="See you!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Mother, do I need to bring\nmy birth certificate?",
         subtitle_2="I guess so.",
         subtitle_3="And school report?",
@@ -512,14 +512,14 @@ test_cases = [
         subtitle_5="Wow, I'm saved!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="I found it!",
         subtitle_2="I found my birth certificate!",
         subtitle_3="Mother, you keep it and don't lose it…",
         subtitle_4="Or else we're stuck.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Leave on the morning, return at night.",
         subtitle_2="Mother said that'd make things worthy.",
         subtitle_3="Hence…",
@@ -530,11 +530,11 @@ test_cases = [
         subtitle_8="If only for one small piece.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="- Goodnight, mother!    - Goodnight!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="The Hong Kong…",
         subtitle_2="windsurfing athlete San San Li…",
         subtitle_3="Has just won the first gold medal\nin Hong Kong history!",
@@ -553,7 +553,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingPrompt)(
         subtitle_1="Then, mother seemed inspired.",
         subtitle_2="Handsome, lucky, smart…",
         subtitle_3="So much for those plans.",
@@ -568,13 +568,13 @@ test_cases = [
         subtitle_12="I know it is not easy for him to take me in.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="No matter how difficult this is…",
         subtitle_2="Logan will be my master!",
         subtitle_3="I shall get an Olympic medal!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Cheung Chau!",
         subtitle_2="You raised San San,\nnow you will raise me!",
         subtitle_3="When I receive my Olympic medal…",
@@ -582,20 +582,20 @@ test_cases = [
         subtitle_5="HK athletes are honourable athletes!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Cheung Chau, I finally make it here.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="I must kiss this holy land!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Kiddo, this is Lamma Island.",
         subtitle_2="Lamma Island?\nWhere Chow Yun Fat grew up?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="I came into hiding on this island…",
         subtitle_2="To stay away from the paparazzi.",
         subtitle_3="And so many kids came to seek me out.",
@@ -608,11 +608,11 @@ test_cases = [
         subtitle_10="Dream on!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Kiddo, look!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="This calf…",
         subtitle_2="So thick, so strong!",
         subtitle_3="And so muscular!",
@@ -625,16 +625,16 @@ test_cases = [
         subtitle_10="Before a calf becomes a calf?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="I shall have this calf!",
         subtitle_2="Master!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Can I take a pee?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingPrompt)(
         subtitle_1="Whenever I sing this song, I need to pee.",
         subtitle_2="Taking a pee first would not help.",
         subtitle_3="But I must sing it now.",
@@ -663,7 +663,7 @@ test_cases = [
         subtitle_26='"Forget about indigestion."',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Logan looks strange after the song.",
         subtitle_2="I must grab my chance.",
         subtitle_3="Master! Please be my master!",
@@ -674,7 +674,7 @@ test_cases = [
         subtitle_8="My calf has gone numb!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingPrompt)(
         subtitle_1="I tell mother what happened today.",
         subtitle_2="She won't say a word…",
         subtitle_3="But starts to defreeze a chicken.",
@@ -693,7 +693,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(25, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(25, EnglishProofreadingPrompt)(
         subtitle_1="In honour of my master,\nmother throws a banquet.",
         subtitle_2="As I am the last disciple of the master…",
         subtitle_3="Everyone on Cheung Chau comes.",
@@ -721,12 +721,12 @@ test_cases = [
         subtitle_25="Can you tell us what skill is that?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="That is…",
         subtitle_2="Bun snatching!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingPrompt)(
         subtitle_1="Bun snatching?",
         subtitle_2='"Bun Snatching",\nfor our uninformed audience…',
         subtitle_3="Is a unique Cheung Chau tradition.",
@@ -757,7 +757,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingPrompt)(
         subtitle_1="The Olympic medal…\nit has slipped away.",
         subtitle_2="Every Saturday,\nI'd take a ferry to Cheung Chau…",
         subtitle_3="To practice bun snatching.",
@@ -776,7 +776,7 @@ test_cases = [
         subtitle_16="San yourself! Work!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="You hear me?",
         subtitle_2="So San San leaves without seeing me.",
         subtitle_3="In despair, I crawl up the shelf.",
@@ -791,19 +791,19 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Today is the first time\nI sit down with Logan.",
         subtitle_2="He must be around 50,",
         subtitle_3="with a baby face.",
         subtitle_4="Fresh from the oven!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="This thing…",
         subtitle_2="What does it look like?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(21, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(21, EnglishProofreadingPrompt)(
         subtitle_1="Dull… he's not a bad student.",
         subtitle_2="Logan then proceeds to tell me a lot…",
         subtitle_3="His ambition, his expectation of Dull.",
@@ -827,7 +827,7 @@ test_cases = [
         subtitle_21="Before a calf becomes a calf?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="My son…",
         subtitle_2="Your son, he will get this calf.",
         subtitle_3="I have no idea why would Dull need…",
@@ -836,13 +836,13 @@ test_cases = [
         subtitle_6="I am reminded of Dull's pa, Bing.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="The electronic dictionary\ncannot be found.",
         subtitle_2="Where could it be?",
         subtitle_3="Could it be that…?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(35, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(35, EnglishProofreadingPrompt)(
         subtitle_1="So mother has been using the dictionary?",
         subtitle_2="But why is she writing in English?",
         subtitle_3="The letter is short.",
@@ -883,7 +883,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingPrompt)(
         subtitle_1="After reading mother's letter…",
         subtitle_2="I go back to Cheung Chau to practice.",
         subtitle_3="Not because of San San.",
@@ -914,7 +914,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(51, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(51, EnglishProofreadingPrompt)(
         subtitle_1='"There is no deformity,\nbut saves us from a dream"',
         subtitle_2="This is Dull.",
         subtitle_3="Dull the big guy, not Dull the boy.",
@@ -973,7 +973,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Such a beautiful night!",
         subtitle_2="Mother and me sat at the seafront.",
         subtitle_3="Lights shimmered on the sea.",
@@ -985,7 +985,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="I had never tasted anything so strong.",
         subtitle_2="Cup noodles or roast duck\nwere not as strong.",
         subtitle_3="The taste embedded\nevery single taste bud…",
@@ -994,7 +994,7 @@ test_cases = [
         subtitle_6="Most beautiful, brilliant, and tender.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(56, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(56, EnglishProofreadingPrompt)(
         subtitle_1="I woke up late the next day.",
         subtitle_2="The sweetness was still there\nafter washing.",
         subtitle_3="As we had a late breakfast…",
@@ -1065,11 +1065,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='"Special Report"',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingPrompt)(
         subtitle_1="'Special Report\"",
         subtitle_2="Olympic medal winner San San Li\nwill compete again…",
         subtitle_3="To prove to the world that…",
@@ -1104,7 +1104,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingPrompt)(
         subtitle_1="In the end…",
         subtitle_2="Nothing came of anything.",
         subtitle_3='"Tart Throwing"\nwas chosen as the highlight.',
@@ -1118,7 +1118,7 @@ test_cases = [
         subtitle_11="Everything went on as usual.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="In secondary school,\nI stopped practicing the 12 hands.",
         subtitle_2="Sometimes, when I went out with mother…",
         subtitle_3="I'd still snatch a bun for her.",
@@ -1130,13 +1130,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="At times, I'd go to Cheung Chau\nfor barbecue.",
         subtitle_2="The master looked older…",
         subtitle_3="Each time I saw him.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="For environmental reason…",
         subtitle_2="They'd changed to snatch plastic buns.",
         subtitle_3="Master thought they stunk.",
@@ -1145,7 +1145,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(34, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(34, EnglishProofreadingPrompt)(
         subtitle_1="On Cheung Chau\nwas a Cheung Po Tsai Cave.",
         subtitle_2="Where legend claimed\nthe pirate hid his treasure.",
         subtitle_3="As I was the one who could crawl…",
@@ -1182,21 +1182,21 @@ test_cases = [
         subtitle_34="What shall I be?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='"…Nothing shall be done!"',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='"I Have Grown Up"',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1='"Fat, Still"',
         subtitle_2='"Powerful"',
         subtitle_3="",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingPrompt)(
         subtitle_1="Right, I am McDull the big guy.",
         subtitle_2="Fat, with raw power.",
         subtitle_3="Not doing too well.",
@@ -1225,7 +1225,7 @@ test_cases = [
         subtitle_26="She'd be happy.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="I've come up with a lesson!",
         subtitle_2="Mother got inspired after\nher dot com failed.",
         subtitle_3="She published a cookbook.",
@@ -1246,7 +1246,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingPrompt)(
         subtitle_1="One Regular, please.",
         subtitle_2="What's a Regular?",
         subtitle_3="The same as Special.",
@@ -1262,7 +1262,7 @@ test_cases = [
         subtitle_13="Our Regular today is fantastic!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingPrompt)(
         subtitle_1="Sorry, Regular is gone.",
         subtitle_2="We can have the Special.",
         subtitle_3="What's a Special?",
@@ -1291,7 +1291,7 @@ test_cases = [
         subtitle_26="We'll have Quickie.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="Sorry, Quickie is gone.",
         subtitle_2="This is too much!\nIs there anything we can eat here?",
         subtitle_3="Try the Lunch. It's fantastic!",
@@ -1304,7 +1304,7 @@ test_cases = [
         subtitle_10="Great! We'll have Lunch.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="Sorry, Lunch is gone.",
         subtitle_2="Try our Supper. It's all the same.",
         subtitle_3="I'm not having supper\nunder board daylight!",

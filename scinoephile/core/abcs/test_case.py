@@ -13,7 +13,7 @@ from pydantic.fields import FieldInfo
 
 from ..models import format_field
 from .answer import Answer
-from .llm_text import LLMText
+from .prompt import Prompt
 from .query import Query
 
 __all__ = ["TestCase"]
@@ -41,7 +41,7 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     """Answer class for this test case."""
     query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
-    text: ClassVar[type[LLMText]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     difficulty: int = Field(

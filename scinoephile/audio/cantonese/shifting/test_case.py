@@ -13,7 +13,7 @@ from pydantic import create_model, model_validator
 from scinoephile.core.abcs import TestCase
 
 from .answer import ShiftingAnswer
-from .llm_text import ShiftingLLMText
+from .prompt import ShiftingPrompt
 from .query import ShiftingQuery
 
 __all__ = ["ShiftingTestCase"]
@@ -28,7 +28,7 @@ class ShiftingTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[ShiftingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ShiftingLLMText]]
+    text: ClassVar[type[ShiftingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def get_min_difficulty(self) -> int:
@@ -69,12 +69,12 @@ class ShiftingTestCase(
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[ShiftingLLMText] = ShiftingLLMText
+        cls, text: type[ShiftingPrompt] = ShiftingPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -86,5 +86,5 @@ class ShiftingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ShiftingQuery]], query_cls),
             answer_cls=(ClassVar[type[ShiftingAnswer]], answer_cls),
-            text=(ClassVar[type[ShiftingLLMText]], text),
+            text=(ClassVar[type[ShiftingPrompt]], text),
         )

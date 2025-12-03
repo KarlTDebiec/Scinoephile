@@ -5,30 +5,30 @@
 from __future__ import annotations
 
 from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenProofreadingLLMText,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingTestCase,
 )
 
 # noinspection PyArgumentList
 # ruff: noqa: E501
 test_cases = [
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="少爺！準備好了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="辛苦了！少爺",
         zimu_2="少爺！擦個汗吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="師爺，少爺寫的是甚麼？",
         zimu_2="名字",
         zimu_3="好棒！原來少爺會寫自己的名字",
         zimu_4="對呀",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(44, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(44, ZhongwenProofreadingPrompt)(
         zimu_1="好字",
         zimu_2="走開",
         zimu_3="好字！龍飛鳳舞，蘇察哈爾燦",
@@ -76,13 +76,13 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="皇爺，你覺得廣東大戲怎樣？",
         zimu_2="地方戲曲，當然不及京戲",
         zimu_3="但也算是一種見識",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(31, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(31, ZhongwenProofreadingPrompt)(
         zimu_1="打賞⋯打賞",
         zimu_2="恭喜蘇翁生辰快樂",
         zimu_3="我家破人亡、貧病老弱",
@@ -116,7 +116,7 @@ test_cases = [
         zimu_31="大戲做完了，請用毛巾",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingPrompt)(
         zimu_1="蘇翁來了⋯",
         zimu_2="蘇翁，恭喜發財",
         zimu_3="這邊⋯這邊",
@@ -134,7 +134,7 @@ test_cases = [
         zimu_15="沒甚麼特別",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingPrompt)(
         zimu_1="蘇翁，甚麼事？",
         zimu_2="我給人挑了一下",
         zimu_3="甚麼？",
@@ -161,7 +161,7 @@ test_cases = [
         zimu_24="小女子如霜，拜見趙大人",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="果然是美人",
         zimu_2="趙大人，那今晚⋯",
         zimu_3="銀票十萬兩",
@@ -178,7 +178,7 @@ test_cases = [
         zimu_14="我有一顆朝廷大內的定風珠，無價寶",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="我還是比較喜歡珍珠",
         zimu_2="趙大人，我回房間等你",
         zimu_3="這顆珠值十萬兩嗎？",
@@ -186,7 +186,7 @@ test_cases = [
         zimu_5="我也喜歡銀兩，只是不喜歡你",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="夠坦白，我真的非常喜歡",
         zimu_2="蘇翁⋯",
         zimu_3="沒相干",
@@ -199,24 +199,24 @@ test_cases = [
         zimu_10="大膽！放肆",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="螳螂拳？像模像樣的",
         zimu_2="奏樂",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="先放好",
         zimu_2="鶴咀",
         zimu_3="虎爪",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="螳螂怎跟老虎鬥？何況我還有一隻鶴",
         zimu_2="虎鶴雙形我也會",
         zimu_3="那你試試看我的螳螂",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="好⋯好",
         zimu_2="我的螳螂拳再破你的虎鶴雙形",
         zimu_3="原來不是虎鶴雙形",
@@ -224,13 +224,13 @@ test_cases = [
         zimu_5="難怪比較差",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="動作蠻快",
         zimu_2="看來你比較像樣",
         zimu_3="年青人，不知天高地厚",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(17, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(17, ZhongwenProofreadingPrompt)(
         zimu_1="廣州將軍到",
         zimu_2="走開⋯",
         zimu_3="誰敢欺負我的兒子，我就射誰",
@@ -250,7 +250,7 @@ test_cases = [
         zimu_17="令牌上寫著「鐵帽子王僧格林參」",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingPrompt)(
         zimu_1="你膽敢搶皇爺的令牌？",
         zimu_2="把他鎖起來",
         zimu_3="等一等！根據大清律例",
@@ -272,7 +272,7 @@ test_cases = [
         zimu_19="斬他⋯斬他",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingPrompt)(
         zimu_1="根據大清律例",
         zimu_2="任何人不束辮子也要問斬",
         zimu_3="那你是要⋯",
@@ -293,11 +293,11 @@ test_cases = [
         zimu_18="少爺，你的帽子",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="真是高手",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="莫大叔，酒菜已經加了斷腸散",
         zimu_2="好！趙無極暗算我們幫主",
         zimu_3="和太平天國的幾名將領",
@@ -314,7 +314,7 @@ test_cases = [
         zimu_14="大家準備⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingPrompt)(
         zimu_1="如霜姑娘，我們又見面了",
         zimu_2="怎麼是你？趙大爺呢？",
         zimu_3="趙大爺的定風珠",
@@ -332,7 +332,7 @@ test_cases = [
         zimu_15="七姑娘⋯　　將就一下⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="這個是誰？",
         zimu_2="我不知道",
         zimu_3="姑娘，首先有個好消息",
@@ -349,7 +349,7 @@ test_cases = [
         zimu_14="不要喝⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingPrompt)(
         zimu_1="實在讓我太感意外",
         zimu_2="姑娘",
         zimu_3="放手",
@@ -368,7 +368,7 @@ test_cases = [
         zimu_16="原來有人藏在這裡",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingPrompt)(
         zimu_1="正好，我正想找個證人",
         zimu_2="證人？　　對",
         zimu_3="我就對著你的寶劍發誓",
@@ -384,7 +384,7 @@ test_cases = [
         zimu_13="讓我想一想",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="做得到",
         zimu_2="好",
         zimu_3="待你做得到的時候，才回來找我",
@@ -395,27 +395,27 @@ test_cases = [
         zimu_8="不見不散",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="變態",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="丐幫辦事，閒雜人等立即離開",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="大人，半炷香的時間剛剛好",
         zimu_2="現在路上很安全，請上路",
         zimu_3="好！非常好",
         zimu_4="起轎！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="糟糕！我們來晚了",
         zimu_2="都是那個人礙事！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="姐姐·姐姐",
         zimu_2="甚麼事？",
         zimu_3="那個神經病還在",
@@ -428,7 +428,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="你不是喜歡他吧？",
         zimu_2="你胡說甚麼？",
         zimu_3="趙無極一日不死",
@@ -440,7 +440,7 @@ test_cases = [
         zimu_9="行吧！別發情",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingPrompt)(
         zimu_1="何方妖孽？竟敢來嚇我？",
         zimu_2="蘇翁，我是鴇母⋯",
         zimu_3="你是鴇母？",
@@ -454,7 +454,7 @@ test_cases = [
         zimu_11="走了？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(67, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(67, ZhongwenProofreadingPrompt)(
         zimu_1="那究竟如霜姑娘去了哪裡？",
         zimu_2="聽說，她⋯她去了京城",
         zimu_3="京城？",
@@ -527,12 +527,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="大驚小怪！退下",
         zimu_2="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="微臣大膽，讓皇上受驚",
         zimu_2="如果這個女人是真的就好了",
         zimu_3="站好！快點",
@@ -540,7 +540,7 @@ test_cases = [
         zimu_5="來⋯進去",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="甚麼事？",
         zimu_2="躲進去",
         zimu_3="準備好了，少爺",
@@ -548,7 +548,7 @@ test_cases = [
         zimu_5="全部站好別再動",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(37, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(37, ZhongwenProofreadingPrompt)(
         zimu_1="那麼香？你是飄紅",
         zimu_2="少爺你很棒，我喜歡",
         zimu_3="靠攏一點",
@@ -588,29 +588,29 @@ test_cases = [
         zimu_37="人情歸人情，數目一定要分明",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="決定佈個雁行陣，馬隊前駐中鋒營",
         zimu_2="弓隊側翼，槍隊殿後",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="武狀元初賽，考生進場",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="舉不起來",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="留力而矣",
         zimu_2="無恥？無恥你娘",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="十分！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(49, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(49, ZhongwenProofreadingPrompt)(
         zimu_1="武狀元決賽現在開始",
         zimu_2="今天武狀元之爭",
         zimu_3="是由蒙古的博達爾多⋯",
@@ -662,7 +662,7 @@ test_cases = [
         zimu_49="不是老鄭主考嗎？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="請坐",
         zimu_2="僧格林參？",
         zimu_3="有甚麼問題？",
@@ -670,55 +670,55 @@ test_cases = [
         zimu_5="開始",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="開始",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="靶都射穿了！至少都多加兩分",
         zimu_2="照道理是！照道理是",
         zimu_3="蘇燦靶上沒有箭！博達爾多勝",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="有沒有攪錯！你老祖！要把戲？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="考生上馬！準備下一回合",
         zimu_2="趙先生",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="你拿著這套袖箭！必要時有用",
         zimu_2="第二回合開始",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="兵器都動了手腳？",
         zimu_2="太黑暗了！退票不賭行不行？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="追回一局了",
         zimu_2="你的票撕了沒有",
         zimu_3="沒有",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="有沒有攪錯？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="還不認輸？再來",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="重新開始，讓你一手一腳",
         zimu_2="免你說我欺負你",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="你用這骯髒的手段來取得勝利？",
         zimu_2="小子你睡醒了嗎",
         zimu_3="好棒呀！贏了",
@@ -731,7 +731,7 @@ test_cases = [
         zimu_10="你先掉下來，這個回合判博達爾多勝",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingPrompt)(
         zimu_1="你個短命的老鄭，竟敢騙我",
         zimu_2="以後不要給我看見你",
         zimu_3="見一次打一次",
@@ -745,7 +745,7 @@ test_cases = [
         zimu_11="明明是我贏！我抗議",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="甚麼事？",
         zimu_2="鏢有毒",
         zimu_3="報應來了！死得好",
@@ -756,17 +756,17 @@ test_cases = [
         zimu_8="你⋯你⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="光宗耀祖了⋯",
         zimu_2="有眼光",
         zimu_3="大人，皇上說要親自欽點",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="好",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="武狀元，我想問你幾句作為朝庭紀錄",
         zimu_2="你這次成功！會先感謝誰？",
         zimu_3="如霜姑娘",
@@ -776,7 +776,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingPrompt)(
         zimu_1="萬歲！萬歲！萬萬歲",
         zimu_2="平身",
         zimu_3="謝皇上",
@@ -790,18 +790,18 @@ test_cases = [
         zimu_11="分明有詐",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="給朕拿文房四寶來",
         zimu_2="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="蘇察哈爾燦，馬上寫出你的名字來",
         zimu_2="走運了！他懂得寫名字",
         zimu_3="懂寫名字！懂寫名字",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingPrompt)(
         zimu_1="我不會寫",
         zimu_2="你分明作弊",
         zimu_3="拉他出去斬",
@@ -823,7 +823,7 @@ test_cases = [
         zimu_19="我在這裡！在這裡",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="他是吏部尚書？",
         zimu_2="蘇察哈爾燦兩父子罪犯欺君理應問斬",
         zimu_3="念在你是功臣之後！可免一死",
@@ -835,7 +835,7 @@ test_cases = [
         zimu_9="皇上，依例最多判抄家的罪",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingPrompt)(
         zimu_1="這麼輕？你有沒有記錯？",
         zimu_2="奴才很公正的",
         zimu_3="全都是依足基本法例辦事",
@@ -856,11 +856,11 @@ test_cases = [
         zimu_18="我想你要認真的學寫字了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="苦相思，能買不能賣⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(17, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(17, ZhongwenProofreadingPrompt)(
         zimu_1="師爺",
         zimu_2="我會學的",
         zimu_3="悔不該，惹下⋯",
@@ -880,7 +880,7 @@ test_cases = [
         zimu_17="太開心了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(31, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(31, ZhongwenProofreadingPrompt)(
         zimu_1="進去，進去",
         zimu_2="快點⋯",
         zimu_3="為甚麼他們給人家抄家還這樣開心？",
@@ -914,13 +914,13 @@ test_cases = [
         zimu_31="小乞丐老乞丐，拿去買東西吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="你真的當我們是乞丐？",
         zimu_2="混你的帳！你⋯",
         zimu_3="太過分了！吃飯吃飯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦，反正吃飽沒事幹",
         zimu_2="讓我在那邊坐一會，說不定有晚飯吃",
         zimu_3="那你真的當自己是乞丐嗎",
@@ -935,7 +935,7 @@ test_cases = [
         zimu_12="好的",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(29, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(29, ZhongwenProofreadingPrompt)(
         zimu_1="多謝",
         zimu_2="我為甚麼要給你錢？",
         zimu_3="你問這麼多幹甚麼！",
@@ -967,16 +967,16 @@ test_cases = [
         zimu_29="就在對面燈籠下穿紅衣服的那個",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="鬼",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="沒問題嗎",
         zimu_2="沒問題！不過你先來，我跟在後面",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦，胸口碎大石我還沒玩過",
         zimu_2="小心點",
         zimu_3="不用怕，我會很小心",
@@ -987,7 +987,7 @@ test_cases = [
         zimu_8="不許在這兒賣藝",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="大人，我們只想賺點錢",
         zimu_2="回廣州去",
         zimu_3="給我們一條生路，不要趕盡殺絕",
@@ -1000,7 +1000,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingPrompt)(
         zimu_1="救命",
         zimu_2="趙大人！一個人搬不動",
         zimu_3="一個搬不動多上幾個人",
@@ -1015,7 +1015,7 @@ test_cases = [
         zimu_12="不然他就會有還擊的機會",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦⋯",
         zimu_2="阿燦",
         zimu_3="你的手腳跟全身經脈都給我打斷",
@@ -1026,7 +1026,7 @@ test_cases = [
         zimu_8="走⋯沒事⋯走開",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingPrompt)(
         zimu_1="不用怕阿燦，沒事的，沒事的⋯",
         zimu_2="不用怕，沒事的⋯",
         zimu_3="不用怕",
@@ -1055,21 +1055,21 @@ test_cases = [
         zimu_26="因為做狀元對我來說易如反掌",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="馬上寫出你的名字來",
         zimu_2="我不會寫",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="燦！怎麼？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="又作惡夢？",
         zimu_2="別想這麼多",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingPrompt)(
         zimu_1="雖然休息了兩個月，手腳可以動了",
         zimu_2="但是還沒有完全好了",
         zimu_3="哈爾叔⋯來⋯",
@@ -1090,29 +1090,29 @@ test_cases = [
         zimu_18="你以為自己是以前的大將軍",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="給我點錢",
         zimu_2="沒有沒有，走吧",
         zimu_3="走，快走⋯別礙我做生意",
         zimu_4="阿燦，阿爹出去了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="謝謝⋯⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="謝謝⋯謝謝",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="別那麼吝嗇吧，老兄？",
         zimu_2="你不會自己寫？",
         zimu_3="我見你下班了，借你地方用一下吧",
         zimu_4="你當我呆子嗎？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingPrompt)(
         zimu_1="阿爹",
         zimu_2="你甚麼？",
         zimu_3="好冷⋯阿燦！好冷⋯",
@@ -1128,7 +1128,7 @@ test_cases = [
         zimu_13="我找到錢就回來帶你看大夫",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="你這渾小子為何不吃",
         zimu_2="你不吃又怎能像阿爹般強壯",
         zimu_3="快點吃",
@@ -1141,7 +1141,7 @@ test_cases = [
         zimu_10="可不可以⋯　　不可以",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingPrompt)(
         zimu_1="好心吧！福心吧！",
         zimu_2="可憐我這個⋯小乞丐",
         zimu_3="我爹快要冷死了",
@@ -1155,11 +1155,11 @@ test_cases = [
         zimu_11="姐姐⋯姐姐！蘇燦",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="等一下",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="小姐，你找誰呀？",
         zimu_2="對不起，我認錯人！",
         zimu_3="小翠，去拿幾個饅頭出來",
@@ -1171,13 +1171,13 @@ test_cases = [
         zimu_9="拿去",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="謝謝⋯⋯",
         zimu_2="姐姐",
         zimu_3="要不是為了你，他也不會變成這樣",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="阿爹！怎麼呢",
         zimu_2="阿燦！我剛剛餓壞了",
         zimu_3="看見小孩子吃饅頭，我借來咬一口",
@@ -1194,17 +1194,17 @@ test_cases = [
         zimu_14="相請不如偶遇，是否想請我們喝酒呢",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="給狗吃的飯到",
         zimu_2="狀元爺，吃完這飯就放你的爹",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="甚麼？",
         zimu_2="吃吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦！你不能吃",
         zimu_2="你吃了後怎樣見人？",
         zimu_3="阿爹年紀大沒甚麼大不了",
@@ -1214,23 +1214,23 @@ test_cases = [
         zimu_7="站好",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="狀元爺吃狗的飯",
         zimu_2="爹，味道不錯",
         zimu_3="嚐嚐⋯嚐嚐，來⋯來",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="好吃，是嗎？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="阿爹，你看",
         zimu_2="有些肉絲在裡面",
         zimu_3="甚麼　　肉絲？是肉排",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="你倆比狗還要餓！",
         zimu_2="註定這輩子都吃狗的飯",
         zimu_3="吃吧！快點吧！",
@@ -1242,11 +1242,11 @@ test_cases = [
         zimu_9="來！我們去吃人的飯吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="蘇老伯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingPrompt)(
         zimu_1="你是⋯",
         zimu_2="丐幫幫主就是我爹",
         zimu_3="不如你倆加入丐幫，好不好？",
@@ -1262,7 +1262,7 @@ test_cases = [
         zimu_13="燦⋯燦",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(44, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(44, ZhongwenProofreadingPrompt)(
         zimu_1="如霜！恭喜發財",
         zimu_2="莫大叔！恭喜發財",
         zimu_3="這禮物是給你的",
@@ -1309,7 +1309,7 @@ test_cases = [
         zimu_44="你別那麼大聲好不好？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦，不管人家現在怎麼看不起你",
         zimu_2="老爹對你很有信心",
         zimu_3="雖然現在你沒有武功",
@@ -1321,36 +1321,36 @@ test_cases = [
         zimu_9="快打我一拳",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="這一拳蠻有力嗎",
         zimu_2="所以我說，做人⋯",
         zimu_3="算了！不要再浪費時間",
         zimu_4="還是讓我多睡一會兒吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="你怎麼把門鎖上？",
         zimu_2="你慢慢睡吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="孩兒，我費盡心思才弄出這麼大陣容",
         zimu_2="你要多用點心把打狗棒法練好才行",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="你爬得那麼高幹甚麼？",
         zimu_2="就算你要我練打狗棒法",
         zimu_3="你總該留個棒子給我吧",
         zimu_4="抱歉抱歉！你接好了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="天將降大任於斯人也",
         zimu_2="必先勞其筋骨，餓其體膚，苦其心智",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="苦海無涯？你寫的？",
         zimu_2="寫得這麼醜，把它擦掉也對",
         zimu_3="乞丐？",
@@ -1361,7 +1361,7 @@ test_cases = [
         zimu_8="正好我有",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingPrompt)(
         zimu_1="這造型不去討飯博人家同情，真可惜",
         zimu_2="這與你無關！",
         zimu_3="你當乞丐也這麼懶",
@@ -1382,7 +1382,7 @@ test_cases = [
         zimu_18="我也不用在這兒捱饅頭",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingPrompt)(
         zimu_1="不過你不用怕，你有恩於我",
         zimu_2="我會報答你的",
         zimu_3="多謝，心領",
@@ -1409,7 +1409,7 @@ test_cases = [
         zimu_24="即是說閣下注定討飯討一輩子",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="還是不跟你說，我想睡一會兒",
         zimu_2="先別走！行行出狀元",
         zimu_3="如果我沒看錯",
@@ -1418,7 +1418,7 @@ test_cases = [
         zimu_6="還是乞丐",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="我不管你是甚麼人，我不想再跟你說",
         zimu_2="請你讓開，不要礙著我睡覺",
         zimu_3="你找死吧？",
@@ -1427,16 +1427,16 @@ test_cases = [
         zimu_6="神經病",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="年青人，我們夢中相見",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="佛前金座，羅漢歸位",
         zimu_2="降龍，伏虎",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="蘇燦，你享盡人間富貴",
         zimu_2="亦嚐盡人間苦楚",
         zimu_3="如今大徹大悟",
@@ -1446,22 +1446,22 @@ test_cases = [
         zimu_7="希望你好好利用，接招",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="前輩⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="苦盡甘來？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="萬歲！萬歲！萬萬歲",
         zimu_2="白羊降世，天理循環",
         zimu_3="真空家鄉，無生老母，賜我神通",
         zimu_4="超渡眾生",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="皇帝明天會到成都狩獵",
         zimu_2="我會用獻上美女的理由接近他",
         zimu_3="宛玲，你明天可能要犧牲一下色相",
@@ -1471,34 +1471,34 @@ test_cases = [
         zimu_7="榮華富貴絕對少不了你們",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="萬歲！萬歲！萬萬歲",
         zimu_2="長老",
         zimu_3="回去再說",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="長老",
         zimu_2="我們走",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="長老",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="我們追　　不用追了！",
         zimu_2="皇上快要出發",
         zimu_3="你殺了我的女人⋯",
         zimu_4="⋯我要把你獻給皇上",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="怎麼？沒有人敢上來當幫主",
         zimu_2="叫莫老三把打狗棒交出來",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="莫大叔跟你姐姐到底到哪處？",
         zimu_2="我怎麼知道",
         zimu_3="剛才我聽見莫大叔跟姐姐說了幾句話",
@@ -1506,11 +1506,11 @@ test_cases = [
         zimu_5="難道他倆有曖昧關係？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="現在開始選幫主",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="莫大叔⋯",
         zimu_2="真的被你嚇我一跳",
         zimu_3="還以為你不會來了",
@@ -1519,17 +1519,17 @@ test_cases = [
         zimu_6="我們要找人上去選幫主",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="到底派誰上去呢？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="讓我去",
         zimu_2="莫大叔",
         zimu_3="不如讓我試試",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦",
         zimu_2="你不是九代弟子，快下來",
         zimu_3="既然你挑不出好的，我可以教育你！",
@@ -1539,26 +1539,26 @@ test_cases = [
         zimu_7="廢話！丟他",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="既然如此，我就成全你",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="他在幹嗎？",
         zimu_2="睡覺？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="這一招難道就是⋯",
         zimu_2="新師叔的睡夢羅漢拳？",
         zimu_3="佈陣",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="天亮了沒有",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="各位不好意思",
         zimu_2="我贏了",
         zimu_3="你打贏我們有甚麼用？",
@@ -1566,23 +1566,23 @@ test_cases = [
         zimu_5="你不配當幫主",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="打狗棒！是嗎",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="棒棒都打狗",
         zimu_2="誰說我不會打狗棒法？",
         zimu_3="不像打狗棒法",
         zimu_4="也蠻厲害！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="他打斷了打狗棒",
         zimu_2="他打斷我們鎮幫之寶！我們殺了他",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(33, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(33, ZhongwenProofreadingPrompt)(
         zimu_1="洪七公在此誰敢放肆",
         zimu_2="我當年定下幫規",
         zimu_3="任何弟子破了蓮花落陣",
@@ -1618,7 +1618,7 @@ test_cases = [
         zimu_33="參見幫主",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="很棒",
         zimu_2="莫大叔！我兒子有一套嗎",
         zimu_3="想不到你學會睡夢羅漢拳",
@@ -1631,13 +1631,13 @@ test_cases = [
         zimu_10="好棒！幫主好棒！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="莫大叔⋯莫大叔！你怎麼呢？",
         zimu_2="莫大叔，莫大叔",
         zimu_3="莫大叔⋯莫大叔",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingPrompt)(
         zimu_1="長路漫漫伴你闖",
         zimu_2="帶一身膽色與熱腸",
         zimu_3="尋自我覓真情",
@@ -1663,12 +1663,12 @@ test_cases = [
         zimu_23="寧願鏽蝕我纓槍",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="你們到大營去看那兒準備好沒有？",
         zimu_2="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="趙無極",
         zimu_2="你帶這個女人來是甚麼意思？",
         zimu_3="我知道皇上喜歡美女",
@@ -1680,14 +1680,14 @@ test_cases = [
         zimu_9="走吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="大人，好一陣子不見，氣色不錯",
         zimu_2="你應該回到自己的崗位",
         zimu_3="不要擅離職守",
         zimu_4="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="啟稟皇上",
         zimu_2="趙大人帶了個女人來獻給皇上",
         zimu_3="女人？",
@@ -1696,18 +1696,18 @@ test_cases = [
         zimu_6="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="這個王八蛋又想見皇上",
         zimu_2="再讓你多見幾次，不是連官都沒得當",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="人來",
         zimu_2="大人",
         zimu_3="看看發生甚麼事　　是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="大人，樹林裡有一大隊人馬",
         zimu_2="甚麼人馬？",
         zimu_3="不知道",
@@ -1716,16 +1716,16 @@ test_cases = [
         zimu_6="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="前面大營放狼煙，大家戒備",
         zimu_2="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="臭乞丐？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="蘇察哈爾燦，你攪甚麼鬼？",
         zimu_2="沒有！只是想向你討個錢",
         zimu_3="豈有此理！你是不是不想活？",
@@ -1738,7 +1738,7 @@ test_cases = [
         zimu_10="再行一步格殺勿論",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(18, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦，對方這麼多人馬我們怎麼打？",
         zimu_2="長老　　在",
         zimu_3="其他人馬呢？",
@@ -1759,13 +1759,13 @@ test_cases = [
         zimu_18="等我走了你再才唱　　好的",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="前面放狼煙，一定有人打草驚蛇",
         zimu_2="準備麒麟煙　　是",
         zimu_3="攻入大營",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="作反了！這些狗賊真的作反了",
         zimu_2="太可惡",
         zimu_3="射不死你的那個人才是最可惡",
@@ -1773,36 +1773,36 @@ test_cases = [
         zimu_5="這次真的完了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="不是！風向轉了",
         zimu_2="對！等等我",
         zimu_3="丐幫再不撤退，格殺勿論",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="你們看這邊",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="天理教的麒麟煙",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="大家鎮定點！用尿可以解毒",
         zimu_2="撒尿⋯撒尿⋯",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="那我該怎麼辦？",
         zimu_2="不怕！我的尿多，分一點給你",
         zimu_3="來⋯拿著它",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="衝！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingPrompt)(
         zimu_1="形勢如何？",
         zimu_2="託皇上鴻福，風向轉變",
         zimu_3="毒煙已吹不過來",
@@ -1817,11 +1817,11 @@ test_cases = [
         zimu_12="不要走",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="護駕",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦？",
         zimu_2="如霜",
         zimu_3="你怎麼來到這裡的？",
@@ -1840,28 +1840,28 @@ test_cases = [
         zimu_16="是",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="你這個叛賊",
         zimu_2="捉住他",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="皇上",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="狗皇帝，把你的江山交給我",
         zimu_2="你說甚麼？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="是你？",
         zimu_2="是我！蘇乞兒",
         zimu_3="蘇乞兒？你不是在乞丐窩裡睡覺嗎",
         zimu_4="是！你說起都有點睏",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="睡羅漢？",
         zimu_2="失禮！你披頭散髮的樣子都蠻像乞丐",
         zimu_3="有沒有興趣加入我們丐幫？",
@@ -1869,16 +1869,16 @@ test_cases = [
         zimu_5="是！這都是拜你所賜",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="你已出全力？我還沒出力",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="蠢蛋！普天之下除了降龍十八掌",
         zimu_2="甚麼武功我都不放在眼內",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="降龍十八掌第七式",
         zimu_2="飛龍在天",
         zimu_3="神龍擺尾",
@@ -1891,28 +1891,28 @@ test_cases = [
         zimu_10="打完收工",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="怎麼得十七掌？太可惜了",
         zimu_2="如果你學會第十八掌",
         zimu_3="就一定可以打贏我",
         zimu_4="不過你沒有這個機會",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="我想到了，原來頭十七掌融合一起",
         zimu_2="就是第十八掌",
         zimu_3="我實在太聰明瞭",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="第十八掌－殺龍有悔",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦，你沒事吧？",
         zimu_2="你看我的姿勢，說有事沒有？",
         zimu_3="你的姿勢是很帥",
@@ -1922,7 +1922,7 @@ test_cases = [
         zimu_7="這麼厲害",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="阿燦⋯你沒事吧",
         zimu_2="趙無極呢",
         zimu_3="到處都是",
@@ -1933,11 +1933,11 @@ test_cases = [
         zimu_8="趙無極的人馬都給我們捉住",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="辛苦了各位兄弟",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="如霜",
         zimu_2="你記不記得我們之間還有一個協議",
         zimu_3="記得！一人之下！萬人之上",
@@ -1948,7 +1948,7 @@ test_cases = [
         zimu_8="你先！我稍後跟上",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="僧格林參，你竟不分青紅皁白",
         zimu_2="你引狼入室",
         zimu_3="朕現在貶你為小乞丐",
@@ -1960,7 +1960,7 @@ test_cases = [
         zimu_9="你真沒話跟朕說？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingPrompt)(
         zimu_1="有甚麼好說呢？走",
         zimu_2="抱我起來",
         zimu_3="蘇英雄！蘇英雄",
@@ -1986,7 +1986,7 @@ test_cases = [
         zimu_23="萬歲萬萬歲　　平身",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingPrompt)(
         zimu_1="兄弟！認得我嗎？",
         zimu_2="化成灰也認得你！臭乞丐",
         zimu_3="揹著女兒，博取同情？",
@@ -2004,7 +2004,7 @@ test_cases = [
         zimu_15="沒有一千都給八百",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="還不快謝謝人家？",
         zimu_2="謝謝",
         zimu_3="快點吃吧",

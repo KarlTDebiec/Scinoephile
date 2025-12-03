@@ -13,7 +13,7 @@ from pydantic import Field, create_model
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Answer
 
-from .llm_text import TranslationLLMText
+from .prompt import TranslationPrompt
 
 __all__ = ["TranslationAnswer"]
 
@@ -21,7 +21,7 @@ __all__ = ["TranslationAnswer"]
 class TranslationAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription translation answers."""
 
-    text: ClassVar[type[TranslationLLMText]]
+    text: ClassVar[type[TranslationPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
@@ -30,14 +30,14 @@ class TranslationAnswer(Answer, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        text: type[TranslationLLMText] = TranslationLLMText,
+        text: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided size, missing, and text.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate fields and text
         """
@@ -63,6 +63,6 @@ class TranslationAnswer(Answer, ABC):
             name[:64],
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[TranslationLLMText]], text),
+            text=(ClassVar[type[TranslationPrompt]], text),
             **fields,
         )

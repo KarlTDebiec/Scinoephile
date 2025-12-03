@@ -7,12 +7,12 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.core.abcs import LLMText
+from scinoephile.core.abcs import Prompt
 
-__all__ = ["ZhongwenLLMText"]
+__all__ = ["ZhongwenPrompt"]
 
 
-class ZhongwenLLMText(LLMText, ABC):
+class ZhongwenPrompt(Prompt, ABC):
     """Text strings to be used for corresponding with an LLM in 中文."""
 
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："

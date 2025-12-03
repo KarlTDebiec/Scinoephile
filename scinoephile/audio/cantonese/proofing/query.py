@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
 
-from .llm_text import ProofingLLMText
+from .prompt import ProofingPrompt
 
 __all__ = ["ProofingQuery"]
 
@@ -20,7 +20,7 @@ __all__ = ["ProofingQuery"]
 class ProofingQuery(Query, ABC):
     """Abstract base class for 粤文 transcription proofing queries."""
 
-    text: ClassVar[type[ProofingLLMText]]
+    text: ClassVar[type[ProofingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
@@ -34,11 +34,11 @@ class ProofingQuery(Query, ABC):
 
     @classmethod
     @cache
-    def get_query_cls(cls, text: type[ProofingLLMText] = ProofingLLMText) -> type[Self]:
+    def get_query_cls(cls, text: type[ProofingPrompt] = ProofingPrompt) -> type[Self]:
         """Get concrete query class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate fields and text
         """
@@ -50,6 +50,6 @@ class ProofingQuery(Query, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ProofingLLMText]], text),
+            text=(ClassVar[type[ProofingPrompt]], text),
             **fields,
         )

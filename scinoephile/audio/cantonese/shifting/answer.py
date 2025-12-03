@@ -12,7 +12,7 @@ from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
 
-from .llm_text import ShiftingLLMText
+from .prompt import ShiftingPrompt
 
 __all__ = ["ShiftingAnswer"]
 
@@ -20,18 +20,16 @@ __all__ = ["ShiftingAnswer"]
 class ShiftingAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription shifting answers."""
 
-    text: ClassVar[type[ShiftingLLMText]]
+    text: ClassVar[type[ShiftingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls, text: type[ShiftingLLMText] = ShiftingLLMText
-    ) -> type[Self]:
+    def get_answer_cls(cls, text: type[ShiftingPrompt] = ShiftingPrompt) -> type[Self]:
         """Get concrete answer class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate fields and text
         """
@@ -49,6 +47,6 @@ class ShiftingAnswer(Answer, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ShiftingLLMText]], text),
+            text=(ClassVar[type[ShiftingPrompt]], text),
             **fields,
         )

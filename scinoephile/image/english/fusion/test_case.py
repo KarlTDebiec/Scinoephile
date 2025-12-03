@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import EnglishFusionAnswer
-from .llm_text import EnglishFusionLLMText
+from .prompt import EnglishFusionPrompt
 from .query import EnglishFusionQuery
 
 __all__ = ["EnglishFusionTestCase"]
@@ -32,7 +32,7 @@ class EnglishFusionTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[EnglishFusionQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[EnglishFusionLLMText]]
+    text: ClassVar[type[EnglishFusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -85,12 +85,12 @@ class EnglishFusionTestCase(
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
+        cls, text: type[EnglishFusionPrompt] = EnglishFusionPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -102,5 +102,5 @@ class EnglishFusionTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[EnglishFusionQuery]], query_cls),
             answer_cls=(ClassVar[type[EnglishFusionAnswer]], answer_cls),
-            text=(ClassVar[type[EnglishFusionLLMText]], text),
+            text=(ClassVar[type[EnglishFusionPrompt]], text),
         )

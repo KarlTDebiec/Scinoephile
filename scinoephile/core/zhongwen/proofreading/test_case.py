@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import ZhongwenProofreadingAnswer
-from .llm_text import ZhongwenProofreadingLLMText
+from .prompt import ZhongwenProofreadingPrompt
 from .query import ZhongwenProofreadingQuery
 
 __all__ = ["ZhongwenProofreadingTestCase"]
@@ -29,7 +29,7 @@ class ZhongwenProofreadingTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[ZhongwenProofreadingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ZhongwenProofreadingLLMText]]
+    text: ClassVar[type[ZhongwenProofreadingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -100,13 +100,13 @@ class ZhongwenProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided size and text.
 
         Arguments:
             size: number of subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -118,5 +118,5 @@ class ZhongwenProofreadingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ZhongwenProofreadingQuery]], query_cls),
             answer_cls=(ClassVar[type[ZhongwenProofreadingAnswer]], answer_cls),
-            text=(ClassVar[type[ZhongwenProofreadingLLMText]], text),
+            text=(ClassVar[type[ZhongwenProofreadingPrompt]], text),
         )

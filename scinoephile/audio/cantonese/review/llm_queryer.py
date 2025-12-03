@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import ReviewAnswer
-from .llm_text import ReviewLLMText
+from .prompt import ReviewPrompt
 from .query import ReviewQuery
 from .test_case import ReviewTestCase
 
@@ -19,5 +19,5 @@ __all__ = ["ReviewLLMQueryer"]
 class ReviewLLMQueryer(LLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]):
     """Reviews 粤文 text based on corresponding 中文."""
 
-    text: ClassVar[type[ReviewLLMText]] = ReviewLLMText
+    text: ClassVar[type[ReviewPrompt]] = ReviewPrompt
     """Text strings to be used for corresponding with LLM."""

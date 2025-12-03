@@ -5,30 +5,30 @@
 from __future__ import annotations
 
 from scinoephile.core.english.proofreading import (
-    EnglishProofreadingLLMText,
+    EnglishProofreadingPrompt,
     EnglishProofreadingTestCase,
 )
 
 # noinspection PyArgumentList
 test_cases = [
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Young master, we are ready",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="What's a hard job for you, young master",
         subtitle_2="The towel, young master",
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="What did he write?",
         subtitle_2="His name!",
         subtitle_3="Great! Young master knows how to\nwrite his name!",
         subtitle_4="Yes!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(44, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(44, EnglishProofreadingPrompt)(
         subtitle_1="Nice calligraphy",
         subtitle_2="Get lost",
         subtitle_3="Nice calligraphy! So Cha Ha Yee Chan!",
@@ -78,7 +78,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Your Majesty, how do you think about\nthe Cantonese Opera?",
         subtitle_2="For sure, it can't compete with Peking Opera!",
         subtitle_3="But, I am appreciated to view this",
@@ -88,7 +88,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(31, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(31, EnglishProofreadingPrompt)(
         subtitle_1="Money…",
         subtitle_2="Happy birthday to you, Mr So",
         subtitle_3="I am homeless and sick…",
@@ -126,7 +126,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingPrompt)(
         subtitle_1="Mr So has come",
         subtitle_2="Congratulation!",
         subtitle_3="This way…",
@@ -155,7 +155,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingPrompt)(
         subtitle_1="Mr So, what's the matter?",
         subtitle_2="I am attacked",
         subtitle_3="What?",
@@ -191,7 +191,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="A pretty woman!",
         subtitle_2="Mr Chiu, about tonight…",
         subtitle_3="100,000 taels",
@@ -214,7 +214,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="I love the pearl more",
         subtitle_2="Mr Chiu, I will wait you in my room",
         subtitle_3="Does the pearl worth 100,000 taels?",
@@ -225,7 +225,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="You are frank! I love it very much",
         subtitle_2="Mr So…",
         subtitle_3="It doesn't matter,",
@@ -241,24 +241,24 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Mantis Fist? It seems to be powerful",
         subtitle_2="Music!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Keep this",
         subtitle_2="See my Crane's Fists!",
         subtitle_3="The Tiger's Claws!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="How can a mantis fight with a tiger?",
         subtitle_2="I know Tiger Claws and Crane's Fists too!",
         subtitle_3="Well, try my mantis!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Bravo…",
         subtitle_2="Your Tiger's claws are defeated",
         subtitle_3="Actually it's not Tiger's Claws,",
@@ -270,13 +270,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="You move fast!",
         subtitle_2="It seems to be powerful…",
         subtitle_3="Kid, you don't know how the wind blows",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingPrompt)(
         subtitle_1="The general of Canton has arrived",
         subtitle_2="Get lost…",
         subtitle_3="Who dares bully my son, let me teach him a lesson",
@@ -299,7 +299,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingPrompt)(
         subtitle_1="How dare you seize the medal of His Majesty?",
         subtitle_2="Cuff him",
         subtitle_3="Hold it, according to the Ching's law,",
@@ -331,7 +331,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingPrompt)(
         subtitle_1="According to the Ching laws,",
         subtitle_2="anyone without a tail should be killed",
         subtitle_3="So you…",
@@ -356,11 +356,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="He is great!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="Uncle Mok, the dishes are all poisoned",
         subtitle_2="Chiu assassinated our Master",
         subtitle_3="and some generals of The Taiping Reign",
@@ -387,7 +387,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingPrompt)(
         subtitle_1="Miss Yushang, we meet again",
         subtitle_2="Why do you come here? Where is Mister Chiu?",
         subtitle_3="The pearl of Mr Chiu is broken",
@@ -408,7 +408,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="Who is this guy?",
         subtitle_2="I don't know",
         subtitle_3="Miss, first of all, I have a good news to you",
@@ -434,7 +434,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingPrompt)(
         subtitle_1="It surprised me",
         subtitle_2="Miss",
         subtitle_3="Hands off!",
@@ -459,7 +459,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingPrompt)(
         subtitle_1="That's good, I want a witness",
         subtitle_2="- Witness?\n- Yes",
         subtitle_3="I swear in front of your sword",
@@ -479,7 +479,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="I can do it",
         subtitle_2="OK",
         subtitle_3="Do it first and then look for me",
@@ -493,16 +493,16 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Crazy!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="We come for the Beggars Association,\n"
         "those unrelated persons leave at once",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Sir, the timing is fit",
         subtitle_2="The road is safe now, please go",
         subtitle_3="Good, very good",
@@ -512,12 +512,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Shit, we are late",
         subtitle_2="That Manchurian should be blamed",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="Sister…",
         subtitle_2="What's the matter?",
         subtitle_3="The idiot is still there",
@@ -526,7 +526,7 @@ test_cases = [
         subtitle_6="Let him go",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="Are you fond of him?",
         subtitle_2="What did you say?",
         subtitle_3="I won't fall in love with anybody",
@@ -539,7 +539,7 @@ test_cases = [
         subtitle_9="Let's go, if you want to marry",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingPrompt)(
         subtitle_1="What evil are you? How dare you scare me?",
         subtitle_2="Mr So, it's me!",
         subtitle_3="You are the pimp?!",
@@ -558,7 +558,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(67, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(67, EnglishProofreadingPrompt)(
         subtitle_1="Where is she going?",
         subtitle_2="She… she is going to Peking",
         subtitle_3="Peking?",
@@ -652,12 +652,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="There is nothing surprising, go",
         subtitle_2="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="I am sorry for scaring you",
         subtitle_2="If this girl is real, that's fantastic!",
         subtitle_3="Hurry up!",
@@ -665,7 +665,7 @@ test_cases = [
         subtitle_5="Come on, go in",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="What's the matter?",
         subtitle_2="Hide in",
         subtitle_3="Get ready, young master",
@@ -673,7 +673,7 @@ test_cases = [
         subtitle_5="Freeze, don't move",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(37, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(37, EnglishProofreadingPrompt)(
         subtitle_1="Sweet smell, are you Piu Hung?",
         subtitle_2="You are great! I love it",
         subtitle_3="Closer",
@@ -722,7 +722,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Let the Horse teams be the pioneer",
         subtitle_2="The arrows teams go side ways,\nthe gunmen stay back",
         revised_1="Let the horse teams be the pioneer",
@@ -733,24 +733,24 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="The candidates come in",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="I can't lift it",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="I don't want to waste my force",
         subtitle_2="Shameless? Damn you!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Oh, 10 marks",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(49, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(49, EnglishProofreadingPrompt)(
         subtitle_1="The final race now starts",
         subtitle_2="The candidates,",
         subtitle_3="Po Ye Tat Tor from Mongolia",
@@ -810,7 +810,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Please take a seat",
         subtitle_2="Seng-ko-lin-ch'in?!",
         subtitle_3="What's the problem?",
@@ -818,11 +818,11 @@ test_cases = [
         subtitle_5="Let's start",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Start!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="They should act 2 more marks for that\npowerful shoot",
         subtitle_2="I do think so",
         subtitle_3="So's arrow isn't on the target,\nPo won this section",
@@ -831,17 +831,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Kidding? Damn you! They are cheating",
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="The candidates please get on the horses",
         subtitle_2="Mr Chiu",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Take these with you, may be you will\nfind them useful",
         subtitle_2="Here comes the 2nd round",
         revised_1="Take these with you, maybe you will\nfind them useful",
@@ -850,7 +850,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="They trick again",
         subtitle_2="It's corrupt! May I give up the betting?",
         revised_1="They tricked again",
@@ -858,21 +858,21 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Chan won this race",
         subtitle_2="Did you tear the ticket?",
         subtitle_3="Not yet",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Are you kidding?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Once again?!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="OK, let's start from the very beginning,\n"
         "I'll fight with single hand and leg",
         subtitle_2="I won't take your advantage",
@@ -882,7 +882,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="How can you use such dirty stance?",
         subtitle_2="Have you waken?",
         subtitle_3="Bravo! He won",
@@ -902,7 +902,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingPrompt)(
         subtitle_1="Damn you Cheng! You betrayed me!",
         subtitle_2="I will beat you to death",
         subtitle_3="if I see you again",
@@ -918,7 +918,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="What are you doing?",
         subtitle_2="The dart is poisoned",
         subtitle_3="He deserves it!",
@@ -929,17 +929,17 @@ test_cases = [
         subtitle_8="You… You…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Thank you, my ancestors!",
         subtitle_2="You have good judgement",
         subtitle_3="Sir, His Majesty wants to\nappoint the title himself",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="OK",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="I want to take some statement from you as record",
         subtitle_2="You won this time, who are you going to thank?",
         subtitle_3="Miss Yushang!",
@@ -949,7 +949,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingPrompt)(
         subtitle_1="Long life to you!",
         subtitle_2="Please get up",
         subtitle_3="Thank you",
@@ -968,18 +968,18 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Take the stationery out!",
         subtitle_2="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="So Cha Ha Yee Chan, write your name now",
         subtitle_2="Thank God, he knows how to write his name!",
         subtitle_3="He can write his name!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(19, EnglishProofreadingPrompt)(
         subtitle_1="I don't know how to write",
         subtitle_2="That's shit!",
         subtitle_3="Kill him now",
@@ -1005,7 +1005,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="He is the Secretary for Justice",
         subtitle_2="So's family should be sentenced to death",
         subtitle_3="But their ancestors achieved a lot\nto Ching, they can be exampled",
@@ -1022,7 +1022,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingPrompt)(
         subtitle_1="What? Are you sure?",
         subtitle_2="I am fair",
         subtitle_3="I judge it from the Law Book",
@@ -1046,11 +1046,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="But I can't sell the affection…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingPrompt)(
         subtitle_1="Professor",
         subtitle_2="I will learn it",
         subtitle_3="I regret that…",
@@ -1073,7 +1073,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(31, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(31, EnglishProofreadingPrompt)(
         subtitle_1="Go in…",
         subtitle_2="Hurry up…",
         subtitle_3="Why are they so happy?",
@@ -1112,13 +1112,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="You treat us as beggars?",
         subtitle_2="Damn you!",
         subtitle_3="It's weird! Let's eat",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingPrompt)(
         subtitle_1="Chan, since we have nothing to do",
         subtitle_2="Let me take a seat, may be we can\nhave something to eat tonight",
         subtitle_3="You are treating yourself a beggar?",
@@ -1136,7 +1136,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(29, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(29, EnglishProofreadingPrompt)(
         subtitle_1="Thank you",
         subtitle_2="Why should I give you money?",
         subtitle_3="Why do you ask so many questions?",
@@ -1174,11 +1174,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Ghost!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="It's a benefit of you!",
         subtitle_2="Why don't you go yourself?",
         revised_1="It's a benefit for you!",
@@ -1186,7 +1186,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Chan, I haven't tried this before",
         subtitle_2="Be careful!",
         subtitle_3="Don't worry",
@@ -1197,7 +1197,7 @@ test_cases = [
         subtitle_8="No show here",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="We just want to earn some money",
         subtitle_2="to go back to Canton",
         subtitle_3="Don't be that mean to us",
@@ -1215,7 +1215,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingPrompt)(
         subtitle_1="Help!",
         subtitle_2="Master Chiu, it's hard for one to carry it",
         subtitle_3="Ask more men to remove it",
@@ -1239,7 +1239,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Chan…",
         subtitle_2="Chan…",
         subtitle_3="Your legs and hands are all broken by me",
@@ -1253,7 +1253,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(26, EnglishProofreadingPrompt)(
         subtitle_1="Don't panic, Chan, it's OK",
         subtitle_2="Don't panic, you'll be alright… Chan!",
         subtitle_3="Don't panic",
@@ -1285,21 +1285,21 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Write your name at once",
         subtitle_2="I don't know how to write",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Chan, what's wrong with you?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Nightmare again?",
         subtitle_2="Don't think so much!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingPrompt)(
         subtitle_1="Although you have taken 2 months' rest,",
         subtitle_2="your legs and hands have not been\ntotally recovered",
         subtitle_3="- Mr. Ha Yee\n- Coming",
@@ -1333,18 +1333,18 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Give me money please",
         subtitle_2="Go, go, I won't give you money",
         subtitle_3="Go, don't stop me from doing business",
         subtitle_4="Chan, dad is leaving",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Thank you…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Are you that mean?",
         subtitle_2="Why don't you write it yourself?",
         subtitle_3="You are off duty, so I just want to lend it",
@@ -1355,7 +1355,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingPrompt)(
         subtitle_1="Dad!",
         subtitle_2="What are you doing?",
         subtitle_3="I am cold… I am cold… Chan",
@@ -1375,7 +1375,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="You bastard, why don't you eat?",
         subtitle_2="You should eat more so as to be strong!",
         subtitle_3="Finish it",
@@ -1388,7 +1388,7 @@ test_cases = [
         subtitle_10="- May I… - No",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingPrompt)(
         subtitle_1="Be merciful!",
         subtitle_2="Be merciful to me please",
         subtitle_3="My dad is dying!",
@@ -1410,11 +1410,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Wait!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="Miss, who are you looking for?",
         subtitle_2="I am sorry, I have mistaken",
         subtitle_3="Tracy, take some dumpling out",
@@ -1435,7 +1435,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Thank you…",
         subtitle_2="Sister,",
         subtitle_3="he wouldn't be that poor if not were you",
@@ -1445,7 +1445,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingPrompt)(
         subtitle_1="Dad, what are you doing?",
         subtitle_2="I can't stand the hunger",
         subtitle_3="So I bit the dumpling of the kid",
@@ -1465,17 +1465,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="The dog's rice",
         subtitle_2="Sir, I will let your dad go if you eat\nthe dog's rice now",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="What's the matter?",
         subtitle_2="Come on",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Chan, don't eat that",
         subtitle_2="You can't face the others if you eat this",
         subtitle_3="Let's forget about me",
@@ -1485,17 +1485,17 @@ test_cases = [
         subtitle_7="Stand properly",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="The Scholar eats the dog's food",
         subtitle_2="Dad. It's quite delicious",
         subtitle_3="Try some. Come on",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="It's delicious, isn't it?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Dad, look!",
         subtitle_2="There is a slice of meat here",
         subtitle_3="It's pock chop!",
@@ -1504,7 +1504,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="They are as hungry as dogs!",
         subtitle_2="Enjoy the dog food!",
         subtitle_3="Hurry, finish it",
@@ -1519,11 +1519,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Uncle So!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingPrompt)(
         subtitle_1="You are…",
         subtitle_2="My dad was the Master of the\nBeggar's Association",
         subtitle_3="Why don't you join our Beggar's Association",
@@ -1548,7 +1548,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(44, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(44, EnglishProofreadingPrompt)(
         subtitle_1="Yushang, good year!",
         subtitle_2="Uncle Mok, happy new year!",
         subtitle_3="This is for you",
@@ -1607,7 +1607,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="Chan, no matter how they despise you,",
         subtitle_2="I have faith on you",
         subtitle_3="Although you lost your power",
@@ -1624,24 +1624,24 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="See, that was powerful",
         subtitle_2="Well, being a people…",
         subtitle_3="Forget it, don't waste time",
         subtitle_4="Why don't you let me sleep?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Why did you lock the door?",
         subtitle_2="Enjoy sleeping",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Son, I tried very hard to get this for you",
         subtitle_2="Try hard to practise, be good",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Why do you go up?",
         subtitle_2="Even you want me to practise Kung-fu,",
         subtitle_3="you should give me a waddy first",
@@ -1650,7 +1650,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Before being appointed important task,",
         subtitle_2="God will give you severe\ntraining for soul and flesh.",
         revised_1="Before being appointed an important task,",
@@ -1658,7 +1658,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Did you write it?",
         subtitle_2="It's ugly, it's right to wipe it away",
         subtitle_3="Hey, beggar?",
@@ -1675,7 +1675,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingPrompt)(
         subtitle_1="See your look, it's a waste for you not to beg",
         subtitle_2="None of your damn business",
         subtitle_3="You are too lazy to be a beggar!",
@@ -1699,7 +1699,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(24, EnglishProofreadingPrompt)(
         subtitle_1="But, don't worry, you were my benefit or,",
         subtitle_2="I will repay you one day",
         subtitle_3="Thank you very much",
@@ -1747,7 +1747,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="I don't want to talk to you, I want a sleep first",
         subtitle_2="Don't go, you can achieve in your profession",
         subtitle_3="From my judgement,",
@@ -1760,7 +1760,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="I won't care who you are,\nI just want to stop the conversation",
         subtitle_2="Please step aside, don't stop me from sleeping",
         subtitle_3="Damn you!",
@@ -1769,11 +1769,11 @@ test_cases = [
         subtitle_6="Idiot!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Kid, see you in the dream",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Before the Buddha, the Disciples\nreturns to your position",
         subtitle_2="To suppress the dragon and tight",
         revised_1="Before the Buddha, the Disciples\nreturn to your position",
@@ -1784,7 +1784,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="So Chan, you enjoyed the prosperity of the world",
         subtitle_2="And you tasted the bitter fruit of the world too",
         subtitle_3="Now you regretted",
@@ -1799,18 +1799,18 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Senior…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="The bitter pasted",
         revised_1="The bitter past",
         note_1="Corrected 'pasted' to 'past' to fix the OCR error.",
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Long life to you…",
         subtitle_2="Here comes the white Goat",
         subtitle_3="My mother, give me power",
@@ -1820,7 +1820,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Tomorrow the Emperor will go hunting",
         subtitle_2="I will send him a pretty girl,\nso as to get close to him",
         subtitle_3="Yuen Ling, you should seduce him tomorrow",
@@ -1830,22 +1830,22 @@ test_cases = [
         subtitle_7="I will give you a share of wealth!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Long life to you",
         subtitle_2="Senior!",
         subtitle_3="Let's go back now",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Senior!",
         subtitle_2="Let's go!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Senior!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="- Let's chase them\n- Stop!",
         subtitle_2="The Emperor is setting off soon",
         subtitle_3="You killed woman…",
@@ -1857,12 +1857,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="No one dares come up to fight for the leadership?",
         subtitle_2='Ask Mok to give us the "Dog Hitting Waddy"!',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Where have they been?",
         subtitle_2="I don't know,",
         subtitle_3="I saw them chat,",
@@ -1875,11 +1875,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Now, we are going to choose the new leader",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="Uncle Mok…",
         subtitle_2="I am scared,",
         subtitle_3="I think you won't come back",
@@ -1891,17 +1891,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Who should go?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="I'll do it",
         subtitle_2="Uncle Mok",
         subtitle_3="Why don't you let me try?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Chan,",
         subtitle_2="you are not qualified, come down",
         subtitle_3="Since you don't have a good candidate,\n"
@@ -1912,16 +1912,16 @@ test_cases = [
         subtitle_7="Bullshit, throw him to death",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Well, I will make your wish come true",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="What is he doing?",
         subtitle_2="Sleeping",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Isn't this stance…",
         subtitle_2="Uncle Sun's \"Sleeping Disciple's Fists'?",
         subtitle_3="Set the position!",
@@ -1930,11 +1930,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Is it dawn?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="I am sorry!",
         subtitle_2="I won",
         subtitle_3="What is the use for defeating us?",
@@ -1946,11 +1946,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='"Dog Hitting Waddy"?',
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="It's for hitting dogs",
         subtitle_2="I do know how to use this waddy!",
         subtitle_3="But it's dislike from the standard stances!",
@@ -1961,12 +1961,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="He broke the waddy!",
         subtitle_2="He broke the treasure of our Association,\nlet's kill him!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(33, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(33, EnglishProofreadingPrompt)(
         subtitle_1="I am Master Hung, who dares go against me?",
         subtitle_2="I set the rules of the association",
         subtitle_3="Any student who defeated the Lotus Position",
@@ -2008,7 +2008,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="Bravo…",
         subtitle_2="Uncle Mok, my son is really great!",
         subtitle_3="I can't guess you have learnt the\n\"Sleeping Disciple's Fists\"?!",
@@ -2025,13 +2025,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Uncle Mok, how are you?",
         subtitle_2="Uncle Mok!",
         subtitle_3="Uncle Mok…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingPrompt)(
         subtitle_1="",
         subtitle_2="",
         subtitle_3="",
@@ -2060,12 +2060,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Check whether the camp is ready or not?",
         subtitle_2="Yes!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="Chiu,",
         subtitle_2="why do you bring this woman here?",
         subtitle_3="I know the Emperor loves pretty woman",
@@ -2080,14 +2080,14 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Sir, you look great!",
         subtitle_2="I think you should go back",
         subtitle_3="to your own position",
         subtitle_4="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="Your Majesty,",
         subtitle_2="Officer Chiu brings this woman to you",
         subtitle_3="Woman?",
@@ -2096,7 +2096,7 @@ test_cases = [
         subtitle_6="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="This bastard wants to see the Emperor,",
         subtitle_2="if I let him see His Majesty oftenly,\nmy post will be taken away",
         revised_2="if I let him see His Majesty often,\nmy post will be taken away",
@@ -2104,7 +2104,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="Men",
         subtitle_2="Sir",
         subtitle_3="- Check what had happened\n- Yes",
@@ -2113,7 +2113,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingPrompt)(
         subtitle_1="Sir, there are many people coming from the forest",
         subtitle_2="Who are they?",
         subtitle_3="I don't know!",
@@ -2122,16 +2122,16 @@ test_cases = [
         subtitle_6="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="There is smoke ahead, let's get armed",
         subtitle_2="Yes",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Damn you beggars",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1="So Chan, what are you doing?",
         subtitle_2="Nothing, I just want to beg for money",
         subtitle_3="Shit, do you want to be killed",
@@ -2147,7 +2147,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingPrompt)(
         subtitle_1="Chan, how can we fight with them?",
         subtitle_2="- Senior\n- Yes",
         subtitle_3="Where are the rest of our men?",
@@ -2171,14 +2171,14 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="There is smoke ahead,\nsomeone must have alarmed them",
         subtitle_2="- Get ready the Unicorn Smoke\n- Yes",
         subtitle_3="Attack the main camp",
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1="Rebel! Help!",
         subtitle_2="They should be killed",
         subtitle_3="The one who didn't kill you should be killed",
@@ -2186,36 +2186,36 @@ test_cases = [
         subtitle_5="is blowing to the Royal camp",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="No, the wind direction changed",
         subtitle_2="Yes, wait for me",
         subtitle_3="If the beggars don't retreat now,\nwe will kill with no mercy",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Have a look",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="The Unicorn Smoke of the Tin Li Sect",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="Be calm, urine is the antidote to the poison",
         subtitle_2="Come and piss",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="How about me?",
         subtitle_2="Don't worry, I can give you some urine",
         subtitle_3="Come on, hold it",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Rush in!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingPrompt)(
         subtitle_1="How is the situation?",
         subtitle_2="Thanks for Your Majesty's luck,\nthe wind direction changed",
         subtitle_3="The smoke is going to the other direction",
@@ -2239,11 +2239,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Protect me",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingPrompt)(
         subtitle_1="Chan?",
         subtitle_2="Yushang",
         subtitle_3="How did you get here?",
@@ -2267,28 +2267,28 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="You betrayer!",
         subtitle_2="Catch him",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Your Majesty",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1="You bastard, give your kingdom to me",
         subtitle_2="What are you telling him?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="It's you",
         subtitle_2="Yes, I am Beggar So",
         subtitle_3="Why don't you sleep in your hut?",
         subtitle_4="Well, I am a little bit sleepy",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingPrompt)(
         subtitle_1='"Sleeping Disciple"?',
         subtitle_2="Yes. Look at you, you are like beggar too",
         subtitle_3="Are you interested to join us?",
@@ -2299,16 +2299,16 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Did you generate all your force? I didn't",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingPrompt)(
         subtitle_1='Fool, only the "Dragon Suppressing\nStances" scare me',
         subtitle_2="I won't give a damn to any other stances",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingPrompt)(
         subtitle_1='"Dragon Suppress Stances"',
         subtitle_2='"Dragon in the sky"',
         subtitle_3='"Dragon swings its tail"',
@@ -2321,31 +2321,31 @@ test_cases = [
         subtitle_10="Finished",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="You can't finish the last stance,",
         subtitle_2="you can defeat me",
         subtitle_3="after learning the 18th stance",
         subtitle_4="But you have no chance",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Chan!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingPrompt)(
         subtitle_1="I've got it. Just mix the 17 stances,",
         subtitle_2="it's the 18th stance then",
         subtitle_3="I am too smart!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1='The 18 stance, "It\'s a regret to kill the Dragon"!',
         revised_1='The 18th stance, "It\'s a regret to kill the Dragon"!',
         note_1="Corrected '18 stance' to '18th stance' for proper ordinal usage.",
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingPrompt)(
         subtitle_1="Chan, are you alright?",
         subtitle_2="See, don't you think I am alright?",
         subtitle_3="Your post is really smart",
@@ -2358,7 +2358,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Chan! Are you okay?",
         subtitle_2="Where is Chiu?",
         subtitle_3="He is around",
@@ -2375,11 +2375,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingPrompt)(
         subtitle_1="Thank you, buddies",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingPrompt)(
         subtitle_1="Yushang",
         subtitle_2="We have an agreement, do you remember?",
         subtitle_3="Yes, be the top of all",
@@ -2394,7 +2394,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingPrompt)(
         subtitle_1="Seng-ko-lin-ch'in,\nyou are really a fool",
         subtitle_2="You bring a thief to harm me",
         subtitle_3="Now, you are titled to be a beggar",
@@ -2412,7 +2412,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingPrompt)(
         subtitle_1="Nothing special, let's go",
         subtitle_2="Pick me up",
         subtitle_3="Mister\nSo!",
@@ -2447,7 +2447,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingPrompt)(
         subtitle_1="Pal, do you know me?",
         subtitle_2="Of course! You beggar",
         subtitle_3="You beg with your girl, you think I'll\n"
@@ -2466,7 +2466,7 @@ test_cases = [
         subtitle_15="Not less than a thousand, got me?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingPrompt)(
         subtitle_1="Say thank you now",
         subtitle_2="Thank you, uncle",
         subtitle_3="Hurry up",

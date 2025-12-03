@@ -10,7 +10,7 @@ from scinoephile.core.series import Series
 
 from .answer import ZhongwenProofreadingAnswer
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
-from .llm_text import ZhongwenProofreadingLLMText
+from .prompt import ZhongwenProofreadingPrompt
 from .proofreader import ZhongwenProofreader
 from .query import ZhongwenProofreadingQuery
 from .test_case import ZhongwenProofreadingTestCase
@@ -19,7 +19,7 @@ __all__ = [
     "ZhongwenProofreader",
     "ZhongwenProofreadingAnswer",
     "ZhongwenProofreadingLLMQueryer",
-    "ZhongwenProofreadingLLMText",
+    "ZhongwenProofreadingPrompt",
     "ZhongwenProofreadingQuery",
     "ZhongwenProofreadingTestCase",
     "get_zhongwen_proofread",

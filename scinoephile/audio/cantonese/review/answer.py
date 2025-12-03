@@ -12,7 +12,7 @@ from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer
 
-from .llm_text import ReviewLLMText
+from .prompt import ReviewPrompt
 
 __all__ = ["ReviewAnswer"]
 
@@ -20,7 +20,7 @@ __all__ = ["ReviewAnswer"]
 class ReviewAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription review answers."""
 
-    text: ClassVar[type[ReviewLLMText]]
+    text: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
@@ -28,13 +28,13 @@ class ReviewAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        text: type[ReviewLLMText] = ReviewLLMText,
+        text: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[ReviewAnswer]:
         """Get concrete answer class with provided size and text.
 
         Arguments:
             size: number of subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate fields and text
         """
@@ -56,6 +56,6 @@ class ReviewAnswer(Answer, ABC):
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ReviewLLMText]], text),
+            text=(ClassVar[type[ReviewPrompt]], text),
             **fields,
         )

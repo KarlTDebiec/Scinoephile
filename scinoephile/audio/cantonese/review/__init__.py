@@ -4,16 +4,16 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review.answer import ReviewAnswer
-from scinoephile.audio.cantonese.review.llm_queryer import ReviewLLMQueryer
-from scinoephile.audio.cantonese.review.llm_text import ReviewLLMText
-from scinoephile.audio.cantonese.review.query import ReviewQuery
-from scinoephile.audio.cantonese.review.test_case import ReviewTestCase
+from .answer import ReviewAnswer
+from .llm_queryer import ReviewLLMQueryer
+from .prompt import ReviewPrompt
+from .query import ReviewQuery
+from .test_case import ReviewTestCase
 
 __all__ = [
     "ReviewAnswer",
     "ReviewLLMQueryer",
-    "ReviewLLMText",
+    "ReviewPrompt",
     "ReviewQuery",
     "ReviewTestCase",
 ]

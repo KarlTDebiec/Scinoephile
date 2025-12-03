@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import ProofingAnswer
-from .llm_text import ProofingLLMText
+from .prompt import ProofingPrompt
 from .query import ProofingQuery
 
 __all__ = ["ProofingTestCase"]
@@ -29,7 +29,7 @@ class ProofingTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[ProofingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ProofingLLMText]]
+    text: ClassVar[type[ProofingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -80,12 +80,12 @@ class ProofingTestCase(
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[ProofingLLMText] = ProofingLLMText
+        cls, text: type[ProofingPrompt] = ProofingPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -97,5 +97,5 @@ class ProofingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ProofingQuery]], query_cls),
             answer_cls=(ClassVar[type[ProofingAnswer]], answer_cls),
-            text=(ClassVar[type[ProofingLLMText]], text),
+            text=(ClassVar[type[ProofingPrompt]], text),
         )

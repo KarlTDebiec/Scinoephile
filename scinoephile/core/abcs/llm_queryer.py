@@ -23,7 +23,7 @@ from scinoephile.openai import OpenAIProvider
 from ..exceptions import ScinoephileError
 from .answer import Answer
 from .llm_provider import LLMProvider
-from .llm_text import LLMText
+from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
@@ -33,7 +33,7 @@ __all__ = ["LLMQueryer"]
 class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """Abstract base class for LLM queryers."""
 
-    text: ClassVar[type[LLMText]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __init__(

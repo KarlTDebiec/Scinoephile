@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import ProofingAnswer
-from .llm_text import ProofingLLMText
+from .prompt import ProofingPrompt
 from .query import ProofingQuery
 from .test_case import ProofingTestCase
 
@@ -19,5 +19,5 @@ __all__ = ["ProofingLLMQueryer"]
 class ProofingLLMQueryer(LLMQueryer[ProofingQuery, ProofingAnswer, ProofingTestCase]):
     """Proofreads 粤文 text based on the corresponding 中文."""
 
-    text: ClassVar[type[ProofingLLMText]] = ProofingLLMText
+    text: ClassVar[type[ProofingPrompt]] = ProofingPrompt
     """Text strings to be used for corresponding with LLM."""

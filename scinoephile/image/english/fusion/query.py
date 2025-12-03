@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
 
-from .llm_text import EnglishFusionLLMText
+from .prompt import EnglishFusionPrompt
 
 __all__ = ["EnglishFusionQuery"]
 
@@ -20,7 +20,7 @@ __all__ = ["EnglishFusionQuery"]
 class EnglishFusionQuery(Query, ABC):
     """Abstract base class for English OCR fusion queries."""
 
-    text: ClassVar[type[EnglishFusionLLMText]]
+    text: ClassVar[type[EnglishFusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
@@ -37,12 +37,12 @@ class EnglishFusionQuery(Query, ABC):
     @classmethod
     @cache
     def get_query_cls(
-        cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
+        cls, text: type[EnglishFusionPrompt] = EnglishFusionPrompt
     ) -> type[Self]:
         """Get concrete query class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate fields and text
         """
@@ -54,6 +54,6 @@ class EnglishFusionQuery(Query, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[EnglishFusionLLMText]], text),
+            text=(ClassVar[type[EnglishFusionPrompt]], text),
             **fields,
         )

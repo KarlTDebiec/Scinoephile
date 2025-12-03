@@ -15,7 +15,7 @@ from scinoephile.core.models import format_field
 from scinoephile.core.text import whitespace
 
 from .answer import ZhongwenFusionAnswer
-from .llm_text import ZhongwenFusionLLMText
+from .prompt import ZhongwenFusionPrompt
 from .query import ZhongwenFusionQuery
 
 __all__ = ["ZhongwenFusionTestCase"]
@@ -33,7 +33,7 @@ class ZhongwenFusionTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[ZhongwenFusionQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ZhongwenFusionLLMText]]
+    text: ClassVar[type[ZhongwenFusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -89,12 +89,12 @@ class ZhongwenFusionTestCase(
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
+        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -106,5 +106,5 @@ class ZhongwenFusionTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ZhongwenFusionQuery]], query_cls),
             answer_cls=(ClassVar[type[ZhongwenFusionAnswer]], answer_cls),
-            text=(ClassVar[type[ZhongwenFusionLLMText]], text),
+            text=(ClassVar[type[ZhongwenFusionPrompt]], text),
         )

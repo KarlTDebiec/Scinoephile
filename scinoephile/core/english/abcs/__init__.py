@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from .english_llm_text import EnglishLLMText
+from .prompt import EnglishPrompt
 
 __all__ = [
-    "EnglishLLMText",
+    "EnglishPrompt",
 ]

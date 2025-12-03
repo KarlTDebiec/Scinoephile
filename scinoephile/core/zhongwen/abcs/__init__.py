@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from .zhongwen_llm_text import ZhongwenLLMText
+from .prompt import ZhongwenPrompt
 
 __all__ = [
-    "ZhongwenLLMText",
+    "ZhongwenPrompt",
 ]

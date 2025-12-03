@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import EnglishProofreadingAnswer
-from .llm_text import EnglishProofreadingLLMText
+from .prompt import EnglishProofreadingPrompt
 from .query import EnglishProofreadingQuery
 from .test_case import EnglishProofreadingTestCase
 
@@ -23,5 +23,5 @@ class EnglishProofreadingLLMQueryer(
 ):
     """Queries LLM to proofread English subtitles."""
 
-    text: ClassVar[type[EnglishProofreadingLLMText]] = EnglishProofreadingLLMText
+    text: ClassVar[type[EnglishProofreadingPrompt]] = EnglishProofreadingPrompt
     """Text strings to be used for corresponding with LLM."""

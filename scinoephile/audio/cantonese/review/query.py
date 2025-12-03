@@ -12,7 +12,7 @@ from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Query
 
-from .llm_text import ReviewLLMText
+from .prompt import ReviewPrompt
 
 __all__ = ["ReviewQuery"]
 
@@ -20,7 +20,7 @@ __all__ = ["ReviewQuery"]
 class ReviewQuery(Query, ABC):
     """Abstract base class for 粤文 transcription review queries."""
 
-    text: ClassVar[type[ReviewLLMText]]
+    text: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
@@ -28,13 +28,13 @@ class ReviewQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        text: type[ReviewLLMText] = ReviewLLMText,
+        text: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided size and text.
 
         Arguments:
             size: number of subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate fields and text
         """
@@ -52,6 +52,6 @@ class ReviewQuery(Query, ABC):
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ReviewLLMText]], text),
+            text=(ClassVar[type[ReviewPrompt]], text),
             **fields,
         )
