@@ -12,10 +12,10 @@ from textwrap import dedent
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.english.proofreading.english_proofreading_llm_queryer import (
+from scinoephile.core.english.proofreading.llm_queryer import (
     EnglishProofreadingLLMQueryer,
 )
-from scinoephile.core.english.proofreading.english_proofreading_test_case import (
+from scinoephile.core.english.proofreading.test_case import (
     EnglishProofreadingTestCase,
 )
 from scinoephile.testing import (

@@ -11,13 +11,13 @@ from typing import ClassVar, Self
 from pydantic import create_model, model_validator
 
 from scinoephile.core.abcs import TestCase
-from scinoephile.core.english.proofreading.english_proofreading_answer import (
+from scinoephile.core.english.proofreading.answer import (
     EnglishProofreadingAnswer,
 )
-from scinoephile.core.english.proofreading.english_proofreading_llm_text import (
+from scinoephile.core.english.proofreading.llm_text import (
     EnglishProofreadingLLMText,
 )
-from scinoephile.core.english.proofreading.english_proofreading_query import (
+from scinoephile.core.english.proofreading.query import (
     EnglishProofreadingQuery,
 )
 from scinoephile.core.models import format_field
