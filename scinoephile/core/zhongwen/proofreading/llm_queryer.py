@@ -4,12 +4,15 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any, ClassVar
 
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.abcs import LLMQueryer, Prompt
 
 from .answer import ZhongwenProofreadingAnswer
-from .prompt import ZhongwenProofreadingPrompt
+from .prompt import (
+    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingSimplifiedPrompt,
+)
 from .query import ZhongwenProofreadingQuery
 from .test_case import ZhongwenProofreadingTestCase
 
@@ -25,5 +28,22 @@ class ZhongwenProofreadingLLMQueryer(
 ):
     """Queries LLM to proofread 中文 subtitles."""
 
-    text: ClassVar[type[ZhongwenProofreadingPrompt]] = ZhongwenProofreadingPrompt
+    text: ClassVar[type[Prompt]] = ZhongwenProofreadingSimplifiedPrompt
     """Text strings to be used for corresponding with LLM."""
+
+    def __init__(
+        self,
+        *,
+        text: type[ZhongwenProofreadingPromptBase] | None = None,
+        **kwargs: Any,
+    ):
+        """Initialize.
+
+        Arguments:
+            text: prompt text to use for LLM correspondence
+            kwargs: Additional keyword arguments forwarded to LLMQueryer.
+        """
+        if text is not None:
+            type(self).text = text
+
+        super().__init__(**kwargs)

@@ -10,9 +10,12 @@ from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.abcs import Query
+from scinoephile.core.abcs import Prompt, Query
 
-from .prompt import ZhongwenProofreadingPrompt
+from .prompt import (
+    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingSimplifiedPrompt,
+)
 
 __all__ = ["ZhongwenProofreadingQuery"]
 
@@ -20,7 +23,7 @@ __all__ = ["ZhongwenProofreadingQuery"]
 class ZhongwenProofreadingQuery(Query, ABC):
     """Abstract base class for 中文 proofreading queries."""
 
-    text: ClassVar[type[ZhongwenProofreadingPrompt]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
@@ -28,7 +31,9 @@ class ZhongwenProofreadingQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
+        text: type[
+            ZhongwenProofreadingPromptBase
+        ] = ZhongwenProofreadingSimplifiedPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided size and text.
 
@@ -48,6 +53,6 @@ class ZhongwenProofreadingQuery(Query, ABC):
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenProofreadingPrompt]], text),
+            text=(ClassVar[type[ZhongwenProofreadingPromptBase]], text),
             **fields,
         )

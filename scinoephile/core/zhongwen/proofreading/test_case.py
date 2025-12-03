@@ -6,15 +6,18 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import ClassVar, Self, cast
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.abcs import TestCase
+from scinoephile.core.abcs import Answer, Prompt, Query, TestCase
 from scinoephile.core.models import format_field
 
 from .answer import ZhongwenProofreadingAnswer
-from .prompt import ZhongwenProofreadingPrompt
+from .prompt import (
+    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingSimplifiedPrompt,
+)
 from .query import ZhongwenProofreadingQuery
 
 __all__ = ["ZhongwenProofreadingTestCase"]
@@ -25,11 +28,11 @@ class ZhongwenProofreadingTestCase(
 ):
     """Abstract base class for 中文 proofreading test cases."""
 
-    answer_cls: ClassVar[type[ZhongwenProofreadingAnswer]]
+    answer_cls: ClassVar[type[Answer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ZhongwenProofreadingQuery]]
+    query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
-    text: ClassVar[type[ZhongwenProofreadingPrompt]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -80,19 +83,18 @@ class ZhongwenProofreadingTestCase(
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
+        text = cast(type[ZhongwenProofreadingPromptBase], self.text)
         for idx in range(self.size):
             zimu = getattr(self, f"zimu_{idx + 1}")
             xiugai = getattr(self, f"xiugai_{idx + 1}")
             beizhu = getattr(self, f"beizhu_{idx + 1}")
             if xiugai != "":
                 if zimu == xiugai:
-                    raise ValueError(
-                        self.text.zimu_xiugai_equal_error.format(idx=idx + 1)
-                    )
+                    raise ValueError(text.zimu_xiugai_equal_error.format(idx=idx + 1))
                 if beizhu == "":
-                    raise ValueError(self.text.beizhu_missing_error.format(idx=idx + 1))
+                    raise ValueError(text.beizhu_missing_error.format(idx=idx + 1))
             elif beizhu != "":
-                raise ValueError(self.text.xiugai_missing_error.format(idx=idx + 1))
+                raise ValueError(text.xiugai_missing_error.format(idx=idx + 1))
         return self
 
     @classmethod
@@ -100,7 +102,9 @@ class ZhongwenProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
+        text: type[
+            ZhongwenProofreadingPromptBase
+        ] = ZhongwenProofreadingSimplifiedPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided size and text.
 
@@ -110,13 +114,13 @@ class ZhongwenProofreadingTestCase(
         Returns:
             TestCase type with appropriate fields and text
         """
-        query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
-        answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)
+        query_cls = ZhongwenProofreadingQuery.get_query_cls(size, text=text)
+        answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size, text=text)
         return create_model(
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ZhongwenProofreadingQuery]], query_cls),
             answer_cls=(ClassVar[type[ZhongwenProofreadingAnswer]], answer_cls),
-            text=(ClassVar[type[ZhongwenProofreadingPrompt]], text),
+            text=(ClassVar[type[ZhongwenProofreadingPromptBase]], text),
         )

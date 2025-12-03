@@ -8,6 +8,7 @@ import re
 from logging import info, warning
 from pathlib import Path
 from textwrap import dedent
+from typing import cast
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
@@ -19,6 +20,10 @@ from scinoephile.testing import (
 )
 
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
+from .prompt import (
+    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingSimplifiedPrompt,
+)
 from .test_case import ZhongwenProofreadingTestCase
 
 __all__ = ["ZhongwenProofreader"]
@@ -32,6 +37,9 @@ class ZhongwenProofreader:
         test_cases: list[ZhongwenProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
+        text: type[
+            ZhongwenProofreadingPromptBase
+        ] = ZhongwenProofreadingSimplifiedPrompt,
     ):
         """Initialize.
 
@@ -39,13 +47,19 @@ class ZhongwenProofreader:
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
+            text: prompt text to use when communicating with the LLM
         """
         if test_cases is None:
             test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_cases.extend(get_test_cases_from_file_path(test_case_path))
+            test_cases.extend(
+                cast(
+                    list[ZhongwenProofreadingTestCase],
+                    get_test_cases_from_file_path(test_case_path),
+                )
+            )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -54,6 +68,7 @@ class ZhongwenProofreader:
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
+            text=text,
         )
         """Proofreads 中文 subtitles."""
 
@@ -76,7 +91,9 @@ class ZhongwenProofreader:
                 break
 
             # Query LLM
-            test_case_cls = ZhongwenProofreadingTestCase.get_test_case_cls(len(block))
+            test_case_cls = ZhongwenProofreadingTestCase.get_test_case_cls(
+                len(block), text=self.llm_queryer.text
+            )
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
             query = query_cls(
@@ -149,7 +166,9 @@ class ZhongwenProofreader:
 
             from __future__ import annotations
 
-            from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+            from scinoephile.core.zhongwen.proofreading import (
+                ZhongwenProofreadingTestCase,
+            )
 
             # noinspection PyArgumentList
             test_cases = []  # test_cases
