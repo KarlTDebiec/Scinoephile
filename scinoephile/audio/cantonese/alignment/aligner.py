@@ -334,10 +334,11 @@ class Aligner:
             alignment: Nascent alignment
         """
         for sg_idx in range(len(alignment.sync_groups)):
-            query, answer_cls, test_case_cls = get_proofing_query(alignment, sg_idx)
-            if query is None:
+            query_and_friends = get_proofing_query(alignment, sg_idx)
+            if query_and_friends is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
+            query, answer_cls, test_case_cls = query_and_friends
             answer = await self.proofing_llm_queryer.call_async(
                 query, answer_cls, test_case_cls
             )

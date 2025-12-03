@@ -14,6 +14,7 @@ from scinoephile.audio.cantonese.merging.merging_answer import MergingAnswer
 from scinoephile.audio.cantonese.merging.merging_llm_text import MergingLLMText
 from scinoephile.audio.cantonese.merging.merging_query import MergingQuery
 from scinoephile.core.abcs import TestCase
+from scinoephile.core.models import format_field
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
@@ -39,6 +40,24 @@ class MergingTestCase(
             len(self.yuewen_to_merge) == 1
             and self.yuewen_to_merge[0] == self.yuewen_merged
         )
+
+    @property
+    def source_str(self) -> str:
+        """Get Python source string."""
+        lines = [f"{MergingTestCase.__name__}.get_test_case_cls({self.text.__name__})("]
+        for field in self.query_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        for field in self.answer_fields:
+            value = getattr(self, field)
+            if value == "":
+                continue
+            lines.append(format_field(field, value))
+        for field in self.test_case_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        lines.append(")")
+        return "\n".join(lines)
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.

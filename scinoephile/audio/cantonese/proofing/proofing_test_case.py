@@ -14,6 +14,7 @@ from scinoephile.audio.cantonese.proofing.proofing_answer import ProofingAnswer
 from scinoephile.audio.cantonese.proofing.proofing_llm_text import ProofingLLMText
 from scinoephile.audio.cantonese.proofing.proofing_query import ProofingQuery
 from scinoephile.core.abcs import TestCase
+from scinoephile.core.models import format_field
 
 
 class ProofingTestCase(
@@ -32,6 +33,26 @@ class ProofingTestCase(
     def noop(self) -> bool:
         """Return whether this test case is a no-op."""
         return self.yuewen == self.yuewen_proofread
+
+    @property
+    def source_str(self) -> str:
+        """Get Python source string."""
+        lines = [
+            f"{ProofingTestCase.__name__}.get_test_case_cls({self.text.__name__})("
+        ]
+        for field in self.query_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        for field in self.answer_fields:
+            value = getattr(self, field)
+            if value == "":
+                continue
+            lines.append(format_field(field, value))
+        for field in self.test_case_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        lines.append(")")
+        return "\n".join(lines)
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
