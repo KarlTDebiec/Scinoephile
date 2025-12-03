@@ -72,7 +72,9 @@ def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | N
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    return ShiftingQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
+    return ShiftingQuery.get_query_cls()(
+        zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2
+    )
 
 
 def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
@@ -108,7 +110,7 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    return MergingQuery(zhongwen=zw, yuewen_to_merge=yws)
+    return MergingQuery.get_query_cls()(zhongwen=zw, yuewen_to_merge=yws)
 
 
 def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | None:
@@ -148,7 +150,7 @@ def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | Non
     yw = alignment.yuewen[yw_idxs[0]].text
 
     # Return proof query
-    return ProofingQuery(zhongwen=zw, yuewen=yw)
+    return ProofingQuery.get_query_cls()(zhongwen=zw, yuewen=yw)
 
 
 def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> ReviewQuery:
