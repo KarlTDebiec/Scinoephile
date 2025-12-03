@@ -24,13 +24,13 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
 
 
 def get_zhongwen_ocr_fused(
-    paddle: Series, lens: Series, fuser: ZhongwenFuser = None, **kwargs: Any
+    lens: Series, paddle: Series, fuser: ZhongwenFuser = None, **kwargs: Any
 ) -> Series:
-    """Get OCRed 中文 series fused from PaddleOCR and Google Lens outputs.
+    """Get OCRed 中文 series fused from Google Lens and PaddleOCR outputs.
 
     Arguments:
-        paddle: subtitles OCRed using PaddleOCR
         lens: subtitles OCRed using Google Lens
+        paddle: subtitles OCRed using PaddleOCR
         fuser: ZhongwenFuser to use
         kwargs: additional keyword arguments for ZhongwenFuser.fuse
     Returns:
@@ -38,7 +38,7 @@ def get_zhongwen_ocr_fused(
     """
     if fuser is None:
         fuser = ZhongwenFuser()
-    fused = fuser.fuse(paddle, lens, **kwargs)
+    fused = fuser.fuse(lens, paddle, **kwargs)
     return fused
 
 

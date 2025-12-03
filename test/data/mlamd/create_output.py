@@ -63,23 +63,23 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "简体中文 (OCR)",
-    # "English (OCR)",
-    "简体粤文 (Transcription)"
-    # "Bilingual 简体中文 and English",
-    # "Bilingual 简体粤文 and English",
+    "简体中文 (OCR)",
+    "English (OCR)",
+    "简体粤文 (Transcription)",
+    "Bilingual 简体中文 and English",
+    "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
-    zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
-    zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
-    zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
     zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
     zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
     zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
+    zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
+    zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
+    zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
     zho_hans_fuse = get_zhongwen_ocr_fused(
-        zho_hans_paddle,
         zho_hans_lens,
+        zho_hans_paddle,
         ZhongwenFuser(
             test_cases=kob_zhongwen_fusion_test_cases
             + mnt_zhongwen_fusion_test_cases
@@ -116,13 +116,13 @@ if "简体中文 (OCR)" in actions:
     )
 
 if "English (OCR)" in actions:
-    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
-    eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
     eng_lens = Series.load(input_dir / "eng_lens.srt")
     eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
+    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
+    eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
     eng_fuse = get_english_ocr_fused(
-        eng_tesseract,
         eng_lens,
+        eng_tesseract,
         EnglishFuser(
             test_cases=kob_english_fusion_test_cases
             + mnt_english_fusion_test_cases
