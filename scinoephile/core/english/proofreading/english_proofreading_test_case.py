@@ -36,15 +36,6 @@ class EnglishProofreadingTestCase(
     """Text strings to be used for corresponding with LLM."""
 
     @property
-    def noop(self) -> bool:
-        """Whether this test case is a no-op."""
-        for idx in range(1, self.size + 1):
-            revised = getattr(self, f"revised_{idx}")
-            if revised != "":
-                return False
-        return True
-
-    @property
     def size(self) -> int:
         """Size of the test case."""
         idxs = [
@@ -87,7 +78,10 @@ class EnglishProofreadingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if not self.noop:
+        has_revision = any(
+            getattr(self, f"revised_{idx}") != "" for idx in range(1, self.size + 1)
+        )
+        if has_revision:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 

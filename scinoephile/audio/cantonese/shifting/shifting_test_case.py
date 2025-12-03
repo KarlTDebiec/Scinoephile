@@ -55,7 +55,7 @@ class ShiftingTestCase(
         if self.yuewen_1_shifted != "" or self.yuewen_2_shifted != "":
             expected = self.yuewen_1 + self.yuewen_2
             received = self.yuewen_1_shifted + self.yuewen_2_shifted
-            if not self.noop and expected != received:
+            if expected != received:
                 raise ValueError(
                     self.text.yuewen_characters_changed_error.format(
                         expected=expected, received=received

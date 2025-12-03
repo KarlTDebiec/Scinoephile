@@ -69,11 +69,6 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         return self.answer_cls.model_fields
 
     @property
-    def noop(self) -> bool:
-        """Whether this test case is a no-op."""
-        return False
-
-    @property
     def query(self) -> TQuery:
         """Query part of the test case."""
         return self.query_cls.model_validate(
