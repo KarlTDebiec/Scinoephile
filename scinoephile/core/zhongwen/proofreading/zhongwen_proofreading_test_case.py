@@ -132,5 +132,3 @@ class ZhongwenProofreadingTestCase(
             answer_cls=(ClassVar[type[ZhongwenProofreadingAnswer]], answer_cls),
             text=(ClassVar[type[ZhongwenProofreadingLLMText]], text),
         )
-
-        return model
