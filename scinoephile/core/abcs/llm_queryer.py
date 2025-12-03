@@ -54,8 +54,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
         """
-        self.provider = provider or OpenAIProvider()
-        """LLM Provider to use for queries."""
+        self._provider = provider
 
         self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or {}}
         """Test cases included in the prompt for few-shot learning."""
@@ -89,6 +88,18 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             LLM's answer
         """
         return self.call(query, answer_cls, test_case_cls)
+
+    @property
+    def provider(self):
+        """LLM Provider to use for queries."""
+        if self._provider is None:
+            self._provider = OpenAIProvider()
+        return self._provider
+
+    @provider.setter
+    def provider(self, value: LLMProvider):
+        """Set LLM Provider to use for queries."""
+        self._provider = value
 
     def call(
         self,
