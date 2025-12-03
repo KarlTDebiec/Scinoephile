@@ -40,8 +40,8 @@ class ShiftingQuery(Query, ABC):
         fields = {
             "zhongwen_1": (str, Field(..., description=text.zhongwen_1_description)),
             "zhongwen_2": (str, Field(..., description=text.zhongwen_2_description)),
-            "yuewen_1": (str, Field(..., description=text.yuewen_1_description)),
-            "yuewen_2": (str, Field(..., description=text.yuewen_2_description)),
+            "yuewen_1": (str, Field("", description=text.yuewen_1_description)),
+            "yuewen_2": (str, Field("", description=text.yuewen_2_description)),
         }
         return create_model(
             f"{cls.__name__}_{text.__name__}",

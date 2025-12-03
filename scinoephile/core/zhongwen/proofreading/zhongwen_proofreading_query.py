@@ -29,13 +29,13 @@ class ZhongwenProofreadingQuery(Query, ABC):
         size: int,
         text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
     ) -> type[Self]:
-        """Get query class for 中文 proofreading.
+        """Get concrete query class with provided size and text.
 
         Arguments:
             size: number of subtitles
             text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenProofreadingQuery type with appropriate fields and descriptions
+            Query type with appropriate fields and text
         """
         fields = {}
         for idx in range(size):

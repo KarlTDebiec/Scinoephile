@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar
 
 from pydantic import create_model, model_validator
@@ -51,32 +52,6 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
         lines.append(")")
         return "\n".join(lines)
 
-    @classmethod
-    def get_test_case_cls(
-        cls,
-        size: int,
-    ) -> type[ReviewTestCase[ReviewQuery, ReviewAnswer]]:
-        """Get test case class for review of Cantonese audio.
-
-        Arguments:
-            size: Number of 中文 subtitles
-        Returns:
-            ReviewTestCase type with appropriate query and answer models
-        Raises:
-            ScinoephileError: If missing indices are out of range
-        """
-        query_cls = ReviewQuery.get_query_cls(size)
-        answer_cls = ReviewAnswer.get_answer_cls(size)
-        model = create_model(
-            f"{cls.__name__}_{size}",
-            __base__=(query_cls, answer_cls, ReviewTestCase[query_cls, answer_cls]),
-            __module__=cls.__module__,
-        )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-
-        return model
-
     @model_validator(mode="after")
     def validate_test_case(self) -> ReviewTestCase:
         """Ensure query and answer are consistent with one another."""
@@ -104,3 +79,30 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
                     f"needed an empty string must be provided."
                 )
         return self
+
+    @classmethod
+    @cache
+    def get_test_case_cls(
+        cls,
+        size: int,
+    ) -> type[ReviewTestCase[ReviewQuery, ReviewAnswer]]:
+        """Get test case class for review of Cantonese audio.
+
+        Arguments:
+            size: Number of 中文 subtitles
+        Returns:
+            ReviewTestCase type with appropriate query and answer models
+        Raises:
+            ScinoephileError: If missing indices are out of range
+        """
+        query_cls = ReviewQuery.get_query_cls(size)
+        answer_cls = ReviewAnswer.get_answer_cls(size)
+        model = create_model(
+            f"{cls.__name__}_{size}",
+            __base__=(query_cls, answer_cls, ReviewTestCase[query_cls, answer_cls]),
+            __module__=cls.__module__,
+        )
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+
+        return model

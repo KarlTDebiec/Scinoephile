@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar, Self
 
 from pydantic import create_model
@@ -40,7 +41,8 @@ class ZhongwenFusionTestCase(
     def source_str(self) -> str:
         """Get Python source string."""
         lines = [
-            f"{ZhongwenFusionTestCase.__name__}.get_test_case_cls({self.text.__name__})("
+            f"{ZhongwenFusionTestCase.__name__}.get_test_case_cls("
+            f"{self.text.__name__})("
         ]
         for field in self.query_fields:
             value = getattr(self, field)
@@ -86,15 +88,16 @@ class ZhongwenFusionTestCase(
         return min_difficulty
 
     @classmethod
+    @cache
     def get_test_case_cls(
         cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for 中文 OCR fusion test case.
+        """Get concrete test case class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenFusionTestCase type with appropriate fields and descriptions
+            TestCase type with appropriate fields and text
         """
         query_cls = ZhongwenFusionQuery.get_query_cls(text)
         answer_cls = ZhongwenFusionAnswer.get_answer_cls(text)

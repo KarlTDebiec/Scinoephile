@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar, Self
 
 from pydantic import create_model
@@ -83,6 +84,7 @@ class EnglishFusionTestCase(
         return min_difficulty
 
     @classmethod
+    @cache
     def get_test_case_cls(
         cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
     ) -> type[Self]:

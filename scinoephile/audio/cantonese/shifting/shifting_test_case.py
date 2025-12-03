@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
@@ -63,6 +64,7 @@ class ShiftingTestCase(
         return self
 
     @classmethod
+    @cache
     def get_test_case_cls(
         cls, text: type[ShiftingLLMText] = ShiftingLLMText
     ) -> type[Self]:

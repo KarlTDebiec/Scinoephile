@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
@@ -90,7 +90,7 @@ class ZhongwenProofreadingTestCase(
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ZhongwenProofreadingTestCase:
+    def validate_test_case(self) -> Self:
         """Ensure query and answer are consistent with one another."""
         for idx in range(self.size):
             zimu = getattr(self, f"zimu_{idx + 1}")
@@ -113,16 +113,14 @@ class ZhongwenProofreadingTestCase(
         cls,
         size: int,
         text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
-    ) -> type[ZhongwenProofreadingTestCase]:
-        """Get test case class for 中文 proofing.
+    ) -> type[Self]:
+        """Get concrete test case class with provided size and text.
 
         Arguments:
             size: number of subtitles
             text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenProofreadingTestCase type with appropriate fields and descriptions
-        Raises:
-            ScinoephileError: if missing indices are out of range
+            TestCase type with appropriate fields and text
         """
         query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
         answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)

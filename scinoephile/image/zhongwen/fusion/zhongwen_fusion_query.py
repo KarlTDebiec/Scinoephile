@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Query for 中文 OCR fusion."""
+"""Abstract base class for 中文 OCR fusion queries."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_text import (
 
 
 class ZhongwenFusionQuery(Query, ABC):
-    """Query for 中文 OCR fusion."""
+    """Abstract base class for 中文 OCR fusion queries."""
 
     text: ClassVar[type[ZhongwenFusionLLMText]]
     """Text strings to be used for corresponding with LLM."""
@@ -38,12 +38,12 @@ class ZhongwenFusionQuery(Query, ABC):
     def get_query_cls(
         cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for 中文 OCR fusion query.
+        """Get concrete query class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenFusionQuery type with appropriate fields and descriptions
+            Query type with appropriate fields and text
         """
         fields = {
             "lens": (str, Field(..., description=text.lens_description)),

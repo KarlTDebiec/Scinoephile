@@ -36,12 +36,12 @@ class ZhongwenFusionAnswer(Answer, ABC):
     def get_answer_cls(
         cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for 中文 OCR fusion answer.
+        """Get concrete answer class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            ZhongwenFusionAnswer type with appropriate fields and descriptions
+            Answer type with appropriate fields and text
         """
         fields = {
             "ronghe": (str, Field(..., description=text.ronghe_description)),

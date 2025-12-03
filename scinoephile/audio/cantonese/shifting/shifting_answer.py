@@ -35,11 +35,11 @@ class ShiftingAnswer(Answer, ABC):
         fields = {
             "yuewen_1_shifted": (
                 str,
-                Field(..., description=text.yuewen_1_shifted_description),
+                Field("", description=text.yuewen_1_shifted_description),
             ),
             "yuewen_2_shifted": (
                 str,
-                Field(..., description=text.yuewen_2_shifted_description),
+                Field("", description=text.yuewen_2_shifted_description),
             ),
         }
         return create_model(

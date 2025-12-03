@@ -29,13 +29,13 @@ class EnglishProofreadingAnswer(Answer, ABC):
         size: int,
         text: type[EnglishProofreadingLLMText] = EnglishProofreadingLLMText,
     ) -> type[Self]:
-        """Get answer class for English proofreading.
+        """Get concrete answer class with provided size and text.
 
         Arguments:
             size: number of subtitles
             text: LLMText providing descriptions and messages
         Returns:
-            EnglishProofreadingAnswer type with appropriate fields and descriptions
+            Answer type with appropriate fields and text
         """
         fields = {}
         for idx in range(size):
