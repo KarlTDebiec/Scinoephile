@@ -4,17 +4,11 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.translation.translation_answer import TranslationAnswer
-from scinoephile.audio.cantonese.translation.translation_llm_queryer import (
-    TranslationLLMQueryer,
-)
-from scinoephile.audio.cantonese.translation.translation_llm_text import (
-    TranslationLLMText,
-)
-from scinoephile.audio.cantonese.translation.translation_query import TranslationQuery
-from scinoephile.audio.cantonese.translation.translation_test_case import (
-    TranslationTestCase,
-)
+from .answer import TranslationAnswer
+from .llm_queryer import TranslationLLMQueryer
+from .llm_text import TranslationLLMText
+from .query import TranslationQuery
+from .test_case import TranslationTestCase
 
 __all__ = [
     "TranslationAnswer",

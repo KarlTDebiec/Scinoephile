@@ -4,13 +4,22 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.alignment.alignment import Alignment
 from scinoephile.audio.cantonese.merging import MergingQuery, MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingQuery, ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewQuery
 from scinoephile.audio.cantonese.shifting import ShiftingQuery, ShiftingTestCase
 from scinoephile.audio.cantonese.translation import TranslationQuery
 from scinoephile.core import ScinoephileError
+
+from .alignment import Alignment
+
+__all__ = [
+    "get_shifting_query",
+    "get_merging_query",
+    "get_proofing_query",
+    "get_review_query",
+    "get_translation_query",
+]
 
 
 def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | None:
@@ -238,12 +247,3 @@ def get_translation_query(
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
     return query_cls(**kwargs)
-
-
-__all__ = [
-    "get_shifting_query",
-    "get_merging_query",
-    "get_proofing_query",
-    "get_review_query",
-    "get_translation_query",
-]

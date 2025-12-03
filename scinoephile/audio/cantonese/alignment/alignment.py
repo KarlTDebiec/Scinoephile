@@ -19,6 +19,8 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 
+__all__ = ["Alignment"]
+
 
 class Alignment:
     """Nascent alignment between 中文 and 粤文 subtitles."""

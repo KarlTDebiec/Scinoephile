@@ -7,6 +7,12 @@ from __future__ import annotations
 import numba as nb
 import numpy as np
 
+__all__ = [
+    "read_sup_image_array",
+    "read_sup_palette",
+    "read_sup_series",
+]
+
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image_array(bytes_: bytearray, height: int, width: int) -> np.ndarray:

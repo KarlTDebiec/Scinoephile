@@ -7,9 +7,12 @@ from __future__ import annotations
 from abc import ABC
 
 from scinoephile.core.abcs import LLMQueryer
-from scinoephile.documentation.translation.translate_answer import TranslateAnswer
-from scinoephile.documentation.translation.translate_query import TranslateQuery
-from scinoephile.documentation.translation.translate_test_case import TranslateTestCase
+
+from .answer import TranslateAnswer
+from .query import TranslateQuery
+from .test_case import TranslateTestCase
+
+__all__ = ["Translator"]
 
 
 class Translator(LLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase], ABC):

@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.alignment.alignment import Alignment
 from scinoephile.audio.cantonese.review import ReviewAnswer, ReviewQuery, ReviewTestCase
 from scinoephile.audio.cantonese.translation import (
     TranslationAnswer,
@@ -12,6 +11,13 @@ from scinoephile.audio.cantonese.translation import (
     TranslationTestCase,
 )
 from scinoephile.core import ScinoephileError
+
+from .alignment import Alignment
+
+__all__ = [
+    "get_review_models",
+    "get_translate_models",
+]
 
 
 def get_review_models(
@@ -111,9 +117,3 @@ def get_translate_models(
         return query_cls, answer_cls, test_case_cls
 
     return None
-
-
-__all__ = [
-    "get_review_models",
-    "get_translate_models",
-]

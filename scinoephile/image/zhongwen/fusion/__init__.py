@@ -7,20 +7,23 @@ from __future__ import annotations
 from typing import Any
 
 from scinoephile.core import Series
-from scinoephile.image.zhongwen.fusion.zhongwen_fuser import ZhongwenFuser
-from scinoephile.image.zhongwen.fusion.zhongwen_fusion_answer import (
-    ZhongwenFusionAnswer,
-)
-from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_queryer import (
-    ZhongwenFusionLLMQueryer,
-)
-from scinoephile.image.zhongwen.fusion.zhongwen_fusion_llm_text import (
-    ZhongwenFusionLLMText,
-)
-from scinoephile.image.zhongwen.fusion.zhongwen_fusion_query import ZhongwenFusionQuery
-from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
-    ZhongwenFusionTestCase,
-)
+
+from .answer import ZhongwenFusionAnswer
+from .fuser import ZhongwenFuser
+from .llm_queryer import ZhongwenFusionLLMQueryer
+from .llm_text import ZhongwenFusionLLMText
+from .query import ZhongwenFusionQuery
+from .test_case import ZhongwenFusionTestCase
+
+__all__ = [
+    "ZhongwenFuser",
+    "ZhongwenFusionAnswer",
+    "ZhongwenFusionLLMQueryer",
+    "ZhongwenFusionLLMText",
+    "ZhongwenFusionQuery",
+    "ZhongwenFusionTestCase",
+    "get_zhongwen_ocr_fused",
+]
 
 
 def get_zhongwen_ocr_fused(
@@ -43,14 +46,3 @@ def get_zhongwen_ocr_fused(
         fuser = ZhongwenFuser()
     fused = fuser.fuse(lens, paddle, **kwargs)
     return fused
-
-
-__all__ = [
-    "ZhongwenFuser",
-    "ZhongwenFusionAnswer",
-    "ZhongwenFusionLLMQueryer",
-    "ZhongwenFusionLLMText",
-    "ZhongwenFusionQuery",
-    "ZhongwenFusionTestCase",
-    "get_zhongwen_ocr_fused",
-]

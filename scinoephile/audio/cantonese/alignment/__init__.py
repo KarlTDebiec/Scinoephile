@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.alignment.aligner import Aligner
-from scinoephile.audio.cantonese.alignment.alignment import Alignment
+from .aligner import Aligner
+from .alignment import Alignment
 
 __all__ = [
     "Aligner",

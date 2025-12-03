@@ -12,9 +12,12 @@ from PIL import Image
 
 from scinoephile.core import Subtitle
 from scinoephile.core.text import whitespace_chars
-from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.char_pair import CharPair
-from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
+
+from .base64 import get_base64_image
+from .char_pair import CharPair
+from .drawing import get_img_with_bboxes, get_img_with_white_bg
+
+__all__ = ["ImageSubtitle"]
 
 
 class ImageSubtitle(Subtitle):

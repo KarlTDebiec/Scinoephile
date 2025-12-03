@@ -13,6 +13,16 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
 )
 
+__all__ = [
+    "AudioBlock",
+    "AudioSeries",
+    "AudioSubtitle",
+    "get_series_from_segments",
+    "get_series_with_sub_split_at_idx",
+    "get_sub_merged",
+    "get_sub_split_at_idx",
+]
+
 
 def get_series_from_segments(
     segments: list[TranscribedSegment], offset: int = 0
@@ -111,14 +121,3 @@ def get_sub_split_at_idx(
         # TODO: Audio
     )
     return one, two
-
-
-__all__ = [
-    "AudioBlock",
-    "AudioSeries",
-    "AudioSubtitle",
-    "get_series_from_segments",
-    "get_series_with_sub_split_at_idx",
-    "get_sub_merged",
-    "get_sub_split_at_idx",
-]

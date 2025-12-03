@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from scinoephile.image.bbox_manager import BboxManager
-from scinoephile.image.char_pair import CharPair
-from scinoephile.image.image_series import ImageSeries
-from scinoephile.image.image_subtitle import ImageSubtitle
-from scinoephile.image.validation_manager import ValidationManager
-from scinoephile.image.whitespace_manager import WhitespaceManager
+from .bbox_manager import BboxManager
+from .char_pair import CharPair
+from .image_series import ImageSeries
+from .image_subtitle import ImageSubtitle
+from .validation_manager import ValidationManager
+from .whitespace_manager import WhitespaceManager
 
 __all__ = [
     "BboxManager",

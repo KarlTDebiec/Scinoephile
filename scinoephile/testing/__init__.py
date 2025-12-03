@@ -18,7 +18,20 @@ from pytest import fixture, mark, param
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.abcs import LLMQueryer, TestCase
-from scinoephile.testing.sync_test_case import SyncTestCase
+
+from .sync_test_case import SyncTestCase
+
+__all__ = [
+    "SyncTestCase",
+    "flaky",
+    "get_test_cases_from_file_path",
+    "parametrized_fixture",
+    "skip_if_ci",
+    "skip_if_codex",
+    "test_data_root",
+    "update_test_cases",
+    "update_test_cases_async",
+]
 
 test_data_root = package_root.parent / "test" / "data"
 
@@ -148,16 +161,3 @@ async def update_test_cases_async(path: Path, variable: str, queryer: LLMQueryer
     await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
     info(f"Replaced test cases {variable} in {path.name}.")
     queryer.encountered_test_cases = {}
-
-
-__all__ = [
-    "SyncTestCase",
-    "flaky",
-    "get_test_cases_from_file_path",
-    "parametrized_fixture",
-    "skip_if_ci",
-    "skip_if_codex",
-    "test_data_root",
-    "update_test_cases",
-    "update_test_cases_async",
-]

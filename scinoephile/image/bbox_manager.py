@@ -11,7 +11,10 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.image.image_subtitle import ImageSubtitle
+
+from .image_subtitle import ImageSubtitle
+
+__all__ = ["BboxManager"]
 
 
 class BboxManager:

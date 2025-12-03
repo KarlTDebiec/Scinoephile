@@ -8,6 +8,8 @@ from dataclasses import dataclass
 
 from scinoephile.core.text import get_char_type
 
+__all__ = ["CharPair"]
+
 
 @dataclass(slots=True)
 class CharPair:

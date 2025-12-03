@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.openai.openai_provider import OpenAIProvider
+from .openai_provider import OpenAIProvider
 
 __all__ = [
     "OpenAIProvider",

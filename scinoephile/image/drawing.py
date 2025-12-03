@@ -14,7 +14,18 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import get_text_type
-from scinoephile.image.bbox import get_bbox
+
+from .bbox import get_bbox
+
+__all__ = [
+    "get_img_with_bboxes",
+    "get_img_diff",
+    "get_img_of_text",
+    "get_img_of_text_with_bboxes",
+    "get_img_scaled_to_bbox",
+    "get_img_with_white_bg",
+    "get_imgs_stacked",
+]
 
 
 def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Image.Image:
