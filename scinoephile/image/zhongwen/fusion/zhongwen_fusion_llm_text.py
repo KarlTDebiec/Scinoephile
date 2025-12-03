@@ -14,7 +14,7 @@ class ZhongwenFusionLLMText(EnglishLLMText):
     """Text for LLM correspondence for 中文 OCR fusion."""
 
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：PaddleOCR 和 Google Lens。
+        你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：Google Lens 和 PaddleOCR。
         请遵循以下原则：
         * Google Lens 在识别汉字方面更可靠。
         * Google Lens 在标点符号方面更可靠。
@@ -45,7 +45,7 @@ class ZhongwenFusionLLMText(EnglishLLMText):
     """Description of 'ronghe' field."""
 
     beizhu_description: ClassVar[str] = "对所做更正的说明"
-    """Description of 'beizhu' fields."""
+    """Description of 'beizhu' field."""
 
     # Answer validation errors
     ronghe_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"

@@ -24,7 +24,10 @@ from scinoephile.image.english.fusion.english_fusion_test_case import (
 
 
 def get_english_ocr_fused(
-    lens: Series, tesseract: Series, fuser: EnglishFuser = None, **kwargs: Any
+    lens: Series,
+    tesseract: Series,
+    fuser: EnglishFuser | None = None,
+    **kwargs: Any,
 ) -> Series:
     """Get OCRed English series fused from Google Lens and Tesseract outputs.
 

@@ -25,10 +25,10 @@ class EnglishFusionLLMText(EnglishLLMText):
     """Base system prompt."""
 
     # Query descriptions
-    lens_description: ClassVar[str] = "Subtitle Text OCRed using Google Lens"
+    lens_description: ClassVar[str] = "Subtitle text OCRed using Google Lens"
     """Description of 'lens' field."""
 
-    tesseract_description: ClassVar[str] = "Subtitle Text OCRed using Tesseract"
+    tesseract_description: ClassVar[str] = "Subtitle text OCRed using Tesseract"
     """Description of 'tesseract' field."""
 
     # Query validation errors
@@ -52,7 +52,7 @@ class EnglishFusionLLMText(EnglishLLMText):
     """Description of 'fused' field."""
 
     note_description: ClassVar[str] = "Explanation of changes made"
-    """Description of 'note' fields."""
+    """Description of 'note' field."""
 
     # Answer validation errors
     fused_missing_error: ClassVar[str] = "Merged subtitle text is required."
