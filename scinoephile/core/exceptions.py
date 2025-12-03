@@ -7,3 +7,21 @@ from __future__ import annotations
 
 class ScinoephileError(Exception):
     """Scinoephile error."""
+
+
+class RateLimitError(ScinoephileError):
+    """Raised when a rate limit is encountered.
+
+    Attributes:
+        wait_time: Number of seconds to wait before retrying if provided.
+    """
+
+    def __init__(self, message: str, wait_time: float | None = None):
+        """Initialize.
+
+        Arguments:
+            message: Description of the rate limit error.
+            wait_time: Number of seconds to wait before retrying if available.
+        """
+        super().__init__(message)
+        self.wait_time = wait_time

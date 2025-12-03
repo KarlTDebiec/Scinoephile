@@ -11,6 +11,7 @@ from abc import ABC
 from functools import cache
 from logging import debug, error, info
 from pathlib import Path
+from time import sleep
 from typing import ClassVar
 
 import aiofiles
@@ -18,7 +19,7 @@ from aiofiles import os as aioos
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
-from scinoephile.core import ScinoephileError
+from scinoephile.core import RateLimitError, ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
 from scinoephile.core.abcs.llm_text import LLMText
@@ -139,6 +140,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 content = self.provider.chat_completion(messages, answer_cls)
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
+                if isinstance(exc, RateLimitError):
+                    wait_time = exc.wait_time or 1.0
+                    info(
+                        f"Rate limit encountered; waiting {wait_time:.1f} seconds "
+                        "before retrying"
+                    )
+                    sleep(wait_time)
                 if attempt == self.max_attempts:
                     raise
                 continue
@@ -248,6 +256,13 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
                 )
             except ScinoephileError as exc:
                 error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
+                if isinstance(exc, RateLimitError):
+                    wait_time = exc.wait_time or 1.0
+                    info(
+                        f"Rate limit encountered; waiting {wait_time:.1f} seconds "
+                        "before retrying"
+                    )
+                    await asyncio.sleep(wait_time)
                 if attempt == self.max_attempts:
                     raise
                 continue

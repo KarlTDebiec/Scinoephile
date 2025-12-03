@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-import asyncio
-from time import sleep
 from typing import Any, override
 
 from openai import AsyncOpenAI, OpenAI, OpenAIError
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core import RateLimitError, ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
 
@@ -69,10 +67,14 @@ class OpenAIProvider(LLMProvider):
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
-            # TODO: Parse out rate limit and backoff properly
-            # Probably subclass Scinoephile Error and store time to wait there
             if exc_code == "rate_limit_exceeded":
-                sleep(1)
+                raise RateLimitError(
+                    (
+                        f"OpenAI API rate limit error "
+                        f"({exc_code=}, {exc_type=} {exc_param=}): {exc}"
+                    ),
+                    wait_time=self._get_retry_after(exc),
+                ) from exc
             raise ScinoephileError(
                 f"OpenAI API error ({exc_code=}, {exc_type=} {exc_param=}): {exc}"
             ) from exc
@@ -116,10 +118,33 @@ class OpenAIProvider(LLMProvider):
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
-            # TODO: Parse out rate limit and backoff properly
-            # Probably subclass Scinoephile Error and store time to wait there
             if exc_code == "rate_limit_exceeded":
-                await asyncio.sleep(1)
+                raise RateLimitError(
+                    (
+                        f"OpenAI API rate limit error "
+                        f"({exc_code=}, {exc_type=} {exc_param=}): {exc}"
+                    ),
+                    wait_time=self._get_retry_after(exc),
+                ) from exc
             raise ScinoephileError(
                 f"OpenAI API error ({exc_code=}, {exc_type=} {exc_param=}): {exc}"
             ) from exc
+
+    def _get_retry_after(self, exc: OpenAIError) -> float | None:
+        """Return the retry-after time from an OpenAI error if available.
+
+        Arguments:
+            exc: OpenAI error returned by the client.
+        Returns:
+            Number of seconds to wait before retrying, if provided by the response.
+        """
+        response = getattr(exc, "response", None)
+        headers = getattr(response, "headers", None) if response else None
+        if headers:
+            retry_after = headers.get("Retry-After") or headers.get("retry-after")
+            if retry_after is not None:
+                try:
+                    return float(retry_after)
+                except (TypeError, ValueError):
+                    return None
+        return None

@@ -11,7 +11,7 @@ Many functions herein follow the naming convention:
 from __future__ import annotations
 
 from scinoephile.core.block import Block
-from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.exceptions import RateLimitError, ScinoephileError
 from scinoephile.core.series import Series
 from scinoephile.core.subtitle import Subtitle
 
@@ -57,6 +57,7 @@ def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle
 
 __all__ = [
     "Block",
+    "RateLimitError",
     "ScinoephileError",
     "Series",
     "Subtitle",
