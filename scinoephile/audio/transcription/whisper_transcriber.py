@@ -15,6 +15,7 @@ import whisper_timestamped as whisper
 
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
+    filterwarnings("ignore", category=RuntimeWarning)
     from pydub import AudioSegment
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
