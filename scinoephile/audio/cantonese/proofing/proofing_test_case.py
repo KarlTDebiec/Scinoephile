@@ -30,11 +30,6 @@ class ProofingTestCase(
     """Text strings to be used for corresponding with LLM."""
 
     @property
-    def noop(self) -> bool:
-        """Return whether this test case is a no-op."""
-        return self.yuewen == self.yuewen_proofread
-
-    @property
     def source_str(self) -> str:
         """Get Python source string."""
         lines = [
@@ -66,7 +61,7 @@ class ProofingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if not self.noop:
+        if self.yuewen != self.yuewen_proofread:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 

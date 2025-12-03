@@ -24,7 +24,10 @@ from scinoephile.image.zhongwen.fusion.zhongwen_fusion_test_case import (
 
 
 def get_zhongwen_ocr_fused(
-    lens: Series, paddle: Series, fuser: ZhongwenFuser = None, **kwargs: Any
+    lens: Series,
+    paddle: Series,
+    fuser: ZhongwenFuser | None = None,
+    **kwargs: Any,
 ) -> Series:
     """Get OCRed 中文 series fused from Google Lens and PaddleOCR outputs.
 

@@ -39,15 +39,6 @@ class ZhongwenProofreadingTestCase(
     """Text strings to be used for corresponding with LLM."""
 
     @property
-    def noop(self) -> bool:
-        """Whether this test case is a no-op."""
-        for idx in range(1, self.size + 1):
-            revised = getattr(self, f"xiugai_{idx}")
-            if revised != "":
-                return False
-        return True
-
-    @property
     def size(self) -> int:
         """Size of the test case."""
         idxs = [
@@ -88,7 +79,7 @@ class ZhongwenProofreadingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if not self.noop:
+        if any(getattr(self, f"xiugai_{idx}") != "" for idx in range(1, self.size + 1)):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
