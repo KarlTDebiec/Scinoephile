@@ -13,7 +13,7 @@ from pydantic import Field, create_model
 from scinoephile.core.abcs import Answer, Prompt
 
 from .prompt import (
-    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
 
@@ -31,9 +31,7 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        text: type[
-            ZhongwenProofreadingPromptBase
-        ] = ZhongwenProofreadingSimplifiedPrompt,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingSimplifiedPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided size and text.
 
@@ -47,7 +45,7 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
         for idx in range(size):
             fields[f"xiugai_{idx + 1}"] = (
                 str,
-                Field("", description=text.beizhu_description.format(idx=idx + 1)),
+                Field("", description=text.xiugai_description.format(idx=idx + 1)),
             )
             fields[f"beizhu_{idx + 1}"] = (
                 str,
@@ -61,6 +59,6 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenProofreadingPromptBase]], text),
+            text=(ClassVar[type[Prompt]], text),
             **fields,
         )

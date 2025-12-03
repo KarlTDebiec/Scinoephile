@@ -13,7 +13,7 @@ from pydantic import Field, create_model
 from scinoephile.core.abcs import Prompt, Query
 
 from .prompt import (
-    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
 
@@ -31,9 +31,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        text: type[
-            ZhongwenProofreadingPromptBase
-        ] = ZhongwenProofreadingSimplifiedPrompt,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingSimplifiedPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided size and text.
 
@@ -53,6 +51,6 @@ class ZhongwenProofreadingQuery(Query, ABC):
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenProofreadingPromptBase]], text),
+            text=(ClassVar[type[Prompt]], text),
             **fields,
         )

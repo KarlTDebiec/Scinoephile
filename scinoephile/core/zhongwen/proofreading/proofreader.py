@@ -21,7 +21,7 @@ from scinoephile.testing import (
 
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
 from .prompt import (
-    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
 from .test_case import ZhongwenProofreadingTestCase
@@ -37,9 +37,7 @@ class ZhongwenProofreader:
         test_cases: list[ZhongwenProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        text: type[
-            ZhongwenProofreadingPromptBase
-        ] = ZhongwenProofreadingSimplifiedPrompt,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingSimplifiedPrompt,
     ):
         """Initialize.
 

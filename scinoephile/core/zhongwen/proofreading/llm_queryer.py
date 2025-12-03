@@ -10,7 +10,7 @@ from scinoephile.core.abcs import LLMQueryer, Prompt
 
 from .answer import ZhongwenProofreadingAnswer
 from .prompt import (
-    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
 from .query import ZhongwenProofreadingQuery
@@ -34,7 +34,7 @@ class ZhongwenProofreadingLLMQueryer(
     def __init__(
         self,
         *,
-        text: type[ZhongwenProofreadingPromptBase] | None = None,
+        text: type[ZhongwenProofreadingPrompt] | None = None,
         **kwargs: Any,
     ):
         """Initialize.

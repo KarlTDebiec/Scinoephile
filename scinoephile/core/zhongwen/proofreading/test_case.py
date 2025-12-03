@@ -15,7 +15,7 @@ from scinoephile.core.models import format_field
 
 from .answer import ZhongwenProofreadingAnswer
 from .prompt import (
-    ZhongwenProofreadingPromptBase,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
 from .query import ZhongwenProofreadingQuery
@@ -83,18 +83,18 @@ class ZhongwenProofreadingTestCase(
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
-        text = cast(type[ZhongwenProofreadingPromptBase], self.text)
+        prompt = cast(type[ZhongwenProofreadingPrompt], self.text)
         for idx in range(self.size):
             zimu = getattr(self, f"zimu_{idx + 1}")
             xiugai = getattr(self, f"xiugai_{idx + 1}")
             beizhu = getattr(self, f"beizhu_{idx + 1}")
             if xiugai != "":
                 if zimu == xiugai:
-                    raise ValueError(text.zimu_xiugai_equal_error.format(idx=idx + 1))
+                    raise ValueError(prompt.zimu_xiugai_equal_error.format(idx=idx + 1))
                 if beizhu == "":
-                    raise ValueError(text.beizhu_missing_error.format(idx=idx + 1))
+                    raise ValueError(prompt.beizhu_missing_error.format(idx=idx + 1))
             elif beizhu != "":
-                raise ValueError(text.xiugai_missing_error.format(idx=idx + 1))
+                raise ValueError(prompt.xiugai_missing_error.format(idx=idx + 1))
         return self
 
     @classmethod
@@ -102,9 +102,7 @@ class ZhongwenProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[
-            ZhongwenProofreadingPromptBase
-        ] = ZhongwenProofreadingSimplifiedPrompt,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingSimplifiedPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided size and text.
 
@@ -122,5 +120,5 @@ class ZhongwenProofreadingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ZhongwenProofreadingQuery]], query_cls),
             answer_cls=(ClassVar[type[ZhongwenProofreadingAnswer]], answer_cls),
-            text=(ClassVar[type[ZhongwenProofreadingPromptBase]], text),
+            text=(ClassVar[type[Prompt]], text),
         )

@@ -12,7 +12,6 @@ from .answer import ZhongwenProofreadingAnswer
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
 from .prompt import (
     ZhongwenProofreadingPrompt,
-    ZhongwenProofreadingPromptBase,
     ZhongwenProofreadingSimplifiedPrompt,
     ZhongwenProofreadingTraditionalPrompt,
 )
@@ -25,7 +24,6 @@ __all__ = [
     "ZhongwenProofreadingAnswer",
     "ZhongwenProofreadingLLMQueryer",
     "ZhongwenProofreadingPrompt",
-    "ZhongwenProofreadingPromptBase",
     "ZhongwenProofreadingSimplifiedPrompt",
     "ZhongwenProofreadingTraditionalPrompt",
     "ZhongwenProofreadingQuery",
