@@ -1,17 +1,20 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 translation test cases."""
+"""Abstract base class for 粤文 transcription translation test cases."""
 
 from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import create_model
 
 from scinoephile.audio.cantonese.translation.translation_answer import (
     TranslationAnswer,
+)
+from scinoephile.audio.cantonese.translation.translation_llm_text import (
+    TranslationLLMText,
 )
 from scinoephile.audio.cantonese.translation.translation_query import (
     TranslationQuery,
@@ -23,10 +26,14 @@ from scinoephile.core.models import format_field
 class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
     TestCase[TQuery, TAnswer], ABC
 ):
-    """Abstract base class for 粤文 translation test cases."""
+    """Abstract base class for 粤文 transcription translation test cases."""
 
-    query_cls: ClassVar[type[TranslationQuery]]
     answer_cls: ClassVar[type[TranslationAnswer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[TranslationQuery]]
+    """Query class for this test case."""
+    text: ClassVar[type[TranslationLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @property
     def missing(self) -> tuple[int, ...]:
@@ -50,18 +57,23 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
 
     @property
     def source_str(self) -> str:
-        """Python source-like string representation."""
-        lines = (
-            [
-                f"{TranslationTestCase.__name__}.get_test_case_cls(",
-                f"    {self.size}, {self.missing},",
-                ")(",
-            ]
-            + [format_field(f, getattr(self, f)) for f in self.query_fields]
-            + [format_field(f, getattr(self, f)) for f in self.answer_fields]
-            + [format_field(f, getattr(self, f)) for f in self.test_case_fields]
-            + [")"]
-        )
+        """Get Python source string."""
+        lines = [
+            f"{TranslationTestCase.__name__}.get_test_case_cls(",
+            f"    {self.size}, {self.missing}, {self.text.__name__})(",
+        ]
+        for field in self.query_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        for field in self.answer_fields:
+            value = getattr(self, field)
+            if value == "":
+                continue
+            lines.append(format_field(field, value))
+        for field in self.test_case_fields:
+            value = getattr(self, field)
+            lines.append(format_field(field, value))
+        lines.append(")")
         return "\n".join(lines)
 
     @classmethod
@@ -70,30 +82,28 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
         cls,
         size: int,
         missing: tuple[int, ...],
-    ) -> type[TranslationTestCase[TranslationQuery, TranslationAnswer]]:
-        """Get test case class 粤文 translation.
+        text: type[TranslationLLMText] = TranslationLLMText,
+    ) -> type[Self]:
+        """Get concrete test case class with provided size, missing, and text.
 
         Arguments:
-            size: Number of 中文 subtitles
-            missing: Indices of 中文 subtitles that are missing 粤文
+            size: number of subtitles
+            missing: indexes of missing subtitles
+            text: LLMText providing descriptions and messages
         Returns:
-            TranslateTestCase type with appropriate query and answer models
-        Raises:
-            ScinoephileError: If missing indices are out of range
+            TestCase type with appropriate fields and text
         """
-        query_cls = TranslationQuery.get_query_cls(size, missing)
-        answer_cls = TranslationAnswer.get_answer_cls(size, missing)
-        name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-        model = create_model(
-            name[:64],
-            __base__=(
-                query_cls,
-                answer_cls,
-                TranslationTestCase[query_cls, answer_cls],
-            ),
-            __module__=cls.__module__,
+        query_cls = TranslationQuery.get_query_cls(size, missing, text)
+        answer_cls = TranslationAnswer.get_answer_cls(size, missing, text)
+        name = (
+            f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
+            f"_{text.__name__}"
         )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-
-        return model
+        return create_model(
+            name[:64],
+            __base__=(query_cls, answer_cls, cls),
+            __module__=cls.__module__,
+            query_cls=(ClassVar[type[TranslationQuery]], query_cls),
+            answer_cls=(ClassVar[type[TranslationAnswer]], answer_cls),
+            text=(ClassVar[type[TranslationLLMText]], text),
+        )

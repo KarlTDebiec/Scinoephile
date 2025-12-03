@@ -87,7 +87,7 @@ class MergingTestCase(
         """
         query_cls = MergingQuery.get_query_cls(text)
         answer_cls = MergingAnswer.get_answer_cls(text)
-        model = create_model(
+        return create_model(
             f"{cls.__name__}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,
@@ -95,5 +95,3 @@ class MergingTestCase(
             answer_cls=(ClassVar[type[MergingAnswer]], answer_cls),
             text=(ClassVar[type[MergingLLMText]], text),
         )
-
-        return model

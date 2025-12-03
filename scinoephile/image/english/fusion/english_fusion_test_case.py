@@ -97,7 +97,7 @@ class EnglishFusionTestCase(
         """
         query_cls = EnglishFusionQuery.get_query_cls(text)
         answer_cls = EnglishFusionAnswer.get_answer_cls(text)
-        model = create_model(
+        return create_model(
             f"{cls.__name__}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,
@@ -105,5 +105,3 @@ class EnglishFusionTestCase(
             answer_cls=(ClassVar[type[EnglishFusionAnswer]], answer_cls),
             text=(ClassVar[type[EnglishFusionLLMText]], text),
         )
-
-        return model

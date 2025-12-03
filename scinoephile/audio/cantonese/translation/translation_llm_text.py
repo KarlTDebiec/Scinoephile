@@ -20,11 +20,12 @@ class TranslationLLMText(EnglishLLMText):
     """Base system prompt."""
 
     # Query descriptions
+    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle {idx}"
+    """Description of 'zhongwen_{idx}' fields."""
 
-    # Query validation errors
+    yuewen_query_description: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
+    """Description of 'yuewen_{idx}' query fields."""
 
     # Answer descriptions
-
-    # Answer validation erros
-
-    # Test case validation errors
+    yuewen_answer_description: ClassVar[str] = "Translated 粤文 of subtitle {idx}"
+    """Description of 'yuewen_{idx}' answer fields."""

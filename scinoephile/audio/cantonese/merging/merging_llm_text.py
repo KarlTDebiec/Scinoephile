@@ -49,7 +49,7 @@ class MergingLLMText(EnglishLLMText):
     yuewen_merged_description: ClassVar[str] = "Merged 粤文 of subtitle"
     """Description of 'yuewen_merged' field."""
 
-    # Answer validation erros
+    # Answer validation errors
     yuewen_merged_missing_error: ClassVar[str] = (
         "Answer must have merged 粤文 subtitle."
     )

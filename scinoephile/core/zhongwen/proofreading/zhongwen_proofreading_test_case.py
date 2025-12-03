@@ -124,7 +124,7 @@ class ZhongwenProofreadingTestCase(
         """
         query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
         answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)
-        model = create_model(
+        return create_model(
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,

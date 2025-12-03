@@ -101,7 +101,7 @@ class ZhongwenFusionTestCase(
         """
         query_cls = ZhongwenFusionQuery.get_query_cls(text)
         answer_cls = ZhongwenFusionAnswer.get_answer_cls(text)
-        model = create_model(
+        return create_model(
             f"{cls.__name__}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,
@@ -109,5 +109,3 @@ class ZhongwenFusionTestCase(
             answer_cls=(ClassVar[type[ZhongwenFusionAnswer]], answer_cls),
             text=(ClassVar[type[ZhongwenFusionLLMText]], text),
         )
-
-        return model

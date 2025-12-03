@@ -60,7 +60,7 @@ class ProofingLLMText(EnglishLLMText):
     note_description: ClassVar[str] = "Description of corrections made"
     """Description of 'note' field."""
 
-    # Answer validation erros
+    # Answer validation errors
     yuewen_proofread_and_note_missing_error: ClassVar[str] = (
         "If Answer omits proofread 粤文 of subtitle to indicate that 粤文 is "
         "believed to be a complete mistranscription of the spoken Cantonese "

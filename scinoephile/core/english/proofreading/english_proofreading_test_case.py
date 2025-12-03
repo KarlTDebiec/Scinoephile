@@ -58,8 +58,8 @@ class EnglishProofreadingTestCase(
     def source_str(self) -> str:
         """Get Python source string."""
         lines = [
-            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls({self.size}, "
-            f"{self.text.__name__})("
+            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls("
+            f"    {self.size}, {self.text.__name__})("
         ]
         for field in self.query_fields:
             value = getattr(self, field)
@@ -126,7 +126,7 @@ class EnglishProofreadingTestCase(
         """
         query_cls = EnglishProofreadingQuery.get_query_cls(size, text)
         answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, text)
-        model = create_model(
+        return create_model(
             f"{cls.__name__}_{size}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),
             __module__=cls.__module__,
@@ -134,5 +134,3 @@ class EnglishProofreadingTestCase(
             answer_cls=(ClassVar[type[EnglishProofreadingAnswer]], answer_cls),
             text=(ClassVar[type[EnglishProofreadingLLMText]], text),
         )
-
-        return model

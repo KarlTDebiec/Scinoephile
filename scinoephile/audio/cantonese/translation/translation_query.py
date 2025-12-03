@@ -1,50 +1,71 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 translation queries."""
+"""Abstract base class for 粤文 transcription translation queries."""
 
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
+from scinoephile.audio.cantonese.translation.translation_llm_text import (
+    TranslationLLMText,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs import Query
 
 
 class TranslationQuery(Query, ABC):
-    """Abstract base class for 粤文 translation queries."""
+    """Abstract base class for 粤文 transcription translation queries."""
+
+    text: ClassVar[type[TranslationLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @classmethod
+    @cache
     def get_query_cls(
-        cls, size: int, missing: tuple[int, ...]
-    ) -> type[TranslationQuery]:
-        """Get query class for 粤文 translation.
+        cls,
+        size: int,
+        missing: tuple[int, ...],
+        text: type[TranslationLLMText] = TranslationLLMText,
+    ) -> type[Self]:
+        """Get concrete query class with provided size, missing, and text.
 
         Arguments:
-            size: Number of 中文 subtitles
-            missing: Indices of 中文 subtitles that are missing 粤文
+            size: number of subtitles
+            missing: indexes of missing subtitles
+            text: LLMText providing descriptions and messages
         Returns:
-            Query type with appropriate fields
-        Raises:
-            ScinoephileError: If missing indices are out of range
+            Query type with appropriate fields and text
         """
         if any(m < 0 or m > size for m in missing):
             raise ScinoephileError(
                 f"Missing indices must be in range 1 to {size}, got {missing}."
             )
-        query_fields = {}
-        for zw_idx in range(size):
-            query_fields[f"zhongwen_{zw_idx + 1}"] = (
+        fields = {}
+        for idx in range(size):
+            fields[f"zhongwen_{idx + 1}"] = (
                 str,
-                Field(..., description=f"Known 中文 of subtitle {zw_idx + 1}"),
+                Field(..., description=text.zhongwen_description),
             )
-            if zw_idx not in missing:
-                query_fields[f"yuewen_{zw_idx + 1}"] = (
+            if idx not in missing:
+                fields[f"yuewen_{idx + 1}"] = (
                     str,
                     Field(
-                        ..., description=f"Transcribed 粤文 of subtitle {zw_idx + 1}"
+                        ...,
+                        description=text.yuewen_query_description.format(idx=idx + 1),
                     ),
                 )
-        name = f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-        return create_model(name[:64], __base__=TranslationQuery, **query_fields)
+        name = (
+            f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
+            f"_{text.__name__}"
+        )
+        return create_model(
+            name[:64],
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[TranslationLLMText]], text),
+            **fields,
+        )

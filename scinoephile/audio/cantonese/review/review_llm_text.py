@@ -36,11 +36,34 @@ class ReviewLLMText(EnglishLLMText):
     """Base system prompt."""
 
     # Query descriptions
+    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle {idx}"
+    """Description of 'zhongwen_{idx}' field."""
 
-    # Query validation errors
+    yuewen_description: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
+    """Description of 'yuewen_{idx}' field."""
 
     # Answer descriptions
+    yuewen_revised_description: ClassVar[str] = "Revised 粤文 of subtitle {idx}"
+    """Description of 'yuewen_revised_{idx}' field."""
 
-    # Answer validation erros
+    note_description: ClassVar[str] = "Note concerning revision of subtitle {idx}"
+    """Description of 'note_{idx}' field."""
 
     # Test case validation errors
+    yuewen_unmodified_error: ClassVar[str] = (
+        "Answer's revised 粤文 text {idx} is not modified relative to query's 粤文 text "
+        "{idx}, if no revision is needed an empty string must be provided."
+    )
+    """Error message when revised 粤文 is unmodified."""
+
+    yuewen_revised_provided_note_missing_error: ClassVar[str] = (
+        "Answer's 粤文 text {idx} is modified relative to query's 粤文 text {idx}, but "
+        "no note is provided, if revision is needed a note must be provided."
+    )
+    """Error message when revised 粤文 is provided but note is missing."""
+
+    yuewen_revised_missing_note_provided_error: ClassVar[str] = (
+        "Answer's 粤文 text {idx} is not modified relative to query's 粤文 text {idx}, "
+        "but a note is provided, if no revisions are needed an empty string must be "
+        "provided."
+    )
