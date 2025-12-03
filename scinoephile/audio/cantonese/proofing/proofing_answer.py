@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import Self
+
 from pydantic import Field, model_validator
 
 from scinoephile.core.abcs import Answer
@@ -16,7 +18,7 @@ class ProofingAnswer(Answer):
     note: str = Field("", description="Description of corrections made")
 
     @model_validator(mode="after")
-    def validate_answer(self) -> ProofingAnswer:
+    def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
         if not self.yuewen_proofread and not self.note:
             raise ValueError(

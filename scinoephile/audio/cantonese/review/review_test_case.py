@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
@@ -53,8 +53,8 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
         return "\n".join(lines)
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ReviewTestCase:
-        """Ensure query and answer are consistent with one another."""
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
         for idx in range(1, self.size + 1):
             yuewen = getattr(self, f"yuewen_{idx}")
             yuewen_revised = getattr(self, f"yuewen_revised_{idx}")

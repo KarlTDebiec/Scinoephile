@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import model_validator
 
@@ -45,8 +45,8 @@ class ProofingTestCase(
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ProofingTestCase:
-        """Ensure query and answer are consistent with one another."""
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
         if self.yuewen != self.yuewen_proofread and not self.note:
             raise ValueError(
                 "Answer's proofread 粤文 of subtitle is modified relative to query's "

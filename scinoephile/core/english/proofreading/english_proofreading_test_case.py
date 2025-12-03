@@ -93,7 +93,7 @@ class EnglishProofreadingTestCase(
 
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
-        """Ensure query and answer are consistent with one another."""
+        """Ensure query and answer together are valid."""
         for idx in range(self.size):
             subtitle = getattr(self, f"subtitle_{idx + 1}")
             revised = getattr(self, f"revised_{idx + 1}")

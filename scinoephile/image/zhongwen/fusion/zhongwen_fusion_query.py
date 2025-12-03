@@ -23,7 +23,7 @@ class ZhongwenFusionQuery(Query, ABC):
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
-    def validate_query(self) -> ZhongwenFusionQuery:
+    def validate_query(self) -> Self:
         """Ensure query is internally valid."""
         if not self.lens:
             raise ValueError(self.text.lens_missing_error)

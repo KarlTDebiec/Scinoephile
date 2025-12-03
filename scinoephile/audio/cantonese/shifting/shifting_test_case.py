@@ -45,7 +45,7 @@ class ShiftingTestCase(
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ShiftingTestCase:
+    def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
         if (
             self.yuewen_1 == self.yuewen_1_shifted

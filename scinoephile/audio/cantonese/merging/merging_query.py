@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import Self
+
 from pydantic import Field, model_validator
 
 from scinoephile.core.abcs import Query
@@ -16,8 +18,8 @@ class MergingQuery(Query):
     yuewen_to_merge: list[str] = Field(..., description="Transcribed 粤文 of subtitle.")
 
     @model_validator(mode="after")
-    def validate_query(self) -> MergingQuery:
-        """Ensure query has minimum necessary information."""
+    def validate_query(self) -> Self:
+        """Ensure query is internally valid."""
         if not self.zhongwen:
             raise ValueError("Query must have 中文 of subtitle.")
         if not self.yuewen_to_merge:

@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import Self
+
 from pydantic import Field, model_validator
 
 from scinoephile.core.abcs import Answer
@@ -15,7 +17,7 @@ class MergingAnswer(Answer):
     yuewen_merged: str = Field(..., description="Merged 粤文 of subtitle.")
 
     @model_validator(mode="after")
-    def validate_answer(self) -> MergingAnswer:
+    def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
         if not self.yuewen_merged:
             raise ValueError("Answer must have merged 粤文 subtitle.")

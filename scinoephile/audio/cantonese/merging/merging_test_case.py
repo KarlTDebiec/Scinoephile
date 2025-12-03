@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import model_validator
 
@@ -56,8 +56,8 @@ class MergingTestCase(
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> MergingTestCase:
-        """Ensure query and answer are consistent with one another."""
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
         expected = "".join(remove_punc_and_whitespace(s) for s in self.yuewen_to_merge)
         received = remove_punc_and_whitespace(self.yuewen_merged)
         if expected != received:
