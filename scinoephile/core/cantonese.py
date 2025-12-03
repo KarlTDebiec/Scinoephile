@@ -67,7 +67,7 @@ def get_cantonese_romanization(series: Series) -> Series:
     return series
 
 
-def _get_cantonese_character_romanization(hanzi: str) -> str:
+def _get_cantonese_character_romanization(hanzi: str) -> str | None:
     """Get the Yale Cantonese romanization of a single Chinese character.
 
     Arguments:
@@ -90,53 +90,53 @@ def _get_cantonese_character_romanization(hanzi: str) -> str:
 
     # Otherwise search corpus for value
     matches = corpus.search(character=hanzi)
+    jyutping: str | None = None
+    yale: str | None = None
 
     # If not found, try traditional alternative
     if len(matches) == 0:
         trad_hanzi = _s2t.convert(hanzi)
         if trad_hanzi != hanzi:
             yale = _get_cantonese_character_romanization(trad_hanzi)
-            hanzi_to_romanization[hanzi] = yale
-            with open(hanzi_to_yale_file_path, "wb") as outfile:
-                pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
-            return yale
-
-        # Truly no instance of hanzi in corpus
-        unmatched.add(hanzi)
-        with open(unmatched_hanzi_file_path, "wb") as outfile:
-            pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
-        return None
-
-    # If found in corpus alone, use most common instance
-    character_matches = [m.jyutping for m in matches if len(m.word) == 1]
-    if len(character_matches) > 0:
-        jyutping = Counter(character_matches).most_common(1)[0][0]
-
-    # Otherwise use most common word
-    else:
-        try:
-            most_common_word = Counter([m.word for m in matches]).most_common(1)[0][0]
-            token = [m for m in matches if m.word == most_common_word][0]
-            index = token.word.index(hanzi)
-            jyutping = re_jyutping.findall(token.jyutping)[index]
-        except TypeError:
+        else:
             unmatched.add(hanzi)
             with open(unmatched_hanzi_file_path, "wb") as outfile:
                 pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
-            return None
 
-    # Convert from jyutping to Yale
-    try:
-        yale = pycantonese.jyutping2yale(jyutping)[0]
+    # If found in corpus alone, use most common instance
+    else:
+        character_matches = [m.jyutping for m in matches if len(m.word) == 1]
+        if len(character_matches) > 0:
+            jyutping = Counter(character_matches).most_common(1)[0][0]
+
+        # Otherwise use most common word
+        else:
+            try:
+                most_common_word = Counter([m.word for m in matches]).most_common(1)[0][
+                    0
+                ]
+                token = [m for m in matches if m.word == most_common_word][0]
+                index = token.word.index(hanzi)
+                jyutping = re_jyutping.findall(token.jyutping)[index]
+            except TypeError:
+                unmatched.add(hanzi)
+                with open(unmatched_hanzi_file_path, "wb") as outfile:
+                    pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
+                return None
+
+        if jyutping is not None:
+            try:
+                yale = pycantonese.jyutping_to_yale(jyutping)[0]
+            except ValueError:
+                unmatched.add(hanzi)
+                with open(unmatched_hanzi_file_path, "wb") as outfile:
+                    pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
+
+    if yale is not None:
         hanzi_to_romanization[hanzi] = yale
         with open(hanzi_to_yale_file_path, "wb") as outfile:
             pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
-        return yale
-    except ValueError:
-        unmatched.add(hanzi)
-        with open(unmatched_hanzi_file_path, "wb") as outfile:
-            pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
-        return None
+    return yale
 
 
 def _get_cantonese_text_romanization(text: str) -> str:
