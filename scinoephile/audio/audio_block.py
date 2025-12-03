@@ -9,6 +9,7 @@ from warnings import catch_warnings, filterwarnings
 
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
+    filterwarnings("ignore", category=RuntimeWarning)
     from pydub import AudioSegment
 
 from scinoephile.core.block import Block

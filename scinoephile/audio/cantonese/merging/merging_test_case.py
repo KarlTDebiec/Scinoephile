@@ -34,14 +34,6 @@ class MergingTestCase(
     """Text strings to be used for corresponding with LLM."""
 
     @property
-    def noop(self) -> bool:
-        """Return whether this test case is a no-op."""
-        return (
-            len(self.yuewen_to_merge) == 1
-            and self.yuewen_to_merge[0] == self.yuewen_merged
-        )
-
-    @property
     def source_str(self) -> str:
         """Get Python source string."""
         lines = [f"{MergingTestCase.__name__}.get_test_case_cls({self.text.__name__})("]
