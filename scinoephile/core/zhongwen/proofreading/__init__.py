@@ -10,7 +10,7 @@ from scinoephile.core.series import Series
 
 from .answer import ZhongwenProofreadingAnswer
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
-from .prompt import (
+from .prompts import (
     ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
     ZhongwenProofreadingTraditionalPrompt,

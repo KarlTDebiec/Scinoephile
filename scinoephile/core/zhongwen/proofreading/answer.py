@@ -12,7 +12,7 @@ from pydantic import Field, create_model
 
 from scinoephile.core.abcs import Answer, Prompt
 
-from .prompt import (
+from .prompts import (
     ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
@@ -23,7 +23,11 @@ __all__ = ["ZhongwenProofreadingAnswer"]
 class ZhongwenProofreadingAnswer(Answer, ABC):
     """Abstract base class for 中文 proofreading answers."""
 
-    text: ClassVar[type[Prompt]]
+    prompt_text: ClassVar[type[ZhongwenProofreadingPrompt]] = (
+        ZhongwenProofreadingSimplifiedPrompt
+    )
+    """Text strings specialized for 中文 proofreading."""
+    text: ClassVar[type[Prompt]] = prompt_text
     """Text strings to be used for corresponding with LLM."""
 
     @classmethod
@@ -60,5 +64,6 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
             __base__=cls,
             __module__=cls.__module__,
             text=(ClassVar[type[Prompt]], text),
+            prompt_text=(ClassVar[type[ZhongwenProofreadingPrompt]], text),
             **fields,
         )

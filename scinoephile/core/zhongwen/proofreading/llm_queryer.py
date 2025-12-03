@@ -4,12 +4,13 @@
 
 from __future__ import annotations
 
-from typing import Any, ClassVar
+from functools import cache
+from typing import ClassVar
 
 from scinoephile.core.abcs import LLMQueryer, Prompt
 
 from .answer import ZhongwenProofreadingAnswer
-from .prompt import (
+from .prompts import (
     ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
@@ -28,22 +29,32 @@ class ZhongwenProofreadingLLMQueryer(
 ):
     """Queries LLM to proofread 中文 subtitles."""
 
-    text: ClassVar[type[Prompt]] = ZhongwenProofreadingSimplifiedPrompt
+    prompt_text: ClassVar[type[ZhongwenProofreadingPrompt]] = (
+        ZhongwenProofreadingSimplifiedPrompt
+    )
+    """Text strings specialized for 中文 proofreading."""
+    text: ClassVar[type[Prompt]] = prompt_text
     """Text strings to be used for corresponding with LLM."""
 
-    def __init__(
-        self,
-        *,
-        text: type[ZhongwenProofreadingPrompt] | None = None,
-        **kwargs: Any,
-    ):
-        """Initialize.
+    @classmethod
+    @cache
+    def get_llm_queryer_cls(
+        cls,
+        text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingSimplifiedPrompt,
+    ) -> type[LLMQueryer]:
+        """Get LLM queryer subclass with provided prompt text.
 
         Arguments:
             text: prompt text to use for LLM correspondence
-            kwargs: Additional keyword arguments forwarded to LLMQueryer.
+        Returns:
+            LLM queryer type with appropriate prompt text
         """
-        if text is not None:
-            type(self).text = text
-
-        super().__init__(**kwargs)
+        return type(
+            f"{cls.__name__}_{text.__name__}",
+            (cls,),
+            {
+                "prompt_text": text,
+                "text": text,
+                "__module__": cls.__module__,
+            },
+        )

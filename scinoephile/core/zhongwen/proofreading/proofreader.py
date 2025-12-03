@@ -20,7 +20,7 @@ from scinoephile.testing import (
 )
 
 from .llm_queryer import ZhongwenProofreadingLLMQueryer
-from .prompt import (
+from .prompts import (
     ZhongwenProofreadingPrompt,
     ZhongwenProofreadingSimplifiedPrompt,
 )
@@ -61,12 +61,12 @@ class ZhongwenProofreader:
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        self.llm_queryer = ZhongwenProofreadingLLMQueryer(
+        llm_queryer_cls = ZhongwenProofreadingLLMQueryer.get_llm_queryer_cls(text=text)
+        self.llm_queryer = llm_queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
-            cache_dir_path=test_data_root / "cache",
+            cache_dir_path=str(test_data_root / "cache"),
             auto_verify=auto_verify,
-            text=text,
         )
         """Proofreads 中文 subtitles."""
 
