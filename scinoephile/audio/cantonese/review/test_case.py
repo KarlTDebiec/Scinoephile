@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import ReviewAnswer
-from .llm_text import ReviewLLMText
+from .prompt import ReviewPrompt
 from .query import ReviewQuery
 
 __all__ = ["ReviewTestCase"]
@@ -29,7 +29,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     """Answer class for this test case."""
     query_cls: ClassVar[type[ReviewQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ReviewLLMText]]
+    text: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -88,13 +88,13 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, size: int, text: type[ReviewLLMText] = ReviewLLMText
+        cls, size: int, text: type[ReviewPrompt] = ReviewPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided size, and text.
 
         Arguments:
             size: number of subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -106,5 +106,5 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
             __module__=cls.__module__,
             query_cls=(ClassVar[type[ReviewQuery]], query_cls),
             answer_cls=(ClassVar[type[ReviewAnswer]], answer_cls),
-            text=(ClassVar[type[ReviewLLMText]], text),
+            text=(ClassVar[type[ReviewPrompt]], text),
         )

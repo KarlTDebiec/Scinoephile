@@ -5,14 +5,14 @@
 from __future__ import annotations
 
 from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenProofreadingLLMText,
+    ZhongwenProofreadingPrompt,
     ZhongwenProofreadingTestCase,
 )
 
 # noinspection PyArgumentList
 # ruff: noqa: E501
 test_cases = [
-    ZhongwenProofreadingTestCase.get_test_case_cls(33, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(33, ZhongwenProofreadingPrompt)(
         zimu_1="在麦太即将临盆的时候",
         zimu_2="一只胶兜在九龙上空飞过",
         zimu_3="沿荔枝角道直出大角咀道",
@@ -48,7 +48,7 @@ test_cases = [
         zimu_33="但总得要叻仔呀！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingPrompt)(
         zimu_1="最后，胶兜「嘀督」一声落地",
         zimu_2="嘀督？嘀督，就是答应了",
         zimu_3="麦太想，这次走运了！",
@@ -64,7 +64,7 @@ test_cases = [
         zimu_13="麦兜！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingPrompt)(
         zimu_1="麦太，没见面一阵",
         zimu_2="怎么小腿粗起来了？",
         zimu_3="可怜呀，每天扑来扑去⋯",
@@ -83,7 +83,7 @@ test_cases = [
         zimu_16="春田花花，确有好多西人呀！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingPrompt)(
         zimu_1="鹅满是快烙滴好耳痛⋯",
         zimu_2="〝鹅闷天天一戏个窗！〞",
         zimu_3="鹅们在壳习，鹅闷载升胀 II",
@@ -114,7 +114,7 @@ test_cases = [
         difficulty=3,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(55, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(55, ZhongwenProofreadingPrompt)(
         zimu_1="你们可能觉得这间幼稚园很烂",
         zimu_2="可是，对我和我一班同学",
         zimu_3="这儿是我们最快乐，最美丽的乐园⋯",
@@ -172,7 +172,7 @@ test_cases = [
         zimu_55="我买所房子给妈妈！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(20, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(20, ZhongwenProofreadingPrompt)(
         zimu_1="幼稚园楼下，由校长兼营的茶餐厅",
         zimu_2="我们一班同学下课后经常光顾",
         zimu_3="鱼蛋粗面，麻烦你　　粗面买光了",
@@ -195,7 +195,7 @@ test_cases = [
         zimu_20="麦兜，射呀！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="看著自己每天疴烂煮⋯",
         zimu_2="每天长肉⋯",
         zimu_3="我感到充满力量！",
@@ -203,7 +203,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="有一首歌，Miss Chan唱的好听",
         zimu_2="我时常想著学习",
         zimu_3="可每次我总唱成「疴」什么什么的⋯",
@@ -214,7 +214,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="三、四、五、六、七⋯",
         zimu_2="多劳多得！",
         zimu_3="星期一至星期七⋯多劳多得！",
@@ -227,7 +227,7 @@ test_cases = [
         difficulty=3,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(15, ZhongwenProofreadingPrompt)(
         zimu_1="是的，我妈妈真的很厉害",
         zimu_2="除了兼任保险，地产经纪及trading⋯",
         zimu_3="她还趁高科技热潮搞了个烹饪网站⋯",
@@ -249,7 +249,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="好高兴这么快又跟大家见面",
         zimu_2="接下来我会教大家整一味纸鸡包",
         zimu_3="材料也很简单，只需要白纸一张",
@@ -258,7 +258,7 @@ test_cases = [
         zimu_6="各位小朋友，像鸡包不像呀？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="现在要教大家一味别致小菜－",
         zimu_2="包鸡纸包鸡包纸包鸡",
         zimu_3="首先将纸包鸡小心撕开",
@@ -270,7 +270,7 @@ test_cases = [
         zimu_9="还真有一块鸡吃呢！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(20, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(20, ZhongwenProofreadingPrompt)(
         zimu_1="今日为大家介绍一味⋯",
         zimu_2="小朋友一定喜欢的⋯",
         zimu_3="鸡包包鸡包包鸡包纸包纸⋯",
@@ -296,7 +296,7 @@ test_cases = [
         difficulty=3,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="从前，有个小朋友早睡晚起；第二天⋯",
         zimu_2="他死了！",
         zimu_3="我妈妈就是这样子，一切都那么直接",
@@ -306,7 +306,7 @@ test_cases = [
         zimu_7="没有不成的事",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="可有些事情，要是真的不成呢？",
         zimu_2="日子一天一天的过",
         zimu_3="首先是周润发事件⋯",
@@ -319,7 +319,7 @@ test_cases = [
         zimu_10="可是⋯我仍然有梦",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingPrompt)(
         zimu_1="马尔代夫，座落于印度洋的世外桃源",
         zimu_2="蓝天白云，椰林树影，水清沙幼",
         zimu_3="七彩缤纷的珊瑚，目不暇给的热带鱼",
@@ -338,7 +338,7 @@ test_cases = [
         zimu_16="发梦呀！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingPrompt)(
         zimu_1="校长早晨！",
         zimu_2="校长再见！",
         zimu_3="你最喜爱的地方是哪儿？",
@@ -363,13 +363,13 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="衰仔，快点起床上学",
         zimu_2="咦？",
         zimu_3="妈妈！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="开点药给他吃就没事了",
         zimu_2="医生，吃了药会不会有那个什么的？",
         zimu_3="不会！",
@@ -380,7 +380,7 @@ test_cases = [
         zimu_8="那么他怕不怕死？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="没事吧？快点先把药水喝掉！",
         zimu_2="妈妈我不想喝药水",
         zimu_3="不要呀妈妈，我不喝呀",
@@ -392,7 +392,7 @@ test_cases = [
         zimu_9="乖，先把药水喝掉",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="好呀，马尔代夫！",
         zimu_2="马尔代夫！",
         zimu_3="马尔代夫！",
@@ -402,7 +402,7 @@ test_cases = [
         zimu_7="来，多喝一点！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(7, ZhongwenProofreadingPrompt)(
         zimu_1="妈妈，你看！",
         zimu_2="妈妈你看，我病好了！",
         zimu_3="我把药都吃光了",
@@ -412,7 +412,7 @@ test_cases = [
         zimu_7="就给我喝光了！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingPrompt)(
         zimu_1="喝光了就叻仔了！",
         zimu_2="喝光了就病好了！",
         zimu_3="妈妈呀⋯",
@@ -441,7 +441,7 @@ test_cases = [
         zimu_26="太好了！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="麦唛，我是麦兜呀",
         zimu_2="是这样子的，我明天就飞了",
         zimu_3="对　　⋯是吗？",
@@ -459,7 +459,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="妈妈，我得把出世纸带著吗？",
         zimu_2="也要的",
         zimu_3="那么成绩表呢？",
@@ -467,14 +467,14 @@ test_cases = [
         zimu_5="太好了！吓得我！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="找到了！",
         zimu_2="出世纸给我找到了！",
         zimu_3="妈妈你替我收好它别抛掉",
         zimu_4="抛掉就去不成了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="早机去，晚机返",
         zimu_2="妈妈说这样才够精明",
         zimu_3="就这样⋯",
@@ -485,11 +485,11 @@ test_cases = [
         zimu_8="特别是小小一块的",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="妈妈晚安！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(9, ZhongwenProofreadingPrompt)(
         zimu_1="最新消息",
         zimu_2="奥运滑浪风帆选手李丽珊五场四胜",
         zimu_3="夺得香港历史上第一面奥运金牌！",
@@ -501,7 +501,7 @@ test_cases = [
         zimu_9="特别报告完毕",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="妈妈好像又有计了",
         zimu_2="靓仔，好运，叻仔⋯",
         zimu_3="好像都没希望了",
@@ -514,13 +514,13 @@ test_cases = [
         zimu_10="我知道要他收我做徒弟更加不容易",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="但无论多不容易，我都要试一试",
         zimu_2="我要黎根收我做徒弟！",
         zimu_3="无论几辛苦，我一定要得到奥运金牌！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="长洲！长洲！",
         zimu_2="你孕育了珊珊！你也会孕育我！",
         zimu_3="当我站在奥运会颁奖台上",
@@ -528,20 +528,20 @@ test_cases = [
         zimu_5="香港运动员不是垃圾！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="长洲，我终于来到长洲了！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="长洲，我得亲吻这片圣洁的土地！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="小朋友，这儿是南丫岛呀！",
         zimu_2="南丫岛？它也孕育了周润发！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="想不到我黎根避进南丫岛也给你发现",
         zimu_2="小朋友，你知道什么是狗仔队吧？",
         zimu_3="加上总有小朋友及家长来说要拜我为师",
@@ -554,11 +554,11 @@ test_cases = [
         zimu_10="别作梦了！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="小朋友，你看！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="这个⋯",
         zimu_2="这脚瓜⋯好粗好大！比一节瓜还要大！",
         zimu_3="脚瓜的肌肉非常结实⋯",
@@ -571,16 +571,16 @@ test_cases = [
         zimu_10="才可以练成这举世无双的脚瓜？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="我⋯我一定要练成这脚瓜！",
         zimu_2="师傅！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="我可以去小个便吗？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingPrompt)(
         zimu_1="每次唱这首歌，我都会急小便",
         zimu_2="现在先去，一回恐怕还是会急",
         zimu_3="但是我现在一定要唱这首歌",
@@ -609,7 +609,7 @@ test_cases = [
         zimu_26="「大包，整多两笼唔怕滞」",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="黎根听完歌以后，表情有点古怪⋯",
         zimu_2="我一定要好好把握这机会",
         zimu_3="师傅！你收我做徒弟吧！",
@@ -620,7 +620,7 @@ test_cases = [
         zimu_8="不成了！我的脚瓜太痹了！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(12, ZhongwenProofreadingPrompt)(
         zimu_1="我将今天发生的事讲给妈妈听",
         zimu_2="妈妈一句话也没说",
         zimu_3="从冰箱内拿了只雪鸡出来解冻",
@@ -636,7 +636,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(25, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(25, ZhongwenProofreadingPrompt)(
         zimu_1="妈妈在长洲找了间酒楼摆拜师宴",
         zimu_2="因为我是师傅最后一个入室弟子",
         zimu_3="到贺的乡绅父老持别多",
@@ -667,12 +667,12 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="第二项绝技，就是⋯",
         zimu_2="抢包山！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(19, ZhongwenProofreadingPrompt)(
         zimu_1="抢包山？",
         zimu_2="年轻观众可能不知「抢包山」何物",
         zimu_3="抢包山乃长洲独有传统节日",
@@ -694,7 +694,7 @@ test_cases = [
         zimu_19="而长洲独有的传统，亦渐被遗忘",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(16, ZhongwenProofreadingPrompt)(
         zimu_1="奥运金牌⋯这一世是没有机会的了",
         zimu_2="每个星期六我都搭船过长洲",
         zimu_3="去学抢包山⋯",
@@ -717,7 +717,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(8, ZhongwenProofreadingPrompt)(
         zimu_1="还不去？",
         zimu_2="珊珊没看见我这个师弟",
         zimu_3="我只有死死气再爬上组合柜",
@@ -731,19 +731,19 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(4, ZhongwenProofreadingPrompt)(
         zimu_1="其实今天是我第一次近距离见黎根",
         zimu_2="他恐怕都有五十岁了",
         zimu_3="却还是一副孩子脸",
         zimu_4="鸡尾包！新鲜出炉！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(2, ZhongwenProofreadingPrompt)(
         zimu_1="其实鸡尾包呢⋯",
         zimu_2="你说这似不似鸡尾？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(21, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(21, ZhongwenProofreadingPrompt)(
         zimu_1="麦兜他学东西⋯还可以",
         zimu_2="黎根接著说了一大堆话⋯",
         zimu_3="他的抱负，他对麦兜的期望",
@@ -767,7 +767,7 @@ test_cases = [
         zimu_21="才可以练成这举世无双的脚瓜？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="我个仔⋯",
         zimu_2="你个仔，他日都会有这只大脚瓜",
         zimu_3="其实我也不知道个仔要这么粗的脚瓜⋯",
@@ -776,13 +776,13 @@ test_cases = [
         zimu_6="我想起麦兜的爸爸，阿炳",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="我找来找去也找不到那部电子英文辞典",
         zimu_2="跑哪去了？",
         zimu_3="难道⋯不会吧？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(35, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(35, ZhongwenProofreadingPrompt)(
         zimu_1="想不到真的让妈妈拿去了．吓得我！",
         zimu_2="妈妈怎么会写起英文信？",
         zimu_3="信很短",
@@ -824,7 +824,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(24, ZhongwenProofreadingPrompt)(
         zimu_1="看完妈妈的信",
         zimu_2="我决定回长洲继续学抢包山",
         zimu_3="我不是为了见珊珊",
@@ -851,7 +851,7 @@ test_cases = [
         zimu_24="我最后终于练成「十二路抢包手」",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(50, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(50, ZhongwenProofreadingPrompt)(
         zimu_1="喂，我是麦兜",
         zimu_2="刚才的是小朋友麦兜，我是大个佬麦兜",
         zimu_3="小朋友麦兜和大个佬麦兜除了声音不同⋯",
@@ -905,7 +905,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(5, ZhongwenProofreadingPrompt)(
         zimu_1="好靓的晚上啊！",
         zimu_2="我和妈妈坐在尖东海傍",
         zimu_3="点点灯光在海面走来走去⋯",
@@ -913,7 +913,7 @@ test_cases = [
         zimu_5="真的好靓！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="我从没吃过这么浓味的东西",
         zimu_2="什至杯面，烧鸭的味道也没有这么浓",
         zimu_3="火鸡的味道把我每一个味蕾缠住⋯",
@@ -925,7 +925,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(56, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(56, ZhongwenProofreadingPrompt)(
         zimu_1="第二天我睡得很晏⋯",
         zimu_2="刷过牙我还感觉到火鸡的美味",
         zimu_3="因为早餐吃得晚⋯",
@@ -989,7 +989,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(23, ZhongwenProofreadingPrompt)(
         zimu_1="特别报告",
         zimu_2="奥运金牌得主李丽珊决定参加今届奥运",
         zimu_3="向全世界人再次证明⋯",
@@ -1015,7 +1015,7 @@ test_cases = [
         zimu_23="成为本港举办亚运的重点推介比赛项目",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(11, ZhongwenProofreadingPrompt)(
         zimu_1="最后⋯",
         zimu_2="最后，一切成烟",
         zimu_3="最后，他们选了「掷蛋挞」做推介项目",
@@ -1029,7 +1029,7 @@ test_cases = [
         zimu_11="一切回复正常",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="上中学后，我再没有练习抢包手",
         zimu_2="有时候跟妈妈饮茶⋯",
         zimu_3="我都会手快快替她抢一笼大包",
@@ -1038,19 +1038,19 @@ test_cases = [
         zimu_6="一切落空",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="有时候我也会跟同学回到长洲烧烤",
         zimu_2="每次看见师傅⋯",
         zimu_3="他都好像老了一点",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(3, ZhongwenProofreadingPrompt)(
         zimu_1="因为环保⋯",
         zimu_2="长洲的抢包都转为塑胶",
         zimu_3="师傅说，那阵胶气，相当臭",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(34, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(34, ZhongwenProofreadingPrompt)(
         zimu_1="长洲有个张保仔洞",
         zimu_2="听说张保仔在洞内藏了很多宝藏",
         zimu_3="因为我练过抢包手，身手比较灵活⋯",
@@ -1087,15 +1087,15 @@ test_cases = [
         zimu_34="世界的时候，我会怎么样？",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="「⋯无力挽！」",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(1, ZhongwenProofreadingPrompt)(
         zimu_1="橙",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingPrompt)(
         zimu_1="是的，我就是大个佬麦兜",
         zimu_2="肥，算大力",
         zimu_3="麻麻地可以",
@@ -1127,7 +1127,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(14, ZhongwenProofreadingPrompt)(
         zimu_1="不成，还是出个锦囊！",
         zimu_2="妈妈的dot com散掉后，她又有计",
         zimu_3="她出版了一本教烹饪的食谱",
@@ -1144,7 +1144,7 @@ test_cases = [
         zimu_14="多谢合作！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(13, ZhongwenProofreadingPrompt)(
         zimu_1="麻烦你，一客常餐",
         zimu_2="常餐？常餐有什么吃？",
         zimu_3="跟特餐一样吧",
@@ -1160,7 +1160,7 @@ test_cases = [
         zimu_13="今天常餐精采呀！",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(26, ZhongwenProofreadingPrompt)(
         zimu_1="对不起，常餐卖光了",
         zimu_2="那改要特餐吧",
         zimu_3="特餐？特餐有什么吃？",
@@ -1189,7 +1189,7 @@ test_cases = [
         zimu_26="来两份快餐吧",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(10, ZhongwenProofreadingPrompt)(
         zimu_1="对不起，没快餐了",
         zimu_2="太过份了吧？你们究竟有吃的没？",
         zimu_3="午餐吧，午餐精采呀",
@@ -1202,7 +1202,7 @@ test_cases = [
         zimu_10="好吧好吧！两份午餐好了",
         verified=True,
     ),
-    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingLLMText)(
+    ZhongwenProofreadingTestCase.get_test_case_cls(6, ZhongwenProofreadingPrompt)(
         zimu_1="对不起，午餐卖光了",
         zimu_2="要试试我们的晚餐吗？都一样的",
         zimu_3="光天白日，吃什么鬼晚餐？",

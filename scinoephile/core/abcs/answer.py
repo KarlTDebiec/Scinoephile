@@ -10,7 +10,7 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from .llm_text import LLMText
+from .prompt import Prompt
 
 __all__ = ["Answer"]
 
@@ -18,7 +18,7 @@ __all__ = ["Answer"]
 class Answer(BaseModel, ABC):
     """Abstract base class for LLM answers."""
 
-    text: ClassVar[type[LLMText]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __str__(self) -> str:

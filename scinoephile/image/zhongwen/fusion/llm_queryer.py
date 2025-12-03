@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import ZhongwenFusionAnswer
-from .llm_text import ZhongwenFusionLLMText
+from .prompt import ZhongwenFusionPrompt
 from .query import ZhongwenFusionQuery
 from .test_case import ZhongwenFusionTestCase
 
@@ -21,5 +21,5 @@ class ZhongwenFusionLLMQueryer(
 ):
     """Queries LLM to fuse OCRed 中文 subtitles from Google Lens and PaddleOCR."""
 
-    text: ClassVar[type[ZhongwenFusionLLMText]] = ZhongwenFusionLLMText
+    text: ClassVar[type[ZhongwenFusionPrompt]] = ZhongwenFusionPrompt
     """Text strings to be used for corresponding with LLM."""

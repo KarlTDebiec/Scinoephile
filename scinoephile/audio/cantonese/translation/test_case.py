@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import TranslationAnswer
-from .llm_text import TranslationLLMText
+from .prompt import TranslationPrompt
 from .query import TranslationQuery
 
 __all__ = ["TranslationTestCase"]
@@ -29,7 +29,7 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
     """Answer class for this test case."""
     query_cls: ClassVar[type[TranslationQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[TranslationLLMText]]
+    text: ClassVar[type[TranslationPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -79,14 +79,14 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
         cls,
         size: int,
         missing: tuple[int, ...],
-        text: type[TranslationLLMText] = TranslationLLMText,
+        text: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided size, missing, and text.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -102,5 +102,5 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
             __module__=cls.__module__,
             query_cls=(ClassVar[type[TranslationQuery]], query_cls),
             answer_cls=(ClassVar[type[TranslationAnswer]], answer_cls),
-            text=(ClassVar[type[TranslationLLMText]], text),
+            text=(ClassVar[type[TranslationPrompt]], text),
         )

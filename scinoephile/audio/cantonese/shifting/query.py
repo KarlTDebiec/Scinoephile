@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
 
-from .llm_text import ShiftingLLMText
+from .prompt import ShiftingPrompt
 
 __all__ = ["ShiftingQuery"]
 
@@ -20,7 +20,7 @@ __all__ = ["ShiftingQuery"]
 class ShiftingQuery(Query, ABC):
     """Abstract base class for 粤文 transcription shifting queries."""
 
-    text: ClassVar[type[ShiftingLLMText]]
+    text: ClassVar[type[ShiftingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
@@ -32,11 +32,11 @@ class ShiftingQuery(Query, ABC):
 
     @classmethod
     @cache
-    def get_query_cls(cls, text: type[ShiftingLLMText] = ShiftingLLMText) -> type[Self]:
+    def get_query_cls(cls, text: type[ShiftingPrompt] = ShiftingPrompt) -> type[Self]:
         """Get concrete query class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate fields and text
         """
@@ -50,6 +50,6 @@ class ShiftingQuery(Query, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ShiftingLLMText]], text),
+            text=(ClassVar[type[ShiftingPrompt]], text),
             **fields,
         )

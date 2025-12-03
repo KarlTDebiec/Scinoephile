@@ -11,7 +11,7 @@ from typing import ClassVar
 from pydantic import BaseModel
 
 from ..models import make_hashable
-from .llm_text import LLMText
+from .prompt import Prompt
 
 __all__ = ["Query"]
 
@@ -19,7 +19,7 @@ __all__ = ["Query"]
 class Query(BaseModel, ABC):
     """Abstract base class for LLM queries."""
 
-    text: ClassVar[type[LLMText]]
+    text: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __str__(self) -> str:

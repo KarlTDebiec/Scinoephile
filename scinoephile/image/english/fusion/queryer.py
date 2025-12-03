@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import EnglishFusionAnswer
-from .llm_text import EnglishFusionLLMText
+from .prompt import EnglishFusionPrompt
 from .query import EnglishFusionQuery
 from .test_case import EnglishFusionTestCase
 
@@ -21,5 +21,5 @@ class EnglishFusionLLMQueryer(
 ):
     """Queries LLM to fuse OCRed English subtitles from Google Lens and Tesseract."""
 
-    text: ClassVar[type[EnglishFusionLLMText]] = EnglishFusionLLMText
+    text: ClassVar[type[EnglishFusionPrompt]] = EnglishFusionPrompt
     """Text strings to be used for corresponding with LLM."""

@@ -18,7 +18,7 @@ from scinoephile.core.text import (
 )
 
 from .answer import MergingAnswer
-from .llm_text import MergingLLMText
+from .prompt import MergingPrompt
 from .query import MergingQuery
 
 __all__ = ["MergingTestCase"]
@@ -33,7 +33,7 @@ class MergingTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[MergingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[MergingLLMText]]
+    text: ClassVar[type[MergingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -89,13 +89,11 @@ class MergingTestCase(
 
     @classmethod
     @cache
-    def get_test_case_cls(
-        cls, text: type[MergingLLMText] = MergingLLMText
-    ) -> type[Self]:
+    def get_test_case_cls(cls, text: type[MergingPrompt] = MergingPrompt) -> type[Self]:
         """Get concrete test case class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -107,5 +105,5 @@ class MergingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[MergingQuery]], query_cls),
             answer_cls=(ClassVar[type[MergingAnswer]], answer_cls),
-            text=(ClassVar[type[MergingLLMText]], text),
+            text=(ClassVar[type[MergingPrompt]], text),
         )

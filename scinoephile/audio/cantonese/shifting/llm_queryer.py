@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import ShiftingAnswer
-from .llm_text import ShiftingLLMText
+from .prompt import ShiftingPrompt
 from .query import ShiftingQuery
 from .test_case import ShiftingTestCase
 
@@ -19,5 +19,5 @@ __all__ = ["ShiftingLLMQueryer"]
 class ShiftingLLMQueryer(LLMQueryer[ShiftingQuery, ShiftingAnswer, ShiftingTestCase]):
     """Queries LLM to shift 粤文 text between adjacent subtitles based on 中文."""
 
-    text: ClassVar[type[ShiftingLLMText]] = ShiftingLLMText
+    text: ClassVar[type[ShiftingPrompt]] = ShiftingPrompt
     """Text strings to be used for corresponding with LLM."""

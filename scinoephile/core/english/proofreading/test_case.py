@@ -14,7 +14,7 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.models import format_field
 
 from .answer import EnglishProofreadingAnswer
-from .llm_text import EnglishProofreadingLLMText
+from .prompt import EnglishProofreadingPrompt
 from .query import EnglishProofreadingQuery
 
 __all__ = ["EnglishProofreadingTestCase"]
@@ -29,7 +29,7 @@ class EnglishProofreadingTestCase(
     """Answer class for this test case."""
     query_cls: ClassVar[type[EnglishProofreadingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[EnglishProofreadingLLMText]]
+    text: ClassVar[type[EnglishProofreadingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @property
@@ -104,13 +104,13 @@ class EnglishProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[EnglishProofreadingLLMText] = EnglishProofreadingLLMText,
+        text: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided size and text.
 
         Arguments:
             size: number of subtitles
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate fields and text
         """
@@ -122,5 +122,5 @@ class EnglishProofreadingTestCase(
             __module__=cls.__module__,
             query_cls=(ClassVar[type[EnglishProofreadingQuery]], query_cls),
             answer_cls=(ClassVar[type[EnglishProofreadingAnswer]], answer_cls),
-            text=(ClassVar[type[EnglishProofreadingLLMText]], text),
+            text=(ClassVar[type[EnglishProofreadingPrompt]], text),
         )

@@ -10,7 +10,7 @@ from scinoephile.core import Series
 
 from .answer import EnglishFusionAnswer
 from .fuser import EnglishFuser
-from .llm_text import EnglishFusionLLMText
+from .prompt import EnglishFusionPrompt
 from .query import EnglishFusionQuery
 from .queryer import EnglishFusionLLMQueryer
 from .test_case import EnglishFusionTestCase
@@ -19,7 +19,7 @@ __all__ = [
     "EnglishFuser",
     "EnglishFusionAnswer",
     "EnglishFusionLLMQueryer",
-    "EnglishFusionLLMText",
+    "EnglishFusionPrompt",
     "EnglishFusionQuery",
     "EnglishFusionTestCase",
     "get_english_ocr_fused",

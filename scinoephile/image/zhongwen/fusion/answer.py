@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Answer
 
-from .llm_text import ZhongwenFusionLLMText
+from .prompt import ZhongwenFusionPrompt
 
 __all__ = ["ZhongwenFusionAnswer"]
 
@@ -20,7 +20,7 @@ __all__ = ["ZhongwenFusionAnswer"]
 class ZhongwenFusionAnswer(Answer, ABC):
     """Abstract base class for 中文 OCR fusion answers."""
 
-    text: ClassVar[type[ZhongwenFusionLLMText]]
+    text: ClassVar[type[ZhongwenFusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
@@ -35,12 +35,12 @@ class ZhongwenFusionAnswer(Answer, ABC):
     @classmethod
     @cache
     def get_answer_cls(
-        cls, text: type[ZhongwenFusionLLMText] = ZhongwenFusionLLMText
+        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
     ) -> type[Self]:
         """Get concrete answer class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate fields and text
         """
@@ -52,6 +52,6 @@ class ZhongwenFusionAnswer(Answer, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenFusionLLMText]], text),
+            text=(ClassVar[type[ZhongwenFusionPrompt]], text),
             **fields,
         )

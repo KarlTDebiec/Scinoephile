@@ -7,10 +7,10 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-__all__ = ["LLMText"]
+__all__ = ["Prompt"]
 
 
-class LLMText(ABC):
+class Prompt(ABC):
     """Text strings to be used for corresponding with an LLM."""
 
     # Prompt

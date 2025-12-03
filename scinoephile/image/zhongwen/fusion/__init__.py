@@ -11,7 +11,7 @@ from scinoephile.core import Series
 from .answer import ZhongwenFusionAnswer
 from .fuser import ZhongwenFuser
 from .llm_queryer import ZhongwenFusionLLMQueryer
-from .llm_text import ZhongwenFusionLLMText
+from .prompt import ZhongwenFusionPrompt
 from .query import ZhongwenFusionQuery
 from .test_case import ZhongwenFusionTestCase
 
@@ -19,7 +19,7 @@ __all__ = [
     "ZhongwenFuser",
     "ZhongwenFusionAnswer",
     "ZhongwenFusionLLMQueryer",
-    "ZhongwenFusionLLMText",
+    "ZhongwenFusionPrompt",
     "ZhongwenFusionQuery",
     "ZhongwenFusionTestCase",
     "get_zhongwen_ocr_fused",

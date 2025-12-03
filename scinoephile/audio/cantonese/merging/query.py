@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
 
-from .llm_text import MergingLLMText
+from .prompt import MergingPrompt
 
 __all__ = ["MergingQuery"]
 
@@ -20,7 +20,7 @@ __all__ = ["MergingQuery"]
 class MergingQuery(Query, ABC):
     """Abstract base class for 粤文 transcription merging queries."""
 
-    text: ClassVar[type[MergingLLMText]]
+    text: ClassVar[type[MergingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
@@ -34,11 +34,11 @@ class MergingQuery(Query, ABC):
 
     @classmethod
     @cache
-    def get_query_cls(cls, text: type[MergingLLMText] = MergingLLMText) -> type[Self]:
+    def get_query_cls(cls, text: type[MergingPrompt] = MergingPrompt) -> type[Self]:
         """Get concrete query class with provided text.
 
         Arguments:
-            text: LLMText providing descriptions and messages
+            text: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate fields and text
         """
@@ -53,6 +53,6 @@ class MergingQuery(Query, ABC):
             f"{cls.__name__}_{text.__name__}",
             __base__=cls,
             __module__=cls.__module__,
-            text=(ClassVar[type[MergingLLMText]], text),
+            text=(ClassVar[type[MergingPrompt]], text),
             **fields,
         )

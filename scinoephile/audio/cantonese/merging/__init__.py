@@ -6,14 +6,14 @@ from __future__ import annotations
 
 from .answer import MergingAnswer
 from .llm_queryer import MergingLLMQueryer
-from .llm_text import MergingLLMText
+from .prompt import MergingPrompt
 from .query import MergingQuery
 from .test_case import MergingTestCase
 
 __all__ = [
     "MergingAnswer",
     "MergingLLMQueryer",
-    "MergingLLMText",
+    "MergingPrompt",
     "MergingQuery",
     "MergingTestCase",
 ]

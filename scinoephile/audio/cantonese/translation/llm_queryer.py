@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.abcs import LLMQueryer
 
 from .answer import TranslationAnswer
-from .llm_text import TranslationLLMText
+from .prompt import TranslationPrompt
 from .query import TranslationQuery
 from .test_case import TranslationTestCase
 
@@ -21,5 +21,5 @@ class TranslationLLMQueryer(
 ):
     """Translates 粤文 text based on corresponding 中文."""
 
-    text: ClassVar[type[TranslationLLMText]] = TranslationLLMText
+    text: ClassVar[type[TranslationPrompt]] = TranslationPrompt
     """Text strings to be used for corresponding with LLM."""
