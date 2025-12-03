@@ -58,7 +58,6 @@ class ZhongwenFusionTestCase(
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
-        auto_verified = super().get_auto_verified()
         if any(ch in self.ronghe for ch in whitespace.values()):
             return False
         if self.get_min_difficulty() > 1:
@@ -67,7 +66,7 @@ class ZhongwenFusionTestCase(
             return True
         if self.paddle == self.ronghe and "\n" not in self.paddle:
             return True
-        return False
+        return super().get_auto_verified()
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.

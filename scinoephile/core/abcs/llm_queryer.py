@@ -57,7 +57,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.provider = provider or OpenAIProvider()
         """LLM Provider to use for queries."""
 
-        self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases}
+        self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or {}}
         """Test cases included in the prompt for few-shot learning."""
         self.verified_test_cases = {
             tc.query.key: tc for tc in verified_test_cases or {}

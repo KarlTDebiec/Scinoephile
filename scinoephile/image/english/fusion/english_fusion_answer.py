@@ -36,12 +36,12 @@ class EnglishFusionAnswer(Answer, ABC):
     def get_answer_cls(
         cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for English OCR fusion answer.
+        """Get concrete answer class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            EnglishFusionAnswer type with appropriate fields and descriptions
+            Answer type with appropriate fields and text
         """
         fields = {
             "fused": (str, Field(..., description=text.fused_description)),

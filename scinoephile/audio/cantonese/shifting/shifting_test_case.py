@@ -1,30 +1,31 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Test case for 粤文 shifting; may also be used for few-shot prompt."""
+"""Abstract base class for 粤文 transcription shifting test cases."""
 
 from __future__ import annotations
 
-from typing import ClassVar
+from abc import ABC
+from typing import ClassVar, Self
 
-from pydantic import model_validator
+from pydantic import create_model, model_validator
 
 from scinoephile.audio.cantonese.shifting.shifting_answer import ShiftingAnswer
+from scinoephile.audio.cantonese.shifting.shifting_llm_text import ShiftingLLMText
 from scinoephile.audio.cantonese.shifting.shifting_query import ShiftingQuery
 from scinoephile.core.abcs import TestCase
 
 
 class ShiftingTestCase(
-    ShiftingQuery, ShiftingAnswer, TestCase[ShiftingQuery, ShiftingAnswer]
+    ShiftingQuery, ShiftingAnswer, TestCase[ShiftingQuery, ShiftingAnswer], ABC
 ):
-    """Test case for 粤文 shifting; may also be used for few-shot prompt."""
+    """Abstract base class for 粤文 transcription shifting test cases."""
 
-    query_cls: ClassVar[type[ShiftingQuery]] = ShiftingQuery
-    answer_cls: ClassVar[type[ShiftingAnswer]] = ShiftingAnswer
-
-    @property
-    def noop(self) -> bool:
-        """Return whether this test case is a no-op."""
-        return self.yuewen_1_shifted == "" and self.yuewen_2_shifted == ""
+    answer_cls: ClassVar[type[ShiftingAnswer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[ShiftingQuery]]
+    """Query class for this test case."""
+    text: ClassVar[type[ShiftingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -38,29 +39,49 @@ class ShiftingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if not self.noop:
+        if self.yuewen_1_shifted != "" or self.yuewen_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
     def validate_test_case(self) -> ShiftingTestCase:
-        """Ensure query and answer are consistent with one another."""
+        """Ensure query and answer together are valid."""
         if (
             self.yuewen_1 == self.yuewen_1_shifted
             and self.yuewen_2 == self.yuewen_2_shifted
         ):
-            raise ValueError(
-                "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's "
-                "yuewen_1 and yuewen_2; if no shift is needed, yuewen_1_shifted and "
-                "yuewen_2_shifted must be empty strings."
-            )
-        expected = self.yuewen_1 + self.yuewen_2
-        received = self.yuewen_1_shifted + self.yuewen_2_shifted
-        if not self.noop and expected != received:
-            raise ValueError(
-                "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not "
-                "match query's concatenated yuewen_1 and yuewen_2:\n"
-                f"Expected: {expected}\n"
-                f"Received: {received}"
-            )
+            raise ValueError(self.text.yuewen_1_yuewen_2_unchanged_error)
+        if self.yuewen_1_shifted != "" or self.yuewen_2_shifted != "":
+            expected = self.yuewen_1 + self.yuewen_2
+            received = self.yuewen_1_shifted + self.yuewen_2_shifted
+            if not self.noop and expected != received:
+                raise ValueError(
+                    self.text.yuewen_characters_changed_error.format(
+                        expected=expected, received=received
+                    )
+                )
         return self
+
+    @classmethod
+    def get_test_case_cls(
+        cls, text: type[ShiftingLLMText] = ShiftingLLMText
+    ) -> type[Self]:
+        """Get concrete test case class with provided text.
+
+        Arguments:
+            text: LLMText providing descriptions and messages
+        Returns:
+            TestCase type with appropriate fields and text
+        """
+        query_cls = ShiftingQuery.get_query_cls(text)
+        answer_cls = ShiftingAnswer.get_answer_cls(text)
+        model = create_model(
+            f"{cls.__name__}_{text.__name__}",
+            __base__=(query_cls, answer_cls, cls),
+            __module__=cls.__module__,
+            query_cls=(ClassVar[type[ShiftingQuery]], query_cls),
+            answer_cls=(ClassVar[type[ShiftingAnswer]], answer_cls),
+            text=(ClassVar[type[ShiftingLLMText]], text),
+        )
+
+        return model

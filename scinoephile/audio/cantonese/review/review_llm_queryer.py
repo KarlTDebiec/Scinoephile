@@ -18,26 +18,3 @@ class ReviewLLMQueryer(LLMQueryer[ReviewQuery, ReviewAnswer, ReviewTestCase]):
 
     text: ClassVar[type[ReviewLLMText]] = ReviewLLMText
     """Text strings to be used for corresponding with LLM."""
-
-    def get_answer_example(self, answer_cls: type[ReviewAnswer]) -> ReviewAnswer:
-        """Example answer.
-
-        Arguments:
-            answer_cls: Answer class
-        Returns:
-            example answer
-        """
-        answer_values = {}
-        for key in answer_cls.model_fields.keys():
-            kind, idx = key.rsplit("_", 1)
-            if kind == "yuewen":
-                answer_values[key] = (
-                    f"粤文 subtitle {idx} revised based on query's 中文 "
-                    f"subtitle {idx}, or an empty string if no revision is necessary."
-                )
-            else:
-                answer_values[key] = (
-                    f"Note concerning revisions to 粤文 subtitle {idx}, "
-                    f"or an empty string if no revision is necessary."
-                )
-        return answer_cls(**answer_values)

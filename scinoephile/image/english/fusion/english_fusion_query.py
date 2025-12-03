@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Query for English OCR fusion."""
+"""Abstract base class for English OCR fusion queries."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from scinoephile.image.english.fusion.english_fusion_llm_text import (
 
 
 class EnglishFusionQuery(Query, ABC):
-    """Query for English OCR fusion."""
+    """Abstract base class for English OCR fusion queries."""
 
     text: ClassVar[type[EnglishFusionLLMText]]
     """Text strings to be used for corresponding with LLM."""
@@ -38,12 +38,12 @@ class EnglishFusionQuery(Query, ABC):
     def get_query_cls(
         cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for English OCR fusion query.
+        """Get concrete query class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            EnglishFusionQuery type with appropriate fields and descriptions
+            Query type with appropriate fields and text
         """
         fields = {
             "lens": (str, Field(..., description=text.lens_description)),

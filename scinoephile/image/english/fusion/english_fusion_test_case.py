@@ -57,14 +57,13 @@ class EnglishFusionTestCase(
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
-        auto_verified = super().get_auto_verified()
         if self.get_min_difficulty() > 1:
             return False
         if self.lens == self.fused and "\n" not in self.lens:
             return True
         if self.tesseract == self.fused and "\n" not in self.tesseract:
             return True
-        return False
+        return super().get_auto_verified()
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -87,12 +86,12 @@ class EnglishFusionTestCase(
     def get_test_case_cls(
         cls, text: type[EnglishFusionLLMText] = EnglishFusionLLMText
     ) -> type[Self]:
-        """Get concrete class for English OCR fusion test case.
+        """Get concrete test case class with provided text.
 
         Arguments:
             text: LLMText providing descriptions and messages
         Returns:
-            EnglishFusionTestCase type with appropriate fields and descriptions
+            TestCase type with appropriate fields and text
         """
         query_cls = EnglishFusionQuery.get_query_cls(text)
         answer_cls = EnglishFusionAnswer.get_answer_cls(text)
