@@ -15,6 +15,15 @@ from pysubs2 import SSAFile
 
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
+    filterwarnings(
+        "ignore",
+        message=(
+            "Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not "
+            "work"
+        ),
+        category=RuntimeWarning,
+        module="pydub.utils",
+    )
     from pydub import AudioSegment
 
 

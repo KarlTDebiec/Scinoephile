@@ -10,6 +10,15 @@ from warnings import catch_warnings, filterwarnings
 
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
+    filterwarnings(
+        "ignore",
+        message=(
+            "Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not "
+            "work"
+        ),
+        category=RuntimeWarning,
+        module="pydub.utils",
+    )
     from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment
