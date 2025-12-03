@@ -24,55 +24,53 @@ class OpenAIProvider(LLMProvider):
         """Initialize.
 
         Arguments:
-            client: OpenAI client
-            aclient: Asynchronous OpenAI client
+            client: synchronous OpenAI client
+            aclient: asynchronous OpenAI client
         """
-        self.client = client or OpenAI()
-        self.aclient = aclient or AsyncOpenAI()
+        self.sync_client = client or OpenAI()
+        self.async_client = aclient or AsyncOpenAI()
 
     @override
     def chat_completion(
         self,
-        model: str,
         messages: list[dict[str, Any]],
-        temperature: float = 0.0,
-        seed: int = 0,
         response_format: type[Answer] | None = None,
+        model: str = "gpt-5.1",
+        **kwargs: Any,
     ) -> str:
-        """Complete chat message.
+        """Return chat completion text synchronously.
 
         Arguments:
-            model: Model to use for completion
-            messages: Messages to send
-            temperature: Sampling temperature
-            seed: Seed for reproducibility
-            response_format: Response format
+            messages: messages to send
+            response_format: response format
+            model: model to use
+            kwargs: additional keyword arguments
         Returns:
-            Completion text from the model
+            completion text from the model
         Raises:
             ScinoephileError: Error during chat completion
         """
         try:
             if response_format:
-                completion = self.client.beta.chat.completions.parse(
-                    model=model,
+                completion = self.sync_client.beta.chat.completions.parse(
                     messages=messages,
-                    temperature=temperature,
-                    seed=seed,
                     response_format=response_format,
+                    model=model,
+                    **kwargs,
                 )
             else:
-                completion = self.client.chat.completions.create(
-                    model=model,
+                completion = self.sync_client.chat.completions.create(
                     messages=messages,
-                    temperature=temperature,
-                    seed=seed,
+                    model=model,
+                    **kwargs,
                 )
             return completion.choices[0].message.content
         except OpenAIError as exc:
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
+            # TODO: Parse out rate limit and backoff properly
+            # Probably subclass Scinoephile Error and store time to wait there
             if exc_code == "rate_limit_exceeded":
                 sleep(1)
             raise ScinoephileError(
@@ -80,42 +78,38 @@ class OpenAIProvider(LLMProvider):
             ) from exc
 
     @override
-    async def achat_completion(
+    async def chat_completion_async(
         self,
-        model: str,
         messages: list[dict[str, Any]],
-        temperature: float = 0.0,
-        seed: int = 0,
         response_format: type[Answer] | None = None,
+        model: str = "gpt-5.1",
+        **kwargs: Any,
     ) -> str:
-        """Complete chat message asynchronously.
+        """Return chat completion text asynchronously.
 
         Arguments:
-            model: Model to use for completion
-            messages: Messages to send
-            temperature: Sampling temperature
-            seed: Seed for reproducibility
-            response_format: Response format
+            messages: messages to send
+            response_format: response format
+            model: model to use
+            kwargs: additional keyword arguments
         Returns:
-            Completion text from the model
+            completion text from the model
         Raises:
             ScinoephileError: Error during chat completion
         """
         try:
             if response_format:
-                completion = await self.aclient.beta.chat.completions.parse(
-                    model=model,
+                completion = await self.async_client.beta.chat.completions.parse(
                     messages=messages,
-                    temperature=temperature,
-                    seed=seed,
                     response_format=response_format,
+                    model=model,
+                    **kwargs,
                 )
             else:
-                completion = await self.aclient.chat.completions.create(
-                    model=model,
+                completion = await self.async_client.chat.completions.create(
                     messages=messages,
-                    temperature=temperature,
-                    seed=seed,
+                    model=model,
+                    **kwargs,
                 )
             return completion.choices[0].message.content
         except OpenAIError as exc:

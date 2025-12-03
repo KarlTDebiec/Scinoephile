@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field, model_validator
 from pydantic.fields import FieldInfo
 
 from scinoephile.core.abcs.answer import Answer
+from scinoephile.core.abcs.llm_text import LLMText
 from scinoephile.core.abcs.query import Query
 from scinoephile.core.models import format_field
 
@@ -38,6 +39,8 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     """Answer class for this test case."""
     query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
+    text: ClassVar[type[LLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     difficulty: int = Field(
         0, description="Difficulty level of the test case, used for filtering."
@@ -64,11 +67,6 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
     def answer_fields(self) -> dict[str, FieldInfo]:
         """List of answer fields."""
         return self.answer_cls.model_fields
-
-    @property
-    def key(self) -> tuple[str, ...]:
-        """Unique key for the test case."""
-        return tuple(list(self.query.query_key) + list(self.answer.answer_key))
 
     @property
     def noop(self) -> bool:
@@ -127,8 +125,6 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
-        if self.noop:
-            return True
         return False
 
     def get_min_difficulty(self) -> int:
@@ -145,14 +141,13 @@ class TestCase[TQuery: Query, TAnswer: Answer](BaseModel, ABC):
         return 0
 
     @classmethod
-    def from_query_and_answer(
-        cls, query: TQuery, answer: TAnswer, prompt: bool = False
-    ) -> Self:
+    def from_query_and_answer(cls, query: TQuery, answer: TAnswer) -> Self:
         """Create test case from query and answer.
 
         Arguments:
             query: Query part of the test case
             answer: Answer part of the test case
-            prompt: Whether to include this test case in prompt examples
+        Returns:
+            Test case combining the query and answer
         """
-        return cls(**query.model_dump(), **answer.model_dump(), prompt=prompt)
+        return cls(**query.model_dump(), **answer.model_dump())

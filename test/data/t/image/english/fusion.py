@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.english.fusion import EnglishFusionLLMText, EnglishFusionTestCase
 
 # noinspection PyArgumentList
 test_cases = [
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="- Let me see.\n- please verify ID number C532743…",
         tesseract="- Let me see.\n- please verify ID number 0532743…",
         fused="- Let me see.\n- please verify ID number C532743…",
@@ -18,7 +18,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Contained in the agreement\nare not measures of expediency.",
         tesseract="contained in the agreement\nare not measures of expediency.",
         fused="contained in the agreement\nare not measures of expediency.",
@@ -26,7 +26,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="In the Basic Law for Hong Kong",
         tesseract="in the Basic Law for Hong Kong",
         fused="in the Basic Law for Hong Kong",
@@ -34,7 +34,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="And preserved intact for 50 years from 1997.",
         tesseract="and preserved intact for 50 years from 1997.",
         fused="and preserved intact for 50 years from 1997.",
@@ -42,7 +42,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="As well as shared\nresponsibilities of China and Britain",
         tesseract="as well as shared\nresponsibilities of China and Britain",
         fused="as well as shared\nresponsibilities of China and Britain",
@@ -50,7 +50,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="To ensure the Joint Declaration is fully\n"
         "implemented with no encumbrances.",
         tesseract="to ensure the Joint Declaration is fully\n"
@@ -62,7 +62,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
         tesseract="{\\i1}4 armed suspects robbed 5 gem shops\n"
         "on Mut Watt Street.{\\i0}",
@@ -72,7 +72,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="The robbers exchanged fire",
         tesseract="the robbers exchanged fire",
         fused="the robbers exchanged fire",
@@ -80,7 +80,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="With the Special Duties Unit.",
         tesseract="with the Special Duties Unit.",
         fused="with the Special Duties Unit.",
@@ -88,7 +88,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="The 5 gold shops lost $10M in total.",
         tesseract="The{\\i1}5{\\i0}gold shops lost $1 OM in total.",
         fused="The 5 gold shops lost $10M in total.",
@@ -98,7 +98,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens='Is the "Most Wanted" Yip Kwok-foon.',
         tesseract='is the "Most Wanted" Yip Kwok-foon.',
         fused='is the "Most Wanted" Yip Kwok-foon.',
@@ -106,7 +106,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Red skirt, red scarf,",
         tesseract="red skirt, red scarf,",
         fused="red skirt, red scarf,",
@@ -114,7 +114,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="We agreed on $3 billion.",
         tesseract="we agreed on $3 billion.",
         fused="we agreed on $3 billion.",
@@ -123,7 +123,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Take the $500M now.",
         tesseract="Take the $5OOM now.",
         fused="Take the $500M now.",
@@ -132,7 +132,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="By that time,\nhowever, you son will be…",
         tesseract="By that time, however, you son will be…",
         fused="By that time, however, you son will be…",
@@ -141,7 +141,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="But they are useless.",
         tesseract="but they are useless.",
         fused="but they are useless.",
@@ -149,7 +149,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="If I said I'd fucked your mother,\ndid I really fuck her?",
         tesseract="if I said I'd fucked your mother,\ndid I really fuck her?",
         fused="if I said I'd fucked your mother,\ndid I really fuck her?",
@@ -157,7 +157,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Is all right.",
         tesseract="is all right.",
         fused="is all right.",
@@ -165,7 +165,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens='How much will you "lend" me?',
         tesseract='how much will you "lend" me?',
         fused='how much will you "lend" me?',
@@ -173,7 +173,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Business?\nTravel?",
         tesseract="Business? Travel?",
         fused="Business? Travel?",
@@ -181,7 +181,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="At 8pm",
         tesseract="at 8pm tomorrow.",
         fused="at 8pm tomorrow.",
@@ -189,7 +189,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Hurry up!\n- Tell me the room number…",
         tesseract="- Hurry up!\n- Tell me the room number…",
         fused="- Hurry up!\n- Tell me the room number…",
@@ -197,7 +197,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="You are too\nkind. Come in and have a seat.",
         tesseract="You are too kind. Come in and have a seat.",
         fused="You are too kind. Come in and have a seat.",
@@ -205,7 +205,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="I'll spank you. Good girl.",
         tesseract="- I'll spank you.\n- Good girl.",
         fused="- I'll spank you.\n- Good girl.",
@@ -213,7 +213,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="RMB¥30K for Chief Chen.\nPlease count it.",
         tesseract="RMB¥30K for Chief Chen. Please count it.",
         fused="RMB¥30K for Chief Chen. Please count it.",
@@ -221,7 +221,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Don't pull a long face all day long.",
         tesseract="Don't pull a long face all daylong.",
         fused="Don't pull a long face all day long.",
@@ -230,7 +230,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Quick - What's wrong?",
         tesseract="- Quick\n- What's wrong?",
         fused="- Quick\n- What's wrong?",
@@ -238,7 +238,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Got\nit.",
         tesseract="Got it.",
         fused="Got it.",
@@ -246,7 +246,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Robbery!\nRobbery!",
         tesseract="Robbery! Robbery!",
         fused="Robbery! Robbery!",
@@ -254,7 +254,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="even if we open a fish ball stall\ntogether,",
         tesseract="even if we open a fish ball stall together,",
         fused="even if we open a fish ball stall together,",
@@ -262,7 +262,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Kam!\nKam!",
         tesseract="Kam! Kam!",
         fused="Kam! Kam!",
@@ -270,7 +270,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="If it's not enough, then $100M!",
         tesseract="If it's not enough, then $1OOM!",
         fused="If it's not enough, then $100M!",
@@ -279,7 +279,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="I worked with Kwai once.\nHe's so average.",
         tesseract="I worked with Kwai once. He's so average.",
         fused="I worked with Kwai once. He's so average.",
@@ -287,7 +287,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="$1M!",
         tesseract="{\\i1}'MM'.!{\\i0}",
         fused="$1M!",
@@ -296,7 +296,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Are you tight in cash\nlately, Taishan Boy?",
         tesseract="Are you tight in cash lately, Taishan Boy?",
         fused="Are you tight in cash lately, Taishan Boy?",
@@ -304,7 +304,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Bro Coke, you should've\ntold us beforehand.",
         tesseract="Bro Coke, you should've told us beforehand.",
         fused="Bro Coke, you should've told us beforehand.",
@@ -312,7 +312,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="- - I thought I was on my way.\nYou've scared the hell out of us.",
         tesseract="- I thought I was on my way.\n- You've scared the hell out of us.",
         fused="- I thought I was on my way.\n- You've scared the hell out of us.",
@@ -321,7 +321,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="RMB¥2M,\nthank you!",
         tesseract="RMB¥2M, thank you!",
         fused="RMB¥2M, thank you!",
@@ -329,7 +329,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="It's insane!",
         tesseract="It's insane!!",
         fused="It's insane!",
@@ -337,7 +337,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="So what?\nMotherfucker!",
         tesseract="So what? Motherfucker!",
         fused="So what? Motherfucker!",
@@ -345,7 +345,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Go!\nGo! Go!",
         tesseract="{\\i1}Go'. Go'. Go'.!{\\i0}",
         fused="Go! Go! Go!",
@@ -354,7 +354,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="I understand.\nDon't worry.",
         tesseract="I understand. Don't worry.",
         fused="I understand. Don't worry.",
@@ -362,7 +362,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="I killed 3\nplainclothes",
         tesseract="I killed 3 plainclothes",
         fused="I killed 3 plainclothes",
@@ -370,7 +370,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="It's you,\nYip!",
         tesseract="It's you, Yip!",
         fused="It's you, Yip!",
@@ -378,7 +378,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Motherfucker!\nThe 3 Kings",
         tesseract="Motherfucker! The 3 Kings",
         fused="Motherfucker! The 3 Kings",
@@ -386,7 +386,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="Retired soldiers?\nGo!",
         tesseract="Retired soldiers? Go!",
         fused="Retired soldiers? Go!",
@@ -394,7 +394,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishFusionTestCase(
+    EnglishFusionTestCase.get_test_case_cls(EnglishFusionLLMText)(
         lens="It will work this time.\nGet me a boat.",
         tesseract="It will work this time. Get me a boat.",
         fused="It will work this time. Get me a boat.",

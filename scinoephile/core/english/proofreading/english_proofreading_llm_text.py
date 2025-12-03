@@ -13,6 +13,7 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 class EnglishProofreadingLLMText(EnglishLLMText):
     """Text for LLM correspondence for English proofreading."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for proofreading English subtitles generated using OCR.
         For each subtitle, you are to provide revised subtitle only if revisions are
@@ -34,11 +35,37 @@ class EnglishProofreadingLLMText(EnglishLLMText):
         Do not remove newlines ('\\n').""")
     """Base system prompt."""
 
-    answer_example_revised_description: ClassVar[str] = (
+    # Query descriptions
+    subtitle_description: ClassVar[str] = "Subtitle {idx}"
+    """Description of 'subtitle' field."""
+
+    # Answer descriptions
+    revised_description: ClassVar[str] = (
         "Subtitle {idx} revised, or an empty string if no revision is necessary."
     )
+    """Description of 'revised' field."""
 
-    answer_example_note_description: ClassVar[str] = (
+    note_description: ClassVar[str] = (
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
+    """Description of 'note' field'."""
+
+    # Test case validation errors
+    subtitle_revised_equal_error: ClassVar[str] = (
+        "Answer's revised text {idx} is not modified relative to query's text {idx}, "
+        "if no revision is needed an empty string must be provided."
+    )
+    """Error message when 'subtitle' and 'revised' fields are equal."""
+
+    note_missing_error: ClassVar[str] = (
+        "Answer's text {idx} is modified relative to query's text {idx}, but no note "
+        "is provided, if revision is needed a note must be provided."
+    )
+    """Error message when 'revised' field is present but 'note' field is missing."""
+
+    revised_missing_error: ClassVar[str] = (
+        "Answer's text {idx} is not modified relative to query's text {idx}, but a "
+        "note is provided, if no revisions are needed an empty string must be provided."
+    )
+    """Error message when 'revised' field is missing but 'note' field is present."""

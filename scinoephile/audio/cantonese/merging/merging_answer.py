@@ -4,19 +4,49 @@
 
 from __future__ import annotations
 
-from pydantic import Field, model_validator
+from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
 
+from pydantic import Field, create_model, model_validator
+
+from scinoephile.audio.cantonese.merging.merging_llm_text import MergingLLMText
 from scinoephile.core.abcs import Answer
 
 
-class MergingAnswer(Answer):
+class MergingAnswer(Answer, ABC):
     """Answer for 粤文 merging."""
 
-    yuewen_merged: str = Field(..., description="Merged 粤文 of subtitle.")
+    text: ClassVar[type[MergingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
-    def validate_answer(self) -> MergingAnswer:
+    def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
         if not self.yuewen_merged:
-            raise ValueError("Answer must have merged 粤文 subtitle.")
+            raise ValueError(self.text.yuewen_merged_missing_error)
         return self
+
+    @classmethod
+    @cache
+    def get_answer_cls(cls, text: type[MergingLLMText] = MergingLLMText) -> type[Self]:
+        """Get concrete answer class with provided text.
+
+        Arguments:
+            text: LLMText providing descriptions and messages
+        Returns:
+            Answer type with appropriate fields and text
+        """
+        fields = {
+            "yuewen_merged": (
+                str,
+                Field(..., description=text.yuewen_merged_description),
+            ),
+        }
+        return create_model(
+            f"{cls.__name__}_{text.__name__}",
+            __base__=cls,
+            __module__=cls.__module__,
+            text=(ClassVar[type[MergingLLMText]], text),
+            **fields,
+        )

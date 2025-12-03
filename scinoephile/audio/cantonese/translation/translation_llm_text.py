@@ -13,11 +13,19 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 class TranslationLLMText(EnglishLLMText):
     """Text for LLM correspondence for 粤文 transcription translation."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         Translate the missing 粤文 subtitles based on the corresponding 中文
         subtitles.""")
     """Base system prompt."""
 
-    answer_example_yuewen_description: ClassVar[str] = (
-        "粤文 subtitle {idx} translated from query's 中文 subtitle {idx}"
-    )
+    # Query descriptions
+    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle {idx}"
+    """Description of 'zhongwen_{idx}' fields."""
+
+    yuewen_query_description: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
+    """Description of 'yuewen_{idx}' query fields."""
+
+    # Answer descriptions
+    yuewen_answer_description: ClassVar[str] = "Translated 粤文 of subtitle {idx}"
+    """Description of 'yuewen_{idx}' answer fields."""

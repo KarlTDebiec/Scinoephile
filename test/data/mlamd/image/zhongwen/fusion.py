@@ -4,12 +4,15 @@
 
 from __future__ import annotations
 
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
+from scinoephile.image.zhongwen.fusion import (
+    ZhongwenFusionLLMText,
+    ZhongwenFusionTestCase,
+)
 
 # noinspection PyArgumentList
 # ruff: noqa: E501
 test_cases = [
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="经好彩酒家左转花园街乐园牛丸王⋯",
         paddle="经好彩酒家左转花园街乐园牛丸王",
         ronghe="经好彩酒家左转花园街乐园牛丸王⋯",
@@ -17,7 +20,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="转呀，转⋯再更正一下：",
         paddle="转呀，转⋯再更正一下",
         ronghe="转呀，转⋯再更正一下：",
@@ -25,7 +28,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="飞呀，飞⋯",
         paddle="飞呀 飞．",
         ronghe="飞呀，飞⋯",
@@ -34,7 +37,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="也就是在麦太右边额角上⋯",
         paddle="也就是在麦太右边额角上",
         ronghe="也就是在麦太右边额角上⋯",
@@ -42,16 +45,16 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="更正：\n左边额角上⋯",
         paddle="更正：左边额角上",
         ronghe="更正：左边额角上⋯",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens "
-        "OCR 中存在但 PaddleOCR 中不存在的换行符。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR "
+        "中存在但 PaddleOCR 中不存在的换行符。",
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="转呀，转⋯",
         paddle="转呀 转·",
         ronghe="转呀，转⋯",
@@ -60,7 +63,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="赶忙趁胶兜落地前另许一个愿望\n：",
         paddle="赶忙趁胶兜落地前另许一个愿望：",
         ronghe="赶忙趁胶兜落地前另许一个愿望：",
@@ -68,7 +71,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="但总得要叻仔呀！",
         paddle="但总得要叻仔呀 F！",
         ronghe="但总得要叻仔呀！",
@@ -76,16 +79,16 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="最后，胶兜「嘀督」一声落地",
         paddle="最后，胶兜 嘀督」一声落地",
         ronghe="最后，胶兜「嘀督」一声落地",
-        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的引号「；省略了 PaddleOCR "
-        "中存在但 Google Lens 中不存在的空格。",
+        beizhu="包括了 Google Lens 中存在但 PaddleOCR 中不存在的引号「；省略了 PaddleOCR 中存在但 "
+        "Google Lens 中不存在的空格。",
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麦太想，\n这次走运了！",
         paddle="麦太想，这次走运了！",
         ronghe="麦太想，这次走运了！",
@@ -93,7 +96,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="还是似周润发？",
         paddle="还是似周润发 ？",
         ronghe="还是似周润发？",
@@ -101,7 +104,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不行，胶胶声，多难听！",
         paddle="不行，月 胶胶声，多难听！",
         ronghe="不行，胶胶声，多难听！",
@@ -109,7 +112,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="各位⋯",
         paddle="各位",
         ronghe="各位⋯",
@@ -117,7 +120,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可怜呀，每天扑来扑去⋯",
         paddle="可怜呀，每天扑来扑去",
         ronghe="可怜呀，每天扑来扑去⋯",
@@ -125,7 +128,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="春田花花幼稚园？",
         paddle="春田花花幼稚园",
         ronghe="春田花花幼稚园？",
@@ -133,7 +136,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="就是座落界限街南昌街交界⋯",
         paddle="就是座落界限街南昌街交界．",
         ronghe="就是座落界限街南昌街交界⋯",
@@ -141,7 +144,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="银城美食广场附近的⋯",
         paddle="银城美食广场附近的",
         ronghe="银城美食广场附近的⋯",
@@ -149,7 +152,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="春田花花幼稚园，师资优良⋯",
         paddle="春田花花幼稚园，师资优良",
         ronghe="春田花花幼稚园，师资优良⋯",
@@ -157,7 +160,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="＇鹅满是快烙滴好耳痛⋯",
         paddle="鹅满是快烙滴好耳痛＂",
         ronghe="鹅满是快烙滴好耳痛⋯",
@@ -165,7 +168,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="〝鹅闷天天一戏个窗！〞",
         paddle="鹅闷天天一戏个窗！",
         ronghe="〝鹅闷天天一戏个窗！〞",
@@ -173,7 +176,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="〝鹅闷是春天滴化！〞",
         paddle="鹅闷是春天滴化！",
         ronghe="〝鹅闷是春天滴化！〞",
@@ -181,7 +184,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="横看竖看也不像发哥伟仔的一个⋯",
         paddle="横看竖看也不像发哥伟仔的一个",
         ronghe="横看竖看也不像发哥伟仔的一个⋯",
@@ -189,7 +192,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="就是我，\n麦兜",
         paddle="就是我，麦兜",
         ronghe="就是我，麦兜",
@@ -197,7 +200,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="这么多年来⋯",
         paddle="这么多年来",
         ronghe="这么多年来⋯",
@@ -205,7 +208,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="蛋挞！\n蛋挞！",
         paddle="蛋挞！ 蛋挞！",
         ronghe="蛋挞！　　蛋挞！",
@@ -213,7 +216,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="荔芋火鸭札！\n荔芋火鸭札！",
         paddle="荔芋火鸭札！ 荔芋火鸭札！",
         ronghe="荔芋火鸭札！　　荔芋火鸭札！",
@@ -222,7 +225,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="忘记校训九十七⋯\n忘记校训九十七⋯",
         paddle="忘记校训九十七 忘记校训九十七",
         ronghe="忘记校训九十七⋯　　忘记校训九十七⋯",
@@ -231,7 +234,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一个重要主题：",
         paddle="一个重要主题 页：",
         ronghe="一个重要主题：",
@@ -240,7 +243,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="太好了！\n大家去上堂吧",
         paddle="太好了！大家去上堂吧",
         ronghe="太好了！大家去上堂吧",
@@ -248,7 +251,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可是，对我和我一班同学",
         paddle="可是， 对我和我一班同学",
         ronghe="可是，对我和我一班同学",
@@ -256,7 +259,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="⋯还有一个很疼我们",
         paddle="·还有一个很疼我们",
         ronghe="⋯还有一个很疼我们",
@@ -264,7 +267,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="就是有点游魂的\nMiss Chan",
         paddle="就是有点游魂的Mi ss Chan",
         ronghe="就是有点游魂的Miss Chan",
@@ -273,7 +276,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麦唛同学！\n到！",
         paddle="麦唛同学！ 到！",
         ronghe="麦唛同学！　　到！",
@@ -281,7 +284,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="亚辉同学！\n到！",
         paddle="亚辉同学！ 到！",
         ronghe="亚辉同学！　　到！",
@@ -289,7 +292,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="菇时同学！\n到！",
         paddle="菇时同学！ 到！",
         ronghe="菇时同学！　　到！",
@@ -297,7 +300,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="得巴同学！\n到！",
         paddle="得巴同学！ 到！",
         ronghe="得巴同学！　　到！",
@@ -305,7 +308,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="阿May同学！\n到！",
         paddle="阿May同学！ 到！",
         ronghe="阿May同学！　　到！",
@@ -313,7 +316,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="阿June同学！\n到！",
         paddle="阿June同学！ 到！",
         ronghe="阿June同学！　　到！",
@@ -321,7 +324,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="Miss Chan，\n我点过两次了！",
         paddle="Miss Chan＇我点过两次了！",
         ronghe="Miss Chan，我点过两次了！",
@@ -330,7 +333,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麦唛呀，\n即是呢⋯",
         paddle="麦唛呀 即是呢⋯",
         ronghe="麦唛呀，即是呢⋯",
@@ -339,7 +342,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我好像觉得呢⋯",
         paddle="我好像觉得呢",
         ronghe="我好像觉得呢⋯",
@@ -347,7 +350,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="其实我正在思考一个学术问题\n：",
         paddle="其实我正在思考一个学术问题：",
         ronghe="其实我正在思考一个学术问题：",
@@ -355,7 +358,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="还有这个「芭－娜－哪」香蕉",
         paddle="还有这个 芭－娜－哪 香蕉",
         ronghe="还有这个「芭－娜－哪」香蕉",
@@ -364,7 +367,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="为什么雨伞又会是「暗－芭－娜－哪」呢？",
         paddle="为什么雨伞又会是「暗－芭－娜－哪－呢？",
         ronghe="为什么雨伞又会是「暗－芭－娜－哪」呢？",
@@ -373,7 +376,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="至多是疴烂煮，怎么会下起雨来呢？",
         paddle="至多是疴烂煮，怎么会下起雨来呢",
         ronghe="至多是疴烂煮，怎么会下起雨来呢？",
@@ -381,7 +384,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="升小学，上中学",
         paddle="升小学 上中学",
         ronghe="升小学，上中学",
@@ -389,7 +392,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="鱼蛋粗面，麻烦你\n粗面买光了",
         paddle="鱼蛋粗面，麻烦你 粗面买光了",
         ronghe="鱼蛋粗面，麻烦你　　粗面买光了",
@@ -397,7 +400,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那样子⋯来碗鱼蛋河粉吧鱼蛋买光了",
         paddle="那样子⋯来碗鱼蛋河粉吧 鱼蛋买光了",
         ronghe="那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
@@ -405,7 +408,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那么⋯金钱肚粗面好了\n粗面买光了",
         paddle="那么金钱肚粗面好了 粗面买光了",
         ronghe="那么⋯金钱肚粗面好了　　粗面买光了",
@@ -414,7 +417,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那么要鱼蛋油面吧\n鱼蛋买光了",
         paddle="那么要鱼蛋油面吧 鱼蛋买光了",
         ronghe="那么要鱼蛋油面吧　　鱼蛋买光了",
@@ -422,7 +425,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="来个墨鱼丸粗面吧\n粗面买光了",
         paddle="来个墨鱼丸粗面吧 粗面买光了",
         ronghe="来个墨鱼丸粗面吧　　粗面买光了",
@@ -430,7 +433,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麻烦来碗鱼蛋濑吧\n鱼蛋买光了",
         paddle="麻烦来碗鱼蛋濑吧 鱼蛋买光了",
         ronghe="麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
@@ -438,7 +441,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麻烦你，净要鱼蛋吧\n鱼蛋买光了",
         paddle="麻烦你，净要鱼蛋吧 鱼蛋买光了",
         ronghe="麻烦你，净要鱼蛋吧　　鱼蛋买光了",
@@ -446,7 +449,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那么净要粗面呢？\n粗面买光了",
         paddle="那么净要粗面呢？ 粗面买光了",
         ronghe="那么净要粗面呢？　　粗面买光了",
@@ -454,7 +457,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="鱼蛋买光了\n？那么粗面吧",
         paddle="鱼蛋买光了？那么粗面吧",
         ronghe="鱼蛋买光了？那么粗面吧",
@@ -462,7 +465,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麦兜，\n射呀！",
         paddle="麦兜，射呀！",
         ronghe="麦兜，射呀！",
@@ -470,7 +473,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="看著自己每天疴烂煮⋯",
         paddle="看著自己每天病烂煮",
         ronghe="看著自己每天疴烂煮⋯",
@@ -478,7 +481,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="世界好美丽！",
         paddle="世界好美丽 j！",
         ronghe="世界好美丽！",
@@ -486,7 +489,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="有一首歌，\nMiss Chan唱的好听",
         paddle="有一首歌，Miss Chanl 唱的好听",
         ronghe="有一首歌，Miss Chan唱的好听",
@@ -495,7 +498,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可每次我总唱成「疴」什么什么的⋯",
         paddle="可每次我总唱成「疴」什么什么的",
         ronghe="可每次我总唱成「疴」什么什么的⋯",
@@ -503,7 +506,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="是的，\n一切都好！",
         paddle="是的，一切都好！",
         ronghe="是的，一切都好！",
@@ -511,7 +514,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="世上一切，一切一切⋯",
         paddle="世上一切，一切一切",
         ronghe="世上一切，一切一切⋯",
@@ -519,7 +522,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="三、四、五、六、七⋯",
         paddle="二（三 四 I 五、六、七",
         ronghe="三、四、五、六、七⋯",
@@ -528,7 +531,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="多劳多得！",
         paddle="多劳多得",
         ronghe="多劳多得！",
@@ -536,7 +539,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="星期一至星期七⋯多劳多得！",
         paddle="星期一至星期七多劳多得",
         ronghe="星期一至星期七⋯多劳多得！",
@@ -544,7 +547,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="除了兼任保险，地产经纪及trading⋯",
         paddle="除了兼任保险，地产经纪及trading＂",
         ronghe="除了兼任保险，地产经纪及trading⋯",
@@ -553,7 +556,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="Www．麦太世界．com",
         paddle="Www．麦太世界．．Com",
         ronghe="Www．麦太世界．com",
@@ -561,7 +564,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="欢迎大家收看＜麦太世界＞",
         paddle="欢迎大家收看 看＜麦太世界",
         ronghe="欢迎大家收看＜麦太世界＞",
@@ -569,7 +572,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="今日为大家介绍一个⋯",
         paddle="今日为大家介绍一个",
         ronghe="今日为大家介绍一个⋯",
@@ -577,7 +580,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="将鸡包底部的纸撕下来⋯慢慢地撕",
         paddle="将鸡包底部的纸撕下来慢慢地撕",
         ronghe="将鸡包底部的纸撕下来⋯慢慢地撕",
@@ -585,7 +588,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="只要把这纸这样子⋯",
         paddle="只要把这纸这样子．",
         ronghe="只要把这纸这样子⋯",
@@ -594,7 +597,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="各位小朋友，像鸡包不像呀？",
         paddle="各位小朋友，像鸡包不像呀",
         ronghe="各位小朋友，像鸡包不像呀？",
@@ -602,7 +605,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一味「包鸡纸包鸡包纸包鸡」完成了！",
         paddle="一味  包鸡纸包鸡包纸包鸡 完成了！",
         ronghe="一味「包鸡纸包鸡包纸包鸡」完成了！",
@@ -611,7 +614,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="今日为大家介绍一味⋯",
         paddle="今日为大家介绍一味",
         ronghe="今日为大家介绍一味⋯",
@@ -619,7 +622,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="小朋友一定喜欢的⋯",
         paddle="小朋友一定喜欢的",
         ronghe="小朋友一定喜欢的⋯",
@@ -627,7 +630,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="再包包包，纸纸纸",
         paddle="再包包包， 纸纸纸",
         ronghe="再包包包，纸纸纸",
@@ -635,7 +638,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="从前，有个小朋友撒谎；有一天⋯",
         paddle="从前，有个小朋友撒谎；有一天",
         ronghe="从前，有个小朋友撒谎；有一天⋯",
@@ -643,7 +646,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="从前，有个小朋友很勤力念书⋯",
         paddle="从前，有个小朋友很勤力念书",
         ronghe="从前，有个小朋友很勤力念书⋯",
@@ -651,7 +654,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="从前，有个小朋友不孝，有天⋯",
         paddle="从前，有个小朋友不孝，有天",
         ronghe="从前，有个小朋友不孝，有天⋯",
@@ -659,7 +662,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="妈妈，\n我想睡觉",
         paddle="妈妈  我想睡觉",
         ronghe="妈妈，我想睡觉",
@@ -668,7 +671,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="她爱得我直接⋯",
         paddle="她爱得我直接",
         ronghe="她爱得我直接⋯",
@@ -676,7 +679,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对她，一\n三、四、五、六、七",
         paddle="对她 一 二 一 一 一 五 一 六、七\n三 四",
         ronghe="对她，一、二、三、四、五、六、七",
@@ -685,7 +688,7 @@ test_cases = [
         difficulty=3,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可有些事情，要是真的不成呢？",
         paddle="可有些事情，要是真的不成呢",
         ronghe="可有些事情，要是真的不成呢？",
@@ -693,7 +696,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="会！\n发财了再说吧",
         paddle="会！发财了再说吧",
         ronghe="会！发财了再说吧",
@@ -701,7 +704,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那儿有 Disneyland 和Hello Kitty Land",
         paddle="那儿有Disneyｌand 和Hello Kitty Land",
         ronghe="那儿有 Disneyland 和Hello Kitty Land",
@@ -710,7 +713,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我最喜爱的地方⋯",
         paddle="我最喜爱的地方",
         ronghe="我最喜爱的地方⋯",
@@ -718,7 +721,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不用！\n给他打口针吧！",
         paddle="不用！给他打口针吧！",
         ronghe="不用！给他打口针吧！",
@@ -726,7 +729,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="怎么？\n得打针？",
         paddle="怎么？得打针？",
         ronghe="怎么？得打针？",
@@ -734,7 +737,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="没事吧？\n快点先把药水喝掉！",
         paddle="没事吧？快点先把药水喝掉！",
         ronghe="没事吧？快点先把药水喝掉！",
@@ -742,7 +745,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不要呀妈妈，我不喝呀",
         paddle="不要呀妈妈 马，我不喝呀",
         ronghe="不要呀妈妈，我不喝呀",
@@ -751,7 +754,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="好呀，\n马尔代夫！",
         paddle="好呀，马尔代夫！",
         ronghe="好呀，马尔代夫！",
@@ -759,7 +762,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="妈妈，\n你看！",
         paddle="妈妈，你看！",
         ronghe="妈妈，你看！",
@@ -767,7 +770,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我喝一格，又喝一格，又喝一格⋯",
         paddle="我喝一格，又喝一格，又喝一格",
         ronghe="我喝一格，又喝一格，又喝一格⋯",
@@ -775,7 +778,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="马尔代夫，椰林树影，水清沙幼⋯",
         paddle="马尔代夫，椰林树影，水清沙幼",
         ronghe="马尔代夫，椰林树影，水清沙幼⋯",
@@ -783,7 +786,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="好了，\n别哭了",
         paddle="好了，别哭了",
         ronghe="好了，别哭了",
@@ -791,7 +794,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="真的吗？\n对",
         paddle="真的吗？ 对",
         ronghe="真的吗？　　对",
@@ -799,7 +802,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="你早发财了⋯",
         paddle="你早发财了",
         ronghe="你早发财了⋯",
@@ -807,7 +810,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="麦唛，\n我是麦兜呀",
         paddle="麦唛，我是麦兜呀",
         ronghe="麦唛，我是麦兜呀",
@@ -815,7 +818,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对\n⋯是吗？",
         paddle="对⋯是吗？",
         ronghe="对　　⋯是吗？",
@@ -823,7 +826,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="也得吃呀！",
         paddle="也得吃呀 F！",
         ronghe="也得吃呀！",
@@ -831,7 +834,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="就这样⋯",
         paddle="就这样",
         ronghe="就这样⋯",
@@ -839,7 +842,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="依你说，纸是否可以包著鸡呢？",
         paddle="依你说，纸是否可以包著鸡呢",
         ronghe="依你说，纸是否可以包著鸡呢？",
@@ -847,7 +850,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="消息说当李丽珊 获悉 自己稳夺金牌后",
         paddle="消息说当李丽珊获悉自己稳夺金牌后",
         ronghe="消息说当李丽珊获悉自己稳夺金牌后",
@@ -855,7 +858,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="激动地对在场记者表示她今次的成绩⋯",
         paddle="激动地对在场记者表示她今次的成绩",
         ronghe="激动地对在场记者表示她今次的成绩⋯",
@@ -863,7 +866,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="足以证明香港运动员不是腊鸭！",
         paddle="足以证明香港运动员不是腊鸭 马！",
         ronghe="足以证明香港运动员不是腊鸭！",
@@ -872,7 +875,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，应该\n是垃圾，不是腊鸭！",
         paddle="对不起，应该 是垃圾，不是腊鸭",
         ronghe="对不起，应该　　是垃圾，不是腊鸭！",
@@ -881,7 +884,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，应该\n不是垃圾，也不是腊鸭！",
         paddle="对不起，应该 不是垃圾，也不是腊鸭",
         ronghe="对不起，应该　　不是垃圾，也不是腊鸭！",
@@ -889,7 +892,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="是不是可以靠手瓜呢？",
         paddle="是不是可以靠手瓜呢 尼？",
         ronghe="是不是可以靠手瓜呢？",
@@ -897,7 +900,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="于是，一个梦还没醒⋯",
         paddle="于是，一个梦还没醒",
         ronghe="于是，一个梦还没醒⋯",
@@ -905,7 +908,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="长洲！\n长洲！",
         paddle="长洲！长洲！",
         ronghe="长洲！长洲！",
@@ -914,7 +917,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我会举起金牌跟全世界说\n：",
         paddle="我会举起金牌跟全世界说：",
         ronghe="我会举起金牌跟全世界说：",
@@ -922,7 +925,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="至于拜师的事⋯",
         paddle="至于拜师的事",
         ronghe="至于拜师的事⋯",
@@ -930,7 +933,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="这脚瓜⋯好粗好大！比一节瓜还要大！",
         paddle="这脚瓜好粗好大！比一节瓜还要大！",
         ronghe="这脚瓜⋯好粗好大！比一节瓜还要大！",
@@ -938,7 +941,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="脚瓜的肌肉非常结实⋯",
         paddle="脚瓜的肌肉非常结实",
         ronghe="脚瓜的肌肉非常结实⋯",
@@ -946,7 +949,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="要行过几多座山⋯",
         paddle="要行过几多座山",
         ronghe="要行过几多座山⋯",
@@ -954,7 +957,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="跨过几多个海⋯",
         paddle="跨过几多个海",
         ronghe="跨过几多个海⋯",
@@ -962,7 +965,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="吃过几多苦头⋯",
         paddle="吃过几多苦头",
         ronghe="吃过几多苦头⋯",
@@ -970,7 +973,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="歌，\n是这样唱的⋯",
         paddle="歌，是这样唱的⋯",
         ronghe="歌，是这样唱的⋯",
@@ -978,7 +981,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「大包，\n整多两笼」",
         paddle="「大包，整 整多两笼」",
         ronghe="「大包，整多两笼」",
@@ -987,7 +990,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「食晒个包，脚瓜大个」",
         paddle="食晒个包，脚瓜大个」",
         ronghe="「食晒个包，脚瓜大个」",
@@ -995,7 +998,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「孝顺我阿妈」",
         paddle="孝顺我阿妈」",
         ronghe="「孝顺我阿妈」",
@@ -1003,7 +1006,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「食晒个包，脚瓜硬朗」",
         paddle="食晒个包，脚瓜硬朗」",
         ronghe="「食晒个包，脚瓜硬朗」",
@@ -1011,7 +1014,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="师傅！\n你收我做徒弟吧！",
         paddle="师傅！你收我做徒弟吧！",
         ronghe="师傅！你收我做徒弟吧！",
@@ -1019,7 +1022,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不成了！\n我的脚瓜太痹了！",
         paddle="不成了！我的脚瓜太痹了！",
         ronghe="不成了！我的脚瓜太痹了！",
@@ -1027,7 +1030,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="庄重而温柔地跟我说：",
         paddle="庄重而温柔地跟我说 兑：",
         ronghe="庄重而温柔地跟我说：",
@@ -1035,7 +1038,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="多谢各位 赏面！多谢各位！",
         paddle="多谢各位赏面！多谢各位！",
         ronghe="多谢各位赏面！多谢各位！",
@@ -1043,7 +1046,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="另一项绝技，我打算传给这个新徒弟⋯",
         paddle="另一项绝技，我打算传给这个新徒弟",
         ronghe="另一项绝技，我打算传给这个新徒弟⋯",
@@ -1051,7 +1054,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="请问那是什么绝技呢？",
         paddle="请问那是什么绝技呢",
         ronghe="请问那是什么绝技呢？",
@@ -1059,7 +1062,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="第二项绝技，就是⋯",
         paddle="第二项绝技，就是",
         ronghe="第二项绝技，就是⋯",
@@ -1067,7 +1070,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="年轻观众可能不知「抢包山」何物",
         paddle="年轻观众可能不知 抢包山」何物",
         ronghe="年轻观众可能不知「抢包山」何物",
@@ -1076,7 +1079,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一座包山，起码六、七层楼高⋯",
         paddle="一座包山，起码六 七层楼高⋯",
         ronghe="一座包山，起码六、七层楼高⋯",
@@ -1085,7 +1088,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「抢包山」\n从此被禁！",
         paddle="抢包山」从此被禁！",
         ronghe="「抢包山」从此被禁！",
@@ -1094,7 +1097,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="奥运金牌⋯这一世是没有机会的了",
         paddle="奥运金牌这一世是没有机会的了",
         ronghe="奥运金牌⋯这一世是没有机会的了",
@@ -1102,7 +1105,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="去学抢包山⋯",
         paddle="去学抢包山．",
         ronghe="去学抢包山⋯",
@@ -1110,7 +1113,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一项没有奖牌，没有对手，没有比赛⋯",
         paddle="一项没有奖牌，没有对手，没有比赛",
         ronghe="一项没有奖牌，没有对手，没有比赛⋯",
@@ -1118,7 +1121,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="碰！\n三番！",
         paddle="碰！三番！",
         ronghe="碰！三番！",
@@ -1126,7 +1129,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="别躲懒！\n继续练！",
         paddle="别躲懒！继续练！",
         ronghe="别躲懒！继续练！",
@@ -1134,7 +1137,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我咁大个仔，什么「头」也给骂过⋯",
         paddle="我喵大个仔，什么「头」也给骂过",
         ronghe="我咁大个仔，什么「头」也给骂过⋯",
@@ -1142,7 +1145,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「珊你个头」\n却特别刺耳",
         paddle="珊你个头」却特别刺耳",
         ronghe="「珊你个头」却特别刺耳",
@@ -1151,7 +1154,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我⋯我⋯",
         paddle="我⋯我",
         ronghe="我⋯我⋯",
@@ -1159,7 +1162,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="其实鸡尾包呢⋯",
         paddle="其实鸡尾包呢",
         ronghe="其实鸡尾包呢⋯",
@@ -1167,7 +1170,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="黎根接著说了一大堆话⋯",
         paddle="黎根接著说了一大堆话",
         ronghe="黎根接著说了一大堆话⋯",
@@ -1175,7 +1178,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="缩脚，\n唔该！",
         paddle="缩脚，唔该！",
         ronghe="缩脚，唔该！",
@@ -1183,7 +1186,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="其实我也不知道个仔要这么粗的脚瓜⋯",
         paddle="其实我也不知道个仔要这么粗的脚瓜·",
         ronghe="其实我也不知道个仔要这么粗的脚瓜⋯",
@@ -1191,7 +1194,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="难道⋯\n不会吧？",
         paddle="难道⋯不会吧？",
         ronghe="难道⋯不会吧？",
@@ -1199,7 +1202,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="想不到真的让妈妈拿去了．吓得我！",
         paddle="想不到真的让妈妈拿去了．吓得我 b",
         ronghe="想不到真的让妈妈拿去了．吓得我！",
@@ -1208,7 +1211,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「亲爱的主席：」",
         paddle="亲爱的主席：」",
         ronghe="「亲爱的主席：」",
@@ -1216,7 +1219,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「你好吗？我很好！」",
         paddle="你好吗？我很好！」",
         ronghe="「你好吗？我很好！」",
@@ -1224,7 +1227,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「你吃包吗？我吃包！」",
         paddle="你吃包吗？我吃包 ！",
         ronghe="「你吃包吗？我吃包！」",
@@ -1233,7 +1236,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「我们居住在香港这里的人，很爱吃包」",
         paddle="我们居住在香港这里的人， 很爱吃包」",
         ronghe="「我们居住在香港这里的人，很爱吃包」",
@@ -1242,7 +1245,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「小笼包，上海包，广东包，莲蓉包」",
         paddle="「小笼包， 上海包，广东包， bid 莲蓉包」",
         ronghe="「小笼包，上海包，广东包，莲蓉包」",
@@ -1251,7 +1254,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「好朋友，我认为",
         paddle="好朋友，我认为",
         ronghe="「好朋友，我认为",
@@ -1259,7 +1262,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「也算是运动，就真！」",
         paddle="也算是运动，就真！」",
         ronghe="「也算是运动，就真！」",
@@ -1267,7 +1270,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「要大力！大吃晚上的粥，和大节瓜！」",
         paddle="要大力！大吃晚上的粥，和大节瓜！」",
         ronghe="「要大力！大吃晚上的粥，和大节瓜！」",
@@ -1275,7 +1278,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「按照我愚蠢的见解⋯」",
         paddle="按照我愚蠢的见解⋯」",
         ronghe="「按照我愚蠢的见解⋯」",
@@ -1283,7 +1286,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「抢劫那些包，是奥运会比赛」",
         paddle="抢劫那些包，是奥运会比赛」",
         ronghe="「抢劫那些包，是奥运会比赛」",
@@ -1291,7 +1294,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「世界便和平！」",
         paddle="世界便和平！」」",
         ronghe="「世界便和平！」",
@@ -1300,7 +1303,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「你有孩子吗？」",
         paddle="你有孩子吗 马？」",
         ronghe="「你有孩子吗？」",
@@ -1308,7 +1311,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「我有一个孩子，麦兜」",
         paddle="我有一个孩子，麦兜」",
         ronghe="「我有一个孩子，麦兜」",
@@ -1316,7 +1319,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「他是一个好男孩」",
         paddle="他是一个好男孩」",
         ronghe="「他是一个好男孩」",
@@ -1324,7 +1327,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「他非常懂得抢劫那些包」",
         paddle="他非常懂得抢劫那些包」",
         ronghe="「他非常懂得抢劫那些包」",
@@ -1332,7 +1335,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「抢了一个奥运金牌」",
         paddle="抢了一个奥运金牌」",
         ronghe="「抢了一个奥运金牌」",
@@ -1340,7 +1343,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「那便是一个母亲能够有的最大的安慰」",
         paddle="那便是一个母亲能够有的最大的安慰」",
         ronghe="「那便是一个母亲能够有的最大的安慰」",
@@ -1348,7 +1351,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「孩子的才干，得到了世界人类的知道」",
         paddle="孩子的才干，得到了世界人类的知道",
         ronghe="「孩子的才干，得到了世界人类的知道」",
@@ -1356,7 +1359,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「虽然你不知道我是什么微细的东西」",
         paddle="Bid 虽然你不知道我是什么微细的东西」",
         ronghe="「虽然你不知道我是什么微细的东西」",
@@ -1365,7 +1368,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「但我的孩子很大，很大！」",
         paddle="但我的孩子很大，很大！」",
         ronghe="「但我的孩子很大，很大！」",
@@ -1373,7 +1376,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「有一天，你都会知道」",
         paddle="「有一天， 你都会知道",
         ronghe="「有一天，你都会知道」",
@@ -1382,7 +1385,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「多谢合作！」",
         paddle="多谢合作！－",
         ronghe="「多谢合作！」",
@@ -1391,7 +1394,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「你忠实的，麦太」",
         paddle="你忠实的，麦太」",
         ronghe="「你忠实的，麦太」",
@@ -1399,7 +1402,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="因为，\n我爱我妈妈",
         paddle="因为，我爱我妈妈",
         ronghe="因为，我爱我妈妈",
@@ -1407,7 +1410,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「十二路抢包手」⋯",
         paddle="「十二路抢包手」",
         ronghe="「十二路抢包手」⋯",
@@ -1415,7 +1418,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="后来麦唛告诉我⋯",
         paddle="后来麦唛告诉我",
         ronghe="后来麦唛告诉我⋯",
@@ -1423,7 +1426,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我是一块揸住两个包",
         paddle="我是一块楂住两个包",
         ronghe="我是一块揸住两个包",
@@ -1431,7 +1434,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="于是我咬实牙根⋯",
         paddle="于是我咬实牙根",
         ronghe="于是我咬实牙根⋯",
@@ -1439,7 +1442,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一步一步\n，一爪一爪⋯",
         paddle="一步一步，一爪一爪",
         ronghe="一步一步，一爪一爪⋯",
@@ -1448,7 +1451,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="喂，\n我是麦兜",
         paddle="喂，我是麦兜",
         ronghe="喂，我是麦兜",
@@ -1456,7 +1459,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="小朋友麦兜和大个佬麦兜除了声音不同⋯",
         paddle="小朋友麦兜和大个佬麦兜除了声音不同",
         ronghe="小朋友麦兜和大个佬麦兜除了声音不同⋯",
@@ -1464,7 +1467,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="久而久之，就变成大个佬麦兜",
         paddle="久而久之，京 就变成大个佬麦兜",
         ronghe="久而久之，就变成大个佬麦兜",
@@ -1472,7 +1475,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="小朋友麦兜仍然希望希望⋯",
         paddle="小朋友麦兜仍然希望希望",
         ronghe="小朋友麦兜仍然希望希望⋯",
@@ -1480,7 +1483,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一片片比外边的雪还要白的鸡胸肉⋯",
         paddle="一片片比外边的雪还要白的鸡胸肉",
         ronghe="一片片比外边的雪还要白的鸡胸肉⋯",
@@ -1488,7 +1491,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="香气直入灵魂⋯",
         paddle="香气直入灵魂",
         ronghe="香气直入灵魂⋯",
@@ -1496,7 +1499,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="在圣诞夜中飞呀，飞⋯",
         paddle="在圣诞夜中飞呀 飞⋯",
         ronghe="在圣诞夜中飞呀，飞⋯",
@@ -1504,7 +1507,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我从来没吃过火鸡⋯",
         paddle="我从来没吃过火鸡",
         ronghe="我从来没吃过火鸡⋯",
@@ -1512,7 +1515,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我们一家两口，吃不下",
         paddle="我们一家两口， 吃不下",
         ronghe="我们一家两口，吃不下",
@@ -1520,7 +1523,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那日妈妈竟然跟我说⋯",
         paddle="那日妈妈竟然跟我说",
         ronghe="那日妈妈竟然跟我说⋯",
@@ -1528,7 +1531,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我说：火鸡「疴烂煮」！",
         paddle="我说：火鸡「疴烂煮」",
         ronghe="我说：火鸡「疴烂煮」！",
@@ -1536,7 +1539,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="⋯\n焗炉戚戚恻恻，戚戚恻恻⋯",
         paddle="焗炉戚戚恻恻，戚戚恻恻",
         ronghe="焗炉戚戚恻恻，戚戚恻恻⋯",
@@ -1545,7 +1548,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="真的好靓！",
         paddle="真的好靓 ！",
         ronghe="真的好靓！",
@@ -1553,7 +1556,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="爆发⋯缠住⋯爆发⋯",
         paddle="爆发⋯·缠住⋯·爆发",
         ronghe="爆发⋯缠住⋯爆发⋯",
@@ -1561,7 +1564,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="因为早餐吃得晚⋯",
         paddle="因为早餐吃得晚⋯1",
         ronghe="因为早餐吃得晚⋯",
@@ -1569,7 +1572,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不用说，那夜就是我渴望了⋯",
         paddle="不用说，那夜就是我渴望了",
         ronghe="不用说，那夜就是我渴望了⋯",
@@ -1577,7 +1580,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="很久很久很久的⋯圣诞火鸡大餐！",
         paddle="很久很久很久的圣诞火鸡大餐！",
         ronghe="很久很久很久的⋯圣诞火鸡大餐！",
@@ -1585,7 +1588,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
         paddle="一片片的火鸡肉和伴碟的薯仔和节瓜",
         ronghe="一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
@@ -1593,7 +1596,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="妈妈骂我「冇衣食」⋯",
         paddle="妈妈骂我 有衣食」",
         ronghe="妈妈骂我「冇衣食」⋯",
@@ -1602,7 +1605,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="唉，我好后悔讲过一句「火鸡疴烂煮」",
         paddle="我好后悔讲过一句 火鸡疴烂煮」",
         ronghe="唉，我好后悔讲过一句「火鸡疴烂煮」",
@@ -1611,7 +1614,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
         paddle="端午节 ， 当我翻开我最喜欢吃的裹蒸粽⋯·",
         ronghe="端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
@@ -1620,7 +1623,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="发现咸蛋旁边是一件火鸡背的时候⋯",
         paddle="发现咸蛋旁边是一件火鸡背的时候",
         ronghe="发现咸蛋旁边是一件火鸡背的时候⋯",
@@ -1628,7 +1631,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="后来我才知道⋯",
         paddle="后来我才知道",
         ronghe="后来我才知道⋯",
@@ -1636,7 +1639,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我还发觉，火鸡的味道⋯",
         paddle="我还发觉，火鸡的味道",
         ronghe="我还发觉，火鸡的味道⋯",
@@ -1644,7 +1647,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我没有哲学家的头脑⋯",
         paddle="我没有哲学家的头脑",
         ronghe="我没有哲学家的头脑⋯",
@@ -1652,7 +1655,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="在我长大后⋯",
         paddle="在我长大后",
         ronghe="在我长大后⋯",
@@ -1660,7 +1663,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="在一些跟圣诞节无关的日子⋯",
         paddle="在一些跟圣诞节无关的日子",
         ronghe="在一些跟圣诞节无关的日子⋯",
@@ -1668,7 +1671,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一次⋯",
         paddle="一次",
         ronghe="一次⋯",
@@ -1676,7 +1679,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="向全世界人再次证明⋯",
         paddle="向全世界人再次证明",
         ronghe="向全世界人再次证明⋯",
@@ -1684,7 +1687,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="香港体运总会霍震霆⋯",
         paddle="香港体运总会霍震霆",
         ronghe="香港体运总会霍震霆⋯",
@@ -1692,7 +1695,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="另外，全港茶餐厅员工协会⋯",
         paddle="另外，全港茶餐厅员工协会．",
         ronghe="另外，全港茶餐厅员工协会⋯",
@@ -1701,7 +1704,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="经已发动所有会员⋯",
         paddle="经已发动所有会员",
         ronghe="经已发动所有会员⋯",
@@ -1709,7 +1712,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="争取「掷蛋挞」成为亚运比赛项目",
         paddle="争取  掷蛋挞 成为亚运比赛项目",
         ronghe="争取「掷蛋挞」成为亚运比赛项目",
@@ -1718,7 +1721,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="亦向霍主席当面提出⋯",
         paddle="亦向霍主席当面提出．",
         ronghe="亦向霍主席当面提出⋯",
@@ -1726,7 +1729,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「挂腊鸭」可以成为亚运比赛项目",
         paddle="挂腊鸭 与 可以成为亚运比赛项目",
         ronghe="「挂腊鸭」可以成为亚运比赛项目",
@@ -1735,7 +1738,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="较为特别的是，CIC保险营业员联同⋯",
         paddle="较为特别的是，CIC保险营业员联同",
         ronghe="较为特别的是，CIC保险营业员联同⋯",
@@ -1743,7 +1746,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="大角咀春田花花幼稚园⋯",
         paddle="大角咀春田花花幼稚园．",
         ronghe="大角咀春田花花幼稚园⋯",
@@ -1751,7 +1754,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="附属小学一班小朋友⋯",
         paddle="附属小学一班小朋友",
         ronghe="附属小学一班小朋友⋯",
@@ -1759,7 +1762,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="争取\n「抢包山」",
         paddle="争取「抢包山」",
         ronghe="争取「抢包山」",
@@ -1767,7 +1770,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="一项几乎绝迹的运动⋯",
         paddle="一项几乎绝迹的运动",
         ronghe="一项几乎绝迹的运动⋯",
@@ -1775,7 +1778,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="最后，\n一切成烟",
         paddle="最后，一切成烟",
         ronghe="最后，一切成烟",
@@ -1783,7 +1786,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="最后，他们选了「掷蛋挞」做推介项目",
         paddle="最后，他们选了（掷蛋挞 做推介项目",
         ronghe="最后，他们选了「掷蛋挞」做推介项目",
@@ -1791,7 +1794,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="至于香港争取申办亚运的口号⋯",
         paddle="至于香港争取申办亚运的口号．",
         ronghe="至于香港争取申办亚运的口号⋯",
@@ -1799,7 +1802,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="亦顺理成章叫成「香港一蛋挞」",
         paddle="亦顺理成章叫成 香港一蛋挞」",
         ronghe="亦顺理成章叫成「香港一蛋挞」",
@@ -1808,7 +1811,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="之后李丽珊蝉联失败⋯",
         paddle="之后李丽珊蝉联失败",
         ronghe="之后李丽珊蝉联失败⋯",
@@ -1816,7 +1819,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="亚运主办权⋯",
         paddle="亚运主办权·",
         ronghe="亚运主办权⋯",
@@ -1824,7 +1827,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="想著转行当运动员的茶餐厅伙记⋯",
         paddle="想著转行当运动员的茶餐厅伙记",
         ronghe="想著转行当运动员的茶餐厅伙记⋯",
@@ -1832,7 +1835,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="每次看见师傅⋯",
         paddle="每次看见师傅",
         ronghe="每次看见师傅⋯",
@@ -1840,7 +1843,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="因为我练过抢包手，身手比较灵活⋯",
         paddle="因为我练过抢包手，身手比较灵活",
         ronghe="因为我练过抢包手，身手比较灵活⋯",
@@ -1848,7 +1851,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="于是我就向著这个又黑又窄的洞⋯",
         paddle="于是我就向著这个又黑又窄的洞",
         ronghe="于是我就向著这个又黑又窄的洞⋯",
@@ -1856,7 +1859,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="我小心揭开盒⋯",
         paddle="我小心揭开盒",
         ronghe="我小心揭开盒⋯",
@@ -1864,7 +1867,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「年少，练了六套脚法。」",
         paddle="年少，练了六套脚法 云」",
         ronghe="「年少，练了六套脚法。」",
@@ -1872,7 +1875,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「可惜我依然未觉够用。」",
         paddle="「可惜我依然未觉够用 月」",
         ronghe="「可惜我依然未觉够用。」",
@@ -1881,7 +1884,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="揸住个包，我忽然明白⋯",
         paddle="楂住个包，我忽然明白",
         ronghe="揸住个包，我忽然明白⋯",
@@ -1890,7 +1893,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="唔得，\n就是唔得",
         paddle="唔得 就是唔得",
         ronghe="唔得，就是唔得",
@@ -1898,7 +1901,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="没有鱼蛋没有粗面没去成马尔代夫⋯",
         paddle="没有鱼蛋没有粗面没去成马尔代夫",
         ronghe="没有鱼蛋没有粗面没去成马尔代夫⋯",
@@ -1906,7 +1909,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="而张保仔，也没有咬过那个包",
         paddle="而张保仔 子，也没有咬过那个包",
         ronghe="而张保仔，也没有咬过那个包",
@@ -1914,7 +1917,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="原来蠢，\n并不那么好笑",
         paddle="原来蠢，并不那么好笑",
         ronghe="原来蠢，并不那么好笑",
@@ -1922,7 +1925,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="失望，\n并不那么好笑",
         paddle="失望，并不那么好笑",
         ronghe="失望，并不那么好笑",
@@ -1930,7 +1933,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="肥，\n都不一定好笑",
         paddle="肥，都不一定好笑",
         ronghe="肥，都不一定好笑",
@@ -1938,7 +1941,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="肥，\n不一定大力",
         paddle="肥，不一定大力",
         ronghe="肥，不一定大力",
@@ -1946,7 +1949,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="大力，\n亦不一定得",
         paddle="大力，亦不一定得",
         ronghe="大力，亦不一定得",
@@ -1954,7 +1957,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="长大了，到我要面对这个实掘掘⋯",
         paddle="长大了，到我要面对这个实掘掘",
         ronghe="长大了，到我要面对这个实掘掘⋯",
@@ -1962,7 +1965,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="未必可以发梦，未必那么好笑的⋯",
         paddle="未必可以发梦，未必那么好笑的",
         ronghe="未必可以发梦，未必那么好笑的⋯",
@@ -1970,7 +1973,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「⋯无力挽！」",
         paddle="「⋯无力挽 免！」",
         ronghe="「⋯无力挽！」",
@@ -1979,7 +1982,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="肥，\n算大力",
         paddle="肥，算大力",
         ronghe="肥，算大力",
@@ -1987,7 +1990,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="脚瓜上的肌肉非常结实⋯",
         paddle="脚瓜上的肌肉非常结实",
         ronghe="脚瓜上的肌肉非常结实⋯",
@@ -1995,7 +1998,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="至于脚趾甲⋯",
         paddle="至于脚趾甲",
         ronghe="至于脚趾甲⋯",
@@ -2003,7 +2006,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="有次我无无聊聊真的量了一下⋯",
         paddle="有次我无无聊聊真的量了一下",
         ronghe="有次我无无聊聊真的量了一下⋯",
@@ -2011,7 +2014,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="是的，\n故事讲完了",
         paddle="是的，故事讲完了",
         ronghe="是的，故事讲完了",
@@ -2019,7 +2022,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="失败⋯尝试⋯",
         paddle="失败⋯尝试",
         ronghe="失败⋯尝试⋯",
@@ -2027,7 +2030,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可是栋一双脚瓜站这儿⋯",
         paddle="可是楝一双脚瓜站这儿·",
         ronghe="可是栋一双脚瓜站这儿⋯",
@@ -2035,7 +2038,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="当浪打过来⋯",
         paddle="当浪打过来",
         ronghe="当浪打过来⋯",
@@ -2043,7 +2046,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="可是，浸一双脚瓜站水中⋯",
         paddle="可是，浸一双脚瓜站水中",
         ronghe="可是，浸一双脚瓜站水中⋯",
@@ -2051,7 +2054,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="如果妈妈看见我这个大脚瓜⋯",
         paddle="如果妈妈看见我这个大脚瓜",
         ronghe="如果妈妈看见我这个大脚瓜⋯",
@@ -2059,7 +2062,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="不\n成，还是出个锦囊！",
         paddle="不成，还是出个锦囊",
         ronghe="不成，还是出个锦囊！",
@@ -2068,7 +2071,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="妈妈的dot com散掉后，她又有计",
         paddle="妈妈的dot COm背 散掉后，她又有计",
         ronghe="妈妈的dot com散掉后，她又有计",
@@ -2076,7 +2079,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="「烧鸡」",
         paddle="烧鸡」",
         ronghe="「烧鸡」",
@@ -2084,7 +2087,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="方法：\n把鸡烧几烧",
         paddle="方法：把鸡烧几烧",
         ronghe="方法：把鸡烧几烧",
@@ -2092,7 +2095,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="就这样，一味「烧鸡」大功告成",
         paddle="就这样，一味「烧鸡 1 大功告成",
         ronghe="就这样，一味「烧鸡」大功告成",
@@ -2101,7 +2104,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="食谱里面补充说：",
         paddle="食谱里面补充说 ：",
         ronghe="食谱里面补充说：",
@@ -2109,7 +2112,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="常餐？\n常餐有什么吃？",
         paddle="常餐？ 常餐有什么吃？",
         ronghe="常餐？常餐有什么吃？",
@@ -2117,7 +2120,7 @@ test_cases = [
         difficulty=2,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="那么，\n两客常餐吧",
         paddle="那么，两客常餐吧",
         ronghe="那么，两客常餐吧",
@@ -2125,7 +2128,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，\n常餐卖光了",
         paddle="对不起 ，常餐卖光了",
         ronghe="对不起，常餐卖光了",
@@ -2135,7 +2138,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="唉，\n快餐不就是常餐",
         paddle="唉，快餐不就是常餐",
         ronghe="唉，快餐不就是常餐",
@@ -2143,7 +2146,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，\n特餐卖光了",
         paddle="对不起，特餐卖光了",
         ronghe="对不起，特餐卖光了",
@@ -2151,7 +2154,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="妈妈，\n改快餐吧",
         paddle="妈妈  一 改快餐吧",
         ronghe="妈妈，改快餐吧",
@@ -2160,7 +2163,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="晚餐呢？",
         paddle="晚餐呢",
         ronghe="晚餐呢？",
@@ -2168,7 +2171,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，\n没快餐了",
         paddle="对不起，没快餐了",
         ronghe="对不起，没快餐了",
@@ -2176,7 +2179,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="午餐吧，\n午餐精采呀",
         paddle="午餐吧，午餐精采呀",
         ronghe="午餐吧，午餐精采呀",
@@ -2184,7 +2187,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="好吧好吧！\n两份午餐好了",
         paddle="好吧好吧！两份午餐好了",
         ronghe="好吧好吧！两份午餐好了",
@@ -2192,7 +2195,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="对不起，\n午餐卖光了",
         paddle="对不起 ，午餐卖光了",
         ronghe="对不起，午餐卖光了",
@@ -2202,7 +2205,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="光天白日，\n吃什么鬼晚餐？",
         paddle="光天白日 ， 吃什么鬼晚餐？",
         ronghe="光天白日，吃什么鬼晚餐？",
@@ -2212,7 +2215,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="唉，说是说晚餐，还不就是午餐？",
         paddle="唉，让 说是说晚餐，还不就是午餐？",
         ronghe="唉，说是说晚餐，还不就是午餐？",
@@ -2220,7 +2223,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    ZhongwenFusionTestCase(
+    ZhongwenFusionTestCase.get_test_case_cls(ZhongwenFusionLLMText)(
         lens="要快吗？\n那得吃快餐了！",
         paddle="要快吗？那得吃快餐了！",
         ronghe="要快吗？那得吃快餐了！",

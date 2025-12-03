@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import re
 from logging import info, warning
 from pathlib import Path
@@ -15,9 +14,6 @@ from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_queryer import (
     ZhongwenProofreadingLLMQueryer,
-)
-from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
-    ZhongwenProofreadingQuery,
 )
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_test_case import (
     ZhongwenProofreadingTestCase,
@@ -80,11 +76,16 @@ class ZhongwenProofreader:
             if block_idx >= stop_at_idx:
                 break
 
-            # Query for proofreading
+            # Query LLM
             test_case_cls = ZhongwenProofreadingTestCase.get_test_case_cls(len(block))
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
-            query = self.get_query(block.to_series(), query_cls)
+            query = query_cls(
+                **{
+                    f"zimu_{idx + 1}": re.sub(r"\\N", r"\n", subtitle.text).strip()
+                    for idx, subtitle in enumerate(block)
+                }
+            )
             answer = self.llm_queryer(query, answer_cls, test_case_cls)
 
             output_series = Series()
@@ -98,12 +99,12 @@ class ZhongwenProofreader:
                 f"{block.to_series().to_simple_string()}"
             )
             output_series_to_concatenate[block_idx] = output_series
-        if self.test_case_path is not None:
-            asyncio.run(
-                update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
-            )
 
-        # Concatenate and return
+        # Log test cases
+        if self.test_case_path is not None:
+            update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+
+        # Organize and return
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
@@ -161,21 +162,3 @@ class ZhongwenProofreader:
         test_case_path.parent.mkdir(parents=True, exist_ok=True)
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")
-
-    @staticmethod
-    def get_query(
-        series: Series, query_cls: type[ZhongwenProofreadingQuery]
-    ) -> ZhongwenProofreadingQuery:
-        """Get the query for a given series.
-
-        Arguments:
-            series: subtitles
-            query_cls: query class
-        Returns:
-            instance of query_cls for series
-        """
-        kwargs = {}
-        for idx, subtitle in enumerate(series.events, 1):
-            kwargs[f"zimu_{idx}"] = re.sub(r"\\N", r"\n", subtitle.text).strip()
-
-        return query_cls(**kwargs)

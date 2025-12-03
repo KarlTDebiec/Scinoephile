@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.alignment.alignment import Alignment
-from scinoephile.audio.cantonese.merging import MergingQuery
-from scinoephile.audio.cantonese.proofing import ProofingQuery
+from scinoephile.audio.cantonese.merging import MergingQuery, MergingTestCase
+from scinoephile.audio.cantonese.proofing import ProofingQuery, ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewQuery
-from scinoephile.audio.cantonese.shifting import ShiftingQuery
+from scinoephile.audio.cantonese.shifting import ShiftingQuery, ShiftingTestCase
 from scinoephile.audio.cantonese.translation import TranslationQuery
 from scinoephile.core import ScinoephileError
 
@@ -72,7 +72,11 @@ def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | N
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    return ShiftingQuery(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
+    test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
+    query_cls = test_case_cls.query_cls
+    answer_cls = test_case_cls.answer_cls
+    query = query_cls(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
+    return query, answer_cls, test_case_cls
 
 
 def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
@@ -108,7 +112,10 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    return MergingQuery(zhongwen=zw, yuewen_to_merge=yws)
+    test_case_class: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
+    query_cls = test_case_class.query_cls
+    answer_cls = test_case_class.answer_cls
+    return query_cls(zhongwen=zw, yuewen_to_merge=yws), answer_cls, test_case_class
 
 
 def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | None:
@@ -148,7 +155,10 @@ def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | Non
     yw = alignment.yuewen[yw_idxs[0]].text
 
     # Return proof query
-    return ProofingQuery(zhongwen=zw, yuewen=yw)
+    test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
+    answer_cls = test_case_cls.answer_cls
+    query_cls = test_case_cls.query_cls
+    return query_cls(zhongwen=zw, yuewen=yw), answer_cls, test_case_cls
 
 
 def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> ReviewQuery:

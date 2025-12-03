@@ -11,6 +11,7 @@ from typing import ClassVar
 class LLMText(ABC):
     """Text strings to be used for corresponding with an LLM."""
 
+    # Prompt
     base_system_prompt: ClassVar[str]
     """Base system prompt."""
 
@@ -26,12 +27,14 @@ class LLMText(ABC):
     few_shot_answer_intro: ClassVar[str]
     """Text preceding each few-shot expected answer."""
 
+    # Answer validation errors
     answer_invalid_pre: ClassVar[str]
     """Text preceding answer validation errors."""
 
     answer_invalid_post: ClassVar[str]
     """Text following answer validation errors."""
 
+    # Test case validation errors
     test_case_invalid_pre: ClassVar[str]
     """Text preceding test case validation errors."""
 

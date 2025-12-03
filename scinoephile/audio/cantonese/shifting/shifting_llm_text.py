@@ -30,3 +30,45 @@ class ShiftingLLMText(EnglishLLMText):
         If no changes are needed, return empty strings for both yuewen_1_shifted and
         yuewen_2_shifted.""")
     """Base system prompt."""
+
+    # Query descriptions
+    zhongwen_1_description: ClassVar[str] = "Known 中文 of subtitle 1"
+    """Description of 'zhongwen_1' field."""
+
+    zhongwen_2_description: ClassVar[str] = "Known 中文 of subtitle 2"
+    """Description of 'zhongwen_2' field."""
+
+    yuewen_1_description: ClassVar[str] = "Transcribed 粤文 of subtitle "
+    """Description of 'yuewen_1' field."""
+
+    yuewen_2_description: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
+    """Description of 'yuewen_2' field."""
+
+    # Query validation errors
+    yuewen_1_yuewen_2_missing_error: ClassVar[str] = (
+        "Query must have yuewen_1, yuewen_2, or both."
+    )
+    """Error message when 'yuewen_1' and 'yuewen_2' fields are missing."""
+
+    # Answer descriptions
+    yuewen_1_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
+    """Description of 'yuewen_1_shifted' field."""
+
+    yuewen_2_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
+    """Description of 'yuewen_2_shifted' field."""
+
+    # Test case validation errors
+    yuewen_1_yuewen_2_unchanged_error: ClassVar[str] = (
+        "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's yuewen_1 "
+        "and yuewen_2; if no shift is needed, yuewen_1_shifted and yuewen_2_shifted "
+        "must be empty strings."
+    )
+    """Error message when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
+
+    yuewen_characters_changed_error: ClassVar[str] = (
+        "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
+        "query's concatenated yuewen_1 and yuewen_2:\n"
+        "Expected: {expected}\n"
+        "Received: {received}"
+    )
+    """Error message when shifted 粤文 characters do not match original."""

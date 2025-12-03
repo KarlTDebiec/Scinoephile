@@ -4,16 +4,19 @@
 
 from __future__ import annotations
 
-from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.english.proofreading import (
+    EnglishProofreadingLLMText,
+    EnglishProofreadingTestCase,
+)
 
 # noinspection PyArgumentList
 test_cases = [
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Police.",
         subtitle_2="Show me your ID.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="- Check his ID.\n- Yes sir.",
         subtitle_2="- What's in your bag?\n- Headquarter,",
         subtitle_3="- Let me see.\n- please verify ID number C532743…",
@@ -21,7 +24,7 @@ test_cases = [
         subtitle_5="Open it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="The arrangement for Hong Kong",
         subtitle_2="contained in the agreement\nare not measures of expediency.",
         subtitle_3="They are long-term policies\nwhich will be incorporated",
@@ -37,7 +40,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
         subtitle_1="An armed robbery took place this afternoon in Kwun Tong.",
         subtitle_2="4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
         subtitle_3="Fuck you!",
@@ -55,7 +58,7 @@ test_cases = [
         subtitle_15="Take it, jerk!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Shit has really hit the fan!",
         subtitle_2="I can give you 20% tops. Sorry.",
         subtitle_3="We agreed on 40%.",
@@ -69,7 +72,7 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Especially for your swag, Bro foon!",
         subtitle_2="It took us 2 years to fence it last time!",
         subtitle_3="Stocks, real estate,\nand even chestnuts are more profitable!",
@@ -85,7 +88,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="How about you find another fence?",
         subtitle_2="If I can't take it, I doubt others would dare to!",
         subtitle_3="Fuck you!",
@@ -93,11 +96,11 @@ test_cases = [
         subtitle_5="Are you robbing me?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Don't make me do it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Thanks so much, Bro foon.",
         subtitle_2="Don't look me up in the future.",
         subtitle_3="There's no more business between us!",
@@ -107,18 +110,18 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Light, Bro foon.",
         revised_1="Light, Bro Foon.",
         note_1="Corrected 'foon' to 'Foon' to capitalize the proper noun.",
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Fisherman!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Don't worry.",
         subtitle_2="These ships belong to Yi Fa.",
         subtitle_3="What's Yi Fa?",
@@ -129,12 +132,12 @@ test_cases = [
         subtitle_8="A TV set sells for $2K\nin Hong Kong and $8K in China.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="They earn millions of dollars in each transaction.",
         subtitle_2="Cash keeps rolling in!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Used notes with no consecutive serial numbers.",
         subtitle_2="I need them today!",
         subtitle_3="You have $80M over there.",
@@ -144,7 +147,7 @@ test_cases = [
         subtitle_7="Manager Fok!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="We are in love but can't be together.",
         subtitle_2="I wait day by day but you never come back…",
         subtitle_3="I want to forget you but you haunt my memory.",
@@ -152,7 +155,7 @@ test_cases = [
         subtitle_5="let's discuss the price.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Was it a bit flat?",
         subtitle_2="No way! Let's start over!",
         subtitle_3="Red face,",
@@ -160,16 +163,16 @@ test_cases = [
         subtitle_5="like white paper…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="I said let's start over. Didn't you hear me?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="I said let's start over. Didn't you hear me?",
         subtitle_2="Let's not waste time!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Mr Tycoon,",
         subtitle_2="we agreed on $3 billion.",
         subtitle_3="That's final.",
@@ -177,7 +180,7 @@ test_cases = [
         subtitle_5="I've only got $500M on hand.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Did I say you could go?",
         subtitle_2="Take the $500M now.",
         subtitle_3="Don't get too greedy.",
@@ -193,11 +196,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Call the Commissioner of Police!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="I said let's start over. Didn't you hear me?",
         subtitle_2="You hear me, or not?",
         subtitle_3="If you can't hear me with your ear,",
@@ -210,27 +213,27 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="You should've said so earlier.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="What's up?",
         subtitle_2="The Commissioner didn't answer?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="You're playing me, right?",
         subtitle_2="Let's play it all the way then!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Leaving so soon, Officer Wu?",
         subtitle_2="Mr Tycoon is looking for you.",
         subtitle_3="Mr Tycoon, didn't you call the cops? Come here!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(21)(
+    EnglishProofreadingTestCase.get_test_case_cls(21, EnglishProofreadingLLMText)(
         subtitle_1="Mr Ho.",
         subtitle_2="They are sending these dogs after me,",
         subtitle_3="but they are useless.",
@@ -254,12 +257,12 @@ test_cases = [
         subtitle_21="$3 billion.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="",
         subtitle_2="Are you in Guangzhou for business or leisure?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Excuse me?",
         subtitle_2="Business? Travel?",
         subtitle_3="Yea, I am a businessman.",
@@ -268,17 +271,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Guangzhou Railway Station",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="I'd like to reserve a private room",
         subtitle_2="at 8pm tomorrow.",
         subtitle_3="My name is Chen. Thank you.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Hello, Commander.",
         subtitle_2="8pm tomorrow at Fengman Restaurant.",
         subtitle_3="Who the fuck am I? I'm Chiu.",
@@ -286,7 +289,7 @@ test_cases = [
         subtitle_5="That's it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="Fengman Restaurant",
         subtitle_2="Almost there, Mr Fong.",
         subtitle_3="OK.",
@@ -302,7 +305,7 @@ test_cases = [
         subtitle_13="Chief Chen.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="Chief Chen.",
         subtitle_2="This is Zhang Da-bao, Boss Zhang,",
         subtitle_3="who has bought Yi Fa.",
@@ -316,7 +319,7 @@ test_cases = [
         subtitle_11="Bottoms up!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Boss Zhang cannot drink?",
         subtitle_2="Bottoms up!",
         subtitle_3="I said bottoms up!",
@@ -324,7 +327,7 @@ test_cases = [
         subtitle_5="Bottoms up!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(34)(
+    EnglishProofreadingTestCase.get_test_case_cls(34, EnglishProofreadingLLMText)(
         subtitle_1="Da-bao is my buddy.",
         subtitle_2="We've only met quite recently.",
         subtitle_3="But we hit it off right away!",
@@ -361,7 +364,7 @@ test_cases = [
         subtitle_34="Bottoms up!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="This guy plays golf every Sunday\nin Clear Water Bay.",
         subtitle_2="One-way road. Quiet. No phone signal. It may work.",
         subtitle_3="Hey! Where's our rice?",
@@ -372,7 +375,7 @@ test_cases = [
         subtitle_8="He recently has an actress as a mistress.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Hey!",
         subtitle_2="Where is our rice?",
         subtitle_3="Rice? Give me a second.",
@@ -383,7 +386,7 @@ test_cases = [
         subtitle_8="Close the door.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
         subtitle_1="Sir, please follow me.",
         subtitle_2="Give me a cup of tea.",
         subtitle_3="Hey! Haven't you gone to the bathroom just now?",
@@ -402,7 +405,7 @@ test_cases = [
         subtitle_16="There's no other way.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="We've stolen cars, committed burglaries,",
         subtitle_2="and robbed cash vans.",
         subtitle_3="We even kidnapped the tycoon's son.",
@@ -414,7 +417,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
         subtitle_1="I'm a mountaineer.",
         subtitle_2="After conquering one mountain,",
         subtitle_3="I need to find a higher and harder mountain.",
@@ -435,11 +438,11 @@ test_cases = [
         subtitle_18="OK, I'll talk to you later.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Excuse me, Boss.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Please go on.",
         subtitle_2="Don't give us a hard time.\nWe're doing small business.",
         subtitle_3="Big Bro, these kids are great.",
@@ -450,18 +453,18 @@ test_cases = [
         subtitle_8="You should be out of business.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="What is he staring at?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="He is smart and helpful",
         subtitle_2="I don't want the guy in blue either.",
         subtitle_3="You only need two men this time?",
         subtitle_4="Take the others to broaden their horizons.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Got it!",
         subtitle_2="Let me see to it.",
         subtitle_3="What are you fucking looking at?",
@@ -470,7 +473,7 @@ test_cases = [
         subtitle_6="You two come with me.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
         subtitle_1="Faster.",
         subtitle_2="So slow!",
         subtitle_3="Big Bro Chiu,",
@@ -485,18 +488,18 @@ test_cases = [
         subtitle_12="Sure will!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Motherfucker.",
         subtitle_2="Sit and eat.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Commander,",
         subtitle_2="who's this Big Bro Chiu?",
         subtitle_3="Who cares if he is Big Bro Chiu or not?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="He is a douchebag.",
         subtitle_2="He is a sly,",
         subtitle_3="old fox who changes identities.",
@@ -508,7 +511,7 @@ test_cases = [
         subtitle_9="Big Bro Chiu is just a name.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="Is Fai here?",
         subtitle_2="Fai.",
         subtitle_3="What's up?",
@@ -524,7 +527,7 @@ test_cases = [
         subtitle_13="Do you think I speak French?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(20)(
+    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingLLMText)(
         subtitle_1="You stink!",
         subtitle_2="Really?",
         subtitle_3="Bo.",
@@ -547,23 +550,23 @@ test_cases = [
         subtitle_20="I say no Coke.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Fai, I'm not gonna eat. I'm running late.",
         subtitle_2="You're going now?",
         subtitle_3="Yes.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Be a good girl.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Bro Coke, dig in.",
         subtitle_2="She's not eating with us?",
         subtitle_3="She has to work night shift.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="She's a legit masseuse.",
         subtitle_2="Eat some barbecued pork.",
         subtitle_3="Bo, eat some veggies.",
@@ -572,12 +575,12 @@ test_cases = [
         subtitle_6="Shall we ride the roller coaster?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Shall we fly higher and farther?",
         subtitle_2="Tickle, tickle.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(38)(
+    EnglishProofreadingTestCase.get_test_case_cls(38, EnglishProofreadingLLMText)(
         subtitle_1="Stop making noise, or the landlady will be nasty.",
         subtitle_2="She's nasty because you haven't paid the rent.",
         subtitle_3="You're being cheeky. Come down.",
@@ -618,7 +621,7 @@ test_cases = [
         subtitle_38="And we didn't earn that much.\nSo what's the point?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="I'd like to stay here for a few days.",
         subtitle_2="What?",
         subtitle_3="I can sleep on the couch.",
@@ -630,11 +633,11 @@ test_cases = [
         subtitle_9="That's fine",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(Gold shop)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="(Jockey Club)",
         subtitle_2="Panyu Yi Fa Market",
         subtitle_3="30 sets of 29-inch TVs. RMB¥12K apiece.",
@@ -645,7 +648,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="You pay me RMB¥700K.",
         subtitle_2="I will notify you once the goods are delivered.",
         subtitle_3="Next.",
@@ -653,7 +656,7 @@ test_cases = [
         subtitle_5="Business License",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(22)(
+    EnglishProofreadingTestCase.get_test_case_cls(22, EnglishProofreadingLLMText)(
         subtitle_1="RMB¥30K. The amount is correct.",
         subtitle_2="Will notify you once the goods are onboard.",
         subtitle_3="Please extend my thanks to Chief Chen.",
@@ -681,29 +684,29 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Something wrong with the goods?",
         subtitle_2="No, close the door.",
         subtitle_3="Close the door.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Want to play tough guy? Call your wife now.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Call your wife now.",
         subtitle_2="Tell your folks you're OK, asshole.",
         subtitle_3="If you kill me, you won't get a cent.",
         subtitle_4="Are you threatening me?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Cheuk, be patient.",
         subtitle_2="If he doesn't talk, don't give him food or water.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(48)(
+    EnglishProofreadingTestCase.get_test_case_cls(48, EnglishProofreadingLLMText)(
         subtitle_1="You're so noisy.",
         subtitle_2="Hey, what are you doing?",
         subtitle_3="Get him back! Get him back!",
@@ -757,17 +760,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="What the fuck?! Join me",
         subtitle_2="or go home and eat shit.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro Chiu,",
         subtitle_2="how much can we earn from robbing this gold shop?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="You're calling or not?",
         subtitle_2="If the 3 Kings of Thieves join forces,",
         subtitle_3="even if we open a fish ball stall together,",
@@ -777,19 +780,19 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Hey, wake up!",
         subtitle_2="Gold depository?",
         subtitle_3="Racecourse?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Kidnap Hong Kong Governor Chris Patten?",
         subtitle_2="The Head of Hong Kong and Macau Affairs, Lu Ping?",
         subtitle_3="No way.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="What are you listening?",
         subtitle_2="The 4 Heavenly Kings singing on stage together.",
         subtitle_3="What are they singing?",
@@ -803,7 +806,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="How's my husband? I beg you!",
         subtitle_2="He's not in good health. Don't hurt him.",
         subtitle_3="We are not as loaded as it may seem.",
@@ -811,7 +814,7 @@ test_cases = [
         subtitle_5="Name a price. I'll pay you from my own pocket…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         subtitle_2="I have $80M in cash.",
         subtitle_3="Is it OK?",
@@ -819,7 +822,7 @@ test_cases = [
         subtitle_5="Find Yip and Kwai!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="What the hell?",
         subtitle_2="The 3 Kings of Thieves\njoin forces for the first time.",
         subtitle_3="It will be terrific no matter what we do!",
@@ -831,13 +834,13 @@ test_cases = [
         subtitle_9="Himalaya!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Having night snack?",
         subtitle_2="There's Coke in the fridge.",
         subtitle_3="OK, I'll get it myself.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="Fai, how long is your friend staying?",
         subtitle_2="3 or 4 nights.",
         subtitle_3="We have a daughter.",
@@ -851,23 +854,23 @@ test_cases = [
         subtitle_11="I'll go to bed after sewing.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="I will arrive with clients in 3 minutes.",
         subtitle_2="Got it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Gui, Guang, unload the goods. Be quick.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro, we have a situation!",
         subtitle_2="Panyu Customs!",
         subtitle_3="Kam! Kam!",
         subtitle_4="Chung, pull over!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Take a look over there.",
         subtitle_2="Take a look again over there.",
         subtitle_3="Don't move. Hands on your head.",
@@ -877,11 +880,11 @@ test_cases = [
         subtitle_7="Find Mr Fong.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Chinese customs",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Comrade.",
         subtitle_2="What do you want?",
         subtitle_3="We're looking for Chief Long.",
@@ -889,28 +892,28 @@ test_cases = [
         subtitle_5="if he can discharge the Lianhuashan goods and men?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="We know Mr Fong.",
         subtitle_2="In 4 days, the goods will be confiscated",
         subtitle_3="and the men will be executed.",
         subtitle_4="Yes, we understand.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Chief, someone wants to see you.",
         subtitle_2="OK.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Chief Long is busy today.",
         subtitle_2="Come again tomorrow.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="All right. Yes…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Chief Long is not seeing guests today.",
         subtitle_2="Come again tomorrow.",
         subtitle_3="Asshole.",
@@ -919,14 +922,14 @@ test_cases = [
         subtitle_6="Yes, yes.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Chief Long said he wanted to talk over dinner.",
         subtitle_2="Find a restaurant and wait for him.",
         subtitle_3="Good.",
         subtitle_4="Fengman Restaurant.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         subtitle_2="I am in Fugui Restaurant with Chief Long.",
         subtitle_3="Coming right away.",
@@ -937,7 +940,7 @@ test_cases = [
         subtitle_8="Okay!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(25)(
+    EnglishProofreadingTestCase.get_test_case_cls(25, EnglishProofreadingLLMText)(
         subtitle_1="Hurry up!",
         subtitle_2="Chief Long of Customs.",
         subtitle_3="He's my buddy.",
@@ -965,7 +968,7 @@ test_cases = [
         subtitle_25="Waiter!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
         subtitle_1="Thanks a lot.",
         subtitle_2="What's your name?",
         subtitle_3="Boss Zhang.",
@@ -985,12 +988,12 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Don't forget the vase.",
         subtitle_2="Yes.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Chinese customs",
         subtitle_2="Thanks to connections,\nI didn't need to rot in jail.",
         subtitle_3="We stayed in a motel,",
@@ -1003,12 +1006,12 @@ test_cases = [
         subtitle_10="for money's sake.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Hey! Come here.",
         subtitle_2="Our goods!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Come.",
         subtitle_2="Your goods are here.",
         subtitle_3="Take a look. Any problems?",
@@ -1018,32 +1021,32 @@ test_cases = [
         subtitle_7="Thanks so much.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="OK.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Your mole hasn't found Kwai's dossier",
         subtitle_2="in the police station?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="No news about Yip in China?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="What about his underlings? His fences?",
         subtitle_2="His fellow illegal immigrants? His village mates?",
         subtitle_3="Can't find them?",
         subtitle_4="Nothing at all?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Good.",
         subtitle_2="Good.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
         subtitle_1="Fuck you!",
         subtitle_2="Fuck you!",
         subtitle_3="The cops have offered a $1M reward on him.",
@@ -1062,24 +1065,24 @@ test_cases = [
         subtitle_16="Find a way to shake them off.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         subtitle_2="Are you Cheuk?",
         subtitle_3="Yes.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Noon tomorrow. Bring a purple umbrella\nto Temple Street.",
         subtitle_2="I'll have you picked up.",
         subtitle_3="Get on.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Take off your clothes.",
         subtitle_2="Take them all off.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="I worked with Kwai once. He's so average.",
         subtitle_2="I know Yip. He lived in Guangdong.",
         subtitle_3="Kwai's real name is Xing Zhennan.",
@@ -1088,7 +1091,7 @@ test_cases = [
         subtitle_6="OK.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(35)(
+    EnglishProofreadingTestCase.get_test_case_cls(35, EnglishProofreadingLLMText)(
         subtitle_1="I drove for Yip and was chased by the cops.",
         subtitle_2="I fenced for Yip.",
         subtitle_3="I was present in Yip's every heist.",
@@ -1130,23 +1133,23 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Hey.",
         subtitle_2="Thanks so much!",
         subtitle_3="Let's go have some fun?",
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Are you tight in cash lately, Taishan Boy?",
         subtitle_2="How can 3 pieces be enough?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Guns are for firing, not for sniffing.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(17)(
+    EnglishProofreadingTestCase.get_test_case_cls(17, EnglishProofreadingLLMText)(
         subtitle_1="Our commander taught us: safety first.",
         subtitle_2="Have you sniffed that Cheuk\nis looking for Yip and Kwai?",
         subtitle_3="Mr Cheuk says he wants to meet those two.",
@@ -1171,7 +1174,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Stand still, sir.",
         subtitle_2="What's wrong?",
         subtitle_3="Where are you going?",
@@ -1179,7 +1182,7 @@ test_cases = [
         subtitle_5="Your ID, please.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Bo!",
         subtitle_2="Why didn't you come home right after school?",
         subtitle_3="I told you so many times.",
@@ -1189,7 +1192,7 @@ test_cases = [
         subtitle_7="- I thought I was on my way.\n- You've scared the hell out of us.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="Shut up!",
         subtitle_2="Still drinking? Bad girl!",
         subtitle_3="What happened?",
@@ -1201,11 +1204,11 @@ test_cases = [
         subtitle_9="Thank you, sir.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Sorry.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Darling.",
         subtitle_2="Daddy loves you.",
         subtitle_3="My good girl.",
@@ -1218,20 +1221,20 @@ test_cases = [
         subtitle_10="can you do me a favor?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Go!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Let him vent his anger.",
         subtitle_2="Stop!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Chief Song, you're a tea connoisseur.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Enough.",
         subtitle_2="I need you to do me a favor.",
         subtitle_3="What do you mean?",
@@ -1240,7 +1243,7 @@ test_cases = [
         subtitle_6="Give me face.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="They robbed me.",
         subtitle_2="What have you lost?",
         subtitle_3="They robbed me! Me!",
@@ -1261,17 +1264,17 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Great, there's a vase in the toilet…",
         subtitle_2="We're lucky…",
         subtitle_3="It's small but it will do.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="We're good buddies.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
         subtitle_1="RMB¥2M, thank you!",
         subtitle_2="I receive RMB¥1.3M from you. Thanks.",
         subtitle_3="I'll notify you once we have the goods.",
@@ -1289,7 +1292,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
         subtitle_1="Inspector Wu.",
         subtitle_2="You're difficult to tail.",
         subtitle_3="I had to wait here for you!",
@@ -1315,13 +1318,13 @@ test_cases = [
         subtitle_23="Or I'd have kicked you too!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Want to report the crime?",
         subtitle_2="If not, I'll let him go.",
         subtitle_3="Well?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="If not, I'll let him go!",
         subtitle_2="Get lost!",
         subtitle_3="- Are you assaulting a police officer?\n- Don't play tricks.",
@@ -1331,7 +1334,7 @@ test_cases = [
         subtitle_7="The Royal Hong Kong Police relies\non your phone calls.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Why don't you just drop it?",
         subtitle_2="Don't ruin your impeccable record.",
         subtitle_3="I'd help you if I could!",
@@ -1339,7 +1342,7 @@ test_cases = [
         subtitle_5="I must say it's a dead end!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="I know, I know!",
         subtitle_2="We've come to the climax of tonight.",
         subtitle_3="The last leg of the Triple Trio.",
@@ -1360,7 +1363,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Motherfucker, almost $400M in the pool.",
         subtitle_2="Hong Kong citizens are robbed by the Triple Trio.",
         subtitle_3="What does Triple Trio mean?",
@@ -1368,14 +1371,14 @@ test_cases = [
         subtitle_5="has attracted many fans queuing\nto place their bets.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="No more clothes pegs?",
         subtitle_2="No.",
         subtitle_3="Go get some in the room.",
         subtitle_4="Sure.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="The race is about to start.",
         subtitle_2="The $170M jackpot pool.",
         subtitle_3="A single winner",
@@ -1391,33 +1394,33 @@ test_cases = [
         subtitle_13="Go! Go! Go!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Faster! Faster! Faster!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="No one wins. The warehouse\nmust be filled with money.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro Chiu.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Hey.",
         subtitle_2="Mr Cheuk, you know who Kun-xi is?",
         subtitle_3="It's Kun-xi speaking.",
         subtitle_4="Look me up in Guangdong. I won't let you down.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="You're really quitting? It's a cushy job.",
         subtitle_2="You're telling me!",
         subtitle_3="Talk to Big Bro yourself.",
         subtitle_4="I have invested all I got in the goods.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="You already know all those officials",
         subtitle_2="and connections well…",
         subtitle_3="What did you say?",
@@ -1438,7 +1441,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Fuck! Thought I would be famous overnight.",
         subtitle_2="What a waste of time!",
         subtitle_3="Fame is not an issue.",
@@ -1446,23 +1449,23 @@ test_cases = [
         subtitle_5="Not to mention having to chew this bread here.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro Chiu,",
         subtitle_2="coming to Hong Kong has not been easy for us.",
         subtitle_3="We can't just go back like this.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro Chiu, you really want us to leave?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="If you guys have something big in mind,",
         subtitle_2="count us in!",
         subtitle_3="We can do anything.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="I can keep a secret.",
         subtitle_2="If you say you're Big Bro Chiu, then so be it.",
         subtitle_3="I understand. Don't worry.",
@@ -1470,33 +1473,33 @@ test_cases = [
         subtitle_5="We have moral principle.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Share it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Seriously, we can make it work.",
         subtitle_2="The 3 Kings of Thieves join forces…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mind your own business.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Aren't you on dialysis? Still smoking?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Old habits die hard.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Are you still angry with me?",
         subtitle_2="You're planning to rob the gold shop downstairs?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="I thought you're paying me a visit.",
         subtitle_2="You're here just for the location.",
         subtitle_3="Listen to me…",
@@ -1510,48 +1513,48 @@ test_cases = [
         subtitle_11="Can you leave my family alone?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="I'm in the wrong this time.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="You know it's hard to make a living.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="We're sworn brothers.",
         subtitle_2="I owe you this time.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Forget what happened these past few days.",
         subtitle_2="Keep it to yourself.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="I'll leave early tomorrow morning.",
         subtitle_2="You won't see me again.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Uncle Coke.",
         subtitle_2="Not in bed yet?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Guangdong province",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Sai Wan Container Terminal, Hong Kong",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mr Cheuk,",
         subtitle_2="I've heard so much about you.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
         subtitle_1="Where's Yip?",
         subtitle_2="Let me show you something.",
         subtitle_3="This way.",
@@ -1572,21 +1575,21 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="They were all retired soldiers.",
         subtitle_2="They're fearless veterans in battles!",
         subtitle_3="I want Yip!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Coin!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Give it to me!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(16)(
+    EnglishProofreadingTestCase.get_test_case_cls(16, EnglishProofreadingLLMText)(
         subtitle_1="Big Bro, let's think it through.",
         subtitle_2="Give it to me!",
         subtitle_3="We're doing all right.",
@@ -1605,20 +1608,20 @@ test_cases = [
         subtitle_16="Come down!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Yip has retired!",
         subtitle_2="He used to be my man!",
         subtitle_3="Am I not a better partner?",
         subtitle_4="Who the hell are you?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         subtitle_2="Hello, Cheuk.",
         subtitle_3="It's Yip Kwok-foon speaking.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Are you kidding me?",
         subtitle_2="Why should I believe you?",
         subtitle_3="I am who I am!",
@@ -1631,7 +1634,7 @@ test_cases = [
         subtitle_10="Hey!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="You are dead!",
         subtitle_2="Go up!",
         subtitle_3="Go up!",
@@ -1641,7 +1644,7 @@ test_cases = [
         subtitle_7="Who's speaking?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(15)(
+    EnglishProofreadingTestCase.get_test_case_cls(15, EnglishProofreadingLLMText)(
         subtitle_1="Kwai Ching-hung.",
         subtitle_2="Need my help?",
         subtitle_3="Are you kidding me?",
@@ -1663,7 +1666,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="What did you just say?",
         subtitle_2="Fuck you!",
         subtitle_3="Are you playing me?",
@@ -1678,18 +1681,18 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="We're all here.",
         subtitle_2="Where are you right now?",
         subtitle_3="Hong Kong!",
         subtitle_4="I'll call you when I'm back in Hong Kong.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Hello?",
         subtitle_2="Kwai Ching-hung, you still there?",
         subtitle_3="Hello?",
@@ -1698,39 +1701,39 @@ test_cases = [
         subtitle_6="Hong Kong.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Call you when I'm back in Hong Kong.",
         subtitle_2="Let's talk later.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Motherfucker! The 3 Kings",
         subtitle_2="of Thieves have nothing to do with you.",
         subtitle_3="Since you're here,",
         subtitle_4="you can't bail without leaving something.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Yes.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="There's less than $10M here.",
         subtitle_2="Mr Cheuk's life",
         subtitle_3="worth at least $100M!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Put your guns down!",
         subtitle_2="Retired soldiers? Go!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Car key.",
         subtitle_2="Car key!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="You think I'm bullshitting?",
         subtitle_2="If you don't treat me as your Big Bro,\nlet's split!",
         subtitle_3="Big Bro, we always follow your orders.",
@@ -1740,7 +1743,7 @@ test_cases = [
         subtitle_7="We support you no matter what!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Are you looking down on me?",
         subtitle_2="I stoop so low that I need your support?",
         subtitle_3="I don't need you!",
@@ -1753,7 +1756,7 @@ test_cases = [
         subtitle_10="- Where are your IDs?\n- Here.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="We planned to take a boat to Macau",
         subtitle_2="but got lost here.",
         subtitle_3="We couldn't find the pier.",
@@ -1762,7 +1765,7 @@ test_cases = [
         subtitle_6="PC1844 calling the station. Send.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Quick!",
         subtitle_2="Don't let him flee!",
         subtitle_3="Motherfucker!",
@@ -1770,7 +1773,7 @@ test_cases = [
         subtitle_5="Go after him!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="Hello? Uncle Dog, I've found them.",
         subtitle_2="Believe it or not, they called me up!",
         subtitle_3="I even got a whole ton of dynamite!",
@@ -1783,7 +1786,7 @@ test_cases = [
         subtitle_9="What the fuck!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="The night snack is here. Back yet?",
         subtitle_2="Coming back.",
         subtitle_3="We're at the entrance\nto the complainant's building.",
@@ -1796,24 +1799,24 @@ test_cases = [
         subtitle_10="Take a cab!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mainlanders are numskulls.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Quick!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mainlanders?",
         subtitle_2="I'm Yip Kwok-foon!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Military Police",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(29)(
+    EnglishProofreadingTestCase.get_test_case_cls(29, EnglishProofreadingLLMText)(
         subtitle_1="Waiter.",
         subtitle_2="Sir, have you reserved a table?",
         subtitle_3="I booked a room under the name of Chen.",
@@ -1845,7 +1848,7 @@ test_cases = [
         subtitle_29="Give me a second. I'll be right back.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="We should not forget you.",
         subtitle_2="And we should watch with the closest interests",
         subtitle_3="as you embark on this new era\nof your remarkable history.",

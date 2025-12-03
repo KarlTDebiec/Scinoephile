@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.english.proofreading import (
+    EnglishProofreadingLLMText,
+    EnglishProofreadingTestCase,
+)
 
 # noinspection PyArgumentList
 test_cases = [
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="♪ Hey, let's go ♪",
         subtitle_2="♪ Hey, let's go ♪",
         subtitle_3="♪ I'm happy as can be ♪",
@@ -22,7 +25,7 @@ test_cases = [
         subtitle_11="♪ Ready, set, let's go ♪",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="♪ Hey, let's go ♪",
         subtitle_2="♪ Hey, let's go ♪",
         subtitle_3="♪ I'm happy as can be ♪",
@@ -38,28 +41,28 @@ test_cases = [
         subtitle_13="♪ Ready, set, let's go ♪",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(ENGINE RUMBLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
         subtitle_3="- Fine.\n- Are you tired? Oop!",
         subtitle_4="- Mmm-mmm.\n- We're almost there.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mei, hide.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Whoops. I thought\nthat was a policeman.",
         subtitle_2="Hi!",
         subtitle_3="(BOTH LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Hello there. Are your parents around?\nWe're your new neighbors.",
         subtitle_2="Great. Thanks.",
         subtitle_3="Hello! Hi, we're the Kusakabes!\nWe're moving in down the street.",
@@ -73,11 +76,11 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(WATER RUNNING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="This is it, girls.",
         subtitle_2="(GRUNTING)",
         subtitle_3="- Wait up!\n- Here you go.",
@@ -85,7 +88,7 @@ test_cases = [
         subtitle_5="A bridge?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="There's a fish! Oh, look!\nThere's another one!",
         subtitle_2="So, how do you like the new place?",
         subtitle_3="Dad, it's perfect.",
@@ -95,7 +98,7 @@ test_cases = [
         subtitle_7="Dad, hurry!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(18)(
+    EnglishProofreadingTestCase.get_test_case_cls(18, EnglishProofreadingLLMText)(
         subtitle_1="Wow! It's creepy.",
         subtitle_2="Creepy!",
         subtitle_3="- It looks like it could be haunted.\n- What, haunted?",
@@ -116,7 +119,7 @@ test_cases = [
         subtitle_18="Look.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="- Wow! It's huge, isn't it?\n- Ah-choo!",
         subtitle_2="(LAUGHING)",
         subtitle_3="(DOORS SLIDING)",
@@ -127,7 +130,7 @@ test_cases = [
         subtitle_8="Huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Whoa!",
         subtitle_2="An acorn.",
         subtitle_3="Let me see.",
@@ -138,7 +141,7 @@ test_cases = [
         subtitle_8="(GASPS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Out of the way, Mei.\nI can't close the door with you there.",
         subtitle_2="Acorns.",
         subtitle_3="Dad, acorns are falling from the ceiling.",
@@ -146,7 +149,7 @@ test_cases = [
         subtitle_5="Hmm.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
         subtitle_1="Maybe squirrels live here.",
         subtitle_2="- Squirrels?\n- Squirrels?",
         subtitle_3="I think rats eat acorns.\nMaybe they're rats.",
@@ -162,28 +165,28 @@ test_cases = [
         prompt=True,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(GASPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(WHIMPERING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(ROARING)",
         subtitle_2="(SCREAMING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="- Let's go.\n- Hmph!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="- The bath.\n- Yep.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="I think they're gone.",
         subtitle_2="(GASPS)",
         subtitle_3="Hey, you found the bath.",
@@ -194,7 +197,7 @@ test_cases = [
         subtitle_7="Hmm. Let's have a look.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(20)(
+    EnglishProofreadingTestCase.get_test_case_cls(20, EnglishProofreadingLLMText)(
         subtitle_1="- Ah.\n- So?",
         subtitle_2="It was probably just some soot gremlins.",
         subtitle_3='What do you mean, "gremlins"?\nLike the ones in my book?',
@@ -218,7 +221,7 @@ test_cases = [
         subtitle_20="(GRUNTING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="Nope.",
         subtitle_2="The toilet!",
         subtitle_3="Not here.",
@@ -228,54 +231,54 @@ test_cases = [
         subtitle_7="Ahh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Nope.",
         subtitle_2="Nope. Hey!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(CREAKING)",
         subtitle_2="Mei, I found the stairs.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="It's pitch-black.",
         subtitle_3="Maybe it's the soot gremlins.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="An acorn.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Come out, come out, wherever you are!",
         subtitle_2="(RUSTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Hmph.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="BOTH: Ahh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="We know you're in here, soot gremlins.",
         subtitle_2="Come on out.",
         subtitle_3="(GASPS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Hey!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="KUSAKABE: (GRUNTS) Okay, lift.",
         subtitle_2="Dad, come here! There's definitely\nsomething weird in this house!",
         subtitle_3="That's great.",
@@ -286,15 +289,15 @@ test_cases = [
         subtitle_7="(CRASH)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SHRIEKS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="I caught one! Satsuki, look!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(22)(
+    EnglishProofreadingTestCase.get_test_case_cls(22, EnglishProofreadingLLMText)(
         subtitle_1="- Ah!\n- Oof!",
         subtitle_2="Hi.",
         subtitle_3="(SHRIEKS)",
@@ -319,13 +322,13 @@ test_cases = [
         subtitle_22="Ahh! Your feet!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="Mine are black, too!",
         subtitle_3="Ah…",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(27)(
+    EnglishProofreadingTestCase.get_test_case_cls(27, EnglishProofreadingLLMText)(
         subtitle_1="You've got soot sprites in your house.",
         subtitle_2="Soot sprites? The black puff balls?\nAbout this big?",
         subtitle_3="They scurry everywhere\nwhen you enter a room?",
@@ -356,11 +359,11 @@ test_cases = [
         subtitle_27="Mei, wait there, okay?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Did you catch a fish?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(7)(
+    EnglishProofreadingTestCase.get_test_case_cls(7, EnglishProofreadingLLMText)(
         subtitle_1="(GRUNTING)",
         subtitle_2="(SQUEALING)",
         subtitle_3="Granny, the pump's working!",
@@ -370,7 +373,7 @@ test_cases = [
         subtitle_7="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(21)(
+    EnglishProofreadingTestCase.get_test_case_cls(21, EnglishProofreadingLLMText)(
         subtitle_1="Oh. Hello again. Can I help you?",
         subtitle_2="Eh… My… mom said\nto give this to Granny.",
         subtitle_3="Oh. What is it?",
@@ -394,30 +397,30 @@ test_cases = [
         subtitle_21="- Good-bye, Granny!\n- Good-bye, Granny!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(CHOPPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(WOOD CLATTERING)",
         subtitle_2="(LEAVES RUSTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(WIND HOWLING)",
         subtitle_2="(SCREAMING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(WIND WHISTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(CREAKING)",
         subtitle_2="(POTS RATTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Dad, this house is too old.\nI think it's gonna fall down.",
         subtitle_2="(LAUGHING)",
         subtitle_3="That would be a problem,\nsince we just moved in here.",
@@ -425,11 +428,11 @@ test_cases = [
         subtitle_5="Huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SHUTTERS RATTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="(CLOCK TICKING)",
         subtitle_2="(HOOTING)",
         subtitle_3="(GASPS)",
@@ -446,24 +449,24 @@ test_cases = [
         subtitle_14="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="BOTH: One, two, one, two, one, two.",
         subtitle_2="That's it. Stamp that dirt out, girls.\nThat's it.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Okay. That's all the chores.",
         subtitle_2="- You're done.\n- BOTH: Yay!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Ready? Hold on!",
         subtitle_2="Who-o-oa!",
         subtitle_3="(GIRLS SHRIEKING)",
         subtitle_4="KUSAKABE: Whoo-ooo!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="SATSUKI: Granny!",
         subtitle_2="GIRLS: Hi, Granny!\nKUSAKABE: Good afternoon!",
         subtitle_3="Hello there, Kusakabes!\nWhere are you headed?",
@@ -474,16 +477,16 @@ test_cases = [
         subtitle_8="- Mmm.\n- Mmm.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Hey, this way. Whoa!",
         subtitle_2="(GIRLS GIGGLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Hey, Dad. There it is.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(34)(
+    EnglishProofreadingTestCase.get_test_case_cls(34, EnglishProofreadingLLMText)(
         subtitle_1="(DOOR OPENS)",
         subtitle_2="- Good afternoon, ma'am.\n- Hello, dear.",
         subtitle_3="- Mommy!\n- Hi, Mei. It's so good to see you.",
@@ -523,11 +526,11 @@ test_cases = [
         subtitle_34="You and I are a lot alike, Satsuki.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(INAUDIBLE)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="- Mom looked great, didn't she, Dad?\n- Yeah, she did,",
         subtitle_2="her doctor said she should be able\nto come home real soon.",
         subtitle_3="- So she'll be home tomorrow?\n"
@@ -540,14 +543,14 @@ test_cases = [
         subtitle_9="(BOTH LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Hey, Dad! Look, it's morning!",
         subtitle_2="(GROANING)",
         subtitle_3="- Umph!\n- Hey, wake up!",
         subtitle_4="(GROANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(27)(
+    EnglishProofreadingTestCase.get_test_case_cls(27, EnglishProofreadingLLMText)(
         subtitle_1="- Sorry. I overslept again.\n"
         "- I have to take lunch to school today.",
         subtitle_2="Oh, no. I forgot all about that.",
@@ -578,131 +581,131 @@ test_cases = [
         subtitle_27="I'm just off to run some errands.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Dad, is it lunchtime yet?",
         subtitle_2="What? We just ate breakfast.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Dad, you be the flower shop. Okay?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Hey, tadpoles.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(GIGGLES)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="What a stupid bucket.",
         subtitle_2="Huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Acorn.",
         subtitle_2="Ha!",
         subtitle_3="(GIGGLES)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(GIGGLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(QUICK STEPS)",
         subtitle_2="Ha!",
         subtitle_3="(GRUNTING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(RIPPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Hey!",
         subtitle_2="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Bleh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Ahh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Hey!",
         subtitle_2="(GIGGLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Ahh! Ahh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GRUNTING)",
         subtitle_2="(SCREAMING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SNORING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SNORING CONTINUES)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Whoa!",
         subtitle_2="(LAUGHING)",
         subtitle_3="(GROANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="(SNORING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(MOANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GIGGLES)",
         subtitle_2="(SNORING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         subtitle_2="(SNUFFLING)",
         subtitle_3="Ahh…",
         subtitle_4="Ah-choo!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(MEI GRUNTING)",
         subtitle_2="(SNORING RESUMES)",
         subtitle_3="(MOANING)",
         subtitle_4="(CHUCKLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="Who are you? A great big soot gremlin?",
         subtitle_2="(GRUMBLING)",
         subtitle_3="(ROARING)",
@@ -719,20 +722,20 @@ test_cases = [
         subtitle_14="(MOANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(YAWNING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SNORING)",
         subtitle_2="(MOANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(PLOP)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="- Bye.\n- See you later!",
         subtitle_2="- I'm home!\n- Hi there.",
         subtitle_3="- Wow. Is it that late already?\n- Where's Mei?",
@@ -743,17 +746,17 @@ test_cases = [
         subtitle_8="Mei?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mei?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="Hey, Dad! Come here!",
         subtitle_3="I found Mei's hat!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(23)(
+    EnglishProofreadingTestCase.get_test_case_cls(23, EnglishProofreadingLLMText)(
         subtitle_1="Mei! Mei!",
         subtitle_2="(MOANING)",
         subtitle_3="Hmm? Hmm.",
@@ -782,7 +785,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         subtitle_2="(BREATHING HEAVY)",
         subtitle_3="Hey, wait up!",
@@ -797,14 +800,14 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         subtitle_2="Quit laughing! I really did see Totoro!",
         subtitle_3="I'm not lying.",
         subtitle_4="Mmm.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Mei?",
         subtitle_2="It's not a lie, Dad.",
         subtitle_3="Hmm. Don't worry, Mei.",
@@ -817,24 +820,24 @@ test_cases = [
         subtitle_10="- A greeting?\n- Of course. Come on. Let's go.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="Oh, Mei, you're getting heavy.",
         subtitle_3="Dad, there's that big camphor tree.",
         subtitle_4="It's incredible.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="That's it!",
         subtitle_2="SATSUKI: That's Totoro's tree?\nMEI: Yeah!",
         subtitle_3="Come on, Dad! Can't you go any faster?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Whoa.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="Totoro's hole is gone.",
         subtitle_2="- Are you sure it was here?\n- Mmm-hmm.",
         subtitle_3="Dad, she says the hole disappeared.",
@@ -846,7 +849,7 @@ test_cases = [
         subtitle_9="back in the time when trees\nand people used to be friends.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="When I saw this tree, I knew this would\n"
         "be a good place for our family to live.",
         subtitle_2="And I think it will make\nyour mother feel right at home.",
@@ -865,29 +868,29 @@ test_cases = [
         subtitle_14="I hope I'll be able\nto see him someday, too.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(ROOSTER CROWING)",
         subtitle_2="(CLUCKING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="WOMAN: Kanta, hurry up,\nor you'll be late for school.",
         subtitle_2="Yeah.",
         subtitle_3="(CHILDREN LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(WHISPERING)",
         subtitle_2="(GIGGLING)",
         subtitle_3="(THUNK)",
         subtitle_4="Back to work.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Oh.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Mei?",
         subtitle_2="Miss Hara!",
         subtitle_3="Yes, Satsuki?",
@@ -896,7 +899,7 @@ test_cases = [
         subtitle_6="(CLAMORING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="- Granny, what's wrong?\n- I don't know.",
         subtitle_2="She said she wouldn't stop crying\nunless I brought her to you.",
         subtitle_3="She said that? Mei, be reasonable.",
@@ -907,19 +910,19 @@ test_cases = [
         subtitle_8="She's been so good up till now.\nWeren't you, Mei?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SIGHS)",
         subtitle_2="Well, I'll talk to my teacher\nand see what we can do.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         subtitle_2="Satsuki's mom is in the hospital,",
         subtitle_3="so her sister Mei is going\nto stay with us today, okay, class?",
         subtitle_4="- Let's make her feel welcome.\n- ALL: Yes, ma'am.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="- What are you drawing, Mei?\n- It's a big Totoro.",
         subtitle_2="Shh. Mei, try to keep quiet, will you?",
         subtitle_3="Mmm-hmm.",
@@ -927,7 +930,7 @@ test_cases = [
         subtitle_5="(BELL RINGING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="CHILDREN: Bye, Mei!",
         subtitle_2="MICHIKO: Come again soon!",
         subtitle_3="I have to skip our club meeting, Michiko.",
@@ -936,36 +939,36 @@ test_cases = [
         subtitle_6="Okay.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="- Ah! Here it comes!\n- Here it comes!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(SPLAT)",
         subtitle_2="(GASPS)",
         subtitle_3="Come on.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="I didn't even cry. That's good, huh?",
         subtitle_2="Hmm.",
         subtitle_3="Yeah, but we're not home yet.",
         subtitle_4="We'd like to share your roof\nfor a while, sir, if you don't mind.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="- Mmm.\n- Huh?",
         subtitle_2="- Don't you…\n- Mmm. Mmm!",
         subtitle_3="Mmm!",
         subtitle_4="Hey!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="- That was lucky, wasn't it?\n- Mmm-hmm.",
         subtitle_2="- MEI: This umbrella has holes.\n- Hmm.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(EATING)",
         subtitle_2="(CLOCK CHIMING)",
         subtitle_3="Dad left his umbrella here.",
@@ -975,7 +978,7 @@ test_cases = [
         difficulty=1,
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="What? I left it.",
         subtitle_2="(SIGHS)",
         subtitle_3="What kind of fool forgets his umbrella\n"
@@ -985,12 +988,12 @@ test_cases = [
         subtitle_6="No, I didn't.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="Ahh.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="Hello! Is anyone home?",
         subtitle_2="Oh, Satsuki and Mei. Come in. Granny!",
         subtitle_3="Thanks for watching Mei today.",
@@ -1006,105 +1009,105 @@ test_cases = [
         subtitle_13="- Bye, girls.\n- SATSUKI: Bye!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(GIGGLING)",
         subtitle_2="(IMITATES AIRPLANE)",
         subtitle_3="- Who was at the door, Kanta?\n- Beats me.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS) There's the bus, Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Are you getting on?",
         subtitle_2="Drive on.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Satsuki, Dad wasn't on the bus.",
         subtitle_2="He'll be on the next one for sure.",
         subtitle_3="Do you want to go back\nto Granny's and wait there?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(WATER DRIPPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="What's the matter?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SQUEAKING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SIGHS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="What is it, Mei? Are you sleepy?",
         subtitle_2="I knew this would happen.\nDon't you want to wait at Granny's?",
         subtitle_3="Mmm-mmm.",
         subtitle_4="It's okay, Mei. He'll be here soon.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SIGHS)",
         subtitle_2="That bus sure is late, huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Here.",
         subtitle_2="(GRUNTS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(MOANING)",
         subtitle_2="(GRUNTING)",
         subtitle_3="(FOOTSTEPS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(PLINKING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Totoro?",
         subtitle_2="(PLINK)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GRUMBLING)",
         subtitle_2="Oh, wait a minute.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Here. Try this.",
         subtitle_2="Hurry. Mei's slipping.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GRUNTS)",
         subtitle_2="Hold it over your head. Like this.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SPLASH)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SPLASHING)",
         subtitle_2="(GRUMBLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SPLASHING)",
         subtitle_2="(BELLOWING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="(THUD)",
         subtitle_2="(SHRIEKS)",
         subtitle_3="(DOUSING)",
@@ -1117,7 +1120,7 @@ test_cases = [
         subtitle_10="(YOWLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="(MEOWING)",
         subtitle_2="(GASPING)",
         subtitle_3="(HUMMING)",
@@ -1125,11 +1128,11 @@ test_cases = [
         subtitle_5="(WIND WHISTLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Well, Mei, so much for\nbringing Dad his umbrella.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="- Hi. Sorry I'm late.\n- WOMAN: Drive on.",
         subtitle_2="My train was delayed,\nso I had to wait for the next bus.",
         subtitle_3="Were you worried?",
@@ -1146,13 +1149,13 @@ test_cases = [
         subtitle_14="(INSECTS CHIRPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="- Hey, Dad, pick us up.\n- Come on, Dad.",
         subtitle_2="(GRUNTING)",
         subtitle_3="(ALL LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(32)(
+    EnglishProofreadingTestCase.get_test_case_cls(32, EnglishProofreadingLLMText)(
         subtitle_1="SATSUKI: Dear Mom:",
         subtitle_2="We had such a weird,\nmysterious, spectacular day.",
         subtitle_3="My heart is still pounding.",
@@ -1187,20 +1190,20 @@ test_cases = [
         subtitle_32="(CRICKETS CHIRPING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(BUZZING OF INSECTS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mei.",
         subtitle_2="(GROANING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="That's where we planted the acorns.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
         subtitle_1="(GRUNTING)",
         subtitle_2="(GIGGLING)",
         subtitle_3="(GRUNTING)",
@@ -1215,53 +1218,53 @@ test_cases = [
         subtitle_12="ALL: Ahh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="GIRLS: Yay! We did it! We did it!",
         subtitle_2="GIRLS: Yay!",
         subtitle_3="(BELLOWING)",
         subtitle_4="(HUMMING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SQUEALING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GRUMBLING)",
         subtitle_2="(GASP)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(WHIRRING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="(ROARING)",
         subtitle_2="(GIRLS ROARING)",
         subtitle_3="(ROARING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GRUMBLING)",
         subtitle_2="Mei, we're the wind!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(INHALES)",
         subtitle_2="(INSTRUMENT PLAYS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SECOND INSTRUMENT PLAYS)",
         subtitle_2="(ALL MAKING MUSIC)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mmm…",
         subtitle_2="(GASPS)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="(GROANS)",
         subtitle_2="Where'd the tree go?",
         subtitle_3="- Ahh!\n- Ahh!",
@@ -1272,43 +1275,43 @@ test_cases = [
         subtitle_8="BOTH: I thought it was a dream!\nWe did it!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Mr. KUSAKABE? Telegram!",
         subtitle_2="Mr. KUSAKABE?",
         subtitle_3="A telegram for you.",
         subtitle_4="Huh. No one's home.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(TRAMPLING)",
         subtitle_2="MEI: Granny!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="I'm over here.",
         subtitle_2="This one's ready to eat.",
         subtitle_3="(GRUNTING)",
         subtitle_4="(SNAP)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="What about this one, Granny?",
         subtitle_2="Try it.",
         subtitle_3="(GRUNTING)",
         subtitle_4="(SNAP)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Wow, Granny. Your garden\nis just like a market.",
         subtitle_2="We've picked enough,\nhaven't we? Let's take a rest.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mmm. Nice and cold.",
         subtitle_2="Mark, get set, go!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="It's delicious.",
         subtitle_2="I'm glad you like it.\nThey're very good for you.",
         subtitle_3="They've soaked up lots\nof vitamins and sunshine.",
@@ -1325,12 +1328,12 @@ test_cases = [
         subtitle_13="- I bet that will do her wonders.\n- Yep.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Here. The postman\nleft us your telegram.",
         subtitle_2="A telegram?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="What should I do with it, Granny?\nDad won't be home till evening.",
         subtitle_2="Better open it. Might be an emergency.",
         subtitle_3="Mmm-hmm.",
@@ -1346,19 +1349,19 @@ test_cases = [
         subtitle_11="Mmm-hmm.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mei, you need to stay here with me!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mei, go back and stay with Granny!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Uh!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Hello? I'd like to place\na long-distance call, please.",
         subtitle_2="It's to my dad at Tokyo 31-13-82.",
         subtitle_3="Right.",
@@ -1371,7 +1374,7 @@ test_cases = [
         subtitle_10="My name is Satsuki KUSAKABE.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(12)(
+    EnglishProofreadingTestCase.get_test_case_cls(12, EnglishProofreadingLLMText)(
         subtitle_1="Hello, Dad? Is that you? It's Satsuki.",
         subtitle_2="- Satsuki, what's wrong?\n- We got a telegram.",
         subtitle_3="You're supposed to call Mom's\ndoctor at the hospital.",
@@ -1387,7 +1390,7 @@ test_cases = [
         subtitle_12="Of course. Make yourself at home.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Satsuki!",
         subtitle_2="(PANTING)",
         subtitle_3="(BLEATING)",
@@ -1398,7 +1401,7 @@ test_cases = [
         subtitle_8="(BLEATING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="Mei, the doctor said\nthat Mom's not doing well.",
         subtitle_2="So she doesn't get\nto come home this weekend.",
         subtitle_3="No fair!",
@@ -1411,29 +1414,29 @@ test_cases = [
         subtitle_10="You're such a baby! Just grow up!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(SNIFFLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="Come on, Mei.",
         subtitle_2="(CRYING)",
         subtitle_3="She's so mean!",
         subtitle_4="(CRYING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Come on, girls.\nLet's put the laundry away.",
         subtitle_2="Oh, don't be sad. Granny's here to help.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(3)(
+    EnglishProofreadingTestCase.get_test_case_cls(3, EnglishProofreadingLLMText)(
         subtitle_1="Don't worry. Your father is\ngoing to stop by the hospital.",
         subtitle_2="The doctors say your mom\njust has a cold.",
         subtitle_3="She should be home next Saturday.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="This is just like last time.",
         subtitle_2="They said Mom just had a little cold,\n"
         "she'd be home in a few days.",
@@ -1448,11 +1451,11 @@ test_cases = [
         subtitle_11="I'll stay here until your father\ncomes home. Okay? Okay?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(11)(
+    EnglishProofreadingTestCase.get_test_case_cls(11, EnglishProofreadingLLMText)(
         subtitle_1="- Did she come back?\n- No.",
         subtitle_2="- She wasn't at the bus stop?\n- No.",
         subtitle_3="Let's think.",
@@ -1466,11 +1469,11 @@ test_cases = [
         subtitle_11="Mei's disappeared, and we need\nall the help we can get!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="I shouldn't have yelled at her.\nThis is all my fault.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="Excuse me, mister! Hello!",
         subtitle_2="- Yeah?\n- I'm looking for my sister.",
         subtitle_3="Did you happen to see\na little girl pass this way?",
@@ -1479,25 +1482,25 @@ test_cases = [
         subtitle_6="I'll try the other road.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="MAN: Are you sure that this\nis the way she came?",
         subtitle_2="I don't know.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Mei!",
         subtitle_2="(HEAVY BREATHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(PANTING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(CAR APPROACHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(14)(
+    EnglishProofreadingTestCase.get_test_case_cls(14, EnglishProofreadingLLMText)(
         subtitle_1="Stop! Please, stop!",
         subtitle_2="- Oh! Are you crazy?\n- I'm looking for my little sister.",
         subtitle_3="Have you seen a girl walking this way?",
@@ -1515,7 +1518,7 @@ test_cases = [
         subtitle_14="MAN: Good luck. I hope you find her.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="Satsuki!",
         subtitle_2="Kanta!",
         subtitle_3="- Find her?\n- No.",
@@ -1527,20 +1530,20 @@ test_cases = [
         subtitle_9="A little while ago,\nthey found a sandal in the pond.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(GASPS)",
         subtitle_2="They don't know for sure\nit's Mei's sandal!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(BREATHING HARD)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Did you find her yet?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(6)(
+    EnglishProofreadingTestCase.get_test_case_cls(6, EnglishProofreadingLLMText)(
         subtitle_1="MAN: We'll check the irrigation ditch.",
         subtitle_2="(PEOPLE CHATTERING)",
         subtitle_3="MAN: On the far end.",
@@ -1549,18 +1552,18 @@ test_cases = [
         subtitle_6="MAN: Are there more poles?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(CHANTING)",
         subtitle_2="(CLAMORING)",
         subtitle_3="Huh?",
         subtitle_4="WOMAN: It's Satsuki.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Here. Is this Mei's?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="- It's not hers.\n- Oh!",
         subtitle_2="(SIGHS)",
         subtitle_3="Ohh…",
@@ -1571,17 +1574,17 @@ test_cases = [
         subtitle_8="Hey! It's not her sandal!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="All right everyone, I know you've spent\n"
         "a lot of time here already,",
         subtitle_2="but we still need your help.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="Satsuki!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(5)(
+    EnglishProofreadingTestCase.get_test_case_cls(5, EnglishProofreadingLLMText)(
         subtitle_1="Please.",
         subtitle_2="(PANTING)",
         subtitle_3="Let me in to see Totoro. Mei's lost.",
@@ -1589,7 +1592,7 @@ test_cases = [
         subtitle_5="Please let me in to see him.\nIt's an emergency.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(10)(
+    EnglishProofreadingTestCase.get_test_case_cls(10, EnglishProofreadingLLMText)(
         subtitle_1="(THUDDING)",
         subtitle_2="(SCREAMING)",
         subtitle_3="(THUDDING)",
@@ -1603,56 +1606,56 @@ test_cases = [
         subtitle_10="(SOBBING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(ROARING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(INHALES DEEPLY)",
         subtitle_2="(ROARING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(YOWLING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="No one else can see it, can they?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="FOREST-SWAMP",
         subtitle_2="CEMETERY-SHRINE",
         subtitle_3="MEI",
         subtitle_4="- Mei.\n- Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(4)(
+    EnglishProofreadingTestCase.get_test_case_cls(4, EnglishProofreadingLLMText)(
         subtitle_1="(LAUGHING)",
         subtitle_2="GRANNY: Mei!",
         subtitle_3="(GASP)",
         subtitle_4="Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="The trees are parting!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(1)(
+    EnglishProofreadingTestCase.get_test_case_cls(1, EnglishProofreadingLLMText)(
         subtitle_1="(BARKING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="(SIGHS)",
         subtitle_2="SATSUKI: Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Satsuki!",
         subtitle_2="- Where are you?\n- Mei!",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(9)(
+    EnglishProofreadingTestCase.get_test_case_cls(9, EnglishProofreadingLLMText)(
         subtitle_1="- Mei!\n- Satsuki!",
         subtitle_2="- Oh! You're okay.\n- I'm sorry.",
         subtitle_3="Were you trying to take your\ncorn to Mom at the hospital?",
@@ -1664,7 +1667,7 @@ test_cases = [
         subtitle_9="(LAUGHING)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(13)(
+    EnglishProofreadingTestCase.get_test_case_cls(13, EnglishProofreadingLLMText)(
         subtitle_1="I'm sorry. I don't know why\nthe hospital sent a telegram.",
         subtitle_2="It's just a cold.",
         subtitle_3="I hope it didn't upset the girls too much.\n"
@@ -1682,17 +1685,17 @@ test_cases = [
         subtitle_13="(INAUDIBLE)",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="Look at Mom. She's laughing.",
         subtitle_2="- Everything must be okay.\n- Yeah.",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(2)(
+    EnglishProofreadingTestCase.get_test_case_cls(2, EnglishProofreadingLLMText)(
         subtitle_1="I'm going to hurry up and get well!",
         subtitle_2="That's the spirit. Huh?",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(8)(
+    EnglishProofreadingTestCase.get_test_case_cls(8, EnglishProofreadingLLMText)(
         subtitle_1="Who left this?",
         subtitle_2="(GASPS)",
         subtitle_3="What is it?",
@@ -1704,7 +1707,7 @@ test_cases = [
         subtitle_8="♪ Totoro, Totoro ♪",
         verified=True,
     ),
-    EnglishProofreadingTestCase.get_test_case_cls(41)(
+    EnglishProofreadingTestCase.get_test_case_cls(41, EnglishProofreadingLLMText)(
         subtitle_1="♪ Who leaves the seeds ♪",
         subtitle_2="♪ For you to find ♪",
         subtitle_3="♪ Follow them and you will see ♪",

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
@@ -14,20 +14,26 @@ from scinoephile.core.abcs import TestCase
 from scinoephile.core.english.proofreading.english_proofreading_answer import (
     EnglishProofreadingAnswer,
 )
+from scinoephile.core.english.proofreading.english_proofreading_llm_text import (
+    EnglishProofreadingLLMText,
+)
 from scinoephile.core.english.proofreading.english_proofreading_query import (
     EnglishProofreadingQuery,
 )
 from scinoephile.core.models import format_field
 
 
-class EnglishProofreadingTestCase[
-    TQuery: EnglishProofreadingQuery,
-    TAnswer: EnglishProofreadingAnswer,
-](TestCase[TQuery, TAnswer], ABC):
+class EnglishProofreadingTestCase(
+    TestCase[EnglishProofreadingQuery, EnglishProofreadingAnswer], ABC
+):
     """Abstract base class for English proofreading test cases."""
 
-    query_cls: ClassVar[type[EnglishProofreadingQuery]] = EnglishProofreadingQuery
-    answer_cls: ClassVar[type[EnglishProofreadingAnswer]] = EnglishProofreadingAnswer
+    answer_cls: ClassVar[type[EnglishProofreadingAnswer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[EnglishProofreadingQuery]]
+    """Query class for this test case."""
+    text: ClassVar[type[EnglishProofreadingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @property
     def noop(self) -> bool:
@@ -40,7 +46,7 @@ class EnglishProofreadingTestCase[
 
     @property
     def size(self) -> int:
-        """Get size of the test case."""
+        """Size of the test case."""
         idxs = [
             int(s.split("_")[1]) - 1
             for s in self.query_fields
@@ -50,9 +56,10 @@ class EnglishProofreadingTestCase[
 
     @property
     def source_str(self) -> str:
-        """Get Python source-like string representation."""
+        """Get Python source string."""
         lines = [
-            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls({self.size})("
+            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls("
+            f"    {self.size}, {self.text.__name__})("
         ]
         for field in self.query_fields:
             value = getattr(self, field)
@@ -67,36 +74,6 @@ class EnglishProofreadingTestCase[
             lines.append(format_field(field, value))
         lines.append(")")
         return "\n".join(lines)
-
-    @classmethod
-    @cache
-    def get_test_case_cls(
-        cls,
-        size: int,
-    ) -> type[
-        EnglishProofreadingTestCase[EnglishProofreadingQuery, EnglishProofreadingAnswer]
-    ]:
-        """Get test case class for English proofing.
-
-        Arguments:
-            size: number of subtitles
-        Returns:
-            EnglishProofreadingTestCase type with appropriate EnglishProofreadingQuery
-            and EnglishProofAnswer models
-        Raises:
-            ScinoephileError: if missing indices are out of range
-        """
-        query_cls = cls.query_cls.get_query_cls(size)
-        answer_cls = cls.answer_cls.get_answer_cls(size)
-        model = create_model(
-            f"{cls.__name__}_{size}",
-            __base__=(query_cls, answer_cls, cls[query_cls, answer_cls]),
-            __module__=cls.__module__,
-        )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-
-        return model
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -115,29 +92,45 @@ class EnglishProofreadingTestCase[
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> EnglishProofreadingTestCase:
-        """Ensure query and answer are consistent with one another."""
-        for idx in range(1, self.size + 1):
-            subtitle = getattr(self, f"subtitle_{idx}")
-            revised = getattr(self, f"revised_{idx}")
-            note = getattr(self, f"note_{idx}")
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
+        for idx in range(self.size):
+            subtitle = getattr(self, f"subtitle_{idx + 1}")
+            revised = getattr(self, f"revised_{idx + 1}")
+            note = getattr(self, f"note_{idx + 1}")
             if revised != "":
-                if revised == subtitle:
+                if subtitle == revised:
                     raise ValueError(
-                        f"Answer's revised text {idx} is not modified relative to "
-                        f"query's text {idx}, if no revision is needed an empty string "
-                        f"must be provided."
+                        self.text.subtitle_revised_equal_error.format(idx + 1)
                     )
                 if note == "":
-                    raise ValueError(
-                        f"Answer's text {idx} is modified relative to query's text "
-                        f"{idx}, but no note is provided, if revision is needed a note "
-                        f"must be provided."
-                    )
+                    raise ValueError(self.text.note_missing_error.format(idx + 1))
             elif note != "":
-                raise ValueError(
-                    f"Answer's text {idx} is not modified relative to query's text "
-                    f"{idx}, but a note is provided, if no revisions are needed an "
-                    f"empty string must be provided."
-                )
+                raise ValueError(self.text.revised_missing_error.format(idx + 1))
         return self
+
+    @classmethod
+    @cache
+    def get_test_case_cls(
+        cls,
+        size: int,
+        text: type[EnglishProofreadingLLMText] = EnglishProofreadingLLMText,
+    ) -> type[Self]:
+        """Get concrete test case class with provided size and text.
+
+        Arguments:
+            size: number of subtitles
+            text: LLMText providing descriptions and messages
+        Returns:
+            TestCase type with appropriate fields and text
+        """
+        query_cls = EnglishProofreadingQuery.get_query_cls(size, text)
+        answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, text)
+        return create_model(
+            f"{cls.__name__}_{size}_{text.__name__}",
+            __base__=(query_cls, answer_cls, cls),
+            __module__=cls.__module__,
+            query_cls=(ClassVar[type[EnglishProofreadingQuery]], query_cls),
+            answer_cls=(ClassVar[type[EnglishProofreadingAnswer]], answer_cls),
+            text=(ClassVar[type[EnglishProofreadingLLMText]], text),
+        )

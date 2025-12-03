@@ -6,25 +6,32 @@ from __future__ import annotations
 
 import json
 from abc import ABC
+from typing import ClassVar
 
 from pydantic import BaseModel
 
+from scinoephile.core.abcs.llm_text import LLMText
 from scinoephile.core.models import make_hashable
 
 
 class Query(BaseModel, ABC):
     """Abstract base class for LLM queries."""
 
+    text: ClassVar[type[LLMText]]
+    """Text strings to be used for corresponding with LLM."""
+
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
     @property
-    def query_key(self) -> tuple:
+    def key(self) -> tuple:
         """Unique key for the query, with hashable values."""
-        return tuple(make_hashable(getattr(self, field)) for field in self.model_fields)
+        return tuple(
+            make_hashable(getattr(self, field)) for field in sorted(self.model_fields)
+        )
 
     @property
-    def query_key_str(self) -> str:
+    def key_str(self) -> str:
         """Unique string key for the query."""
-        return json.dumps(self.query_key, ensure_ascii=False)
+        return json.dumps(self.key, ensure_ascii=False)

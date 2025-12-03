@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.abcs import FixedLLMQueryer
+from scinoephile.core.abcs import LLMQueryer
 from scinoephile.image.english.fusion.english_fusion_answer import (
     EnglishFusionAnswer,
 )
@@ -20,7 +20,7 @@ from scinoephile.image.english.fusion.english_fusion_test_case import (
 
 
 class EnglishFusionLLMQueryer(
-    FixedLLMQueryer[EnglishFusionQuery, EnglishFusionAnswer, EnglishFusionTestCase]
+    LLMQueryer[EnglishFusionQuery, EnglishFusionAnswer, EnglishFusionTestCase]
 ):
     """Queries LLM to fuse OCRed English subtitles from Google Lens and Tesseract."""
 

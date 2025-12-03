@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
@@ -15,19 +15,25 @@ from scinoephile.core.models import format_field
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_answer import (
     ZhongwenProofreadingAnswer,
 )
+from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_llm_text import (
+    ZhongwenProofreadingLLMText,
+)
 from scinoephile.core.zhongwen.proofreading.zhongwen_proofreading_query import (
     ZhongwenProofreadingQuery,
 )
 
 
-class ZhongwenProofreadingTestCase[
-    TQuery: ZhongwenProofreadingQuery,
-    TAnswer: ZhongwenProofreadingAnswer,
-](TestCase[TQuery, TAnswer], ABC):
+class ZhongwenProofreadingTestCase(
+    TestCase[ZhongwenProofreadingQuery, ZhongwenProofreadingAnswer], ABC
+):
     """Abstract base class for 中文 proofreading test cases."""
 
-    query_cls: ClassVar[type[ZhongwenProofreadingQuery]] = ZhongwenProofreadingQuery
-    answer_cls: ClassVar[type[ZhongwenProofreadingAnswer]] = ZhongwenProofreadingAnswer
+    answer_cls: ClassVar[type[ZhongwenProofreadingAnswer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[ZhongwenProofreadingQuery]]
+    """Query class for this test case."""
+    text: ClassVar[type[ZhongwenProofreadingLLMText]]
+    """Text strings to be used for corresponding with LLM."""
 
     @property
     def noop(self) -> bool:
@@ -48,9 +54,10 @@ class ZhongwenProofreadingTestCase[
 
     @property
     def source_str(self) -> str:
-        """Get Python source-like string representation."""
+        """Get Python source string."""
         lines = [
-            f"{ZhongwenProofreadingTestCase.__name__}.get_test_case_cls({self.size})("
+            f"{ZhongwenProofreadingTestCase.__name__}.get_test_case_cls({self.size}, "
+            f"{self.text.__name__})("
         ]
         for field in self.query_fields:
             value = getattr(self, field)
@@ -65,38 +72,6 @@ class ZhongwenProofreadingTestCase[
             lines.append(format_field(field, value))
         lines.append(")")
         return "\n".join(lines)
-
-    @classmethod
-    @cache
-    def get_test_case_cls(
-        cls,
-        size: int,
-    ) -> type[
-        ZhongwenProofreadingTestCase[
-            ZhongwenProofreadingQuery, ZhongwenProofreadingAnswer
-        ]
-    ]:
-        """Get test case class for 中文 proofing.
-
-        Arguments:
-            size: number of subtitles
-        Returns:
-            ZhongwenProofreadingTestCase type with appropriate ZhongwenProofreadingQuery
-            and ZhongwenProofreadingAnswer models
-        Raises:
-            ScinoephileError: if missing indices are out of range
-        """
-        query_cls = cls.query_cls.get_query_cls(size)
-        answer_cls = cls.answer_cls.get_answer_cls(size)
-        model = create_model(
-            f"{cls.__name__}_{size}",
-            __base__=(query_cls, answer_cls, cls[query_cls, answer_cls]),
-            __module__=cls.__module__,
-        )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-
-        return model
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -115,26 +90,45 @@ class ZhongwenProofreadingTestCase[
         return min_difficulty
 
     @model_validator(mode="after")
-    def validate_test_case(self) -> ZhongwenProofreadingTestCase:
-        """Ensure query and answer are consistent with one another."""
-        for idx in range(1, self.size + 1):
-            subtitle = getattr(self, f"zimu_{idx}")
-            revised = getattr(self, f"xiugai_{idx}")
-            note = getattr(self, f"beizhu_{idx}")
-            if revised != "":
-                if revised == subtitle:
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
+        for idx in range(self.size):
+            zimu = getattr(self, f"zimu_{idx + 1}")
+            xiugai = getattr(self, f"xiugai_{idx + 1}")
+            beizhu = getattr(self, f"beizhu_{idx + 1}")
+            if xiugai != "":
+                if zimu == xiugai:
                     raise ValueError(
-                        f"第 {idx} 条答案的修改文本与查询文本相同。"
-                        f"如果不需要修改，应提供空字符串。"
+                        self.text.zimu_xiugai_equal_error.format(idx=idx + 1)
                     )
-                if note == "":
-                    raise ValueError(
-                        f"第 {idx} 条答案的文本已被修改，但未提供备注。"
-                        f"如需修改，必须附带备注说明。"
-                    )
-            elif note != "":
-                raise ValueError(
-                    f"第 {idx} 条答案的文本未修改，但提供了备注。"
-                    f"如果不需要修改，应提供空字符串。"
-                )
+                if beizhu == "":
+                    raise ValueError(self.text.beizhu_missing_error.format(idx=idx + 1))
+            elif beizhu != "":
+                raise ValueError(self.text.xiugai_missing_error.format(idx=idx + 1))
         return self
+
+    @classmethod
+    @cache
+    def get_test_case_cls(
+        cls,
+        size: int,
+        text: type[ZhongwenProofreadingLLMText] = ZhongwenProofreadingLLMText,
+    ) -> type[Self]:
+        """Get concrete test case class with provided size and text.
+
+        Arguments:
+            size: number of subtitles
+            text: LLMText providing descriptions and messages
+        Returns:
+            TestCase type with appropriate fields and text
+        """
+        query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
+        answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)
+        return create_model(
+            f"{cls.__name__}_{size}_{text.__name__}",
+            __base__=(query_cls, answer_cls, cls),
+            __module__=cls.__module__,
+            query_cls=(ClassVar[type[ZhongwenProofreadingQuery]], query_cls),
+            answer_cls=(ClassVar[type[ZhongwenProofreadingAnswer]], answer_cls),
+            text=(ClassVar[type[ZhongwenProofreadingLLMText]], text),
+        )
