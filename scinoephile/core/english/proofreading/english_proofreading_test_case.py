@@ -78,10 +78,9 @@ class EnglishProofreadingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        has_revision = any(
+        if any(
             getattr(self, f"revised_{idx}") != "" for idx in range(1, self.size + 1)
-        )
-        if has_revision:
+        ):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 

@@ -76,10 +76,7 @@ class ZhongwenProofreadingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        has_revision = any(
-            getattr(self, f"xiugai_{idx}") != "" for idx in range(1, self.size + 1)
-        )
-        if has_revision:
+        if any(getattr(self, f"xiugai_{idx}") != "" for idx in range(1, self.size + 1)):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
