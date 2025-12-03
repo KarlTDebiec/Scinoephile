@@ -122,6 +122,7 @@ def _get_cantonese_character_romanization(hanzi: str) -> str | None:
                 unmatched.add(hanzi)
                 with open(unmatched_hanzi_file_path, "wb") as outfile:
                     pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
+                return None
 
         if jyutping is not None:
             try:
@@ -131,9 +132,10 @@ def _get_cantonese_character_romanization(hanzi: str) -> str | None:
                 with open(unmatched_hanzi_file_path, "wb") as outfile:
                     pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
 
-    hanzi_to_romanization[hanzi] = yale
-    with open(hanzi_to_yale_file_path, "wb") as outfile:
-        pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
+    if yale is not None:
+        hanzi_to_romanization[hanzi] = yale
+        with open(hanzi_to_yale_file_path, "wb") as outfile:
+            pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
     return yale
 
 
