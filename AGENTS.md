@@ -16,6 +16,8 @@
 * Include the standard copyright header at the top of the file.
 * Include a module docstring at the top of each file.
 * Include `from __future__ import annotations`, unless the file is empty.
+  * Treat `__init__.py` files with no executable code (only copyright headers and
+    module docstrings) as empty; do not add the import in those cases.
 * All imports within the `scinoephile` package should use absolute paths starting with
   `scinoephile` rather than relative imports.
 * In `__init__.py` files, only import classes from the module, not functions or
