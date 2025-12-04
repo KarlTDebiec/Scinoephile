@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Answer
 
-from .prompt import ZhongwenFusionPrompt
+from .prompts import ZhongwenFusionPrompt, ZhongwenFusionSimplifiedPrompt
 
 __all__ = ["ZhongwenFusionAnswer"]
 
@@ -35,7 +35,7 @@ class ZhongwenFusionAnswer(Answer, ABC):
     @classmethod
     @cache
     def get_answer_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionSimplifiedPrompt
     ) -> type[Self]:
         """Get concrete answer class with provided text.
 

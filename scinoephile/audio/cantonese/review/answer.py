@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
@@ -29,7 +29,7 @@ class ReviewAnswer(Answer, ABC):
         cls,
         size: int,
         text: type[ReviewPrompt] = ReviewPrompt,
-    ) -> type[ReviewAnswer]:
+    ) -> type[Self]:
         """Get concrete answer class with provided size and text.
 
         Arguments:

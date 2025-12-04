@@ -11,7 +11,11 @@ from scinoephile.core import Series
 from .answer import ZhongwenFusionAnswer
 from .fuser import ZhongwenFuser
 from .llm_queryer import ZhongwenFusionLLMQueryer
-from .prompt import ZhongwenFusionPrompt
+from .prompts import (
+    ZhongwenFusionPrompt,
+    ZhongwenFusionSimplifiedPrompt,
+    ZhongwenFusionTraditionalPrompt,
+)
 from .query import ZhongwenFusionQuery
 from .test_case import ZhongwenFusionTestCase
 
@@ -20,6 +24,8 @@ __all__ = [
     "ZhongwenFusionAnswer",
     "ZhongwenFusionLLMQueryer",
     "ZhongwenFusionPrompt",
+    "ZhongwenFusionSimplifiedPrompt",
+    "ZhongwenFusionTraditionalPrompt",
     "ZhongwenFusionQuery",
     "ZhongwenFusionTestCase",
     "get_zhongwen_ocr_fused",

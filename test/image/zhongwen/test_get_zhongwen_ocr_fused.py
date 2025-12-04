@@ -70,9 +70,9 @@ def test_get_zhongwen_ocr_fused_mlamd(
         mlamd_zho_hans_fuse: Expected fused MLAMD 中文 subtitles fixture
     """
     lens = get_zhongwen_cleaned(mlamd_zho_hans_lens, remove_empty=False)
-    lens = get_zhongwen_converted(lens)
+    lens = get_zhongwen_converted(lens, OpenCCConfig.t2s)
     paddle = get_zhongwen_cleaned(mlamd_zho_hans_paddle, remove_empty=False)
-    paddle = get_zhongwen_converted(paddle)
+    paddle = get_zhongwen_converted(paddle, OpenCCConfig.t2s)
     _test_get_zhongwen_ocr_fused(lens, paddle, mlamd_zho_hans_fuse)
 
 
@@ -89,9 +89,9 @@ def test_get_zhongwen_ocr_fused_mnt(
         mnt_zho_hans_fuse: Expected fused MNT 中文 subtitles fixture
     """
     lens = get_zhongwen_cleaned(mnt_zho_hans_lens, remove_empty=False)
-    lens = get_zhongwen_converted(lens)
+    lens = get_zhongwen_converted(lens, OpenCCConfig.t2s)
     paddle = get_zhongwen_cleaned(mnt_zho_hans_paddle, remove_empty=False)
-    paddle = get_zhongwen_converted(paddle)
+    paddle = get_zhongwen_converted(paddle, OpenCCConfig.t2s)
     _test_get_zhongwen_ocr_fused(lens, paddle, mnt_zho_hans_fuse)
 
 
@@ -106,7 +106,7 @@ def test_get_zhongwen_ocr_fused_t(
         t_zho_hans_fuse: Expected fused T 中文 subtitles fixture
     """
     lens = get_zhongwen_cleaned(t_zho_hans_lens, remove_empty=False)
-    lens = get_zhongwen_converted(lens)
+    lens = get_zhongwen_converted(lens, OpenCCConfig.t2s)
     paddle = get_zhongwen_cleaned(t_zho_hans_paddle, remove_empty=False)
-    paddle = get_zhongwen_converted(paddle)
+    paddle = get_zhongwen_converted(paddle, OpenCCConfig.t2s)
     _test_get_zhongwen_ocr_fused(lens, paddle, t_zho_hans_fuse)

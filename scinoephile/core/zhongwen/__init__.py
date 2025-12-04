@@ -13,6 +13,7 @@ from opencc import OpenCC
 from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 
+from .abcs import ZhongwenPrompt
 from .opencc_config import OpenCCConfig
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     "get_zhongwen_converted",
     "get_zhongwen_converter",
     "get_zhongwen_flattened",
+    "get_zhongwen_prompt_converted",
     "get_zhongwen_text_converted",
 ]
 
@@ -65,7 +67,7 @@ def get_zhongwen_converter(config: OpenCCConfig) -> OpenCC:
 
 def get_zhongwen_converted(
     series: Series,
-    config: OpenCCConfig = OpenCCConfig.t2s,
+    config: OpenCCConfig,
     apply_exclusions: bool = True,
 ) -> Series:
     """Get 中文 converted between character sets.
@@ -97,6 +99,37 @@ def get_zhongwen_flattened(series: Series) -> Series:
     for event in series:
         event.text = _get_zhongwen_text_flattened(event.text)
     return series
+
+
+def get_zhongwen_prompt_converted(
+    source: type[ZhongwenPrompt],
+    base: type[ZhongwenPrompt],
+    name: str,
+    config: OpenCCConfig,
+) -> type[ZhongwenPrompt]:
+    """Get 中文 prompt class with text converted between character sets.
+
+    Arguments:
+        source: prompt class from which to copy text
+        base: base class of created prompt class
+        name: name of new prompt class
+        config: OpenCC configuration for conversion
+    Returns:
+        new prompt class with converted text
+    """
+    if not issubclass(source, base):
+        raise TypeError(
+            f"Source class {source} must be a subclass of base class {base}."
+        )
+    if not issubclass(base, ZhongwenPrompt):
+        raise TypeError(f"Base class {base} must be a subclass of ZhongwenPrompt.")
+
+    attrs = {
+        attr: get_zhongwen_text_converted(value, config)
+        for attr, value in source.__dict__.items()
+        if not attr.startswith("_") and isinstance(value, str)
+    }
+    return type(name, (base,), attrs)
 
 
 def get_zhongwen_text_converted(

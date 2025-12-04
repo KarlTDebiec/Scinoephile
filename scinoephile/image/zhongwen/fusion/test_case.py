@@ -15,7 +15,7 @@ from scinoephile.core.models import format_field
 from scinoephile.core.text import whitespace
 
 from .answer import ZhongwenFusionAnswer
-from .prompt import ZhongwenFusionPrompt
+from .prompts import ZhongwenFusionPrompt, ZhongwenFusionSimplifiedPrompt
 from .query import ZhongwenFusionQuery
 
 __all__ = ["ZhongwenFusionTestCase"]
@@ -89,7 +89,7 @@ class ZhongwenFusionTestCase(
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionSimplifiedPrompt
     ) -> type[Self]:
         """Get concrete test case class with provided text.
 
@@ -98,8 +98,8 @@ class ZhongwenFusionTestCase(
         Returns:
             TestCase type with appropriate fields and text
         """
-        query_cls = ZhongwenFusionQuery.get_query_cls(text)
-        answer_cls = ZhongwenFusionAnswer.get_answer_cls(text)
+        query_cls = cls.get_query_cls(text)
+        answer_cls = cls.get_answer_cls(text)
         return create_model(
             f"{cls.__name__}_{text.__name__}",
             __base__=(query_cls, answer_cls, cls),

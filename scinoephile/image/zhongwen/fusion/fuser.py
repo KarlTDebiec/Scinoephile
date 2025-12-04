@@ -18,9 +18,12 @@ from scinoephile.testing import (
 )
 
 from .llm_queryer import ZhongwenFusionLLMQueryer
+from .prompts import ZhongwenFusionPrompt, ZhongwenFusionSimplifiedPrompt
 from .test_case import ZhongwenFusionTestCase
 
 __all__ = ["ZhongwenFuser"]
+
+# ruff: noqa: PLC0415
 
 
 class ZhongwenFuser:
@@ -28,6 +31,7 @@ class ZhongwenFuser:
 
     def __init__(
         self,
+        text: type[ZhongwenFusionPrompt] = ZhongwenFusionSimplifiedPrompt,
         test_cases: list[ZhongwenFusionTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
@@ -35,6 +39,7 @@ class ZhongwenFuser:
         """Initialize.
 
         Arguments:
+            text: Prompt class providing descriptions and messages
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
@@ -48,7 +53,8 @@ class ZhongwenFuser:
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        self.llm_queryer = ZhongwenFusionLLMQueryer(
+        llm_query_cls = ZhongwenFusionLLMQueryer.get_queryer_cls(text)
+        self.llm_queryer = llm_query_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
@@ -56,7 +62,9 @@ class ZhongwenFuser:
         )
         """Queries LLM to fuse OCRed 中文 subtitles from Google Lens and PaddleOCR."""
 
-    def fuse(self, lens: Series, paddle: Series, stop_at_idx: int | None = None):
+    def fuse(
+        self, lens: Series, paddle: Series, stop_at_idx: int | None = None
+    ) -> Series:
         """Fuse OCRed 中文 subtitles from Google Lens and PaddleOCR.
 
         Arguments:
@@ -74,6 +82,11 @@ class ZhongwenFuser:
         # Ensure test case file exists
         if self.test_case_path is not None and not self.test_case_path.exists():
             self.create_test_case_file(self.test_case_path)
+
+        # Get classes
+        test_case_cls = ZhongwenFusionTestCase.get_test_case_cls(self.llm_queryer.text)
+        query_cls = test_case_cls.query_cls
+        answer_cls = test_case_cls.answer_cls
 
         # Fuse subtitles
         output_subtitles = []
@@ -114,9 +127,6 @@ class ZhongwenFuser:
                 continue
 
             # Query LLM
-            test_case_cls = ZhongwenFusionTestCase.get_test_case_cls()
-            query_cls = test_case_cls.query_cls
-            answer_cls = test_case_cls.answer_cls
             query = query_cls(lens=lens_sub.text, paddle=paddle_sub.text)
             answer = self.llm_queryer(query, answer_cls, test_case_cls)
             sub = Subtitle(start=lens_sub.start, end=lens_sub.end, text=answer.ronghe)
@@ -174,7 +184,9 @@ class ZhongwenFuser:
 
             from __future__ import annotations
 
-            from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
+            from scinoephile.image.zhongwen.fusion import (
+                ZhongwenFusionTestCase,
+            )
 
             # noinspection PyArgumentList
             test_cases = []  # test_cases
