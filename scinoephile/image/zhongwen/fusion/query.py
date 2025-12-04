@@ -12,7 +12,7 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs import Query
 
-from .prompt import ZhongwenFusionPrompt
+from .prompts import ZhongwenFusionPrompt, ZhongwenFusionSimplifiedPrompt
 
 __all__ = ["ZhongwenFusionQuery"]
 
@@ -37,7 +37,7 @@ class ZhongwenFusionQuery(Query, ABC):
     @classmethod
     @cache
     def get_query_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionSimplifiedPrompt
     ) -> type[Self]:
         """Get concrete query class with provided text.
 

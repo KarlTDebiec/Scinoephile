@@ -15,6 +15,7 @@ from scinoephile.core.english.proofreading import (
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
+    OpenCCConfig,
     get_zhongwen_cleaned,
     get_zhongwen_converted,
     get_zhongwen_flattened,
@@ -59,10 +60,10 @@ actions = {
 if "简体中文 (OCR)" in actions:
     zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
     zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)
-    zho_hans_lens = get_zhongwen_converted(zho_hans_lens)
+    zho_hans_lens = get_zhongwen_converted(zho_hans_lens, OpenCCConfig.t2s)
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
-    zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
+    zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle, OpenCCConfig.t2s)
     zho_hans_fuse = get_zhongwen_ocr_fused(
         zho_hans_lens,
         zho_hans_paddle,
@@ -76,7 +77,7 @@ if "简体中文 (OCR)" in actions:
     )
     zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
     zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
-    zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
+    zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse, OpenCCConfig.t2s)
     zho_hans_fuse_proofread = get_zhongwen_proofread(
         zho_hans_fuse,
         ZhongwenProofreader(
