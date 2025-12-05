@@ -20,7 +20,7 @@ __all__ = ["EnglishProofreadingAnswer2"]
 class EnglishProofreadingAnswer2(Answer2, ABC):
     """Abstract base class for English proofreading answers."""
 
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]
+    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]

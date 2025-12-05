@@ -9,17 +9,14 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.core import Series
+from scinoephile.core.abcs.llm_queryer2 import LLMQueryer2
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.testing import (
-    test_data_root,
-)
+from scinoephile.testing import test_data_root
 
 from .prompt2 import EnglishProofreadingPrompt2
 from .test_case2 import EnglishProofreadingTestCase2
 
 __all__ = ["EnglishProofreader2"]
-
-from ...abcs.llm_queryer2 import LLMQueryer2
 
 
 class EnglishProofreader2:
@@ -54,14 +51,16 @@ class EnglishProofreader2:
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Proofreads English subtitles."""
+        """LLM queryer for proofreading."""
 
-    def proofread(self, series: Series, stop_at_idx: int | None = None):
+    def proofread(self, series: Series, stop_at_idx: int | None = None) -> Series:
         """Proofread English subtitles.
 
         Arguments:
             series: English subtitles
             stop_at_idx: stop processing at this index
+        Returns:
+            proofread English subtitles
         """
         # Ensure test case file exists
         # if self.test_case_path is not None and not self.test_case_path.exists():
@@ -85,7 +84,8 @@ class EnglishProofreader2:
                 }
             )
             test_case = test_case_cls(query=query)
-            answer = self.llm_queryer(test_case)
+            test_case = self.llm_queryer(test_case)
+            answer = test_case.answer
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):

@@ -9,9 +9,9 @@ import json
 from abc import ABC
 from functools import cache
 from json import JSONDecodeError
-from logging import debug, error, info
+from logging import debug, error, info, warning
 from pathlib import Path
-from typing import ClassVar, Self
+from typing import ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -103,7 +103,7 @@ class LLMQueryer2[
         """Set LLM Provider to use for queries."""
         self._provider = value
 
-    def call(self, test_case: TTestCase) -> TAnswer:
+    def call(self, test_case: TTestCase) -> TTestCase:
         """Query LLM synchronously.
 
         Arguments:
@@ -112,19 +112,19 @@ class LLMQueryer2[
             test case including LLM's answer
         """
         # Load from verified if available
-        if answer := self._get_verified_answer(test_case.query):
-            return answer
+        if verified_test_case := self._get_verified_test_case(test_case.query):
+            return verified_test_case
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
-        if answer := self._get_cached_answer(system_prompt, test_case):
-            return answer
+        if cached_test_case := self._get_cached_test_case(system_prompt, test_case):
+            return cached_test_case
 
         # Query provider
         query_prompt = json.dumps(
             test_case.query.model_dump(), indent=4, ensure_ascii=False
         )
-        answer: TAnswer | None = None
+        answer: Answer2 | None = None
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": query_prompt},
@@ -189,7 +189,7 @@ class LLMQueryer2[
                 )
                 continue
             break
-        if answer is None:
+        if test_case.answer is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
         # Log encountered test case
@@ -206,7 +206,7 @@ class LLMQueryer2[
                 f.write(contents)
             debug(f"Saved to cache: {cache_path}")
 
-        return answer
+        return test_case
 
     def get_prompt_test_cases_few_shot_str(self) -> str:
         """String representation of all test cases in the log."""
@@ -214,6 +214,12 @@ class LLMQueryer2[
             return ""
         few_shot = f"\n\n{self.prompt_cls.few_shot_intro}"
         for test_case in self.prompt_test_cases.values():
+            if test_case.answer is None:
+                warning(
+                    f"Prompt test case {test_case.query.key_str} has no answer; "
+                    "skipping."
+                )
+                continue
             few_shot += f"\n\n{self.prompt_cls.few_shot_query_intro}\n"
             few_shot += json.dumps(
                 test_case.query.model_dump(), indent=4, ensure_ascii=False
@@ -253,18 +259,18 @@ class LLMQueryer2[
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def _get_cached_answer(
+    def _get_cached_test_case(
         self,
         system_prompt: str,
         test_case: TTestCase,
-    ) -> TAnswer | None:
-        """Get cached answer for the given query if available.
+    ) -> TTestCase | None:
+        """Get cached test case for the given query if available.
 
         Arguments:
             system_prompt: system prompt used for the query
-            test_case: test case containing query for which to get cached answer
+            test_case: test case containing query for which to get cached version
         Returns:
-            cached answer if available, else None
+            cached test case if available, else None
         """
         query_prompt = json.dumps(
             test_case.query.model_dump(), indent=4, ensure_ascii=False
@@ -284,7 +290,7 @@ class LLMQueryer2[
             self.log_encountered_test_case(test_case)
             info(f"Loaded from cache: {test_case.query.key_str}")
             cache_path.touch()
-            return test_case.answer
+            return test_case
         except (AttributeError, JSONDecodeError, ValidationError) as exc:
             error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
@@ -293,7 +299,7 @@ class LLMQueryer2[
             info(f"Deleted invalid cache file: {cache_path}")
         return None
 
-    def _get_system_prompt(self, answer_cls: type[TAnswer]) -> str:
+    def _get_system_prompt(self, answer_cls: type[Answer2]) -> str:
         """Get system prompt for the given answer class.
 
         Arguments:
@@ -310,19 +316,18 @@ class LLMQueryer2[
 
         return system_prompt
 
-    def _get_verified_answer(self, query: TQuery) -> TAnswer | None:
-        """Get verified answer for the given query if available.
+    def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
+        """Get verified test case for the given query if available.
 
         Arguments:
-            query: query for which to get verified answer
+            query: query for which to get verified test case
         Returns:
-            verified answer if available, else None
+            verified test case if available, else None
         """
         if test_case := self.verified_test_cases.get(query.key):
-            answer = test_case.answer
             self.log_encountered_test_case(test_case)
             info(f"Loaded from verified log: {query.key_str}")
-            return answer
+            return test_case
         return None
 
     @classmethod
@@ -335,12 +340,14 @@ class LLMQueryer2[
         Returns:
             LLMQueryer type with appropriate text
         """
+        name = f"{cls.__name__}_{prompt_cls.__name__}"
         attrs = {
             "__module__": cls.__module__,
             "prompt_cls": prompt_cls,
         }
-        return type(
-            f"{cls.__name__}_{prompt_cls.__name__}",
+        queryer_cls = type(
+            name,
             (cls,),
             attrs,
         )
+        return cast(type[Self], queryer_cls)

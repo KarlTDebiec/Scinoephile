@@ -20,7 +20,7 @@ __all__ = ["EnglishProofreadingQuery2"]
 class EnglishProofreadingQuery2(Query2, ABC):
     """Abstract base class for English proofreading queries."""
 
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]
+    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]

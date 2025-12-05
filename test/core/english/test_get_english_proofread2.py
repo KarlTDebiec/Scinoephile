@@ -18,8 +18,8 @@ def _test_get_english_proofread(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_english_proofread2(series)
     set_logging_verbosity(2)
+    output = get_english_proofread2(series)
 
     assert len(series) == len(output)
 

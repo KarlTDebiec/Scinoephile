@@ -23,11 +23,11 @@ class EnglishProofreadingTestCase2(
 ):
     """Abstract base class for English proofreading test cases."""
 
-    answer_cls: ClassVar[type[EnglishProofreadingAnswer2]]
+    answer_cls: ClassVar[type[EnglishProofreadingAnswer2]]  # type: ignore
     """Answer class for this test case."""
-    query_cls: ClassVar[type[EnglishProofreadingQuery2]]
+    query_cls: ClassVar[type[EnglishProofreadingQuery2]]  # type: ignore
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]
+    prompt_cls: ClassVar[type[EnglishProofreadingPrompt2]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
