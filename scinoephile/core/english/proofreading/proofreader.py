@@ -11,6 +11,7 @@ from textwrap import dedent
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
+from scinoephile.core.abcs import LLMQueryerOptions
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import (
     get_test_cases_from_file_path,
@@ -53,7 +54,7 @@ class EnglishProofreader:
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
-            auto_verify=auto_verify,
+            query_options=LLMQueryerOptions(auto_verify=auto_verify),
         )
         """Proofreads English subtitles."""
 
@@ -144,12 +145,15 @@ class EnglishProofreader:
         Arguments:
             test_case_path: path to file to create
         """
-        contents = dedent('''
+        contents = dedent(
+            '''
             """English proofreading test cases."""
 
             from __future__ import annotations
 
-            from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+            from scinoephile.core.english.proofreading import (
+                EnglishProofreadingTestCase,
+            )
 
             # noinspection PyArgumentList
             test_cases = []  # test_cases
@@ -157,7 +161,9 @@ class EnglishProofreader:
 
             __all__ = [
                 "test_cases",
-            ]''').strip()
+            ]
+            '''
+        ).strip()
         test_case_path.parent.mkdir(parents=True, exist_ok=True)
         test_case_path.write_text(contents, encoding="utf-8")
         info(f"Created test case file at {test_case_path}.")

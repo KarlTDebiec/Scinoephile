@@ -13,6 +13,7 @@ from openai import AsyncOpenAI, OpenAI, OpenAIError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.abcs.answer import Answer
 from scinoephile.core.abcs.llm_provider import LLMProvider
+from scinoephile.core.providers import register_default_provider
 
 __all__ = ["OpenAIProvider"]
 
@@ -125,3 +126,6 @@ class OpenAIProvider(LLMProvider):
             raise ScinoephileError(
                 f"OpenAI API error ({exc_code=}, {exc_type=} {exc_param=}): {exc}"
             ) from exc
+
+
+register_default_provider(lambda: OpenAIProvider())
