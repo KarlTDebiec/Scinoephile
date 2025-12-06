@@ -8,6 +8,7 @@ import asyncio
 import hashlib
 import json
 from abc import ABC
+from dataclasses import dataclass
 from functools import cache
 from logging import debug, error, info
 from pathlib import Path
@@ -18,16 +19,23 @@ from aiofiles import os as aioos
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
-from scinoephile.openai import OpenAIProvider
+from scinoephile.core.abcs.answer import Answer
+from scinoephile.core.abcs.llm_provider import LLMProvider
+from scinoephile.core.abcs.prompt import Prompt
+from scinoephile.core.abcs.query import Query
+from scinoephile.core.abcs.test_case import TestCase
+from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.providers import get_default_provider
 
-from ..exceptions import ScinoephileError
-from .answer import Answer
-from .llm_provider import LLMProvider
-from .prompt import Prompt
-from .query import Query
-from .test_case import TestCase
+__all__ = ["LLMQueryer", "LLMQueryerOptions"]
 
-__all__ = ["LLMQueryer"]
+
+@dataclass
+class LLMQueryerOptions:
+    """Configuration options for :class:`LLMQueryer`."""
+
+    max_attempts: int = 5
+    auto_verify: bool = False
 
 
 class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
@@ -42,9 +50,8 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         verified_test_cases: list[TTestCase] | None = None,
         provider: LLMProvider | None = None,
         *,
-        cache_dir_path: str | None = None,
-        max_attempts: int = 5,
-        auto_verify: bool = False,
+        cache_dir_path: str | Path | None = None,
+        query_options: LLMQueryerOptions | None = None,
     ):
         """Initialize.
 
@@ -54,8 +61,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
               LLM need not be queried
             provider: provider to use for queries
             cache_dir_path: directory in which to cache
-            max_attempts: maximum number of attempts
-            auto_verify: automatically mark test cases as verified if no changes
+            query_options: options that control query behavior
         """
         self._provider = provider
 
@@ -73,9 +79,11 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-        self.max_attempts = max_attempts
+        options = query_options or LLMQueryerOptions()
+
+        self.max_attempts = options.max_attempts
         """Maximum number of query attempts."""
-        self.auto_verify = auto_verify
+        self.auto_verify = options.auto_verify
         """Automatically verify test cases if they meet selected criteria."""
 
     def __call__(
@@ -93,10 +101,10 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return self.call(query, answer_cls, test_case_cls)
 
     @property
-    def provider(self):
+    def provider(self) -> LLMProvider:
         """LLM Provider to use for queries."""
         if self._provider is None:
-            self._provider = OpenAIProvider()
+            self._provider = get_default_provider()
         return self._provider
 
     @provider.setter
@@ -373,7 +381,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return self.cache_dir_path / f"{sha256}.json"
 
     def _get_cached_answer(
-        self, system_prompt: str, query: TQuery, test_case_cls: type[TTestCase]
+        self, system_prompt: str, query: Query, test_case_cls: type[TTestCase]
     ) -> TAnswer | None:
         """Get cached answer for the given query if available.
 
@@ -407,7 +415,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         return None
 
     async def _get_cached_answer_async(
-        self, system_prompt: str, query: TQuery, test_case_cls: type[TTestCase]
+        self, system_prompt: str, query: Query, test_case_cls: type[TTestCase]
     ) -> TAnswer | None:
         """Get cached answer for the given query if available.
 
@@ -457,7 +465,7 @@ class LLMQueryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         return system_prompt
 
-    def _get_verified_answer(self, query: TQuery) -> TAnswer | None:
+    def _get_verified_answer(self, query: Query) -> TAnswer | None:
         """Get verified answer for the given query if available.
 
         Arguments:

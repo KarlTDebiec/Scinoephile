@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from .answer import Answer
 from .llm_provider import LLMProvider
-from .llm_queryer import LLMQueryer
+from .llm_queryer import LLMQueryer, LLMQueryerOptions
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
@@ -15,6 +15,7 @@ __all__ = [
     "Answer",
     "LLMProvider",
     "LLMQueryer",
+    "LLMQueryerOptions",
     "Prompt",
     "Query",
     "TestCase",

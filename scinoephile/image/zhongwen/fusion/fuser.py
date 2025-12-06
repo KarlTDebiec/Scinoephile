@@ -10,6 +10,7 @@ from textwrap import dedent
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError, Series, Subtitle
+from scinoephile.core.abcs import LLMQueryerOptions
 from scinoephile.core.synchronization import are_series_one_to_one
 from scinoephile.testing import (
     get_test_cases_from_file_path,
@@ -52,7 +53,7 @@ class ZhongwenFuser:
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
-            auto_verify=auto_verify,
+            query_options=LLMQueryerOptions(auto_verify=auto_verify),
         )
         """Queries LLM to fuse OCRed 中文 subtitles from Google Lens and PaddleOCR."""
 
