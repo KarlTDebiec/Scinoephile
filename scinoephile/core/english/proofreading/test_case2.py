@@ -11,9 +11,10 @@ from typing import ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.abcs.test_case2 import TestCase2
-from scinoephile.core.english.proofreading.answer2 import EnglishProofreadingAnswer2
-from scinoephile.core.english.proofreading.prompt2 import EnglishProofreadingPrompt2
-from scinoephile.core.english.proofreading.query2 import EnglishProofreadingQuery2
+
+from .answer2 import EnglishProofreadingAnswer2
+from .prompt2 import EnglishProofreadingPrompt2
+from .query2 import EnglishProofreadingQuery2
 
 __all__ = ["EnglishProofreadingTestCase2"]
 

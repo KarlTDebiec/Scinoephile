@@ -345,9 +345,5 @@ class LLMQueryer2[
             "__module__": cls.__module__,
             "prompt_cls": prompt_cls,
         }
-        queryer_cls = type(
-            name,
-            (cls,),
-            attrs,
-        )
+        queryer_cls = type(name, (cls,), attrs)
         return cast(type[Self], queryer_cls)
