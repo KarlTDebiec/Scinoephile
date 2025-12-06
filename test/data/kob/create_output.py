@@ -51,13 +51,26 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
+# Load English proofreading test cases and migrate to v2, then write to JSON
+# from test.data.kob import kob_english_proofreading_test_cases as test_cases
+#
+# test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
+# print(test_cases_2)
+# output_path = test_data_root / title / "core" / "english" / "proofreading.json"
+# data = [tc.model_dump(exclude_defaults=True) for tc in test_cases_2]
+# with open(output_path, "w", encoding="utf-8") as f:
+#     json.dump(data, f, ensure_ascii=False, indent=2)
+from test.data.kob.core.english import get_proofreading_test_cases
+
+print(get_proofreading_test_cases())
+
 actions = {
-    "繁體中文 (OCR)",
-    "English (OCR)",
-    "简体粵文 (SRT)",
-    "繁體粵文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体粵文 and English",
+    # "繁體中文 (OCR)",
+    # "English (OCR)",
+    # "简体粵文 (SRT)",
+    # "繁體粵文 (SRT)",
+    # "English (SRT)",
+    # "Bilingual 简体粵文 and English",
 }
 
 if "繁體中文 (OCR)" in actions:

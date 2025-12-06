@@ -1,0 +1,3043 @@
+[
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Young master, we are ready"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What's a hard job for you, young master",
+      "subtitle_2": "The towel, young master"
+    },
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What did he write?",
+      "subtitle_2": "His name!",
+      "subtitle_3": "Great! Young master knows how to\nwrite his name!",
+      "subtitle_4": "Yes!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Nice calligraphy",
+      "subtitle_2": "Get lost",
+      "subtitle_3": "Nice calligraphy! So Cha Ha Yee Chan!",
+      "subtitle_4": "It's reversed, Master",
+      "subtitle_5": "Chan Yee Ha Cha So",
+      "subtitle_6": "Good boy, but, don't be proud! Got me?",
+      "subtitle_7": "Dad, since the first\nemperor of the Ching Dynasty,",
+      "subtitle_8": "our family",
+      "subtitle_9": "has been illiterate",
+      "subtitle_10": "But not, my son, that's your grandson,",
+      "subtitle_11": "he knows how to write his name!",
+      "subtitle_12": "Dad, it's very great!",
+      "subtitle_13": "He knows writing now,",
+      "subtitle_14": "he will be scholar one day",
+      "subtitle_15": "Now, he knows how to write his name,",
+      "subtitle_16": "he will have a son later",
+      "subtitle_17": "Young master, you should try hard to learn",
+      "subtitle_18": "Chan, I think, we should mount it",
+      "subtitle_19": "OK",
+      "subtitle_20": "Professor, show it in some obvious places",
+      "subtitle_21": "By the way, one minute,",
+      "subtitle_22": "why don't you carry it with traditional\ndecoration in the street?",
+      "subtitle_23": "Let's go!",
+      "subtitle_24": "Chan, come and sit…",
+      "subtitle_25": "I am so pleased that you are that hard\nworking and filial",
+      "subtitle_26": "Listen to me, I am notorious of being\na spendthrift",
+      "subtitle_27": "My fortune is almost used up",
+      "subtitle_28": "If I die one day,",
+      "subtitle_29": "you should depend on yourself",
+      "subtitle_30": "I used to depend on myself",
+      "subtitle_31": "The cheques worth 100,000 taels!\nDon't be an extravagant spender",
+      "subtitle_32": "Give me the imported hat",
+      "subtitle_33": "Where are you going? Chan!",
+      "subtitle_34": "I am having a grand birthday party tonight",
+      "subtitle_35": "How old are you?",
+      "subtitle_36": "25 years old. Come earlier",
+      "subtitle_37": "But you should dress up first",
+      "subtitle_38": "You are like beggar!",
+      "subtitle_39": "How can a beggar be that rich?!\nI do want to be a rich beggar!",
+      "subtitle_40": "That fat-headed…",
+      "subtitle_41": "Come over here",
+      "subtitle_42": "What's the matter?",
+      "subtitle_43": "The invitation card of my son is great!",
+      "subtitle_44": "If I hold a birthday party in future,\nI want a better invitation card!"
+    },
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "But, I appreciate viewing this",
+      "note_3": "Corrected 'I am appreciated to view this' to 'I appreciate viewing this' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Your Majesty, how do you think about\nthe Cantonese Opera?",
+      "subtitle_2": "For sure, it can't compete with Peking Opera!",
+      "subtitle_3": "But, I am appreciated to view this"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_25": "Has your dad passed away?",
+      "note_25": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Money…",
+      "subtitle_2": "Happy birthday to you, Mr So",
+      "subtitle_3": "I am homeless and sick…",
+      "subtitle_4": "I am poor, I am damn poor!",
+      "subtitle_5": "- Please give me some money\n- Kidding? Damn you beggar!",
+      "subtitle_6": "How can you beg here?",
+      "subtitle_7": "Go to hell!",
+      "subtitle_8": "- Give him tips\n- Yes, young master",
+      "subtitle_9": "Are you kidding? How can you give him tips?",
+      "subtitle_10": "A beggar is a man too",
+      "subtitle_11": "Everyone can come here\nif he has money",
+      "subtitle_12": "Your living,",
+      "subtitle_13": "including the expenditure for hooking,\nI will pay for you!",
+      "subtitle_14": "You pay it?",
+      "subtitle_15": "So what?",
+      "subtitle_16": "Nothing!",
+      "subtitle_17": "- Come into my room…\n- Please follow me.",
+      "subtitle_18": "Mr So!",
+      "subtitle_19": "Hello…",
+      "subtitle_20": "How are you, Madam Pimp?",
+      "subtitle_21": "It's very bad of you to call me that!",
+      "subtitle_22": "Just be frank, why not?",
+      "subtitle_23": "You should be frank!",
+      "subtitle_24": "Your hat, is like the mourning uniform!",
+      "subtitle_25": "Is your dad passed away?",
+      "subtitle_26": "I feel happy to talk in this way",
+      "subtitle_27": "Mr Chiu, you helped me to terminate\nthe Hairy Gang,",
+      "subtitle_28": "the emperor will give you award for this",
+      "subtitle_29": "I'll appreciate it if you",
+      "subtitle_30": "speak something nice in front of the emperor",
+      "subtitle_31": "Please have the towel"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Congratulations!",
+      "note_2": "Corrected 'Congratulation!' to 'Congratulations!' for proper usage.",
+      "revised_5": "We have some new girls,\nyou must be satisfied with them",
+      "note_5": "Changed 'it' to 'them' to correctly refer to 'girls' (plural).",
+      "revised_11": "You, cooked fish, why don't you\ncome and serve Mr So?",
+      "note_11": "Changed 'cooked fishes' to 'cooked fish' for correct pluralization (fish is both singular and plural).",
+      "revised_14": "I won't mind, every woman is just the same",
+      "note_14": "Changed 'women' to 'woman' for correct singular usage in this context."
+    },
+    "query": {
+      "subtitle_1": "Mr So has come",
+      "subtitle_2": "Congratulation!",
+      "subtitle_3": "This way…",
+      "subtitle_4": "Mr So, today is your big day,\nyou must be very happy!",
+      "subtitle_5": "We have some new girls,\nyou must be satisfied with it",
+      "subtitle_6": "What are they? Gold fish, or cooked fish?",
+      "subtitle_7": "What does that mean?",
+      "subtitle_8": "You idiot! Gold fish is for watching only",
+      "subtitle_9": "Cooked fish can be eaten",
+      "subtitle_10": "Cooked fish of course",
+      "subtitle_11": "You, cooked fishes, why don't you\ncome and serve Mr So?",
+      "subtitle_12": "Mr So, you are the superior master today",
+      "subtitle_13": "What kind of woman do you want? Just tell me",
+      "subtitle_14": "I won't mind, every women is just the same",
+      "subtitle_15": "Nothing special"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_9": "Miss Yushang comes to be a part-time hooker only",
+      "note_9": "Added 'a' before 'part-time hooker' and hyphenated 'part-time' for correct grammar and adjective use.",
+      "revised_16": "The room service, please",
+      "note_16": "Added comma for correct phrasing: 'The room service, please.'",
+      "revised_24": "How are you, Mr Chiu?",
+      "note_24": "Added comma and question mark for correct address and sentence completion."
+    },
+    "query": {
+      "subtitle_1": "Mr So, what's the matter?",
+      "subtitle_2": "I am attacked",
+      "subtitle_3": "What?",
+      "subtitle_4": "Who dared so? I will hit that\nbastard's mouth for you",
+      "subtitle_5": "She didn't use her mouth",
+      "subtitle_6": "She used her eyes",
+      "subtitle_7": "Tempting, and I smell blood\nI haven't seen such eyesight before",
+      "subtitle_8": "Who is she?",
+      "subtitle_9": "Miss Yushang comes to be part time hooker only",
+      "subtitle_10": "Is Mr Chiu interested to sleep with her?",
+      "subtitle_11": "You should ask His Majesty first",
+      "subtitle_12": "How is it? Your Majesty?",
+      "subtitle_13": "We are friends, just go ahead if you want!",
+      "subtitle_14": "Mr Chiu, help yourself",
+      "subtitle_15": "Thank you then",
+      "subtitle_16": "The room service please",
+      "subtitle_17": "Yushang, come and greet Mr Chiu",
+      "subtitle_18": "Sister, he is the one we want",
+      "subtitle_19": "He killed dad",
+      "subtitle_20": "I know, stay calm",
+      "subtitle_21": "Let's go",
+      "subtitle_22": "- May I be excused\n- Mr Chiu",
+      "subtitle_23": "Miss Yushang has arrived",
+      "subtitle_24": "How are you? Mr Chiu"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "You are not welcome",
+      "note_5": "Corrected 'welcomed' to 'welcome'.",
+      "revised_11": "Don't quarrel because of such\na small amount, isn't it right?",
+      "note_11": "Added 'a' before 'small amount' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "A pretty woman!",
+      "subtitle_2": "Mr Chiu, about tonight…",
+      "subtitle_3": "100,000 taels",
+      "subtitle_4": "if Miss Yushang sleeps with our\nyoung master tonight…",
+      "subtitle_5": "You are not welcomed",
+      "subtitle_6": "I am sorry, I am damn sorry",
+      "subtitle_7": "Don't you have any objection?",
+      "subtitle_8": "Let me say something fair",
+      "subtitle_9": "If any of you can offer more than 100,000 taels",
+      "subtitle_10": "Yushang will sleep with whom",
+      "subtitle_11": "Don't quarrel because of such\nsmall amount, isn't it right?",
+      "subtitle_12": "Pal, you are a big spender",
+      "subtitle_13": "The cheque is too simple to me",
+      "subtitle_14": "I have a pearl which is granted by the\nRoyal family, it's invaluable!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Mr Chiu, I will wait for you in my room",
+      "note_2": "Added 'for' to correct the phrase to 'wait for you'."
+    },
+    "query": {
+      "subtitle_1": "I love the pearl more",
+      "subtitle_2": "Mr Chiu, I will wait you in my room",
+      "subtitle_3": "Does the pearl worth 100,000 taels?",
+      "subtitle_4": "Don't you think that's too little for you?",
+      "subtitle_5": "I love money too. But, I don't like you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "Yushang doesn't like me. I deserve it.",
+      "note_5": "Replaced comma with a period to separate two sentences."
+    },
+    "query": {
+      "subtitle_1": "You are frank! I love it very much",
+      "subtitle_2": "Mr So…",
+      "subtitle_3": "It doesn't matter,",
+      "subtitle_4": "I think, my hat doesn't match me",
+      "subtitle_5": "Yushang doesn't like me, I deserve it",
+      "subtitle_6": "I am glad you understand this",
+      "subtitle_7": "Don't worry, I have many pretty girls here",
+      "subtitle_8": "I trust your arrangement",
+      "subtitle_9": "None of my business",
+      "subtitle_10": "How bold are you?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Mantis Fist? It seems to be powerful",
+      "subtitle_2": "Music!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Keep this",
+      "subtitle_2": "See my Crane's Fists!",
+      "subtitle_3": "The Tiger's Claws!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "How can a mantis fight with a tiger?",
+      "subtitle_2": "I know Tiger Claws and Crane's Fists too!",
+      "subtitle_3": "Well, try my mantis!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Your Tiger's Claws are defeated",
+      "note_2": "Capitalized 'Claws' to match the usage in the following subtitle and for consistency."
+    },
+    "query": {
+      "subtitle_1": "Bravo…",
+      "subtitle_2": "Your Tiger's claws are defeated",
+      "subtitle_3": "Actually it's not Tiger's Claws,",
+      "subtitle_4": "it's beggar's fists!",
+      "subtitle_5": "That's why it's too weak"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You move fast!",
+      "subtitle_2": "It seems to be powerful…",
+      "subtitle_3": "Kid, you don't know how the wind blows"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_15": "They send you such a valuable present,\nyou'd stop bullying them",
+      "note_15": "Changed 'so' to 'such' for correct usage: 'such a valuable present'."
+    },
+    "query": {
+      "subtitle_1": "The general of Canton has arrived",
+      "subtitle_2": "Get lost…",
+      "subtitle_3": "Who dares bully my son, let me teach him a lesson",
+      "subtitle_4": "Master",
+      "subtitle_5": "Don't panic, Chan who bullied you?",
+      "subtitle_6": "It's me who bullied others",
+      "subtitle_7": "What? You bullied others?",
+      "subtitle_8": "How much does he have?\nIs he qualified to be bullied by you?",
+      "subtitle_9": "Master, they are the ones",
+      "subtitle_10": "Who are they?",
+      "subtitle_11": "Just take a look",
+      "subtitle_12": "The King of Iron Hat?",
+      "subtitle_13": "Send the gift",
+      "subtitle_14": "Chan",
+      "subtitle_15": "They send you so valuable present,\nyou'd stop bullying them",
+      "subtitle_16": "- Come on, give tips to the girl here\n- Master",
+      "subtitle_17": "King of Iron Hat, Seng-ko-lin-ch'in\nis written on the medal"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_6": "Do you know you have violated the laws of Ching?",
+      "note_6": "Changed 'committed the laws of Ching' to 'violated the laws of Ching' for correct meaning.",
+      "revised_16": "Today is the birthday of the ex-Empress Dowager",
+      "note_16": "Changed 'Ex-Empress' to 'ex-Empress' (lowercase 'ex-' as per convention).",
+      "revised_18": "It may lead to capital punishment",
+      "note_18": "Changed 'cause to capital punishment' to 'lead to capital punishment' for correct phrasing."
+    },
+    "query": {
+      "subtitle_1": "How dare you seize the medal of His Majesty?",
+      "subtitle_2": "Cuff him",
+      "subtitle_3": "Hold it, according to the Ching's law,",
+      "subtitle_4": "Courtier is not allowed hooking",
+      "subtitle_5": "Now, you are in the brothel",
+      "subtitle_6": "Do you know you have committed the laws of Ching?",
+      "subtitle_7": "How about you?",
+      "subtitle_8": "- You mean me?\n- Yes!",
+      "subtitle_9": "That's right, I come…",
+      "subtitle_10": "- to arrest…\n- You!",
+      "subtitle_11": "- Him!\n- Arrest him",
+      "subtitle_12": "I am the general of Canton,",
+      "subtitle_13": "so I should arrest those bad people",
+      "subtitle_14": "By the way…",
+      "subtitle_15": "What else? Go ahead",
+      "subtitle_16": "Today is the birthday of the Ex-Empress Dowager",
+      "subtitle_17": "So your crime is doubled",
+      "subtitle_18": "It may cause to capital punishment",
+      "subtitle_19": "Kill him…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "You can see as much as you want! Fat-head",
+      "note_5": "Corrected 'Fat-headed' to 'Fat-head' for proper insult form; 'Fat-headed' is not standard in this context."
+    },
+    "query": {
+      "subtitle_1": "According to the Ching laws,",
+      "subtitle_2": "anyone without a tail should be killed",
+      "subtitle_3": "So you…",
+      "subtitle_4": "Do you want to see my hair?",
+      "subtitle_5": "You can see as much as you want! Fat-headed",
+      "subtitle_6": "Cut the crap, just kill him",
+      "subtitle_7": "OK, it's finished",
+      "subtitle_8": "General So, let's play happily together,\nso forget it",
+      "subtitle_9": "I haven't played!",
+      "subtitle_10": "Your Majesty,",
+      "subtitle_11": "a rascal has ruined the atmosphere here,",
+      "subtitle_12": "I should be blamed for poor arrangement",
+      "subtitle_13": "None of your business",
+      "subtitle_14": "Let's go",
+      "subtitle_15": "Master, you can't fool this guy. Let's go",
+      "subtitle_16": "OK, go",
+      "subtitle_17": "Just forget the trouble",
+      "subtitle_18": "Young master, your hat"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "He is great!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "And he framed us, the Beggars Association,\nto be the assassins",
+      "note_4": "Corrected 'assassinators' to 'assassins'.",
+      "revised_6": "to be despised by the world",
+      "note_6": "Changed 'being despised by the world' to 'to be despised by the world' for correct grammar.",
+      "revised_11": "Because we can't defeat him even if\nwe group together",
+      "note_11": "Added 'if' after 'even' for correct grammar: 'even if we group together'."
+    },
+    "query": {
+      "subtitle_1": "Uncle Mok, the dishes are all poisoned",
+      "subtitle_2": "Chiu assassinated our Master",
+      "subtitle_3": "and some generals of The Taiping Reign",
+      "subtitle_4": "And he framed us, the Beggars Association,\nto be the assassinators",
+      "subtitle_5": "Thus made us",
+      "subtitle_6": "being despised by the world",
+      "subtitle_7": "Saying that we became the dogs of the government",
+      "subtitle_8": "I should ask him to pay for it",
+      "subtitle_9": "His initial power is harmful",
+      "subtitle_10": "Don't take action until he is trapped",
+      "subtitle_11": "Because we can't defeat him even\nwe group together",
+      "subtitle_12": "I will try my best to seduce him to the bed",
+      "subtitle_13": "Senior, somebody is coming",
+      "subtitle_14": "Get ready…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "by Mr So and became pearl powder",
+      "note_4": "Changed 'become' to 'became' for correct past tense."
+    },
+    "query": {
+      "subtitle_1": "Miss Yushang, we meet again",
+      "subtitle_2": "Why do you come here? Where is Mister Chiu?",
+      "subtitle_3": "The pearl of Mr Chiu is broken",
+      "subtitle_4": "by Mr So and become pearl powder",
+      "subtitle_5": "I have drunk it",
+      "subtitle_6": "Don't judge Mr So from his hair,",
+      "subtitle_7": "he is really romantic and funny",
+      "subtitle_8": "But…",
+      "subtitle_9": "Stop, I have taken his money,\n100,000 taels you know?",
+      "subtitle_10": "I won't give it back",
+      "subtitle_11": "About the personality of Mr So…",
+      "subtitle_12": "Cut the crap, pimp!",
+      "subtitle_13": "Leave here first",
+      "subtitle_14": "Yes, you are right",
+      "subtitle_15": "- Miss Seven…\n- Just accept this"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "Miss, first of all, I have good news for you",
+      "note_3": "Changed 'a good news to you' to 'good news for you' for correct grammar and usage.",
+      "revised_9": "for your company tonight",
+      "note_9": "Removed extra 'you' to correct the phrase to 'for your company tonight'.",
+      "revised_12": "I haven't chosen the wrong one",
+      "note_12": "Changed 'a wrong one' to 'the wrong one' for correct idiomatic usage."
+    },
+    "query": {
+      "subtitle_1": "Who is this guy?",
+      "subtitle_2": "I don't know",
+      "subtitle_3": "Miss, first of all, I have a good news to you",
+      "subtitle_4": "I love you",
+      "subtitle_5": "To me, this is a bad news",
+      "subtitle_6": "I know you will reply like this",
+      "subtitle_7": "Cut the crap",
+      "subtitle_8": "I wish to pay you 100 pearls",
+      "subtitle_9": "for you your company tonight",
+      "subtitle_10": "I don't want to talk to you",
+      "subtitle_11": "Please get out",
+      "subtitle_12": "I haven't chosen a wrong one",
+      "subtitle_13": "OK, I will drink this wine first",
+      "subtitle_14": "No…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "You know kung fu?",
+      "note_4": "Corrected 'Kung-fu' to 'kung fu' for standard spelling.",
+      "revised_16": "Is there anyone hiding here?",
+      "note_16": "Corrected 'Are there anyone' to 'Is there anyone' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "It surprised me",
+      "subtitle_2": "Miss",
+      "subtitle_3": "Hands off!",
+      "subtitle_4": "You know Kung-fu?",
+      "subtitle_5": "No, I don't know Kung-fu at all",
+      "subtitle_6": "I beg you, stop bothering me",
+      "subtitle_7": "I won't accompany you",
+      "subtitle_8": "Yushang, no one treats me like this",
+      "subtitle_9": "I have found that I am in love with you",
+      "subtitle_10": "What?",
+      "subtitle_11": "I have been in love with you",
+      "subtitle_12": "Are you kidding?",
+      "subtitle_13": "I am not kidding, I decided to marry you",
+      "subtitle_14": "Are you nuts?",
+      "subtitle_15": "Kidding?",
+      "subtitle_16": "Are there anyone hiding here?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_8": "Don't you know it isn't that easy to be my husband?",
+      "note_8": "Corrected 'it's' to 'it isn't' to match the intended meaning (that it is not easy to be my husband)."
+    },
+    "query": {
+      "subtitle_1": "That's good, I want a witness",
+      "subtitle_2": "- Witness?\n- Yes",
+      "subtitle_3": "I swear in front of your sword",
+      "subtitle_4": "I do want to marry Miss Yushang\nas my wife, I am sincere",
+      "subtitle_5": "If I cheat, I will be killed by thunder",
+      "subtitle_6": "Sister, I feel excited for you",
+      "subtitle_7": "Hey",
+      "subtitle_8": "Don't you know it's that easy to be my husband?",
+      "subtitle_9": "How can I be your husband?",
+      "subtitle_10": "I want him to be the superior Kung-fu master",
+      "subtitle_11": "Be the top of all",
+      "subtitle_12": "Can you do that?",
+      "subtitle_13": "Let me think for one second"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "Because, this is too easy for me\nto be the Kung-fu scholar!",
+      "note_5": "Corrected 'to me' to 'for me' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "I can do it",
+      "subtitle_2": "OK",
+      "subtitle_3": "Do it first and then look for me",
+      "subtitle_4": "Well, I think we should fix a date for our wedding",
+      "subtitle_5": "Because, this is too easy to me\nto be the Kung-fu scholar!",
+      "subtitle_6": "OK, but you'd give me some time to consider it",
+      "subtitle_7": "No problem, I will wait for your answer\noutside the garden",
+      "subtitle_8": "I won't leave until seeing you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Crazy!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "We come for the Beggars Association,\nthose unrelated persons leave at once"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "Sir, the timing is right",
+      "note_1": "Replaced 'fit' with 'right' for correct usage in this context."
+    },
+    "query": {
+      "subtitle_1": "Sir, the timing is fit",
+      "subtitle_2": "The road is safe now, please go",
+      "subtitle_3": "Good, very good",
+      "subtitle_4": "Let's go!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Shit, we are late",
+      "subtitle_2": "That Manchurian should be blamed"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Sister…",
+      "subtitle_2": "What's the matter?",
+      "subtitle_3": "The idiot is still there",
+      "subtitle_4": "Let's kill him",
+      "subtitle_5": "Forget it, he doesn't mean to bother us",
+      "subtitle_6": "Let him go"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Are you fond of him?",
+      "subtitle_2": "What did you say?",
+      "subtitle_3": "I won't fall in love with anybody",
+      "subtitle_4": "until Chiu is killed",
+      "subtitle_5": "Especially him",
+      "subtitle_6": "Chiu is good at Kung-fu",
+      "subtitle_7": "Mok said, we can't defeat him unless\nusing the \"Dragon Killing Palms\"",
+      "subtitle_8": "So, I can never marry!",
+      "subtitle_9": "Let's go, if you want to marry"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "You have a flat figure, where are your busts?",
+      "note_5": "Added 'a' before 'flat figure' for correct grammar.",
+      "revised_6": "It's early in the morning,\nthey haven't woken up yet",
+      "note_6": "Corrected 'waken' to 'woken' for correct verb form."
+    },
+    "query": {
+      "subtitle_1": "What evil are you? How dare you scare me?",
+      "subtitle_2": "Mr So, it's me!",
+      "subtitle_3": "You are the pimp?!",
+      "subtitle_4": "Yes!",
+      "subtitle_5": "You have flat figure, where are your busts?",
+      "subtitle_6": "It's early in the morning,\nthey haven't waken up yet",
+      "subtitle_7": "It's lucky of you for not being killed",
+      "subtitle_8": "Don't go around if you haven't made up yet",
+      "subtitle_9": "I won't do it again",
+      "subtitle_10": "Stop waiting for Miss Yushang, she left",
+      "subtitle_11": "What?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "Where should I put my pigtail?",
+      "note_5": "Corrected 'pig-tail' to 'pigtail'.",
+      "revised_9": "I decided to join the examination for the\nScholar of Martial Arts",
+      "note_9": "Capitalized 'Scholar' to match the title format used elsewhere.",
+      "revised_12": "For the sake of our family, you should do that",
+      "note_12": "Changed 'For the family of us' to 'For the sake of our family' for correct phrasing.",
+      "revised_16": "For a girl, you want to be the Scholar\nof Martial Arts!",
+      "note_16": "Capitalized 'Scholar' to match the title format used elsewhere.",
+      "revised_30": "If you break my stuff,\nI will teach you a good lesson",
+      "note_30": "Added 'a' before 'good lesson' for correct grammar.",
+      "revised_32": "Good morning Dad",
+      "note_32": "Capitalized 'Dad' as a form of address.",
+      "revised_36": "Please leave me a cloth",
+      "note_36": "Corrected 'clothe' to 'cloth'.",
+      "revised_46": "Please, work hard, men!",
+      "note_46": "Added comma after 'hard' for correct address to 'men'.",
+      "revised_56": "Take care of my lychee, you fathead!",
+      "note_56": "Changed 'Lychee' to lowercase and 'fat headed' to 'fathead' for correct usage.",
+      "revised_61": "Hope you will serve our Ching Dynasty\nwholeheartedly",
+      "note_61": "Changed 'whole-heartedly' to 'wholeheartedly' (no hyphen needed)."
+    },
+    "query": {
+      "subtitle_1": "Where is she going?",
+      "subtitle_2": "She… she is going to Peking",
+      "subtitle_3": "Peking?",
+      "subtitle_4": "Men should contribute to the country",
+      "subtitle_5": "Where should I put my pig-tail?",
+      "subtitle_6": "Swing and swing…",
+      "subtitle_7": "I pull it and play it…",
+      "subtitle_8": "Dad!",
+      "subtitle_9": "I decided to join the examination for the\nscholar of Martial Arts",
+      "subtitle_10": "Chan",
+      "subtitle_11": "I have been longing for this word for 25 years",
+      "subtitle_12": "For the family of us, you should do that",
+      "subtitle_13": "Don't misunderstand it, I do it not for no one",
+      "subtitle_14": "But for a woman",
+      "subtitle_15": "What a hero!",
+      "subtitle_16": "For a girl, you want to be the scholar\nof Martial Arts!",
+      "subtitle_17": "Who is that girl?",
+      "subtitle_18": "The hooker of Yee Hung Brothel, Miss Yushang",
+      "subtitle_19": "For a hooker?",
+      "subtitle_20": "What's wrong with it?",
+      "subtitle_21": "You have different taste, you are great!",
+      "subtitle_22": "I am admiring you!",
+      "subtitle_23": "I will accompany you to Peking",
+      "subtitle_24": "2, 3, 4, 5, 6",
+      "subtitle_25": "I am coming",
+      "subtitle_26": "Young master is going for the examination,\nlet's move to Peking too",
+      "subtitle_27": "Stop chasing,",
+      "subtitle_28": "we won't take the hens with us",
+      "subtitle_29": "Be careful!",
+      "subtitle_30": "If you break my stuff,\nI will teach you good lesson",
+      "subtitle_31": "Be careful!",
+      "subtitle_32": "Good morning dad",
+      "subtitle_33": "Good morning",
+      "subtitle_34": "You want to move everything to Peking?",
+      "subtitle_35": "Sure",
+      "subtitle_36": "Please leave me a clothe",
+      "subtitle_37": "You are only a kid, you don't need this",
+      "subtitle_38": "But I am not small",
+      "subtitle_39": "Are you bigger than mine?",
+      "subtitle_40": "You despise me!",
+      "subtitle_41": "Mine will be bigger than yours one day",
+      "subtitle_42": "Let's find something, say trousers to cover it",
+      "subtitle_43": "I don't want to see it",
+      "subtitle_44": "Why are you standing here for?\nWhy don't you remove it?",
+      "subtitle_45": "It's a hard job to remove such a big house!",
+      "subtitle_46": "Please, work hard men!",
+      "subtitle_47": "Ready, 1, 2, 3, push!",
+      "subtitle_48": "Push!",
+      "subtitle_49": "Be careful!",
+      "subtitle_50": "Tie it well…",
+      "subtitle_51": "Master, do you want to move the tree too?",
+      "subtitle_52": "Sure,",
+      "subtitle_53": "or how can I eat Lychee in Peking?",
+      "subtitle_54": "Push it over…",
+      "subtitle_55": "Be careful",
+      "subtitle_56": "Take care of my Lychee, you fat headed!",
+      "subtitle_57": "Chiu helped me to terminate",
+      "subtitle_58": "the Hairy Gang in Kwangsi",
+      "subtitle_59": "So I bring him here to greet Your Majesty",
+      "subtitle_60": "Fine, I am now appointing you to be\nthe Deputy Secretary",
+      "subtitle_61": "Hope you will serve our Ching Dynasty\nwhole-heartedly",
+      "subtitle_62": "Thank you, Your Majesty",
+      "subtitle_63": "Your Majesty, Mr Chiu is a magician",
+      "subtitle_64": "Why don't you ask him to show you something?",
+      "subtitle_65": "Magic?",
+      "subtitle_66": "Mr Chiu, then show me your magic",
+      "subtitle_67": "Yes, Your Majesty"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "There is nothing surprising, go",
+      "subtitle_2": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I am sorry for scaring you",
+      "subtitle_2": "If this girl is real, that's fantastic!",
+      "subtitle_3": "Hurry up!",
+      "subtitle_4": "What's the matter?",
+      "subtitle_5": "Come on, go in"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What's the matter?",
+      "subtitle_2": "Hide in",
+      "subtitle_3": "Get ready, young master",
+      "subtitle_4": "Come on",
+      "subtitle_5": "Freeze, don't move"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_8": "You are a dad.",
+      "note_8": "Added 'a' before 'dad' for correct grammar and added period at the end.",
+      "revised_26": "It depends on fate.",
+      "note_26": "Removed 'the' before 'fate' for correct idiomatic usage and added period at the end.",
+      "revised_35": "My son is keen on martial arts.",
+      "note_35": "Changed 'keen in' to 'keen on' for correct usage."
+    },
+    "query": {
+      "subtitle_1": "Sweet smell, are you Piu Hung?",
+      "subtitle_2": "You are great! I love it",
+      "subtitle_3": "Closer",
+      "subtitle_4": "So big! You must be Small!",
+      "subtitle_5": "You are bad, how can you say so to me?",
+      "subtitle_6": "You are big!",
+      "subtitle_7": "What? Pregnant woman? You can't cheat me",
+      "subtitle_8": "You are dad",
+      "subtitle_9": "How bad are you, how can you guess that?",
+      "subtitle_10": "Good boy",
+      "subtitle_11": "I wanted to trick you actually,\nyou are really smart",
+      "subtitle_12": "Young master has to join the examination tomorrow,",
+      "subtitle_13": "stop playing",
+      "subtitle_14": "Get out…",
+      "subtitle_15": "Chan, have you prepared",
+      "subtitle_16": "for your examination?",
+      "subtitle_17": "What should I prepare?\nI must win, don't you know that?",
+      "subtitle_18": "Yes I do!",
+      "subtitle_19": "I have faith in you from seeing your behaviour!",
+      "subtitle_20": "Chan, this is Uncle Cheng",
+      "subtitle_21": "He will be the examiner",
+      "subtitle_22": "Say hello to Uncle Cheng",
+      "subtitle_23": "How are you, Uncle Cheng?",
+      "subtitle_24": "See",
+      "subtitle_25": "Doesn't he seem to be the winner?",
+      "subtitle_26": "It depends on the fate",
+      "subtitle_27": "Cheng, I've asked someone",
+      "subtitle_28": "to finish the papers which you gave me",
+      "subtitle_29": "Will the questions be changed?",
+      "subtitle_30": "Don't worry about the question paper",
+      "subtitle_31": "But about the test of arrows shooting,",
+      "subtitle_32": "riding, boxing and weapons…",
+      "subtitle_33": "He should try his best",
+      "subtitle_34": "Don't worry",
+      "subtitle_35": "My son is keen in martial arts",
+      "subtitle_36": "So, can I deduct some from the payment\nof 2 million taels?",
+      "subtitle_37": "We are friends, but that is business"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "Let the horse teams be the pioneer",
+      "note_1": "Changed 'Horse' to lowercase 'horse' for consistency with 'arrows teams' and 'gunmen'.",
+      "revised_2": "The arrows teams go sideways,\nthe gunmen stay back",
+      "note_2": "Corrected 'side ways' to 'sideways'."
+    },
+    "query": {
+      "subtitle_1": "Let the Horse teams be the pioneer",
+      "subtitle_2": "The arrows teams go side ways,\nthe gunmen stay back"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "The candidates come in"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I can't lift it"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I don't want to waste my force",
+      "subtitle_2": "Shameless? Damn you!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Oh, 10 marks"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_25": "What do you think?",
+      "note_25": "Corrected 'thing' to 'think'.",
+      "revised_27": "But he has worked vert hard",
+      "note_27": "Change 'achieved' to 'worked'.",
+      "revised_35": "You have good analysis",
+      "note_35": "Corrected 'analyse' to 'analysis'."
+    },
+    "query": {
+      "subtitle_1": "The final race now starts",
+      "subtitle_2": "The candidates,",
+      "subtitle_3": "Po Ye Tat Tor from Mongolia",
+      "subtitle_4": "Bravo…",
+      "subtitle_5": "And So Cha Ha Yee Chan from Canton",
+      "subtitle_6": "Last call",
+      "subtitle_7": "So, one to ten Po, one to one",
+      "subtitle_8": "Are you kidding, how can the betting rates\ndiffer so much?",
+      "subtitle_9": "One to ten for Chan? Kidding?",
+      "subtitle_10": "Why don't you have faith in Chan?",
+      "subtitle_11": "That is, Chan defaulted in weight lifting",
+      "subtitle_12": "Look, Po entered the final race",
+      "subtitle_13": "with full marks, it differs",
+      "subtitle_14": "It's an examination of the Scholar of\nMartial Arts, not king of coolie",
+      "subtitle_15": "It's meaningless to be the champion\nof weight lifting",
+      "subtitle_16": "- You shouldn't put it that way\n- What?",
+      "subtitle_17": "He is smart",
+      "subtitle_18": "I've studied this race for a long time",
+      "subtitle_19": "I feel strange about the rate too",
+      "subtitle_20": "Po is smart and strong",
+      "subtitle_21": "But see the sweat of his neck",
+      "subtitle_22": "I think it's because he is getting tired",
+      "subtitle_23": "Really?",
+      "subtitle_24": "But this So",
+      "subtitle_25": "What do you thing?",
+      "subtitle_26": "He has been disappointing the audience",
+      "subtitle_27": "But he has achieved very hard",
+      "subtitle_28": "What?",
+      "subtitle_29": "He tried very hard",
+      "subtitle_30": "So I want to bet on him",
+      "subtitle_31": "How much do you want to bet?",
+      "subtitle_32": "800,000 taels",
+      "subtitle_33": "Why not 2 million taels?",
+      "subtitle_34": "What? Why are you so optimistic about Chan?",
+      "subtitle_35": "You have good analyse",
+      "subtitle_36": "I feel Chan",
+      "subtitle_37": "will be the champion",
+      "subtitle_38": "Come on",
+      "subtitle_39": "I want to bet more on him",
+      "subtitle_40": "Really?",
+      "subtitle_41": "2 million taels!",
+      "subtitle_42": "How generous!",
+      "subtitle_43": "Why don't you bet?",
+      "subtitle_44": "Why should I bet? He is my son",
+      "subtitle_45": "Shit, I miss one thing out of my calculation",
+      "subtitle_46": "What?",
+      "subtitle_47": "The blood",
+      "subtitle_48": "Here comes the Examiner",
+      "subtitle_49": "What? Isn't Cheng the examiner?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Please take a seat",
+      "subtitle_2": "Seng-ko-lin-ch'in?!",
+      "subtitle_3": "What's the problem?",
+      "subtitle_4": "He is the uncle of Po",
+      "subtitle_5": "Let's start"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Start!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "They should add 2 more marks for that\npowerful shoot",
+      "note_1": "Corrected 'act' to 'add' for correct meaning: 'add 2 more marks'."
+    },
+    "query": {
+      "subtitle_1": "They should act 2 more marks for that\npowerful shoot",
+      "subtitle_2": "I do think so",
+      "subtitle_3": "So's arrow isn't on the target,\nPo won this section"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Kidding? Damn you! They are cheating"
+    },
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "The candidates please get on the horses",
+      "subtitle_2": "Mr Chiu"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "Take these with you, maybe you will\nfind them useful",
+      "note_1": "Corrected 'may be' to 'maybe'."
+    },
+    "query": {
+      "subtitle_1": "Take these with you, may be you will\nfind them useful",
+      "subtitle_2": "Here comes the 2nd round"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "They tricked again",
+      "note_1": "Changed 'trick' to 'tricked' for correct tense."
+    },
+    "query": {
+      "subtitle_1": "They trick again",
+      "subtitle_2": "It's corrupt! May I give up the betting?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan won this race",
+      "subtitle_2": "Did you tear the ticket?",
+      "subtitle_3": "Not yet"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Are you kidding?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Once again?!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "OK, let's start from the very beginning,\nI'll fight with a single hand and leg",
+      "note_1": "Added 'a' before 'single hand and leg' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "OK, let's start from the very beginning,\nI'll fight with single hand and leg",
+      "subtitle_2": "I won't take your advantage"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "How can you use such a dirty stance?",
+      "note_1": "Added 'a' before 'dirty stance' for correct grammar.",
+      "revised_2": "Have you woken?",
+      "note_2": "Corrected 'waken' to 'woken'.",
+      "revised_9": "There is no regulation stating that a\nweapon is not allowed",
+      "note_9": "Added 'a' before 'weapon' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "How can you use such dirty stance?",
+      "subtitle_2": "Have you waken?",
+      "subtitle_3": "Bravo! He won",
+      "subtitle_4": "Have some tea",
+      "subtitle_5": "All the best!",
+      "subtitle_6": "What did you say?",
+      "subtitle_7": "It's English",
+      "subtitle_8": "It's English",
+      "subtitle_9": "There is no regulation stating that\nweapon is not allowed",
+      "subtitle_10": "You fell down first, Po is the winner again"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Damn you Cheng! You betrayed me!",
+      "subtitle_2": "I will beat you to death",
+      "subtitle_3": "if I see you again",
+      "subtitle_4": "Forget it, you won't see him anymore",
+      "subtitle_5": "Why?",
+      "subtitle_6": "I am now going to kill him!",
+      "subtitle_7": "I don't have 2 million to lose!",
+      "subtitle_8": "Just kidding",
+      "subtitle_9": "You shameless",
+      "subtitle_10": "Po is the Scholar of Martial Arts",
+      "subtitle_11": "I did win! Objection"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What are you doing?",
+      "subtitle_2": "The dart is poisoned",
+      "subtitle_3": "He deserves it!",
+      "subtitle_4": "He was poisoned by his own dart",
+      "subtitle_5": "Well, my son will be the Scholar then",
+      "subtitle_6": "I am going to be rich!",
+      "subtitle_7": "Yes!",
+      "subtitle_8": "You… You…"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Thank you, my ancestors!",
+      "subtitle_2": "You have good judgement",
+      "subtitle_3": "Sir, His Majesty wants to\nappoint the title himself"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "OK"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "I want to take a statement from you as record",
+      "note_1": "Added 'a' before 'statement' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "I want to take some statement from you as record",
+      "subtitle_2": "You won this time, who are you going to thank?",
+      "subtitle_3": "Miss Yushang!",
+      "subtitle_4": "Is Miss Yushang his mom?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_9": "I have found that So is illiterate",
+      "note_9": "Removed the period after 'that' for correct sentence structure.",
+      "revised_11": "That should be a trick",
+      "note_11": "Changed 'tricks' to 'a trick' for correct singular usage in context."
+    },
+    "query": {
+      "subtitle_1": "Long life to you!",
+      "subtitle_2": "Please get up",
+      "subtitle_3": "Thank you",
+      "subtitle_4": "Who is the new Scholar of Martial Arts?",
+      "subtitle_5": "Your Majesty, So Chan from Canton\nis the Scholar this year",
+      "subtitle_6": "Your Majesty, I am So Cha Ha Yee Chan",
+      "subtitle_7": "Your Majesty, I want to report something",
+      "subtitle_8": "Go ahead",
+      "subtitle_9": "I have found that. So is illiterate",
+      "subtitle_10": "So how could he answer the\nquestion paper of strategy?",
+      "subtitle_11": "That should be tricks"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Take the stationery out!",
+      "subtitle_2": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "So Cha Ha Yee Chan, write your name now",
+      "subtitle_2": "Thank God, he knows how to write his name!",
+      "subtitle_3": "He can write his name!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_16": "You two cooperated to cheat me",
+      "note_16": "Corrected 'co-operated' to 'cooperated' (no hyphen needed)."
+    },
+    "query": {
+      "subtitle_1": "I don't know how to write",
+      "subtitle_2": "That's shit!",
+      "subtitle_3": "Kill him now",
+      "subtitle_4": "No! No!",
+      "subtitle_5": "Your Majesty, I am the one who cheated",
+      "subtitle_6": "It's none of his business",
+      "subtitle_7": "Just chop me to death",
+      "subtitle_8": "No, you should kill me",
+      "subtitle_9": "Sorry dad",
+      "subtitle_10": "I don't know how to write my name",
+      "subtitle_11": "Stop, I have known it already",
+      "subtitle_12": "Your Majesty, I should be killed",
+      "subtitle_13": "- Kill me\n- No, kill me",
+      "subtitle_14": "- Kill me.\n- Your Majesty, you'd better kill me",
+      "subtitle_15": "Shit, are you giving order?",
+      "subtitle_16": "You two co-operated to cheat me",
+      "subtitle_17": "The Secretary for Justice,\nannounce the penalty for them",
+      "subtitle_18": "Come out! Hurry up",
+      "subtitle_19": "I am here!"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "But their ancestors achieved a lot\nfor Ching, they can be exempted",
+      "note_3": "Corrected 'to Ching, they can be exampled' to 'for Ching, they can be exempted' for correct meaning and grammar."
+    },
+    "query": {
+      "subtitle_1": "He is the Secretary for Justice",
+      "subtitle_2": "So's family should be sentenced to death",
+      "subtitle_3": "But their ancestors achieved a lot\nto Ching, they can be exampled",
+      "subtitle_4": "But, their fortune should be forfeited",
+      "subtitle_5": "Have you carried out any military duty?",
+      "subtitle_6": "I haven't gone back to my camp for\n7 years, I haven't done anything",
+      "subtitle_7": "So, he didn't miscarry out any duty",
+      "subtitle_8": "So, the maximum penalty",
+      "subtitle_9": "is forfeiture of property only"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_18": "you'd be hardworking to learn how to write",
+      "note_18": "Corrected 'hard working' to 'hardworking' (should be one word)."
+    },
+    "query": {
+      "subtitle_1": "What? Are you sure?",
+      "subtitle_2": "I am fair",
+      "subtitle_3": "I judge it from the Law Book",
+      "subtitle_4": "Can I add something?",
+      "subtitle_5": "Sure, since you are the Emperor",
+      "subtitle_6": "I want them to be beggars for the rest\nof their lives",
+      "subtitle_7": "Why couldn't you find out",
+      "subtitle_8": "they cheated during the examination?",
+      "subtitle_9": "Luckily Chiu reported it to me on time",
+      "subtitle_10": "Chiu, you would be rewarded",
+      "subtitle_11": "I am wandering…",
+      "subtitle_12": "That's the spirit tablet of my dad,\ndo you want to take it too?",
+      "subtitle_13": "It's useless for you",
+      "subtitle_14": "How poor are we…",
+      "subtitle_15": "I am thinking of my better half…",
+      "subtitle_16": "Young master,",
+      "subtitle_17": "from now on,",
+      "subtitle_18": "you'd be hard working to learn how to write"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "But I can't sell the affection…"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "Master, I will take good care of the little turtle",
+      "note_4": "Added 'the' before 'little turtle' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Professor",
+      "subtitle_2": "I will learn it",
+      "subtitle_3": "I regret that…",
+      "subtitle_4": "Master, I will take good care of little turtle",
+      "subtitle_5": "I am sorry",
+      "subtitle_6": "We haven't given birth to any baby of yours",
+      "subtitle_7": "It doesn't matter",
+      "subtitle_8": "It's all my fault",
+      "subtitle_9": "If I did better, you could have many babies",
+      "subtitle_10": "But I think Chan is enough for me",
+      "subtitle_11": "Why are you standing here? Go now",
+      "subtitle_12": "Master, we are leaving",
+      "subtitle_13": "We are leaving, master",
+      "subtitle_14": "Go, go now",
+      "subtitle_15": "We are free",
+      "subtitle_16": "I feel so happy",
+      "subtitle_17": "How happy are we!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_27": "Even the Gods won't let me be a beggar",
+      "note_27": "Changed 'be beggars' to 'be a beggar' for correct singular usage.",
+      "revised_29": "Am I like a beggar?",
+      "note_29": "Added 'a' before 'beggar' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Go in…",
+      "subtitle_2": "Hurry up…",
+      "subtitle_3": "Why are they so happy?",
+      "subtitle_4": "I am very happy",
+      "subtitle_5": "Please go in…",
+      "subtitle_6": "Welcome…",
+      "subtitle_7": "Damn sequestration, I wanna cry, my son",
+      "subtitle_8": "Hold it, don't lose our face",
+      "subtitle_9": "Keep on laughing",
+      "subtitle_10": "Son. Have you kept any money?",
+      "subtitle_11": "No, how about you?",
+      "subtitle_12": "I forgot that",
+      "subtitle_13": "Shit, damn sequestration!",
+      "subtitle_14": "Be merciful, please give money to us",
+      "subtitle_15": "Son, that guy is like dad",
+      "subtitle_16": "You mean the one who sings?",
+      "subtitle_17": "No, the one who pays",
+      "subtitle_18": "He is more disgusting than the one who sings",
+      "subtitle_19": "Not exactly, he is smart",
+      "subtitle_20": "Dad should be blamed",
+      "subtitle_21": "I always called you beggar",
+      "subtitle_22": "Now, it becomes true",
+      "subtitle_23": "What's wrong with you?",
+      "subtitle_24": "The emperor wants us to be beggars",
+      "subtitle_25": "Do you think we'd be beggars?",
+      "subtitle_26": "I am smart, I am keen in kung-fu fighting",
+      "subtitle_27": "Even the Gods won't let me be beggars",
+      "subtitle_28": "That's true",
+      "subtitle_29": "Am I like beggar?",
+      "subtitle_30": "No",
+      "subtitle_31": "Buy something to eat, you beggars"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You treat us as beggars?",
+      "subtitle_2": "Damn you!",
+      "subtitle_3": "It's weird! Let's eat"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Let me take a seat, maybe we can\nhave something to eat tonight",
+      "note_2": "Corrected 'may be' to 'maybe'."
+    },
+    "query": {
+      "subtitle_1": "Chan, since we have nothing to do",
+      "subtitle_2": "Let me take a seat, may be we can\nhave something to eat tonight",
+      "subtitle_3": "You are treating yourself a beggar?",
+      "subtitle_4": "Dad, don't worry",
+      "subtitle_5": "I need no begging for money",
+      "subtitle_6": "How can you get money if you don't beg?",
+      "subtitle_7": "Just ask someone to give us money",
+      "subtitle_8": "Pal, may I know your name?",
+      "subtitle_9": "Nau Tai Chung",
+      "subtitle_10": "Do you have money?",
+      "subtitle_11": "- Yes\n- Just give it to me",
+      "subtitle_12": "OK"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_12": "Begging? How dare you, you beggar,\nyou are cheating me!",
+      "note_12": "Corrected 'How dare are you' to 'How dare you' for correct grammar.",
+      "revised_17": "I have a friend's girlfriend",
+      "note_17": "Corrected 'girl-friend' to 'girlfriend' (no hyphen needed)."
+    },
+    "query": {
+      "subtitle_1": "Thank you",
+      "subtitle_2": "Why should I give you money?",
+      "subtitle_3": "Why do you ask so many questions?",
+      "subtitle_4": "But I should know the reason",
+      "subtitle_5": "Anyway, you should pay it",
+      "subtitle_6": "No, let's fix it up first",
+      "subtitle_7": "Just give it to us, why are you asking so much?",
+      "subtitle_8": "Hands off",
+      "subtitle_9": "You mean robbing?",
+      "subtitle_10": "Robbery…",
+      "subtitle_11": "I am not robbing, I am begging",
+      "subtitle_12": "Begging? How dare are you, you beggar,\nyou are cheating me!",
+      "subtitle_13": "Don't you think I am stupid? I am smart, you know?",
+      "subtitle_14": "Hey, two days passed,",
+      "subtitle_15": "It's cold and I am hungry now",
+      "subtitle_16": "Have you had any idea?",
+      "subtitle_17": "I have a friend's girl-friend",
+      "subtitle_18": "who is living in Peking",
+      "subtitle_19": "She always admires you",
+      "subtitle_20": "Really?",
+      "subtitle_21": "Yes, if you are willing to date her",
+      "subtitle_22": "I think she will help us to go back to Canton",
+      "subtitle_23": "But, you have to sacrifice",
+      "subtitle_24": "Do you mean…",
+      "subtitle_25": "For our family, just as you said",
+      "subtitle_26": "I know it's very hard for you",
+      "subtitle_27": "Cut the crap, let's go and find her",
+      "subtitle_28": "I have arranged it",
+      "subtitle_29": "The one wearing red dress who stands\nunder the lantern, that's her"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Ghost!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "It's a benefit for you!",
+      "note_1": "Changed 'of' to 'for' to correct the preposition: 'benefit for you'."
+    },
+    "query": {
+      "subtitle_1": "It's a benefit of you!",
+      "subtitle_2": "Why don't you go yourself?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan, I haven't tried this before",
+      "subtitle_2": "Be careful!",
+      "subtitle_3": "Don't worry",
+      "subtitle_4": "I'll take care of you",
+      "subtitle_5": "You want to earn money for shark-fins, right?",
+      "subtitle_6": "Right…",
+      "subtitle_7": "Get lost…",
+      "subtitle_8": "No show here"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "It's the Royal instruction that",
+      "note_4": "Removed comma.",
+      "revised_7": "I am carrying out my duty only, men!",
+      "note_7": "Added 'out' after 'carrying' and a comma before 'men' for correct phrasing and punctuation."
+    },
+    "query": {
+      "subtitle_1": "We just want to earn some money",
+      "subtitle_2": "to go back to Canton",
+      "subtitle_3": "Don't be that mean to us",
+      "subtitle_4": "It's the Royal instruction that,",
+      "subtitle_5": "the So's family'd be beggars for life",
+      "subtitle_6": "You two can only be beggars",
+      "subtitle_7": "I am carrying my duty only Men!",
+      "subtitle_8": "- Yes!\n- Remove all the things",
+      "subtitle_9": "Yes"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_8": "Last time you escaped from Yee Hung Hostel",
+      "note_8": "Changed 'you can escape' to 'you escaped' for correct tense and grammar.",
+      "revised_11": "I've got to defeat him by one powerful strike",
+      "note_11": "Expanded contraction 'I've' to 'I've got' for correct usage in this context.",
+      "revised_12": "I can't give him another chance to counterattack",
+      "note_12": "Changed 'counter attack' to 'counterattack' (one word)."
+    },
+    "query": {
+      "subtitle_1": "Help!",
+      "subtitle_2": "Master Chiu, it's hard for one to carry it",
+      "subtitle_3": "Ask more men to remove it",
+      "subtitle_4": "Yes",
+      "subtitle_5": "What do you want?",
+      "subtitle_6": "- No, we can't move it\n- Let me do it",
+      "subtitle_7": "You want a fight, don't you?",
+      "subtitle_8": "Last time you can escape from Yee Hung Hostel",
+      "subtitle_9": "But you won't be that lucky this time",
+      "subtitle_10": "He is powerful!",
+      "subtitle_11": "I've to defeat him by one powerful strike",
+      "subtitle_12": "I can't give him another chance to counter attack"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "You will be a cripple for the rest of your life",
+      "note_4": "Added 'a' before 'cripple' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Chan…",
+      "subtitle_2": "Chan…",
+      "subtitle_3": "Your legs and hands are all broken by me",
+      "subtitle_4": "You will be cripple for the rest of your life",
+      "subtitle_5": "You want to fight? Not now!",
+      "subtitle_6": "But, you can beg for money",
+      "subtitle_7": "Be a good beggar",
+      "subtitle_8": "Go, go away…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_26": "Because being the scholar is too simple for me",
+      "note_26": "Changed 'to me' to 'for me' for correct usage."
+    },
+    "query": {
+      "subtitle_1": "Don't panic, Chan, it's OK",
+      "subtitle_2": "Don't panic, you'll be alright… Chan!",
+      "subtitle_3": "Don't panic",
+      "subtitle_4": "I went to the examination hall",
+      "subtitle_5": "with my son,",
+      "subtitle_6": "don't you know who was the examiner?",
+      "subtitle_7": "He is Seng-ko-lin-ch'in, that bastard",
+      "subtitle_8": "He was the enemy of us!",
+      "subtitle_9": "About our story…",
+      "subtitle_10": "Let me stop here first, I want a smoke",
+      "subtitle_11": "It's better to smoke now",
+      "subtitle_12": "Yes, it's better",
+      "subtitle_13": "We let him go in",
+      "subtitle_14": "the Yee Hung Brothel",
+      "subtitle_15": "But he framed us in return",
+      "subtitle_16": "He tricked my son",
+      "subtitle_17": "during the examination",
+      "subtitle_18": "But, my son was really smart and great",
+      "subtitle_19": "To be the greatest Kung-fu fighter, invincible",
+      "subtitle_20": "Be the top",
+      "subtitle_21": "Can you do that?",
+      "subtitle_22": "Sure!",
+      "subtitle_23": "Well",
+      "subtitle_24": "Come back to me if you can do that",
+      "subtitle_25": "I think we should fix our wedding date first",
+      "subtitle_26": "Because being the scholar is too simple to me"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Write your name at once",
+      "subtitle_2": "I don't know how to write"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan, what's wrong with you?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Nightmare again?",
+      "subtitle_2": "Don't think so much!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_7": "This job should be left to me",
+      "note_7": "Corrected 'should leave to me' to 'should be left to me' for correct grammar.",
+      "revised_10": "there are some lessons!",
+      "note_10": "Corrected 'there is some lessons!' to 'there are some lessons!' for subject-verb agreement.",
+      "revised_16": "We can't beg for food if we are late!",
+      "note_16": "Corrected 'beg for good' to 'beg for food' to match context and likely intended meaning.",
+      "revised_18": "You're not a master now.",
+      "note_18": "Corrected 'You not a master now.' to 'You're not a master now.' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Although you have taken 2 months' rest,",
+      "subtitle_2": "your legs and hands have not been\ntotally recovered",
+      "subtitle_3": "- Mr. Ha Yee\n- Coming",
+      "subtitle_4": "I am going to beg for food",
+      "subtitle_5": "I will make the last herbal tea for you later",
+      "subtitle_6": "Dad, you go begging again?",
+      "subtitle_7": "This job should leave to me",
+      "subtitle_8": "You are the Scholar…",
+      "subtitle_9": "Chan, to be a beggar,",
+      "subtitle_10": "there is some lessons!",
+      "subtitle_11": "You can't just show your hand and beg for money",
+      "subtitle_12": "At least you should have a bowl,\nthat represents your class",
+      "subtitle_13": "Is it ridiculous?",
+      "subtitle_14": "Hurry up",
+      "subtitle_15": "I am coming",
+      "subtitle_16": "We can't beg for good if we are late!",
+      "subtitle_17": "Yes…",
+      "subtitle_18": "You not a master now."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Give me money please",
+      "subtitle_2": "Go, go, I won't give you money",
+      "subtitle_3": "Go, don't stop me from doing business",
+      "subtitle_4": "Chan, dad is leaving"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Thank you…"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "Don't you think I am an idiot?",
+      "note_4": "Added 'an' before 'idiot' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Are you that mean?",
+      "subtitle_2": "Why don't you write it yourself?",
+      "subtitle_3": "You are off duty, so I just want to lend it",
+      "subtitle_4": "Don't you think I am idiot?"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_10": "Are you going for begging?",
+      "note_10": "Corrected 'Are you go for begging?' to 'Are you going for begging?' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Dad!",
+      "subtitle_2": "What are you doing?",
+      "subtitle_3": "I am cold… I am cold… Chan",
+      "subtitle_4": "No, your body is as hot as fire",
+      "subtitle_5": "Are you sick?",
+      "subtitle_6": "I am not…",
+      "subtitle_7": "It's late",
+      "subtitle_8": "I have to search for food",
+      "subtitle_9": "Lie down, I will go this time",
+      "subtitle_10": "Are you go for begging?",
+      "subtitle_11": "I have my own way to get food",
+      "subtitle_12": "Take a rest now",
+      "subtitle_13": "I will take you to the doctor after\ngetting some money"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You bastard, why don't you eat?",
+      "subtitle_2": "You should eat more so as to be strong!",
+      "subtitle_3": "Finish it",
+      "subtitle_4": "No, I am full",
+      "subtitle_5": "You should take all the food",
+      "subtitle_6": "OK, just forget it, let's go home",
+      "subtitle_7": "Come on, eat them all",
+      "subtitle_8": "Little kid!",
+      "subtitle_9": "What?",
+      "subtitle_10": "- May I… - No"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Be merciful to me, please",
+      "note_2": "Added a comma after 'me' for correct punctuation.",
+      "revised_4": "Beggar, do you want the broken charcoal?",
+      "note_4": "Corrected 'carbon' to 'charcoal', which is the correct term in this context.",
+      "revised_8": "No, you are mistaken",
+      "note_8": "Changed 'you have mistaken' to 'you are mistaken' for correct usage."
+    },
+    "query": {
+      "subtitle_1": "Be merciful!",
+      "subtitle_2": "Be merciful to me please",
+      "subtitle_3": "My dad is dying!",
+      "subtitle_4": "Beggar, do you want the broken carbon?",
+      "subtitle_5": "Thank you",
+      "subtitle_6": "Can you give me some coins?",
+      "subtitle_7": "It's you!",
+      "subtitle_8": "No, you have mistaken",
+      "subtitle_9": "Sister, it's him",
+      "subtitle_10": "No, no",
+      "subtitle_11": "Sister, he is So Chan"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Wait!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "I am sorry, I was mistaken",
+      "note_2": "Changed 'have mistaken' to 'was mistaken' for correct usage.",
+      "revised_3": "Tracy, take some dumplings out",
+      "note_3": "Changed 'dumpling' to 'dumplings' for correct plural usage.",
+      "revised_4": "You are mistaken, he is not So Chan",
+      "note_4": "Changed 'have mistake' to 'are mistaken' for correct phrasing.",
+      "revised_8": "Dumplings",
+      "note_8": "Changed 'Dumpling' to 'Dumplings' for correct plural usage."
+    },
+    "query": {
+      "subtitle_1": "Miss, who are you looking for?",
+      "subtitle_2": "I am sorry, I have mistaken",
+      "subtitle_3": "Tracy, take some dumpling out",
+      "subtitle_4": "You have mistake, he is not So Chan",
+      "subtitle_5": "You are like my friend",
+      "subtitle_6": "Come to get some dumplings if you\nget nothing to eat",
+      "subtitle_7": "We always have surplus",
+      "subtitle_8": "Dumpling",
+      "subtitle_9": "Take it"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "he wouldn't be that poor if it were not for you",
+      "note_3": "Corrected 'if not were you' to 'if it were not for you' for proper grammar."
+    },
+    "query": {
+      "subtitle_1": "Thank you…",
+      "subtitle_2": "Sister,",
+      "subtitle_3": "he wouldn't be that poor if not were you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "I have a dumpling, take it back",
+      "note_4": "Added 'a' before 'dumpling' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Dad, what are you doing?",
+      "subtitle_2": "I can't stand the hunger",
+      "subtitle_3": "So I bit the dumpling of the kid",
+      "subtitle_4": "I have dumpling, take it back",
+      "subtitle_5": "Could I pay you another head",
+      "subtitle_6": "if I chopped yours",
+      "subtitle_7": "Are you the Scholar?",
+      "subtitle_8": "Yes, are you the Scholar?",
+      "subtitle_9": "I was nearly the Scholar",
+      "subtitle_10": "He is the Scholar!",
+      "subtitle_11": "We should give him face",
+      "subtitle_12": "Thank you",
+      "subtitle_13": "Hold it",
+      "subtitle_14": "Are they going to treat me some food?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "The dog's rice",
+      "subtitle_2": "Sir, I will let your dad go if you eat\nthe dog's rice now"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What's the matter?",
+      "subtitle_2": "Come on"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan, don't eat that",
+      "subtitle_2": "You can't face the others if you eat this",
+      "subtitle_3": "Let's forget about me",
+      "subtitle_4": "Sir, I was a general in Canton",
+      "subtitle_5": "So what?",
+      "subtitle_6": "Stop fighting",
+      "subtitle_7": "Stand properly"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "The Scholar eats the dog's food",
+      "subtitle_2": "Dad. It's quite delicious",
+      "subtitle_3": "Try some. Come on"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "It's delicious, isn't it?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "It's pork chop!",
+      "note_3": "Corrected 'pock chop' to 'pork chop'."
+    },
+    "query": {
+      "subtitle_1": "Dad, look!",
+      "subtitle_2": "There is a slice of meat here",
+      "subtitle_3": "It's pock chop!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_8": "The Scholar is eating dog food",
+      "note_8": "Changed \"dog's food\" to \"dog food\" for correct usage."
+    },
+    "query": {
+      "subtitle_1": "They are as hungry as dogs!",
+      "subtitle_2": "Enjoy the dog food!",
+      "subtitle_3": "Hurry, finish it",
+      "subtitle_4": "That's too delicious!",
+      "subtitle_5": "I want to save it for midnight snack",
+      "subtitle_6": "It's very clever of you!",
+      "subtitle_7": "You deserve to be beggars",
+      "subtitle_8": "The Scholar is eating dog's food",
+      "subtitle_9": "Come on, let's go and eat the man's food"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Uncle So!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "My dad was the Master of the\nBeggars' Association",
+      "note_2": "Added apostrophe to 'Beggars'' for correct possessive form.",
+      "revised_3": "Why don't you join our Beggars' Association",
+      "note_3": "Added apostrophe to 'Beggars'' for correct possessive form.",
+      "revised_9": "It's wise to join the Beggars' Association\nso as to be taken care of",
+      "note_9": "Added 'of' to complete the phrase 'taken care of'. Added apostrophe to 'Beggars'' for correct possessive form."
+    },
+    "query": {
+      "subtitle_1": "You are…",
+      "subtitle_2": "My dad was the Master of the\nBeggar's Association",
+      "subtitle_3": "Why don't you join our Beggar's Association",
+      "subtitle_4": "Uncle Mok, isn't it a good idea?",
+      "subtitle_5": "Good",
+      "subtitle_6": "Isn't it the association for beggars?",
+      "subtitle_7": "Yes!",
+      "subtitle_8": "That's right, we are being beggars",
+      "subtitle_9": "It's wise to join the Beggars' Association\nso as to be taken care",
+      "subtitle_10": "Chan… where is that fool going?",
+      "subtitle_11": "Where is Chan?",
+      "subtitle_12": "OK, we will join you!",
+      "subtitle_13": "Chan… Chan…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "One cloth is for you\nand the other is for Chan",
+      "note_5": "Corrected 'clothe' to 'cloth'.",
+      "revised_10": "It's new year, you should receive a red packet",
+      "note_10": "Added 'a' before 'red pocket' for correct grammar.",
+      "revised_14": "Uncle Mok, we needn't give red\npackets to each other",
+      "note_14": "Changed 'red pocket' to 'red packets' for correct plural usage.",
+      "revised_25": "So we must choose a new master to\nbe in charge of the association",
+      "note_25": "Changed 'in-charge' to 'be in charge of' for correct usage.",
+      "revised_42": "He is not even qualified to be a beggar!",
+      "note_42": "Added 'a' before 'beggar' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Yushang, good year!",
+      "subtitle_2": "Uncle Mok, happy new year!",
+      "subtitle_3": "This is for you",
+      "subtitle_4": "Thank you",
+      "subtitle_5": "One clothe is for you\nand the other is for Chan",
+      "subtitle_6": "Thank you. Put it down first",
+      "subtitle_7": "Do you have any coins?",
+      "subtitle_8": "Yes!",
+      "subtitle_9": "- Give them to me, come on\n- What for?",
+      "subtitle_10": "It's new year, you should receive red pocket",
+      "subtitle_11": "Come on, happy new year",
+      "subtitle_12": "Good year!",
+      "subtitle_13": "- Wish you ever beauty\n- Thank you",
+      "subtitle_14": "Uncle Mok, we needn't give red\npocket to each other",
+      "subtitle_15": "How about Chan",
+      "subtitle_16": "Chan?",
+      "subtitle_17": "He is still sleeping",
+      "subtitle_18": "Don't wake him up",
+      "subtitle_19": "I will cook you some new year cake",
+      "subtitle_20": "Let me help you",
+      "subtitle_21": "How can he sleep on the 1st day of this year?",
+      "subtitle_22": "He is useless",
+      "subtitle_23": "Are you all here?",
+      "subtitle_24": "To fight against Chiu, we need a union of\nthe Beggar's Association",
+      "subtitle_25": "So we must choose a new master to\nin-charge the association",
+      "subtitle_26": "Yushang…",
+      "subtitle_27": "To defeat the Lotus position of the three seniors",
+      "subtitle_28": "You should try your best",
+      "subtitle_29": "Uncle, I don't have faith to defeat them",
+      "subtitle_30": "Judging from my kung-fu now,",
+      "subtitle_31": "how can I defeat them and become the new master?",
+      "subtitle_32": "Take this Taiwan pill, after this,\nyour power will be improved",
+      "subtitle_33": "No, this is the only medicine to cure\nyour inner injury",
+      "subtitle_34": "How can I take this?",
+      "subtitle_35": "Don't worry,",
+      "subtitle_36": "you can ask my son to fight for you",
+      "subtitle_37": "He was a scholar of Martial Arts",
+      "subtitle_38": "before…",
+      "subtitle_39": "Before…",
+      "subtitle_40": "Look at him, he is so lazy,",
+      "subtitle_41": "he knows sleeping only",
+      "subtitle_42": "He is not even qualified to be beggar!",
+      "subtitle_43": "Don't be that frank, can you?",
+      "subtitle_44": "Don't shout that loudly, OK?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "I have faith in you",
+      "note_2": "Corrected 'faith on you' to 'faith in you'.",
+      "revised_5": "only if you try hard,",
+      "note_5": "Added 'if' to correct the conditional phrase: 'only if you try hard'."
+    },
+    "query": {
+      "subtitle_1": "Chan, no matter how they despise you,",
+      "subtitle_2": "I have faith on you",
+      "subtitle_3": "Although you lost your power",
+      "subtitle_4": "With your background,",
+      "subtitle_5": "only you try hard,",
+      "subtitle_6": "you can achieve something",
+      "subtitle_7": "But I am now powerless,\nI don't want to fight again",
+      "subtitle_8": "You have power!",
+      "subtitle_9": "Come on, beat me"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "See, that was powerful",
+      "subtitle_2": "Well, being a people…",
+      "subtitle_3": "Forget it, don't waste time",
+      "subtitle_4": "Why don't you let me sleep?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Why did you lock the door?",
+      "subtitle_2": "Enjoy sleeping"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Son, I tried very hard to get this for you",
+      "subtitle_2": "Try hard to practise, be good"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Why do you go up?",
+      "subtitle_2": "Even you want me to practise Kung-fu,",
+      "subtitle_3": "you should give me a waddy first",
+      "subtitle_4": "I am sorry, catch it"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "Before being appointed an important task,",
+      "note_1": "Added 'an' before 'important task' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Before being appointed important task,",
+      "subtitle_2": "God will give you severe\ntraining for soul and flesh."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_6": "Congratulations",
+      "note_6": "Corrected 'Congratulation' to 'Congratulations'.",
+      "revised_7": "- Is there anything to eat?\n- No",
+      "note_7": "Corrected 'Are there anything to eat?' to 'Is there anything to eat?' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Did you write it?",
+      "subtitle_2": "It's ugly, it's right to wipe it away",
+      "subtitle_3": "Hey, beggar?",
+      "subtitle_4": "Yes",
+      "subtitle_5": "Me too",
+      "subtitle_6": "Congratulation",
+      "subtitle_7": "- Are there anything to eat?\n- No",
+      "subtitle_8": "Luckily, I have"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_18": "I wouldn't be a beggar!",
+      "note_18": "Added 'a' before 'beggar' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "See your look, it's a waste for you not to beg",
+      "subtitle_2": "None of your damn business",
+      "subtitle_3": "You are too lazy to be a beggar!",
+      "subtitle_4": "Your fellows despise you",
+      "subtitle_5": "I was always respected by others",
+      "subtitle_6": "But now, I am despised",
+      "subtitle_7": "Dislike from you,",
+      "subtitle_8": "no one respected me before",
+      "subtitle_9": "Listen to me. Don't go!",
+      "subtitle_10": "I remembered once in Canton",
+      "subtitle_11": "A fool paid my living, including hooking",
+      "subtitle_12": "What a weird man",
+      "subtitle_13": "Kid, I remembered you",
+      "subtitle_14": "Me too",
+      "subtitle_15": "Hey, hurry up",
+      "subtitle_16": "Repay my money, I am in urgent need",
+      "subtitle_17": "If I had money,",
+      "subtitle_18": "I wouldn't be beggar!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "But, don't worry, you were my benefactor,",
+      "note_1": "Corrected 'benefit or' to 'benefactor'.",
+      "revised_5": "even if you have money again",
+      "note_5": "Added 'if' to correct the conditional phrase: 'even if you have money again'.",
+      "revised_10": "I am Hung Yat-sun, nicknamed Old Bag Sun",
+      "note_10": "Corrected 'nicked name' to 'nicknamed'.",
+      "revised_12": "It's good to be a beggar",
+      "note_12": "Added 'a' before 'beggar' for correct grammar.",
+      "revised_17": "Don't you think you are not human-like?",
+      "note_17": "Added hyphen to 'human-like' for correct compound adjective.",
+      "revised_19": "So you have to be a beggar now",
+      "note_19": "Added 'a' before 'beggar' for correct grammar.",
+      "revised_21": "But I won't cheat you, from your head to toe",
+      "note_21": "Changed 'toes' to 'toe' for the correct idiom: 'from head to toe'.",
+      "revised_22": "Every part of you is beggar-like",
+      "note_22": "Changed 'Every parts' to 'Every part' and added hyphen to 'beggar-like'.",
+      "revised_24": "That means, you will be a beggar for your life",
+      "note_24": "Added 'a' before 'beggar' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "But, don't worry, you were my benefit or,",
+      "subtitle_2": "I will repay you one day",
+      "subtitle_3": "Thank you very much",
+      "subtitle_4": "But, you can't buy back what you lost",
+      "subtitle_5": "even you have money again",
+      "subtitle_6": "What did I lose?",
+      "subtitle_7": "Pride and faith",
+      "subtitle_8": "And your woman too",
+      "subtitle_9": "Who are you?",
+      "subtitle_10": "I am Hung Yat-sun, nicked name Old Bag Sun",
+      "subtitle_11": "I am the most senior one among the beggars",
+      "subtitle_12": "It's good to be beggar",
+      "subtitle_13": "You can do everything you want",
+      "subtitle_14": "You can do the same",
+      "subtitle_15": "Tell me, what do you want?\nI will make your wish come true",
+      "subtitle_16": "I want to be human again",
+      "subtitle_17": "Don't you think you are not human like?",
+      "subtitle_18": "Not at all",
+      "subtitle_19": "So you have to be beggar now",
+      "subtitle_20": "Very good! Very good!",
+      "subtitle_21": "But I won't cheat you, from your head to toes",
+      "subtitle_22": "Every parts of you are beggar like",
+      "subtitle_23": "So what?",
+      "subtitle_24": "That means, you will be beggar for your life"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "I don't want to talk to you, I want to sleep first",
+      "note_1": "Changed 'I want a sleep first' to 'I want to sleep first' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "I don't want to talk to you, I want a sleep first",
+      "subtitle_2": "Don't go, you can achieve in your profession",
+      "subtitle_3": "From my judgement,",
+      "subtitle_4": "you will be the king of beggars",
+      "subtitle_5": "King of beggars, what does that mean?",
+      "subtitle_6": "That is beggar"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I won't care who you are,\nI just want to stop the conversation",
+      "subtitle_2": "Please step aside, don't stop me from sleeping",
+      "subtitle_3": "Damn you!",
+      "subtitle_4": "No… I just want to sleep",
+      "subtitle_5": "with you",
+      "subtitle_6": "Idiot!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Kid, see you in the dream"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "Before the Buddha, the Disciples\nreturn to your position",
+      "note_1": "Changed 'returns' to 'return' for subject-verb agreement.",
+      "revised_2": "To suppress the dragon and tiger",
+      "note_2": "Corrected 'tight' to 'tiger', which is the likely intended word in the common phrase 'dragon and tiger'."
+    },
+    "query": {
+      "subtitle_1": "Before the Buddha, the Disciples\nreturns to your position",
+      "subtitle_2": "To suppress the dragon and tight"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "Now you regret it",
+      "note_3": "Changed 'regretted' to 'regret it' for correct tense and grammar.",
+      "revised_7": "Hope you can make good use of it. Come on",
+      "note_7": "Added a period between 'it' and 'Come on' to separate the sentences."
+    },
+    "query": {
+      "subtitle_1": "So Chan, you enjoyed the prosperity of the world",
+      "subtitle_2": "And you tasted the bitter fruit of the world too",
+      "subtitle_3": "Now you regretted",
+      "subtitle_4": "On behalf of Master Hung",
+      "subtitle_5": "I appoint you to be the \"Sleeping Disciple\"",
+      "subtitle_6": "Now, I will teach you the\n\"Sleeping Disciple's Fist\"!",
+      "subtitle_7": "Hope you can make good use of it Come on"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Senior…"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "The bitter past",
+      "note_1": "Corrected 'pasted' to 'past' to fix the OCR error."
+    },
+    "query": {
+      "subtitle_1": "The bitter pasted"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Here comes the White Goat",
+      "note_2": "Capitalized 'White Goat' as it appears to be a proper noun or title."
+    },
+    "query": {
+      "subtitle_1": "Long life to you…",
+      "subtitle_2": "Here comes the white Goat",
+      "subtitle_3": "My mother, give me power",
+      "subtitle_4": "To save the people!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Tomorrow the Emperor will go hunting",
+      "subtitle_2": "I will send him a pretty girl,\nso as to get close to him",
+      "subtitle_3": "Yuen Ling, you should seduce him tomorrow",
+      "subtitle_4": "Yes",
+      "subtitle_5": "If we can kill the Emperor,",
+      "subtitle_6": "I can take over his reign",
+      "subtitle_7": "I will give you a share of wealth!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Long life to you",
+      "subtitle_2": "Senior!",
+      "subtitle_3": "Let's go back now"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Senior!",
+      "subtitle_2": "Let's go!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Senior!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "You killed a woman…",
+      "note_3": "Added 'a' before 'woman' for correct grammar.",
+      "revised_4": "You should replace her as\na gift to the Emperor!",
+      "note_4": "Changed 'replace her to be' to 'replace her as' for correct usage."
+    },
+    "query": {
+      "subtitle_1": "- Let's chase them\n- Stop!",
+      "subtitle_2": "The Emperor is setting off soon",
+      "subtitle_3": "You killed woman…",
+      "subtitle_4": "You should replace her to be\na gift to the Emperor!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "No one dares come up to fight for the leadership?",
+      "subtitle_2": "Ask Mok to give us the \"Dog Hitting Waddy\"!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "Is there any affair between them?",
+      "note_5": "Changed 'Are there any affair between them?' to 'Is there any affair between them?' for correct subject-verb agreement and singular noun usage."
+    },
+    "query": {
+      "subtitle_1": "Where have they been?",
+      "subtitle_2": "I don't know,",
+      "subtitle_3": "I saw them chat,",
+      "subtitle_4": "then they went away",
+      "subtitle_5": "Are there any affair between them?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Now, we are going to choose the new leader"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_6": "We'd better find someone to compete for the leadership",
+      "note_6": "Added 'better' to correct the grammar: 'We'd better find someone...'."
+    },
+    "query": {
+      "subtitle_1": "Uncle Mok…",
+      "subtitle_2": "I am scared,",
+      "subtitle_3": "I think you won't come back",
+      "subtitle_4": "- How is it?\n- Where is sister?",
+      "subtitle_5": "Your sister is caught by Chiu",
+      "subtitle_6": "We'd find someone to compete for the leadership"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Who should go?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I'll do it",
+      "subtitle_2": "Uncle Mok",
+      "subtitle_3": "Why don't you let me try?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan,",
+      "subtitle_2": "you are not qualified, come down",
+      "subtitle_3": "Since you don't have a good candidate,\nI'll give you some advantage",
+      "subtitle_4": "Chan, it's not a game",
+      "subtitle_5": "You will be killed, come down",
+      "subtitle_6": "It doesn't matter, I have forgotten\nmy life already",
+      "subtitle_7": "Bullshit, throw him to death"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Well, I will make your wish come true"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "What is he doing?",
+      "subtitle_2": "Sleeping"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Uncle Sun's \"Sleeping Disciple's Fists\"?",
+      "note_2": "Corrected quotation marks."
+    },
+    "query": {
+      "subtitle_1": "Isn't this stance…",
+      "subtitle_2": "Uncle Sun's \"Sleeping Disciple's Fists'?",
+      "subtitle_3": "Set the position!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Is it dawn?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "What is the use of defeating us?",
+      "note_3": "Corrected 'for' to 'of' in 'What is the use of defeating us?' for correct idiomatic usage."
+    },
+    "query": {
+      "subtitle_1": "I am sorry!",
+      "subtitle_2": "I won",
+      "subtitle_3": "What is the use for defeating us?",
+      "subtitle_4": "You don't know how to use the\n\"Dog Hitting Waddy\".",
+      "subtitle_5": "You are not qualified to be the leader of us"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "\"Dog Hitting Waddy\"?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "But it's different from the standard stances!",
+      "note_3": "Corrected 'dislike' to 'different' for correct meaning: 'different from the standard stances'."
+    },
+    "query": {
+      "subtitle_1": "It's for hitting dogs",
+      "subtitle_2": "I do know how to use this waddy!",
+      "subtitle_3": "But it's dislike from the standard stances!",
+      "subtitle_4": "It's quite powerful!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "He broke the waddy!",
+      "subtitle_2": "He broke the treasure of our Association,\nlet's kill him!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_6": "We became the biggest association",
+      "note_6": "Corrected 'becomes' to 'beaome' for subject-verb agreement.",
+      "revised_30": "They are easy to be cheated,\nI am really a genius!",
+      "note_30": "Corrected 'easily to be cheated' to 'easy to be cheated' for correct usage."
+    },
+    "query": {
+      "subtitle_1": "I am Master Hung, who dares go against me?",
+      "subtitle_2": "I set the rules of the association",
+      "subtitle_3": "Any student who defeated the Lotus Position",
+      "subtitle_4": "could be the leader",
+      "subtitle_5": "Have you all forgotten?",
+      "subtitle_6": "We becomes the biggest association",
+      "subtitle_7": "because of being united",
+      "subtitle_8": "I left you the \"Dog Hitting Waddy\",",
+      "subtitle_9": "is just for memory",
+      "subtitle_10": "The waddy is meaningless",
+      "subtitle_11": "But you fools take this as treasure",
+      "subtitle_12": "And fight among yourselves for this damn waddy!",
+      "subtitle_13": "In these five years, you have had no\nleader, don't you feel shy?",
+      "subtitle_14": "So Chan broke the waddy,",
+      "subtitle_15": "so you won't fight for this anymore",
+      "subtitle_16": "He is correct to do so",
+      "subtitle_17": "This youngster is so junior,",
+      "subtitle_18": "but he is a genius, a smart ass",
+      "subtitle_19": "He is being taught by my disciple Hung Yat Sun",
+      "subtitle_20": "Who doesn't respect him is going against me too",
+      "subtitle_21": "You should respect him,",
+      "subtitle_22": "your new leader, and you'd love him,",
+      "subtitle_23": "whole-heartedly, to care much for him,\nmaybe, treat him dinner",
+      "subtitle_24": "Then, although I am in heaven,",
+      "subtitle_25": "I will bless all of you, all the best",
+      "subtitle_26": "Isn't it true?",
+      "subtitle_27": "You'd better trust it",
+      "subtitle_28": "Master Hung's soul talked to us,",
+      "subtitle_29": "we are blessed",
+      "subtitle_30": "They are easily to be cheated,\nI am really a genius!",
+      "subtitle_31": "We'll have better living",
+      "subtitle_32": "What happened?",
+      "subtitle_33": "Let's greet the new Master"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "I can't guess you have learnt the\n\"Sleeping Disciple's Fist\"?!",
+      "note_3": "Corrected 'Fists' to 'Fist' to match the likely intended singular form of the martial arts style name."
+    },
+    "query": {
+      "subtitle_1": "Bravo…",
+      "subtitle_2": "Uncle Mok, my son is really great!",
+      "subtitle_3": "I can't guess you have learnt the\n\"Sleeping Disciple's Fists\"?!",
+      "subtitle_4": "From now on, you are the new leader of us",
+      "subtitle_5": "This is the book of \"Dragon Suppressing Stances\"",
+      "subtitle_6": "And, I will give you the Taiwan Pill",
+      "subtitle_7": "Hope you will be a good leader",
+      "subtitle_8": "I just want to save Yushang as soon as possible",
+      "subtitle_9": "Yushang didn't make a wrong choice",
+      "subtitle_10": "Bravo! Bravo!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Uncle Mok, how are you?",
+      "subtitle_2": "Uncle Mok!",
+      "subtitle_3": "Uncle Mok…"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_13": "I can control the 17 stances",
+      "note_13": "Corrected '17th stances' to '17 stances' for grammatical accuracy."
+    },
+    "query": {
+      "subtitle_1": "",
+      "subtitle_2": "",
+      "subtitle_3": "",
+      "subtitle_4": "",
+      "subtitle_5": "",
+      "subtitle_6": "",
+      "subtitle_7": "",
+      "subtitle_8": "Chan,",
+      "subtitle_9": "do you understand everything written in this book?",
+      "subtitle_10": "Don't think that I am so foolish",
+      "subtitle_11": "After getting the help of Taiwan Pill",
+      "subtitle_12": "My initial power is increased",
+      "subtitle_13": "I can control the 17th stances",
+      "subtitle_14": "But the last stance,",
+      "subtitle_15": "there is no picture or description of it",
+      "subtitle_16": "I can't understand at all",
+      "subtitle_17": "But Uncle Mok is dead, what'll we do now?",
+      "subtitle_18": "Just go ahead",
+      "subtitle_19": "No matter how, I have to save Yushang first",
+      "subtitle_20": "",
+      "subtitle_21": "",
+      "subtitle_22": "",
+      "subtitle_23": ""
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Check whether the camp is ready or not?",
+      "subtitle_2": "Yes!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "I know the Emperor loves pretty women",
+      "note_3": "Corrected 'woman' to 'women' for correct plural form."
+    },
+    "query": {
+      "subtitle_1": "Chiu,",
+      "subtitle_2": "why do you bring this woman here?",
+      "subtitle_3": "I know the Emperor loves pretty woman",
+      "subtitle_4": "So I want to send him this gift",
+      "subtitle_5": "And I want to meet him too",
+      "subtitle_6": "There is no order from the Emperor",
+      "subtitle_7": "Men, come and take this woman to the camp",
+      "subtitle_8": "Yes",
+      "subtitle_9": "Go!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Sir, you look great!",
+      "subtitle_2": "I think you should go back",
+      "subtitle_3": "to your own position",
+      "subtitle_4": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Your Majesty,",
+      "subtitle_2": "Officer Chiu brings this woman to you",
+      "subtitle_3": "Woman?",
+      "subtitle_4": "Chiu knows my hobby!",
+      "subtitle_5": "I want to take a bath first, bring her to me later",
+      "subtitle_6": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "if I let him see His Majesty often,\nmy post will be taken away",
+      "note_2": "Corrected 'oftenly' to 'often'."
+    },
+    "query": {
+      "subtitle_1": "This bastard wants to see the Emperor,",
+      "subtitle_2": "if I let him see His Majesty oftenly,\nmy post will be taken away"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "- Check what has happened\n- Yes",
+      "note_3": "Changed 'had' to 'has' for correct tense in the context."
+    },
+    "query": {
+      "subtitle_1": "Men",
+      "subtitle_2": "Sir",
+      "subtitle_3": "- Check what had happened\n- Yes"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Sir, there are many people coming from the forest",
+      "subtitle_2": "Who are they?",
+      "subtitle_3": "I don't know!",
+      "subtitle_4": "Release the alarm smoke",
+      "subtitle_5": "Be alert",
+      "subtitle_6": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "There is smoke ahead, let's get armed",
+      "subtitle_2": "Yes"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Damn you beggars"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "Chiu wants to raise a rebellion,",
+      "note_5": "Corrected 'raise a rebel' to 'raise a rebellion' for correct meaning."
+    },
+    "query": {
+      "subtitle_1": "So Chan, what are you doing?",
+      "subtitle_2": "Nothing, I just want to beg for money",
+      "subtitle_3": "Shit, do you want to be killed",
+      "subtitle_4": "It's you who will be killed",
+      "subtitle_5": "Chiu wants to raise a rebel,",
+      "subtitle_6": "he is going to assassinate the king",
+      "subtitle_7": "You fat-headed",
+      "subtitle_8": "Who do you think you are?",
+      "subtitle_9": "How dare you frame the courtier?",
+      "subtitle_10": "I will kill you if you step forward"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_18": "- Go on after I've left\n- Sure",
+      "note_18": "Changed 'after I left' to 'after I've left' for correct tense."
+    },
+    "query": {
+      "subtitle_1": "Chan, how can we fight with them?",
+      "subtitle_2": "- Senior\n- Yes",
+      "subtitle_3": "Where are the rest of our men?",
+      "subtitle_4": "They are coming",
+      "subtitle_5": "We have no time,",
+      "subtitle_6": "you stay here to wait for the others",
+      "subtitle_7": "I will go first",
+      "subtitle_8": "I will follow",
+      "subtitle_9": "Be serious",
+      "subtitle_10": "Master, don't worry",
+      "subtitle_11": "Am I going to die?",
+      "subtitle_12": "Say something lucky, OK?",
+      "subtitle_13": "Sure! Happy birthday to you…",
+      "subtitle_14": "Happy birthday to you…",
+      "subtitle_15": "Happy birthday to you…",
+      "subtitle_16": "That's enough",
+      "subtitle_17": "I haven't finished",
+      "subtitle_18": "- Go on after I left\n- Sure"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "There is smoke ahead,\nsomeone must have alarmed them",
+      "subtitle_2": "- Get ready the Unicorn Smoke\n- Yes",
+      "subtitle_3": "Attack the main camp"
+    },
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Rebel! Help!",
+      "subtitle_2": "They should be killed",
+      "subtitle_3": "The one who didn't kill you should be killed",
+      "subtitle_4": "Shit, the poisoned smoke",
+      "subtitle_5": "is blowing to the Royal camp"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "No, the wind direction changed",
+      "subtitle_2": "Yes, wait for me",
+      "subtitle_3": "If the beggars don't retreat now,\nwe will kill with no mercy"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Have a look"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "The Unicorn Smoke of the Tin Li Sect"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Be calm, urine is the antidote to the poison",
+      "subtitle_2": "Come and piss"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "How about me?",
+      "subtitle_2": "Don't worry, I can give you some urine",
+      "subtitle_3": "Come on, hold it"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Rush in!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "The smoke is going in the other direction",
+      "note_3": "Changed 'to' to 'in' for correct phrasing: 'going in the other direction'.",
+      "revised_6": "Bring me the sword",
+      "note_6": "Changed 'Take me the sword' to 'Bring me the sword' for correct usage.",
+      "revised_10": "Get lost, don't you want\nto wait for death? Get lost",
+      "note_10": "Added a question mark after 'wait for death' to correct the sentence structure."
+    },
+    "query": {
+      "subtitle_1": "How is the situation?",
+      "subtitle_2": "Thanks for Your Majesty's luck,\nthe wind direction changed",
+      "subtitle_3": "The smoke is going to the other direction",
+      "subtitle_4": "How about our armies?",
+      "subtitle_5": "They are all dead",
+      "subtitle_6": "Take me the sword",
+      "subtitle_7": "Don't… don't!",
+      "subtitle_8": "Get lost! Get lost!",
+      "subtitle_9": "Your Majesty, it's dangerous, don't go!",
+      "subtitle_10": "Get lost, don't you want\nto wait for death, get lost",
+      "subtitle_11": "You are ordered to get away",
+      "subtitle_12": "You can't go!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Protect me"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_12": "But only dumplings left",
+      "note_12": "Changed 'dumpling' to 'dumplings' for correct plural form.",
+      "revised_13": "You know, I don't like eating dumplings",
+      "note_13": "Changed 'dumpling' to 'dumplings' for correct plural form."
+    },
+    "query": {
+      "subtitle_1": "Chan?",
+      "subtitle_2": "Yushang",
+      "subtitle_3": "How did you get here?",
+      "subtitle_4": "It's a long story",
+      "subtitle_5": "We left our base last night",
+      "subtitle_6": "We reached the Great Wall",
+      "subtitle_7": "this morning",
+      "subtitle_8": "We stayed one hour for lunch",
+      "subtitle_9": "I pissed once",
+      "subtitle_10": "- Really?\n- Yes",
+      "subtitle_11": "Then I want to eat a sweet potato",
+      "subtitle_12": "But only dumpling left",
+      "subtitle_13": "You know, I don't like eating dumpling",
+      "subtitle_14": "I am late to save you, please forgive me",
+      "subtitle_15": "To protect the Emperor",
+      "subtitle_16": "Yes"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You betrayer!",
+      "subtitle_2": "Catch him"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Your Majesty"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You bastard, give your kingdom to me",
+      "subtitle_2": "What are you telling him?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "It's you",
+      "subtitle_2": "Yes, I am Beggar So",
+      "subtitle_3": "Why don't you sleep in your hut?",
+      "subtitle_4": "Well, I am a little bit sleepy"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_2": "Yes. Look at you, you are like a beggar too",
+      "note_2": "Added 'a' before 'beggar' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "\"Sleeping Disciple\"?",
+      "subtitle_2": "Yes. Look at you, you are like beggar too",
+      "subtitle_3": "Are you interested to join us?",
+      "subtitle_4": "I can't guess you could recover!",
+      "subtitle_5": "Yes, it's all because of you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Did you generate all your force? I didn't"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Fool, only the \"Dragon Suppressing\nStances\" scare me",
+      "subtitle_2": "I won't give a damn to any other stances"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "\"Dragon Suppress Stances\"",
+      "subtitle_2": "\"Dragon in the sky\"",
+      "subtitle_3": "\"Dragon swings its tail\"",
+      "subtitle_4": "\"Dragon steals the heart\"",
+      "subtitle_5": "Dragon swims, dragon in the field,",
+      "subtitle_6": "dragon dances…",
+      "subtitle_7": "Dragon's descendant,",
+      "subtitle_8": "dragon's wish…",
+      "subtitle_9": "Dragon's spirit, dragon's couple",
+      "subtitle_10": "Finished"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "You can't finish the last stance,",
+      "subtitle_2": "you can defeat me",
+      "subtitle_3": "after learning the 18th stance",
+      "subtitle_4": "But you have no chance"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Chan!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "I've got it. Just mix the 17 stances,",
+      "subtitle_2": "it's the 18th stance then",
+      "subtitle_3": "I am too smart!"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_1": "The 18th stance, \"It's a regret to kill the Dragon\"!",
+      "note_1": "Corrected '18 stance' to '18th stance' for proper ordinal usage."
+    },
+    "query": {
+      "subtitle_1": "The 18 stance, \"It's a regret to kill the Dragon\"!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_3": "Your pose is really smart",
+      "note_3": "Corrected 'post' to 'pose' to match the intended meaning."
+    },
+    "query": {
+      "subtitle_1": "Chan, are you alright?",
+      "subtitle_2": "See, don't you think I am alright?",
+      "subtitle_3": "Your post is really smart",
+      "subtitle_4": "But your look is awful!",
+      "subtitle_5": "Idiot, I am fine",
+      "subtitle_6": "I can marry tonight",
+      "subtitle_7": "You are great!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_5": "He became ashes",
+      "note_5": "Corrected 'ash' to 'ashes' for proper usage in this context.",
+      "revised_8": "Chiu's fellows have all been caught by us",
+      "note_8": "Changed 'are all caught by us' to 'have all been caught by us' for correct tense and grammar."
+    },
+    "query": {
+      "subtitle_1": "Chan! Are you okay?",
+      "subtitle_2": "Where is Chiu?",
+      "subtitle_3": "He is around",
+      "subtitle_4": "Around?",
+      "subtitle_5": "He became ash",
+      "subtitle_6": "Damn it!",
+      "subtitle_7": "Master",
+      "subtitle_8": "Chiu's fellows are all caught by us"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Thank you, buddies"
+    },
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_7": "I love beggars.",
+      "note_7": "Changed 'beggar' to 'beggars' for correct grammar (referring to a group/type, not a single person)."
+    },
+    "query": {
+      "subtitle_1": "Yushang",
+      "subtitle_2": "We have an agreement, do you remember?",
+      "subtitle_3": "Yes, be the top of all",
+      "subtitle_4": "Invincible",
+      "subtitle_5": "But, I can't be the Scholar",
+      "subtitle_6": "But I don't like Scholar at all",
+      "subtitle_7": "I love beggar",
+      "subtitle_8": "You first, I will go after you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_4": "You have potential to be a beggar",
+      "note_4": "Added 'a' before 'beggar' for correct grammar.",
+      "revised_6": "If there is anyone bullies you,\njust tell them my name",
+      "note_6": "Corrected 'If there anyone' to 'If there is anyone' for correct grammar."
+    },
+    "query": {
+      "subtitle_1": "Seng-ko-lin-ch'in,\nyou are really a fool",
+      "subtitle_2": "You bring a thief to harm me",
+      "subtitle_3": "Now, you are titled to be a beggar",
+      "subtitle_4": "You have potential to be beggar",
+      "subtitle_5": "Report duty in the temple tomorrow",
+      "subtitle_6": "If there anyone bullies you,\njust tell them my name",
+      "subtitle_7": "Thank you, thank you master",
+      "subtitle_8": "So Chan, what do you want as reward?",
+      "subtitle_9": "Don't you have anything to tell me?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "revised_10": "we have nothing to chat about",
+      "note_10": "Added 'about' to complete the phrase 'nothing to chat about'.",
+      "revised_13": "The number of fellows doesn't depend on me,",
+      "note_13": "Changed 'fellow' to 'fellows' for subject-verb agreement: 'number of fellows'.",
+      "revised_16": "If you are great, making the\nsociety peaceful and wealthy,",
+      "note_16": "Corrected 'peace' to 'peaceful' for correct adjective usage: 'peaceful and wealthy'."
+    },
+    "query": {
+      "subtitle_1": "Nothing special, let's go",
+      "subtitle_2": "Pick me up",
+      "subtitle_3": "Mister\nSo!",
+      "subtitle_4": "Put me down",
+      "subtitle_5": "Although you have saved me,",
+      "subtitle_6": "if you don't respect me, I will kill you",
+      "subtitle_7": "If so, you needn't squat and talk to me",
+      "subtitle_8": "Don't move, it'll attract their attention",
+      "subtitle_9": "Actually we have no relation,",
+      "subtitle_10": "we have nothing to chat",
+      "subtitle_11": "You have billions of fellows",
+      "subtitle_12": "Your force makes me worry",
+      "subtitle_13": "The number of fellow doesn't depend on me,",
+      "subtitle_14": "but you",
+      "subtitle_15": "What?",
+      "subtitle_16": "If you are great, making the\nsociety peace and wealthy,",
+      "subtitle_17": "no one wishes to be beggar, right?",
+      "subtitle_18": "- It's reasonable\n- Be smart",
+      "subtitle_19": "But,",
+      "subtitle_20": "give me some face",
+      "subtitle_21": "Yes",
+      "subtitle_22": "Long life…",
+      "subtitle_23": "- …to Your Majesty\n- Get up"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Pal, do you know me?",
+      "subtitle_2": "Of course! You beggar",
+      "subtitle_3": "You beg with your girl, you think I'll\ngive you money out of mercy?",
+      "subtitle_4": "Yes, please give me money",
+      "subtitle_5": "No mercy, go away",
+      "subtitle_6": "No, you should pay me",
+      "subtitle_7": "It's a must, pal",
+      "subtitle_8": "A must? Kidding?",
+      "subtitle_9": "It's true, be quick",
+      "subtitle_10": "It's bad luck to meet you",
+      "subtitle_11": "Stop",
+      "subtitle_12": "What?",
+      "subtitle_13": "See my family? Give more",
+      "subtitle_14": "How much?",
+      "subtitle_15": "Not less than a thousand, got me?"
+    },
+    "verified": true
+  },
+  {
+    "answer": {},
+    "query": {
+      "subtitle_1": "Say thank you now",
+      "subtitle_2": "Thank you, uncle",
+      "subtitle_3": "Hurry up",
+      "subtitle_4": "Follow me… go…"
+    },
+    "verified": true
+  }
+]
