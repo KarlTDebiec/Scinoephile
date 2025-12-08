@@ -18,7 +18,6 @@ from .prompt2 import EnglishProofreadingPrompt2
 __all__ = ["EnglishProofreadingAnswer2"]
 
 
-
 class EnglishProofreadingAnswer2(Answer2, ABC):
     """Abstract base class for English proofreading answers."""
 
