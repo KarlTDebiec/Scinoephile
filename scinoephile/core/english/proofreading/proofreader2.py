@@ -45,7 +45,14 @@ class EnglishProofreader2:
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_cases.extend(load_test_cases_from_json(test_case_path))
+            # noinspection PyTypeChecker
+            test_cases.extend(
+                load_test_cases_from_json(
+                    test_case_path,
+                    EnglishProofreadingTestCase2,
+                    prompt_cls=EnglishProofreadingPrompt2,
+                )
+            )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
@@ -101,7 +108,7 @@ class EnglishProofreader2:
         # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
-                self.test_case_path, self.queryer.encountered_test_cases
+                self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
         # Organize and return

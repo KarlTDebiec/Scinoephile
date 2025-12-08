@@ -7,7 +7,6 @@ from __future__ import annotations
 import asyncio
 from logging import info
 from pathlib import Path
-from pprint import pprint
 
 from data.mlamd import (
     mlamd_merge_test_cases,
@@ -23,12 +22,9 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
-    EnglishProofreader,
-    EnglishProofreadingTestCase2,
-    get_english_proofread,
-    migrate_english_proofreading_v1_to_v2,
+    EnglishProofreader2,
+    get_english_proofread2,
 )
-from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
@@ -43,20 +39,20 @@ from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.kob import (
+    get_kob_english_proofreading_test_cases,
     kob_english_fusion_test_cases,
-    kob_english_proofreading_test_cases,
     kob_zhongwen_fusion_test_cases,
     kob_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
+    get_mnt_english_proofreading_test_cases,
     mnt_english_fusion_test_cases,
-    mnt_english_proofreading_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
 from test.data.t import (
+    get_t_english_proofreading_test_cases,
     t_english_fusion_test_cases,
-    t_english_proofreading_test_cases,
     t_zhongwen_fusion_test_cases,
     t_zhongwen_proofreading_test_cases,
 )
@@ -67,23 +63,23 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 # Load English proofreading test cases and migrate to v2, then write to JSON
-from test.data.mlamd import mlamd_english_proofreading_test_cases as test_cases
-
-test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
-pprint(test_cases_2[0:10])
-output_path = test_data_root / title / "core" / "english" / "proofreading.json"
-save_test_cases_to_json(output_path, test_cases_2)
-test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
-pprint(test_cases_2[0:10])
-from test.data.mlamd.core.english import get_proofreading_test_cases
-
-test_cases_2 = get_proofreading_test_cases()
-pprint(test_cases_2[0:10])
+# from test.data.mlamd import mlamd_english_proofreading_test_cases as test_cases
+#
+# test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
+# pprint(test_cases_2[0:10])
+# output_path = test_data_root / title / "core" / "english" / "proofreading.json"
+# save_test_cases_to_json(output_path, test_cases_2)
+# test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
+# pprint(test_cases_2[0:10])
+# from test.data.mlamd.core.english import get_proofreading_test_cases
+#
+# test_cases_2 = get_proofreading_test_cases()
+# pprint(test_cases_2[0:10])
 
 
 actions = {
     # "简体中文 (OCR)",
-    # "English (OCR)",
+    "English (OCR)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
@@ -151,17 +147,17 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_fuse_proofread = get_english_proofread(
+    eng_fuse_proofread = get_english_proofread2(
         eng_fuse,
-        EnglishProofreader(
-            test_cases=kob_english_proofreading_test_cases
-            + mnt_english_proofreading_test_cases
-            + t_english_proofreading_test_cases,
+        EnglishProofreader2(
+            test_cases=get_kob_english_proofreading_test_cases()
+            + get_mnt_english_proofreading_test_cases()
+            + get_t_english_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "english"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
