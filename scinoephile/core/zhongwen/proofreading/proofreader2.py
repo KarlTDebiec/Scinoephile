@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -125,28 +125,28 @@ class ZhongwenProofreader2:
         Returns:
             test cases
         """
-        # try:
-        #     # noinspection PyUnusedImports
-        #     from test.data.kob import get_kob_zhongwen_proofreading_test_cases
-        #
-        #     # noinspection PyUnusedImports
-        #     from test.data.mlamd import get_mlamd_zhongwen_proofreading_test_cases
-        #
-        #     # noinspection PyUnusedImports
-        #     from test.data.mnt import get_mnt_zhongwen_proofreading_test_cases
-        #
-        #     # noinspection PyUnusedImports
-        #     from test.data.t import get_t_zhongwen_proofreading_test_cases
-        #
-        #     return (
-        #         get_kob_zhongwen_proofreading_test_cases()
-        #         + get_mlamd_zhongwen_proofreading_test_cases()
-        #         + get_mnt_zhongwen_proofreading_test_cases()
-        #         + get_t_zhongwen_proofreading_test_cases()
-        #     )
-        # except ImportError as exc:
-        #     warning(
-        #         f"Default test cases not available for {cls.__name__}, "
-        #         f"encountered Exception:\n{exc}"
-        #     )
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import get_kob_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import get_mlamd_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import get_mnt_zhongwen_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import get_t_zhongwen_proofreading_test_cases
+
+            return (
+                get_kob_zhongwen_proofreading_test_cases()
+                + get_mlamd_zhongwen_proofreading_test_cases()
+                + get_mnt_zhongwen_proofreading_test_cases()
+                + get_t_zhongwen_proofreading_test_cases()
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
         return []

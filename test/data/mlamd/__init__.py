@@ -12,6 +12,7 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -164,6 +165,24 @@ def get_mlamd_english_proofreading_test_cases(
     return cast(list[EnglishProofreadingTestCase2], test_cases)
 
 
+def get_mlamd_zhongwen_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenProofreadingTestCase2]:
+    """Get MLAMD Zhongwen proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        Zhongwen proofreading test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "core" / "zhongwen" / "proofreading.json",
+        ZhongwenProofreadingTestCase2,
+        **kwargs,
+    )
+    return cast(list[ZhongwenProofreadingTestCase2], test_cases)
+
+
 ___all__ = [
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
@@ -192,4 +211,5 @@ ___all__ = [
     "mlamd_zhongwen_fusion_test_cases",
     "mlamd_zhongwen_proofreading_test_cases",
     "get_mlamd_english_proofreading_test_cases",
+    "get_mlamd_zhongwen_proofreading_test_cases",
 ]
