@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from pprint import pprint
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
@@ -13,6 +14,7 @@ from scinoephile.core.english.proofreading import (
     EnglishProofreader2,
     get_english_proofread2,
 )
+from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     OpenCCConfig,
@@ -22,7 +24,9 @@ from scinoephile.core.zhongwen import (
 )
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
+    ZhongwenProofreadingTestCase2,
     get_zhongwen_proofread,
+    migrate_zhongwen_proofreading_v1_to_v2,
 )
 from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
@@ -65,10 +69,23 @@ set_logging_verbosity(2)
 # test_cases_2 = get_proofreading_test_cases()
 # pprint(test_cases_2[0:10])
 
+# Load Zhongwen proofreading test cases and migrate to v2, then write to JSON
+from test.data.kob import kob_zhongwen_proofreading_test_cases as test_cases
+
+test_cases_2 = migrate_zhongwen_proofreading_v1_to_v2(test_cases)
+pprint(test_cases_2[0:10])
+output_path = test_data_root / title / "core" / "zhongwen" / "proofreading.json"
+save_test_cases_to_json(output_path, test_cases_2)
+test_cases_2 = load_test_cases_from_json(output_path, ZhongwenProofreadingTestCase2)
+pprint(test_cases_2[0:10])
+# from test.data.kob.core.zhongwen import get_proofreading_test_cases
+
+# test_cases_2 = get_proofreading_test_cases()
+# pprint(test_cases_2[0:10])
 
 actions = {
     # "繁體中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
     # "简体粵文 (SRT)",
     # "繁體粵文 (SRT)",
     # "English (SRT)",
