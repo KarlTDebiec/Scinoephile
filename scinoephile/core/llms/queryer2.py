@@ -124,7 +124,6 @@ class Queryer2[
         query_prompt = json.dumps(
             test_case.query.model_dump(), indent=4, ensure_ascii=False
         )
-        answer: Answer2 | None = None
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": query_prompt},
@@ -167,8 +166,8 @@ class Queryer2[
                 test_case = type(test_case).model_validate(
                     {**test_case.model_dump(), "answer": answer}
                 )
-                # if self.auto_verify and test_case.get_auto_verified():
-                #     test_case.verified = True
+                if self.auto_verify and test_case.get_auto_verified():
+                    test_case.verified = True
             except ValidationError as exc:
                 error(
                     f"Query:\n{test_case.query}\n"
@@ -285,8 +284,8 @@ class Queryer2[
         try:
             content = json.loads(contents)
             test_case = type(test_case).model_validate(content)
-            # if self.auto_verify and test_case.get_auto_verified():
-            #     test_case.verified = True
+            if self.auto_verify and test_case.get_auto_verified():
+                test_case.verified = True
             self.log_encountered_test_case(test_case)
             info(f"Loaded from cache: {test_case.query.key_str}")
             cache_path.touch()
