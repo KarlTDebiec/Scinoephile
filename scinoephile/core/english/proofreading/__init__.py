@@ -9,12 +9,14 @@ from typing import Any
 from scinoephile.core.series import Series
 
 from .answer import EnglishProofreadingAnswer
+from .answer2 import EnglishProofreadingAnswer2
 from .llm_queryer import EnglishProofreadingLLMQueryer
 from .prompt import EnglishProofreadingPrompt
 from .prompt2 import EnglishProofreadingPrompt2
 from .proofreader import EnglishProofreader
 from .proofreader2 import EnglishProofreader2
 from .query import EnglishProofreadingQuery
+from .query2 import EnglishProofreadingQuery2
 from .test_case import EnglishProofreadingTestCase
 from .test_case2 import EnglishProofreadingTestCase2
 
@@ -22,10 +24,12 @@ __all__ = [
     "EnglishProofreader",
     "EnglishProofreader2",
     "EnglishProofreadingAnswer",
+    "EnglishProofreadingAnswer2",
     "EnglishProofreadingLLMQueryer",
     "EnglishProofreadingPrompt",
     "EnglishProofreadingPrompt2",
     "EnglishProofreadingQuery",
+    "EnglishProofreadingQuery2",
     "EnglishProofreadingTestCase",
     "EnglishProofreadingTestCase2",
     "get_english_proofread",
