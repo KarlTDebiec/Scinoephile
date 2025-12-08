@@ -46,6 +46,10 @@ class TestCase2[TQuery: Query2, TAnswer: Answer2](BaseModel, ABC):
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
+    def get_auto_verified(self) -> bool:
+        """Whether this test case should automatically be verified."""
+        return False
+
     @classmethod
     @abstractmethod
     def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
