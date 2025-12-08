@@ -5,10 +5,13 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
 from scinoephile.core import Series
+from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
+from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -30,9 +33,9 @@ from test.data.mlamd.review import mlamd_review_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
 from test.data.mlamd.translation import mlamd_translate_test_cases
 
-title = Path(__file__).parent.name
-input_dir = test_data_root / title / "input"
-output_dir = test_data_root / title / "output"
+title_root = test_data_root / Path(__file__).parent.name
+input_dir = title_root / "input"
+output_dir = title_root / "output"
 
 
 # 简体中文 (OCR)
@@ -143,6 +146,24 @@ def mlamd_yue_hans_eng() -> Series:
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
+def get_mlamd_english_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[EnglishProofreadingTestCase2]:
+    """Get MLAMD English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        English proofreading test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "core" / "english" / "proofreading.json",
+        EnglishProofreadingTestCase2,
+        **kwargs,
+    )
+    return cast(list[EnglishProofreadingTestCase2], test_cases)
+
+
 ___all__ = [
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
@@ -170,4 +191,5 @@ ___all__ = [
     "mlamd_english_proofreading_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
     "mlamd_zhongwen_proofreading_test_cases",
+    "get_mlamd_english_proofreading_test_cases",
 ]

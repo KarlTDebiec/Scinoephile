@@ -54,12 +54,12 @@ def load_test_cases_from_json(
     return test_cases
 
 
-def save_test_cases_to_json(test_cases: list[TestCase2], output_path: Path) -> None:
+def save_test_cases_to_json(output_path: Path, test_cases: list[TestCase2]) -> None:
     """Save test cases to JSON file.
 
     Arguments:
-        test_cases: test cases to save
         output_path: path to JSON file to which to save
+        test_cases: test cases to save
     """
     data = [tc.model_dump(exclude_defaults=True) for tc in test_cases]
 

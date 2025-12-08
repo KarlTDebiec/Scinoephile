@@ -60,7 +60,7 @@ from test.data.t import t_english_proofreading_test_cases as test_cases
 test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
 pprint(test_cases_2[0:10])
 output_path = test_data_root / title / "core" / "english" / "proofreading.json"
-save_test_cases_to_json(test_cases_2, output_path)
+save_test_cases_to_json(output_path, test_cases_2)
 test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
 pprint(test_cases_2[0:10])
 from test.data.t.core.english import get_proofreading_test_cases

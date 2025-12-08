@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -50,7 +50,7 @@ class EnglishProofreader2:
         """Path to file containing test cases."""
 
         queryer_cls = Queryer2.get_queryer_cls(EnglishProofreadingPrompt2)
-        self.llm_queryer = queryer_cls(
+        self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
@@ -84,7 +84,7 @@ class EnglishProofreader2:
                 }
             )
             test_case = test_case_cls(query=query)
-            test_case = self.llm_queryer(test_case)
+            test_case = self.queryer(test_case)
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
@@ -101,7 +101,7 @@ class EnglishProofreader2:
         # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
-                self.test_case_path, test_case.answer.encountered_test_cases
+                self.test_case_path, self.queryer.encountered_test_cases
             )
 
         # Organize and return
@@ -118,48 +118,28 @@ class EnglishProofreader2:
         Returns:
             test cases
         """
-        #     try:
-        #         # noinspection PyUnusedImports
-        #         from test.data.kob import kob_english_proofreading_test_cases
-        #         from test.data.mlamd import mlamd_english_proofreading_test_cases
-        #         from test.data.mnt import mnt_english_proofreading_test_cases
-        #         from test.data.t import t_english_proofreading_test_cases
-        #
-        #         return (
-        #             kob_english_proofreading_test_cases
-        #             + mlamd_english_proofreading_test_cases
-        #             + mnt_english_proofreading_test_cases
-        #             + t_english_proofreading_test_cases
-        #         )
-        #     except ImportError as exc:
-        #         warning(
-        #             f"Default test cases not available for {cls.__name__}, "
-        #             f"encountered Exception:\n{exc}"
-        #         )
-        #         return []
-        return []
+        try:
+            # noinspection PyUnusedImports
+            from test.data.kob import get_kob_english_proofreading_test_cases
 
-    # @staticmethod
-    # def create_test_case_file(test_case_path: Path):
-    #     """Create a test case file.
-    #
-    #     Arguments:
-    #         test_case_path: path to file to create
-    #     """
-    #     contents = dedent('''
-    #         """English proofreading test cases."""
-    #
-    #         from __future__ import annotations
-    #
-    #         from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
-    #
-    #         # noinspection PyArgumentList
-    #         test_cases = []  # test_cases
-    #         """English proofreading test cases."""
-    #
-    #         __all__ = [
-    #             "test_cases",
-    #         ]''').strip()
-    #     test_case_path.parent.mkdir(parents=True, exist_ok=True)
-    #     test_case_path.write_text(contents, encoding="utf-8")
-    #     info(f"Created test case file at {test_case_path}.")
+            # noinspection PyUnusedImports
+            from test.data.mlamd import get_mlamd_english_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import get_mnt_english_proofreading_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import get_t_english_proofreading_test_cases
+
+            return (
+                get_kob_english_proofreading_test_cases()
+                + get_mlamd_english_proofreading_test_cases()
+                + get_mnt_english_proofreading_test_cases()
+                + get_t_english_proofreading_test_cases()
+            )
+        except ImportError as exc:
+            warning(
+                f"Default test cases not available for {cls.__name__}, "
+                f"encountered Exception:\n{exc}"
+            )
+        return []
