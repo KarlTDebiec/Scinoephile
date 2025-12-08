@@ -10,7 +10,8 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import TestCase2, get_cls_name
+from scinoephile.core.llms import TestCase2
+from scinoephile.core.models import get_cls_name
 
 from .answer2 import EnglishProofreadingAnswer2
 from .prompt2 import EnglishProofreadingPrompt2

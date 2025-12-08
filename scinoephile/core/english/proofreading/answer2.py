@@ -10,11 +10,13 @@ from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Answer2, get_cls_name
+from scinoephile.core.llms import Answer2
+from scinoephile.core.models import get_cls_name
 
 from .prompt2 import EnglishProofreadingPrompt2
 
 __all__ = ["EnglishProofreadingAnswer2"]
+
 
 
 class EnglishProofreadingAnswer2(Answer2, ABC):

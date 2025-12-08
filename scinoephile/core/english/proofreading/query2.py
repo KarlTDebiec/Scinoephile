@@ -10,7 +10,8 @@ from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Query2, get_cls_name
+from scinoephile.core.llms import Query2
+from scinoephile.core.models import get_cls_name
 
 from .prompt2 import EnglishProofreadingPrompt2
 

@@ -9,8 +9,35 @@ from typing import Any
 
 __all__ = [
     "format_field",
+    "get_cls_name",
     "make_hashable",
 ]
+
+
+def get_cls_name(base_name: str, suffix: str) -> str:
+    """Build a Pydantic-valid class name from a base name and suffix.
+
+    If the name exceeds the 64-character Pydantic limit, replace the suffix
+    with a deterministic short hash.
+
+    Arguments:
+        base_name: name of base class
+        suffix: descriptive suffix
+
+    Returns:
+        Valid class name string
+    """
+    # Base name and suffix are short enough to use directly
+    if len(base_name) + 1 + len(suffix) <= 64:
+        return f"{base_name}_{suffix}"
+
+    # Base name is too long even for hash of suffix to be used
+    if len(base_name) + 1 + 12 > 64:
+        raise ValueError("Base name too long to create a valid Pydantic class name.")
+
+    # Use base name and hash of suffix
+    digest = hashlib.sha256(suffix.encode("utf-8")).hexdigest()[:12]
+    return f"{base_name}_{digest}"
 
 
 def format_field(name: str, value: object) -> str:
