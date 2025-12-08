@@ -7,9 +7,9 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-__all__ = ["EnglishPrompt2"]
+from scinoephile.core.llms.prompt2 import Prompt2
 
-from scinoephile.core.abcs.prompt2 import Prompt2
+__all__ = ["EnglishPrompt2"]
 
 
 class EnglishPrompt2(Prompt2, ABC):

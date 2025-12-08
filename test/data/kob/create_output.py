@@ -5,14 +5,18 @@
 from __future__ import annotations
 
 from pathlib import Path
+from pprint import pprint
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
     EnglishProofreader2,
+    EnglishProofreadingTestCase2,
     get_english_proofread2,
+    migrate_english_proofreading_v1_to_v2,
 )
+from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     OpenCCConfig,
@@ -49,17 +53,19 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 # Load English proofreading test cases and migrate to v2, then write to JSON
-# from test.data.kob import kob_english_proofreading_test_cases as test_cases
-#
-# test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
-# print(test_cases_2)
-# output_path = test_data_root / title / "core" / "english" / "proofreading.json"
-# data = [tc.model_dump(exclude_defaults=True) for tc in test_cases_2]
-# with open(output_path, "w", encoding="utf-8") as f:
-#     json.dump(data, f, ensure_ascii=False, indent=2)
+from test.data.kob import kob_english_proofreading_test_cases as test_cases
+
+test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
+pprint(test_cases_2[0:10])
+output_path = test_data_root / title / "core" / "english" / "proofreading.json"
+save_test_cases_to_json(test_cases_2, output_path)
+test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
+pprint(test_cases_2[0:10])
 from test.data.kob.core.english import get_proofreading_test_cases
 
-print(get_proofreading_test_cases())
+test_cases_2 = get_proofreading_test_cases()
+pprint(test_cases_2[0:10])
+
 
 actions = {
     # "繁體中文 (OCR)",

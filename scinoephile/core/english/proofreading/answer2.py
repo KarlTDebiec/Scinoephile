@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.abcs.answer2 import Answer2
+from scinoephile.core.llms import Answer2, get_cls_name
 
 from .prompt2 import EnglishProofreadingPrompt2
 
@@ -41,6 +41,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
         Returns:
             Answer type with appropriate fields and text
         """
+        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields = {}
         for idx in range(size):
             key = f"revised_{idx + 1}"
@@ -49,7 +50,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
             key = f"note_{idx + 1}"
             description = prompt_cls.note_description.format(idx=idx + 1)
             fields[key] = (str, Field("", description=description, max_length=1000))
-        name = f"{cls.__name__}_{size}_{prompt_cls.__name__}"
+
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls
         model.size = size

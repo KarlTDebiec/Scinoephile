@@ -51,7 +51,7 @@ class EnglishProofreadingPrompt2(EnglishPrompt2):
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
-    """Description of 'note' field'."""
+    """Description of 'note' field."""
 
     # Test case validation errors
     subtitle_revised_equal_error: ClassVar[str] = (

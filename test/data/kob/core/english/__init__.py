@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-import json
 from functools import cache
+from typing import cast
 
-from scinoephile.core.abcs.functions import load_test_cases_from_json
 from scinoephile.core.english.proofreading import (
     EnglishProofreadingPrompt2,
     EnglishProofreadingTestCase2,
 )
+from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.testing import test_data_root
 
 title = "kob"
@@ -21,22 +21,16 @@ title = "kob"
 def get_proofreading_test_cases(
     prompt_cls: type[EnglishProofreadingPrompt2] = EnglishProofreadingPrompt2,
 ) -> list[EnglishProofreadingTestCase2]:
-    """Lazily load KOB English proofreading test cases (v2) from JSON."""
+    """Load English proofreading test cases from JSON.
+
+    Arguments:
+        prompt_cls: text strings to be used for corresponding with LLM
+    Returns:
+        list of English proofreading test cases
+    """
     path = test_data_root / title / "core" / "english" / "proofreading.json"
-    test_cases = load_test_cases_from_json(path=path, prompt_cls=prompt_cls)
+    test_cases = load_test_cases_from_json(
+        path, EnglishProofreadingTestCase2, prompt_cls=prompt_cls
+    )
 
-    with open(path, encoding="utf-8") as f:
-        raw_test_cases: list[dict] = json.load(f)
-
-    test_cases: list[EnglishProofreadingTestCase2] = []
-
-    for test_case_data in raw_test_cases:
-        size = sum(1 for key in test_case_data["query"] if key.startswith("subtitle_"))
-
-        test_case_cls = EnglishProofreadingTestCase2.get_test_case_cls(
-            size=size,
-            prompt_cls=prompt_cls,
-        )
-        test_cases.append(test_case_cls.model_validate(test_case_data))
-
-    return test_cases
+    return cast(list[EnglishProofreadingTestCase2], test_cases)

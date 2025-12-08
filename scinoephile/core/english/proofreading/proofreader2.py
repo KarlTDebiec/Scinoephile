@@ -10,12 +10,12 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
-from scinoephile.core.abcs.functions import (
+from scinoephile.core.blocks import get_concatenated_series
+from scinoephile.core.llms import (
+    Queryer2,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.core.abcs.llm_queryer2 import LLMQueryer2
-from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import test_data_root
 
 from .prompt2 import EnglishProofreadingPrompt2
@@ -49,8 +49,8 @@ class EnglishProofreader2:
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        llm_queryer_cls = LLMQueryer2.get_queryer_cls(EnglishProofreadingPrompt2)
-        self.llm_queryer = llm_queryer_cls(
+        queryer_cls = Queryer2.get_queryer_cls(EnglishProofreadingPrompt2)
+        self.llm_queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",

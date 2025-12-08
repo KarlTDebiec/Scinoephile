@@ -16,19 +16,19 @@ from typing import ClassVar, Self, cast
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.abcs import LLMProvider
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.openai import OpenAIProvider
 
 from .answer2 import Answer2
-from .llm_provider import LLMProvider
 from .prompt2 import Prompt2
 from .query2 import Query2
 from .test_case2 import TestCase2
 
-__all__ = ["LLMQueryer2"]
+__all__ = ["Queryer2"]
 
 
-class LLMQueryer2[
+class Queryer2[
     TQuery: Query2,
     TAnswer: Answer2,
     TTestCase: TestCase2,

@@ -10,8 +10,9 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.abcs.prompt2 import Prompt2
 from scinoephile.core.models import make_hashable
+
+from .prompt2 import Prompt2
 
 __all__ = ["Query2"]
 

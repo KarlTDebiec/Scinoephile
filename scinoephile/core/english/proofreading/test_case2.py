@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.abcs.test_case2 import TestCase2
+from scinoephile.core.llms import TestCase2, get_cls_name
 
 from .answer2 import EnglishProofreadingAnswer2
 from .prompt2 import EnglishProofreadingPrompt2
@@ -72,7 +72,7 @@ class EnglishProofreadingTestCase2(
         Returns:
             TestCase type with appropriate fields and text
         """
-        name = f"{cls.__name__}_{size}_{prompt_cls.__name__}"
+        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         query_cls = EnglishProofreadingQuery2.get_query_cls(size, prompt_cls)
         answer_cls = EnglishProofreadingAnswer2.get_answer_cls(size, prompt_cls)
         fields = {

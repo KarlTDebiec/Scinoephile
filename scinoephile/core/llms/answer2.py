@@ -10,7 +10,7 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.abcs.prompt2 import Prompt2
+from .prompt2 import Prompt2
 
 __all__ = ["Answer2"]
 

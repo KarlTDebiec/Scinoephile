@@ -5,14 +5,18 @@
 from __future__ import annotations
 
 from pathlib import Path
+from pprint import pprint
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
     EnglishProofreader,
+    EnglishProofreadingTestCase2,
     get_english_proofread,
+    migrate_english_proofreading_v1_to_v2,
 )
+from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
@@ -50,16 +54,28 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
+# Load English proofreading test cases and migrate to v2, then write to JSON
+from test.data.t import t_english_proofreading_test_cases as test_cases
+
+test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
+pprint(test_cases_2[0:10])
+output_path = test_data_root / title / "core" / "english" / "proofreading.json"
+save_test_cases_to_json(test_cases_2, output_path)
+test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
+pprint(test_cases_2[0:10])
+from test.data.t.core.english import get_proofreading_test_cases
+
+test_cases_2 = get_proofreading_test_cases()
+pprint(test_cases_2[0:10])
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
-    "简体中文 (SRT)",
-    "繁體中文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体中文 and English",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
+    # "简体中文 (SRT)",
+    # "繁體中文 (SRT)",
+    # "English (SRT)",
+    # "Bilingual 简体中文 and English",
 }
 
-# 简体中文 (OCR)
 if "简体中文 (OCR)" in actions:
     zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
     zho_hans_lens = get_zhongwen_cleaned(zho_hans_lens, remove_empty=False)

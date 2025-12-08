@@ -20,11 +20,14 @@ from .test_case2 import EnglishProofreadingTestCase2
 
 __all__ = [
     "EnglishProofreader",
+    "EnglishProofreader2",
     "EnglishProofreadingAnswer",
     "EnglishProofreadingLLMQueryer",
     "EnglishProofreadingPrompt",
+    "EnglishProofreadingPrompt2",
     "EnglishProofreadingQuery",
     "EnglishProofreadingTestCase",
+    "EnglishProofreadingTestCase2",
     "get_english_proofread",
     "get_english_proofread2",
     "migrate_english_proofreading_v1_to_v2",

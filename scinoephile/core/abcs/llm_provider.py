@@ -33,7 +33,7 @@ class LLMProvider(ABC):
         Raises:
             ScinoephileError: Error during chat completion
         """
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     async def chat_completion_async(
@@ -53,4 +53,4 @@ class LLMProvider(ABC):
         Raises:
             ScinoephileError: Error during chat completion
         """
-        pass
+        raise NotImplementedError()
