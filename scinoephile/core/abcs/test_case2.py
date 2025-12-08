@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 import json
-from abc import ABC
-from typing import ClassVar
+from abc import ABC, abstractmethod
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, Field
 
@@ -45,3 +45,15 @@ class TestCase2[TQuery: Query2, TAnswer: Answer2](BaseModel, ABC):
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+
+    @classmethod
+    @abstractmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get test case class from data.
+
+        Arguments:
+            data: data dictionary
+        Returns:
+            test case class
+        """
+        raise NotImplementedError()

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
@@ -98,3 +98,17 @@ class EnglishProofreadingTestCase2(
         model.prompt_cls = prompt_cls
         model.size = size
         return model
+
+    @classmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get test case class from data.
+
+        Arguments:
+            data: data dictionary
+            kwargs: additional keyword arguments passed to get_test_case_cls
+        Returns:
+            test case class
+        """
+        size = sum(1 for key in data["query"] if key.startswith("subtitle_"))
+        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
+        return test_case_cls

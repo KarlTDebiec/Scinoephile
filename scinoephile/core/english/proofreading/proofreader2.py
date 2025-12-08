@@ -8,7 +8,12 @@ import re
 from logging import info
 from pathlib import Path
 
+from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
+from scinoephile.core.abcs.functions import (
+    load_test_cases_from_json,
+    save_test_cases_to_json,
+)
 from scinoephile.core.abcs.llm_queryer2 import LLMQueryer2
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.testing import test_data_root
@@ -38,11 +43,11 @@ class EnglishProofreader2:
         if test_cases is None:
             test_cases = self.get_default_test_cases()
 
-        # if test_case_path is not None:
-        #     test_case_path = val_output_path(test_case_path, exist_ok=True)
-        #     test_cases.extend(get_test_cases_from_file_path(test_case_path))
-        # self.test_case_path = test_case_path
-        # """Path to file containing test cases."""
+        if test_case_path is not None:
+            test_case_path = val_output_path(test_case_path, exist_ok=True)
+            test_cases.extend(load_test_cases_from_json(test_case_path))
+        self.test_case_path = test_case_path
+        """Path to file containing test cases."""
 
         llm_queryer_cls = LLMQueryer2.get_queryer_cls(EnglishProofreadingPrompt2)
         self.llm_queryer = llm_queryer_cls(
@@ -62,10 +67,6 @@ class EnglishProofreader2:
         Returns:
             proofread English subtitles
         """
-        # Ensure test case file exists
-        # if self.test_case_path is not None and not self.test_case_path.exists():
-        #     self.create_test_case_file(self.test_case_path)
-
         # Proofread subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
@@ -76,7 +77,6 @@ class EnglishProofreader2:
             # Query LLM
             test_case_cls = EnglishProofreadingTestCase2.get_test_case_cls(len(block))
             query_cls = test_case_cls.query_cls
-            # answer_cls = test_case_cls.answer_cls
             query = query_cls(
                 **{
                     f"subtitle_{idx + 1}": re.sub(r"\\N", r"\n", subtitle.text).strip()
@@ -85,11 +85,10 @@ class EnglishProofreader2:
             )
             test_case = test_case_cls(query=query)
             test_case = self.llm_queryer(test_case)
-            answer = test_case.answer
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                if revised := getattr(answer, f"revised_{sub_idx + 1}"):
+                if revised := getattr(test_case.answer, f"revised_{sub_idx + 1}"):
                     subtitle.text = revised
                 output_series.append(subtitle)
 
@@ -100,8 +99,10 @@ class EnglishProofreader2:
             output_series_to_concatenate[block_idx] = output_series
 
         # Log test cases
-        # if self.test_case_path is not None:
-        #     update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+        if self.test_case_path is not None:
+            save_test_cases_to_json(
+                self.test_case_path, test_case.answer.encountered_test_cases
+            )
 
         # Organize and return
         output_series = get_concatenated_series(

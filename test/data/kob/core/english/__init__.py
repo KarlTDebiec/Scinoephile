@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from functools import cache
 
+from scinoephile.core.abcs.functions import load_test_cases_from_json
 from scinoephile.core.english.proofreading import (
     EnglishProofreadingPrompt2,
     EnglishProofreadingTestCase2,
@@ -22,6 +23,7 @@ def get_proofreading_test_cases(
 ) -> list[EnglishProofreadingTestCase2]:
     """Lazily load KOB English proofreading test cases (v2) from JSON."""
     path = test_data_root / title / "core" / "english" / "proofreading.json"
+    test_cases = load_test_cases_from_json(path=path, prompt_cls=prompt_cls)
 
     with open(path, encoding="utf-8") as f:
         raw_test_cases: list[dict] = json.load(f)

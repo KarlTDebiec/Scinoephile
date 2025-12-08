@@ -10,8 +10,8 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
-    EnglishProofreader,
-    get_english_proofread,
+    EnglishProofreader2,
+    get_english_proofread2,
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
@@ -29,19 +29,16 @@ from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fu
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     mlamd_english_fusion_test_cases,
-    mlamd_english_proofreading_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
     mnt_english_fusion_test_cases,
-    mnt_english_proofreading_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
 from test.data.t import (
     t_english_fusion_test_cases,
-    t_english_proofreading_test_cases,
     t_zhongwen_fusion_test_cases,
     t_zhongwen_proofreading_test_cases,
 )
@@ -127,17 +124,15 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_fuse_proofread = get_english_proofread(
+    eng_fuse_proofread = get_english_proofread2(
         eng_fuse,
-        EnglishProofreader(
-            test_cases=mlamd_english_proofreading_test_cases
-            + mnt_english_proofreading_test_cases
-            + t_english_proofreading_test_cases,
+        EnglishProofreader2(
+            test_cases=[],
             test_case_path=test_data_root
             / title
             / "core"
             / "english"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
