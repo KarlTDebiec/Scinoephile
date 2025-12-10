@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 import json
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Any, ClassVar, Self
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from .answer2 import Answer2
 from .prompt2 import Prompt2
@@ -46,18 +46,38 @@ class TestCase2[TQuery: Query2, TAnswer: Answer2](BaseModel, ABC):
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty reflects prompt/split status if not already higher."""
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
+
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
         return False
 
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on the test case properties.
+
+        0: No change needed
+        1: Change needed
+        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
+        3: Not considered realistic for LLM to handle correctly
+
+        Returns:
+            minimum difficulty level based on the test case properties
+        """
+        return 0
+
     @classmethod
-    @abstractmethod
     def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
-        """Get test case class from data.
+        """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data dictionary
+            kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case class
         """
-        raise NotImplementedError()
+        test_case_cls = cls.get_test_case_cls(**kwargs)
+        return test_case_cls

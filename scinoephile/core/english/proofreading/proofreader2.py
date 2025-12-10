@@ -7,6 +7,7 @@ from __future__ import annotations
 import re
 from logging import info, warning
 from pathlib import Path
+from typing import cast
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
@@ -45,12 +46,14 @@ class EnglishProofreader2:
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            # noinspection PyTypeChecker
             test_cases.extend(
-                load_test_cases_from_json(
-                    test_case_path,
-                    EnglishProofreadingTestCase2,
-                    prompt_cls=EnglishProofreadingPrompt2,
+                cast(
+                    list[EnglishProofreadingTestCase2],
+                    load_test_cases_from_json(
+                        test_case_path,
+                        EnglishProofreadingTestCase2,
+                        prompt_cls=EnglishProofreadingPrompt2,
+                    ),
                 )
             )
         self.test_case_path = test_case_path
@@ -63,7 +66,7 @@ class EnglishProofreader2:
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """LLM queryer for proofreading."""
+        """LLM queryer."""
 
     def proofread(self, series: Series, stop_at_idx: int | None = None) -> Series:
         """Proofread English subtitles.

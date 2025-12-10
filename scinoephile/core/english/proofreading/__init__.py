@@ -89,7 +89,6 @@ def migrate_english_proofreading_v1_to_v2(
         list of EnglishProofreadingTestCase2
     """
     test_case_2s: list[EnglishProofreadingTestCase2] = []
-
     for test_case in test_cases:
         test_case_2_cls = EnglishProofreadingTestCase2.get_test_case_cls(
             size=test_case.size,

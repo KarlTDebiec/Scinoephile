@@ -24,11 +24,14 @@ from scinoephile.core.zhongwen import (
 )
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
-    ZhongwenProofreadingTestCase2,
     get_zhongwen_proofread,
-    migrate_zhongwen_proofreading_v1_to_v2,
 )
-from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
+from scinoephile.image.english.fusion import (
+    EnglishFuser,
+    EnglishFusionTestCase2,
+    get_english_ocr_fused,
+    migrate_english_ocr_fusion_v1_to_v2,
+)
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
@@ -55,31 +58,17 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
-# Load English proofreading test cases and migrate to v2, then write to JSON
-# from test.data.kob import kob_english_proofreading_test_cases as test_cases
-#
-# test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
-# pprint(test_cases_2[0:10])
-# output_path = test_data_root / title / "core" / "english" / "proofreading.json"
-# save_test_cases_to_json(output_path, test_cases_2)
-# test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
-# pprint(test_cases_2[0:10])
+# Load English fusion test cases and migrate to v2, then write to JSON
+from test.data.kob import kob_english_fusion_test_cases as test_cases
+
+test_cases_2 = migrate_english_ocr_fusion_v1_to_v2(test_cases)
+pprint(test_cases_2[0:10])
+output_path = test_data_root / title / "image" / "english" / "fusion.json"
+save_test_cases_to_json(output_path, test_cases_2)
+test_cases_2 = load_test_cases_from_json(output_path, EnglishFusionTestCase2)
+pprint(test_cases_2[0:10])
 # from test.data.kob.core.english import get_proofreading_test_cases
 #
-# test_cases_2 = get_proofreading_test_cases()
-# pprint(test_cases_2[0:10])
-
-# Load Zhongwen proofreading test cases and migrate to v2, then write to JSON
-from test.data.kob import kob_zhongwen_proofreading_test_cases as test_cases
-
-test_cases_2 = migrate_zhongwen_proofreading_v1_to_v2(test_cases)
-pprint(test_cases_2[0:10])
-output_path = test_data_root / title / "core" / "zhongwen" / "proofreading.json"
-save_test_cases_to_json(output_path, test_cases_2)
-test_cases_2 = load_test_cases_from_json(output_path, ZhongwenProofreadingTestCase2)
-pprint(test_cases_2[0:10])
-# from test.data.kob.core.zhongwen import get_proofreading_test_cases
-
 # test_cases_2 = get_proofreading_test_cases()
 # pprint(test_cases_2[0:10])
 

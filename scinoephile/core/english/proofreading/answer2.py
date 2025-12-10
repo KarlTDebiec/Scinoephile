@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
@@ -34,7 +34,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
         size: int,
         prompt_cls: type[EnglishProofreadingPrompt2] = EnglishProofreadingPrompt2,
     ) -> type[Self]:
-        """Get concrete answer class with provided size and text.
+        """Get concrete answer class with provided configuartion.
 
         Arguments:
             size: number of subtitles
@@ -43,7 +43,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
             Answer type with appropriate fields and text
         """
         name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        fields = {}
+        fields: dict[str, Any] = {}
         for idx in range(size):
             key = f"revised_{idx + 1}"
             description = prompt_cls.revised_description.format(idx=idx + 1)
