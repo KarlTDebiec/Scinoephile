@@ -32,5 +32,4 @@ def get_proofreading_test_cases(
     test_cases = load_test_cases_from_json(
         path, EnglishProofreadingTestCase2, prompt_cls=prompt_cls
     )
-
     return cast(list[EnglishProofreadingTestCase2], test_cases)

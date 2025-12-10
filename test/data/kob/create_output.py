@@ -67,10 +67,10 @@ output_path = test_data_root / title / "image" / "english" / "fusion.json"
 save_test_cases_to_json(output_path, test_cases_2)
 test_cases_2 = load_test_cases_from_json(output_path, EnglishFusionTestCase2)
 pprint(test_cases_2[0:10])
-# from test.data.kob.core.english import get_proofreading_test_cases
-#
-# test_cases_2 = get_proofreading_test_cases()
-# pprint(test_cases_2[0:10])
+from test.data.kob.image.english import get_fusion_test_cases
+
+test_cases_2 = get_fusion_test_cases()
+pprint(test_cases_2[0:10])
 
 actions = {
     # "繁體中文 (OCR)",
