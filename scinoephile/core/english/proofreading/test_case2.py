@@ -21,10 +21,9 @@ __all__ = ["EnglishProofreadingTestCase2"]
 
 
 class EnglishProofreadingTestCase2(
-    TestCase2[EnglishProofreadingQuery2, EnglishProofreadingAnswer2], ABC
+    TestCase2[EnglishProofreadingQuery2, EnglishProofreadingAnswer2],
+    ABC,
 ):
-    """Abstract base class for English proofreading test cases."""
-
     answer_cls: ClassVar[type[EnglishProofreadingAnswer2]]  # type: ignore
     """Answer class for this test case."""
     query_cls: ClassVar[type[EnglishProofreadingQuery2]]  # type: ignore
@@ -34,6 +33,24 @@ class EnglishProofreadingTestCase2(
 
     size: ClassVar[int]
     """Number of subtitles."""
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on the test case properties.
+
+        0: No change needed
+        1: Change needed
+        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
+        3: Not considered realistic for LLM to handle correctly
+
+        Returns:
+            minimum difficulty level based on the test case properties
+        """
+        min_difficulty = super().get_min_difficulty()
+        if any(
+            getattr(self, f"revised_{idx}") != "" for idx in range(1, self.size + 1)
+        ):
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
 
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
@@ -65,7 +82,7 @@ class EnglishProofreadingTestCase2(
         size: int,
         prompt_cls: type[EnglishProofreadingPrompt2] = EnglishProofreadingPrompt2,
     ) -> type[Self]:
-        """Get concrete test case class with provided size and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
@@ -102,7 +119,7 @@ class EnglishProofreadingTestCase2(
 
     @classmethod
     def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
-        """Get test case class from data.
+        """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data dictionary
