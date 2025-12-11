@@ -8,6 +8,11 @@ import asyncio
 from logging import info
 from pathlib import Path
 
+from data.kob import (
+    get_kob_eng_fusion_test_cases,
+    get_kob_zho_fusion_test_cases,
+    get_kob_zho_proofreading_test_cases,
+)
 from data.mlamd import (
     mlamd_merge_test_cases,
     mlamd_proof_test_cases,
@@ -32,29 +37,32 @@ from scinoephile.core.zhongwen import (
     get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenProofreader,
-    get_zhongwen_proofread,
+    ZhongwenProofreader2,
+    get_zhongwen_proofread2,
 )
-from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
-from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
+from scinoephile.image.english.fusion import (
+    EnglishFuser2,
+    get_english_ocr_fused2,
+)
+from scinoephile.image.zhongwen.fusion import (
+    ZhongwenFuser2,
+    get_zhongwen_ocr_fused2,
+)
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_proofreading_test_cases,
-    kob_english_fusion_test_cases,
-    kob_zhongwen_fusion_test_cases,
-    kob_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
+    get_mnt_eng_fusion_test_cases,
     get_mnt_eng_proofreading_test_cases,
-    mnt_english_fusion_test_cases,
-    mnt_zhongwen_fusion_test_cases,
-    mnt_zhongwen_proofreading_test_cases,
+    get_mnt_zho_fusion_test_cases,
+    get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
+    get_t_eng_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
-    t_english_fusion_test_cases,
-    t_zhongwen_fusion_test_cases,
-    t_zhongwen_proofreading_test_cases,
+    get_t_zho_fusion_test_cases,
+    get_t_zho_proofreading_test_cases,
 )
 
 title = Path(__file__).parent.name
@@ -77,8 +85,8 @@ set_logging_verbosity(2)
 # pprint(test_cases_2[0:10])
 
 actions = {
-    # "简体中文 (OCR)",
-    # "English (OCR)",
+    "简体中文 (OCR)",
+    "English (OCR)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
@@ -91,31 +99,35 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
-    zho_hans_fuse = get_zhongwen_ocr_fused(
+    zho_hans_fuse = get_zhongwen_ocr_fused2(
         zho_hans_lens,
         zho_hans_paddle,
-        ZhongwenFuser(
-            test_cases=kob_zhongwen_fusion_test_cases
-            + mnt_zhongwen_fusion_test_cases
-            + t_zhongwen_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
+        ZhongwenFuser2(
+            test_cases=get_kob_zho_fusion_test_cases()
+            + get_mnt_zho_fusion_test_cases()
+            + get_t_zho_fusion_test_cases(),
+            test_case_path=test_data_root
+            / title
+            / "image"
+            / "zhongwen"
+            / "fusion.json",
             auto_verify=True,
         ),
     )
     zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
     zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
     zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
-    zho_hans_fuse_proofread = get_zhongwen_proofread(
+    zho_hans_fuse_proofread = get_zhongwen_proofread2(
         zho_hans_fuse,
-        ZhongwenProofreader(
-            test_cases=kob_zhongwen_proofreading_test_cases
-            + mnt_zhongwen_proofreading_test_cases
-            + t_zhongwen_proofreading_test_cases,
+        ZhongwenProofreader2(
+            test_cases=get_kob_zho_proofreading_test_cases()
+            + get_mnt_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "zhongwen"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
@@ -134,14 +146,14 @@ if "English (OCR)" in actions:
     eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuse = get_english_ocr_fused(
+    eng_fuse = get_english_ocr_fused2(
         eng_lens,
         eng_tesseract,
-        EnglishFuser(
-            test_cases=kob_english_fusion_test_cases
-            + mnt_english_fusion_test_cases
-            + t_english_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+        EnglishFuser2(
+            test_cases=get_kob_eng_fusion_test_cases()
+            + get_mnt_eng_fusion_test_cases()
+            + get_t_eng_fusion_test_cases(),
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.json",
             auto_verify=True,
         ),
     )
