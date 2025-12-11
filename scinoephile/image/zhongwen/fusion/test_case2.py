@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English OCR fusion test cases."""
+"""Abstract base class for Zhongwen OCR fusion test cases."""
 
 from __future__ import annotations
 
@@ -13,21 +13,23 @@ from pydantic import Field, create_model
 from scinoephile.core.llms import TestCase2
 from scinoephile.core.models import get_cls_name
 
-from .answer2 import EnglishFusionAnswer2
-from .prompt2 import EnglishFusionPrompt2
-from .query2 import EnglishFusionQuery2
+from .answer2 import ZhongwenFusionAnswer2
+from .prompt2 import ZhongwenFusionPrompt2
+from .query2 import ZhongwenFusionQuery2
 
-__all__ = ["EnglishFusionTestCase2"]
+__all__ = ["ZhongwenFusionTestCase2"]
 
 
-class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2], ABC):
-    """Abstract base class for English OCR fusion test cases."""
+class ZhongwenFusionTestCase2(
+    TestCase2[ZhongwenFusionQuery2, ZhongwenFusionAnswer2], ABC
+):
+    """Abstract base class for Zhongwen OCR fusion test cases."""
 
-    answer_cls: ClassVar[type[EnglishFusionAnswer2]]  # type: ignore
+    answer_cls: ClassVar[type[ZhongwenFusionAnswer2]]  # type: ignore
     """Answer class for this test case."""
-    query_cls: ClassVar[type[EnglishFusionQuery2]]  # type: ignore
+    query_cls: ClassVar[type[ZhongwenFusionQuery2]]  # type: ignore
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[EnglishFusionPrompt2]]  # type: ignore
+    prompt_cls: ClassVar[type[ZhongwenFusionPrompt2]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     def get_auto_verified(self) -> bool:
@@ -39,12 +41,12 @@ class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2
             return False
 
         lens = getattr(self.query, "lens", None)
-        tesseract = getattr(self.query, "tesseract", None)
-        fused = getattr(self.answer, "fused", None)
-        if lens is not None and tesseract is not None and fused is not None:
-            if lens == fused and "\n" not in lens:
+        paddle = getattr(self.query, "paddle", None)
+        ronghe = getattr(self.answer, "ronghe", None)
+        if lens is not None and paddle is not None and ronghe is not None:
+            if lens == ronghe and "\n" not in lens:
                 return True
-            if tesseract == fused and "\n" not in tesseract:
+            if paddle == ronghe and "\n" not in paddle:
                 return True
         return super().get_auto_verified()
 
@@ -62,9 +64,9 @@ class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
         if self.answer is not None:
-            fused = getattr(self.answer, "fused", None)
-            if fused is not None:
-                if "-" in fused or '"' in fused:
+            ronghe = getattr(self.answer, "ronghe", None)
+            if ronghe is not None:
+                if "-" in ronghe or '"' in ronghe:
                     min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
@@ -72,7 +74,7 @@ class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[EnglishFusionPrompt2] = EnglishFusionPrompt2,
+        prompt_cls: type[ZhongwenFusionPrompt2] = ZhongwenFusionPrompt2,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -82,8 +84,8 @@ class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2
             TestCase type with appropriate fields and text
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
-        query_cls = EnglishFusionQuery2.get_query_cls(prompt_cls)
-        answer_cls = EnglishFusionAnswer2.get_answer_cls(prompt_cls)
+        query_cls = ZhongwenFusionQuery2.get_query_cls(prompt_cls)
+        answer_cls = ZhongwenFusionAnswer2.get_answer_cls(prompt_cls)
         fields = {
             "query": (query_cls, Field(...)),
             "answer": (answer_cls | None, Field(default=None)),

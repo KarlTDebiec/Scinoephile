@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English OCR fusion queries."""
+"""Abstract base class for Zhongwen OCR fusion queries."""
 
 from __future__ import annotations
 
@@ -13,35 +13,35 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Query2
 from scinoephile.core.models import get_cls_name
 
-from .prompt2 import EnglishFusionPrompt2
+from .prompt2 import ZhongwenFusionPrompt2
 
-__all__ = ["EnglishFusionQuery2"]
+__all__ = ["ZhongwenFusionQuery2"]
 
 
-class EnglishFusionQuery2(Query2, ABC):
-    """Abstract base class for English OCR fusion queries."""
+class ZhongwenFusionQuery2(Query2, ABC):
+    """Abstract base class for Zhongwen OCR fusion queries."""
 
-    prompt_cls: ClassVar[type[EnglishFusionPrompt2]]  # type: ignore
+    prompt_cls: ClassVar[type[ZhongwenFusionPrompt2]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
         lens = getattr(self, "lens", None)
-        tesseract = getattr(self, "tesseract", None)
+        paddle = getattr(self, "paddle", None)
         if not lens:
             raise ValueError(self.prompt_cls.lens_missing_error)
-        if not tesseract:
-            raise ValueError(self.prompt_cls.tesseract_missing_error)
-        if lens == tesseract:
-            raise ValueError(self.prompt_cls.lens_tesseract_equal_error)
+        if not paddle:
+            raise ValueError(self.prompt_cls.paddle_missing_error)
+        if lens == paddle:
+            raise ValueError(self.prompt_cls.lens_paddle_equal_error)
         return self
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[EnglishFusionPrompt2] = EnglishFusionPrompt2,
+        prompt_cls: type[ZhongwenFusionPrompt2] = ZhongwenFusionPrompt2,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -53,9 +53,9 @@ class EnglishFusionQuery2(Query2, ABC):
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
             "lens": (str, Field(..., description=prompt_cls.lens_description)),
-            "tesseract": (
+            "paddle": (
                 str,
-                Field(..., description=prompt_cls.tesseract_description),
+                Field(..., description=prompt_cls.paddle_description),
             ),
         }
 

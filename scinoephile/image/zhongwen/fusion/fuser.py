@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed 中文 subtitles from Google Lens and PaddleOCR."""
+"""Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ __all__ = ["ZhongwenFuser"]
 
 
 class ZhongwenFuser:
-    """Fuses OCRed 中文 subtitles from Google Lens and PaddleOCR."""
+    """Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
 
     def __init__(
         self,

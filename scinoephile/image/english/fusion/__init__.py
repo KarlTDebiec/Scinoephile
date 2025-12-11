@@ -34,6 +34,7 @@ __all__ = [
     "EnglishFusionTestCase2",
     "get_english_ocr_fused",
     "get_english_ocr_fused2",
+    "migrate_english_ocr_fusion_v1_to_v2",
 ]
 
 

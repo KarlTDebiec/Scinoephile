@@ -17,7 +17,6 @@ from scinoephile.core.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
 from .prompt2 import EnglishFusionPrompt2
-from .test_case import EnglishFusionTestCase
 from .test_case2 import EnglishFusionTestCase2
 
 __all__ = ["EnglishFuser2"]
@@ -121,7 +120,7 @@ class EnglishFuser2:
                 continue
 
             # Query LLM
-            test_case_cls = EnglishFusionTestCase.get_test_case_cls()
+            test_case_cls = EnglishFusionTestCase2.get_test_case_cls()
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
             query = query_cls(lens=lens_sub.text, tesseract=tesseract_sub.text)
@@ -153,22 +152,22 @@ class EnglishFuser2:
         """
         try:
             # noinspection PyUnusedImports
-            from test.data.kob import get_kob_english_fusion_test_cases
+            from test.data.kob import get_kob_eng_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mlamd import get_mlamd_english_fusion_test_cases
+            from test.data.mlamd import get_mlamd_eng_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mnt import get_mnt_english_fusion_test_cases
+            from test.data.mnt import get_mnt_eng_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.t import get_t_english_fusion_test_cases
+            from test.data.t import get_t_eng_fusion_test_cases
 
             return (
-                get_kob_english_fusion_test_cases()
-                + get_mlamd_english_fusion_test_cases()
-                + get_mnt_english_fusion_test_cases()
-                + get_t_english_fusion_test_cases()
+                get_kob_eng_fusion_test_cases()
+                + get_mlamd_eng_fusion_test_cases()
+                + get_mnt_eng_fusion_test_cases()
+                + get_t_eng_fusion_test_cases()
             )
         except ImportError as exc:
             warning(

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed English subtitles from Google Lens and Tesseract."""
+"""Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
 
 from __future__ import annotations
 
@@ -16,19 +16,18 @@ from scinoephile.core.llms import (
 from scinoephile.core.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
-from .prompt2 import EnglishFusionPrompt2
-from .test_case import EnglishFusionTestCase
-from .test_case2 import EnglishFusionTestCase2
+from .prompt2 import ZhongwenFusionPrompt2
+from .test_case2 import ZhongwenFusionTestCase2
 
-__all__ = ["EnglishFuser2"]
+__all__ = ["ZhongwenFuser2"]
 
 
-class EnglishFuser2:
-    """Fuses OCRed English subtitles from Google Lens and Tesseract."""
+class ZhongwenFuser2:
+    """Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
 
     def __init__(
         self,
-        test_cases: list[EnglishFusionTestCase2] | None = None,
+        test_cases: list[ZhongwenFusionTestCase2] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
     ):
@@ -47,14 +46,14 @@ class EnglishFuser2:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    EnglishFusionTestCase2,
-                    prompt_cls=EnglishFusionPrompt2,
+                    ZhongwenFusionTestCase2,
+                    prompt_cls=ZhongwenFusionPrompt2,
                 )
             )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        queryer_cls = Queryer2.get_queryer_cls(EnglishFusionPrompt2)
+        queryer_cls = Queryer2.get_queryer_cls(ZhongwenFusionPrompt2)
         self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
@@ -64,48 +63,48 @@ class EnglishFuser2:
         """LLM queryer."""
 
     def fuse(
-        self, lens: Series, tesseract: Series, stop_at_idx: int | None = None
+        self, lens: Series, paddle: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Fuse OCRed English subtitles from Google Lens and Tesseract.
+        """Fuse OCRed Zhongwen subtitles from Google Lens and PaddleOCR.
 
         Arguments:
-            lens: English subtitles OCRed using Google Lens
-            tesseract: English subtitles OCRed using Tesseract
+            lens: Zhongwen subtitles OCRed using Google Lens
+            paddle: Zhongwen subtitles OCRed using PaddleOCR
             stop_at_idx: stop processing at this index
         Returns:
-            fused English subtitles
+            ronghe Zhongwen subtitles
         """
         # Validate series
-        if not are_series_one_to_one(lens, tesseract):
+        if not are_series_one_to_one(lens, paddle):
             raise ScinoephileError(
-                "Google Lens and Tesseract series must have the same number of "
+                "Google Lens and PaddleOCR series must have the same number of "
                 "subtitles."
             )
 
         # Fuse subtitles
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(lens)
-        for sub_idx, (lens_sub, tesseract_sub) in enumerate(zip(lens, tesseract)):
+        for sub_idx, (lens_sub, paddle_sub) in enumerate(zip(lens, paddle)):
             if sub_idx >= stop_at_idx:
                 break
             lens_text = lens_sub.text
-            tesseract_text = tesseract_sub.text
+            paddle_text = paddle_sub.text
 
             # Handle missing data
-            if not lens_text and not tesseract_text:
+            if not lens_text and not paddle_text:
                 output_subtitles.append(
                     Subtitle(start=lens_sub.start, end=lens_sub.end, text="")
                 )
                 info(f"Subtitle {sub_idx + 1} empty.")
                 continue
-            if lens_text == tesseract_text:
+            if lens_text == paddle_text:
                 output_subtitles.append(lens_sub)
                 info(
                     f"Subtitle {sub_idx + 1} identical:     "
                     f"{lens_text.replace('\n', ' ')}"
                 )
                 continue
-            if not tesseract_text:
+            if not paddle_text:
                 output_subtitles.append(lens_sub)
                 info(
                     f"Subtitle {sub_idx + 1} from Lens:      "
@@ -113,20 +112,20 @@ class EnglishFuser2:
                 )
                 continue
             if not lens_text:
-                output_subtitles.append(tesseract_sub)
+                output_subtitles.append(paddle_sub)
                 info(
-                    f"Subtitle {sub_idx + 1} from Tesseract: "
-                    f"{tesseract_text.replace('\n', ' ')}"
+                    f"Subtitle {sub_idx + 1} from PaddleOCR: "
+                    f"{paddle_text.replace('\n', ' ')}"
                 )
                 continue
 
             # Query LLM
-            test_case_cls = EnglishFusionTestCase.get_test_case_cls()
+            test_case_cls = ZhongwenFusionTestCase2.get_test_case_cls()
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
-            query = query_cls(lens=lens_sub.text, tesseract=tesseract_sub.text)
+            query = query_cls(lens=lens_sub.text, paddle=paddle_sub.text)
             answer = self.queryer(query, answer_cls, test_case_cls)
-            sub = Subtitle(start=lens_sub.start, end=lens_sub.end, text=answer.fused)
+            sub = Subtitle(start=lens_sub.start, end=lens_sub.end, text=answer.ronghe)
             info(
                 f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"
             )
@@ -153,22 +152,22 @@ class EnglishFuser2:
         """
         try:
             # noinspection PyUnusedImports
-            from test.data.kob import get_kob_english_fusion_test_cases
+            from test.data.kob import get_kob_zho_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mlamd import get_mlamd_english_fusion_test_cases
+            from test.data.mlamd import get_mlamd_zho_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mnt import get_mnt_english_fusion_test_cases
+            from test.data.mnt import get_mnt_zho_fusion_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.t import get_t_english_fusion_test_cases
+            from test.data.t import get_t_zho_fusion_test_cases
 
             return (
-                get_kob_english_fusion_test_cases()
-                + get_mlamd_english_fusion_test_cases()
-                + get_mnt_english_fusion_test_cases()
-                + get_t_english_fusion_test_cases()
+                get_kob_zho_fusion_test_cases()
+                + get_mlamd_zho_fusion_test_cases()
+                + get_mnt_zho_fusion_test_cases()
+                + get_t_zho_fusion_test_cases()
             )
         except ImportError as exc:
             warning(

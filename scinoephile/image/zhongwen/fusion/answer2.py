@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 OCR fusion answers."""
+"""Abstract base class for Zhongwen OCR fusion answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["ZhongwenFusionAnswer2"]
 
 
 class ZhongwenFusionAnswer2(Answer2, ABC):
-    """Abstract base class for 中文 OCR fusion answers."""
+    """Abstract base class for Zhongwen OCR fusion answers."""
 
     prompt_cls: ClassVar[type[ZhongwenFusionPrompt2]]  # type:ignore
     """Text strings to be used for corresponding with LLM."""
@@ -27,12 +27,12 @@ class ZhongwenFusionAnswer2(Answer2, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        fused = getattr(self, "fused", None)
-        note = getattr(self, "note", None)
-        if not fused:
-            raise ValueError(self.prompt_cls.fused_missing_error)
-        if not note:
-            raise ValueError(self.prompt_cls.note_missing_error)
+        ronghe = getattr(self, "ronghe", None)
+        beizhu = getattr(self, "beizhu", None)
+        if not ronghe:
+            raise ValueError(self.prompt_cls.ronghe_missing_error)
+        if not beizhu:
+            raise ValueError(self.prompt_cls.beizhu_missing_error)
         return self
 
     @classmethod
@@ -50,8 +50,8 @@ class ZhongwenFusionAnswer2(Answer2, ABC):
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "fused": (str, Field(..., description=prompt_cls.fused_description)),
-            "note": (str, Field(..., description=prompt_cls.note_description)),
+            "ronghe": (str, Field(..., description=prompt_cls.ronghe_description)),
+            "beizhu": (str, Field(..., description=prompt_cls.beizhu_description)),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
