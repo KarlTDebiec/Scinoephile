@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 proofreading test cases."""
+"""Abstract base class for Zhongwen proofreading test cases."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ class ZhongwenProofreadingTestCase2(
     TestCase2[ZhongwenProofreadingQuery2, ZhongwenProofreadingAnswer2],
     ABC,
 ):
-    """Abstract base class for 中文 proofreading test cases."""
+    """Abstract base class for Zhongwen proofreading test cases."""
 
     answer_cls: ClassVar[type[ZhongwenProofreadingAnswer2]]  # type: ignore
     """Answer class for this test case."""
@@ -48,8 +48,12 @@ class ZhongwenProofreadingTestCase2(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if any(getattr(self, f"xiugai_{idx}") != "" for idx in range(1, self.size + 1)):
-            min_difficulty = max(min_difficulty, 1)
+        if self.answer is not None:
+            if any(
+                getattr(self.answer, f"xiugai_{idx}") != ""
+                for idx in range(1, self.size + 1)
+            ):
+                min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
@@ -82,7 +86,7 @@ class ZhongwenProofreadingTestCase2(
         size: int,
         prompt_cls: type[ZhongwenProofreadingPrompt2] = ZhongwenProofreadingPrompt2,
     ) -> type[Self]:
-        """Get concrete test case class with provided size and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
@@ -119,7 +123,7 @@ class ZhongwenProofreadingTestCase2(
 
     @classmethod
     def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
-        """Get test case class from data.
+        """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data dictionary

@@ -122,7 +122,6 @@ class EnglishFuser2:
             # Query LLM
             test_case_cls = EnglishFusionTestCase2.get_test_case_cls()
             query_cls = test_case_cls.query_cls
-            answer_cls = test_case_cls.answer_cls
             query = query_cls(lens=lens_sub.text, tesseract=tesseract_sub.text)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)

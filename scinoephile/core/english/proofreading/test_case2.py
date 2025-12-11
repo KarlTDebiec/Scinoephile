@@ -24,6 +24,8 @@ class EnglishProofreadingTestCase2(
     TestCase2[EnglishProofreadingQuery2, EnglishProofreadingAnswer2],
     ABC,
 ):
+    """Abstract base class for English proofreading test cases."""
+
     answer_cls: ClassVar[type[EnglishProofreadingAnswer2]]  # type: ignore
     """Answer class for this test case."""
     query_cls: ClassVar[type[EnglishProofreadingQuery2]]  # type: ignore
