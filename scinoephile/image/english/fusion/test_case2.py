@@ -79,7 +79,7 @@ class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2
         Arguments:
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
         query_cls = EnglishFusionQuery2.get_query_cls(prompt_cls)

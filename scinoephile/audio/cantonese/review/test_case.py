@@ -96,7 +96,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
             size: number of subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = ReviewQuery.get_query_cls(size)
         answer_cls = ReviewAnswer.get_answer_cls(size)

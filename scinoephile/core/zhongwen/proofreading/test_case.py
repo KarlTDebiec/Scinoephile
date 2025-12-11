@@ -102,13 +102,13 @@ class ZhongwenProofreadingTestCase(
         size: int,
         text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
     ) -> type[Self]:
-        """Get concrete test case class with provided size and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = ZhongwenProofreadingQuery.get_query_cls(size)
         answer_cls = ZhongwenProofreadingAnswer.get_answer_cls(size)

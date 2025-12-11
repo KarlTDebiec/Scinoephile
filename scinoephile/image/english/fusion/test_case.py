@@ -87,12 +87,12 @@ class EnglishFusionTestCase(
     def get_test_case_cls(
         cls, text: type[EnglishFusionPrompt] = EnglishFusionPrompt
     ) -> type[Self]:
-        """Get concrete test case class with provided text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = EnglishFusionQuery.get_query_cls(text)
         answer_cls = EnglishFusionAnswer.get_answer_cls(text)

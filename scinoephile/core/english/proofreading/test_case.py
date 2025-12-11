@@ -106,13 +106,13 @@ class EnglishProofreadingTestCase(
         size: int,
         text: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
     ) -> type[Self]:
-        """Get concrete test case class with provided size and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = EnglishProofreadingQuery.get_query_cls(size, text)
         answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, text)

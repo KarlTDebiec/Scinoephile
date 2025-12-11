@@ -40,7 +40,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
             size: number of subtitles
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}

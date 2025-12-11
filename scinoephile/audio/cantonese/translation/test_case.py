@@ -81,14 +81,14 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
         missing: tuple[int, ...],
         text: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
-        """Get concrete test case class with provided size, missing, and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = TranslationQuery.get_query_cls(size, missing, text)
         answer_cls = TranslationAnswer.get_answer_cls(size, missing, text)

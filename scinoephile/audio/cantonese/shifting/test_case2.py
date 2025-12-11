@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Zhongwen OCR fusion test cases."""
+"""Abstract base class for 粤文 transcription shifting test cases."""
 
 from __future__ import annotations
 
@@ -8,47 +8,27 @@ from abc import ABC
 from functools import cache
 from typing import ClassVar, Self
 
-from pydantic import Field, create_model
+from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import TestCase2
 from scinoephile.core.models import get_cls_name
 
-from .answer2 import ZhongwenFusionAnswer2
-from .prompt2 import ZhongwenFusionPrompt2
-from .query2 import ZhongwenFusionQuery2
+from .answer2 import ShiftingAnswer2
+from .prompt2 import ShiftingPrompt2
+from .query2 import ShiftingQuery2
 
-__all__ = ["ZhongwenFusionTestCase2"]
+__all__ = ["ShiftingTestCase2"]
 
 
-class ZhongwenFusionTestCase2(
-    TestCase2[ZhongwenFusionQuery2, ZhongwenFusionAnswer2], ABC
-):
-    """Abstract base class for Zhongwen OCR fusion test cases."""
+class ShiftingTestCase2(TestCase2[ShiftingQuery2, ShiftingAnswer2], ABC):
+    """Abstract base class for 粤文 transcription shifting test cases."""
 
-    answer_cls: ClassVar[type[ZhongwenFusionAnswer2]]  # type: ignore
+    answer_cls: ClassVar[type[ShiftingAnswer2]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ZhongwenFusionQuery2]]  # type: ignore
+    query_cls: ClassVar[type[ShiftingQuery2]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[ZhongwenFusionPrompt2]]  # type: ignore
+    prompt_cls: ClassVar[type[ShiftingPrompt2]]
     """Text strings to be used for corresponding with LLM."""
-
-    def get_auto_verified(self) -> bool:
-        """Whether this test case should automatically be verified."""
-        if self.answer is None:
-            return False
-
-        if self.get_min_difficulty() > 1:
-            return False
-
-        lens = getattr(self.query, "lens", None)
-        paddle = getattr(self.query, "paddle", None)
-        ronghe = getattr(self.answer, "ronghe", None)
-        if lens is not None and paddle is not None and ronghe is not None:
-            if lens == ronghe and "\n" not in lens:
-                return True
-            if paddle == ronghe and "\n" not in paddle:
-                return True
-        return super().get_auto_verified()
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -62,19 +42,44 @@ class ZhongwenFusionTestCase2(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        min_difficulty = max(min_difficulty, 1)
-        if self.answer is not None:
-            ronghe = getattr(self.answer, "ronghe", None)
-            if ronghe is not None:
-                if "-" in ronghe or '"' in ronghe:
-                    min_difficulty = max(min_difficulty, 2)
+        if self.answer is None:
+            return min_difficulty
+
+        yuewen_1_shifted = getattr(self.answer, "yuewen_1_shifted", None)
+        yuewen_2_shifted = getattr(self.answer, "yuewen_2_shifted", None)
+        if yuewen_1_shifted != "" or yuewen_2_shifted != "":
+            min_difficulty = max(min_difficulty, 1)
+
         return min_difficulty
+
+    @model_validator(mode="after")
+    def validate_test_case(self) -> Self:
+        """Ensure query and answer together are valid."""
+        if self.answer is None:
+            return self
+
+        yuewen_1 = getattr(self.query, "yuewen_1", None)
+        yuewen_2 = getattr(self.query, "yuewen_2", None)
+        yuewen_1_shifted = getattr(self.answer, "yuewen_1_shifted", None)
+        yuewen_2_shifted = getattr(self.answer, "yuewen_2_shifted", None)
+        if yuewen_1 == yuewen_1_shifted and yuewen_2 == yuewen_2_shifted:
+            raise ValueError(self.prompt_cls.yuewen_1_yuewen_2_unchanged_error)
+        if yuewen_1_shifted != "" or yuewen_2_shifted != "":
+            expected = yuewen_1 + yuewen_2
+            received = yuewen_1_shifted + yuewen_2_shifted
+            if expected != received:
+                raise ValueError(
+                    self.prompt_cls.yuewen_characters_changed_error.format(
+                        expected=expected, received=received
+                    )
+                )
+        return self
 
     @classmethod
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[ZhongwenFusionPrompt2] = ZhongwenFusionPrompt2,
+        prompt_cls: type[ShiftingPrompt2] = ShiftingPrompt2,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -84,8 +89,8 @@ class ZhongwenFusionTestCase2(
             TestCase type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
-        query_cls = ZhongwenFusionQuery2.get_query_cls(prompt_cls)
-        answer_cls = ZhongwenFusionAnswer2.get_answer_cls(prompt_cls)
+        query_cls = ShiftingQuery2.get_query_cls(prompt_cls)
+        answer_cls = ShiftingAnswer2.get_answer_cls(prompt_cls)
         fields = {
             "query": (query_cls, Field(...)),
             "answer": (answer_cls | None, Field(default=None)),

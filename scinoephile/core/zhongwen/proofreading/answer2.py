@@ -34,13 +34,13 @@ class ZhongwenProofreadingAnswer2(Answer2, ABC):
         size: int,
         prompt_cls: type[ZhongwenProofreadingPrompt2] = ZhongwenProofreadingPrompt2,
     ) -> type[Self]:
-        """Get concrete answer class with provided size and text.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields = {}

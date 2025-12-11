@@ -82,12 +82,12 @@ class ProofingTestCase(
     def get_test_case_cls(
         cls, text: type[ProofingPrompt] = ProofingPrompt
     ) -> type[Self]:
-        """Get concrete test case class with provided text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         query_cls = ProofingQuery.get_query_cls(text)
         answer_cls = ProofingAnswer.get_answer_cls(text)

@@ -48,7 +48,7 @@ class EnglishFusionQuery2(Query2, ABC):
         Arguments:
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {

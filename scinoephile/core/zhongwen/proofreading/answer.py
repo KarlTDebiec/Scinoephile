@@ -30,13 +30,13 @@ class ZhongwenProofreadingAnswer(Answer, ABC):
         size: int,
         text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
     ) -> type[Self]:
-        """Get concrete answer class with provided size and text.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         fields = {}
         for idx in range(size):

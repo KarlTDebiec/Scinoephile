@@ -34,13 +34,13 @@ class ZhongwenProofreadingQuery2(Query2, ABC):
         size: int,
         prompt_cls: type[ZhongwenProofreadingPrompt2] = ZhongwenProofreadingPrompt2,
     ) -> type[Self]:
-        """Get concrete query class with provided size and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields = {}

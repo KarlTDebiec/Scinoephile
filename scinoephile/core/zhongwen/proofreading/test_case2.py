@@ -92,7 +92,7 @@ class ZhongwenProofreadingTestCase2(
             size: number of subtitles
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
         name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         query_cls = ZhongwenProofreadingQuery2.get_query_cls(size, prompt_cls)

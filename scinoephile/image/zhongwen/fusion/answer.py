@@ -37,12 +37,12 @@ class ZhongwenFusionAnswer(Answer, ABC):
     def get_answer_cls(
         cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
     ) -> type[Self]:
-        """Get concrete answer class with provided text.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         fields = {
             "ronghe": (str, Field(..., description=text.ronghe_description)),

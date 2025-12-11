@@ -30,7 +30,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
         size: int,
         text: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided size and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles

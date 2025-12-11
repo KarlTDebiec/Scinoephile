@@ -26,12 +26,12 @@ class ShiftingAnswer(Answer, ABC):
     @classmethod
     @cache
     def get_answer_cls(cls, text: type[ShiftingPrompt] = ShiftingPrompt) -> type[Self]:
-        """Get concrete answer class with provided text.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         fields = {
             "yuewen_1_shifted": (

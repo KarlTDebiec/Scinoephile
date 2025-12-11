@@ -30,7 +30,7 @@ class ReviewQuery(Query, ABC):
         size: int,
         text: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided size and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles

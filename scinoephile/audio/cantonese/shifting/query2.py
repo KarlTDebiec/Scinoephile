@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Zhongwen OCR fusion queries."""
+"""Abstract base class for 粤文 transcription shifting queries."""
 
 from __future__ import annotations
 
@@ -13,35 +13,31 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Query2
 from scinoephile.core.models import get_cls_name
 
-from .prompt2 import ZhongwenFusionPrompt2
+from .prompt2 import ShiftingPrompt2
 
-__all__ = ["ZhongwenFusionQuery2"]
+__all__ = ["ShiftingQuery2"]
 
 
-class ZhongwenFusionQuery2(Query2, ABC):
-    """Abstract base class for Zhongwen OCR fusion queries."""
+class ShiftingQuery2(Query2, ABC):
+    """Abstract base class for 粤文 transcription shifting queries."""
 
-    prompt_cls: ClassVar[type[ZhongwenFusionPrompt2]]  # type: ignore
+    prompt_cls: ClassVar[type[ShiftingPrompt2]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        lens = getattr(self, "lens", None)
-        paddle = getattr(self, "paddle", None)
-        if not lens:
-            raise ValueError(self.prompt_cls.lens_missing_error)
-        if not paddle:
-            raise ValueError(self.prompt_cls.paddle_missing_error)
-        if lens == paddle:
-            raise ValueError(self.prompt_cls.lens_paddle_equal_error)
+        yuewen_1 = getattr(self, "yuewen_1", None)
+        yuewen_2 = getattr(self, "yuewen_2", None)
+        if not yuewen_1 and not yuewen_2:
+            raise ValueError(self.prompt_cls.yuewen_1_yuewen_2_missing_error)
         return self
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[ZhongwenFusionPrompt2] = ZhongwenFusionPrompt2,
+        prompt_cls: type[ShiftingPrompt2] = ShiftingPrompt2,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -52,11 +48,16 @@ class ZhongwenFusionQuery2(Query2, ABC):
         """
         name = get_cls_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "lens": (str, Field(..., description=prompt_cls.lens_description)),
-            "paddle": (
+            "zhongwen_1": (
                 str,
-                Field(..., description=prompt_cls.paddle_description),
+                Field(..., description=prompt_cls.zhongwen_1_description),
             ),
+            "zhongwen_2": (
+                str,
+                Field(..., description=prompt_cls.zhongwen_2_description),
+            ),
+            "yuewen_1": (str, Field("", description=prompt_cls.yuewen_1_description)),
+            "yuewen_2": (str, Field("", description=prompt_cls.yuewen_2_description)),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

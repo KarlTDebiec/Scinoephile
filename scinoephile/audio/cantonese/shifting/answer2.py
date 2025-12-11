@@ -1,0 +1,54 @@
+#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Abstract base class for 粤文 transcription shifting answers."""
+
+from __future__ import annotations
+
+from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
+
+from pydantic import Field, create_model
+
+from scinoephile.core.llms import Answer2
+from scinoephile.core.models import get_cls_name
+
+from .prompt2 import ShiftingPrompt2
+
+__all__ = ["ShiftingAnswer2"]
+
+
+class ShiftingAnswer2(Answer2, ABC):
+    """Abstract base class for 粤文 transcription shifting answers."""
+
+    prompt_cls: ClassVar[type[ShiftingPrompt2]]
+    """Text strings to be used for corresponding with LLM."""
+
+    @classmethod
+    @cache
+    def get_answer_cls(
+        cls,
+        prompt_cls: type[ShiftingPrompt2] = ShiftingPrompt2,
+    ) -> type[Self]:
+        """Get concrete answer class with provided configuartion.
+
+        Arguments:
+            prompt_cls: Prompt providing descriptions and messages
+        Returns:
+            Answer type with appropriate configuration
+        """
+        name = get_cls_name(cls.__name__, prompt_cls.__name__)
+        fields = {
+            "yuewen_1_shifted": (
+                str,
+                Field("", description=prompt_cls.yuewen_1_shifted_description),
+            ),
+            "yuewen_2_shifted": (
+                str,
+                Field("", description=prompt_cls.yuewen_2_shifted_description),
+            ),
+        }
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        return model

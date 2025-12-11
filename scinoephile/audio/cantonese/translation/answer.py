@@ -32,14 +32,14 @@ class TranslationAnswer(Answer, ABC):
         missing: tuple[int, ...],
         text: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
-        """Get concrete answer class with provided size, missing, and text.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            Answer type with appropriate fields and text
+            Answer type with appropriate configuration
         """
         if any(m < 0 or m > size for m in missing):
             raise ScinoephileError(
