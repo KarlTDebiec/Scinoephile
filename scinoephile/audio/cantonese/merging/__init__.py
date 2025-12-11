@@ -45,14 +45,11 @@ def migrate_merging_v1_to_v2(
     test_case_2s: list[MergingTestCase2] = []
     for test_case in test_cases:
         query_2 = query_2_cls(
-            zhongwen_1=test_case.query.zhongwen_1,
-            zhongwen_2=test_case.query.zhongwen_2,
-            yuewen_1=test_case.query.yuewen_1,
-            yuewen_2=test_case.query.yuewen_2,
+            zhongwen=test_case.query.zhongwen,
+            yuewen_to_merge=test_case.query.yuewen_to_merge,
         )
         answer_2 = answer_2_cls(
-            yuewen_1_shifted=test_case.answer.yuewen_1_shifted,
-            yuewen_2_shifted=test_case.answer.yuewen_2_shifted,
+            yuewen_merged=test_case.answer.yuewen_merged,
         )
         test_case_2 = test_case_2_cls(
             query=query_2,

@@ -24,9 +24,9 @@ from data.mlamd import (
 
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
-from scinoephile.audio.cantonese.shifting import (
-    ShiftingTestCase2,
-    migrate_shifting_v1_to_v2,
+from scinoephile.audio.cantonese.merging import (
+    MergingTestCase2,
+    migrate_merging_v1_to_v2,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
@@ -77,17 +77,17 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 # Load test cases and migrate to v2, then write to JSON
-from test.data.mlamd import mlamd_shift_test_cases as test_cases
+from test.data.mlamd import mlamd_merge_test_cases as test_cases
 
-test_cases_2 = migrate_shifting_v1_to_v2(test_cases)
+test_cases_2 = migrate_merging_v1_to_v2(test_cases)
 pprint(test_cases_2[0:10])
-output_path = test_data_root / title / "audio" / "cantonese" / "shifting.json"
+output_path = test_data_root / title / "audio" / "cantonese" / "merging.json"
 save_test_cases_to_json(output_path, test_cases_2)
-test_cases_2 = load_test_cases_from_json(output_path, ShiftingTestCase2)
+test_cases_2 = load_test_cases_from_json(output_path, MergingTestCase2)
 pprint(test_cases_2[0:10])
-from test.data.mlamd import get_mlamd_yue_shifting_test_cases
+from test.data.mlamd import get_mlamd_yue_merging_test_cases
 
-test_cases_2 = get_mlamd_yue_shifting_test_cases()
+test_cases_2 = get_mlamd_yue_merging_test_cases()
 pprint(test_cases_2[0:10])
 
 actions = {

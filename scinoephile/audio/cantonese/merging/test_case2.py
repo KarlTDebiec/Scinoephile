@@ -49,7 +49,7 @@ class MergingTestCase2(TestCase2[MergingQuery2, MergingAnswer2], ABC):
         if self.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(self.query, "zhongweng", None)
+        zhongwen = getattr(self.query, "zhongwen", None)
         yuewen_merged = getattr(self.answer, "yuewen_merged", None)
         if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
