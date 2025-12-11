@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from pprint import pprint
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
@@ -14,7 +13,6 @@ from scinoephile.core.english.proofreading import (
     EnglishProofreader2,
     get_english_proofread2,
 )
-from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
@@ -23,27 +21,25 @@ from scinoephile.core.zhongwen import (
 )
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
-    ZhongwenProofreadingTestCase2,
     get_zhongwen_proofread,
-    migrate_zhongwen_proofreading_v1_to_v2,
 )
 from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.kob import (
-    get_kob_english_proofreading_test_cases,
+    get_kob_eng_proofreading_test_cases,
     kob_english_fusion_test_cases,
     kob_zhongwen_fusion_test_cases,
     kob_zhongwen_proofreading_test_cases,
 )
 from test.data.mlamd import (
-    get_mlamd_english_proofreading_test_cases,
+    get_mlamd_eng_proofreading_test_cases,
     mlamd_english_fusion_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
-    get_mnt_english_proofreading_test_cases,
+    get_mnt_eng_proofreading_test_cases,
     mnt_english_fusion_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
@@ -54,37 +50,23 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
-# Load English proofreading test cases and migrate to v2, then write to JSON
-# from test.data.t import t_english_proofreading_test_cases as test_cases
+# Load English fusion test cases and migrate to v2, then write to JSON
+# from test.data.t import t_english_fusion_test_cases as test_cases
 #
-# test_cases_2 = migrate_english_proofreading_v1_to_v2(test_cases)
+# test_cases_2 = migrate_english_ocr_fusion_v1_to_v2(test_cases)
 # pprint(test_cases_2[0:10])
-# output_path = test_data_root / title / "core" / "english" / "proofreading.json"
+# output_path = test_data_root / title / "image" / "english" / "fusion.json"
 # save_test_cases_to_json(output_path, test_cases_2)
-# test_cases_2 = load_test_cases_from_json(output_path, EnglishProofreadingTestCase2)
+# test_cases_2 = load_test_cases_from_json(output_path, EnglishFusionTestCase2)
 # pprint(test_cases_2[0:10])
-# from test.data.t.core.english import get_proofreading_test_cases
+# from test.data.t import get_t_eng_fusion_test_cases
 #
-# test_cases_2 = get_proofreading_test_cases()
-# pprint(test_cases_2[0:10])
-
-# Load Zhongwen proofreading test cases and migrate to v2, then write to JSON
-from test.data.t import t_zhongwen_proofreading_test_cases as test_cases
-
-test_cases_2 = migrate_zhongwen_proofreading_v1_to_v2(test_cases)
-pprint(test_cases_2[0:10])
-output_path = test_data_root / title / "core" / "zhongwen" / "proofreading.json"
-save_test_cases_to_json(output_path, test_cases_2)
-test_cases_2 = load_test_cases_from_json(output_path, ZhongwenProofreadingTestCase2)
-pprint(test_cases_2[0:10])
-# from test.data.t.core.zhongwen import get_proofreading_test_cases
-
-# test_cases_2 = get_proofreading_test_cases()
+# test_cases_2 = get_t_eng_fusion_test_cases()
 # pprint(test_cases_2[0:10])
 
 actions = {
     # "简体中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
     # "简体中文 (SRT)",
     # "繁體中文 (SRT)",
     # "English (SRT)",
@@ -147,9 +129,9 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread2(
         eng_fuse,
         EnglishProofreader2(
-            test_cases=get_kob_english_proofreading_test_cases()
-            + get_mlamd_english_proofreading_test_cases()
-            + get_mnt_english_proofreading_test_cases(),
+            test_cases=get_kob_eng_proofreading_test_cases()
+            + get_mlamd_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"

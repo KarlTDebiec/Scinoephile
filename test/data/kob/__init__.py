@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
 from typing import Any, cast
 
@@ -13,6 +14,7 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -28,6 +30,33 @@ from test.data.kob.image.english.fusion import (
 from test.data.kob.image.zhongwen.fusion import (
     test_cases as kob_zhongwen_fusion_test_cases,
 )
+
+___all__ = [
+    "kob_zho_hant_fuse",
+    "kob_zho_hant_fuse_proofread",
+    "kob_eng_lens",
+    "kob_eng_tesseract",
+    "kob_eng_fuse",
+    "kob_eng_fuse_proofread",
+    "kob_yue_hans",
+    "kob_yue_hans_clean",
+    "kob_yue_hans_flatten",
+    "kob_yue_hans_clean_flatten",
+    "kob_yue_hant",
+    "kob_yue_hant_simplify",
+    "kob_eng",
+    "kob_eng_clean",
+    "kob_eng_flatten",
+    "kob_eng_clean_flatten",
+    "kob_yue_hans_eng",
+    "kob_english_fusion_test_cases",
+    "kob_english_proofreading_test_cases",
+    "kob_zhongwen_fusion_test_cases",
+    "kob_zhongwen_proofreading_test_cases",
+    "get_kob_eng_proofreading_test_cases",
+    "get_kob_zho_proofreading_test_cases",
+    "get_kob_eng_fusion_test_cases",
+]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
@@ -142,7 +171,8 @@ def kob_yue_hans_eng() -> Series:
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
-def get_kob_english_proofreading_test_cases(
+@cache
+def get_kob_eng_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[EnglishProofreadingTestCase2]:
     """Get KOB English proofreading test cases.
@@ -150,7 +180,7 @@ def get_kob_english_proofreading_test_cases(
     Arguments:
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        English proofreading test cases
+        test cases
     """
     test_cases = load_test_cases_from_json(
         title_root / "core" / "english" / "proofreading.json",
@@ -160,7 +190,8 @@ def get_kob_english_proofreading_test_cases(
     return cast(list[EnglishProofreadingTestCase2], test_cases)
 
 
-def get_kob_zhongwen_proofreading_test_cases(
+@cache
+def get_kob_zho_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[ZhongwenProofreadingTestCase2]:
     """Get KOB Zhongwen proofreading test cases.
@@ -168,7 +199,7 @@ def get_kob_zhongwen_proofreading_test_cases(
     Arguments:
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        Zhongwen proofreading test cases
+        test cases
     """
     test_cases = load_test_cases_from_json(
         title_root / "core" / "zhongwen" / "proofreading.json",
@@ -178,28 +209,20 @@ def get_kob_zhongwen_proofreading_test_cases(
     return cast(list[ZhongwenProofreadingTestCase2], test_cases)
 
 
-___all__ = [
-    "kob_zho_hant_fuse",
-    "kob_zho_hant_fuse_proofread",
-    "kob_eng_lens",
-    "kob_eng_tesseract",
-    "kob_eng_fuse",
-    "kob_eng_fuse_proofread",
-    "kob_yue_hans",
-    "kob_yue_hans_clean",
-    "kob_yue_hans_flatten",
-    "kob_yue_hans_clean_flatten",
-    "kob_yue_hant",
-    "kob_yue_hant_simplify",
-    "kob_eng",
-    "kob_eng_clean",
-    "kob_eng_flatten",
-    "kob_eng_clean_flatten",
-    "kob_yue_hans_eng",
-    "kob_english_fusion_test_cases",
-    "kob_english_proofreading_test_cases",
-    "kob_zhongwen_fusion_test_cases",
-    "kob_zhongwen_proofreading_test_cases",
-    "get_kob_english_proofreading_test_cases",
-    "get_kob_zhongwen_proofreading_test_cases",
-]
+@cache
+def get_kob_eng_fusion_test_cases(
+    **kwargs: Any,
+) -> list[EnglishFusionTestCase2]:
+    """Get KOB English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "image" / "english" / "fusion.json",
+        EnglishFusionTestCase2,
+        **kwargs,
+    )
+    return cast(list[EnglishFusionTestCase2], test_cases)

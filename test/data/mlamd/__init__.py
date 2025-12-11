@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
 from typing import Any, cast
 
@@ -13,6 +14,7 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -33,6 +35,38 @@ from test.data.mlamd.proofing import mlamd_proof_test_cases
 from test.data.mlamd.review import mlamd_review_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
 from test.data.mlamd.translation import mlamd_translate_test_cases
+
+___all__ = [
+    "mlamd_zho_hans_lens",
+    "mlamd_zho_hans_paddle",
+    "mlamd_zho_hans_fuse",
+    "mlamd_zho_hans_fuse_proofread",
+    "mlamd_zho_hans_fuse_proofread_clean",
+    "mlamd_zho_hans_fuse_proofread_clean_flatten",
+    "mlamd_zho_hant_lens",
+    "mlamd_zho_hant_paddle",
+    "mlamd_eng_lens",
+    "mlamd_eng_tesseract",
+    "mlamd_eng_fuse",
+    "mlamd_eng_fuse_proofread",
+    "mlamd_eng_fuse_proofread_clean",
+    "mlamd_eng_fuse_proofread_clean_flatten",
+    "mlamd_yue_hans",
+    "mlamd_zho_hans_eng",
+    "mlamd_yue_hans_eng",
+    "mlamd_shift_test_cases",
+    "mlamd_merge_test_cases",
+    "mlamd_proof_test_cases",
+    "mlamd_translate_test_cases",
+    "mlamd_review_test_cases",
+    "mlamd_english_fusion_test_cases",
+    "mlamd_english_proofreading_test_cases",
+    "mlamd_zhongwen_fusion_test_cases",
+    "mlamd_zhongwen_proofreading_test_cases",
+    "get_mlamd_eng_proofreading_test_cases",
+    "get_mlamd_zho_proofreading_test_cases",
+    "get_mlamd_eng_fusion_test_cases",
+]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
@@ -147,7 +181,8 @@ def mlamd_yue_hans_eng() -> Series:
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
-def get_mlamd_english_proofreading_test_cases(
+@cache
+def get_mlamd_eng_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[EnglishProofreadingTestCase2]:
     """Get MLAMD English proofreading test cases.
@@ -165,7 +200,8 @@ def get_mlamd_english_proofreading_test_cases(
     return cast(list[EnglishProofreadingTestCase2], test_cases)
 
 
-def get_mlamd_zhongwen_proofreading_test_cases(
+@cache
+def get_mlamd_zho_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[ZhongwenProofreadingTestCase2]:
     """Get MLAMD Zhongwen proofreading test cases.
@@ -183,33 +219,20 @@ def get_mlamd_zhongwen_proofreading_test_cases(
     return cast(list[ZhongwenProofreadingTestCase2], test_cases)
 
 
-___all__ = [
-    "mlamd_zho_hans_lens",
-    "mlamd_zho_hans_paddle",
-    "mlamd_zho_hans_fuse",
-    "mlamd_zho_hans_fuse_proofread",
-    "mlamd_zho_hans_fuse_proofread_clean",
-    "mlamd_zho_hans_fuse_proofread_clean_flatten",
-    "mlamd_zho_hant_lens",
-    "mlamd_zho_hant_paddle",
-    "mlamd_eng_lens",
-    "mlamd_eng_tesseract",
-    "mlamd_eng_fuse",
-    "mlamd_eng_fuse_proofread",
-    "mlamd_eng_fuse_proofread_clean",
-    "mlamd_eng_fuse_proofread_clean_flatten",
-    "mlamd_yue_hans",
-    "mlamd_zho_hans_eng",
-    "mlamd_yue_hans_eng",
-    "mlamd_shift_test_cases",
-    "mlamd_merge_test_cases",
-    "mlamd_proof_test_cases",
-    "mlamd_translate_test_cases",
-    "mlamd_review_test_cases",
-    "mlamd_english_fusion_test_cases",
-    "mlamd_english_proofreading_test_cases",
-    "mlamd_zhongwen_fusion_test_cases",
-    "mlamd_zhongwen_proofreading_test_cases",
-    "get_mlamd_english_proofreading_test_cases",
-    "get_mlamd_zhongwen_proofreading_test_cases",
-]
+@cache
+def get_mlamd_eng_fusion_test_cases(
+    **kwargs: Any,
+) -> list[EnglishFusionTestCase2]:
+    """Get MLAMD English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "image" / "english" / "fusion.json",
+        EnglishFusionTestCase2,
+        **kwargs,
+    )
+    return cast(list[EnglishFusionTestCase2], test_cases)

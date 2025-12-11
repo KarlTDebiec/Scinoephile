@@ -24,26 +24,23 @@ from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
     get_zhongwen_proofread,
 )
-from scinoephile.image.english.fusion import (
-    EnglishFuser,
-    get_english_ocr_fused,
-)
+from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
-    get_mlamd_english_proofreading_test_cases,
+    get_mlamd_eng_proofreading_test_cases,
     mlamd_english_fusion_test_cases,
     mlamd_zhongwen_fusion_test_cases,
     mlamd_zhongwen_proofreading_test_cases,
 )
 from test.data.mnt import (
-    get_mnt_english_proofreading_test_cases,
+    get_mnt_eng_proofreading_test_cases,
     mnt_english_fusion_test_cases,
     mnt_zhongwen_fusion_test_cases,
     mnt_zhongwen_proofreading_test_cases,
 )
 from test.data.t import (
-    get_t_english_proofreading_test_cases,
+    get_t_eng_proofreading_test_cases,
     t_english_fusion_test_cases,
     t_zhongwen_fusion_test_cases,
     t_zhongwen_proofreading_test_cases,
@@ -63,9 +60,9 @@ set_logging_verbosity(2)
 # save_test_cases_to_json(output_path, test_cases_2)
 # test_cases_2 = load_test_cases_from_json(output_path, EnglishFusionTestCase2)
 # pprint(test_cases_2[0:10])
-# from test.data.kob.image.english import get_fusion_test_cases
+# from test.data.kob import get_kob_eng_fusion_test_cases
 #
-# test_cases_2 = get_fusion_test_cases()
+# test_cases_2 = get_kob_eng_fusion_test_cases()
 # pprint(test_cases_2[0:10])
 
 actions = {
@@ -134,9 +131,9 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread2(
         eng_fuse,
         EnglishProofreader2(
-            test_cases=get_mlamd_english_proofreading_test_cases()
-            + get_mnt_english_proofreading_test_cases()
-            + get_t_english_proofreading_test_cases(),
+            test_cases=get_mlamd_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"

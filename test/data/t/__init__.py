@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
 from typing import Any, cast
 
@@ -13,6 +14,7 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -28,6 +30,34 @@ from test.data.t.image.english.fusion import (
 from test.data.t.image.zhongwen.fusion import (
     test_cases as t_zhongwen_fusion_test_cases,
 )
+
+___all__ = [
+    "t_zho_hans_lens",
+    "t_zho_hans_paddle",
+    "t_zho_hans_fuse",
+    "t_zho_hans_fuse_proofread",
+    "t_zho_hans_fuse_proofread_clean",
+    "t_zho_hans_fuse_proofread_clean_flatten",
+    "t_zho_hans",
+    "t_zho_hans_clean",
+    "t_zho_hans_flatten",
+    "t_zho_hans_clean_flatten",
+    "t_zho_hant",
+    "t_zho_hant_simplify",
+    "t_eng",
+    "t_eng_clean",
+    "t_eng_flatten",
+    "t_eng_proof",
+    "t_eng_proof_clean_flatten",
+    "t_zho_hans_eng",
+    "t_english_fusion_test_cases",
+    "t_english_proofreading_test_cases",
+    "t_zhongwen_fusion_test_cases",
+    "t_zhongwen_proofreading_test_cases",
+    "get_t_eng_proofreading_test_cases",
+    "get_t_zho_proofreading_test_cases",
+    "get_t_eng_fusion_test_cases",
+]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
@@ -155,7 +185,8 @@ def t_zho_hans_eng() -> Series:
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
-def get_t_english_proofreading_test_cases(
+@cache
+def get_t_eng_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[EnglishProofreadingTestCase2]:
     """Get T English proofreading test cases.
@@ -173,7 +204,8 @@ def get_t_english_proofreading_test_cases(
     return cast(list[EnglishProofreadingTestCase2], test_cases)
 
 
-def get_t_zhongwen_proofreading_test_cases(
+@cache
+def get_t_zho_proofreading_test_cases(
     **kwargs: Any,
 ) -> list[ZhongwenProofreadingTestCase2]:
     """Get T Zhongwen proofreading test cases.
@@ -191,29 +223,20 @@ def get_t_zhongwen_proofreading_test_cases(
     return cast(list[ZhongwenProofreadingTestCase2], test_cases)
 
 
-___all__ = [
-    "t_zho_hans_lens",
-    "t_zho_hans_paddle",
-    "t_zho_hans_fuse",
-    "t_zho_hans_fuse_proofread",
-    "t_zho_hans_fuse_proofread_clean",
-    "t_zho_hans_fuse_proofread_clean_flatten",
-    "t_zho_hans",
-    "t_zho_hans_clean",
-    "t_zho_hans_flatten",
-    "t_zho_hans_clean_flatten",
-    "t_zho_hant",
-    "t_zho_hant_simplify",
-    "t_eng",
-    "t_eng_clean",
-    "t_eng_flatten",
-    "t_eng_proof",
-    "t_eng_proof_clean_flatten",
-    "t_zho_hans_eng",
-    "t_english_fusion_test_cases",
-    "t_english_proofreading_test_cases",
-    "t_zhongwen_fusion_test_cases",
-    "t_zhongwen_proofreading_test_cases",
-    "get_t_english_proofreading_test_cases",
-    "get_t_zhongwen_proofreading_test_cases",
-]
+@cache
+def get_t_eng_fusion_test_cases(
+    **kwargs: Any,
+) -> list[EnglishFusionTestCase2]:
+    """Get T English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "image" / "english" / "fusion.json",
+        EnglishFusionTestCase2,
+        **kwargs,
+    )
+    return cast(list[EnglishFusionTestCase2], test_cases)

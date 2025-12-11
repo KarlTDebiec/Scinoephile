@@ -1,0 +1,1508 @@
+[
+  {
+    "answer": {
+      "fused": "♪ Hey, let's go ♪",
+      "note": "Corrected italics and musical notes placement from Tesseract."
+    },
+    "query": {
+      "lens": "Hey, let's go♪",
+      "tesseract": "{\\i1}♪{\\i0}Hey, let's go ♪"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ I'm happy as can be ♪",
+      "note": "Used musical notes from Tesseract and corrected italics placement."
+    },
+    "query": {
+      "lens": "I'm happy as can\nbe♪",
+      "tesseract": "{\\i1}♪ I'm happy as can be ♪{\\i0}"
+    },
+    "difficulty": 3,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Let's go walking\nYou and me ♪",
+      "note": "Added musical notes from Tesseract and preserved line break."
+    },
+    "query": {
+      "lens": "Let's go walking\nYou and me♪♪",
+      "tesseract": "♪ Let's go walking\nYou and me ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Ready, set\nCome on, let's go ♪",
+      "note": "Added musical notes from Tesseract and preserved line break."
+    },
+    "query": {
+      "lens": "Ready, set\nCome on, let's go♪",
+      "tesseract": "♪ Ready, set\nCome on, let's go ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Over the hill\nAcross the field ♪",
+      "note": "Added space after first musical note and placed closing note at the end as in Tesseract; removed extra note from Lens."
+    },
+    "query": {
+      "lens": "♪Over the hill\nAcross the field♪♪",
+      "tesseract": "♪ Over the hill\nAcross the field{\\i1}♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Through the tunnel we'll go ♪",
+      "note": "Corrected '90' to 'go' from Lens; added musical notes from Tesseract."
+    },
+    "query": {
+      "lens": "Through the tunnel we'll go♪",
+      "tesseract": "♪ Through the tunnel we'll 90 ♪"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ We'll run across the bridge ♪",
+      "note": "Used musical notes and italics placement from Tesseract, corrected 'We'“' to 'We'll' from Lens."
+    },
+    "query": {
+      "lens": "We'll run across the bridge♪",
+      "tesseract": "{\\i1}♪ We'“ run across the bridge ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ And down the bumpy gravel road ♪",
+      "note": "Used musical notes and line structure from Tesseract, which better preserves the subtitle formatting for lyrics."
+    },
+    "query": {
+      "lens": "And down the bumpy gravel\nroad♪♪",
+      "tesseract": "♪ And down the bumpy gravel road ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Right beneath the spider's web ♪",
+      "note": "Used Tesseract's italics and musical notes formatting."
+    },
+    "query": {
+      "lens": "Right beneath the spider's web♪",
+      "tesseract": "{\\i1}♪ Right beneath the spider's web ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Ready, set, let's go ♪",
+      "note": "Used musical notes and italics placement from Tesseract, removed line break from Lens."
+    },
+    "query": {
+      "lens": "Ready, set, let's\ngo♪",
+      "tesseract": "{\\i1}♪{\\i0}Ready, set, let's go ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ The foxes and the badgers, too ♪",
+      "note": "Added musical notes from Tesseract at the beginning and end."
+    },
+    "query": {
+      "lens": "The foxes and the badgers, too♪",
+      "tesseract": "♪ The foxes and the badgers, too ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ All come out to play ♪",
+      "note": "Used musical notes from Lens, corrected 'A“' to 'All' and 'May' to 'play' from Lens."
+    },
+    "query": {
+      "lens": "♪All come out to play♪♪",
+      "tesseract": "{\\i1}♪ A“ come out to May ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ They all want to explore ♪",
+      "note": "Added musical notes at both ends as in Tesseract."
+    },
+    "query": {
+      "lens": "They all want to explore♪",
+      "tesseract": "♪ They all want to explore ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ The deep and wonderful woods all day ♪",
+      "note": "Added musical notes and removed line break as in Tesseract."
+    },
+    "query": {
+      "lens": "The deep and wonderful woods all\nday♪",
+      "tesseract": "♪ The deep and wonderful woods all day ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Look at all my many friends ♪",
+      "note": "Used musical notes and italics from Tesseract, corrected 'a“' to 'all' from Lens."
+    },
+    "query": {
+      "lens": "Look at all my many friends",
+      "tesseract": "{\\i1}♪ Look at a“ my many friends ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
+      "note": "Added space after '-' on second line as in Lens for consistency."
+    },
+    "query": {
+      "lens": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
+      "tesseract": "- Hey Dad, want some caramel?\n-Thanks. How you doing back there?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Great. Thanks.",
+      "note": "Used space instead of line break."
+    },
+    "query": {
+      "lens": "Great.\nThanks.",
+      "tesseract": "Great. Thanks."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Wait up!\n- Here you go.",
+      "note": "Added space after '-' in first line as in Lens."
+    },
+    "query": {
+      "lens": "- Wait up!\n- Here you go.",
+      "tesseract": "-Wait up!\n- Here you go."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Oh, wow! Look!",
+      "note": "Used space instead of line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Oh, wow!\nLook!",
+      "tesseract": "Oh, wow! Look!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Let me see.",
+      "note": "Removed incorrect italics from Tesseract."
+    },
+    "query": {
+      "lens": "Let me see.",
+      "tesseract": "Let me{\\i1}see.{\\i0}"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- The bath.\n- Yep.",
+      "note": "Added space after '-' as in Lens for both lines."
+    },
+    "query": {
+      "lens": "- The bath.\n- Yep.",
+      "tesseract": "-The bath.\n-Yep."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "but ghosts don't usually like\nto come out on nice days like this.",
+      "note": "Used lower-case 'but' from Tesseract."
+    },
+    "query": {
+      "lens": "But ghosts don't usually like\nto come out on nice days like this.",
+      "tesseract": "but ghosts don't usually like\nto come out on nice days like this."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "when you go from a bright place to\na dark one, you can catch a glimpse of them.",
+      "note": "Used lower-case 'when' from Tesseract."
+    },
+    "query": {
+      "lens": "When you go from a bright place to\na dark one, you can catch a glimpse of them.",
+      "tesseract": "when you go from a bright place to\na dark one, you can catch a glimpse of them."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "the stairs to the top floor of the house.",
+      "note": "Used lower-case 'the' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "The stairs to the top floor of the house.",
+      "tesseract": "the stairs to the top floor of the house."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Ah!\n- Oof!",
+      "note": "Used Lens text for accurate dialogue and punctuation; ignored Tesseract's incorrect recognition and italics."
+    },
+    "query": {
+      "lens": "- Ah!\n- Oof!",
+      "tesseract": "{\\i1}- Ah'.\n- 001'.!{\\i0}"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "to clean up more before you got here.",
+      "note": "Used lower-case 'to' from Tesseract for correct capitalization of the first word."
+    },
+    "query": {
+      "lens": "To clean up more before you got here.",
+      "tesseract": "to clean up more before you got here."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "but I did manage to keep the place\nwell-dusted, as you can see.",
+      "note": "Used lower-case 'but' from Tesseract and preserved line break."
+    },
+    "query": {
+      "lens": "But I did manage to keep the place\nwell-dusted, as you can see.",
+      "tesseract": "but I did manage to keep the place\nwell-dusted, as you can see."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Ah…",
+      "note": "Combined 'Ah' and ellipsis without line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Ah\n…",
+      "tesseract": "Ah…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and run all over the place,\ncovering everything with dirt.",
+      "note": "Used lower-case 'and' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "And run all over the place,\ncovering everything with dirt.",
+      "tesseract": "and run all over the place,\ncovering everything with dirt."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and after a while, they'll just go away.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "query": {
+      "lens": "And after a while, they'll just go away.",
+      "tesseract": "and after a while, they'll just go away."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "having a talk about whether\nor not they should move out.",
+      "note": "Used lower-case 'having' from Tesseract and preserved line break."
+    },
+    "query": {
+      "lens": "Having a talk about whether\nor not they should move out.",
+      "tesseract": "having a talk about whether\nor not they should move out."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave.",
+      "note": "Added '-' at the start of the second line as in Tesseract for dialogue formatting."
+    },
+    "query": {
+      "lens": "- Hear that, Mei? They're gonna move out.\nI don't want them to leave.",
+      "tesseract": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Right. Then you can go to the bathroom",
+      "note": "Added space after period as in Lens."
+    },
+    "query": {
+      "lens": "Right. Then you can go to the bathroom",
+      "tesseract": "Right.Then you can go to the bathroom"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "by yourself in the middle of the night.",
+      "note": "Used lower-case 'by' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "By yourself in the middle of the night.",
+      "tesseract": "by yourself in the middle of the night."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Is that Kanta?",
+      "note": "Used space instead of line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Is that\nKanta?",
+      "tesseract": "Is that Kanta?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Your house is haunted!\n- Kanta!",
+      "note": "Added space after '-' as in Lens for both lines."
+    },
+    "query": {
+      "lens": "- Your house is haunted!\n- Kanta!",
+      "tesseract": "-Your house is haunted!\n- Kanta!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Okay. That's all the chores.",
+      "note": "Added space after period as in Lens."
+    },
+    "query": {
+      "lens": "Okay. That's all the chores.",
+      "tesseract": "Okay.That's all the chores."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- You're done.\n- BOTH: Yay!",
+      "note": "Added space after '-' and after 'BOTH:' as in Lens."
+    },
+    "query": {
+      "lens": "- You're done.\n- BOTH: Yay!",
+      "tesseract": "-You're done.\n- BOTH:Yay!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "SATSUKI: We will!",
+      "note": "Used single line format from Tesseract, removing unnecessary line break from Lens."
+    },
+    "query": {
+      "lens": "SATSUKI:\nWe will!",
+      "tesseract": "SATSUKI: We will!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Yeah.\n- Hmm?",
+      "note": "Added space after '-' in first line as in Tesseract for consistency."
+    },
+    "query": {
+      "lens": "- Yeah.\n- Hmm?",
+      "tesseract": "-Yeah.\n- Hmm?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Do you two like it?\n- Yeah!",
+      "note": "Added space after '-' in second line as in Lens."
+    },
+    "query": {
+      "lens": "- Do you two like it?\n- Yeah!",
+      "tesseract": "- Do you two like it?\n-Yeah!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
+      "note": "Added space after '-' on the second line as in Lens for consistent dialogue formatting."
+    },
+    "query": {
+      "lens": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
+      "tesseract": "- What a lucky girl you are.\n-Yeah, but she yells at me a lot."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
+      "note": "Added space after '-' at the start of the first line as in Lens."
+    },
+    "query": {
+      "lens": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
+      "tesseract": "-That's because you never sit still.\n- Let's see your hair, Satsuki."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
+      "tesseract": "- Brush my hair! Brush mine!\n-Wait your turn, Mei."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "her doctor said she should be able\nto come home real soon.",
+      "note": "Used lower-case 'her' from Tesseract for correct capitalization of the first word."
+    },
+    "query": {
+      "lens": "Her doctor said she should be able\nto come home real soon.",
+      "tesseract": "her doctor said she should be able\nto come home real soon."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
+      "tesseract": "- So she'll be home tomorrow?\n-There she goes again with tomorrow."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Sorry. I overslept again.\n- I have to take lunch to school today.",
+      "note": "Used Tesseract's line breaks and placement of '-' for dialogue clarity."
+    },
+    "query": {
+      "lens": "- - Sorry. I overslept again. I\nhave to take lunch to school today.",
+      "tesseract": "- Sorry. I overslept again.\n- I have to take lunch to school today."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Satsuki!\n- That's Michiko.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- Satsuki!\n- That's Michiko.",
+      "tesseract": "- Satsuki!\n-That's Michiko."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Hi. Ready for school?\n- Yep.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- Hi. Ready for school?\n- Yep.",
+      "tesseract": "- Hi. Ready for school?\n-Yep."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Totoro?",
+      "note": "Used 'Totoro?' from Lens for correct text; Tesseract misrecognized as 'Totem?' and added unnecessary italics."
+    },
+    "query": {
+      "lens": "Totoro?",
+      "tesseract": "{\\i1}Totem?{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mmm. Totoro.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "query": {
+      "lens": "Mmm.\nTotoro.",
+      "tesseract": "Mmm. Totoro."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Hmm? Hmm.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "query": {
+      "lens": "Hmm?\nHmm.",
+      "tesseract": "Hmm? Hmm."
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- No, I saw Totoro.\n- Totoro?",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- No, I saw Totoro.\n- Totoro?",
+      "tesseract": "- No, I saw Totoro.\n-Totoro?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and a huge one that kept falling asleep.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "query": {
+      "lens": "And a huge one that kept falling asleep.",
+      "tesseract": "and a huge one that kept falling asleep."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Wow. This would make\na great secret hiding place.",
+      "note": "Added space after 'Wow.' as in Lens."
+    },
+    "query": {
+      "lens": "Wow. This would make\na great secret hiding place.",
+      "tesseract": "Wow.This would make\na great secret hiding place."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- A Totoro?\n- Mmm-hmm.",
+      "note": "Added space after '-' as in Lens for both lines."
+    },
+    "query": {
+      "lens": "- A Totoro?\n- Mmm-hmm.",
+      "tesseract": "-A Totoro?\n- Mmm-hmm."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "back in the time when trees\nand people used to be friends.",
+      "note": "Used lower-case 'back' and line break from Tesseract; corrected 'befriends.' to 'be friends.' from Lens."
+    },
+    "query": {
+      "lens": "Back in the time when trees\nand people used to be friends.",
+      "tesseract": "back in the time when trees\nand people used to befriends."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "so her sister Mei is going\nto stay with us today, okay, class?",
+      "note": "Used lower-case 'so' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "So her sister Mei is going\nto stay with us today, okay, class?",
+      "tesseract": "so her sister Mei is going\nto stay with us today, okay, class?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Mmm.\n- Huh?",
+      "note": "Added '-' and line break as in Tesseract for dialogue formatting."
+    },
+    "query": {
+      "lens": "Mmm. Huh?",
+      "tesseract": "- Mmm.\n- Huh?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- That was lucky, wasn't it?\n- Mmm-hmm.",
+      "note": "Added space after '-' at the start of the first line as in Lens."
+    },
+    "query": {
+      "lens": "- That was lucky, wasn't it?\n- Mmm-hmm.",
+      "tesseract": "-That was lucky, wasn't it?\n- Mmm-hmm."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- MEI: This umbrella has holes.\n- Hmm.",
+      "note": "Added space after ':' from Lens and preserved line break from Tesseract."
+    },
+    "query": {
+      "lens": "- MEI: This umbrella has holes.\n- Hmm.",
+      "tesseract": "- MEI:This umbrella has holes.\n- Hmm."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and you broke it.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "query": {
+      "lens": "And you broke it.",
+      "tesseract": "and you broke it."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "So, it was really nice of him\nto help us out. Tell him thank you.",
+      "note": "Added space after period between sentences as in Lens."
+    },
+    "query": {
+      "lens": "So, it was really nice of him\nto help us out. Tell him thank you.",
+      "tesseract": "So, it was really nice of him\nto help us out.Tell him thank you."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- He must have been drenched.\n- That's okay.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- He must have been drenched.\n- That's okay.",
+      "tesseract": "- He must have been drenched.\n-That's okay."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
+      "note": "Added space after ':' in 'SATSUKI:' as in Lens; preserved line break and dashes from Tesseract."
+    },
+    "query": {
+      "lens": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
+      "tesseract": "- SATSUKI:Yes, he forgot his umbrella.\n- Such good kids."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- What?\n- It was huge!",
+      "note": "Added space after '-' in the first line as in Lens."
+    },
+    "query": {
+      "lens": "- What?\n- It was huge!",
+      "tesseract": "-What?\n- It was huge!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and tied with a ribbon made of grass.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "query": {
+      "lens": "And tied with a ribbon made of grass.",
+      "tesseract": "and tied with a ribbon made of grass."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "“We wanted to grow a beautiful\nforest with the acorns,",
+      "note": "Used opening quotation mark from Tesseract and preserved line break as in both sources."
+    },
+    "query": {
+      "lens": "\"We wanted to grow a beautiful\nforest with the acorns,",
+      "tesseract": "“We wanted to grow a beautiful\nforest with the acorns,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "\"so we planted them\nin your garden out back, but…\"",
+      "note": "Removed extra space after opening quotation mark as in Tesseract; preserved line break from both sources."
+    },
+    "query": {
+      "lens": "\" so we planted them in\nyour garden out back, but…\"",
+      "tesseract": "\" so we planted them\nin your garden out back, but…\""
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "SATSUKI: …they just won't grow.\nMei watches them",
+      "note": "Added ellipsis before 'they' as in Lens; preserved line break from Tesseract."
+    },
+    "query": {
+      "lens": "SATSUKI: … they just won't grow.\nMei watches them",
+      "tesseract": "SATSUKI: they just won't grow.\nMei watches them"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "all day, every day,",
+      "note": "Used lower-case 'all' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "All day, every day,",
+      "tesseract": "all day, every day,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "waiting for them to sprout,",
+      "note": "Used lower-case 'waiting' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "Waiting for them to sprout,",
+      "tesseract": "waiting for them to sprout,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "it's starting to make her crabby.",
+      "note": "Used lower-case 'it's' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "It's starting to make her crabby.",
+      "tesseract": "it's starting to make her crabby."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and I can't wait to play\noutside with you.",
+      "note": "Used lower-case 'and' from Tesseract and preserved line break."
+    },
+    "query": {
+      "lens": "And I can't wait to play\noutside with you.",
+      "tesseract": "and I can't wait to play\noutside with you."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "GIRLS: Yay! We did it! We did it!",
+      "note": "Added space after 'GIRLS:' as in Lens."
+    },
+    "query": {
+      "lens": "GIRLS: Yay! We did it! We did it!",
+      "tesseract": "GIRLS:Yay! We did it! We did it!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "GIRLS: Yay!",
+      "note": "Added space after colon as in Lens."
+    },
+    "query": {
+      "lens": "GIRLS: Yay!",
+      "tesseract": "GIRLS:Yay!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Where'd the tree go?",
+      "note": "Used 'go' from Lens instead of '90' from Tesseract."
+    },
+    "query": {
+      "lens": "Where'd the tree go?",
+      "tesseract": "Where'd the tree 90?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Ahh!\n- Ahh!",
+      "note": "Added space after '-' as in Lens and preserved line breaks from Tesseract."
+    },
+    "query": {
+      "lens": "- Ahh!\n- Ahh!",
+      "tesseract": "-Ahh!\n-Ahh!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr. KUSAKABE?",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "query": {
+      "lens": "Mr.\nKUSAKABE?",
+      "tesseract": "Mr. KUSAKABE?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "We've picked enough,\nhaven't we? Let's take a rest.",
+      "note": "Removed incorrect italics from Tesseract; kept line break from both sources."
+    },
+    "query": {
+      "lens": "We've picked enough,\nhaven't we? Let's take a rest.",
+      "tesseract": "{\\i1}We've{\\i0}picked enough,\nhaven't we? Let's take a rest."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- I bet that will do her wonders.\n- Yep.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- I bet that will do her wonders.\n- Yep.",
+      "tesseract": "- I bet that will do her wonders.\n-Yep."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Here. The postman\nleft us your telegram.",
+      "note": "Added space after 'Here.' as in Lens; kept line break from Tesseract."
+    },
+    "query": {
+      "lens": "Here. The postman\nleft us your telegram.",
+      "tesseract": "Here.The postman\nleft us your telegram."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Satsuki, what's wrong?\n- We got a telegram.",
+      "note": "Used Lens text for both lines, as Tesseract's italics were not needed and Lens is more reliable for general text."
+    },
+    "query": {
+      "lens": "- Satsuki, what's wrong?\n- We got a telegram.",
+      "tesseract": "- Satsuki, what's{\\i1}wrong?{\\i0}\n- We got a telegram."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Yeah.\n- Just wait by the phone.",
+      "note": "Added space after '-' and line break as in Tesseract, but removed incorrect italics and merged with Lens for clarity."
+    },
+    "query": {
+      "lens": "- Yeah.\n- Just wait by the phone.",
+      "tesseract": "-Yeah.\n-{\\i1}Just wait{\\i0}by the phone."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- No!\n- You want her to die, Mei?",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- No!\n- You want her to die, Mei?",
+      "tesseract": "- No!\n-You want her to die, Mei?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Yeah?\n- I'm looking for my sister.",
+      "note": "Added space after '-' in first line as in Lens."
+    },
+    "query": {
+      "lens": "- Yeah?\n- I'm looking for my sister.",
+      "tesseract": "-Yeah?\n- I'm looking for my sister."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "No. We just came from the hospital,",
+      "note": "Removed incorrect italics from Tesseract; used Lens text."
+    },
+    "query": {
+      "lens": "No. We just came from the hospital,",
+      "tesseract": "No. We just{\\i1}came{\\i0}from the hospital,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and there was no sign of\na little girl on the road.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "query": {
+      "lens": "And there was no sign of\na little girl on the road.",
+      "tesseract": "and there was no sign of\na little girl on the road."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "A four-year-old couldn't walk this far.",
+      "note": "Used hyphen '-' from Lens instead of em dash '—' from Tesseract."
+    },
+    "query": {
+      "lens": "A four-year-old couldn't walk this far.",
+      "tesseract": "A four-year—old couldn't walk this far."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- You should go back home.\n- Check all around.",
+      "note": "Added space after '-' in the first line as in Lens; preserved line breaks from Tesseract."
+    },
+    "query": {
+      "lens": "- You should go back home.\n- Check all around.",
+      "tesseract": "-You should go back home.\n- Check all around."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "but we still need your help.",
+      "note": "Used lower-case 'but' from Tesseract for correct capitalization."
+    },
+    "query": {
+      "lens": "But we still need your help.",
+      "tesseract": "but we still need your help."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Totoro!",
+      "note": "Used 'Totoro!' from Lens as it is the correct spelling and more reliable than Tesseract's 'Toto ro!'."
+    },
+    "query": {
+      "lens": "Totoro!",
+      "tesseract": "Toto ro!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "MEI",
+      "note": "Used 'MEI' from Tesseract, correcting the Greek letter 'Μ' in Lens to 'M'."
+    },
+    "query": {
+      "lens": "ΜΕΙ",
+      "tesseract": "MEI"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- She tries to act so adult.\n- That's true.",
+      "note": "Added space after '-' on second line as in Lens for consistency."
+    },
+    "query": {
+      "lens": "- She tries to act so adult.\n- That's true.",
+      "tesseract": "- She tries to act so adult.\n-That's true."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Everything must be okay.\n- Yeah.",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- Everything must be okay.\n- Yeah.",
+      "tesseract": "- Everything must be okay.\n-Yeah."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Totoro, Totoro ♪",
+      "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags, and combined lines as in Tesseract."
+    },
+    "query": {
+      "lens": "Totoro,\nTotoro♪",
+      "tesseract": "{\\i1}♪{\\i0}Totoro, Totoro ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Who leaves the seeds ♪",
+      "note": "Added musical notes from Tesseract."
+    },
+    "query": {
+      "lens": "Who leaves the seeds",
+      "tesseract": "♪ Who leaves the seeds ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ For you to find ♪",
+      "note": "Used musical notes and spacing from Tesseract, omitting italics tags."
+    },
+    "query": {
+      "lens": "For you to find♪",
+      "tesseract": "{\\i1}♪ For you to find ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Follow them and you will see ♪",
+      "note": "Used musical notes from Tesseract at both ends for proper formatting."
+    },
+    "query": {
+      "lens": "Follow them and you will see♪",
+      "tesseract": "♪ Follow them and you will see ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ A treasure there ♪",
+      "note": "Used musical notes from both sources, corrected text to 'A treasure there' from Lens, and removed incorrect italics and extra characters from Tesseract."
+    },
+    "query": {
+      "lens": "A treasure\nthere♪♪",
+      "tesseract": "{\\i1}♪ A treasure there I'{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Then plant the seeds ♪",
+      "note": "Added leading and trailing musical notes from Tesseract."
+    },
+    "query": {
+      "lens": "♪Then plant the seeds",
+      "tesseract": "♪ Then plant the seeds ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ And help them grow ♪",
+      "note": "Added musical notes from Tesseract."
+    },
+    "query": {
+      "lens": "And help them grow",
+      "tesseract": "♪ And help them grow ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ It may seem like a dream ♪",
+      "note": "Used musical notes from Tesseract and removed incorrect italics; kept text from Lens for accuracy."
+    },
+    "query": {
+      "lens": "It may seem like a dream♪",
+      "tesseract": "♪ It may{\\i1}seem{\\i0}like a dream{\\i1}♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Things are not what they seem ♪",
+      "note": "Added musical notes from Tesseract and removed italics tags for clarity."
+    },
+    "query": {
+      "lens": "Things are not what they seem",
+      "tesseract": "{\\i1}♪ Things are not what they seem ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Now begins a new adventure ♪",
+      "note": "Used musical notes and spacing from Tesseract, omitted unnecessary italics tags."
+    },
+    "query": {
+      "lens": "Now begins a new adventure♪",
+      "tesseract": "{\\i1}♪{\\i0}Now begins a new adventure ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ For you ♪",
+      "note": "Added space after musical note and at the end as in Tesseract; used musical notes from both sources."
+    },
+    "query": {
+      "lens": "♪For you♪",
+      "tesseract": "{\\i1}♪{\\i0}For you ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ And you'll be with Totoro ♪",
+      "note": "Used musical notes from Tesseract at both ends of the line."
+    },
+    "query": {
+      "lens": "And you'll be with Totoro♪",
+      "tesseract": "♪ And you'll be with Totoro ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Totoro ♪",
+      "note": "Added spaces around 'Totoro' as in Tesseract for proper musical note formatting."
+    },
+    "query": {
+      "lens": "♪Totoro♪",
+      "tesseract": "♪ Totoro ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Living in the forest trees ♪",
+      "note": "Added musical notes from Tesseract."
+    },
+    "query": {
+      "lens": "Living in the forest trees",
+      "tesseract": "♪ Living in the forest trees ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ For such a very, very long time ♪",
+      "note": "Used musical notes and spacing from Tesseract; removed extra trailing note from Lens."
+    },
+    "query": {
+      "lens": "♪For such a very, very long time♪♪",
+      "tesseract": "♪ For such a very, very long time ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ There you'll be with Totoro, Totoro ♪",
+      "note": "Used musical notes from Tesseract, removed extraneous characters, and kept line as a single line for clarity."
+    },
+    "query": {
+      "lens": "There you'll be with Totoro,\nTotoro♪",
+      "tesseract": "♪) There you'll be with Totoro, Totoro ♪’"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ You only see him\nWhen you're very young ♪",
+      "note": "Added musical notes from Tesseract and kept line break as in both sources."
+    },
+    "query": {
+      "lens": "You only see him\nWhen you're very young",
+      "tesseract": "♪ You only see him\nWhen you're very young{\\i1}♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ A magical adventure for you ♪",
+      "note": "Corrected leading character to musical note."
+    },
+    "query": {
+      "lens": "A magical adventure for you",
+      "tesseract": "PA magical adventure for you ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ It's magic for you ♪",
+      "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags, and eliminated line break from Lens."
+    },
+    "query": {
+      "lens": "It's magic for\nyou♪",
+      "tesseract": "{\\i1}♪{\\i0}It's magic for you ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Rain tumbles down ♪",
+      "note": "Used musical notes from Tesseract for both start and end, and removed extra line break from Lens."
+    },
+    "query": {
+      "lens": "Rain tumbles\ndown♪♪",
+      "tesseract": "{\\i1}♪{\\i0}Rain tumbles down ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ The bus is late ♪",
+      "note": "Used musical notes and formatting from Tesseract; removed line break from Lens."
+    },
+    "query": {
+      "lens": "The bus is\nlate♪♪",
+      "tesseract": "♪ The bus is late ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Suddenly, a furry white giant ♪",
+      "note": "Used musical notes and italics placement from Tesseract, corrected 'flurry' to 'furry' from Lens."
+    },
+    "query": {
+      "lens": "Suddenly, a furry white giant♪",
+      "tesseract": "{\\i1}♪ Suddenly, a flurry white giant ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Is by your side ♪",
+      "note": "Used musical notes and single line from Tesseract."
+    },
+    "query": {
+      "lens": "Is by your\nside♪",
+      "tesseract": "♪ Is by your side ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Don't be afraid ♪",
+      "note": "Used musical notes and italics placement from Tesseract, removed line break from Lens."
+    },
+    "query": {
+      "lens": "Don't be\nafraid♪♪",
+      "tesseract": "{\\i1}♪ Don't be afraid ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Just open wide ♪",
+      "note": "Used musical notes and single-line format from Tesseract; removed italics tags."
+    },
+    "query": {
+      "lens": "Just open\nwide♪",
+      "tesseract": "{\\i1}♪ Just open wide ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Your umbrella for him ♪",
+      "note": "Used musical notes from Tesseract at the start and end, and removed unnecessary italics. Used Tesseract's single-line format."
+    },
+    "query": {
+      "lens": "Your umbrella for\nhim♪♪",
+      "tesseract": "♪ Your umbrella for him{\\i1}♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ Watch him play in the rain ♪",
+      "note": "Added musical notes from Tesseract at the beginning and end."
+    },
+    "query": {
+      "lens": "Watch him play in the rain♪",
+      "tesseract": "♪ Watch him play in the rain ♪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ And on a moonlit night ♪",
+      "note": "Used musical notes and italics placement from Tesseract, corrected 'moon fit' to 'moonlit' from Lens."
+    },
+    "query": {
+      "lens": "And on a moonlit night",
+      "tesseract": "{\\i1}♪ And on a moon fit night ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ He plays a magic flute in the sky ♪",
+      "note": "Used musical notes and correct text from Lens, added leading space and italics placement from Tesseract."
+    },
+    "query": {
+      "lens": "♪He plays a magic flute in the sky♪",
+      "tesseract": "{\\i1}♪ He Nays a magic flute “in the sky ♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "♪ There you'll be with Totoro ♪",
+      "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags."
+    },
+    "query": {
+      "lens": "♪There you'll be with Totoro♪",
+      "tesseract": "♪ There you'll be with Totoro{\\i1}♪{\\i0}"
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]
