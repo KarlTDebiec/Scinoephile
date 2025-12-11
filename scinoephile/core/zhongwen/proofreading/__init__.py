@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 proofreading."""
+"""Code related to Zhongwen proofreading."""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ __all__ = [
 def get_zhongwen_proofread(
     series: Series, proofreader: ZhongwenProofreader | None = None, **kwargs: Any
 ) -> Series:
-    """Get 中文 series proofread.
+    """Get Zhongwen series proofread.
 
     Arguments:
         series: Series to proofread
@@ -61,7 +61,7 @@ def get_zhongwen_proofread(
 def get_zhongwen_proofread2(
     series: Series, proofreader: ZhongwenProofreader2 | None = None, **kwargs: Any
 ) -> Series:
-    """Get 中文 series proofread.
+    """Get Zhongwen series proofread.
 
     Arguments:
         series: Series to proofread
@@ -81,7 +81,7 @@ def get_zhongwen_proofread2(
 def migrate_zhongwen_proofreading_v1_to_v2(
     test_cases: list[ZhongwenProofreadingTestCase],
 ) -> list[ZhongwenProofreadingTestCase2]:
-    """Migrate 中文 proofreading from v1 to v2.
+    """Migrate Zhongwen proofreading from v1 to v2.
 
     Arguments:
         test_cases: list of ZhongwenProofreadingTestCase to migrate

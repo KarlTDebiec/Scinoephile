@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 OCR fusion."""
+"""Code related to Zhongwen OCR fusion."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def get_zhongwen_ocr_fused(
     fuser: ZhongwenFuser | None = None,
     **kwargs: Any,
 ) -> Series:
-    """Get OCRed 中文 series fused from Google Lens and PaddleOCR outputs.
+    """Get OCRed Zhongwen series fused from Google Lens and PaddleOCR outputs.
 
     Arguments:
         lens: subtitles OCRed using Google Lens

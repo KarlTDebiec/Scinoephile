@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to 中文 text."""
+"""Core code related to Zhongwen text."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ conversion_exclusions = {
 
 
 def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
-    """Get 中文 series cleaned.
+    """Get Zhongwen series cleaned.
 
     Arguments:
         series: Series to clean
@@ -53,7 +53,7 @@ def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
 
 @cache
 def get_zhongwen_converter(config: OpenCCConfig) -> OpenCC:
-    """Get OpenCC converter for 中文 character set conversion.
+    """Get OpenCC converter for Zhongwen character set conversion.
 
     Arguments:
         config: OpenCC configuration
@@ -68,7 +68,7 @@ def get_zhongwen_converted(
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
 ) -> Series:
-    """Get 中文 converted between character sets.
+    """Get Zhongwen converted between character sets.
 
     Arguments:
         series: Series to convert
@@ -86,7 +86,7 @@ def get_zhongwen_converted(
 
 
 def get_zhongwen_flattened(series: Series) -> Series:
-    """Get multi-line 中文 series flattened to single lines.
+    """Get multi-line Zhongwen series flattened to single lines.
 
     Arguments:
         series: Series to flatten
@@ -102,7 +102,7 @@ def get_zhongwen_flattened(series: Series) -> Series:
 def get_zhongwen_text_converted(
     text: str, config: OpenCCConfig, apply_exclusions: bool = True
 ) -> str:
-    """Get 中文 text converted between character sets.
+    """Get Zhongwen text converted between character sets.
 
     Arguments:
         text: Text to convert
@@ -138,7 +138,7 @@ def get_zhongwen_text_converted(
 
 
 def _get_zhongwen_text_cleaned(text: str) -> str | None:
-    """Get 中文 text cleaned.
+    """Get Zhongwen text cleaned.
 
     Arguments:
         text: Text to clean
@@ -170,7 +170,7 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
 
 
 def _get_zhongwen_text_flattened(text: str) -> str:
-    """Get multi-line 中文 text flattened to a single line.
+    """Get multi-line Zhongwen text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 
