@@ -63,7 +63,7 @@ def get_zhongwen_ocr_fused(
 def get_zhongwen_ocr_fused2(
     lens: Series,
     paddle: Series,
-    fuser: ZhongwenFuser | None = None,
+    fuser: ZhongwenFuser2 | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get OCRed Zhongwen series fused from Google Lens and PaddleOCR outputs.

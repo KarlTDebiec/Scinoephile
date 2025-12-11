@@ -130,22 +130,22 @@ class EnglishProofreader2:
         """
         try:
             # noinspection PyUnusedImports
-            from test.data.kob import get_kob_english_proofreading_test_cases
+            from test.data.kob import get_kob_eng_proofreading_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mlamd import get_mlamd_english_proofreading_test_cases
+            from test.data.mlamd import get_mlamd_eng_proofreading_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.mnt import get_mnt_english_proofreading_test_cases
+            from test.data.mnt import get_mnt_eng_proofreading_test_cases
 
             # noinspection PyUnusedImports
-            from test.data.t import get_t_english_proofreading_test_cases
+            from test.data.t import get_t_eng_proofreading_test_cases
 
             return (
-                get_kob_english_proofreading_test_cases()
-                + get_mlamd_english_proofreading_test_cases()
-                + get_mnt_english_proofreading_test_cases()
-                + get_t_english_proofreading_test_cases()
+                get_kob_eng_proofreading_test_cases()
+                + get_mlamd_eng_proofreading_test_cases()
+                + get_mnt_eng_proofreading_test_cases()
+                + get_t_eng_proofreading_test_cases()
             )
         except ImportError as exc:
             warning(

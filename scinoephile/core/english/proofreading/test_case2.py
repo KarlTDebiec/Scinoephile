@@ -46,10 +46,12 @@ class EnglishProofreadingTestCase2(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if any(
-            getattr(self, f"revised_{idx}") != "" for idx in range(1, self.size + 1)
-        ):
-            min_difficulty = max(min_difficulty, 1)
+        if self.answer is not None:
+            if any(
+                getattr(self.answer, f"revised_{idx}") != ""
+                for idx in range(1, self.size + 1)
+            ):
+                min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")

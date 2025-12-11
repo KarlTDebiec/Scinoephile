@@ -124,8 +124,11 @@ class EnglishFuser2:
             query_cls = test_case_cls.query_cls
             answer_cls = test_case_cls.answer_cls
             query = query_cls(lens=lens_sub.text, tesseract=tesseract_sub.text)
-            answer = self.queryer(query, answer_cls, test_case_cls)
-            sub = Subtitle(start=lens_sub.start, end=lens_sub.end, text=answer.fused)
+            test_case = test_case_cls(query=query)
+            test_case = self.queryer(test_case)
+            sub = Subtitle(
+                start=lens_sub.start, end=lens_sub.end, text=test_case.answer.fused
+            )
             info(
                 f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"
             )
