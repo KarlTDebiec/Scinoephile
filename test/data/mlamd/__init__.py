@@ -10,6 +10,7 @@ from typing import Any, cast
 
 import pytest
 
+from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
@@ -64,6 +65,7 @@ ___all__ = [
     "mlamd_english_proofreading_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
     "mlamd_zhongwen_proofreading_test_cases",
+    "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
     "get_mlamd_eng_fusion_test_cases",
@@ -181,6 +183,25 @@ def mlamd_zho_hans_eng() -> Series:
 def mlamd_yue_hans_eng() -> Series:
     """MLAMD Bilingual 简体粤文 and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
+
+
+@cache
+def get_mlamd_yue_shifting_test_cases(
+    **kwargs: Any,
+) -> list[ShiftingTestCase2]:
+    """Get MLAMD Yuewen shifting test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "audio" / "cantonese" / "shifting.json",
+        ShiftingTestCase2,
+        **kwargs,
+    )
+    return cast(list[ShiftingTestCase2], test_cases)
 
 
 @cache

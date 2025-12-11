@@ -7,6 +7,7 @@ from __future__ import annotations
 import asyncio
 from logging import info
 from pathlib import Path
+from pprint import pprint
 
 from data.kob import (
     get_kob_eng_fusion_test_cases,
@@ -23,6 +24,10 @@ from data.mlamd import (
 
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
+from scinoephile.audio.cantonese.shifting import (
+    ShiftingTestCase2,
+    migrate_shifting_v1_to_v2,
+)
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
@@ -30,6 +35,7 @@ from scinoephile.core.english.proofreading import (
     EnglishProofreader2,
     get_english_proofread2,
 )
+from scinoephile.core.llms import load_test_cases_from_json, save_test_cases_to_json
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     get_zhongwen_cleaned,
@@ -71,22 +77,22 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 # Load test cases and migrate to v2, then write to JSON
-# from test.data.mlamd import mlamd_zhongwen_fusion_test_cases as test_cases
-#
-# test_cases_2 = migrate_zhongwen_ocr_fusion_v1_to_v2(test_cases)
-# pprint(test_cases_2[0:10])
-# output_path = test_data_root / title / "image" / "zhongwen" / "fusion.json"
-# save_test_cases_to_json(output_path, test_cases_2)
-# test_cases_2 = load_test_cases_from_json(output_path, ZhongwenFusionTestCase2)
-# pprint(test_cases_2[0:10])
-# from test.data.mlamd import get_mlamd_zho_fusion_test_cases
-#
-# test_cases_2 = get_mlamd_zho_fusion_test_cases()
-# pprint(test_cases_2[0:10])
+from test.data.mlamd import mlamd_shift_test_cases as test_cases
+
+test_cases_2 = migrate_shifting_v1_to_v2(test_cases)
+pprint(test_cases_2[0:10])
+output_path = test_data_root / title / "audio" / "cantonese" / "shifting.json"
+save_test_cases_to_json(output_path, test_cases_2)
+test_cases_2 = load_test_cases_from_json(output_path, ShiftingTestCase2)
+pprint(test_cases_2[0:10])
+from test.data.mlamd import get_mlamd_yue_shifting_test_cases
+
+test_cases_2 = get_mlamd_yue_shifting_test_cases()
+pprint(test_cases_2[0:10])
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
