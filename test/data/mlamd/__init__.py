@@ -11,6 +11,7 @@ from typing import Any, cast
 import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase2
+from scinoephile.audio.cantonese.proofing import ProofingTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
@@ -68,6 +69,7 @@ __all__ = [
     "mlamd_zhongwen_proofreading_test_cases",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
+    "get_mlamd_yue_proofing_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
     "get_mlamd_eng_fusion_test_cases",
@@ -223,6 +225,25 @@ def get_mlamd_yue_merging_test_cases(
         **kwargs,
     )
     return cast(list[MergingTestCase2], test_cases)
+
+
+@cache
+def get_mlamd_yue_proofing_test_cases(
+    **kwargs: Any,
+) -> list[ProofingTestCase2]:
+    """Get MLAMD Yuewen proofing test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "audio" / "cantonese" / "proofing.json",
+        ProofingTestCase2,
+        **kwargs,
+    )
+    return cast(list[ProofingTestCase2], test_cases)
 
 
 @cache
