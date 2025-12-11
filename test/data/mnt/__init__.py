@@ -32,7 +32,7 @@ from test.data.mnt.image.zhongwen.fusion import (
     test_cases as mnt_zhongwen_fusion_test_cases,
 )
 
-___all__ = [
+__all__ = [
     "mnt_zho_hans_lens",
     "mnt_zho_hans_paddle",
     "mnt_zho_hans_fuse",

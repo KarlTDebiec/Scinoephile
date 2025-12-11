@@ -32,24 +32,18 @@ from test.data.t.image.zhongwen.fusion import (
     test_cases as t_zhongwen_fusion_test_cases,
 )
 
-___all__ = [
+__all__ = [
     "t_zho_hans_lens",
     "t_zho_hans_paddle",
     "t_zho_hans_fuse",
     "t_zho_hans_fuse_proofread",
-    "t_zho_hans_fuse_proofread_clean",
-    "t_zho_hans_fuse_proofread_clean_flatten",
     "t_zho_hans",
     "t_zho_hans_clean",
-    "t_zho_hans_flatten",
     "t_zho_hans_clean_flatten",
     "t_zho_hant",
     "t_zho_hant_simplify",
     "t_eng",
     "t_eng_clean",
-    "t_eng_flatten",
-    "t_eng_proof",
-    "t_eng_proof_clean_flatten",
     "t_zho_hans_eng",
     "t_english_fusion_test_cases",
     "t_english_proofreading_test_cases",

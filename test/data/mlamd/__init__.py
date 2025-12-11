@@ -38,7 +38,7 @@ from test.data.mlamd.review import mlamd_review_test_cases
 from test.data.mlamd.shifting import mlamd_shift_test_cases
 from test.data.mlamd.translation import mlamd_translate_test_cases
 
-___all__ = [
+__all__ = [
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
     "mlamd_zho_hans_fuse",
