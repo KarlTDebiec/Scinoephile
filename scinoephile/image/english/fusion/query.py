@@ -39,12 +39,12 @@ class EnglishFusionQuery(Query, ABC):
     def get_query_cls(
         cls, text: type[EnglishFusionPrompt] = EnglishFusionPrompt
     ) -> type[Self]:
-        """Get concrete query class with provided text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         fields = {
             "lens": (str, Field(..., description=text.lens_description)),

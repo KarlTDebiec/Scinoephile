@@ -32,14 +32,14 @@ class TranslationQuery(Query, ABC):
         missing: tuple[int, ...],
         text: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided size, missing, and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         if any(m < 0 or m > size for m in missing):
             raise ScinoephileError(

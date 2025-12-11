@@ -36,7 +36,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
             size: number of subtitles
             text: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         fields = {}
         for idx in range(size):

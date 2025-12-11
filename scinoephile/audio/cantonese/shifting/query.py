@@ -33,12 +33,12 @@ class ShiftingQuery(Query, ABC):
     @classmethod
     @cache
     def get_query_cls(cls, text: type[ShiftingPrompt] = ShiftingPrompt) -> type[Self]:
-        """Get concrete query class with provided text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             text: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
         fields = {
             "zhongwen_1": (str, Field(..., description=text.zhongwen_1_description)),
