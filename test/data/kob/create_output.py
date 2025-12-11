@@ -51,18 +51,18 @@ input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
-# Load English fusion test cases and migrate to v2, then write to JSON
-# from test.data.kob import kob_english_fusion_test_cases as test_cases
+# Load test cases and migrate to v2, then write to JSON
+# from test.data.kob import kob_zhongwen_fusion_test_cases as test_cases
 #
-# test_cases_2 = migrate_english_ocr_fusion_v1_to_v2(test_cases)
+# test_cases_2 = migrate_zhongwen_ocr_fusion_v1_to_v2(test_cases)
 # pprint(test_cases_2[0:10])
-# output_path = test_data_root / title / "image" / "english" / "fusion.json"
+# output_path = test_data_root / title / "image" / "zhongwen" / "fusion.json"
 # save_test_cases_to_json(output_path, test_cases_2)
-# test_cases_2 = load_test_cases_from_json(output_path, EnglishFusionTestCase2)
+# test_cases_2 = load_test_cases_from_json(output_path, ZhongwenFusionTestCase2)
 # pprint(test_cases_2[0:10])
-# from test.data.kob import get_kob_eng_fusion_test_cases
+# from test.data.kob import get_kob_zho_fusion_test_cases
 #
-# test_cases_2 = get_kob_eng_fusion_test_cases()
+# test_cases_2 = get_kob_zho_fusion_test_cases()
 # pprint(test_cases_2[0:10])
 
 actions = {

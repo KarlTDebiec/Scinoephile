@@ -15,6 +15,7 @@ from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
 from scinoephile.image.english.fusion import EnglishFusionTestCase2
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
@@ -66,6 +67,7 @@ ___all__ = [
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
     "get_mlamd_eng_fusion_test_cases",
+    "get_mlamd_zho_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -223,7 +225,7 @@ def get_mlamd_zho_proofreading_test_cases(
 def get_mlamd_eng_fusion_test_cases(
     **kwargs: Any,
 ) -> list[EnglishFusionTestCase2]:
-    """Get MLAMD English proofreading test cases.
+    """Get MLAMD English fusion test cases.
 
     Arguments:
         kwargs: additional keyword arguments for load_test_cases_from_json
@@ -236,3 +238,22 @@ def get_mlamd_eng_fusion_test_cases(
         **kwargs,
     )
     return cast(list[EnglishFusionTestCase2], test_cases)
+
+
+@cache
+def get_mlamd_zho_fusion_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenFusionTestCase2]:
+    """Get MLAMD Zhongwen fusion test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    test_cases = load_test_cases_from_json(
+        title_root / "image" / "zhongwen" / "fusion.json",
+        ZhongwenFusionTestCase2,
+        **kwargs,
+    )
+    return cast(list[ZhongwenFusionTestCase2], test_cases)

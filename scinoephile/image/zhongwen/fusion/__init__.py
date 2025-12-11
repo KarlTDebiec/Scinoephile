@@ -98,8 +98,8 @@ def migrate_zhongwen_ocr_fusion_v1_to_v2(
 
     test_case_2s: list[ZhongwenFusionTestCase2] = []
     for test_case in test_cases:
-        query_2 = query_2_cls(lens=test_case.lens, tesseract=test_case.tesseract)
-        answer_2 = answer_2_cls(fused=test_case.fused, note=test_case.note)
+        query_2 = query_2_cls(lens=test_case.lens, paddle=test_case.paddle)
+        answer_2 = answer_2_cls(ronghe=test_case.ronghe, beizhu=test_case.beizhu)
         test_case_2 = test_case_2_cls(
             query=query_2,
             answer=answer_2,
