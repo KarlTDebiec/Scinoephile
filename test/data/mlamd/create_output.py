@@ -8,19 +8,6 @@ import asyncio
 from logging import info
 from pathlib import Path
 
-from data.kob import (
-    get_kob_eng_fusion_test_cases,
-    get_kob_zho_fusion_test_cases,
-    get_kob_zho_proofreading_test_cases,
-)
-from data.mlamd import (
-    get_mlamd_yue_merging_test_cases,
-    get_mlamd_yue_proofing_test_cases,
-    get_mlamd_yue_review_test_cases,
-    get_mlamd_yue_shifting_test_cases,
-    get_mlamd_yue_translation_test_cases,
-)
-
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
@@ -50,7 +37,17 @@ from scinoephile.image.zhongwen.fusion import (
 )
 from scinoephile.testing import test_data_root
 from test.data.kob import (
+    get_kob_eng_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
+    get_kob_zho_fusion_test_cases,
+    get_kob_zho_proofreading_test_cases,
+)
+from test.data.mlamd import (
+    get_mlamd_yue_merging_test_cases,
+    get_mlamd_yue_proofing_test_cases,
+    get_mlamd_yue_review_test_cases,
+    get_mlamd_yue_shifting_test_cases,
+    get_mlamd_yue_translation_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_fusion_test_cases,

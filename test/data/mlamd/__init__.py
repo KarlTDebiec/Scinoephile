@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import pytest
 
@@ -36,11 +36,6 @@ from test.data.mlamd.image.english.fusion import (
 from test.data.mlamd.image.zhongwen.fusion import (
     test_cases as mlamd_zhongwen_fusion_test_cases,
 )
-from test.data.mlamd.merging import mlamd_merge_test_cases
-from test.data.mlamd.proofing import mlamd_proof_test_cases
-from test.data.mlamd.review import mlamd_review_test_cases
-from test.data.mlamd.shifting import mlamd_shift_test_cases
-from test.data.mlamd.translation import mlamd_translate_test_cases
 
 __all__ = [
     "mlamd_zho_hans_lens",
@@ -60,11 +55,6 @@ __all__ = [
     "mlamd_yue_hans",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
-    "mlamd_shift_test_cases",
-    "mlamd_merge_test_cases",
-    "mlamd_proof_test_cases",
-    "mlamd_translate_test_cases",
-    "mlamd_review_test_cases",
     "mlamd_english_fusion_test_cases",
     "mlamd_english_proofreading_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
