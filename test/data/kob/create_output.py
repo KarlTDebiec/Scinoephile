@@ -24,14 +24,8 @@ from scinoephile.core.zhongwen.proofreading import (
     ZhongwenProofreader,
     get_zhongwen_proofread,
 )
-from scinoephile.image.english.fusion import (
-    EnglishFuser,
-    get_english_ocr_fused,
-)
-from scinoephile.image.zhongwen.fusion import (
-    ZhongwenFuser,
-    get_zhongwen_ocr_fused,
-)
+from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
+from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_eng_fusion_test_cases,
