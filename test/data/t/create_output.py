@@ -64,8 +64,8 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
     # "简体中文 (SRT)",
     # "繁體中文 (SRT)",
     # "English (SRT)",
