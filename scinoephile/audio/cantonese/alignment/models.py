@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.review import (
-    ReviewAnswer2,
-    ReviewQuery2,
-    ReviewTestCase2,
+    ReviewAnswer,
+    ReviewQuery,
+    ReviewTestCase,
 )
 from scinoephile.audio.cantonese.translation import (
     TranslationAnswer2,
@@ -26,7 +26,7 @@ __all__ = [
 
 def get_review_models(
     alignment: Alignment,
-) -> tuple[type[ReviewQuery2], type[ReviewAnswer2], type[ReviewTestCase2]]:
+) -> tuple[type[ReviewQuery], type[ReviewAnswer], type[ReviewTestCase]]:
     """Get review query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
@@ -57,7 +57,7 @@ def get_review_models(
             )
 
     # Get classes
-    test_case_cls = ReviewTestCase2.get_test_case_cls(size)
+    test_case_cls = ReviewTestCase.get_test_case_cls(size)
     query_cls = test_case_cls.query_cls
     answer_cls = test_case_cls.answer_cls
     return query_cls, answer_cls, test_case_cls

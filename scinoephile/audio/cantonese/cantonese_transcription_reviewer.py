@@ -23,7 +23,7 @@ from scinoephile.testing import test_data_root
 from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
 from .proofing import ProofingPrompt, ProofingTestCase
-from .review import ReviewPrompt2, ReviewTestCase2
+from .review import ReviewPrompt, ReviewTestCase
 from .shifting import ShiftingPrompt2, ShiftingTestCase2
 from .translation import TranslationPrompt2, TranslationTestCase2
 
@@ -38,7 +38,7 @@ class CantoneseTranscriptionReviewer:
         merging_test_cases: list[MergingTestCase],
         proofing_test_cases: list[ProofingTestCase],
         translation_test_cases: list[TranslationTestCase2],
-        review_test_cases: list[ReviewTestCase2],
+        review_test_cases: list[ReviewTestCase],
     ):
         """Initialize.
 
@@ -79,7 +79,7 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        review_queryer_cls = Queryer2.get_queryer_cls(ReviewPrompt2)
+        review_queryer_cls = Queryer2.get_queryer_cls(ReviewPrompt)
         self.review_queryer = review_queryer_cls(
             prompt_test_cases=[tc for tc in review_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in review_test_cases if tc.verified],

@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.abcs import TestCase
-from scinoephile.core.models import format_field
+from scinoephile.core.llms import TestCase2
+from scinoephile.core.models import get_model_name
 
 from .answer import ReviewAnswer
 from .prompt import ReviewPrompt
@@ -20,91 +20,87 @@ from .query import ReviewQuery
 __all__ = ["ReviewTestCase"]
 
 
-class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
-    TestCase[TQuery, TAnswer], ABC
-):
+class ReviewTestCase(TestCase2, ABC):
     """Abstract base class for 粤文 transcription review test cases."""
 
     answer_cls: ClassVar[type[ReviewAnswer]]
     """Answer class for this test case."""
     query_cls: ClassVar[type[ReviewQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[ReviewPrompt]]
+    prompt_cls: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
-    @property
-    def size(self) -> int:
-        """Get size of the test case."""
-        zw_idxs = [
-            int(s.split("_")[1]) - 1
-            for s in self.query_fields
-            if s.startswith("zhongwen_")
-        ]
-        return max(zw_idxs) + 1
-
-    @property
-    def source_str(self) -> str:
-        """Get Python source string."""
-        lines = [
-            f"{ReviewTestCase.__name__}.get_test_case_cls("
-            f"    {self.size}, {self.text.__name__})("
-        ]
-        for field in self.query_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        for field in self.answer_fields:
-            value = getattr(self, field)
-            if value == "":
-                continue
-            lines.append(format_field(field, value))
-        for field in self.test_case_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        lines.append(")")
-        return "\n".join(lines)
+    size: ClassVar[int]
+    """Number of subtitles."""
 
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
+        if self.answer is None:
+            return self
+
+        yuewen_unmodified_error = self.prompt_cls.yuewen_unmodified_error
+        yuewen_revised_provided_note_missing_error = (
+            self.prompt_cls.yuewen_revised_provided_note_missing_error
+        )
+        yuewen_revised_missing_note_provided_error = (
+            self.prompt_cls.yuewen_revised_missing_note_provided_error
+        )
+
         for idx in range(self.size):
-            yuewen = getattr(self, f"yuewen_{idx + 1}")
-            yuewen_revised = getattr(self, f"yuewen_revised_{idx + 1}")
-            note = getattr(self, f"note_{idx + 1}")
+            yuewen = getattr(self.query, f"yuewen_{idx + 1}")
+            yuewen_revised = getattr(self.answer, f"yuewen_revised_{idx + 1}")
+            note = getattr(self.answer, f"note_{idx + 1}")
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
-                    raise ValueError(self.text.yuewen_unmodified_error.format(idx + 1))
+                    raise ValueError(yuewen_unmodified_error.format(idx=idx + 1))
                 if note == "":
                     raise ValueError(
-                        self.text.yuewen_revised_missing_note_provided_error.format(
-                            idx + 1
-                        )
+                        yuewen_revised_provided_note_missing_error.format(idx=idx + 1)
                     )
             elif note != "":
                 raise ValueError(
-                    self.text.yuewen_revised_missing_note_provided_error.format(idx + 1)
+                    yuewen_revised_missing_note_provided_error.format(idx=idx + 1)
                 )
         return self
 
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, size: int, text: type[ReviewPrompt] = ReviewPrompt
+        cls,
+        size: int,
+        prompt_cls: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate configuration
         """
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         query_cls = ReviewQuery.get_query_cls(size)
         answer_cls = ReviewAnswer.get_answer_cls(size)
-        return create_model(
-            f"{cls.__name__}_{size}_{text.__name__}",
-            __base__=(query_cls, answer_cls, cls),
-            __module__=cls.__module__,
-            query_cls=(ClassVar[type[ReviewQuery]], query_cls),
-            answer_cls=(ClassVar[type[ReviewAnswer]], answer_cls),
-            text=(ClassVar[type[ReviewPrompt]], text),
-        )
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        model.size = size
+        return model
+
+    @classmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get concrete test case class for provided data with provided configuration.
+
+        Arguments:
+            data: data dictionary
+            kwargs: additional keyword arguments passed to get_test_case_cls
+        Returns:
+            test case class
+        """
+        size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
+        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
+        return test_case_cls

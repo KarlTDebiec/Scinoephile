@@ -12,7 +12,7 @@ import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewTestCase2
+from scinoephile.audio.cantonese.review import ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.audio.cantonese.translation import TranslationTestCase2
 from scinoephile.core import Series
@@ -236,7 +236,7 @@ def get_mlamd_yue_translation_test_cases(**kwargs: Any) -> list[TranslationTestC
 
 
 @cache
-def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase2]:
+def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
@@ -245,7 +245,7 @@ def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase2]:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "review.json"
-    return load_test_cases_from_json(path, ReviewTestCase2, **kwargs)
+    return load_test_cases_from_json(path, ReviewTestCase, **kwargs)
 
 
 @cache
