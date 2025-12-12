@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.abcs import TestCase
-from scinoephile.core.models import format_field
+from scinoephile.core.llms import TestCase2
+from scinoephile.core.models import get_model_name
 
 from .answer import EnglishProofreadingAnswer
 from .prompt import EnglishProofreadingPrompt
@@ -20,48 +20,18 @@ from .query import EnglishProofreadingQuery
 __all__ = ["EnglishProofreadingTestCase"]
 
 
-class EnglishProofreadingTestCase(
-    TestCase[EnglishProofreadingQuery, EnglishProofreadingAnswer], ABC
-):
+class EnglishProofreadingTestCase(TestCase2, ABC):
     """Abstract base class for English proofreading test cases."""
 
-    answer_cls: ClassVar[type[EnglishProofreadingAnswer]]
+    answer_cls: ClassVar[type[EnglishProofreadingAnswer]]  # type: ignore
     """Answer class for this test case."""
-    query_cls: ClassVar[type[EnglishProofreadingQuery]]
+    query_cls: ClassVar[type[EnglishProofreadingQuery]]  # type: ignore
     """Query class for this test case."""
-    text: ClassVar[type[EnglishProofreadingPrompt]]
+    prompt_cls: ClassVar[type[EnglishProofreadingPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
-    @property
-    def size(self) -> int:
-        """Size of the test case."""
-        idxs = [
-            int(s.split("_")[1]) - 1
-            for s in self.query_fields
-            if s.startswith("subtitle_")
-        ]
-        return max(idxs) + 1
-
-    @property
-    def source_str(self) -> str:
-        """Get Python source string."""
-        lines = [
-            f"{EnglishProofreadingTestCase.__name__}.get_test_case_cls("
-            f"    {self.size}, {self.text.__name__})("
-        ]
-        for field in self.query_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        for field in self.answer_fields:
-            value = getattr(self, field)
-            if value == "":
-                continue
-            lines.append(format_field(field, value))
-        for field in self.test_case_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        lines.append(")")
-        return "\n".join(lines)
+    size: ClassVar[int]
+    """Number of subtitles."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -75,28 +45,35 @@ class EnglishProofreadingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if any(
-            getattr(self, f"revised_{idx}") != "" for idx in range(1, self.size + 1)
-        ):
-            min_difficulty = max(min_difficulty, 1)
+        if self.answer is not None:
+            if any(
+                getattr(self.answer, f"revised_{idx}") != ""
+                for idx in range(1, self.size + 1)
+            ):
+                min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
+        if self.answer is None:
+            return self
+
+        subtitle_revised_equal_error = self.prompt_cls.subtitle_revised_equal_error
+        note_missing_error = self.prompt_cls.note_missing_error
+        revised_missing_error = self.prompt_cls.revised_missing_error
+
         for idx in range(self.size):
-            subtitle = getattr(self, f"subtitle_{idx + 1}")
-            revised = getattr(self, f"revised_{idx + 1}")
-            note = getattr(self, f"note_{idx + 1}")
+            subtitle = getattr(self.query, f"subtitle_{idx + 1}")
+            revised = getattr(self.answer, f"revised_{idx + 1}")
+            note = getattr(self.answer, f"note_{idx + 1}")
             if revised != "":
                 if subtitle == revised:
-                    raise ValueError(
-                        self.text.subtitle_revised_equal_error.format(idx + 1)
-                    )
+                    raise ValueError(subtitle_revised_equal_error.format(idx=idx + 1))
                 if note == "":
-                    raise ValueError(self.text.note_missing_error.format(idx + 1))
+                    raise ValueError(note_missing_error.format(idx=idx + 1))
             elif note != "":
-                raise ValueError(self.text.revised_missing_error.format(idx + 1))
+                raise ValueError(revised_missing_error.format(idx=idx + 1))
         return self
 
     @classmethod
@@ -104,23 +81,38 @@ class EnglishProofreadingTestCase(
     def get_test_case_cls(
         cls,
         size: int,
-        text: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+        prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate configuration
         """
-        query_cls = EnglishProofreadingQuery.get_query_cls(size, text)
-        answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, text)
-        return create_model(
-            f"{cls.__name__}_{size}_{text.__name__}",
-            __base__=(query_cls, answer_cls, cls),
-            __module__=cls.__module__,
-            query_cls=(ClassVar[type[EnglishProofreadingQuery]], query_cls),
-            answer_cls=(ClassVar[type[EnglishProofreadingAnswer]], answer_cls),
-            text=(ClassVar[type[EnglishProofreadingPrompt]], text),
-        )
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        query_cls = EnglishProofreadingQuery.get_query_cls(size, prompt_cls)
+        answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, prompt_cls)
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        model.size = size
+        return model
+
+    @classmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get concrete test case class for provided data with provided configuration.
+
+        Arguments:
+            data: data dictionary
+            kwargs: additional keyword arguments passed to get_test_case_cls
+        Returns:
+            test case class
+        """
+        size = sum(1 for key in data["query"] if key.startswith("subtitle_"))
+        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
+        return test_case_cls

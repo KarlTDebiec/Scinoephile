@@ -11,7 +11,7 @@ from typing import Any, cast
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
+from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
 from scinoephile.image.english.fusion import EnglishFusionTestCase2
@@ -19,9 +19,6 @@ from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
-from test.data.mnt.core.english.proofreading import (
-    test_cases as mnt_english_proofreading_test_cases,
-)
 from test.data.mnt.core.zhongwen.proofreading import (
     test_cases as mnt_zhongwen_proofreading_test_cases,
 )
@@ -51,7 +48,6 @@ __all__ = [
     "mnt_eng_fuse_proofread_clean_flatten",
     "mnt_zho_hans_eng",
     "mnt_english_fusion_test_cases",
-    "mnt_english_proofreading_test_cases",
     "mnt_zhongwen_fusion_test_cases",
     "mnt_zhongwen_proofreading_test_cases",
     "get_mnt_eng_proofreading_test_cases",
@@ -174,7 +170,7 @@ def mnt_zho_hans_eng() -> Series:
 @cache
 def get_mnt_eng_proofreading_test_cases(
     **kwargs: Any,
-) -> list[EnglishProofreadingTestCase2]:
+) -> list[EnglishProofreadingTestCase]:
     """Get MNT English proofreading test cases.
 
     Arguments:
@@ -184,10 +180,10 @@ def get_mnt_eng_proofreading_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "core" / "english" / "proofreading.json",
-        EnglishProofreadingTestCase2,
+        EnglishProofreadingTestCase,
         **kwargs,
     )
-    return cast(list[EnglishProofreadingTestCase2], test_cases)
+    return cast(list[EnglishProofreadingTestCase], test_cases)
 
 
 @cache

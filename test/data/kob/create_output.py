@@ -26,8 +26,8 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
 from scinoephile.core.english.proofreading import (
-    EnglishProofreader2,
-    get_english_proofread2,
+    EnglishProofreader,
+    get_english_proofread,
 )
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
@@ -131,9 +131,9 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_fuse_proofread = get_english_proofread2(
+    eng_fuse_proofread = get_english_proofread(
         eng_fuse,
-        EnglishProofreader2(
+        EnglishProofreader(
             test_cases=get_mlamd_eng_proofreading_test_cases()
             + get_mnt_eng_proofreading_test_cases()
             + get_t_eng_proofreading_test_cases(),
