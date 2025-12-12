@@ -45,12 +45,18 @@ class EnglishProofreadingAnswer(Answer, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = f"revised_{idx + 1}"
-            description = prompt_cls.revised_description.format(idx=idx + 1)
-            fields[key] = (str, Field("", description=description, max_length=1000))
-            key = f"note_{idx + 1}"
-            description = prompt_cls.note_description.format(idx=idx + 1)
-            fields[key] = (str, Field("", description=description, max_length=1000))
+            revised_key = prompt_cls.revised_field(idx + 1)
+            revised_description = prompt_cls.revised_description(idx + 1)
+            fields[revised_key] = (
+                str,
+                Field("", description=revised_description, max_length=1000),
+            )
+            note_key = prompt_cls.note_field(idx + 1)
+            note_description = prompt_cls.note_description(idx + 1)
+            fields[note_key] = (
+                str,
+                Field("", description=note_description, max_length=1000),
+            )
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls

@@ -59,21 +59,22 @@ class EnglishProofreadingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        subtitle_revised_equal_error = self.prompt_cls.subtitle_revised_equal_error
-        note_missing_error = self.prompt_cls.note_missing_error
-        revised_missing_error = self.prompt_cls.revised_missing_error
-
         for idx in range(self.size):
-            subtitle = getattr(self.query, f"subtitle_{idx + 1}")
-            revised = getattr(self.answer, f"revised_{idx + 1}")
-            note = getattr(self.answer, f"note_{idx + 1}")
+            subtitle_field = self.prompt_cls.subtitle_field(idx + 1)
+            revised_field = self.prompt_cls.revised_field(idx + 1)
+            note_field = self.prompt_cls.note_field(idx + 1)
+            subtitle = getattr(self.query, subtitle_field)
+            revised = getattr(self.answer, revised_field)
+            note = getattr(self.answer, note_field)
             if revised != "":
                 if subtitle == revised:
-                    raise ValueError(subtitle_revised_equal_error.format(idx=idx + 1))
+                    raise ValueError(
+                        self.prompt_cls.subtitle_revised_equal_error(idx + 1)
+                    )
                 if note == "":
-                    raise ValueError(note_missing_error.format(idx=idx + 1))
+                    raise ValueError(self.prompt_cls.note_missing_error(idx + 1))
             elif note != "":
-                raise ValueError(revised_missing_error.format(idx=idx + 1))
+                raise ValueError(self.prompt_cls.revised_missing_error(idx + 1))
         return self
 
     @classmethod
@@ -113,6 +114,9 @@ class EnglishProofreadingTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        size = sum(1 for key in data["query"] if key.startswith("subtitle_"))
-        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
+        prompt_cls = kwargs.get("prompt_cls", EnglishProofreadingPrompt)
+        size = 0
+        while prompt_cls.subtitle_field(size + 1) in data["query"]:
+            size += 1
+        test_case_cls = cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
         return test_case_cls

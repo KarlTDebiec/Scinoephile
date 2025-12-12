@@ -37,37 +37,65 @@ class EnglishProofreadingPrompt(EnglishPrompt):
         Do not remove newlines ('\\n').""")
     """Base system prompt."""
 
-    # Query descriptions
-    subtitle_description: ClassVar[str] = "Subtitle {idx}"
-    """Description of 'subtitle' field."""
+    # Query field names and descriptions
+    @classmethod
+    def subtitle_field(cls, idx: int) -> str:
+        """Name of subtitle field in query."""
+        return f"subtitle_{idx}"
 
-    # Answer descriptions
-    revised_description: ClassVar[str] = (
-        "Subtitle {idx} revised, or an empty string if no revision is necessary."
-    )
-    """Description of 'revised' field."""
+    @classmethod
+    def subtitle_description(cls, idx: int) -> str:
+        """Description of subtitle field in query."""
+        return f"Subtitle {idx}"
 
-    note_description: ClassVar[str] = (
-        "Note concerning revisions to subtitle {idx}, or an empty string if no "
-        "revision is necessary."
-    )
-    """Description of 'note' field."""
+    # Answer field names and descriptions
+    @classmethod
+    def revised_field(cls, idx: int) -> str:
+        """Name of revised subtitle field in answer."""
+        return f"revised_{idx}"
+
+    @classmethod
+    def revised_description(cls, idx: int) -> str:
+        """Description of revised subtitle field in answer."""
+        return (
+            f"Subtitle {idx} revised, or an empty string if no revision is necessary."
+        )
+
+    @classmethod
+    def note_field(cls, idx: int) -> str:
+        """Name of note field in answer."""
+        return f"note_{idx}"
+
+    @classmethod
+    def note_description(cls, idx: int) -> str:
+        """Description of note field in answer."""
+        return (
+            f"Note concerning revisions to subtitle {idx}, or an empty string if no "
+            "revision is necessary."
+        )
 
     # Test case validation errors
-    subtitle_revised_equal_error: ClassVar[str] = (
-        "Answer's revised text {idx} is not modified relative to query's text {idx}, "
-        "if no revision is needed an empty string must be provided."
-    )
-    """Error message when 'subtitle' and 'revised' fields are equal."""
+    @classmethod
+    def subtitle_revised_equal_error(cls, idx: int) -> str:
+        """Error message when subtitle and revised fields are equal."""
+        return (
+            f"Answer's revised text {idx} is not modified relative to query's text "
+            f"{idx}, if no revision is needed an empty string must be provided."
+        )
 
-    note_missing_error: ClassVar[str] = (
-        "Answer's text {idx} is modified relative to query's text {idx}, but no note "
-        "is provided, if revision is needed a note must be provided."
-    )
-    """Error message when 'revised' field is present but 'note' field is missing."""
+    @classmethod
+    def note_missing_error(cls, idx: int) -> str:
+        """Error message when note is missing for a revision."""
+        return (
+            f"Answer's text {idx} is modified relative to query's text {idx}, but no "
+            "note is provided, if revision is needed a note must be provided."
+        )
 
-    revised_missing_error: ClassVar[str] = (
-        "Answer's text {idx} is not modified relative to query's text {idx}, but a "
-        "note is provided, if no revisions are needed an empty string must be provided."
-    )
-    """Error message when 'revised' field is missing but 'note' field is present."""
+    @classmethod
+    def revised_missing_error(cls, idx: int) -> str:
+        """Error message when revision is missing but note is provided."""
+        return (
+            f"Answer's text {idx} is not modified relative to query's text {idx}, but "
+            "a note is provided, if no revisions are needed an empty string must be "
+            "provided."
+        )
