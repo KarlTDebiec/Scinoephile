@@ -15,9 +15,6 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.cantonese.merging import (
-    MergingTestCase,
-)
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer2, save_test_cases_to_json
@@ -290,27 +287,22 @@ class Aligner:
                 continue
 
             # Query for 粤文 merge
-            query_and_friends = get_merging_query(alignment, sg_idx)
-            if query_and_friends is None:
+            test_case = get_merging_query(alignment, sg_idx)
+            if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
-            query, answer_cls, test_case_cls = query_and_friends
             try:
-                answer = await self.merging_queryer.call_async(
-                    query, answer_cls, test_case_cls
-                )
+                test_case = self.merging_queryer.call(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
-                answer = answer_cls(yuewen_merged="".join(query.yuewen_to_merge))
-                test_case = MergingTestCase.from_query_and_answer(query, answer)
                 error(
                     f"Error merging sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
-                    f"{test_case.source_str}\n"
+                    f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yw = get_sub_merged(yws, text=answer.yuewen_merged)
+            yw = get_sub_merged(yws, text=test_case.answer.yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
 
