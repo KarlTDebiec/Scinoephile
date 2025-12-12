@@ -21,7 +21,6 @@ from scinoephile.core.zhongwen import OpenCCConfig
 from scinoephile.testing import test_data_root
 
 from .alignment import Aligner
-from .alignment.testing import update_all_test_cases
 from .merging import MergingPrompt2, MergingTestCase2
 from .proofing import ProofingPrompt2, ProofingTestCase2
 from .review import ReviewPrompt2, ReviewTestCase2
@@ -87,11 +86,11 @@ class CantoneseTranscriptionReviewer:
             cache_dir_path=test_data_root / "cache",
         )
         self.aligner = Aligner(
-            shifting_llm_queryer=self.shifting_queryer,
-            merging_llm_queryer=self.merging_queryer,
-            proofing_llm_queryer=self.proofing_queryer,
-            translation_llm_queryer=self.translation_queryer,
-            review_llm_queryer=self.review_queryer,
+            shifting_queryer=self.shifting_queryer,
+            merging_queryer=self.merging_queryer,
+            proofing_queryer=self.proofing_queryer,
+            translation_queryer=self.translation_queryer,
+            review_queryer=self.review_queryer,
         )
 
     async def process_all_blocks(
@@ -184,6 +183,6 @@ class CantoneseTranscriptionReviewer:
         )
         yuewen_block_series = alignment.yuewen
 
-        await update_all_test_cases(self.test_case_directory_path, idx, self.aligner)
+        update_all_test_cases(self.test_case_directory_path)
 
         return yuewen_block_series

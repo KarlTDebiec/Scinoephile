@@ -4,11 +4,15 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review import ReviewAnswer, ReviewQuery, ReviewTestCase
+from scinoephile.audio.cantonese.review import (
+    ReviewAnswer2,
+    ReviewQuery2,
+    ReviewTestCase2,
+)
 from scinoephile.audio.cantonese.translation import (
-    TranslationAnswer,
-    TranslationQuery,
-    TranslationTestCase,
+    TranslationAnswer2,
+    TranslationQuery2,
+    TranslationTestCase2,
 )
 from scinoephile.core import ScinoephileError
 
@@ -22,11 +26,7 @@ __all__ = [
 
 def get_review_models(
     alignment: Alignment,
-) -> tuple[
-    type[ReviewQuery],
-    type[ReviewAnswer],
-    type[ReviewTestCase[ReviewQuery, ReviewAnswer]],
-]:
+) -> tuple[type[ReviewQuery2], type[ReviewAnswer2], type[ReviewTestCase2]]:
     """Get review query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
@@ -57,7 +57,7 @@ def get_review_models(
             )
 
     # Get classes
-    test_case_cls = ReviewTestCase.get_test_case_cls(size)
+    test_case_cls = ReviewTestCase2.get_test_case_cls(size)
     query_cls = test_case_cls.query_cls
     answer_cls = test_case_cls.answer_cls
     return query_cls, answer_cls, test_case_cls
@@ -66,11 +66,7 @@ def get_review_models(
 def get_translate_models(
     alignment: Alignment,
 ) -> (
-    tuple[
-        type[TranslationQuery],
-        type[TranslationAnswer],
-        type[TranslationTestCase[TranslationQuery, TranslationAnswer]],
-    ]
+    tuple[type[TranslationQuery2], type[TranslationAnswer2], type[TranslationTestCase2]]
     | None
 ):
     """Get translation query, answer, and test case for a nascent Cantonese alignment.
@@ -111,7 +107,7 @@ def get_translate_models(
     # Get classes
     if missing:
         missing = tuple(missing)
-        test_case_cls = TranslationTestCase.get_test_case_cls(size, missing)
+        test_case_cls = TranslationTestCase2.get_test_case_cls(size, missing)
         query_cls = test_case_cls.query_cls
         answer_cls = test_case_cls.answer_cls
         return query_cls, answer_cls, test_case_cls
