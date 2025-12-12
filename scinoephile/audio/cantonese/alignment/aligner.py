@@ -18,14 +18,9 @@ from scinoephile.audio import (
 from scinoephile.audio.cantonese.merging import (
     MergingTestCase,
 )
-from scinoephile.audio.cantonese.shifting import (
-    ShiftingAnswer,
-    ShiftingQuery,
-)
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import LLMQueryer
-from scinoephile.core.llms import save_test_cases_to_json
+from scinoephile.core.llms import Queryer2, save_test_cases_to_json
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -41,17 +36,19 @@ from .queries import (
 
 __all__ = ["Aligner"]
 
+from ..shifting import ShiftingAnswer2, ShiftingQuery2
+
 
 class Aligner:
     """Aligns transcribed 粤文 subs with official 中文 subs."""
 
     def __init__(
         self,
-        shifting_queryer: LLMQueryer,
-        merging_queryer: LLMQueryer,
-        proofing_queryer: LLMQueryer,
-        translation_queryer: LLMQueryer,
-        review_queryer: LLMQueryer,
+        shifting_queryer: Queryer2,
+        merging_queryer: Queryer2,
+        proofing_queryer: Queryer2,
+        translation_queryer: Queryer2,
+        review_queryer: Queryer2,
     ):
         """Initialize.
 
@@ -125,15 +122,16 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            query_and_friends = get_shifting_query(alignment, sg_1_idx)
-            if query_and_friends is None:
+            test_case = get_shifting_query(alignment, sg_1_idx)
+            if test_case is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error; not yet encountered
-            query, answer_cls, test_case_cls = query_and_friends
-            answer = self.shifting_queryer.call(query, answer_cls, test_case_cls)
+            test_case = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
+            query = test_case.query
+            answer = test_case.answer
             if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
@@ -144,8 +142,8 @@ class Aligner:
         self,
         alignment: Alignment,
         sg_1_idx: int,
-        query: ShiftingQuery,
-        answer: ShiftingAnswer,
+        query: ShiftingQuery2,
+        answer: ShiftingAnswer2,
     ) -> bool:
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):

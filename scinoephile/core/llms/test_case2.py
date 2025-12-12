@@ -81,3 +81,34 @@ class TestCase2(BaseModel, ABC):
         """
         test_case_cls = cls.get_test_case_cls(**kwargs)
         return test_case_cls
+
+    @staticmethod
+    def get_fields(
+        query_cls: Query2, answer_cls: Answer2, prompt_cls: type[Prompt2]
+    ) -> dict[str, Any]:
+        """Get fields dictionary for dynamic TestCase class creation.
+
+        Arguments:
+            query_cls: Query class for this test case
+            answer_cls: Answer class for this test case
+            prompt_cls: Prompt providing descriptions and messages
+        Returns:
+            fields dictionary for dynamic TestCase class creation
+        """
+        fields: dict[str, Any] = {
+            "query": (query_cls, Field(...)),
+            "answer": (answer_cls | None, Field(default=None)),
+            "difficulty": (
+                int,
+                Field(0, description=prompt_cls.difficulty_description),
+            ),
+            "prompt": (
+                bool,
+                Field(False, description=prompt_cls.prompt_description),
+            ),
+            "verified": (
+                bool,
+                Field(False, description=prompt_cls.verified_description),
+            ),
+        }
+        return fields

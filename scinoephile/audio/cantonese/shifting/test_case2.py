@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self
+from typing import ClassVar, Self
 
-from pydantic import Field, create_model, model_validator
+from pydantic import create_model, model_validator
 
 from scinoephile.core.llms import TestCase2
 from scinoephile.core.models import get_model_name
@@ -91,22 +91,7 @@ class ShiftingTestCase2(TestCase2, ABC):
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         query_cls = ShiftingQuery2.get_query_cls(prompt_cls)
         answer_cls = ShiftingAnswer2.get_answer_cls(prompt_cls)
-        fields: dict[str, Any] = {
-            "query": (query_cls, Field(...)),
-            "answer": (answer_cls | None, Field(default=None)),
-            "difficulty": (
-                int,
-                Field(0, description=prompt_cls.difficulty_description),
-            ),
-            "prompt": (
-                bool,
-                Field(False, description=prompt_cls.prompt_description),
-            ),
-            "verified": (
-                bool,
-                Field(False, description=prompt_cls.verified_description),
-            ),
-        }
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.query_cls = query_cls
