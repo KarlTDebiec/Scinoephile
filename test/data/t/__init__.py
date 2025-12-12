@@ -43,6 +43,8 @@ __all__ = [
     "t_zho_hant",
     "t_zho_hant_simplify",
     "t_eng",
+    "t_eng_lens",
+    "t_eng_tesseract",
     "t_eng_fuse",
     "t_eng_fuse_proofread",
     "t_eng_clean",
