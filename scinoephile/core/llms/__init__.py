@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from .answer2 import Answer2
 from .prompt2 import Prompt2
@@ -25,11 +25,11 @@ __all__ = [
 ]
 
 
-def load_test_cases_from_json(
+def load_test_cases_from_json[TTestCase: TestCase2](
     input_path: Path,
-    test_case_base_cls: type[TestCase2],
+    test_case_base_cls: type[TTestCase],
     **kwargs: Any,
-) -> list[TestCase2]:
+) -> list[TTestCase]:
     """Load test cases from JSON file.
 
     Arguments:
@@ -43,7 +43,7 @@ def load_test_cases_from_json(
     with open(input_path, encoding="utf-8") as f:
         raw_test_cases: list[dict] = json.load(f)
 
-    test_cases: list[TestCase2] = []
+    test_cases: list[TTestCase] = []
     for test_case_data in raw_test_cases:
         test_case_cls = test_case_base_cls.get_test_case_cls_from_data(
             test_case_data, **kwargs

@@ -90,7 +90,7 @@ class ReviewTestCase[TQuery: ReviewQuery, TAnswer: ReviewAnswer](
     def get_test_case_cls(
         cls, size: int, text: type[ReviewPrompt] = ReviewPrompt
     ) -> type[Self]:
-        """Get concrete test case class with provided size, and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles

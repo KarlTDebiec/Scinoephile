@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase2
 from scinoephile.audio.cantonese.proofing import ProofingTestCase2
+from scinoephile.audio.cantonese.review import ReviewTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.audio.cantonese.translation import TranslationTestCase2
 from scinoephile.core import Series
@@ -72,6 +73,7 @@ __all__ = [
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
     "get_mlamd_yue_translation_test_cases",
+    "get_mlamd_yue_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
     "get_mlamd_eng_fusion_test_cases",
@@ -192,9 +194,7 @@ def mlamd_yue_hans_eng() -> Series:
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(
-    **kwargs: Any,
-) -> list[ShiftingTestCase2]:
+def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase2]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
@@ -202,18 +202,12 @@ def get_mlamd_yue_shifting_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "audio" / "cantonese" / "shifting.json",
-        ShiftingTestCase2,
-        **kwargs,
-    )
-    return cast(list[ShiftingTestCase2], test_cases)
+    path = title_root / "audio" / "cantonese" / "shifting.json"
+    return load_test_cases_from_json(path, ShiftingTestCase2, **kwargs)
 
 
 @cache
-def get_mlamd_yue_merging_test_cases(
-    **kwargs: Any,
-) -> list[MergingTestCase2]:
+def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase2]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
@@ -221,18 +215,12 @@ def get_mlamd_yue_merging_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "audio" / "cantonese" / "merging.json",
-        MergingTestCase2,
-        **kwargs,
-    )
-    return cast(list[MergingTestCase2], test_cases)
+    path = title_root / "audio" / "cantonese" / "merging.json"
+    return load_test_cases_from_json(path, MergingTestCase2, **kwargs)
 
 
 @cache
-def get_mlamd_yue_proofing_test_cases(
-    **kwargs: Any,
-) -> list[ProofingTestCase2]:
+def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase2]:
     """Get MLAMD 粵文 proofing test cases.
 
     Arguments:
@@ -240,12 +228,8 @@ def get_mlamd_yue_proofing_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "audio" / "cantonese" / "proofing.json",
-        ProofingTestCase2,
-        **kwargs,
-    )
-    return cast(list[ProofingTestCase2], test_cases)
+    path = title_root / "audio" / "cantonese" / "proofing.json"
+    return load_test_cases_from_json(path, ProofingTestCase2, **kwargs)
 
 
 @cache
@@ -257,12 +241,21 @@ def get_mlamd_yue_translation_test_cases(**kwargs: Any) -> list[TranslationTestC
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "audio" / "cantonese" / "translation.json",
-        TranslationTestCase2,
-        **kwargs,
-    )
-    return cast(list[TranslationTestCase2], test_cases)
+    path = title_root / "audio" / "cantonese" / "translation.json"
+    return load_test_cases_from_json(path, TranslationTestCase2, **kwargs)
+
+
+@cache
+def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase2]:
+    """Get MLAMD 粵文 review test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "audio" / "cantonese" / "review.json"
+    return load_test_cases_from_json(path, ReviewTestCase2, **kwargs)
 
 
 @cache
@@ -276,12 +269,8 @@ def get_mlamd_eng_proofreading_test_cases(
     Returns:
         English proofreading test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "core" / "english" / "proofreading.json",
-        EnglishProofreadingTestCase2,
-        **kwargs,
-    )
-    return cast(list[EnglishProofreadingTestCase2], test_cases)
+    path = title_root / "core" / "english" / "proofreading.json"
+    return load_test_cases_from_json(path, EnglishProofreadingTestCase2, **kwargs)
 
 
 @cache
@@ -295,12 +284,8 @@ def get_mlamd_zho_proofreading_test_cases(
     Returns:
         Zhongwen proofreading test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "core" / "zhongwen" / "proofreading.json",
-        ZhongwenProofreadingTestCase2,
-        **kwargs,
-    )
-    return cast(list[ZhongwenProofreadingTestCase2], test_cases)
+    path = title_root / "core" / "zhongwen" / "proofreading.json"
+    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase2, **kwargs)
 
 
 @cache
@@ -314,12 +299,8 @@ def get_mlamd_eng_fusion_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "image" / "english" / "fusion.json",
-        EnglishFusionTestCase2,
-        **kwargs,
-    )
-    return cast(list[EnglishFusionTestCase2], test_cases)
+    path = title_root / "image" / "english" / "fusion.json"
+    return load_test_cases_from_json(path, EnglishFusionTestCase2, **kwargs)
 
 
 @cache
@@ -333,9 +314,5 @@ def get_mlamd_zho_fusion_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "image" / "zhongwen" / "fusion.json",
-        ZhongwenFusionTestCase2,
-        **kwargs,
-    )
-    return cast(list[ZhongwenFusionTestCase2], test_cases)
+    path = title_root / "image" / "zhongwen" / "fusion.json"
+    return load_test_cases_from_json(path, ZhongwenFusionTestCase2, **kwargs)
