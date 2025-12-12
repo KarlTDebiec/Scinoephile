@@ -72,7 +72,7 @@ class ZhongwenFuser:
             paddle: 中文 subtitles OCRed using PaddleOCR
             stop_at_idx: stop processing at this index
         Returns:
-            ronghe 中文 subtitles
+            fused 中文 subtitles
         """
         # Validate series
         if not are_series_one_to_one(lens, paddle):
