@@ -13,15 +13,12 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
 from scinoephile.image.english.fusion import EnglishFusionTestCase2
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
-from test.data.kob.core.zhongwen.proofreading import (
-    test_cases as kob_zhongwen_proofreading_test_cases,
-)
 from test.data.kob.image.english.fusion import (
     test_cases as kob_english_fusion_test_cases,
 )
@@ -49,7 +46,6 @@ ___all__ = [
     "kob_yue_hans_eng",
     "kob_english_fusion_test_cases",
     "kob_zhongwen_fusion_test_cases",
-    "kob_zhongwen_proofreading_test_cases",
     "get_kob_eng_proofreading_test_cases",
     "get_kob_zho_proofreading_test_cases",
     "get_kob_eng_fusion_test_cases",
@@ -191,7 +187,7 @@ def get_kob_eng_proofreading_test_cases(
 @cache
 def get_kob_zho_proofreading_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenProofreadingTestCase2]:
+) -> list[ZhongwenProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.
 
     Arguments:
@@ -201,10 +197,10 @@ def get_kob_zho_proofreading_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "core" / "zhongwen" / "proofreading.json",
-        ZhongwenProofreadingTestCase2,
+        ZhongwenProofreadingTestCase,
         **kwargs,
     )
-    return cast(list[ZhongwenProofreadingTestCase2], test_cases)
+    return cast(list[ZhongwenProofreadingTestCase], test_cases)
 
 
 @cache

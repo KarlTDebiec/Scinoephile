@@ -18,15 +18,12 @@ from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase2
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
 from scinoephile.image.english.fusion import EnglishFusionTestCase2
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
 from scinoephile.testing import test_data_root
 
 # ruff: noqa: F401 F403
-from test.data.mlamd.core.zhongwen.proofreading import (
-    test_cases as mlamd_zhongwen_proofreading_test_cases,
-)
 from test.data.mlamd.image.english.fusion import (
     test_cases as mlamd_english_fusion_test_cases,
 )
@@ -54,7 +51,6 @@ __all__ = [
     "mlamd_yue_hans_eng",
     "mlamd_english_fusion_test_cases",
     "mlamd_zhongwen_fusion_test_cases",
-    "mlamd_zhongwen_proofreading_test_cases",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
@@ -262,7 +258,7 @@ def get_mlamd_eng_proofreading_test_cases(
 @cache
 def get_mlamd_zho_proofreading_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenProofreadingTestCase2]:
+) -> list[ZhongwenProofreadingTestCase]:
     """Get MLAMD Zhongwen proofreading test cases.
 
     Arguments:
@@ -271,7 +267,7 @@ def get_mlamd_zho_proofreading_test_cases(
         Zhongwen proofreading test cases
     """
     path = title_root / "core" / "zhongwen" / "proofreading.json"
-    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase2, **kwargs)
+    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
 
 
 @cache

@@ -24,8 +24,8 @@ from scinoephile.core.zhongwen import (
     get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenProofreader2,
-    get_zhongwen_proofread2,
+    ZhongwenProofreader,
+    get_zhongwen_proofread,
 )
 from scinoephile.image.english.fusion import (
     EnglishFuser2,
@@ -100,9 +100,9 @@ if "简体中文 (OCR)" in actions:
     zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
     zho_hans_fuse = get_zhongwen_cleaned(zho_hans_fuse)
     zho_hans_fuse = get_zhongwen_converted(zho_hans_fuse)
-    zho_hans_fuse_proofread = get_zhongwen_proofread2(
+    zho_hans_fuse_proofread = get_zhongwen_proofread(
         zho_hans_fuse,
-        ZhongwenProofreader2(
+        ZhongwenProofreader(
             test_cases=get_kob_zho_proofreading_test_cases()
             + get_mnt_zho_proofreading_test_cases()
             + get_t_zho_proofreading_test_cases(),
