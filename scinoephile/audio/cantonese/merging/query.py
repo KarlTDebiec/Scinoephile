@@ -27,11 +27,9 @@ class MergingQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        zhongwen = getattr(self, "zhongwen", None)
-        yuewen_to_merge = getattr(self, "yuewen_to_merge", None)
-        if not zhongwen:
+        if not getattr(self, "zhongwen", None):
             raise ValueError(self.prompt_cls.zhongwen_missing_error)
-        if not yuewen_to_merge:
+        if not getattr(self, "yuewen_to_merge", None):
             raise ValueError(self.prompt_cls.yuewen_characters_changed_error)
         return self
 

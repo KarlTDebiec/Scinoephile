@@ -7,7 +7,6 @@ from __future__ import annotations
 import re
 from logging import info, warning
 from pathlib import Path
-from typing import cast
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
@@ -47,14 +46,11 @@ class EnglishProofreader:
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
             test_cases.extend(
-                cast(
-                    list[EnglishProofreadingTestCase],
-                    load_test_cases_from_json(
-                        test_case_path,
-                        EnglishProofreadingTestCase,
-                        prompt_cls=EnglishProofreadingPrompt,
-                    ),
-                )
+                load_test_cases_from_json(
+                    test_case_path,
+                    EnglishProofreadingTestCase,
+                    prompt_cls=EnglishProofreadingPrompt,
+                ),
             )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""

@@ -42,7 +42,6 @@ class EnglishFuser:
             test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
-            # noinspection PyTypeChecker
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
