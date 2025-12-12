@@ -6,16 +6,16 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-__all__ = ["MergingAnswer2"]
-
 from scinoephile.core.llms import Answer2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import MergingPrompt2
+
+__all__ = ["MergingAnswer2"]
 
 
 class MergingAnswer2(Answer2, ABC):
@@ -45,8 +45,8 @@ class MergingAnswer2(Answer2, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, prompt_cls.__name__)
-        fields = {
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
+        fields: dict[str, Any] = {
             "yuewen_merged": (
                 str,
                 Field(..., description=prompt_cls.yuewen_merged_description),

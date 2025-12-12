@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import Query2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import ShiftingPrompt2
 
@@ -46,7 +46,7 @@ class ShiftingQuery2(Query2, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, prompt_cls.__name__)
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
             "zhongwen_1": (
                 str,

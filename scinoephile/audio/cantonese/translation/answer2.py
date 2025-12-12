@@ -11,18 +11,24 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.abcs import Answer
+from scinoephile.core.llms import Answer2
+from scinoephile.core.models import get_model_name
 
-from .prompt import TranslationPrompt
+from .prompt2 import TranslationPrompt2
 
-__all__ = ["TranslationAnswer"]
+__all__ = ["TranslationAnswer2"]
 
 
-class TranslationAnswer(Answer, ABC):
+class TranslationAnswer2(Answer2, ABC):
     """Abstract base class for 粤文 transcription translation answers."""
 
-    text: ClassVar[type[TranslationPrompt]]
+    prompt_cls: ClassVar[type[TranslationPrompt2]]
     """Text strings to be used for corresponding with LLM."""
+
+    size: ClassVar[int]
+    """Number of subtitles."""
+    missing: ClassVar[tuple[int, ...]]
+    """Indexes of missing subtitles (1-indexed)."""
 
     @classmethod
     @cache
@@ -30,14 +36,14 @@ class TranslationAnswer(Answer, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        text: type[TranslationPrompt] = TranslationPrompt,
+        prompt_cls: type[TranslationPrompt2] = TranslationPrompt2,
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate configuration
         """
@@ -45,24 +51,22 @@ class TranslationAnswer(Answer, ABC):
             raise ScinoephileError(
                 f"Missing indices must be in range 1 to {size}, got {missing}."
             )
+
+        name = get_model_name(
+            cls.__name__,
+            f"{size}_"
+            f"{'-'.join(map(str, [m + 1 for m in missing]))}_"
+            f"{prompt_cls.__name__}",
+        )
         fields: dict[str, Any] = {}
         for idx in range(size):
             if idx in missing:
-                fields[f"yuewen_{idx + 1}"] = (
-                    str,
-                    Field(
-                        ...,
-                        description=text.yuewen_answer_description.format(idx=idx + 1),
-                    ),
-                )
-        name = (
-            f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-            f"_{text.__name__}"
-        )
-        return create_model(
-            name[:64],
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[TranslationPrompt]], text),
-            **fields,
-        )
+                key = f"yuewen_{idx + 1}"
+                description = prompt_cls.yuewen_answer_description.format(idx=idx + 1)
+                fields[key] = (str, Field(..., description=description))
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        model.size = size
+        model.missing = missing
+        return model

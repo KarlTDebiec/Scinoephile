@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
@@ -40,7 +40,7 @@ class ShiftingQuery(Query, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        fields = {
+        fields: dict[str, Any] = {
             "zhongwen_1": (str, Field(..., description=text.zhongwen_1_description)),
             "zhongwen_2": (str, Field(..., description=text.zhongwen_2_description)),
             "yuewen_1": (str, Field("", description=text.yuewen_1_description)),

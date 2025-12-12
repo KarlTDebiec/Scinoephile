@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import TestCase2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .answer2 import ZhongwenProofreadingAnswer2
 from .prompt2 import ZhongwenProofreadingPrompt2
@@ -94,10 +94,10 @@ class ZhongwenProofreadingTestCase2(
         Returns:
             TestCase type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         query_cls = ZhongwenProofreadingQuery2.get_query_cls(size, prompt_cls)
         answer_cls = ZhongwenProofreadingAnswer2.get_answer_cls(size, prompt_cls)
-        fields = {
+        fields: dict[str, Any] = {
             "query": (query_cls, Field(...)),
             "answer": (answer_cls | None, Field(default=None)),
             "difficulty": (

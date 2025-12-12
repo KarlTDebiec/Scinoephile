@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import TestCase2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
@@ -90,10 +90,10 @@ class MergingTestCase2(TestCase2[MergingQuery2, MergingAnswer2], ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, prompt_cls.__name__)
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         query_cls = MergingQuery2.get_query_cls(prompt_cls)
         answer_cls = MergingAnswer2.get_answer_cls(prompt_cls)
-        fields = {
+        fields: dict[str, Any] = {
             "query": (query_cls, Field(...)),
             "answer": (answer_cls | None, Field(default=None)),
             "difficulty": (

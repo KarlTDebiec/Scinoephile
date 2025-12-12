@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Query2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import EnglishProofreadingPrompt2
 
@@ -42,7 +42,7 @@ class EnglishProofreadingQuery2(Query2, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = f"subtitle_{idx + 1}"

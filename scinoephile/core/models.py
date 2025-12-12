@@ -4,17 +4,18 @@
 
 from __future__ import annotations
 
+import hashlib
 import textwrap
 from typing import Any
 
 __all__ = [
     "format_field",
-    "get_cls_name",
+    "get_model_name",
     "make_hashable",
 ]
 
 
-def get_cls_name(base_name: str, suffix: str) -> str:
+def get_model_name(base_name: str, suffix: str) -> str:
     """Build a Pydantic-valid class name from a base name and suffix.
 
     If the name exceeds the 64-character Pydantic limit, replace the suffix

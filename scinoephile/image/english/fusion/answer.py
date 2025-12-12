@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
@@ -44,7 +44,7 @@ class EnglishFusionAnswer(Answer, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        fields = {
+        fields: dict[str, Any] = {
             "fused": (str, Field(..., description=text.fused_description)),
             "note": (str, Field(..., description=text.note_description)),
         }

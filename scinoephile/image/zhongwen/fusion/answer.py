@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
@@ -44,7 +44,7 @@ class ZhongwenFusionAnswer(Answer, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        fields = {
+        fields: dict[str, Any] = {
             "ronghe": (str, Field(..., description=text.ronghe_description)),
             "beizhu": (str, Field(..., description=text.beizhu_description)),
         }

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
@@ -45,7 +45,7 @@ class TranslationQuery(Query, ABC):
             raise ScinoephileError(
                 f"Missing indices must be in range 1 to {size}, got {missing}."
             )
-        fields = {}
+        fields: dict[str, Any] = {}
         for idx in range(size):
             fields[f"zhongwen_{idx + 1}"] = (
                 str,

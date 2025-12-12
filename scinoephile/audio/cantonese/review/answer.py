@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model
 
@@ -38,7 +38,7 @@ class ReviewAnswer(Answer, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        fields = {}
+        fields: dict[str, Any] = {}
         for idx in range(size):
             fields[f"yuewen_revised_{idx + 1}"] = (
                 str,

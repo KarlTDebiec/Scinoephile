@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
@@ -38,7 +38,7 @@ class ZhongwenProofreadingQuery(Query, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        fields = {}
+        fields: dict[str, Any] = {}
         for idx in range(size):
             fields[f"zimu_{idx + 1}"] = (
                 str,

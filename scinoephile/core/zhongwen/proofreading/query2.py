@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Query2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import ZhongwenProofreadingPrompt2
 
@@ -42,8 +42,8 @@ class ZhongwenProofreadingQuery2(Query2, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        fields = {}
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        fields: dict[str, Any] = {}
         for idx in range(size):
             key = f"zimu_{idx + 1}"
             description = prompt_cls.subtitle_description.format(idx=idx + 1)

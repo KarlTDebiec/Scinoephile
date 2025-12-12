@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
@@ -46,7 +46,7 @@ class ZhongwenFusionQuery(Query, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        fields = {
+        fields: dict[str, Any] = {
             "lens": (str, Field(..., description=text.lens_description)),
             "paddle": (str, Field(..., description=text.paddle_description)),
         }

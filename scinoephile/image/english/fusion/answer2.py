@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import Answer2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import EnglishFusionPrompt2
 
@@ -48,7 +48,7 @@ class EnglishFusionAnswer2(Answer2, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, prompt_cls.__name__)
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
             "fused": (str, Field(..., description=prompt_cls.fused_description)),
             "note": (str, Field(..., description=prompt_cls.note_description)),

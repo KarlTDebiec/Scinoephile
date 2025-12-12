@@ -38,7 +38,7 @@ class ReviewQuery(Query, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        fields = {}
+        fields: dict[str, Any] = {}
         for idx in range(size):
             fields[f"zhongwen_{idx + 1}"] = (
                 str,

@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Answer2
-from scinoephile.core.models import get_cls_name
+from scinoephile.core.models import get_model_name
 
 from .prompt2 import EnglishProofreadingPrompt2
 
@@ -42,7 +42,7 @@ class EnglishProofreadingAnswer2(Answer2, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        name = get_cls_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = f"revised_{idx + 1}"
