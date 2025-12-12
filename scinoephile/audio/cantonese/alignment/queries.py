@@ -7,7 +7,7 @@ from __future__ import annotations
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
+from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import TranslationTestCase2
 from scinoephile.core import ScinoephileError
 
@@ -22,7 +22,7 @@ __all__ = [
 ]
 
 
-def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingTestCase2 | None:
+def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingTestCase | None:
     """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
@@ -81,7 +81,7 @@ def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingTestCase2
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    test_case_cls: type[ShiftingTestCase2] = ShiftingTestCase2.get_test_case_cls()
+    test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
     # noinspection PyArgumentList
     test_case = test_case_cls(
         query=test_case_cls.query_cls(

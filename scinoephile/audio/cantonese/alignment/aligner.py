@@ -33,7 +33,7 @@ from .queries import (
 
 __all__ = ["Aligner"]
 
-from ..shifting import ShiftingAnswer2, ShiftingQuery2
+from ..shifting import ShiftingAnswer, ShiftingQuery
 
 
 class Aligner:
@@ -139,8 +139,8 @@ class Aligner:
         self,
         alignment: Alignment,
         sg_1_idx: int,
-        query: ShiftingQuery2,
-        answer: ShiftingAnswer2,
+        query: ShiftingQuery,
+        answer: ShiftingAnswer,
     ) -> bool:
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):

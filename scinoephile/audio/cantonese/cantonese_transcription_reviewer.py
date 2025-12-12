@@ -24,7 +24,7 @@ from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
 from .proofing import ProofingPrompt, ProofingTestCase
 from .review import ReviewPrompt, ReviewTestCase
-from .shifting import ShiftingPrompt2, ShiftingTestCase2
+from .shifting import ShiftingPrompt, ShiftingTestCase
 from .translation import TranslationPrompt2, TranslationTestCase2
 
 
@@ -34,7 +34,7 @@ class CantoneseTranscriptionReviewer:
     def __init__(
         self,
         test_case_directory_path: Path,
-        shifting_test_cases: list[ShiftingTestCase2],
+        shifting_test_cases: list[ShiftingTestCase],
         merging_test_cases: list[MergingTestCase],
         proofing_test_cases: list[ProofingTestCase],
         translation_test_cases: list[TranslationTestCase2],
@@ -55,7 +55,7 @@ class CantoneseTranscriptionReviewer:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
         )
-        shifting_queryer_cls = Queryer2.get_queryer_cls(ShiftingPrompt2)
+        shifting_queryer_cls = Queryer2.get_queryer_cls(ShiftingPrompt)
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],

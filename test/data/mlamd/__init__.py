@@ -13,7 +13,7 @@ import pytest
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
+from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import TranslationTestCase2
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase2
@@ -184,7 +184,7 @@ def mlamd_yue_hans_eng() -> Series:
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase2]:
+def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
@@ -193,7 +193,7 @@ def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase2]:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "shifting.json"
-    return load_test_cases_from_json(path, ShiftingTestCase2, **kwargs)
+    return load_test_cases_from_json(path, ShiftingTestCase, **kwargs)
 
 
 @cache

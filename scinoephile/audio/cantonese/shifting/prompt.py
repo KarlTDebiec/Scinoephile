@@ -6,15 +6,16 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
+from scinoephile.core.english.abcs.prompt2 import EnglishPrompt2
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["ShiftingPrompt"]
 
 
-class ShiftingPrompt(EnglishPrompt):
+class ShiftingPrompt(EnglishPrompt2):
     """Text for LLM correspondence for 粤文 transcription shifting."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for matching 粤文 (yuewen) subtitles of Cantonese speech to
         中文 (zhongwen) subtitles of the same Cantonese speech.
