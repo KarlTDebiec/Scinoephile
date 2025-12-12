@@ -9,10 +9,10 @@ from typing import ClassVar
 from scinoephile.core.english.abcs.prompt2 import EnglishPrompt2
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
-__all__ = ["TranslationPrompt2"]
+__all__ = ["TranslationPrompt"]
 
 
-class TranslationPrompt2(EnglishPrompt2):
+class TranslationPrompt(EnglishPrompt2):
     """Text for LLM correspondence for 粤文 transcription translation."""
 
     # Prompt

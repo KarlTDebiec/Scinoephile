@@ -8,7 +8,7 @@ from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
-from scinoephile.audio.cantonese.translation import TranslationTestCase2
+from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.core import ScinoephileError
 
 from .alignment import Alignment
@@ -213,8 +213,8 @@ def get_review_test_case(
 
 
 def get_translation_query(
-    alignment: Alignment, test_case_cls: type[TranslationTestCase2]
-) -> TranslationTestCase2:
+    alignment: Alignment, test_case_cls: type[TranslationTestCase]
+) -> TranslationTestCase:
     """Get translation query for a nascent Cantonese alignment.
 
     Arguments:

@@ -14,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase2
 from scinoephile.core.models import get_model_name
 
-from .answer2 import TranslationAnswer2
-from .prompt2 import TranslationPrompt2
-from .query2 import TranslationQuery2
+from .answer import TranslationAnswer
+from .prompt import TranslationPrompt
+from .query import TranslationQuery
 
-__all__ = ["TranslationTestCase2"]
+__all__ = ["TranslationTestCase"]
 
 
-class TranslationTestCase2(TestCase2, ABC):
+class TranslationTestCase(TestCase2, ABC):
     """Abstract base class for 粤文 transcription translation test cases."""
 
-    answer_cls: ClassVar[type[TranslationAnswer2]]
+    answer_cls: ClassVar[type[TranslationAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[TranslationQuery2]]
+    query_cls: ClassVar[type[TranslationQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[TranslationPrompt2]]
+    prompt_cls: ClassVar[type[TranslationPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -42,7 +42,7 @@ class TranslationTestCase2(TestCase2, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[TranslationPrompt2] = TranslationPrompt2,
+        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -64,8 +64,8 @@ class TranslationTestCase2(TestCase2, ABC):
             f"{'-'.join(map(str, [m + 1 for m in missing]))}_"
             f"{prompt_cls.__name__}",
         )
-        query_cls = TranslationQuery2.get_query_cls(size, missing, prompt_cls)
-        answer_cls = TranslationAnswer2.get_answer_cls(size, missing, prompt_cls)
+        query_cls = TranslationQuery.get_query_cls(size, missing, prompt_cls)
+        answer_cls = TranslationAnswer.get_answer_cls(size, missing, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

@@ -25,7 +25,7 @@ from .merging import MergingPrompt, MergingTestCase
 from .proofing import ProofingPrompt, ProofingTestCase
 from .review import ReviewPrompt, ReviewTestCase
 from .shifting import ShiftingPrompt, ShiftingTestCase
-from .translation import TranslationPrompt2, TranslationTestCase2
+from .translation import TranslationPrompt, TranslationTestCase
 
 
 class CantoneseTranscriptionReviewer:
@@ -37,7 +37,7 @@ class CantoneseTranscriptionReviewer:
         shifting_test_cases: list[ShiftingTestCase],
         merging_test_cases: list[MergingTestCase],
         proofing_test_cases: list[ProofingTestCase],
-        translation_test_cases: list[TranslationTestCase2],
+        translation_test_cases: list[TranslationTestCase],
         review_test_cases: list[ReviewTestCase],
     ):
         """Initialize.
@@ -73,7 +73,7 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        translation_queryer_cls = Queryer2.get_queryer_cls(TranslationPrompt2)
+        translation_queryer_cls = Queryer2.get_queryer_cls(TranslationPrompt)
         self.translation_queryer = translation_queryer_cls(
             prompt_test_cases=[tc for tc in translation_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in translation_test_cases if tc.verified],

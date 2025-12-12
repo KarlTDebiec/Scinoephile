@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from .answer2 import TranslationAnswer2
-from .prompt2 import TranslationPrompt2
-from .query2 import TranslationQuery2
-from .test_case2 import TranslationTestCase2
+from .answer import TranslationAnswer
+from .prompt import TranslationPrompt
+from .query import TranslationQuery
+from .test_case import TranslationTestCase
 
 __all__ = [
-    "TranslationAnswer2",
-    "TranslationPrompt2",
-    "TranslationQuery2",
-    "TranslationTestCase2",
+    "TranslationAnswer",
+    "TranslationPrompt",
+    "TranslationQuery",
+    "TranslationTestCase",
 ]

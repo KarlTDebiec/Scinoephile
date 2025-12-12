@@ -10,9 +10,9 @@ from scinoephile.audio.cantonese.review import (
     ReviewTestCase,
 )
 from scinoephile.audio.cantonese.translation import (
-    TranslationAnswer2,
-    TranslationQuery2,
-    TranslationTestCase2,
+    TranslationAnswer,
+    TranslationQuery,
+    TranslationTestCase,
 )
 from scinoephile.core import ScinoephileError
 
@@ -66,7 +66,7 @@ def get_review_models(
 def get_translate_models(
     alignment: Alignment,
 ) -> (
-    tuple[type[TranslationQuery2], type[TranslationAnswer2], type[TranslationTestCase2]]
+    tuple[type[TranslationQuery], type[TranslationAnswer], type[TranslationTestCase]]
     | None
 ):
     """Get translation query, answer, and test case for a nascent Cantonese alignment.
@@ -107,7 +107,7 @@ def get_translate_models(
     # Get classes
     if missing:
         missing = tuple(missing)
-        test_case_cls = TranslationTestCase2.get_test_case_cls(size, missing)
+        test_case_cls = TranslationTestCase.get_test_case_cls(size, missing)
         query_cls = test_case_cls.query_cls
         answer_cls = test_case_cls.answer_cls
         return query_cls, answer_cls, test_case_cls
