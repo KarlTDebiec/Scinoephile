@@ -14,15 +14,17 @@ from scinoephile.core import ScinoephileError
 from .alignment import Alignment
 
 __all__ = [
-    "get_shifting_query",
-    "get_merging_query",
-    "get_proofing_query",
+    "get_shifting_test_case",
+    "get_merging_test_case",
+    "get_proofing_test_case",
     "get_review_test_case",
-    "get_translation_query",
+    "get_translation_test_case",
 ]
 
 
-def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingTestCase | None:
+def get_shifting_test_case(
+    alignment: Alignment, sg_1_idx: int
+) -> ShiftingTestCase | None:
     """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
@@ -91,7 +93,7 @@ def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingTestCase 
     return test_case
 
 
-def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingTestCase | None:
+def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase | None:
     """Get merging query for an alignment's sync group.
 
     Arguments:
@@ -132,7 +134,9 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingTestCase | No
     return test_case
 
 
-def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingTestCase | None:
+def get_proofing_test_case(
+    alignment: Alignment, sg_idx: int
+) -> ProofingTestCase | None:
     """Get proofing query for an alignment's sync group.
 
     Arguments:
@@ -212,7 +216,7 @@ def get_review_test_case(
     return test_case
 
 
-def get_translation_query(
+def get_translation_test_case(
     alignment: Alignment, test_case_cls: type[TranslationTestCase]
 ) -> TranslationTestCase:
     """Get translation query for a nascent Cantonese alignment.

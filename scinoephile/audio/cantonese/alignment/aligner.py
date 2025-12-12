@@ -15,6 +15,7 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
+from scinoephile.audio.cantonese.shifting import ShiftingAnswer, ShiftingQuery
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer, save_test_cases_to_json
@@ -24,16 +25,14 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from .alignment import Alignment
 from .models import get_review_models, get_translate_models
 from .queries import (
-    get_merging_query,
-    get_proofing_query,
+    get_merging_test_case,
+    get_proofing_test_case,
     get_review_test_case,
-    get_shifting_query,
-    get_translation_query,
+    get_shifting_test_case,
+    get_translation_test_case,
 )
 
 __all__ = ["Aligner"]
-
-from ..shifting import ShiftingAnswer, ShiftingQuery
 
 
 class Aligner:
@@ -119,7 +118,7 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            test_case = get_shifting_query(alignment, sg_1_idx)
+            test_case = get_shifting_test_case(alignment, sg_1_idx)
             if test_case is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
@@ -287,7 +286,7 @@ class Aligner:
                 continue
 
             # Query for 粤文 merge
-            test_case = get_merging_query(alignment, sg_idx)
+            test_case = get_merging_test_case(alignment, sg_idx)
             if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
@@ -321,7 +320,7 @@ class Aligner:
             alignment: Nascent alignment
         """
         for sg_idx in range(len(alignment.sync_groups)):
-            test_case = get_proofing_query(alignment, sg_idx)
+            test_case = get_proofing_test_case(alignment, sg_idx)
             if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
@@ -380,7 +379,7 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = models
 
         # Query for 粤文 translation
-        test_case = get_translation_query(alignment, test_case_cls)
+        test_case = get_translation_test_case(alignment, test_case_cls)
         test_case = self.translation_queryer.call(test_case)
 
         # Update 粤文
