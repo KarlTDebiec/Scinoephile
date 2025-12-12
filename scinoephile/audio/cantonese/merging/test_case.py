@@ -10,8 +10,8 @@ from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.abcs import TestCase
-from scinoephile.core.models import format_field
+from scinoephile.core.llms import TestCase2
+from scinoephile.core.models import get_model_name
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
@@ -24,35 +24,15 @@ from .query import MergingQuery
 __all__ = ["MergingTestCase"]
 
 
-class MergingTestCase(
-    MergingQuery, MergingAnswer, TestCase[MergingQuery, MergingAnswer], ABC
-):
+class MergingTestCase(TestCase2, ABC):
     """Abstract base class for 粤文 merging test cases."""
 
     answer_cls: ClassVar[type[MergingAnswer]]
     """Answer class for this test case."""
     query_cls: ClassVar[type[MergingQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[MergingPrompt]]
+    prompt_cls: ClassVar[type[MergingPrompt]]
     """Text strings to be used for corresponding with LLM."""
-
-    @property
-    def source_str(self) -> str:
-        """Get Python source string."""
-        lines = [f"{MergingTestCase.__name__}.get_test_case_cls({self.text.__name__})("]
-        for field in self.query_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        for field in self.answer_fields:
-            value = getattr(self, field)
-            if value == "":
-                continue
-            lines.append(format_field(field, value))
-        for field in self.test_case_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        lines.append(")")
-        return "\n".join(lines)
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -66,22 +46,33 @@ class MergingTestCase(
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if remove_non_punc_and_whitespace(self.yuewen_merged):
+        if self.answer is None:
+            return min_difficulty
+
+        zhongwen = getattr(self.query, "zhongwen", None)
+        yuewen_merged = getattr(self.answer, "yuewen_merged", None)
+        if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
-        if remove_non_punc_and_whitespace(
-            self.zhongwen
-        ) != remove_non_punc_and_whitespace(self.yuewen_merged):
+        if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
+            yuewen_merged
+        ):
             min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
     @model_validator(mode="after")
     def validate_test_case(self) -> Self:
         """Ensure query and answer together are valid."""
-        expected = "".join(remove_punc_and_whitespace(s) for s in self.yuewen_to_merge)
-        received = remove_punc_and_whitespace(self.yuewen_merged)
+        if self.answer is None:
+            return self
+
+        yuewen_to_merge = getattr(self.query, "yuewen_to_merge", None)
+        yuewen_merged = getattr(self.answer, "yuewen_merged", None)
+
+        expected = "".join(remove_punc_and_whitespace(s) for s in yuewen_to_merge)
+        received = remove_punc_and_whitespace(yuewen_merged)
         if expected != received:
             raise ValueError(
-                self.text.yuewen_characters_changed_error.format(
+                self.prompt_cls.yuewen_characters_changed_error.format(
                     expected=expected, received=received
                 )
             )
@@ -89,21 +80,23 @@ class MergingTestCase(
 
     @classmethod
     @cache
-    def get_test_case_cls(cls, text: type[MergingPrompt] = MergingPrompt) -> type[Self]:
+    def get_test_case_cls(
+        cls, prompt_cls: type[MergingPrompt] = MergingPrompt
+    ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate configuration
         """
-        query_cls = MergingQuery.get_query_cls(text)
-        answer_cls = MergingAnswer.get_answer_cls(text)
-        return create_model(
-            f"{cls.__name__}_{text.__name__}",
-            __base__=(query_cls, answer_cls, cls),
-            __module__=cls.__module__,
-            query_cls=(ClassVar[type[MergingQuery]], query_cls),
-            answer_cls=(ClassVar[type[MergingAnswer]], answer_cls),
-            text=(ClassVar[type[MergingPrompt]], text),
-        )
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
+        query_cls = MergingQuery.get_query_cls(prompt_cls)
+        answer_cls = MergingAnswer.get_answer_cls(prompt_cls)
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        return model

@@ -10,7 +10,7 @@ from typing import Any
 
 import pytest
 
-from scinoephile.audio.cantonese.merging import MergingTestCase2
+from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase2
 from scinoephile.audio.cantonese.review import ReviewTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
@@ -197,7 +197,7 @@ def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase2]:
 
 
 @cache
-def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase2]:
+def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
@@ -206,7 +206,7 @@ def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase2]:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "merging.json"
-    return load_test_cases_from_json(path, MergingTestCase2, **kwargs)
+    return load_test_cases_from_json(path, MergingTestCase, **kwargs)
 
 
 @cache
