@@ -183,6 +183,6 @@ class CantoneseTranscriptionReviewer:
         )
         yuewen_block_series = alignment.yuewen
 
-        update_all_test_cases(self.test_case_directory_path)
+        self.aligner.update_all_test_cases(self.test_case_directory_path)
 
         return yuewen_block_series

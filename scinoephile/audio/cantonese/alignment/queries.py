@@ -8,7 +8,7 @@ from scinoephile.audio.cantonese.merging import MergingTestCase2
 from scinoephile.audio.cantonese.proofing import ProofingTestCase2
 from scinoephile.audio.cantonese.review import ReviewTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
-from scinoephile.audio.cantonese.translation import TranslationQuery2
+from scinoephile.audio.cantonese.translation import TranslationTestCase2
 from scinoephile.core import ScinoephileError
 
 from .alignment import Alignment
@@ -213,22 +213,18 @@ def get_review_test_case(
 
 
 def get_translation_query(
-    alignment: Alignment,
-    query_cls: type[TranslationQuery2],
-) -> TranslationQuery2:
+    alignment: Alignment, test_case_cls: type[TranslationTestCase2]
+) -> TranslationTestCase2:
     """Get translation query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: TranslationQuery class to instantiate
+        test_case_cls: TranslationQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, TranslationQuery2):
-        raise ScinoephileError("query_cls must be a subclass of TranslationQuery.")
-
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -251,4 +247,5 @@ def get_translation_query(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    return query_cls(**kwargs)
+    test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
+    return test_case

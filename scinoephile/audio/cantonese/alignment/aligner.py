@@ -380,10 +380,8 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = models
 
         # Query for 粤文 translation
-        query = get_translation_query(alignment, query_cls)
-        answer = await self.translation_queryer.call_async(
-            query, answer_cls, test_case_cls
-        )
+        test_case = get_translation_query(alignment, test_case_cls)
+        test_case = self.translation_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -409,7 +407,7 @@ class Aligner:
                 yw = alignment.yuewen[yw_idx]
             else:
                 yw_key = f"yuewen_{zw_idx + 1}"
-                yw_text = getattr(answer, yw_key)
+                yw_text = getattr(test_case.answer, yw_key)
                 yw = deepcopy(zw)
                 yw.text = yw_text
             nascent_yw.append(yw)
