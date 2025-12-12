@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase2
-from scinoephile.audio.cantonese.proofing import ProofingQuery2, ProofingTestCase2
-from scinoephile.audio.cantonese.review import ReviewQuery2
+from scinoephile.audio.cantonese.proofing import ProofingTestCase2
+from scinoephile.audio.cantonese.review import ReviewTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.audio.cantonese.translation import TranslationQuery2
 from scinoephile.core import ScinoephileError
@@ -17,7 +17,7 @@ __all__ = [
     "get_shifting_query",
     "get_merging_query",
     "get_proofing_query",
-    "get_review_query",
+    "get_review_test_case",
     "get_translation_query",
 ]
 
@@ -132,7 +132,7 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingTestCase2 | N
     return test_case
 
 
-def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery2 | None:
+def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingTestCase2 | None:
     """Get proofing query for an alignment's sync group.
 
     Arguments:
@@ -170,27 +170,24 @@ def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery2 | No
 
     # Return proof query
     test_case_cls: type[ProofingTestCase2] = ProofingTestCase2.get_test_case_cls()
-    answer_cls = test_case_cls.answer_cls
-    query_cls = test_case_cls.query_cls
-    return query_cls(zhongwen=zw, yuewen=yw), answer_cls, test_case_cls
+    # noinspection PyArgumentList
+    test_case = test_case_cls(query=test_case_cls.query_cls(zhongwen=zw, yuewen=yw))
+    return test_case
 
 
-def get_review_query(
-    alignment: Alignment, query_cls: type[ReviewQuery2]
-) -> ReviewQuery2:
+def get_review_test_case(
+    alignment: Alignment, test_case_cls: type[ReviewTestCase2]
+) -> ReviewTestCase2:
     """Get review query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: ReviewQuery class to instantiate
+        test_case_cls: ReviewQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, ReviewQuery2):
-        raise ScinoephileError("query_cls must be a subclass of Query.")
-
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -211,7 +208,8 @@ def get_review_query(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    return query_cls(**kwargs)
+    test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
+    return test_case
 
 
 def get_translation_query(

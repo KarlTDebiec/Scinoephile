@@ -26,7 +26,7 @@ from .models import get_review_models, get_translate_models
 from .queries import (
     get_merging_query,
     get_proofing_query,
-    get_review_query,
+    get_review_test_case,
     get_shifting_query,
     get_translation_query,
 )
@@ -321,14 +321,11 @@ class Aligner:
             alignment: Nascent alignment
         """
         for sg_idx in range(len(alignment.sync_groups)):
-            query_and_friends = get_proofing_query(alignment, sg_idx)
-            if query_and_friends is None:
+            test_case = get_proofing_query(alignment, sg_idx)
+            if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            query, answer_cls, test_case_cls = query_and_friends
-            answer = await self.proofing_queryer.call_async(
-                query, answer_cls, test_case_cls
-            )
+            test_case = self.proofing_queryer.call(test_case)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -341,9 +338,9 @@ class Aligner:
                     f"but found {len(yw_idxs)}: {yw_idxs}"
                 )
             yw_idx = yw_idxs[0]
-            if query.yuewen == answer.yuewen_proofread:
+            if test_case.query.yuewen == test_case.answer.yuewen_proofread:
                 continue
-            alignment.yuewen[yw_idx].text = answer.yuewen_proofread
+            alignment.yuewen[yw_idx].text = test_case.answer.yuewen_proofread
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
@@ -430,8 +427,8 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = get_review_models(alignment)
 
         # Query for 粤文 review
-        query = get_review_query(alignment, query_cls)
-        answer = await self.review_queryer.call_async(query, answer_cls, test_case_cls)
+        test_case = get_review_test_case(alignment, test_case_cls)
+        test_case = self.review_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -454,7 +451,7 @@ class Aligner:
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
             yw_key = f"yuewen_{zw_idx + 1}"
-            yw.text = getattr(answer, yw_key, yw.text)
+            yw.text = getattr(test_case.answer, yw_key, yw.text)
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))
