@@ -27,11 +27,9 @@ class EnglishFusionAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        fused = getattr(self, "fused", None)
-        note = getattr(self, "note", None)
-        if not fused:
+        if not getattr(self, "fused", None):
             raise ValueError(self.prompt_cls.fused_missing_error)
-        if not note:
+        if not getattr(self, "note", None):
             raise ValueError(self.prompt_cls.note_missing_error)
         return self
 

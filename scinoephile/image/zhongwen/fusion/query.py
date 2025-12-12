@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Zhongwen OCR fusion queries."""
+"""Abstract base class for 中文 OCR fusion queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["ZhongwenFusionQuery"]
 
 
 class ZhongwenFusionQuery(Query, ABC):
-    """Abstract base class for Zhongwen OCR fusion queries."""
+    """Abstract base class for 中文 OCR fusion queries."""
 
     prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""

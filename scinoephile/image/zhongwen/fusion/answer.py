@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Zhongwen OCR fusion answers."""
+"""Abstract base class for 中文 OCR fusion answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["ZhongwenFusionAnswer"]
 
 
 class ZhongwenFusionAnswer(Answer, ABC):
-    """Abstract base class for Zhongwen OCR fusion answers."""
+    """Abstract base class for 中文 OCR fusion answers."""
 
     prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type:ignore
     """Text strings to be used for corresponding with LLM."""
@@ -27,11 +27,9 @@ class ZhongwenFusionAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        ronghe = getattr(self, "ronghe", None)
-        beizhu = getattr(self, "beizhu", None)
-        if not ronghe:
+        if not getattr(self, "ronghe", None):
             raise ValueError(self.prompt_cls.ronghe_missing_error)
-        if not beizhu:
+        if not getattr(self, "beizhu", None):
             raise ValueError(self.prompt_cls.beizhu_missing_error)
         return self
 

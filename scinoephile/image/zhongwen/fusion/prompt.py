@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for Zhongwen OCR fusion."""
+"""Text for LLM correspondence for 中文 OCR fusion."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["ZhongwenFusionPrompt"]
 
 
 class ZhongwenFusionPrompt(ZhongwenPrompt):
-    """Text for LLM correspondence for Zhongwen OCR fusion."""
+    """Text for LLM correspondence for 中文 OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""

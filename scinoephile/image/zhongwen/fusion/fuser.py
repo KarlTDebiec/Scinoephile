@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
+"""Fuses OCRed 中文 subtitles from Google Lens and PaddleOCR."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ __all__ = ["ZhongwenFuser"]
 
 
 class ZhongwenFuser:
-    """Fuses OCRed Zhongwen subtitles from Google Lens and PaddleOCR."""
+    """Fuses OCRed 中文 subtitles from Google Lens and PaddleOCR."""
 
     def __init__(
         self,
@@ -65,14 +65,14 @@ class ZhongwenFuser:
     def fuse(
         self, lens: Series, paddle: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Fuse OCRed Zhongwen subtitles from Google Lens and PaddleOCR.
+        """Fuse OCRed 中文 subtitles from Google Lens and PaddleOCR.
 
         Arguments:
-            lens: Zhongwen subtitles OCRed using Google Lens
-            paddle: Zhongwen subtitles OCRed using PaddleOCR
+            lens: 中文 subtitles OCRed using Google Lens
+            paddle: 中文 subtitles OCRed using PaddleOCR
             stop_at_idx: stop processing at this index
         Returns:
-            ronghe Zhongwen subtitles
+            ronghe 中文 subtitles
         """
         # Validate series
         if not are_series_one_to_one(lens, paddle):
