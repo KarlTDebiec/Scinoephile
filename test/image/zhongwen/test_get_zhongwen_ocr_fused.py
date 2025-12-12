@@ -43,12 +43,12 @@ def test_get_zhongwen_ocr_fused_kob(
     kob_zho_hant_paddle: Series,
     kob_zho_hant_fuse: Series,
 ):
-    """Test get_zhongwen_ocr_fused with KOB Zhongwen subtitles.
+    """Test get_zhongwen_ocr_fused with KOB 中文 subtitles.
 
     Arguments:
-        kob_zho_hant_lens: KOB Zhongwen subtitles OCRed using Google Lens fixture
-        kob_zho_hant_paddle: KOB Zhongwen subtitles OCRed using PaddleOCR fixture
-        kob_zho_hant_fuse: Expected fused KOB Zhongwen subtitles fixture
+        kob_zho_hant_lens: KOB 中文 subtitles OCRed using Google Lens fixture
+        kob_zho_hant_paddle: KOB 中文 subtitles OCRed using PaddleOCR fixture
+        kob_zho_hant_fuse: Expected fused KOB 中文 subtitles fixture
     """
     lens = get_zhongwen_cleaned(kob_zho_hant_lens, remove_empty=False)
     lens = get_zhongwen_converted(lens, config=OpenCCConfig.s2t)
@@ -62,10 +62,10 @@ def test_get_zhongwen_ocr_fused_mlamd(
     mlamd_zho_hans_paddle: Series,
     mlamd_zho_hans_fuse: Series,
 ):
-    """Test get_zhongwen_ocr_fused with MLAMD Zhongwen subtitles.
+    """Test get_zhongwen_ocr_fused with MLAMD 中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_lens: MLAMD Zhongwen subtitles OCRed using Google Lens fixture
+        mlamd_zho_hans_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
         mlamd_zho_hans_paddle: MLAMD 中文 subtitles OCRed using PaddleOCR fixture
         mlamd_zho_hans_fuse: Expected fused MLAMD 中文 subtitles fixture
     """
