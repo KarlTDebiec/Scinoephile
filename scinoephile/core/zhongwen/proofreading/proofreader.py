@@ -75,7 +75,7 @@ class ZhongwenProofreader:
             series: 中文 subtitles
             stop_at_idx: stop processing at this index
         Returns:
-            proofread Zhongwen subtitles
+            proofread 中文 subtitles
         """
         # Proofread subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
