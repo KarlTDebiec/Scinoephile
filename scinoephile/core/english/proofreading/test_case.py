@@ -111,7 +111,7 @@ class EnglishProofreadingTestCase(TestCase, ABC):
             data: data dictionary
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
         size = sum(1 for key in data["query"] if key.startswith("subtitle_"))
         test_case_cls = cls.get_test_case_cls(size=size, **kwargs)

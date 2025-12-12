@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for Zhongwen proofreading test cases."""
+"""Abstract base class for 中文 proofreading test cases."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = ["ZhongwenProofreadingTestCase"]
 
 
 class ZhongwenProofreadingTestCase(TestCase, ABC):
-    """Abstract base class for Zhongwen proofreading test cases."""
+    """Abstract base class for 中文 proofreading test cases."""
 
     answer_cls: ClassVar[type[ZhongwenProofreadingAnswer]]  # type: ignore
     """Answer class for this test case."""
@@ -111,7 +111,7 @@ class ZhongwenProofreadingTestCase(TestCase, ABC):
             data: data dictionary
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
         size = sum(1 for key in data["query"] if key.startswith("zimu_"))
         test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
