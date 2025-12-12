@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 

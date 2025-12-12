@@ -2295,19 +2295,6 @@
   },
   {
     "answer": {
-      "yuewen_merged": "佢死咗！"
-    },
-    "query": {
-      "zhongwen": "他死了！",
-      "yuewen_to_merge": [
-        "佢死咗"
-      ]
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "answer": {
       "yuewen_merged": "我妈妈就系噉，一切都咁直接"
     },
     "query": {
@@ -5441,20 +5428,6 @@
       "zhongwen": "脚瓜的肌肉非常结实⋯",
       "yuewen_to_merge": [
         "脚瓜嘅肌肉非常结实"
-      ]
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "answer": {
-      "yuewen_merged": "啲青筋凸晒出嚟，好似钢线噉"
-    },
-    "query": {
-      "zhongwen": "青筋凸现，钢线似的",
-      "yuewen_to_merge": [
-        "啲青筋凸晒出嚟",
-        "好似钢线噉"
       ]
     },
     "difficulty": 1,

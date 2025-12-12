@@ -2287,16 +2287,6 @@
   },
   {
     "answer": {
-      "yuewen_proofread": "佢死咗！"
-    },
-    "query": {
-      "zhongwen": "他死了！",
-      "yuewen": "佢死咗！"
-    },
-    "verified": true
-  },
-  {
-    "answer": {
       "yuewen_proofread": "我妈妈就系噉，一切都咁直接"
     },
     "query": {
@@ -5554,16 +5544,6 @@
     "query": {
       "zhongwen": "脚瓜的肌肉非常结实⋯",
       "yuewen": "脚瓜嘅肌肉非常结实⋯"
-    },
-    "verified": true
-  },
-  {
-    "answer": {
-      "yuewen_proofread": "啲青筋凸晒出嚟，好似钢线噉"
-    },
-    "query": {
-      "zhongwen": "青筋凸现，钢线似的",
-      "yuewen": "啲青筋凸晒出嚟，好似钢线噉"
     },
     "verified": true
   },
@@ -9153,16 +9133,6 @@
     "query": {
       "zhongwen": "那么午餐又有什么吃？",
       "yuewen": "哎呀，咁午餐有咩食呀？"
-    },
-    "verified": true
-  },
-  {
-    "answer": {
-      "yuewen_proofread": "午餐同晚餐一样㗎"
-    },
-    "query": {
-      "zhongwen": "午餐跟晚餐一样",
-      "yuewen": "午餐同晚餐一样㗎"
     },
     "verified": true
   },
