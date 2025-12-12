@@ -10,50 +10,55 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.abcs import Query
+from scinoephile.core.llms import Query2
+from scinoephile.core.models import get_model_name
 
 from .prompt import EnglishFusionPrompt
 
 __all__ = ["EnglishFusionQuery"]
 
 
-class EnglishFusionQuery(Query, ABC):
+class EnglishFusionQuery(Query2, ABC):
     """Abstract base class for English OCR fusion queries."""
 
-    text: ClassVar[type[EnglishFusionPrompt]]
+    prompt_cls: ClassVar[type[EnglishFusionPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        if not self.lens:
-            raise ValueError(self.text.lens_missing_error)
-        if not self.tesseract:
-            raise ValueError(self.text.tesseract_missing_error)
-        if self.lens == self.tesseract:
-            raise ValueError(self.text.lens_tesseract_equal_error)
+        lens = getattr(self, "lens", None)
+        tesseract = getattr(self, "tesseract", None)
+        if not lens:
+            raise ValueError(self.prompt_cls.lens_missing_error)
+        if not tesseract:
+            raise ValueError(self.prompt_cls.tesseract_missing_error)
+        if lens == tesseract:
+            raise ValueError(self.prompt_cls.lens_tesseract_equal_error)
         return self
 
     @classmethod
     @cache
     def get_query_cls(
-        cls, text: type[EnglishFusionPrompt] = EnglishFusionPrompt
+        cls,
+        prompt_cls: type[EnglishFusionPrompt] = EnglishFusionPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate configuration
         """
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "lens": (str, Field(..., description=text.lens_description)),
-            "tesseract": (str, Field(..., description=text.tesseract_description)),
+            "lens": (str, Field(..., description=prompt_cls.lens_description)),
+            "tesseract": (
+                str,
+                Field(..., description=prompt_cls.tesseract_description),
+            ),
         }
-        return create_model(
-            f"{cls.__name__}_{text.__name__}",
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[EnglishFusionPrompt]], text),
-            **fields,
-        )
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        return model

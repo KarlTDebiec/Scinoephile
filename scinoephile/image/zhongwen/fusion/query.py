@@ -10,50 +10,55 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.abcs import Query
+from scinoephile.core.llms import Query2
+from scinoephile.core.models import get_model_name
 
 from .prompt import ZhongwenFusionPrompt
 
 __all__ = ["ZhongwenFusionQuery"]
 
 
-class ZhongwenFusionQuery(Query, ABC):
+class ZhongwenFusionQuery(Query2, ABC):
     """Abstract base class for Zhongwen OCR fusion queries."""
 
-    text: ClassVar[type[ZhongwenFusionPrompt]]
+    prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        if not self.lens:
-            raise ValueError(self.text.lens_missing_error)
-        if not self.paddle:
-            raise ValueError(self.text.paddle_missing_error)
-        if self.lens == self.paddle:
-            raise ValueError(self.text.lens_paddle_equal_error)
+        lens = getattr(self, "lens", None)
+        paddle = getattr(self, "paddle", None)
+        if not lens:
+            raise ValueError(self.prompt_cls.lens_missing_error)
+        if not paddle:
+            raise ValueError(self.prompt_cls.paddle_missing_error)
+        if lens == paddle:
+            raise ValueError(self.prompt_cls.lens_paddle_equal_error)
         return self
 
     @classmethod
     @cache
     def get_query_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls,
+        prompt_cls: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             Query type with appropriate configuration
         """
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "lens": (str, Field(..., description=text.lens_description)),
-            "paddle": (str, Field(..., description=text.paddle_description)),
+            "lens": (str, Field(..., description=prompt_cls.lens_description)),
+            "paddle": (
+                str,
+                Field(..., description=prompt_cls.paddle_description),
+            ),
         }
-        return create_model(
-            f"{cls.__name__}_{text.__name__}",
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenFusionPrompt]], text),
-            **fields,
-        )
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        return model

@@ -19,17 +19,9 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
-from scinoephile.image.english.fusion import EnglishFusionTestCase2
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
-
-# ruff: noqa: F401 F403
-from test.data.mlamd.image.english.fusion import (
-    test_cases as mlamd_english_fusion_test_cases,
-)
-from test.data.mlamd.image.zhongwen.fusion import (
-    test_cases as mlamd_zhongwen_fusion_test_cases,
-)
 
 __all__ = [
     "mlamd_zho_hans_lens",
@@ -49,8 +41,6 @@ __all__ = [
     "mlamd_yue_hans",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
-    "mlamd_english_fusion_test_cases",
-    "mlamd_zhongwen_fusion_test_cases",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
@@ -273,7 +263,7 @@ def get_mlamd_zho_proofreading_test_cases(
 @cache
 def get_mlamd_eng_fusion_test_cases(
     **kwargs: Any,
-) -> list[EnglishFusionTestCase2]:
+) -> list[EnglishFusionTestCase]:
     """Get MLAMD English fusion test cases.
 
     Arguments:
@@ -282,13 +272,13 @@ def get_mlamd_eng_fusion_test_cases(
         test cases
     """
     path = title_root / "image" / "english" / "fusion.json"
-    return load_test_cases_from_json(path, EnglishFusionTestCase2, **kwargs)
+    return load_test_cases_from_json(path, EnglishFusionTestCase, **kwargs)
 
 
 @cache
 def get_mlamd_zho_fusion_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenFusionTestCase2]:
+) -> list[ZhongwenFusionTestCase]:
     """Get MLAMD Zhongwen fusion test cases.
 
     Arguments:
@@ -297,4 +287,4 @@ def get_mlamd_zho_fusion_test_cases(
         test cases
     """
     path = title_root / "image" / "zhongwen" / "fusion.json"
-    return load_test_cases_from_json(path, ZhongwenFusionTestCase2, **kwargs)
+    return load_test_cases_from_json(path, ZhongwenFusionTestCase, **kwargs)

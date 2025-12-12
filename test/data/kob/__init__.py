@@ -14,19 +14,13 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
-from scinoephile.image.english.fusion import EnglishFusionTestCase2
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
 
-# ruff: noqa: F401 F403
-from test.data.kob.image.english.fusion import (
-    test_cases as kob_english_fusion_test_cases,
-)
-from test.data.kob.image.zhongwen.fusion import (
-    test_cases as kob_zhongwen_fusion_test_cases,
-)
-
-___all__ = [
+__all__ = [
+    "kob_zho_hant_lens",
+    "kob_zho_hant_paddle",
     "kob_zho_hant_fuse",
     "kob_zho_hant_fuse_proofread",
     "kob_eng_lens",
@@ -35,17 +29,13 @@ ___all__ = [
     "kob_eng_fuse_proofread",
     "kob_yue_hans",
     "kob_yue_hans_clean",
-    "kob_yue_hans_flatten",
     "kob_yue_hans_clean_flatten",
     "kob_yue_hant",
     "kob_yue_hant_simplify",
     "kob_eng",
     "kob_eng_clean",
-    "kob_eng_flatten",
     "kob_eng_clean_flatten",
     "kob_yue_hans_eng",
-    "kob_english_fusion_test_cases",
-    "kob_zhongwen_fusion_test_cases",
     "get_kob_eng_proofreading_test_cases",
     "get_kob_zho_proofreading_test_cases",
     "get_kob_eng_fusion_test_cases",
@@ -206,7 +196,7 @@ def get_kob_zho_proofreading_test_cases(
 @cache
 def get_kob_eng_fusion_test_cases(
     **kwargs: Any,
-) -> list[EnglishFusionTestCase2]:
+) -> list[EnglishFusionTestCase]:
     """Get KOB English fusion test cases.
 
     Arguments:
@@ -216,16 +206,16 @@ def get_kob_eng_fusion_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "image" / "english" / "fusion.json",
-        EnglishFusionTestCase2,
+        EnglishFusionTestCase,
         **kwargs,
     )
-    return cast(list[EnglishFusionTestCase2], test_cases)
+    return cast(list[EnglishFusionTestCase], test_cases)
 
 
 @cache
 def get_kob_zho_fusion_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenFusionTestCase2]:
+) -> list[ZhongwenFusionTestCase]:
     """Get KOB Zhongwen fusion test cases.
 
     Arguments:
@@ -235,7 +225,7 @@ def get_kob_zho_fusion_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "image" / "zhongwen" / "fusion.json",
-        ZhongwenFusionTestCase2,
+        ZhongwenFusionTestCase,
         **kwargs,
     )
-    return cast(list[ZhongwenFusionTestCase2], test_cases)
+    return cast(list[ZhongwenFusionTestCase], test_cases)

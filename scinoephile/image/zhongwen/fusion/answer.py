@@ -10,48 +10,50 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.abcs import Answer
+from scinoephile.core.llms import Answer2
+from scinoephile.core.models import get_model_name
 
 from .prompt import ZhongwenFusionPrompt
 
 __all__ = ["ZhongwenFusionAnswer"]
 
 
-class ZhongwenFusionAnswer(Answer, ABC):
+class ZhongwenFusionAnswer(Answer2, ABC):
     """Abstract base class for Zhongwen OCR fusion answers."""
 
-    text: ClassVar[type[ZhongwenFusionPrompt]]
+    prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type:ignore
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        if not self.ronghe:
-            raise ValueError(self.text.ronghe_missing_error)
-        if not self.beizhu:
-            raise ValueError(self.text.beizhu_missing_error)
+        ronghe = getattr(self, "ronghe", None)
+        beizhu = getattr(self, "beizhu", None)
+        if not ronghe:
+            raise ValueError(self.prompt_cls.ronghe_missing_error)
+        if not beizhu:
+            raise ValueError(self.prompt_cls.beizhu_missing_error)
         return self
 
     @classmethod
     @cache
     def get_answer_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls,
+        prompt_cls: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt,
     ) -> type[Self]:
-        """Get concrete answer class with provided configuration.
+        """Get concrete answer class with provided configuartion.
 
         Arguments:
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             Answer type with appropriate configuration
         """
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "ronghe": (str, Field(..., description=text.ronghe_description)),
-            "beizhu": (str, Field(..., description=text.beizhu_description)),
+            "ronghe": (str, Field(..., description=prompt_cls.ronghe_description)),
+            "beizhu": (str, Field(..., description=prompt_cls.beizhu_description)),
         }
-        return create_model(
-            f"{cls.__name__}_{text.__name__}",
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[ZhongwenFusionPrompt]], text),
-            **fields,
-        )
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        return model

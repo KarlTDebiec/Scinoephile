@@ -28,12 +28,12 @@ from scinoephile.core.zhongwen.proofreading import (
     get_zhongwen_proofread,
 )
 from scinoephile.image.english.fusion import (
-    EnglishFuser2,
-    get_english_ocr_fused2,
+    EnglishFuser,
+    get_english_ocr_fused,
 )
 from scinoephile.image.zhongwen.fusion import (
-    ZhongwenFuser2,
-    get_zhongwen_ocr_fused2,
+    ZhongwenFuser,
+    get_zhongwen_ocr_fused,
 )
 from scinoephile.testing import test_data_root
 from test.data.kob import (
@@ -82,10 +82,10 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zhongwen_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zhongwen_converted(zho_hans_paddle)
-    zho_hans_fuse = get_zhongwen_ocr_fused2(
+    zho_hans_fuse = get_zhongwen_ocr_fused(
         zho_hans_lens,
         zho_hans_paddle,
-        ZhongwenFuser2(
+        ZhongwenFuser(
             test_cases=get_kob_zho_fusion_test_cases()
             + get_mnt_zho_fusion_test_cases()
             + get_t_zho_fusion_test_cases(),
@@ -129,10 +129,10 @@ if "English (OCR)" in actions:
     eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuse = get_english_ocr_fused2(
+    eng_fuse = get_english_ocr_fused(
         eng_lens,
         eng_tesseract,
-        EnglishFuser2(
+        EnglishFuser(
             test_cases=get_kob_eng_fusion_test_cases()
             + get_mnt_eng_fusion_test_cases()
             + get_t_eng_fusion_test_cases(),

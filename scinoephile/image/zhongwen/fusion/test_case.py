@@ -10,9 +10,8 @@ from typing import ClassVar, Self
 
 from pydantic import create_model
 
-from scinoephile.core.abcs import TestCase
-from scinoephile.core.models import format_field
-from scinoephile.core.text import whitespace
+from scinoephile.core.llms import TestCase2
+from scinoephile.core.models import get_model_name
 
 from .answer import ZhongwenFusionAnswer
 from .prompt import ZhongwenFusionPrompt
@@ -21,52 +20,32 @@ from .query import ZhongwenFusionQuery
 __all__ = ["ZhongwenFusionTestCase"]
 
 
-class ZhongwenFusionTestCase(
-    ZhongwenFusionQuery,
-    ZhongwenFusionAnswer,
-    TestCase[ZhongwenFusionQuery, ZhongwenFusionAnswer],
-    ABC,
-):
+class ZhongwenFusionTestCase(TestCase2, ABC):
     """Abstract base class for Zhongwen OCR fusion test cases."""
 
-    answer_cls: ClassVar[type[ZhongwenFusionAnswer]]
+    answer_cls: ClassVar[type[ZhongwenFusionAnswer]]  # type: ignore
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ZhongwenFusionQuery]]
+    query_cls: ClassVar[type[ZhongwenFusionQuery]]  # type: ignore
     """Query class for this test case."""
-    text: ClassVar[type[ZhongwenFusionPrompt]]
+    prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
-
-    @property
-    def source_str(self) -> str:
-        """Get Python source string."""
-        lines = [
-            f"{ZhongwenFusionTestCase.__name__}.get_test_case_cls("
-            f"{self.text.__name__})("
-        ]
-        for field in self.query_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        for field in self.answer_fields:
-            value = getattr(self, field)
-            if value == "":
-                continue
-            lines.append(format_field(field, value))
-        for field in self.test_case_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        lines.append(")")
-        return "\n".join(lines)
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
-        if any(ch in self.ronghe for ch in whitespace.values()):
+        if self.answer is None:
             return False
+
         if self.get_min_difficulty() > 1:
             return False
-        if self.lens == self.ronghe and "\n" not in self.lens:
-            return True
-        if self.paddle == self.ronghe and "\n" not in self.paddle:
-            return True
+
+        lens = getattr(self.query, "lens", None)
+        paddle = getattr(self.query, "paddle", None)
+        ronghe = getattr(self.answer, "ronghe", None)
+        if lens is not None and paddle is not None and ronghe is not None:
+            if lens == ronghe and "\n" not in lens:
+                return True
+            if paddle == ronghe and "\n" not in paddle:
+                return True
         return super().get_auto_verified()
 
     def get_min_difficulty(self) -> int:
@@ -82,29 +61,33 @@ class ZhongwenFusionTestCase(
         """
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
-        if any(ch in self.ronghe for ch in whitespace.values()):
-            min_difficulty = max(min_difficulty, 2)
+        if self.answer is not None:
+            ronghe = getattr(self.answer, "ronghe", None)
+            if ronghe is not None:
+                if "-" in ronghe or '"' in ronghe:
+                    min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
     @classmethod
     @cache
     def get_test_case_cls(
-        cls, text: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt
+        cls,
+        prompt_cls: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
             TestCase type with appropriate configuration
         """
-        query_cls = ZhongwenFusionQuery.get_query_cls(text)
-        answer_cls = ZhongwenFusionAnswer.get_answer_cls(text)
-        return create_model(
-            f"{cls.__name__}_{text.__name__}",
-            __base__=(query_cls, answer_cls, cls),
-            __module__=cls.__module__,
-            query_cls=(ClassVar[type[ZhongwenFusionQuery]], query_cls),
-            answer_cls=(ClassVar[type[ZhongwenFusionAnswer]], answer_cls),
-            text=(ClassVar[type[ZhongwenFusionPrompt]], text),
-        )
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
+        query_cls = ZhongwenFusionQuery.get_query_cls(prompt_cls)
+        answer_cls = ZhongwenFusionAnswer.get_answer_cls(prompt_cls)
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        return model

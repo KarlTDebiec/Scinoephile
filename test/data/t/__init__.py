@@ -14,17 +14,9 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
-from scinoephile.image.english.fusion import EnglishFusionTestCase2
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase2
+from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
-
-# ruff: noqa: F401 F403
-from test.data.t.image.english.fusion import (
-    test_cases as t_english_fusion_test_cases,
-)
-from test.data.t.image.zhongwen.fusion import (
-    test_cases as t_zhongwen_fusion_test_cases,
-)
 
 __all__ = [
     "t_zho_hans_lens",
@@ -44,8 +36,6 @@ __all__ = [
     "t_eng_clean",
     "t_eng_clean_flatten",
     "t_zho_hans_eng",
-    "t_english_fusion_test_cases",
-    "t_zhongwen_fusion_test_cases",
     "get_t_eng_proofreading_test_cases",
     "get_t_zho_proofreading_test_cases",
     "get_t_eng_fusion_test_cases",
@@ -219,7 +209,7 @@ def get_t_zho_proofreading_test_cases(
 @cache
 def get_t_eng_fusion_test_cases(
     **kwargs: Any,
-) -> list[EnglishFusionTestCase2]:
+) -> list[EnglishFusionTestCase]:
     """Get T English fusion test cases.
 
     Arguments:
@@ -229,16 +219,16 @@ def get_t_eng_fusion_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "image" / "english" / "fusion.json",
-        EnglishFusionTestCase2,
+        EnglishFusionTestCase,
         **kwargs,
     )
-    return cast(list[EnglishFusionTestCase2], test_cases)
+    return cast(list[EnglishFusionTestCase], test_cases)
 
 
 @cache
 def get_t_zho_fusion_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenFusionTestCase2]:
+) -> list[ZhongwenFusionTestCase]:
     """Get T Zhongwen fusion test cases.
 
     Arguments:
@@ -248,7 +238,7 @@ def get_t_zho_fusion_test_cases(
     """
     test_cases = load_test_cases_from_json(
         title_root / "image" / "zhongwen" / "fusion.json",
-        ZhongwenFusionTestCase2,
+        ZhongwenFusionTestCase,
         **kwargs,
     )
-    return cast(list[ZhongwenFusionTestCase2], test_cases)
+    return cast(list[ZhongwenFusionTestCase], test_cases)

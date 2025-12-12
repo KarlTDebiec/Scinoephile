@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.zhongwen.abcs.prompt2 import ZhongwenPrompt2
 
 __all__ = ["ZhongwenFusionPrompt"]
 
 
-class ZhongwenFusionPrompt(EnglishPrompt):
+class ZhongwenFusionPrompt(ZhongwenPrompt2):
     """Text for LLM correspondence for Zhongwen OCR fusion."""
 
     # Prompt

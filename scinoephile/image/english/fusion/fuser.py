@@ -6,18 +6,17 @@ from __future__ import annotations
 
 from logging import info, warning
 from pathlib import Path
-from textwrap import dedent
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError, Series, Subtitle
-from scinoephile.core.synchronization import are_series_one_to_one
-from scinoephile.testing import (
-    get_test_cases_from_file_path,
-    test_data_root,
-    update_test_cases,
+from scinoephile.core.llms import (
+    Queryer2,
+    load_test_cases_from_json,
+    save_test_cases_to_json,
 )
+from scinoephile.core.synchronization import are_series_one_to_one
+from scinoephile.testing import test_data_root
 
-from .queryer import EnglishFusionLLMQueryer
+from .prompt import EnglishFusionPrompt
 from .test_case import EnglishFusionTestCase
 
 __all__ = ["EnglishFuser"]
@@ -43,27 +42,37 @@ class EnglishFuser:
             test_cases = self.get_default_test_cases()
 
         if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_cases.extend(get_test_cases_from_file_path(test_case_path))
+            # noinspection PyTypeChecker
+            test_cases.extend(
+                load_test_cases_from_json(
+                    test_case_path,
+                    EnglishFusionTestCase,
+                    prompt_cls=EnglishFusionPrompt,
+                )
+            )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        self.llm_queryer = EnglishFusionLLMQueryer(
+        queryer_cls = Queryer2.get_queryer_cls(EnglishFusionPrompt)
+        self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
-        """Queries LLM to fuse OCRed English subtitles from Google Lens and
-        Tesseract."""
+        """LLM queryer."""
 
-    def fuse(self, lens: Series, tesseract: Series, stop_at_idx: int | None = None):
+    def fuse(
+        self, lens: Series, tesseract: Series, stop_at_idx: int | None = None
+    ) -> Series:
         """Fuse OCRed English subtitles from Google Lens and Tesseract.
 
         Arguments:
             lens: English subtitles OCRed using Google Lens
             tesseract: English subtitles OCRed using Tesseract
             stop_at_idx: stop processing at this index
+        Returns:
+            fused English subtitles
         """
         # Validate series
         if not are_series_one_to_one(lens, tesseract):
@@ -71,10 +80,6 @@ class EnglishFuser:
                 "Google Lens and Tesseract series must have the same number of "
                 "subtitles."
             )
-
-        # Ensure test case file exists
-        if self.test_case_path is not None and not self.test_case_path.exists():
-            self.create_test_case_file(self.test_case_path)
 
         # Fuse subtitles
         output_subtitles = []
@@ -117,10 +122,12 @@ class EnglishFuser:
             # Query LLM
             test_case_cls = EnglishFusionTestCase.get_test_case_cls()
             query_cls = test_case_cls.query_cls
-            answer_cls = test_case_cls.answer_cls
             query = query_cls(lens=lens_sub.text, tesseract=tesseract_sub.text)
-            answer = self.llm_queryer(query, answer_cls, test_case_cls)
-            sub = Subtitle(start=lens_sub.start, end=lens_sub.end, text=answer.fused)
+            test_case = test_case_cls(query=query)
+            test_case = self.queryer(test_case)
+            sub = Subtitle(
+                start=lens_sub.start, end=lens_sub.end, text=test_case.answer.fused
+            )
             info(
                 f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"
             )
@@ -128,7 +135,9 @@ class EnglishFuser:
 
         # Log test cases
         if self.test_case_path is not None:
-            update_test_cases(self.test_case_path, "test_cases", self.llm_queryer)
+            save_test_cases_to_json(
+                self.test_case_path, self.queryer.encountered_test_cases.values()
+            )
 
         # Organize and return
         output_series = Series()
@@ -145,45 +154,26 @@ class EnglishFuser:
         """
         try:
             # noinspection PyUnusedImports
-            from test.data.kob import kob_english_fusion_test_cases
-            from test.data.mlamd import mlamd_english_fusion_test_cases
-            from test.data.mnt import mnt_english_fusion_test_cases
-            from test.data.t import t_english_fusion_test_cases
+            from test.data.kob import get_kob_eng_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mlamd import get_mlamd_eng_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.mnt import get_mnt_eng_fusion_test_cases
+
+            # noinspection PyUnusedImports
+            from test.data.t import get_t_eng_fusion_test_cases
 
             return (
-                kob_english_fusion_test_cases
-                + mlamd_english_fusion_test_cases
-                + mnt_english_fusion_test_cases
-                + t_english_fusion_test_cases
+                get_kob_eng_fusion_test_cases()
+                + get_mlamd_eng_fusion_test_cases()
+                + get_mnt_eng_fusion_test_cases()
+                + get_t_eng_fusion_test_cases()
             )
         except ImportError as exc:
             warning(
                 f"Default test cases not available for {cls.__name__}, "
                 f"encountered Exception:\n{exc}"
             )
-            return []
-
-    @staticmethod
-    def create_test_case_file(test_case_path: Path):
-        """Create a test case file.
-
-        Arguments:
-            test_case_path: path to file to create
-        """
-        contents = dedent('''
-            """English fusion test cases."""
-
-            from __future__ import annotations
-
-            from scinoephile.image.english.fusion import EnglishFusionTestCase
-
-            # noinspection PyArgumentList
-            test_cases = []  # test_cases
-            """English fusion test cases."""
-
-            __all__ = [
-                "test_cases",
-            ]''').strip()
-        test_case_path.parent.mkdir(parents=True, exist_ok=True)
-        test_case_path.write_text(contents, encoding="utf-8")
-        info(f"Created test case file at {test_case_path}.")
+        return []
