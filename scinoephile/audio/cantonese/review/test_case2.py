@@ -53,14 +53,14 @@ class ReviewTestCase2(TestCase2, ABC):
             note = getattr(self.answer, f"note_{idx + 1}")
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
-                    raise ValueError(yuewen_unmodified_error.format(idx + 1))
+                    raise ValueError(yuewen_unmodified_error.format(idx=idx + 1))
                 if note == "":
                     raise ValueError(
-                        yuewen_revised_provided_note_missing_error.format(idx + 1)
+                        yuewen_revised_provided_note_missing_error.format(idx=idx + 1)
                     )
             elif note != "":
                 raise ValueError(
-                    yuewen_revised_missing_note_provided_error.format(idx + 1)
+                    yuewen_revised_missing_note_provided_error.format(idx=idx + 1)
                 )
         return self
 
