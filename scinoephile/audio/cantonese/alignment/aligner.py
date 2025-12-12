@@ -17,7 +17,7 @@ from scinoephile.audio import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Queryer2, save_test_cases_to_json
+from scinoephile.core.llms import Queryer, save_test_cases_to_json
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
@@ -41,11 +41,11 @@ class Aligner:
 
     def __init__(
         self,
-        shifting_queryer: Queryer2,
-        merging_queryer: Queryer2,
-        proofing_queryer: Queryer2,
-        translation_queryer: Queryer2,
-        review_queryer: Queryer2,
+        shifting_queryer: Queryer,
+        merging_queryer: Queryer,
+        proofing_queryer: Queryer,
+        translation_queryer: Queryer,
+        review_queryer: Queryer,
     ):
         """Initialize.
 

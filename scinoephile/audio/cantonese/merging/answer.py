@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import MergingPrompt
@@ -18,7 +18,7 @@ from .prompt import MergingPrompt
 __all__ = ["MergingAnswer"]
 
 
-class MergingAnswer(Answer2, ABC):
+class MergingAnswer(Answer, ABC):
     """Answer for 粤文 merging."""
 
     prompt_cls: ClassVar[type[MergingPrompt]]

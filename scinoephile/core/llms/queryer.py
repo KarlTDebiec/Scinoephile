@@ -16,27 +16,27 @@ from typing import ClassVar, Self, cast
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
-from scinoephile.core.abcs import LLMProvider
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.openai import OpenAIProvider
 
-from .answer2 import Answer2
-from .prompt2 import Prompt2
-from .query2 import Query2
-from .test_case2 import TestCase2
+from .answer import Answer
+from .llm_provider import LLMProvider
+from .prompt import Prompt
+from .query import Query
+from .test_case import TestCase
 
-__all__ = ["Queryer2"]
+__all__ = ["Queryer"]
 
 
-class Queryer2[
-    TQuery: Query2,
-    TAnswer: Answer2,
-    TTestCase: TestCase2,
-    TPrompt: Prompt2,
+class Queryer[
+    TQuery: Query,
+    TAnswer: Answer,
+    TTestCase: TestCase,
+    TPrompt: Prompt,
 ](ABC):
     """Abstract base class for LLM queryers."""
 
-    prompt_cls: ClassVar[type[Prompt2]]
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __init__(
@@ -298,7 +298,7 @@ class Queryer2[
             info(f"Deleted invalid cache file: {cache_path}")
         return None
 
-    def _get_system_prompt(self, answer_cls: type[Answer2]) -> str:
+    def _get_system_prompt(self, answer_cls: type[Answer]) -> str:
         """Get system prompt for the given answer class.
 
         Arguments:
@@ -331,7 +331,7 @@ class Queryer2[
 
     @classmethod
     @cache
-    def get_queryer_cls(cls, prompt_cls: type[Prompt2]) -> type[Self]:
+    def get_queryer_cls(cls, prompt_cls: type[Prompt]) -> type[Self]:
         """Get concrete queryer class with provided text.
 
         Arguments:

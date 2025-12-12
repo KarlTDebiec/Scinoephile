@@ -10,7 +10,10 @@ from logging import info
 
 from scinoephile.core.series import Series
 
+from .prompt import EnglishPrompt
+
 __all__ = [
+    "EnglishPrompt",
     "get_english_cleaned",
     "get_english_flattened",
 ]

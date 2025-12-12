@@ -16,7 +16,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
-from scinoephile.core.llms import Queryer2
+from scinoephile.core.llms import Queryer
 from scinoephile.core.zhongwen import OpenCCConfig
 from scinoephile.testing import test_data_root
 
@@ -55,31 +55,31 @@ class CantoneseTranscriptionReviewer:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
         )
-        shifting_queryer_cls = Queryer2.get_queryer_cls(ShiftingPrompt)
+        shifting_queryer_cls = Queryer.get_queryer_cls(ShiftingPrompt)
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        merging_queryer_cls = Queryer2.get_queryer_cls(MergingPrompt)
+        merging_queryer_cls = Queryer.get_queryer_cls(MergingPrompt)
         self.merging_queryer = merging_queryer_cls(
             prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        proofing_queryer_cls = Queryer2.get_queryer_cls(ProofingPrompt)
+        proofing_queryer_cls = Queryer.get_queryer_cls(ProofingPrompt)
         self.proofing_queryer = proofing_queryer_cls(
             prompt_test_cases=[tc for tc in proofing_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        translation_queryer_cls = Queryer2.get_queryer_cls(TranslationPrompt)
+        translation_queryer_cls = Queryer.get_queryer_cls(TranslationPrompt)
         self.translation_queryer = translation_queryer_cls(
             prompt_test_cases=[tc for tc in translation_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        review_queryer_cls = Queryer2.get_queryer_cls(ReviewPrompt)
+        review_queryer_cls = Queryer.get_queryer_cls(ReviewPrompt)
         self.review_queryer = review_queryer_cls(
             prompt_test_cases=[tc for tc in review_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in review_test_cases if tc.verified],

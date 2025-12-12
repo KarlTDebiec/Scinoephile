@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import ShiftingAnswer
@@ -20,7 +20,7 @@ from .query import ShiftingQuery
 __all__ = ["ShiftingTestCase"]
 
 
-class ShiftingTestCase(TestCase2, ABC):
+class ShiftingTestCase(TestCase, ABC):
     """Abstract base class for 粤文 transcription shifting test cases."""
 
     answer_cls: ClassVar[type[ShiftingAnswer]]

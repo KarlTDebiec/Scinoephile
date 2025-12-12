@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 
 from pydantic import create_model
 
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import ZhongwenFusionAnswer
@@ -20,7 +20,7 @@ from .query import ZhongwenFusionQuery
 __all__ = ["ZhongwenFusionTestCase"]
 
 
-class ZhongwenFusionTestCase(TestCase2, ABC):
+class ZhongwenFusionTestCase(TestCase, ABC):
     """Abstract base class for Zhongwen OCR fusion test cases."""
 
     answer_cls: ClassVar[type[ZhongwenFusionAnswer]]  # type: ignore

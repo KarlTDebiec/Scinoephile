@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Query2
+from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
 from .prompt import MergingPrompt
@@ -18,7 +18,7 @@ from .prompt import MergingPrompt
 __all__ = ["MergingQuery"]
 
 
-class MergingQuery(Query2, ABC):
+class MergingQuery(Query, ABC):
     """Abstract base class for 粤文 transcription merging queries."""
 
     prompt_cls: ClassVar[type[MergingPrompt]]

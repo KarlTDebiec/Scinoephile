@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs.prompt2 import EnglishPrompt2
+from scinoephile.core.english import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["ProofingPrompt"]
 
 
-class ProofingPrompt(EnglishPrompt2):
+class ProofingPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription proofing."""
 
     # Prompt

@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import ProofingPrompt
@@ -18,7 +18,7 @@ from .prompt import ProofingPrompt
 __all__ = ["ProofingAnswer"]
 
 
-class ProofingAnswer(Answer2, ABC):
+class ProofingAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription proofing answers."""
 
     prompt_cls: ClassVar[type[ProofingPrompt]]

@@ -7,12 +7,12 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.core.llms.prompt2 import Prompt2
+from scinoephile.core.llms.prompt import Prompt
 
-__all__ = ["EnglishPrompt2"]
+__all__ = ["EnglishPrompt"]
 
 
-class EnglishPrompt2(Prompt2, ABC):
+class EnglishPrompt(Prompt, ABC):
     """Text strings to be used for corresponding with an LLM in English."""
 
     # Prompt

@@ -10,29 +10,29 @@ from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, Field, model_validator
 
-from .answer2 import Answer2
-from .prompt2 import Prompt2
-from .query2 import Query2
+from .answer import Answer
+from .prompt import Prompt
+from .query import Query
 
-__all__ = ["TestCase2"]
+__all__ = ["TestCase"]
 
 
-class TestCase2(BaseModel, ABC):
+class TestCase(BaseModel, ABC):
     """Abstract base class for LLM test cases."""
 
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
-    answer_cls: ClassVar[type[Answer2]]
+    answer_cls: ClassVar[type[Answer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[Query2]]
+    query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[Prompt2]]
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
-    answer: Answer2 | None = None
+    answer: Answer | None = None
     """Answer part of the test case."""
-    query: Query2
+    query: Query
     """Query part of the test case."""
 
     difficulty: int = Field(0)
@@ -84,7 +84,7 @@ class TestCase2(BaseModel, ABC):
 
     @staticmethod
     def get_fields(
-        query_cls: Query2, answer_cls: Answer2, prompt_cls: type[Prompt2]
+        query_cls: Query, answer_cls: Answer, prompt_cls: type[Prompt]
     ) -> dict[str, Any]:
         """Get fields dictionary for dynamic TestCase class creation.
 

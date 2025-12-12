@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Query2
+from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
 from .prompt import ZhongwenProofreadingPrompt
@@ -18,7 +18,7 @@ from .prompt import ZhongwenProofreadingPrompt
 __all__ = ["ZhongwenProofreadingQuery"]
 
 
-class ZhongwenProofreadingQuery(Query2, ABC):
+class ZhongwenProofreadingQuery(Query, ABC):
     """Abstract base class for 中文 proofreading queries."""
 
     prompt_cls: ClassVar[type[ZhongwenProofreadingPrompt]]  # type: ignore

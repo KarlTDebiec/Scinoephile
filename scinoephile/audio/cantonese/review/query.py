@@ -11,14 +11,14 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.audio.cantonese.review.prompt import ReviewPrompt
-from scinoephile.core.llms import Query2
+from scinoephile.core.llms import Query
 
 __all__ = ["ReviewQuery"]
 
 from scinoephile.core.models import get_model_name
 
 
-class ReviewQuery(Query2, ABC):
+class ReviewQuery(Query, ABC):
     """Abstract base class for 粤文 transcription review queries."""
 
     prompt_cls: ClassVar[type[ReviewPrompt]]

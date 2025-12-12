@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import ReviewPrompt
@@ -18,7 +18,7 @@ from .prompt import ReviewPrompt
 __all__ = ["ReviewAnswer"]
 
 
-class ReviewAnswer(Answer2, ABC):
+class ReviewAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription review answers."""
 
     prompt_cls: ClassVar[type[ReviewPrompt]]

@@ -13,7 +13,7 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core import Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import (
-    Queryer2,
+    Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
@@ -59,7 +59,7 @@ class EnglishProofreader:
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        queryer_cls = Queryer2.get_queryer_cls(EnglishProofreadingPrompt)
+        queryer_cls = Queryer.get_queryer_cls(EnglishProofreadingPrompt)
         self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],

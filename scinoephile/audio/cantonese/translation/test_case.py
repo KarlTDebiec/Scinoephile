@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import TranslationAnswer
@@ -21,7 +21,7 @@ from .query import TranslationQuery
 __all__ = ["TranslationTestCase"]
 
 
-class TranslationTestCase(TestCase2, ABC):
+class TranslationTestCase(TestCase, ABC):
     """Abstract base class for 粤文 transcription translation test cases."""
 
     answer_cls: ClassVar[type[TranslationAnswer]]

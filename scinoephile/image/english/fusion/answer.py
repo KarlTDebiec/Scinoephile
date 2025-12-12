@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import EnglishFusionPrompt
@@ -18,7 +18,7 @@ from .prompt import EnglishFusionPrompt
 __all__ = ["EnglishFusionAnswer"]
 
 
-class EnglishFusionAnswer(Answer2, ABC):
+class EnglishFusionAnswer(Answer, ABC):
     """Abstract base class for English OCR fusion answers."""
 
     prompt_cls: ClassVar[type[EnglishFusionPrompt]]  # type:ignore

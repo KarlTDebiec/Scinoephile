@@ -10,7 +10,7 @@ from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
@@ -24,7 +24,7 @@ from .query import MergingQuery
 __all__ = ["MergingTestCase"]
 
 
-class MergingTestCase(TestCase2, ABC):
+class MergingTestCase(TestCase, ABC):
     """Abstract base class for 粤文 merging test cases."""
 
     answer_cls: ClassVar[type[MergingAnswer]]

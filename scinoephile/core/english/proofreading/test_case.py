@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import EnglishProofreadingAnswer
@@ -20,7 +20,7 @@ from .query import EnglishProofreadingQuery
 __all__ = ["EnglishProofreadingTestCase"]
 
 
-class EnglishProofreadingTestCase(TestCase2, ABC):
+class EnglishProofreadingTestCase(TestCase, ABC):
     """Abstract base class for English proofreading test cases."""
 
     answer_cls: ClassVar[type[EnglishProofreadingAnswer]]  # type: ignore

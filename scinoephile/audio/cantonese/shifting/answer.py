@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import ShiftingPrompt
@@ -18,7 +18,7 @@ from .prompt import ShiftingPrompt
 __all__ = ["ShiftingAnswer"]
 
 
-class ShiftingAnswer(Answer2, ABC):
+class ShiftingAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription shifting answers."""
 
     prompt_cls: ClassVar[type[ShiftingPrompt]]

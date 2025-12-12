@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase2
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import ReviewAnswer
@@ -20,7 +20,7 @@ from .query import ReviewQuery
 __all__ = ["ReviewTestCase"]
 
 
-class ReviewTestCase(TestCase2, ABC):
+class ReviewTestCase(TestCase, ABC):
     """Abstract base class for 粤文 transcription review test cases."""
 
     answer_cls: ClassVar[type[ReviewAnswer]]

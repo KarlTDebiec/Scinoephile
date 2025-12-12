@@ -12,15 +12,15 @@ from pydantic import BaseModel
 
 from scinoephile.core.models import make_hashable
 
-from .prompt2 import Prompt2
+from .prompt import Prompt
 
-__all__ = ["Query2"]
+__all__ = ["Query"]
 
 
-class Query2(BaseModel, ABC):
+class Query(BaseModel, ABC):
     """Abstract base class for LLM queries."""
 
-    prompt_cls: ClassVar[type[Prompt2]]
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __str__(self) -> str:

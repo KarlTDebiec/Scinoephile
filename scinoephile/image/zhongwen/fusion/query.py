@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Query2
+from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
 from .prompt import ZhongwenFusionPrompt
@@ -18,7 +18,7 @@ from .prompt import ZhongwenFusionPrompt
 __all__ = ["ZhongwenFusionQuery"]
 
 
-class ZhongwenFusionQuery(Query2, ABC):
+class ZhongwenFusionQuery(Query, ABC):
     """Abstract base class for Zhongwen OCR fusion queries."""
 
     prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type: ignore

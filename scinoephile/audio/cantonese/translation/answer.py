@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer2
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import TranslationPrompt
@@ -19,7 +19,7 @@ from .prompt import TranslationPrompt
 __all__ = ["TranslationAnswer"]
 
 
-class TranslationAnswer(Answer2, ABC):
+class TranslationAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription translation answers."""
 
     prompt_cls: ClassVar[type[TranslationPrompt]]

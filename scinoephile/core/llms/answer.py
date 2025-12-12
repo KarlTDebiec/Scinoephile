@@ -18,7 +18,7 @@ __all__ = ["Answer"]
 class Answer(BaseModel, ABC):
     """Abstract base class for LLM answers."""
 
-    text: ClassVar[type[Prompt]]
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     def __str__(self) -> str:
