@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from .answer import TranslationAnswer
-from .llm_queryer import TranslationLLMQueryer
 from .prompt import TranslationPrompt
 from .query import TranslationQuery
 from .test_case import TranslationTestCase
 
 __all__ = [
     "TranslationAnswer",
-    "TranslationLLMQueryer",
     "TranslationPrompt",
     "TranslationQuery",
     "TranslationTestCase",

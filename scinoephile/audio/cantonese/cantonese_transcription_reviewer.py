@@ -8,24 +8,24 @@ import asyncio
 from pathlib import Path
 
 from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
-from scinoephile.audio.cantonese.alignment import Aligner
-from scinoephile.audio.cantonese.alignment.testing import update_all_test_cases
-from scinoephile.audio.cantonese.merging import MergingLLMQueryer, MergingTestCase
-from scinoephile.audio.cantonese.proofing import ProofingLLMQueryer, ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewLLMQueryer, ReviewTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingLLMQueryer, ShiftingTestCase
-from scinoephile.audio.cantonese.translation import (
-    TranslationLLMQueryer,
-    TranslationTestCase,
-)
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_split_on_whitespace,
     get_segment_zhongwen_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
+from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
+from scinoephile.core.llms import Queryer
+from scinoephile.core.zhongwen import OpenCCConfig
 from scinoephile.testing import test_data_root
+
+from .alignment import Aligner
+from .merging import MergingPrompt, MergingTestCase
+from .proofing import ProofingPrompt, ProofingTestCase
+from .review import ReviewPrompt, ReviewTestCase
+from .shifting import ShiftingPrompt, ShiftingTestCase
+from .translation import TranslationPrompt, TranslationTestCase
 
 
 class CantoneseTranscriptionReviewer:
@@ -55,43 +55,48 @@ class CantoneseTranscriptionReviewer:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
         )
-        self.shifting_llm_queryer = ShiftingLLMQueryer(
+        shifting_queryer_cls = Queryer.get_queryer_cls(ShiftingPrompt)
+        self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.merging_llm_queryer = MergingLLMQueryer(
+        merging_queryer_cls = Queryer.get_queryer_cls(MergingPrompt)
+        self.merging_queryer = merging_queryer_cls(
             prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.proofing_llm_queryer = ProofingLLMQueryer(
+        proofing_queryer_cls = Queryer.get_queryer_cls(ProofingPrompt)
+        self.proofing_queryer = proofing_queryer_cls(
             prompt_test_cases=[tc for tc in proofing_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.translation_llm_queryer = TranslationLLMQueryer(
+        translation_queryer_cls = Queryer.get_queryer_cls(TranslationPrompt)
+        self.translation_queryer = translation_queryer_cls(
             prompt_test_cases=[tc for tc in translation_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        self.review_llm_queryer = ReviewLLMQueryer(
+        review_queryer_cls = Queryer.get_queryer_cls(ReviewPrompt)
+        self.review_queryer = review_queryer_cls(
             prompt_test_cases=[tc for tc in review_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in review_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
         self.aligner = Aligner(
-            shifting_llm_queryer=self.shifting_llm_queryer,
-            merging_llm_queryer=self.merging_llm_queryer,
-            proofing_llm_queryer=self.proofing_llm_queryer,
-            translation_llm_queryer=self.translation_llm_queryer,
-            review_llm_queryer=self.review_llm_queryer,
+            shifting_queryer=self.shifting_queryer,
+            merging_queryer=self.merging_queryer,
+            proofing_queryer=self.proofing_queryer,
+            translation_queryer=self.translation_queryer,
+            review_queryer=self.review_queryer,
         )
 
     async def process_all_blocks(
         self,
         yuewen: AudioSeries,
-        zhongwen: AudioSeries,
+        zhongwen: Series,
         stop_at_idx: int | None = None,
     ):
         """Process all blocks of audio, transcribing and aligning them with subtitles.
@@ -144,7 +149,7 @@ class CantoneseTranscriptionReviewer:
         self,
         idx: int,
         yuewen_block: AudioBlock,
-        zhongwen_block: AudioBlock,
+        zhongwen_block: Block,
     ) -> AudioSeries:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
@@ -163,7 +168,7 @@ class CantoneseTranscriptionReviewer:
 
         # Simplify segments (optional)
         converted_segments = [
-            get_segment_zhongwen_converted(segment, "hk2s")
+            get_segment_zhongwen_converted(segment, OpenCCConfig.hk2s)
             for segment in split_segments
         ]
 
@@ -178,6 +183,6 @@ class CantoneseTranscriptionReviewer:
         )
         yuewen_block_series = alignment.yuewen
 
-        await update_all_test_cases(self.test_case_directory_path, idx, self.aligner)
+        self.aligner.update_all_test_cases(self.test_case_directory_path)
 
         return yuewen_block_series

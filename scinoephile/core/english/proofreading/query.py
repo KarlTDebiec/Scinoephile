@@ -6,11 +6,12 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.abcs import Query
+from scinoephile.core.llms import Query
+from scinoephile.core.models import get_model_name
 
 from .prompt import EnglishProofreadingPrompt
 
@@ -20,34 +21,35 @@ __all__ = ["EnglishProofreadingQuery"]
 class EnglishProofreadingQuery(Query, ABC):
     """Abstract base class for English proofreading queries."""
 
-    text: ClassVar[type[EnglishProofreadingPrompt]]
+    prompt_cls: ClassVar[type[EnglishProofreadingPrompt]]  # type: ignore
     """Text strings to be used for corresponding with LLM."""
+
+    size: ClassVar[int]
+    """Number of subtitles."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
         size: int,
-        text: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+        prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided size and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
-        fields = {}
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        fields: dict[str, Any] = {}
         for idx in range(size):
-            fields[f"subtitle_{idx + 1}"] = (
-                str,
-                Field(..., description=text.subtitle_description.format(idx=idx + 1)),
-            )
-        return create_model(
-            f"{cls.__name__}_{size}_{text.__name__}",
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[EnglishProofreadingPrompt]], text),
-            **fields,
-        )
+            key = f"subtitle_{idx + 1}"
+            description = prompt_cls.subtitle_description.format(idx=idx + 1)
+            fields[key] = (str, Field(..., description=description, max_length=1000))
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        model.size = size
+        return model

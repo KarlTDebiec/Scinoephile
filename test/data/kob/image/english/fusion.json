@@ -1,0 +1,1641 @@
+[
+  {
+    "answer": {
+      "fused": "Chan Yee Ha Cha So",
+      "note": "Used 'So' instead of '80'."
+    },
+    "query": {
+      "lens": "Chan Yee Ha Cha So",
+      "tesseract": "Chan Yee Ha Cha 80"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "our family",
+      "note": "Used lower-case 'our'."
+    },
+    "query": {
+      "lens": "Our family",
+      "tesseract": "our family"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "has been illiterate",
+      "note": "Used lower-case 'has' from Tesseract."
+    },
+    "query": {
+      "lens": "Has been illiterate",
+      "tesseract": "has been illiterate"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he knows how to write his name!",
+      "note": "Used lower-case 'he' from Tesseract."
+    },
+    "query": {
+      "lens": "He knows how to write his name!",
+      "tesseract": "he knows how to write his name!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he will be scholar one day",
+      "note": "Used lower-case 'he' from Tesseract."
+    },
+    "query": {
+      "lens": "He will be scholar one day",
+      "tesseract": "he will be scholar one day"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he will have a son later",
+      "note": "Used lower-case 'he' from Tesseract."
+    },
+    "query": {
+      "lens": "He will have a son later",
+      "tesseract": "he will have a son later"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "why don't you carry it with traditional\ndecoration in the street?",
+      "note": "Used lower-case 'why'."
+    },
+    "query": {
+      "lens": "Why don't you carry it with traditional\ndecoration in the street?",
+      "tesseract": "why don't you carry it with traditional\ndecoration in the street?"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you should depend on yourself",
+      "note": "Used lower-case 'you' from Tesseract."
+    },
+    "query": {
+      "lens": "You should depend on yourself",
+      "tesseract": "you should depend on yourself"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "25 years old. Come earlier",
+      "note": "Used ' ' instead of '\n'."
+    },
+    "query": {
+      "lens": "25 years old.\nCome earlier",
+      "tesseract": "25 years old. Come earlier"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Happy birthday to you, Mr So",
+      "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Happy birthday to you, Mr So",
+      "tesseract": "Happy birthday to you, Mr 80"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Give him tips\n- Yes, young master",
+      "note": "Placed '-' on second line."
+    },
+    "query": {
+      "lens": "- Give him tips -\nYes, young master",
+      "tesseract": "- Give him tips\n- Yes, young master"
+    },
+    "difficulty": 2,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "including the expenditure for hooking,\nI will pay for you!",
+      "note": "Used lower-case 'including' from Tesseract."
+    },
+    "query": {
+      "lens": "Including the expenditure for hooking,\nI will pay for you!",
+      "tesseract": "including the expenditure for hooking,\nI will pay for you!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr So!",
+      "note": "Used 'So' from Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Mr So!",
+      "tesseract": "Mr 80!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "the emperor will give you award for this",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "query": {
+      "lens": "The emperor will give you award for this",
+      "tesseract": "the emperor will give you award for this"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "speak something nice in front of the emperor",
+      "note": "Used lower-case 'speak'."
+    },
+    "query": {
+      "lens": "Speak something nice in front of the emperor",
+      "tesseract": "speak something nice in front of the emperor"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr So has come",
+      "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Mr So has come",
+      "tesseract": "Mr 80 has come"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr So, today is your big day,\nyou must be very happy!",
+      "note": "Used 'So' from Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Mr So, today is your big day,\nyou must be very happy!",
+      "tesseract": "Mr 80, today is your big day,\nyou must be very happy!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "You, cooked fishes, why don't you\ncome and serve Mr So?",
+      "note": "Used 'So' instead of '80'."
+    },
+    "query": {
+      "lens": "You, cooked fishes, why don't you\ncome and serve Mr So?",
+      "tesseract": "You, cooked fishes, why don't you\ncome and serve Mr 80?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- May I be excused\n- Mr Chiu",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "May I be excused - Mr Chiu",
+      "tesseract": "- May I be excused\n- Mr Chiu"
+    },
+    "difficulty": 2,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "How are you? Mr Chiu",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "How are you?\nMr Chiu",
+      "tesseract": "How are you? Mr Chiu"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "if Miss Yushang sleeps with our\nyoung master tonight…",
+      "note": "Used lower-case 'if' from Tesseract."
+    },
+    "query": {
+      "lens": "If Miss Yushang sleeps with our\nyoung master tonight…",
+      "tesseract": "if Miss Yushang sleeps with our\nyoung master tonight…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "If any of you can offer more than 100,000 taels",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "If any of you can offer\nmore than 100,000 taels",
+      "tesseract": "If any of you can offer more than 100,000 taels"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr So…",
+      "note": "Used 'So' from Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Mr So…",
+      "tesseract": "Mr 80…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "it's beggar's fists!",
+      "note": "Used lower-case 'it's' from Tesseract."
+    },
+    "query": {
+      "lens": "It's beggar's fists!",
+      "tesseract": "it's beggar's fists!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Come on, give tips to the girl here\n- Master",
+      "note": "Moved '- Master' to a new line as in Tesseract."
+    },
+    "query": {
+      "lens": "- Come on, give tips\nto the girl here - Master",
+      "tesseract": "- Come on, give tips to the girl here\n- Master"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Him!\n- Arrest him",
+      "note": "Added space after '-' on second line as in Lens."
+    },
+    "query": {
+      "lens": "- Him!\n- Arrest him",
+      "tesseract": "- Him!\n-Arrest him"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "so I should arrest those bad people",
+      "note": "Used lower-case 'so' as in Tesseract."
+    },
+    "query": {
+      "lens": "So I should arrest those bad people",
+      "tesseract": "so I should arrest those bad people"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "anyone without a tail should be killed",
+      "note": "Used lower-case 'anyone'."
+    },
+    "query": {
+      "lens": "Anyone without a tail should be killed",
+      "tesseract": "anyone without a tail should be killed"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "a rascal has ruined the atmosphere here,",
+      "note": "Used lower-case 'a' as in Tesseract."
+    },
+    "query": {
+      "lens": "A rascal has ruined the atmosphere here,",
+      "tesseract": "a rascal has ruined the atmosphere here,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "and some generals of The Taiping Reign",
+      "note": "Used lower-case 'and' as in Tesseract."
+    },
+    "query": {
+      "lens": "And some generals of The Taiping Reign",
+      "tesseract": "and some generals of The Taiping Reign"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "being despised by the world",
+      "note": "Used lower-case 'being' as in Tesseract."
+    },
+    "query": {
+      "lens": "Being despised by the world",
+      "tesseract": "being despised by the world"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "by Mr So and become pearl powder",
+      "note": "Used lower-case 'by' and 'So' instead of '80'."
+    },
+    "query": {
+      "lens": "By Mr So and become pearl powder",
+      "tesseract": "by Mr 80 and become pearl powder"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Don't judge Mr So from his hair,",
+      "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Don't judge Mr So from his hair,",
+      "tesseract": "Don't judge Mr 80 from his hair,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he is really romantic and funny",
+      "note": "Used lower-case 'he' as in Tesseract."
+    },
+    "query": {
+      "lens": "He is really romantic and funny",
+      "tesseract": "he is really romantic and funny"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "About the personality of Mr So…",
+      "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "About the personality of Mr So…",
+      "tesseract": "About the personality of Mr 80…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "for you your company tonight",
+      "note": "Used lower-case 'for' as in Tesseract."
+    },
+    "query": {
+      "lens": "For you your company tonight",
+      "tesseract": "for you your company tonight"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "until Chiu is killed",
+      "note": "Used lower-case 'until' from Tesseract."
+    },
+    "query": {
+      "lens": "Until Chiu is killed",
+      "tesseract": "until Chiu is killed"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mr So, it's me!",
+      "note": "Used 'So' from Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "Mr So, it's me!",
+      "tesseract": "Mr 80, it's me!"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "2, 3, 4, 5, 6",
+      "note": "Added space after '5,' as in Google Lens."
+    },
+    "query": {
+      "lens": "2, 3, 4, 5, 6",
+      "tesseract": "2, 3, 4, 5,6"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "we won't take the hens with us",
+      "note": "Used lower-case 'we' from Tesseract."
+    },
+    "query": {
+      "lens": "We won't take the hens with us",
+      "tesseract": "we won't take the hens with us"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "or how can I eat Lychee in Peking?",
+      "note": "Used lower-case 'or' from Tesseract."
+    },
+    "query": {
+      "lens": "Or how can I eat Lychee in Peking?",
+      "tesseract": "or how can I eat Lychee in Peking?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "the Hairy Gang in Kwangsi",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "query": {
+      "lens": "The Hairy Gang in Kwangsi",
+      "tesseract": "the Hairy Gang in Kwangsi"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "So big! You must be Small!",
+      "note": "Used 'So' from Lens instead of '80' from Tesseract."
+    },
+    "query": {
+      "lens": "So big! You must be Small!",
+      "tesseract": "80 big! You must be Small!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "stop playing",
+      "note": "Used lower-case 'stop' from Tesseract."
+    },
+    "query": {
+      "lens": "Stop playing",
+      "tesseract": "stop playing"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "for your examination?",
+      "note": "Used lower-case 'for' as in Tesseract."
+    },
+    "query": {
+      "lens": "For your examination?",
+      "tesseract": "for your examination?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "to finish the papers which you gave me",
+      "note": "Used lower-case 'to' from Tesseract."
+    },
+    "query": {
+      "lens": "To finish the papers which you gave me",
+      "tesseract": "to finish the papers which you gave me"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "riding, boxing and weapons…",
+      "note": "Used lower-case 'riding' from Tesseract."
+    },
+    "query": {
+      "lens": "Riding, boxing and weapons…",
+      "tesseract": "riding, boxing and weapons…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "That is, Chan defaulted in weight lifting",
+      "note": "Used 'weight lifting' from Google Lens instead of 'weightlifting'."
+    },
+    "query": {
+      "lens": "That is, Chan defaulted in weight lifting",
+      "tesseract": "That is, Chan defaulted in weightlifting"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "with full marks, it differs",
+      "note": "Used lower-case 'with' from Tesseract."
+    },
+    "query": {
+      "lens": "With full marks, it differs",
+      "tesseract": "with full marks, it differs"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- You shouldn't put it that way\n- What?",
+      "note": "Moved '- What?' to a new line as in Tesseract."
+    },
+    "query": {
+      "lens": "- You shouldn't put\nit that way - What?",
+      "tesseract": "- You shouldn't put it that way\n- What?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "800,000 taels",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "800,000\ntaels",
+      "tesseract": "800,000 taels"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "I feel Chan",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "I\nfeel Chan",
+      "tesseract": "I feel Chan"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "will be the champion",
+      "note": "Used lower-case 'will'."
+    },
+    "query": {
+      "lens": "Will be the champion",
+      "tesseract": "will be the champion"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Bravo! He won",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "Bravo!\nHe won",
+      "tesseract": "Bravo! He won"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "if I see you again",
+      "note": "Used lower-case 'if' as in Tesseract."
+    },
+    "query": {
+      "lens": "If I see you again",
+      "tesseract": "if I see you again"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "You… You…",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "You…\nYou…",
+      "tesseract": "You… You…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "I have found that. So is illiterate",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "I have found\nthat. So is illiterate",
+      "tesseract": "I have found that. So is illiterate"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Kill me\n- No, kill me",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Kill me - No, kill me",
+      "tesseract": "- Kill me\n- No, kill me"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "is forfeiture of property only",
+      "note": "Used lower-case 'is' as in Tesseract."
+    },
+    "query": {
+      "lens": "Is forfeiture of property only",
+      "tesseract": "is forfeiture of property only"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "they cheated during the examination?",
+      "note": "Used lower-case 'they' as in Tesseract."
+    },
+    "query": {
+      "lens": "They cheated during the examination?",
+      "tesseract": "they cheated during the examination?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "from now on,",
+      "note": "Used lower-case 'from' as in Tesseract."
+    },
+    "query": {
+      "lens": "From now on,",
+      "tesseract": "from now on,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you'd be hard working to learn how to write",
+      "note": "Used lower-case 'you'd' from Tesseract."
+    },
+    "query": {
+      "lens": "You'd be hard working to learn how to write",
+      "tesseract": "you'd be hard working to learn how to write"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Why are you standing here? Go now",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "Why are you standing here?\nGo now",
+      "tesseract": "Why are you standing here? Go now"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "who is living in Peking",
+      "note": "Used lower-case 'who' as in Tesseract."
+    },
+    "query": {
+      "lens": "Who is living in Peking",
+      "tesseract": "who is living in Peking"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "to go back to Canton",
+      "note": "Used lower-case 'to' from Tesseract."
+    },
+    "query": {
+      "lens": "To go back to Canton",
+      "tesseract": "to go back to Canton"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "the So's family'd be beggars for life",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "query": {
+      "lens": "The So's family'd be beggars for life",
+      "tesseract": "the So's family'd be beggars for life"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- No, we can't move it\n- Let me do it",
+      "note": "Combined first line and added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "- No, we can't\nmove it - Let me do it",
+      "tesseract": "- No, we can't move it\n- Let me do it"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "with my son,",
+      "note": "Used lower-case 'with' from Tesseract."
+    },
+    "query": {
+      "lens": "With my son,",
+      "tesseract": "with my son,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "don't you know who was the examiner?",
+      "note": "Used lower-case 'don't' as in Tesseract."
+    },
+    "query": {
+      "lens": "Don't you know who was the examiner?",
+      "tesseract": "don't you know who was the examiner?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "the Yee Hung Brothel",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "query": {
+      "lens": "The Yee Hung Brothel",
+      "tesseract": "the Yee Hung Brothel"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "during the examination",
+      "note": "Used lower-case 'during' as in Tesseract."
+    },
+    "query": {
+      "lens": "During the examination",
+      "tesseract": "during the examination"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "To be the greatest Kung-fu fighter, invincible",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "To be the greatest Kung-fu fighter,\ninvincible",
+      "tesseract": "To be the greatest Kung-fu fighter, invincible"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "your legs and hands have not been\ntotally recovered",
+      "note": "Used lower-case 'your' as in Tesseract."
+    },
+    "query": {
+      "lens": "Your legs and hands have not been\ntotally recovered",
+      "tesseract": "your legs and hands have not been\ntotally recovered"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "there is some lessons!",
+      "note": "Used lower-case 'there' from Tesseract."
+    },
+    "query": {
+      "lens": "There is some lessons!",
+      "tesseract": "there is some lessons!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- May I… - No",
+      "note": "Manually corrected."
+    },
+    "query": {
+      "lens": "May I… No -",
+      "tesseract": "May|…"
+    },
+    "difficulty": 3,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he wouldn't be that poor if not were you",
+      "note": "Used lower-case 'he' as in Tesseract."
+    },
+    "query": {
+      "lens": "He wouldn't be that poor if not were you",
+      "tesseract": "he wouldn't be that poor if not were you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "So I bit the dumpling of the kid",
+      "note": "Used 'So I' from Lens instead of 'Sol' from Tesseract."
+    },
+    "query": {
+      "lens": "So I bit the dumpling of the kid",
+      "tesseract": "Sol bit the dumpling of the kid"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "if I chopped yours",
+      "note": "Used lower-case 'if' as in Tesseract."
+    },
+    "query": {
+      "lens": "If I chopped yours",
+      "tesseract": "if I chopped yours"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Give them to me, come on\n- What for?",
+      "note": "Placed '-' and line break before 'What for?' as in Tesseract."
+    },
+    "query": {
+      "lens": "- Give them to me,\ncome on - What for?",
+      "tesseract": "- Give them to me, come on\n- What for?"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Wish you ever beauty\n- Thank you",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "- Wish you ever\nbeauty - Thank you",
+      "tesseract": "- Wish you ever beauty\n- Thank you"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Yushang…",
+      "note": "Used ellipsis '…' from Google Lens instead of closing quote from Tesseract."
+    },
+    "query": {
+      "lens": "Yushang…",
+      "tesseract": "Yushang”."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "how can I defeat them and become the new master?",
+      "note": "Used lower-case 'how' from Tesseract."
+    },
+    "query": {
+      "lens": "How can I defeat them and become the new master?",
+      "tesseract": "how can I defeat them and become the new master?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you can ask my son to fight for you",
+      "note": "Used lower-case 'you' as in Tesseract."
+    },
+    "query": {
+      "lens": "You can ask my son to fight for you",
+      "tesseract": "you can ask my son to fight for you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "before…",
+      "note": "Used lower-case 'before' from Tesseract."
+    },
+    "query": {
+      "lens": "Before…",
+      "tesseract": "before…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he knows sleeping only",
+      "note": "Used lower-case 'he' as in Tesseract."
+    },
+    "query": {
+      "lens": "He knows sleeping only",
+      "tesseract": "he knows sleeping only"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "only you try hard,",
+      "note": "Used lower-case 'only' as in Tesseract."
+    },
+    "query": {
+      "lens": "Only you try hard,",
+      "tesseract": "only you try hard,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you can achieve something",
+      "note": "Used lower-case 'you' from Tesseract."
+    },
+    "query": {
+      "lens": "You can achieve something",
+      "tesseract": "you can achieve something"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you should give me a waddy first",
+      "note": "Used lower-case 'you' as in Tesseract."
+    },
+    "query": {
+      "lens": "You should give me a waddy first",
+      "tesseract": "you should give me a waddy first"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "no one respected me before",
+      "note": "Used lower-case 'no' as in Tesseract."
+    },
+    "query": {
+      "lens": "No one respected me before",
+      "tesseract": "no one respected me before"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "even you have money again",
+      "note": "Used lower-case 'even' from Tesseract."
+    },
+    "query": {
+      "lens": "Even you have money again",
+      "tesseract": "even you have money again"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you will be the king of beggars",
+      "note": "Used lower-case 'you' from Tesseract."
+    },
+    "query": {
+      "lens": "You will be the king of beggars",
+      "tesseract": "you will be the king of beggars"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "with you",
+      "note": "Used lower-case 'with' as in Tesseract."
+    },
+    "query": {
+      "lens": "With you",
+      "tesseract": "with you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "then they went away",
+      "note": "Used lower-case 'then' as in Tesseract."
+    },
+    "query": {
+      "lens": "Then they went away",
+      "tesseract": "then they went away"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you are not qualified, come down",
+      "note": "Used lower-case 'you' from Tesseract."
+    },
+    "query": {
+      "lens": "You are not qualified, come down",
+      "tesseract": "you are not qualified, come down"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Bullshit, throw him to death",
+      "note": "Used 'Bullshit' as one word from Tesseract."
+    },
+    "query": {
+      "lens": "Bull shit, throw him to death",
+      "tesseract": "Bullshit, throw him to death"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "could be the leader",
+      "note": "Used lower-case 'could' from Tesseract."
+    },
+    "query": {
+      "lens": "Could be the leader",
+      "tesseract": "could be the leader"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "because of being united",
+      "note": "Used lower-case 'because' from Tesseract."
+    },
+    "query": {
+      "lens": "Because of being united",
+      "tesseract": "because of being united"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "is just for memory",
+      "note": "Used lower-case 'is' from Tesseract."
+    },
+    "query": {
+      "lens": "Is just for memory",
+      "tesseract": "is just for memory"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "so you won't fight for this anymore",
+      "note": "Used lower-case 'so' from Tesseract."
+    },
+    "query": {
+      "lens": "So you won't fight for this anymore",
+      "tesseract": "so you won't fight for this anymore"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "but he is a genius, a smart ass",
+      "note": "Used lower-case 'but' from Tesseract."
+    },
+    "query": {
+      "lens": "But he is a genius, a smart ass",
+      "tesseract": "but he is a genius, a smart ass"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "your new leader, and you'd love him,",
+      "note": "Used lower-case 'your' as in Tesseract."
+    },
+    "query": {
+      "lens": "Your new leader, and you'd love him,",
+      "tesseract": "your new leader, and you'd love him,"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "whole-heartedly, to care much for him,\nmaybe, treat him dinner",
+      "note": "Used lower-case 'whole-heartedly' as in Tesseract."
+    },
+    "query": {
+      "lens": "Whole-heartedly, to care much for him,\nmaybe, treat him dinner",
+      "tesseract": "whole-heartedly, to care much for him,\nmaybe, treat him dinner"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "we are blessed",
+      "note": "Used lower-case 'we' from Tesseract."
+    },
+    "query": {
+      "lens": "We are blessed",
+      "tesseract": "we are blessed"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "do you understand everything written in this book?",
+      "note": "Used lower-case 'do' as in Tesseract."
+    },
+    "query": {
+      "lens": "Do you understand everything written in this book?",
+      "tesseract": "do you understand everything written in this book?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "there is no picture or description of it",
+      "note": "Used lower-case 'there' from Tesseract."
+    },
+    "query": {
+      "lens": "There is no picture or description of it",
+      "tesseract": "there is no picture or description of it"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "why do you bring this woman here?",
+      "note": "Used lower-case 'why' as in Tesseract."
+    },
+    "query": {
+      "lens": "Why do you bring this woman here?",
+      "tesseract": "why do you bring this woman here?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "to your own position",
+      "note": "Used lower-case 'to' as in Tesseract."
+    },
+    "query": {
+      "lens": "To your own position",
+      "tesseract": "to your own position"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "if I let him see His Majesty oftenly,\nmy post will be taken away",
+      "note": "Used lower-case 'if' from Tesseract."
+    },
+    "query": {
+      "lens": "If I let him see His Majesty oftenly,\nmy post will be taken away",
+      "tesseract": "if I let him see His Majesty oftenly,\nmy post will be taken away"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Check what had happened\n- Yes",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Check what had happened - Yes",
+      "tesseract": "- Check what had happened\n- Yes"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "he is going to assassinate the king",
+      "note": "Used lower-case 'he' as in Tesseract."
+    },
+    "query": {
+      "lens": "He is going to assassinate the king",
+      "tesseract": "he is going to assassinate the king"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Senior\n- Yes",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Senior - Yes",
+      "tesseract": "- Senior\n- Yes"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you stay here to wait for the others",
+      "note": "Used lower-case 'you' from Tesseract."
+    },
+    "query": {
+      "lens": "You stay here to wait for the others",
+      "tesseract": "you stay here to wait for the others"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "I will follow",
+      "note": "Used lower-case 'will' from Lens."
+    },
+    "query": {
+      "lens": "I will follow",
+      "tesseract": "I Will follow"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Go on after I left\n- Sure",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Go on after I left - Sure",
+      "tesseract": "- Go on after I left\n- Sure"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Get ready the Unicorn Smoke\n- Yes",
+      "note": "Combined 'Unicorn Smoke' on one line and added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "- Get ready the\nUnicorn Smoke - Yes",
+      "tesseract": "- Get ready the Unicorn Smoke\n- Yes"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Rebel! Help!",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "Rebel!\nHelp!",
+      "tesseract": "Rebel! Help!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "is blowing to the Royal camp",
+      "note": "Used lower-case 'is' from Tesseract."
+    },
+    "query": {
+      "lens": "Is blowing to the Royal camp",
+      "tesseract": "is blowing to the Royal camp"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Don't… don't!",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "Don't…\ndon't!",
+      "tesseract": "Don't… don't!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "It's a long story",
+      "note": "Used 'a long' from Google Lens instead of 'along' from Tesseract."
+    },
+    "query": {
+      "lens": "It's a long story",
+      "tesseract": "It's along story"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "this morning",
+      "note": "Used lower-case 'this' as in Tesseract."
+    },
+    "query": {
+      "lens": "This morning",
+      "tesseract": "this morning"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- Really?\n- Yes",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "Really? Yes -",
+      "tesseract": "- Really?\n- Yes"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "dragon dances…",
+      "note": "Used lower-case 'dragon' from Tesseract."
+    },
+    "query": {
+      "lens": "Dragon dances…",
+      "tesseract": "dragon dances…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "dragon's wish…",
+      "note": "Used lower-case 'dragon's' from Tesseract."
+    },
+    "query": {
+      "lens": "Dragon's wish…",
+      "tesseract": "dragon's wish…"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "you can defeat me",
+      "note": "Used lower-case 'you' as in Tesseract."
+    },
+    "query": {
+      "lens": "You can defeat me",
+      "tesseract": "you can defeat me"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "after learning the 18th stance",
+      "note": "Used lower-case 'after' as in Tesseract."
+    },
+    "query": {
+      "lens": "After learning the 18th stance",
+      "tesseract": "after learning the 18th stance"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "it's the 18th stance then",
+      "note": "Used lower-case 'it's' as in Tesseract."
+    },
+    "query": {
+      "lens": "It's the 18th stance then",
+      "tesseract": "it's the 18th stance then"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Mister\nSo!",
+      "note": "Kept line break from Google Lens, as Tesseract did not provide one and Lens is generally more reliable for text recognition."
+    },
+    "query": {
+      "lens": "Mister\nSo!",
+      "tesseract": "Mister So!"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "if you don't respect me, I will kill you",
+      "note": "Used lower-case 'if' from Tesseract."
+    },
+    "query": {
+      "lens": "If you don't respect me, I will kill you",
+      "tesseract": "if you don't respect me, I will kill you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "we have nothing to chat",
+      "note": "Used lower-case 'we' from Tesseract."
+    },
+    "query": {
+      "lens": "We have nothing to chat",
+      "tesseract": "we have nothing to chat"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "but you",
+      "note": "Used lower-case 'but' from Tesseract."
+    },
+    "query": {
+      "lens": "But you",
+      "tesseract": "but you"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "no one wishes to be beggar, right?",
+      "note": "Used lower-case 'no' as in Tesseract."
+    },
+    "query": {
+      "lens": "No one wishes to be beggar, right?",
+      "tesseract": "no one wishes to be beggar, right?"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- It's reasonable\n- Be smart",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "query": {
+      "lens": "It's reasonable - Be smart",
+      "tesseract": "- It's reasonable\n- Be smart"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "give me some face",
+      "note": "Used lower-case 'give' as in Tesseract."
+    },
+    "query": {
+      "lens": "Give me some face",
+      "tesseract": "give me some face"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "- …to Your Majesty\n- Get up",
+      "note": "Manually corrected."
+    },
+    "query": {
+      "lens": "… to Your Majesty - Get up",
+      "tesseract": "- to Your Majesty\n- Get up"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "Of course! You beggar",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "Of course!\nYou beggar",
+      "tesseract": "Of course! You beggar"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "answer": {
+      "fused": "See my family? Give more",
+      "note": "Used space instead of newline."
+    },
+    "query": {
+      "lens": "See my family?\nGive more",
+      "tesseract": "See my family? Give more"
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]

@@ -27,28 +27,29 @@ from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.kob import (
-    kob_english_fusion_test_cases,
-    kob_english_proofreading_test_cases,
-    kob_zhongwen_fusion_test_cases,
-    kob_zhongwen_proofreading_test_cases,
+    get_kob_eng_fusion_test_cases,
+    get_kob_eng_proofreading_test_cases,
+    get_kob_zho_fusion_test_cases,
+    get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
-    mlamd_english_fusion_test_cases,
-    mlamd_english_proofreading_test_cases,
-    mlamd_zhongwen_fusion_test_cases,
-    mlamd_zhongwen_proofreading_test_cases,
+    get_mlamd_eng_fusion_test_cases,
+    get_mlamd_eng_proofreading_test_cases,
+    get_mlamd_zho_fusion_test_cases,
+    get_mlamd_zho_proofreading_test_cases,
 )
 from test.data.t import (
-    t_english_fusion_test_cases,
-    t_english_proofreading_test_cases,
-    t_zhongwen_fusion_test_cases,
-    t_zhongwen_proofreading_test_cases,
+    get_t_eng_fusion_test_cases,
+    get_t_eng_proofreading_test_cases,
+    get_t_zho_fusion_test_cases,
+    get_t_zho_proofreading_test_cases,
 )
 
 title = Path(__file__).parent.name
 input_dir = test_data_root / title / "input"
 output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
+
 actions = {
     "简体中文 (OCR)",
     "English (OCR)",
@@ -67,10 +68,14 @@ if "简体中文 (OCR)" in actions:
         zho_hans_lens,
         zho_hans_paddle,
         ZhongwenFuser(
-            test_cases=kob_zhongwen_fusion_test_cases
-            + mlamd_zhongwen_fusion_test_cases
-            + t_zhongwen_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
+            test_cases=get_kob_zho_fusion_test_cases()
+            + get_mlamd_zho_fusion_test_cases()
+            + get_t_zho_fusion_test_cases(),
+            test_case_path=test_data_root
+            / title
+            / "image"
+            / "zhongwen"
+            / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -80,14 +85,14 @@ if "简体中文 (OCR)" in actions:
     zho_hans_fuse_proofread = get_zhongwen_proofread(
         zho_hans_fuse,
         ZhongwenProofreader(
-            test_cases=kob_zhongwen_proofreading_test_cases
-            + mlamd_zhongwen_proofreading_test_cases
-            + t_zhongwen_proofreading_test_cases,
+            test_cases=get_kob_zho_proofreading_test_cases()
+            + get_mlamd_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "zhongwen"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
@@ -110,10 +115,10 @@ if "English (OCR)" in actions:
         eng_lens,
         eng_tesseract,
         EnglishFuser(
-            test_cases=kob_english_fusion_test_cases
-            + mlamd_english_fusion_test_cases
-            + t_english_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+            test_cases=get_kob_eng_fusion_test_cases()
+            + get_mlamd_eng_fusion_test_cases()
+            + get_t_eng_fusion_test_cases(),
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -121,14 +126,14 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread(
         eng_fuse,
         EnglishProofreader(
-            test_cases=kob_english_proofreading_test_cases
-            + mlamd_english_proofreading_test_cases
-            + t_english_proofreading_test_cases,
+            test_cases=get_kob_eng_proofreading_test_cases()
+            + get_mlamd_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "english"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )

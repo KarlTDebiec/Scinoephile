@@ -12,13 +12,11 @@ from .answer import EnglishFusionAnswer
 from .fuser import EnglishFuser
 from .prompt import EnglishFusionPrompt
 from .query import EnglishFusionQuery
-from .queryer import EnglishFusionLLMQueryer
 from .test_case import EnglishFusionTestCase
 
 __all__ = [
     "EnglishFuser",
     "EnglishFusionAnswer",
-    "EnglishFusionLLMQueryer",
     "EnglishFusionPrompt",
     "EnglishFusionQuery",
     "EnglishFusionTestCase",

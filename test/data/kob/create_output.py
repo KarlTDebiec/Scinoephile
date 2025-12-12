@@ -28,22 +28,22 @@ from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
-    mlamd_english_fusion_test_cases,
-    mlamd_english_proofreading_test_cases,
-    mlamd_zhongwen_fusion_test_cases,
-    mlamd_zhongwen_proofreading_test_cases,
+    get_mlamd_eng_fusion_test_cases,
+    get_mlamd_eng_proofreading_test_cases,
+    get_mlamd_zho_fusion_test_cases,
+    get_mlamd_zho_proofreading_test_cases,
 )
 from test.data.mnt import (
-    mnt_english_fusion_test_cases,
-    mnt_english_proofreading_test_cases,
-    mnt_zhongwen_fusion_test_cases,
-    mnt_zhongwen_proofreading_test_cases,
+    get_mnt_eng_fusion_test_cases,
+    get_mnt_eng_proofreading_test_cases,
+    get_mnt_zho_fusion_test_cases,
+    get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
-    t_english_fusion_test_cases,
-    t_english_proofreading_test_cases,
-    t_zhongwen_fusion_test_cases,
-    t_zhongwen_proofreading_test_cases,
+    get_t_eng_fusion_test_cases,
+    get_t_eng_proofreading_test_cases,
+    get_t_zho_fusion_test_cases,
+    get_t_zho_proofreading_test_cases,
 )
 
 title = Path(__file__).parent.name
@@ -71,10 +71,14 @@ if "繁體中文 (OCR)" in actions:
         zho_hant_lens,
         zho_hant_paddle,
         ZhongwenFuser(
-            test_cases=mlamd_zhongwen_fusion_test_cases
-            + mnt_zhongwen_fusion_test_cases
-            + t_zhongwen_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
+            test_cases=get_mlamd_zho_fusion_test_cases()
+            + get_mnt_zho_fusion_test_cases()
+            + get_t_zho_fusion_test_cases(),
+            test_case_path=test_data_root
+            / title
+            / "image"
+            / "zhongwen"
+            / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -84,14 +88,14 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse_proofread = get_zhongwen_proofread(
         zho_hant_fuse,
         ZhongwenProofreader(
-            test_cases=mlamd_zhongwen_proofreading_test_cases
-            + mnt_zhongwen_proofreading_test_cases
-            + t_zhongwen_proofreading_test_cases,
+            test_cases=get_mlamd_zho_proofreading_test_cases()
+            + get_mnt_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "zhongwen"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
@@ -106,10 +110,10 @@ if "English (OCR)" in actions:
         eng_lens,
         eng_tesseract,
         EnglishFuser(
-            test_cases=mlamd_english_fusion_test_cases
-            + mnt_english_fusion_test_cases
-            + t_english_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+            test_cases=get_mlamd_eng_fusion_test_cases()
+            + get_mnt_eng_fusion_test_cases()
+            + get_t_eng_fusion_test_cases(),
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -117,14 +121,14 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread(
         eng_fuse,
         EnglishProofreader(
-            test_cases=mlamd_english_proofreading_test_cases
-            + mnt_english_proofreading_test_cases
-            + t_english_proofreading_test_cases,
+            test_cases=get_mlamd_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "english"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )

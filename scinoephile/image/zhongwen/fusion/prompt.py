@@ -6,15 +6,16 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.zhongwen import ZhongwenPrompt
 
 __all__ = ["ZhongwenFusionPrompt"]
 
 
-class ZhongwenFusionPrompt(EnglishPrompt):
+class ZhongwenFusionPrompt(ZhongwenPrompt):
     """Text for LLM correspondence for 中文 OCR fusion."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：Google Lens 和 PaddleOCR。
         请遵循以下原则：

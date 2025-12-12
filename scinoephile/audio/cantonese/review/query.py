@@ -6,52 +6,53 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.abcs import Query
-
-from .prompt import ReviewPrompt
+from scinoephile.audio.cantonese.review.prompt import ReviewPrompt
+from scinoephile.core.llms import Query
 
 __all__ = ["ReviewQuery"]
+
+from scinoephile.core.models import get_model_name
 
 
 class ReviewQuery(Query, ABC):
     """Abstract base class for 粤文 transcription review queries."""
 
-    text: ClassVar[type[ReviewPrompt]]
+    prompt_cls: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
+
+    size: ClassVar[int]
+    """Number of subtitles."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
         size: int,
-        text: type[ReviewPrompt] = ReviewPrompt,
+        prompt_cls: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided size and text.
+        """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate fields and text
+            Query type with appropriate configuration
         """
-        fields = {}
+        name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
+        fields: dict[str, Any] = {}
         for idx in range(size):
-            fields[f"zhongwen_{idx + 1}"] = (
-                str,
-                Field(..., description=text.zhongwen_description.format(idx=idx + 1)),
-            )
-            fields[f"yuewen_{idx + 1}"] = (
-                str,
-                Field(..., description=text.yuewen_description.format(idx=idx + 1)),
-            )
-        return create_model(
-            f"{cls.__name__}_{size}_{text.__name__}",
-            __base__=cls,
-            __module__=cls.__module__,
-            text=(ClassVar[type[ReviewPrompt]], text),
-            **fields,
-        )
+            key = f"zhongwen_{idx + 1}"
+            description = prompt_cls.zhongwen_description.format(idx=idx + 1)
+            fields[key] = (str, Field(..., description=description))
+            key = f"yuewen_{idx + 1}"
+            description = prompt_cls.yuewen_description.format(idx=idx + 1)
+            fields[key] = (str, Field(..., description=description))
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.prompt_cls = prompt_cls
+        model.size = size
+        return model

@@ -8,14 +8,6 @@ import asyncio
 from logging import info
 from pathlib import Path
 
-from data.mlamd import (
-    mlamd_merge_test_cases,
-    mlamd_proof_test_cases,
-    mlamd_review_test_cases,
-    mlamd_shift_test_cases,
-    mlamd_translate_test_cases,
-)
-
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
@@ -39,22 +31,29 @@ from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.kob import (
-    kob_english_fusion_test_cases,
-    kob_english_proofreading_test_cases,
-    kob_zhongwen_fusion_test_cases,
-    kob_zhongwen_proofreading_test_cases,
+    get_kob_eng_fusion_test_cases,
+    get_kob_eng_proofreading_test_cases,
+    get_kob_zho_fusion_test_cases,
+    get_kob_zho_proofreading_test_cases,
+)
+from test.data.mlamd import (
+    get_mlamd_yue_merging_test_cases,
+    get_mlamd_yue_proofing_test_cases,
+    get_mlamd_yue_review_test_cases,
+    get_mlamd_yue_shifting_test_cases,
+    get_mlamd_yue_translation_test_cases,
 )
 from test.data.mnt import (
-    mnt_english_fusion_test_cases,
-    mnt_english_proofreading_test_cases,
-    mnt_zhongwen_fusion_test_cases,
-    mnt_zhongwen_proofreading_test_cases,
+    get_mnt_eng_fusion_test_cases,
+    get_mnt_eng_proofreading_test_cases,
+    get_mnt_zho_fusion_test_cases,
+    get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
-    t_english_fusion_test_cases,
-    t_english_proofreading_test_cases,
-    t_zhongwen_fusion_test_cases,
-    t_zhongwen_proofreading_test_cases,
+    get_t_eng_fusion_test_cases,
+    get_t_eng_proofreading_test_cases,
+    get_t_zho_fusion_test_cases,
+    get_t_zho_proofreading_test_cases,
 )
 
 title = Path(__file__).parent.name
@@ -81,10 +80,14 @@ if "简体中文 (OCR)" in actions:
         zho_hans_lens,
         zho_hans_paddle,
         ZhongwenFuser(
-            test_cases=kob_zhongwen_fusion_test_cases
-            + mnt_zhongwen_fusion_test_cases
-            + t_zhongwen_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "zhongwen" / "fusion.py",
+            test_cases=get_kob_zho_fusion_test_cases()
+            + get_mnt_zho_fusion_test_cases()
+            + get_t_zho_fusion_test_cases(),
+            test_case_path=test_data_root
+            / title
+            / "image"
+            / "zhongwen"
+            / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -94,14 +97,14 @@ if "简体中文 (OCR)" in actions:
     zho_hans_fuse_proofread = get_zhongwen_proofread(
         zho_hans_fuse,
         ZhongwenProofreader(
-            test_cases=kob_zhongwen_proofreading_test_cases
-            + mnt_zhongwen_proofreading_test_cases
-            + t_zhongwen_proofreading_test_cases,
+            test_cases=get_kob_zho_proofreading_test_cases()
+            + get_mnt_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "zhongwen"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
@@ -124,10 +127,10 @@ if "English (OCR)" in actions:
         eng_lens,
         eng_tesseract,
         EnglishFuser(
-            test_cases=kob_english_fusion_test_cases
-            + mnt_english_fusion_test_cases
-            + t_english_fusion_test_cases,
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.py",
+            test_cases=get_kob_eng_fusion_test_cases()
+            + get_mnt_eng_fusion_test_cases()
+            + get_t_eng_fusion_test_cases(),
+            test_case_path=test_data_root / title / "image" / "english" / "fusion.json",
             auto_verify=True,
         ),
     )
@@ -135,14 +138,14 @@ if "English (OCR)" in actions:
     eng_fuse_proofread = get_english_proofread(
         eng_fuse,
         EnglishProofreader(
-            test_cases=kob_english_proofreading_test_cases
-            + mnt_english_proofreading_test_cases
-            + t_english_proofreading_test_cases,
+            test_cases=get_kob_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
             / "english"
-            / "proofreading.py",
+            / "proofreading.json",
             auto_verify=True,
         ),
     )
@@ -172,11 +175,11 @@ if "简体粤文 (Transcription)" in actions:
     # Utilities
     reviewer = CantoneseTranscriptionReviewer(
         test_case_directory_path=test_data_root / "mlamd",
-        shifting_test_cases=mlamd_shift_test_cases,
-        merging_test_cases=mlamd_merge_test_cases,
-        proofing_test_cases=mlamd_proof_test_cases,
-        translation_test_cases=mlamd_translate_test_cases,
-        review_test_cases=mlamd_review_test_cases,
+        shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
+        merging_test_cases=get_mlamd_yue_merging_test_cases(),
+        proofing_test_cases=get_mlamd_yue_proofing_test_cases(),
+        translation_test_cases=get_mlamd_yue_translation_test_cases(),
+        review_test_cases=get_mlamd_yue_review_test_cases(),
     )
 
     # Process all blocks

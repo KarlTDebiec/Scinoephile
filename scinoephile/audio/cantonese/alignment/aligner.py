@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import error, info
+from pathlib import Path
 
 from pydantic import ValidationError
 
@@ -14,30 +15,21 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.cantonese.merging import (
-    MergingLLMQueryer,
-    MergingTestCase,
-)
-from scinoephile.audio.cantonese.proofing import ProofingLLMQueryer
-from scinoephile.audio.cantonese.review import ReviewLLMQueryer
-from scinoephile.audio.cantonese.shifting import (
-    ShiftingAnswer,
-    ShiftingLLMQueryer,
-    ShiftingQuery,
-)
-from scinoephile.audio.cantonese.translation import TranslationLLMQueryer
+from scinoephile.audio.cantonese.shifting import ShiftingAnswer, ShiftingQuery
+from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
+from scinoephile.core.llms import Queryer, save_test_cases_to_json
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
 from .models import get_review_models, get_translate_models
 from .queries import (
-    get_merging_query,
-    get_proofing_query,
-    get_review_query,
-    get_shifting_query,
-    get_translation_query,
+    get_merging_test_case,
+    get_proofing_test_case,
+    get_review_test_case,
+    get_shifting_test_case,
+    get_translation_test_case,
 )
 
 __all__ = ["Aligner"]
@@ -48,30 +40,30 @@ class Aligner:
 
     def __init__(
         self,
-        shifting_llm_queryer: ShiftingLLMQueryer,
-        merging_llm_queryer: MergingLLMQueryer,
-        proofing_llm_queryer: ProofingLLMQueryer,
-        translation_llm_queryer: TranslationLLMQueryer,
-        review_llm_queryer: ReviewLLMQueryer,
+        shifting_queryer: Queryer,
+        merging_queryer: Queryer,
+        proofing_queryer: Queryer,
+        translation_queryer: Queryer,
+        review_queryer: Queryer,
     ):
         """Initialize.
 
         Arguments:
-            shifting_llm_queryer: ShiftingLLMQueryer
-            merging_llm_queryer: MergingLLMQueryer
-            proofing_llm_queryer: ProofingLLMQueryer
-            translation_llm_queryer: TranslationLLMQueryer
-            review_llm_queryer: ReviewLLMQueryer
+            shifting_queryer: queryer for shifting
+            merging_queryer: queryer for merging
+            proofing_queryer: queryer for proofing
+            translation_queryer: queryer for translation
+            review_queryer: queryer for review
         """
-        self.merging_llm_queryer = merging_llm_queryer
+        self.merging_queryer = merging_queryer
         """Merges transcribed 粤文 text based on corresponding 中文."""
-        self.proofing_llm_queryer = proofing_llm_queryer
+        self.proofing_queryer = proofing_queryer
         """Proofreads 粤文 text based on the corresponding 中文."""
-        self.shifting_llm_queryer = shifting_llm_queryer
+        self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
-        self.translation_llm_queryer = translation_llm_queryer
+        self.translation_queryer = translation_queryer
         """Translates 粤文 text based on corresponding 中文."""
-        self.review_llm_queryer = review_llm_queryer
+        self.review_queryer = review_queryer
         """Reviews 粤文 text based on corresponding 中文 subtitles."""
 
     async def align(
@@ -126,17 +118,16 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            query_and_friends = get_shifting_query(alignment, sg_1_idx)
-            if query_and_friends is None:
+            test_case = get_shifting_test_case(alignment, sg_1_idx)
+            if test_case is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error; not yet encountered
-            query, answer_cls, test_case_cls = query_and_friends
-            answer = await self.shifting_llm_queryer.call_async(
-                query, answer_cls, test_case_cls
-            )
+            test_case = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
+            query = test_case.query
+            answer = test_case.answer
             if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
@@ -295,27 +286,22 @@ class Aligner:
                 continue
 
             # Query for 粤文 merge
-            query_and_friends = get_merging_query(alignment, sg_idx)
-            if query_and_friends is None:
+            test_case = get_merging_test_case(alignment, sg_idx)
+            if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
-            query, answer_cls, test_case_cls = query_and_friends
             try:
-                answer = await self.merging_llm_queryer.call_async(
-                    query, answer_cls, test_case_cls
-                )
+                test_case = self.merging_queryer.call(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
-                answer = answer_cls(yuewen_merged="".join(query.yuewen_to_merge))
-                test_case = MergingTestCase.from_query_and_answer(query, answer)
                 error(
                     f"Error merging sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
-                    f"{test_case.source_str}\n"
+                    f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yw = get_sub_merged(yws, text=answer.yuewen_merged)
+            yw = get_sub_merged(yws, text=test_case.answer.yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
 
@@ -334,14 +320,11 @@ class Aligner:
             alignment: Nascent alignment
         """
         for sg_idx in range(len(alignment.sync_groups)):
-            query_and_friends = get_proofing_query(alignment, sg_idx)
-            if query_and_friends is None:
+            test_case = get_proofing_test_case(alignment, sg_idx)
+            if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            query, answer_cls, test_case_cls = query_and_friends
-            answer = await self.proofing_llm_queryer.call_async(
-                query, answer_cls, test_case_cls
-            )
+            test_case = self.proofing_queryer.call(test_case)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -354,9 +337,9 @@ class Aligner:
                     f"but found {len(yw_idxs)}: {yw_idxs}"
                 )
             yw_idx = yw_idxs[0]
-            if query.yuewen == answer.yuewen_proofread:
+            if test_case.query.yuewen == test_case.answer.yuewen_proofread:
                 continue
-            alignment.yuewen[yw_idx].text = answer.yuewen_proofread
+            alignment.yuewen[yw_idx].text = test_case.answer.yuewen_proofread
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
@@ -396,10 +379,8 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = models
 
         # Query for 粤文 translation
-        query = get_translation_query(alignment, query_cls)
-        answer = await self.translation_llm_queryer.call_async(
-            query, answer_cls, test_case_cls
-        )
+        test_case = get_translation_test_case(alignment, test_case_cls)
+        test_case = self.translation_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -425,7 +406,7 @@ class Aligner:
                 yw = alignment.yuewen[yw_idx]
             else:
                 yw_key = f"yuewen_{zw_idx + 1}"
-                yw_text = getattr(answer, yw_key)
+                yw_text = getattr(test_case.answer, yw_key)
                 yw = deepcopy(zw)
                 yw.text = yw_text
             nascent_yw.append(yw)
@@ -443,10 +424,8 @@ class Aligner:
         query_cls, answer_cls, test_case_cls = get_review_models(alignment)
 
         # Query for 粤文 review
-        query = get_review_query(alignment, query_cls)
-        answer = await self.review_llm_queryer.call_async(
-            query, answer_cls, test_case_cls
-        )
+        test_case = get_review_test_case(alignment, test_case_cls)
+        test_case = self.review_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -469,9 +448,38 @@ class Aligner:
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
             yw_key = f"yuewen_{zw_idx + 1}"
-            yw.text = getattr(answer, yw_key, yw.text)
+            yw.text = getattr(test_case.answer, yw_key, yw.text)
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
+
+    def update_all_test_cases(self, test_root: Path | str):
+        """Update all test cases for the specified block.
+
+        Arguments:
+            test_root: Path to root directory of test cases
+        """
+        test_root = val_input_dir_path(test_root)
+
+        save_test_cases_to_json(
+            test_root / "audio" / "cantonese" / "shifting.json",
+            list(self.shifting_queryer.encountered_test_cases.values()),
+        )
+        save_test_cases_to_json(
+            test_root / "audio" / "cantonese" / "merging.json",
+            list(self.merging_queryer.encountered_test_cases.values()),
+        )
+        save_test_cases_to_json(
+            test_root / "audio" / "cantonese" / "proofing.json",
+            list(self.proofing_queryer.encountered_test_cases.values()),
+        )
+        save_test_cases_to_json(
+            test_root / "audio" / "cantonese" / "translation.json",
+            list(self.translation_queryer.encountered_test_cases.values()),
+        )
+        save_test_cases_to_json(
+            test_root / "audio" / "cantonese" / "review.json",
+            list(self.review_queryer.encountered_test_cases.values()),
+        )

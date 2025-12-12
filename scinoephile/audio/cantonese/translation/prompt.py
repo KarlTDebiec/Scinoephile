@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
+from scinoephile.core.english import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["TranslationPrompt"]

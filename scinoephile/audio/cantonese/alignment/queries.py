@@ -4,25 +4,27 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.merging import MergingQuery, MergingTestCase
-from scinoephile.audio.cantonese.proofing import ProofingQuery, ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewQuery
-from scinoephile.audio.cantonese.shifting import ShiftingQuery, ShiftingTestCase
-from scinoephile.audio.cantonese.translation import TranslationQuery
+from scinoephile.audio.cantonese.merging import MergingTestCase
+from scinoephile.audio.cantonese.proofing import ProofingTestCase
+from scinoephile.audio.cantonese.review import ReviewTestCase
+from scinoephile.audio.cantonese.shifting import ShiftingTestCase
+from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.core import ScinoephileError
 
 from .alignment import Alignment
 
 __all__ = [
-    "get_shifting_query",
-    "get_merging_query",
-    "get_proofing_query",
-    "get_review_query",
-    "get_translation_query",
+    "get_shifting_test_case",
+    "get_merging_test_case",
+    "get_proofing_test_case",
+    "get_review_test_case",
+    "get_translation_test_case",
 ]
 
 
-def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | None:
+def get_shifting_test_case(
+    alignment: Alignment, sg_1_idx: int
+) -> ShiftingTestCase | None:
     """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
@@ -82,13 +84,16 @@ def get_shifting_query(alignment: Alignment, sg_1_idx: int) -> ShiftingQuery | N
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
     test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
-    query_cls = test_case_cls.query_cls
-    answer_cls = test_case_cls.answer_cls
-    query = query_cls(zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2)
-    return query, answer_cls, test_case_cls
+    # noinspection PyArgumentList
+    test_case = test_case_cls(
+        query=test_case_cls.query_cls(
+            zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2
+        )
+    )
+    return test_case
 
 
-def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
+def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase | None:
     """Get merging query for an alignment's sync group.
 
     Arguments:
@@ -121,13 +126,17 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingQuery | None:
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    test_case_class: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
-    query_cls = test_case_class.query_cls
-    answer_cls = test_case_class.answer_cls
-    return query_cls(zhongwen=zw, yuewen_to_merge=yws), answer_cls, test_case_class
+    test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
+    # noinspection PyArgumentList
+    test_case = test_case_cls(
+        query=test_case_cls.query_cls(zhongwen=zw, yuewen_to_merge=yws)
+    )
+    return test_case
 
 
-def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | None:
+def get_proofing_test_case(
+    alignment: Alignment, sg_idx: int
+) -> ProofingTestCase | None:
     """Get proofing query for an alignment's sync group.
 
     Arguments:
@@ -165,25 +174,24 @@ def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingQuery | Non
 
     # Return proof query
     test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
-    answer_cls = test_case_cls.answer_cls
-    query_cls = test_case_cls.query_cls
-    return query_cls(zhongwen=zw, yuewen=yw), answer_cls, test_case_cls
+    # noinspection PyArgumentList
+    test_case = test_case_cls(query=test_case_cls.query_cls(zhongwen=zw, yuewen=yw))
+    return test_case
 
 
-def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> ReviewQuery:
+def get_review_test_case(
+    alignment: Alignment, test_case_cls: type[ReviewTestCase]
+) -> ReviewTestCase:
     """Get review query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: ReviewQuery class to instantiate
+        test_case_cls: ReviewQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, ReviewQuery):
-        raise ScinoephileError("query_cls must be a subclass of Query.")
-
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -204,26 +212,23 @@ def get_review_query(alignment: Alignment, query_cls: type[ReviewQuery]) -> Revi
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    return query_cls(**kwargs)
+    test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
+    return test_case
 
 
-def get_translation_query(
-    alignment: Alignment,
-    query_cls: type[TranslationQuery],
-) -> TranslationQuery:
+def get_translation_test_case(
+    alignment: Alignment, test_case_cls: type[TranslationTestCase]
+) -> TranslationTestCase:
     """Get translation query for a nascent Cantonese alignment.
 
     Arguments:
         alignment: Nascent Cantonese alignment
-        query_cls: TranslationQuery class to instantiate
+        test_case_cls: TranslationQuery class to instantiate
     Returns:
         Query instance
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    if not issubclass(query_cls, TranslationQuery):
-        raise ScinoephileError("query_cls must be a subclass of TranslationQuery.")
-
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -246,4 +251,5 @@ def get_translation_query(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    return query_cls(**kwargs)
+    test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
+    return test_case

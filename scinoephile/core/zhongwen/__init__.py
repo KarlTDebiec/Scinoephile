@@ -14,9 +14,11 @@ from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 
 from .opencc_config import OpenCCConfig
+from .prompt import ZhongwenPrompt
 
 __all__ = [
     "OpenCCConfig",
+    "ZhongwenPrompt",
     "get_zhongwen_cleaned",
     "get_zhongwen_converted",
     "get_zhongwen_converter",

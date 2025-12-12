@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from .answer import ProofingAnswer
-from .llm_queryer import ProofingLLMQueryer
 from .prompt import ProofingPrompt
 from .query import ProofingQuery
 from .test_case import ProofingTestCase
 
 __all__ = [
     "ProofingAnswer",
-    "ProofingLLMQueryer",
     "ProofingPrompt",
     "ProofingQuery",
     "ProofingTestCase",

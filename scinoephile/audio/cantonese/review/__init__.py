@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from .answer import ReviewAnswer
-from .llm_queryer import ReviewLLMQueryer
 from .prompt import ReviewPrompt
 from .query import ReviewQuery
 from .test_case import ReviewTestCase
 
 __all__ = [
     "ReviewAnswer",
-    "ReviewLLMQueryer",
     "ReviewPrompt",
     "ReviewQuery",
     "ReviewTestCase",

@@ -6,12 +6,13 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import create_model
 
-from scinoephile.core.abcs import TestCase
-from scinoephile.core.models import format_field
+from scinoephile.core import ScinoephileError
+from scinoephile.core.llms import TestCase
+from scinoephile.core.models import get_model_name
 
 from .answer import TranslationAnswer
 from .prompt import TranslationPrompt
@@ -20,58 +21,20 @@ from .query import TranslationQuery
 __all__ = ["TranslationTestCase"]
 
 
-class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
-    TestCase[TQuery, TAnswer], ABC
-):
+class TranslationTestCase(TestCase, ABC):
     """Abstract base class for 粤文 transcription translation test cases."""
 
     answer_cls: ClassVar[type[TranslationAnswer]]
     """Answer class for this test case."""
     query_cls: ClassVar[type[TranslationQuery]]
     """Query class for this test case."""
-    text: ClassVar[type[TranslationPrompt]]
+    prompt_cls: ClassVar[type[TranslationPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
-    @property
-    def missing(self) -> tuple[int, ...]:
-        """Indices of missing 粤文 subtitles."""
-        yw_idxs = [
-            int(s.split("_")[1]) - 1
-            for s in self.answer_fields
-            if s.startswith("yuewen_")
-        ]
-        return tuple(yw_idxs)
-
-    @property
-    def size(self) -> int:
-        """Size of the test case."""
-        zw_idxs = [
-            int(s.split("_")[1]) - 1
-            for s in self.query_fields
-            if s.startswith("zhongwen_")
-        ]
-        return max(zw_idxs) + 1
-
-    @property
-    def source_str(self) -> str:
-        """Get Python source string."""
-        lines = [
-            f"{TranslationTestCase.__name__}.get_test_case_cls(",
-            f"    {self.size}, {self.missing}, {self.text.__name__})(",
-        ]
-        for field in self.query_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        for field in self.answer_fields:
-            value = getattr(self, field)
-            if value == "":
-                continue
-            lines.append(format_field(field, value))
-        for field in self.test_case_fields:
-            value = getattr(self, field)
-            lines.append(format_field(field, value))
-        lines.append(")")
-        return "\n".join(lines)
+    size: ClassVar[int]
+    """Number of subtitles."""
+    missing: ClassVar[tuple[int, ...]]
+    """Indexes of missing subtitles (0-indexed)."""
 
     @classmethod
     @cache
@@ -79,28 +42,56 @@ class TranslationTestCase[TQuery: TranslationQuery, TAnswer: TranslationAnswer](
         cls,
         size: int,
         missing: tuple[int, ...],
-        text: type[TranslationPrompt] = TranslationPrompt,
+        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Self]:
-        """Get concrete test case class with provided size, missing, and text.
+        """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            text: Prompt providing descriptions and messages
+            prompt_cls: Prompt providing descriptions and messages
         Returns:
-            TestCase type with appropriate fields and text
+            TestCase type with appropriate configuration
         """
-        query_cls = TranslationQuery.get_query_cls(size, missing, text)
-        answer_cls = TranslationAnswer.get_answer_cls(size, missing, text)
-        name = (
-            f"{cls.__name__}_{size}_{'-'.join(map(str, [m + 1 for m in missing]))}"
-            f"_{text.__name__}"
+        if any(m < 0 or m > size for m in missing):
+            raise ScinoephileError(
+                f"Missing indices must be in range 1 to {size}, got {missing}."
+            )
+
+        name = get_model_name(
+            cls.__name__,
+            f"{size}_"
+            f"{'-'.join(map(str, [m + 1 for m in missing]))}_"
+            f"{prompt_cls.__name__}",
         )
-        return create_model(
-            name[:64],
-            __base__=(query_cls, answer_cls, cls),
-            __module__=cls.__module__,
-            query_cls=(ClassVar[type[TranslationQuery]], query_cls),
-            answer_cls=(ClassVar[type[TranslationAnswer]], answer_cls),
-            text=(ClassVar[type[TranslationPrompt]], text),
-        )
+        query_cls = TranslationQuery.get_query_cls(size, missing, prompt_cls)
+        answer_cls = TranslationAnswer.get_answer_cls(size, missing, prompt_cls)
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        model.size = size
+        model.missing = missing
+        return model
+
+    @classmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get concrete test case class for provided data with provided configuration.
+
+        Arguments:
+            data: data dictionary
+            kwargs: additional keyword arguments passed to get_test_case_cls
+        Returns:
+            test case class
+        """
+        size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
+        yuewen_idxs = [
+            int(key.split("_")[-1]) - 1
+            for key in data["query"]
+            if key.startswith("yuewen_")
+        ]
+        missing = tuple(idx for idx in range(size) if idx not in yuewen_idxs)
+        test_case_cls = cls.get_test_case_cls(size=size, missing=missing, **kwargs)
+        return test_case_cls

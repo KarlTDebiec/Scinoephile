@@ -22,11 +22,7 @@ __all__ = [
 
 def get_review_models(
     alignment: Alignment,
-) -> tuple[
-    type[ReviewQuery],
-    type[ReviewAnswer],
-    type[ReviewTestCase[ReviewQuery, ReviewAnswer]],
-]:
+) -> tuple[type[ReviewQuery], type[ReviewAnswer], type[ReviewTestCase]]:
     """Get review query, answer, and test case for a nascent Cantonese alignment.
 
     Arguments:
@@ -66,11 +62,7 @@ def get_review_models(
 def get_translate_models(
     alignment: Alignment,
 ) -> (
-    tuple[
-        type[TranslationQuery],
-        type[TranslationAnswer],
-        type[TranslationTestCase[TranslationQuery, TranslationAnswer]],
-    ]
+    tuple[type[TranslationQuery], type[TranslationAnswer], type[TranslationTestCase]]
     | None
 ):
     """Get translation query, answer, and test case for a nascent Cantonese alignment.

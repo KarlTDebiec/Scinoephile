@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from .answer import ShiftingAnswer
-from .llm_queryer import ShiftingLLMQueryer
 from .prompt import ShiftingPrompt
 from .query import ShiftingQuery
 from .test_case import ShiftingTestCase
 
 __all__ = [
     "ShiftingAnswer",
-    "ShiftingLLMQueryer",
     "ShiftingPrompt",
     "ShiftingQuery",
     "ShiftingTestCase",

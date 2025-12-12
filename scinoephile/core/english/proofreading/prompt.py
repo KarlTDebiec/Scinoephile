@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
+from scinoephile.core.english import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["EnglishProofreadingPrompt"]
@@ -51,7 +51,7 @@ class EnglishProofreadingPrompt(EnglishPrompt):
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
-    """Description of 'note' field'."""
+    """Description of 'note' field."""
 
     # Test case validation errors
     subtitle_revised_equal_error: ClassVar[str] = (

@@ -4,30 +4,47 @@
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from scinoephile.core import Series
+from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
 
-# ruff: noqa: F401 F403
-from test.data.kob.core.english.proofreading import (
-    test_cases as kob_english_proofreading_test_cases,
-)
-from test.data.kob.core.zhongwen.proofreading import (
-    test_cases as kob_zhongwen_proofreading_test_cases,
-)
-from test.data.kob.image.english.fusion import (
-    test_cases as kob_english_fusion_test_cases,
-)
-from test.data.kob.image.zhongwen.fusion import (
-    test_cases as kob_zhongwen_fusion_test_cases,
-)
+__all__ = [
+    "kob_zho_hant_lens",
+    "kob_zho_hant_paddle",
+    "kob_zho_hant_fuse",
+    "kob_zho_hant_fuse_proofread",
+    "kob_eng_lens",
+    "kob_eng_tesseract",
+    "kob_eng_fuse",
+    "kob_eng_fuse_proofread",
+    "kob_yue_hans",
+    "kob_yue_hans_clean",
+    "kob_yue_hans_clean_flatten",
+    "kob_yue_hant",
+    "kob_yue_hant_simplify",
+    "kob_eng",
+    "kob_eng_clean",
+    "kob_eng_clean_flatten",
+    "kob_yue_hans_eng",
+    "get_kob_eng_proofreading_test_cases",
+    "get_kob_zho_proofreading_test_cases",
+    "get_kob_eng_fusion_test_cases",
+    "get_kob_zho_fusion_test_cases",
+]
 
-title = Path(__file__).parent.name
-input_dir = test_data_root / title / "input"
-output_dir = test_data_root / title / "output"
+title_root = test_data_root / Path(__file__).parent.name
+input_dir = title_root / "input"
+output_dir = title_root / "output"
 
 
 # 繁體中文 (OCR)
@@ -138,26 +155,61 @@ def kob_yue_hans_eng() -> Series:
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
-___all__ = [
-    "kob_zho_hant_fuse",
-    "kob_zho_hant_fuse_proofread",
-    "kob_eng_lens",
-    "kob_eng_tesseract",
-    "kob_eng_fuse",
-    "kob_eng_fuse_proofread",
-    "kob_yue_hans",
-    "kob_yue_hans_clean",
-    "kob_yue_hans_flatten",
-    "kob_yue_hans_clean_flatten",
-    "kob_yue_hant",
-    "kob_yue_hant_simplify",
-    "kob_eng",
-    "kob_eng_clean",
-    "kob_eng_flatten",
-    "kob_eng_clean_flatten",
-    "kob_yue_hans_eng",
-    "kob_english_fusion_test_cases",
-    "kob_english_proofreading_test_cases",
-    "kob_zhongwen_fusion_test_cases",
-    "kob_zhongwen_proofreading_test_cases",
-]
+@cache
+def get_kob_eng_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[EnglishProofreadingTestCase]:
+    """Get KOB English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "core" / "english" / "proofreading.json"
+    return load_test_cases_from_json(path, EnglishProofreadingTestCase, **kwargs)
+
+
+@cache
+def get_kob_zho_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenProofreadingTestCase]:
+    """Get KOB Zhongwen proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "core" / "zhongwen" / "proofreading.json"
+    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
+
+
+@cache
+def get_kob_eng_fusion_test_cases(
+    **kwargs: Any,
+) -> list[EnglishFusionTestCase]:
+    """Get KOB English fusion test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "image" / "english" / "fusion.json"
+    return load_test_cases_from_json(path, EnglishFusionTestCase, **kwargs)
+
+
+@cache
+def get_kob_zho_fusion_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenFusionTestCase]:
+    """Get KOB Zhongwen fusion test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "image" / "zhongwen" / "fusion.json"
+    return load_test_cases_from_json(path, ZhongwenFusionTestCase, **kwargs)

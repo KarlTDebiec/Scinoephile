@@ -9,7 +9,6 @@ from typing import Any
 from scinoephile.core.series import Series
 
 from .answer import ZhongwenProofreadingAnswer
-from .llm_queryer import ZhongwenProofreadingLLMQueryer
 from .prompt import ZhongwenProofreadingPrompt
 from .proofreader import ZhongwenProofreader
 from .query import ZhongwenProofreadingQuery
@@ -18,7 +17,6 @@ from .test_case import ZhongwenProofreadingTestCase
 __all__ = [
     "ZhongwenProofreader",
     "ZhongwenProofreadingAnswer",
-    "ZhongwenProofreadingLLMQueryer",
     "ZhongwenProofreadingPrompt",
     "ZhongwenProofreadingQuery",
     "ZhongwenProofreadingTestCase",

@@ -4,34 +4,25 @@
 
 from __future__ import annotations
 
-import asyncio
-import re
 from functools import partial
-from importlib.util import module_from_spec, spec_from_file_location
-from logging import info
 from os import getenv
-from pathlib import Path
 from typing import Any
 
 from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
-from scinoephile.common.validation import val_output_path
-from scinoephile.core.abcs import LLMQueryer, TestCase
 
 from .sync_test_case import SyncTestCase
 
 __all__ = [
     "SyncTestCase",
     "flaky",
-    "get_test_cases_from_file_path",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
     "test_data_root",
-    "update_test_cases",
-    "update_test_cases_async",
 ]
+
 
 test_data_root = package_root.parent / "test" / "data"
 
@@ -48,34 +39,6 @@ def flaky(inner: partial | None = None) -> partial:
     if inner:
         marks.extend(inner.keywords["marks"])
     return partial(param, marks=marks)
-
-
-def get_test_cases_from_file_path(test_case_path: Path) -> list[TestCase]:
-    """Get test cases from file path.
-
-    Arguments:
-        test_case_path: path to file containing test cases
-    Returns:
-        test cases
-    """
-    test_case_path = val_output_path(test_case_path, exist_ok=True)
-    if not test_case_path.exists():
-        return []
-    spec = spec_from_file_location("test_cases", test_case_path)
-    if spec is None:
-        return []
-    module = module_from_spec(spec)
-    loader = spec.loader
-    if loader is None:
-        return []
-    loader.exec_module(module)
-
-    test_cases = []
-    for name in getattr(module, "__all__", []):
-        if name.endswith("test_cases"):
-            if value := getattr(module, name, None):
-                test_cases.extend(value)
-    return test_cases
 
 
 def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
@@ -125,39 +88,3 @@ def skip_if_codex(inner: partial | None = None) -> partial:
     if inner:
         marks.extend(inner.keywords["marks"])
     return partial(param, marks=marks)
-
-
-def update_test_cases(path: Path, variable: str, queryer: LLMQueryer):
-    """Update test cases synchronously.
-
-    Arguments:
-        path: path to file containing test cases
-        variable: name of the variable containing test cases
-        queryer: LLMQueryer instance to query for test cases
-    """
-    pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
-    replacement = queryer.get_encountered_test_cases_source_str()
-    contents = path.read_text(encoding="utf-8")
-    block = f"{variable} = {replacement}  # {variable}"
-    new_contents = pattern.sub(lambda _m: block, contents)
-    path.write_text(new_contents, encoding="utf-8")
-    info(f"Replaced test cases {variable} in {path.name}.")
-    queryer.encountered_test_cases = {}
-
-
-async def update_test_cases_async(path: Path, variable: str, queryer: LLMQueryer):
-    """Update test cases asynchronously.
-
-    Arguments:
-        path: path to file containing test cases
-        variable: name of the variable containing test cases
-        queryer: LLMQueryer instance to query for test cases
-    """
-    pattern = re.compile(rf"{variable}\s*=\s*\[(.*?)\]  # {variable}", re.DOTALL)
-    replacement = queryer.get_encountered_test_cases_source_str()
-    contents = await asyncio.to_thread(path.read_text, encoding="utf-8")
-    block = f"{variable} = {replacement}  # {variable}"
-    new_contents = pattern.sub(lambda _m: block, contents)
-    await asyncio.to_thread(path.write_text, new_contents, encoding="utf-8")
-    info(f"Replaced test cases {variable} in {path.name}.")
-    queryer.encountered_test_cases = {}

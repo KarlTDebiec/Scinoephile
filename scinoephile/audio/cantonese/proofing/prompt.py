@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english.abcs import EnglishPrompt
+from scinoephile.core.english import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["ProofingPrompt"]
@@ -15,6 +15,7 @@ __all__ = ["ProofingPrompt"]
 class ProofingPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription proofing."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for proofreading 粤文 subtitles of Cantonese speech.
         For reference, you are provided the corresponding 中文 subtitles of the same

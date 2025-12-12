@@ -4,30 +4,47 @@
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from scinoephile.core import Series
+from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+from scinoephile.image.english.fusion import EnglishFusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
 
-# ruff: noqa: F401 F403
-from test.data.mnt.core.english.proofreading import (
-    test_cases as mnt_english_proofreading_test_cases,
-)
-from test.data.mnt.core.zhongwen.proofreading import (
-    test_cases as mnt_zhongwen_proofreading_test_cases,
-)
-from test.data.mnt.image.english.fusion import (
-    test_cases as mnt_english_fusion_test_cases,
-)
-from test.data.mnt.image.zhongwen.fusion import (
-    test_cases as mnt_zhongwen_fusion_test_cases,
-)
+__all__ = [
+    "mnt_zho_hans_lens",
+    "mnt_zho_hans_paddle",
+    "mnt_zho_hans_fuse",
+    "mnt_zho_hans_fuse_proofread",
+    "mnt_zho_hans_fuse_proofread_clean",
+    "mnt_zho_hans_fuse_proofread_clean_flatten",
+    "mnt_zho_hant",
+    "mnt_zho_hant_clean",
+    "mnt_zho_hant_clean_flatten",
+    "mnt_zho_hant_clean_flatten_simplify",
+    "mnt_eng_lens",
+    "mnt_eng_tesseract",
+    "mnt_eng_fuse",
+    "mnt_eng_fuse_proofread",
+    "mnt_eng_fuse_proofread_clean",
+    "mnt_eng_fuse_proofread_clean_flatten",
+    "mnt_zho_hans_eng",
+    "get_mnt_eng_proofreading_test_cases",
+    "get_mnt_zho_proofreading_test_cases",
+    "get_mnt_eng_fusion_test_cases",
+    "get_mnt_zho_fusion_test_cases",
+]
 
-title = Path(__file__).parent.name
-input_dir = test_data_root / title / "input"
-output_dir = test_data_root / title / "output"
+title_root = test_data_root / Path(__file__).parent.name
+input_dir = title_root / "input"
+output_dir = title_root / "output"
 
 
 # 简体中文 (OCR)
@@ -136,23 +153,61 @@ def mnt_zho_hans_eng() -> Series:
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
-___all__ = [
-    "mnt_zho_hans_lens",
-    "mnt_zho_hans_paddle",
-    "mnt_zho_hans_fuse",
-    "mnt_zho_hans_fuse_proofread",
-    "mnt_zho_hans_fuse_proofread_clean",
-    "mnt_zho_hans_fuse_proofread_clean_flatten",
-    "mnt_zho_hant",
-    "mnt_zho_hant_clean",
-    "mnt_zho_hant_clean_flatten",
-    "mnt_zho_hant_clean_flatten_simplify",
-    "mnt_eng_lens",
-    "mnt_eng_tesseract",
-    "mnt_eng_fuse",
-    "mnt_zho_hans_eng",
-    "mnt_english_fusion_test_cases",
-    "mnt_english_proofreading_test_cases",
-    "mnt_zhongwen_fusion_test_cases",
-    "mnt_zhongwen_proofreading_test_cases",
-]
+@cache
+def get_mnt_eng_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[EnglishProofreadingTestCase]:
+    """Get MNT English proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        English proofreading test cases
+    """
+    path = title_root / "core" / "english" / "proofreading.json"
+    return load_test_cases_from_json(path, EnglishProofreadingTestCase, **kwargs)
+
+
+@cache
+def get_mnt_zho_proofreading_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenProofreadingTestCase]:
+    """Get MNT Zhongwen proofreading test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        Zhongwen proofreading test cases
+    """
+    path = title_root / "core" / "zhongwen" / "proofreading.json"
+    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
+
+
+@cache
+def get_mnt_eng_fusion_test_cases(
+    **kwargs: Any,
+) -> list[EnglishFusionTestCase]:
+    """Get MNT English fusion test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "image" / "english" / "fusion.json"
+    return load_test_cases_from_json(path, EnglishFusionTestCase, **kwargs)
+
+
+@cache
+def get_mnt_zho_fusion_test_cases(
+    **kwargs: Any,
+) -> list[ZhongwenFusionTestCase]:
+    """Get MNT Zhongwen fusion test cases.
+
+    Arguments:
+        kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "image" / "zhongwen" / "fusion.json"
+    return load_test_cases_from_json(path, ZhongwenFusionTestCase, **kwargs)

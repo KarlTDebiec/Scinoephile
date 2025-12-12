@@ -142,4 +142,4 @@ class CommandLineInterface(ABC):
     @abstractmethod
     def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments."""
-        pass
+        raise NotImplementedError()
