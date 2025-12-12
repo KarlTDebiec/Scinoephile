@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.proofing import ProofingTestCase2
+from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.review import ReviewTestCase2
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase2
 from scinoephile.audio.cantonese.translation import TranslationTestCase2
@@ -132,7 +132,7 @@ def get_merging_query(alignment: Alignment, sg_idx: int) -> MergingTestCase | No
     return test_case
 
 
-def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingTestCase2 | None:
+def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingTestCase | None:
     """Get proofing query for an alignment's sync group.
 
     Arguments:
@@ -169,7 +169,7 @@ def get_proofing_query(alignment: Alignment, sg_idx: int) -> ProofingTestCase2 |
     yw = alignment.yuewen[yw_idxs[0]].text
 
     # Return proof query
-    test_case_cls: type[ProofingTestCase2] = ProofingTestCase2.get_test_case_cls()
+    test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(zhongwen=zw, yuewen=yw))
     return test_case

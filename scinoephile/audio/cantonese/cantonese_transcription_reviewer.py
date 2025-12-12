@@ -22,7 +22,7 @@ from scinoephile.testing import test_data_root
 
 from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
-from .proofing import ProofingPrompt2, ProofingTestCase2
+from .proofing import ProofingPrompt, ProofingTestCase
 from .review import ReviewPrompt2, ReviewTestCase2
 from .shifting import ShiftingPrompt2, ShiftingTestCase2
 from .translation import TranslationPrompt2, TranslationTestCase2
@@ -36,7 +36,7 @@ class CantoneseTranscriptionReviewer:
         test_case_directory_path: Path,
         shifting_test_cases: list[ShiftingTestCase2],
         merging_test_cases: list[MergingTestCase],
-        proofing_test_cases: list[ProofingTestCase2],
+        proofing_test_cases: list[ProofingTestCase],
         translation_test_cases: list[TranslationTestCase2],
         review_test_cases: list[ReviewTestCase2],
     ):
@@ -67,7 +67,7 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        proofing_queryer_cls = Queryer2.get_queryer_cls(ProofingPrompt2)
+        proofing_queryer_cls = Queryer2.get_queryer_cls(ProofingPrompt)
         self.proofing_queryer = proofing_queryer_cls(
             prompt_test_cases=[tc for tc in proofing_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
