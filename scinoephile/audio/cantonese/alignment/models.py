@@ -4,11 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.review import (
-    ReviewAnswer,
-    ReviewQuery,
-    ReviewTestCase,
-)
+from scinoephile.audio.cantonese.review import ReviewAnswer, ReviewQuery, ReviewTestCase
 from scinoephile.audio.cantonese.translation import (
     TranslationAnswer,
     TranslationQuery,

@@ -6,14 +6,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from data.kob import get_kob_eng_fusion_test_cases
-from data.mlamd import (
-    get_mlamd_eng_fusion_test_cases,
-    get_mlamd_zho_fusion_test_cases,
-    get_mlamd_zho_proofreading_test_cases,
-)
-from data.t import get_t_eng_fusion_test_cases
-
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
@@ -41,14 +33,19 @@ from scinoephile.image.zhongwen.fusion import (
 )
 from scinoephile.testing import test_data_root
 from test.data.kob import (
+    get_kob_eng_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
     get_kob_zho_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
+    get_mlamd_eng_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
+    get_mlamd_zho_fusion_test_cases,
+    get_mlamd_zho_proofreading_test_cases,
 )
 from test.data.t import (
+    get_t_eng_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
     get_t_zho_fusion_test_cases,
     get_t_zho_proofreading_test_cases,

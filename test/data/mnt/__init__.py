@@ -164,12 +164,8 @@ def get_mnt_eng_proofreading_test_cases(
     Returns:
         English proofreading test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "core" / "english" / "proofreading.json",
-        EnglishProofreadingTestCase,
-        **kwargs,
-    )
-    return cast(list[EnglishProofreadingTestCase], test_cases)
+    path = title_root / "core" / "english" / "proofreading.json"
+    return load_test_cases_from_json(path, EnglishProofreadingTestCase, **kwargs)
 
 
 @cache
@@ -183,12 +179,8 @@ def get_mnt_zho_proofreading_test_cases(
     Returns:
         Zhongwen proofreading test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "core" / "zhongwen" / "proofreading.json",
-        ZhongwenProofreadingTestCase,
-        **kwargs,
-    )
-    return cast(list[ZhongwenProofreadingTestCase], test_cases)
+    path = title_root / "core" / "zhongwen" / "proofreading.json"
+    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
 
 
 @cache
@@ -202,12 +194,8 @@ def get_mnt_eng_fusion_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "image" / "english" / "fusion.json",
-        EnglishFusionTestCase,
-        **kwargs,
-    )
-    return cast(list[EnglishFusionTestCase], test_cases)
+    path = title_root / "image" / "english" / "fusion.json"
+    return load_test_cases_from_json(path, EnglishFusionTestCase, **kwargs)
 
 
 @cache
@@ -221,9 +209,5 @@ def get_mnt_zho_fusion_test_cases(
     Returns:
         test cases
     """
-    test_cases = load_test_cases_from_json(
-        title_root / "image" / "zhongwen" / "fusion.json",
-        ZhongwenFusionTestCase,
-        **kwargs,
-    )
-    return cast(list[ZhongwenFusionTestCase], test_cases)
+    path = title_root / "image" / "zhongwen" / "fusion.json"
+    return load_test_cases_from_json(path, ZhongwenFusionTestCase, **kwargs)
