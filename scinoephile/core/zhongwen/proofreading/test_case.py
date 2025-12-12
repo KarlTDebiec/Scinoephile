@@ -104,15 +104,17 @@ class ZhongwenProofreadingTestCase(TestCase, ABC):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+    def get_test_case_cls_from_data(
+        cls, data: dict, prompt_cls: type[ZhongwenProofreadingPrompt], **kwargs: Any
+    ) -> type[Self]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data dictionary
+            prompt_cls: Prompt providing descriptions and messages
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             TestCase type with appropriate configuration
         """
         size = sum(1 for key in data["query"] if key.startswith("zimu_"))
-        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
-        return test_case_cls
+        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)

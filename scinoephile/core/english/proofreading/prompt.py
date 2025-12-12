@@ -37,7 +37,10 @@ class EnglishProofreadingPrompt(EnglishPrompt):
         Do not remove newlines ('\\n').""")
     """Base system prompt."""
 
-    # Query field names and descriptions
+    # Query fields
+    subtitle_prefix: ClassVar[str] = "subtitle_"
+    """Prefix of subtitle field in query."""
+
     @classmethod
     def subtitle_field(cls, idx: int) -> str:
         """Name of subtitle field in query."""
@@ -49,6 +52,9 @@ class EnglishProofreadingPrompt(EnglishPrompt):
         return f"Subtitle {idx}"
 
     # Answer field names and descriptions
+    revised_prefix: ClassVar[str] = "revised_"
+    """Prefix of revised subtitle field in answer."""
+
     @classmethod
     def revised_field(cls, idx: int) -> str:
         """Name of revised subtitle field in answer."""
@@ -60,6 +66,9 @@ class EnglishProofreadingPrompt(EnglishPrompt):
         return (
             f"Subtitle {idx} revised, or an empty string if no revision is necessary."
         )
+
+    note_prefix: ClassVar[str] = "note_"
+    """Prefix of note field in answer."""
 
     @classmethod
     def note_field(cls, idx: int) -> str:

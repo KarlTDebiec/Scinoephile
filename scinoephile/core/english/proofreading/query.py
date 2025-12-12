@@ -46,8 +46,8 @@ class EnglishProofreadingQuery(Query, ABC):
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.subtitle_field(idx + 1)
-            description = prompt_cls.subtitle_description(idx + 1)
-            fields[key] = (str, Field(..., description=description, max_length=1000))
+            desc = prompt_cls.subtitle_description(idx + 1)
+            fields[key] = (str, Field(..., description=desc, max_length=1000))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls
