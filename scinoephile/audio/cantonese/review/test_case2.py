@@ -20,7 +20,7 @@ from .query2 import ReviewQuery2
 __all__ = ["ReviewTestCase2"]
 
 
-class ReviewTestCase2(TestCase2[ReviewQuery2, ReviewAnswer2], ABC):
+class ReviewTestCase2(TestCase2, ABC):
     """Abstract base class for 粤文 transcription review test cases."""
 
     answer_cls: ClassVar[type[ReviewAnswer2]]

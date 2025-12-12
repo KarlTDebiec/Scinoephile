@@ -20,7 +20,7 @@ from .query2 import ProofingQuery2
 __all__ = ["ProofingTestCase2"]
 
 
-class ProofingTestCase2(TestCase2[ProofingQuery2, ProofingAnswer2], ABC):
+class ProofingTestCase2(TestCase2, ABC):
     """Abstract base class for 粤文 proofing test cases."""
 
     answer_cls: ClassVar[type[ProofingAnswer2]]

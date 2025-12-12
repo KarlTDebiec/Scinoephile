@@ -20,7 +20,7 @@ from .query2 import ShiftingQuery2
 __all__ = ["ShiftingTestCase2"]
 
 
-class ShiftingTestCase2(TestCase2[ShiftingQuery2, ShiftingAnswer2], ABC):
+class ShiftingTestCase2(TestCase2, ABC):
     """Abstract base class for 粤文 transcription shifting test cases."""
 
     answer_cls: ClassVar[type[ShiftingAnswer2]]

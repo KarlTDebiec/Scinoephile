@@ -24,7 +24,7 @@ from .query2 import MergingQuery2
 __all__ = ["MergingTestCase2"]
 
 
-class MergingTestCase2(TestCase2[MergingQuery2, MergingAnswer2], ABC):
+class MergingTestCase2(TestCase2, ABC):
     """Abstract base class for 粤文 merging test cases."""
 
     answer_cls: ClassVar[type[MergingAnswer2]]

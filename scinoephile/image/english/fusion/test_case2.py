@@ -20,7 +20,7 @@ from .query2 import EnglishFusionQuery2
 __all__ = ["EnglishFusionTestCase2"]
 
 
-class EnglishFusionTestCase2(TestCase2[EnglishFusionQuery2, EnglishFusionAnswer2], ABC):
+class EnglishFusionTestCase2(TestCase2, ABC):
     """Abstract base class for English OCR fusion test cases."""
 
     answer_cls: ClassVar[type[EnglishFusionAnswer2]]  # type: ignore

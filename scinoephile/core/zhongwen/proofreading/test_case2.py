@@ -20,10 +20,7 @@ from .query2 import ZhongwenProofreadingQuery2
 __all__ = ["ZhongwenProofreadingTestCase2"]
 
 
-class ZhongwenProofreadingTestCase2(
-    TestCase2[ZhongwenProofreadingQuery2, ZhongwenProofreadingAnswer2],
-    ABC,
-):
+class ZhongwenProofreadingTestCase2(TestCase2, ABC):
     """Abstract base class for Zhongwen proofreading test cases."""
 
     answer_cls: ClassVar[type[ZhongwenProofreadingAnswer2]]  # type: ignore

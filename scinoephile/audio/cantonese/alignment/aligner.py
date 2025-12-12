@@ -131,9 +131,7 @@ class Aligner:
                 continue
             # TODO: try/expect and return original 粤文 on error; not yet encountered
             query, answer_cls, test_case_cls = query_and_friends
-            answer = await self.shifting_queryer.call_async(
-                query, answer_cls, test_case_cls
-            )
+            answer = self.shifting_queryer.call(query, answer_cls, test_case_cls)
 
             # If there is no change, continue
             if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":

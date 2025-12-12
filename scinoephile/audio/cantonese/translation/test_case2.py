@@ -21,7 +21,7 @@ from .query2 import TranslationQuery2
 __all__ = ["TranslationTestCase2"]
 
 
-class TranslationTestCase2(TestCase2[TranslationQuery2, TranslationAnswer2], ABC):
+class TranslationTestCase2(TestCase2, ABC):
     """Abstract base class for 粤文 transcription translation test cases."""
 
     answer_cls: ClassVar[type[TranslationAnswer2]]

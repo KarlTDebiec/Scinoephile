@@ -17,7 +17,7 @@ from .query2 import Query2
 __all__ = ["TestCase2"]
 
 
-class TestCase2[TQuery: Query2, TAnswer: Answer2](BaseModel, ABC):
+class TestCase2(BaseModel, ABC):
     """Abstract base class for LLM test cases."""
 
     __test__ = False
@@ -30,9 +30,9 @@ class TestCase2[TQuery: Query2, TAnswer: Answer2](BaseModel, ABC):
     prompt_cls: ClassVar[type[Prompt2]]
     """Text strings to be used for corresponding with LLM."""
 
-    answer: TAnswer | None = None
+    answer: Answer2 | None = None
     """Answer part of the test case."""
-    query: TQuery
+    query: Query2
     """Query part of the test case."""
 
     difficulty: int = Field(0)
