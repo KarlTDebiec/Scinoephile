@@ -15,6 +15,13 @@ __all__ = ["MergingPrompt"]
 class MergingPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription merging."""
 
+    # Query fields
+    zhongwen_field: ClassVar[str] = "zhongwen"
+    """Field name for 中文 of subtitle."""
+
+    yuewen_to_merge_field: ClassVar[str] = "yuewen_to_merge"
+    """Field name for transcribed 粤文 of subtitle."""
+
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for matching 粤文 subtitles of Cantonese speech to 中文
@@ -46,6 +53,10 @@ class MergingPrompt(EnglishPrompt):
         "Query must have transcribed 粤文 of subtitle."
     )
     """Error message when 'yuewen_to_merge' field is missing."""
+
+    # Answer fields
+    yuewen_merged_field: ClassVar[str] = "yuewen_merged"
+    """Field name for merged 粤文 of subtitle."""
 
     # Answer descriptions
     yuewen_merged_description: ClassVar[str] = "Merged 粤文 of subtitle"
