@@ -61,12 +61,12 @@ class ZhongwenSimpProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     note_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本已被修改，但未提供备注。如需修改，必须附带备注说明。"
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when note is missing for a revision."""
 
     revised_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when revision is missing for a note."""
 
 
 class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
@@ -101,9 +101,9 @@ class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     note_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.note_missing_error_template, OpenCCConfig.s2t
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when note is missing for a revision."""
 
     revised_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.revised_missing_error_template, OpenCCConfig.s2t
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when revision is missing for a note."""

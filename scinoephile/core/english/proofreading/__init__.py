@@ -26,7 +26,7 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_eng_proofreading_test_cases(
-    prompt_cls: ProofreadingPrompt = ProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt,
 ) -> list[ProofreadingTestCase]:
     """Get default test cases included with package.
 

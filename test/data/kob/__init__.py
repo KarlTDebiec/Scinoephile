@@ -13,7 +13,7 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.proofreading import ProofreadingTestCase
+from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenSimpProofreadingPrompt,
     ZhongwenTradProofreadingPrompt,
@@ -161,7 +161,7 @@ def kob_yue_hans_eng() -> Series:
 
 @cache
 def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = EnglishProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB English proofreading test cases.
@@ -180,7 +180,7 @@ def get_kob_eng_proofreading_test_cases(
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[ZhongwenSimpProofreadingPrompt] = ZhongwenTradProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ZhongwenTradProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.
