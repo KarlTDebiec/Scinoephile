@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from scinoephile.core.proofreading.answer import ProofreadingAnswer
-from scinoephile.core.proofreading.prompt import ProofreadingPrompt
-from scinoephile.core.proofreading.proofreader import Proofreader
-from scinoephile.core.proofreading.query import ProofreadingQuery
-from scinoephile.core.proofreading.test_case import ProofreadingTestCase
+from .answer import ProofreadingAnswer
+from .prompt import ProofreadingPrompt
+from .proofreader import Proofreader
+from .query import ProofreadingQuery
+from .test_case import ProofreadingTestCase
 
 __all__ = [
     "Proofreader",

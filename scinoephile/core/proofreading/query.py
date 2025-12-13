@@ -1,25 +1,27 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Concrete query factory for proofreading."""
+"""ABC for proofreading queries."""
 
 from __future__ import annotations
 
+from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Prompt, Query
 from scinoephile.core.models import get_model_name
-from scinoephile.core.proofreading.prompt import ProofreadingPrompt
+
+from .prompt import ProofreadingPrompt
 
 __all__ = ["ProofreadingQuery"]
 
 
-class ProofreadingQuery(Query):
-    """Concrete query factory for proofreading."""
+class ProofreadingQuery(ABC, Query):
+    """ABC for proofreading queries."""
 
-    prompt_cls: ClassVar[type[Prompt]] = ProofreadingPrompt
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -30,7 +32,7 @@ class ProofreadingQuery(Query):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[ProofreadingPrompt] | None = None,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -40,10 +42,6 @@ class ProofreadingQuery(Query):
         Returns:
             Query type with appropriate configuration
         """
-        prompt_cls = cast(type[ProofreadingPrompt], prompt_cls or cls.prompt_cls)
-        if prompt_cls is None:
-            raise ValueError("prompt_cls must be provided")
-
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):

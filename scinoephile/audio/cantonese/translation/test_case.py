@@ -94,6 +94,4 @@ class TranslationTestCase(TestCase, ABC):
             if key.startswith("yuewen_")
         ]
         missing = tuple(idx for idx in range(size) if idx not in yuewen_idxs)
-        return cls.get_test_case_cls(
-            size=size, missing=missing, prompt_cls=prompt_cls, **kwargs
-        )
+        return cls.get_test_case_cls(size=size, missing=missing, **kwargs)

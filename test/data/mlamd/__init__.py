@@ -232,9 +232,7 @@ def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase]:
 
 
 @cache
-def get_mlamd_eng_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_mlamd_eng_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get MLAMD English proofreading test cases.
 
     Arguments:
@@ -249,9 +247,7 @@ def get_mlamd_eng_proofreading_test_cases(
 
 
 @cache
-def get_mlamd_zho_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_mlamd_zho_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get MLAMD Zhongwen proofreading test cases.
 
     Arguments:

@@ -155,9 +155,7 @@ def mnt_zho_hans_eng() -> Series:
 
 
 @cache
-def get_mnt_eng_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_mnt_eng_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get MNT English proofreading test cases.
 
     Arguments:
@@ -172,9 +170,7 @@ def get_mnt_eng_proofreading_test_cases(
 
 
 @cache
-def get_mnt_zho_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_mnt_zho_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get MNT Zhongwen proofreading test cases.
 
     Arguments:

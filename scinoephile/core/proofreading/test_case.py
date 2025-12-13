@@ -1,48 +1,38 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Concrete test case factory for proofreading."""
+"""ABC for proofreading test cases."""
 
 from __future__ import annotations
 
 import re
+from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import Answer, Prompt, Query, TestCase
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
-from scinoephile.core.proofreading.answer import ProofreadingAnswer
-from scinoephile.core.proofreading.prompt import ProofreadingPrompt
-from scinoephile.core.proofreading.query import ProofreadingQuery
+
+from .answer import ProofreadingAnswer
+from .prompt import ProofreadingPrompt
+from .query import ProofreadingQuery
 
 __all__ = ["ProofreadingTestCase"]
 
 
-class ProofreadingTestCase(TestCase):
-    """Concrete test case factory for proofreading."""
+class ProofreadingTestCase(ABC, TestCase):
+    """ABC for proofreading test cases."""
 
-    answer_cls: ClassVar[type[Answer]] = ProofreadingAnswer
+    answer_cls: ClassVar[type[ProofreadingAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[Query]] = ProofreadingQuery
+    query_cls: ClassVar[type[ProofreadingQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[Prompt]] = ProofreadingPrompt
+    prompt_cls: ClassVar[type[ProofreadingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
     """Number of subtitles."""
-
-    answer: ProofreadingAnswer | None
-    """Answer associated with this test case."""
-
-    query: ProofreadingQuery
-    """Query associated with this test case."""
-
-    prompt: bool
-    """Whether this test case should be included in the prompt."""
-
-    verified: bool
-    """Whether this test case has been verified."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -56,13 +46,14 @@ class ProofreadingTestCase(TestCase):
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        prompt_cls = cast(type[ProofreadingPrompt], self.prompt_cls)
-        if self.answer is not None:
-            if any(
-                getattr(self.answer, prompt_cls.revised_field(idx)) != ""
-                for idx in range(1, self.size + 1)
-            ):
-                min_difficulty = max(min_difficulty, 1)
+        if self.answer is None:
+            return min_difficulty
+
+        if any(
+            getattr(self.answer, self.prompt_cls.revised_field(idx)) != ""
+            for idx in range(1, self.size + 1)
+        ):
+            min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
@@ -71,19 +62,19 @@ class ProofreadingTestCase(TestCase):
         if self.answer is None:
             return self
 
-        prompt_cls = cast(type[ProofreadingPrompt], self.prompt_cls)
-
         for idx in range(self.size):
-            subtitle = getattr(self.query, prompt_cls.subtitle_field(idx + 1))
-            revised = getattr(self.answer, prompt_cls.revised_field(idx + 1))
-            note = getattr(self.answer, prompt_cls.note_field(idx + 1))
+            subtitle = getattr(self.query, self.prompt_cls.subtitle_field(idx + 1))
+            revised = getattr(self.answer, self.prompt_cls.revised_field(idx + 1))
+            note = getattr(self.answer, self.prompt_cls.note_field(idx + 1))
             if revised != "":
                 if subtitle == revised:
-                    raise ValueError(prompt_cls.subtitle_revised_equal_error(idx + 1))
+                    raise ValueError(
+                        self.prompt_cls.subtitle_revised_equal_error(idx + 1)
+                    )
                 if note == "":
-                    raise ValueError(prompt_cls.note_missing_error(idx + 1))
+                    raise ValueError(self.prompt_cls.note_missing_error(idx + 1))
             elif note != "":
-                raise ValueError(prompt_cls.revised_missing_error(idx + 1))
+                raise ValueError(self.prompt_cls.revised_missing_error(idx + 1))
         return self
 
     @classmethod
@@ -91,7 +82,7 @@ class ProofreadingTestCase(TestCase):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[ProofreadingPrompt] | None = None,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -101,8 +92,6 @@ class ProofreadingTestCase(TestCase):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = cast(type[ProofreadingPrompt], prompt_cls or cls.prompt_cls)
-
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         query_cls = ProofreadingQuery.get_query_cls(size, prompt_cls)
         answer_cls = ProofreadingAnswer.get_answer_cls(size, prompt_cls)
@@ -125,10 +114,7 @@ class ProofreadingTestCase(TestCase):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = cast(
-            type[ProofreadingPrompt], kwargs.get("prompt_cls", cls.prompt_cls)
-        )
-
+        prompt_cls = kwargs.get("prompt_cls", cls.prompt_cls)
         pattern = re.compile(rf"^{re.escape(prompt_cls.subtitle_prefix)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
-        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)
+        return cls.get_test_case_cls(size=size, **kwargs)

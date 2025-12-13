@@ -1,25 +1,27 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Concrete answer factory for proofreading."""
+"""ABC for proofreading answers."""
 
 from __future__ import annotations
 
+from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Answer, Prompt
 from scinoephile.core.models import get_model_name
-from scinoephile.core.proofreading.prompt import ProofreadingPrompt
+
+from .prompt import ProofreadingPrompt
 
 __all__ = ["ProofreadingAnswer"]
 
 
-class ProofreadingAnswer(Answer):
-    """Concrete answer factory for proofreading."""
+class ProofreadingAnswer(ABC, Answer):
+    """ABC for proofreading answers."""
 
-    prompt_cls: ClassVar[type[Prompt]] = ProofreadingPrompt
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -30,20 +32,16 @@ class ProofreadingAnswer(Answer):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[ProofreadingPrompt] | None = None,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: prompt providing descriptions and messages
         Returns:
             Answer type with appropriate configuration
         """
-        prompt_cls = cast(type[ProofreadingPrompt], prompt_cls or cls.prompt_cls)
-        if prompt_cls is None:
-            raise ValueError("prompt_cls must be provided")
-
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):

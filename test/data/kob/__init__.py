@@ -157,9 +157,7 @@ def kob_yue_hans_eng() -> Series:
 
 
 @cache
-def get_kob_eng_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_kob_eng_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get KOB English proofreading test cases.
 
     Arguments:
@@ -174,9 +172,7 @@ def get_kob_eng_proofreading_test_cases(
 
 
 @cache
-def get_kob_zho_proofreading_test_cases(
-    **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+def get_kob_zho_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.
 
     Arguments:
