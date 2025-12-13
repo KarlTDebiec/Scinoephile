@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text strings to be used for corresponding with an LLM in 中文."""
+"""LLM correspondence text for 中文."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["ZhongwenPrompt"]
 
 
 class ZhongwenPrompt(Prompt, ABC):
-    """Text strings to be used for corresponding with an LLM in 中文."""
+    """LLM correspondence text for 中文."""
 
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："
     """Text preceding schema description."""
