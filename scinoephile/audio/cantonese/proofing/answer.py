@@ -27,8 +27,8 @@ class ProofingAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        yuewen_proofread = getattr(self, "yuewen_proofread", None)
-        note = getattr(self, "note", None)
+        yuewen_proofread = getattr(self, self.prompt_cls.yuewen_proofread_field, None)
+        note = getattr(self, self.prompt_cls.note_field, None)
         if not yuewen_proofread and not note:
             raise ValueError(self.prompt_cls.yuewen_proofread_and_note_missing_error)
         return self
@@ -48,11 +48,14 @@ class ProofingAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "yuewen_proofread": (
+            prompt_cls.yuewen_proofread_field: (
                 str,
                 Field("", description=prompt_cls.yuewen_proofread_description),
             ),
-            "note": (str, Field("", description=prompt_cls.note_description)),
+            prompt_cls.note_field: (
+                str,
+                Field("", description=prompt_cls.note_description),
+            ),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

@@ -45,8 +45,10 @@ class ProofingTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        yuewen = getattr(self.query, "yuewen", None)
-        yuewen_proofread = getattr(self.answer, "yuewen_proofread", None)
+        yuewen = getattr(self.query, self.prompt_cls.yuewen_field, None)
+        yuewen_proofread = getattr(
+            self.answer, self.prompt_cls.yuewen_proofread_field, None
+        )
         if yuewen != yuewen_proofread:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
@@ -57,9 +59,11 @@ class ProofingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen = getattr(self.query, "yuewen", None)
-        yuewen_proofread = getattr(self.answer, "yuewen_proofread", None)
-        note = getattr(self.answer, "note", None)
+        yuewen = getattr(self.query, self.prompt_cls.yuewen_field, None)
+        yuewen_proofread = getattr(
+            self.answer, self.prompt_cls.yuewen_proofread_field, None
+        )
+        note = getattr(self.answer, self.prompt_cls.note_field, None)
         if yuewen != yuewen_proofread and not note:
             raise ValueError(self.prompt_cls.yuewen_modified_note_missing_error)
         if yuewen == yuewen_proofread and note:

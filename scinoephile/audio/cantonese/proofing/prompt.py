@@ -42,26 +42,38 @@ class ProofingPrompt(EnglishPrompt):
         If you make no changes, return an empty string for the note.""")
     """Base system prompt."""
 
-    # Query descriptions
+    # Query fields
+    zhongwen_field: ClassVar[str] = "zhongwen"
+    """Field name for 中文 subtitle."""
+
     zhongwen_description: ClassVar[str] = "Known 中文 of subtitle"
-    """Description of 'zhongwen' field."""
+    """Description of zhongwen field."""
+
+    yuewen_field: ClassVar[str] = "yuewen"
+    """Field name for transcribed 粤文 of subtitle."""
 
     yuewen_description: ClassVar[str] = "Transcribed 粤文 of subtitle to proofread"
-    """Description of 'yuewen' field."""
+    """Description of yuewen field."""
 
     # Query validation errors
     zhongwen_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
-    """Error message when 'zhongwen' is missing."""
+    """Error message when zhongwen field is missing."""
 
     yuewen_missing_error: ClassVar[str] = "Query must have 粤文 subtitle to proofread."
-    """Error message when 'yuewen' is missing."""
+    """Error message when yuewen field is missing."""
 
-    # Answer descriptions
+    # Answer fields
+    yuewen_proofread_field: ClassVar[str] = "yuewen_proofread"
+    """Field name for proofread 粤文 of subtitle."""
+
     yuewen_proofread_description: ClassVar[str] = "Proofread 粤文 of subtitle"
-    """Description of 'yuewen_proofread' field."""
+    """Description of yuewen proofread field."""
+
+    note_field: ClassVar[str] = "note"
+    """Field name for description of corrections made."""
 
     note_description: ClassVar[str] = "Description of corrections made"
-    """Description of 'note' field."""
+    """Description of note field."""
 
     # Answer validation errors
     yuewen_proofread_and_note_missing_error: ClassVar[str] = (
@@ -69,7 +81,7 @@ class ProofingPrompt(EnglishPrompt):
         "believed to be a complete mistranscription of the spoken Cantonese "
         "and should be omitted, it must also include a note describing the issue."
     )
-    """Error message when both 'yuewen_proofread' and 'note' are missing."""
+    """Error message when both yuewen proofread and note fields are missing."""
 
     # Test case validation errors
     yuewen_modified_note_missing_error: ClassVar[str] = (
