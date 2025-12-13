@@ -17,7 +17,7 @@ from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCa
 from scinoephile.core.zhongwen.proofreading import ZhongwenTradProofreadingPrompt
 from scinoephile.image.english.fusion import EnglishFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionPrompt
+from scinoephile.image.zhongwen.fusion import ZhongwenSimpFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -215,7 +215,7 @@ def get_kob_eng_fusion_test_cases(
 
 @cache
 def get_kob_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhongwenFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhongwenSimpFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB Zhongwen fusion test cases.
 

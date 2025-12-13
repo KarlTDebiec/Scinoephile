@@ -8,7 +8,7 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned
-from scinoephile.image.english.fusion import get_english_ocr_fused
+from scinoephile.image.english.fusion import get_eng_fused
 
 
 def _test_get_english_ocr_fused(lens: Series, tesseract: Series, expected: Series):
@@ -19,7 +19,7 @@ def _test_get_english_ocr_fused(lens: Series, tesseract: Series, expected: Serie
         tesseract: subtitles OCRed using Tesseract
         expected: expected output series
     """
-    output = get_english_ocr_fused(lens, tesseract)
+    output = get_eng_fused(lens, tesseract)
 
     assert len(lens) == len(output)
 

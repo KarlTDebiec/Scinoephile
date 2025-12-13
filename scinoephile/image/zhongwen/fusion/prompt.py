@@ -1,20 +1,27 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 中文 OCR fusion."""
+"""LLM correspondence text for 中文 fusion."""
 
 from __future__ import annotations
 
 from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.core.zhongwen import ZhongwenPrompt
+from scinoephile.core.zhongwen import (
+    OpenCCConfig,
+    ZhongwenPrompt,
+    get_zhongwen_text_converted,
+)
 from scinoephile.image.fusion import FusionPrompt
 
-__all__ = ["ZhongwenFusionPrompt"]
+__all__ = [
+    "ZhongwenSimpFusionPrompt",
+    "ZhongwenTradFusionPrompt",
+]
 
 
-class ZhongwenFusionPrompt(FusionPrompt, ZhongwenPrompt):
-    """Text for LLM correspondence for 中文 OCR fusion."""
+class ZhongwenSimpFusionPrompt(FusionPrompt, ZhongwenPrompt):
+    """LLM correspondence text for 简体中文 fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -27,45 +34,116 @@ class ZhongwenFusionPrompt(FusionPrompt, ZhongwenPrompt):
 
     # Query fields
     source_one_field: ClassVar[str] = "lens"
-    source_two_field: ClassVar[str] = "paddle"
+    """Field name for OCR source one."""
 
-    # Query descriptions
     source_one_description: ClassVar[str] = "Google Lens 提取的字幕文本"
-    """Description of 'lens' field."""
+    """Description of source one field."""
+
+    source_two_field: ClassVar[str] = "paddle"
+    """Field name for OCR source two."""
 
     source_two_description: ClassVar[str] = "PaddleOCR 提取的字幕文本"
-    """Description of 'paddle' field."""
+    """Description of source two field."""
 
     # Query validation errors
     source_one_missing_error: ClassVar[str] = "缺少 Google Lens 的中文字幕文本。"
-    """Error message when 'lens' field is missing."""
+    """Error message when source one field is missing."""
 
     source_two_missing_error: ClassVar[str] = "缺少 PaddleOCR 的中文字幕文本。"
-    """Error message when 'paddle' field is missing."""
+    """Error message when source two field is missing."""
 
     sources_equal_error: ClassVar[str] = (
         "Google Lens 与 PaddleOCR 的字幕文本不能完全相同。"
     )
-    """Error message when 'lens' and 'paddle' fields are equal."""
+    """Error message when source one and two fields are equal."""
 
     # Answer fields
     fused_field: ClassVar[str] = "ronghe"
-    note_field: ClassVar[str] = "beizhu"
+    """Field name for fused subtitle text."""
 
-    # Answer descriptions
     fused_description: ClassVar[str] = "融合后的字幕文本"
-    """Description of 'ronghe' field."""
+    """Description of fused field."""
+
+    note_field: ClassVar[str] = "beizhu"
+    """Field name for explanation of changes."""
 
     note_description: ClassVar[str] = "对所做更正的说明"
-    """Description of 'beizhu' field."""
+    """Description of note field."""
 
     # Answer validation errors
     fused_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"
-    """Error message when 'ronghe' field is missing."""
+    """Error message when fused field is missing."""
 
     note_missing_error: ClassVar[str] = "更正说明不能为空。"
-    """Error message when 'beizhu' field is missing."""
+    """Error message when note field is missing."""
 
-    # Logging labels
-    source_one_label: ClassVar[str] = "Lens"
-    source_two_label: ClassVar[str] = "PaddleOCR"
+
+class ZhongwenTradFusionPrompt(FusionPrompt, ZhongwenPrompt):
+    """LLM correspondence text for 繁体中文 fusion."""
+
+    # Prompt
+    base_system_prompt: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.base_system_prompt, OpenCCConfig.s2t
+    )
+    """Base system prompt."""
+
+    # Query fields
+    source_one_field: ClassVar[str] = "lens"
+    """Field name for OCR source one."""
+
+    source_one_description: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.source_one_description, OpenCCConfig.s2t
+    )
+    """Description of source one field."""
+
+    source_two_field: ClassVar[str] = "paddle"
+    """Field name for OCR source two."""
+
+    source_two_description: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.source_two_description, OpenCCConfig.s2t
+    )
+    """Description of source two field."""
+
+    # Query validation errors
+    source_one_missing_error: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.source_one_missing_error, OpenCCConfig.s2t
+    )
+    """Error message when source one field is missing."""
+
+    source_two_missing_error: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.source_two_missing_error, OpenCCConfig.s2t
+    )
+    """Error message when source two field is missing."""
+
+    sources_equal_error: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.sources_equal_error, OpenCCConfig.s2t
+    )
+    """Error message when source one and two fields are equal."""
+
+    # Answer fields
+    fused_field: ClassVar[str] = "ronghe"
+    """Field name for fused subtitle text."""
+
+    fused_description: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.fused_description, OpenCCConfig.s2t
+    )
+    """Description of fused field."""
+
+    note_field: ClassVar[str] = "beizhu"
+    """Field name for explanation of changes."""
+
+    note_description: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.note_description, OpenCCConfig.s2t
+    )
+    """Description of note field."""
+
+    # Answer validation errors
+    fused_missing_error: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.fused_missing_error, OpenCCConfig.s2t
+    )
+    """Error message when fused field is missing."""
+
+    note_missing_error: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpFusionPrompt.note_missing_error, OpenCCConfig.s2t
+    )
+    """Error message when note field is missing."""

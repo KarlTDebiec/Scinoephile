@@ -15,8 +15,8 @@ from scinoephile.core.zhongwen import (
 )
 
 __all__ = [
-    "ZhongwenTradProofreadingPrompt",
     "ZhongwenSimpProofreadingPrompt",
+    "ZhongwenTradProofreadingPrompt",
 ]
 
 

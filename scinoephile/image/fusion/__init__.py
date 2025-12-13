@@ -5,14 +5,14 @@
 from __future__ import annotations
 
 from .answer import FusionAnswer
-from .fuser import FusionFuser
+from .fuser import Fuser
 from .prompt import FusionPrompt
 from .query import FusionQuery
 from .test_case import FusionTestCase
 
 __all__ = [
+    "Fuser",
     "FusionAnswer",
-    "FusionFuser",
     "FusionPrompt",
     "FusionQuery",
     "FusionTestCase",

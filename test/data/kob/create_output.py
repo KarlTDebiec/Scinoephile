@@ -22,8 +22,8 @@ from scinoephile.core.zhongwen.proofreading import (
     get_zho_proofread,
     get_zho_proofreader,
 )
-from scinoephile.image.english.fusion import get_english_fuser, get_english_ocr_fused
-from scinoephile.image.zhongwen.fusion import get_zhongwen_fuser, get_zhongwen_ocr_fused
+from scinoephile.image.english.fusion import get_eng_fused, get_eng_fuser
+from scinoephile.image.zhongwen.fusion import get_zho_fuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_eng_fusion_test_cases,
@@ -68,7 +68,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse = get_zhongwen_ocr_fused(
         zho_hant_lens,
         zho_hant_paddle,
-        get_zhongwen_fuser(
+        get_zho_fuser(
             test_cases=get_mlamd_zho_fusion_test_cases()
             + get_mnt_zho_fusion_test_cases()
             + get_t_zho_fusion_test_cases(),
@@ -111,10 +111,10 @@ if "English (OCR)" in actions:
     eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuse = get_english_ocr_fused(
+    eng_fuse = get_eng_fused(
         eng_lens,
         eng_tesseract,
-        get_english_fuser(
+        get_eng_fuser(
             test_cases=get_mlamd_eng_fusion_test_cases()
             + get_mnt_eng_fusion_test_cases()
             + get_t_eng_fusion_test_cases(),

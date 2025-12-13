@@ -19,12 +19,11 @@ class FusionPrompt(Prompt, ABC):
     source_one_field: ClassVar[str] = "one"
     """Field name for OCR source one."""
 
-    source_two_field: ClassVar[str] = "two"
-    """Field name for OCR source two."""
-
-    # Query descriptions
     source_one_description: ClassVar[str] = "Subtitle text from OCR source one"
     """Description of source one field."""
+
+    source_two_field: ClassVar[str] = "two"
+    """Field name for OCR source two."""
 
     source_two_description: ClassVar[str] = "Subtitle text from OCR source two"
     """Description of source two field."""
@@ -49,12 +48,11 @@ class FusionPrompt(Prompt, ABC):
     fused_field: ClassVar[str] = "fused"
     """Field name for fused subtitle text."""
 
-    note_field: ClassVar[str] = "note"
-    """Field name for explanation of changes."""
-
-    # Answer descriptions
     fused_description: ClassVar[str] = "Merged subtitle text"
     """Description of fused field."""
+
+    note_field: ClassVar[str] = "note"
+    """Field name for explanation of changes."""
 
     note_description: ClassVar[str] = "Explanation of changes made"
     """Description of note field."""
@@ -65,10 +63,3 @@ class FusionPrompt(Prompt, ABC):
 
     note_missing_error: ClassVar[str] = "Explanation of changes made is required."
     """Error message when note field is missing."""
-
-    # Logging labels
-    source_one_label: ClassVar[str] = "Source one"
-    """Label for source one used in logs."""
-
-    source_two_label: ClassVar[str] = "Source two"
-    """Label for source two used in logs."""
