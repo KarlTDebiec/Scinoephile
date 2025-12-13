@@ -1,11 +1,12 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreads English subtitles."""
+"""Proofreader for subtitles."""
 
 from __future__ import annotations
 
 import re
-from logging import info, warning
+from collections.abc import Callable, Sequence
+from logging import info
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
@@ -16,72 +17,91 @@ from scinoephile.core.llms import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.core.proofreading.prompt import ProofreadingPrompt
+from scinoephile.core.proofreading.test_case import ProofreadingTestCase
 from scinoephile.testing import test_data_root
 
-from .prompt import EnglishProofreadingPrompt
-from .test_case import EnglishProofreadingTestCase
-
-__all__ = ["EnglishProofreader"]
+__all__ = ["Proofreader"]
 
 
-class EnglishProofreader:
-    """Proofreads English subtitles."""
+class Proofreader:
+    """Proofreads subtitles."""
+
+    prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt
+    """Prompt class used for communication with the LLM."""
+
+    test_case_cls: type[ProofreadingTestCase] = ProofreadingTestCase
+    """Test case class used to validate model responses."""
 
     def __init__(
         self,
-        test_cases: list[EnglishProofreadingTestCase] | None = None,
+        prompt_cls: type[ProofreadingPrompt] | None = None,
+        test_cases: Sequence[ProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
+        get_default_test_cases: Callable[[], Sequence[ProofreadingTestCase]]
+        | None = None,
     ):
         """Initialize.
 
         Arguments:
+            prompt_cls: prompt class
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
+            get_default_test_cases: function returning default test cases
         """
+        self.prompt_cls = prompt_cls or self.prompt_cls
+        if self.prompt_cls is None:
+            raise ValueError("prompt_cls must be provided")
+
         if test_cases is None:
-            test_cases = self.get_default_test_cases()
+            if get_default_test_cases is not None:
+                test_cases = get_default_test_cases()
+            else:
+                test_cases = []
+
+        test_case_list = list(test_cases)
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_cases.extend(
+            test_case_list.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    EnglishProofreadingTestCase,
-                    prompt_cls=EnglishProofreadingPrompt,
+                    self.test_case_cls,
+                    prompt_cls=self.prompt_cls,
                 ),
             )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        queryer_cls = Queryer.get_queryer_cls(EnglishProofreadingPrompt)
+        queryer_cls = Queryer.get_queryer_cls(self.prompt_cls)
         self.queryer = queryer_cls(
-            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in test_cases if tc.verified],
+            prompt_test_cases=[tc for tc in test_case_list if tc.prompt],
+            verified_test_cases=[tc for tc in test_case_list if tc.verified],
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
         """LLM queryer."""
 
     def proofread(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Proofread English subtitles.
+        """Proofread subtitles.
 
         Arguments:
-            series: English subtitles
+            series: subtitles
             stop_at_idx: stop processing at this index
         Returns:
-            proofread English subtitles
+            proofread subtitles
         """
-        # Proofread subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
                 break
 
-            # Query LLM
-            test_case_cls = EnglishProofreadingTestCase.get_test_case_cls(len(block))
+            test_case_cls = self.test_case_cls.get_test_case_cls(
+                len(block), prompt_cls=self.prompt_cls
+            )
             query_cls = test_case_cls.query_cls
             prompt_cls = query_cls.prompt_cls
             query_attrs: dict[str, str] = {}
@@ -105,48 +125,13 @@ class EnglishProofreader:
             )
             output_series_to_concatenate[block_idx] = output_series
 
-        # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
-        # Organize and return
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
         info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series
-
-    @classmethod
-    def get_default_test_cases(cls):
-        """Get default test cases included with package.
-
-        Returns:
-            test cases
-        """
-        try:
-            # noinspection PyUnusedImports
-            from test.data.kob import get_kob_eng_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.mlamd import get_mlamd_eng_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.mnt import get_mnt_eng_proofreading_test_cases
-
-            # noinspection PyUnusedImports
-            from test.data.t import get_t_eng_proofreading_test_cases
-
-            return (
-                get_kob_eng_proofreading_test_cases()
-                + get_mlamd_eng_proofreading_test_cases()
-                + get_mnt_eng_proofreading_test_cases()
-                + get_t_eng_proofreading_test_cases()
-            )
-        except ImportError as exc:
-            warning(
-                f"Default test cases not available for {cls.__name__}, "
-                f"encountered Exception:\n{exc}"
-            )
-        return []

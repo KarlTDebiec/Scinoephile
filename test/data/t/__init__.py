@@ -11,9 +11,10 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+from scinoephile.core.proofreading import ProofreadingTestCase
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingPrompt
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
@@ -171,7 +172,7 @@ def t_zho_hans_eng() -> Series:
 @cache
 def get_t_eng_proofreading_test_cases(
     **kwargs: Any,
-) -> list[EnglishProofreadingTestCase]:
+) -> list[ProofreadingTestCase]:
     """Get T English proofreading test cases.
 
     Arguments:
@@ -180,13 +181,15 @@ def get_t_eng_proofreading_test_cases(
         English proofreading test cases
     """
     path = title_root / "core" / "english" / "proofreading.json"
-    return load_test_cases_from_json(path, EnglishProofreadingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, ProofreadingTestCase, prompt_cls=EnglishProofreadingPrompt, **kwargs
+    )
 
 
 @cache
 def get_t_zho_proofreading_test_cases(
     **kwargs: Any,
-) -> list[ZhongwenProofreadingTestCase]:
+) -> list[ProofreadingTestCase]:
     """Get T Zhongwen proofreading test cases.
 
     Arguments:
@@ -195,7 +198,9 @@ def get_t_zho_proofreading_test_cases(
         Zhongwen proofreading test cases
     """
     path = title_root / "core" / "zhongwen" / "proofreading.json"
-    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, ProofreadingTestCase, prompt_cls=ZhongwenProofreadingPrompt, **kwargs
+    )
 
 
 @cache
