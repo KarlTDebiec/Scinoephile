@@ -72,26 +72,39 @@ class ZhongwenSimpProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
 class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     """LLM correspondence text for 繁体中文 proofreading."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.base_system_prompt, OpenCCConfig.s2t
     )
     """Base system prompt."""
+
+    # Query fields
+    subtitle_prefix: ClassVar[str] = "zimu_"
+    """Prefix of subtitle field in query."""
 
     subtitle_description_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.subtitle_description_template, OpenCCConfig.s2t
     )
     """Description template for subtitle field in query."""
 
+    # Answer fields
+    revised_prefix: ClassVar[str] = "xiugai_"
+    """Prefix of revised field in answer."""
+
     revised_description_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.revised_description_template, OpenCCConfig.s2t
     )
     """Description template for revised field in answer."""
+
+    note_prefix: ClassVar[str] = "beizhu_"
+    """Prefix of note field in answer."""
 
     note_description_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.note_description_template, OpenCCConfig.s2t
     )
     """Description template for note field in answer."""
 
+    # Test case errors
     subtitle_revised_equal_error_template: ClassVar[str] = get_zhongwen_text_converted(
         ZhongwenSimpProofreadingPrompt.subtitle_revised_equal_error_template,
         OpenCCConfig.s2t,

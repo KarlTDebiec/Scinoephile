@@ -10,7 +10,6 @@ from scinoephile.core import Series
 from scinoephile.core.proofreading import Proofreader
 from scinoephile.core.zhongwen.proofreading import (
     ZhongwenTradProofreadingPrompt,
-    get_default_zho_proofreading_test_cases,
     get_zho_proofread,
     get_zho_proofreader,
 )
@@ -53,12 +52,7 @@ def test_get_zhongwen_proofread_kob(
     _test_get_zhongwen_proofread(
         kob_zho_hant_fuse,
         kob_zho_hant_fuse_proofread,
-        get_zho_proofreader(
-            prompt_cls=ZhongwenTradProofreadingPrompt,
-            default_test_cases=get_default_zho_proofreading_test_cases(
-                prompt_cls=ZhongwenTradProofreadingPrompt
-            ),
-        ),
+        get_zho_proofreader(prompt_cls=ZhongwenTradProofreadingPrompt),
     )
 
 
