@@ -10,7 +10,10 @@ from scinoephile.core.proofreading import ProofreadingPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.core.zhongwen import ZhongwenPrompt
 
-__all__ = ["ZhongwenProofreadingPrompt"]
+__all__ = [
+    "TraditionalZhongwenProofreadingPrompt",
+    "ZhongwenProofreadingPrompt",
+]
 
 
 class ZhongwenProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
@@ -58,5 +61,41 @@ class ZhongwenProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
 
     revised_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
+    )
+    """Error template when revision is missing but note is provided."""
+
+
+class TraditionalZhongwenProofreadingPrompt(ZhongwenProofreadingPrompt):
+    """LLM correspondence text for 中文 proofreading in Traditional Chinese."""
+
+    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+        你負責校對由 OCR 識別生成的中文字幕。
+        你的任務僅限於糾正 OCR 識別錯誤（例如錯字、漏字、字符混淆等），
+        不得進行任何風格或語法上的潤色，也不要添加或修改標點符號。
+        對於每一條字幕，如有需要修改，請提供修改後的完整字幕，並附上一條說明所作修改的備註。
+        如果不需要修改，請將修改後的字幕和備註都留空字符串。""")
+    """Base system prompt."""
+
+    subtitle_description_template: ClassVar[str] = "第 {idx} 條字幕"
+    """Description template for subtitle field in query."""
+
+    revised_description_template: ClassVar[str] = "第 {idx} 條修改後的字幕"
+    """Description template for revised field in answer."""
+
+    note_description_template: ClassVar[str] = "關於第 {idx} 條字幕修改的備註說明"
+    """Description template for note field in answer."""
+
+    subtitle_revised_equal_error_template: ClassVar[str] = (
+        "第 {idx} 條答案的修改文本與查詢文本相同。如果不需要修改，應提供空字符串。"
+    )
+    """Error template when subtitle and revised fields are equal."""
+
+    note_missing_error_template: ClassVar[str] = (
+        "第 {idx} 條答案的文本已被修改，但未提供備註。如需修改，必須附帶備註說明。"
+    )
+    """Error template when revision is missing but note is provided."""
+
+    revised_missing_error_template: ClassVar[str] = (
+        "第 {idx} 條答案的文本未修改，但提供了備註。如果不需要修改，應提供空字符串。"
     )
     """Error template when revision is missing but note is provided."""

@@ -10,10 +10,11 @@ from typing import Any
 from scinoephile.core.proofreading import Proofreader, ProofreadingTestCase
 from scinoephile.core.series import Series
 
-from .prompt import ZhongwenProofreadingPrompt
+from .prompt import TraditionalZhongwenProofreadingPrompt, ZhongwenProofreadingPrompt
 
 __all__ = [
     "ZhongwenProofreadingPrompt",
+    "TraditionalZhongwenProofreadingPrompt",
     "get_default_zho_proofreading_test_cases",
     "get_zho_proofread",
     "get_zho_proofreader",

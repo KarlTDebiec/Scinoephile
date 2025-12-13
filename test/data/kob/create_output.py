@@ -18,12 +18,14 @@ from scinoephile.core.zhongwen import (
     get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
+    TraditionalZhongwenProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
 )
 from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
 from scinoephile.testing import test_data_root
+from test.data.kob import get_kob_zho_proofreading_test_cases
 from test.data.mlamd import (
     get_mlamd_eng_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
@@ -57,11 +59,12 @@ actions = {
     "Bilingual 简体粵文 and English",
 }
 
+
 if "繁體中文 (OCR)" in actions:
-    zho_hant_lens = Series.load(input_dir / "zho-Hant_lens.srt")
+    zho_hant_lens = Series.load(str(input_dir / "zho-Hant_lens.srt"))
     zho_hant_lens = get_zhongwen_cleaned(zho_hant_lens, remove_empty=False)
     zho_hant_lens = get_zhongwen_converted(zho_hant_lens, config=OpenCCConfig.s2t)
-    zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
+    zho_hant_paddle = Series.load(str(input_dir / "zho-Hant_paddle.srt"))
     zho_hant_paddle = get_zhongwen_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zhongwen_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
     zho_hant_fuse = get_zhongwen_ocr_fused(
@@ -79,15 +82,25 @@ if "繁體中文 (OCR)" in actions:
             auto_verify=True,
         ),
     )
-    zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
+    zho_hant_fuse.save(str(output_dir / "zho-Hant_fuse.srt"))
     zho_hant_fuse = get_zhongwen_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zhongwen_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
     zho_hant_fuse_proofread = get_zho_proofread(
         zho_hant_fuse,
         get_zho_proofreader(
-            test_cases=get_mlamd_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases(),
+            prompt_cls=TraditionalZhongwenProofreadingPrompt,
+            test_cases=get_kob_zho_proofreading_test_cases(
+                prompt_cls=TraditionalZhongwenProofreadingPrompt
+            )
+            + get_mlamd_zho_proofreading_test_cases(
+                prompt_cls=TraditionalZhongwenProofreadingPrompt
+            )
+            + get_mnt_zho_proofreading_test_cases(
+                prompt_cls=TraditionalZhongwenProofreadingPrompt
+            )
+            + get_t_zho_proofreading_test_cases(
+                prompt_cls=TraditionalZhongwenProofreadingPrompt
+            ),
             test_case_path=test_data_root
             / title
             / "core"
@@ -96,12 +109,12 @@ if "繁體中文 (OCR)" in actions:
             auto_verify=True,
         ),
     )
-    zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")
+    zho_hant_fuse_proofread.save(str(output_dir / "zho-Hant_fuse_proofread.srt"))
 
 if "English (OCR)" in actions:
-    eng_lens = Series.load(input_dir / "eng_lens.srt")
+    eng_lens = Series.load(str(input_dir / "eng_lens.srt"))
     eng_lens = get_english_cleaned(eng_lens, remove_empty=False)
-    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
+    eng_tesseract = Series.load(str(input_dir / "eng_tesseract.srt"))
     eng_tesseract = get_english_cleaned(eng_tesseract, remove_empty=False)
     eng_fuse = get_english_ocr_fused(
         eng_lens,
@@ -114,7 +127,7 @@ if "English (OCR)" in actions:
             auto_verify=True,
         ),
     )
-    eng_fuse.save(output_dir / "eng_fuse.srt")
+    eng_fuse.save(str(output_dir / "eng_fuse.srt"))
     eng_fuse_proofread = get_eng_proofread(
         eng_fuse,
         get_eng_proofreader(
@@ -129,29 +142,29 @@ if "English (OCR)" in actions:
             auto_verify=True,
         ),
     )
-    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+    eng_fuse_proofread.save(str(output_dir / "eng_fuse_proofread.srt"))
 
 if "简体粵文 (SRT)" in actions:
-    yue_hans = Series.load(input_dir / "yue-Hans.srt")
+    yue_hans = Series.load(str(input_dir / "yue-Hans.srt"))
     yue_hans_clean = get_zhongwen_cleaned(yue_hans)
-    yue_hans_clean.save(output_dir / "yue-Hans_clean.srt")
+    yue_hans_clean.save(str(output_dir / "yue-Hans_clean.srt"))
     yue_hans_clean_flatten = get_zhongwen_flattened(yue_hans_clean)
-    yue_hans_clean_flatten.save(output_dir / "yue-Hans_clean_flatten.srt")
+    yue_hans_clean_flatten.save(str(output_dir / "yue-Hans_clean_flatten.srt"))
 
 if "繁體粵文 (SRT)" in actions:
-    yue_hant = Series.load(input_dir / "yue-Hant.srt")
+    yue_hant = Series.load(str(input_dir / "yue-Hant.srt"))
     yue_hant_simplify = get_zhongwen_converted(yue_hant, OpenCCConfig.hk2s)
-    yue_hant_simplify.save(output_dir / "yue-Hant_simplify.srt")
+    yue_hant_simplify.save(str(output_dir / "yue-Hant_simplify.srt"))
 
 if "English (SRT)" in actions:
-    eng = Series.load(input_dir / "eng.srt")
+    eng = Series.load(str(input_dir / "eng.srt"))
     eng_clean = get_english_cleaned(eng)
-    eng_clean.save(output_dir / "eng_clean.srt")
+    eng_clean.save(str(output_dir / "eng_clean.srt"))
     eng_clean_flatten = get_english_flattened(eng_clean)
-    eng_clean_flatten.save(output_dir / "eng_clean_flatten.srt")
+    eng_clean_flatten.save(str(output_dir / "eng_clean_flatten.srt"))
 
 if "Bilingual 简体粵文 and English" in actions:
-    yue_hans_clean_flatten = Series.load(output_dir / "yue-Hans_clean_flatten.srt")
-    eng_clean_flatten = Series.load(output_dir / "eng_clean_flatten.srt")
+    yue_hans_clean_flatten = Series.load(str(output_dir / "yue-Hans_clean_flatten.srt"))
+    eng_clean_flatten = Series.load(str(output_dir / "eng_clean_flatten.srt"))
     yue_hans_eng = get_synced_series(yue_hans_clean_flatten, eng_clean_flatten)
-    yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
+    yue_hans_eng.save(str(output_dir / "yue-Hans_eng.srt"))
