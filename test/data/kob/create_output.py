@@ -23,7 +23,11 @@ from scinoephile.core.zhongwen.proofreading import (
     get_zho_proofreader,
 )
 from scinoephile.image.english.fusion import get_eng_fused, get_eng_fuser
-from scinoephile.image.zhongwen.fusion import get_zho_fuser, get_zhongwen_ocr_fused
+from scinoephile.image.zhongwen.fusion import (
+    ZhongwenTradFusionPrompt,
+    get_zho_fuser,
+    get_zhongwen_ocr_fused,
+)
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_eng_fusion_test_cases,
@@ -69,6 +73,7 @@ if "繁體中文 (OCR)" in actions:
         zho_hant_lens,
         zho_hant_paddle,
         get_zho_fuser(
+            prompt_cls=ZhongwenTradFusionPrompt,
             test_cases=get_mlamd_zho_fusion_test_cases()
             + get_mnt_zho_fusion_test_cases()
             + get_t_zho_fusion_test_cases(),
@@ -87,15 +92,9 @@ if "繁體中文 (OCR)" in actions:
         zho_hant_fuse,
         get_zho_proofreader(
             prompt_cls=ZhongwenTradProofreadingPrompt,
-            test_cases=get_mlamd_zho_proofreading_test_cases(
-                prompt_cls=ZhongwenTradProofreadingPrompt
-            )
-            + get_mnt_zho_proofreading_test_cases(
-                prompt_cls=ZhongwenTradProofreadingPrompt
-            )
-            + get_t_zho_proofreading_test_cases(
-                prompt_cls=ZhongwenTradProofreadingPrompt
-            ),
+            test_cases=get_mlamd_zho_proofreading_test_cases()
+            + get_mnt_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases(),
             test_case_path=test_data_root
             / title
             / "core"
