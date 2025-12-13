@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from logging import info
 from pathlib import Path
 
@@ -27,20 +27,16 @@ __all__ = ["Proofreader"]
 class Proofreader:
     """Proofreads subtitles."""
 
-    prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt
+    prompt_cls: type[ProofreadingPrompt]
     """Prompt class used for communication with the LLM."""
-
-    test_case_cls: type[ProofreadingTestCase] = ProofreadingTestCase
-    """Test case class used to validate model responses."""
 
     def __init__(
         self,
-        prompt_cls: type[ProofreadingPrompt] | None = None,
-        test_cases: Sequence[ProofreadingTestCase] | None = None,
+        prompt_cls: type[ProofreadingPrompt],
+        test_cases: list[ProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        get_default_test_cases: Callable[[], Sequence[ProofreadingTestCase]]
-        | None = None,
+        default_test_cases: Sequence[ProofreadingTestCase] | None = None,
     ):
         """Initialize.
 
@@ -49,26 +45,22 @@ class Proofreader:
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
-            get_default_test_cases: function returning default test cases
+            default_test_cases: default test cases
         """
-        self.prompt_cls = prompt_cls or self.prompt_cls
-        if self.prompt_cls is None:
-            raise ValueError("prompt_cls must be provided")
+        self.prompt_cls = prompt_cls
 
         if test_cases is None:
-            if get_default_test_cases is not None:
-                test_cases = get_default_test_cases()
+            if default_test_cases is not None:
+                test_cases = default_test_cases
             else:
                 test_cases = []
 
-        test_case_list = list(test_cases)
-
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_case_list.extend(
+            test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    self.test_case_cls,
+                    ProofreadingTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -77,8 +69,8 @@ class Proofreader:
 
         queryer_cls = Queryer.get_queryer_cls(self.prompt_cls)
         self.queryer = queryer_cls(
-            prompt_test_cases=[tc for tc in test_case_list if tc.prompt],
-            verified_test_cases=[tc for tc in test_case_list if tc.verified],
+            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
             auto_verify=auto_verify,
         )
@@ -93,13 +85,15 @@ class Proofreader:
         Returns:
             proofread subtitles
         """
+        # Proofread subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
                 break
 
-            test_case_cls = self.test_case_cls.get_test_case_cls(
+            # Query LLM
+            test_case_cls = ProofreadingTestCase.get_test_case_cls(
                 len(block), prompt_cls=self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
@@ -125,11 +119,13 @@ class Proofreader:
             )
             output_series_to_concatenate[block_idx] = output_series
 
+        # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
+        # Organize and return
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
