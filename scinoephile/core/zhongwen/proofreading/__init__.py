@@ -78,7 +78,7 @@ def get_zho_proofreader(
     Returns:
         Configured proofreader instance.
     """
-    if default_test_cases is not None:
+    if default_test_cases is None:
         default_test_cases = get_default_zho_proofreading_test_cases()
     return Proofreader(
         prompt_cls=prompt_cls,

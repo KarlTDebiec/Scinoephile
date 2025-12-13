@@ -114,7 +114,7 @@ class ProofreadingTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", cls.prompt_cls)
+        prompt_cls = kwargs.get("prompt_cls")
         pattern = re.compile(rf"^{re.escape(prompt_cls.subtitle_prefix)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, **kwargs)
