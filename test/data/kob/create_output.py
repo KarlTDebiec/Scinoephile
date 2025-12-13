@@ -58,7 +58,6 @@ actions = {
     "Bilingual 简体粵文 and English",
 }
 
-
 if "繁體中文 (OCR)" in actions:
     zho_hant_lens = Series.load(input_dir / "zho-Hant_lens.srt")
     zho_hant_lens = get_zhongwen_cleaned(zho_hant_lens, remove_empty=False)
