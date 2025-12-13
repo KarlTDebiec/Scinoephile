@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English proofreading queries."""
+"""ABC for proofreading queries."""
 
 from __future__ import annotations
 
@@ -10,18 +10,18 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Query
+from scinoephile.core.llms import Prompt, Query
 from scinoephile.core.models import get_model_name
 
-from .prompt import EnglishProofreadingPrompt
+from .prompt import ProofreadingPrompt
 
-__all__ = ["EnglishProofreadingQuery"]
+__all__ = ["ProofreadingQuery"]
 
 
-class EnglishProofreadingQuery(Query, ABC):
-    """Abstract base class for English proofreading queries."""
+class ProofreadingQuery(Query, ABC):
+    """ABC for proofreading queries."""
 
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt]]  # type: ignore
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -32,7 +32,7 @@ class EnglishProofreadingQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 

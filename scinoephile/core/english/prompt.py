@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text strings to be used for corresponding with an LLM in English."""
+"""LLM correspondence text for English."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["EnglishPrompt"]
 
 
 class EnglishPrompt(Prompt, ABC):
-    """Text strings to be used for corresponding with an LLM in English."""
+    """LLM correspondence text for English."""
 
     # Prompt
     schema_intro: ClassVar[str] = (

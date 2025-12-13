@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import get_english_proofread
+from scinoephile.core.english.proofreading import get_eng_proofread
 
 
 def _test_get_english_proofread(series: Series, expected: Series):
@@ -17,7 +17,7 @@ def _test_get_english_proofread(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_english_proofread(series)
+    output = get_eng_proofread(series)
 
     assert len(series) == len(output)
 

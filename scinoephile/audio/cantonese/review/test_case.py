@@ -101,6 +101,5 @@ class ReviewTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", ReviewPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
-        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)
+        return cls.get_test_case_cls(size=size, **kwargs)

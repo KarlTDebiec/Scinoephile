@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English proofreading test cases."""
+"""ABC for proofreading test cases."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from pydantic import create_model, model_validator
 from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
-from .answer import EnglishProofreadingAnswer
-from .prompt import EnglishProofreadingPrompt
-from .query import EnglishProofreadingQuery
+from .answer import ProofreadingAnswer
+from .prompt import ProofreadingPrompt
+from .query import ProofreadingQuery
 
-__all__ = ["EnglishProofreadingTestCase"]
+__all__ = ["ProofreadingTestCase"]
 
 
-class EnglishProofreadingTestCase(TestCase, ABC):
-    """Abstract base class for English proofreading test cases."""
+class ProofreadingTestCase(TestCase, ABC):
+    """ABC for proofreading test cases."""
 
-    answer_cls: ClassVar[type[EnglishProofreadingAnswer]]  # type: ignore
+    answer_cls: ClassVar[type[ProofreadingAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[EnglishProofreadingQuery]]  # type: ignore
+    query_cls: ClassVar[type[ProofreadingQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt]]  # type: ignore
+    prompt_cls: ClassVar[type[ProofreadingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -46,12 +46,14 @@ class EnglishProofreadingTestCase(TestCase, ABC):
             minimum difficulty level based on the test case properties
         """
         min_difficulty = super().get_min_difficulty()
-        if self.answer is not None:
-            if any(
-                getattr(self.answer, f"revised_{idx}") != ""
-                for idx in range(1, self.size + 1)
-            ):
-                min_difficulty = max(min_difficulty, 1)
+        if self.answer is None:
+            return min_difficulty
+
+        if any(
+            getattr(self.answer, self.prompt_cls.revised_field(idx)) != ""
+            for idx in range(1, self.size + 1)
+        ):
+            min_difficulty = max(min_difficulty, 1)
         return min_difficulty
 
     @model_validator(mode="after")
@@ -80,7 +82,7 @@ class EnglishProofreadingTestCase(TestCase, ABC):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -91,8 +93,8 @@ class EnglishProofreadingTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = EnglishProofreadingQuery.get_query_cls(size, prompt_cls)
-        answer_cls = EnglishProofreadingAnswer.get_answer_cls(size, prompt_cls)
+        query_cls = ProofreadingQuery.get_query_cls(size, prompt_cls)
+        answer_cls = ProofreadingAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
@@ -112,7 +114,7 @@ class EnglishProofreadingTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", EnglishProofreadingPrompt)
+        prompt_cls = kwargs.get("prompt_cls")
         pattern = re.compile(rf"^{re.escape(prompt_cls.subtitle_prefix)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
-        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)
+        return cls.get_test_case_cls(size=size, **kwargs)

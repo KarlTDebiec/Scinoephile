@@ -11,9 +11,10 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingTestCase
+from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingTestCase
+from scinoephile.core.proofreading import ProofreadingTestCase
+from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingPrompt
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
@@ -157,32 +158,40 @@ def kob_yue_hans_eng() -> Series:
 
 @cache
 def get_kob_eng_proofreading_test_cases(
+    prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
     **kwargs: Any,
-) -> list[EnglishProofreadingTestCase]:
+) -> list[ProofreadingTestCase]:
     """Get KOB English proofreading test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "core" / "english" / "proofreading.json"
-    return load_test_cases_from_json(path, EnglishProofreadingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache
 def get_kob_zho_proofreading_test_cases(
+    prompt_cls: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
     **kwargs: Any,
-) -> list[ZhongwenProofreadingTestCase]:
+) -> list[ProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "core" / "zhongwen" / "proofreading.json"
-    return load_test_cases_from_json(path, ZhongwenProofreadingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache

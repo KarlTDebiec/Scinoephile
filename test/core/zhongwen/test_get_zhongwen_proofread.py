@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zhongwen.proofreading import get_zhongwen_proofread
+from scinoephile.core.zhongwen.proofreading import get_zho_proofread
 
 
 def _test_get_zhongwen_proofread(series: Series, expected: Series):
@@ -17,7 +17,7 @@ def _test_get_zhongwen_proofread(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_zhongwen_proofread(series)
+    output = get_zho_proofread(series)
 
     assert len(series) == len(output)
 

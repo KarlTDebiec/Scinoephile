@@ -4,41 +4,84 @@
 
 from __future__ import annotations
 
+from logging import warning
 from typing import Any
 
+from scinoephile.core.proofreading import Proofreader, ProofreadingTestCase
 from scinoephile.core.series import Series
 
-from .answer import EnglishProofreadingAnswer
 from .prompt import EnglishProofreadingPrompt
-from .proofreader import EnglishProofreader
-from .query import EnglishProofreadingQuery
-from .test_case import EnglishProofreadingTestCase
 
 __all__ = [
-    "EnglishProofreader",
-    "EnglishProofreadingAnswer",
     "EnglishProofreadingPrompt",
-    "EnglishProofreadingQuery",
-    "EnglishProofreadingTestCase",
-    "get_english_proofread",
+    "get_default_eng_proofreading_test_cases",
+    "get_eng_proofread",
+    "get_eng_proofreader",
 ]
 
 
-def get_english_proofread(
-    series: Series, proofreader: EnglishProofreader | None = None, **kwargs: Any
+# noinspection PyUnusedImports
+def get_default_eng_proofreading_test_cases() -> list[ProofreadingTestCase]:
+    """Get default test cases included with package.
+
+    Returns:
+        Test cases configured with the English proofreading prompt.
+    """
+    try:
+        from test.data.kob import get_kob_eng_proofreading_test_cases
+        from test.data.mlamd import get_mlamd_eng_proofreading_test_cases
+        from test.data.mnt import get_mnt_eng_proofreading_test_cases
+        from test.data.t import get_t_eng_proofreading_test_cases
+
+        return (
+            get_kob_eng_proofreading_test_cases()
+            + get_mlamd_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases()
+        )
+    except ImportError as exc:
+        warning(
+            "Default test cases not available for English proofreading, "
+            f"encountered Exception:\n{exc}"
+        )
+    return []
+
+
+def get_eng_proofread(
+    series: Series, proofreader: Proofreader | None = None, **kwargs: Any
 ) -> Series:
     """Get English series proofread.
 
     Arguments:
         series: Series to proofread
-        proofreader: EnglishProofreader to use
-        kwargs: additional keyword arguments for EnglishProofreader.proofread
+        proofreader: proofreader to use
+        kwargs: additional keyword arguments for proofreader.proofread
     Returns:
-        proofread Series
+        Proofread Series
     """
     if proofreader is None:
-        proofreader = EnglishProofreader()
+        proofreader = get_eng_proofreader()
+    return proofreader.proofread(series, **kwargs)
 
-    proofread = proofreader.proofread(series, **kwargs)
 
-    return proofread
+def get_eng_proofreader(
+    prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+    default_test_cases: list[ProofreadingTestCase] | None = None,
+    **kwargs: Any,
+) -> Proofreader:
+    """Get a proofreader configured for English subtitles.
+
+    Arguments:
+        prompt_cls: prompt
+        default_test_cases: default test cases
+        kwargs: additional keyword arguments for Proofreader
+    Returns:
+        Configured proofreader instance.
+    """
+    if default_test_cases is None:
+        default_test_cases = get_default_eng_proofreading_test_cases()
+    return Proofreader(
+        prompt_cls=prompt_cls,
+        default_test_cases=default_test_cases,
+        **kwargs,
+    )

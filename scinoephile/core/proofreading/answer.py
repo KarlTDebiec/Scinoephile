@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English proofreading answers."""
+"""ABC for proofreading answers."""
 
 from __future__ import annotations
 
@@ -10,18 +10,18 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Answer
+from scinoephile.core.llms import Answer, Prompt
 from scinoephile.core.models import get_model_name
 
-from .prompt import EnglishProofreadingPrompt
+from .prompt import ProofreadingPrompt
 
-__all__ = ["EnglishProofreadingAnswer"]
+__all__ = ["ProofreadingAnswer"]
 
 
-class EnglishProofreadingAnswer(Answer, ABC):
-    """Abstract base class for English proofreading answers."""
+class ProofreadingAnswer(Answer, ABC):
+    """ABC for proofreading answers."""
 
-    prompt_cls: ClassVar[type[EnglishProofreadingPrompt]]  # type: ignore
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -32,13 +32,13 @@ class EnglishProofreadingAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+        prompt_cls: type[ProofreadingPrompt],
     ) -> type[Self]:
-        """Get concrete answer class with provided configuartion.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: prompt providing descriptions and messages
         Returns:
             Answer type with appropriate configuration
         """
