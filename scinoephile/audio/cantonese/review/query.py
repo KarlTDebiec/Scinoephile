@@ -45,11 +45,11 @@ class ReviewQuery(Query, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = f"zhongwen_{idx + 1}"
-            description = prompt_cls.zhongwen_description.format(idx=idx + 1)
+            key = prompt_cls.zhongwen_field(idx + 1)
+            description = prompt_cls.zhongwen_description(idx + 1)
             fields[key] = (str, Field(..., description=description))
-            key = f"yuewen_{idx + 1}"
-            description = prompt_cls.yuewen_description.format(idx=idx + 1)
+            key = prompt_cls.yuewen_field(idx + 1)
+            description = prompt_cls.yuewen_description(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
