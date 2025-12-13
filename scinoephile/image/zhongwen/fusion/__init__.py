@@ -10,10 +10,11 @@ from typing import Any
 from scinoephile.core import Series
 from scinoephile.image.fusion import Fuser, FusionPrompt, FusionTestCase
 
-from .prompt import ZhongwenSimpFusionPrompt
+from .prompt import ZhongwenSimpFusionPrompt, ZhongwenTradFusionPrompt
 
 __all__ = [
     "ZhongwenSimpFusionPrompt",
+    "ZhongwenTradFusionPrompt",
     "get_default_zho_fusion_test_cases",
     "get_zho_fuser",
     "get_zhongwen_ocr_fused",
