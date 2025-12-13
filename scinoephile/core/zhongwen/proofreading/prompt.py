@@ -53,6 +53,3 @@ class ZhongwenProofreadingPrompt(ZhongwenPrompt):
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
     """Error message when 'xiugai' field is missing but 'beizhu' field is present."""
-    # Query fields
-    subtitle_prefix: ClassVar[str] = "subtitle_"
-    """Prefix of subtitle field in query."""
