@@ -24,11 +24,14 @@ class ZhongwenProofreadingPrompt(ZhongwenPrompt):
         如果不需要修改，请将修改后的字幕和备注都留空字符串。""")
     """Base system prompt."""
 
-    # Query descriptions
+    # Query fields
+    subtitle_prefix: ClassVar[str] = "zimu_"
+    """Prefix of subtitle field in query."""
+
     subtitle_description: ClassVar[str] = "第 {idx} 条字幕"
     """Description of 'zimu' field."""
 
-    # Answer descriptions
+    # Answer field names and descriptions
     revised_description: ClassVar[str] = "第 {idx} 条修改后的字幕"
     """Description of 'xiugai' field."""
 
@@ -50,3 +53,6 @@ class ZhongwenProofreadingPrompt(ZhongwenPrompt):
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
     """Error message when 'xiugai' field is missing but 'beizhu' field is present."""
+    # Query fields
+    subtitle_prefix: ClassVar[str] = "subtitle_"
+    """Prefix of subtitle field in query."""

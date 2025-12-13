@@ -61,20 +61,17 @@ class TestCase(BaseModel, ABC):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        prompt_cls: type[Prompt],
         **kwargs: Any,
     ) -> type[Self]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data from JSON
-            prompt_cls: Prompt providing descriptions and messages
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case class
         """
-        test_case_cls = cls.get_test_case_cls(prompt_cls=prompt_cls, **kwargs)
-        return test_case_cls
+        return cls.get_test_case_cls(**kwargs)
 
     @staticmethod
     def get_fields(
