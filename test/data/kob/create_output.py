@@ -9,10 +9,7 @@ from pathlib import Path
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.english import get_english_cleaned, get_english_flattened
-from scinoephile.core.english.proofreading import (
-    get_english_proofread,
-    get_english_proofreader,
-)
+from scinoephile.core.english.proofreading import get_eng_proofread, get_eng_proofreader
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.core.zhongwen import (
     OpenCCConfig,
@@ -21,8 +18,8 @@ from scinoephile.core.zhongwen import (
     get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
-    get_zhongwen_proofread,
-    get_zhongwen_proofreader,
+    get_zho_proofread,
+    get_zho_proofreader,
 )
 from scinoephile.image.english.fusion import EnglishFuser, get_english_ocr_fused
 from scinoephile.image.zhongwen.fusion import ZhongwenFuser, get_zhongwen_ocr_fused
@@ -85,9 +82,9 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
     zho_hant_fuse = get_zhongwen_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zhongwen_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
-    zho_hant_fuse_proofread = get_zhongwen_proofread(
+    zho_hant_fuse_proofread = get_zho_proofread(
         zho_hant_fuse,
-        get_zhongwen_proofreader(
+        get_zho_proofreader(
             test_cases=get_mlamd_zho_proofreading_test_cases()
             + get_mnt_zho_proofreading_test_cases()
             + get_t_zho_proofreading_test_cases(),
@@ -118,9 +115,9 @@ if "English (OCR)" in actions:
         ),
     )
     eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_fuse_proofread = get_english_proofread(
+    eng_fuse_proofread = get_eng_proofread(
         eng_fuse,
-        get_english_proofreader(
+        get_eng_proofreader(
             test_cases=get_mlamd_eng_proofreading_test_cases()
             + get_mnt_eng_proofreading_test_cases()
             + get_t_eng_proofreading_test_cases(),
