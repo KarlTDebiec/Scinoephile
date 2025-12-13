@@ -120,9 +120,9 @@ class ProofreadingPrompt(Prompt, ABC):
         "Answer's text {idx} is not modified relative to query's text {idx}, but a "
         "note is provided, if no revisions are needed an empty string must be provided."
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when revision is missing for a note."""
 
     @classmethod
     def revised_missing_error(cls, idx: int) -> str:
-        """Error message when revision is missing but note is provided."""
+        """Error message when revision is missing for a note."""
         return cls.revised_missing_error_template.format(idx=idx)

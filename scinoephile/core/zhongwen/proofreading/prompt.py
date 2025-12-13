@@ -8,13 +8,20 @@ from typing import ClassVar
 
 from scinoephile.core.proofreading import ProofreadingPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.core.zhongwen import ZhongwenPrompt
+from scinoephile.core.zhongwen import (
+    OpenCCConfig,
+    ZhongwenPrompt,
+    get_zhongwen_text_converted,
+)
 
-__all__ = ["ZhongwenProofreadingPrompt"]
+__all__ = [
+    "ZhongwenTradProofreadingPrompt",
+    "ZhongwenSimpProofreadingPrompt",
+]
 
 
-class ZhongwenProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
-    """LLM correspondence text for 中文 proofreading."""
+class ZhongwenSimpProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
+    """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -54,9 +61,62 @@ class ZhongwenProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     note_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本已被修改，但未提供备注。如需修改，必须附带备注说明。"
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when note is missing for a revision."""
 
     revised_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
-    """Error template when revision is missing but note is provided."""
+    """Error template when revision is missing for a note."""
+
+
+class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
+    """LLM correspondence text for 繁体中文 proofreading."""
+
+    # Prompt
+    base_system_prompt: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.base_system_prompt, OpenCCConfig.s2t
+    )
+    """Base system prompt."""
+
+    # Query fields
+    subtitle_prefix: ClassVar[str] = "zimu_"
+    """Prefix of subtitle field in query."""
+
+    subtitle_description_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.subtitle_description_template, OpenCCConfig.s2t
+    )
+    """Description template for subtitle field in query."""
+
+    # Answer fields
+    revised_prefix: ClassVar[str] = "xiugai_"
+    """Prefix of revised field in answer."""
+
+    revised_description_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.revised_description_template, OpenCCConfig.s2t
+    )
+    """Description template for revised field in answer."""
+
+    note_prefix: ClassVar[str] = "beizhu_"
+    """Prefix of note field in answer."""
+
+    note_description_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.note_description_template, OpenCCConfig.s2t
+    )
+    """Description template for note field in answer."""
+
+    # Test case errors
+    subtitle_revised_equal_error_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.subtitle_revised_equal_error_template,
+        OpenCCConfig.s2t,
+    )
+    """Error template when subtitle and revised fields are equal."""
+
+    note_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.note_missing_error_template, OpenCCConfig.s2t
+    )
+    """Error template when note is missing for a revision."""
+
+    revised_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
+        ZhongwenSimpProofreadingPrompt.revised_missing_error_template, OpenCCConfig.s2t
+    )
+    """Error template when revision is missing for a note."""

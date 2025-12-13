@@ -7,17 +7,25 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zhongwen.proofreading import get_zho_proofread
+from scinoephile.core.proofreading import Proofreader
+from scinoephile.core.zhongwen.proofreading import (
+    ZhongwenTradProofreadingPrompt,
+    get_zho_proofread,
+    get_zho_proofreader,
+)
 
 
-def _test_get_zhongwen_proofread(series: Series, expected: Series):
+def _test_get_zhongwen_proofread(
+    series: Series, expected: Series, proofreader: Proofreader | None = None
+):
     """Test get_zhongwen_proofread.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
+        proofreader: Proofreader to use for the test
     """
-    output = get_zho_proofread(series)
+    output = get_zho_proofread(series, proofreader=proofreader)
 
     assert len(series) == len(output)
 
@@ -41,7 +49,11 @@ def test_get_zhongwen_proofread_kob(
         kob_zho_hant_fuse: KOB English series fixture
         kob_zho_hant_fuse_proofread: Expected proofread KOB English series fixture
     """
-    _test_get_zhongwen_proofread(kob_zho_hant_fuse, kob_zho_hant_fuse_proofread)
+    _test_get_zhongwen_proofread(
+        kob_zho_hant_fuse,
+        kob_zho_hant_fuse_proofread,
+        get_zho_proofreader(prompt_cls=ZhongwenTradProofreadingPrompt),
+    )
 
 
 def test_get_zhongwen_proofread_mlamd(

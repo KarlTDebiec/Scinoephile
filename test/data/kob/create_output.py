@@ -18,6 +18,7 @@ from scinoephile.core.zhongwen import (
     get_zhongwen_flattened,
 )
 from scinoephile.core.zhongwen.proofreading import (
+    ZhongwenTradProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
 )
@@ -85,9 +86,16 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse_proofread = get_zho_proofread(
         zho_hant_fuse,
         get_zho_proofreader(
-            test_cases=get_mlamd_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases(),
+            prompt_cls=ZhongwenTradProofreadingPrompt,
+            test_cases=get_mlamd_zho_proofreading_test_cases(
+                prompt_cls=ZhongwenTradProofreadingPrompt
+            )
+            + get_mnt_zho_proofreading_test_cases(
+                prompt_cls=ZhongwenTradProofreadingPrompt
+            )
+            + get_t_zho_proofreading_test_cases(
+                prompt_cls=ZhongwenTradProofreadingPrompt
+            ),
             test_case_path=test_data_root
             / title
             / "core"
