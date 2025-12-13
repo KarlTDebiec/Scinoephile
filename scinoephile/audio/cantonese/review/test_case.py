@@ -92,16 +92,15 @@ class ReviewTestCase(TestCase, ABC):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls, data: dict, prompt_cls: type[ReviewPrompt], **kwargs: Any
-    ) -> type[Self]:
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
+        prompt_cls = kwargs.get("prompt_cls", ReviewPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)

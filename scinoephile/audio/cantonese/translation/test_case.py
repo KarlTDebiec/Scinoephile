@@ -77,18 +77,16 @@ class TranslationTestCase(TestCase, ABC):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls, data: dict, prompt_cls: type[TranslationPrompt], **kwargs: Any
-    ) -> type[Self]:
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
-            prompt_cls: Prompt providing descriptions and messages
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
+        prompt_cls = kwargs.get("prompt_cls", TranslationPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
         yuewen_idxs = [
             int(key.split("_")[-1]) - 1
