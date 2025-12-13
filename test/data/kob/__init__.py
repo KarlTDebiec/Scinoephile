@@ -14,10 +14,7 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenSimpProofreadingPrompt,
-    ZhongwenTradProofreadingPrompt,
-)
+from scinoephile.core.zhongwen.proofreading import ZhongwenTradProofreadingPrompt
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
