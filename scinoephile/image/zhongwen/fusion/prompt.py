@@ -8,11 +8,12 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.core.zhongwen import ZhongwenPrompt
+from scinoephile.image.fusion import FusionPrompt
 
 __all__ = ["ZhongwenFusionPrompt"]
 
 
-class ZhongwenFusionPrompt(ZhongwenPrompt):
+class ZhongwenFusionPrompt(FusionPrompt, ZhongwenPrompt):
     """Text for LLM correspondence for 中文 OCR fusion."""
 
     # Prompt
@@ -24,35 +25,47 @@ class ZhongwenFusionPrompt(ZhongwenPrompt):
         * PaddleOCR 在换行格式方面更可靠。""")
     """Base system prompt."""
 
+    # Query fields
+    source_one_field: ClassVar[str] = "lens"
+    source_two_field: ClassVar[str] = "paddle"
+
     # Query descriptions
-    lens_description: ClassVar[str] = "Google Lens 提取的字幕文本"
+    source_one_description: ClassVar[str] = "Google Lens 提取的字幕文本"
     """Description of 'lens' field."""
 
-    paddle_description: ClassVar[str] = "PaddleOCR 提取的字幕文本"
+    source_two_description: ClassVar[str] = "PaddleOCR 提取的字幕文本"
     """Description of 'paddle' field."""
 
     # Query validation errors
-    lens_missing_error: ClassVar[str] = "缺少 Google Lens 的中文字幕文本。"
+    source_one_missing_error: ClassVar[str] = "缺少 Google Lens 的中文字幕文本。"
     """Error message when 'lens' field is missing."""
 
-    paddle_missing_error: ClassVar[str] = "缺少 PaddleOCR 的中文字幕文本。"
+    source_two_missing_error: ClassVar[str] = "缺少 PaddleOCR 的中文字幕文本。"
     """Error message when 'paddle' field is missing."""
 
-    lens_paddle_equal_error: ClassVar[str] = (
+    sources_equal_error: ClassVar[str] = (
         "Google Lens 与 PaddleOCR 的字幕文本不能完全相同。"
     )
     """Error message when 'lens' and 'paddle' fields are equal."""
 
+    # Answer fields
+    fused_field: ClassVar[str] = "ronghe"
+    note_field: ClassVar[str] = "beizhu"
+
     # Answer descriptions
-    ronghe_description: ClassVar[str] = "融合后的字幕文本"
+    fused_description: ClassVar[str] = "融合后的字幕文本"
     """Description of 'ronghe' field."""
 
-    beizhu_description: ClassVar[str] = "对所做更正的说明"
+    note_description: ClassVar[str] = "对所做更正的说明"
     """Description of 'beizhu' field."""
 
     # Answer validation errors
-    ronghe_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"
+    fused_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"
     """Error message when 'ronghe' field is missing."""
 
-    beizhu_missing_error: ClassVar[str] = "更正说明不能为空。"
+    note_missing_error: ClassVar[str] = "更正说明不能为空。"
     """Error message when 'beizhu' field is missing."""
+
+    # Logging labels
+    source_one_label: ClassVar[str] = "Lens"
+    source_two_label: ClassVar[str] = "PaddleOCR"

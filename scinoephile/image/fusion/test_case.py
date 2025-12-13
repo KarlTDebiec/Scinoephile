@@ -1,34 +1,42 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for English OCR fusion test cases."""
+"""ABC for OCR fusion test cases."""
 
 from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import ClassVar, Self, cast
 
 from pydantic import create_model
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import Answer, Prompt, Query, TestCase
 from scinoephile.core.models import get_model_name
 
-from .answer import EnglishFusionAnswer
-from .prompt import EnglishFusionPrompt
-from .query import EnglishFusionQuery
+from .answer import FusionAnswer
+from .prompt import FusionPrompt
+from .query import FusionQuery
 
-__all__ = ["EnglishFusionTestCase"]
+__all__ = ["FusionTestCase"]
 
 
-class EnglishFusionTestCase(TestCase, ABC):
-    """Abstract base class for English OCR fusion test cases."""
+class FusionTestCase(TestCase, ABC):
+    """ABC for OCR fusion test cases."""
 
-    answer_cls: ClassVar[type[EnglishFusionAnswer]]  # type: ignore
+    answer_cls: ClassVar[type[Answer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[EnglishFusionQuery]]  # type: ignore
+    query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[EnglishFusionPrompt]]  # type: ignore
+    prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
+    query: FusionQuery
+    """Query for this test case."""
+    answer: FusionAnswer | None
+    """Answer to this test case."""
+    prompt: bool
+    """Whether to include test case in prompt examples."""
+    verified: bool
+    """Whether to cache verified answer."""
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
@@ -38,13 +46,17 @@ class EnglishFusionTestCase(TestCase, ABC):
         if self.get_min_difficulty() > 1:
             return False
 
-        lens = getattr(self.query, "lens", None)
-        tesseract = getattr(self.query, "tesseract", None)
-        fused = getattr(self.answer, "fused", None)
-        if lens is not None and tesseract is not None and fused is not None:
-            if lens == fused and "\n" not in lens:
+        prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
+        source_one_field = prompt_cls.source_one_field
+        source_two_field = prompt_cls.source_two_field
+        fused_field = prompt_cls.fused_field
+        source_one = getattr(self.query, source_one_field, None)
+        source_two = getattr(self.query, source_two_field, None)
+        fused = getattr(self.answer, fused_field, None)
+        if source_one is not None and source_two is not None and fused is not None:
+            if source_one == fused and "\n" not in source_one:
                 return True
-            if tesseract == fused and "\n" not in tesseract:
+            if source_two == fused and "\n" not in source_two:
                 return True
         return super().get_auto_verified()
 
@@ -62,7 +74,8 @@ class EnglishFusionTestCase(TestCase, ABC):
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
         if self.answer is not None:
-            fused = getattr(self.answer, "fused", None)
+            prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
+            fused = getattr(self.answer, prompt_cls.fused_field, None)
             if fused is not None:
                 if "-" in fused or '"' in fused:
                     min_difficulty = max(min_difficulty, 2)
@@ -72,7 +85,7 @@ class EnglishFusionTestCase(TestCase, ABC):
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[EnglishFusionPrompt] = EnglishFusionPrompt,
+        prompt_cls: type[FusionPrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -82,8 +95,8 @@ class EnglishFusionTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = EnglishFusionQuery.get_query_cls(prompt_cls)
-        answer_cls = EnglishFusionAnswer.get_answer_cls(prompt_cls)
+        query_cls = FusionQuery.get_query_cls(prompt_cls)
+        answer_cls = FusionAnswer.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
