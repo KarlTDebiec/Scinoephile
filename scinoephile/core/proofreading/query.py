@@ -18,7 +18,7 @@ from .prompt import ProofreadingPrompt
 __all__ = ["ProofreadingQuery"]
 
 
-class ProofreadingQuery(ABC, Query):
+class ProofreadingQuery(Query, ABC):
     """ABC for proofreading queries."""
 
     prompt_cls: ClassVar[type[Prompt]]

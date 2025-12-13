@@ -21,7 +21,7 @@ from .query import ProofreadingQuery
 __all__ = ["ProofreadingTestCase"]
 
 
-class ProofreadingTestCase(ABC, TestCase):
+class ProofreadingTestCase(TestCase, ABC):
     """ABC for proofreading test cases."""
 
     answer_cls: ClassVar[type[ProofreadingAnswer]]

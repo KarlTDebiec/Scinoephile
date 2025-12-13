@@ -18,7 +18,7 @@ from .prompt import ProofreadingPrompt
 __all__ = ["ProofreadingAnswer"]
 
 
-class ProofreadingAnswer(ABC, Answer):
+class ProofreadingAnswer(Answer, ABC):
     """ABC for proofreading answers."""
 
     prompt_cls: ClassVar[type[Prompt]]
