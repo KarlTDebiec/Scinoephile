@@ -15,8 +15,8 @@ from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingTestCase
 from scinoephile.core.zhongwen.proofreading import (
-    TraditionalZhongwenProofreadingPrompt,
-    ZhongwenProofreadingPrompt,
+    ZhongwenSimpProofreadingPrompt,
+    ZhongwenTradProofreadingPrompt,
 )
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
@@ -55,108 +55,108 @@ output_dir = title_root / "output"
 @pytest.fixture
 def kob_zho_hant_lens() -> Series:
     """KOB 繁體中文 subtitles OCRed using Google Lens."""
-    return Series.load(str(input_dir / "zho-Hant_lens.srt"))
+    return Series.load(input_dir / "zho-Hant_lens.srt")
 
 
 @pytest.fixture
 def kob_zho_hant_paddle() -> Series:
     """KOB 繁體中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(str(input_dir / "zho-Hant_paddle.srt"))
+    return Series.load(input_dir / "zho-Hant_paddle.srt")
 
 
 @pytest.fixture
 def kob_zho_hant_fuse() -> Series:
     """KOB 繁體中文 fused subtitles."""
-    return Series.load(str(output_dir / "zho-Hant_fuse.srt"))
+    return Series.load(output_dir / "zho-Hant_fuse.srt")
 
 
 @pytest.fixture
 def kob_zho_hant_fuse_proofread() -> Series:
     """KOB 简体粤文 fused and proofread subtitles."""
-    return Series.load(str(output_dir / "zho-Hant_fuse_proofread.srt"))
+    return Series.load(output_dir / "zho-Hant_fuse_proofread.srt")
 
 
 # English (OCR)
 @pytest.fixture
 def kob_eng_lens() -> Series:
     """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(str(input_dir / "eng_lens.srt"))
+    return Series.load(input_dir / "eng_lens.srt")
 
 
 @pytest.fixture
 def kob_eng_tesseract() -> Series:
     """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(str(input_dir / "eng_tesseract.srt"))
+    return Series.load(input_dir / "eng_tesseract.srt")
 
 
 @pytest.fixture
 def kob_eng_fuse() -> Series:
     """KOB English fused subtitles."""
-    return Series.load(str(output_dir / "eng_fuse.srt"))
+    return Series.load(output_dir / "eng_fuse.srt")
 
 
 @pytest.fixture
 def kob_eng_fuse_proofread() -> Series:
     """KOB English fused and proofread subtitles."""
-    return Series.load(str(output_dir / "eng_fuse_proofread.srt"))
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
 
 
 # 简体粤文 (SRT)
 @pytest.fixture
 def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles."""
-    return Series.load(str(input_dir / "yue-Hans.srt"))
+    return Series.load(input_dir / "yue-Hans.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean() -> Series:
     """KOB 简体粤文 cleaned subtitles."""
-    return Series.load(str(output_dir / "yue-Hans_clean.srt"))
+    return Series.load(output_dir / "yue-Hans_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_clean_flatten() -> Series:
     """KOB 简体粤文 cleaned and flattened subtitles."""
-    return Series.load(str(output_dir / "yue-Hans_clean_flatten.srt"))
+    return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
 
 
 # 繁体粤文 (SRT)
 @pytest.fixture
 def kob_yue_hant() -> Series:
     """KOB 繁体粤文 subtitles."""
-    return Series.load(str(input_dir / "yue-Hant.srt"))
+    return Series.load(input_dir / "yue-Hant.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_simplify() -> Series:
     """KOB 繁体粤文 simplified subtitles."""
-    return Series.load(str(output_dir / "yue-Hant_simplify.srt"))
+    return Series.load(output_dir / "yue-Hant_simplify.srt")
 
 
 # English (SRT)
 @pytest.fixture
 def kob_eng() -> Series:
     """KOB English subtitles."""
-    return Series.load(str(input_dir / "eng.srt"))
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
 def kob_eng_clean() -> Series:
     """KOB English cleaned subtitles."""
-    return Series.load(str(output_dir / "eng_clean.srt"))
+    return Series.load(output_dir / "eng_clean.srt")
 
 
 @pytest.fixture
 def kob_eng_clean_flatten() -> Series:
     """KOB English cleaned and flattened subtitles."""
-    return Series.load(str(output_dir / "eng_clean_flatten.srt"))
+    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 # Bilingual 简体粤文 and English
 @pytest.fixture()
 def kob_yue_hans_eng() -> Series:
     """KOB Bilingual 简体粤文 and English subtitles."""
-    return Series.load(str(output_dir / "yue-Hans_eng.srt"))
+    return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @cache
@@ -180,9 +180,7 @@ def get_kob_eng_proofreading_test_cases(
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[
-        ZhongwenProofreadingPrompt
-    ] = TraditionalZhongwenProofreadingPrompt,
+    prompt_cls: type[ZhongwenSimpProofreadingPrompt] = ZhongwenTradProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.

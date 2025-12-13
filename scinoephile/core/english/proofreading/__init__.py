@@ -7,7 +7,11 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
-from scinoephile.core.proofreading import Proofreader, ProofreadingTestCase
+from scinoephile.core.proofreading import (
+    Proofreader,
+    ProofreadingPrompt,
+    ProofreadingTestCase,
+)
 from scinoephile.core.series import Series
 
 from .prompt import EnglishProofreadingPrompt
@@ -21,9 +25,13 @@ __all__ = [
 
 
 # noinspection PyUnusedImports
-def get_default_eng_proofreading_test_cases() -> list[ProofreadingTestCase]:
+def get_default_eng_proofreading_test_cases(
+    prompt_cls: ProofreadingPrompt = ProofreadingPrompt,
+) -> list[ProofreadingTestCase]:
     """Get default test cases included with package.
 
+    Arguments:
+        prompt_cls: prompt class to use for test cases
     Returns:
         Test cases configured with the English proofreading prompt.
     """
@@ -34,10 +42,10 @@ def get_default_eng_proofreading_test_cases() -> list[ProofreadingTestCase]:
         from test.data.t import get_t_eng_proofreading_test_cases
 
         return (
-            get_kob_eng_proofreading_test_cases()
-            + get_mlamd_eng_proofreading_test_cases()
-            + get_mnt_eng_proofreading_test_cases()
-            + get_t_eng_proofreading_test_cases()
+            get_kob_eng_proofreading_test_cases(prompt_cls)
+            + get_mlamd_eng_proofreading_test_cases(prompt_cls)
+            + get_mnt_eng_proofreading_test_cases(prompt_cls)
+            + get_t_eng_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
         warning(

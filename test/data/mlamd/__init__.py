@@ -19,7 +19,7 @@ from scinoephile.core import Series
 from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingTestCase
-from scinoephile.core.zhongwen.proofreading import ZhongwenProofreadingPrompt
+from scinoephile.core.zhongwen.proofreading import ZhongwenSimpProofreadingPrompt
 from scinoephile.image.english.fusion import EnglishFusionTestCase
 from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
 from scinoephile.testing import test_data_root
@@ -252,7 +252,7 @@ def get_mlamd_eng_proofreading_test_cases(
 
 @cache
 def get_mlamd_zho_proofreading_test_cases(
-    prompt_cls: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
+    prompt_cls: type[ZhongwenSimpProofreadingPrompt] = ZhongwenSimpProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get MLAMD Zhongwen proofreading test cases.

@@ -7,14 +7,18 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
-from scinoephile.core.proofreading import Proofreader, ProofreadingTestCase
+from scinoephile.core.proofreading import (
+    Proofreader,
+    ProofreadingPrompt,
+    ProofreadingTestCase,
+)
 from scinoephile.core.series import Series
 
-from .prompt import TraditionalZhongwenProofreadingPrompt, ZhongwenProofreadingPrompt
+from .prompt import ZhongwenSimpProofreadingPrompt, ZhongwenTradProofreadingPrompt
 
 __all__ = [
-    "ZhongwenProofreadingPrompt",
-    "TraditionalZhongwenProofreadingPrompt",
+    "ZhongwenSimpProofreadingPrompt",
+    "ZhongwenTradProofreadingPrompt",
     "get_default_zho_proofreading_test_cases",
     "get_zho_proofread",
     "get_zho_proofreader",
@@ -22,9 +26,13 @@ __all__ = [
 
 
 # noinspection PyUnusedImports
-def get_default_zho_proofreading_test_cases() -> list[ProofreadingTestCase]:
+def get_default_zho_proofreading_test_cases(
+    prompt_cls: ProofreadingPrompt = ProofreadingPrompt,
+) -> list[ProofreadingTestCase]:
     """Get default test cases included with package.
 
+    Arguments:
+        prompt_cls: prompt class to use for test cases
     Returns:
         Test cases configured with the 中文 proofreading prompt.
     """
@@ -35,10 +43,10 @@ def get_default_zho_proofreading_test_cases() -> list[ProofreadingTestCase]:
         from test.data.t import get_t_zho_proofreading_test_cases
 
         return (
-            get_kob_zho_proofreading_test_cases()
-            + get_mlamd_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases()
+            get_kob_zho_proofreading_test_cases(prompt_cls)
+            + get_mlamd_zho_proofreading_test_cases(prompt_cls)
+            + get_mnt_zho_proofreading_test_cases(prompt_cls)
+            + get_t_zho_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
         warning(
@@ -66,7 +74,7 @@ def get_zho_proofread(
 
 
 def get_zho_proofreader(
-    prompt_cls: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
+    prompt_cls: type[ZhongwenSimpProofreadingPrompt] = ZhongwenSimpProofreadingPrompt,
     default_test_cases: list[ProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> Proofreader:
