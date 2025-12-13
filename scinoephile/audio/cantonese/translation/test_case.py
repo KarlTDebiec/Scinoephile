@@ -86,7 +86,6 @@ class TranslationTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", TranslationPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
         yuewen_idxs = [
             int(key.split("_")[-1]) - 1
