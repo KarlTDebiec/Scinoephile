@@ -7,12 +7,12 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
+from scinoephile.core import Series
 from scinoephile.core.proofreading import (
     Proofreader,
     ProofreadingPrompt,
     ProofreadingTestCase,
 )
-from scinoephile.core.series import Series
 
 from .prompt import ZhongwenSimpProofreadingPrompt, ZhongwenTradProofreadingPrompt
 
@@ -34,7 +34,7 @@ def get_default_zho_proofreading_test_cases(
     Arguments:
         prompt_cls: prompt class to use for test cases
     Returns:
-        Test cases configured with the 中文 proofreading prompt.
+        default test cases
     """
     try:
         from test.data.kob import get_kob_zho_proofreading_test_cases
@@ -49,24 +49,23 @@ def get_default_zho_proofreading_test_cases(
             + get_t_zho_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(
-            "Default test cases not available for 中文 proofreading, "
-            f"encountered Exception:\n{exc}"
-        )
+        warning(f"Default test cases not available for 中文 proofreading:\n{exc}")
     return []
 
 
 def get_zho_proofread(
-    series: Series, proofreader: Proofreader | None = None, **kwargs: Any
+    series: Series,
+    proofreader: Proofreader | None = None,
+    **kwargs: Any,
 ) -> Series:
     """Get 中文 series proofread.
 
     Arguments:
         series: Series to proofread
-        proofreader: proofreader to use
-        kwargs: additional keyword arguments for proofreader.proofread
+        proofreader: Proofreader to use
+        kwargs: additional keyword arguments for Proofreader.proofread
     Returns:
-        Proofread Series
+        proofread Series
     """
     if proofreader is None:
         proofreader = get_zho_proofreader()
@@ -78,14 +77,14 @@ def get_zho_proofreader(
     default_test_cases: list[ProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> Proofreader:
-    """Get a proofreader configured for English subtitles.
+    """Get a Proofreader with provided configuration.
 
     Arguments:
         prompt_cls: prompt
         default_test_cases: default test cases
         kwargs: additional keyword arguments for Proofreader
     Returns:
-        Configured proofreader instance.
+        Proofreader with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_zho_proofreading_test_cases(prompt_cls)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for English OCR fusion."""
+"""LLM correspondence text for English fusion."""
 
 from __future__ import annotations
 
@@ -8,12 +8,13 @@ from typing import ClassVar
 
 from scinoephile.core.english import EnglishPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.image.fusion import FusionPrompt
 
 __all__ = ["EnglishFusionPrompt"]
 
 
-class EnglishFusionPrompt(EnglishPrompt):
-    """Text for LLM correspondence for English OCR fusion."""
+class EnglishFusionPrompt(FusionPrompt, EnglishPrompt):
+    """LLM correspondence text for English fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -26,39 +27,31 @@ class EnglishFusionPrompt(EnglishPrompt):
         * Tesseract is more reliable at the capitalization of the first word.""")
     """Base system prompt."""
 
-    # Query descriptions
-    lens_description: ClassVar[str] = "Subtitle text OCRed using Google Lens"
-    """Description of 'lens' field."""
+    # Query fields
+    source_one_field: ClassVar[str] = "lens"
+    """Field name for OCR source one."""
 
-    tesseract_description: ClassVar[str] = "Subtitle text OCRed using Tesseract"
-    """Description of 'tesseract' field."""
+    source_one_description: ClassVar[str] = "Subtitle text OCRed using Google Lens"
+    """Description of source one field."""
+
+    source_two_field: ClassVar[str] = "tesseract"
+    """Field name for OCR source two."""
+
+    source_two_description: ClassVar[str] = "Subtitle text OCRed using Tesseract"
+    """Description of source two field."""
 
     # Query validation errors
-    lens_missing_error: ClassVar[str] = (
+    source_one_missing_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens is required."
     )
-    """Error message when 'lens' field is missing."""
+    """Error message when source one field is missing."""
 
-    tesseract_missing_error: ClassVar[str] = (
+    source_two_missing_error: ClassVar[str] = (
         "Subtitle text OCRed using Tesseract is required."
     )
-    """Error message when 'tesseract' field is missing."""
+    """Error message when source two field is missing."""
 
-    lens_tesseract_equal_error: ClassVar[str] = (
+    sources_equal_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens and Tesseract must differ."
     )
-    """Error message when 'lens' and 'tesseract' fields are equal."""
-
-    # Answer descriptions
-    fused_description: ClassVar[str] = "Merged subtitle text"
-    """Description of 'fused' field."""
-
-    note_description: ClassVar[str] = "Explanation of changes made"
-    """Description of 'note' field."""
-
-    # Answer validation errors
-    fused_missing_error: ClassVar[str] = "Merged subtitle text is required."
-    """Error message when 'fused' field is missing."""
-
-    note_missing_error: ClassVar[str] = "Explanation of changes made is required."
-    """Error message when 'note' field is missing."""
+    """Error message when source one and two fields are equal."""

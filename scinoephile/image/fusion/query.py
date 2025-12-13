@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 中文 OCR fusion queries."""
+"""ABC for OCR fusion queries."""
 
 from __future__ import annotations
 
@@ -13,35 +13,35 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
-from .prompt import ZhongwenFusionPrompt
+from .prompt import FusionPrompt
 
-__all__ = ["ZhongwenFusionQuery"]
+__all__ = ["FusionQuery"]
 
 
-class ZhongwenFusionQuery(Query, ABC):
-    """Abstract base class for 中文 OCR fusion queries."""
+class FusionQuery(Query, ABC):
+    """ABC for OCR fusion queries."""
 
-    prompt_cls: ClassVar[type[ZhongwenFusionPrompt]]  # type: ignore
+    prompt_cls: ClassVar[type[FusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        lens = getattr(self, "lens", None)
-        paddle = getattr(self, "paddle", None)
-        if not lens:
-            raise ValueError(self.prompt_cls.lens_missing_error)
-        if not paddle:
-            raise ValueError(self.prompt_cls.paddle_missing_error)
-        if lens == paddle:
-            raise ValueError(self.prompt_cls.lens_paddle_equal_error)
+        source_one = getattr(self, self.prompt_cls.source_one_field, None)
+        source_two = getattr(self, self.prompt_cls.source_two_field, None)
+        if not source_one:
+            raise ValueError(self.prompt_cls.source_one_missing_error)
+        if not source_two:
+            raise ValueError(self.prompt_cls.source_two_missing_error)
+        if source_one == source_two:
+            raise ValueError(self.prompt_cls.sources_equal_error)
         return self
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[ZhongwenFusionPrompt] = ZhongwenFusionPrompt,
+        prompt_cls: type[FusionPrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -52,10 +52,13 @@ class ZhongwenFusionQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "lens": (str, Field(..., description=prompt_cls.lens_description)),
-            "paddle": (
+            prompt_cls.source_one_field: (
                 str,
-                Field(..., description=prompt_cls.paddle_description),
+                Field(..., description=prompt_cls.source_one_description),
+            ),
+            prompt_cls.source_two_field: (
+                str,
+                Field(..., description=prompt_cls.source_two_description),
             ),
         }
 

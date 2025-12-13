@@ -6,7 +6,6 @@
 * Run the following checks on **only the Python files you have changed or been asked to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
-  3. `uv run pyright`
 * Do not add `noqa` comments to ignore linting errors. If fixing a linting error is not
   possible or is outside the scope of your change, that is fine.
 * Testing: `uv run pytest`
@@ -18,8 +17,6 @@
 * Include `from __future__ import annotations`, unless the file is empty (i.e., contains
   only copyright headers and module docstrings such as otherwise empty
   `__init__.py` files).
-* All imports within the `scinoephile` package should use absolute paths starting with
-  `scinoephile` rather than relative imports.
 * In `__init__.py` files, only import classes from the module, not functions or
   variables.
 * Do **not** commit binary files.
@@ -34,6 +31,6 @@
 * Do **not** include any reStructuredText markup such as double backticks.
 * Provide docstrings for all classes and functions, including internal helpers prefixed
   with an underscore.
-* Format docstrings using Google style, with the following tweaks.
+* Format docstrings using Google style, with the following tweaks:
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank link between the "Arguments:" and "Returns:" sections.

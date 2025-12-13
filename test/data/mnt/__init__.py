@@ -15,8 +15,9 @@ from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
 from scinoephile.core.zhongwen.proofreading import ZhongwenSimpProofreadingPrompt
-from scinoephile.image.english.fusion import EnglishFusionTestCase
-from scinoephile.image.zhongwen.fusion import ZhongwenFusionTestCase
+from scinoephile.image.english.fusion import EnglishFusionPrompt
+from scinoephile.image.fusion import FusionPrompt, FusionTestCase
+from scinoephile.image.zhongwen.fusion import ZhongwenSimpFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -194,29 +195,35 @@ def get_mnt_zho_proofreading_test_cases(
 
 @cache
 def get_mnt_eng_fusion_test_cases(
-    **kwargs: Any,
-) -> list[EnglishFusionTestCase]:
+    prompt_cls: type[FusionPrompt] = EnglishFusionPrompt, **kwargs: Any
+) -> list[FusionTestCase]:
     """Get MNT English fusion test cases.
 
     Arguments:
+        prompt_cls: prompt class to use for test cases
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "image" / "english" / "fusion.json"
-    return load_test_cases_from_json(path, EnglishFusionTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache
 def get_mnt_zho_fusion_test_cases(
-    **kwargs: Any,
-) -> list[ZhongwenFusionTestCase]:
+    prompt_cls: type[FusionPrompt] = ZhongwenSimpFusionPrompt, **kwargs: Any
+) -> list[FusionTestCase]:
     """Get MNT Zhongwen fusion test cases.
 
     Arguments:
+        prompt_cls: prompt class to use for test cases
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "image" / "zhongwen" / "fusion.json"
-    return load_test_cases_from_json(path, ZhongwenFusionTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
+    )
