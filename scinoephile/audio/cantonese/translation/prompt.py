@@ -21,13 +21,48 @@ class TranslationPrompt(EnglishPrompt):
         subtitles.""")
     """Base system prompt."""
 
-    # Query descriptions
-    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle {idx}"
-    """Description of 'zhongwen_{idx}' fields."""
+    # Query fields
+    zhongwen_prefix: ClassVar[str] = "zhongwen_"
+    """Prefix of zhongwen field in query."""
 
-    yuewen_query_description: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
-    """Description of 'yuewen_{idx}' query fields."""
+    @classmethod
+    def zhongwen_field(cls, idx: int) -> str:
+        """Name of zhongwen field in query."""
+        return f"{cls.zhongwen_prefix}{idx}"
 
-    # Answer descriptions
-    yuewen_answer_description: ClassVar[str] = "Translated 粤文 of subtitle {idx}"
-    """Description of 'yuewen_{idx}' answer fields."""
+    zhongwen_description_template: ClassVar[str] = "Known 中文 of subtitle {idx}"
+    """Description template for zhongwen field in query."""
+
+    @classmethod
+    def zhongwen_description(cls, idx: int) -> str:
+        """Description of zhongwen field in query."""
+        return cls.zhongwen_description_template.format(idx=idx)
+
+    yuewen_prefix: ClassVar[str] = "yuewen_"
+    """Prefix of yuewen field."""
+
+    @classmethod
+    def yuewen_field(cls, idx: int) -> str:
+        """Name of yuewen field."""
+        return f"{cls.yuewen_prefix}{idx}"
+
+    yuewen_query_description_template: ClassVar[str] = (
+        "Transcribed 粤文 of subtitle {idx}"
+    )
+    """Description template for yuewen field in query."""
+
+    @classmethod
+    def yuewen_query_description(cls, idx: int) -> str:
+        """Description of yuewen field in query."""
+        return cls.yuewen_query_description_template.format(idx=idx)
+
+    # Answer fields
+    yuewen_answer_description_template: ClassVar[str] = (
+        "Translated 粤文 of subtitle {idx}"
+    )
+    """Description template for yuewen field in answer."""
+
+    @classmethod
+    def yuewen_answer_description(cls, idx: int) -> str:
+        """Description of yuewen field in answer."""
+        return cls.yuewen_answer_description_template.format(idx=idx)

@@ -86,11 +86,14 @@ class TranslationTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
+        prompt_cls = kwargs.get("prompt_cls", TranslationPrompt)
+        size = sum(
+            1 for key in data["query"] if key.startswith(prompt_cls.zhongwen_prefix)
+        )
         yuewen_idxs = [
-            int(key.split("_")[-1]) - 1
+            int(key.removeprefix(prompt_cls.yuewen_prefix)) - 1
             for key in data["query"]
-            if key.startswith("yuewen_")
+            if key.startswith(prompt_cls.yuewen_prefix)
         ]
         missing = tuple(idx for idx in range(size) if idx not in yuewen_idxs)
         return cls.get_test_case_cls(size=size, missing=missing, **kwargs)
