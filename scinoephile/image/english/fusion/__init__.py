@@ -43,8 +43,8 @@ def get_default_eng_fusion_test_cases(
             + get_mnt_eng_fusion_test_cases(prompt_cls)
             + get_t_eng_fusion_test_cases(prompt_cls)
         )
-    except ImportError:
-        warning("Default test cases not available for English fusion:\n{exc}")
+    except ImportError as exc:
+        warning(f"Default test cases not available for English fusion:\n{exc}")
     return []
 
 

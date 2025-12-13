@@ -28,7 +28,7 @@ __all__ = [
 def get_default_eng_proofreading_test_cases(
     prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt,
 ) -> list[ProofreadingTestCase]:
-    """Get default English fusion test cases included with package.
+    """Get default English proofreading test cases included with package.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -47,8 +47,8 @@ def get_default_eng_proofreading_test_cases(
             + get_mnt_eng_proofreading_test_cases(prompt_cls)
             + get_t_eng_proofreading_test_cases(prompt_cls)
         )
-    except ImportError:
-        warning("Default test cases not available for English proofreading:\n{exc}")
+    except ImportError as exc:
+        warning(f"Default test cases not available for English proofreading:\n{exc}")
     return []
 
 

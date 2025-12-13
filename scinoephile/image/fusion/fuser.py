@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import info
 from pathlib import Path
 
+from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError, Series, Subtitle
 from scinoephile.core.llms import (
     Queryer,
@@ -20,8 +21,6 @@ from .prompt import FusionPrompt
 from .test_case import FusionTestCase
 
 __all__ = ["Fuser"]
-
-from ...common.validation import val_output_path
 
 
 class Fuser:

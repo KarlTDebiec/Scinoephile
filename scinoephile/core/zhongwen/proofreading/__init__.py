@@ -48,8 +48,8 @@ def get_default_zho_proofreading_test_cases(
             + get_mnt_zho_proofreading_test_cases(prompt_cls)
             + get_t_zho_proofreading_test_cases(prompt_cls)
         )
-    except ImportError:
-        warning("Default test cases not available for 中文 proofreading:\n{exc}")
+    except ImportError as exc:
+        warning(f"Default test cases not available for 中文 proofreading:\n{exc}")
     return []
 
 
