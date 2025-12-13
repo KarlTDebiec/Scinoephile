@@ -157,32 +157,40 @@ def kob_yue_hans_eng() -> Series:
 
 
 @cache
-def get_kob_eng_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
+def get_kob_eng_proofreading_test_cases(
+    prompt_cls: type[EnglishProofreadingPrompt] = EnglishProofreadingPrompt,
+    **kwargs: Any,
+) -> list[ProofreadingTestCase]:
     """Get KOB English proofreading test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "core" / "english" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=EnglishProofreadingPrompt, **kwargs
+        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_kob_zho_proofreading_test_cases(**kwargs: Any) -> list[ProofreadingTestCase]:
+def get_kob_zho_proofreading_test_cases(
+    prompt_cls: type[ZhongwenProofreadingPrompt] = ZhongwenProofreadingPrompt,
+    **kwargs: Any,
+) -> list[ProofreadingTestCase]:
     """Get KOB Zhongwen proofreading test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "core" / "zhongwen" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=ZhongwenProofreadingPrompt, **kwargs
+        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
