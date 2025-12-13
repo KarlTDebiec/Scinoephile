@@ -83,18 +83,19 @@ class EnglishProofreader:
             # Query LLM
             test_case_cls = EnglishProofreadingTestCase.get_test_case_cls(len(block))
             query_cls = test_case_cls.query_cls
-            query = query_cls(
-                **{
-                    f"subtitle_{idx + 1}": re.sub(r"\\N", r"\n", subtitle.text).strip()
-                    for idx, subtitle in enumerate(block)
-                }
-            )
+            prompt_cls = query_cls.prompt_cls
+            query_attrs: dict[str, str] = {}
+            for idx, subtitle in enumerate(block):
+                key = prompt_cls.subtitle_field(idx + 1)
+                query_attrs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
+            query = query_cls(**query_attrs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                if revised := getattr(test_case.answer, f"revised_{sub_idx + 1}"):
+                key = prompt_cls.revised_field(sub_idx + 1)
+                if revised := getattr(test_case.answer, key):
                     subtitle.text = revised
                 output_series.append(subtitle)
 

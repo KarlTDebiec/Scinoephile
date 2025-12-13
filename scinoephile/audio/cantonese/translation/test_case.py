@@ -81,11 +81,12 @@ class TranslationTestCase(TestCase, ABC):
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
+        prompt_cls = kwargs.get("prompt_cls", TranslationPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
         yuewen_idxs = [
             int(key.split("_")[-1]) - 1
@@ -93,5 +94,6 @@ class TranslationTestCase(TestCase, ABC):
             if key.startswith("yuewen_")
         ]
         missing = tuple(idx for idx in range(size) if idx not in yuewen_idxs)
-        test_case_cls = cls.get_test_case_cls(size=size, missing=missing, **kwargs)
-        return test_case_cls
+        return cls.get_test_case_cls(
+            size=size, missing=missing, prompt_cls=prompt_cls, **kwargs
+        )

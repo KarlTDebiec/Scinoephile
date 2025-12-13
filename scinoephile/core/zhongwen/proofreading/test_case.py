@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import re
 from abc import ABC
 from functools import cache
 from typing import Any, ClassVar, Self
@@ -108,11 +109,12 @@ class ZhongwenProofreadingTestCase(TestCase, ABC):
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             TestCase type with appropriate configuration
         """
-        size = sum(1 for key in data["query"] if key.startswith("zimu_"))
-        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
-        return test_case_cls
+        prompt_cls = kwargs.get("prompt_cls", ZhongwenProofreadingPrompt)
+        pattern = re.compile(rf"^{re.escape(prompt_cls.subtitle_prefix)}\d+$")
+        size = sum(1 for field in data["query"] if pattern.match(field))
+        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)

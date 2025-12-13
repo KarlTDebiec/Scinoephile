@@ -96,11 +96,11 @@ class ReviewTestCase(TestCase, ABC):
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
-            test case class
+            TestCase type with appropriate configuration
         """
+        prompt_cls = kwargs.get("prompt_cls", ReviewPrompt)
         size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
-        test_case_cls = cls.get_test_case_cls(size=size, **kwargs)
-        return test_case_cls
+        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls, **kwargs)

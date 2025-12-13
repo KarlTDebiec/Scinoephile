@@ -30,18 +30,6 @@ class TestCase(BaseModel, ABC):
     prompt_cls: ClassVar[type[Prompt]]
     """Text strings to be used for corresponding with LLM."""
 
-    answer: Answer | None = None
-    """Answer part of the test case."""
-    query: Query
-    """Query part of the test case."""
-
-    difficulty: int = Field(0)
-    """Difficulty level of the test case, used for filtering."""
-    prompt: bool = Field(False)
-    """Whether to include test case in prompt examples."""
-    verified: bool = Field(False)
-    """Whether to include test case in the verified answers cache."""
-
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
@@ -70,17 +58,20 @@ class TestCase(BaseModel, ABC):
         return 0
 
     @classmethod
-    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+    def get_test_case_cls_from_data(
+        cls,
+        data: dict,
+        **kwargs: Any,
+    ) -> type[Self]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
-            data: data dictionary
+            data: data from JSON
             kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case class
         """
-        test_case_cls = cls.get_test_case_cls(**kwargs)
-        return test_case_cls
+        return cls.get_test_case_cls(**kwargs)
 
     @staticmethod
     def get_fields(
