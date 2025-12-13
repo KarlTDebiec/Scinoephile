@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self, cast
+from typing import ClassVar, Self
 
 from pydantic import create_model
 
-from scinoephile.core.llms import Answer, Prompt, Query, TestCase
+from scinoephile.core.llms import TestCase
 from scinoephile.core.models import get_model_name
 
 from .answer import FusionAnswer
@@ -23,20 +23,12 @@ __all__ = ["FusionTestCase"]
 class FusionTestCase(TestCase, ABC):
     """ABC for OCR fusion test cases."""
 
-    answer_cls: ClassVar[type[Answer]]
+    answer_cls: ClassVar[type[FusionAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[Query]]
+    query_cls: ClassVar[type[FusionQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt_cls: ClassVar[type[FusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
-    query: FusionQuery
-    """Query for this test case."""
-    answer: FusionAnswer | None
-    """Answer to this test case."""
-    prompt: bool
-    """Whether to include test case in prompt examples."""
-    verified: bool
-    """Whether to cache verified answer."""
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
@@ -46,13 +38,9 @@ class FusionTestCase(TestCase, ABC):
         if self.get_min_difficulty() > 1:
             return False
 
-        prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
-        source_one_field = prompt_cls.source_one_field
-        source_two_field = prompt_cls.source_two_field
-        fused_field = prompt_cls.fused_field
-        source_one = getattr(self.query, source_one_field, None)
-        source_two = getattr(self.query, source_two_field, None)
-        fused = getattr(self.answer, fused_field, None)
+        source_one = getattr(self.query, self.prompt_cls.source_one_field, None)
+        source_two = getattr(self.query, self.prompt_cls.source_two_field, None)
+        fused = getattr(self.answer, self.prompt_cls.fused_field, None)
         if source_one is not None and source_two is not None and fused is not None:
             if source_one == fused and "\n" not in source_one:
                 return True
@@ -73,12 +61,12 @@ class FusionTestCase(TestCase, ABC):
         """
         min_difficulty = super().get_min_difficulty()
         min_difficulty = max(min_difficulty, 1)
-        if self.answer is not None:
-            prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
-            fused = getattr(self.answer, prompt_cls.fused_field, None)
-            if fused is not None:
-                if "-" in fused or '"' in fused:
-                    min_difficulty = max(min_difficulty, 2)
+        if self.answer is None:
+            return min_difficulty
+
+        if fused := getattr(self.answer, self.prompt_cls.fused_field, None):
+            if "-" in fused or '"' in fused:
+                min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
     @classmethod

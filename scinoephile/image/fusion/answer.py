@@ -1,16 +1,16 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for OCR fusion answers."""
+"""ABC for fusion answers."""
 
 from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer, Prompt
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
 
 from .prompt import FusionPrompt
@@ -19,21 +19,18 @@ __all__ = ["FusionAnswer"]
 
 
 class FusionAnswer(Answer, ABC):
-    """ABC for OCR fusion answers."""
+    """ABC for fusion answers."""
 
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt_cls: ClassVar[type[FusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
-        fused_field = prompt_cls.fused_field
-        note_field = prompt_cls.note_field
-        if not getattr(self, fused_field, None):
-            raise ValueError(prompt_cls.fused_missing_error)
-        if not getattr(self, note_field, None):
-            raise ValueError(prompt_cls.note_missing_error)
+        if not getattr(self, self.prompt_cls.fused_field, None):
+            raise ValueError(self.prompt_cls.fused_missing_error)
+        if not getattr(self, self.prompt_cls.note_field, None):
+            raise ValueError(self.prompt_cls.note_missing_error)
         return self
 
     @classmethod
@@ -45,7 +42,7 @@ class FusionAnswer(Answer, ABC):
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: prompt providing descriptions and messages
         Returns:
             Answer type with appropriate configuration
         """

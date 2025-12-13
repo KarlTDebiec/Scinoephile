@@ -10,7 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Prompt, Query
+from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
 from .prompt import ProofreadingPrompt
@@ -21,7 +21,7 @@ __all__ = ["ProofreadingQuery"]
 class ProofreadingQuery(Query, ABC):
     """ABC for proofreading queries."""
 
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt_cls: ClassVar[type[ProofreadingPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]

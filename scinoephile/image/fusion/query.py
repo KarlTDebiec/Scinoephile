@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Prompt, Query
+from scinoephile.core.llms import Query
 from scinoephile.core.models import get_model_name
 
 from .prompt import FusionPrompt
@@ -21,23 +21,20 @@ __all__ = ["FusionQuery"]
 class FusionQuery(Query, ABC):
     """ABC for OCR fusion queries."""
 
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt_cls: ClassVar[type[FusionPrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        prompt_cls = cast(type[FusionPrompt], self.prompt_cls)
-        source_one_field = prompt_cls.source_one_field
-        source_two_field = prompt_cls.source_two_field
-        source_one = getattr(self, source_one_field, None)
-        source_two = getattr(self, source_two_field, None)
+        source_one = getattr(self, self.prompt_cls.source_one_field, None)
+        source_two = getattr(self, self.prompt_cls.source_two_field, None)
         if not source_one:
-            raise ValueError(prompt_cls.source_one_missing_error)
+            raise ValueError(self.prompt_cls.source_one_missing_error)
         if not source_two:
-            raise ValueError(prompt_cls.source_two_missing_error)
+            raise ValueError(self.prompt_cls.source_two_missing_error)
         if source_one == source_two:
-            raise ValueError(prompt_cls.sources_equal_error)
+            raise ValueError(self.prompt_cls.sources_equal_error)
         return self
 
     @classmethod

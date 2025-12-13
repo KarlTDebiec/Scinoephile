@@ -17,9 +17,10 @@ from scinoephile.core.llms import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.core.proofreading.prompt import ProofreadingPrompt
-from scinoephile.core.proofreading.test_case import ProofreadingTestCase
 from scinoephile.testing import test_data_root
+
+from .prompt import ProofreadingPrompt
+from .test_case import ProofreadingTestCase
 
 __all__ = ["Proofreader"]
 
@@ -94,13 +95,12 @@ class Proofreader:
 
             # Query LLM
             test_case_cls = ProofreadingTestCase.get_test_case_cls(
-                len(block), prompt_cls=self.prompt_cls
+                len(block), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
-            prompt_cls = query_cls.prompt_cls
             query_attrs: dict[str, str] = {}
             for idx, subtitle in enumerate(block):
-                key = prompt_cls.subtitle_field(idx + 1)
+                key = self.prompt_cls.subtitle_field(idx + 1)
                 query_attrs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
             query = query_cls(**query_attrs)
             test_case = test_case_cls(query=query)
@@ -108,7 +108,7 @@ class Proofreader:
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                key = prompt_cls.revised_field(sub_idx + 1)
+                key = self.prompt_cls.revised_field(sub_idx + 1)
                 if revised := getattr(test_case.answer, key):
                     subtitle.text = revised
                 output_series.append(subtitle)
