@@ -229,6 +229,7 @@ def get_translation_test_case(
     Raises:
         ScinoephileError: If sync groups are malformed
     """
+    prompt_cls = test_case_cls.prompt_cls
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -238,7 +239,8 @@ def get_translation_test_case(
                 f"Sync group {sg} has {len(zw_idxs)} 中文 subs, expected 1."
             )
         zw_idx = zw_idxs[0]
-        kwargs[f"zhongwen_{zw_idx + 1}"] = alignment.zhongwen[zw_idx].text
+        zw_key = prompt_cls.zhongwen_field(zw_idx + 1)
+        kwargs[zw_key] = alignment.zhongwen[zw_idx].text
 
         # Get 粤文
         yw_idxs = sg[1]
@@ -249,7 +251,8 @@ def get_translation_test_case(
                 f"Sync group {sg} has {len(yw_idxs)} 粤文 subs, expected 0 or 1."
             )
         yw_idx = yw_idxs[0]
-        kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
+        yw_key = prompt_cls.yuewen_field(zw_idx + 1)
+        kwargs[yw_key] = alignment.yuewen[yw_idx].text
 
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
