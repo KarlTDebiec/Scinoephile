@@ -230,7 +230,8 @@ def get_mlamd_yue_translation_test_cases(
 
 @cache
 def get_mlamd_yue_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt, **kwargs: Any
+    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt,
+    **kwargs: Any,
 ) -> list[ReviewTestCase]:
     """Get MLAMD 粵文 review test cases.
 
