@@ -39,6 +39,8 @@ from .queries import (
 
 __all__ = ["Aligner"]
 
+from ..translation import TranslationTestCase
+
 
 class Aligner:
     """Aligns transcribed 粤文 subs with official 中文 subs."""
@@ -398,7 +400,7 @@ class Aligner:
 
         # Query for 粤文 translation
         test_case = get_translation_test_case(alignment, test_case_cls)
-        test_case = self.translation_queryer.call(test_case)
+        test_case: TranslationTestCase = self.translation_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -423,7 +425,7 @@ class Aligner:
                     )
                 yw = alignment.yuewen[yw_idx]
             else:
-                yw_key = f"yuewen_{zw_idx + 1}"
+                yw_key = test_case.prompt_cls.yuewen_field(zw_idx + 1)
                 yw_text = getattr(test_case.answer, yw_key)
                 yw = deepcopy(zw)
                 yw.text = yw_text

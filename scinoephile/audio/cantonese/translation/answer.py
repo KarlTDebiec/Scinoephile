@@ -61,8 +61,8 @@ class TranslationAnswer(Answer, ABC):
         fields: dict[str, Any] = {}
         for idx in range(size):
             if idx in missing:
-                key = f"yuewen_{idx + 1}"
-                description = prompt_cls.yuewen_answer_description.format(idx=idx + 1)
+                key = prompt_cls.yuewen_field(idx + 1)
+                description = prompt_cls.yuewen_answer_description(idx + 1)
                 fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
