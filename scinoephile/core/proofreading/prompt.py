@@ -102,7 +102,13 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def subtitle_revised_equal_error(cls, idx: int) -> str:
-        """Error message when subtitle and revised fields are equal."""
+        """Error message when subtitle and revised fields are equal.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message
+        """
         return cls.subtitle_revised_equal_error_template.format(idx=idx)
 
     note_missing_error_template: ClassVar[str] = (
@@ -113,7 +119,13 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def note_missing_error(cls, idx: int) -> str:
-        """Error message when note is missing for a revision."""
+        """Error message when note is missing for a revision.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message
+        """
         return cls.note_missing_error_template.format(idx=idx)
 
     revised_missing_error_template: ClassVar[str] = (
@@ -124,5 +136,11 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def revised_missing_error(cls, idx: int) -> str:
-        """Error message when revision is missing for a note."""
+        """Error message when revision is missing for a note.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message
+        """
         return cls.revised_missing_error_template.format(idx=idx)
