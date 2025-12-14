@@ -84,12 +84,14 @@ def get_shifting_test_case(
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
     test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
+    query_kwargs = {
+        test_case_cls.prompt_cls.zhongwen_1_field: zw_1,
+        test_case_cls.prompt_cls.yuewen_1_field: yw_1,
+        test_case_cls.prompt_cls.zhongwen_2_field: zw_2,
+        test_case_cls.prompt_cls.yuewen_2_field: yw_2,
+    }
     # noinspection PyArgumentList
-    test_case = test_case_cls(
-        query=test_case_cls.query_cls(
-            zhongwen_1=zw_1, yuewen_1=yw_1, zhongwen_2=zw_2, yuewen_2=yw_2
-        )
-    )
+    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
     return test_case
 
 
@@ -127,10 +129,12 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
 
     # Return merge query
     test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
+    query_kwargs = {
+        test_case_cls.prompt_cls.zhongwen_field: zw,
+        test_case_cls.prompt_cls.yuewen_to_merge_field: yws,
+    }
     # noinspection PyArgumentList
-    test_case = test_case_cls(
-        query=test_case_cls.query_cls(zhongwen=zw, yuewen_to_merge=yws)
-    )
+    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
     return test_case
 
 
@@ -174,8 +178,12 @@ def get_proofing_test_case(
 
     # Return proof query
     test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
+    query_kwargs = {
+        test_case_cls.prompt_cls.zhongwen_field: zw,
+        test_case_cls.prompt_cls.yuewen_field: yw,
+    }
     # noinspection PyArgumentList
-    test_case = test_case_cls(query=test_case_cls.query_cls(zhongwen=zw, yuewen=yw))
+    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
     return test_case
 
 
@@ -213,6 +221,7 @@ def get_review_test_case(
         yw_idx = yw_idxs[0]
         kwargs[prompt_cls.yuewen_field(zw_idx + 1)] = alignment.yuewen[yw_idx].text
 
+    # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
 
@@ -239,7 +248,8 @@ def get_translation_test_case(
                 f"Sync group {sg} has {len(zw_idxs)} 中文 subs, expected 1."
             )
         zw_idx = zw_idxs[0]
-        kwargs[f"zhongwen_{zw_idx + 1}"] = alignment.zhongwen[zw_idx].text
+        zw_key = test_case_cls.prompt_cls.zhongwen_field(zw_idx + 1)
+        kwargs[zw_key] = alignment.zhongwen[zw_idx].text
 
         # Get 粤文
         yw_idxs = sg[1]
@@ -250,7 +260,9 @@ def get_translation_test_case(
                 f"Sync group {sg} has {len(yw_idxs)} 粤文 subs, expected 0 or 1."
             )
         yw_idx = yw_idxs[0]
-        kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
+        yw_key = test_case_cls.prompt_cls.yuewen_field(zw_idx + 1)
+        kwargs[yw_key] = alignment.yuewen[yw_idx].text
 
+    # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case

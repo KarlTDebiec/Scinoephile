@@ -1,6 +1,5 @@
 [
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "在麦太即将临盆的时候",
       "yuewen_1": "就喺麦太快要临盆嘅时候",
@@ -69,10 +68,10 @@
       "zhongwen_33": "但总得要叻仔呀！",
       "yuewen_33": "但系都要叻仔先得㗎！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "最后，胶兜「嘀督」一声落地",
       "yuewen_1": "最后，胶兜「嘀督」一声咁落地",
@@ -101,10 +100,10 @@
       "zhongwen_13": "麦兜！",
       "yuewen_13": "麦兜！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "麦太，没见面一阵",
       "yuewen_1": "咦，麦太，咩唔见你一排",
@@ -139,10 +138,10 @@
       "zhongwen_16": "春田花花，确有好多西人呀！",
       "yuewen_16": "春田花花，真系好多西人㗎！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "〝鹅满是快烙滴好耳痛⋯〞",
       "yuewen_1": "〝鹅满是快烙滴好耳痛⋯〞",
@@ -191,11 +190,11 @@
       "zhongwen_23": "太好了！大家去上堂吧",
       "yuewen_23": "哎，好在！噉大家可以返去上堂喇"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "你们可能觉得这间幼稚园很烂",
       "yuewen_1": "你哋可能觉得呢间幼稚园好烂",
@@ -308,10 +307,10 @@
       "zhongwen_55": "我买所房子给妈妈！",
       "yuewen_55": "我买层楼畀我妈妈！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "幼稚园楼下，由校长兼营的茶餐厅",
       "yuewen_1": "喺幼稚园楼下，校长兼营嘅间茶餐厅",
@@ -354,10 +353,10 @@
       "zhongwen_20": "麦兜，射呀！",
       "yuewen_20": "麦兜，转身食啊！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "看著自己每天疴烂煮⋯",
       "yuewen_1": "睇住自己日日疴烂煮⋯",
@@ -368,10 +367,10 @@
       "zhongwen_4": "世界好美丽！",
       "yuewen_4": "世界好美丽！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "有一首歌，Miss Chan唱的好听",
       "yuewen_1": "有一首歌，Miss Chan唱得好好听呀",
@@ -388,10 +387,10 @@
       "zhongwen_7": "所有那些，都好！",
       "yuewen_7": "所有嗰啲嘢，都几好！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "一、二、三、四、五、六、七⋯",
       "yuewen_1": "1, 2, 3, 4, 5, 6, 7⋯",
@@ -408,10 +407,10 @@
       "zhongwen_7": "一个女人背起整个世界！",
       "yuewen_7": "一个女人揹起成个世界！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "是的，我妈妈真的很厉害",
       "yuewen_1": "系呀，我妈妈真系好犀利㗎",
@@ -444,10 +443,10 @@
       "zhongwen_15": "多谢大家收看",
       "yuewen_15": "多谢大家收睇"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "好高兴这么快又跟大家见面",
       "yuewen_1": "好高兴咁快又同大家见面",
@@ -462,10 +461,10 @@
       "zhongwen_6": "各位小朋友，像鸡包不像呀？",
       "yuewen_6": "各位小朋友，你哋话似唔似鸡包啊？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "现在要教大家一味别致小菜－",
       "yuewen_1": "间阵要教大家一味几别致嘅小菜－",
@@ -486,10 +485,10 @@
       "zhongwen_9": "还真有一块鸡吃呢！",
       "yuewen_9": "仲真系有嚿鸡食添！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "今日为大家介绍一味⋯",
       "yuewen_1": "今日要同大家介绍一味⋯",
@@ -532,10 +531,10 @@
       "zhongwen_20": "妈妈，我想睡觉",
       "yuewen_20": "妈，我想瞓啦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "从前，有个小朋友早睡晚起；第二天⋯",
       "yuewen_1": "从前，有个小朋友早睡晚起；第二朝⋯",
@@ -552,10 +551,10 @@
       "zhongwen_7": "没有不成的事",
       "yuewen_7": "唔得都要得"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "可有些事情，要是真的不成呢？",
       "yuewen_1": "但系如果有啲嘢，真系真系唔得呢？",
@@ -578,10 +577,10 @@
       "zhongwen_10": "可是⋯我仍然有梦",
       "yuewen_10": "但系⋯我仲可以发梦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "马尔代夫，座落于印度洋的世外桃源",
       "yuewen_1": "马尔代夫，坐落于印度洋嘅世外桃源",
@@ -616,10 +615,10 @@
       "zhongwen_16": "发梦呀！",
       "yuewen_16": "发梦吖嘛！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "校长早晨！",
       "yuewen_1": "校长早晨！",
@@ -660,10 +659,10 @@
       "zhongwen_19": "座落于印度洋的世外桃源",
       "yuewen_19": "座落于印度洋嘅世外桃源"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "衰仔，快点起床上学",
       "yuewen_1": "喂，衰仔啊，快啲起身返学喇",
@@ -672,10 +671,10 @@
       "zhongwen_3": "妈妈！",
       "yuewen_3": "妈妈！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "开点药给他吃就没事了",
       "yuewen_1": "开啲药过佢食就冇事㗎喇",
@@ -694,10 +693,10 @@
       "zhongwen_8": "那么他怕不怕死？",
       "yuewen_8": "噉佢怕唔怕死呀？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "没事吧？快点先把药水喝掉！",
       "yuewen_1": "冇嘢吖嘛？快啲食埋啲药水佢先啦！",
@@ -718,10 +717,10 @@
       "zhongwen_9": "乖，先把药水喝掉",
       "yuewen_9": "乖，食埋啲药水先啦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "好呀，马尔代夫！",
       "yuewen_1": "嘻嘻，好嘢，马尔代夫！",
@@ -738,13 +737,10 @@
       "zhongwen_7": "来，多喝一点！",
       "yuewen_7": "嚟啦，食多更！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "yuewen_revised_7": "吓，我饮晒㖞！",
-      "note_7": "Manually overridden; '咪' is an error in transcription."
-    },
     "query": {
       "zhongwen_1": "妈妈，你看！",
       "yuewen_1": "妈妈，你睇！",
@@ -761,10 +757,13 @@
       "zhongwen_7": "就给我喝光了！",
       "yuewen_7": "吓，咪我饮晒㖞！"
     },
+    "answer": {
+      "yuewen_revised_7": "吓，我饮晒㖞！",
+      "note_7": "Manually overridden; '咪' is an error in transcription."
+    },
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "喝光了就叻仔了！",
       "yuewen_1": "饮晒就叻仔啦！",
@@ -819,10 +818,10 @@
       "zhongwen_26": "太好了！",
       "yuewen_26": "好嘢！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "麦唛，我是麦兜呀",
       "yuewen_1": "喂，麦唛啊，我系麦兜啊",
@@ -853,10 +852,10 @@
       "zhongwen_14": "再见！",
       "yuewen_14": "拜拜！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "妈妈，我得把出世纸带著吗？",
       "yuewen_1": "哎哟，妈妈，我系咪要带埋出世纸去㗎？",
@@ -869,10 +868,10 @@
       "zhongwen_5": "太好了！吓得我！",
       "yuewen_5": "好嘢！吓得我啊！咁都好啲"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "找到了！",
       "yuewen_1": "揾到喇！",
@@ -883,10 +882,10 @@
       "zhongwen_4": "抛掉就去不成了",
       "yuewen_4": "掉咗就去唔到㗎喇"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "早机去，晚机返",
       "yuewen_1": "早机去，晚机返",
@@ -905,18 +904,18 @@
       "zhongwen_8": "特别是小小一块的",
       "yuewen_8": "尤其系细细旧嗰啲"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "妈妈晚安！",
       "yuewen_1": "妈妈早唞！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "最新消息",
       "yuewen_1": "啱啱收到消息",
@@ -937,10 +936,10 @@
       "zhongwen_9": "特别报告完毕",
       "yuewen_9": "特别报告完毕"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "妈妈好像又有计了",
       "yuewen_1": "咦，妈妈好似又有计噉噃",
@@ -963,10 +962,10 @@
       "zhongwen_10": "我知道要他收我做徒弟更加不容易",
       "yuewen_10": "我知道要佢收我做徒弟更加唔容易"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "但无论多不容易，我都要试一试",
       "yuewen_1": "但无论几唔容易，我都要试一试",
@@ -975,10 +974,10 @@
       "zhongwen_3": "无论几辛苦，我一定要得到奥运金牌！",
       "yuewen_3": "无论几辛苦，我一定要攞到奥运金牌！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "长洲！长洲！",
       "yuewen_1": "长洲！长洲！",
@@ -991,39 +990,36 @@
       "zhongwen_5": "香港运动员不是垃圾！",
       "yuewen_5": "香港运动员唔系垃圾！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "长洲，我终于来到长洲了！",
       "yuewen_1": "长洲，我终于嚟到长洲嘞！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "长洲，我得亲吻这片圣洁的土地！",
       "yuewen_1": "长洲，我要亲吻呢片圣洁嘅土地！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "小朋友，这儿是南丫岛呀！",
       "yuewen_1": "小朋友呀，呢度系南丫岛噃！",
       "zhongwen_2": "南丫岛？它也孕育了周润发！",
       "yuewen_2": "南丫岛？都孕育咗周润发噃！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "yuewen_revised_6": "拜你个头！",
-      "note_6": "Removed 嘅 at the end to better match natural spoken Cantonese and the tone of the exclamation, as 嘅 is unnecessary and not idiomatic in this context."
-    },
     "query": {
       "zhongwen_1": "想不到我黎根避进南丫岛也给你发现",
       "yuewen_1": "真估唔到我黎根避入嚟南丫岛都畀你揾到",
@@ -1046,18 +1042,21 @@
       "zhongwen_10": "别作梦了！",
       "yuewen_10": "醒梦你！"
     },
-    "verified": true
-  },
-  {
-    "answer": {},
-    "query": {
-      "zhongwen_1": "小朋友，你看！",
-      "yuewen_1": "小朋友，你睇下！"
+    "answer": {
+      "yuewen_revised_6": "拜你个头！",
+      "note_6": "Removed 嘅 at the end to better match natural spoken Cantonese and the tone of the exclamation, as 嘅 is unnecessary and not idiomatic in this context."
     },
     "verified": true
   },
   {
+    "query": {
+      "zhongwen_1": "小朋友，你看！",
+      "yuewen_1": "小朋友，你睇下！"
+    },
     "answer": {},
+    "verified": true
+  },
+  {
     "query": {
       "zhongwen_1": "这个⋯",
       "yuewen_1": "哗，呢只⋯",
@@ -1080,28 +1079,28 @@
       "zhongwen_10": "才可以练成这举世无双的脚瓜？",
       "yuewen_10": "先至可以练成呢只举世无双嘅脚瓜？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我⋯我一定要练成这脚瓜！",
       "yuewen_1": "我⋯我一定要练成呢只脚瓜！",
       "zhongwen_2": "师傅！",
       "yuewen_2": "师父！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我可以去小个便吗？",
       "yuewen_1": "我可唔可以去个小便呢？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "每次唱这首歌，我都会急小便",
       "yuewen_1": "唔知点解每一次唱呢首歌都会急小便",
@@ -1156,10 +1155,10 @@
       "zhongwen_26": "「大包，整多两笼唔怕滞」",
       "yuewen_26": "「大包，整多两笼唔怕滞」"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "黎根听完歌以后，表情有点古怪⋯",
       "yuewen_1": "黎根听完首歌之后，啲表情有啲古怪⋯",
@@ -1178,10 +1177,10 @@
       "zhongwen_8": "不成了！我的脚瓜太痹了！",
       "yuewen_8": "顶唔顺啊！我个脚瓜太痹啊！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我将今天发生的事讲给妈妈听",
       "yuewen_1": "我将今日发生嘅嘢话晒畀妈妈听",
@@ -1208,10 +1207,10 @@
       "zhongwen_12": "跟师傅学习，光宗耀祖！",
       "yuewen_12": "跟师父学嘢，光宗耀祖！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "妈妈在长洲找了间酒楼摆拜师宴",
       "yuewen_1": "妈妈喺长洲揾咗间酒楼摆咗几回拜师宴",
@@ -1264,20 +1263,20 @@
       "zhongwen_25": "请问那是什么绝技呢？",
       "yuewen_25": "噉请问嗰样绝技系乜嘢啊？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "第二项绝技，就是⋯",
       "yuewen_1": "第二样绝技，就系⋯",
       "zhongwen_2": "抢包山！",
       "yuewen_2": "抢包山！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "抢包山？",
       "yuewen_1": "抢包山？",
@@ -1318,10 +1317,10 @@
       "zhongwen_19": "而长洲独有的传统，亦渐被遗忘",
       "yuewen_19": "长洲特有嘅传统，亦渐被遗忘"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "奥运金牌⋯这一世是没有机会的了",
       "yuewen_1": "奥运金牌⋯我谂呢一世都唔会攞到",
@@ -1356,10 +1355,10 @@
       "zhongwen_16": "珊你个头！继续练习！",
       "yuewen_16": "珊你个头啊！继续练习！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "还不去？",
       "yuewen_1": "仲唔去？",
@@ -1376,10 +1375,10 @@
       "zhongwen_7": "我唔学抢包山了！",
       "yuewen_7": "我唔学抢包山嘞！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "其实今天是我第一次近距离见黎根",
       "yuewen_1": "其实今日系我第一次咁近距离同丽根见面",
@@ -1390,23 +1389,20 @@
       "zhongwen_4": "鸡尾包！新鲜出炉！",
       "yuewen_4": "鸡尾包！啱啱出炉嘅！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "其实鸡尾包呢⋯",
       "yuewen_1": "其实鸡尾包呢⋯",
       "zhongwen_2": "你说这似不似鸡尾？",
       "yuewen_2": "吓，你话噉样似唔似鸡尾呀？哈哈哈哈"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "yuewen_revised_18": "要行过几多座山",
-      "note_18": "Removed the question mark to match the 中文."
-    },
     "query": {
       "zhongwen_1": "麦兜他学东西⋯还可以",
       "yuewen_1": "麦兜嘅学嘢呢⋯都仲可以",
@@ -1451,10 +1447,13 @@
       "zhongwen_21": "才可以练成这举世无双的脚瓜？",
       "yuewen_21": "先至可以练成呢一只举世无双嘅脚瓜？"
     },
+    "answer": {
+      "yuewen_revised_18": "要行过几多座山",
+      "note_18": "Removed the question mark to match the 中文."
+    },
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我个仔⋯",
       "yuewen_1": "我个仔⋯",
@@ -1469,10 +1468,10 @@
       "zhongwen_6": "我想起麦兜的爸爸，阿炳",
       "yuewen_6": "我⋯我谂起麦兜嘅爸爸，阿炳"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我找来找去也找不到那部电子英文辞典",
       "yuewen_1": "我揾完成间屋都揾唔到部电子英文词典",
@@ -1481,10 +1480,10 @@
       "zhongwen_3": "难道⋯不会吧？",
       "yuewen_3": "唔通⋯冇理由㗎？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "想不到真的让妈妈拿去了。吓得我！",
       "yuewen_1": "咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
@@ -1557,10 +1556,10 @@
       "zhongwen_35": "「你忠实的，麦太」",
       "yuewen_35": "「你忠实的，麦太」"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "看完妈妈的信",
       "yuewen_1": "睇完妈妈封信后",
@@ -1611,10 +1610,10 @@
       "zhongwen_24": "我最后终于练成「十二路抢包手」",
       "yuewen_24": "最后我终于练成「十二路抢包手」啦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "喂，我是麦兜",
       "yuewen_1": "喂，我系麦兜啊",
@@ -1717,10 +1716,10 @@
       "zhongwen_50": "有如天使预早送来的福音",
       "yuewen_50": "就好似天使预早畀我哋嘅福音"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "好靓的晚上啊！",
       "yuewen_1": "好靓嘅夜晚呀！",
@@ -1733,10 +1732,10 @@
       "zhongwen_5": "真的好靓！",
       "yuewen_5": "真系好靓！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "我从没吃过这么浓味的东西",
       "yuewen_1": "我从未食过咁浓味嘅嘢",
@@ -1751,10 +1750,10 @@
       "zhongwen_6": "最靓最靓，最犀利，而且最温柔",
       "yuewen_6": "最靓最靓，最犀利，亦都系最温柔"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "第二天我睡得很晏⋯",
       "yuewen_1": "第二日我瞓到好晏⋯",
@@ -1869,10 +1868,10 @@
       "zhongwen_56": "我好后悔要妈妈扔掉最后几件火鸡",
       "yuewen_56": "我后悔要妈妈撇咗几件火鸡"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "特别报告",
       "yuewen_1": "特别报道",
@@ -1921,10 +1920,10 @@
       "zhongwen_23": "成为本港举办亚运的重点推介比赛项目",
       "yuewen_23": "成为本港举办亚运重点推介嘅比赛项目"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "最后⋯",
       "yuewen_1": "最后⋯",
@@ -1949,10 +1948,10 @@
       "zhongwen_11": "一切回复正常",
       "yuewen_11": "一切回复正常"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "上中学后，我再没有练习抢包手",
       "yuewen_1": "上个中学，我已经再冇练习抢包手",
@@ -1967,10 +1966,10 @@
       "zhongwen_6": "一切落空",
       "yuewen_6": "一切都落空"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "有时候我也会跟同学回到长洲烧烤",
       "yuewen_1": "有时我都会同班同学仔返长洲烧嘢食",
@@ -1979,10 +1978,10 @@
       "zhongwen_3": "他都好像老了一点",
       "yuewen_3": "佢都好似老咗啲噉"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "因为环保⋯",
       "yuewen_1": "因为环保⋯",
@@ -1991,10 +1990,10 @@
       "zhongwen_3": "师傅说，那阵胶气，相当臭",
       "yuewen_3": "师傅话，嗰阵胶气，都几臭下"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "长洲有个张保仔洞",
       "yuewen_1": "长洲有个张保仔洞",
@@ -2065,26 +2064,26 @@
       "zhongwen_34": "世界的时候，我会怎么样？",
       "yuewen_34": "世界嘅时候，我会系点㗎呢？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "「⋯无力挽！」",
       "yuewen_1": "「⋯无力挽！」"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "橙",
       "yuewen_1": "橙"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "是的，我就是大个佬麦兜",
       "yuewen_1": "系呀，我就系大个佬麦兜喇",
@@ -2139,10 +2138,10 @@
       "zhongwen_26": "我猜，她会好开心",
       "yuewen_26": "我谂，佢会好开心"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "不成，还是出个锦囊！",
       "yuewen_1": "都系唔好呀，都系出返个锦囊先得！",
@@ -2173,10 +2172,10 @@
       "zhongwen_14": "多谢合作！",
       "yuewen_14": "多谢合作！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "麻烦你，一客常餐",
       "yuewen_1": "唔该，我要一个常餐啦",
@@ -2205,10 +2204,10 @@
       "zhongwen_13": "今天常餐精采呀！",
       "yuewen_13": "好嘢呀，我哋今日啲常餐！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "对不起，常餐卖光了",
       "yuewen_1": "唔好意思，常餐卖晒",
@@ -2263,10 +2262,10 @@
       "zhongwen_26": "来两份快餐吧",
       "yuewen_26": "咁两份快餐啦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "对不起，没快餐了",
       "yuewen_1": "唔好意思，冇快餐呀",
@@ -2289,10 +2288,10 @@
       "zhongwen_10": "好吧好吧！两份午餐好了",
       "yuewen_10": "好啦好啦！要两份午餐啦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zhongwen_1": "对不起，午餐卖光了",
       "yuewen_1": "唔好意思，午餐卖晒",
@@ -2307,6 +2306,7 @@
       "zhongwen_6": "要快吗？那得吃快餐了！",
       "yuewen_6": "想快？想快就要快餐啊！"
     },
+    "answer": {},
     "verified": true
   }
 ]

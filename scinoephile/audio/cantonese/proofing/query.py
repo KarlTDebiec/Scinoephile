@@ -27,8 +27,8 @@ class ProofingQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        zhongwen = getattr(self, "zhongwen", None)
-        yuewen = getattr(self, "yuewen", None)
+        zhongwen = getattr(self, self.prompt_cls.zhongwen_field, None)
+        yuewen = getattr(self, self.prompt_cls.yuewen_field, None)
         if not zhongwen:
             raise ValueError(self.prompt_cls.zhongwen_missing_error)
         if not yuewen:
@@ -50,8 +50,14 @@ class ProofingQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "zhongwen": (str, Field(..., description=prompt_cls.zhongwen_description)),
-            "yuewen": (str, Field(..., description=prompt_cls.yuewen_description)),
+            prompt_cls.zhongwen_field: (
+                str,
+                Field(..., description=prompt_cls.zhongwen_description),
+            ),
+            prompt_cls.yuewen_field: (
+                str,
+                Field(..., description=prompt_cls.yuewen_description),
+            ),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

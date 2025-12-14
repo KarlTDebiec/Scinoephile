@@ -27,8 +27,8 @@ class ShiftingQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        yuewen_1 = getattr(self, "yuewen_1", None)
-        yuewen_2 = getattr(self, "yuewen_2", None)
+        yuewen_1 = getattr(self, self.prompt_cls.yuewen_1_field, None)
+        yuewen_2 = getattr(self, self.prompt_cls.yuewen_2_field, None)
         if not yuewen_1 and not yuewen_2:
             raise ValueError(self.prompt_cls.yuewen_1_yuewen_2_missing_error)
         return self
@@ -48,16 +48,22 @@ class ShiftingQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "zhongwen_1": (
+            prompt_cls.zhongwen_1_field: (
                 str,
                 Field(..., description=prompt_cls.zhongwen_1_description),
             ),
-            "zhongwen_2": (
+            prompt_cls.zhongwen_2_field: (
                 str,
                 Field(..., description=prompt_cls.zhongwen_2_description),
             ),
-            "yuewen_1": (str, Field("", description=prompt_cls.yuewen_1_description)),
-            "yuewen_2": (str, Field("", description=prompt_cls.yuewen_2_description)),
+            prompt_cls.yuewen_1_field: (
+                str,
+                Field("", description=prompt_cls.yuewen_1_description),
+            ),
+            prompt_cls.yuewen_2_field: (
+                str,
+                Field("", description=prompt_cls.yuewen_2_description),
+            ),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
