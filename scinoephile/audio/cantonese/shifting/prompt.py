@@ -86,10 +86,24 @@ class ShiftingPrompt(EnglishPrompt):
     )
     """Error message when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
 
-    yuewen_characters_changed_error: ClassVar[str] = (
+    yuewen_characters_changed_error_template: ClassVar[str] = (
         "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
         "query's concatenated yuewen_1 and yuewen_2:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
-    """Error message when shifted 粤文 characters do not match original."""
+    """Error template when shifted 粤文 characters do not match original."""
+
+    @classmethod
+    def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
+        """Error message when shifted 粤文 characters do not match original.
+
+        Arguments:
+            expected: the expected concatenated 粤文 characters
+            received: the received concatenated 粤文 characters
+        Returns:
+            formatted error message
+        """
+        return cls.yuewen_characters_changed_error_template.format(
+            expected=expected, received=received
+        )

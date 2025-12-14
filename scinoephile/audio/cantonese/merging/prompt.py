@@ -15,13 +15,6 @@ __all__ = ["MergingPrompt"]
 class MergingPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription merging."""
 
-    # Query fields
-    zhongwen_field: ClassVar[str] = "zhongwen"
-    """Field name for 中文 of subtitle."""
-
-    yuewen_to_merge_field: ClassVar[str] = "yuewen_to_merge"
-    """Field name for transcribed 粤文 of subtitle."""
-
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for matching 粤文 subtitles of Cantonese speech to 中文
@@ -38,9 +31,15 @@ class MergingPrompt(EnglishPrompt):
         and spacing.""")
     """Base system prompt."""
 
-    # Query descriptions
+    # Query fields
+    zhongwen_field: ClassVar[str] = "zhongwen"
+    """Field name for 中文 of subtitle."""
+
     zhongwen_description: ClassVar[str] = "Known 中文 of subtitle"
     """Description of 'zhongwen' field."""
+
+    yuewen_to_merge_field: ClassVar[str] = "yuewen_to_merge"
+    """Field name for transcribed 粤文 of subtitle."""
 
     yuewen_to_merge_description: ClassVar[str] = "Transcribed 粤文 of subtitle"
     """Description of 'yuewen_to_merge' field."""
@@ -58,7 +57,6 @@ class MergingPrompt(EnglishPrompt):
     yuewen_merged_field: ClassVar[str] = "yuewen_merged"
     """Field name for merged 粤文 of subtitle."""
 
-    # Answer descriptions
     yuewen_merged_description: ClassVar[str] = "Merged 粤文 of subtitle"
     """Description of 'yuewen_merged' field."""
 
@@ -69,10 +67,24 @@ class MergingPrompt(EnglishPrompt):
     """Error message when 'yuewen_merged' field is missing."""
 
     # Test case validation errors
-    yuewen_characters_changed_error: ClassVar[str] = (
+    yuewen_characters_changed_error_template: ClassVar[str] = (
         "Answer's 粤文 subtitle stripped of punctuation and whitespace does not match "
         "query's 粤文 subtitle concatenated:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
-    """Error message when merged 粤文 characters do not match original."""
+    """Error template when merged 粤文 characters do not match original."""
+
+    @classmethod
+    def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
+        """Error message when merged 粤文 characters do not match original.
+
+        Arguments:
+            expected: expected 粤文 characters
+            received: received 粤文 characters
+        Returns:
+            error message
+        """
+        return cls.yuewen_characters_changed_error_template.format(
+            expected=expected, received=received
+        )

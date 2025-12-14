@@ -74,9 +74,7 @@ class MergingTestCase(TestCase, ABC):
         received = remove_punc_and_whitespace(yuewen_merged)
         if expected != received:
             raise ValueError(
-                self.prompt_cls.yuewen_characters_changed_error.format(
-                    expected=expected, received=received
-                )
+                self.prompt_cls.yuewen_characters_changed_error(expected, received)
             )
         return self
 
