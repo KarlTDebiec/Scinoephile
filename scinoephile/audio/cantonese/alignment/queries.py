@@ -129,10 +129,12 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
 
     # Return merge query
     test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
+    query_kwargs = {
+        test_case_cls.prompt_cls.zhongwen_field: zw,
+        test_case_cls.prompt_cls.yuewen_to_merge_field: yws,
+    }
     # noinspection PyArgumentList
-    test_case = test_case_cls(
-        query=test_case_cls.query_cls(zhongwen=zw, yuewen_to_merge=yws)
-    )
+    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
     return test_case
 
 
@@ -214,7 +216,7 @@ def get_review_test_case(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    # Noinspection PyArgumentList
+    # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
 
@@ -254,6 +256,6 @@ def get_translation_test_case(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
-    # Noinspection PyArgumentList
+    # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case

@@ -77,9 +77,7 @@ class ShiftingTestCase(TestCase, ABC):
             received = yuewen_1_shifted + yuewen_2_shifted
             if expected != received:
                 raise ValueError(
-                    self.prompt_cls.yuewen_characters_changed_error.format(
-                        expected=expected, received=received
-                    )
+                    self.prompt_cls.yuewen_characters_changed_error(expected, received)
                 )
         return self
 
