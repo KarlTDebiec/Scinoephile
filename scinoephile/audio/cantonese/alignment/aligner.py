@@ -426,6 +426,7 @@ class Aligner:
         # Query for 粤文 review
         test_case = get_review_test_case(alignment, test_case_cls)
         test_case = self.review_queryer.call(test_case)
+        prompt_cls = test_case.prompt_cls
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -447,8 +448,12 @@ class Aligner:
                 )
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
-            yw_key = f"yuewen_{zw_idx + 1}"
-            yw.text = getattr(test_case.answer, yw_key, yw.text)
+            yuewen_field = prompt_cls.yuewen_field(zw_idx + 1)
+            yuewen_revised_field = prompt_cls.yuewen_revised_field(zw_idx + 1)
+            revised = getattr(test_case.answer, yuewen_revised_field, "")
+            if revised == "":
+                revised = getattr(test_case.query, yuewen_field, yw.text)
+            yw.text = revised
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))
