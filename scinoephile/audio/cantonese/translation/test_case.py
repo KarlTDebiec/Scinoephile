@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import re
 from abc import ABC
 from functools import cache
 from typing import Any, ClassVar, Self
@@ -86,10 +87,9 @@ class TranslationTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", TranslationPrompt)
-        size = sum(
-            1 for key in data["query"] if key.startswith(prompt_cls.zhongwen_prefix)
-        )
+        prompt_cls = kwargs.get("prompt_cls")
+        pattern = re.compile(rf"^{re.escape(prompt_cls.zhongwen_prefix)}\d+$")
+        size = sum(1 for field in data["query"] if pattern.match(field))
         yuewen_idxs = [
             int(key.removeprefix(prompt_cls.yuewen_prefix)) - 1
             for key in data["query"]

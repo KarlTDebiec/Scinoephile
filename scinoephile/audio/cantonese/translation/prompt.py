@@ -27,7 +27,13 @@ class TranslationPrompt(EnglishPrompt):
 
     @classmethod
     def zhongwen_field(cls, idx: int) -> str:
-        """Name of zhongwen field in query."""
+        """Name of zhongwen field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of zhongwen field
+        """
         return f"{cls.zhongwen_prefix}{idx}"
 
     zhongwen_description_template: ClassVar[str] = "Known 中文 of subtitle {idx}"
@@ -35,7 +41,13 @@ class TranslationPrompt(EnglishPrompt):
 
     @classmethod
     def zhongwen_description(cls, idx: int) -> str:
-        """Description of zhongwen field in query."""
+        """Description of zhongwen field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of zhongwen field
+        """
         return cls.zhongwen_description_template.format(idx=idx)
 
     yuewen_prefix: ClassVar[str] = "yuewen_"
@@ -43,7 +55,13 @@ class TranslationPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_field(cls, idx: int) -> str:
-        """Name of yuewen field."""
+        """Name of yuewen field.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of yuewen field
+        """
         return f"{cls.yuewen_prefix}{idx}"
 
     yuewen_query_description_template: ClassVar[str] = (
@@ -53,7 +71,13 @@ class TranslationPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_query_description(cls, idx: int) -> str:
-        """Description of yuewen field in query."""
+        """Description of yuewen field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of yuewen field
+        """
         return cls.yuewen_query_description_template.format(idx=idx)
 
     # Answer fields
@@ -64,5 +88,11 @@ class TranslationPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_answer_description(cls, idx: int) -> str:
-        """Description of yuewen field in answer."""
+        """Description of yuewen field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of yuewen field
+        """
         return cls.yuewen_answer_description_template.format(idx=idx)
