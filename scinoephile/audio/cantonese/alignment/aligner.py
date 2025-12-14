@@ -301,7 +301,11 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yw = get_sub_merged(yws, text=test_case.answer.yuewen_merged)
+            prompt_cls = test_case.prompt_cls
+            yuewen_merged = getattr(
+                test_case.answer, prompt_cls.yuewen_merged_field, None
+            )
+            yw = get_sub_merged(yws, text=yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
 
