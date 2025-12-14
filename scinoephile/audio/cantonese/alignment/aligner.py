@@ -328,6 +328,7 @@ class Aligner:
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
+            prompt_cls = test_case.prompt_cls
 
             # Get 粤文
             yw_idxs = sg[1]
@@ -337,9 +338,11 @@ class Aligner:
                     f"but found {len(yw_idxs)}: {yw_idxs}"
                 )
             yw_idx = yw_idxs[0]
-            if test_case.query.yuewen == test_case.answer.yuewen_proofread:
+            query_yuewen = getattr(test_case.query, prompt_cls.yuewen_field)
+            answer_yuewen = getattr(test_case.answer, prompt_cls.yuewen_proofread_field)
+            if query_yuewen == answer_yuewen:
                 continue
-            alignment.yuewen[yw_idx].text = test_case.answer.yuewen_proofread
+            alignment.yuewen[yw_idx].text = answer_yuewen
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []

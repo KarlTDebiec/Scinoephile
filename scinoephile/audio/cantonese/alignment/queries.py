@@ -174,8 +174,13 @@ def get_proofing_test_case(
 
     # Return proof query
     test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
+    prompt_cls = test_case_cls.prompt_cls
+    query_kwargs = {
+        prompt_cls.zhongwen_field: zw,
+        prompt_cls.yuewen_field: yw,
+    }
     # noinspection PyArgumentList
-    test_case = test_case_cls(query=test_case_cls.query_cls(zhongwen=zw, yuewen=yw))
+    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
     return test_case
 
 
