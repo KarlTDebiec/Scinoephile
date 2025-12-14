@@ -1,564 +1,564 @@
 [
   {
-    "answer": {
-      "fused": "- Let me see.\n- please verify ID number C532743…",
-      "note": "Used 'C532743' from Lens as it is more likely correct than '0532743' from Tesseract; preserved line breaks and capitalization from Tesseract."
-    },
     "query": {
       "lens": "- Let me see.\n- please verify ID number C532743…",
       "tesseract": "- Let me see.\n- please verify ID number 0532743…"
     },
+    "answer": {
+      "fused": "- Let me see.\n- please verify ID number C532743…",
+      "note": "Used 'C532743' from Lens as it is more likely correct than '0532743' from Tesseract; preserved line breaks and capitalization from Tesseract."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "contained in the agreement\nare not measures of expediency.",
-      "note": "Used lower-case 'contained' from Tesseract."
-    },
     "query": {
       "lens": "Contained in the agreement\nare not measures of expediency.",
       "tesseract": "contained in the agreement\nare not measures of expediency."
     },
+    "answer": {
+      "fused": "contained in the agreement\nare not measures of expediency.",
+      "note": "Used lower-case 'contained' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "in the Basic Law for Hong Kong",
-      "note": "Used lower-case 'in' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "In the Basic Law for Hong Kong",
       "tesseract": "in the Basic Law for Hong Kong"
     },
+    "answer": {
+      "fused": "in the Basic Law for Hong Kong",
+      "note": "Used lower-case 'in' from Tesseract for correct capitalization."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "and preserved intact for 50 years from 1997.",
-      "note": "Used lower-case 'and' from Tesseract."
-    },
     "query": {
       "lens": "And preserved intact for 50 years from 1997.",
       "tesseract": "and preserved intact for 50 years from 1997."
     },
+    "answer": {
+      "fused": "and preserved intact for 50 years from 1997.",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "as well as shared\nresponsibilities of China and Britain",
-      "note": "Used lower-case 'as' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "As well as shared\nresponsibilities of China and Britain",
       "tesseract": "as well as shared\nresponsibilities of China and Britain"
     },
+    "answer": {
+      "fused": "as well as shared\nresponsibilities of China and Britain",
+      "note": "Used lower-case 'as' from Tesseract for correct capitalization."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "to ensure the Joint Declaration is fully\nimplemented with no encumbrances.",
-      "note": "Used lower-case 'to' from Tesseract for correct capitalization of the first word."
-    },
     "query": {
       "lens": "To ensure the Joint Declaration is fully\nimplemented with no encumbrances.",
       "tesseract": "to ensure the Joint Declaration is fully\nimplemented with no encumbrances."
     },
+    "answer": {
+      "fused": "to ensure the Joint Declaration is fully\nimplemented with no encumbrances.",
+      "note": "Used lower-case 'to' from Tesseract for correct capitalization of the first word."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
-      "note": "Used 'gold shops' and 'Mut Wah Street' from Lens for accuracy; omitted italics as not needed."
-    },
     "query": {
       "lens": "4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
       "tesseract": "{\\i1}4 armed suspects robbed 5 gem shops\non Mut Watt Street.{\\i0}"
     },
+    "answer": {
+      "fused": "4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
+      "note": "Used 'gold shops' and 'Mut Wah Street' from Lens for accuracy; omitted italics as not needed."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "the robbers exchanged fire",
-      "note": "Used lower-case 'the' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "The robbers exchanged fire",
       "tesseract": "the robbers exchanged fire"
     },
+    "answer": {
+      "fused": "the robbers exchanged fire",
+      "note": "Used lower-case 'the' from Tesseract for correct capitalization."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "with the Special Duties Unit.",
-      "note": "Used lower-case 'with' from Tesseract."
-    },
     "query": {
       "lens": "With the Special Duties Unit.",
       "tesseract": "with the Special Duties Unit."
     },
+    "answer": {
+      "fused": "with the Special Duties Unit.",
+      "note": "Used lower-case 'with' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "The 5 gold shops lost $10M in total.",
-      "note": "Used Lens for correct spacing and '$10M' instead of Tesseract's '$1 OM'; removed incorrect italics from Tesseract."
-    },
     "query": {
       "lens": "The 5 gold shops lost $10M in total.",
       "tesseract": "The{\\i1}5{\\i0}gold shops lost $1 OM in total."
     },
+    "answer": {
+      "fused": "The 5 gold shops lost $10M in total.",
+      "note": "Used Lens for correct spacing and '$10M' instead of Tesseract's '$1 OM'; removed incorrect italics from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "is the \"Most Wanted\" Yip Kwok-foon.",
-      "note": "Used lower-case 'is' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "Is the \"Most Wanted\" Yip Kwok-foon.",
       "tesseract": "is the \"Most Wanted\" Yip Kwok-foon."
     },
+    "answer": {
+      "fused": "is the \"Most Wanted\" Yip Kwok-foon.",
+      "note": "Used lower-case 'is' from Tesseract for correct capitalization."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "red skirt, red scarf,",
-      "note": "Used lower-case 'red' from Tesseract."
-    },
     "query": {
       "lens": "Red skirt, red scarf,",
       "tesseract": "red skirt, red scarf,"
     },
+    "answer": {
+      "fused": "red skirt, red scarf,",
+      "note": "Used lower-case 'red' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "we agreed on $3 billion.",
-      "note": "Used lower-case 'we' from Tesseract for correct capitalization of the first word."
-    },
     "query": {
       "lens": "We agreed on $3 billion.",
       "tesseract": "we agreed on $3 billion."
     },
+    "answer": {
+      "fused": "we agreed on $3 billion.",
+      "note": "Used lower-case 'we' from Tesseract for correct capitalization of the first word."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Take the $500M now.",
-      "note": "Used '500M' from Lens instead of '5OOM' from Tesseract, correcting the letter 'O' to zero."
-    },
     "query": {
       "lens": "Take the $500M now.",
       "tesseract": "Take the $5OOM now."
     },
+    "answer": {
+      "fused": "Take the $500M now.",
+      "note": "Used '500M' from Lens instead of '5OOM' from Tesseract, correcting the letter 'O' to zero."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "By that time, however, you son will be…",
-      "note": "Used Tesseract's version for line break removal and included ellipsis at the end."
-    },
     "query": {
       "lens": "By that time,\nhowever, you son will be…",
       "tesseract": "By that time, however, you son will be…"
     },
+    "answer": {
+      "fused": "By that time, however, you son will be…",
+      "note": "Used Tesseract's version for line break removal and included ellipsis at the end."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "but they are useless.",
-      "note": "Used lower-case 'but' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "But they are useless.",
       "tesseract": "but they are useless."
     },
+    "answer": {
+      "fused": "but they are useless.",
+      "note": "Used lower-case 'but' from Tesseract for correct capitalization."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "if I said I'd fucked your mother,\ndid I really fuck her?",
-      "note": "Used lower-case 'if' from Tesseract and preserved line break."
-    },
     "query": {
       "lens": "If I said I'd fucked your mother,\ndid I really fuck her?",
       "tesseract": "if I said I'd fucked your mother,\ndid I really fuck her?"
     },
+    "answer": {
+      "fused": "if I said I'd fucked your mother,\ndid I really fuck her?",
+      "note": "Used lower-case 'if' from Tesseract and preserved line break."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "is all right.",
-      "note": "Used lower-case 'is' from Tesseract."
-    },
     "query": {
       "lens": "Is all right.",
       "tesseract": "is all right."
     },
+    "answer": {
+      "fused": "is all right.",
+      "note": "Used lower-case 'is' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "how much will you \"lend\" me?",
-      "note": "Used lower-case 'how' from Tesseract for correct capitalization."
-    },
     "query": {
       "lens": "How much will you \"lend\" me?",
       "tesseract": "how much will you \"lend\" me?"
     },
+    "answer": {
+      "fused": "how much will you \"lend\" me?",
+      "note": "Used lower-case 'how' from Tesseract for correct capitalization."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Business? Travel?",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Business?\nTravel?",
       "tesseract": "Business? Travel?"
     },
+    "answer": {
+      "fused": "Business? Travel?",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "at 8pm tomorrow.",
-      "note": "Used lower-case 'at' and added 'tomorrow.' from Tesseract."
-    },
     "query": {
       "lens": "At 8pm",
       "tesseract": "at 8pm tomorrow."
     },
+    "answer": {
+      "fused": "at 8pm tomorrow.",
+      "note": "Used lower-case 'at' and added 'tomorrow.' from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "- Hurry up!\n- Tell me the room number…",
-      "note": "Added '-' before 'Hurry up!' and preserved line break as in Tesseract."
-    },
     "query": {
       "lens": "Hurry up!\n- Tell me the room number…",
       "tesseract": "- Hurry up!\n- Tell me the room number…"
     },
+    "answer": {
+      "fused": "- Hurry up!\n- Tell me the room number…",
+      "note": "Added '-' before 'Hurry up!' and preserved line break as in Tesseract."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "You are too kind. Come in and have a seat.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "You are too\nkind. Come in and have a seat.",
       "tesseract": "You are too kind. Come in and have a seat."
     },
+    "answer": {
+      "fused": "You are too kind. Come in and have a seat.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "- I'll spank you.\n- Good girl.",
-      "note": "Added '-' and line break as in Tesseract."
-    },
     "query": {
       "lens": "I'll spank you. Good girl.",
       "tesseract": "- I'll spank you.\n- Good girl."
     },
+    "answer": {
+      "fused": "- I'll spank you.\n- Good girl.",
+      "note": "Added '-' and line break as in Tesseract."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "RMB¥30K for Chief Chen. Please count it.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "RMB¥30K for Chief Chen.\nPlease count it.",
       "tesseract": "RMB¥30K for Chief Chen. Please count it."
     },
+    "answer": {
+      "fused": "RMB¥30K for Chief Chen. Please count it.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Don't pull a long face all day long.",
-      "note": "Used 'all day long' from Lens, correcting the missing space in Tesseract."
-    },
     "query": {
       "lens": "Don't pull a long face all day long.",
       "tesseract": "Don't pull a long face all daylong."
     },
+    "answer": {
+      "fused": "Don't pull a long face all day long.",
+      "note": "Used 'all day long' from Lens, correcting the missing space in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "- Quick\n- What's wrong?",
-      "note": "Added '-' and line break as in Tesseract."
-    },
     "query": {
       "lens": "Quick - What's wrong?",
       "tesseract": "- Quick\n- What's wrong?"
     },
+    "answer": {
+      "fused": "- Quick\n- What's wrong?",
+      "note": "Added '-' and line break as in Tesseract."
+    },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Got it.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Got\nit.",
       "tesseract": "Got it."
     },
+    "answer": {
+      "fused": "Got it.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Robbery! Robbery!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Robbery!\nRobbery!",
       "tesseract": "Robbery! Robbery!"
     },
+    "answer": {
+      "fused": "Robbery! Robbery!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "even if we open a fish ball stall together,",
-      "note": "Used single line from Tesseract for correct line break and spacing."
-    },
     "query": {
       "lens": "even if we open a fish ball stall\ntogether,",
       "tesseract": "even if we open a fish ball stall together,"
     },
+    "answer": {
+      "fused": "even if we open a fish ball stall together,",
+      "note": "Used single line from Tesseract for correct line break and spacing."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Kam! Kam!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Kam!\nKam!",
       "tesseract": "Kam! Kam!"
     },
+    "answer": {
+      "fused": "Kam! Kam!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "If it's not enough, then $100M!",
-      "note": "Used '100M' from Lens instead of '1OOM' (with letter 'O') from Tesseract."
-    },
     "query": {
       "lens": "If it's not enough, then $100M!",
       "tesseract": "If it's not enough, then $1OOM!"
     },
+    "answer": {
+      "fused": "If it's not enough, then $100M!",
+      "note": "Used '100M' from Lens instead of '1OOM' (with letter 'O') from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "I worked with Kwai once. He's so average.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "I worked with Kwai once.\nHe's so average.",
       "tesseract": "I worked with Kwai once. He's so average."
     },
+    "answer": {
+      "fused": "I worked with Kwai once. He's so average.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "$1M!",
-      "note": "Used '$1M!' from Lens for correct text and formatting; ignored Tesseract's incorrect italics and characters."
-    },
     "query": {
       "lens": "$1M!",
       "tesseract": "{\\i1}'MM'.!{\\i0}"
     },
+    "answer": {
+      "fused": "$1M!",
+      "note": "Used '$1M!' from Lens for correct text and formatting; ignored Tesseract's incorrect italics and characters."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Are you tight in cash lately, Taishan Boy?",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Are you tight in cash\nlately, Taishan Boy?",
       "tesseract": "Are you tight in cash lately, Taishan Boy?"
     },
+    "answer": {
+      "fused": "Are you tight in cash lately, Taishan Boy?",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Bro Coke, you should've told us beforehand.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Bro Coke, you should've\ntold us beforehand.",
       "tesseract": "Bro Coke, you should've told us beforehand."
     },
+    "answer": {
+      "fused": "Bro Coke, you should've told us beforehand.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "- I thought I was on my way.\n- You've scared the hell out of us.",
-      "note": "Removed extra '-' at the start and placed '-' at the beginning of the second line as in Tesseract."
-    },
     "query": {
       "lens": "- - I thought I was on my way.\nYou've scared the hell out of us.",
       "tesseract": "- I thought I was on my way.\n- You've scared the hell out of us."
+    },
+    "answer": {
+      "fused": "- I thought I was on my way.\n- You've scared the hell out of us.",
+      "note": "Removed extra '-' at the start and placed '-' at the beginning of the second line as in Tesseract."
     },
     "difficulty": 2,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "RMB¥2M, thank you!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "RMB¥2M,\nthank you!",
       "tesseract": "RMB¥2M, thank you!"
     },
+    "answer": {
+      "fused": "RMB¥2M, thank you!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "It's insane!",
-      "note": "Used single exclamation mark from Lens instead of double from Tesseract."
-    },
     "query": {
       "lens": "It's insane!",
       "tesseract": "It's insane!!"
     },
+    "answer": {
+      "fused": "It's insane!",
+      "note": "Used single exclamation mark from Lens instead of double from Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "So what? Motherfucker!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "So what?\nMotherfucker!",
       "tesseract": "So what? Motherfucker!"
     },
+    "answer": {
+      "fused": "So what? Motherfucker!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Go! Go! Go!",
-      "note": "Removed italics, corrected punctuation, and used space instaed of line break."
-    },
     "query": {
       "lens": "Go!\nGo! Go!",
       "tesseract": "{\\i1}Go'. Go'. Go'.!{\\i0}"
     },
+    "answer": {
+      "fused": "Go! Go! Go!",
+      "note": "Removed italics, corrected punctuation, and used space instaed of line break."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "I understand. Don't worry.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "I understand.\nDon't worry.",
       "tesseract": "I understand. Don't worry."
     },
+    "answer": {
+      "fused": "I understand. Don't worry.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "I killed 3 plainclothes",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "I killed 3\nplainclothes",
       "tesseract": "I killed 3 plainclothes"
     },
+    "answer": {
+      "fused": "I killed 3 plainclothes",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "It's you, Yip!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "It's you,\nYip!",
       "tesseract": "It's you, Yip!"
     },
+    "answer": {
+      "fused": "It's you, Yip!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Motherfucker! The 3 Kings",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Motherfucker!\nThe 3 Kings",
       "tesseract": "Motherfucker! The 3 Kings"
     },
+    "answer": {
+      "fused": "Motherfucker! The 3 Kings",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "Retired soldiers? Go!",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "Retired soldiers?\nGo!",
       "tesseract": "Retired soldiers? Go!"
     },
+    "answer": {
+      "fused": "Retired soldiers? Go!",
+      "note": "Used space instead of newline as in Tesseract."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "fused": "It will work this time. Get me a boat.",
-      "note": "Used space instead of newline as in Tesseract."
-    },
     "query": {
       "lens": "It will work this time.\nGet me a boat.",
       "tesseract": "It will work this time. Get me a boat."
+    },
+    "answer": {
+      "fused": "It will work this time. Get me a boat.",
+      "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
     "verified": true
