@@ -15,6 +15,7 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
+from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import (
     ShiftingAnswer,
     ShiftingQuery,
@@ -127,7 +128,7 @@ class Aligner:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error (not yet encountered)
-            test_case: type[ShiftingTestCase] = self.shifting_queryer.call(test_case)
+            test_case: ShiftingTestCase = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -337,7 +338,7 @@ class Aligner:
             if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            test_case = self.proofing_queryer.call(test_case)
+            test_case: ProofingTestCase = self.proofing_queryer.call(test_case)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -350,9 +351,13 @@ class Aligner:
                     f"but found {len(yw_idxs)}: {yw_idxs}"
                 )
             yw_idx = yw_idxs[0]
-            if test_case.query.yuewen == test_case.answer.yuewen_proofread:
+            query_yuewen = getattr(test_case.query, test_case.prompt_cls.yuewen_field)
+            answer_yuewen = getattr(
+                test_case.answer, test_case.prompt_cls.yuewen_proofread_field
+            )
+            if query_yuewen == answer_yuewen:
                 continue
-            alignment.yuewen[yw_idx].text = test_case.answer.yuewen_proofread
+            alignment.yuewen[yw_idx].text = answer_yuewen
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
