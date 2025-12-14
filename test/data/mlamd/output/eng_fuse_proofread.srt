@@ -192,7 +192,7 @@ I'm McDull!
 
 47
 00:04:39,500 --> 00:04:43,375
-"My School"
+“My School”
 
 48
 00:04:43,583 --> 00:04:45,083
@@ -236,7 +236,7 @@ The Spring Flower Kindergarten!
 
 58
 00:05:04,000 --> 00:05:08,208
-Only 10 minutes' walk from
+Only 10 minutes walk from
 the MTR Station!
 
 59
@@ -258,23 +258,23 @@ Yeah!
 
 63
 00:05:17,125 --> 00:05:22,417
-Spring Flower offers white teachers!
+Spring Flower offer white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
-"We are all happy children…"
+“We are all happy children…”
 
 65
 00:05:36,042 --> 00:05:40,917
-"We sing everyday!"
+“We sing everyday!”
 
 66
 00:05:41,042 --> 00:05:45,625
-"We learn as we grow…"
+“We learn as we grow…”
 
 67
 00:05:45,750 --> 00:05:50,792
-"We are the flowers of spring!"
+“We are the flowers of spring!”
 
 68
 00:05:51,833 --> 00:05:54,083
@@ -697,7 +697,7 @@ But it just comes out different.
 169
 00:10:41,792 --> 00:10:44,375
 You mean
-"All Things Bright and Beautiful"?
+“All Things Bright and Beautiful”?
 
 170
 00:10:44,542 --> 00:10:46,375
@@ -713,7 +713,7 @@ They are fine!!
 
 173
 00:11:39,250 --> 00:11:45,375
-"My Mother"
+“My Mother”
 
 174
 00:11:54,708 --> 00:11:56,500
@@ -767,7 +767,7 @@ Offering brilliant dishes.
 
 186
 00:13:23,333 --> 00:13:25,500
-Welcome to "Mrs. Mc Can Cook".
+Welcome to “Mrs. Mc Can Cook”.
 
 187
 00:13:26,042 --> 00:13:27,542
@@ -979,7 +979,7 @@ For her, it is always…
 
 237
 00:16:47,042 --> 00:16:48,500
-"no pain no gain".
+“no pain no gain”.
 
 238
 00:17:08,458 --> 00:17:11,500
@@ -1025,7 +1025,7 @@ But then, I still have dreams.
 
 248
 00:17:41,208 --> 00:17:44,250
-"My Ideal World"
+“My Ideal World”
 
 249
 00:17:44,292 --> 00:17:49,417
@@ -1563,7 +1563,7 @@ in Hong Kong history!
 
 379
 00:33:55,833 --> 00:33:59,708
-San San, when confirming her winning…
+San San, when confirmed her winning…
 
 380
 00:33:59,833 --> 00:34:03,875
@@ -1576,7 +1576,7 @@ Hong Kong athletes are horrible…
 
 382
 00:34:09,292 --> 00:34:13,708
-Excuse me, it should be "honourable".
+Excuse me, it should be “honourable”.
 
 383
 00:34:13,875 --> 00:34:18,875
@@ -1605,7 +1605,7 @@ Now how about something physical?
 
 389
 00:34:35,500 --> 00:34:36,917
-"Looking for Logan"
+“Looking for Logan”
 
 390
 00:34:36,958 --> 00:34:38,333
@@ -1617,7 +1617,7 @@ Another one begins.
 
 392
 00:34:41,000 --> 00:34:43,417
-"Aka: How Does a Calf Become a Calf?"
+“Aka: How Does a Calf Become a Calf?”
 
 393
 00:34:43,500 --> 00:34:45,417
@@ -1811,79 +1811,79 @@ The song goes like this…
 
 440
 00:38:26,042 --> 00:38:27,542
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 441
 00:38:27,667 --> 00:38:29,417
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 442
 00:38:29,542 --> 00:38:33,250
-"Forget about indigestion."
+“Forget about indigestion.”
 
 443
 00:38:33,375 --> 00:38:35,083
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 444
 00:38:35,208 --> 00:38:36,875
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 445
 00:38:37,042 --> 00:38:40,667
-"Forget about indigestion."
+“Forget about indigestion.”
 
 446
 00:38:41,000 --> 00:38:42,583
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 447
 00:38:42,708 --> 00:38:44,500
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 448
 00:38:44,667 --> 00:38:48,875
-"Forget about indigestion."
+“Forget about indigestion.”
 
 449
 00:38:49,167 --> 00:38:54,333
-"Eat the bun, grow a calf…"
+“Eat the bun, grow a calf…”
 
 450
 00:38:54,500 --> 00:38:57,542
-"Respect my mother."
+“Respect my mother.”
 
 451
 00:38:58,375 --> 00:39:03,750
-"Eat the bun, toughen my calf…"
+“Eat the bun, toughen my calf…”
 
 452
 00:39:03,917 --> 00:39:07,333
-"Serve my country."
+“Serve my country.”
 
 453
 00:39:08,458 --> 00:39:10,000
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 454
 00:39:10,125 --> 00:39:11,875
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 455
 00:39:12,042 --> 00:39:15,500
-"Forget about indigestion."
+“Forget about indigestion.”
 
 456
 00:39:15,708 --> 00:39:17,667
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 457
 00:39:17,792 --> 00:39:19,458
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 458
 00:39:19,625 --> 00:39:24,792
-"Forget about indigestion."
+“Forget about indigestion.”
 
 459
 00:39:28,583 --> 00:39:32,875
@@ -2090,7 +2090,7 @@ Bun snatching?
 
 507
 00:43:12,292 --> 00:43:15,542
-"Bun Snatching",
+“Bun Snatching”,
 for our uninformed audience…
 
 508
@@ -2107,11 +2107,11 @@ Cheung Chau people…
 
 511
 00:43:25,958 --> 00:43:28,667
-Set up 3 stacks of buns to celebrate.
+Set up 3 stacks of bun to celebrate.
 
 512
 00:43:29,750 --> 00:43:31,333
-Stacks of buns?
+Stacks of bun?
 
 513
 00:43:31,792 --> 00:43:32,875
@@ -2119,7 +2119,7 @@ Literally speaking…
 
 514
 00:43:33,083 --> 00:43:38,375
-A stack of buns is a stack of many buns!
+A stack of bun is a stack of many buns!
 
 515
 00:43:38,750 --> 00:43:41,958
@@ -2157,7 +2157,7 @@ hurting many.
 
 523
 00:44:11,958 --> 00:44:14,417
-"Bun Snatching" was thus banned!
+“Bun Snatching” was thus banned!
 
 524
 00:44:14,583 --> 00:44:18,583
@@ -2249,7 +2249,7 @@ I have had a lot of things said to me…
 
 545
 00:45:39,708 --> 00:45:40,708
-But "San yourself"…
+But “San yourself”…
 
 546
 00:45:40,792 --> 00:45:43,833
@@ -2441,64 +2441,64 @@ the Olympic Committee Chairman.
 
 591
 00:49:04,667 --> 00:49:06,083
-"Dear Chairman:"
+“Dear Chairman:”
 
 592
 00:49:06,250 --> 00:49:08,500
-"How are you? I am fine."
+“How are you? I am fine.”
 
 593
 00:49:08,667 --> 00:49:10,917
-"You like bun? I like bun!"
+“You like bun? I like bun!”
 
 594
 00:49:11,083 --> 00:49:15,292
-"We Hong Kong people here love bun."
+“We Hong Kong people here love bun.”
 
 595
 00:49:15,500 --> 00:49:19,917
-"Buns of all sorts."
+“Buns of all sort.”
 
 596
 00:49:20,042 --> 00:49:22,125
-"Dear friend,
+“Dear friend,
 
 597
 00:49:22,250 --> 00:49:25,125
-it is important to snatch buns."
+it is important to snatch buns.”
 
 598
 00:49:25,250 --> 00:49:27,708
-"It is a game, no joke."
+“It is a game, no joke.”
 
 599
 00:49:27,958 --> 00:49:32,500
-"One needs energy,
-and many night congee."
+“One needs energy,
+and many night congee.”
 
 600
 00:49:32,667 --> 00:49:34,708
-"In my stupid opinion…"
+“In my stupid opinion…”
 
 601
 00:49:35,000 --> 00:49:38,958
-"Snatching bun is an Olympic game."
+“Snatching bun is an Olympic game.”
 
 602
 00:49:39,083 --> 00:49:41,958
-"Let athletes all over the world snatch!"
+“Let athletes all over the world snatch!”
 
 603
 00:49:42,125 --> 00:49:43,833
-"And there will be peace."
+“And there will be peace.”
 
 604
 00:49:44,167 --> 00:49:45,667
-"Do you have children?"
+“Do you have children?”
 
 605
 00:49:45,792 --> 00:49:48,417
-"I have a boy, Dull."
+“I have a boy, Dull.”
 
 606
 00:49:48,750 --> 00:49:50,167
@@ -2506,60 +2506,60 @@ She's talking about me!
 
 607
 00:49:51,500 --> 00:49:54,125
-"He is a good boy."
+“He is a good boy.”
 
 608
 00:49:54,292 --> 00:49:56,708
-"He knows how to snatch buns."
+“He knows how to snatch buns.”
 
 609
 00:49:57,000 --> 00:49:59,792
-"One day,
-I can see him snatching buns…"
+“One day,
+I can see him snatching buns…”
 
 610
 00:50:00,083 --> 00:50:02,292
-"Ending up snatching
-an Olympic medal."
+“Ending up snatching
+an Olympic medal.”
 
 611
 00:50:02,583 --> 00:50:06,792
-"That is the biggest comfort
-a mother can get."
+“That is the biggest comfort
+a mother can get.”
 
 612
 00:50:07,292 --> 00:50:11,167
-"Let the world know
-the talent of your children."
+“Let the world know
+the talent of your children.”
 
 613
 00:50:11,833 --> 00:50:15,167
-"Parents will do anything for that."
+“Parents will do anything for that.”
 
 614
 00:50:15,667 --> 00:50:19,333
-"That is why I write you this sudden letter."
+“That is why I write you this sudden letter.”
 
 615
 00:50:19,542 --> 00:50:23,333
-"Although you don't know
-humble things like me."
+“Although you don't know
+humble things like me.”
 
 616
 00:50:23,625 --> 00:50:26,500
-"But my boy is big, very big."
+“But my boy is big, very big.”
 
 617
 00:50:26,667 --> 00:50:29,125
-"One day, you will know him too."
+“One day, you will know him too.”
 
 618
 00:50:29,875 --> 00:50:31,250
-"Thank you for your cooperation."
+“Thank you for your cooperation.”
 
 619
 00:50:31,583 --> 00:50:34,917
-"Yours faithfully, Mrs. Mc"
+“Yours faithfully, Mrs. Mc”
 
 620
 00:50:42,375 --> 00:50:43,833
@@ -2597,7 +2597,7 @@ Master thinks my crawling has passed.
 628
 00:51:09,458 --> 00:51:12,583
 Now I'll learn the
-"12 Bun Snatching Hands".
+“12 Bun Snatching Hands”.
 
 629
 00:51:13,000 --> 00:51:16,042
@@ -2658,13 +2658,13 @@ Step by step, claw by claw…
 
 643
 00:51:55,167 --> 00:51:59,833
-I make it past
+I make it pass
 the "12 Bun Snatching Hands".
 
 644
 00:52:10,208 --> 00:52:20,625
-"There is no deformity,
-but saves us from a dream"
+“There is no deformity,
+but saves us from a dream”
 
 645
 00:52:21,208 --> 00:52:23,750
@@ -2860,7 +2860,7 @@ into the oven.
 
 691
 00:54:42,042 --> 00:54:43,500
-24th December
+24th, December
 
 692
 00:54:44,000 --> 00:54:47,625
@@ -2961,7 +2961,7 @@ accompanied by gourd and potato…
 
 715
 00:56:45,083 --> 00:56:47,708
-Were dressed with soy sauce.
+were dressed with soy sauce.
 
 716
 00:56:48,833 --> 00:56:52,000
@@ -3035,7 +3035,7 @@ Paper turkey paper bun.
 
 733
 00:57:37,125 --> 00:57:39,667
-Turkey pate with bread.
+Turkey paté with bread.
 
 734
 00:57:40,625 --> 00:57:46,625
@@ -3066,7 +3066,7 @@ the turkey…
 
 740
 00:58:06,167 --> 00:58:10,417
-It was already half a year later.
+It was already half year later.
 
 741
 00:58:10,542 --> 00:58:14,542
@@ -3083,7 +3083,7 @@ A serving turkey needs only be raised…
 
 744
 00:58:18,792 --> 00:58:21,083
-For a few months.
+for a few months.
 
 745
 00:58:21,500 --> 00:58:25,417
@@ -3091,7 +3091,7 @@ The time the turkey spent with us…
 
 746
 00:58:25,625 --> 00:58:28,208
-Was in fact longer than its life.
+was in fact longer than its life.
 
 747
 00:58:28,833 --> 00:58:31,417
@@ -3099,12 +3099,12 @@ I realized also, with turkey…
 
 748
 00:58:31,583 --> 00:58:35,792
-Taking the first bite is all that matters.
+Taking the first bite is all it matters.
 
 749
 00:58:36,333 --> 00:58:40,083
 Afterwards,
-it is just "be over and done with it".
+it is just “be over and done with it”.
 
 750
 00:58:41,500 --> 00:58:43,333
@@ -3155,15 +3155,15 @@ the turkey returned.
 761
 00:59:18,000 --> 00:59:22,542
 I regretted I made mother
-throw the turkey away.
+threw the turkey away.
 
 762
 01:00:11,583 --> 01:00:18,500
-"Special Report"
+“Special Report”
 
 763
 01:00:21,833 --> 01:00:23,208
-"Special Report"
+“Special Report”
 
 764
 01:00:23,417 --> 01:00:28,000
@@ -3206,7 +3206,7 @@ the Bamboo Game Association…
 
 773
 01:00:50,958 --> 01:00:53,875
-Is proposing Mahjong for official game.
+is proposing Mahjong for official game.
 
 774
 01:00:54,375 --> 01:00:57,000
@@ -3218,7 +3218,7 @@ have vowed…
 
 776
 01:00:58,625 --> 01:01:02,458
-To campaign for "Tart Throwing".
+To campaign for “Tart Throwing”.
 
 777
 01:01:02,917 --> 01:01:05,125
@@ -3231,13 +3231,13 @@ They believe…
 
 779
 01:01:07,667 --> 01:01:11,000
-"Duck Hanging"
+“Duck Hanging”
 would make an ideal addition.
 
 780
 01:01:12,042 --> 01:01:15,958
 More interesting,
-CIC Insurance is joining forces with…
+CIC Insurance is joining force with…
 
 781
 01:01:16,083 --> 01:01:17,958
@@ -3253,7 +3253,7 @@ In support of…
 
 784
 01:01:22,708 --> 01:01:24,375
-"Bun Snatching"…
+“Bun Snatching”…
 
 785
 01:01:24,542 --> 01:01:28,542
@@ -3269,7 +3269,7 @@ Nothing came of anything.
 
 788
 01:02:35,375 --> 01:02:38,875
-"Tart Throwing"
+“Tart Throwing”
 was chosen as the highlight.
 
 789
@@ -3278,7 +3278,7 @@ As for the official slogan…
 
 790
 01:02:41,625 --> 01:02:45,542
-"HK, One Big Tart" was a logical choice.
+“HK, One Big Tart” was a logical choice.
 
 791
 01:02:47,292 --> 01:02:49,625
@@ -3404,33 +3404,33 @@ Maybe the pirate didn't get to finish it.
 
 819
 01:04:46,958 --> 01:04:55,542
-"Eating 6 buns last night…"
+“Eating 6 buns last night…”
 
 820
 01:04:55,667 --> 01:05:04,500
-"Still left me hungry."
+“Still left me hungry.”
 
 821
 01:05:05,333 --> 01:05:13,250
-"Eating 1½lb white bread last night…"
+“Eating 1½lb white bread last night…”
 
 822
 01:05:13,417 --> 01:05:24,792
-"Still left me hungry."
+“Still left me hungry.”
 
 823
 01:05:26,750 --> 01:05:35,042
-"Excelled 6 sets of steps
-when I was young…"
+“Excelled 6 sets of steps
+when I was young…”
 
 824
 01:05:35,208 --> 01:05:42,458
-"Still left me empty."
+“Still left me empty.”
 
 825
 01:05:44,042 --> 01:05:57,375
-"Brought up San San
-when I am old! Still…"
+“Brought up San San
+when I am old! Still…”
 
 826
 01:05:57,917 --> 01:06:01,292
@@ -3502,19 +3502,19 @@ What shall I be?
 
 843
 01:07:05,375 --> 01:07:16,417
-"…Nothing shall be done!"
+“…Nothing shall be done!”
 
 844
 01:07:30,833 --> 01:07:31,958
-"I Have Grown Up"
+“I Have Grown Up”
 
 845
 01:07:35,292 --> 01:07:37,125
-"Fat, Still"
+“Fat, Still”
 
 846
 01:07:39,792 --> 01:07:41,625
-"Powerful"
+“Powerful”
 
 847
 01:07:42,250 --> 01:07:44,542
@@ -3641,7 +3641,7 @@ She published a cookbook.
 
 877
 01:10:25,250 --> 01:10:28,042
-The last recipe was "Roast Chicken".
+The last recipe was “Roast Chicken”.
 
 878
 01:10:28,417 --> 01:10:30,875
@@ -3649,7 +3649,7 @@ A simple dish no less.
 
 879
 01:10:31,000 --> 01:10:32,000
-"Roast Chicken".
+“Roast Chicken”.
 
 880
 01:10:32,292 --> 01:10:34,375
