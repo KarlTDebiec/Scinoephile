@@ -450,7 +450,7 @@ It was probably just some soot gremlins.
 96
 00:09:04,298 --> 00:09:07,051
 灰尘精灵
-What do you mean, "gremlins"? Like the ones in my book?
+What do you mean, “gremlins”? Like the ones in my book?
 
 97
 00:09:06,379 --> 00:09:07,338
@@ -730,7 +730,7 @@ This is our neighbor. She takes care of this house.
 156
 00:13:44,578 --> 00:13:47,368
 婆婆今天是来帮忙的
-She said you can call her "Granny" if you'd like.
+She said you can call her “Granny” if you'd like.
 
 157
 00:13:47,248 --> 00:13:50,459
@@ -3074,7 +3074,7 @@ Ahh.
 651
 00:55:50,518 --> 00:55:53,772
 所以就把它们洒在院子里
-"so we planted them in your garden out back, but…"
+“so we planted them in your garden out back, but…”
 
 652
 00:55:53,684 --> 00:55:54,518
@@ -3482,7 +3482,7 @@ Mmm-hmm.
 737
 01:04:38,713 --> 01:04:42,796
 发电处七国山医院
-"Please contact Shichikokuyama."
+“Please contact Shichikokuyama.”
 
 738
 01:04:42,758 --> 01:04:44,468
@@ -4609,12 +4609,12 @@ It sounds crazy, but maybe you did.
 970
 01:23:23,874 --> 01:23:25,917
 妳看
-- Look at this.    - "For Mommy."
+- Look at this.    - “For Mommy.”
 
 971
 01:23:25,917 --> 01:23:27,961
 〝送给妈妈〞
-- Look at this.    - "For Mommy."
+- Look at this.    - “For Mommy.”
 
 972
 01:23:29,759 --> 01:23:33,263
