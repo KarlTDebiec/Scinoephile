@@ -1,14 +1,13 @@
 [
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Police.",
       "subtitle_2": "Show me your ID."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "- Check his ID.\n- Yes sir.",
       "subtitle_2": "- What's in your bag?\n- Headquarter,",
@@ -16,13 +15,10 @@
       "subtitle_4": "Bracket 1, Kwai Ching-hung.",
       "subtitle_5": "Open it."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_6": "It is the common interest",
-      "note_6": "Corrected 'interests' to 'interest' for subject-verb agreement with the singular 'It is the common interest'."
-    },
     "query": {
       "subtitle_1": "The arrangement for Hong Kong",
       "subtitle_2": "contained in the agreement\nare not measures of expediency.",
@@ -33,11 +29,14 @@
       "subtitle_7": "as well as shared\nresponsibilities of China and Britain",
       "subtitle_8": "to ensure the Joint Declaration is fully\nimplemented with no encumbrances."
     },
+    "answer": {
+      "revised_6": "It is the common interest",
+      "note_6": "Corrected 'interests' to 'interest' for subject-verb agreement with the singular 'It is the common interest'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "An armed robbery took place this afternoon in Kwun Tong.",
       "subtitle_2": "4 armed suspects robbed 5 gold shops\non Mut Wah Street.",
@@ -55,10 +54,10 @@
       "subtitle_14": "Look, there's blood everywhere!",
       "subtitle_15": "Take it, jerk!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Shit has really hit the fan!",
       "subtitle_2": "I can give you 20% tops. Sorry.",
@@ -71,16 +70,11 @@
       "subtitle_9": "Time has changed.",
       "subtitle_10": "The cops are on the prowl!"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "Especially for your swag, Bro Foon!",
-      "note_1": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns.",
-      "revised_6": "Bro Foon, you always have your way!",
-      "note_6": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns."
-    },
     "query": {
       "subtitle_1": "Especially for your swag, Bro foon!",
       "subtitle_2": "It took us 2 years to fence it last time!",
@@ -89,11 +83,16 @@
       "subtitle_5": "40%.",
       "subtitle_6": "Bro foon, you always have your way!"
     },
+    "answer": {
+      "revised_1": "Especially for your swag, Bro Foon!",
+      "note_1": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns.",
+      "revised_6": "Bro Foon, you always have your way!",
+      "note_6": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "How about you find another fence?",
       "subtitle_2": "If I can't take it, I doubt others would dare to!",
@@ -101,49 +100,49 @@
       "subtitle_4": "Open the safe!",
       "subtitle_5": "Are you robbing me?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Don't make me do it."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "Thanks so much, Bro Foon.",
-      "note_1": "Corrected 'Bro foon.' to 'Bro Foon.' (capitalized proper noun)."
-    },
     "query": {
       "subtitle_1": "Thanks so much, Bro foon.",
       "subtitle_2": "Don't look me up in the future.",
       "subtitle_3": "There's no more business between us!",
       "subtitle_4": "We go separate ways!"
     },
+    "answer": {
+      "revised_1": "Thanks so much, Bro Foon.",
+      "note_1": "Corrected 'Bro foon.' to 'Bro Foon.' (capitalized proper noun)."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
+    "query": {
+      "subtitle_1": "Light, Bro foon."
+    },
     "answer": {
       "revised_1": "Light, Bro Foon.",
       "note_1": "Corrected 'foon' to 'Foon' to capitalize the proper noun."
     },
-    "query": {
-      "subtitle_1": "Light, Bro foon."
-    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fisherman!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Don't worry.",
       "subtitle_2": "These ships belong to Yi Fa.",
@@ -154,18 +153,18 @@
       "subtitle_7": "They have strong backing. It's legit!",
       "subtitle_8": "A TV set sells for $2K\nin Hong Kong and $8K in China."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "They earn millions of dollars in each transaction.",
       "subtitle_2": "Cash keeps rolling in!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Used notes with no consecutive serial numbers.",
       "subtitle_2": "I need them today!",
@@ -175,10 +174,10 @@
       "subtitle_6": "Manager Shum, how much do we have?",
       "subtitle_7": "Manager Fok!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We are in love but can't be together.",
       "subtitle_2": "I wait day by day but you never come back…",
@@ -186,10 +185,10 @@
       "subtitle_4": "Mr Cheuk,",
       "subtitle_5": "let's discuss the price."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Was it a bit flat?",
       "subtitle_2": "No way! Let's start over!",
@@ -197,25 +196,25 @@
       "subtitle_4": "red skirt, red scarf,",
       "subtitle_5": "like white paper…"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I said let's start over. Didn't you hear me?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I said let's start over. Didn't you hear me?",
       "subtitle_2": "Let's not waste time!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mr Tycoon,",
       "subtitle_2": "we agreed on $3 billion.",
@@ -223,13 +222,10 @@
       "subtitle_4": "It's impossible to get so much cash\nout of the blue.",
       "subtitle_5": "I've only got $500M on hand."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_10": "By that time, however, your son will be…",
-      "note_10": "Corrected 'you son' to 'your son'."
-    },
     "query": {
       "subtitle_1": "Did I say you could go?",
       "subtitle_2": "Take the $500M now.",
@@ -242,21 +238,21 @@
       "subtitle_9": "But after 48 hours, they have to release me.",
       "subtitle_10": "By that time, however, you son will be…"
     },
+    "answer": {
+      "revised_10": "By that time, however, your son will be…",
+      "note_10": "Corrected 'you son' to 'your son'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Call the Commissioner of Police!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "I might as well cut it off, OK?",
-      "note_4": "Corrected 'if' to 'it' to match the intended meaning: 'cut it off'."
-    },
     "query": {
       "subtitle_1": "I said let's start over. Didn't you hear me?",
       "subtitle_2": "You hear me, or not?",
@@ -265,44 +261,47 @@
       "subtitle_5": "Please don't!",
       "subtitle_6": "I'm sorry! I'm sorry!"
     },
+    "answer": {
+      "revised_4": "I might as well cut it off, OK?",
+      "note_4": "Corrected 'if' to 'it' to match the intended meaning: 'cut it off'."
+    },
     "difficulty": 1,
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You should've said so earlier."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "What's up?",
       "subtitle_2": "The Commissioner didn't answer?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You're playing me, right?",
       "subtitle_2": "Let's play it all the way then!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Leaving so soon, Officer Wu?",
       "subtitle_2": "Mr Tycoon is looking for you.",
       "subtitle_3": "Mr Tycoon, didn't you call the cops? Come here!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mr Ho.",
       "subtitle_2": "They are sending these dogs after me,",
@@ -326,47 +325,47 @@
       "subtitle_20": "how much will you \"lend\" me?",
       "subtitle_21": "$3 billion."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "",
       "subtitle_2": "Are you in Guangzhou for business or leisure?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_3": "Yeah, I am a businessman.",
-      "note_3": "Corrected 'Yea' to 'Yeah' for standard usage in this context."
-    },
     "query": {
       "subtitle_1": "Excuse me?",
       "subtitle_2": "Business? Travel?",
       "subtitle_3": "Yea, I am a businessman."
     },
+    "answer": {
+      "revised_3": "Yeah, I am a businessman.",
+      "note_3": "Corrected 'Yea' to 'Yeah' for standard usage in this context."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Guangzhou Railway Station"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I'd like to reserve a private room",
       "subtitle_2": "at 8pm tomorrow.",
       "subtitle_3": "My name is Chen. Thank you."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello, Commander.",
       "subtitle_2": "8pm tomorrow at Fengman Restaurant.",
@@ -374,10 +373,10 @@
       "subtitle_4": "Don't make me fucking wait for you.",
       "subtitle_5": "That's it."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fengman Restaurant",
       "subtitle_2": "Almost there, Mr Fong.",
@@ -393,10 +392,10 @@
       "subtitle_12": "Never mind. Let's go.",
       "subtitle_13": "Chief Chen."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief Chen.",
       "subtitle_2": "This is Zhang Da-bao, Boss Zhang,",
@@ -410,10 +409,10 @@
       "subtitle_10": "Have a seat.",
       "subtitle_11": "Bottoms up!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Boss Zhang cannot drink?",
       "subtitle_2": "Bottoms up!",
@@ -421,10 +420,10 @@
       "subtitle_4": "Yes!",
       "subtitle_5": "Bottoms up!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Da-bao is my buddy.",
       "subtitle_2": "We've only met quite recently.",
@@ -461,10 +460,10 @@
       "subtitle_33": "Bottoms up!",
       "subtitle_34": "Bottoms up!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "This guy plays golf every Sunday\nin Clear Water Bay.",
       "subtitle_2": "One-way road. Quiet. No phone signal. It may work.",
@@ -475,10 +474,10 @@
       "subtitle_7": "Drunk every night.",
       "subtitle_8": "He recently has an actress as a mistress."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hey!",
       "subtitle_2": "Where is our rice?",
@@ -489,10 +488,10 @@
       "subtitle_7": "Enjoy your food.",
       "subtitle_8": "Close the door."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Sir, please follow me.",
       "subtitle_2": "Give me a cup of tea.",
@@ -511,13 +510,10 @@
       "subtitle_15": "C'est la vie.",
       "subtitle_16": "There's no other way."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "Should we do more kidnappings?",
-      "note_4": "Changed 'kidnaps' to 'kidnappings' for correct noun usage."
-    },
     "query": {
       "subtitle_1": "We've stolen cars, committed burglaries,",
       "subtitle_2": "and robbed cash vans.",
@@ -526,11 +522,14 @@
       "subtitle_5": "What do you have in mind?",
       "subtitle_6": "Spit it out. We can discuss."
     },
+    "answer": {
+      "revised_4": "Should we do more kidnappings?",
+      "note_4": "Changed 'kidnaps' to 'kidnappings' for correct noun usage."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I'm a mountaineer.",
       "subtitle_2": "After conquering one mountain,",
@@ -551,17 +550,17 @@
       "subtitle_17": "Beepers are already outdated.",
       "subtitle_18": "OK, I'll talk to you later."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Excuse me, Boss."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Please go on.",
       "subtitle_2": "Don't give us a hard time.\nWe're doing small business.",
@@ -572,27 +571,27 @@
       "subtitle_7": "They all look like criminals and idiots.",
       "subtitle_8": "You should be out of business."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "What is he staring at?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "He is smart and helpful",
       "subtitle_2": "I don't want the guy in blue either.",
       "subtitle_3": "You only need two men this time?",
       "subtitle_4": "Take the others to broaden their horizons."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Got it!",
       "subtitle_2": "Let me see to it.",
@@ -601,10 +600,10 @@
       "subtitle_5": "Stop drinking and scram!",
       "subtitle_6": "You two come with me."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Faster.",
       "subtitle_2": "So slow!",
@@ -619,27 +618,27 @@
       "subtitle_11": "Spruce them up before sending them to Hong Kong.",
       "subtitle_12": "Sure will!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Motherfucker.",
       "subtitle_2": "Sit and eat."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Commander,",
       "subtitle_2": "who's this Big Bro Chiu?",
       "subtitle_3": "Who cares if he is Big Bro Chiu or not?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "He is a douchebag.",
       "subtitle_2": "He is a sly,",
@@ -651,10 +650,10 @@
       "subtitle_8": "Then Big Bro Chiu popped up.",
       "subtitle_9": "Big Bro Chiu is just a name."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Is Fai here?",
       "subtitle_2": "Fai.",
@@ -670,10 +669,10 @@
       "subtitle_12": "Did you just speak Thai?",
       "subtitle_13": "Do you think I speak French?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You stink!",
       "subtitle_2": "Really?",
@@ -696,35 +695,35 @@
       "subtitle_19": "Not coughing? You are being cheeky!",
       "subtitle_20": "I say no Coke."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fai, I'm not gonna eat. I'm running late.",
       "subtitle_2": "You're going now?",
       "subtitle_3": "Yes."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Be a good girl."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Bro Coke, dig in.",
       "subtitle_2": "She's not eating with us?",
       "subtitle_3": "She has to work night shift."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "She's a legit masseuse.",
       "subtitle_2": "Eat some barbecued pork.",
@@ -733,18 +732,18 @@
       "subtitle_5": "Shall we go to Ocean Park?",
       "subtitle_6": "Shall we ride the roller coaster?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Shall we fly higher and farther?",
       "subtitle_2": "Tickle, tickle."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Stop making noise, or the landlady will be nasty.",
       "subtitle_2": "She's nasty because you haven't paid the rent.",
@@ -785,10 +784,10 @@
       "subtitle_37": "Our life was insecure. We couldn't sleep well.",
       "subtitle_38": "And we didn't earn that much.\nSo what's the point?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I'd like to stay here for a few days.",
       "subtitle_2": "What?",
@@ -800,20 +799,17 @@
       "subtitle_8": "Coming!",
       "subtitle_9": "That's fine"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "(Gold shop)"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "Plus 80 VCD players. RMB¥4K apiece.",
-      "note_4": "Changed 'a piece' to 'apiece' for correct usage."
-    },
     "query": {
       "subtitle_1": "(Jockey Club)",
       "subtitle_2": "Panyu Yi Fa Market",
@@ -821,11 +817,14 @@
       "subtitle_4": "Plus 80 VCD players. RMB¥4K a piece.",
       "subtitle_5": "RMB¥680K, thank you."
     },
+    "answer": {
+      "revised_4": "Plus 80 VCD players. RMB¥4K apiece.",
+      "note_4": "Changed 'a piece' to 'apiece' for correct usage."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You pay me RMB¥700K.",
       "subtitle_2": "I will notify you once the goods are delivered.",
@@ -833,13 +832,10 @@
       "subtitle_4": "RMB¥30K for Chief Chen. Please count it.",
       "subtitle_5": "Business License"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "Will notify you once the goods are on board.",
-      "note_2": "Corrected 'onboard' to 'on board' for standard usage in this context."
-    },
     "query": {
       "subtitle_1": "RMB¥30K. The amount is correct.",
       "subtitle_2": "Will notify you once the goods are onboard.",
@@ -864,48 +860,48 @@
       "subtitle_21": "Boss Zhang.",
       "subtitle_22": "What's wrong?"
     },
+    "answer": {
+      "revised_2": "Will notify you once the goods are on board.",
+      "note_2": "Corrected 'onboard' to 'on board' for standard usage in this context."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Something wrong with the goods?",
       "subtitle_2": "No, close the door.",
       "subtitle_3": "Close the door."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Want to play tough guy? Call your wife now."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Call your wife now.",
       "subtitle_2": "Tell your folks you're OK, asshole.",
       "subtitle_3": "If you kill me, you won't get a cent.",
       "subtitle_4": "Are you threatening me?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Cheuk, be patient.",
       "subtitle_2": "If he doesn't talk, don't give him food or water."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_19": "Bro Foon, are you making a comeback?",
-      "note_19": "Corrected 'Bro foon' to 'Bro Foon' to capitalize the name properly."
-    },
     "query": {
       "subtitle_1": "You're so noisy.",
       "subtitle_2": "Hey, what are you doing?",
@@ -956,27 +952,30 @@
       "subtitle_47": "Stand firm.",
       "subtitle_48": "Shoot the hell out of him."
     },
+    "answer": {
+      "revised_19": "Bro Foon, are you making a comeback?",
+      "note_19": "Corrected 'Bro foon' to 'Bro Foon' to capitalize the name properly."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "What the fuck?! Join me",
       "subtitle_2": "or go home and eat shit."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro Chiu,",
       "subtitle_2": "how much can we earn from robbing this gold shop?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You're calling or not?",
       "subtitle_2": "If the 3 Kings of Thieves join forces,",
@@ -985,32 +984,29 @@
       "subtitle_5": "What shall I call our stall?",
       "subtitle_6": "Are you calling your family or not?"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hey, wake up!",
       "subtitle_2": "Gold depository?",
       "subtitle_3": "Racecourse?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Kidnap Hong Kong Governor Chris Patten?",
       "subtitle_2": "The Head of Hong Kong and Macau Affairs, Lu Ping?",
       "subtitle_3": "No way."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "What are you listening to?",
-      "note_1": "Added 'to' at the end for correct grammar: 'listening to'."
-    },
     "query": {
       "subtitle_1": "What are you listening?",
       "subtitle_2": "The 4 Heavenly Kings singing on stage together.",
@@ -1021,11 +1017,14 @@
       "subtitle_7": "Water, give me water.",
       "subtitle_8": "I will make the call."
     },
+    "answer": {
+      "revised_1": "What are you listening to?",
+      "note_1": "Added 'to' at the end for correct grammar: 'listening to'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "How's my husband? I beg you!",
       "subtitle_2": "He's not in good health. Don't hurt him.",
@@ -1033,10 +1032,10 @@
       "subtitle_4": "Mr Cheuk, can you let my husband go?",
       "subtitle_5": "Name a price. I'll pay you from my own pocket…"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?",
       "subtitle_2": "I have $80M in cash.",
@@ -1044,10 +1043,10 @@
       "subtitle_4": "$80M it is!",
       "subtitle_5": "Find Yip and Kwai!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "What the hell?",
       "subtitle_2": "The 3 Kings of Thieves\njoin forces for the first time.",
@@ -1059,19 +1058,19 @@
       "subtitle_8": "This is the mountain I'm looking for.",
       "subtitle_9": "Himalaya!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Having night snack?",
       "subtitle_2": "There's Coke in the fridge.",
       "subtitle_3": "OK, I'll get it myself."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fai, how long is your friend staying?",
       "subtitle_2": "3 or 4 nights.",
@@ -1085,35 +1084,35 @@
       "subtitle_10": "OK.",
       "subtitle_11": "I'll go to bed after sewing."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I will arrive with clients in 3 minutes.",
       "subtitle_2": "Got it."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Gui, Guang, unload the goods. Be quick."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro, we have a situation!",
       "subtitle_2": "Panyu Customs!",
       "subtitle_3": "Kam! Kam!",
       "subtitle_4": "Chung, pull over!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Take a look over there.",
       "subtitle_2": "Take a look again over there.",
@@ -1123,17 +1122,17 @@
       "subtitle_6": "What about Kam?",
       "subtitle_7": "Find Mr Fong."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chinese customs"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Comrade.",
       "subtitle_2": "What do you want?",
@@ -1141,43 +1140,43 @@
       "subtitle_4": "We're wondering",
       "subtitle_5": "if he can discharge the Lianhuashan goods and men?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We know Mr Fong.",
       "subtitle_2": "In 4 days, the goods will be confiscated",
       "subtitle_3": "and the men will be executed.",
       "subtitle_4": "Yes, we understand."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief, someone wants to see you.",
       "subtitle_2": "OK."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief Long is busy today.",
       "subtitle_2": "Come again tomorrow."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "All right. Yes…"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief Long is not seeing guests today.",
       "subtitle_2": "Come again tomorrow.",
@@ -1186,20 +1185,20 @@
       "subtitle_5": "You don't want to save Kam anymore?",
       "subtitle_6": "Yes, yes."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief Long said he wanted to talk over dinner.",
       "subtitle_2": "Find a restaurant and wait for him.",
       "subtitle_3": "Good.",
       "subtitle_4": "Fengman Restaurant."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?",
       "subtitle_2": "I am in Fugui Restaurant with Chief Long.",
@@ -1210,10 +1209,10 @@
       "subtitle_7": "Quick!",
       "subtitle_8": "Okay!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hurry up!",
       "subtitle_2": "Chief Long of Customs.",
@@ -1241,10 +1240,10 @@
       "subtitle_24": "Let's order delicacies.",
       "subtitle_25": "Waiter!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Thanks a lot.",
       "subtitle_2": "What's your name?",
@@ -1263,19 +1262,19 @@
       "subtitle_15": "It's good to take a bath.",
       "subtitle_16": "Find a sauna."
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Don't forget the vase.",
       "subtitle_2": "Yes."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chinese customs",
       "subtitle_2": "Thanks to connections,\nI didn't need to rot in jail.",
@@ -1288,18 +1287,18 @@
       "subtitle_9": "Don't complain about carousing,",
       "subtitle_10": "for money's sake."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hey! Come here.",
       "subtitle_2": "Our goods!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Come.",
       "subtitle_2": "Your goods are here.",
@@ -1309,50 +1308,50 @@
       "subtitle_6": "Sign here if there's no problem.",
       "subtitle_7": "Thanks so much."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "OK."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Your mole hasn't found Kwai's dossier",
       "subtitle_2": "in the police station?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "No news about Yip in China?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "What about his underlings? His fences?",
       "subtitle_2": "His fellow illegal immigrants? His village mates?",
       "subtitle_3": "Can't find them?",
       "subtitle_4": "Nothing at all?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Good.",
       "subtitle_2": "Good."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fuck you!",
       "subtitle_2": "Fuck you!",
@@ -1371,36 +1370,36 @@
       "subtitle_15": "They will send loads of people after us.",
       "subtitle_16": "Find a way to shake them off."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?",
       "subtitle_2": "Are you Cheuk?",
       "subtitle_3": "Yes."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Noon tomorrow. Bring a purple umbrella\nto Temple Street.",
       "subtitle_2": "I'll have you picked up.",
       "subtitle_3": "Get on."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Take off your clothes.",
       "subtitle_2": "Take them all off."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I worked with Kwai once. He's so average.",
       "subtitle_2": "I know Yip. He lived in Guangdong.",
@@ -1409,13 +1408,10 @@
       "subtitle_5": "Yes.",
       "subtitle_6": "OK."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "We wielded AK-47s together.",
-      "note_4": "Added 's' to 'AK-47' to indicate plural, as 'we' implies more than one weapon."
-    },
     "query": {
       "subtitle_1": "I drove for Yip and was chased by the cops.",
       "subtitle_2": "I fenced for Yip.",
@@ -1453,41 +1449,39 @@
       "subtitle_34": "Quincy will stand in front of you tomorrow.",
       "subtitle_35": "Give me the dough."
     },
+    "answer": {
+      "revised_4": "We wielded AK-47s together.",
+      "note_4": "Added 's' to 'AK-47' to indicate plural, as 'we' implies more than one weapon."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hey.",
       "subtitle_2": "Thanks so much!",
       "subtitle_3": "Let's go have some fun?"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Are you tight in cash lately, Taishan Boy?",
       "subtitle_2": "How can 3 pieces be enough?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Guns are for firing, not for sniffing."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "Have you sniffed out that Cheuk\nis looking for Yip and Kwai?",
-      "note_2": "Added 'out' to complete the phrasal verb 'sniffed out'.",
-      "revised_9": "They are being so brazen?",
-      "note_9": "Removed 'ly' from 'brazenly' to correct the phrase to 'so brazen'."
-    },
     "query": {
       "subtitle_1": "Our commander taught us: safety first.",
       "subtitle_2": "Have you sniffed that Cheuk\nis looking for Yip and Kwai?",
@@ -1507,11 +1501,16 @@
       "subtitle_16": "Keep me posted, kiddo.",
       "subtitle_17": "Keep me posted!"
     },
+    "answer": {
+      "revised_2": "Have you sniffed out that Cheuk\nis looking for Yip and Kwai?",
+      "note_2": "Added 'out' to complete the phrasal verb 'sniffed out'.",
+      "revised_9": "They are being so brazen?",
+      "note_9": "Removed 'ly' from 'brazenly' to correct the phrase to 'so brazen'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Stand still, sir.",
       "subtitle_2": "What's wrong?",
@@ -1519,10 +1518,10 @@
       "subtitle_4": "Home.",
       "subtitle_5": "Your ID, please."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Bo!",
       "subtitle_2": "Why didn't you come home right after school?",
@@ -1532,10 +1531,10 @@
       "subtitle_6": "Bro Coke, you should've told us beforehand.",
       "subtitle_7": "- I thought I was on my way.\n- You've scared the hell out of us."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Shut up!",
       "subtitle_2": "Still drinking? Bad girl!",
@@ -1547,17 +1546,17 @@
       "subtitle_8": "Let's go home.",
       "subtitle_9": "Thank you, sir."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Sorry."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Darling.",
       "subtitle_2": "Daddy loves you.",
@@ -1570,32 +1569,32 @@
       "subtitle_9": "Boss Zhang,",
       "subtitle_10": "can you do me a favor?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Go!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Let him vent his anger.",
       "subtitle_2": "Stop!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Chief Song, you're a tea connoisseur."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Enough.",
       "subtitle_2": "I need you to do me a favor.",
@@ -1604,15 +1603,10 @@
       "subtitle_5": "Forgive them.",
       "subtitle_6": "Give me face."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_6": "A petit bourgeois!",
-      "note_6": "Corrected 'pet it bourgeois' to 'petit bourgeois'.",
-      "revised_7": "A greedy, smuggling, tax-evading petit bourgeois!",
-      "note_7": "Corrected 'pet it bourgeois' to 'petit bourgeois'."
-    },
     "query": {
       "subtitle_1": "They robbed me.",
       "subtitle_2": "What have you lost?",
@@ -1628,30 +1622,32 @@
       "subtitle_12": "Shoot him,",
       "subtitle_13": "I'll act according to the law!"
     },
+    "answer": {
+      "revised_6": "A petit bourgeois!",
+      "note_6": "Corrected 'pet it bourgeois' to 'petit bourgeois'.",
+      "revised_7": "A greedy, smuggling, tax-evading petit bourgeois!",
+      "note_7": "Corrected 'pet it bourgeois' to 'petit bourgeois'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Great, there's a vase in the toilet…",
       "subtitle_2": "We're lucky…",
       "subtitle_3": "It's small but it will do."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We're good buddies."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_11": "Bro Foon, Cheuk has gone mad!",
-      "note_11": "Capitalized 'Foon' to match the proper noun format for a name."
-    },
     "query": {
       "subtitle_1": "RMB¥2M, thank you!",
       "subtitle_2": "I receive RMB¥1.3M from you. Thanks.",
@@ -1666,11 +1662,14 @@
       "subtitle_11": "Bro foon, Cheuk has gone mad!",
       "subtitle_12": "He set up a special phone line to look for you."
     },
+    "answer": {
+      "revised_11": "Bro Foon, Cheuk has gone mad!",
+      "note_11": "Capitalized 'Foon' to match the proper noun format for a name."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Inspector Wu.",
       "subtitle_2": "You're difficult to tail.",
@@ -1696,19 +1695,19 @@
       "subtitle_22": "I'm very calm.",
       "subtitle_23": "Or I'd have kicked you too!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Want to report the crime?",
       "subtitle_2": "If not, I'll let him go.",
       "subtitle_3": "Well?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "If not, I'll let him go!",
       "subtitle_2": "Get lost!",
@@ -1718,10 +1717,10 @@
       "subtitle_6": "keep searching for him.",
       "subtitle_7": "The Royal Hong Kong Police relies\non your phone calls."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Why don't you just drop it?",
       "subtitle_2": "Don't ruin your impeccable record.",
@@ -1729,13 +1728,10 @@
       "subtitle_4": "Even if you were to hit me,",
       "subtitle_5": "I must say it's a dead end!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_9": "A single winning ticket will make\nyou richer than any king.",
-      "note_9": "Corrected 'kings' to 'king' for correct idiomatic usage: 'richer than any king'."
-    },
     "query": {
       "subtitle_1": "I know, I know!",
       "subtitle_2": "We've come to the climax of tonight.",
@@ -1752,11 +1748,14 @@
       "subtitle_13": "The odds are 99.",
       "subtitle_14": "Win & Place."
     },
+    "answer": {
+      "revised_9": "A single winning ticket will make\nyou richer than any king.",
+      "note_9": "Corrected 'kings' to 'king' for correct idiomatic usage: 'richer than any king'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Motherfucker, almost $400M in the pool.",
       "subtitle_2": "Hong Kong citizens are robbed by the Triple Trio.",
@@ -1764,20 +1763,20 @@
       "subtitle_4": "The $170M jackpot pool",
       "subtitle_5": "has attracted many fans queuing\nto place their bets."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "No more clothes pegs?",
       "subtitle_2": "No.",
       "subtitle_3": "Go get some in the room.",
       "subtitle_4": "Sure."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "The race is about to start.",
       "subtitle_2": "The $170M jackpot pool.",
@@ -1793,56 +1792,51 @@
       "subtitle_12": "The rest can hardly catch up.",
       "subtitle_13": "Go! Go! Go!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Faster! Faster! Faster!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "No one wins. The warehouse\nmust be filled with money."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro Chiu."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hey.",
       "subtitle_2": "Mr Cheuk, you know who Kun-xi is?",
       "subtitle_3": "It's Kun-xi speaking.",
       "subtitle_4": "Look me up in Guangdong. I won't let you down."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You're really quitting? It's a cushy job.",
       "subtitle_2": "You're telling me!",
       "subtitle_3": "Talk to Big Bro yourself.",
       "subtitle_4": "I have invested all I got in the goods."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_5": "Yes, Bro Foon.",
-      "note_5": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate.",
-      "revised_7": "Bro Foon.",
-      "note_7": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate."
-    },
     "query": {
       "subtitle_1": "You already know all those officials",
       "subtitle_2": "and connections well…",
@@ -1856,11 +1850,16 @@
       "subtitle_10": "Give me the number!",
       "subtitle_11": "Sure."
     },
+    "answer": {
+      "revised_5": "Yes, Bro Foon.",
+      "note_5": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate.",
+      "revised_7": "Bro Foon.",
+      "note_7": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Fuck! Thought I would be famous overnight.",
       "subtitle_2": "What a waste of time!",
@@ -1868,35 +1867,35 @@
       "subtitle_4": "I can't just go back empty-handed.",
       "subtitle_5": "Not to mention having to chew this bread here."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro Chiu,",
       "subtitle_2": "coming to Hong Kong has not been easy for us.",
       "subtitle_3": "We can't just go back like this."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro Chiu, you really want us to leave?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "If you guys have something big in mind,",
       "subtitle_2": "count us in!",
       "subtitle_3": "We can do anything."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I can keep a secret.",
       "subtitle_2": "If you say you're Big Bro Chiu, then so be it.",
@@ -1904,54 +1903,54 @@
       "subtitle_4": "I know the rules. It's between you and me.",
       "subtitle_5": "We have moral principle."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Share it."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Seriously, we can make it work.",
       "subtitle_2": "The 3 Kings of Thieves join forces…"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mind your own business."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Aren't you on dialysis? Still smoking?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Old habits die hard."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Are you still angry with me?",
       "subtitle_2": "You're planning to rob the gold shop downstairs?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I thought you're paying me a visit.",
       "subtitle_2": "You're here just for the location.",
@@ -1965,81 +1964,78 @@
       "subtitle_10": "My life is great.",
       "subtitle_11": "Can you leave my family alone?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I'm in the wrong this time."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You know it's hard to make a living."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We're sworn brothers.",
       "subtitle_2": "I owe you this time."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Forget what happened these past few days.",
       "subtitle_2": "Keep it to yourself."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I'll leave early tomorrow morning.",
       "subtitle_2": "You won't see me again."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Uncle Coke.",
       "subtitle_2": "Not in bed yet?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Guangdong province"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Sai Wan Container Terminal, Hong Kong"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mr Cheuk,",
       "subtitle_2": "I've heard so much about you."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "Mr  Cheuk. How was your journey?",
-      "note_4": "Changed 'How's' to 'How was' for correct grammar in this context."
-    },
     "query": {
       "subtitle_1": "Where's Yip?",
       "subtitle_2": "Let me show you something.",
@@ -2057,34 +2053,37 @@
       "subtitle_14": "You can blow up whatever you want.",
       "subtitle_15": "Where's Yip?"
     },
+    "answer": {
+      "revised_4": "Mr  Cheuk. How was your journey?",
+      "note_4": "Changed 'How's' to 'How was' for correct grammar in this context."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "They were all retired soldiers.",
       "subtitle_2": "They're fearless veterans in battles!",
       "subtitle_3": "I want Yip!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Coin!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Give it to me!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Big Bro, let's think it through.",
       "subtitle_2": "Give it to me!",
@@ -2103,29 +2102,29 @@
       "subtitle_15": "Fuck you!",
       "subtitle_16": "Come down!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Yip has retired!",
       "subtitle_2": "He used to be my man!",
       "subtitle_3": "Am I not a better partner?",
       "subtitle_4": "Who the hell are you?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?",
       "subtitle_2": "Hello, Cheuk.",
       "subtitle_3": "It's Yip Kwok-foon speaking."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Are you kidding me?",
       "subtitle_2": "Why should I believe you?",
@@ -2138,10 +2137,10 @@
       "subtitle_9": "Hey!",
       "subtitle_10": "Hey!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You are dead!",
       "subtitle_2": "Go up!",
@@ -2151,13 +2150,10 @@
       "subtitle_6": "Are you Cheuk?",
       "subtitle_7": "Who's speaking?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_13": "Do you think only Yip had an AK-47?",
-      "note_13": "Added 'an' before 'AK-47' for grammatical correctness."
-    },
     "query": {
       "subtitle_1": "Kwai Ching-hung.",
       "subtitle_2": "Need my help?",
@@ -2175,14 +2171,14 @@
       "subtitle_14": "He loved to be on camera\nand the cops were dumb.",
       "subtitle_15": "- I just took advantage of the situation…\n- Hold on! Don't hang up."
     },
+    "answer": {
+      "revised_13": "Do you think only Yip had an AK-47?",
+      "note_13": "Added 'an' before 'AK-47' for grammatical correctness."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_8": "I never did my jobs clandestinely!",
-      "note_8": "Changed 'in clandestine' to 'clandestinely' for correct adverb usage."
-    },
     "query": {
       "subtitle_1": "What did you just say?",
       "subtitle_2": "Fuck you!",
@@ -2194,28 +2190,31 @@
       "subtitle_8": "I never did my jobs in clandestine!",
       "subtitle_9": "Why should I hide myself?"
     },
+    "answer": {
+      "revised_8": "I never did my jobs clandestinely!",
+      "note_8": "Changed 'in clandestine' to 'clandestinely' for correct adverb usage."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We're all here.",
       "subtitle_2": "Where are you right now?",
       "subtitle_3": "Hong Kong!",
       "subtitle_4": "I'll call you when I'm back in Hong Kong."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello?",
       "subtitle_2": "Kwai Ching-hung, you still there?",
@@ -2224,60 +2223,60 @@
       "subtitle_5": "Where are you?",
       "subtitle_6": "Hong Kong."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Call you when I'm back in Hong Kong.",
       "subtitle_2": "Let's talk later."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Motherfucker! The 3 Kings",
       "subtitle_2": "of Thieves have nothing to do with you.",
       "subtitle_3": "Since you're here,",
       "subtitle_4": "you can't bail without leaving something."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Yes."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "There's less than $10M here.",
       "subtitle_2": "Mr Cheuk's life",
       "subtitle_3": "worth at least $100M!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Put your guns down!",
       "subtitle_2": "Retired soldiers? Go!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Car key.",
       "subtitle_2": "Car key!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "You think I'm bullshitting?",
       "subtitle_2": "If you don't treat me as your Big Bro,\nlet's split!",
@@ -2287,10 +2286,10 @@
       "subtitle_6": "No, we always follow you, Big Bro.",
       "subtitle_7": "We support you no matter what!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Are you looking down on me?",
       "subtitle_2": "I stoop so low that I need your support?",
@@ -2303,10 +2302,10 @@
       "subtitle_9": "The residents upstairs filed a complaint.",
       "subtitle_10": "- Where are your IDs?\n- Here."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "We planned to take a boat to Macau",
       "subtitle_2": "but got lost here.",
@@ -2315,10 +2314,10 @@
       "subtitle_5": "Call the station.",
       "subtitle_6": "PC1844 calling the station. Send."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Quick!",
       "subtitle_2": "Don't let him flee!",
@@ -2326,10 +2325,10 @@
       "subtitle_4": "He's in the front!",
       "subtitle_5": "Go after him!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Hello? Uncle Dog, I've found them.",
       "subtitle_2": "Believe it or not, they called me up!",
@@ -2341,10 +2340,10 @@
       "subtitle_8": "It will create a stir for sure!",
       "subtitle_9": "What the fuck!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "The night snack is here. Back yet?",
       "subtitle_2": "Coming back.",
@@ -2357,39 +2356,39 @@
       "subtitle_9": "Go to the main street and take a cab.",
       "subtitle_10": "Take a cab!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mainlanders are numskulls."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Quick!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mainlanders?",
       "subtitle_2": "I'm Yip Kwok-foon!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Military Police"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Waiter.",
       "subtitle_2": "Sir, have you reserved a table?",
@@ -2421,17 +2420,18 @@
       "subtitle_28": "Sure I'll get you tea.",
       "subtitle_29": "Give me a second. I'll be right back."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "And we should watch with the closest interest",
-      "note_2": "Corrected 'interests' to 'interest' for correct usage in this context."
-    },
     "query": {
       "subtitle_1": "We should not forget you.",
       "subtitle_2": "And we should watch with the closest interests",
       "subtitle_3": "as you embark on this new era\nof your remarkable history."
+    },
+    "answer": {
+      "revised_2": "And we should watch with the closest interest",
+      "note_2": "Corrected 'interests' to 'interest' for correct usage in this context."
     },
     "difficulty": 1,
     "verified": true

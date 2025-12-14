@@ -1,31 +1,30 @@
 [
   {
-    "answer": {},
     "query": {
       "zimu_1": "少爺！準備好了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "辛苦了！少爺",
       "zimu_2": "少爺！擦個汗吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "師爺，少爺寫的是甚麼？",
       "zimu_2": "名字",
       "zimu_3": "好棒！原來少爺會寫自己的名字",
       "zimu_4": "對呀"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "好字",
       "zimu_2": "走開",
@@ -72,20 +71,20 @@
       "zimu_43": "那臭小子的壽帖真威風",
       "zimu_44": "他日老爺做大壽，要比他威風"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "皇爺，你覺得廣東大戲怎樣？",
       "zimu_2": "地方戲曲，當然不及京戲",
       "zimu_3": "但也算是一種見識"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "打賞⋯打賞",
       "zimu_2": "恭喜蘇翁生辰快樂",
@@ -119,10 +118,10 @@
       "zimu_30": "多說幾句好說話",
       "zimu_31": "大戲做完了，請用毛巾"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇翁來了⋯",
       "zimu_2": "蘇翁，恭喜發財",
@@ -140,10 +139,10 @@
       "zimu_14": "隨便，女人都是一樣的",
       "zimu_15": "沒甚麼特別"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇翁，甚麼事？",
       "zimu_2": "我給人挑了一下",
@@ -170,10 +169,10 @@
       "zimu_23": "如霜姑娘到",
       "zimu_24": "小女子如霜，拜見趙大人"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "果然是美人",
       "zimu_2": "趙大人，那今晚⋯",
@@ -190,10 +189,10 @@
       "zimu_13": "銀票實在太普通",
       "zimu_14": "我有一顆朝廷大內的定風珠，無價寶"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "我還是比較喜歡珍珠",
       "zimu_2": "趙大人，我回房間等你",
@@ -201,10 +200,10 @@
       "zimu_4": "十萬兩你還嫌少嗎，姑娘？",
       "zimu_5": "我也喜歡銀兩，只是不喜歡你"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "夠坦白，我真的非常喜歡",
       "zimu_2": "蘇翁⋯",
@@ -217,36 +216,36 @@
       "zimu_9": "這與我無關",
       "zimu_10": "大膽！放肆"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "螳螂拳？像模像樣的",
       "zimu_2": "奏樂"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "先放好",
       "zimu_2": "鶴咀",
       "zimu_3": "虎爪"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "螳螂怎跟老虎鬥？何況我還有一隻鶴",
       "zimu_2": "虎鶴雙形我也會",
       "zimu_3": "那你試試看我的螳螂"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "好⋯好",
       "zimu_2": "我的螳螂拳再破你的虎鶴雙形",
@@ -254,19 +253,19 @@
       "zimu_4": "是孔雀開屏",
       "zimu_5": "難怪比較差"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "動作蠻快",
       "zimu_2": "看來你比較像樣",
       "zimu_3": "年青人，不知天高地厚"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "廣州將軍到",
       "zimu_2": "走開⋯",
@@ -286,10 +285,10 @@
       "zimu_16": "來⋯拿去打賞給這裡的姑娘　　老爺",
       "zimu_17": "令牌上寫著「鐵帽子王僧格林參」"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你膽敢搶皇爺的令牌？",
       "zimu_2": "把他鎖起來",
@@ -311,10 +310,10 @@
       "zimu_18": "可以問斬",
       "zimu_19": "斬他⋯斬他"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "根據大清律例",
       "zimu_2": "任何人不束辮子也要問斬",
@@ -335,17 +334,17 @@
       "zimu_17": "大事化小，小事化無",
       "zimu_18": "少爺，你的帽子"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "真是高手"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "莫大叔，酒菜已經加了斷腸散",
       "zimu_2": "好！趙無極暗算我們幫主",
@@ -362,10 +361,10 @@
       "zimu_13": "長老，有人來",
       "zimu_14": "大家準備⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "如霜姑娘，我們又見面了",
       "zimu_2": "怎麼是你？趙大爺呢？",
@@ -383,10 +382,10 @@
       "zimu_14": "是的⋯是的",
       "zimu_15": "七姑娘⋯　　將就一下⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這個是誰？",
       "zimu_2": "我不知道",
@@ -403,10 +402,10 @@
       "zimu_13": "好，我先飲為敬",
       "zimu_14": "不要喝⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "實在讓我太感意外",
       "zimu_2": "姑娘",
@@ -425,10 +424,10 @@
       "zimu_15": "不是吧",
       "zimu_16": "原來有人藏在這裡"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "正好，我正想找個證人",
       "zimu_2": "證人？　　對",
@@ -444,10 +443,10 @@
       "zimu_12": "那你是否做得到？",
       "zimu_13": "讓我想一想"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "做得到",
       "zimu_2": "好",
@@ -458,45 +457,42 @@
       "zimu_7": "沒問題，我就在外面的花園等待答覆",
       "zimu_8": "不見不散"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "變態"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "丐幫辦事，閒雜人等立即離開"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大人，半炷香的時間剛剛好",
       "zimu_2": "現在路上很安全，請上路",
       "zimu_3": "好！非常好",
       "zimu_4": "起轎！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "糟糕！我們來晚了",
       "zimu_2": "都是那個人礙事！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "xiugai_1": "姐姐⋯姐姐",
-      "beizhu_1": "将“·”更正为“⋯”。"
-    },
     "query": {
       "zimu_1": "姐姐·姐姐",
       "zimu_2": "甚麼事？",
@@ -505,12 +501,15 @@
       "zimu_5": "算吧！他不是有心阻礙我們",
       "zimu_6": "由他吧"
     },
+    "answer": {
+      "xiugai_1": "姐姐⋯姐姐",
+      "beizhu_1": "将“·”更正为“⋯”。"
+    },
     "difficulty": 1,
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你不是喜歡他吧？",
       "zimu_2": "你胡說甚麼？",
@@ -522,10 +521,10 @@
       "zimu_8": "那我豈不是嫁不出嗎？",
       "zimu_9": "行吧！別發情"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "何方妖孽？竟敢來嚇我？",
       "zimu_2": "蘇翁，我是鴇母⋯",
@@ -539,13 +538,10 @@
       "zimu_10": "你不用等如霜姑娘了，她已經走了⋯",
       "zimu_11": "走了？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "xiugai_53": "否則我到京城哪有荔枝吃？",
-      "beizhu_53": "将“那有荔枝吃？”更正为“哪有荔枝吃？”，修正错别字。"
-    },
     "query": {
       "zimu_1": "那究竟如霜姑娘去了哪裡？",
       "zimu_2": "聽說，她⋯她去了京城",
@@ -615,19 +611,22 @@
       "zimu_66": "趙先生，你就示範給朕看",
       "zimu_67": "是"
     },
+    "answer": {
+      "xiugai_53": "否則我到京城哪有荔枝吃？",
+      "beizhu_53": "将“那有荔枝吃？”更正为“哪有荔枝吃？”，修正错别字。"
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大驚小怪！退下",
       "zimu_2": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "微臣大膽，讓皇上受驚",
       "zimu_2": "如果這個女人是真的就好了",
@@ -635,10 +634,10 @@
       "zimu_4": "甚麼事⋯甚麼事？",
       "zimu_5": "來⋯進去"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "甚麼事？",
       "zimu_2": "躲進去",
@@ -646,10 +645,10 @@
       "zimu_4": "來",
       "zimu_5": "全部站好別再動"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "那麼香？你是飄紅",
       "zimu_2": "少爺你很棒，我喜歡",
@@ -689,47 +688,47 @@
       "zimu_36": "那二百萬兩可否酌量減一點？",
       "zimu_37": "人情歸人情，數目一定要分明"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "決定佈個雁行陣，馬隊前駐中鋒營",
       "zimu_2": "弓隊側翼，槍隊殿後"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "武狀元初賽，考生進場"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "舉不起來"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "留力而矣",
       "zimu_2": "無恥？無恥你娘"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "十分！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "武狀元決賽現在開始",
       "zimu_2": "今天武狀元之爭",
@@ -781,10 +780,10 @@
       "zimu_48": "主考到",
       "zimu_49": "不是老鄭主考嗎？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "請坐",
       "zimu_2": "僧格林參？",
@@ -792,88 +791,88 @@
       "zimu_4": "他是博達爾多的叔叔",
       "zimu_5": "開始"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "開始"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "靶都射穿了！至少都多加兩分",
       "zimu_2": "照道理是！照道理是",
       "zimu_3": "蘇燦靶上沒有箭！博達爾多勝"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "有沒有攪錯！你老祖！要把戲？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "考生上馬！準備下一回合",
       "zimu_2": "趙先生"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你拿著這套袖箭！必要時有用",
       "zimu_2": "第二回合開始"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "兵器都動了手腳？",
       "zimu_2": "太黑暗了！退票不賭行不行？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "追回一局了",
       "zimu_2": "你的票撕了沒有",
       "zimu_3": "沒有"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "有沒有攪錯？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "還不認輸？再來"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "重新開始，讓你一手一腳",
       "zimu_2": "免你說我欺負你"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你用這骯髒的手段來取得勝利？",
       "zimu_2": "小子你睡醒了嗎",
@@ -886,10 +885,10 @@
       "zimu_9": "例上沒有說明不準用暗器",
       "zimu_10": "你先掉下來，這個回合判博達爾多勝"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你個短命的老鄭，竟敢騙我",
       "zimu_2": "以後不要給我看見你",
@@ -903,10 +902,10 @@
       "zimu_10": "博達爾多三局兩勝，是今科武狀元",
       "zimu_11": "明明是我贏！我抗議"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "甚麼事？",
       "zimu_2": "鏢有毒",
@@ -917,40 +916,40 @@
       "zimu_7": "對⋯",
       "zimu_8": "你⋯你⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "光宗耀祖了⋯",
       "zimu_2": "有眼光",
       "zimu_3": "大人，皇上說要親自欽點"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "好"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "xiugai_1": "武狀元，我想問你幾句作為朝廷紀錄",
-      "beizhu_1": "將“朝庭”更正為“朝廷”，修正錯別字。"
-    },
     "query": {
       "zimu_1": "武狀元，我想問你幾句作為朝庭紀錄",
       "zimu_2": "你這次成功！會先感謝誰？",
       "zimu_3": "如霜姑娘",
       "zimu_4": "如霜姑娘！會不會是他的娘？"
     },
+    "answer": {
+      "xiugai_1": "武狀元，我想問你幾句作為朝廷紀錄",
+      "beizhu_1": "將“朝庭”更正為“朝廷”，修正錯別字。"
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "萬歲！萬歲！萬萬歲",
       "zimu_2": "平身",
@@ -964,27 +963,27 @@
       "zimu_10": "怎可以答到考戰略的題目呢？",
       "zimu_11": "分明有詐"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "給朕拿文房四寶來",
       "zimu_2": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇察哈爾燦，馬上寫出你的名字來",
       "zimu_2": "走運了！他懂得寫名字",
       "zimu_3": "懂寫名字！懂寫名字"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "我不會寫",
       "zimu_2": "你分明作弊",
@@ -1006,10 +1005,10 @@
       "zimu_18": "吏部尚書，快點出來！出來",
       "zimu_19": "我在這裡！在這裡"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "他是吏部尚書？",
       "zimu_2": "蘇察哈爾燦兩父子罪犯欺君理應問斬",
@@ -1021,10 +1020,10 @@
       "zimu_8": "是這樣的",
       "zimu_9": "皇上，依例最多判抄家的罪"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這麼輕？你有沒有記錯？",
       "zimu_2": "奴才很公正的",
@@ -1045,17 +1044,17 @@
       "zimu_17": "從今天開始",
       "zimu_18": "我想你要認真的學寫字了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "苦相思，能買不能賣⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "師爺",
       "zimu_2": "我會學的",
@@ -1075,10 +1074,10 @@
       "zimu_16": "真開心",
       "zimu_17": "太開心了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "進去，進去",
       "zimu_2": "快點⋯",
@@ -1112,19 +1111,19 @@
       "zimu_30": "不像",
       "zimu_31": "小乞丐老乞丐，拿去買東西吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你真的當我們是乞丐？",
       "zimu_2": "混你的帳！你⋯",
       "zimu_3": "太過分了！吃飯吃飯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦，反正吃飽沒事幹",
       "zimu_2": "讓我在那邊坐一會，說不定有晚飯吃",
@@ -1139,10 +1138,10 @@
       "zimu_11": "有　　借來用用",
       "zimu_12": "好的"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "多謝",
       "zimu_2": "我為甚麼要給你錢？",
@@ -1174,25 +1173,25 @@
       "zimu_28": "我早就跟你安排好了",
       "zimu_29": "就在對面燈籠下穿紅衣服的那個"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "鬼"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "沒問題嗎",
       "zimu_2": "沒問題！不過你先來，我跟在後面"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦，胸口碎大石我還沒玩過",
       "zimu_2": "小心點",
@@ -1203,10 +1202,10 @@
       "zimu_7": "走開⋯走開",
       "zimu_8": "不許在這兒賣藝"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大人，我們只想賺點錢",
       "zimu_2": "回廣州去",
@@ -1218,11 +1217,11 @@
       "zimu_8": "有　　將所有東西搬走",
       "zimu_9": "是"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "救命",
       "zimu_2": "趙大人！一個人搬不動",
@@ -1237,10 +1236,10 @@
       "zimu_11": "我一定要在第一招出盡力打敗他",
       "zimu_12": "不然他就會有還擊的機會"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦⋯",
       "zimu_2": "阿燦",
@@ -1251,10 +1250,10 @@
       "zimu_7": "乖乖當乞丐吧",
       "zimu_8": "走⋯沒事⋯走開"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "不用怕阿燦，沒事的，沒事的⋯",
       "zimu_2": "不用怕，沒事的⋯",
@@ -1283,33 +1282,33 @@
       "zimu_25": "既然如此，我想我們要先定婚期",
       "zimu_26": "因為做狀元對我來說易如反掌"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "馬上寫出你的名字來",
       "zimu_2": "我不會寫"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "燦！怎麼？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "又作惡夢？",
       "zimu_2": "別想這麼多"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "雖然休息了兩個月，手腳可以動了",
       "zimu_2": "但是還沒有完全好了",
@@ -1330,44 +1329,44 @@
       "zimu_17": "是的⋯",
       "zimu_18": "你以為自己是以前的大將軍"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "給我點錢",
       "zimu_2": "沒有沒有，走吧",
       "zimu_3": "走，快走⋯別礙我做生意",
       "zimu_4": "阿燦，阿爹出去了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "謝謝⋯⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "謝謝⋯謝謝"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "別那麼吝嗇吧，老兄？",
       "zimu_2": "你不會自己寫？",
       "zimu_3": "我見你下班了，借你地方用一下吧",
       "zimu_4": "你當我呆子嗎？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿爹",
       "zimu_2": "你甚麼？",
@@ -1383,10 +1382,10 @@
       "zimu_12": "你休息一下",
       "zimu_13": "我找到錢就回來帶你看大夫"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你這渾小子為何不吃",
       "zimu_2": "你不吃又怎能像阿爹般強壯",
@@ -1399,10 +1398,10 @@
       "zimu_9": "甚麼？",
       "zimu_10": "可不可以⋯　　不可以"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "好心吧！福心吧！",
       "zimu_2": "可憐我這個⋯小乞丐",
@@ -1416,17 +1415,17 @@
       "zimu_10": "不是他！不是他",
       "zimu_11": "姐姐⋯姐姐！蘇燦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "等一下"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "小姐，你找誰呀？",
       "zimu_2": "對不起，我認錯人！",
@@ -1438,19 +1437,19 @@
       "zimu_8": "饅頭來了",
       "zimu_9": "拿去"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "謝謝⋯⋯",
       "zimu_2": "姐姐",
       "zimu_3": "要不是為了你，他也不會變成這樣"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿爹！怎麼呢",
       "zimu_2": "阿燦！我剛剛餓壞了",
@@ -1467,26 +1466,26 @@
       "zimu_13": "等一等！相請不如偶遇",
       "zimu_14": "相請不如偶遇，是否想請我們喝酒呢"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "給狗吃的飯到",
       "zimu_2": "狀元爺，吃完這飯就放你的爹"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "甚麼？",
       "zimu_2": "吃吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦！你不能吃",
       "zimu_2": "你吃了後怎樣見人？",
@@ -1496,35 +1495,35 @@
       "zimu_6": "不要打",
       "zimu_7": "站好"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "狀元爺吃狗的飯",
       "zimu_2": "爹，味道不錯",
       "zimu_3": "嚐嚐⋯嚐嚐，來⋯來"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "好吃，是嗎？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿爹，你看",
       "zimu_2": "有些肉絲在裡面",
       "zimu_3": "甚麼　　肉絲？是肉排"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你倆比狗還要餓！",
       "zimu_2": "註定這輩子都吃狗的飯",
@@ -1536,17 +1535,17 @@
       "zimu_8": "狀元爺都要吃狗的飯",
       "zimu_9": "來！我們去吃人的飯吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇老伯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你是⋯",
       "zimu_2": "丐幫幫主就是我爹",
@@ -1562,10 +1561,10 @@
       "zimu_12": "好，我們兩個報名，兩個",
       "zimu_13": "燦⋯燦"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "如霜！恭喜發財",
       "zimu_2": "莫大叔！恭喜發財",
@@ -1612,10 +1611,10 @@
       "zimu_43": "你別那麼坦白行不行？",
       "zimu_44": "你別那麼大聲好不好？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦，不管人家現在怎麼看不起你",
       "zimu_2": "老爹對你很有信心",
@@ -1627,54 +1626,54 @@
       "zimu_8": "怎麼會沒有力呢？",
       "zimu_9": "快打我一拳"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這一拳蠻有力嗎",
       "zimu_2": "所以我說，做人⋯",
       "zimu_3": "算了！不要再浪費時間",
       "zimu_4": "還是讓我多睡一會兒吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你怎麼把門鎖上？",
       "zimu_2": "你慢慢睡吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "孩兒，我費盡心思才弄出這麼大陣容",
       "zimu_2": "你要多用點心把打狗棒法練好才行"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你爬得那麼高幹甚麼？",
       "zimu_2": "就算你要我練打狗棒法",
       "zimu_3": "你總該留個棒子給我吧",
       "zimu_4": "抱歉抱歉！你接好了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "天將降大任於斯人也",
       "zimu_2": "必先勞其筋骨，餓其體膚，苦其心智"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "苦海無涯？你寫的？",
       "zimu_2": "寫得這麼醜，把它擦掉也對",
@@ -1685,10 +1684,10 @@
       "zimu_7": "有沒有東西吃？　　沒有",
       "zimu_8": "正好我有"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這造型不去討飯博人家同情，真可惜",
       "zimu_2": "這與你無關！",
@@ -1709,10 +1708,10 @@
       "zimu_17": "如果我有錢",
       "zimu_18": "我也不用在這兒捱饅頭"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "不過你不用怕，你有恩於我",
       "zimu_2": "我會報答你的",
@@ -1739,10 +1738,10 @@
       "zimu_23": "又如何？",
       "zimu_24": "即是說閣下注定討飯討一輩子"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "還是不跟你說，我想睡一會兒",
       "zimu_2": "先別走！行行出狀元",
@@ -1751,10 +1750,10 @@
       "zimu_5": "乞丐中的霸主？那是甚麼？",
       "zimu_6": "還是乞丐"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "我不管你是甚麼人，我不想再跟你說",
       "zimu_2": "請你讓開，不要礙著我睡覺",
@@ -1763,25 +1762,25 @@
       "zimu_5": "我只想跟你一塊兒",
       "zimu_6": "神經病"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "年青人，我們夢中相見"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "佛前金座，羅漢歸位",
       "zimu_2": "降龍，伏虎"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇燦，你享盡人間富貴",
       "zimu_2": "亦嚐盡人間苦楚",
@@ -1791,34 +1790,34 @@
       "zimu_6": "醉回夢生法，傳授你睡夢羅漢拳",
       "zimu_7": "希望你好好利用，接招"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "前輩⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "苦盡甘來？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "萬歲！萬歲！萬萬歲",
       "zimu_2": "白羊降世，天理循環",
       "zimu_3": "真空家鄉，無生老母，賜我神通",
       "zimu_4": "超渡眾生"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "皇帝明天會到成都狩獵",
       "zimu_2": "我會用獻上美女的理由接近他",
@@ -1828,52 +1827,52 @@
       "zimu_6": "天下就盡在我手",
       "zimu_7": "榮華富貴絕對少不了你們"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "萬歲！萬歲！萬萬歲",
       "zimu_2": "長老",
       "zimu_3": "回去再說"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "長老",
       "zimu_2": "我們走"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "長老"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "我們追　　不用追了！",
       "zimu_2": "皇上快要出發",
       "zimu_3": "你殺了我的女人⋯",
       "zimu_4": "⋯我要把你獻給皇上"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "怎麼？沒有人敢上來當幫主",
       "zimu_2": "叫莫老三把打狗棒交出來"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "莫大叔跟你姐姐到底到哪處？",
       "zimu_2": "我怎麼知道",
@@ -1881,17 +1880,17 @@
       "zimu_4": "就出去了",
       "zimu_5": "難道他倆有曖昧關係？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "現在開始選幫主"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "莫大叔⋯",
       "zimu_2": "真的被你嚇我一跳",
@@ -1900,26 +1899,26 @@
       "zimu_5": "你姐姐給趙無極抓了",
       "zimu_6": "我們要找人上去選幫主"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "到底派誰上去呢？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "讓我去",
       "zimu_2": "莫大叔",
       "zimu_3": "不如讓我試試"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦",
       "zimu_2": "你不是九代弟子，快下來",
@@ -1929,41 +1928,41 @@
       "zimu_6": "沒相干，我的命早就當沒了",
       "zimu_7": "廢話！丟他"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "既然如此，我就成全你"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "他在幹嗎？",
       "zimu_2": "睡覺？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這一招難道就是⋯",
       "zimu_2": "新師叔的睡夢羅漢拳？",
       "zimu_3": "佈陣"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "天亮了沒有"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "各位不好意思",
       "zimu_2": "我贏了",
@@ -1971,35 +1970,35 @@
       "zimu_4": "你又不會打狗棒法",
       "zimu_5": "你不配當幫主"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "打狗棒！是嗎"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "棒棒都打狗",
       "zimu_2": "誰說我不會打狗棒法？",
       "zimu_3": "不像打狗棒法",
       "zimu_4": "也蠻厲害！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "他打斷了打狗棒",
       "zimu_2": "他打斷我們鎮幫之寶！我們殺了他"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "洪七公在此誰敢放肆",
       "zimu_2": "我當年定下幫規",
@@ -2035,10 +2034,10 @@
       "zimu_32": "發生甚麼事？",
       "zimu_33": "參見幫主"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "很棒",
       "zimu_2": "莫大叔！我兒子有一套嗎",
@@ -2051,19 +2050,19 @@
       "zimu_9": "如霜總算沒看錯你",
       "zimu_10": "好棒！幫主好棒！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "莫大叔⋯莫大叔！你怎麼呢？",
       "zimu_2": "莫大叔，莫大叔",
       "zimu_3": "莫大叔⋯莫大叔"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "長路漫漫伴你闖",
       "zimu_2": "帶一身膽色與熱腸",
@@ -2089,18 +2088,18 @@
       "zimu_22": "來日醉臥逍遙",
       "zimu_23": "寧願鏽蝕我纓槍"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你們到大營去看那兒準備好沒有？",
       "zimu_2": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "趙無極",
       "zimu_2": "你帶這個女人來是甚麼意思？",
@@ -2112,20 +2111,20 @@
       "zimu_8": "是",
       "zimu_9": "走吧"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大人，好一陣子不見，氣色不錯",
       "zimu_2": "你應該回到自己的崗位",
       "zimu_3": "不要擅離職守",
       "zimu_4": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "啟稟皇上",
       "zimu_2": "趙大人帶了個女人來獻給皇上",
@@ -2134,27 +2133,27 @@
       "zimu_5": "我先去沐浴更衣，稍後帶他來見我",
       "zimu_6": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "這個王八蛋又想見皇上",
       "zimu_2": "再讓你多見幾次，不是連官都沒得當"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "人來",
       "zimu_2": "大人",
       "zimu_3": "看看發生甚麼事　　是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大人，樹林裡有一大隊人馬",
       "zimu_2": "甚麼人馬？",
@@ -2163,25 +2162,25 @@
       "zimu_5": "戒備",
       "zimu_6": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "前面大營放狼煙，大家戒備",
       "zimu_2": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "臭乞丐？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蘇察哈爾燦，你攪甚麼鬼？",
       "zimu_2": "沒有！只是想向你討個錢",
@@ -2194,10 +2193,10 @@
       "zimu_9": "膽大包天！竟敢誣告官員？",
       "zimu_10": "再行一步格殺勿論"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦，對方這麼多人馬我們怎麼打？",
       "zimu_2": "長老　　在",
@@ -2218,19 +2217,19 @@
       "zimu_17": "還沒唱完",
       "zimu_18": "等我走了你再才唱　　好的"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "前面放狼煙，一定有人打草驚蛇",
       "zimu_2": "準備麒麟煙　　是",
       "zimu_3": "攻入大營"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "作反了！這些狗賊真的作反了",
       "zimu_2": "太可惡",
@@ -2238,57 +2237,57 @@
       "zimu_4": "糟糕！毒煙吹向皇上大營",
       "zimu_5": "這次真的完了"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "不是！風向轉了",
       "zimu_2": "對！等等我",
       "zimu_3": "丐幫再不撤退，格殺勿論"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你們看這邊"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "天理教的麒麟煙"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "大家鎮定點！用尿可以解毒",
       "zimu_2": "撒尿⋯撒尿⋯"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "那我該怎麼辦？",
       "zimu_2": "不怕！我的尿多，分一點給你",
       "zimu_3": "來⋯拿著它"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "衝！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "形勢如何？",
       "zimu_2": "託皇上鴻福，風向轉變",
@@ -2303,17 +2302,17 @@
       "zimu_11": "我叫你們走開",
       "zimu_12": "不要走"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "護駕"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦？",
       "zimu_2": "如霜",
@@ -2332,43 +2331,43 @@
       "zimu_15": "保護皇上",
       "zimu_16": "是"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你這個叛賊",
       "zimu_2": "捉住他"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "皇上"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "狗皇帝，把你的江山交給我",
       "zimu_2": "你說甚麼？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "是你？",
       "zimu_2": "是我！蘇乞兒",
       "zimu_3": "蘇乞兒？你不是在乞丐窩裡睡覺嗎",
       "zimu_4": "是！你說起都有點睏"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "睡羅漢？",
       "zimu_2": "失禮！你披頭散髮的樣子都蠻像乞丐",
@@ -2376,25 +2375,25 @@
       "zimu_4": "想不到你這條臭死魚都可以復活",
       "zimu_5": "是！這都是拜你所賜"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "你已出全力？我還沒出力"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "蠢蛋！普天之下除了降龍十八掌",
       "zimu_2": "甚麼武功我都不放在眼內"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "降龍十八掌第七式",
       "zimu_2": "飛龍在天",
@@ -2407,43 +2406,43 @@
       "zimu_9": "⋯龍馬精神，望夫成龍⋯",
       "zimu_10": "打完收工"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "怎麼得十七掌？太可惜了",
       "zimu_2": "如果你學會第十八掌",
       "zimu_3": "就一定可以打贏我",
       "zimu_4": "不過你沒有這個機會"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦！"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "我想到了，原來頭十七掌融合一起",
       "zimu_2": "就是第十八掌",
       "zimu_3": "我實在太聰明瞭"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "第十八掌－殺龍有悔"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦，你沒事吧？",
       "zimu_2": "你看我的姿勢，說有事沒有？",
@@ -2453,10 +2452,10 @@
       "zimu_6": "今天晚上洞房都沒問題",
       "zimu_7": "這麼厲害"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "阿燦⋯你沒事吧",
       "zimu_2": "趙無極呢",
@@ -2467,17 +2466,17 @@
       "zimu_7": "報告幫主",
       "zimu_8": "趙無極的人馬都給我們捉住"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "辛苦了各位兄弟"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "如霜",
       "zimu_2": "你記不記得我們之間還有一個協議",
@@ -2488,10 +2487,10 @@
       "zimu_7": "我喜歡乞丐嘛",
       "zimu_8": "你先！我稍後跟上"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "僧格林參，你竟不分青紅皁白",
       "zimu_2": "你引狼入室",
@@ -2503,10 +2502,10 @@
       "zimu_8": "蘇燦，你有甚麼要求？",
       "zimu_9": "你真沒話跟朕說？"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "有甚麼好說呢？走",
       "zimu_2": "抱我起來",
@@ -2532,10 +2531,10 @@
       "zimu_22": "皇上吉祥",
       "zimu_23": "萬歲萬萬歲　　平身"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "兄弟！認得我嗎？",
       "zimu_2": "化成灰也認得你！臭乞丐",
@@ -2553,16 +2552,17 @@
       "zimu_14": "添多少？",
       "zimu_15": "沒有一千都給八百"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "zimu_1": "還不快謝謝人家？",
       "zimu_2": "謝謝",
       "zimu_3": "快點吃吧",
       "zimu_4": "跟住我⋯走吧⋯"
     },
+    "answer": {},
     "verified": true
   }
 ]
