@@ -21,6 +21,7 @@ from scinoephile.audio.cantonese.shifting import (
     ShiftingQuery,
     ShiftingTestCase,
 )
+from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer, save_test_cases_to_json
@@ -38,8 +39,6 @@ from .queries import (
 )
 
 __all__ = ["Aligner"]
-
-from ..translation import TranslationTestCase
 
 
 class Aligner:
