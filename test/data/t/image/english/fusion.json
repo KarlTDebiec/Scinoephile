@@ -121,11 +121,11 @@
   },
   {
     "query": {
-      "lens": "Is the \"Most Wanted\" Yip Kwok-foon.",
-      "tesseract": "is the \"Most Wanted\" Yip Kwok-foon."
+      "lens": "Is the “Most Wanted” Yip Kwok-foon.",
+      "tesseract": "is the “Most Wanted” Yip Kwok-foon."
     },
     "answer": {
-      "fused": "is the \"Most Wanted\" Yip Kwok-foon.",
+      "fused": "is the “Most Wanted” Yip Kwok-foon.",
       "note": "Used lower-case 'is' from Tesseract for correct capitalization."
     },
     "difficulty": 2,
@@ -217,11 +217,11 @@
   },
   {
     "query": {
-      "lens": "How much will you \"lend\" me?",
-      "tesseract": "how much will you \"lend\" me?"
+      "lens": "How much will you “lend” me?",
+      "tesseract": "how much will you “lend” me?"
     },
     "answer": {
-      "fused": "how much will you \"lend\" me?",
+      "fused": "how much will you “lend” me?",
       "note": "Used lower-case 'how' from Tesseract for correct capitalization."
     },
     "difficulty": 2,

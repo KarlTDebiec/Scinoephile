@@ -12,7 +12,7 @@ import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewTestCase
+from scinoephile.audio.cantonese.review import ReviewPrompt, ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import (
     TranslationPrompt,
@@ -230,7 +230,7 @@ def get_mlamd_yue_translation_test_cases(
 
 @cache
 def get_mlamd_yue_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ReviewPrompt,
     **kwargs: Any,
 ) -> list[ReviewTestCase]:
     """Get MLAMD 粵文 review test cases.

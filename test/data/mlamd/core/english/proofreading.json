@@ -70,7 +70,7 @@
   },
   {
     "query": {
-      "subtitle_1": "\"My School\"",
+      "subtitle_1": "“My School”",
       "subtitle_2": "Oh dear,",
       "subtitle_3": "your calves have grown strong.",
       "subtitle_4": "I've been desperately…",
@@ -88,21 +88,15 @@
       "subtitle_16": "Yeah!",
       "subtitle_17": "Spring Flower offer white teachers!"
     },
-    "answer": {
-      "revised_12": "Only 10 minutes' walk from\nthe MTR Station!",
-      "note_12": "Added possessive apostrophe to 'minutes'' for correct expression: '10 minutes' walk'.",
-      "revised_17": "Spring Flower offers white teachers!",
-      "note_17": "Corrected 'offer' to 'offers' to match subject-verb agreement."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"We are all happy children…\"",
-      "subtitle_2": "\"We sing everyday!\"",
-      "subtitle_3": "\"We learn as we grow…\"",
-      "subtitle_4": "\"We are the flowers of spring!\"",
+      "subtitle_1": "“We are all happy children…”",
+      "subtitle_2": "“We sing everyday!”",
+      "subtitle_3": "“We learn as we grow…”",
+      "subtitle_4": "“We are the flowers of spring!”",
       "subtitle_5": "This piggy kid in a rabbit outfit…",
       "subtitle_6": "Who doesn't look the least\nlike Chow or Leung…",
       "subtitle_7": "That's me, McDull.",
@@ -241,7 +235,7 @@
       "subtitle_1": "There is a song Miss Chan loves…",
       "subtitle_2": "Which I always want to learn…",
       "subtitle_3": "But it just comes out different.",
-      "subtitle_4": "You mean\n\"All Things Bright and Beautiful\"?",
+      "subtitle_4": "You mean\n“All Things Bright and Beautiful”?",
       "subtitle_5": "Yes, all are fine!",
       "subtitle_6": "All things on earth…",
       "subtitle_7": "They are fine!!"
@@ -251,7 +245,7 @@
   },
   {
     "query": {
-      "subtitle_1": "\"My Mother\""
+      "subtitle_1": "“My Mother”"
     },
     "answer": {},
     "verified": true
@@ -283,7 +277,7 @@
       "subtitle_3": "At the height of IT,\nshe even sets up her cooking site…",
       "subtitle_4": "www.MrsMcBing.com",
       "subtitle_5": "Offering brilliant dishes.",
-      "subtitle_6": "Welcome to\"Mrs. Mc Can Cook\".",
+      "subtitle_6": "Welcome to“Mrs. Mc Can Cook”.",
       "subtitle_7": "Today we're doing a simple dish,",
       "subtitle_8": "Paper Chicken.",
       "subtitle_9": "Kids at home would love it.",
@@ -295,8 +289,8 @@
       "subtitle_15": "Thank you, everyone!"
     },
     "answer": {
-      "revised_6": "Welcome to \"Mrs. Mc Can Cook\".",
-      "note_6": "Added a space after 'to' and before the opening quotation mark for correct formatting."
+      "revised_6": "Welcome to “Mrs. Mc Can Cook”.",
+      "note_6": "Added a space after 'to' before the opening quotation mark."
     },
     "difficulty": 1,
     "verified": true
@@ -372,7 +366,7 @@
       "subtitle_4": "Her love for me is direct.",
       "subtitle_5": "Her expectation of me is direct.",
       "subtitle_6": "For her, it is always…",
-      "subtitle_7": "\"no pain no gain\"."
+      "subtitle_7": "“no pain no gain”."
     },
     "answer": {},
     "verified": true
@@ -389,7 +383,7 @@
       "subtitle_8": "As for being smart…",
       "subtitle_9": "I did try hard, but then…",
       "subtitle_10": "But then, I still have dreams.",
-      "subtitle_11": "\"My Ideal World\"",
+      "subtitle_11": "“My Ideal World”",
       "subtitle_12": "Maldives, a world outside our world.",
       "subtitle_13": "The sky blue, clouds white,\nthe trees tall and water bright.",
       "subtitle_14": "The colourful world of the tropical sea.",
@@ -614,15 +608,13 @@
       "subtitle_4": "San San, when confirmed her winning…",
       "subtitle_5": "Told reporters that her result…",
       "subtitle_6": "Help proves that\nHong Kong athletes are horrible…",
-      "subtitle_7": "Excuse me, it should be\"honourable\".",
+      "subtitle_7": "Excuse me, it should be“honourable”.",
       "subtitle_8": "Hong Kong athletes\nare honourable athletes.",
       "subtitle_9": "End of special report."
     },
     "answer": {
-      "revised_4": "San San, when confirming her winning…",
-      "note_4": "Changed 'when confirmed her winning' to 'when confirming her winning' for correct grammar.",
-      "revised_7": "Excuse me, it should be \"honourable\".",
-      "note_7": "Added a space after 'be' and before the quotation mark for correct formatting."
+      "revised_7": "Excuse me, it should be “honourable”.",
+      "note_7": "Added a space after 'be' before the opening quotation mark."
     },
     "difficulty": 1,
     "verified": true
@@ -633,10 +625,10 @@
       "subtitle_2": "Handsome, lucky, smart…",
       "subtitle_3": "So much for those plans.",
       "subtitle_4": "Now how about something physical?",
-      "subtitle_5": "\"Looking for Logan\"",
+      "subtitle_5": "“Looking for Logan”",
       "subtitle_6": "And so, while one dream lingers on…",
       "subtitle_7": "Another one begins.",
-      "subtitle_8": "\"Aka: How Does a Calf Become a Calf?\"",
+      "subtitle_8": "“Aka: How Does a Calf Become a Calf?”",
       "subtitle_9": "It's about the Calf!",
       "subtitle_10": "I know it is not easy.",
       "subtitle_11": "I know it is not easy to find Logan.",
@@ -750,25 +742,25 @@
       "subtitle_5": "Logan will think better of me.",
       "subtitle_6": "Logan will be my master!",
       "subtitle_7": "The song goes like this…",
-      "subtitle_8": "\"Big bun, have two more…\"",
-      "subtitle_9": "\"Big bun, have two more…\"",
-      "subtitle_10": "\"Forget about indigestion.\"",
-      "subtitle_11": "\"Big bun, have two more…\"",
-      "subtitle_12": "\"Big bun, have two more…\"",
-      "subtitle_13": "\"Forget about indigestion.\"",
-      "subtitle_14": "\"Big bun, have two more…\"",
-      "subtitle_15": "\"Big bun, have two more…\"",
-      "subtitle_16": "\"Forget about indigestion.\"",
-      "subtitle_17": "\"Eat the bun, grow a calf…\"",
-      "subtitle_18": "\"Respect my mother.\"",
-      "subtitle_19": "\"Eat the bun, toughen my calf…\"",
-      "subtitle_20": "\"Serve my country.\"",
-      "subtitle_21": "\"Big bun, have two more…\"",
-      "subtitle_22": "\"Big bun, have two more…\"",
-      "subtitle_23": "\"Forget about indigestion.\"",
-      "subtitle_24": "\"Big bun, have two more…\"",
-      "subtitle_25": "\"Big bun, have two more…\"",
-      "subtitle_26": "\"Forget about indigestion.\""
+      "subtitle_8": "“Big bun, have two more…”",
+      "subtitle_9": "“Big bun, have two more…”",
+      "subtitle_10": "“Forget about indigestion.”",
+      "subtitle_11": "“Big bun, have two more…”",
+      "subtitle_12": "“Big bun, have two more…”",
+      "subtitle_13": "“Forget about indigestion.”",
+      "subtitle_14": "“Big bun, have two more…”",
+      "subtitle_15": "“Big bun, have two more…”",
+      "subtitle_16": "“Forget about indigestion.”",
+      "subtitle_17": "“Eat the bun, grow a calf…”",
+      "subtitle_18": "“Respect my mother.”",
+      "subtitle_19": "“Eat the bun, toughen my calf…”",
+      "subtitle_20": "“Serve my country.”",
+      "subtitle_21": "“Big bun, have two more…”",
+      "subtitle_22": "“Big bun, have two more…”",
+      "subtitle_23": "“Forget about indigestion.”",
+      "subtitle_24": "“Big bun, have two more…”",
+      "subtitle_25": "“Big bun, have two more…”",
+      "subtitle_26": "“Forget about indigestion.”"
     },
     "answer": {},
     "verified": true
@@ -851,7 +843,7 @@
   {
     "query": {
       "subtitle_1": "Bun snatching?",
-      "subtitle_2": "\"Bun Snatching\",\nfor our uninformed audience…",
+      "subtitle_2": "“Bun Snatching”,\nfor our uninformed audience…",
       "subtitle_3": "Is a unique Cheung Chau tradition.",
       "subtitle_4": "Each year, in the forth month,",
       "subtitle_5": "Cheung Chau people…",
@@ -867,18 +859,12 @@
       "subtitle_15": "The higher the bun you snatch,\nthe more blessed you are.",
       "subtitle_16": "And the more praises you get.",
       "subtitle_17": "In 1978, 2 stacks tumbled down,\nhurting many.",
-      "subtitle_18": "\"Bun Snatching\" was thus banned!",
+      "subtitle_18": "“Bun Snatching” was thus banned!",
       "subtitle_19": "And the unique tradition is lost."
     },
     "answer": {
       "revised_4": "Each year, in the fourth month,",
-      "note_4": "Corrected 'forth' to 'fourth'.",
-      "revised_6": "Set up 3 stacks of buns to celebrate.",
-      "note_6": "Changed 'bun' to 'buns' for correct plural form.",
-      "revised_7": "Stacks of buns?",
-      "note_7": "Changed 'bun' to 'buns' for correct plural form.",
-      "revised_9": "A stack of buns is a stack of many buns!",
-      "note_9": "Changed 'bun' to 'buns' for correct plural form."
+      "note_4": "Corrected 'forth' to 'fourth' (the ordinal number for the month)."
     },
     "difficulty": 1,
     "verified": true
@@ -911,14 +897,14 @@
       "subtitle_2": "So San San leaves without seeing me.",
       "subtitle_3": "In despair, I crawl up the shelf.",
       "subtitle_4": "I have had a lot of things said to me…",
-      "subtitle_5": "But\"San yourself\"…",
+      "subtitle_5": "But“San yourself”…",
       "subtitle_6": "hurts like never before.",
       "subtitle_7": "I… I…",
       "subtitle_8": "I am quitting!"
     },
     "answer": {
-      "revised_5": "But \"San yourself\"…",
-      "note_5": "Added a space after 'But' and the opening quotation mark for correct formatting."
+      "revised_5": "But “San yourself”…",
+      "note_5": "Added a space between 'But' and the opening quotation mark for correct spacing."
     },
     "difficulty": 1,
     "verified": true
@@ -997,41 +983,44 @@
       "subtitle_4": "Mother must have translated it\nword by word.",
       "subtitle_5": "I use the machine to turn it back\ninto Chinese.",
       "subtitle_6": "It is addressed to\nthe Olympic Committee Chairman.",
-      "subtitle_7": "\"Dear Chairman:\"",
-      "subtitle_8": "\"How are you? I am fine.\"",
-      "subtitle_9": "\"You like bun? I like bun!\"",
-      "subtitle_10": "\"We Hong Kong people here love bun.\"",
-      "subtitle_11": "\"Buns of all sort.\"",
+      "subtitle_7": "“Dear Chairman:”",
+      "subtitle_8": "“How are you? I am fine.”",
+      "subtitle_9": "“You like bun? I like bun!”",
+      "subtitle_10": "“We Hong Kong people here love bun.”",
+      "subtitle_11": "“Buns of all sort.”",
       "subtitle_12": "\"Dear friend,",
       "subtitle_13": "it is important to snatch buns.\"",
-      "subtitle_14": "\"It is a game, no joke.\"",
-      "subtitle_15": "\"One needs energy,\nand many night congee.\"",
-      "subtitle_16": "\"In my stupid opinion…\"",
-      "subtitle_17": "\"Snatching bun is an Olympic game.\"",
-      "subtitle_18": "\"Let athletes all over the world snatch!\"",
-      "subtitle_19": "\"And there will be peace.\"",
-      "subtitle_20": "\"Do you have children?\"",
-      "subtitle_21": "\"I have a boy, Dull.\"",
+      "subtitle_14": "“It is a game, no joke.”",
+      "subtitle_15": "“One needs energy,\nand many night congee.”",
+      "subtitle_16": "“In my stupid opinion…”",
+      "subtitle_17": "“Snatching bun is an Olympic game.”",
+      "subtitle_18": "“Let athletes all over the world snatch!”",
+      "subtitle_19": "“And there will be peace.”",
+      "subtitle_20": "“Do you have children?”",
+      "subtitle_21": "“I have a boy, Dull.”",
       "subtitle_22": "She's talking about me!",
-      "subtitle_23": "\"He is a good boy.\"",
-      "subtitle_24": "\"He knows how to snatch buns.\"",
-      "subtitle_25": "\"One day,\nI can see him snatching buns…\"",
-      "subtitle_26": "\"Ending up snatching\nan Olympic medal.\"",
-      "subtitle_27": "\"That is the biggest comfort\na mother can get.\"",
-      "subtitle_28": "\"Let the world know\nthe talent of your children.\"",
-      "subtitle_29": "\"Parents will do anything for that.\"",
-      "subtitle_30": "\"That is why I write you this sudden letter.\"",
-      "subtitle_31": "\"Although you don't know\nhumble things like me.\"",
-      "subtitle_32": "\"But my boy is big, very big.\"",
-      "subtitle_33": "\"One day, you will know him too.\"",
-      "subtitle_34": "\"Thank you for your cooperation.\"",
-      "subtitle_35": "\"Yours faithfully, Mrs. Mc\""
+      "subtitle_23": "“He is a good boy.”",
+      "subtitle_24": "“He knows how to snatch buns.”",
+      "subtitle_25": "“One day,\nI can see him snatching buns…”",
+      "subtitle_26": "“Ending up snatching\nan Olympic medal.”",
+      "subtitle_27": "“That is the biggest comfort\na mother can get.”",
+      "subtitle_28": "“Let the world know\nthe talent of your children.”",
+      "subtitle_29": "“Parents will do anything for that.”",
+      "subtitle_30": "“That is why I write you this sudden letter.”",
+      "subtitle_31": "“Although you don't know\nhumble things like me.”",
+      "subtitle_32": "“But my boy is big, very big.”",
+      "subtitle_33": "“One day, you will know him too.”",
+      "subtitle_34": "“Thank you for your cooperation.”",
+      "subtitle_35": "“Yours faithfully, Mrs. Mc”"
     },
     "answer": {
-      "revised_11": "\"Buns of all sorts.\"",
-      "note_11": "Corrected 'sort' to 'sorts' for correct plural usage."
+      "revised_12": "“Dear friend,",
+      "note_12": "Changed quotation mark style of split line to match the rest of the letter.",
+      "revised_13": "it is important to snatch buns.”",
+      "note_13": "Changed quotation mark style of split line to match the rest of the letter."
     },
     "difficulty": 1,
+    "prompt": true,
     "verified": true
   },
   {
@@ -1044,7 +1033,7 @@
       "subtitle_6": "But I keep learning.",
       "subtitle_7": "Because I love my mother.",
       "subtitle_8": "Master thinks my crawling has passed.",
-      "subtitle_9": "Now I'll learn the\n\"12 Bun Snatching Hands\".",
+      "subtitle_9": "Now I'll learn the\n“12 Bun Snatching Hands”.",
       "subtitle_10": "Master says these 12 hands,",
       "subtitle_11": "in its prime…",
       "subtitle_12": "Was much admired by Butcher Lin!",
@@ -1059,18 +1048,18 @@
       "subtitle_21": "I am only doing this for mother.",
       "subtitle_22": "Hence I hang on…",
       "subtitle_23": "Step by step, claw by claw…",
-      "subtitle_24": "I make it pass\nthe\"12 Bun Snatching Hands\"."
+      "subtitle_24": "I make it pass\nthe“12 Bun Snatching Hands”."
     },
     "answer": {
-      "revised_24": "I make it past\nthe \"12 Bun Snatching Hands\".",
-      "note_24": "Corrected 'make it pass' to 'make it past' and added a space after 'the' for correct phrase formatting."
+      "revised_24": "I make it pass\nthe \"12 Bun Snatching Hands\".",
+      "note_24": "Added a space after 'the' for correct phrase formatting."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"There is no deformity,\nbut saves us from a dream\"",
+      "subtitle_1": "“There is no deformity,\nbut saves us from a dream”",
       "subtitle_2": "This is Dull.",
       "subtitle_3": "Dull the big guy, not Dull the boy.",
       "subtitle_4": "The two Dulls have different voices,\nand then…",
@@ -1124,9 +1113,7 @@
     },
     "answer": {
       "revised_34": "At a closedown sale.",
-      "note_34": "Corrected 'closed own sale' to 'closedown sale'.",
-      "revised_48": "24th December",
-      "note_48": "Removed comma after '24th' for correct date formatting."
+      "note_34": "Corrected 'closed own sale' to 'closedown sale'."
     },
     "difficulty": 1,
     "verified": true
@@ -1203,7 +1190,7 @@
       "subtitle_41": "Was in fact longer than its life.",
       "subtitle_42": "I realized also, with turkey…",
       "subtitle_43": "Taking the first bite is all it matters.",
-      "subtitle_44": "Afterwards,\nit is just \"be over and done with it\".",
+      "subtitle_44": "Afterwards,\nit is just “be over and done with it”.",
       "subtitle_45": "I am no philosopher.",
       "subtitle_46": "I could not come up with any profundity.",
       "subtitle_47": "But, such thoughts…",
@@ -1219,22 +1206,22 @@
     },
     "answer": {
       "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
-      "note_9": "Corrected 'guard' to 'gourd' (vegetable) as appropriate for food context.",
-      "revised_28": "Turkey pate with bread.",
-      "note_28": "Corrected 'Turkey Pete' to 'Turkey pate' (food item).",
-      "revised_35": "It was already half a year later.",
-      "note_35": "Added 'a' to correct 'half year' to 'half a year'.",
-      "revised_43": "Taking the first bite is all that matters.",
-      "note_43": "Added 'that' for correct phrase: 'all that matters'.",
-      "revised_56": "I regretted I made mother\nthrow the turkey away.",
-      "note_56": "Corrected 'threw' to 'throw' for correct verb tense after 'made'."
+      "note_9": "Corrected 'guard' to 'gourd', which fits the food context.",
+      "revised_10": "were dressed with soy sauce.",
+      "note_10": "Changed capital 'W' to lowercase 'w' mid-sentence.",
+      "revised_28": "Turkey paté with bread.",
+      "note_28": "Corrected 'Pete' to 'paté', a food item that fits the context.",
+      "revised_39": "for a few months.",
+      "note_39": "Changed capital 'F' to lowercase 'f' mid-sentence.",
+      "revised_41": "was in fact longer than its life.",
+      "note_41": "Changed capital 'W' to lowercase 'w' mid-sentence."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"Special Report\""
+      "subtitle_1": "“Special Report”"
     },
     "answer": {},
     "verified": true
@@ -1254,24 +1241,24 @@
       "subtitle_11": "Is proposing Mahjong for official game.",
       "subtitle_12": "While Tearoom Serving Groups…",
       "subtitle_13": "have vowed…",
-      "subtitle_14": "To campaign for\"Tart Throwing\".",
+      "subtitle_14": "To campaign for“Tart Throwing”.",
       "subtitle_15": "As for the Cold Cut and\nRoasting Association…",
       "subtitle_16": "They believe…",
-      "subtitle_17": "\"Duck Hanging\"\nwould make an ideal addition.",
+      "subtitle_17": "“Duck Hanging”\nwould make an ideal addition.",
       "subtitle_18": "More interesting,\nCIC Insurance is joining force with…",
       "subtitle_19": "Children from…",
       "subtitle_20": "Spring Flower Primary School…",
       "subtitle_21": "In support of…",
-      "subtitle_22": "\"Bun Snatching\"…",
+      "subtitle_22": "“Bun Snatching”…",
       "subtitle_23": "A game thought extinct."
     },
     "answer": {
-      "revised_1": "\"Special Report\"",
-      "note_1": "Corrected the opening single quote to a double quote for consistency and proper formatting.",
-      "revised_14": "To campaign for \"Tart Throwing\".",
-      "note_14": "Added a space after 'for' and corrected the quotation mark placement for clarity.",
-      "revised_18": "More interesting,\nCIC Insurance is joining forces with…",
-      "note_18": "Corrected 'joining force' to 'joining forces' for correct grammar."
+      "revised_1": "“Special Report”",
+      "note_1": "Corrected quotation marks.",
+      "revised_11": "is proposing Mahjong for official game.",
+      "note_11": "Lowercased 'Is' to continue the sentence from the previous line.",
+      "revised_14": "To campaign for “Tart Throwing”.",
+      "note_14": "Added a space between 'for' and the opening quote, and corrected the opening quote style."
     },
     "difficulty": 1,
     "verified": true
@@ -1280,9 +1267,9 @@
     "query": {
       "subtitle_1": "In the end…",
       "subtitle_2": "Nothing came of anything.",
-      "subtitle_3": "\"Tart Throwing\"\nwas chosen as the highlight.",
+      "subtitle_3": "“Tart Throwing”\nwas chosen as the highlight.",
       "subtitle_4": "As for the official slogan…",
-      "subtitle_5": "\"HK, One Big Tart\" was a logical choice.",
+      "subtitle_5": "“HK, One Big Tart” was a logical choice.",
       "subtitle_6": "Then San San Li lost.",
       "subtitle_7": "And the hosting right of\nthe Asian Games…",
       "subtitle_8": "Went to a place Hong Kong people\nhave never heard of.",
@@ -1343,13 +1330,13 @@
       "subtitle_8": "I opened the box…",
       "subtitle_9": "Inside, there was an unfinished bun.",
       "subtitle_10": "Maybe the pirate didn't get to finish it.",
-      "subtitle_11": "\"Eating 6 buns last night…\"",
-      "subtitle_12": "\"Still left me hungry.\"",
-      "subtitle_13": "\"Eating 1½lb white bread last night…\"",
-      "subtitle_14": "\"Still left me hungry.\"",
-      "subtitle_15": "\"Excelled 6 sets of steps\nwhen I was young…\"",
-      "subtitle_16": "\"Still left me empty.\"",
-      "subtitle_17": "\"Brought up San San\nwhen I am old! Still…\"",
+      "subtitle_11": "“Eating 6 buns last night…”",
+      "subtitle_12": "“Still left me hungry.”",
+      "subtitle_13": "“Eating 1½lb white bread last night…”",
+      "subtitle_14": "“Still left me hungry.”",
+      "subtitle_15": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "subtitle_16": "“Still left me empty.”",
+      "subtitle_17": "“Brought up San San\nwhen I am old! Still…”",
       "subtitle_18": "Bun in hand, I suddenly realized…",
       "subtitle_19": "There are things that cannot be forced.",
       "subtitle_20": "A no is a no.",
@@ -1373,22 +1360,22 @@
   },
   {
     "query": {
-      "subtitle_1": "\"…Nothing shall be done!\""
+      "subtitle_1": "“…Nothing shall be done!”"
     },
     "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"I Have Grown Up\""
+      "subtitle_1": "“I Have Grown Up”"
     },
     "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"Fat, Still\"",
-      "subtitle_2": "\"Powerful\"",
+      "subtitle_1": "“Fat, Still”",
+      "subtitle_2": "“Powerful”",
       "subtitle_3": ""
     },
     "answer": {},
@@ -1431,9 +1418,9 @@
       "subtitle_1": "I've come up with a lesson!",
       "subtitle_2": "Mother got inspired after\nher dot com failed.",
       "subtitle_3": "She published a cookbook.",
-      "subtitle_4": "The last recipe was\"Roast Chicken\".",
+      "subtitle_4": "The last recipe was“Roast Chicken”.",
       "subtitle_5": "A simple dish no less.",
-      "subtitle_6": "\"Roast Chicken\".",
+      "subtitle_6": "“Roast Chicken”.",
       "subtitle_7": "Ingredient: chicken.",
       "subtitle_8": "Method: roast the chicken.",
       "subtitle_9": "That way, you have a roast chicken.",
@@ -1444,8 +1431,8 @@
       "subtitle_14": "Thank you!"
     },
     "answer": {
-      "revised_4": "The last recipe was \"Roast Chicken\".",
-      "note_4": "Added a space after 'was' and before the quotation mark for correct formatting."
+      "revised_4": "The last recipe was “Roast Chicken”.",
+      "note_4": "Added a space between 'was' and the opening quotation mark for correct spacing."
     },
     "difficulty": 1,
     "verified": true

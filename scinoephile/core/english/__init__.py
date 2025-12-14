@@ -79,6 +79,8 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Replace '...' with '…'
     cleaned = re.sub(r"\.\.\.", "…", cleaned)
 
+    cleaned = _replace_half_width_double_quotes(cleaned)
+
     # Remove lines starting with dashes if they are otherwise empty
     cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)
 
@@ -142,3 +144,30 @@ def _get_english_text_flattened(text: str) -> str:
         flags=re.M,
     )
     return flattened
+
+
+def _replace_half_width_double_quotes(text: str) -> str:
+    """Replace straight double quotes (") with curly quotes (“/”).
+
+    Arguments:
+        text: text in which to replace quotes
+    Returns:
+        text with quotes replaced
+    """
+    count = text.count('"')
+    if count == 0 or count % 2 != 0:
+        return text
+    result: list[str] = []
+    next_quote_should_be_an_open_quote = True
+
+    for character in text:
+        if character == '"':
+            if next_quote_should_be_an_open_quote:
+                result.append("“")
+            else:
+                result.append("”")
+            next_quote_should_be_an_open_quote = not next_quote_should_be_an_open_quote
+        else:
+            result.append(character)
+
+    return "".join(result)

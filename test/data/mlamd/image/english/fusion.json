@@ -75,11 +75,11 @@
   {
     "query": {
       "lens": "\"We learn as we grow…'",
-      "tesseract": "\"We learn as we grow…\""
+      "tesseract": "“We learn as we grow…”"
     },
     "answer": {
-      "fused": "\"We learn as we grow…\"",
-      "note": "Used closing double quote from Tesseract instead of single quote from Lens."
+      "fused": "“We learn as we grow…”",
+      "note": "Used Tesseract’s opening and closing quotation marks and matching ellipsis, which are more typographically consistent than the mixed quote marks in the Lens result."
     },
     "difficulty": 2,
     "verified": true
@@ -305,12 +305,12 @@
   },
   {
     "query": {
-      "lens": "\"No pain no gain\".",
-      "tesseract": "\"no pain no gain\"."
+      "lens": "“No pain no gain”.",
+      "tesseract": "“no pain no gain”."
     },
     "answer": {
-      "fused": "\"no pain no gain\".",
-      "note": "Used lower-case 'no' from Tesseract."
+      "fused": "“no pain no gain”.",
+      "note": "Used lower-case 'no' at the beginning from Tesseract, which is more reliable for initial capitalization."
     },
     "difficulty": 2,
     "verified": true
@@ -461,12 +461,12 @@
   },
   {
     "query": {
-      "lens": "\"How are you?\nI am fine.\"",
-      "tesseract": "\"How are you? I am fine.\""
+      "lens": "“How are you?\nI am fine.”",
+      "tesseract": "“How are you? I am fine.”"
     },
     "answer": {
-      "fused": "\"How are you? I am fine.\"",
-      "note": "Used space instead of newline as in Tesseract."
+      "fused": "“How are you? I am fine.”",
+      "note": "Used Tesseract's single-line version, replacing the newline after the question mark from Google Lens with a space."
     },
     "difficulty": 2,
     "verified": true
@@ -485,12 +485,12 @@
   },
   {
     "query": {
-      "lens": "\"That is the biggest comfort\na mother can get.\"",
-      "tesseract": "\"That is the biggest comfort\n3 mother can get.\""
+      "lens": "“That is the biggest comfort\na mother can get.”",
+      "tesseract": "“That is the biggest comfort\n3 mother can get.”"
     },
     "answer": {
-      "fused": "\"That is the biggest comfort\na mother can get.\"",
-      "note": "Used 'a' from Lens instead of '3' from Tesseract; preserved line break from Tesseract."
+      "fused": "“That is the biggest comfort\na mother can get.”",
+      "note": "Used 'a mother' from Lens instead of '3 mother' from Tesseract; kept Tesseract's line break after 'comfort'."
     },
     "difficulty": 2,
     "verified": true
@@ -558,11 +558,11 @@
   {
     "query": {
       "lens": "Afterwards,\nit is just \"be over and done with it…",
-      "tesseract": "Afterwards,\nit is just\"be over and done with it\"."
+      "tesseract": "Afterwards,\nit is just“be over and done with it”."
     },
     "answer": {
-      "fused": "Afterwards,\nit is just \"be over and done with it\".",
-      "note": "Used Tesseract's quotation marks and period for accuracy, kept Tesseract's line break and capitalization."
+      "fused": "Afterwards,\nit is just “be over and done with it”.",
+      "note": "Used Tesseract’s correct closing quote and period, and its curly quote style; removed incomplete ellipsis and straight quotes from Lens while keeping Tesseract’s line break."
     },
     "difficulty": 2,
     "verified": true
@@ -617,24 +617,24 @@
   },
   {
     "query": {
-      "lens": "\"Eating 1½lb white bread last night…\n\"",
-      "tesseract": "\"Eating 1½lb white bread last night… \""
+      "lens": "“Eating 1½lb white bread last night…\n”",
+      "tesseract": "“Eating 1½lb white bread last night… ”"
     },
     "answer": {
-      "fused": "\"Eating 1½lb white bread last night…\"",
-      "note": "Removed extra space."
+      "fused": "“Eating 1½lb white bread last night…”",
+      "note": "Used single-line formatting from Tesseract and removed the extra space before the closing quote from Tesseract while omitting the line break and trailing quote line from Lens."
     },
     "difficulty": 2,
     "verified": true
   },
   {
     "query": {
-      "lens": "\"Excelled 6 sets of steps\nwhen I was young…' \"",
-      "tesseract": "\"Excelled 6 sets of steps\nwhen I was young…\""
+      "lens": "“Excelled 6 sets of steps\nwhen I was young…' ”",
+      "tesseract": "“Excelled 6 sets of steps\nwhen I was young…”"
     },
     "answer": {
-      "fused": "\"Excelled 6 sets of steps\nwhen I was young…\"",
-      "note": "Removed extra single quote at the end as in Tesseract."
+      "fused": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "note": "Used Tesseract’s ending ellipsis and closing quote, removing the stray apostrophe and extra quote from Lens while keeping Tesseract’s line break."
     },
     "difficulty": 2,
     "verified": true

@@ -202,7 +202,7 @@ def _get_zhongwen_text_flattened(text: str) -> str:
 
 
 def _replace_full_width_double_quotes(text: str) -> str:
-    """Replace '＂' characters with angled '〝' and '〞' characters.
+    """Replace straight double quotes (＂) with curly quotes (〝/〞).
 
     Arguments:
         text: text in which to replace quotes
