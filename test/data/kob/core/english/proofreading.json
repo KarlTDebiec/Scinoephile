@@ -611,7 +611,7 @@
       "subtitle_4": "until Chiu is killed",
       "subtitle_5": "Especially him",
       "subtitle_6": "Chiu is good at Kung-fu",
-      "subtitle_7": "Mok said, we can't defeat him unless\nusing the \"Dragon Killing Palms\"",
+      "subtitle_7": "Mok said, we can't defeat him unless\nusing the “Dragon Killing Palms”",
       "subtitle_8": "So, I can never marry!",
       "subtitle_9": "Let's go, if you want to marry"
     },
@@ -2136,8 +2136,8 @@
       "subtitle_2": "And you tasted the bitter fruit of the world too",
       "subtitle_3": "Now you regretted",
       "subtitle_4": "On behalf of Master Hung",
-      "subtitle_5": "I appoint you to be the \"Sleeping Disciple\"",
-      "subtitle_6": "Now, I will teach you the\n\"Sleeping Disciple's Fist\"!",
+      "subtitle_5": "I appoint you to be the “Sleeping Disciple”",
+      "subtitle_6": "Now, I will teach you the\n“Sleeping Disciple's Fist”!",
       "subtitle_7": "Hope you can make good use of it Come on"
     },
     "answer": {
@@ -2237,7 +2237,7 @@
   {
     "query": {
       "subtitle_1": "No one dares come up to fight for the leadership?",
-      "subtitle_2": "Ask Mok to give us the \"Dog Hitting Waddy\"!"
+      "subtitle_2": "Ask Mok to give us the “Dog Hitting Waddy”!"
     },
     "answer": {},
     "verified": true
@@ -2349,19 +2349,15 @@
       "subtitle_1": "I am sorry!",
       "subtitle_2": "I won",
       "subtitle_3": "What is the use for defeating us?",
-      "subtitle_4": "You don't know how to use the\n\"Dog Hitting Waddy\".",
+      "subtitle_4": "You don't know how to use the\n“Dog Hitting Waddy”.",
       "subtitle_5": "You are not qualified to be the leader of us"
     },
-    "answer": {
-      "revised_3": "What is the use of defeating us?",
-      "note_3": "Corrected 'for' to 'of' in 'What is the use of defeating us?' for correct idiomatic usage."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "\"Dog Hitting Waddy\"?"
+      "subtitle_1": "“Dog Hitting Waddy”?"
     },
     "answer": {},
     "verified": true
@@ -2397,7 +2393,7 @@
       "subtitle_5": "Have you all forgotten?",
       "subtitle_6": "We becomes the biggest association",
       "subtitle_7": "because of being united",
-      "subtitle_8": "I left you the \"Dog Hitting Waddy\",",
+      "subtitle_8": "I left you the “Dog Hitting Waddy”,",
       "subtitle_9": "is just for memory",
       "subtitle_10": "The waddy is meaningless",
       "subtitle_11": "But you fools take this as treasure",
@@ -2424,33 +2420,23 @@
       "subtitle_32": "What happened?",
       "subtitle_33": "Let's greet the new Master"
     },
-    "answer": {
-      "revised_6": "We became the biggest association",
-      "note_6": "Corrected 'becomes' to 'beaome' for subject-verb agreement.",
-      "revised_30": "They are easy to be cheated,\nI am really a genius!",
-      "note_30": "Corrected 'easily to be cheated' to 'easy to be cheated' for correct usage."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
     "query": {
       "subtitle_1": "Bravo…",
       "subtitle_2": "Uncle Mok, my son is really great!",
-      "subtitle_3": "I can't guess you have learnt the\n\"Sleeping Disciple's Fists\"?!",
+      "subtitle_3": "I can't guess you have learnt the\n“Sleeping Disciple's Fists”?!",
       "subtitle_4": "From now on, you are the new leader of us",
-      "subtitle_5": "This is the book of \"Dragon Suppressing Stances\"",
+      "subtitle_5": "This is the book of “Dragon Suppressing Stances”",
       "subtitle_6": "And, I will give you the Taiwan Pill",
       "subtitle_7": "Hope you will be a good leader",
       "subtitle_8": "I just want to save Yushang as soon as possible",
       "subtitle_9": "Yushang didn't make a wrong choice",
       "subtitle_10": "Bravo! Bravo!"
     },
-    "answer": {
-      "revised_3": "I can't guess you have learnt the\n\"Sleeping Disciple's Fist\"?!",
-      "note_3": "Corrected 'Fists' to 'Fist' to match the likely intended singular form of the martial arts style name."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2808,17 +2794,13 @@
   },
   {
     "query": {
-      "subtitle_1": "\"Sleeping Disciple\"?",
+      "subtitle_1": "“Sleeping Disciple”?",
       "subtitle_2": "Yes. Look at you, you are like beggar too",
       "subtitle_3": "Are you interested to join us?",
       "subtitle_4": "I can't guess you could recover!",
       "subtitle_5": "Yes, it's all because of you"
     },
-    "answer": {
-      "revised_2": "Yes. Look at you, you are like a beggar too",
-      "note_2": "Added 'a' before 'beggar' for correct grammar."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2830,7 +2812,7 @@
   },
   {
     "query": {
-      "subtitle_1": "Fool, only the \"Dragon Suppressing\nStances\" scare me",
+      "subtitle_1": "Fool, only the “Dragon Suppressing\nStances” scare me",
       "subtitle_2": "I won't give a damn to any other stances"
     },
     "answer": {},
@@ -2838,10 +2820,10 @@
   },
   {
     "query": {
-      "subtitle_1": "\"Dragon Suppress Stances\"",
-      "subtitle_2": "\"Dragon in the sky\"",
-      "subtitle_3": "\"Dragon swings its tail\"",
-      "subtitle_4": "\"Dragon steals the heart\"",
+      "subtitle_1": "“Dragon Suppress Stances”",
+      "subtitle_2": "“Dragon in the sky”",
+      "subtitle_3": "“Dragon swings its tail”",
+      "subtitle_4": "“Dragon steals the heart”",
       "subtitle_5": "Dragon swims, dragon in the field,",
       "subtitle_6": "dragon dances…",
       "subtitle_7": "Dragon's descendant,",
@@ -2880,13 +2862,9 @@
   },
   {
     "query": {
-      "subtitle_1": "The 18 stance, \"It's a regret to kill the Dragon\"!"
+      "subtitle_1": "The 18 stance, “It's a regret to kill the Dragon”!"
     },
-    "answer": {
-      "revised_1": "The 18th stance, \"It's a regret to kill the Dragon\"!",
-      "note_1": "Corrected '18 stance' to '18th stance' for proper ordinal usage."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
