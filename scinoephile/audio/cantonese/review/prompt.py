@@ -15,6 +15,7 @@ __all__ = ["ReviewPrompt"]
 class ReviewPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription review."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for performing final review of 粤文 subtitles of Cantonese
         speech.
@@ -43,7 +44,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def zhongwen_field(cls, idx: int) -> str:
-        """Name of 中文 field in query."""
+        """Name of 中文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of 中文 field in query
+        """
         return f"{cls.zhongwen_prefix}{idx}"
 
     zhongwen_description_template: ClassVar[str] = "Known 中文 of subtitle {idx}"
@@ -51,7 +58,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def zhongwen_description(cls, idx: int) -> str:
-        """Description of 中文 field in query."""
+        """Description of 中文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of 中文 field in query
+        """
         return cls.zhongwen_description_template.format(idx=idx)
 
     yuewen_prefix: ClassVar[str] = "yuewen_"
@@ -59,7 +72,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_field(cls, idx: int) -> str:
-        """Name of 粤文 field in query."""
+        """Name of 粤文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of 粤文 field in query
+        """
         return f"{cls.yuewen_prefix}{idx}"
 
     yuewen_description_template: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
@@ -67,7 +86,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_description(cls, idx: int) -> str:
-        """Description of 粤文 field in query."""
+        """Description of 粤文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of 粤文 field in query
+        """
         return cls.yuewen_description_template.format(idx=idx)
 
     # Answer fields
@@ -76,7 +101,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_revised_field(cls, idx: int) -> str:
-        """Name of revised 粤文 field in answer."""
+        """Name of revised 粤文 field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of revised 粤文 field in answer
+        """
         return f"{cls.yuewen_revised_prefix}{idx}"
 
     yuewen_revised_description_template: ClassVar[str] = (
@@ -86,7 +117,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_revised_description(cls, idx: int) -> str:
-        """Description of revised 粤文 field in answer."""
+        """Description of revised 粤文 field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of revised 粤文 field in answer
+        """
         return cls.yuewen_revised_description_template.format(idx=idx)
 
     note_prefix: ClassVar[str] = "note_"
@@ -94,7 +131,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def note_field(cls, idx: int) -> str:
-        """Name of note field in answer."""
+        """Name of note field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of note field in answer
+        """
         return f"{cls.note_prefix}{idx}"
 
     note_description_template: ClassVar[str] = (
@@ -104,7 +147,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def note_description(cls, idx: int) -> str:
-        """Description of note field in answer."""
+        """Description of note field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of note field in answer
+        """
         return cls.note_description_template.format(idx=idx)
 
     # Test case validation errors
@@ -116,7 +165,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_unmodified_error(cls, idx: int) -> str:
-        """Error message when revised 粤文 is unmodified."""
+        """Error message when revised 粤文 is unmodified.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is unmodified
+        """
         return cls.yuewen_unmodified_error_template.format(idx=idx)
 
     yuewen_revised_provided_note_missing_error_template: ClassVar[str] = (
@@ -127,7 +182,13 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_revised_provided_note_missing_error(cls, idx: int) -> str:
-        """Error message when revised 粤文 is provided but note is missing."""
+        """Error message when revised 粤文 is provided but note is missing.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is provided but note is missing
+        """
         return cls.yuewen_revised_provided_note_missing_error_template.format(idx=idx)
 
     yuewen_revised_missing_note_provided_error_template: ClassVar[str] = (
@@ -139,5 +200,11 @@ class ReviewPrompt(EnglishPrompt):
 
     @classmethod
     def yuewen_revised_missing_note_provided_error(cls, idx: int) -> str:
-        """Error message when revised 粤文 is missing but note is provided."""
+        """Error message when revised 粤文 is missing but note is provided.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is missing but note is provided
+        """
         return cls.yuewen_revised_missing_note_provided_error_template.format(idx=idx)

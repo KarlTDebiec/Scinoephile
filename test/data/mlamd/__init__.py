@@ -211,11 +211,13 @@ def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase]:
 
 @cache
 def get_mlamd_yue_translation_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt, **kwargs: Any
+    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt,
+    **kwargs: Any,
 ) -> list[TranslationTestCase]:
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -227,16 +229,21 @@ def get_mlamd_yue_translation_test_cases(
 
 
 @cache
-def get_mlamd_yue_review_test_cases(**kwargs: Any) -> list[ReviewTestCase]:
+def get_mlamd_yue_review_test_cases(
+    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt, **kwargs: Any
+) -> list[ReviewTestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
+        prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "review.json"
-    return load_test_cases_from_json(path, ReviewTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, ReviewTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache

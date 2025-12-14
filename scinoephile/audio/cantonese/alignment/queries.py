@@ -200,7 +200,6 @@ def get_review_test_case(
     Raises:
         ScinoephileError: If sync groups are malformed
     """
-    prompt_cls = test_case_cls.prompt_cls
     kwargs = {}
     for sg in alignment.sync_groups:
         # Get 中文
@@ -210,7 +209,8 @@ def get_review_test_case(
                 f"Sync group {sg} has {len(zw_idxs)} 中文 subs, expected 1."
             )
         zw_idx = zw_idxs[0]
-        kwargs[prompt_cls.zhongwen_field(zw_idx + 1)] = alignment.zhongwen[zw_idx].text
+        zw_key = test_case_cls.prompt_cls.zhongwen_field(zw_idx + 1)
+        kwargs[zw_key] = alignment.zhongwen[zw_idx].text
 
         # Get 粤文
         yw_idxs = sg[1]
@@ -219,7 +219,8 @@ def get_review_test_case(
                 f"Sync group {sg} has {len(yw_idxs)} 粤文 subs, expected 1."
             )
         yw_idx = yw_idxs[0]
-        kwargs[prompt_cls.yuewen_field(zw_idx + 1)] = alignment.yuewen[yw_idx].text
+        yw_key = test_case_cls.prompt_cls.yuewen_field(zw_idx + 1)
+        kwargs[yw_key] = alignment.yuewen[yw_idx].text
 
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
