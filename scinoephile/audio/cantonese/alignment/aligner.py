@@ -16,6 +16,7 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
+from scinoephile.audio.cantonese.review import ReviewTestCase
 from scinoephile.audio.cantonese.shifting import (
     ShiftingAnswer,
     ShiftingQuery,
@@ -39,8 +40,6 @@ from .queries import (
 )
 
 __all__ = ["Aligner"]
-
-from ..review import ReviewTestCase
 
 
 class Aligner:
