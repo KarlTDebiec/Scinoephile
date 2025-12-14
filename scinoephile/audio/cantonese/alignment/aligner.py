@@ -468,7 +468,8 @@ class Aligner:
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
             yw_key = test_case.prompt_cls.yuewen_revised_field(zw_idx + 1)
-            yw.text = getattr(test_case.answer, yw_key, yw.text)
+            if yw_revised := getattr(test_case.answer, yw_key, None):
+                yw.text = yw_revised
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
             nascent_sg.append(([zw_idx], [yw_idx]))
