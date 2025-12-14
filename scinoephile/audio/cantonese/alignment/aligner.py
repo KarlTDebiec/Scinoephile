@@ -38,6 +38,8 @@ from .queries import (
 
 __all__ = ["Aligner"]
 
+from ..proofing import ProofingTestCase
+
 
 class Aligner:
     """Aligns transcribed 粤文 subs with official 中文 subs."""
@@ -127,7 +129,7 @@ class Aligner:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error (not yet encountered)
-            test_case: type[ShiftingTestCase] = self.shifting_queryer.call(test_case)
+            test_case: ShiftingTestCase = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -337,11 +339,10 @@ class Aligner:
             if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 continue
-            test_case = self.proofing_queryer.call(test_case)
+            test_case: ProofingTestCase = self.proofing_queryer.call(test_case)
 
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
-            prompt_cls = test_case.prompt_cls
 
             # Get 粤文
             yw_idxs = sg[1]
@@ -351,8 +352,10 @@ class Aligner:
                     f"but found {len(yw_idxs)}: {yw_idxs}"
                 )
             yw_idx = yw_idxs[0]
-            query_yuewen = getattr(test_case.query, prompt_cls.yuewen_field)
-            answer_yuewen = getattr(test_case.answer, prompt_cls.yuewen_proofread_field)
+            query_yuewen = getattr(test_case.query, test_case.prompt_cls.yuewen_field)
+            answer_yuewen = getattr(
+                test_case.answer, test_case.prompt_cls.yuewen_proofread_field
+            )
             if query_yuewen == answer_yuewen:
                 continue
             alignment.yuewen[yw_idx].text = answer_yuewen
