@@ -1681,7 +1681,7 @@ Chiu is good at Kung-fu
 337
 00:19:47,563 --> 00:19:50,940
 莫大叔话唔识降龙十八掌都打佢唔赢
-Mok said, we can't defeat him unless using the "Dragon Killing Palms"
+Mok said, we can't defeat him unless using the “Dragon Killing Palms”
 
 338
 00:19:51,984 --> 00:19:53,318
@@ -5491,12 +5491,12 @@ On behalf of Master Hung
 1099
 01:07:59,746 --> 01:08:01,373
 封你为睡梦罗汉
-I appoint you to be the "Sleeping Disciple"
+I appoint you to be the “Sleeping Disciple”
 
 1100
 01:08:01,414 --> 01:08:05,294
 醉回梦生法，传授你睡梦罗汉拳
-Now, I will teach you the "Sleeping Disciple's Fist"!
+Now, I will teach you the “Sleeping Disciple's Fist”!
 
 1101
 01:08:05,335 --> 01:08:07,838
@@ -5626,7 +5626,7 @@ No one dares come up to fight for the leadership?
 1126
 01:11:21,531 --> 01:11:23,784
 叫莫老三交番支打狗棍出嚟！
-Ask Mok to give us the "Dog Hitting Waddy"!
+Ask Mok to give us the “Dog Hitting Waddy”!
 
 1127
 01:11:25,869 --> 01:11:29,831
@@ -5801,7 +5801,7 @@ What is the use for defeating us?
 1161
 01:15:56,139 --> 01:15:57,057
 你又唔识打狗棍法！
-You don't know how to use the "Dog Hitting Waddy".
+You don't know how to use the “Dog Hitting Waddy”.
 
 1162
 01:15:58,016 --> 01:15:59,101
@@ -5811,7 +5811,7 @@ You are not qualified to be the leader of us
 1163
 01:16:02,604 --> 01:16:04,064
 打狗棍啫！吓话！
-"Dog Hitting Waddy"?
+“Dog Hitting Waddy”?
 
 1164
 01:16:08,526 --> 01:16:09,736
@@ -5881,7 +5881,7 @@ because of being united
 1177
 01:16:57,784 --> 01:16:59,995
 我洪某当年留低枝打狗棍
-I left you the "Dog Hitting Waddy",
+I left you the “Dog Hitting Waddy”,
 
 1178
 01:17:00,036 --> 01:17:02,372
@@ -6021,7 +6021,7 @@ Uncle Mok, my son is really great!
 1205
 01:18:16,821 --> 01:18:18,573
 估唔到你学识睡梦罗汉拳！
-I can't guess you have learnt the "Sleeping Disciple's Fists"?!
+I can't guess you have learnt the “Sleeping Disciple's Fists”?!
 
 1206
 01:18:20,658 --> 01:18:23,245
@@ -6031,7 +6031,7 @@ From now on, you are the new leader of us
 1207
 01:18:24,412 --> 01:18:26,331
 呢本系降龙十八掌
-This is the book of "Dragon Suppressing Stances"
+This is the book of “Dragon Suppressing Stances”
 
 1208
 01:18:26,373 --> 01:18:28,042
@@ -6795,7 +6795,7 @@ Well, I am a little bit sleepy
 1362
 01:32:05,066 --> 01:32:05,900
 睡罗汉？
-"Sleeping Disciple"?
+“Sleeping Disciple”?
 
 1363
 01:32:06,401 --> 01:32:10,364
@@ -6825,7 +6825,7 @@ Did you generate all your force? I didn't
 1368
 01:32:43,313 --> 01:32:46,483
 蠢材！普天之下除咗降龙十八掌！
-Fool, only the "Dragon Suppressing Stances" scare me
+Fool, only the “Dragon Suppressing Stances” scare me
 
 1369
 01:32:46,483 --> 01:32:48,277
@@ -6835,22 +6835,22 @@ I won't give a damn to any other stances
 1370
 01:33:00,789 --> 01:33:02,666
 降龙十八掌第七式
-"Dragon Suppress Stances"
+“Dragon Suppress Stances”
 
 1371
 01:33:05,293 --> 01:33:06,461
 飞龙在天
-"Dragon in the sky"
+“Dragon in the sky”
 
 1372
 01:33:08,046 --> 01:33:08,797
 神龙摆尾
-"Dragon swings its tail"
+“Dragon swings its tail”
 
 1373
 01:33:09,047 --> 01:33:09,798
 乌龙偷心
-"Dragon steals the heart"
+“Dragon steals the heart”
 
 1374
 01:33:09,839 --> 01:33:10,715
@@ -6925,7 +6925,7 @@ I am too smart!
 1388
 01:34:56,821 --> 01:34:59,200
 第十八掌──杀龙有悔
-The 18 stance, "It's a regret to kill the Dragon"!
+The 18 stance, “It's a regret to kill the Dragon”!
 
 1389
 01:35:29,270 --> 01:35:31,190
