@@ -45,8 +45,12 @@ class ShiftingTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        yuewen_1_shifted = getattr(self.answer, "yuewen_1_shifted", None)
-        yuewen_2_shifted = getattr(self.answer, "yuewen_2_shifted", None)
+        yuewen_1_shifted = getattr(
+            self.answer, self.prompt_cls.yuewen_1_shifted_field, None
+        )
+        yuewen_2_shifted = getattr(
+            self.answer, self.prompt_cls.yuewen_2_shifted_field, None
+        )
         if yuewen_1_shifted != "" or yuewen_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
 
@@ -58,10 +62,14 @@ class ShiftingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen_1 = getattr(self.query, "yuewen_1", None)
-        yuewen_2 = getattr(self.query, "yuewen_2", None)
-        yuewen_1_shifted = getattr(self.answer, "yuewen_1_shifted", None)
-        yuewen_2_shifted = getattr(self.answer, "yuewen_2_shifted", None)
+        yuewen_1 = getattr(self.query, self.prompt_cls.yuewen_1_field, None)
+        yuewen_2 = getattr(self.query, self.prompt_cls.yuewen_2_field, None)
+        yuewen_1_shifted = getattr(
+            self.answer, self.prompt_cls.yuewen_1_shifted_field, None
+        )
+        yuewen_2_shifted = getattr(
+            self.answer, self.prompt_cls.yuewen_2_shifted_field, None
+        )
         if yuewen_1 == yuewen_1_shifted and yuewen_2 == yuewen_2_shifted:
             raise ValueError(self.prompt_cls.yuewen_1_yuewen_2_unchanged_error)
         if yuewen_1_shifted != "" or yuewen_2_shifted != "":
@@ -69,9 +77,7 @@ class ShiftingTestCase(TestCase, ABC):
             received = yuewen_1_shifted + yuewen_2_shifted
             if expected != received:
                 raise ValueError(
-                    self.prompt_cls.yuewen_characters_changed_error.format(
-                        expected=expected, received=received
-                    )
+                    self.prompt_cls.yuewen_characters_changed_error(expected, received)
                 )
         return self
 

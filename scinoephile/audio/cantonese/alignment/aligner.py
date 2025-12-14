@@ -15,7 +15,11 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.cantonese.shifting import ShiftingAnswer, ShiftingQuery
+from scinoephile.audio.cantonese.shifting import (
+    ShiftingAnswer,
+    ShiftingQuery,
+    ShiftingTestCase,
+)
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer, save_test_cases_to_json
@@ -122,13 +126,19 @@ class Aligner:
             if test_case is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
-            # TODO: try/expect and return original 粤文 on error; not yet encountered
-            test_case = self.shifting_queryer.call(test_case)
+            # TODO: try/expect and return original 粤文 on error (not yet encountered)
+            test_case: type[ShiftingTestCase] = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
-            if answer.yuewen_1_shifted == "" and answer.yuewen_2_shifted == "":
+            yuewen_1_shifted = getattr(
+                answer, test_case.prompt_cls.yuewen_1_shifted_field, None
+            )
+            yuewen_2_shifted = getattr(
+                answer, test_case.prompt_cls.yuewen_2_shifted_field, None
+            )
+            if yuewen_1_shifted == "" and yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
                 return True
@@ -161,10 +171,10 @@ class Aligner:
         # Get 粤文
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = query.yuewen_1
-        yw_2 = query.yuewen_2
-        yw_1_shifted = answer.yuewen_1_shifted
-        yw_2_shifted = answer.yuewen_2_shifted
+        yw_1 = getattr(query, query.prompt_cls.yuewen_1_field, None)
+        yw_2 = getattr(query, query.prompt_cls.yuewen_2_field, None)
+        yw_1_shifted = getattr(answer, query.prompt_cls.yuewen_1_shifted_field, None)
+        yw_2_shifted = getattr(answer, query.prompt_cls.yuewen_2_shifted_field, None)
 
         # Shift 粤文
         nascent_sg = deepcopy(alignment.sync_groups)
@@ -301,7 +311,10 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yw = get_sub_merged(yws, text=test_case.answer.yuewen_merged)
+            yuewen_merged = getattr(
+                test_case.answer, test_case.prompt_cls.yuewen_merged_field, None
+            )
+            yw = get_sub_merged(yws, text=yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
 
