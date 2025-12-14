@@ -38,24 +38,23 @@ class ShiftingPrompt(EnglishPrompt):
     zhongwen_1_field: ClassVar[str] = "zhongwen_1"
     """Field name for 中文 subtitle 1."""
 
-    zhongwen_2_field: ClassVar[str] = "zhongwen_2"
-    """Field name for 中文 subtitle 2."""
-
-    yuewen_1_field: ClassVar[str] = "yuewen_1"
-    """Field name for 粤文 subtitle 1."""
-
-    yuewen_2_field: ClassVar[str] = "yuewen_2"
-    """Field name for 粤文 subtitle 2."""
-
-    # Query descriptions
     zhongwen_1_description: ClassVar[str] = "Known 中文 of subtitle 1"
     """Description of 'zhongwen_1' field."""
+
+    zhongwen_2_field: ClassVar[str] = "zhongwen_2"
+    """Field name for 中文 subtitle 2."""
 
     zhongwen_2_description: ClassVar[str] = "Known 中文 of subtitle 2"
     """Description of 'zhongwen_2' field."""
 
+    yuewen_1_field: ClassVar[str] = "yuewen_1"
+    """Field name for 粤文 subtitle 1."""
+
     yuewen_1_description: ClassVar[str] = "Transcribed 粤文 of subtitle "
     """Description of 'yuewen_1' field."""
+
+    yuewen_2_field: ClassVar[str] = "yuewen_2"
+    """Field name for 粤文 subtitle 2."""
 
     yuewen_2_description: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
     """Description of 'yuewen_2' field."""
@@ -70,12 +69,11 @@ class ShiftingPrompt(EnglishPrompt):
     yuewen_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
     """Field name for shifted 粤文 subtitle 1."""
 
-    yuewen_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
-    """Field name for shifted 粤文 subtitle 2."""
-
-    # Answer descriptions
     yuewen_1_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
     """Description of 'yuewen_1_shifted' field."""
+
+    yuewen_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
+    """Field name for shifted 粤文 subtitle 2."""
 
     yuewen_2_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
     """Description of 'yuewen_2_shifted' field."""

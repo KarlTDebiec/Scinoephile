@@ -84,12 +84,11 @@ def get_shifting_test_case(
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
     test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
-    prompt_cls = test_case_cls.prompt_cls
     query_kwargs = {
-        prompt_cls.zhongwen_1_field: zw_1,
-        prompt_cls.yuewen_1_field: yw_1,
-        prompt_cls.zhongwen_2_field: zw_2,
-        prompt_cls.yuewen_2_field: yw_2,
+        test_case_cls.prompt_cls.zhongwen_1_field: zw_1,
+        test_case_cls.prompt_cls.yuewen_1_field: yw_1,
+        test_case_cls.prompt_cls.zhongwen_2_field: zw_2,
+        test_case_cls.prompt_cls.yuewen_2_field: yw_2,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
@@ -215,6 +214,7 @@ def get_review_test_case(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
+    # Noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
 
@@ -254,5 +254,6 @@ def get_translation_test_case(
         yw_idx = yw_idxs[0]
         kwargs[f"yuewen_{zw_idx + 1}"] = alignment.yuewen[yw_idx].text
 
+    # Noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
