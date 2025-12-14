@@ -39,11 +39,11 @@ class ShiftingAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "yuewen_1_shifted": (
+            prompt_cls.yuewen_1_shifted_field: (
                 str,
                 Field("", description=prompt_cls.yuewen_1_shifted_description),
             ),
-            "yuewen_2_shifted": (
+            prompt_cls.yuewen_2_shifted_field: (
                 str,
                 Field("", description=prompt_cls.yuewen_2_shifted_description),
             ),

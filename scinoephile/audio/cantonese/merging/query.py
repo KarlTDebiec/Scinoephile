@@ -27,10 +27,12 @@ class MergingQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        if not getattr(self, "zhongwen", None):
+        zhongwen = getattr(self, self.prompt_cls.zhongwen_field, None)
+        yuewen_to_merge = getattr(self, self.prompt_cls.yuewen_to_merge_field, None)
+        if not zhongwen:
             raise ValueError(self.prompt_cls.zhongwen_missing_error)
-        if not getattr(self, "yuewen_to_merge", None):
-            raise ValueError(self.prompt_cls.yuewen_characters_changed_error)
+        if not yuewen_to_merge:
+            raise ValueError(self.prompt_cls.yuewen_to_merge_missing_error)
         return self
 
     @classmethod
@@ -48,8 +50,11 @@ class MergingQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "zhongwen": (str, Field(..., description=prompt_cls.zhongwen_description)),
-            "yuewen_to_merge": (
+            prompt_cls.zhongwen_field: (
+                str,
+                Field(..., description=prompt_cls.zhongwen_description),
+            ),
+            prompt_cls.yuewen_to_merge_field: (
                 list[str],
                 Field(..., description=prompt_cls.yuewen_to_merge_description),
             ),

@@ -27,7 +27,7 @@ class MergingAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        if not getattr(self, "yuewen_merged", None):
+        if not getattr(self, self.prompt_cls.yuewen_merged_field, None):
             raise ValueError(self.prompt_cls.yuewen_merged_missing_error)
         return self
 
@@ -46,7 +46,7 @@ class MergingAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            "yuewen_merged": (
+            prompt_cls.yuewen_merged_field: (
                 str,
                 Field(..., description=prompt_cls.yuewen_merged_description),
             ),
