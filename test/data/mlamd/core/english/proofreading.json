@@ -1,15 +1,5 @@
 [
   {
-    "answer": {
-      "revised_3": "It flew along Garden Street…",
-      "note_3": "Corrected 'flied' to 'flew'.",
-      "revised_7": "Lingered a bit… Correction:",
-      "note_7": "Added a space after the ellipsis before 'Correction:' for clarity.",
-      "revised_8": "It flew over the railway, turned right…",
-      "note_8": "Corrected 'flied' to 'flew'.",
-      "revised_10": "It flew on…",
-      "note_10": "Corrected 'flied' to 'flew'."
-    },
     "query": {
       "subtitle_1": "When Mrs. McBing was in labour…",
       "subtitle_2": "A pan appeared in the sky.",
@@ -45,12 +35,21 @@
       "subtitle_32": "Of course Chow and Leung are\nlucky guys…",
       "subtitle_33": "But then they are smart too!"
     },
+    "answer": {
+      "revised_3": "It flew along Garden Street…",
+      "note_3": "Corrected 'flied' to 'flew'.",
+      "revised_7": "Lingered a bit… Correction:",
+      "note_7": "Added a space after the ellipsis before 'Correction:' for clarity.",
+      "revised_8": "It flew over the railway, turned right…",
+      "note_8": "Corrected 'flied' to 'flew'.",
+      "revised_10": "It flew on…",
+      "note_10": "Corrected 'flied' to 'flew'."
+    },
     "difficulty": 1,
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Finally, the pan dropped to the floor…",
       "subtitle_2": "Mrs. McBing,\nbelieving her wish granted…",
@@ -66,15 +65,10 @@
       "subtitle_12": "I am the boy, no more McNificient…",
       "subtitle_13": "I'm McDull!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_12": "Only 10 minutes' walk from\nthe MTR Station!",
-      "note_12": "Added possessive apostrophe to 'minutes'' for correct expression: '10 minutes' walk'.",
-      "revised_17": "Spring Flower offers white teachers!",
-      "note_17": "Corrected 'offer' to 'offers' to match subject-verb agreement."
-    },
     "query": {
       "subtitle_1": "\"My School\"",
       "subtitle_2": "Oh dear,",
@@ -94,11 +88,16 @@
       "subtitle_16": "Yeah!",
       "subtitle_17": "Spring Flower offer white teachers!"
     },
+    "answer": {
+      "revised_12": "Only 10 minutes' walk from\nthe MTR Station!",
+      "note_12": "Added possessive apostrophe to 'minutes'' for correct expression: '10 minutes' walk'.",
+      "revised_17": "Spring Flower offers white teachers!",
+      "note_17": "Corrected 'offer' to 'offers' to match subject-verb agreement."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"We are all happy children…\"",
       "subtitle_2": "\"We sing everyday!\"",
@@ -124,17 +123,10 @@
       "subtitle_22": "Yes!",
       "subtitle_23": "Great! Now move to class."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_13": "- May!    - Present!",
-      "note_13": "Added four spaces between speakers for consistency with other roll call lines.",
-      "revised_15": "- May!    - Present!",
-      "note_15": "Added four spaces between speakers for consistency with other roll call lines.",
-      "revised_26": "- May!    - Present!",
-      "note_26": "Added four spaces between speakers for consistency with other roll call lines."
-    },
     "query": {
       "subtitle_1": "You might conclude that\nthis is a shabby school.",
       "subtitle_2": "But, for me and my mates…",
@@ -192,12 +184,19 @@
       "subtitle_54": "And then…",
       "subtitle_55": "I will buy my mother a house!"
     },
+    "answer": {
+      "revised_13": "- May!    - Present!",
+      "note_13": "Added four spaces between speakers for consistency with other roll call lines.",
+      "revised_15": "- May!    - Present!",
+      "note_15": "Added four spaces between speakers for consistency with other roll call lines.",
+      "revised_26": "- May!    - Present!",
+      "note_26": "Added four spaces between speakers for consistency with other roll call lines."
+    },
     "difficulty": 1,
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Our headmaster runs a tea stand…",
       "subtitle_2": "Which we kids frequent after class.",
@@ -220,24 +219,24 @@
       "subtitle_19": "No fishball left? Let's get some noodle.",
       "subtitle_20": "Shoot, Dull!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "Every day…",
-      "note_2": "Corrected 'Everyday…' to 'Every day…' ('everyday' is an adjective; 'every day' is correct here)."
-    },
     "query": {
       "subtitle_1": "Watching myself grow and grow…",
       "subtitle_2": "Everyday…",
       "subtitle_3": "I feel full of strength!",
       "subtitle_4": "The world is beautiful!"
     },
+    "answer": {
+      "revised_2": "Every day…",
+      "note_2": "Corrected 'Everyday…' to 'Every day…' ('everyday' is an adjective; 'every day' is correct here)."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "There is a song Miss Chan loves…",
       "subtitle_2": "Which I always want to learn…",
@@ -247,22 +246,17 @@
       "subtitle_6": "All things on earth…",
       "subtitle_7": "They are fine!!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"My Mother\""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "1, 2, 3, 4, 5, 6, 7…",
-      "note_1": "Added spaces after commas for correct number formatting.",
-      "revised_4": "The middle-aged swine is Mrs. McBing,",
-      "note_4": "Corrected 'middleaged' to 'middle-aged'."
-    },
     "query": {
       "subtitle_1": "1,2,3,4,5,6,7…",
       "subtitle_2": "No pain no gain!",
@@ -272,15 +266,17 @@
       "subtitle_6": "A brilliant woman…",
       "subtitle_7": "carrying the world!"
     },
+    "answer": {
+      "revised_1": "1, 2, 3, 4, 5, 6, 7…",
+      "note_1": "Added spaces after commas for correct number formatting.",
+      "revised_4": "The middle-aged swine is Mrs. McBing,",
+      "note_4": "Corrected 'middleaged' to 'middle-aged'."
+    },
     "difficulty": 1,
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {
-      "revised_6": "Welcome to \"Mrs. Mc Can Cook\".",
-      "note_6": "Added a space after 'to' and before the opening quotation mark for correct formatting."
-    },
     "query": {
       "subtitle_1": "Yes, she is really something.",
       "subtitle_2": "She works in insurance,\nreal estate and trading.",
@@ -298,14 +294,14 @@
       "subtitle_14": "Voila! Simple, isn't it?",
       "subtitle_15": "Thank you, everyone!"
     },
+    "answer": {
+      "revised_6": "Welcome to \"Mrs. Mc Can Cook\".",
+      "note_6": "Added a space after 'to' and before the opening quotation mark for correct formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_3": "The ingredient takes only paper.",
-      "note_3": "Removed the article 'a' before 'paper' to correct the phrase to 'takes only paper.'"
-    },
     "query": {
       "subtitle_1": "How time flies since last episode!",
       "subtitle_2": "Now we shall do a Paper Bun.",
@@ -314,16 +310,14 @@
       "subtitle_5": "And we have a Paper Bun.",
       "subtitle_6": "Isn't this a lovely bun?"
     },
+    "answer": {
+      "revised_3": "The ingredient takes only paper.",
+      "note_3": "Removed the article 'a' before 'paper' to correct the phrase to 'takes only paper.'"
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "Chicken Bun Paper Bun-ning a Bun.",
-      "note_2": "Added hyphen to 'Bun-ning' to clarify the play on words and match the likely intended pun.",
-      "revised_7": "The delicious Chicken Bun Paper\nBun-ning a Bun!",
-      "note_7": "Added hyphen to 'Bun-ning' to match the correction in subtitle 2 and maintain consistency."
-    },
     "query": {
       "subtitle_1": "A novelty today for everyone:",
       "subtitle_2": "Chicken Bun Paper Bunning a Bun.",
@@ -335,11 +329,16 @@
       "subtitle_8": "Such a simple dish!",
       "subtitle_9": "See if the chicken is good!"
     },
+    "answer": {
+      "revised_2": "Chicken Bun Paper Bun-ning a Bun.",
+      "note_2": "Added hyphen to 'Bun-ning' to clarify the play on words and match the likely intended pun.",
+      "revised_7": "The delicious Chicken Bun Paper\nBun-ning a Bun!",
+      "note_7": "Added hyphen to 'Bun-ning' to match the correction in subtitle 2 and maintain consistency."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Kids are bound to love…",
       "subtitle_2": "today's dish…",
@@ -362,10 +361,10 @@
       "subtitle_19": "He twisted his ankle.",
       "subtitle_20": "Mother, I want to sleep."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Once upon a time, a boy slept a lot.\nNext day…",
       "subtitle_2": "He died.",
@@ -375,10 +374,10 @@
       "subtitle_6": "For her, it is always…",
       "subtitle_7": "\"no pain no gain\"."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "But there are things that\nsimply cannot be gained.",
       "subtitle_2": "Days come and go.",
@@ -408,14 +407,11 @@
       "subtitle_26": "Soon…",
       "subtitle_27": "In my dream!"
     },
+    "answer": {},
     "prompt": true,
     "verified": true
   },
   {
-    "answer": {
-      "revised_12": "What's-its-name.",
-      "note_12": "Corrected 'What's-it's name.' to 'What's-its-name.' to fix the possessive error and match the intended phrase."
-    },
     "query": {
       "subtitle_1": "Good morning, sir!",
       "subtitle_2": "Good day, sir!",
@@ -437,20 +433,23 @@
       "subtitle_18": "There, the sky is blue,\nclouds white, the trees tall…",
       "subtitle_19": "It is a world outside our world."
     },
+    "answer": {
+      "revised_12": "What's-its-name.",
+      "note_12": "Corrected 'What's-it's name.' to 'What's-its-name.' to fix the possessive error and match the intended phrase."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Rise and shine, kiddo.",
       "subtitle_2": "Oh?",
       "subtitle_3": "Mother!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Take some medicine and he'll be fine.",
       "subtitle_2": "Will he not what after the medicine?",
@@ -461,10 +460,10 @@
       "subtitle_7": "He's scared of shots.",
       "subtitle_8": "Is he scared of dying?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "How are you doing? Take the medicine.",
       "subtitle_2": "Mother I don't want medicine.",
@@ -476,10 +475,10 @@
       "subtitle_8": "Has mother ever lied before?",
       "subtitle_9": "Now, drink up."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Yes, Maldives!",
       "subtitle_2": "Maldives!",
@@ -489,10 +488,10 @@
       "subtitle_6": "I will book the ticket once you get well.",
       "subtitle_7": "Come on, drink up!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Look, mother!",
       "subtitle_2": "Mother, I am well!",
@@ -502,17 +501,10 @@
       "subtitle_6": "And I gulped it down bit by bit…",
       "subtitle_7": "I did it!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_10": "Those words have flair.",
-      "note_10": "Corrected 'flare' to 'flair' (correct word for style or panache).",
-      "revised_15": "No, that wasn't what you meant.",
-      "note_15": "Corrected 'mean' to 'meant' for correct tense.",
-      "revised_25": "We will go next week, OK?",
-      "note_25": "Capitalized 'ok' to 'OK' for standard usage."
-    },
     "query": {
       "subtitle_1": "Now I am a good boy!",
       "subtitle_2": "Now I am not sick!",
@@ -541,11 +533,18 @@
       "subtitle_25": "We will go next week, ok?",
       "subtitle_26": "Bravo!"
     },
+    "answer": {
+      "revised_10": "Those words have flair.",
+      "note_10": "Corrected 'flare' to 'flair' (correct word for style or panache).",
+      "revised_15": "No, that wasn't what you meant.",
+      "note_15": "Corrected 'mean' to 'meant' for correct tense.",
+      "revised_25": "We will go next week, OK?",
+      "note_25": "Capitalized 'ok' to 'OK' for standard usage."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "This is McDull.",
       "subtitle_2": "Hey, I'm leaving tomorrow.",
@@ -562,10 +561,10 @@
       "subtitle_13": "I need to pack now. Talk to you later.",
       "subtitle_14": "See you!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Mother, do I need to bring\nmy birth certificate?",
       "subtitle_2": "I guess so.",
@@ -573,20 +572,20 @@
       "subtitle_4": "We don't need that.",
       "subtitle_5": "Wow, I'm saved!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I found it!",
       "subtitle_2": "I found my birth certificate!",
       "subtitle_3": "Mother, you keep it and don't lose it…",
       "subtitle_4": "Or else we're stuck."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Leave on the morning, return at night.",
       "subtitle_2": "Mother said that'd make things worthy.",
@@ -597,22 +596,17 @@
       "subtitle_7": "Maybe.",
       "subtitle_8": "If only for one small piece."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "- Goodnight, mother!    - Goodnight!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "San San, when confirming her winning…",
-      "note_4": "Changed 'when confirmed her winning' to 'when confirming her winning' for correct grammar.",
-      "revised_7": "Excuse me, it should be \"honourable\".",
-      "note_7": "Added a space after 'be' and before the quotation mark for correct formatting."
-    },
     "query": {
       "subtitle_1": "The Hong Kong…",
       "subtitle_2": "windsurfing athlete San San Li…",
@@ -624,11 +618,16 @@
       "subtitle_8": "Hong Kong athletes\nare honourable athletes.",
       "subtitle_9": "End of special report."
     },
+    "answer": {
+      "revised_4": "San San, when confirming her winning…",
+      "note_4": "Changed 'when confirmed her winning' to 'when confirming her winning' for correct grammar.",
+      "revised_7": "Excuse me, it should be \"honourable\".",
+      "note_7": "Added a space after 'be' and before the quotation mark for correct formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Then, mother seemed inspired.",
       "subtitle_2": "Handsome, lucky, smart…",
@@ -643,19 +642,19 @@
       "subtitle_11": "I know it is not easy to find Logan.",
       "subtitle_12": "I know it is not easy for him to take me in."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "No matter how difficult this is…",
       "subtitle_2": "Logan will be my master!",
       "subtitle_3": "I shall get an Olympic medal!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Cheung Chau!",
       "subtitle_2": "You raised San San,\nnow you will raise me!",
@@ -663,32 +662,32 @@
       "subtitle_4": "I shall tell the world:",
       "subtitle_5": "HK athletes are honourable athletes!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Cheung Chau, I finally make it here."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I must kiss this holy land!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Kiddo, this is Lamma Island.",
       "subtitle_2": "Lamma Island?\nWhere Chow Yun Fat grew up?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I came into hiding on this island…",
       "subtitle_2": "To stay away from the paparazzi.",
@@ -701,17 +700,17 @@
       "subtitle_9": "You want to get an Olympic medal too?",
       "subtitle_10": "Dream on!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Kiddo, look!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "This calf…",
       "subtitle_2": "So thick, so strong!",
@@ -724,25 +723,25 @@
       "subtitle_9": "How much pain must it bear…",
       "subtitle_10": "Before a calf becomes a calf?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I shall have this calf!",
       "subtitle_2": "Master!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Can I take a pee?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Whenever I sing this song, I need to pee.",
       "subtitle_2": "Taking a pee first would not help.",
@@ -771,10 +770,10 @@
       "subtitle_25": "\"Big bun, have two more…\"",
       "subtitle_26": "\"Forget about indigestion.\""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Logan looks strange after the song.",
       "subtitle_2": "I must grab my chance.",
@@ -785,13 +784,10 @@
       "subtitle_7": "Silly, help me get up.",
       "subtitle_8": "My calf has gone numb!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_3": "But starts to defrost a chicken.",
-      "note_3": "Corrected 'defreeze' to 'defrost', which is the correct verb for thawing food."
-    },
     "query": {
       "subtitle_1": "I tell mother what happened today.",
       "subtitle_2": "She won't say a word…",
@@ -806,11 +802,14 @@
       "subtitle_11": "Be good,",
       "subtitle_12": "learn with the master and\nhonour the ancestor."
     },
+    "answer": {
+      "revised_3": "But starts to defrost a chicken.",
+      "note_3": "Corrected 'defreeze' to 'defrost', which is the correct verb for thawing food."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "In honour of my master,\nmother throws a banquet.",
       "subtitle_2": "As I am the last disciple of the master…",
@@ -838,27 +837,18 @@
       "subtitle_24": "what a marvelous skill that is!",
       "subtitle_25": "Can you tell us what skill is that?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "That is…",
       "subtitle_2": "Bun snatching!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "Each year, in the fourth month,",
-      "note_4": "Corrected 'forth' to 'fourth'.",
-      "revised_6": "Set up 3 stacks of buns to celebrate.",
-      "note_6": "Changed 'bun' to 'buns' for correct plural form.",
-      "revised_7": "Stacks of buns?",
-      "note_7": "Changed 'bun' to 'buns' for correct plural form.",
-      "revised_9": "A stack of buns is a stack of many buns!",
-      "note_9": "Changed 'bun' to 'buns' for correct plural form."
-    },
     "query": {
       "subtitle_1": "Bun snatching?",
       "subtitle_2": "\"Bun Snatching\",\nfor our uninformed audience…",
@@ -880,11 +870,20 @@
       "subtitle_18": "\"Bun Snatching\" was thus banned!",
       "subtitle_19": "And the unique tradition is lost."
     },
+    "answer": {
+      "revised_4": "Each year, in the fourth month,",
+      "note_4": "Corrected 'forth' to 'fourth'.",
+      "revised_6": "Set up 3 stacks of buns to celebrate.",
+      "note_6": "Changed 'bun' to 'buns' for correct plural form.",
+      "revised_7": "Stacks of buns?",
+      "note_7": "Changed 'bun' to 'buns' for correct plural form.",
+      "revised_9": "A stack of buns is a stack of many buns!",
+      "note_9": "Changed 'bun' to 'buns' for correct plural form."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "The Olympic medal…\nit has slipped away.",
       "subtitle_2": "Every Saturday,\nI'd take a ferry to Cheung Chau…",
@@ -903,13 +902,10 @@
       "subtitle_15": "San San!",
       "subtitle_16": "San yourself! Work!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_5": "But \"San yourself\"…",
-      "note_5": "Added a space after 'But' and the opening quotation mark for correct formatting."
-    },
     "query": {
       "subtitle_1": "You hear me?",
       "subtitle_2": "So San San leaves without seeing me.",
@@ -920,29 +916,32 @@
       "subtitle_7": "I… I…",
       "subtitle_8": "I am quitting!"
     },
+    "answer": {
+      "revised_5": "But \"San yourself\"…",
+      "note_5": "Added a space after 'But' and the opening quotation mark for correct formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Today is the first time\nI sit down with Logan.",
       "subtitle_2": "He must be around 50,",
       "subtitle_3": "with a baby face.",
       "subtitle_4": "Fresh from the oven!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "This thing…",
       "subtitle_2": "What does it look like?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Dull… he's not a bad student.",
       "subtitle_2": "Logan then proceeds to tell me a lot…",
@@ -966,10 +965,10 @@
       "subtitle_20": "How much pain must it bear…",
       "subtitle_21": "Before a calf becomes a calf?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "My son…",
       "subtitle_2": "Your son, he will get this calf.",
@@ -978,22 +977,19 @@
       "subtitle_5": "But, looking at those steely veins…",
       "subtitle_6": "I am reminded of Dull's pa, Bing."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "The electronic dictionary\ncannot be found.",
       "subtitle_2": "Where could it be?",
       "subtitle_3": "Could it be that…?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_11": "\"Buns of all sorts.\"",
-      "note_11": "Corrected 'sort' to 'sorts' for correct plural usage."
-    },
     "query": {
       "subtitle_1": "So mother has been using the dictionary?",
       "subtitle_2": "But why is she writing in English?",
@@ -1031,14 +1027,14 @@
       "subtitle_34": "\"Thank you for your cooperation.\"",
       "subtitle_35": "\"Yours faithfully, Mrs. Mc\""
     },
+    "answer": {
+      "revised_11": "\"Buns of all sorts.\"",
+      "note_11": "Corrected 'sort' to 'sorts' for correct plural usage."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_24": "I make it past\nthe \"12 Bun Snatching Hands\".",
-      "note_24": "Corrected 'make it pass' to 'make it past' and added a space after 'the' for correct phrase formatting."
-    },
     "query": {
       "subtitle_1": "After reading mother's letter…",
       "subtitle_2": "I go back to Cheung Chau to practice.",
@@ -1065,16 +1061,14 @@
       "subtitle_23": "Step by step, claw by claw…",
       "subtitle_24": "I make it pass\nthe\"12 Bun Snatching Hands\"."
     },
+    "answer": {
+      "revised_24": "I make it past\nthe \"12 Bun Snatching Hands\".",
+      "note_24": "Corrected 'make it pass' to 'make it past' and added a space after 'the' for correct phrase formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_34": "At a closedown sale.",
-      "note_34": "Corrected 'closed own sale' to 'closedown sale'.",
-      "revised_48": "24th December",
-      "note_48": "Removed comma after '24th' for correct date formatting."
-    },
     "query": {
       "subtitle_1": "\"There is no deformity,\nbut saves us from a dream\"",
       "subtitle_2": "This is Dull.",
@@ -1128,14 +1122,16 @@
       "subtitle_50": "The oven hummed. Hummed.",
       "subtitle_51": "It was like early blessing from the angels."
     },
+    "answer": {
+      "revised_34": "At a closedown sale.",
+      "note_34": "Corrected 'closed own sale' to 'closedown sale'.",
+      "revised_48": "24th December",
+      "note_48": "Removed comma after '24th' for correct date formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {
-      "revised_2": "Mother and I sat at the seafront.",
-      "note_2": "Replaced 'me' with 'I' for correct grammar: 'Mother and I sat at the seafront.'"
-    },
     "query": {
       "subtitle_1": "Such a beautiful night!",
       "subtitle_2": "Mother and me sat at the seafront.",
@@ -1143,11 +1139,14 @@
       "subtitle_4": "Beautiful and gentle.",
       "subtitle_5": "So beautiful!"
     },
+    "answer": {
+      "revised_2": "Mother and I sat at the seafront.",
+      "note_2": "Replaced 'me' with 'I' for correct grammar: 'Mother and I sat at the seafront.'"
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "I had never tasted anything so strong.",
       "subtitle_2": "Cup noodles or roast duck\nwere not as strong.",
@@ -1156,21 +1155,10 @@
       "subtitle_5": "Like everything tonight…",
       "subtitle_6": "Most beautiful, brilliant, and tender."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
-      "note_9": "Corrected 'guard' to 'gourd' (vegetable) as appropriate for food context.",
-      "revised_28": "Turkey pate with bread.",
-      "note_28": "Corrected 'Turkey Pete' to 'Turkey pate' (food item).",
-      "revised_35": "It was already half a year later.",
-      "note_35": "Added 'a' to correct 'half year' to 'half a year'.",
-      "revised_43": "Taking the first bite is all that matters.",
-      "note_43": "Added 'that' for correct phrase: 'all that matters'.",
-      "revised_56": "I regretted I made mother\nthrow the turkey away.",
-      "note_56": "Corrected 'threw' to 'throw' for correct verb tense after 'made'."
-    },
     "query": {
       "subtitle_1": "I woke up late the next day.",
       "subtitle_2": "The sweetness was still there\nafter washing.",
@@ -1229,25 +1217,29 @@
       "subtitle_55": "Suddenly, the smell of\nthe turkey returned.",
       "subtitle_56": "I regretted I made mother\nthrew the turkey away."
     },
+    "answer": {
+      "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
+      "note_9": "Corrected 'guard' to 'gourd' (vegetable) as appropriate for food context.",
+      "revised_28": "Turkey pate with bread.",
+      "note_28": "Corrected 'Turkey Pete' to 'Turkey pate' (food item).",
+      "revised_35": "It was already half a year later.",
+      "note_35": "Added 'a' to correct 'half year' to 'half a year'.",
+      "revised_43": "Taking the first bite is all that matters.",
+      "note_43": "Added 'that' for correct phrase: 'all that matters'.",
+      "revised_56": "I regretted I made mother\nthrow the turkey away.",
+      "note_56": "Corrected 'threw' to 'throw' for correct verb tense after 'made'."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"Special Report\""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "\"Special Report\"",
-      "note_1": "Corrected the opening single quote to a double quote for consistency and proper formatting.",
-      "revised_14": "To campaign for \"Tart Throwing\".",
-      "note_14": "Added a space after 'for' and corrected the quotation mark placement for clarity.",
-      "revised_18": "More interesting,\nCIC Insurance is joining forces with…",
-      "note_18": "Corrected 'joining force' to 'joining forces' for correct grammar."
-    },
     "query": {
       "subtitle_1": "'Special Report\"",
       "subtitle_2": "Olympic medal winner San San Li\nwill compete again…",
@@ -1273,11 +1265,18 @@
       "subtitle_22": "\"Bun Snatching\"…",
       "subtitle_23": "A game thought extinct."
     },
+    "answer": {
+      "revised_1": "\"Special Report\"",
+      "note_1": "Corrected the opening single quote to a double quote for consistency and proper formatting.",
+      "revised_14": "To campaign for \"Tart Throwing\".",
+      "note_14": "Added a space after 'for' and corrected the quotation mark placement for clarity.",
+      "revised_18": "More interesting,\nCIC Insurance is joining forces with…",
+      "note_18": "Corrected 'joining force' to 'joining forces' for correct grammar."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "In the end…",
       "subtitle_2": "Nothing came of anything.",
@@ -1291,13 +1290,10 @@
       "subtitle_10": "Went back to where\nthey used to throw their tarts.",
       "subtitle_11": "Everything went on as usual."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_5": "Carts were replaced by ordering sheets.",
-      "note_5": "Changed 'ordering sheet' to 'ordering sheets' for correct plural form."
-    },
     "query": {
       "subtitle_1": "In secondary school,\nI stopped practicing the 12 hands.",
       "subtitle_2": "Sometimes, when I went out with mother…",
@@ -1306,33 +1302,36 @@
       "subtitle_5": "Carts were replaced by ordering sheet.",
       "subtitle_6": "Everything came to nothing."
     },
+    "answer": {
+      "revised_5": "Carts were replaced by ordering sheets.",
+      "note_5": "Changed 'ordering sheet' to 'ordering sheets' for correct plural form."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "At times, I'd go to Cheung Chau\nfor barbecue.",
       "subtitle_2": "The master looked older…",
       "subtitle_3": "Each time I saw him."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_1": "For environmental reasons…",
-      "note_1": "Changed 'reason' to 'reasons' for correct usage in this context."
-    },
     "query": {
       "subtitle_1": "For environmental reason…",
       "subtitle_2": "They'd changed to snatch plastic buns.",
       "subtitle_3": "Master thought they stunk."
     },
+    "answer": {
+      "revised_1": "For environmental reasons…",
+      "note_1": "Changed 'reason' to 'reasons' for correct usage in this context."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "On Cheung Chau\nwas a Cheung Po Tsai Cave.",
       "subtitle_2": "Where legend claimed\nthe pirate hid his treasure.",
@@ -1369,33 +1368,33 @@
       "subtitle_33": "This not so dreamy, not so funny world…",
       "subtitle_34": "What shall I be?"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"…Nothing shall be done!\""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"I Have Grown Up\""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "\"Fat, Still\"",
       "subtitle_2": "\"Powerful\"",
       "subtitle_3": ""
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Right, I am McDull the big guy.",
       "subtitle_2": "Fat, with raw power.",
@@ -1424,13 +1423,10 @@
       "subtitle_25": "If mother could see me like this…",
       "subtitle_26": "She'd be happy."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_4": "The last recipe was \"Roast Chicken\".",
-      "note_4": "Added a space after 'was' and before the quotation mark for correct formatting."
-    },
     "query": {
       "subtitle_1": "I've come up with a lesson!",
       "subtitle_2": "Mother got inspired after\nher dot com failed.",
@@ -1447,11 +1443,14 @@
       "subtitle_13": "The secret is: please, roast it well!",
       "subtitle_14": "Thank you!"
     },
+    "answer": {
+      "revised_4": "The last recipe was \"Roast Chicken\".",
+      "note_4": "Added a space after 'was' and before the quotation mark for correct formatting."
+    },
     "difficulty": 1,
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "One Regular, please.",
       "subtitle_2": "What's a Regular?",
@@ -1467,10 +1466,10 @@
       "subtitle_12": "We'll have the Regular.",
       "subtitle_13": "Our Regular today is fantastic!"
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Sorry, Regular is gone.",
       "subtitle_2": "We can have the Special.",
@@ -1499,10 +1498,10 @@
       "subtitle_25": "The Special sure is gone.\nTry Quickie. It's the same.",
       "subtitle_26": "We'll have Quickie."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {},
     "query": {
       "subtitle_1": "Sorry, Quickie is gone.",
       "subtitle_2": "This is too much!\nIs there anything we can eat here?",
@@ -1515,13 +1514,10 @@
       "subtitle_9": "The Regular is gone. Isn't that fantastic?",
       "subtitle_10": "Great! We'll have Lunch."
     },
+    "answer": {},
     "verified": true
   },
   {
-    "answer": {
-      "revised_3": "I'm not having supper\nunder broad daylight!",
-      "note_3": "Corrected 'board daylight' to 'broad daylight'."
-    },
     "query": {
       "subtitle_1": "Sorry, Lunch is gone.",
       "subtitle_2": "Try our Supper. It's all the same.",
@@ -1529,6 +1525,10 @@
       "subtitle_4": "What's in a name?\nIt's the same as Lunch.",
       "subtitle_5": "Great! Whatever you say!\nAnd make it quick!",
       "subtitle_6": "You want it quick? Try Quickie!"
+    },
+    "answer": {
+      "revised_3": "I'm not having supper\nunder broad daylight!",
+      "note_3": "Corrected 'board daylight' to 'broad daylight'."
     },
     "difficulty": 1,
     "verified": true
