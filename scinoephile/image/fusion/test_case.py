@@ -65,7 +65,7 @@ class FusionTestCase(TestCase, ABC):
             return min_difficulty
 
         if fused := getattr(self.answer, self.prompt_cls.fused_field, None):
-            if "-" in fused or '"' or "“" in fused or "”" in fused:
+            if "-" in fused or '"' in fused or "“" in fused or "”" in fused:
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
