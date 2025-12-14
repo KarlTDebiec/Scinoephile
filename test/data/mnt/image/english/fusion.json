@@ -818,17 +818,17 @@
       "fused": "“We wanted to grow a beautiful\nforest with the acorns,",
       "note": "Used opening quotation mark from Tesseract and preserved line break as in both sources."
     },
-    "difficulty": 1,
+    "difficulty": 2,
     "verified": true
   },
   {
     "query": {
-      "lens": "\" so we planted them in\nyour garden out back, but…\"",
-      "tesseract": "\" so we planted them\nin your garden out back, but…\""
+      "lens": "“ so we planted them in\nyour garden out back, but…”",
+      "tesseract": "“ so we planted them\nin your garden out back, but…”"
     },
     "answer": {
-      "fused": "\"so we planted them\nin your garden out back, but…\"",
-      "note": "Removed extra space after opening quotation mark as in Tesseract; preserved line break from both sources."
+      "fused": "“so we planted them\nin your garden out back, but…”",
+      "note": "Removed extra space after opening quotation mark; preserved line break from both sources."
     },
     "difficulty": 2,
     "verified": true
