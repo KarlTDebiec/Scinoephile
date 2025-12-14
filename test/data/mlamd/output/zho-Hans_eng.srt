@@ -230,7 +230,7 @@ I'm McDull!
 
 47
 00:04:39,500 --> 00:04:43,375
-"My School"
+“My School”
 
 48
 00:04:43,583 --> 00:04:45,083
@@ -285,7 +285,7 @@ The Spring Flower Kindergarten!
 58
 00:05:04,000 --> 00:05:08,208
 对！深水埗地铁站步行不用10分钟！
-Only 10 minutes' walk from the MTR Station!
+Only 10 minutes walk from the MTR Station!
 
 59
 00:05:08,333 --> 00:05:11,625
@@ -310,27 +310,27 @@ Yeah!
 63
 00:05:17,125 --> 00:05:22,417
 春田花花，确有好多西人呀！
-Spring Flower offers white teachers!
+Spring Flower offer white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
 〝鹅满是快烙滴好耳痛⋯〞
-"We are all happy children…"
+“We are all happy children…”
 
 65
 00:05:36,042 --> 00:05:40,917
 〝鹅闷天天一戏个窗！〞
-"We sing everyday!"
+“We sing everyday!”
 
 66
 00:05:41,042 --> 00:05:45,625
 〝鹅们在壳习，鹅闷载升胀⋯〞
-"We learn as we grow…"
+“We learn as we grow…”
 
 67
 00:05:45,750 --> 00:05:50,792
 〝鹅闷是春天滴化！〞
-"We are the flowers of spring!"
+“We are the flowers of spring!”
 
 68
 00:05:51,833 --> 00:05:54,083
@@ -840,7 +840,7 @@ But it just comes out different.
 169
 00:10:41,792 --> 00:10:44,375
 是All Things Bright and Beautiful吧？
-You mean "All Things Bright and Beautiful"?
+You mean “All Things Bright and Beautiful”?
 
 170
 00:10:44,542 --> 00:10:46,375
@@ -920,7 +920,7 @@ Offering brilliant dishes.
 185
 00:13:23,333 --> 00:13:25,500
 欢迎大家收看＜麦太世界＞
-Welcome to "Mrs. Mc Can Cook".
+Welcome to “Mrs. Mc Can Cook”.
 
 186
 00:13:26,042 --> 00:13:27,542
@@ -1175,7 +1175,7 @@ For her, it is always…
 236
 00:16:47,042 --> 00:16:48,500
 没有不成的事
-"no pain no gain".
+“no pain no gain”.
 
 237
 00:17:08,458 --> 00:17:11,500
@@ -1229,7 +1229,7 @@ But then, I still have dreams.
 
 247
 00:17:41,208 --> 00:17:44,250
-"My Ideal World"
+“My Ideal World”
 
 248
 00:17:44,292 --> 00:17:49,417
@@ -1884,7 +1884,7 @@ Has just won the first gold medal in Hong Kong history!
 378
 00:33:55,833 --> 00:33:59,708
 消息说当李丽珊获悉自己稳夺金牌后
-San San, when confirming her winning…
+San San, when confirmed her winning…
 
 379
 00:33:59,833 --> 00:34:03,875
@@ -1899,7 +1899,7 @@ Help proves that Hong Kong athletes are horrible…
 381
 00:34:09,292 --> 00:34:13,708
 对不起，应该　　是垃圾，不是腊鸭！
-Excuse me, it should be "honourable".
+Excuse me, it should be “honourable”.
 
 382
 00:34:13,875 --> 00:34:18,875
@@ -1933,7 +1933,7 @@ Now how about something physical?
 
 388
 00:34:35,500 --> 00:34:36,917
-"Looking for Logan"
+“Looking for Logan”
 
 389
 00:34:36,958 --> 00:34:38,333
@@ -1947,7 +1947,7 @@ Another one begins.
 
 391
 00:34:41,000 --> 00:34:43,417
-"Aka: How Does a Calf Become a Calf?"
+“Aka: How Does a Calf Become a Calf?”
 
 392
 00:34:43,500 --> 00:34:45,417
@@ -2187,97 +2187,97 @@ The song goes like this…
 439
 00:38:26,042 --> 00:38:27,542
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 440
 00:38:27,667 --> 00:38:29,417
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 441
 00:38:29,542 --> 00:38:33,250
 「大包，整多两笼唔怕滞」
-"Forget about indigestion."
+“Forget about indigestion.”
 
 442
 00:38:33,375 --> 00:38:35,083
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 443
 00:38:35,208 --> 00:38:36,875
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 444
 00:38:37,042 --> 00:38:40,667
 「大包，整多两笼唔怕滞」
-"Forget about indigestion."
+“Forget about indigestion.”
 
 445
 00:38:41,000 --> 00:38:42,583
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 446
 00:38:42,708 --> 00:38:44,500
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 447
 00:38:44,667 --> 00:38:48,875
 「大包，整多两笼唔怕滞」
-"Forget about indigestion."
+“Forget about indigestion.”
 
 448
 00:38:49,167 --> 00:38:54,333
 「食晒个包，脚瓜大个」
-"Eat the bun, grow a calf…"
+“Eat the bun, grow a calf…”
 
 449
 00:38:54,500 --> 00:38:57,542
 「孝顺我阿妈」
-"Respect my mother."
+“Respect my mother.”
 
 450
 00:38:58,375 --> 00:39:03,750
 「食晒个包，脚瓜硬朗」
-"Eat the bun, toughen my calf…"
+“Eat the bun, toughen my calf…”
 
 451
 00:39:03,917 --> 00:39:07,333
 「再奉献国家」
-"Serve my country."
+“Serve my country.”
 
 452
 00:39:08,458 --> 00:39:10,000
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 453
 00:39:10,125 --> 00:39:11,875
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 454
 00:39:12,042 --> 00:39:15,500
 「大包，整多两笼唔怕滞」
-"Forget about indigestion."
+“Forget about indigestion.”
 
 455
 00:39:15,708 --> 00:39:17,667
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 456
 00:39:17,792 --> 00:39:19,458
 「大包，整多两笼」
-"Big bun, have two more…"
+“Big bun, have two more…”
 
 457
 00:39:19,625 --> 00:39:24,792
 「大包，整多两笼唔怕滞」
-"Forget about indigestion."
+“Forget about indigestion.”
 
 458
 00:39:28,583 --> 00:39:32,875
@@ -2522,7 +2522,7 @@ Bun snatching?
 506
 00:43:12,292 --> 00:43:15,542
 年轻观众可能不知「抢包山」何物
-"Bun Snatching", for our uninformed audience…
+“Bun Snatching”, for our uninformed audience…
 
 507
 00:43:16,292 --> 00:43:19,833
@@ -2542,12 +2542,12 @@ Cheung Chau people…
 510
 00:43:25,958 --> 00:43:28,667
 于北帝庙前搭起三座包山
-Set up 3 stacks of buns to celebrate.
+Set up 3 stacks of bun to celebrate.
 
 511
 00:43:29,750 --> 00:43:31,333
 什么是包山呢？
-Stacks of buns?
+Stacks of bun?
 
 512
 00:43:31,792 --> 00:43:32,875
@@ -2557,7 +2557,7 @@ Literally speaking…
 513
 00:43:33,083 --> 00:43:38,375
 包山就是一座由好多好多包砌起的山！
-A stack of buns is a stack of many buns!
+A stack of bun is a stack of many buns!
 
 514
 00:43:38,750 --> 00:43:41,958
@@ -2602,7 +2602,7 @@ In 1978, 2 stacks tumbled down, hurting many.
 522
 00:44:11,958 --> 00:44:14,417
 「抢包山」从此被禁！
-"Bun Snatching" was thus banned!
+“Bun Snatching” was thus banned!
 
 523
 00:44:14,583 --> 00:44:18,583
@@ -2712,7 +2712,7 @@ I have had a lot of things said to me…
 544
 00:45:39,708 --> 00:45:40,708
 不知道为什么
-But "San yourself"…
+But “San yourself”…
 
 545
 00:45:40,792 --> 00:45:43,833
@@ -2942,77 +2942,77 @@ It is addressed to the Olympic Committee Chairman.
 590
 00:49:04,667 --> 00:49:06,083
 「亲爱的主席：」
-"Dear Chairman:"
+“Dear Chairman:”
 
 591
 00:49:06,250 --> 00:49:08,500
 「你好吗？我很好！」
-"How are you? I am fine."
+“How are you? I am fine.”
 
 592
 00:49:08,667 --> 00:49:10,917
 「你吃包吗？我吃包！」
-"You like bun? I like bun!"
+“You like bun? I like bun!”
 
 593
 00:49:11,083 --> 00:49:15,292
 「我们居住在香港这里的人，很爱吃包」
-"We Hong Kong people here love bun."
+“We Hong Kong people here love bun.”
 
 594
 00:49:15,500 --> 00:49:19,917
 「小笼包，上海包，广东包，莲蓉包」
-"Buns of all sorts."
+“Buns of all sort.”
 
 595
 00:49:20,042 --> 00:49:22,125
 「好朋友，我认为
-"Dear friend,
+“Dear friend,
 
 596
 00:49:22,250 --> 00:49:25,125
 抢劫那些包，十分重要」
-it is important to snatch buns."
+it is important to snatch buns.”
 
 597
 00:49:25,250 --> 00:49:27,708
 「也算是运动，就真！」
-"It is a game, no joke."
+“It is a game, no joke.”
 
 598
 00:49:27,958 --> 00:49:32,500
 「要大力！大吃晚上的粥，和大节瓜！」
-"One needs energy, and many night congee."
+“One needs energy, and many night congee.”
 
 599
 00:49:32,667 --> 00:49:34,708
 「按照我愚蠢的见解⋯」
-"In my stupid opinion…"
+“In my stupid opinion…”
 
 600
 00:49:35,000 --> 00:49:38,958
 「抢劫那些包，是奥运会比赛」
-"Snatching bun is an Olympic game."
+“Snatching bun is an Olympic game.”
 
 601
 00:49:39,083 --> 00:49:41,958
 「让全世界的体育家，抢过！」
-"Let athletes all over the world snatch!"
+“Let athletes all over the world snatch!”
 
 602
 00:49:42,125 --> 00:49:43,833
 「世界便和平！」
-"And there will be peace."
+“And there will be peace.”
 
 603
 00:49:44,167 --> 00:49:45,667
 「你有孩子吗？」
-"Do you have children?"
+“Do you have children?”
 
 604
 00:49:45,792 --> 00:49:48,417
 「我有一个孩子，麦兜」
-"I have a boy, Dull."
+“I have a boy, Dull.”
 
 605
 00:49:48,750 --> 00:49:50,167
@@ -3022,67 +3022,67 @@ She's talking about me!
 606
 00:49:51,500 --> 00:49:54,125
 「他是一个好男孩」
-"He is a good boy."
+“He is a good boy.”
 
 607
 00:49:54,292 --> 00:49:56,708
 「他非常懂得抢劫那些包」
-"He knows how to snatch buns."
+“He knows how to snatch buns.”
 
 608
 00:49:57,000 --> 00:49:59,792
 「有一天，我看见他，抢劫包⋯」
-"One day, I can see him snatching buns…"
+“One day, I can see him snatching buns…”
 
 609
 00:50:00,083 --> 00:50:02,292
 「抢了一个奥运金牌」
-"Ending up snatching an Olympic medal."
+“Ending up snatching an Olympic medal.”
 
 610
 00:50:02,583 --> 00:50:06,792
 「那便是一个母亲能够有的最大的安慰」
-"That is the biggest comfort a mother can get."
+“That is the biggest comfort a mother can get.”
 
 611
 00:50:07,292 --> 00:50:11,167
 「孩子的才干，得到了世界人类的知道」
-"Let the world know the talent of your children."
+“Let the world know the talent of your children.”
 
 612
 00:50:11,833 --> 00:50:15,167
 「父母愿意做什么的东西都得」
-"Parents will do anything for that."
+“Parents will do anything for that.”
 
 613
 00:50:15,667 --> 00:50:19,333
 「于是我写了这忽然间的信给你」
-"That is why I write you this sudden letter."
+“That is why I write you this sudden letter.”
 
 614
 00:50:19,542 --> 00:50:23,333
 「虽然你不知道我是什么微细的东西」
-"Although you don't know humble things like me."
+“Although you don't know humble things like me.”
 
 615
 00:50:23,625 --> 00:50:26,500
 「但我的孩子很大，很大！」
-"But my boy is big, very big."
+“But my boy is big, very big.”
 
 616
 00:50:26,667 --> 00:50:29,125
 「有一天，你都会知道」
-"One day, you will know him too."
+“One day, you will know him too.”
 
 617
 00:50:29,875 --> 00:50:31,250
 「多谢合作！」
-"Thank you for your cooperation."
+“Thank you for your cooperation.”
 
 618
 00:50:31,583 --> 00:50:34,917
 「你忠实的，麦太」
-"Yours faithfully, Mrs. Mc"
+“Yours faithfully, Mrs. Mc”
 
 619
 00:50:42,375 --> 00:50:43,833
@@ -3127,7 +3127,7 @@ Master thinks my crawling has passed.
 627
 00:51:09,458 --> 00:51:12,583
 可以开始教我「十二路抢包手」
-Now I'll learn the "12 Bun Snatching Hands".
+Now I'll learn the “12 Bun Snatching Hands”.
 
 628
 00:51:13,000 --> 00:51:16,042
@@ -3202,11 +3202,11 @@ Step by step, claw by claw…
 642
 00:51:55,167 --> 00:51:59,833
 我最后终于练成「十二路抢包手」
-I make it past the "12 Bun Snatching Hands".
+I make it pass the “12 Bun Snatching Hands”.
 
 643
 00:52:10,208 --> 00:52:20,625
-"There is no deformity, but saves us from a dream"
+“There is no deformity, but saves us from a dream”
 
 644
 00:52:21,208 --> 00:52:23,750
@@ -3441,7 +3441,7 @@ We managed to stuff the turkey into the oven.
 690
 00:54:42,042 --> 00:54:43,500
 12月24日
-24th December
+24th, December
 
 691
 00:54:44,000 --> 00:54:47,625
@@ -3561,7 +3561,7 @@ Slices of meat, accompanied by gourd and potato…
 714
 00:56:45,083 --> 00:56:47,708
 上面淋了老抽生粉献
-Were dressed with soy sauce.
+were dressed with soy sauce.
 
 715
 00:56:48,833 --> 00:56:52,000
@@ -3651,7 +3651,7 @@ Paper turkey paper bun.
 732
 00:57:37,125 --> 00:57:39,667
 酿火鸡馅搽面包
-Turkey pate with bread.
+Turkey paté with bread.
 
 733
 00:57:40,625 --> 00:57:46,625
@@ -3686,7 +3686,7 @@ When mother finally disposed of the turkey…
 739
 00:58:06,167 --> 00:58:10,417
 那已经是火鸡解冻后差不多半年的事
-It was already half a year later.
+It was already half year later.
 
 740
 00:58:10,542 --> 00:58:14,542
@@ -3706,7 +3706,7 @@ A serving turkey needs only be raised…
 743
 00:58:18,792 --> 00:58:21,083
 也不过是几个月间的事
-For a few months.
+for a few months.
 
 744
 00:58:21,500 --> 00:58:25,417
@@ -3716,7 +3716,7 @@ The time the turkey spent with us…
 745
 00:58:25,625 --> 00:58:28,208
 还要长过它的一生
-Was in fact longer than its life.
+was in fact longer than its life.
 
 746
 00:58:28,833 --> 00:58:31,417
@@ -3726,12 +3726,12 @@ I realized also, with turkey…
 747
 00:58:31,583 --> 00:58:35,792
 将吃未吃和第一口之间已经是最高峰
-Taking the first bite is all that matters.
+Taking the first bite is all it matters.
 
 748
 00:58:36,333 --> 00:58:40,083
 之后的，不过是开始了也就吃下去
-Afterwards, it is just "be over and done with it".
+Afterwards, it is just “be over and done with it”.
 
 749
 00:58:41,500 --> 00:58:43,333
@@ -3791,12 +3791,12 @@ Suddenly, the smell of the turkey returned.
 760
 00:59:18,000 --> 00:59:22,542
 我好后悔要妈妈扔掉最后几件火鸡
-I regretted I made mother throw the turkey away.
+I regretted I made mother threw the turkey away.
 
 761
 01:00:21,833 --> 01:00:23,208
 特别报告
-"Special Report"
+“Special Report”
 
 762
 01:00:23,417 --> 01:00:28,000
@@ -3846,7 +3846,7 @@ Among them, the Bamboo Game Association…
 771
 01:00:50,958 --> 01:00:53,875
 更希望打麻将可以成为亚运项目
-Is proposing Mahjong for official game.
+is proposing Mahjong for official game.
 
 772
 01:00:54,375 --> 01:00:57,000
@@ -3861,7 +3861,7 @@ have vowed…
 774
 01:00:58,625 --> 01:01:02,458
 争取「掷蛋挞」成为亚运比赛项目
-To campaign for "Tart Throwing".
+To campaign for “Tart Throwing”.
 
 775
 01:01:02,917 --> 01:01:05,125
@@ -3876,12 +3876,12 @@ They believe…
 777
 01:01:07,667 --> 01:01:11,000
 「挂腊鸭」可以成为亚运比赛项目
-"Duck Hanging" would make an ideal addition.
+“Duck Hanging” would make an ideal addition.
 
 778
 01:01:12,042 --> 01:01:15,958
 较为特别的是，CIC保险营业员联同⋯
-More interesting, CIC Insurance is joining forces with…
+More interesting, CIC Insurance is joining force with…
 
 779
 01:01:16,083 --> 01:01:17,958
@@ -3901,7 +3901,7 @@ In support of…
 782
 01:01:22,708 --> 01:01:24,375
 一项几乎绝迹的运动⋯
-"Bun Snatching"…
+“Bun Snatching”…
 
 783
 01:01:24,542 --> 01:01:28,542
@@ -3921,7 +3921,7 @@ Nothing came of anything.
 786
 01:02:35,375 --> 01:02:38,875
 最后，他们选了「掷蛋挞」做推介项目
-"Tart Throwing" was chosen as the highlight.
+“Tart Throwing” was chosen as the highlight.
 
 787
 01:02:39,125 --> 01:02:41,458
@@ -3931,7 +3931,7 @@ As for the official slogan…
 788
 01:02:41,625 --> 01:02:45,542
 亦顺理成章叫成「香港一蛋挞」
-"HK, One Big Tart" was a logical choice.
+“HK, One Big Tart” was a logical choice.
 
 789
 01:02:47,292 --> 01:02:49,625
@@ -4076,37 +4076,37 @@ Maybe the pirate didn't get to finish it.
 817
 01:04:46,958 --> 01:04:55,542
 「寻晚，食了六个餐包」
-"Eating 6 buns last night…"
+“Eating 6 buns last night…”
 
 818
 01:04:55,667 --> 01:05:04,500
 「可惜我依然系觉得仍未十分饱」
-"Still left me hungry."
+“Still left me hungry.”
 
 819
 01:05:05,333 --> 01:05:13,250
 「寻晚，食了磅半方包」
-"Eating 1½lb white bread last night…"
+“Eating 1½lb white bread last night…”
 
 820
 01:05:13,417 --> 01:05:24,792
 「可叹是我依然觉饿，不够顶肚」
-"Still left me hungry."
+“Still left me hungry.”
 
 821
 01:05:26,750 --> 01:05:35,042
 「年少，练了六套脚法。」
-"Excelled 6 sets of steps when I was young…"
+“Excelled 6 sets of steps when I was young…”
 
 822
 01:05:35,208 --> 01:05:42,458
 「可惜我依然未觉够用。」
-"Still left me empty."
+“Still left me empty.”
 
 823
 01:05:44,042 --> 01:05:57,375
 「年晚，又培育了珊珊！可惜⋯」
-"Brought up San San when I am old! Still…"
+“Brought up San San when I am old! Still…”
 
 824
 01:05:57,917 --> 01:06:01,292
@@ -4196,16 +4196,16 @@ What shall I be?
 841
 01:07:05,375 --> 01:07:16,417
 「⋯无力挽！」
-"…Nothing shall be done!"
+“…Nothing shall be done!”
 
 842
 01:07:35,292 --> 01:07:37,125
-"Fat, Still"
+“Fat, Still”
 
 843
 01:07:39,792 --> 01:07:44,542
 橙
-"Powerful"
+“Powerful”
 
 844
 01:08:19,458 --> 01:08:22,333
@@ -4355,7 +4355,7 @@ She published a cookbook.
 873
 01:10:25,250 --> 01:10:28,042
 食谱最后一页教人整烧鸡
-The last recipe was "Roast Chicken".
+The last recipe was “Roast Chicken”.
 
 874
 01:10:28,417 --> 01:10:30,875
@@ -4365,7 +4365,7 @@ A simple dish no less.
 875
 01:10:31,000 --> 01:10:32,000
 「烧鸡」
-"Roast Chicken".
+“Roast Chicken”.
 
 876
 01:10:32,292 --> 01:10:34,375
