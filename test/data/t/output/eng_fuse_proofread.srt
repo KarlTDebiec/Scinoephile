@@ -105,7 +105,7 @@ The police believe the mastermind
 
 25
 00:03:53,583 --> 00:03:55,500
-is the "Most Wanted" Yip Kwok-foon.
+is the “Most Wanted” Yip Kwok-foon.
 
 26
 00:03:58,167 --> 00:04:02,333
@@ -561,7 +561,7 @@ Mr Tycoon,
 
 138
 00:13:15,667 --> 00:13:17,583
-how much will you "lend" me?
+how much will you “lend” me?
 
 139
 00:13:18,042 --> 00:13:19,333
@@ -4453,7 +4453,7 @@ Big Bro, we always follow your orders.
 
 1099
 01:22:38,375 --> 01:22:40,500
-You said "drop the guns," we dropped the guns.
+You said “drop the guns,” we dropped the guns.
 
 1100
 01:22:40,500 --> 01:22:41,458
