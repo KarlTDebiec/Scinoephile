@@ -15,6 +15,7 @@ __all__ = ["ReviewPrompt"]
 class ReviewPrompt(EnglishPrompt):
     """Text for LLM correspondence for 粤文 transcription review."""
 
+    # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         You are responsible for performing final review of 粤文 subtitles of Cantonese
         speech.
@@ -37,35 +38,173 @@ class ReviewPrompt(EnglishPrompt):
         If no revisions are needed return an empty string for the note.""")
     """Base system prompt."""
 
-    # Query descriptions
-    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle {idx}"
-    """Description of 'zhongwen_{idx}' field."""
+    # Query fields
+    zhongwen_prefix: ClassVar[str] = "zhongwen_"
+    """Prefix of 中文 field in query."""
 
-    yuewen_description: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
-    """Description of 'yuewen_{idx}' field."""
+    @classmethod
+    def zhongwen_field(cls, idx: int) -> str:
+        """Name of 中文 field in query.
 
-    # Answer descriptions
-    yuewen_revised_description: ClassVar[str] = "Revised 粤文 of subtitle {idx}"
-    """Description of 'yuewen_revised_{idx}' field."""
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of 中文 field in query
+        """
+        return f"{cls.zhongwen_prefix}{idx}"
 
-    note_description: ClassVar[str] = "Note concerning revision of subtitle {idx}"
-    """Description of 'note_{idx}' field."""
+    zhongwen_description_template: ClassVar[str] = "Known 中文 of subtitle {idx}"
+    """Description template for 中文 field in query."""
+
+    @classmethod
+    def zhongwen_description(cls, idx: int) -> str:
+        """Description of 中文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of 中文 field in query
+        """
+        return cls.zhongwen_description_template.format(idx=idx)
+
+    yuewen_prefix: ClassVar[str] = "yuewen_"
+    """Prefix of 粤文 field in query."""
+
+    @classmethod
+    def yuewen_field(cls, idx: int) -> str:
+        """Name of 粤文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of 粤文 field in query
+        """
+        return f"{cls.yuewen_prefix}{idx}"
+
+    yuewen_description_template: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
+    """Description template for 粤文 field in query."""
+
+    @classmethod
+    def yuewen_description(cls, idx: int) -> str:
+        """Description of 粤文 field in query.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of 粤文 field in query
+        """
+        return cls.yuewen_description_template.format(idx=idx)
+
+    # Answer fields
+    yuewen_revised_prefix: ClassVar[str] = "yuewen_revised_"
+    """Prefix of revised 粤文 field in answer."""
+
+    @classmethod
+    def yuewen_revised_field(cls, idx: int) -> str:
+        """Name of revised 粤文 field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of revised 粤文 field in answer
+        """
+        return f"{cls.yuewen_revised_prefix}{idx}"
+
+    yuewen_revised_description_template: ClassVar[str] = (
+        "Revised 粤文 of subtitle {idx}"
+    )
+    """Description template for revised 粤文 field in answer."""
+
+    @classmethod
+    def yuewen_revised_description(cls, idx: int) -> str:
+        """Description of revised 粤文 field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of revised 粤文 field in answer
+        """
+        return cls.yuewen_revised_description_template.format(idx=idx)
+
+    note_prefix: ClassVar[str] = "note_"
+    """Prefix of note field in answer."""
+
+    @classmethod
+    def note_field(cls, idx: int) -> str:
+        """Name of note field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            name of note field in answer
+        """
+        return f"{cls.note_prefix}{idx}"
+
+    note_description_template: ClassVar[str] = (
+        "Note concerning revision of subtitle {idx}"
+    )
+    """Description template for note field in answer."""
+
+    @classmethod
+    def note_description(cls, idx: int) -> str:
+        """Description of note field in answer.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            description of note field in answer
+        """
+        return cls.note_description_template.format(idx=idx)
 
     # Test case validation errors
-    yuewen_unmodified_error: ClassVar[str] = (
+    yuewen_unmodified_error_template: ClassVar[str] = (
         "Answer's revised 粤文 text {idx} is not modified relative to query's 粤文 "
         "text {idx}, if no revision is needed an empty string must be provided."
     )
-    """Error message when revised 粤文 is unmodified."""
+    """Error template when revised 粤文 is unmodified."""
 
-    yuewen_revised_provided_note_missing_error: ClassVar[str] = (
+    @classmethod
+    def yuewen_unmodified_error(cls, idx: int) -> str:
+        """Error message when revised 粤文 is unmodified.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is unmodified
+        """
+        return cls.yuewen_unmodified_error_template.format(idx=idx)
+
+    yuewen_revised_provided_note_missing_error_template: ClassVar[str] = (
         "Answer's 粤文 text {idx} is modified relative to query's 粤文 text {idx}, but "
         "no note is provided, if revision is needed a note must be provided."
     )
-    """Error message when revised 粤文 is provided but note is missing."""
+    """Error template when revised 粤文 is provided but note is missing."""
 
-    yuewen_revised_missing_note_provided_error: ClassVar[str] = (
+    @classmethod
+    def yuewen_revised_provided_note_missing_error(cls, idx: int) -> str:
+        """Error message when revised 粤文 is provided but note is missing.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is provided but note is missing
+        """
+        return cls.yuewen_revised_provided_note_missing_error_template.format(idx=idx)
+
+    yuewen_revised_missing_note_provided_error_template: ClassVar[str] = (
         "Answer's 粤文 text {idx} is not modified relative to query's 粤文 text {idx}, "
         "but a note is provided, if no revisions are needed an empty string must be "
         "provided."
     )
+    """Error template when revised 粤文 is missing but note is provided."""
+
+    @classmethod
+    def yuewen_revised_missing_note_provided_error(cls, idx: int) -> str:
+        """Error message when revised 粤文 is missing but note is provided.
+
+        Arguments:
+            idx: index of subtitle
+        Returns:
+            error message when revised 粤文 is missing but note is provided
+        """
+        return cls.yuewen_revised_missing_note_provided_error_template.format(idx=idx)

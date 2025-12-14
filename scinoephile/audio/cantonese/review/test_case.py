@@ -39,28 +39,24 @@ class ReviewTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen_unmodified_error = self.prompt_cls.yuewen_unmodified_error
-        yuewen_revised_provided_note_missing_error = (
-            self.prompt_cls.yuewen_revised_provided_note_missing_error
-        )
-        yuewen_revised_missing_note_provided_error = (
-            self.prompt_cls.yuewen_revised_missing_note_provided_error
-        )
-
         for idx in range(self.size):
-            yuewen = getattr(self.query, f"yuewen_{idx + 1}")
-            yuewen_revised = getattr(self.answer, f"yuewen_revised_{idx + 1}")
-            note = getattr(self.answer, f"note_{idx + 1}")
+            yuewen = getattr(self.query, self.prompt_cls.yuewen_field(idx + 1))
+            yuewen_revised = getattr(
+                self.answer, self.prompt_cls.yuewen_revised_field(idx + 1)
+            )
+            note = getattr(self.answer, self.prompt_cls.note_field(idx + 1))
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
-                    raise ValueError(yuewen_unmodified_error.format(idx=idx + 1))
+                    raise ValueError(self.prompt_cls.yuewen_unmodified_error(idx + 1))
                 if note == "":
                     raise ValueError(
-                        yuewen_revised_provided_note_missing_error.format(idx=idx + 1)
+                        self.prompt_cls.yuewen_revised_provided_note_missing_error(
+                            idx + 1
+                        )
                     )
             elif note != "":
                 raise ValueError(
-                    yuewen_revised_missing_note_provided_error.format(idx=idx + 1)
+                    self.prompt_cls.yuewen_revised_missing_note_provided_error(idx + 1)
                 )
         return self
 
@@ -80,8 +76,8 @@ class ReviewTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = ReviewQuery.get_query_cls(size)
-        answer_cls = ReviewAnswer.get_answer_cls(size)
+        query_cls = ReviewQuery.get_query_cls(size, prompt_cls)
+        answer_cls = ReviewAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
@@ -101,5 +97,8 @@ class ReviewTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        size = sum(1 for key in data["query"] if key.startswith("zhongwen_"))
-        return cls.get_test_case_cls(size=size, **kwargs)
+        prompt_cls = kwargs.get("prompt_cls", ReviewPrompt)
+        size = sum(
+            1 for key in data["query"] if key.startswith(prompt_cls.zhongwen_prefix)
+        )
+        return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)

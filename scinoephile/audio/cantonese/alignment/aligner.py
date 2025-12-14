@@ -16,11 +16,13 @@ from scinoephile.audio import (
     get_sub_merged,
 )
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
+from scinoephile.audio.cantonese.review import ReviewTestCase
 from scinoephile.audio.cantonese.shifting import (
     ShiftingAnswer,
     ShiftingQuery,
     ShiftingTestCase,
 )
+from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer, save_test_cases_to_json
@@ -38,8 +40,6 @@ from .queries import (
 )
 
 __all__ = ["Aligner"]
-
-from ..translation import TranslationTestCase
 
 
 class Aligner:
@@ -445,7 +445,7 @@ class Aligner:
 
         # Query for 粤文 review
         test_case = get_review_test_case(alignment, test_case_cls)
-        test_case = self.review_queryer.call(test_case)
+        test_case: ReviewTestCase = self.review_queryer.call(test_case)
 
         # Update 粤文
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
@@ -467,7 +467,7 @@ class Aligner:
                 )
             yw_idx = yw_idxs[0]
             yw = alignment.yuewen[yw_idx]
-            yw_key = f"yuewen_{zw_idx + 1}"
+            yw_key = test_case.prompt_cls.yuewen_revised_field(zw_idx + 1)
             yw.text = getattr(test_case.answer, yw_key, yw.text)
             nascent_yw.append(yw)
             yw_idx = len(nascent_yw) - 1
