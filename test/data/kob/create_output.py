@@ -49,8 +49,9 @@ from test.data.t import (
 )
 
 title = Path(__file__).parent.name
-input_dir = test_data_root / title / "input"
-output_dir = test_data_root / title / "output"
+title_root = test_data_root / title
+input_dir = title_root / "input"
+output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
@@ -69,40 +70,27 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
     zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
-    zho_hant_fuse = get_zho_fused(
-        zho_hant_lens,
-        zho_hant_paddle,
-        get_zho_fuser(
-            prompt_cls=ZhoTradFusionPrompt,
-            test_cases=get_mlamd_zho_fusion_test_cases()
-            + get_mnt_zho_fusion_test_cases()
-            + get_t_zho_fusion_test_cases(),
-            test_case_path=test_data_root
-            / title
-            / "image"
-            / "zhongwen"
-            / "fusion.json",
-            auto_verify=True,
-        ),
+    zho_fuser = get_zho_fuser(
+        prompt_cls=ZhoTradFusionPrompt,
+        test_cases=get_mlamd_zho_fusion_test_cases()
+        + get_mnt_zho_fusion_test_cases()
+        + get_t_zho_fusion_test_cases(),
+        test_case_path=title_root / "image" / "zho" / "fusion.json",
+        auto_verify=True,
     )
+    zho_hant_fuse = get_zho_fused(zho_hant_lens, zho_hant_paddle, zho_fuser)
     zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
     zho_hant_fuse = get_zho_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zho_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
-    zho_hant_fuse_proofread = get_zho_proofread(
-        zho_hant_fuse,
-        get_zho_proofreader(
-            prompt_cls=ZhoTradProofreadingPrompt,
-            test_cases=get_mlamd_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases(),
-            test_case_path=test_data_root
-            / title
-            / "core"
-            / "zhongwen"
-            / "proofreading.json",
-            auto_verify=True,
-        ),
+    zho_proofreader = get_zho_proofreader(
+        prompt_cls=ZhoTradProofreadingPrompt,
+        test_cases=get_mlamd_zho_proofreading_test_cases()
+        + get_mnt_zho_proofreading_test_cases()
+        + get_t_zho_proofreading_test_cases(),
+        test_case_path=title_root / "core" / "zho" / "proofreading.json",
+        auto_verify=True,
     )
+    zho_hant_fuse_proofread = get_zho_proofread(zho_hant_fuse, zho_proofreader)
     zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")
 
 if "English (OCR)" in actions:
@@ -110,32 +98,23 @@ if "English (OCR)" in actions:
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuse = get_eng_fused(
-        eng_lens,
-        eng_tesseract,
-        get_eng_fuser(
-            test_cases=get_mlamd_eng_fusion_test_cases()
-            + get_mnt_eng_fusion_test_cases()
-            + get_t_eng_fusion_test_cases(),
-            test_case_path=test_data_root / title / "image" / "english" / "fusion.json",
-            auto_verify=True,
-        ),
+    eng_fuser = get_eng_fuser(
+        test_cases=get_mlamd_eng_fusion_test_cases()
+        + get_mnt_eng_fusion_test_cases()
+        + get_t_eng_fusion_test_cases(),
+        test_case_path=title_root / "image" / "eng" / "fusion.json",
+        auto_verify=True,
     )
+    eng_fuse = get_eng_fused(eng_lens, eng_tesseract, eng_fuser)
     eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_fuse_proofread = get_eng_proofread(
-        eng_fuse,
-        get_eng_proofreader(
-            test_cases=get_mlamd_eng_proofreading_test_cases()
-            + get_mnt_eng_proofreading_test_cases()
-            + get_t_eng_proofreading_test_cases(),
-            test_case_path=test_data_root
-            / title
-            / "core"
-            / "english"
-            / "proofreading.json",
-            auto_verify=True,
-        ),
+    eng_proofreader = get_eng_proofreader(
+        test_cases=get_mlamd_eng_proofreading_test_cases()
+        + get_mnt_eng_proofreading_test_cases()
+        + get_t_eng_proofreading_test_cases(),
+        test_case_path=title_root / "core" / "eng" / "proofreading.json",
+        auto_verify=True,
     )
+    eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
     eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 
 if "简体粵文 (SRT)" in actions:
