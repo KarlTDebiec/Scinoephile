@@ -23,7 +23,6 @@ from scinoephile.testing import test_data_root
 from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
 from .proofing import ProofingPrompt, ProofingTestCase
-from .review import ReviewPrompt, ReviewTestCase
 from .shifting import ShiftingPrompt, ShiftingTestCase
 from .translation import TranslationPrompt, TranslationTestCase
 
@@ -38,7 +37,6 @@ class CantoneseTranscriptionReviewer:
         merging_test_cases: list[MergingTestCase],
         proofing_test_cases: list[ProofingTestCase],
         translation_test_cases: list[TranslationTestCase],
-        review_test_cases: list[ReviewTestCase],
     ):
         """Initialize.
 
@@ -48,7 +46,6 @@ class CantoneseTranscriptionReviewer:
             merging_test_cases: merging test cases
             proofing_test_cases: proofing test cases
             translation_test_cases: translation test cases
-            review_test_cases: review test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
@@ -79,18 +76,11 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        review_queryer_cls = Queryer.get_queryer_cls(ReviewPrompt)
-        self.review_queryer = review_queryer_cls(
-            prompt_test_cases=[tc for tc in review_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in review_test_cases if tc.verified],
-            cache_dir_path=test_data_root / "cache",
-        )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,
             merging_queryer=self.merging_queryer,
             proofing_queryer=self.proofing_queryer,
             translation_queryer=self.translation_queryer,
-            review_queryer=self.review_queryer,
         )
 
     async def process_all_blocks(

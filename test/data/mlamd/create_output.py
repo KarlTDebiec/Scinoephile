@@ -36,7 +36,6 @@ from test.data.kob import (
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_proofing_test_cases,
-    get_mlamd_yue_review_test_cases,
     get_mlamd_yue_shifting_test_cases,
     get_mlamd_yue_translation_test_cases,
 )
@@ -59,11 +58,11 @@ output_dir = test_data_root / title / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
     "简体粤文 (Transcription)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -176,7 +175,6 @@ if "简体粤文 (Transcription)" in actions:
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
         proofing_test_cases=get_mlamd_yue_proofing_test_cases(),
         translation_test_cases=get_mlamd_yue_translation_test_cases(),
-        review_test_cases=get_mlamd_yue_review_test_cases(),
     )
 
     # Process all blocks
