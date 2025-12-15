@@ -8,13 +8,13 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.eng import (
-    _get_english_text_flattened,  # noqa
+    _get_eng_text_flattened,  # noqa
     get_eng_flattened,
 )
 
 
-def _test_get_english_flattened(series: Series, expected: Series):
-    """Test get_english_flattened.
+def _test_get_eng_flattened(series: Series, expected: Series):
+    """Test get_eng_flattened.
 
     Arguments:
         series: Series with which to test
@@ -37,57 +37,62 @@ def _test_get_english_flattened(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def test_get_english_flattened_kob(
-    kob_eng_clean: Series, kob_eng_clean_flatten: Series
+def test_get_eng_flattened_kob(
+    kob_eng_clean: Series,
+    kob_eng_clean_flatten: Series,
 ):
-    """Test get_english_flattened with KOB English subtitles.
+    """Test get_eng_flattened with KOB English subtitles.
 
     Arguments:
         kob_eng_clean: KOB English series fixture
         kob_eng_clean_flatten: Expected flattened KOB English series fixture
     """
-    _test_get_english_flattened(kob_eng_clean, kob_eng_clean_flatten)
+    _test_get_eng_flattened(kob_eng_clean, kob_eng_clean_flatten)
 
 
-def test_get_english_flattened_mlamd(
+def test_get_eng_flattened_mlamd(
     mlamd_eng_fuse_proofread_clean: Series,
     mlamd_eng_fuse_proofread_clean_flatten: Series,
 ):
-    """Test get_english_flattened with MLAMD English subtitles.
+    """Test get_eng_flattened with MLAMD English subtitles.
 
     Arguments:
         mlamd_eng_fuse_proofread_clean: MLAMD English series fixture
         mlamd_eng_fuse_proofread_clean_flatten: Expected flattened MLAMD English series
           fixture
     """
-    _test_get_english_flattened(
+    _test_get_eng_flattened(
         mlamd_eng_fuse_proofread_clean, mlamd_eng_fuse_proofread_clean_flatten
     )
 
 
-def test_get_english_flattened_mnt(
-    mnt_eng_fuse_proofread_clean: Series, mnt_eng_fuse_proofread_clean_flatten: Series
+def test_get_eng_flattened_mnt(
+    mnt_eng_fuse_proofread_clean: Series,
+    mnt_eng_fuse_proofread_clean_flatten: Series,
 ):
-    """Test get_english_flattened with MNT English subtitles.
+    """Test get_eng_flattened with MNT English subtitles.
 
     Arguments:
         mnt_eng_fuse_proofread_clean: MNT English series fixture
         mnt_eng_fuse_proofread_clean_flatten: Expected flattened MNT English series
           fixture
     """
-    _test_get_english_flattened(
+    _test_get_eng_flattened(
         mnt_eng_fuse_proofread_clean, mnt_eng_fuse_proofread_clean_flatten
     )
 
 
-def test_get_english_flattened_t(t_eng_clean: Series, t_eng_clean_flatten: Series):
-    """Test get_english_flattened with T English subtitles.
+def test_get_eng_flattened_t(
+    t_eng_clean: Series,
+    t_eng_clean_flatten: Series,
+):
+    """Test get_eng_flattened with T English subtitles.
 
     Arguments:
         t_eng_clean: T English series fixture
         t_eng_clean_flatten: Expected flattened T English series fixture
     """
-    _test_get_english_flattened(t_eng_clean, t_eng_clean_flatten)
+    _test_get_eng_flattened(t_eng_clean, t_eng_clean_flatten)
 
 
 @pytest.mark.parametrize(
@@ -96,11 +101,11 @@ def test_get_english_flattened_t(t_eng_clean: Series, t_eng_clean_flatten: Serie
         ("line 1\nline 2", "line 1 line 2"),
     ],
 )
-def test_get_english_text_flattened(text: str, expected: str):
-    """Test _get_english_text_flattened.
+def test_get_eng_text_flattened(text: str, expected: str):
+    """Test get_eng_text_flattened.
 
     Arguments:
         text: Text to flatten
         expected: Expected flattened text
     """
-    assert _get_english_text_flattened(text) == expected
+    assert _get_eng_text_flattened(text) == expected

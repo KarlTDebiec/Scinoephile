@@ -13,8 +13,8 @@ from scinoephile.core.eng import (
 )
 
 
-def _test_get_english_cleaned(series: Series, expected: Series):
-    """Test get_english_cleaned.
+def _test_get_eng_cleaned(series: Series, expected: Series):
+    """Test get_eng_cleaned.
 
     Arguments:
         series: Series with which to test
@@ -33,48 +33,56 @@ def _test_get_english_cleaned(series: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies")
 
 
-def test_get_english_cleaned_kob(kob_eng: Series, kob_eng_clean: Series):
-    """Test get_english_cleaned with KOB English subtitles.
+def test_get_eng_cleaned_kob(
+    kob_eng: Series,
+    kob_eng_clean: Series,
+):
+    """Test get_eng_cleaned with KOB English subtitles.
 
     Arguments:
         kob_eng: KOB English series fixture
         kob_eng_clean: Expected cleaned KOB English series fixture
     """
-    _test_get_english_cleaned(kob_eng, kob_eng_clean)
+    _test_get_eng_cleaned(kob_eng, kob_eng_clean)
 
 
-def test_get_english_cleaned_mlamd(
-    mlamd_eng_fuse_proofread: Series, mlamd_eng_fuse_proofread_clean: Series
+def test_get_eng_cleaned_mlamd(
+    mlamd_eng_fuse_proofread: Series,
+    mlamd_eng_fuse_proofread_clean: Series,
 ):
-    """Test get_english_cleaned with MLAMD English subtitles.
+    """Test get_eng_cleaned with MLAMD English subtitles.
 
     Arguments:
         mlamd_eng_fuse_proofread: MLAMD English series fixture
         mlamd_eng_fuse_proofread_clean: Expected cleaned MLAMD English series fixture
     """
-    _test_get_english_cleaned(mlamd_eng_fuse_proofread, mlamd_eng_fuse_proofread_clean)
+    _test_get_eng_cleaned(mlamd_eng_fuse_proofread, mlamd_eng_fuse_proofread_clean)
 
 
-def test_get_english_cleaned_mnt(
-    mnt_eng_fuse_proofread: Series, mnt_eng_fuse_proofread_clean: Series
+def test_get_eng_cleaned_mnt(
+    mnt_eng_fuse_proofread: Series,
+    mnt_eng_fuse_proofread_clean: Series,
 ):
-    """Test get_english_cleaned with MNT English subtitles.
+    """Test get_eng_cleaned with MNT English subtitles.
 
     Arguments:
         mnt_eng_fuse_proofread: MNT English series fixture
         mnt_eng_fuse_proofread_clean: Expected cleaned MNT English series fixture
     """
-    _test_get_english_cleaned(mnt_eng_fuse_proofread, mnt_eng_fuse_proofread_clean)
+    _test_get_eng_cleaned(mnt_eng_fuse_proofread, mnt_eng_fuse_proofread_clean)
 
 
-def test_get_english_cleaned_t(t_eng: Series, t_eng_clean: Series):
-    """Test get_english_cleaned with T English subtitles.
+def test_get_eng_cleaned_t(
+    t_eng: Series,
+    t_eng_clean: Series,
+):
+    """Test get_eng_cleaned with T English subtitles.
 
     Arguments:
         t_eng: T English series fixture
         t_eng_clean: Expected cleaned T English series fixture
     """
-    _test_get_english_cleaned(t_eng, t_eng_clean)
+    _test_get_eng_cleaned(t_eng, t_eng_clean)
 
 
 @pytest.mark.parametrize(
@@ -96,8 +104,8 @@ def test_get_english_cleaned_t(t_eng: Series, t_eng_clean: Series):
         ("{\\i1} abcd{\\i0}", "{\\i1}abcd{\\i0}"),
     ],
 )
-def test_get_english_text_cleaned(text: str, expected: str):
-    """Test _get_english_text_cleaned.
+def test_get_eng_text_cleaned(text: str, expected: str):
+    """Test _get_eng_text_cleaned.
 
     Arguments:
         text: Text to clean

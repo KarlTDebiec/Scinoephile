@@ -92,7 +92,9 @@ def test_get_zho_fused_mnt(
 
 
 def test_get_zho_fused_t(
-    t_zho_hans_lens: Series, t_zho_hans_paddle: Series, t_zho_hans_fuse: Series
+    t_zho_hans_lens: Series,
+    t_zho_hans_paddle: Series,
+    t_zho_hans_fuse: Series,
 ):
     """Test get_zho_fused with T 中文 subtitles.
 

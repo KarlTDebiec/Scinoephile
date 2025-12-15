@@ -97,7 +97,7 @@ def get_zho_flattened(series: Series) -> Series:
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_zhongwen_text_flattened(event.text)
+        event.text = _get_zho_text_flattened(event.text)
     return series
 
 
@@ -171,7 +171,7 @@ def _get_zhongwen_text_cleaned(text: str) -> str | None:
     return cleaned
 
 
-def _get_zhongwen_text_flattened(text: str) -> str:
+def _get_zho_text_flattened(text: str) -> str:
     """Get multi-line 中文 text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.

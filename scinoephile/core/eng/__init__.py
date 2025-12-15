@@ -55,7 +55,7 @@ def get_eng_flattened(series: Series, exclusions: list[int] = None) -> Series:
         if i in exclusions:
             info(f"Skipping flattening of subtitle {i}, with text:\n{event.text}")
             continue
-        event.text = _get_english_text_flattened(event.text.strip())
+        event.text = _get_eng_text_flattened(event.text.strip())
     return series
 
 
@@ -108,7 +108,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
     return cleaned
 
 
-def _get_english_text_flattened(text: str) -> str:
+def _get_eng_text_flattened(text: str) -> str:
     """Get multi-line English text flattened to a single line.
 
     Accounts for dashes ('-') used for dialogue from multiple sources.

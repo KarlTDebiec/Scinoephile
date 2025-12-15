@@ -15,10 +15,10 @@ from scinoephile.core.zho.proofreading import (
 )
 
 
-def _test_get_zhongwen_proofread(
+def _test_get_zho_proofread(
     series: Series, expected: Series, proofreader: Proofreader | None = None
 ):
-    """Test get_zhongwen_proofread.
+    """Test get_zho_proofread.
 
     Arguments:
         series: Series with which to test
@@ -40,53 +40,57 @@ def _test_get_zhongwen_proofread(
         pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
 
 
-def test_get_zhongwen_proofread_kob(
-    kob_zho_hant_fuse: Series, kob_zho_hant_fuse_proofread: Series
+def test_get_zho_proofread_kob(
+    kob_zho_hant_fuse: Series,
+    kob_zho_hant_fuse_proofread: Series,
 ):
-    """Test get_zhongwen_proofread with KOB English subtitles.
+    """Test get_zho_proofread with KOB English subtitles.
 
     Arguments:
         kob_zho_hant_fuse: KOB English series fixture
         kob_zho_hant_fuse_proofread: Expected proofread KOB English series fixture
     """
-    _test_get_zhongwen_proofread(
+    _test_get_zho_proofread(
         kob_zho_hant_fuse,
         kob_zho_hant_fuse_proofread,
         get_zho_proofreader(prompt_cls=ZhoTradProofreadingPrompt),
     )
 
 
-def test_get_zhongwen_proofread_mlamd(
-    mlamd_zho_hans_fuse: Series, mlamd_zho_hans_fuse_proofread: Series
+def test_get_zho_proofread_mlamd(
+    mlamd_zho_hans_fuse: Series,
+    mlamd_zho_hans_fuse_proofread: Series,
 ):
-    """Test get_zhongwen_proofread with MLAMD English subtitles.
+    """Test get_zho_proofread with MLAMD English subtitles.
 
     Arguments:
         mlamd_zho_hans_fuse: MLAMD English series fixture
         mlamd_zho_hans_fuse_proofread: Expected proofread MLAMD English series fixture
     """
-    _test_get_zhongwen_proofread(mlamd_zho_hans_fuse, mlamd_zho_hans_fuse_proofread)
+    _test_get_zho_proofread(mlamd_zho_hans_fuse, mlamd_zho_hans_fuse_proofread)
 
 
-def test_get_zhongwen_proofread_mnt(
-    mnt_zho_hans_fuse: Series, mnt_zho_hans_fuse_proofread: Series
+def test_get_zho_proofread_mnt(
+    mnt_zho_hans_fuse: Series,
+    mnt_zho_hans_fuse_proofread: Series,
 ):
-    """Test get_zhongwen_proofread with MNT English subtitles.
+    """Test get_zho_proofread with MNT English subtitles.
 
     Arguments:
         mnt_zho_hans_fuse: MNT English series fixture
         mnt_zho_hans_fuse_proofread: Expected proofread MNT English series fixture
     """
-    _test_get_zhongwen_proofread(mnt_zho_hans_fuse, mnt_zho_hans_fuse_proofread)
+    _test_get_zho_proofread(mnt_zho_hans_fuse, mnt_zho_hans_fuse_proofread)
 
 
-def test_get_zhongwen_proofread_t(
-    t_zho_hans_fuse: Series, t_zho_hans_fuse_proofread: Series
+def test_get_zho_proofread_t(
+    t_zho_hans_fuse: Series,
+    t_zho_hans_fuse_proofread: Series,
 ):
-    """Test get_zhongwen_proofread with T English subtitles.
+    """Test get_zho_proofread with T English subtitles.
 
     Arguments:
         t_zho_hans_fuse: T English series fixture
         t_zho_hans_fuse_proofread: Expected proofread T English series fixture
     """
-    _test_get_zhongwen_proofread(t_zho_hans_fuse, t_zho_hans_fuse_proofread)
+    _test_get_zho_proofread(t_zho_hans_fuse, t_zho_hans_fuse_proofread)
