@@ -17,7 +17,7 @@ __all__ = [
     "ZhoTradFusionPrompt",
     "get_default_zho_fusion_test_cases",
     "get_zho_fuser",
-    "get_zhongwen_ocr_fused",
+    "get_zho_fused",
 ]
 
 
@@ -49,7 +49,7 @@ def get_default_zho_fusion_test_cases(
     return []
 
 
-def get_zhongwen_ocr_fused(
+def get_zho_fused(
     lens: Series,
     paddle: Series,
     fuser: Fuser | None = None,

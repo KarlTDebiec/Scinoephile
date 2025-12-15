@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
+from scinoephile.core.eng.proofreading import EngProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zhongwen.proofreading import ZhongwenSimpProofreadingPrompt
-from scinoephile.image.english.fusion import EnglishFusionPrompt
+from scinoephile.core.zho.proofreading import ZhoSimpProofreadingPrompt
+from scinoephile.image.eng.fusion import EngFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zhongwen.fusion import ZhongwenSimpFusionPrompt
+from scinoephile.image.zho.fusion import ZhoSimpFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -172,7 +172,7 @@ def t_zho_hans_eng() -> Series:
 
 @cache
 def get_t_eng_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = EnglishProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get T English proofreading test cases.
@@ -191,7 +191,7 @@ def get_t_eng_proofreading_test_cases(
 
 @cache
 def get_t_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhongwenSimpProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ZhoSimpProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get T Zhongwen proofreading test cases.
@@ -210,7 +210,7 @@ def get_t_zho_proofreading_test_cases(
 
 @cache
 def get_t_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EnglishFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get T English fusion test cases.
 
@@ -228,7 +228,7 @@ def get_t_eng_fusion_test_cases(
 
 @cache
 def get_t_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhongwenSimpFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhoSimpFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get T Zhongwen fusion test cases.
 

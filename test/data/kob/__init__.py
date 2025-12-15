@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
+from scinoephile.core.eng.proofreading import EngProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zhongwen.proofreading import ZhongwenTradProofreadingPrompt
-from scinoephile.image.english.fusion import EnglishFusionPrompt
+from scinoephile.core.zho.proofreading import ZhoTradProofreadingPrompt
+from scinoephile.image.eng.fusion import EngFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zhongwen.fusion import ZhongwenTradFusionPrompt
+from scinoephile.image.zho.fusion import ZhoTradFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -159,7 +159,7 @@ def kob_yue_hans_eng() -> Series:
 
 @cache
 def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = EnglishProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB English proofreading test cases.
@@ -178,7 +178,7 @@ def get_kob_eng_proofreading_test_cases(
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhongwenTradProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ZhoTradProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB 中文 proofreading test cases.
@@ -197,7 +197,7 @@ def get_kob_zho_proofreading_test_cases(
 
 @cache
 def get_kob_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EnglishFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB English fusion test cases.
 
@@ -215,7 +215,7 @@ def get_kob_eng_fusion_test_cases(
 
 @cache
 def get_kob_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhongwenTradFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhoTradFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB 中文 fusion test cases.
 
