@@ -9,7 +9,7 @@ import pytest
 from scinoephile.core import Series
 from scinoephile.core.proofreading import Proofreader
 from scinoephile.core.zho.proofreading import (
-    ZhoTradProofreadingPrompt,
+    ZhoHantProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
 )
@@ -53,7 +53,7 @@ def test_get_zho_proofread_kob(
     _test_get_zho_proofread(
         kob_zho_hant_fuse,
         kob_zho_hant_fuse_proofread,
-        get_zho_proofreader(prompt_cls=ZhoTradProofreadingPrompt),
+        get_zho_proofreader(prompt_cls=ZhoHantProofreadingPrompt),
     )
 
 

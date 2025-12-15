@@ -18,13 +18,13 @@ from scinoephile.core.zho import (
     get_zho_flattened,
 )
 from scinoephile.core.zho.proofreading import (
-    ZhoTradProofreadingPrompt,
+    ZhoHantProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
 )
 from scinoephile.image.eng.fusion import get_eng_fused, get_eng_fuser
 from scinoephile.image.zho.fusion import (
-    ZhoTradFusionPrompt,
+    ZhoHantFusionPrompt,
     get_zho_fused,
     get_zho_fuser,
 )
@@ -70,7 +70,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
     zho_fuser = get_zho_fuser(
-        prompt_cls=ZhoTradFusionPrompt,
+        prompt_cls=ZhoHantFusionPrompt,
         test_cases=get_mlamd_zho_fusion_test_cases()
         + get_mnt_zho_fusion_test_cases()
         + get_t_zho_fusion_test_cases(),
@@ -82,7 +82,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse = get_zho_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zho_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
     zho_proofreader = get_zho_proofreader(
-        prompt_cls=ZhoTradProofreadingPrompt,
+        prompt_cls=ZhoHantProofreadingPrompt,
         test_cases=get_mlamd_zho_proofreading_test_cases()
         + get_mnt_zho_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),

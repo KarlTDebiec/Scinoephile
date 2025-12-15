@@ -14,10 +14,10 @@ from scinoephile.core import Series
 from scinoephile.core.eng.proofreading import EngProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zho.proofreading import ZhoTradProofreadingPrompt
+from scinoephile.core.zho.proofreading import ZhoHantProofreadingPrompt
 from scinoephile.image.eng.fusion import EngFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zho.fusion import ZhoTradFusionPrompt
+from scinoephile.image.zho.fusion import ZhoHantFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -178,7 +178,7 @@ def get_kob_eng_proofreading_test_cases(
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhoTradProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ZhoHantProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get KOB 中文 proofreading test cases.
@@ -215,7 +215,7 @@ def get_kob_eng_fusion_test_cases(
 
 @cache
 def get_kob_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoTradFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhoHantFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB 中文 fusion test cases.
 

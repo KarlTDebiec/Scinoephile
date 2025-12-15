@@ -14,11 +14,11 @@ from scinoephile.core.proofreading import (
     ProofreadingTestCase,
 )
 
-from .prompt import ZhoSimpProofreadingPrompt, ZhoTradProofreadingPrompt
+from .prompt import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
 __all__ = [
-    "ZhoSimpProofreadingPrompt",
-    "ZhoTradProofreadingPrompt",
+    "ZhoHansProofreadingPrompt",
+    "ZhoHantProofreadingPrompt",
     "get_default_zho_proofreading_test_cases",
     "get_zho_proofread",
     "get_zho_proofreader",
@@ -73,7 +73,7 @@ def get_zho_proofread(
 
 
 def get_zho_proofreader(
-    prompt_cls: type[ZhoSimpProofreadingPrompt] = ZhoSimpProofreadingPrompt,
+    prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
     default_test_cases: list[ProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> Proofreader:
