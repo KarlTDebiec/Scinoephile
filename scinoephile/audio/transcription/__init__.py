@@ -12,6 +12,16 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.core.zho import OpenCCConfig, get_zho_text_converted
 
+__all__ = [
+    "TranscribedSegment",
+    "TranscribedWord",
+    "WhisperTranscriber",
+    "get_segment_merged",
+    "get_segment_split_at_idx",
+    "get_segment_split_on_whitespace",
+    "get_segment_zho_converted",
+]
+
 
 def get_segment_zho_converted(
     segment: TranscribedSegment,
@@ -146,14 +156,3 @@ def get_segment_split_on_whitespace(
         split_segments.append(nascent_segment)
 
     return split_segments
-
-
-__all__ = [
-    "TranscribedSegment",
-    "TranscribedWord",
-    "WhisperTranscriber",
-    "get_segment_zho_converted",
-    "get_segment_merged",
-    "get_segment_split_at_idx",
-    "get_segment_split_on_whitespace",
-]
