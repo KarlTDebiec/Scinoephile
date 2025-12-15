@@ -48,8 +48,7 @@ from test.data.t import (
     get_t_zho_proofreading_test_cases,
 )
 
-title = Path(__file__).parent.name
-title_root = test_data_root / title
+title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
 output_dir = title_root / "output"
 set_logging_verbosity(2)
