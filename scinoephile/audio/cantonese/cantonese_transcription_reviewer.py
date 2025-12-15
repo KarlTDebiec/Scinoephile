@@ -11,7 +11,7 @@ from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_split_on_whitespace,
-    get_segment_zhongwen_converted,
+    get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import Block, Series
@@ -168,7 +168,7 @@ class CantoneseTranscriptionReviewer:
 
         # Simplify segments (optional)
         converted_segments = [
-            get_segment_zhongwen_converted(segment, OpenCCConfig.hk2s)
+            get_segment_zho_converted(segment, OpenCCConfig.hk2s)
             for segment in split_segments
         ]
 

@@ -45,7 +45,7 @@ def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
     series = deepcopy(series)
     new_events = []
     for event in series:
-        text = _get_zhongwen_text_cleaned(event.text.strip())
+        text = _get_zho_text_cleaned(event.text.strip())
         if text or not remove_empty:
             event.text = text
             new_events.append(event)
@@ -139,7 +139,7 @@ def get_zho_text_converted(
     return converted_text
 
 
-def _get_zhongwen_text_cleaned(text: str) -> str | None:
+def _get_zho_text_cleaned(text: str) -> str | None:
     """Get 中文 text cleaned.
 
     Arguments:

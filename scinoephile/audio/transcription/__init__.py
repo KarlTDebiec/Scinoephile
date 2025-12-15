@@ -13,7 +13,7 @@ from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscrib
 from scinoephile.core.zho import OpenCCConfig, get_zho_text_converted
 
 
-def get_segment_zhongwen_converted(
+def get_segment_zho_converted(
     segment: TranscribedSegment,
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
@@ -152,7 +152,7 @@ __all__ = [
     "TranscribedSegment",
     "TranscribedWord",
     "WhisperTranscriber",
-    "get_segment_zhongwen_converted",
+    "get_segment_zho_converted",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
